@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -9,8 +11,6 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class WorkflowUniqueIdRule implements Rule
 {
-    public function code(): string { return 'workflow.unique_id'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         $seen = [];
@@ -20,5 +20,10 @@ final class WorkflowUniqueIdRule implements Rule
             }
             $seen[$w->workflowId] = true;
         }
+    }
+
+    public function code(): string
+    {
+        return 'workflow.unique_id';
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation\Rules;
@@ -29,6 +30,7 @@ function docWithWorkflows(array $workflows): ArazzoDocument
 function wf(string $id): Workflow
 {
     $s = new Step('s', null, 'op', null, null, [], null, [], [], [], []);
+
     return new Workflow($id, null, null, null, [], [$s], [], [], [], []);
 }
 

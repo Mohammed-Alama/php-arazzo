@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 function supportsAnsi(): bool
 {
     if (getenv('NO_COLOR') !== false) {
@@ -20,7 +22,7 @@ function supportsAnsi(): bool
 
 function ansi(string $text, string $code): string
 {
-    if (! supportsAnsi()) {
+    if (!supportsAnsi()) {
         return $text;
     }
 
@@ -49,7 +51,7 @@ function yellow(string $text): string
 
 function writeln(string $line): void
 {
-    echo $line.PHP_EOL;
+    echo $line . PHP_EOL;
 }
 
 function ask(string $question, string $default = ''): string
@@ -57,12 +59,12 @@ function ask(string $question, string $default = ''): string
     $prompt = bold($question);
 
     if ($default) {
-        $prompt .= ' '.dim("({$default})");
+        $prompt .= ' ' . dim("({$default})");
     }
 
-    $answer = readline('  '.$prompt.': ');
+    $answer = readline('  ' . $prompt . ': ');
 
-    if (! $answer) {
+    if (!$answer) {
         return $default;
     }
 
@@ -71,9 +73,9 @@ function ask(string $question, string $default = ''): string
 
 function confirm(string $question, bool $default = false): bool
 {
-    $answer = ask($question.' '.($default ? 'Y/n' : 'y/N'));
+    $answer = ask($question . ' ' . ($default ? 'Y/n' : 'y/N'));
 
-    if (! $answer) {
+    if (!$answer) {
         return $default;
     }
 
@@ -120,8 +122,8 @@ function replace_in_file(string $file, array $replacements): void
         str_replace(
             array_keys($replacements),
             array_values($replacements),
-            $contents
-        )
+            $contents,
+        ),
     );
 }
 
@@ -140,7 +142,7 @@ function remove_readme_paragraphs(string $file): void
 
     file_put_contents(
         $file,
-        preg_replace('/<!--delete-->.*<!--\/delete-->/s', '', $contents) ?: $contents
+        preg_replace('/<!--delete-->.*<!--\/delete-->/s', '', $contents) ?: $contents,
     );
 }
 
@@ -168,16 +170,16 @@ function getFilesWithPlaceholders(): array
     $files = [];
 
     foreach ($iterator as $file) {
-        if (! $file->isFile()) {
+        if (!$file->isFile()) {
             continue;
         }
 
         $path = $file->getPathname();
-        $relativePath = str_replace(__DIR__.DIRECTORY_SEPARATOR, '', $path);
+        $relativePath = str_replace(__DIR__ . DIRECTORY_SEPARATOR, '', $path);
 
         // Skip excluded directories
         foreach ($skipDirs as $skipDir) {
-            if (str_starts_with($relativePath, $skipDir.DIRECTORY_SEPARATOR)) {
+            if (str_starts_with($relativePath, $skipDir . DIRECTORY_SEPARATOR)) {
                 continue 2;
             }
         }
@@ -202,7 +204,7 @@ function getFilesWithPlaceholders(): array
 
 function modifyComposerJson(array $removeDeps, array $removeScripts): void
 {
-    $path = __DIR__.'/composer.json';
+    $path = __DIR__ . '/composer.json';
     $data = json_decode(file_get_contents($path), true);
 
     foreach ($removeDeps as $name) {
@@ -255,7 +257,7 @@ function searchCommitsForGitHubUsername(): string
         return [
             'name' => $name,
             'email' => $email,
-            'isMatch' => strtolower($name) === $authorName && ! str_contains($name, '[bot]'),
+            'isMatch' => strtolower($name) === $authorName && !str_contains($name, '[bot]'),
         ];
     }, $committersLines), fn ($item) => $item['isMatch']);
 
@@ -284,12 +286,12 @@ function guessGitHubUsernameUsingCli()
 function guessGitHubUsername(): string
 {
     $username = searchCommitsForGitHubUsername();
-    if (! empty($username)) {
+    if (!empty($username)) {
         return $username;
     }
 
     $username = guessGitHubUsernameUsingCli();
-    if (! empty($username)) {
+    if (!empty($username)) {
         return $username;
     }
 
@@ -305,7 +307,7 @@ function guessGitHubVendorInfo($authorName, $username): array
     $remoteUrl = shell_exec('git config remote.origin.url') ?? '';
     $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
 
-    if (! isset($remoteUrlParts[1])) {
+    if (!isset($remoteUrlParts[1])) {
         return [$authorName, $username];
     }
 
@@ -428,14 +430,14 @@ writeln("  Namespace   {$vendorNamespace}\\{$className}");
 writeln("  Class       {$className}");
 writeln('');
 writeln('  Tooling');
-writeln('  PhpStan          '.($usePhpStan ? green('yes') : dim('no')));
-writeln('  Laravel Pint     '.($useLaravelPint ? green('yes') : dim('no')));
-writeln('  Dependabot       '.($useDependabot ? green('yes') : dim('no')));
-writeln('  Ray              '.($useLaravelRay ? green('yes') : dim('no')));
-writeln('  Auto-Changelog   '.($useUpdateChangelogWorkflow ? green('yes') : dim('no')));
+writeln('  PhpStan          ' . ($usePhpStan ? green('yes') : dim('no')));
+writeln('  Laravel Pint     ' . ($useLaravelPint ? green('yes') : dim('no')));
+writeln('  Dependabot       ' . ($useDependabot ? green('yes') : dim('no')));
+writeln('  Ray              ' . ($useLaravelRay ? green('yes') : dim('no')));
+writeln('  Auto-Changelog   ' . ($useUpdateChangelogWorkflow ? green('yes') : dim('no')));
 writeln('');
 
-if (! confirm('Modify files?', true)) {
+if (!confirm('Modify files?', true)) {
     exit(1);
 }
 
@@ -461,40 +463,40 @@ foreach ($files as $file) {
     ]);
 
     match (true) {
-        str_contains($file, normalizePath('src/Skeleton.php')) => rename($file, normalizePath('./src/'.$className.'.php')),
-        str_contains($file, normalizePath('src/SkeletonServiceProvider.php')) => rename($file, normalizePath('./src/'.$className.'ServiceProvider.php')),
-        str_contains($file, normalizePath('src/Facades/Skeleton.php')) => rename($file, normalizePath('./src/Facades/'.$className.'.php')),
-        str_contains($file, normalizePath('src/Commands/SkeletonCommand.php')) => rename($file, normalizePath('./src/Commands/'.$className.'Command.php')),
-        str_contains($file, normalizePath('database/migrations/create_skeleton_table.php.stub')) => rename($file, normalizePath('./database/migrations/create_'.title_snake($packageSlugWithoutPrefix).'_table.php.stub')),
-        str_contains($file, normalizePath('config/skeleton.php')) => rename($file, normalizePath('./config/'.$packageSlugWithoutPrefix.'.php')),
+        str_contains($file, normalizePath('src/Skeleton.php')) => rename($file, normalizePath('./src/' . $className . '.php')),
+        str_contains($file, normalizePath('src/SkeletonServiceProvider.php')) => rename($file, normalizePath('./src/' . $className . 'ServiceProvider.php')),
+        str_contains($file, normalizePath('src/Facades/Skeleton.php')) => rename($file, normalizePath('./src/Facades/' . $className . '.php')),
+        str_contains($file, normalizePath('src/Commands/SkeletonCommand.php')) => rename($file, normalizePath('./src/Commands/' . $className . 'Command.php')),
+        str_contains($file, normalizePath('database/migrations/create_skeleton_table.php.stub')) => rename($file, normalizePath('./database/migrations/create_' . title_snake($packageSlugWithoutPrefix) . '_table.php.stub')),
+        str_contains($file, normalizePath('config/skeleton.php')) => rename($file, normalizePath('./config/' . $packageSlugWithoutPrefix . '.php')),
         str_contains($file, 'README.md') => remove_readme_paragraphs($file),
         default => null,
     };
 }
 
-writeln(green('  ✓ Updated '.count($files).' files'));
+writeln(green('  ✓ Updated ' . count($files) . ' files'));
 
-if (! $useLaravelPint) {
-    safeUnlink(__DIR__.'/.github/workflows/fix-php-code-style-issues.yml');
-    safeUnlink(__DIR__.'/pint.json');
+if (!$useLaravelPint) {
+    safeUnlink(__DIR__ . '/.github/workflows/fix-php-code-style-issues.yml');
+    safeUnlink(__DIR__ . '/pint.json');
     writeln(green('  ✓ Removed Laravel Pint configuration'));
 }
 
-if (! $usePhpStan) {
-    safeUnlink(__DIR__.'/phpstan.neon.dist');
-    safeUnlink(__DIR__.'/phpstan-baseline.neon');
-    safeUnlink(__DIR__.'/.github/workflows/phpstan.yml');
+if (!$usePhpStan) {
+    safeUnlink(__DIR__ . '/phpstan.neon.dist');
+    safeUnlink(__DIR__ . '/phpstan-baseline.neon');
+    safeUnlink(__DIR__ . '/.github/workflows/phpstan.yml');
     writeln(green('  ✓ Removed PhpStan configuration'));
 }
 
-if (! $useDependabot) {
-    safeUnlink(__DIR__.'/.github/dependabot.yml');
-    safeUnlink(__DIR__.'/.github/workflows/dependabot-auto-merge.yml');
+if (!$useDependabot) {
+    safeUnlink(__DIR__ . '/.github/dependabot.yml');
+    safeUnlink(__DIR__ . '/.github/workflows/dependabot-auto-merge.yml');
     writeln(green('  ✓ Removed Dependabot configuration'));
 }
 
-if (! $useUpdateChangelogWorkflow) {
-    safeUnlink(__DIR__.'/.github/workflows/update-changelog.yml');
+if (!$useUpdateChangelogWorkflow) {
+    safeUnlink(__DIR__ . '/.github/workflows/update-changelog.yml');
     writeln(green('  ✓ Removed changelog updater workflow'));
 }
 
@@ -502,7 +504,7 @@ if (! $useUpdateChangelogWorkflow) {
 $removeDeps = [];
 $removeScripts = [];
 
-if (! $usePhpStan) {
+if (!$usePhpStan) {
     $removeDeps = array_merge($removeDeps, [
         'phpstan/extension-installer',
         'phpstan/phpstan-deprecation-rules',
@@ -512,11 +514,11 @@ if (! $usePhpStan) {
     $removeScripts[] = 'analyse';
 }
 
-if (! $useLaravelRay) {
+if (!$useLaravelRay) {
     $removeDeps[] = 'spatie/laravel-ray';
 }
 
-if (! empty($removeDeps) || ! empty($removeScripts)) {
+if (!empty($removeDeps) || !empty($removeScripts)) {
     modifyComposerJson($removeDeps, $removeScripts);
     writeln(green('  ✓ Cleaned up composer.json'));
 }

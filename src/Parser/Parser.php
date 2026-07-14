@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Parser;
@@ -38,7 +39,7 @@ class Parser
         $arazzo = $this->requireString($d, 'arazzo', $ctx);
 
         if (!array_key_exists('info', $d)) {
-            throw \Alama\LaravelArazzo\Exceptions\ParserException::missingField($ctx, 'info');
+            throw ParserException::missingField($ctx, 'info');
         }
         $info = $this->parseInfo($d['info'], $ctx->push('info'));
 
@@ -51,7 +52,7 @@ class Parser
         }
 
         if (!array_key_exists('workflows', $d)) {
-            throw \Alama\LaravelArazzo\Exceptions\ParserException::missingField($ctx, 'workflows');
+            throw ParserException::missingField($ctx, 'workflows');
         }
         $workflows = [];
         if ($d['workflows'] !== null) {
@@ -133,24 +134,10 @@ class Parser
     protected function requireList(mixed $node, ParseContext $ctx): array
     {
         if (!is_array($node) || (!empty($node) && !array_is_list($node))) {
-            throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType($ctx, 'list', $node);
+            throw ParserException::wrongType($ctx, 'list', $node);
         }
 
         return $node;
-    }
-
-    /**
-     * @param array<string,mixed> $arr
-     *
-     * @return list<mixed>|null
-     */
-    protected function optionalList(array $arr, string $key, ParseContext $ctx): ?array
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-
-        return $this->requireList($arr[$key], $ctx->push($key));
     }
 
     protected function parseSourceDescription(mixed $node, ParseContext $ctx): SourceDescription
@@ -158,7 +145,7 @@ class Parser
         $obj = $this->requireObjectMap($node, $ctx);
         $type = $this->requireString($obj, 'type', $ctx);
         $enum = SourceType::tryFrom($type)
-            ?? throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidEnum(
+            ?? throw ParserException::invalidEnum(
                 $ctx->push('type'), 'openapi|arazzo', $type,
             );
 
@@ -179,7 +166,7 @@ class Parser
         if (($d = $this->optionalList($obj, 'dependsOn', $ctx)) !== null) {
             foreach (array_values($d) as $i => $item) {
                 if (!is_string($item)) {
-                    throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType(
+                    throw ParserException::wrongType(
                         $ctx->push('dependsOn')->push($i), 'string', $item,
                     );
                 }
@@ -189,7 +176,7 @@ class Parser
 
         $steps = [];
         if (!array_key_exists('steps', $obj)) {
-            throw \Alama\LaravelArazzo\Exceptions\ParserException::missingField($ctx, 'steps');
+            throw ParserException::missingField($ctx, 'steps');
         }
         $rawSteps = $this->requireList($obj['steps'], $ctx->push('steps'));
         foreach (array_values($rawSteps) as $i => $item) {
@@ -244,9 +231,13 @@ class Parser
      */
     protected function optionalArray(array $arr, string $key, ParseContext $ctx): ?array
     {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) return null;
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
         $v = $arr[$key];
-        if (!is_array($v)) throw ParserException::wrongType($ctx->push($key), 'array', $v);
+        if (!is_array($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'array', $v);
+        }
 
         return $v;
     }
@@ -254,15 +245,15 @@ class Parser
     /**
      * @param array<string,mixed> $arr
      *
-     * @return array<int|string,mixed>
+     * @return list<mixed>|null
      */
-    protected function requireArray(array $arr, string $key, ParseContext $ctx): array
+    protected function optionalList(array $arr, string $key, ParseContext $ctx): ?array
     {
-        if (!array_key_exists($key, $arr)) throw ParserException::missingField($ctx, $key);
-        $v = $arr[$key];
-        if (!is_array($v)) throw ParserException::wrongType($ctx->push($key), 'array', $v);
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
 
-        return $v;
+        return $this->requireList($arr[$key], $ctx->push($key));
     }
 
     protected function parseStep(mixed $node, ParseContext $ctx): Step
@@ -328,12 +319,12 @@ class Parser
         $in = null;
         if (($rawIn = $this->optionalString($obj, 'in', $ctx)) !== null) {
             $in = ParameterIn::tryFrom($rawIn)
-                ?? throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidEnum(
+                ?? throw ParserException::invalidEnum(
                     $ctx->push('in'), 'path|query|header|cookie|body', $rawIn,
                 );
         }
         if (!array_key_exists('value', $obj)) {
-            throw \Alama\LaravelArazzo\Exceptions\ParserException::missingField($ctx, 'value');
+            throw ParserException::missingField($ctx, 'value');
         }
 
         return new Parameter(
@@ -359,7 +350,7 @@ class Parser
         $rawRepl = $this->optionalList($obj, 'replacements', $ctx);
         if ($rawRepl !== null) {
             foreach (array_values($rawRepl) as $i => $item) {
-                $replacements[] = $this->parsePayloadReplacement($item, $ctx->push('replacements')->push((string)$i));
+                $replacements[] = $this->parsePayloadReplacement($item, $ctx->push('replacements')->push((string) $i));
             }
         }
 
@@ -376,7 +367,7 @@ class Parser
     {
         $obj = $this->requireObjectMap($node, $ctx);
         if (!array_key_exists('value', $obj)) {
-            throw \Alama\LaravelArazzo\Exceptions\ParserException::missingField($ctx, 'value');
+            throw ParserException::missingField($ctx, 'value');
         }
 
         return new PayloadReplacement(
@@ -391,7 +382,7 @@ class Parser
         $type = null;
         if (($t = $this->optionalString($obj, 'type', $ctx)) !== null) {
             $type = CriterionType::tryFrom($t)
-                ?? throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidEnum(
+                ?? throw ParserException::invalidEnum(
                     $ctx->push('type'), 'simple|regex|jsonpath|xpath', $t,
                 );
         }
@@ -421,7 +412,7 @@ class Parser
                 criteria: $criteria,
             ),
             'end' => new SuccessEndAction($name, $criteria),
-            default => throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidActionType($ctx->push('type'), $type),
+            default => throw ParserException::invalidActionType($ctx->push('type'), $type),
         };
     }
 
@@ -438,12 +429,14 @@ class Parser
     /**
      * @param array<string,mixed> $obj
      *
-     * @return list<\Alama\LaravelArazzo\Dto\SuccessCriterion>
+     * @return list<SuccessCriterion>
      */
     private function parseCriteriaList(array $obj, ParseContext $ctx): array
     {
         $list = $this->optionalList($obj, 'criteria', $ctx);
-        if ($list === null) return [];
+        if ($list === null) {
+            return [];
+        }
         $out = [];
         foreach (array_values($list) as $i => $item) {
             $out[] = $this->parseSuccessCriterion($item, $ctx->push('criteria')->push($i));
@@ -478,28 +471,32 @@ class Parser
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
                 criteria: $criteria,
             ),
-            default => throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidActionType($ctx->push('type'), $type),
+            default => throw ParserException::invalidActionType($ctx->push('type'), $type),
         };
     }
 
     /** @param array<string,mixed> $arr */
     protected function optionalInt(array $arr, string $key, ParseContext $ctx): ?int
     {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) return null;
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
         $v = $arr[$key];
-        if (!is_int($v)) throw ParserException::wrongType($ctx->push($key), 'int', $v);
+        if (!is_int($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'int', $v);
+        }
 
         return $v;
     }
 
-    /** @return array<string,\Alama\LaravelArazzo\Dto\Expression> */
+    /** @return array<string,Expression> */
     protected function parseOutputsMap(mixed $node, ParseContext $ctx): array
     {
         $obj = $this->requireObjectMap($node, $ctx);
         $out = [];
         foreach ($obj as $k => $v) {
             if (!is_string($v)) {
-                throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType($ctx->push((string)$k), 'string (expression)', $v);
+                throw ParserException::wrongType($ctx->push((string) $k), 'string (expression)', $v);
             }
             $out[$k] = new Expression($v);
         }
@@ -518,59 +515,81 @@ class Parser
         if (($i = $this->optionalArray($obj, 'inputs', $ctx)) !== null) {
             foreach ($i as $k => $v) {
                 if (!is_array($v)) {
-                    throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType(
-                        $ctx->push('inputs')->push((string)$k), 'object (JSON Schema)', $v,
+                    throw ParserException::wrongType(
+                        $ctx->push('inputs')->push((string) $k), 'object (JSON Schema)', $v,
                     );
                 }
                 /** @var array<string,mixed> $v */
-                $inputs[(string)$k] = $v;
+                $inputs[(string) $k] = $v;
             }
         }
 
         $parameters = [];
         if (($p = $this->optionalArray($obj, 'parameters', $ctx)) !== null) {
             foreach ($p as $k => $v) {
-                $parameters[(string)$k] = $this->parseParameter($v, $ctx->push('parameters')->push((string)$k));
+                $parameters[(string) $k] = $this->parseParameter($v, $ctx->push('parameters')->push((string) $k));
             }
         }
 
         $successActions = [];
         if (($s = $this->optionalArray($obj, 'successActions', $ctx)) !== null) {
             foreach ($s as $k => $v) {
-                $parsed = $this->parseSuccessAction($v, $ctx->push('successActions')->push((string)$k));
+                $parsed = $this->parseSuccessAction($v, $ctx->push('successActions')->push((string) $k));
                 if ($parsed instanceof Reusable) {
-                    throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType(
-                        $ctx->push('successActions')->push((string)$k),
+                    throw ParserException::wrongType(
+                        $ctx->push('successActions')->push((string) $k),
                         'action (not a reusable ref)', $v,
                     );
                 }
-                $successActions[(string)$k] = $parsed;
+                $successActions[(string) $k] = $parsed;
             }
         }
 
         $failureActions = [];
         if (($f = $this->optionalArray($obj, 'failureActions', $ctx)) !== null) {
             foreach ($f as $k => $v) {
-                $parsed = $this->parseFailureAction($v, $ctx->push('failureActions')->push((string)$k));
+                $parsed = $this->parseFailureAction($v, $ctx->push('failureActions')->push((string) $k));
                 if ($parsed instanceof Reusable) {
-                    throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType(
-                        $ctx->push('failureActions')->push((string)$k),
+                    throw ParserException::wrongType(
+                        $ctx->push('failureActions')->push((string) $k),
                         'action (not a reusable ref)', $v,
                     );
                 }
-                $failureActions[(string)$k] = $parsed;
+                $failureActions[(string) $k] = $parsed;
             }
         }
 
         return new Components($inputs, $parameters, $successActions, $failureActions);
     }
 
+    /**
+     * @param array<string,mixed> $arr
+     *
+     * @return array<int|string,mixed>
+     */
+    protected function requireArray(array $arr, string $key, ParseContext $ctx): array
+    {
+        if (!array_key_exists($key, $arr)) {
+            throw ParserException::missingField($ctx, $key);
+        }
+        $v = $arr[$key];
+        if (!is_array($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'array', $v);
+        }
+
+        return $v;
+    }
+
     /** @param array<string,mixed> $arr */
     protected function optionalBool(array $arr, string $key, ParseContext $ctx): ?bool
     {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) return null;
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
         $v = $arr[$key];
-        if (!is_bool($v)) throw ParserException::wrongType($ctx->push($key), 'bool', $v);
+        if (!is_bool($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'bool', $v);
+        }
 
         return $v;
     }

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -11,8 +13,6 @@ use Alama\LaravelArazzo\Validation\Support\ExpressionWalker;
 
 final class ExpressionSyntaxRule implements Rule
 {
-    public function code(): string { return 'expr.syntax'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
@@ -21,5 +21,10 @@ final class ExpressionSyntaxRule implements Rule
                 $errors->error($this->code(), $ast->getMessage(), $site->pointer);
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'expr.syntax';
     }
 }

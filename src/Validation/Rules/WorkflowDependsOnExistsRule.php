@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -9,8 +11,6 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class WorkflowDependsOnExistsRule implements Rule
 {
-    public function code(): string { return 'workflow.dependson_exists'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ($doc->workflows as $i => $w) {
@@ -21,9 +21,10 @@ final class WorkflowDependsOnExistsRule implements Rule
                         "workflow '{$w->workflowId}' dependsOn item at index {$j} must be a string or integer.",
                         "/workflows/{$i}/dependsOn/{$j}",
                     );
+
                     continue;
                 }
-                if (!isset($symbols->workflows[(string)$dep])) {
+                if (!isset($symbols->workflows[(string) $dep])) {
                     $errors->error(
                         $this->code(),
                         "workflow '{$w->workflowId}' dependsOn '{$dep}' which is not declared.",
@@ -32,5 +33,10 @@ final class WorkflowDependsOnExistsRule implements Rule
                 }
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'workflow.dependson_exists';
     }
 }

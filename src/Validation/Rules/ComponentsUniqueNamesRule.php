@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -9,7 +11,12 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class ComponentsUniqueNamesRule implements Rule
 {
-    public function code(): string { return 'components.unique_names'; }
+    public function code(): string
+    {
+        return 'components.unique_names';
+    }
 
-    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void {}
+    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
+    {
+    }
 }

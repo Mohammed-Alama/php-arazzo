@@ -14,8 +14,8 @@ use Alama\LaravelArazzo\Dto\Workflow;
 
 it('builds full document tree', function (): void {
     $step = new Step('s1', null, 'getFoo', null, null, [], null, [], [], [], []);
-    $wf   = new Workflow('wf', null, null, null, [], [$step], [], [], [], []);
-    $doc  = new ArazzoDocument(
+    $wf = new Workflow('wf', null, null, null, [], [$step], [], [], [], []);
+    $doc = new ArazzoDocument(
         arazzo: '1.0.0',
         info: new Info('T', null, null, '1'),
         sourceDescriptions: [new SourceDescription('api', '/x', SourceType::Openapi)],

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -10,8 +12,6 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class ActionReusableRefResolvesRule implements Rule
 {
-    public function code(): string { return 'action.reusable_ref_resolves'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ($doc->workflows as $wi => $w) {
@@ -26,10 +26,13 @@ final class ActionReusableRefResolvesRule implements Rule
     private function checkList(array $items, string $componentType, SymbolTable $symbols, ErrorCollector $errors, string $base): void
     {
         foreach ($items as $i => $item) {
-            if (!$item instanceof Reusable) continue;
+            if (!$item instanceof Reusable) {
+                continue;
+            }
             $prefix = "\$components.{$componentType}.";
             if (!str_starts_with($item->reference, $prefix)) {
                 $errors->error($this->code(), "Reusable reference '{$item->reference}' does not target components.{$componentType}.", "{$base}/{$i}/reference");
+
                 continue;
             }
             $name = substr($item->reference, strlen($prefix));
@@ -37,5 +40,10 @@ final class ActionReusableRefResolvesRule implements Rule
                 $errors->error($this->code(), "Reusable reference '{$item->reference}' does not resolve.", "{$base}/{$i}/reference");
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'action.reusable_ref_resolves';
     }
 }

@@ -1,18 +1,21 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation;
 
 final readonly class RuleSet
 {
     /**
-     * @param list<Rule>    $rules
-     * @param list<string>  $disabled
+     * @param list<Rule> $rules
+     * @param list<string> $disabled
      */
     public function __construct(
         public array $rules,
         public array $disabled = [],
         public bool $strict = true,
-    ) {}
+    ) {
+    }
 
     /**
      * @param list<string> $disabled
@@ -28,16 +31,22 @@ final readonly class RuleSet
     }
 
     /** @return list<Rule> */
-    public function rules(): array { return $this->rules; }
+    public function rules(): array
+    {
+        return $this->rules;
+    }
 
     /** @return list<Rule> */
     public function activeRules(): array
     {
         return array_values(array_filter(
             $this->rules,
-            fn(Rule $r) => !in_array($r->code(), $this->disabled, true),
+            fn (Rule $r) => !in_array($r->code(), $this->disabled, true),
         ));
     }
 
-    public function isStrict(): bool { return $this->strict; }
+    public function isStrict(): bool
+    {
+        return $this->strict;
+    }
 }

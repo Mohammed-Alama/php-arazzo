@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -9,8 +11,6 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class WorkflowDependsOnNoCycleRule implements Rule
 {
-    public function code(): string { return 'workflow.dependson_no_cycle'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         /** @var array<string,int> $color 0=white,1=grey,2=black */
@@ -25,11 +25,17 @@ final class WorkflowDependsOnNoCycleRule implements Rule
 
         $reported = false;
         $dfs = function (string $node) use (&$dfs, &$color, $symbols, $errors, $indexOf, &$reported): void {
-            if ($reported) return;
-            if (!isset($symbols->workflows[$node])) return;
+            if ($reported) {
+                return;
+            }
+            if (!isset($symbols->workflows[$node])) {
+                return;
+            }
             $color[$node] = 1;
             foreach ($symbols->workflows[$node]->dependsOn as $next => $_) {
-                if (!isset($color[$next])) continue;
+                if (!isset($color[$next])) {
+                    continue;
+                }
                 if ($color[$next] === 1) {
                     $i = $indexOf[$node] ?? 0;
                     $errors->error(
@@ -38,11 +44,16 @@ final class WorkflowDependsOnNoCycleRule implements Rule
                         "/workflows/{$i}/dependsOn",
                     );
                     $reported = true;
+
                     return;
                 }
-                if ($color[$next] === 0) $dfs($next);
+                if ($color[$next] === 0) {
+                    $dfs($next);
+                }
                 /** @phpstan-ignore if.alwaysFalse */
-                if ($reported) return;
+                if ($reported) {
+                    return;
+                }
             }
             $color[$node] = 2;
         };
@@ -51,7 +62,14 @@ final class WorkflowDependsOnNoCycleRule implements Rule
             if (($color[$w->workflowId] ?? 0) === 0) {
                 $dfs($w->workflowId);
             }
-            if ($reported) break;
+            if ($reported) {
+                break;
+            }
         }
+    }
+
+    public function code(): string
+    {
+        return 'workflow.dependson_no_cycle';
     }
 }

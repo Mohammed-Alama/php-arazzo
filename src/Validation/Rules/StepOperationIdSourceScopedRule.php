@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -10,18 +12,18 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class StepOperationIdSourceScopedRule implements Rule
 {
-    public function code(): string { return 'step.operationid_source_scoped'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         $openapiSources = array_values(array_filter(
             $doc->sourceDescriptions,
-            fn($s) => $s->type === SourceType::Openapi,
+            fn ($s) => $s->type === SourceType::Openapi,
         ));
 
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                if ($s->operationId === null) continue;
+                if ($s->operationId === null) {
+                    continue;
+                }
                 if (str_contains($s->operationId, '#')) {
                     [$src] = explode('#', $s->operationId, 2);
                     if (!isset($symbols->sourceDescriptions[$src])) {
@@ -42,5 +44,10 @@ final class StepOperationIdSourceScopedRule implements Rule
                 }
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'step.operationid_source_scoped';
     }
 }

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;

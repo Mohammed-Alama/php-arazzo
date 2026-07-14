@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Expression;
 
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
 use Alama\LaravelArazzo\Expression\Ast\HttpMetaRef;
 use Alama\LaravelArazzo\Expression\Ast\InputRef;
@@ -68,6 +70,6 @@ it('rejects unknown root token', function (): void {
 })->throws(ExpressionSyntaxException::class);
 
 it('caches ast on Expression VO', function (): void {
-    $e = new \Alama\LaravelArazzo\Dto\Expression('{$inputs.x}');
+    $e = new Expression('{$inputs.x}');
     expect($e->ast())->toBe($e->ast());
 });

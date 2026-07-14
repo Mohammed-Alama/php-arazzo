@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -12,17 +14,21 @@ use Alama\LaravelArazzo\Validation\Support\ExpressionWalker;
 
 final class ExpressionUnresolvedInputRefRule implements Rule
 {
-    public function code(): string { return 'expr.unresolved_input_ref'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
             $ast = $site->expression->astOrError();
-            if ($ast instanceof ExpressionSyntaxException) continue;
-            if (!$ast instanceof InputRef) continue;
+            if ($ast instanceof ExpressionSyntaxException) {
+                continue;
+            }
+            if (!$ast instanceof InputRef) {
+                continue;
+            }
 
             $syms = $site->workflow;
-            if ($syms === null) continue;
+            if ($syms === null) {
+                continue;
+            }
             if (!isset($syms->inputs[$ast->name]) && !isset($syms->parameters[$ast->name])) {
                 $errors->error(
                     $this->code(),
@@ -31,5 +37,10 @@ final class ExpressionUnresolvedInputRefRule implements Rule
                 );
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'expr.unresolved_input_ref';
     }
 }

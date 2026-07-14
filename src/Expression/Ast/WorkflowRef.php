@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Expression\Ast;
 
 final readonly class WorkflowRef extends ExpressionAst
@@ -9,5 +11,6 @@ final readonly class WorkflowRef extends ExpressionAst
         public string $workflowId,
         public string $partKind,
         public string $name,
-    ) {}
+    ) {
+    }
 }

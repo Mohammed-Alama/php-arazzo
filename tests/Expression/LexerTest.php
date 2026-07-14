@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Expression;
@@ -9,8 +10,8 @@ use Alama\LaravelArazzo\Expression\TokenKind;
 
 it('tokenises inputs.userId', function (): void {
     $tokens = (new Lexer())->tokenize('{$inputs.userId}');
-    $kinds = array_map(fn($t) => $t->kind, $tokens);
-    $values = array_map(fn($t) => $t->value, $tokens);
+    $kinds = array_map(fn ($t) => $t->kind, $tokens);
+    $values = array_map(fn ($t) => $t->value, $tokens);
 
     expect($kinds)->toBe([TokenKind::Keyword, TokenKind::Dot, TokenKind::Name])
         ->and($values)->toBe(['inputs', '.', 'userId']);
@@ -39,7 +40,7 @@ it('tokenises dollar signs inside expressions', function (): void {
 
 it('tokenises extended characters like %, @, +, :', function (): void {
     $t = (new Lexer())->tokenize('{$components.schemas.User%20Profile@v1+new:id}');
-    $values = array_map(fn($tok) => $tok->value, $t);
+    $values = array_map(fn ($tok) => $tok->value, $t);
     expect($values)->toBe(['components', '.', 'schemas', '.', 'User%20Profile@v1+new:id']);
 });
 
