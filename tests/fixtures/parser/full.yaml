@@ -1,0 +1,63 @@
+arazzo: "1.0.0"
+info:
+  title: Full
+  version: "1.0"
+  description: Exhaustive fixture
+sourceDescriptions:
+  - name: api
+    url: /openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: main
+    summary: Primary workflow
+    inputs:
+      type: object
+      properties:
+        userId:
+          type: string
+    parameters:
+      - name: X-Trace
+        in: header
+        value: "{$inputs.userId}"
+    steps:
+      - stepId: fetch
+        description: Fetch user
+        operationId: getUser
+        parameters:
+          - name: id
+            in: query
+            value: "{$inputs.userId}"
+        successCriteria:
+          - condition: "$statusCode == 200"
+        outputs:
+          user: "{$response.body}"
+        onSuccess:
+          - name: next
+            type: goto
+            stepId: post
+        onFailure:
+          - name: back
+            type: retry
+            retryAfter: 500
+            retryLimit: 2
+      - stepId: post
+        operationId: postThing
+        requestBody:
+          contentType: application/json
+          payload: "{$steps.fetch.outputs.user}"
+          replacements:
+            - target: /id
+              value: "{$inputs.userId}"
+    outputs:
+      user: "{$steps.fetch.outputs.user}"
+components:
+  parameters:
+    Trace:
+      name: X-Trace
+      in: header
+      value: "{$inputs.userId}"
+  successActions:
+    goEnd:
+      name: goEnd
+      type: end
+x-vendor-custom: hello
