@@ -7,12 +7,13 @@ namespace Alama\LaravelArazzo\Tests\Resolution;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Resolution\DefaultSourceResolver;
+use Alama\LaravelArazzo\Resolution\Exceptions\SourceFetchException;
 use Alama\LaravelArazzo\Resolution\Exceptions\SourceParseException;
 use Alama\LaravelArazzo\Resolution\ResolvedSource;
 use Alama\LaravelArazzo\Resolution\SourceFetcher;
 use Alama\LaravelArazzo\Resolution\SourceParser;
 
-it('resolves http url using remote fetcher and the matching parser', function (): void {
+it('resolves http url using http fetcher and the matching parser', function (): void {
     $resolved = new class() implements ResolvedSource
     {
         public function extract(string $jsonPointer): mixed
@@ -21,7 +22,7 @@ it('resolves http url using remote fetcher and the matching parser', function ()
         }
     };
 
-    $remoteFetcher = new class() implements SourceFetcher
+    $httpFetcher = new class() implements SourceFetcher
     {
         public bool $called = false;
 
@@ -33,7 +34,7 @@ it('resolves http url using remote fetcher and the matching parser', function ()
         }
     };
 
-    $localFetcher = new class() implements SourceFetcher
+    $fileFetcher = new class() implements SourceFetcher
     {
         public bool $called = false;
 
@@ -58,8 +59,11 @@ it('resolves http url using remote fetcher and the matching parser', function ()
     };
 
     $resolver = new DefaultSourceResolver(
-        remoteFetcher: $remoteFetcher,
-        localFetcher: $localFetcher,
+        fetchers: [
+            'http' => $httpFetcher,
+            'https' => $httpFetcher,
+            'file' => $fileFetcher,
+        ],
         parsers: [SourceType::Openapi->value => $parser],
     );
 
@@ -67,11 +71,11 @@ it('resolves http url using remote fetcher and the matching parser', function ()
     $result = $resolver->resolve($source, '/base');
 
     expect($result)->toBe($resolved)
-        ->and($remoteFetcher->called)->toBeTrue()
-        ->and($localFetcher->called)->toBeFalse();
+        ->and($httpFetcher->called)->toBeTrue()
+        ->and($fileFetcher->called)->toBeFalse();
 });
 
-it('routes non-http url to local fetcher', function (): void {
+it('routes url with no scheme to file fetcher', function (): void {
     $resolved = new class() implements ResolvedSource
     {
         public function extract(string $jsonPointer): mixed
@@ -80,7 +84,7 @@ it('routes non-http url to local fetcher', function (): void {
         }
     };
 
-    $remoteFetcher = new class() implements SourceFetcher
+    $httpFetcher = new class() implements SourceFetcher
     {
         public bool $called = false;
 
@@ -92,7 +96,7 @@ it('routes non-http url to local fetcher', function (): void {
         }
     };
 
-    $localFetcher = new class() implements SourceFetcher
+    $fileFetcher = new class() implements SourceFetcher
     {
         public bool $called = false;
 
@@ -117,19 +121,22 @@ it('routes non-http url to local fetcher', function (): void {
     };
 
     $resolver = new DefaultSourceResolver(
-        remoteFetcher: $remoteFetcher,
-        localFetcher: $localFetcher,
+        fetchers: [
+            'http' => $httpFetcher,
+            'https' => $httpFetcher,
+            'file' => $fileFetcher,
+        ],
         parsers: [SourceType::Openapi->value => $parser],
     );
 
     $source = new SourceDescription('local', './local/api.json', SourceType::Openapi);
     $resolver->resolve($source, '/base');
 
-    expect($localFetcher->called)->toBeTrue()
-        ->and($remoteFetcher->called)->toBeFalse();
+    expect($fileFetcher->called)->toBeTrue()
+        ->and($httpFetcher->called)->toBeFalse();
 });
 
-it('routes https url to remote fetcher', function (): void {
+it('routes https url to https fetcher', function (): void {
     $resolved = new class() implements ResolvedSource
     {
         public function extract(string $jsonPointer): mixed
@@ -138,7 +145,7 @@ it('routes https url to remote fetcher', function (): void {
         }
     };
 
-    $remoteFetcher = new class() implements SourceFetcher
+    $httpFetcher = new class() implements SourceFetcher
     {
         public bool $called = false;
 
@@ -150,7 +157,7 @@ it('routes https url to remote fetcher', function (): void {
         }
     };
 
-    $localFetcher = new class() implements SourceFetcher
+    $fileFetcher = new class() implements SourceFetcher
     {
         public bool $called = false;
 
@@ -175,16 +182,18 @@ it('routes https url to remote fetcher', function (): void {
     };
 
     $resolver = new DefaultSourceResolver(
-        remoteFetcher: $remoteFetcher,
-        localFetcher: $localFetcher,
+        fetchers: [
+            'http' => $fileFetcher,
+            'https' => $httpFetcher,
+            'file' => $fileFetcher,
+        ],
         parsers: [SourceType::Openapi->value => $parser],
     );
 
     $source = new SourceDescription('remote', 'https://example.com/api.json', SourceType::Openapi);
     $resolver->resolve($source, '/base');
 
-    expect($remoteFetcher->called)->toBeTrue()
-        ->and($localFetcher->called)->toBeFalse();
+    expect($httpFetcher->called)->toBeTrue();
 });
 
 it('throws SourceParseException when no parser is configured for the source type', function (): void {
@@ -197,8 +206,11 @@ it('throws SourceParseException when no parser is configured for the source type
     };
 
     $resolver = new DefaultSourceResolver(
-        remoteFetcher: $fetcher,
-        localFetcher: $fetcher,
+        fetchers: [
+            'http' => $fetcher,
+            'https' => $fetcher,
+            'file' => $fetcher,
+        ],
         parsers: [],
     );
 
@@ -206,6 +218,30 @@ it('throws SourceParseException when no parser is configured for the source type
 
     expect(fn () => $resolver->resolve($source, '/base'))
         ->toThrow(SourceParseException::class, SourceType::Openapi->value);
+});
+
+it('throws SourceFetchException for unknown scheme', function (): void {
+    $fetcher = new class() implements SourceFetcher
+    {
+        public function fetch(string $urlOrPath, string $basePath): string
+        {
+            return 'content';
+        }
+    };
+
+    $resolver = new DefaultSourceResolver(
+        fetchers: [
+            'http' => $fetcher,
+            'https' => $fetcher,
+            'file' => $fetcher,
+        ],
+        parsers: [],
+    );
+
+    $source = new SourceDescription('s3', 's3://my-bucket/api.json', SourceType::Openapi);
+
+    expect(fn () => $resolver->resolve($source, '/base'))
+        ->toThrow(SourceFetchException::class, 's3');
 });
 
 it('selects the parser by SourceType value, choosing arazzo parser over openapi', function (): void {
@@ -258,8 +294,11 @@ it('selects the parser by SourceType value, choosing arazzo parser over openapi'
     };
 
     $resolver = new DefaultSourceResolver(
-        remoteFetcher: $fetcher,
-        localFetcher: $fetcher,
+        fetchers: [
+            'http' => $fetcher,
+            'https' => $fetcher,
+            'file' => $fetcher,
+        ],
         parsers: [
             SourceType::Openapi->value => $openapiParser,
             SourceType::Arazzo->value => $arazzoParser,
