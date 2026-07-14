@@ -40,6 +40,8 @@ final class HttpFetcher implements SourceFetcher
             return rtrim($basePath, '/') . '/' . ltrim($urlOrPath, '/');
         }
 
-        return $urlOrPath;
+        throw new SourceFetchException(
+            "Cannot resolve relative URL '{$urlOrPath}' without an HTTP or HTTPS basePath.",
+        );
     }
 }

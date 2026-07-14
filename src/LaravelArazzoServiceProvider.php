@@ -25,7 +25,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->singleton(SourceResolver::class, function ($app) {
+        $this->app->singleton(SourceResolver::class, function () {
             return new DefaultSourceResolver(
                 fetchers: [
                     'http' => new CachedFetcher(new HttpFetcher(), 3600),

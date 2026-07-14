@@ -193,7 +193,8 @@ it('routes https url to https fetcher', function (): void {
     $source = new SourceDescription('remote', 'https://example.com/api.json', SourceType::Openapi);
     $resolver->resolve($source, '/base');
 
-    expect($httpFetcher->called)->toBeTrue();
+    expect($httpFetcher->called)->toBeTrue()
+        ->and($fileFetcher->called)->toBeFalse();
 });
 
 it('throws SourceParseException when no parser is configured for the source type', function (): void {
