@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Parser;
 
-final class ParseContext
+final readonly class ParseContext
 {
     /** @param list<string> $segments */
     public function __construct(
-        private readonly string $filePath,
-        private readonly array $segments = [],
+        private string $filePath,
+        private array $segments = [],
     ) {
     }
 
