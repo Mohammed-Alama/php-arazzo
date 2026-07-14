@@ -9,9 +9,6 @@ use Alama\LaravelArazzo\Resolution\Exceptions\SourceParseException;
 
 final readonly class DefaultSourceResolver implements SourceResolver
 {
-    /**
-     * @param array<string, SourceParser> $parsers
-     */
     public function __construct(
         private SourceFetcher $remoteFetcher,
         private SourceFetcher $localFetcher,
