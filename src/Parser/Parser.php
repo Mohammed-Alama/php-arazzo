@@ -202,4 +202,85 @@ class Parser
         }
         return $node;
     }
+
+    protected function parseSuccessAction(mixed $node, ParseContext $ctx): \Alama\LaravelArazzo\Dto\Action\SuccessAction|\Alama\LaravelArazzo\Dto\Reusable
+    {
+        $obj = $this->requireObjectMap($node, $ctx);
+        if (array_key_exists('reference', $obj)) {
+            return $this->parseReusable($obj, $ctx);
+        }
+        $name = $this->requireString($obj, 'name', $ctx);
+        $type = $this->requireString($obj, 'type', $ctx);
+        $criteria = $this->parseCriteriaList($obj, $ctx);
+
+        return match ($type) {
+            'goto' => new \Alama\LaravelArazzo\Dto\Action\SuccessGotoAction(
+                name: $name,
+                stepId: $this->optionalString($obj, 'stepId', $ctx),
+                workflowId: $this->optionalString($obj, 'workflowId', $ctx),
+                criteria: $criteria,
+            ),
+            'end' => new \Alama\LaravelArazzo\Dto\Action\SuccessEndAction($name, $criteria),
+            default => throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidActionType($ctx->push('type'), $type),
+        };
+    }
+
+    protected function parseFailureAction(mixed $node, ParseContext $ctx): \Alama\LaravelArazzo\Dto\Action\FailureAction|\Alama\LaravelArazzo\Dto\Reusable
+    {
+        $obj = $this->requireObjectMap($node, $ctx);
+        if (array_key_exists('reference', $obj)) {
+            return $this->parseReusable($obj, $ctx);
+        }
+        $name = $this->requireString($obj, 'name', $ctx);
+        $type = $this->requireString($obj, 'type', $ctx);
+        $criteria = $this->parseCriteriaList($obj, $ctx);
+
+        return match ($type) {
+            'goto' => new \Alama\LaravelArazzo\Dto\Action\FailureGotoAction(
+                name: $name,
+                stepId: $this->optionalString($obj, 'stepId', $ctx),
+                workflowId: $this->optionalString($obj, 'workflowId', $ctx),
+                criteria: $criteria,
+            ),
+            'end' => new \Alama\LaravelArazzo\Dto\Action\FailureEndAction($name, $criteria),
+            'retry' => new \Alama\LaravelArazzo\Dto\Action\RetryAction(
+                name: $name,
+                retryAfter: $this->optionalInt($obj, 'retryAfter', $ctx),
+                retryLimit: $this->optionalInt($obj, 'retryLimit', $ctx),
+                stepId: $this->optionalString($obj, 'stepId', $ctx),
+                workflowId: $this->optionalString($obj, 'workflowId', $ctx),
+                criteria: $criteria,
+            ),
+            default => throw \Alama\LaravelArazzo\Exceptions\ParserException::invalidActionType($ctx->push('type'), $type),
+        };
+    }
+
+    /**
+     * @param array<string,mixed> $obj
+     * @return list<\Alama\LaravelArazzo\Dto\SuccessCriterion>
+     */
+    private function parseCriteriaList(array $obj, ParseContext $ctx): array
+    {
+        $list = $this->optionalArray($obj, 'criteria', $ctx);
+        if ($list === null) return [];
+        $out = [];
+        foreach (array_values($list) as $i => $item) {
+            $out[] = $this->parseSuccessCriterion($item, $ctx->push('criteria')->push($i));
+        }
+        return $out;
+    }
+
+    /** @return array<string,\Alama\LaravelArazzo\Dto\Expression> */
+    protected function parseOutputsMap(mixed $node, ParseContext $ctx): array
+    {
+        $obj = $this->requireObjectMap($node, $ctx);
+        $out = [];
+        foreach ($obj as $k => $v) {
+            if (!is_string($v)) {
+                throw \Alama\LaravelArazzo\Exceptions\ParserException::wrongType($ctx->push((string) $k), 'string (expression)', $v);
+            }
+            $out[$k] = new \Alama\LaravelArazzo\Dto\Expression($v);
+        }
+        return $out;
+    }
 }
