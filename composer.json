@@ -47,6 +47,7 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
+        "test-mutate": "vendor/bin/pest --mutate --covered-only",
         "format": "vendor/bin/pint"
     },
     "config": {

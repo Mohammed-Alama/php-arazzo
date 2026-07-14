@@ -41,3 +41,8 @@ it('honours disabled list', function (): void {
     $codes = array_map(fn (Rule $r) => $r->code(), $set->activeRules());
     expect($codes)->toBe(['y']);
 });
+
+it('exposes strict flag via isStrict()', function (): void {
+    expect(RuleSet::default(strict: true)->isStrict())->toBeTrue()
+        ->and(RuleSet::default(strict: false)->isStrict())->toBeFalse();
+});
