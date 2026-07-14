@@ -1,5 +1,6 @@
 <?php
 
-use VendorName\Skeleton\Tests\TestCase;
+use Alama\LaravelArazzo\Tests\TestCase;
 
-uses(TestCase::class)->in(__DIR__);
+uses(TestCase::class)->in('Feature', 'Commands');
+
