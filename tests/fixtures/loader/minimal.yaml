@@ -1,0 +1,13 @@
+arazzo: "1.0.0"
+info:
+  title: Minimal
+  version: "1.0"
+sourceDescriptions:
+  - name: api
+    url: /openapi.yaml
+    type: openapi
+workflows:
+  - workflowId: wf
+    steps:
+      - stepId: s1
+        operationId: getFoo
