@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Alama\LaravelArazzo\Tests\Dto;
+
 use Alama\LaravelArazzo\Dto\Action\FailureEndAction;
 use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
 use Alama\LaravelArazzo\Dto\Action\RetryAction;

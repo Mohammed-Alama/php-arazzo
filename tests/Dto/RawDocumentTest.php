@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Alama\LaravelArazzo\Tests\Dto;
+
 use Alama\LaravelArazzo\Dto\Enum\Format;
 use Alama\LaravelArazzo\Dto\RawDocument;
 

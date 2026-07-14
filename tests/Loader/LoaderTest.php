@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Alama\LaravelArazzo\Tests\Loader;
+
 use Alama\LaravelArazzo\Dto\Enum\Format;
 use Alama\LaravelArazzo\Exceptions\LoaderException;
 use Alama\LaravelArazzo\Loader\Loader;
