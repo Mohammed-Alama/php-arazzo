@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Expression;
 
 final readonly class Token
@@ -8,5 +10,6 @@ final readonly class Token
         public TokenKind $kind,
         public string $value,
         public int $offset,
-    ) {}
+    ) {
+    }
 }

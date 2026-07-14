@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation;
 
 final readonly class Warning
@@ -9,7 +11,8 @@ final readonly class Warning
         public string $message,
         public string $path,
         public ?int $line = null,
-    ) {}
+    ) {
+    }
 
     /** @return array{code:string,message:string,path:string,line:?int} */
     public function toArray(): array

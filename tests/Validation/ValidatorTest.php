@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation;
@@ -14,7 +15,11 @@ use Alama\LaravelArazzo\Validation\Validator;
 
 class RecordingRule implements Rule
 {
-    public function code(): string { return 'r.a'; }
+    public function code(): string
+    {
+        return 'r.a';
+    }
+
     public function check(ArazzoDocument $d, SymbolTable $s, ErrorCollector $e): void
     {
         $e->error('r.a', 'msg', '/foo');

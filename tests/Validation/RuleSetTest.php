@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation;
@@ -11,8 +12,15 @@ use Alama\LaravelArazzo\Validation\RuleSet;
 
 class DummyRule implements Rule
 {
-    public function __construct(private readonly string $c) {}
-    public function code(): string { return $this->c; }
+    public function __construct(private readonly string $c)
+    {
+    }
+
+    public function code(): string
+    {
+        return $this->c;
+    }
+
     public function check(ArazzoDocument $d, SymbolTable $s, ErrorCollector $e): void
     {
         $e->error($this->c, 'boom', '/');
@@ -30,6 +38,6 @@ it('honours disabled list', function (): void {
     $set = RuleSet::default(disabled: ['x'], strict: false)
         ->withRule(new DummyRule('x'))
         ->withRule(new DummyRule('y'));
-    $codes = array_map(fn(Rule $r) => $r->code(), $set->activeRules());
+    $codes = array_map(fn (Rule $r) => $r->code(), $set->activeRules());
     expect($codes)->toBe(['y']);
 });

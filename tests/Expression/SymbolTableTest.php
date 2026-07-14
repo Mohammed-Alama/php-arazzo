@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Expression;
@@ -24,7 +25,7 @@ it('builds symbol table from document', function (): void {
     $wf = new Workflow(
         workflowId: 'main',
         summary: null, description: null,
-        inputs: ['type'=>'object','properties'=>['userId'=>['type'=>'string']]],
+        inputs: ['type' => 'object', 'properties' => ['userId' => ['type' => 'string']]],
         dependsOn: [],
         steps: [$step],
         successActions: [], failureActions: [],
@@ -55,30 +56,30 @@ it('does not throw on missing or malformed data', function (): void {
     // We instantiate ArazzoDocument with invalid types internally to simulate what
     // could happen before strict validation is run, since SymbolTable is defensive.
     $doc = new \ReflectionClass(ArazzoDocument::class)->newInstanceWithoutConstructor();
-    
+
     // Uninitialized properties shouldn't crash it
     $sym = SymbolTable::build($doc);
-    
+
     expect($sym->workflows)->toBe([])
         ->and($sym->sourceDescriptions)->toBe([]);
 });
 
 it('extracts valid parts even when other parts are malformed or missing', function (): void {
     $doc = new \ReflectionClass(ArazzoDocument::class)->newInstanceWithoutConstructor();
-    
+
     // Give it valid workflows but NO source descriptions or components
     // Instantiate Workflow without constructor to leave its identifiers and collections uninitialized
     $wf = new \ReflectionClass(Workflow::class)->newInstanceWithoutConstructor();
-    
+
     // Set ONLY the workflowId to simulate a partially hydrated object
     $wfProp = new \ReflectionProperty(Workflow::class, 'workflowId');
     $wfProp->setValue($wf, 'partial_wf');
-    
+
     $docProp = new \ReflectionProperty(ArazzoDocument::class, 'workflows');
     $docProp->setValue($doc, [$wf]);
-    
+
     $sym = SymbolTable::build($doc);
-    
+
     // Workflows should be extracted properly and safely ignore its uninitialized collections (steps, parameters, etc.)
     expect($sym->workflows)->toHaveKey('partial_wf')
         // And the rest should be empty arrays safely extracted

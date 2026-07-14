@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
@@ -13,8 +15,6 @@ use Alama\LaravelArazzo\Validation\Rule;
 
 final class ActionGotoTargetResolvesRule implements Rule
 {
-    public function code(): string { return 'action.goto_target_resolves'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ($doc->workflows as $wi => $w) {
@@ -30,9 +30,11 @@ final class ActionGotoTargetResolvesRule implements Rule
     private function checkList(array $actions, ?WorkflowSymbols $syms, SymbolTable $global, ErrorCollector $errors, string $base): void
     {
         foreach ($actions as $i => $a) {
-            $stepId = null; $workflowId = null;
+            $stepId = null;
+            $workflowId = null;
             if ($a instanceof SuccessGotoAction || $a instanceof FailureGotoAction || $a instanceof RetryAction) {
-                $stepId = $a->stepId; $workflowId = $a->workflowId;
+                $stepId = $a->stepId;
+                $workflowId = $a->workflowId;
             } else {
                 continue;
             }
@@ -43,5 +45,10 @@ final class ActionGotoTargetResolvesRule implements Rule
                 $errors->error($this->code(), "Action references unknown workflowId '{$workflowId}'.", "{$base}/{$i}/workflowId");
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'action.goto_target_resolves';
     }
 }

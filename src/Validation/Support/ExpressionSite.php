@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Support;
 
 use Alama\LaravelArazzo\Dto\Expression;
@@ -14,5 +16,6 @@ final readonly class ExpressionSite
         public ?WorkflowSymbols $workflow,
         public ?string $currentStepId,
         public string $context,
-    ) {}
+    ) {
+    }
 }

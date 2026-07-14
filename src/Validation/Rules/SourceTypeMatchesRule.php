@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -14,7 +16,10 @@ use Alama\LaravelArazzo\Validation\Rule;
  */
 final class SourceTypeMatchesRule implements Rule
 {
-    public function code(): string { return 'source.type_matches'; }
+    public function code(): string
+    {
+        return 'source.type_matches';
+    }
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {

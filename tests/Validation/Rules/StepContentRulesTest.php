@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation\Rules;
@@ -24,6 +25,7 @@ use Alama\LaravelArazzo\Validation\Rules\StepSuccessCriteriaConditionRule;
 function stepContentDoc(Step $s): ArazzoDocument
 {
     $w = new Workflow('w', null, null, null, [], [$s], [], [], [], []);
+
     return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$w], new Components([], [], [], []), []);
 }
 

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Exceptions;
 
 use Alama\LaravelArazzo\Validation\ValidationResult;

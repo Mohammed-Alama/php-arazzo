@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -15,15 +17,15 @@ use Alama\LaravelArazzo\Validation\Support\ExpressionWalker;
 
 final class ExpressionContextMisuseRule implements Rule
 {
-    public function code(): string { return 'expr.context_misuse'; }
-
     private const ALLOWED = ['criteria', 'outputs', 'onSuccess', 'onFailure'];
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
             $ast = $site->expression->astOrError();
-            if ($ast instanceof ExpressionSyntaxException) continue;
+            if ($ast instanceof ExpressionSyntaxException) {
+                continue;
+            }
 
             $isRuntime = $ast instanceof HttpMetaRef
                 || ($ast instanceof StepRef && ($ast->part instanceof RequestPart || $ast->part instanceof ResponsePart));
@@ -36,5 +38,10 @@ final class ExpressionContextMisuseRule implements Rule
                 );
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'expr.context_misuse';
     }
 }

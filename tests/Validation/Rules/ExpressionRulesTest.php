@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation\Rules;
@@ -22,13 +23,16 @@ use Alama\LaravelArazzo\Validation\Rules\ExpressionUnresolvedSourceRefRule;
 use Alama\LaravelArazzo\Validation\Rules\ExpressionUnresolvedStepRefRule;
 use Alama\LaravelArazzo\Validation\Rules\ExpressionUnresolvedWorkflowRefRule;
 
-function stepE(string $id, array $params = [], array $outs = []): Step {
+function stepE(string $id, array $params = [], array $outs = []): Step
+{
     return new Step($id, null, 'op', null, null, $params, null, [], [], [], $outs);
 }
 
-function docE(array $params = [], array $outs = [], ?array $inputs = ['type'=>'object','properties'=>['userId'=>['type'=>'string']]], array $sources = [], array $deps = []): ArazzoDocument {
+function docE(array $params = [], array $outs = [], ?array $inputs = ['type' => 'object', 'properties' => ['userId' => ['type' => 'string']]], array $sources = [], array $deps = []): ArazzoDocument
+{
     $steps = [stepE('fetch', $params, $outs)];
     $wf = new Workflow('main', null, null, $inputs, $deps, $steps, [], [], [], []);
+
     return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), $sources, [$wf], new Components([], [], [], []), []);
 }
 

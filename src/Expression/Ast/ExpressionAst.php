@@ -1,5 +1,9 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Expression\Ast;
 
-abstract readonly class ExpressionAst {}
+abstract readonly class ExpressionAst
+{
+}

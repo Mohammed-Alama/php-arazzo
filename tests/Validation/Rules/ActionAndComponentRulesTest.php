@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation\Rules;
@@ -23,6 +24,7 @@ use Alama\LaravelArazzo\Validation\Rules\ExtensionsXPrefixRule;
 function actionDocSteps(array $steps, ?array $rawRoot = null): ArazzoDocument
 {
     $w = new Workflow('w', null, null, null, [], $steps, [], [], [], []);
+
     return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$w], new Components([], [], [], []), [], $rawRoot);
 }
 
@@ -66,7 +68,7 @@ it('warns on extension without x- prefix (via extensions preprocessing)', functi
 });
 
 it('flags unknown top-level field', function (): void {
-    $raw = ['arazzo'=>'1.0.0','info'=>[],'workflows'=>[],'weird'=>true];
+    $raw = ['arazzo' => '1.0.0', 'info' => [], 'workflows' => [], 'weird' => true];
     $doc = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), [], $raw);
     $ec = new ErrorCollector();
     (new DocUnknownFieldRule(strict: false))->check($doc, SymbolTable::build($doc), $ec);

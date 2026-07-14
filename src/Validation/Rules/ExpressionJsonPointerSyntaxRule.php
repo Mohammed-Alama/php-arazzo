@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
@@ -14,18 +16,24 @@ use Alama\LaravelArazzo\Validation\Support\ExpressionWalker;
 
 final class ExpressionJsonPointerSyntaxRule implements Rule
 {
-    public function code(): string { return 'expr.jsonpointer_syntax'; }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
             $ast = $site->expression->astOrError();
-            if ($ast instanceof ExpressionSyntaxException) continue;
-            if (!$ast instanceof StepRef) continue;
+            if ($ast instanceof ExpressionSyntaxException) {
+                continue;
+            }
+            if (!$ast instanceof StepRef) {
+                continue;
+            }
             $part = $ast->part;
-            if (!($part instanceof RequestPart) && !($part instanceof ResponsePart)) continue;
+            if (!($part instanceof RequestPart) && !($part instanceof ResponsePart)) {
+                continue;
+            }
             $ptr = $part->jsonPointer;
-            if ($ptr === null || $ptr === '') continue;
+            if ($ptr === null || $ptr === '') {
+                continue;
+            }
 
             $segments = explode('/', ltrim($ptr, '/'));
             foreach ($segments as $seg) {
@@ -35,5 +43,10 @@ final class ExpressionJsonPointerSyntaxRule implements Rule
                 }
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'expr.jsonpointer_syntax';
     }
 }

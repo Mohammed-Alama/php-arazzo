@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Validation\Rules;
@@ -14,7 +15,10 @@ use Alama\LaravelArazzo\Validation\Rules\WorkflowDependsOnExistsRule;
 use Alama\LaravelArazzo\Validation\Rules\WorkflowDependsOnNoCycleRule;
 use Alama\LaravelArazzo\Validation\Rules\WorkflowInputsValidSchemaRule;
 
-function step(string $id): Step { return new Step($id, null, 'op', null, null, [], null, [], [], [], []); }
+function step(string $id): Step
+{
+    return new Step($id, null, 'op', null, null, [], null, [], [], [], []);
+}
 
 function wfDep(string $id, array $dep = [], ?array $inputs = null): Workflow
 {

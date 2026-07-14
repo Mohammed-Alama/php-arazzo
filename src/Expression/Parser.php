@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Expression;
 
 use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
@@ -17,7 +19,9 @@ use Alama\LaravelArazzo\Expression\Ast\WorkflowRef;
 
 final class Parser
 {
-    public function __construct(private readonly Lexer $lexer = new Lexer()) {}
+    public function __construct(private readonly Lexer $lexer = new Lexer())
+    {
+    }
 
     public function parse(string $raw): ExpressionAst
     {
@@ -25,7 +29,7 @@ final class Parser
         if ($tokens === []) {
             throw new ExpressionSyntaxException("Empty expression: {$raw}", '', 'expr.syntax');
         }
-        
+
         $i = 0;
         // Optionally consume Dollar ($) token if it's there
         if ($tokens[$i]->kind === TokenKind::Dollar) {
@@ -34,20 +38,20 @@ final class Parser
                 throw new ExpressionSyntaxException("Expression ended after \$: {$raw}", '', 'expr.syntax');
             }
         }
-        
+
         $head = $tokens[$i];
         if ($head->kind !== TokenKind::Keyword) {
             throw new ExpressionSyntaxException("Expression must start with a keyword: {$raw}", '', 'expr.syntax');
         }
 
         return match ($head->value) {
-            'inputs'             => $this->parseSimpleRef($tokens, InputRef::class, $raw, $i),
-            'outputs'            => $this->parseSimpleRef($tokens, OutputRef::class, $raw, $i),
+            'inputs' => $this->parseSimpleRef($tokens, InputRef::class, $raw, $i),
+            'outputs' => $this->parseSimpleRef($tokens, OutputRef::class, $raw, $i),
             'url', 'method', 'statusCode' => $this->parseHttpMeta($tokens, $raw, $i),
-            'steps'              => $this->parseStepRef($tokens, $raw, $i),
-            'workflows'          => $this->parseWorkflowRef($tokens, $raw, $i),
+            'steps' => $this->parseStepRef($tokens, $raw, $i),
+            'workflows' => $this->parseWorkflowRef($tokens, $raw, $i),
             'sourceDescriptions' => $this->parseSourceRef($tokens, $raw, $i),
-            'components'         => $this->parseComponentRef($tokens, $raw, $i),
+            'components' => $this->parseComponentRef($tokens, $raw, $i),
             'request', 'response' => throw new ExpressionSyntaxException(
                 "Bare \${$head->value} must appear inside a \$steps.* expression: {$raw}", '', 'expr.syntax',
             ),
@@ -68,6 +72,7 @@ final class Parser
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)) {
             throw new ExpressionSyntaxException("Malformed reference: {$raw}", '', 'expr.syntax');
         }
+
         return new $refClass($rest[2]->value);
     }
 
@@ -80,6 +85,7 @@ final class Parser
         }
         /** @var 'url'|'method'|'statusCode' $field */
         $field = $rest[0]->value;
+
         return new HttpMetaRef($field);
     }
 
@@ -101,10 +107,10 @@ final class Parser
 
         return new StepRef($stepId, match ($sub) {
             'outputs' => $this->parseNamedPart($tail, OutputPart::class, $raw),
-            'inputs'  => $this->parseNamedPart($tail, InputPart::class, $raw),
+            'inputs' => $this->parseNamedPart($tail, InputPart::class, $raw),
             'request' => $this->parseHttpPart($tail, RequestPart::class, $raw),
             'response' => $this->parseHttpPart($tail, ResponsePart::class, $raw),
-            default   => throw new ExpressionSyntaxException("Unknown step part '{$sub}' in: {$raw}", '', 'expr.syntax'),
+            default => throw new ExpressionSyntaxException("Unknown step part '{$sub}' in: {$raw}", '', 'expr.syntax'),
         });
     }
 
@@ -117,6 +123,7 @@ final class Parser
         if (count($rest) !== 2 || $rest[0]->kind !== TokenKind::Dot || ($rest[1]->kind !== TokenKind::Name && $rest[1]->kind !== TokenKind::Keyword)) {
             throw new ExpressionSyntaxException("Malformed reference: {$raw}", '', 'expr.syntax');
         }
+
         return new $cls($rest[1]->value);
     }
 
@@ -143,7 +150,10 @@ final class Parser
             'body' => new $cls('body', null, $this->parseJsonPointer($tail, $raw)),
             'header' => new $cls('header', $this->parseHeaderName($tail, $raw), null),
             'url', 'method', 'statusCode' => (function () use ($cls, $kw, $tail, $raw) {
-                if ($tail !== []) throw new ExpressionSyntaxException("Unexpected tokens after '{$kw}' in: {$raw}", '', 'expr.syntax');
+                if ($tail !== []) {
+                    throw new ExpressionSyntaxException("Unexpected tokens after '{$kw}' in: {$raw}", '', 'expr.syntax');
+                }
+
                 return new $cls($kw, null, null);
             })(),
             default => throw new ExpressionSyntaxException("Unknown http part '{$kw}' in: {$raw}", '', 'expr.syntax'),
@@ -153,7 +163,9 @@ final class Parser
     /** @param list<Token> $tail */
     private function parseJsonPointer(array $tail, string $raw): ?string
     {
-        if ($tail === []) return null;
+        if ($tail === []) {
+            return null;
+        }
         if ($tail[0]->kind !== TokenKind::Hash) {
             throw new ExpressionSyntaxException("Expected '#' before JSON pointer in: {$raw}", '', 'expr.syntax');
         }
@@ -170,6 +182,7 @@ final class Parser
                 $i++;
             }
         }
+
         return $out;
     }
 
@@ -179,6 +192,7 @@ final class Parser
         if (count($tail) !== 2 || $tail[0]->kind !== TokenKind::Dot || ($tail[1]->kind !== TokenKind::Name && $tail[1]->kind !== TokenKind::Keyword)) {
             throw new ExpressionSyntaxException("Expected '.name' after header in: {$raw}", '', 'expr.syntax');
         }
+
         return $tail[1]->value;
     }
 
@@ -200,6 +214,7 @@ final class Parser
         if ($kind !== 'inputs' && $kind !== 'outputs') {
             throw new ExpressionSyntaxException("Workflow part must be inputs or outputs in: {$raw}", '', 'expr.syntax');
         }
+
         /** @var 'inputs'|'outputs' $kind */
         return new WorkflowRef($rest[2]->value, $kind, $rest[6]->value);
     }
@@ -215,7 +230,9 @@ final class Parser
             throw new ExpressionSyntaxException("Malformed sourceDescriptions reference: {$raw}", '', 'expr.syntax');
         }
         $name = $rest[2]->value;
-        if (count($rest) === 3) return new SourceRef($name, null);
+        if (count($rest) === 3) {
+            return new SourceRef($name, null);
+        }
         if ($rest[3]->kind !== TokenKind::Dot) {
             throw new ExpressionSyntaxException("Expected '.' after source name in: {$raw}", '', 'expr.syntax');
         }
@@ -225,6 +242,7 @@ final class Parser
         foreach ($tail as $t) {
             $out .= $t->kind === TokenKind::Dot ? '.' : $t->value;
         }
+
         return new SourceRef($name, $out === '' ? null : $out);
     }
 
@@ -240,6 +258,7 @@ final class Parser
             || ($rest[4]->kind !== TokenKind::Name && $rest[4]->kind !== TokenKind::Keyword)) {
             throw new ExpressionSyntaxException("Malformed components reference: {$raw}", '', 'expr.syntax');
         }
+
         return new ComponentRef($rest[2]->value, $rest[4]->value);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Parser;
@@ -11,19 +12,50 @@ use Alama\LaravelArazzo\Parser\Parser;
 class ParserProbe extends Parser
 {
     /** @param array<string,mixed> $arr */
-    public function reqStr(array $arr, string $k, ParseContext $c): string { return $this->requireString($arr, $k, $c); }
+    public function reqStr(array $arr, string $k, ParseContext $c): string
+    {
+        return $this->requireString($arr, $k, $c);
+    }
+
     /** @param array<string,mixed> $arr */
-    public function optStr(array $arr, string $k, ParseContext $c): ?string { return $this->optionalString($arr, $k, $c); }
+    public function optStr(array $arr, string $k, ParseContext $c): ?string
+    {
+        return $this->optionalString($arr, $k, $c);
+    }
+
     /** @param array<string,mixed> $arr */
-    public function reqArr(array $arr, string $k, ParseContext $c): array { return $this->requireArray($arr, $k, $c); }
+    public function reqArr(array $arr, string $k, ParseContext $c): array
+    {
+        return $this->requireArray($arr, $k, $c);
+    }
+
     /** @param array<string,mixed> $arr */
-    public function optArr(array $arr, string $k, ParseContext $c): ?array { return $this->optionalArray($arr, $k, $c); }
+    public function optArr(array $arr, string $k, ParseContext $c): ?array
+    {
+        return $this->optionalArray($arr, $k, $c);
+    }
+
     /** @param array<string,mixed> $arr */
-    public function optInt(array $arr, string $k, ParseContext $c): ?int { return $this->optionalInt($arr, $k, $c); }
+    public function optInt(array $arr, string $k, ParseContext $c): ?int
+    {
+        return $this->optionalInt($arr, $k, $c);
+    }
+
     /** @param array<string,mixed> $arr */
-    public function optBool(array $arr, string $k, ParseContext $c): ?bool { return $this->optionalBool($arr, $k, $c); }
-    public function reqObj(mixed $n, ParseContext $c): array { return $this->requireObjectMap($n, $c); }
-    public function reqList(mixed $n, ParseContext $c): array { return $this->requireList($n, $c); }
+    public function optBool(array $arr, string $k, ParseContext $c): ?bool
+    {
+        return $this->optionalBool($arr, $k, $c);
+    }
+
+    public function reqObj(mixed $n, ParseContext $c): array
+    {
+        return $this->requireObjectMap($n, $c);
+    }
+
+    public function reqList(mixed $n, ParseContext $c): array
+    {
+        return $this->requireList($n, $c);
+    }
 }
 
 it('requireString returns value', function (): void {
@@ -44,7 +76,7 @@ it('optionalString returns null when absent', function (): void {
 });
 
 it('requireObjectMap rejects lists', function (): void {
-    (new ParserProbe())->reqObj([1,2,3], new ParseContext('/x'));
+    (new ParserProbe())->reqObj([1, 2, 3], new ParseContext('/x'));
 })->throws(ParserException::class, 'Expected object');
 
 it('requireList rejects assoc arrays', function (): void {

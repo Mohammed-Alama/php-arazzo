@@ -1,21 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Parser;
 
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
-use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Enum\CriterionType;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\Reusable;
+use Alama\LaravelArazzo\Exceptions\ParserException;
 use Alama\LaravelArazzo\Loader\Loader;
 use Alama\LaravelArazzo\Loader\NativeJsonDecoder;
 use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
 use Alama\LaravelArazzo\Parser\Parser;
 
-function parseFixture(string $rel): \Alama\LaravelArazzo\Dto\ArazzoDocument {
+function parseFixture(string $rel): ArazzoDocument
+{
     $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
     $raw = $loader->load(__DIR__ . '/../fixtures/parser/' . $rel);
+
     return (new Parser())->parse($raw);
 }
 
@@ -38,7 +43,7 @@ it('parses a full arazzo document', function (): void {
 
     $s1 = $wf->steps[0];
     expect($s1->operationPath)->toBe('/users/{id}')
-        ->and($s1->successCriteria[0]->type)->toBe(\Alama\LaravelArazzo\Dto\Enum\CriterionType::Simple)
+        ->and($s1->successCriteria[0]->type)->toBe(CriterionType::Simple)
         ->and($s1->successCriteria[0]->context)->toBe('$response.header.status')
         ->and($s1->onSuccess[0])->toBeInstanceOf(Reusable::class)
         ->and($s1->onFailure[0])->toBeInstanceOf(RetryAction::class);
@@ -58,4 +63,4 @@ it('parses a minimal arazzo document', function (): void {
 
 it('rejects missing workflows', function (): void {
     parseFixture('invalid-missing-workflows.yaml');
-})->throws(\Alama\LaravelArazzo\Exceptions\ParserException::class, 'Missing required field: /workflows');
+})->throws(ParserException::class, 'Missing required field: /workflows');
