@@ -74,6 +74,7 @@ class Parser
             workflows: $workflows,
             components: $components,
             specificationExtensions: $extensions,
+            rawRoot: $d,
         );
     }
 

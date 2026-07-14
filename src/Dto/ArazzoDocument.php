@@ -9,6 +9,7 @@ final readonly class ArazzoDocument
      * @param list<SourceDescription> $sourceDescriptions
      * @param list<Workflow> $workflows
      * @param array<string,mixed> $specificationExtensions
+     * @param array<string,mixed>|null $rawRoot
      */
     public function __construct(
         public string $arazzo,
@@ -17,6 +18,7 @@ final readonly class ArazzoDocument
         public array $workflows,
         public Components $components,
         public array $specificationExtensions,
+        public ?array $rawRoot = null,
     ) {
     }
 }
