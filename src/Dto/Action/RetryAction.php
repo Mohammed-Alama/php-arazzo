@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Dto\Action;
 
 use Alama\LaravelArazzo\Dto\Enum\ActionKind;

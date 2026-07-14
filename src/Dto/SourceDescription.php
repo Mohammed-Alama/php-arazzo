@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Dto;
 
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
@@ -10,5 +11,6 @@ final readonly class SourceDescription
         public string $name,
         public string $url,
         public SourceType $type,
-    ) {}
+    ) {
+    }
 }

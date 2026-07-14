@@ -13,8 +13,8 @@ enum Format: string
     {
         return match (strtolower($extension)) {
             'yaml', 'yml' => self::Yaml,
-            'json'        => self::Json,
-            default       => null,
+            'json' => self::Json,
+            default => null,
         };
     }
 }

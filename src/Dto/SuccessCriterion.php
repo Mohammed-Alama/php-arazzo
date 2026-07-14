@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Dto;
 
 use Alama\LaravelArazzo\Dto\Enum\CriterionType;
@@ -10,5 +11,6 @@ final readonly class SuccessCriterion
         public ?string $context,
         public string $condition,
         public ?CriterionType $type,
-    ) {}
+    ) {
+    }
 }
