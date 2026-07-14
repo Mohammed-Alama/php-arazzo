@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Exceptions;
 
 use Alama\LaravelArazzo\Parser\ParseContext;
@@ -9,6 +10,7 @@ final class ParserException extends ArazzoException
     public static function missingField(ParseContext $ctx, string $field): self
     {
         $pointer = $ctx->push($field)->pointer();
+
         return new self("Missing required field: {$pointer}", $pointer, 'parser.missing_field');
     }
 
@@ -16,18 +18,21 @@ final class ParserException extends ArazzoException
     {
         $type = get_debug_type($actual);
         $pointer = $ctx->pointer();
+
         return new self("Expected {$expected} at {$pointer}, got {$type}", $pointer, 'parser.wrong_type');
     }
 
     public static function invalidEnum(ParseContext $ctx, string $expected, string $actual): self
     {
         $pointer = $ctx->pointer();
+
         return new self("Invalid value '{$actual}' at {$pointer}; expected one of {$expected}", $pointer, 'parser.invalid_enum');
     }
 
     public static function invalidActionType(ParseContext $ctx, string $actual): self
     {
         $pointer = $ctx->pointer();
+
         return new self("Invalid action type '{$actual}' at {$pointer}", $pointer, 'parser.invalid_action_type');
     }
 }

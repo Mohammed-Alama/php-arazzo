@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Dto;
 
 use Alama\LaravelArazzo\Dto\Action\FailureAction;
@@ -8,11 +9,11 @@ use Alama\LaravelArazzo\Dto\Action\SuccessAction;
 final readonly class Step
 {
     /**
-     * @param list<Parameter>                        $parameters
-     * @param list<SuccessCriterion>                 $successCriteria
-     * @param list<SuccessAction|Reusable>           $onSuccess
-     * @param list<FailureAction|Reusable>           $onFailure
-     * @param array<string,Expression>               $outputs
+     * @param list<Parameter> $parameters
+     * @param list<SuccessCriterion> $successCriteria
+     * @param list<SuccessAction|Reusable> $onSuccess
+     * @param list<FailureAction|Reusable> $onFailure
+     * @param array<string,Expression> $outputs
      */
     public function __construct(
         public string $stepId,
@@ -26,5 +27,6 @@ final readonly class Step
         public array $onSuccess,
         public array $onFailure,
         public array $outputs,
-    ) {}
+    ) {
+    }
 }

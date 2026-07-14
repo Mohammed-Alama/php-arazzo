@@ -10,6 +10,8 @@ sourceDescriptions:
 workflows:
   - workflowId: main
     summary: Primary workflow
+    dependsOn:
+      - init
     inputs:
       type: object
       properties:
@@ -19,22 +21,28 @@ workflows:
       - name: X-Trace
         in: header
         value: "{$inputs.userId}"
+    successActions:
+      - name: wfGoEnd
+        type: end
+    failureActions:
+      - reference: $components.failureActions.globalFail
     steps:
       - stepId: fetch
         description: Fetch user
         operationId: getUser
+        operationPath: /users/{id}
         parameters:
           - name: id
             in: query
             value: "{$inputs.userId}"
         successCriteria:
           - condition: "$statusCode == 200"
+            type: simple
+            context: $response.header.status
         outputs:
           user: "{$response.body}"
         onSuccess:
-          - name: next
-            type: goto
-            stepId: post
+          - reference: $components.successActions.goEnd
         onFailure:
           - name: back
             type: retry
@@ -59,5 +67,9 @@ components:
   successActions:
     goEnd:
       name: goEnd
+      type: end
+  failureActions:
+    globalFail:
+      name: globalFail
       type: end
 x-vendor-custom: hello

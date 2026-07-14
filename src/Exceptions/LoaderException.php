@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Exceptions;
 
+use Throwable;
+
 final class LoaderException extends ArazzoException
 {
     public static function notFound(string $path): self
@@ -26,7 +28,7 @@ final class LoaderException extends ArazzoException
         return new self("Failed to read file: {$path}", $path, 'loader.read_failed');
     }
 
-    public static function decodeFailed(string $path, \Throwable $previous): self
+    public static function decodeFailed(string $path, Throwable $previous): self
     {
         return new self("Failed to decode file: {$path} ({$previous->getMessage()})", $path, 'loader.decode_failed', $previous);
     }

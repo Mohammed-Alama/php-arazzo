@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Dto;
 
 final readonly class Info
@@ -9,5 +10,6 @@ final readonly class Info
         public ?string $summary,
         public ?string $description,
         public string $version,
-    ) {}
+    ) {
+    }
 }

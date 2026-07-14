@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Tests\Parser;
 
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
+use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
+use Alama\LaravelArazzo\Dto\Reusable;
 use Alama\LaravelArazzo\Loader\Loader;
 use Alama\LaravelArazzo\Loader\NativeJsonDecoder;
 use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
@@ -27,14 +29,33 @@ it('parses a full arazzo document', function (): void {
 
     $wf = $doc->workflows[0];
     expect($wf->workflowId)->toBe('main')
+        ->and($wf->dependsOn)->toBe(['init'])
         ->and($wf->steps)->toHaveCount(2)
         ->and($wf->parameters[0]->name)->toBe('X-Trace')
+        ->and($wf->successActions[0])->toBeInstanceOf(SuccessEndAction::class)
+        ->and($wf->failureActions[0])->toBeInstanceOf(Reusable::class)
         ->and($wf->outputs)->toHaveKey('user');
 
     $s1 = $wf->steps[0];
-    expect($s1->onSuccess[0])->toBeInstanceOf(SuccessGotoAction::class)
+    expect($s1->operationPath)->toBe('/users/{id}')
+        ->and($s1->successCriteria[0]->type)->toBe(\Alama\LaravelArazzo\Dto\Enum\CriterionType::Simple)
+        ->and($s1->successCriteria[0]->context)->toBe('$response.header.status')
+        ->and($s1->onSuccess[0])->toBeInstanceOf(Reusable::class)
         ->and($s1->onFailure[0])->toBeInstanceOf(RetryAction::class);
 
     expect($doc->components->successActions)->toHaveKey('goEnd')
+        ->and($doc->components->failureActions)->toHaveKey('globalFail')
         ->and($doc->specificationExtensions)->toHaveKey('x-vendor-custom');
 });
+
+it('parses a minimal arazzo document', function (): void {
+    $doc = parseFixture('valid-minimal.yaml');
+
+    expect($doc->arazzo)->toBe('1.0.0')
+        ->and($doc->info->title)->toBe('Minimal')
+        ->and($doc->workflows)->toBeArray()->toBeEmpty();
+});
+
+it('rejects missing workflows', function (): void {
+    parseFixture('invalid-missing-workflows.yaml');
+})->throws(\Alama\LaravelArazzo\Exceptions\ParserException::class, 'Missing required field: /workflows');

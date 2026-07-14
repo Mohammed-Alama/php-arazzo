@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Dto;
 
 final readonly class RequestBody
@@ -9,5 +10,6 @@ final readonly class RequestBody
         public ?string $contentType,
         public mixed $payload,
         public array $replacements,
-    ) {}
+    ) {
+    }
 }

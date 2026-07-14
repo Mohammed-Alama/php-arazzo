@@ -13,5 +13,6 @@ final readonly class RawDocument
         public array $data,
         public string $path,
         public Format $format,
-    ) {}
+    ) {
+    }
 }
