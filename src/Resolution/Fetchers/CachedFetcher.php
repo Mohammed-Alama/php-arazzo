@@ -17,7 +17,7 @@ final class CachedFetcher implements SourceFetcher
 
     public function fetch(string $urlOrPath, string $basePath): string
     {
-        $key = 'arazzo_source_' . md5($urlOrPath . $basePath);
+        $key = 'arazzo_source_' . md5($urlOrPath . '|' . $basePath);
 
         return Cache::remember($key, $this->ttlSeconds, fn (): string => $this->inner->fetch($urlOrPath, $basePath));
     }

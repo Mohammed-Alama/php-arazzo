@@ -5,22 +5,30 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Resolution;
 
 use Alama\LaravelArazzo\Dto\SourceDescription;
+use Alama\LaravelArazzo\Resolution\Exceptions\SourceFetchException;
 use Alama\LaravelArazzo\Resolution\Exceptions\SourceParseException;
 
 final readonly class DefaultSourceResolver implements SourceResolver
 {
     public function __construct(
-        private SourceFetcher $remoteFetcher,
-        private SourceFetcher $localFetcher,
-        /** @var array<string, SourceParser> $parsers */
+        /** @var array<string, SourceFetcher> */
+        private array $fetchers,
+        /** @var array<string, SourceParser> */
         private array $parsers,
     ) {
     }
 
     public function resolve(SourceDescription $source, string $basePath): ResolvedSource
     {
-        $isRemote = str_starts_with($source->url, 'http://') || str_starts_with($source->url, 'https://');
-        $fetcher = $isRemote ? $this->remoteFetcher : $this->localFetcher;
+        $scheme = parse_url($source->url, PHP_URL_SCHEME);
+        if (!is_string($scheme) || $scheme === '') {
+            $scheme = 'file';
+        }
+
+        $fetcher = $this->fetchers[$scheme] ?? null;
+        if ($fetcher === null) {
+            throw new SourceFetchException("No fetcher configured for scheme '{$scheme}'.");
+        }
 
         $content = $fetcher->fetch($source->url, $basePath);
 
