@@ -203,3 +203,40 @@ it('tolerates float rounding drift in multipleOf', function (): void {
 
     expect(SchemaValidator::validate($schema, 0.3))->toBe([]);
 });
+
+it('enforces minLength/maxLength', function (): void {
+    $schema = new Schema(['type' => 'string', 'minLength' => 2, 'maxLength' => 4]);
+
+    expect(SchemaValidator::validate($schema, 'abc'))->toBe([]);
+    expect(SchemaValidator::validate($schema, 'a'))->toHaveCount(1);
+    expect(SchemaValidator::validate($schema, 'abcde'))->toHaveCount(1);
+});
+
+it('enforces minItems/maxItems on a non-empty array', function (): void {
+    $schema = new Schema(['type' => 'array', 'items' => ['type' => 'integer'], 'minItems' => 2, 'maxItems' => 3]);
+
+    expect(SchemaValidator::validate($schema, [1, 2]))->toBe([]);
+    expect(SchemaValidator::validate($schema, [1]))->toHaveCount(1);
+    expect(SchemaValidator::validate($schema, [1, 2, 3, 4]))->toHaveCount(1);
+});
+
+it('enforces minItems against a genuinely empty array', function (): void {
+    $schema = new Schema(['type' => 'array', 'minItems' => 1]);
+
+    expect(SchemaValidator::validate($schema, []))->toHaveCount(1);
+});
+
+it('enforces uniqueItems', function (): void {
+    $schema = new Schema(['type' => 'array', 'items' => ['type' => 'integer'], 'uniqueItems' => true]);
+
+    expect(SchemaValidator::validate($schema, [1, 2, 3]))->toBe([]);
+    expect(SchemaValidator::validate($schema, [1, 2, 2]))->toHaveCount(1);
+});
+
+it('enforces minProperties/maxProperties', function (): void {
+    $schema = new Schema(['type' => 'object', 'minProperties' => 1, 'maxProperties' => 2]);
+
+    expect(SchemaValidator::validate($schema, ['a' => 1]))->toBe([]);
+    expect(SchemaValidator::validate($schema, []))->toHaveCount(1);
+    expect(SchemaValidator::validate($schema, ['a' => 1, 'b' => 2, 'c' => 3]))->toHaveCount(1);
+});
