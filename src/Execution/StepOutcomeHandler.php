@@ -89,13 +89,19 @@ class StepOutcomeHandler
             return;
         }
 
-        $status = $matched instanceof SuccessEndAction ? ExecutionStatus::Succeeded : ExecutionStatus::Failed;
-        $this->terminate(
-            $context,
-            $executionId,
-            $status,
-            $status === ExecutionStatus::Succeeded ? 'execution.succeeded' : 'execution.failed',
-        );
+        if ($matched instanceof SuccessEndAction || $matched instanceof FailureEndAction) {
+            $status = $matched instanceof SuccessEndAction ? ExecutionStatus::Succeeded : ExecutionStatus::Failed;
+            $this->terminate(
+                $context,
+                $executionId,
+                $status,
+                $status === ExecutionStatus::Succeeded ? 'execution.succeeded' : 'execution.failed',
+            );
+
+            return;
+        }
+
+        throw new \LogicException('Unhandled action type: ' . $matched::class);
     }
 
     /**
