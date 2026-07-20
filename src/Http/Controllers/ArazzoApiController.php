@@ -55,10 +55,22 @@ class ArazzoApiController extends Controller
         // Convert graph to a natural language trace for the AI
         $trace = "Workflow Graph Intent:\n";
         foreach ($graph['nodes'] ?? [] as $node) {
-            $trace .= "- Node {$node['id']}: Execute {$node['data']['method']} {$node['data']['path']} (Operation: {$node['data']['operationId']}). Notes: {$node['data']['notes']}\n";
+            $trace .= "- Node {$node['id']}: Execute {$node['data']['method']} {$node['data']['path']} (Operation: {$node['data']['operationId']}).\n";
+            if (!empty($node['data']['parameters'])) {
+                $trace .= "  - Parameters: " . str_replace("\n", " ", $node['data']['parameters']) . "\n";
+            }
+            if (!empty($node['data']['requestBody'])) {
+                $trace .= "  - Request Body: " . str_replace("\n", " ", $node['data']['requestBody']) . "\n";
+            }
+            if (!empty($node['data']['criteria'])) {
+                $trace .= "  - Success Criteria: " . str_replace("\n", " ", $node['data']['criteria']) . "\n";
+            }
+            if (!empty($node['data']['outputs'])) {
+                $trace .= "  - Outputs: " . str_replace("\n", " ", $node['data']['outputs']) . "\n";
+            }
         }
         foreach ($graph['edges'] ?? [] as $edge) {
-            $trace .= "- Edge: Output of Node {$edge['source']} flows to Node {$edge['target']}. Notes: {$edge['data']['notes']}\n";
+            $trace .= "- Edge: Output of Node {$edge['source']} flows to Node {$edge['target']}.\n";
         }
 
         $yaml = $generator->generate($request->input('openapi'), $trace);
