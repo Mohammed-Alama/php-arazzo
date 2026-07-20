@@ -61,9 +61,17 @@ final class SchemaValidator
      */
     private static function validateObject(Schema $schema, array $value, string $path): array
     {
+        $at = $path === '' ? '/' : $path;
         $violations = [];
 
-        foreach ($schema->required ?? [] as $requiredName) {
+        if ($schema->minProperties !== null && count($value) < $schema->minProperties) {
+            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minProperties} properties, got " . count($value)];
+        }
+        if ($schema->maxProperties !== null && count($value) > $schema->maxProperties) {
+            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxProperties} properties, got " . count($value)];
+        }
+
+        foreach (($schema->required ?? []) as $requiredName) {
             if (!array_key_exists($requiredName, $value)) {
                 $violations[] = [
                     'path' => $path . '/' . $requiredName,
@@ -72,7 +80,7 @@ final class SchemaValidator
             }
         }
 
-        foreach ($schema->properties ?? [] as $name => $propSchema) {
+        foreach (($schema->properties ?? []) as $name => $propSchema) {
             if (!array_key_exists($name, $value)) {
                 continue;
             }
@@ -93,7 +101,18 @@ final class SchemaValidator
      */
     private static function validateArray(Schema $schema, array $value, string $path): array
     {
+        $at = $path === '' ? '/' : $path;
         $violations = [];
+
+        if ($schema->minItems !== null && count($value) < $schema->minItems) {
+            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minItems} items, got " . count($value)];
+        }
+        if ($schema->maxItems !== null && count($value) > $schema->maxItems) {
+            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxItems} items, got " . count($value)];
+        }
+        if ($schema->uniqueItems === true && count($value) !== count(array_unique($value, SORT_REGULAR))) {
+            $violations[] = ['path' => $at, 'message' => 'items must be unique'];
+        }
 
         $itemSchema = self::resolveSchema($schema->items);
         if ($itemSchema !== null) {
@@ -112,6 +131,13 @@ final class SchemaValidator
     {
         $at = $path === '' ? '/' : $path;
         $violations = [];
+
+        if ($schema->minLength !== null && mb_strlen($value) < $schema->minLength) {
+            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minLength} characters, got " . mb_strlen($value)];
+        }
+        if ($schema->maxLength !== null && mb_strlen($value) > $schema->maxLength) {
+            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxLength} characters, got " . mb_strlen($value)];
+        }
 
         if ($schema->pattern !== null && @preg_match('/' . str_replace('/', '\/', $schema->pattern) . '/u', $value) !== 1) {
             $violations[] = ['path' => $at, 'message' => "does not match pattern '{$schema->pattern}'"];
