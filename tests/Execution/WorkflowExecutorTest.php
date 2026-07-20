@@ -92,7 +92,24 @@ it('executes a workflow end-to-end', function () {
 
                 public function getBody(): StreamInterface
                 {
-                    throw new \Exception();
+                    return new class() implements StreamInterface
+                    {
+                        public function __toString(): string { return ''; }
+                        public function close(): void {}
+                        public function detach() {}
+                        public function getSize(): ?int { return null; }
+                        public function tell(): int { return 0; }
+                        public function eof(): bool { return true; }
+                        public function isSeekable(): bool { return false; }
+                        public function seek($offset, $whence = \SEEK_SET): void {}
+                        public function rewind(): void {}
+                        public function isWritable(): bool { return false; }
+                        public function write($string): int { return 0; }
+                        public function isReadable(): bool { return true; }
+                        public function read($length): string { return ''; }
+                        public function getContents(): string { return ''; }
+                        public function getMetadata($key = null) { return null; }
+                    };
                 }
 
                 public function withBody(StreamInterface $body): RequestInterface
@@ -122,7 +139,29 @@ it('executes a workflow end-to-end', function () {
 
                 public function getUri(): UriInterface
                 {
-                    throw new \Exception();
+                    return new class($this->uri) implements UriInterface
+                    {
+                        public function __construct(private string $uri) {}
+                        public function getScheme(): string { return ''; }
+                        public function getAuthority(): string { return ''; }
+                        public function getUserInfo(): string { return ''; }
+                        public function getHost(): string { return ''; }
+                        public function getPort(): ?int { return null; }
+                        public function getPath(): string { return ''; }
+                        public function getQuery(): string {
+                            $parts = explode('?', $this->uri, 2);
+                            return isset($parts[1]) ? $parts[1] : '';
+                        }
+                        public function getFragment(): string { return ''; }
+                        public function withScheme($scheme): UriInterface { return $this; }
+                        public function withUserInfo($user, $password = null): UriInterface { return $this; }
+                        public function withHost($host): UriInterface { return $this; }
+                        public function withPort($port): UriInterface { return $this; }
+                        public function withPath($path): UriInterface { return $this; }
+                        public function withQuery($query): UriInterface { return $this; }
+                        public function withFragment($fragment): UriInterface { return $this; }
+                        public function __toString(): string { return $this->uri; }
+                    };
                 }
 
                 public function withUri(UriInterface $uri, $preserveHost = false): RequestInterface
@@ -329,7 +368,7 @@ it('executes a workflow end-to-end', function () {
     );
 
     // Create a dummy openapi file
-    $openapiJson = '{"openapi":"3.0.0","servers":[{"url":"https://api.test"}],"paths":{"/rides":{"post":{"operationId":"createRide"}}}}';
+    $openapiJson = '{"openapi":"3.0.0","servers":[{"url":"https://api.test"}],"paths":{"/rides":{"post":{"operationId":"createRide","responses":{"201":{"description":"Created"}}}}}}';
     $tmpFile = tempnam(sys_get_temp_dir(), 'openapi_') . '.json';
     file_put_contents($tmpFile, $openapiJson);
 
@@ -369,8 +408,9 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
+    $resolver = new \Alama\LaravelArazzo\Execution\ArazzoExpressionResolver($sourceResolver, $requestFactory, $evaluator);
 
-    $stepExecutor = new StepExecutor($sourceResolver, $httpClient, $requestFactory, $evaluator);
+    $stepExecutor = new StepExecutor($httpClient, $resolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);
 
