@@ -303,6 +303,7 @@ it('goto jumps to a same-workflow step directly, bypassing DependencyAnalyzer or
     $job = $queue->dispatched[0]['job'];
     expect($job->step->stepId)->toBe('C');
     expect($job->context->getStepStatus('C'))->toBe(StepStatus::Pending);
+    expect($job->context->getStepStatus('A'))->toBe(StepStatus::Failed);
 });
 
 it('goto loop-back resets an already-succeeded target step to Pending so it re-runs', function (): void {
@@ -324,6 +325,7 @@ it('goto loop-back resets an already-succeeded target step to Pending so it re-r
     $job = $queue->dispatched[0]['job'];
     expect($job->step->stepId)->toBe('A');
     expect($job->context->getStepStatus('A'))->toBe(StepStatus::Pending);
+    expect($job->context->getStepStatus('B'))->toBe(StepStatus::Failed);
 });
 
 it('goto to a workflowId-only target hands off to Engine::evaluate for the target workflow entry steps', function (): void {
@@ -343,6 +345,7 @@ it('goto to a workflowId-only target hands off to Engine::evaluate for the targe
     $job = $queue->dispatched[0]['job'];
     expect($job->step->stepId)->toBe('entry');
     expect($job->context->getWorkflowId())->toBe('wf_2');
+    expect($job->context->getStepStatus('A'))->toBe(StepStatus::Failed);
 });
 
 it('goto with both workflowId and stepId jumps directly to that step in the target workflow', function (): void {
@@ -362,6 +365,7 @@ it('goto with both workflowId and stepId jumps directly to that step in the targ
     $job = $queue->dispatched[0]['job'];
     expect($job->step->stepId)->toBe('mid');
     expect($job->context->getWorkflowId())->toBe('wf_2');
+    expect($job->context->getStepStatus('A'))->toBe(StepStatus::Failed);
 });
 
 it('goto to an unknown workflowId throws GotoTargetNotFoundException', function (): void {
