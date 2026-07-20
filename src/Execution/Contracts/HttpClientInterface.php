@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Execution\Contracts;
 
 use Psr\Http\Message\RequestInterface;

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Laravel;
 
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;

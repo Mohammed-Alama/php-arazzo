@@ -12,6 +12,7 @@ class StepResult
         public readonly string $stepId,
         public readonly bool $success,
         public readonly array $outputs = [],
-        public readonly ?Throwable $error = null
-    ) {}
+        public readonly ?Throwable $error = null,
+    ) {
+    }
 }

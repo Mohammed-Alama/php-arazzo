@@ -8,18 +8,23 @@ use Alama\LaravelArazzo\Generator\ArazzoGenerator;
 use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
 
 it('generates arazzo yaml from openapi and trace', function () {
-    $aiClient = new class implements AiClientInterface {
+    $aiClient = new class() implements AiClientInterface
+    {
         public string $lastSystemPrompt = '';
+
         public string $lastUserPrompt = '';
-        public function generate(string $systemPrompt, string $userPrompt): string {
+
+        public function generate(string $systemPrompt, string $userPrompt): string
+        {
             $this->lastSystemPrompt = $systemPrompt;
             $this->lastUserPrompt = $userPrompt;
+
             return "arazzo: 1.0.1\ninfo:\n  title: Test\n  version: 1.0.0";
         }
     };
 
     $generator = new ArazzoGenerator($aiClient);
-    
+
     $openapi = "openapi: 3.0.0\ninfo:\n  title: API\n  version: 1.0";
     $trace = "Workflow Graph Intent:\n- Node 1: Execute GET /users";
 
@@ -32,15 +37,17 @@ it('generates arazzo yaml from openapi and trace', function () {
 });
 
 it('strips markdown code blocks from the generated yaml', function () {
-    $aiClient = new class implements AiClientInterface {
-        public function generate(string $systemPrompt, string $userPrompt): string {
+    $aiClient = new class() implements AiClientInterface
+    {
+        public function generate(string $systemPrompt, string $userPrompt): string
+        {
             return "```yaml\narazzo: 1.0.1\ninfo:\n  title: Test\n  version: 1.0.0\n```";
         }
     };
 
     $generator = new ArazzoGenerator($aiClient);
-    
-    $openapi = "openapi: 3.0.0";
+
+    $openapi = 'openapi: 3.0.0';
     $trace = "Workflow Graph Intent:\n- Node 1: Execute GET /users";
 
     $yaml = $generator->generate($openapi, $trace);

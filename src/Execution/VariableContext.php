@@ -9,8 +9,9 @@ class VariableContext
     public function __construct(
         private array $inputs = [],
         private array $steps = [],
-        private array $components = []
-    ) {}
+        private array $components = [],
+    ) {
+    }
 
     public function setInput(string $key, mixed $value): void
     {
@@ -41,7 +42,7 @@ class VariableContext
     {
         $this->steps[$stepId]['response'] = $response;
     }
-    
+
     public function getComponents(): array
     {
         return $this->components;

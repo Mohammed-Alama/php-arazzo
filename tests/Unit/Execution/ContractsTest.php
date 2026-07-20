@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Execution;
 
-use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
-use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
+use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
+use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use PHPUnit\Framework\TestCase;
 
 class ContractsTest extends TestCase

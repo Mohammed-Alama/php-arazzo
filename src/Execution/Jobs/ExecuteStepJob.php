@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Execution\Jobs;
 
 use Alama\LaravelArazzo\Dto\Step;
@@ -9,6 +11,7 @@ class ExecuteStepJob
 {
     public function __construct(
         public Step $step,
-        public WorkflowContext $context
-    ) {}
+        public WorkflowContext $context,
+    ) {
+    }
 }

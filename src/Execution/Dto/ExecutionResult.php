@@ -11,6 +11,7 @@ class ExecutionResult
         public readonly string $status,
         public readonly array $outputs,
         /** @var array<string, StepResult> */
-        public readonly array $stepResults
-    ) {}
+        public readonly array $stepResults,
+    ) {
+    }
 }

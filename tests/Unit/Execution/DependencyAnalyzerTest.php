@@ -1,9 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Unit\Execution;
 
+use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
-use Alama\LaravelArazzo\Dto\Step;
 use PHPUnit\Framework\TestCase;
 
 class DependencyAnalyzerTest extends TestCase
@@ -12,9 +15,9 @@ class DependencyAnalyzerTest extends TestCase
     {
         $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
         $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
-        
+
         $analyzer = new DependencyAnalyzer();
-        
+
         // Initial state
         $context = new WorkflowContext('def_1');
         $runnable = $analyzer->getRunnableSteps([$stepA, $stepB], $context);

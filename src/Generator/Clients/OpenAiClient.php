@@ -19,8 +19,9 @@ class OpenAiClient implements AiClientInterface
         private string $apiKey,
         private string $endpoint,
         private string $model = 'gpt-4o',
-        private float $temperature = 0.0
-    ) {}
+        private float $temperature = 0.0,
+    ) {
+    }
 
     public function generate(string $systemPrompt, string $userPrompt): string
     {
