@@ -150,7 +150,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(\Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface::class),
                 $app->make(StateStoreInterface::class),
                 $app->make(Engine::class),
-                $app->make(ClientInterface::class),
+                $app->make(\Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 $app->make(DefinitionRegistryInterface::class),
                 $app->make(EventLedgerInterface::class),
