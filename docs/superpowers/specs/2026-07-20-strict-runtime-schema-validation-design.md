@@ -21,8 +21,11 @@ of a confusing failure two or three calls deep in the stack.
 
 **In scope:**
 - A hand-rolled `SchemaValidator` that checks a decoded JSON value against a `cebe\openapi\spec\Schema`:
-  `type`, `required` (object properties), `enum`, `nullable`, recursing into `properties` and
-  `items`.
+  `type`, `required` (object properties), `enum`, `nullable`, `pattern`, `format` (known formats
+  only), numeric/length/collection bounds (`minimum`/`maximum`/`exclusiveMinimum`/`exclusiveMaximum`,
+  `minLength`/`maxLength`, `minItems`/`maxItems`/`uniqueItems`, `minProperties`/`maxProperties`,
+  `multipleOf`), and composition (`allOf`/`oneOf`/`anyOf`) — recursing into `properties`, `items`,
+  and each composition branch.
 - A dedicated `SchemaValidationException` carrying the step ID, status code, and a structured list
   of violations.
 - Wiring: a new `ExpressionResolverInterface::validateResponseSchema()` method, called from
@@ -35,9 +38,8 @@ of a confusing failure two or three calls deep in the stack.
 **Out of scope (explicitly deferred):**
 - Validating request bodies before sending — this item covers *incoming* (response) payloads only,
   per the roadmap wording. Request-side validation would be a separate, later addition if needed.
-- JSON Schema keywords beyond `type`/`required`/`enum`/`nullable` — no `format`, `pattern`,
-  `minLength`/`maximum`-style numeric bounds, `oneOf`/`allOf`/`anyOf`. Nothing in the roadmap or
-  the existing casting code exercises these; adding them now would be speculative.
+- `not` (JSON Schema negation) and `discriminator` — not requested, and `discriminator` needs
+  polymorphic-schema resolution rules beyond what this item's scope calls for.
 - Turning a validation failure into a soft step-failure (routed through `onFailure`/retry) — it's a
   hard exception that propagates out of `StepExecutor::execute()` uncaught, the same way an
   unresolvable operation already does today.
@@ -74,6 +76,36 @@ Recursion rules:
 - **`required`** (object schemas): each name in `$schema->required` must exist as a key in `$value`
   when `$value` is an array; missing keys are one violation each, path-qualified
   (`{$path}/{$name}`).
+- **`pattern`** (string schemas): `preg_match('/' . str_replace('/', '\/', $schema->pattern) . '/u',
+  $value)` — same delimiter-escaping approach `evaluateSuccessCriteria`'s `Regex` criterion already
+  uses, for consistency. No ECMA-262-to-PCRE translation layer; PHP's PCRE is a superset for the
+  patterns OpenAPI specs realistically use.
+- **`format`** (string schemas): checked against a fixed allowlist of recognized formats —
+  `date` (`Y-m-d` via `DateTime::createFromFormat`, rejecting overflow like `2024-02-30`),
+  `date-time` (RFC 3339, via `DateTime::createFromFormat(DateTime::RFC3339_EXTENDED)` falling back to
+  non-fractional `RFC3339`), `email` (`FILTER_VALIDATE_EMAIL`), `uuid` (regex), `uri`
+  (`FILTER_VALIDATE_URL`), `ipv4`/`ipv6` (`FILTER_VALIDATE_IP` with the matching flag). **Any format
+  not in this list is silently ignored** (no violation either way) — per the JSON Schema spec,
+  `format` is an annotation that unrecognized values MAY be skipped, not a MUST-validate keyword;
+  this avoids false failures on formats like `password`/`byte`/`int64` that are hints, not checks.
+- **Numeric/length/collection bounds**: `minimum`/`maximum` compared with `<`/`>`; `exclusiveMinimum`/
+  `exclusiveMaximum` are **booleans that modify `minimum`/`maximum`** in OAS 3.0 (not standalone
+  numeric bounds like later JSON Schema drafts) — `exclusiveMinimum: true` means `$value >
+  $schema->minimum` (strict) rather than `>=`, and symmetrically for `exclusiveMaximum`/`maximum`.
+  `minLength`/`maxLength` use `mb_strlen`. `minItems`/`maxItems` use `count()`; `uniqueItems` checks
+  `count($value) === count(array_unique($value, SORT_REGULAR))`. `minProperties`/`maxProperties`
+  use `count()` on object schemas. `multipleOf` checks `fmod($value, $schema->multipleOf) === 0.0`
+  (with a small epsilon tolerance for float drift, e.g. `abs(fmod(...)) < 1e-9`).
+- **`allOf`**: value must satisfy every subschema — recurse into each and merge (union) all
+  violations; failing any one subschema is a violation of the whole.
+- **`anyOf`**: value must satisfy at least one subschema — recurse into each; if all fail, emit one
+  violation at `$path` (`"value did not match any of N anyOf schemas"`) rather than surfacing every
+  branch's internal violations (which would be noise for branches that were never the intended
+  match).
+- **`oneOf`**: value must satisfy **exactly one** subschema — recurse into each; zero matches is a
+  violation (`"matched none of N oneOf schemas"`), and **more than one** match is also a violation
+  (`"matched N of M oneOf schemas, expected exactly one"`) — this is `oneOf`'s defining difference
+  from `anyOf`.
 - **`properties`**: for each key present in both `$value` and `$schema->properties`, recurse with
   `$path` extended by `/{$key}` (resolving `Reference` schemas first, same as
   `ArazzoExpressionResolver` already does elsewhere).
@@ -212,7 +244,13 @@ it.
 
 - `SchemaValidatorTest.php` (new) — type mismatch, missing required property, enum violation,
   nested object, nested array, nullable accepting/rejecting `null`, unresolvable schema pieces
-  (missing `properties`/`items`) treated as "can't check further, not a violation."
+  (missing `properties`/`items`) treated as "can't check further, not a violation"; `pattern`
+  match/mismatch; each recognized `format` (valid + invalid per format) plus an unrecognized format
+  passing through unchecked; `minimum`/`maximum` with `exclusiveMinimum`/`exclusiveMaximum` true and
+  false; `minLength`/`maxLength`; `minItems`/`maxItems`/`uniqueItems` (with a duplicate-elements
+  case); `minProperties`/`maxProperties`; `multipleOf` (including a float case near the epsilon
+  tolerance); `allOf` (single failing branch fails the whole); `anyOf` (one passing branch is
+  enough); `oneOf` (zero matches, exactly one match, and more-than-one-match all exercised).
 - `ArazzoExpressionResolverTest.php` — extended with `validateResponseSchema()` cases: violation
   throws with expected message/violations shape; no-op when schema unresolvable; passes clean
   payload.
@@ -242,3 +280,13 @@ it.
   property of the document, detectable without ever executing a step; failing fast at validation
   time (like `StepCriteriaTypeContextRule` already does for missing `context`) is strictly better
   than discovering it mid-execution.
+- **Unrecognized `format` values are ignored, not rejected** — matches the JSON Schema spec's own
+  treatment of `format` as an annotation; failing on `password`/`byte`/vendor-specific formats would
+  punish specs for using format as a hint, which is legitimate per spec.
+- **`exclusiveMinimum`/`exclusiveMaximum` follow OAS 3.0 boolean semantics**, not the later JSON
+  Schema draft's standalone-numeric-bound semantics — `cebe/php-openapi` models OAS 3.0, and this
+  validator is checking OAS 3.0 `Schema` objects, so following any other semantics would silently
+  misvalidate every spec that sets these keywords.
+- **`oneOf` enforces exclusivity, `anyOf` doesn't** — the one behavioral difference between the two
+  keywords; collapsing them to the same "at least one" check would silently accept a value that
+  matches two `oneOf` branches when the spec author meant them to be mutually exclusive.
