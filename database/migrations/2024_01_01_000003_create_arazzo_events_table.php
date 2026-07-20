@@ -20,7 +20,7 @@ return new class extends Migration
             $table->ulid('execution_id')->index();
             $table->string('event_type');
             $table->json('payload');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

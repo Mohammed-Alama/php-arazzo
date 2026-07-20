@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('document_identity');
             $table->string('content_hash', 64);
             $table->json('raw_document');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->useCurrent();
 
             $table->unique(['document_identity', 'content_hash']);
         });
