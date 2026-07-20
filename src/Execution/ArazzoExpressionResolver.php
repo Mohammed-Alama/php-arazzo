@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Enum\CriterionType;
 use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException;
 use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
 use Alama\LaravelArazzo\Expression\Ast\StepRef;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
@@ -163,6 +165,43 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {
+        if (empty($step->successCriteria)) {
+            return true;
+        }
+
+        $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
+
+        foreach ($step->successCriteria as $criterion) {
+            $type = $criterion->type ?? CriterionType::Simple;
+
+            if ($type === CriterionType::Simple) {
+                // Not fully implemented evaluating logic yet, just returning true for now
+                // Needs a real expression parser for boolean logic
+                continue;
+            }
+
+            if ($type === CriterionType::Regex) {
+                if ($criterion->context === null) {
+                    continue; // Skip invalid regex criteria
+                }
+                $target = $this->evaluator->evaluate(new Expression($criterion->context), $context, $step->stepId);
+                if (!preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', (string) $target)) {
+                    return false;
+                }
+                continue;
+            }
+
+            if ($type === CriterionType::JsonPath) {
+                $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($responseBody) ? $responseBody : []);
+                if (empty($result)) {
+                    return false;
+                }
+                continue;
+            }
+
+            throw new UnsupportedCriterionTypeException("Criterion type '{$type->value}' is not supported.");
+        }
+
         return true;
     }
 

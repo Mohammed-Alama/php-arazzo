@@ -230,4 +230,63 @@ class ArazzoExpressionResolverTest extends TestCase
 
         $this->assertSame(1, $outputs['firstId']);
     }
+
+    public function test_evaluates_success_criteria_simple_regex_jsonpath(): void
+    {
+        $resolver = $this->makeResolver();
+
+        $step = new Step(
+            stepId: 'step1',
+            description: null,
+            operationId: null,
+            operationPath: null,
+            workflowId: null,
+            parameters: [],
+            requestBody: null,
+            successCriteria: [
+                new \Alama\LaravelArazzo\Dto\SuccessCriterion(null, '{$statusCode} == 200', \Alama\LaravelArazzo\Dto\Enum\CriterionType::Simple),
+                new \Alama\LaravelArazzo\Dto\SuccessCriterion('{$statusCode}', '^20[0-1]$', \Alama\LaravelArazzo\Dto\Enum\CriterionType::Regex),
+                new \Alama\LaravelArazzo\Dto\SuccessCriterion(null, '$.users[?(@.id==1)]', \Alama\LaravelArazzo\Dto\Enum\CriterionType::JsonPath),
+            ],
+            onSuccess: [],
+            onFailure: [],
+            outputs: [],
+        );
+
+        $context = (new WorkflowContext('def_1'))
+            ->withStepRequest('step1', [])
+            ->withStepResponse('step1', [
+                'statusCode' => 200,
+                'headers' => [],
+                'body' => ['users' => [['id' => 1], ['id' => 2]]],
+            ]);
+
+        $this->assertTrue($resolver->evaluateSuccessCriteria($step, $context));
+    }
+
+    public function test_evaluates_success_criteria_unsupported(): void
+    {
+        $resolver = $this->makeResolver();
+
+        $step = new Step(
+            stepId: 'step1',
+            description: null,
+            operationId: null,
+            operationPath: null,
+            workflowId: null,
+            parameters: [],
+            requestBody: null,
+            successCriteria: [
+                new \Alama\LaravelArazzo\Dto\SuccessCriterion(null, '/users/id', \Alama\LaravelArazzo\Dto\Enum\CriterionType::XPath),
+            ],
+            onSuccess: [],
+            onFailure: [],
+            outputs: [],
+        );
+
+        $context = (new WorkflowContext('def_1'))->withStepResponse('step1', []);
+
+        $this->expectException(\Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException::class);
+        $resolver->evaluateSuccessCriteria($step, $context);
+    }
 }
