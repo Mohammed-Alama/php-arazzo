@@ -31,6 +31,16 @@ class VariableContext
     {
         return $this->steps;
     }
+
+    public function setStepRequest(string $stepId, array $request): void
+    {
+        $this->steps[$stepId]['request'] = $request;
+    }
+
+    public function setStepResponse(string $stepId, array $response): void
+    {
+        $this->steps[$stepId]['response'] = $response;
+    }
     
     public function getComponents(): array
     {
