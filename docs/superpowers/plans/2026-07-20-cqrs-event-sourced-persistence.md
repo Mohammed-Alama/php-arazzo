@@ -929,6 +929,8 @@ git commit -m "feat: update InMemoryDefinitionRegistry to register/return Arazzo
 
 **Note:** these files live in `database/migrations/` **without** the `.php.stub` extension the existing `create_skeleton_table.php.stub` uses — spatie/laravel-package-tools' `hasMigrations()` (wired in Task 12) looks for `{name}.php` first and only falls back to `.php.stub`. Using plain `.php` means Orchestra Testbench's package-migration auto-discovery (via `runsMigrations()`) picks these up directly without needing a publish step, which is what makes them testable in this plan without a real host Laravel app.
 
+**Style note:** `tests/Pest.php` already binds `uses(TestCase::class)->in('Feature', 'Commands', 'Resolution')` — every existing file under `tests/Resolution/` (e.g. `DefaultSourceResolverTest.php`) is plain Pest `it(...)` with no `uses()` call needed in the file itself, since the directory-level binding covers it. `tests/Feature/` doesn't exist yet in this repo — this task creates it — so write this test in that same Pest style to match the convention `tests/Pest.php` already declares for that directory, not the PHPUnit-class style used under `tests/Unit/`.
+
 - [ ] **Step 1: Write the failing test**
 
 Create `tests/Feature/PersistenceMigrationsTest.php`:
@@ -938,61 +940,50 @@ Create `tests/Feature/PersistenceMigrationsTest.php`:
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
-
-use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class PersistenceMigrationsTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    public function test_arazzo_definitions_table_exists_with_expected_columns(): void
-    {
-        $this->assertTrue(Schema::hasTable('arazzo_definitions'));
-        $this->assertTrue(Schema::hasColumns('arazzo_definitions', [
-            'id', 'document_identity', 'content_hash', 'raw_document', 'created_at',
-        ]));
-    }
+it('creates the arazzo_definitions table with expected columns', function (): void {
+    expect(Schema::hasTable('arazzo_definitions'))->toBeTrue();
+    expect(Schema::hasColumns('arazzo_definitions', [
+        'id', 'document_identity', 'content_hash', 'raw_document', 'created_at',
+    ]))->toBeTrue();
+});
 
-    public function test_arazzo_executions_table_exists_with_expected_columns(): void
-    {
-        $this->assertTrue(Schema::hasTable('arazzo_executions'));
-        $this->assertTrue(Schema::hasColumns('arazzo_executions', [
-            'id', 'definition_id', 'workflow_id', 'created_at', 'updated_at',
-        ]));
-    }
+it('creates the arazzo_executions table with expected columns', function (): void {
+    expect(Schema::hasTable('arazzo_executions'))->toBeTrue();
+    expect(Schema::hasColumns('arazzo_executions', [
+        'id', 'definition_id', 'workflow_id', 'created_at', 'updated_at',
+    ]))->toBeTrue();
+});
 
-    public function test_arazzo_events_table_exists_with_expected_columns(): void
-    {
-        $this->assertTrue(Schema::hasTable('arazzo_events'));
-        $this->assertTrue(Schema::hasColumns('arazzo_events', [
-            'id', 'execution_id', 'event_type', 'payload', 'created_at',
-        ]));
-    }
+it('creates the arazzo_events table with expected columns', function (): void {
+    expect(Schema::hasTable('arazzo_events'))->toBeTrue();
+    expect(Schema::hasColumns('arazzo_events', [
+        'id', 'execution_id', 'event_type', 'payload', 'created_at',
+    ]))->toBeTrue();
+});
 
-    public function test_unique_index_on_definitions_prevents_duplicate_content(): void
-    {
-        \DB::table('arazzo_definitions')->insert([
-            'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
-            'document_identity' => 'Test Doc',
-            'content_hash' => str_repeat('a', 64),
-            'raw_document' => json_encode(['x' => 1]),
-            'created_at' => now(),
-        ]);
+it('enforces the unique index on definitions and rejects duplicate content', function (): void {
+    DB::table('arazzo_definitions')->insert([
+        'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
+        'document_identity' => 'Test Doc',
+        'content_hash' => str_repeat('a', 64),
+        'raw_document' => json_encode(['x' => 1]),
+        'created_at' => now(),
+    ]);
 
-        $this->expectException(\Illuminate\Database\QueryException::class);
-
-        \DB::table('arazzo_definitions')->insert([
-            'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAW',
-            'document_identity' => 'Test Doc',
-            'content_hash' => str_repeat('a', 64),
-            'raw_document' => json_encode(['x' => 2]),
-            'created_at' => now(),
-        ]);
-    }
-}
+    expect(fn () => DB::table('arazzo_definitions')->insert([
+        'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAW',
+        'document_identity' => 'Test Doc',
+        'content_hash' => str_repeat('a', 64),
+        'raw_document' => json_encode(['x' => 2]),
+        'created_at' => now(),
+    ]))->toThrow(\Illuminate\Database\QueryException::class);
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
