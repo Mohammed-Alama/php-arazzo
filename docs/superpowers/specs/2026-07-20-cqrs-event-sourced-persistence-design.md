@@ -88,13 +88,14 @@ interface DefinitionRegistryInterface
 ### Tables (new migration)
 
 1. **`arazzo_definitions`** — `id` (ULID PK), `document_identity` (e.g. `info.title`, since a
-   document has no `workflowId` of its own), `content_hash` (sha256 of the dehydrated JSON with
-   keys sorted recursively before encoding, so semantically-identical documents always hash
-   identically regardless of key order), `definition` (JSON — the full `ArazzoDocument`,
-   dehydrated), `created_at`. Unique index on `(document_identity, content_hash)` — makes
-   `register()` idempotent: re-registering identical content returns the existing row's ID
-   instead of inserting a duplicate. `document_identity` uniqueness assumes single-tenant use;
-   cross-tenant title collisions are [11 — Multi-Tenancy Isolation](../roadmap/11-multi-tenancy-isolation.md)'s
+   document has no `workflowId` of its own), `content_hash` (sha256 of `raw_document` with keys
+   sorted recursively before encoding, so semantically-identical documents always hash
+   identically regardless of key order), **`raw_document`** (JSON — the original decoded document,
+   see "Round-tripping" below; this column, not a DTO reconstruction, is the actual source of
+   truth), `created_at`. Unique index on `(document_identity, content_hash)` — makes `register()`
+   idempotent: re-registering identical content returns the existing row's ID instead of
+   inserting a duplicate. `document_identity` uniqueness assumes single-tenant use; cross-tenant
+   title collisions are [11 — Multi-Tenancy Isolation](../roadmap/11-multi-tenancy-isolation.md)'s
    concern, not this item's.
 2. **`arazzo_executions`** — `id` (ULID PK), `definition_id` (FK), `workflow_id`, `created_at`,
    `updated_at`. No `status` column (see Scope). Exists so `executionId`s have a row of their own
@@ -104,13 +105,61 @@ interface DefinitionRegistryInterface
    Plain indexed table on any driver; Postgres-only second migration step adds
    `PARTITION BY RANGE (created_at)`.
 
-### Dehydration
+### Data model diagram
 
-`ArazzoDocument` (and its nested DTOs) need array↔DTO round-tripping to live in
-`arazzo_definitions.definition` as JSON. `Parser::parse(RawDocument $raw): ArazzoDocument`
-already does array→DTO for a whole document — reuse its private per-node parse methods where
-shapes match, rather than writing a second hydrator from scratch. DTO→array is new (recursive
-`readonly`-property dump; no library needed).
+```mermaid
+erDiagram
+    ARAZZO_DEFINITIONS ||--o{ ARAZZO_EXECUTIONS : "definition_id"
+    ARAZZO_EXECUTIONS ||--o{ ARAZZO_EVENTS : "execution_id"
+
+    ARAZZO_DEFINITIONS {
+        string id PK "ULID, returned by register()"
+        string document_identity "e.g. info.title"
+        string content_hash "sha256, sorted-key JSON of raw_document"
+        json raw_document "ArazzoDocument::$rawRoot -- source of truth"
+        timestamp created_at
+    }
+
+    ARAZZO_EXECUTIONS {
+        string id PK "ULID -- this IS executionId"
+        string definition_id FK "which document version"
+        string workflow_id "which workflow inside that document"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ARAZZO_EVENTS {
+        bigint id PK
+        string execution_id FK
+        string event_type "e.g. step.executed"
+        json payload
+        timestamp created_at "partition key, pgsql only"
+    }
+```
+
+Not shown (not relational): Redis hot state, one key per execution —
+`arazzo:state:{executionId}` → JSON snapshot, TTL-refreshed on every `save()`. It mirrors
+`arazzo_executions.id` as its key but lives outside the SQL schema entirely; that's the "hot"
+half of the dual-store strategy, `arazzo_events` is the durable/audit half.
+
+### Round-tripping via `rawRoot` — no custom dehydrator
+
+`ArazzoDocument` already carries `?array $rawRoot` (`src/Dto/ArazzoDocument.php:22`), populated
+by `Parser::parse()` (`src/Parser/Parser.php:78`) with the original decoded document — the exact
+array that was fed in, before any DTO construction. That's what gets persisted verbatim as
+`raw_document`, not a hand-rolled DTO→array reconstruction:
+
+- **`register(ArazzoDocument $document)`** — caller has already parsed the document (that's how
+  they got an `ArazzoDocument` to pass in), so `$document->rawRoot` is already populated. Hash it,
+  store it, done. No serializer to write.
+- **`get(string $definitionId)`** — fetch the row, `json_decode` it back into an array, wrap it in
+  a `RawDocument` (synthetic `path`, e.g. `"db://{$definitionId}"`), and run it through the
+  **same** `Parser::parse()` used at load time. This is the only reconstruction path in the
+  system — register and get both terminate at the one already-tested parser, so a rehydrated
+  `ArazzoDocument` can never silently diverge from what fresh-parsing that content would produce,
+  even after the DTO tree gains fields in a future release. This is also what makes "the DB is
+  the source of truth" literally true: what's stored is the original input, not a lossy
+  reconstruction of it.
 
 ### Wiring (`LaravelArazzoServiceProvider`)
 
@@ -152,10 +201,12 @@ it (step above) is what unblocks item 03's double-dispatch fix, not this item bu
 - **`get()` miss** (bad/deleted `definitionId`) — stays `null`; `StepExecutionWorker` still
   no-ops on null, but first appends an `execution.definition_missing` event, so a stalled run
   leaves an audit trace instead of silently vanishing.
-- **Hydration failure** (corrupted/unparseable JSON in `definition`) — wrapped in try/catch,
-  throws a dedicated `DefinitionHydrationException` rather than a generic `TypeError` leaking
-  out. Matches the codebase's existing pattern (`ParserException`,
-  `UnsupportedCriterionTypeException`) of typed exceptions over generic ones.
+- **Hydration failure** (corrupted/unparseable JSON in `raw_document`, or content that no longer
+  passes `Parser::parse()` — e.g. a validation rule tightened since it was stored) — the
+  `ParserException` `Parser::parse()` throws on re-parse is caught and rewrapped as a dedicated
+  `DefinitionHydrationException`, so callers can distinguish "this workflow doesn't exist" (`get()`
+  returns `null`) from "this workflow exists but is now unrunnable" (exception) rather than the
+  latter surfacing as a raw `ParserException` from a code path that looks like a simple fetch.
 - **Event ledger write failure** — `append()` is an audit trail, not the execution source of
   truth. Catch + log on DB failure, don't fail a step that already succeeded — same
   "best-effort, log don't fail" philosophy the zero-code-pipelining spec already uses for
@@ -194,6 +245,12 @@ it (step above) is what unblocks item 03's double-dispatch fix, not this item bu
   actually execute (no `sourceDescriptions`/`Components` context), so storing only that would be
   durable but useless. This reverses an initial narrower design that punted this as "deferred to
   item 03" — it isn't; it's this item's own correctness bar.
+- **The persisted column is `raw_document` (original decoded input via `ArazzoDocument::$rawRoot`),
+  not a hand-rolled dehydrated-DTO reconstruction** — an earlier pass of this design proposed
+  writing a new DTO→array serializer. Corrected: `rawRoot` already exists and is already what
+  `Parser::parse()` was fed, so it's the literal source of truth, not a reconstruction that could
+  drift from it. `get()` re-runs `Parser::parse()` on read-back — one validated code path for both
+  directions, no second hydrator to keep in sync as DTOs evolve.
 - **Three IDs, not one** — `definitionId`/`workflowId`/`executionId` replace the single
   `WorkflowContext::$definitionId` that was silently doing all three jobs (state-store key,
   registry key, and — implicitly — run identity) before.
