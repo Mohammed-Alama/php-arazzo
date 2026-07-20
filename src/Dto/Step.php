@@ -28,6 +28,7 @@ final readonly class Step
         public array $onSuccess,
         public array $onFailure,
         public array $outputs,
+        public array $dependsOn = [],
     ) {
     }
 }
