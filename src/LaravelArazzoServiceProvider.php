@@ -141,7 +141,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->app->singleton(StateStoreInterface::class, function ($app) {
             return new RedisHotStateStore(
                 $app->make(RedisFactory::class),
-                defaultTtlSeconds: (int) config('arazzo.hot_state_ttl', 86400),
+                defaultTtlSeconds: (int) config('arazzo.state_ttl', 86400),
             );
         });
 
@@ -198,8 +198,8 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(PendingCorrelationRegistryInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 $app->make(StateStoreInterface::class),
-                (int) config('arazzo.max_retry_attempts', 10),
-                (int) config('arazzo.hot_state_ttl', 86400),
+                (int) config('arazzo.retry_ceiling', 10),
+                (int) config('arazzo.state_ttl', 86400),
             );
         });
 
@@ -259,7 +259,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return view($view);
         })->middleware('web');
 
-        Route::prefix('api/arazzo')
+        Route::prefix(config('arazzo.webhook_prefix', 'api/arazzo'))
             ->middleware('api')
             ->group(function () {
                 Route::get('/endpoints', [ArazzoApiController::class, 'endpoints']);
