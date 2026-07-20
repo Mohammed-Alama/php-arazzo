@@ -43,6 +43,6 @@ USER;
         // Strip out markdown code blocks if the AI returned them despite the prompt
         $yaml = preg_replace('/^```yaml\s*|\s*```$/si', '', trim($yaml));
 
-        return $yaml;
+        return (string) $yaml;
     }
 }

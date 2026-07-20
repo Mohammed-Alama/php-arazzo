@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
@@ -51,14 +52,19 @@ class StepExecutionMockStateStore implements StateStoreInterface
 }
 class StepExecutionMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function compileRequest(Step $step, WorkflowContext $context): RequestInterface
+    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         return new Request('GET', 'http://localhost');
     }
 
-    public function extractOutputs(Step $step, array $responseData): array
+    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
         return [];
+    }
+
+    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    {
+        return true;
     }
 }
 class StepExecutionMockHttpClient implements HttpClientInterface

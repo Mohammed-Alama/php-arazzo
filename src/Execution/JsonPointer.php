@@ -6,6 +6,9 @@ namespace Alama\LaravelArazzo\Execution;
 
 class JsonPointer
 {
+    /**
+     * @param array<string, mixed> $data
+     */
     public static function resolve(array $data, ?string $pointer): mixed
     {
         if ($pointer === null || $pointer === '') {

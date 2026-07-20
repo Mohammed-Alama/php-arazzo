@@ -9,6 +9,7 @@ use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 
 class InMemoryDefinitionRegistry implements DefinitionRegistryInterface
 {
+    /** @var array<string, Workflow> */
     private array $registry = [];
 
     public function register(Workflow $workflow): string

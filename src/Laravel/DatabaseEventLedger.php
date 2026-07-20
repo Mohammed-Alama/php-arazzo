@@ -15,6 +15,9 @@ class DatabaseEventLedger implements EventLedgerInterface
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     public function append(string $workflowId, string $eventType, array $payload): void
     {
         $this->db->table($this->tableName)->insert([

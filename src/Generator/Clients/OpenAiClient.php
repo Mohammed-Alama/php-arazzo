@@ -34,7 +34,7 @@ class OpenAiClient implements AiClientInterface
             'temperature' => $this->temperature,
         ]);
 
-        $stream = $this->streamFactory->createStream($payload);
+        $stream = $this->streamFactory->createStream($payload ?: '');
 
         $request = $this->requestFactory->createRequest('POST', $this->endpoint)
             ->withHeader('Authorization', 'Bearer ' . $this->apiKey)
