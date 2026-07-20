@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Laravel;
 
-use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Alama\LaravelArazzo\Laravel\DatabaseExecutionRegistry;
 use Alama\LaravelArazzo\Tests\TestCase;

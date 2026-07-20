@@ -20,11 +20,10 @@ use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use LogicException;
-
-use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 
 class StepOutcomeHandler
 {
@@ -105,7 +104,7 @@ class StepOutcomeHandler
             return;
         }
 
-        throw new \LogicException('Unhandled action type: ' . $matched::class);
+        throw new LogicException('Unhandled action type: ' . $matched::class);
     }
 
     /**
@@ -208,7 +207,7 @@ class StepOutcomeHandler
     private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
     {
         $targetWorkflowId = $action->workflowId ?? $context->getWorkflowId();
-        $targetWorkflow = $this->findWorkflow($document, $targetWorkflowId);
+        $targetWorkflow = $this->findWorkflow($document, (string) $targetWorkflowId);
         if ($targetWorkflow === null) {
             throw new GotoTargetNotFoundException("Goto action '{$action->name}' references unknown workflowId '{$targetWorkflowId}'.");
         }
@@ -232,7 +231,7 @@ class StepOutcomeHandler
         }
 
         $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
-        
+
         $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext));
     }
@@ -280,7 +279,7 @@ class StepOutcomeHandler
     private function continueNormally(Workflow $workflow, Step $step, WorkflowContext $context, string $executionId): void
     {
         $newContext = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
-        
+
         $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
         $this->engine->evaluate($workflow, $newContext);
 
