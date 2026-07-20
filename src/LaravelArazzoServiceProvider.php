@@ -103,7 +103,10 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'arazzo');
 
         Route::get('/arazzo-builder', function () {
-            return view('arazzo::arazzo');
+            /** @var view-string $view */
+            $view = 'arazzo::arazzo';
+
+            return view($view);
         })->middleware('web');
 
         Route::prefix('api/arazzo')

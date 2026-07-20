@@ -8,22 +8,23 @@ use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Generator\ArazzoGenerator;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class ArazzoApiController extends Controller
 {
-    public function endpoints(Request $request, SourceResolver $resolver)
+    public function endpoints(Request $request, SourceResolver $resolver): JsonResponse
     {
         $specPath = $request->query('spec');
         if (!$specPath) {
             return response()->json(['error' => 'spec parameter is required'], 400);
         }
 
-        $source = new SourceDescription('api', $specPath, SourceType::Openapi);
-        $resolved = $resolver->resolve($source, getcwd());
+        $source = new SourceDescription('api', is_string($specPath) ? $specPath : '', SourceType::Openapi);
+        $resolved = $resolver->resolve($source, getcwd() ?: '');
 
-        $data = json_decode(json_encode($resolved->extract('/')), true);
+        $data = json_decode((string) json_encode($resolved->extract('/')), true);
         $endpoints = [];
 
         if (isset($data['paths']) && is_array($data['paths'])) {
@@ -46,7 +47,7 @@ class ArazzoApiController extends Controller
         return response()->json($endpoints);
     }
 
-    public function generate(Request $request, ArazzoGenerator $generator)
+    public function generate(Request $request, ArazzoGenerator $generator): JsonResponse
     {
         $request->validate([
             'openapi' => 'required|string',

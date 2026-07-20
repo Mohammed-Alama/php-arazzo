@@ -44,6 +44,9 @@ class TypeCaster
         throw new \InvalidArgumentException('Cannot cast to string.');
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public static function asArray(mixed $value): array
     {
         if (is_array($value)) {

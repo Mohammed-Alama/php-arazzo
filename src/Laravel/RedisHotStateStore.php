@@ -13,11 +13,17 @@ class RedisHotStateStore implements StateStoreInterface
     {
     }
 
+    /**
+     * @param array<string, mixed> $state
+     */
     public function save(string $id, array $state): void
     {
         $this->redis->connection()->set($this->prefix . $id, json_encode($state));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function load(string $id): array
     {
         $data = $this->redis->connection()->get($this->prefix . $id);
