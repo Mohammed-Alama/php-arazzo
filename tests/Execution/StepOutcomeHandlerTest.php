@@ -285,3 +285,107 @@ it('only matches an action whose own criteria evaluate true, skipping ones that 
 
     expect($queue->dispatched[0]['delaySeconds'])->toBe(2);
 });
+
+it('goto jumps to a same-workflow step directly, bypassing DependencyAnalyzer ordering', function (): void {
+    [$handler, $queue] = makeStepOutcomeHandler();
+
+    $goto = new FailureGotoAction('goto-c', 'C', null, []);
+    $stepA = stepOutcomeStep('A', onFailure: [$goto]);
+    $stepB = stepOutcomeStep('B');
+    $stepC = stepOutcomeStep('C', dependsOn: ['B']); // C would not normally be runnable yet
+    $workflow = stepOutcomeWorkflow('wf_1', [$stepA, $stepB, $stepC]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow, $stepA, $context, 'exec_1', false);
+
+    expect($queue->dispatched)->toHaveCount(1);
+    $job = $queue->dispatched[0]['job'];
+    expect($job->step->stepId)->toBe('C');
+    expect($job->context->getStepStatus('C'))->toBe(StepStatus::Pending);
+});
+
+it('goto loop-back resets an already-succeeded target step to Pending so it re-runs', function (): void {
+    [$handler, $queue] = makeStepOutcomeHandler();
+
+    $goto = new FailureGotoAction('goto-a', 'A', null, []);
+    $stepA = stepOutcomeStep('A');
+    $stepB = stepOutcomeStep('B', onFailure: [$goto], dependsOn: ['A']);
+    $workflow = stepOutcomeWorkflow('wf_1', [$stepA, $stepB]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))
+        ->withWorkflowId('wf_1')
+        ->withExecutionId('exec_1')
+        ->withStepResult('A', ['statusCode' => 200])
+        ->withStepStatus('A', StepStatus::Succeeded);
+
+    $handler->handle($document, $workflow, $stepB, $context, 'exec_1', false);
+
+    $job = $queue->dispatched[0]['job'];
+    expect($job->step->stepId)->toBe('A');
+    expect($job->context->getStepStatus('A'))->toBe(StepStatus::Pending);
+});
+
+it('goto to a workflowId-only target hands off to Engine::evaluate for the target workflow entry steps', function (): void {
+    [$handler, $queue] = makeStepOutcomeHandler();
+
+    $goto = new FailureGotoAction('goto-wf2', null, 'wf_2', []);
+    $stepA = stepOutcomeStep('A', onFailure: [$goto]);
+    $workflow1 = stepOutcomeWorkflow('wf_1', [$stepA]);
+    $entryStep = stepOutcomeStep('entry');
+    $workflow2 = stepOutcomeWorkflow('wf_2', [$entryStep]);
+    $document = stepOutcomeDocument([$workflow1, $workflow2]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow1, $stepA, $context, 'exec_1', false);
+
+    expect($queue->dispatched)->toHaveCount(1);
+    $job = $queue->dispatched[0]['job'];
+    expect($job->step->stepId)->toBe('entry');
+    expect($job->context->getWorkflowId())->toBe('wf_2');
+});
+
+it('goto with both workflowId and stepId jumps directly to that step in the target workflow', function (): void {
+    [$handler, $queue] = makeStepOutcomeHandler();
+
+    $goto = new FailureGotoAction('goto-wf2-mid', 'mid', 'wf_2', []);
+    $stepA = stepOutcomeStep('A', onFailure: [$goto]);
+    $workflow1 = stepOutcomeWorkflow('wf_1', [$stepA]);
+    $entryStep = stepOutcomeStep('entry');
+    $midStep = stepOutcomeStep('mid', dependsOn: ['entry']);
+    $workflow2 = stepOutcomeWorkflow('wf_2', [$entryStep, $midStep]);
+    $document = stepOutcomeDocument([$workflow1, $workflow2]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow1, $stepA, $context, 'exec_1', false);
+
+    $job = $queue->dispatched[0]['job'];
+    expect($job->step->stepId)->toBe('mid');
+    expect($job->context->getWorkflowId())->toBe('wf_2');
+});
+
+it('goto to an unknown workflowId throws GotoTargetNotFoundException', function (): void {
+    [$handler] = makeStepOutcomeHandler();
+
+    $goto = new FailureGotoAction('goto-missing', null, 'does-not-exist', []);
+    $step = stepOutcomeStep('A', onFailure: [$goto]);
+    $workflow = stepOutcomeWorkflow('wf_1', [$step]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    expect(fn () => $handler->handle($document, $workflow, $step, $context, 'exec_1', false))
+        ->toThrow(\Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException::class);
+});
+
+it('goto to an unknown stepId in the current workflow throws GotoTargetNotFoundException', function (): void {
+    [$handler] = makeStepOutcomeHandler();
+
+    $goto = new FailureGotoAction('goto-missing-step', 'nope', null, []);
+    $step = stepOutcomeStep('A', onFailure: [$goto]);
+    $workflow = stepOutcomeWorkflow('wf_1', [$step]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    expect(fn () => $handler->handle($document, $workflow, $step, $context, 'exec_1', false))
+        ->toThrow(\Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException::class);
+});
