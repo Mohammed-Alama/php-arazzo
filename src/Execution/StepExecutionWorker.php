@@ -100,7 +100,6 @@ class StepExecutionWorker
 
             $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
 
-            $this->stateStore->save($executionId, $this->serialize($contextWithResult), $this->stateTtlSeconds);
             $this->executionRegistry->start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId);
 
             try {
@@ -125,7 +124,7 @@ class StepExecutionWorker
             return $context;
         }
 
-        $mergedSteps = array_merge($persisted['steps'] ?? [], $context->getSteps());
+        $mergedSteps = array_merge($context->getSteps(), $persisted['steps'] ?? []);
 
         return new WorkflowContext(
             $context->getDefinitionId(),

@@ -185,7 +185,7 @@ function makeWorker(StepExecutionOutcome $outcome, \Alama\LaravelArazzo\Executio
     $engine = new Engine($dependencyAnalyzer, $queue, $store);
     $outcomeHandler = new StepOutcomeHandler(
         $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger,
-        new WorkerMockPendingCorrelationRegistry(), $resolver,
+        new WorkerMockPendingCorrelationRegistry(), $resolver, $store
     );
 
     $worker = new StepExecutionWorker(
