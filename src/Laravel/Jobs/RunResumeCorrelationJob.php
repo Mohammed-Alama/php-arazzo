@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Laravel\Jobs;
 
 use Alama\LaravelArazzo\Execution\CorrelationResumer;
-use Alama\LaravelArazzo\Execution\Jobs\ResumeCorrelationJob;
+use Alama\LaravelArazzo\Execution\ResumeCorrelationJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -25,6 +25,6 @@ class RunResumeCorrelationJob implements ShouldQueue
 
     public function handle(CorrelationResumer $resumer): void
     {
-        $resumer->resume($this->inner);
+        $resumer->resume($this->inner->correlationId, $this->inner->response);
     }
 }
