@@ -11,15 +11,24 @@ use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\CorrelationResumer;
 use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\LaravelArazzo\Execution\Jobs\ResumeCorrelationJob;
+use Alama\LaravelArazzo\Execution\ResumeCorrelationJob;
 use Alama\LaravelArazzo\Execution\PendingCorrelation;
 use Alama\LaravelArazzo\Execution\StepOutcomeHandler;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Psr\Http\Message\RequestInterface;
+
+class ResumerMockLockManager implements LockManagerInterface
+{
+    public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
+    {
+        return $callback();
+    }
+}
 
 class ResumerMockPendingCorrelations implements PendingCorrelationRegistryInterface
 {
@@ -131,9 +140,9 @@ it('does nothing when the correlation is not found', function (): void {
     [$definitionRegistry] = resumerDocument();
     $outcomeHandler = new RecordingStepOutcomeHandler();
 
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, new ResumerMockEventLedger());
+    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, new ResumerMockEventLedger(), new ResumerMockLockManager());
 
-    $resumer->resume(new ResumeCorrelationJob('missing', ['x' => 1]));
+    $resumer->resume('missing', ['body' => ['x' => 1]]);
 
     expect($outcomeHandler->calls)->toBeEmpty();
     expect($pendingCorrelations->consumed)->toBeEmpty();
@@ -147,9 +156,9 @@ it('logs and does nothing when persisted state is missing', function (): void {
     $eventLedger = new ResumerMockEventLedger();
     $outcomeHandler = new RecordingStepOutcomeHandler();
 
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger);
+    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger, new ResumerMockLockManager());
 
-    $resumer->resume(new ResumeCorrelationJob('corr_1', ['x' => 1]));
+    $resumer->resume('corr_1', ['body' => ['x' => 1]]);
 
     expect($outcomeHandler->calls)->toBeEmpty();
     expect($eventLedger->appended[0]['eventType'])->toBe('execution.state_missing');
@@ -173,9 +182,9 @@ it('merges the payload, consumes the correlation, saves state, and calls StepOut
     $eventLedger = new ResumerMockEventLedger();
     $outcomeHandler = new RecordingStepOutcomeHandler();
 
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger);
+    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger, new ResumerMockLockManager());
 
-    $resumer->resume(new ResumeCorrelationJob('corr_1', ['rideId' => 'r_1']));
+    $resumer->resume('corr_1', ['body' => ['rideId' => 'r_1']]);
 
     expect($pendingCorrelations->consumed)->toBe(['corr_1']);
     expect($stateStore->saves['exec_1']['steps']['wait-for-ride']['response']['body'])->toBe(['rideId' => 'r_1']);

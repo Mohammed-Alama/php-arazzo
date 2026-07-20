@@ -12,7 +12,7 @@ use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
-use Alama\LaravelArazzo\Execution\Jobs\ResumeCorrelationJob;
+use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 
 class CorrelationResumer
 {
@@ -23,81 +23,92 @@ class CorrelationResumer
         private ExpressionResolverInterface $expressionResolver,
         private StepOutcomeHandler $outcomeHandler,
         private EventLedgerInterface $eventLedger,
+        private LockManagerInterface $lockManager,
     ) {
     }
 
-    public function resume(ResumeCorrelationJob $job): void
+    /**
+     * @param array{statusCode?: int, headers?: array<string, mixed>, body?: mixed} $response
+     */
+    public function resume(string $correlationId, array $response): void
     {
-        $correlation = $this->pendingCorrelations->findByCorrelationId($job->correlationId);
+        $correlation = $this->pendingCorrelations->findByCorrelationId($correlationId);
         if ($correlation === null) {
             return;
         }
 
         $executionId = $correlation->executionId;
-        $persisted = $this->stateStore->load($executionId);
-        if ($persisted === null) {
-            $this->eventLedger->append($executionId, 'execution.state_missing', ['correlationId' => $job->correlationId]);
+        $lockKey = "execution_lock_{$executionId}";
 
-            return;
-        }
+        $this->lockManager->acquire($lockKey, 30, function () use ($correlationId, $correlation, $response, $executionId) {
+            $persisted = $this->stateStore->load($executionId);
+            if ($persisted === null) {
+                $this->eventLedger->append($executionId, 'execution.state_missing', ['correlationId' => $correlationId]);
 
-        $document = $this->definitionRegistry->get((string) $persisted['definitionId']);
-        if ($document === null) {
-            $this->eventLedger->append($executionId, 'execution.definition_missing', ['definitionId' => $persisted['definitionId']]);
+                return;
+            }
 
-            return;
-        }
+            $document = $this->definitionRegistry->get((string) $persisted['definitionId']);
+            if ($document === null) {
+                $this->eventLedger->append($executionId, 'execution.definition_missing', ['definitionId' => $persisted['definitionId']]);
 
-        $workflow = $this->findWorkflow($document, (string) $persisted['workflowId']);
-        if ($workflow === null) {
-            $this->eventLedger->append($executionId, 'execution.workflow_missing', ['workflowId' => $persisted['workflowId']]);
+                return;
+            }
 
-            return;
-        }
+            $workflow = $this->findWorkflow($document, (string) $persisted['workflowId']);
+            if ($workflow === null) {
+                $this->eventLedger->append($executionId, 'execution.workflow_missing', ['workflowId' => $persisted['workflowId']]);
 
-        $step = $this->findStep($workflow, $correlation->stepId);
-        if ($step === null) {
-            $this->eventLedger->append($executionId, 'execution.step_missing', ['stepId' => $correlation->stepId]);
+                return;
+            }
 
-            return;
-        }
+            $step = $this->findStep($workflow, $correlation->stepId);
+            if ($step === null) {
+                $this->eventLedger->append($executionId, 'execution.step_missing', ['stepId' => $correlation->stepId]);
 
-        $context = new WorkflowContext(
-            (string) $persisted['definitionId'],
-            (array) ($persisted['inputs'] ?? []),
-            (array) ($persisted['steps'] ?? []),
-            (array) ($persisted['components'] ?? []),
-            (string) $persisted['workflowId'],
-            $executionId,
-        );
+                return;
+            }
 
-        $contextWithResponse = $context->withStepResponse($step->stepId, [
-            'statusCode' => 200,
-            'body' => $job->payload,
-        ]);
-        $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
+            $context = new WorkflowContext(
+                (string) $persisted['definitionId'],
+                (array) ($persisted['inputs'] ?? []),
+                (array) ($persisted['steps'] ?? []),
+                (array) ($persisted['components'] ?? []),
+                (string) $persisted['workflowId'],
+                $executionId,
+            );
 
-        $contextWithResult = $context->withStepResult($step->stepId, [
-            'statusCode' => 200,
-            'response' => ['statusCode' => 200, 'body' => $job->payload],
-            'outputs' => $outputs,
-        ]);
+            $statusCode = $response['statusCode'] ?? 200;
+            $body = $response['body'] ?? null;
 
-        $this->pendingCorrelations->consume($job->correlationId);
+            $contextWithResponse = $context->withStepResponse($step->stepId, [
+                'statusCode' => $statusCode,
+                'body' => $body,
+            ]);
+            $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
-        $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
+            $contextWithResult = $context->withStepResult($step->stepId, [
+                'statusCode' => $statusCode,
+                'response' => $response,
+                'outputs' => $outputs,
+            ]);
 
-        $this->stateStore->save($executionId, [
-            'definitionId' => $contextWithResult->getDefinitionId(),
-            'workflowId' => $contextWithResult->getWorkflowId(),
-            'steps' => $contextWithResult->getSteps(),
-            'inputs' => $contextWithResult->getInputs(),
-            'components' => $contextWithResult->getComponents(),
-        ]);
+            $this->pendingCorrelations->consume($correlationId);
 
-        $this->eventLedger->append($executionId, 'step.resumed', ['stepId' => $step->stepId, 'correlationId' => $job->correlationId]);
+            $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
 
-        $this->outcomeHandler->handle($document, $workflow, $step, $contextWithResult, $executionId, $criteriaMet);
+            $this->stateStore->save($executionId, [
+                'definitionId' => $contextWithResult->getDefinitionId(),
+                'workflowId' => $contextWithResult->getWorkflowId(),
+                'steps' => $contextWithResult->getSteps(),
+                'inputs' => $contextWithResult->getInputs(),
+                'components' => $contextWithResult->getComponents(),
+            ]);
+
+            $this->eventLedger->append($executionId, 'step.resumed', ['stepId' => $step->stepId, 'correlationId' => $correlationId]);
+
+            $this->outcomeHandler->handle($document, $workflow, $step, $contextWithResult, $executionId, $criteriaMet);
+        });
     }
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
