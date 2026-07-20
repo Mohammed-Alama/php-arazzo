@@ -19,4 +19,9 @@ interface ExpressionResolverInterface
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;
+
+    /**
+     * @param list<\Alama\LaravelArazzo\Dto\SuccessCriterion> $criteria
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;
 }
