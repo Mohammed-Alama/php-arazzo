@@ -39,7 +39,13 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     $context = (new WorkflowContext('def_1'))->withExecutionId('exec_1');
     $innerJob = new ExecuteStepJob($step, $context);
 
-    Queue::connection('sync')->push(new RunExecuteStepJob($innerJob));
+    $wrapper = new RunExecuteStepJob($innerJob);
+
+    expect($wrapper->definitionId)->toBe('def_1');
+    expect($wrapper->workflowId)->toBeNull();
+    expect($wrapper->executionId)->toBe('exec_1');
+
+    Queue::connection('sync')->push($wrapper);
 
     expect($recorder->handled)->toHaveCount(1);
     expect($recorder->handled[0]->step->stepId)->toBe('A');
