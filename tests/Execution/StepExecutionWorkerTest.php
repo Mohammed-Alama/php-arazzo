@@ -348,3 +348,42 @@ it('acquires the lock using an execution-scoped key, not a definition-scoped key
 
     expect($lockManager->keysUsed[0])->toBe('execution_lock_exec_42');
 });
+
+it('resolves a diamond fan-in exactly once: B and C both complete from the same stale context, D dispatches exactly once with A+B+C all present', function (): void {
+    $definitionRegistry = new InMemoryDefinitionRegistry();
+    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $stepC = new Step('C', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $stepD = new Step('D', null, null, null, null, [], null, [], [], [], [], ['B', 'C']);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB, $stepC, $stepD], [], [], [], []);
+    $document = makeWorkerDocument($workflow);
+    $definitionId = $definitionRegistry->register($document);
+
+    [$worker, , $store, , , $queue] = makeWorker(StepExecutionOutcome::resolved(200, [], []), $definitionRegistry);
+
+    // A already completed and persisted by an earlier job.
+    $store->preloaded['exec_1'] = [
+        'definitionId' => $definitionId,
+        'workflowId' => 'wf_1',
+        'steps' => ['A' => ['statusCode' => 200, 'status' => StepStatus::Succeeded]],
+        'inputs' => [],
+        'components' => [],
+    ];
+
+    // B and C were both dispatched right after A completed, so both jobs carry the exact
+    // same A-only context snapshot -- this is the classic diamond/fan-in lost-update race.
+    $staleContext = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
+
+    $worker->handle(new ExecuteStepJob($stepB, $staleContext));
+
+    // WorkerMockStateStore keeps save()/load() as two separate arrays for test clarity
+    // elsewhere in this file -- bridge them here to simulate B's write becoming visible to
+    // C's subsequent load(), exactly like a real shared StateStore would.
+    $store->preloaded['exec_1'] = $store->saves['exec_1'];
+
+    $worker->handle(new ExecuteStepJob($stepC, $staleContext));
+
+    $dDispatches = array_values(array_filter($queue->dispatched, fn ($d) => $d['job']->step->stepId === 'D'));
+    expect($dDispatches)->toHaveCount(1);
+    expect($store->saves['exec_1']['steps'])->toHaveKeys(['A', 'B', 'C']);
+});
