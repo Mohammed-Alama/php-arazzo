@@ -148,7 +148,8 @@ class StepOutcomeHandler
                 'attempts' => $attempts,
             ]);
 
-            $remaining = array_values(array_filter($actionsConsidered, static fn ($a) => $a !== $action));
+            $index = array_search($action, $actionsConsidered, true);
+            $remaining = array_slice($actionsConsidered, $index + 1);
             $this->applyFirstMatch($remaining, $document, $workflow, $step, $context, $executionId, $criteriaMet);
 
             return;
