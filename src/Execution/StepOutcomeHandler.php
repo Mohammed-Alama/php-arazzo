@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\Action\FailureAction;
+use Alama\LaravelArazzo\Dto\Action\FailureEndAction;
 use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
+use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Reusable;
@@ -16,6 +18,7 @@ use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
@@ -26,8 +29,10 @@ class StepOutcomeHandler
     public function __construct(
         private QueueDriverInterface $queueDriver,
         private Engine $engine,
+        private DependencyAnalyzer $dependencyAnalyzer,
         private ExecutionRegistryInterface $executionRegistry,
         private EventLedgerInterface $eventLedger,
+        private PendingCorrelationRegistryInterface $pendingCorrelations,
         private ExpressionResolverInterface $expressionResolver,
         private int $maxRetryAttempts = 10,
     ) {
@@ -84,7 +89,13 @@ class StepOutcomeHandler
             return;
         }
 
-        throw new LogicException('Unhandled action type: ' . $matched::class);
+        $status = $matched instanceof SuccessEndAction ? ExecutionStatus::Succeeded : ExecutionStatus::Failed;
+        $this->terminate(
+            $context,
+            $executionId,
+            $status,
+            $status === ExecutionStatus::Succeeded ? 'execution.succeeded' : 'execution.failed',
+        );
     }
 
     /**
@@ -256,6 +267,11 @@ class StepOutcomeHandler
     {
         $newContext = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
         $this->engine->evaluate($workflow, $newContext);
+
+        $runnable = $this->dependencyAnalyzer->getRunnableSteps($workflow->steps, $newContext);
+        if ($runnable === [] && !$this->pendingCorrelations->existsForExecution($executionId)) {
+            $this->terminate($newContext, $executionId, ExecutionStatus::Succeeded, 'execution.succeeded');
+        }
     }
 
     private function terminate(WorkflowContext $context, string $executionId, ExecutionStatus $status, string $eventType): void
