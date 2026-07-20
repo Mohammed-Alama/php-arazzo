@@ -8,6 +8,9 @@ use Flow\JSONPath\JSONPath;
 
 class JsonPathEvaluator
 {
+    /**
+     * @param array<string, mixed>|object $data
+     */
     public static function evaluate(string $expression, array|object $data): mixed
     {
         $jsonPath = new JSONPath($data);

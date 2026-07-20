@@ -18,6 +18,9 @@ class WorkflowExecutor
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $inputs
+     */
     public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs): ExecutionResult
     {
         // Components should ideally be populated from $document, but keep simple for now
@@ -42,7 +45,7 @@ class WorkflowExecutor
                 break;
             }
 
-            $this->logger?->logStepCompleted($stepId, $result->outputs);
+            $this->logger?->logStepCompleted($workflow->workflowId, $stepId, $result->outputs);
         }
 
         return new ExecutionResult($workflow->workflowId, 'completed', [], $stepResults);

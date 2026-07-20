@@ -22,8 +22,8 @@ use cebe\openapi\spec\Parameter as OpenApiParameter;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\RequestBody;
 use cebe\openapi\spec\Response;
+use cebe\openapi\spec\Responses;
 use cebe\openapi\spec\Schema;
-use cebe\openapi\spec\TypeInterface;
 use GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -253,10 +253,15 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
             return null;
         }
 
-        return $operation->requestBody->content['application/json']->schema ?? null;
+        $schema = $operation->requestBody->content['application/json']->schema ?? null;
+        if ($schema instanceof Reference) {
+            $schema = $schema->resolve();
+        }
+
+        return $schema instanceof Schema ? $schema : null;
     }
 
-    private function resolveSchemaAtPointer(?TypeInterface $schema, string $pointer): ?Schema
+    private function resolveSchemaAtPointer(?Schema $schema, string $pointer): ?Schema
     {
         if ($schema === null) {
             return null;
@@ -343,7 +348,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
         $statusCode = (string) ($context->getSteps()[$step->stepId]['response']['statusCode'] ?? '');
         $responses = $operation->responses;
-        if ($responses === null) {
+        if (!$responses instanceof Responses) {
             return $value;
         }
         $response = $responses->getResponse($statusCode) ?? $responses->getResponse('default');
@@ -352,7 +357,10 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         }
 
         $schema = $response->content['application/json']->schema ?? null;
-        $leafSchema = $this->resolveSchemaAtPointer($schema, $ast->part->jsonPointer);
+        if ($schema instanceof Reference) {
+            $schema = $schema->resolve();
+        }
+        $leafSchema = $this->resolveSchemaAtPointer($schema instanceof Schema ? $schema : null, $ast->part->jsonPointer);
 
         return $this->castToSchemaType($value, $leafSchema);
     }
