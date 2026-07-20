@@ -6,6 +6,16 @@ landed — `ArazzoExpressionResolver` is the real `compileRequest`/`extractOutpu
 `evaluateSuccessCriteria` implementation, shared by both the sync (`StepExecutor`) and async
 (`StepExecutionWorker`) paths).
 
+> **Addendum (2026-07-20) — 03 merged mid-brainstorm:** [03 — Native Async Control Flow](../roadmap/03-native-async-control-flow.md)
+> landed while this spec was being written, and it changed the shape of the sync/async split assumed
+> below. It's no longer "one shared resolver behind two execution shells where only one is wired" —
+> it introduced `HttpStepExecutor` (`src/Execution/HttpStepExecutor.php`), a **second, independently
+> wired** `compileRequest → send → withStepResponse → extractOutputs` flow, live in the service
+> provider and driving the async `StepExecutionWorker` via `StepProtocolExecutorInterface[]`. Both
+> `StepExecutor` (sync) and `HttpStepExecutor` (async) are real, wired execution paths now. Every
+> place below that said the async path "picks up validation for free later" or was "out of scope"
+> is superseded — this item hooks `validateResponseSchema()` into **both**.
+
 ## Starting point
 
 `ArazzoExpressionResolver` already does best-effort OpenAPI-schema-driven **type casting** —
@@ -28,8 +38,9 @@ of a confusing failure two or three calls deep in the stack.
   and each composition branch.
 - A dedicated `SchemaValidationException` carrying the step ID, status code, and a structured list
   of violations.
-- Wiring: a new `ExpressionResolverInterface::validateResponseSchema()` method, called from
-  `StepExecutor::execute()` between storing the response and extracting outputs.
+- Wiring: a new `ExpressionResolverInterface::validateResponseSchema()` method, called from both
+  `StepExecutor::execute()` (sync path) and `HttpStepExecutor::execute()` (async path), in each
+  case between storing the response and extracting outputs.
 - Opt-in config: global default off, per-step override via an `x-strict-validation` extension.
 - The Arazzo 1.1.0 delta: `SuccessCriterion` gains a `version` field (parsing the `{type, version}`
   object form for `type`), and a new parse-time validation rule rejects `xpath` criteria pinned to
@@ -41,11 +52,11 @@ of a confusing failure two or three calls deep in the stack.
 - `not` (JSON Schema negation) and `discriminator` — not requested, and `discriminator` needs
   polymorphic-schema resolution rules beyond what this item's scope calls for.
 - Turning a validation failure into a soft step-failure (routed through `onFailure`/retry) — it's a
-  hard exception that propagates out of `StepExecutor::execute()` uncaught, the same way an
-  unresolvable operation already does today.
-- Fixing `StepExecutionWorker`'s known gaps (roadmap item 03) — it shares the same
-  `ExpressionResolverInterface` singleton, so it picks up `validateResponseSchema()` for free once
-  its own wiring is finished, but fixing that wiring isn't this item's job.
+  hard exception that propagates out of `StepExecutor::execute()`/`HttpStepExecutor::execute()`
+  uncaught, the same way an unresolvable operation already does today.
+- Any other change to `StepExecutionWorker`, `StepOutcomeHandler`, or the retry/goto/end decision
+  logic 03 built — this item only adds one call to `HttpStepExecutor::execute()`, it doesn't touch
+  what happens after that call returns or throws.
 - The rest of the 1.1.0 Selector Object (output `selector`/`context` object syntax, `querystring`
   params, `$self`, AsyncAPI `sourceDescriptions`) — only the success-criteria `{type, version}` form
   is in scope here, because it's the specific validation surface the roadmap stub calls out.
@@ -219,26 +230,44 @@ $outputs  = $resolver->extractOutputs($step, $context, $document)
 $success  = $resolver->evaluateSuccessCriteria($step, $context, $document)
 ```
 
-`shouldValidate()` is a small private helper on `StepExecutor`:
-`$step->strictValidation ?? config('arazzo.strict_schema_validation')`.
+`shouldValidate()` is a small private helper: `$step->strictValidation ?? $this->strictValidationDefault`
+— a constructor-injected `bool`, matching how `retry_ceiling`/`state_ttl` are already threaded from
+config into framework-agnostic `Execution/` classes via the service provider (`(int)
+config('arazzo.retry_ceiling', 10)` passed as a constructor arg, not read via a `config()` call
+inside `Execution/` code). Both `StepExecutor` and `HttpStepExecutor` gain this constructor
+parameter and this helper.
 
 Not run on the synthetic-500 network-failure path — there's no real API response body to check
 against a schema in that case, and `evaluateSuccessCriteria` already correctly reports failure for
 it.
 
+`HttpStepExecutor::execute()` gains the identical insertion point, between `withStepResponse` and
+`extractOutputs`:
+
+```
+$contextWithResponse = $context->withStepResponse($step->stepId, [...])
+
+if ($this->shouldValidate($step)) {
+    $this->expressionResolver->validateResponseSchema($step, $contextWithResponse, $document);
+}
+
+$outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document)
+```
+
 ## Error Handling
 
-- **Schema violation** — throws `SchemaValidationException` immediately; propagates out of
-  `StepExecutor::execute()` uncaught (`WorkflowExecutor::execute()` has no try/catch around the
+- **Schema violation (sync path)** — throws `SchemaValidationException` immediately; propagates out
+  of `StepExecutor::execute()` uncaught (`WorkflowExecutor::execute()` has no try/catch around the
   step-executor call today, so this is consistent with how an unresolvable-operation
   `RuntimeException` already behaves — no new catch/rethrow plumbing needed).
+- **Schema violation (async path)** — throws the same `SchemaValidationException` out of
+  `HttpStepExecutor::execute()`, uncaught by this item's code. What happens next (does
+  `StepExecutionWorker`'s queue job retry, dead-letter, or fail the execution) is governed entirely
+  by 03's existing job-failure handling — not modified here.
 - **No resolvable schema** (operation/response/content-type not found) — silent no-op, matching the
   existing casting code's fallback philosophy.
 - **Validation disabled** (default) — `validateResponseSchema()` is never called; zero behavior
-  change for existing workflows.
-- **Async path (`StepExecutionWorker`)** — not modified in this item. It shares
-  `ExpressionResolverInterface`, so once its own wiring gaps (roadmap item 03) are fixed, adding the
-  same `validateResponseSchema()` call there is a one-line follow-up, not a redesign.
+  change for existing workflows, on either path.
 
 ## Testing
 
