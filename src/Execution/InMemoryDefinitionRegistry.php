@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 
 class InMemoryDefinitionRegistry implements DefinitionRegistryInterface
 {
-    /** @var array<string, Workflow> */
+    /** @var array<string, ArazzoDocument> */
     private array $registry = [];
 
-    public function register(Workflow $workflow): string
+    public function register(ArazzoDocument $document): string
     {
-        // Simple hash for versioning based on workflow content.
-        // In real life, it might hash the source JSON/YAML, but here we can just use spl_object_hash or a uniqid for the MVP.
-        $id = $workflow->workflowId . '_' . uniqid();
-        $this->registry[$id] = $workflow;
+        $id = 'in_memory_' . spl_object_id($document);
+        $this->registry[$id] = $document;
 
         return $id;
     }
 
-    public function get(string $definitionId): ?Workflow
+    public function get(string $definitionId): ?ArazzoDocument
     {
         return $this->registry[$definitionId] ?? null;
     }
