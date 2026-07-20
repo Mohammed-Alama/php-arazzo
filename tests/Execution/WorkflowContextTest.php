@@ -26,21 +26,23 @@ it('is immutable on withStepRequest and merges into steps', function (): void {
     expect($newContext->getSteps()['step_1']['request'])->toEqual(['method' => 'GET', 'url' => 'http://x']);
 });
 
-it('merges withStepResponse alongside an existing request', function (): void {
+it('is immutable on withStepResponse and merges alongside an existing request', function (): void {
     $context = (new WorkflowContext('def_1'))
-        ->withStepRequest('step_1', ['method' => 'GET'])
-        ->withStepResponse('step_1', ['statusCode' => 200]);
+        ->withStepRequest('step_1', ['method' => 'GET']);
+    $newContext = $context->withStepResponse('step_1', ['statusCode' => 200]);
 
-    expect($context->getSteps()['step_1']['request'])->toEqual(['method' => 'GET']);
-    expect($context->getSteps()['step_1']['response'])->toEqual(['statusCode' => 200]);
+    expect($newContext)->not->toBe($context);
+    expect($newContext->getSteps()['step_1']['request'])->toEqual(['method' => 'GET']);
+    expect($newContext->getSteps()['step_1']['response'])->toEqual(['statusCode' => 200]);
 });
 
-it('merges withStepOutput as individual keys', function (): void {
+it('is immutable on withStepOutput and merges as individual keys', function (): void {
     $context = (new WorkflowContext('def_1'))
-        ->withStepOutput('step_1', 'id', 123)
-        ->withStepOutput('step_1', 'name', 'Alice');
+        ->withStepOutput('step_1', 'id', 123);
+    $newContext = $context->withStepOutput('step_1', 'name', 'Alice');
 
-    expect($context->getSteps()['step_1']['outputs'])->toEqual(['id' => 123, 'name' => 'Alice']);
+    expect($newContext)->not->toBe($context);
+    expect($newContext->getSteps()['step_1']['outputs'])->toEqual(['id' => 123, 'name' => 'Alice']);
 });
 
 it('defaults workflowId and executionId to null', function (): void {
