@@ -72,6 +72,10 @@ class WorkerMockStateStore implements StateStoreInterface
 
 class WorkerMockExpressionResolver implements ExpressionResolverInterface
 {
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
+    {
+    }
+
     public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         throw new \LogicException('not used -- protocol dispatch is faked directly in these tests');

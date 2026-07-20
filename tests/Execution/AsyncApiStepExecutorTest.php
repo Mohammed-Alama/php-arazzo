@@ -60,6 +60,10 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
 
 class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
 {
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
+    {
+    }
+
     public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         return new Request('POST', 'http://broker.local/publish');
