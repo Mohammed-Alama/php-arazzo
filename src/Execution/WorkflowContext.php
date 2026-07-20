@@ -16,12 +16,24 @@ final class WorkflowContext
         private array $inputs = [],
         private array $steps = [],
         private array $components = [],
+        private ?string $workflowId = null,
+        private ?string $executionId = null,
     ) {
     }
 
     public function getDefinitionId(): string
     {
         return $this->definitionId;
+    }
+
+    public function getWorkflowId(): ?string
+    {
+        return $this->workflowId;
+    }
+
+    public function getExecutionId(): ?string
+    {
+        return $this->executionId;
     }
 
     /**
@@ -48,6 +60,16 @@ final class WorkflowContext
         return $this->components;
     }
 
+    public function withWorkflowId(string $workflowId): self
+    {
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId);
+    }
+
+    public function withExecutionId(string $executionId): self
+    {
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId);
+    }
+
     /**
      * @param array<string, mixed> $result
      */
@@ -56,7 +78,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId] = $result;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
     }
 
     /**
@@ -67,7 +89,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['request'] = $request;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
     }
 
     /**
@@ -78,7 +100,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['response'] = $response;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
     }
 
     public function withStepOutput(string $stepId, string $key, mixed $value): self
@@ -86,6 +108,6 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['outputs'][$key] = $value;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
     }
 }
