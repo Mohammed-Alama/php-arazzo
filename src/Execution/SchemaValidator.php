@@ -43,6 +43,10 @@ final class SchemaValidator
             }
         }
 
+        if (is_string($value)) {
+            $violations = [...$violations, ...self::validateString($schema, $value, $path)];
+        }
+
         return $violations;
     }
 
@@ -95,6 +99,49 @@ final class SchemaValidator
         }
 
         return $violations;
+    }
+
+    /**
+     * @return list<array{path: string, message: string}>
+     */
+    private static function validateString(Schema $schema, string $value, string $path): array
+    {
+        $at = $path === '' ? '/' : $path;
+        $violations = [];
+
+        if ($schema->pattern !== null && @preg_match('/' . str_replace('/', '\/', $schema->pattern) . '/u', $value) !== 1) {
+            $violations[] = ['path' => $at, 'message' => "does not match pattern '{$schema->pattern}'"];
+        }
+
+        if ($schema->format !== null && !self::matchesFormat($schema->format, $value)) {
+            $violations[] = ['path' => $at, 'message' => "does not match format '{$schema->format}'"];
+        }
+
+        return $violations;
+    }
+
+    private static function matchesFormat(string $format, string $value): bool
+    {
+        return match ($format) {
+            'date' => self::isValidDateTime($value, 'Y-m-d'),
+            'date-time' => self::isValidDateTime($value, \DateTimeInterface::RFC3339_EXTENDED)
+                || self::isValidDateTime($value, \DateTimeInterface::RFC3339),
+            'email' => filter_var($value, FILTER_VALIDATE_EMAIL) !== false,
+            'uuid' => preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $value) === 1,
+            'uri' => filter_var($value, FILTER_VALIDATE_URL) !== false,
+            'ipv4' => filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false,
+            'ipv6' => filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false,
+            // Unrecognized formats (password, byte, int64, vendor-specific, ...) are
+            // annotations per the JSON Schema spec -- not validated, never a violation.
+            default => true,
+        };
+    }
+
+    private static function isValidDateTime(string $value, string $format): bool
+    {
+        $date = \DateTime::createFromFormat('!' . $format, $value);
+
+        return $date !== false && $date->format($format) === $value;
     }
 
     private static function matchesType(string $type, mixed $value): bool

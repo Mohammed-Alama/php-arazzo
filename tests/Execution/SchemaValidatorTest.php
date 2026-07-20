@@ -129,3 +129,41 @@ it('checks required/minItems against an empty array, ambiguous with empty object
     $messages = array_column($violations, 'message');
     expect($messages)->toContain('missing required property \'id\'');
 });
+
+it('flags a string not matching pattern', function (): void {
+    $schema = new Schema(['type' => 'string', 'pattern' => '^[a-z]+$']);
+
+    expect(SchemaValidator::validate($schema, 'abc'))->toBe([]);
+    expect(SchemaValidator::validate($schema, 'ABC'))->toHaveCount(1);
+});
+
+it('validates known formats: date, date-time, email, uuid, uri, ipv4, ipv6', function (): void {
+    $format = fn (string $fmt) => new Schema(['type' => 'string', 'format' => $fmt]);
+
+    expect(SchemaValidator::validate($format('date'), '2024-01-15'))->toBe([]);
+    expect(SchemaValidator::validate($format('date'), '2024-02-30'))->toHaveCount(1);
+
+    expect(SchemaValidator::validate($format('date-time'), '2024-01-15T10:00:00+00:00'))->toBe([]);
+    expect(SchemaValidator::validate($format('date-time'), 'not-a-datetime'))->toHaveCount(1);
+
+    expect(SchemaValidator::validate($format('email'), 'a@b.com'))->toBe([]);
+    expect(SchemaValidator::validate($format('email'), 'not-an-email'))->toHaveCount(1);
+
+    expect(SchemaValidator::validate($format('uuid'), '550e8400-e29b-41d4-a716-446655440000'))->toBe([]);
+    expect(SchemaValidator::validate($format('uuid'), 'not-a-uuid'))->toHaveCount(1);
+
+    expect(SchemaValidator::validate($format('uri'), 'https://example.com'))->toBe([]);
+    expect(SchemaValidator::validate($format('uri'), 'not a uri'))->toHaveCount(1);
+
+    expect(SchemaValidator::validate($format('ipv4'), '192.168.1.1'))->toBe([]);
+    expect(SchemaValidator::validate($format('ipv4'), 'not-an-ip'))->toHaveCount(1);
+
+    expect(SchemaValidator::validate($format('ipv6'), '::1'))->toBe([]);
+    expect(SchemaValidator::validate($format('ipv6'), 'not-an-ip'))->toHaveCount(1);
+});
+
+it('ignores an unrecognized format rather than flagging a violation', function (): void {
+    $schema = new Schema(['type' => 'string', 'format' => 'password']);
+
+    expect(SchemaValidator::validate($schema, 'anything at all'))->toBe([]);
+});
