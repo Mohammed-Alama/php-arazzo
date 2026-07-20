@@ -318,6 +318,7 @@ class Parser
             action: $action,
             channelPath: $channelPath,
             correlationId: $correlationId,
+            strictValidation: $obj['x-strict-validation'] ?? null,
         );
     }
 
