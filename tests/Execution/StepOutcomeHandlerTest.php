@@ -144,38 +144,45 @@ function stepOutcomeDocument(array $workflows, ?Components $components = null): 
     );
 }
 
+class StepOutcomeMockStateStore implements \Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface
+{
+    public array $saves = [];
+
+    public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
+    {
+        $this->saves[$executionId] = $state;
+    }
+
+    public function load(string $executionId): ?array
+    {
+        return null;
+    }
+}
+
 /**
- * @return array{0: StepOutcomeHandler, 1: SyncQueueDriver, 2: StepOutcomeMockExecutionRegistry, 3: StepOutcomeMockEventLedger, 4: StepOutcomeMockPendingCorrelationRegistry}
+ * @return array{0: StepOutcomeHandler, 1: SyncQueueDriver, 2: StepOutcomeMockExecutionRegistry, 3: StepOutcomeMockEventLedger, 4: StepOutcomeMockPendingCorrelationRegistry, 5: StepOutcomeMockStateStore}
  */
 function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrelationOutstanding = false): array
 {
     $queue = new SyncQueueDriver();
+    $dependencyAnalyzer = new DependencyAnalyzer();
+    $store = new StepOutcomeMockStateStore();
+    $engine = new Engine($dependencyAnalyzer, $queue, $store);
     $executionRegistry = new StepOutcomeMockExecutionRegistry();
     $eventLedger = new StepOutcomeMockEventLedger();
     $pendingCorrelations = new StepOutcomeMockPendingCorrelationRegistry();
     if ($pendingCorrelationOutstanding) {
         $pendingCorrelations->outstanding['exec_1'] = true;
     }
-    $dependencyAnalyzer = new DependencyAnalyzer();
-    $engine = new Engine($dependencyAnalyzer, $queue, new class implements \Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface {
-        public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
-        {
-        }
-
-        public function load(string $executionId): ?array
-        {
-            return null;
-        }
-    });
     $resolver = new StepOutcomeMockExpressionResolver();
 
-    $handler = new StepOutcomeHandler($queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $maxRetryAttempts);
+    $handler = new StepOutcomeHandler($queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $store, $maxRetryAttempts);
 
-    return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations];
+    return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations, $store];
 }
 
 it('continues normally and dispatches the next runnable step when criteria met and no actions match', function (): void {
-    [$handler, $queue] = makeStepOutcomeHandler();
+    [$handler, $queue, , , , $store] = makeStepOutcomeHandler();
 
     $stepA = stepOutcomeStep('A');
     $stepB = stepOutcomeStep('B', dependsOn: ['A']);
@@ -188,6 +195,7 @@ it('continues normally and dispatches the next runnable step when criteria met a
 
     expect($queue->dispatched)->toHaveCount(1);
     expect($queue->dispatched[0]['job']->step->stepId)->toBe('B');
+    expect($store->saves['exec_1']['steps']['A']['status'])->toBe(StepStatus::Succeeded);
 });
 
 it('terminates the execution as failed when criteria not met and no failure action matches', function (): void {
