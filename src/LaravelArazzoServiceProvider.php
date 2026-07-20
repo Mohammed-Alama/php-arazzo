@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo;
 
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
+use Alama\LaravelArazzo\Execution\ArazzoExpressionResolver;
+use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowExecutor;
@@ -76,12 +78,18 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         });
 
         // Workflow Execution
-        $this->app->singleton(StepExecutor::class, function ($app) {
-            return new StepExecutor(
+        $this->app->singleton(ExpressionResolverInterface::class, function ($app) {
+            return new ArazzoExpressionResolver(
                 $app->make(SourceResolver::class),
-                $app->make(ClientInterface::class),
                 $app->make(RequestFactoryInterface::class),
                 new ExpressionEvaluator(),
+            );
+        });
+
+        $this->app->singleton(StepExecutor::class, function ($app) {
+            return new StepExecutor(
+                $app->make(ClientInterface::class),
+                $app->make(ExpressionResolverInterface::class),
             );
         });
 
@@ -95,7 +103,10 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'arazzo');
 
         Route::get('/arazzo-builder', function () {
-            return view('arazzo::arazzo');
+            /** @var view-string $view */
+            $view = 'arazzo::arazzo';
+
+            return view($view);
         })->middleware('web');
 
         Route::prefix('api/arazzo')

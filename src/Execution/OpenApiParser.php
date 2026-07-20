@@ -12,7 +12,7 @@ use RuntimeException;
 class OpenApiParser
 {
     /**
-     * @return array{0: string, 1: string} [method, url_path]
+     * @return array{0: string, 1: string, 2: Operation}
      */
     public static function findOperation(OpenApi $openApi, string $operationId): array
     {
@@ -23,7 +23,7 @@ class OpenApiParser
                 /** @var Operation|null $operation */
                 $operation = $pathItem->$method;
                 if ($operation !== null && $operation->operationId === $operationId) {
-                    return [strtoupper($method), (string) $path];
+                    return [strtoupper($method), (string) $path, $operation];
                 }
             }
         }

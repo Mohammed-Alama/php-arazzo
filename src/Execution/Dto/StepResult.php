@@ -8,6 +8,9 @@ use Throwable;
 
 class StepResult
 {
+    /**
+     * @param array<string, mixed> $outputs
+     */
     public function __construct(
         public readonly string $stepId,
         public readonly bool $success,

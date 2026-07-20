@@ -14,6 +14,7 @@ class Engine
     public function __construct(
         private DependencyAnalyzer $analyzer,
         private QueueDriverInterface $queueDriver,
+        /** @phpstan-ignore property.onlyWritten */
         private StateStoreInterface $stateStore,
     ) {
     }

@@ -6,10 +6,10 @@ namespace Alama\LaravelArazzo\Tests\Execution;
 
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
-use Alama\LaravelArazzo\Execution\VariableContext;
+use Alama\LaravelArazzo\Execution\WorkflowContext;
 
 it('evaluates input references', function () {
-    $context = new VariableContext(['userId' => 123]);
+    $context = new WorkflowContext('def_1', ['userId' => 123]);
     $evaluator = new ExpressionEvaluator();
 
     $expr = new Expression('{$inputs.userId}');
@@ -20,8 +20,7 @@ it('evaluates input references', function () {
 });
 
 it('evaluates step output references', function () {
-    $context = new VariableContext();
-    $context->setStepOutput('create-user', 'id', 456);
+    $context = (new WorkflowContext('def_1'))->withStepOutput('create-user', 'id', 456);
     $evaluator = new ExpressionEvaluator();
 
     $expr = new Expression('{$steps.create-user.outputs.id}');
@@ -29,8 +28,7 @@ it('evaluates step output references', function () {
 });
 
 it('evaluates request parts using json pointer', function () {
-    $context = new VariableContext();
-    $context->setStepRequest('step1', [
+    $context = (new WorkflowContext('def_1'))->withStepRequest('step1', [
         'headers' => ['Authorization' => 'Bearer token'],
         'query' => ['search' => 'test'],
         'path' => ['id' => 789],
@@ -44,8 +42,7 @@ it('evaluates request parts using json pointer', function () {
 });
 
 it('evaluates response parts using json pointer', function () {
-    $context = new VariableContext();
-    $context->setStepResponse('step1', [
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
         'statusCode' => 201,
         'headers' => ['X-RateLimit' => '100'],
         'body' => ['data' => ['items' => [1, 2, 3]]],
@@ -60,8 +57,7 @@ it('evaluates response parts using json pointer', function () {
 });
 
 it('evaluates json pointer with escaped characters', function () {
-    $context = new VariableContext();
-    $context->setStepResponse('step1', [
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
         'body' => [
             'foo~bar' => 'tilde',
             'foo/bar' => 'slash',
@@ -70,7 +66,25 @@ it('evaluates json pointer with escaped characters', function () {
 
     $evaluator = new ExpressionEvaluator();
 
-    // RFC 6901: ~0 becomes ~, ~1 becomes /
     expect($evaluator->evaluate(new Expression('{$steps.step1.response.body#/foo~0bar}'), $context))->toBe('tilde');
     expect($evaluator->evaluate(new Expression('{$steps.step1.response.body#/foo~1bar}'), $context))->toBe('slash');
+});
+
+it('evaluates bare HttpMetaRef against the current step when stepId is given', function () {
+    $context = (new WorkflowContext('def_1'))
+        ->withStepRequest('step1', ['method' => 'POST', 'url' => 'http://x/y'])
+        ->withStepResponse('step1', ['statusCode' => 201]);
+
+    $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$statusCode}'), $context, 'step1'))->toBe(201);
+    expect($evaluator->evaluate(new Expression('{$method}'), $context, 'step1'))->toBe('POST');
+    expect($evaluator->evaluate(new Expression('{$url}'), $context, 'step1'))->toBe('http://x/y');
+});
+
+it('returns null for HttpMetaRef when no current step is given', function () {
+    $context = new WorkflowContext('def_1');
+    $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$statusCode}'), $context))->toBeNull();
 });

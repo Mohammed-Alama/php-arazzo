@@ -1,0 +1,430 @@
+ ------ ---------------------------------------------------------------------- 
+  Line   config/arazzo.php                                                     
+ ------ ---------------------------------------------------------------------- 
+  7      Called 'env' outside of the config directory which returns null when  
+         the config is cached, use 'config'.                                   
+         🪪  larastan.noEnvCallsOutsideOfConfig                                
+  8      Called 'env' outside of the config directory which returns null when  
+         the config is cached, use 'config'.                                   
+         🪪  larastan.noEnvCallsOutsideOfConfig                                
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Dto/Step.php                                                       
+ ------ ----------------------------------------------------------------------- 
+  19     Method Alama\LaravelArazzo\Dto\Step::__construct() has parameter       
+         $dependsOn with no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/ArazzoExpressionResolver.php                             
+ ------ ----------------------------------------------------------------------- 
+  218    Parameter #1 $json of static method                                    
+         cebe\openapi\Reader::readFromJson() expects string, string|false       
+         given.                                                                 
+         🪪  argument.type                                                      
+  228    Method                                                                 
+         Alama\LaravelArazzo\Execution\ArazzoExpressionResolver::findParameter  
+         Schema() should return cebe\openapi\spec\Schema|null but returns       
+         cebe\openapi\spec\Reference|cebe\openapi\spec\Schema|null.             
+         🪪  return.type                                                        
+  241    Method                                                                 
+         Alama\LaravelArazzo\Execution\ArazzoExpressionResolver::findRequestBo  
+         dySchema() should return cebe\openapi\spec\Schema|null but returns     
+         cebe\openapi\spec\Reference|cebe\openapi\spec\Schema|null.             
+         🪪  return.type                                                        
+  328    Cannot call method getResponse() on                                    
+         (cebe\openapi\spec\Responses&iterable<cebe\openapi\spec\Response>)|nu  
+         ll.                                                                    
+         🪪  method.nonObject                                                   
+  328    Cannot call method getResponse() on                                    
+         (cebe\openapi\spec\Responses&iterable<cebe\openapi\spec\Response>)|nu  
+         ll.                                                                    
+         🪪  method.nonObject                                                   
+  334    Parameter #1 $schema of method                                         
+         Alama\LaravelArazzo\Execution\ArazzoExpressionResolver::resolveSchema  
+         AtPointer() expects cebe\openapi\spec\Schema|null,                     
+         cebe\openapi\spec\Reference|cebe\openapi\spec\Schema|null given.       
+         🪪  argument.type                                                      
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Contracts/EventLedgerInterface.php                       
+ ------ ----------------------------------------------------------------------- 
+  9      Method                                                                 
+         Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface::append(  
+         ) has parameter $payload with no value type specified in iterable      
+         type array.                                                            
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Contracts/ExecutionLoggerInterface.php                   
+ ------ ----------------------------------------------------------------------- 
+  13     Method                                                                 
+         Alama\LaravelArazzo\Execution\Contracts\ExecutionLoggerInterface::log  
+         StepCompleted() has parameter $outputs with no value type specified    
+         in iterable type array.                                                
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Contracts/StateStoreInterface.php                        
+ ------ ----------------------------------------------------------------------- 
+  9      Method                                                                 
+         Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface::save()    
+         has parameter $state with no value type specified in iterable type     
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  11     Method                                                                 
+         Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface::load()    
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Dto/ExecutionResult.php                                  
+ ------ ----------------------------------------------------------------------- 
+  9      Method                                                                 
+         Alama\LaravelArazzo\Execution\Dto\ExecutionResult::__construct() has   
+         parameter $outputs with no value type specified in iterable type       
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Dto/StepResult.php                                       
+ ------ ----------------------------------------------------------------------- 
+  11     Method Alama\LaravelArazzo\Execution\Dto\StepResult::__construct()     
+         has parameter $outputs with no value type specified in iterable type   
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Engine.php                                               
+ ------ ----------------------------------------------------------------------- 
+  17     Property Alama\LaravelArazzo\Execution\Engine::$stateStore is never    
+         read, only written.                                                    
+         🪪  property.onlyWritten                                               
+         💡  See:                                                               
+         https://phpstan.org/developing-extensions/always-read-written-propert  
+         ies                                                                    
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/Events/StepExecuted.php                                  
+ ------ ----------------------------------------------------------------------- 
+  9      Method                                                                 
+         Alama\LaravelArazzo\Execution\Events\StepExecuted::__construct() has   
+         parameter $requestData with no value type specified in iterable type   
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  9      Method                                                                 
+         Alama\LaravelArazzo\Execution\Events\StepExecuted::__construct() has   
+         parameter $responseData with no value type specified in iterable type  
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/InMemoryDefinitionRegistry.php                           
+ ------ ----------------------------------------------------------------------- 
+  12     Property                                                               
+         Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry::$registry    
+         type has no value type specified in iterable type array.               
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/JsonPathEvaluator.php                                    
+ ------ ----------------------------------------------------------------------- 
+  11     Method Alama\LaravelArazzo\Execution\JsonPathEvaluator::evaluate()     
+         has parameter $data with no value type specified in iterable type      
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/JsonPointer.php                                          
+ ------ ----------------------------------------------------------------------- 
+  9      Method Alama\LaravelArazzo\Execution\JsonPointer::resolve() has        
+         parameter $data with no value type specified in iterable type array.   
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/SyncQueueDriver.php                                      
+ ------ ----------------------------------------------------------------------- 
+  11     Property Alama\LaravelArazzo\Execution\SyncQueueDriver::$dispatched    
+         type has no value type specified in iterable type array.               
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/TypeCaster.php                                           
+ ------ ----------------------------------------------------------------------- 
+  45     Method Alama\LaravelArazzo\Execution\TypeCaster::asArray() return      
+         type has no value type specified in iterable type array.               
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/VariableContext.php                                      
+ ------ ----------------------------------------------------------------------- 
+  9      Method Alama\LaravelArazzo\Execution\VariableContext::__construct()    
+         has parameter $components with no value type specified in iterable     
+         type array.                                                            
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  9      Method Alama\LaravelArazzo\Execution\VariableContext::__construct()    
+         has parameter $inputs with no value type specified in iterable type    
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  9      Method Alama\LaravelArazzo\Execution\VariableContext::__construct()    
+         has parameter $steps with no value type specified in iterable type     
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  21     Method Alama\LaravelArazzo\Execution\VariableContext::getInputs()      
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  31     Method Alama\LaravelArazzo\Execution\VariableContext::getSteps()       
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  36     Method                                                                 
+         Alama\LaravelArazzo\Execution\VariableContext::setStepRequest() has    
+         parameter $request with no value type specified in iterable type       
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  41     Method                                                                 
+         Alama\LaravelArazzo\Execution\VariableContext::setStepResponse() has   
+         parameter $response with no value type specified in iterable type      
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  46     Method Alama\LaravelArazzo\Execution\VariableContext::getComponents()  
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/WorkflowContext.php                                      
+ ------ ----------------------------------------------------------------------- 
+  9      Method Alama\LaravelArazzo\Execution\WorkflowContext::__construct()    
+         has parameter $components with no value type specified in iterable     
+         type array.                                                            
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  9      Method Alama\LaravelArazzo\Execution\WorkflowContext::__construct()    
+         has parameter $inputs with no value type specified in iterable type    
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  9      Method Alama\LaravelArazzo\Execution\WorkflowContext::__construct()    
+         has parameter $steps with no value type specified in iterable type     
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  22     Method Alama\LaravelArazzo\Execution\WorkflowContext::getInputs()      
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  27     Method Alama\LaravelArazzo\Execution\WorkflowContext::getSteps()       
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  32     Method Alama\LaravelArazzo\Execution\WorkflowContext::getComponents()  
+         return type has no value type specified in iterable type array.        
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  37     Method                                                                 
+         Alama\LaravelArazzo\Execution\WorkflowContext::withStepResult() has    
+         parameter $result with no value type specified in iterable type        
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  45     Method                                                                 
+         Alama\LaravelArazzo\Execution\WorkflowContext::withStepRequest() has   
+         parameter $request with no value type specified in iterable type       
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  53     Method                                                                 
+         Alama\LaravelArazzo\Execution\WorkflowContext::withStepResponse() has  
+         parameter $response with no value type specified in iterable type      
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Execution/WorkflowExecutor.php                                     
+ ------ ----------------------------------------------------------------------- 
+  20     Method Alama\LaravelArazzo\Execution\WorkflowExecutor::execute() has   
+         parameter $inputs with no value type specified in iterable type        
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------ 
+  Line   src/Generator/ArazzoGenerator.php                                 
+ ------ ------------------------------------------------------------------ 
+  46     Method Alama\LaravelArazzo\Generator\ArazzoGenerator::generate()  
+         should return string but returns string|null.                     
+         🪪  return.type                                                   
+ ------ ------------------------------------------------------------------ 
+
+ ------ ----------------------------------------------------------------- 
+  Line   src/Generator/Clients/OpenAiClient.php                           
+ ------ ----------------------------------------------------------------- 
+  37     Parameter #1 $content of method                                  
+         Psr\Http\Message\StreamFactoryInterface::createStream() expects  
+         string, string|false given.                                      
+         🪪  argument.type                                                
+ ------ ----------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Http/Controllers/ArazzoApiController.php                           
+ ------ ----------------------------------------------------------------------- 
+  16     Method                                                                 
+         Alama\LaravelArazzo\Http\Controllers\ArazzoApiController::endpoints()  
+         has no return type specified.                                          
+         🪪  missingType.return                                                 
+  24     Parameter #2 $basePath of method                                       
+         Alama\LaravelArazzo\Resolution\SourceResolver::resolve() expects       
+         string, string|false given.                                            
+         🪪  argument.type                                                      
+  26     Parameter #1 $json of function json_decode expects string,             
+         string|false given.                                                    
+         🪪  argument.type                                                      
+  49     Method                                                                 
+         Alama\LaravelArazzo\Http\Controllers\ArazzoApiController::generate()   
+         has no return type specified.                                          
+         🪪  missingType.return                                                 
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Laravel/DatabaseEventLedger.php                                    
+ ------ ----------------------------------------------------------------------- 
+  18     Method Alama\LaravelArazzo\Laravel\DatabaseEventLedger::append() has   
+         parameter $payload with no value type specified in iterable type       
+         array.                                                                 
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   src/Laravel/RedisHotStateStore.php                                     
+ ------ ----------------------------------------------------------------------- 
+  16     Method Alama\LaravelArazzo\Laravel\RedisHotStateStore::save() has      
+         parameter $state with no value type specified in iterable type array.  
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+  21     Method Alama\LaravelArazzo\Laravel\RedisHotStateStore::load() return   
+         type has no value type specified in iterable type array.               
+         🪪  missingType.iterableValue                                          
+         💡  See:                                                               
+         https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-i  
+         terable-type                                                           
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   src/LaravelArazzoServiceProvider.php                                  
+ ------ ---------------------------------------------------------------------- 
+  106    Parameter #1 $view of function view expects view-string|null, string  
+         given.                                                                
+         🪪  argument.type                                                     
+ ------ ---------------------------------------------------------------------- 
+
+ [ERROR] Found 51 errors                                                        
+
