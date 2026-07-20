@@ -27,7 +27,7 @@ class DatabaseEventLedger implements EventLedgerInterface
             $this->db->table($this->tableName)->insert([
                 'execution_id' => $executionId,
                 'event_type' => $eventType,
-                'payload' => json_encode($payload),
+                'payload' => json_encode($payload, JSON_THROW_ON_ERROR),
                 'created_at' => now(),
             ]);
         } catch (Throwable $e) {
