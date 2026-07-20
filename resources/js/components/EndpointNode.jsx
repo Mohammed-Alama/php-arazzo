@@ -38,12 +38,20 @@ export default function EndpointNode({ id, data }) {
                 <span className="text-gray-400 text-xs ml-2">{expanded ? '▲' : '▼'}</span>
             </div>
             
-            <div className="px-3 py-1 text-xs text-gray-400 border-b border-gray-700">
-                {data.operationId}
+            <div className="px-3 py-1 text-[10px] text-gray-500 border-b border-gray-700 bg-gray-850">
+                <span className="font-semibold text-gray-400">ID:</span> {data.operationId}
+                {data.tags && data.tags.length > 0 && (
+                    <span className="ml-2 text-blue-400">[{data.tags.join(', ')}]</span>
+                )}
             </div>
 
             {expanded && (
                 <div className="p-3 bg-gray-900 space-y-3">
+                    {(data.summary || data.description) && (
+                        <div className="mb-2 text-xs text-gray-300 italic border-l-2 border-gray-600 pl-2">
+                            {data.summary || data.description}
+                        </div>
+                    )}
                     <div>
                         <label className="block text-xs font-bold text-gray-400 mb-1">Parameters (Key: Value)</label>
                         <textarea 

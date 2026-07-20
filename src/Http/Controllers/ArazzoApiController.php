@@ -28,13 +28,14 @@ class ArazzoApiController extends Controller
             foreach ($data['paths'] as $path => $methods) {
                 foreach ((array)$methods as $method => $op) {
                     if (is_array($op) && isset($op['operationId'])) {
-                        $endpoints[] = [
-                            'method' => strtoupper($method),
-                            'path' => $path,
-                            'operationId' => $op['operationId'],
-                            'summary' => $op['summary'] ?? '',
-                            'tags' => $op['tags'] ?? ['Default']
-                        ];
+                            $endpoints[] = [
+                                'method' => strtoupper($method),
+                                'path' => $path,
+                                'operationId' => $op['operationId'],
+                                'summary' => $op['summary'] ?? '',
+                                'description' => $op['description'] ?? '',
+                                'tags' => $op['tags'] ?? ['Default']
+                            ];
                     }
                 }
             }
