@@ -31,10 +31,12 @@ use Psr\Http\Message\ResponseInterface;
 class StepExecutionMockLockManager implements LockManagerInterface
 {
     public int $acquireCount = 0;
+    public ?string $lastLockKey = null;
 
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
     {
         $this->acquireCount++;
+        $this->lastLockKey = $key;
 
         return $callback();
     }
@@ -46,6 +48,8 @@ class StepExecutionMockStateStore implements StateStoreInterface
     /** @var array<string, int|null> */
     public array $ttls = [];
 
+    public int $loadCount = 0;
+
     public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
     {
         $this->saves[$executionId] = $state;
@@ -54,7 +58,8 @@ class StepExecutionMockStateStore implements StateStoreInterface
 
     public function load(string $executionId): ?array
     {
-        return null;
+        $this->loadCount++;
+        return $this->saves[$executionId] ?? null;
     }
 }
 class StepExecutionMockExpressionResolver implements ExpressionResolverInterface
@@ -148,7 +153,9 @@ it('skips an already-completed step', function (): void {
     $worker->handle($job);
 
     expect($lockManager->acquireCount)->toBe(1);
+    expect($lockManager->lastLockKey)->toBe('workflow_lock_exec_1');
     expect($store->saves)->toBeEmpty();
+    expect($store->loadCount)->toBe(1);
     expect($eventLedger->appended)->toBeEmpty();
 });
 
