@@ -24,7 +24,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
-        return $step->action !== null;
+        return in_array($step->action, ['send', 'receive'], true);
     }
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
@@ -34,6 +34,10 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
             $response = $this->httpClient->sendRequest($request);
 
             return StepExecutionOutcome::resolved($response->getStatusCode(), [], []);
+        }
+
+        if ($step->action !== 'receive') {
+            throw new LogicException("Unsupported action '{$step->action}' for step '{$step->stepId}'.");
         }
 
         if ($step->correlationId === null) {
