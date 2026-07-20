@@ -15,7 +15,7 @@ class WorkflowExecutor
         private ?ExecutionLoggerInterface $logger = null
     ) {}
 
-    public function execute(Workflow $workflow, array $inputs): ExecutionResult
+    public function execute(Workflow $workflow, \Alama\LaravelArazzo\Dto\ArazzoDocument $document, array $inputs): ExecutionResult
     {
         $context = new VariableContext($inputs);
 
@@ -26,7 +26,7 @@ class WorkflowExecutor
             
             $this->logger?->logStepStarted($stepId);
             
-            $result = $this->stepExecutor->execute($step, $context);
+            $result = $this->stepExecutor->execute($step, $context, $document);
             $stepResults[$stepId] = $result;
 
             if (!$result->success) {
