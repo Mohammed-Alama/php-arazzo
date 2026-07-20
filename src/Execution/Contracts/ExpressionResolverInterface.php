@@ -33,5 +33,5 @@ interface ExpressionResolverInterface
      *
      * @throws \Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException
      */
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody): void;
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;
 }

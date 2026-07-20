@@ -364,7 +364,7 @@ it('validates a response against the OpenAPI schema', function (): void {
         public function __construct($sourceResolver, $requestFactory, $evaluator) { 
             parent::__construct($sourceResolver, $requestFactory, $evaluator); 
         }
-        protected function findOperation(\Alama\LaravelArazzo\Dto\Step $step): ?Operation {
+        protected function findOperation(\Alama\LaravelArazzo\Dto\Step $step, ?\Alama\LaravelArazzo\Dto\ArazzoDocument $document = null): ?Operation {
             return $this->mockOperation;
         }
     };
