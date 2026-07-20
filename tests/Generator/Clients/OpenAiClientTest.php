@@ -88,7 +88,7 @@ it('sends prompt to openai and returns content', function () {
         }
     };
 
-    $client = new OpenAiClient($httpClient, $requestFactory, 'test-key', 'gpt-4o');
+    $client = new OpenAiClient($httpClient, $requestFactory, 'test-key', 'https://api.openai.com/v1/chat/completions', 'gpt-4o');
     $result = $client->generate('system_instructions', 'user_trace');
 
     expect($result)->toBe('generated_yaml');
