@@ -7,6 +7,7 @@ use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 
 class StepExecutionWorker
 {
@@ -15,7 +16,8 @@ class StepExecutionWorker
         private StateStoreInterface $stateStore,
         private Engine $engine,
         private HttpClientInterface $httpClient,
-        private ExpressionResolverInterface $expressionResolver
+        private ExpressionResolverInterface $expressionResolver,
+        private DefinitionRegistryInterface $definitionRegistry
     ) {}
 
     public function handle(ExecuteStepJob $job): void
@@ -52,10 +54,15 @@ class StepExecutionWorker
                 'inputs' => $newContext->getInputs(),
                 'components' => $newContext->getComponents(),
             ]);
-            
+
             // Fire event (commented out for this step to avoid depending on Laravel events directly in core class if not injected, or we can use Laravel event helper later)
             // event(new \Alama\LaravelArazzo\Execution\Events\StepExecuted(...));
-            
+
+            // Choreograph: look up the full workflow and dispatch any newly-unlocked steps.
+            $workflow = $this->definitionRegistry->get($newContext->getDefinitionId());
+            if ($workflow !== null) {
+                $this->engine->evaluate($workflow, $newContext);
+            }
         });
     }
 }
