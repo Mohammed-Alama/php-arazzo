@@ -7,7 +7,10 @@ namespace Alama\LaravelArazzo\Tests;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowExecutor;
 use Alama\LaravelArazzo\Generator\ArazzoGenerator;
+use Alama\LaravelArazzo\Generator\Clients\OpenAiClient;
 use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -15,13 +18,13 @@ use Psr\Http\Message\StreamFactoryInterface;
 uses(TestCase::class);
 
 it('binds psr interfaces to guzzle', function () {
-    expect(app(ClientInterface::class))->toBeInstanceOf(\GuzzleHttp\Client::class);
-    expect(app(RequestFactoryInterface::class))->toBeInstanceOf(\GuzzleHttp\Psr7\HttpFactory::class);
-    expect(app(StreamFactoryInterface::class))->toBeInstanceOf(\GuzzleHttp\Psr7\HttpFactory::class);
+    expect(app(ClientInterface::class))->toBeInstanceOf(Client::class);
+    expect(app(RequestFactoryInterface::class))->toBeInstanceOf(HttpFactory::class);
+    expect(app(StreamFactoryInterface::class))->toBeInstanceOf(HttpFactory::class);
 });
 
 it('binds AiClientInterface', function () {
-    expect(app(AiClientInterface::class))->toBeInstanceOf(\Alama\LaravelArazzo\Generator\Clients\OpenAiClient::class);
+    expect(app(AiClientInterface::class))->toBeInstanceOf(OpenAiClient::class);
 });
 
 it('binds ArazzoGenerator', function () {

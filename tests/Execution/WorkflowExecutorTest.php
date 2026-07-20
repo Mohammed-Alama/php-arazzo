@@ -6,6 +6,8 @@ namespace Alama\LaravelArazzo\Tests\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
+use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Parameter;
@@ -16,82 +18,278 @@ use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowExecutor;
-use Alama\LaravelArazzo\Resolution\DefaultSourceResolver;
-use Alama\LaravelArazzo\Resolution\Fetchers\CachedFetcher;
-use Alama\LaravelArazzo\Resolution\Fetchers\LocalFetcher;
+use Alama\LaravelArazzo\Resolution\ResolvedSource;
+use Alama\LaravelArazzo\Resolution\SourceResolver;
+use cebe\openapi\spec\OpenApi;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 
 it('executes a workflow end-to-end', function () {
     // 1. Mock PSR-7/18
-    $requestFactory = new class implements RequestFactoryInterface {
-        public function createRequest(string $method, $uri): RequestInterface {
-            return new class($method, (string)$uri) implements RequestInterface {
+    $requestFactory = new class() implements RequestFactoryInterface
+    {
+        public function createRequest(string $method, $uri): RequestInterface
+        {
+            return new class($method, (string) $uri) implements RequestInterface
+            {
                 private array $headers = [];
-                public function __construct(public string $method, public string $uri) {}
-                public function getProtocolVersion(): string { return '1.1'; }
-                public function withProtocolVersion($version): RequestInterface { return $this; }
-                public function getHeaders(): array { return $this->headers; }
-                public function hasHeader($name): bool { return isset($this->headers[$name]); }
-                public function getHeader($name): array { return $this->headers[$name] ?? []; }
-                public function getHeaderLine($name): string { return implode(', ', $this->getHeader($name)); }
-                public function withHeader($name, $value): RequestInterface { $c = clone $this; $c->headers[$name] = (array)$value; return $c; }
-                public function withAddedHeader($name, $value): RequestInterface { return $this; }
-                public function withoutHeader($name): RequestInterface { return $this; }
-                public function getBody(): \Psr\Http\Message\StreamInterface { throw new \Exception(); }
-                public function withBody(\Psr\Http\Message\StreamInterface $body): RequestInterface { return $this; }
-                public function getRequestTarget(): string { return ''; }
-                public function withRequestTarget($requestTarget): RequestInterface { return $this; }
-                public function getMethod(): string { return $this->method; }
-                public function withMethod($method): RequestInterface { return $this; }
-                public function getUri(): \Psr\Http\Message\UriInterface { throw new \Exception(); }
-                public function withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false): RequestInterface { return $this; }
+
+                public function __construct(public string $method, public string $uri)
+                {
+                }
+
+                public function getProtocolVersion(): string
+                {
+                    return '1.1';
+                }
+
+                public function withProtocolVersion($version): RequestInterface
+                {
+                    return $this;
+                }
+
+                public function getHeaders(): array
+                {
+                    return $this->headers;
+                }
+
+                public function hasHeader($name): bool
+                {
+                    return isset($this->headers[$name]);
+                }
+
+                public function getHeader($name): array
+                {
+                    return $this->headers[$name] ?? [];
+                }
+
+                public function getHeaderLine($name): string
+                {
+                    return implode(', ', $this->getHeader($name));
+                }
+
+                public function withHeader($name, $value): RequestInterface
+                {
+                    $c = clone $this;
+                    $c->headers[$name] = (array) $value;
+
+                    return $c;
+                }
+
+                public function withAddedHeader($name, $value): RequestInterface
+                {
+                    return $this;
+                }
+
+                public function withoutHeader($name): RequestInterface
+                {
+                    return $this;
+                }
+
+                public function getBody(): StreamInterface
+                {
+                    throw new \Exception();
+                }
+
+                public function withBody(StreamInterface $body): RequestInterface
+                {
+                    return $this;
+                }
+
+                public function getRequestTarget(): string
+                {
+                    return '';
+                }
+
+                public function withRequestTarget($requestTarget): RequestInterface
+                {
+                    return $this;
+                }
+
+                public function getMethod(): string
+                {
+                    return $this->method;
+                }
+
+                public function withMethod($method): RequestInterface
+                {
+                    return $this;
+                }
+
+                public function getUri(): UriInterface
+                {
+                    throw new \Exception();
+                }
+
+                public function withUri(UriInterface $uri, $preserveHost = false): RequestInterface
+                {
+                    return $this;
+                }
             };
         }
     };
 
-    $responseMock = new class implements ResponseInterface {
-        public function getStatusCode(): int { return 201; }
-        public function withStatus($code, $reasonPhrase = ''): ResponseInterface { return $this; }
-        public function getReasonPhrase(): string { return 'Created'; }
-        public function getProtocolVersion(): string { return '1.1'; }
-        public function withProtocolVersion($version): ResponseInterface { return $this; }
-        public function getHeaders(): array { return []; }
-        public function hasHeader($name): bool { return false; }
-        public function getHeader($name): array { return []; }
-        public function getHeaderLine($name): string { return ''; }
-        public function withHeader($name, $value): ResponseInterface { return $this; }
-        public function withAddedHeader($name, $value): ResponseInterface { return $this; }
-        public function withoutHeader($name): ResponseInterface { return $this; }
-        public function getBody(): \Psr\Http\Message\StreamInterface {
-            return new class implements \Psr\Http\Message\StreamInterface {
-                public function __toString(): string { return '{"data": {"id": 99}}'; }
-                public function close(): void {}
-                public function detach() {}
-                public function getSize(): ?int { return null; }
-                public function tell(): int { return 0; }
-                public function eof(): bool { return true; }
-                public function isSeekable(): bool { return false; }
-                public function seek($offset, $whence = \SEEK_SET): void {}
-                public function rewind(): void {}
-                public function isWritable(): bool { return false; }
-                public function write($string): int { return 0; }
-                public function isReadable(): bool { return true; }
-                public function read($length): string { return ''; }
-                public function getContents(): string { return '{"data": {"id": 99}}'; }
-                public function getMetadata($key = null) { return null; }
+    $responseMock = new class() implements ResponseInterface
+    {
+        public function getStatusCode(): int
+        {
+            return 201;
+        }
+
+        public function withStatus($code, $reasonPhrase = ''): ResponseInterface
+        {
+            return $this;
+        }
+
+        public function getReasonPhrase(): string
+        {
+            return 'Created';
+        }
+
+        public function getProtocolVersion(): string
+        {
+            return '1.1';
+        }
+
+        public function withProtocolVersion($version): ResponseInterface
+        {
+            return $this;
+        }
+
+        public function getHeaders(): array
+        {
+            return [];
+        }
+
+        public function hasHeader($name): bool
+        {
+            return false;
+        }
+
+        public function getHeader($name): array
+        {
+            return [];
+        }
+
+        public function getHeaderLine($name): string
+        {
+            return '';
+        }
+
+        public function withHeader($name, $value): ResponseInterface
+        {
+            return $this;
+        }
+
+        public function withAddedHeader($name, $value): ResponseInterface
+        {
+            return $this;
+        }
+
+        public function withoutHeader($name): ResponseInterface
+        {
+            return $this;
+        }
+
+        public function getBody(): StreamInterface
+        {
+            return new class() implements StreamInterface
+            {
+                public function __toString(): string
+                {
+                    return '{"data": {"id": 99}}';
+                }
+
+                public function close(): void
+                {
+                }
+
+                public function detach()
+                {
+                }
+
+                public function getSize(): ?int
+                {
+                    return null;
+                }
+
+                public function tell(): int
+                {
+                    return 0;
+                }
+
+                public function eof(): bool
+                {
+                    return true;
+                }
+
+                public function isSeekable(): bool
+                {
+                    return false;
+                }
+
+                public function seek($offset, $whence = \SEEK_SET): void
+                {
+                }
+
+                public function rewind(): void
+                {
+                }
+
+                public function isWritable(): bool
+                {
+                    return false;
+                }
+
+                public function write($string): int
+                {
+                    return 0;
+                }
+
+                public function isReadable(): bool
+                {
+                    return true;
+                }
+
+                public function read($length): string
+                {
+                    return '';
+                }
+
+                public function getContents(): string
+                {
+                    return '{"data": {"id": 99}}';
+                }
+
+                public function getMetadata($key = null)
+                {
+                    return null;
+                }
             };
         }
-        public function withBody(\Psr\Http\Message\StreamInterface $body): ResponseInterface { return $this; }
+
+        public function withBody(StreamInterface $body): ResponseInterface
+        {
+            return $this;
+        }
     };
 
-    $httpClient = new class($responseMock) implements ClientInterface {
+    $httpClient = new class($responseMock) implements ClientInterface
+    {
         public array $requests = [];
-        public function __construct(private ResponseInterface $response) {}
-        public function sendRequest(RequestInterface $request): ResponseInterface {
+
+        public function __construct(private ResponseInterface $response)
+        {
+        }
+
+        public function sendRequest(RequestInterface $request): ResponseInterface
+        {
             $this->requests[] = $request;
+
             return $this->response;
         }
     };
@@ -104,17 +302,17 @@ it('executes a workflow end-to-end', function () {
         operationPath: null,
         workflowId: null,
         parameters: [
-            new Parameter('customerId', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Query, new Expression('{$inputs.customerId}')),
+            new Parameter('customerId', ParameterIn::Query, new Expression('{$inputs.customerId}')),
         ],
         requestBody: null,
         successCriteria: [
-            new SuccessCriterion(null, '$statusCode == 201', null)
+            new SuccessCriterion(null, '$statusCode == 201', null),
         ],
         onSuccess: [],
         onFailure: [],
         outputs: [
-            'rideId' => new Expression('{$steps.create-ride.response.body#/data/id}')
-        ]
+            'rideId' => new Expression('{$steps.create-ride.response.body#/data/id}'),
+        ],
     );
 
     $workflow = new Workflow(
@@ -127,7 +325,7 @@ it('executes a workflow end-to-end', function () {
         successActions: [],
         failureActions: [],
         outputs: ['finalRideId' => new Expression('{$steps.create-ride.outputs.rideId}')],
-        parameters: []
+        parameters: [],
     );
 
     // Create a dummy openapi file
@@ -139,39 +337,51 @@ it('executes a workflow end-to-end', function () {
         arazzo: '1.0.1',
         info: new Info('Test', null, null, '1.0.0'),
         sourceDescriptions: [
-            new SourceDescription('test-api', $tmpFile, \Alama\LaravelArazzo\Dto\Enum\SourceType::Openapi)
+            new SourceDescription('test-api', $tmpFile, SourceType::Openapi),
         ],
         workflows: [$workflow],
         components: new Components([], [], [], []),
-        specificationExtensions: []
+        specificationExtensions: [],
     );
 
-    $sourceResolver = new class implements \Alama\LaravelArazzo\Resolution\SourceResolver {
-        public function resolve(\Alama\LaravelArazzo\Dto\SourceDescription $description, string $basePath): \Alama\LaravelArazzo\Resolution\ResolvedSource {
-            return new class($description->url) implements \Alama\LaravelArazzo\Resolution\ResolvedSource {
-                public function __construct(private string $file) {}
-                public function getBaseUrl(): ?string { return null; }
-                public function extract(string $jsonPointer): mixed {
+    $sourceResolver = new class() implements SourceResolver
+    {
+        public function resolve(SourceDescription $description, string $basePath): ResolvedSource
+        {
+            return new class($description->url) implements ResolvedSource
+            {
+                public function __construct(private string $file)
+                {
+                }
+
+                public function getBaseUrl(): ?string
+                {
+                    return null;
+                }
+
+                public function extract(string $jsonPointer): mixed
+                {
                     $json = json_decode(file_get_contents($this->file), true);
-                    return new \cebe\openapi\spec\OpenApi($json);
+
+                    return new OpenApi($json);
                 }
             };
         }
     };
     $evaluator = new ExpressionEvaluator();
-    
+
     $stepExecutor = new StepExecutor($sourceResolver, $httpClient, $requestFactory, $evaluator);
-    
+
     $workflowExecutor = new WorkflowExecutor($stepExecutor);
-    
+
     $result = $workflowExecutor->execute($workflow, $doc, ['customerId' => 12345]);
-    
+
     expect($result->status)->toBe('completed');
     expect($result->stepResults['create-ride']->success)->toBeTrue();
     expect($result->stepResults['create-ride']->outputs['rideId'])->toBe(99);
     expect($httpClient->requests)->toHaveCount(1);
-    
-    /** @var \Psr\Http\Message\RequestInterface $req */
+
+    /** @var RequestInterface $req */
     $req = $httpClient->requests[0];
     expect($req->getMethod())->toBe('POST');
     expect($req->uri)->toBe('https://api.test/rides?customerId=12345');

@@ -8,7 +8,9 @@ use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
 
 class ArazzoGenerator
 {
-    public function __construct(private AiClientInterface $aiClient) {}
+    public function __construct(private AiClientInterface $aiClient)
+    {
+    }
 
     public function generate(string $openapiSpec, string $workflowTrace): string
     {
@@ -37,10 +39,10 @@ Please generate the Arazzo YAML document:
 USER;
 
         $yaml = $this->aiClient->generate($systemPrompt, $userPrompt);
-        
+
         // Strip out markdown code blocks if the AI returned them despite the prompt
         $yaml = preg_replace('/^```yaml\s*|\s*```$/si', '', trim($yaml));
-        
+
         return $yaml;
     }
 }

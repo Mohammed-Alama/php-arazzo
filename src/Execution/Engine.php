@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\Workflow;
@@ -12,8 +14,9 @@ class Engine
     public function __construct(
         private DependencyAnalyzer $analyzer,
         private QueueDriverInterface $queueDriver,
-        private StateStoreInterface $stateStore
-    ) {}
+        private StateStoreInterface $stateStore,
+    ) {
+    }
 
     public function evaluate(Workflow $workflow, WorkflowContext $context): void
     {

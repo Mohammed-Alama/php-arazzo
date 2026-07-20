@@ -1,11 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Unit\Laravel;
 
 use Alama\LaravelArazzo\Laravel\LaravelQueueDriver;
-use Alama\LaravelArazzo\Laravel\LaravelRedisLockManager;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Cache;
 use Alama\LaravelArazzo\Tests\TestCase;
+use Illuminate\Support\Facades\Queue;
 
 class AdaptersTest extends TestCase
 {

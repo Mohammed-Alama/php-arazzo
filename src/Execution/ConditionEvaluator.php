@@ -9,9 +9,11 @@ use InvalidArgumentException;
 
 class ConditionEvaluator
 {
-    public function __construct(private ExpressionEvaluator $evaluator) {}
+    public function __construct(private ExpressionEvaluator $evaluator)
+    {
+    }
 
-    public function evaluate(string $condition, string $stepId, \Alama\LaravelArazzo\Execution\VariableContext $context): bool
+    public function evaluate(string $condition, string $stepId, VariableContext $context): bool
     {
         // Simple condition parser: $expression == value, $expression != value
         if (preg_match('/^(\S+)\s*(==|!=|matches)\s*(.+)$/', trim($condition), $matches)) {
@@ -38,7 +40,7 @@ class ConditionEvaluator
             }
 
             $actualValue = $this->evaluator->evaluate(new Expression($exprString), $context);
-            
+
             // Normalize expected value
             $expectedValue = trim($expectedValue, " '\"");
             if (is_numeric($expectedValue)) {
@@ -46,7 +48,7 @@ class ConditionEvaluator
                 $expectedValue = str_contains($expectedValue, '.') ? (float) $expectedValue : (int) $expectedValue;
             }
 
-            return match($operator) {
+            return match ($operator) {
                 '==' => $actualValue == $expectedValue,
                 '!=' => $actualValue != $expectedValue,
                 'matches' => (bool) preg_match('/' . str_replace('/', '\/', $expectedValue) . '/', (string) $actualValue),

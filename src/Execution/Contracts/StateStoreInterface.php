@@ -7,6 +7,6 @@ namespace Alama\LaravelArazzo\Execution\Contracts;
 interface StateStoreInterface
 {
     public function save(string $executionId, array $state): void;
-    
+
     public function load(string $executionId): ?array;
 }

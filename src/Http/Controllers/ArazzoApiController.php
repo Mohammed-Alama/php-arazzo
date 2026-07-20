@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Http\Controllers;
 
+use Alama\LaravelArazzo\Dto\Enum\SourceType;
+use Alama\LaravelArazzo\Dto\SourceDescription;
+use Alama\LaravelArazzo\Generator\ArazzoGenerator;
+use Alama\LaravelArazzo\Resolution\SourceResolver;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Alama\LaravelArazzo\Resolution\SourceResolver;
-use Alama\LaravelArazzo\Generator\ArazzoGenerator;
-use Alama\LaravelArazzo\Dto\SourceDescription;
-use Alama\LaravelArazzo\Dto\Enum\SourceType;
 
 class ArazzoApiController extends Controller
 {
@@ -20,22 +22,22 @@ class ArazzoApiController extends Controller
 
         $source = new SourceDescription('api', $specPath, SourceType::Openapi);
         $resolved = $resolver->resolve($source, getcwd());
-        
+
         $data = json_decode(json_encode($resolved->extract('/')), true);
         $endpoints = [];
 
         if (isset($data['paths']) && is_array($data['paths'])) {
             foreach ($data['paths'] as $path => $methods) {
-                foreach ((array)$methods as $method => $op) {
+                foreach ((array) $methods as $method => $op) {
                     if (is_array($op) && isset($op['operationId'])) {
-                            $endpoints[] = [
-                                'method' => strtoupper($method),
-                                'path' => $path,
-                                'operationId' => $op['operationId'],
-                                'summary' => $op['summary'] ?? '',
-                                'description' => $op['description'] ?? '',
-                                'tags' => $op['tags'] ?? ['Default']
-                            ];
+                        $endpoints[] = [
+                            'method' => strtoupper($method),
+                            'path' => $path,
+                            'operationId' => $op['operationId'],
+                            'summary' => $op['summary'] ?? '',
+                            'description' => $op['description'] ?? '',
+                            'tags' => $op['tags'] ?? ['Default'],
+                        ];
                     }
                 }
             }
@@ -48,26 +50,26 @@ class ArazzoApiController extends Controller
     {
         $request->validate([
             'openapi' => 'required|string',
-            'graph' => 'required|array'
+            'graph' => 'required|array',
         ]);
 
         $graph = $request->input('graph');
-        
+
         // Convert graph to a natural language trace for the AI
         $trace = "Workflow Graph Intent:\n";
         foreach ($graph['nodes'] ?? [] as $node) {
             $trace .= "- Node {$node['id']}: Execute {$node['data']['method']} {$node['data']['path']} (Operation: {$node['data']['operationId']}).\n";
             if (!empty($node['data']['parameters'])) {
-                $trace .= "  - Parameters: " . str_replace("\n", " ", $node['data']['parameters']) . "\n";
+                $trace .= '  - Parameters: ' . str_replace("\n", ' ', $node['data']['parameters']) . "\n";
             }
             if (!empty($node['data']['requestBody'])) {
-                $trace .= "  - Request Body: " . str_replace("\n", " ", $node['data']['requestBody']) . "\n";
+                $trace .= '  - Request Body: ' . str_replace("\n", ' ', $node['data']['requestBody']) . "\n";
             }
             if (!empty($node['data']['criteria'])) {
-                $trace .= "  - Success Criteria: " . str_replace("\n", " ", $node['data']['criteria']) . "\n";
+                $trace .= '  - Success Criteria: ' . str_replace("\n", ' ', $node['data']['criteria']) . "\n";
             }
             if (!empty($node['data']['outputs'])) {
-                $trace .= "  - Outputs: " . str_replace("\n", " ", $node['data']['outputs']) . "\n";
+                $trace .= '  - Outputs: ' . str_replace("\n", ' ', $node['data']['outputs']) . "\n";
             }
         }
         foreach ($graph['edges'] ?? [] as $edge) {

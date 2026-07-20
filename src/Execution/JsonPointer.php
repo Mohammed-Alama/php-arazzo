@@ -13,7 +13,7 @@ class JsonPointer
         }
 
         $segments = explode('/', ltrim($pointer, '/'));
-        
+
         $current = $data;
         foreach ($segments as $segment) {
             $key = str_replace(['~1', '~0'], ['/', '~'], $segment);

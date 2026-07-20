@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\Step;
@@ -8,6 +10,7 @@ class DependencyAnalyzer
 {
     /**
      * @param Step[] $allSteps
+     *
      * @return Step[]
      */
     public function getRunnableSteps(array $allSteps, WorkflowContext $context): array
@@ -24,6 +27,7 @@ class DependencyAnalyzer
             // If no dependencies, it's runnable
             if (empty($step->dependsOn)) {
                 $runnable[] = $step;
+
                 continue;
             }
 

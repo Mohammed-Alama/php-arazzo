@@ -27,7 +27,7 @@ class OpenApiParser
                 }
             }
         }
-        
+
         throw new RuntimeException("Operation '{$operationId}' not found in OpenAPI specification.");
     }
 }

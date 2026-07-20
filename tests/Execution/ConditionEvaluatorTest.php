@@ -22,7 +22,7 @@ it('evaluates equality condition', function () {
 it('evaluates string equality condition', function () {
     $context = new VariableContext();
     $context->setStepResponse('step1', [
-        'body' => ['status' => 'success']
+        'body' => ['status' => 'success'],
     ]);
     $evaluator = new ExpressionEvaluator();
     $conditionEvaluator = new ConditionEvaluator($evaluator);
@@ -35,7 +35,7 @@ it('evaluates string equality condition', function () {
 it('evaluates matches condition', function () {
     $context = new VariableContext();
     $context->setStepResponse('step1', [
-        'body' => ['id' => 'usr_123xyz']
+        'body' => ['id' => 'usr_123xyz'],
     ]);
     $evaluator = new ExpressionEvaluator();
     $conditionEvaluator = new ConditionEvaluator($evaluator);

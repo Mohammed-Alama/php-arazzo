@@ -11,6 +11,7 @@ use Alama\LaravelArazzo\Execution\WorkflowExecutor;
 use Alama\LaravelArazzo\Generator\ArazzoGenerator;
 use Alama\LaravelArazzo\Generator\Clients\OpenAiClient;
 use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
+use Alama\LaravelArazzo\Http\Controllers\ArazzoApiController;
 use Alama\LaravelArazzo\Parser\Parser;
 use Alama\LaravelArazzo\Resolution\DefaultSourceResolver;
 use Alama\LaravelArazzo\Resolution\Fetchers\CachedFetcher;
@@ -21,6 +22,7 @@ use Alama\LaravelArazzo\Resolution\Parsers\OpenApiSourceParser;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
+use Illuminate\Support\Facades\Route;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -65,7 +67,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(RequestFactoryInterface::class),
                 $app->make(StreamFactoryInterface::class),
                 config('arazzo.openai.api_key', ''),
-                config('arazzo.openai.model', 'gpt-4o')
+                config('arazzo.openai.model', 'gpt-4o'),
             );
         });
 
@@ -79,7 +81,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(SourceResolver::class),
                 $app->make(ClientInterface::class),
                 $app->make(RequestFactoryInterface::class),
-                new ExpressionEvaluator()
+                new ExpressionEvaluator(),
             );
         });
 
@@ -90,17 +92,17 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'arazzo');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'arazzo');
 
-        \Illuminate\Support\Facades\Route::get('/arazzo-builder', function () {
+        Route::get('/arazzo-builder', function () {
             return view('arazzo::arazzo');
         })->middleware('web');
 
-        \Illuminate\Support\Facades\Route::prefix('api/arazzo')
+        Route::prefix('api/arazzo')
             ->middleware('api')
             ->group(function () {
-                \Illuminate\Support\Facades\Route::get('/endpoints', [\Alama\LaravelArazzo\Http\Controllers\ArazzoApiController::class, 'endpoints']);
-                \Illuminate\Support\Facades\Route::post('/generate', [\Alama\LaravelArazzo\Http\Controllers\ArazzoApiController::class, 'generate']);
+                Route::get('/endpoints', [ArazzoApiController::class, 'endpoints']);
+                Route::post('/generate', [ArazzoApiController::class, 'generate']);
             });
     }
 }

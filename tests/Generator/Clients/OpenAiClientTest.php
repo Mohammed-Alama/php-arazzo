@@ -25,7 +25,7 @@ it('sends prompt to openai and returns content', function () {
 
     $endpoint = 'https://api.openai.com/v1/chat/completions';
     $apiKey = 'test-key';
-    
+
     $payloadArray = [
         'model' => 'gpt-4o',
         'messages' => [
@@ -47,7 +47,7 @@ it('sends prompt to openai and returns content', function () {
     $request->shouldReceive('withHeader')
         ->with('Authorization', 'Bearer ' . $apiKey)
         ->andReturn($request);
-        
+
     $request->shouldReceive('withHeader')
         ->with('Content-Type', 'application/json')
         ->andReturn($request);
@@ -69,8 +69,8 @@ it('sends prompt to openai and returns content', function () {
     $responseStream->shouldReceive('__toString')
         ->andReturn(json_encode([
             'choices' => [
-                ['message' => ['content' => 'generated_yaml']]
-            ]
+                ['message' => ['content' => 'generated_yaml']],
+            ],
         ]));
 
     $client = new OpenAiClient($httpClient, $requestFactory, $streamFactory, $apiKey, $endpoint, 'gpt-4o');
@@ -90,11 +90,11 @@ it('throws exception when api returns error', function () {
 
     $endpoint = 'https://api.openai.com/v1/chat/completions';
     $apiKey = 'test-key';
-    
+
     $streamFactory->shouldReceive('createStream')->andReturn($requestStream);
-    
+
     $requestFactory->shouldReceive('createRequest')->andReturn($request);
-    
+
     $request->shouldReceive('withHeader')->andReturn($request);
     $request->shouldReceive('withBody')->andReturn($request);
 
@@ -105,16 +105,16 @@ it('throws exception when api returns error', function () {
 
     $response->shouldReceive('getBody')
         ->andReturn($responseStream);
-        
+
     $responseStream->shouldReceive('__toString')
         ->andReturn(json_encode([
             'error' => [
-                'message' => 'Invalid API key'
-            ]
+                'message' => 'Invalid API key',
+            ],
         ]));
 
     $client = new OpenAiClient($httpClient, $requestFactory, $streamFactory, $apiKey, $endpoint, 'gpt-4o');
-    
-    expect(fn() => $client->generate('system_instructions', 'user_trace'))
+
+    expect(fn () => $client->generate('system_instructions', 'user_trace'))
         ->toThrow(RuntimeException::class, 'API Error: Invalid API key');
 });

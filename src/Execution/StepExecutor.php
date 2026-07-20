@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
+use Alama\LaravelArazzo\Dto\Expression;
+use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Dto\StepResult;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
+use cebe\openapi\spec\OpenApi;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
-use cebe\openapi\spec\OpenApi;
-use RuntimeException;
 
 class StepExecutor
 {
@@ -20,7 +21,7 @@ class StepExecutor
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ExpressionEvaluator $evaluator,
-        private ?ConditionEvaluator $conditionEvaluator = null
+        private ?ConditionEvaluator $conditionEvaluator = null,
     ) {
         $this->conditionEvaluator ??= new ConditionEvaluator($evaluator);
     }
@@ -31,7 +32,7 @@ class StepExecutor
         $method = 'GET';
         $urlPath = '/';
         $baseUrl = '';
-        
+
         if ($step->operationId || $step->operationPath) {
             // Find source definition
             // Arazzo 1.0.1 rule: if sourceDescriptions exist and no prefix, use first, etc.
@@ -42,12 +43,12 @@ class StepExecutor
                 // Or better, let's assume OpenApi document is successfully resolved.
                 $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
                 $openApi = $resolvedSource->extract('');
-                
+
                 if ($openApi instanceof OpenApi) {
                     if ($openApi->servers && count($openApi->servers) > 0) {
                         $baseUrl = rtrim($openApi->servers[0]->url, '/');
                     }
-                    
+
                     if ($step->operationId) {
                         // Strip prefix if any (e.g. sourceName.operationId)
                         $opId = str_contains($step->operationId, '.') ? explode('.', $step->operationId, 2)[1] : $step->operationId;
@@ -58,33 +59,33 @@ class StepExecutor
                         // simplified: just mock this for now or parse
                         // If it's a JSON pointer like /paths/~1pets/get
                         if (preg_match('/~\d/', $step->operationPath)) {
-                             // It's a pointer to the OpenAPI spec. We'll skip implementation of full pointer-to-path for this MVP test
-                             $urlPath = '/test'; // fallback
+                            // It's a pointer to the OpenAPI spec. We'll skip implementation of full pointer-to-path for this MVP test
+                            $urlPath = '/test'; // fallback
                         }
                     }
                 }
             }
         }
-        
+
         // 2. Resolve parameters
         $queryParams = [];
         $headers = [];
         $pathReplacements = [];
-        
+
         foreach ($step->parameters as $param) {
-            $val = $param->value instanceof \Alama\LaravelArazzo\Dto\Expression 
-                ? $this->evaluator->evaluate($param->value, $context) 
+            $val = $param->value instanceof Expression
+                ? $this->evaluator->evaluate($param->value, $context)
                 : $param->value;
-            
-            if ($param->in === \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Query) {
+
+            if ($param->in === ParameterIn::Query) {
                 $queryParams[$param->name] = $val;
-            } elseif ($param->in === \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header) {
+            } elseif ($param->in === ParameterIn::Header) {
                 $headers[$param->name] = $val;
-            } elseif ($param->in === \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Path) {
+            } elseif ($param->in === ParameterIn::Path) {
                 $pathReplacements[$param->name] = $val;
             }
         }
-        
+
         // requestBody replacements logic
         $bodyData = [];
         if ($step->requestBody && $step->requestBody->payload) {
@@ -116,7 +117,7 @@ class StepExecutor
         foreach ($pathReplacements as $name => $value) {
             $urlPath = str_replace('{' . $name . '}', (string) $value, $urlPath);
         }
-        
+
         $url = $baseUrl . $urlPath;
         if (!empty($queryParams)) {
             $url .= '?' . http_build_query($queryParams);
@@ -131,7 +132,7 @@ class StepExecutor
             'path' => $pathReplacements,
             'body' => $bodyData,
         ]);
-        
+
         // 3. Send HTTP Request
         $request = $this->requestFactory->createRequest($method, $url);
         foreach ($headers as $k => $v) {
@@ -139,7 +140,7 @@ class StepExecutor
         }
         if (!empty($bodyData)) {
             // For MVP, create stream not provided, assume client sends it or we mock it
-            // but we need a stream factory in full PSR. We skip real body writing for MVP 
+            // but we need a stream factory in full PSR. We skip real body writing for MVP
             // since we'll mock the HTTP client in tests.
         }
 
@@ -172,7 +173,7 @@ class StepExecutor
             $outputs[$key] = $this->evaluator->evaluate($expr, $context);
             $context->setStepOutput($step->stepId, $key, $outputs[$key]);
         }
-        
+
         // 5. Evaluate Success Criteria
         $success = true;
         foreach ($step->successCriteria as $criterion) {
@@ -181,7 +182,7 @@ class StepExecutor
                 break;
             }
         }
-        
+
         return new StepResult($step->stepId, $success, $outputs);
     }
 }
