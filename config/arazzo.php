@@ -10,13 +10,19 @@ return [
         'model' => env('OPENAI_MODEL', 'gpt-4o'),
     ],
 
-    /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
-    'hot_state_ttl' => env('ARAZZO_HOT_STATE_TTL', 86400),
+
     'definitions_table' => 'arazzo_definitions',
     'executions_table' => 'arazzo_executions',
     'events_table' => 'arazzo_events',
 
     'pending_correlations_table' => 'arazzo_pending_correlations',
+    
     /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
-    'max_retry_attempts' => env('ARAZZO_MAX_RETRY_ATTEMPTS', 10),
+    'retry_ceiling' => env('ARAZZO_RETRY_CEILING', 10),
+    
+    /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
+    'state_ttl' => env('ARAZZO_STATE_TTL', 86400),
+    
+    /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
+    'webhook_prefix' => env('ARAZZO_WEBHOOK_PREFIX', 'api/arazzo'),
 ];
