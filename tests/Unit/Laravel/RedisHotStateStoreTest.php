@@ -7,49 +7,88 @@ namespace Tests\Unit\Laravel;
 use Alama\LaravelArazzo\Laravel\RedisHotStateStore;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 use Illuminate\Redis\Connections\Connection;
-use PHPUnit\Framework\TestCase;
 
-class RedisHotStateStoreTest extends TestCase
+function makeRecordingRedisConnection(): Connection
 {
-    public function test_saves_and_loads_state(): void
+    return new class() extends Connection
     {
-        $redisConnection = new class() extends Connection
+        /** @var list<array<string, mixed>> */
+        public array $calls = [];
+
+        public function __construct()
         {
-            public $calls = [];
+        }
 
-            public function __construct()
-            {
-            }
+        public function set($key, $value)
+        {
+            $this->calls[] = ['method' => 'set', 'key' => $key, 'value' => $value];
+        }
 
-            public function set($key, $value)
-            {
-                $this->calls[] = ['method' => 'set', 'key' => $key, 'value' => $value];
-            }
+        public function setex($key, $seconds, $value)
+        {
+            $this->calls[] = ['method' => 'setex', 'key' => $key, 'seconds' => $seconds, 'value' => $value];
+        }
 
-            public function get($key)
-            {
-                $this->calls[] = ['method' => 'get', 'key' => $key];
+        public function get($key)
+        {
+            $this->calls[] = ['method' => 'get', 'key' => $key];
 
-                return json_encode(['foo' => 'bar']);
-            }
+            return json_encode(['foo' => 'bar']);
+        }
 
-            public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
-            {
-            }
-        };
-
-        $factory = $this->createMock(RedisFactory::class);
-        $factory->method('connection')->willReturn($redisConnection);
-
-        $store = new RedisHotStateStore($factory);
-        $store->save('wf_123', ['foo' => 'bar']);
-        $result = $store->load('wf_123');
-
-        $this->assertEquals(['foo' => 'bar'], $result);
-        $this->assertEquals('set', $redisConnection->calls[0]['method']);
-        $this->assertEquals('arazzo:state:wf_123', $redisConnection->calls[0]['key']);
-        $this->assertEquals(json_encode(['foo' => 'bar']), $redisConnection->calls[0]['value']);
-        $this->assertEquals('get', $redisConnection->calls[1]['method']);
-        $this->assertEquals('arazzo:state:wf_123', $redisConnection->calls[1]['key']);
-    }
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
+        {
+        }
+    };
 }
+
+it('saves with the default TTL and loads state back', function (): void {
+    $redisConnection = makeRecordingRedisConnection();
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory, defaultTtlSeconds: 3600);
+    $store->save('exec_123', ['foo' => 'bar']);
+    $result = $store->load('exec_123');
+
+    expect($result)->toEqual(['foo' => 'bar']);
+    expect($redisConnection->calls[0]['method'])->toBe('setex');
+    expect($redisConnection->calls[0]['key'])->toBe('arazzo:state:exec_123');
+    expect($redisConnection->calls[0]['seconds'])->toBe(3600);
+    expect($redisConnection->calls[0]['value'])->toBe(json_encode(['foo' => 'bar']));
+});
+
+it('lets an explicit TTL override the default', function (): void {
+    $redisConnection = makeRecordingRedisConnection();
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory, defaultTtlSeconds: 3600);
+    $store->save('exec_123', ['foo' => 'bar'], ttlSeconds: 60);
+
+    expect($redisConnection->calls[0]['seconds'])->toBe(60);
+});
+
+it('returns null when the key is missing', function (): void {
+    $redisConnection = new class() extends Connection
+    {
+        public function __construct()
+        {
+        }
+
+        public function get($key)
+        {
+            return null;
+        }
+
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
+        {
+        }
+    };
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory);
+
+    expect($store->load('missing'))->toBeNull();
+});

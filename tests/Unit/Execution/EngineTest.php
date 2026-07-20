@@ -10,8 +10,8 @@ use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
+use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
-use PHPUnit\Framework\TestCase;
 
 class MockQueueDriver implements QueueDriverInterface
 {
@@ -25,33 +25,60 @@ class MockQueueDriver implements QueueDriverInterface
 
 class MockStateStore implements StateStoreInterface
 {
-    public function save(string $id, array $state): void
+    public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
     {
     }
 
-    public function load(string $id): array
+    public function load(string $executionId): ?array
     {
-        return [];
-    }
-}
-
-class EngineTest extends TestCase
-{
-    public function test_engine_dispatches_runnable_steps(): void
-    {
-        $queue = new MockQueueDriver();
-        $store = new MockStateStore();
-        $analyzer = new DependencyAnalyzer();
-        $engine = new Engine($analyzer, $queue, $store);
-
-        $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
-        $workflow = new Workflow('w_1', null, null, [], [], [$stepA, $stepB], [], [], [], []);
-
-        $context = new WorkflowContext('def_1');
-
-        $engine->evaluate($workflow, $context);
-
-        $this->assertCount(2, $queue->dispatched);
+        return null;
     }
 }
+
+it('dispatches every runnable step', function (): void {
+    $queue = new MockQueueDriver();
+    $store = new MockStateStore();
+    $analyzer = new DependencyAnalyzer();
+    $engine = new Engine($analyzer, $queue, $store);
+
+    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('w_1', null, null, [], [], [$stepA, $stepB], [], [], [], []);
+
+    $context = new WorkflowContext('def_1');
+
+    $engine->evaluate($workflow, $context);
+
+    expect($queue->dispatched)->toHaveCount(2);
+});
+
+it('stamps workflowId onto the dispatched job context', function (): void {
+    $queue = new MockQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
+
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $context = new WorkflowContext('def_1');
+
+    $engine->evaluate($workflow, $context);
+
+    expect($queue->dispatched)->toHaveCount(1);
+    /** @var ExecuteStepJob $job */
+    $job = $queue->dispatched[0];
+    expect($job->context->getWorkflowId())->toBe('wf_1');
+});
+
+it('does not overwrite an already-set workflowId', function (): void {
+    $queue = new MockQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
+
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_original');
+
+    $engine->evaluate($workflow, $context);
+
+    /** @var ExecuteStepJob $job */
+    $job = $queue->dispatched[0];
+    expect($job->context->getWorkflowId())->toBe('wf_original');
+});
