@@ -16,7 +16,6 @@ use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\CorrelationResumer;
 use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\LaravelArazzo\Execution\ResumeCorrelationJob;
 use Alama\LaravelArazzo\Execution\PendingCorrelation;
 use Alama\LaravelArazzo\Execution\StepOutcomeHandler;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
@@ -33,6 +32,7 @@ class ResumerMockLockManager implements LockManagerInterface
 class ResumerMockPendingCorrelations implements PendingCorrelationRegistryInterface
 {
     public ?PendingCorrelation $toReturn = null;
+
     /** @var list<string> */
     public array $consumed = [];
 
@@ -60,6 +60,7 @@ class ResumerMockStateStore implements StateStoreInterface
 {
     /** @var array<string, array<string, mixed>> */
     public array $preloaded = [];
+
     /** @var array<string, array<string, mixed>> */
     public array $saves = [];
 

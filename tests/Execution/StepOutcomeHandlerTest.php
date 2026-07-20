@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\LaravelArazzo\Dto\Action\FailureAction;
+use Alama\LaravelArazzo\Dto\Action\FailureEndAction;
 use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
+use Alama\LaravelArazzo\Dto\Action\SuccessAction;
+use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Info;
@@ -16,16 +20,18 @@ use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
+use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
+use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\ExecutionStatus;
+use Alama\LaravelArazzo\Execution\PendingCorrelation;
 use Alama\LaravelArazzo\Execution\StepOutcomeHandler;
 use Alama\LaravelArazzo\Execution\StepStatus;
 use Alama\LaravelArazzo\Execution\SyncQueueDriver;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
-
-use Alama\LaravelArazzo\Dto\Action\FailureAction;
-use Alama\LaravelArazzo\Dto\Action\SuccessAction;
+use Psr\Http\Message\RequestInterface;
 
 class StepOutcomeMockExecutionRegistry implements ExecutionRegistryInterface
 {
@@ -53,7 +59,7 @@ class StepOutcomeMockEventLedger implements EventLedgerInterface
     }
 }
 
-class StepOutcomeMockPendingCorrelationRegistry implements \Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface
+class StepOutcomeMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
     /** @var array<string, bool> */
     public array $outstanding = [];
@@ -63,7 +69,7 @@ class StepOutcomeMockPendingCorrelationRegistry implements \Alama\LaravelArazzo\
         $this->outstanding[$executionId] = true;
     }
 
-    public function findByCorrelationId(string $correlationId): ?\Alama\LaravelArazzo\Execution\PendingCorrelation
+    public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
         return null;
     }
@@ -80,17 +86,17 @@ class StepOutcomeMockPendingCorrelationRegistry implements \Alama\LaravelArazzo\
 
 class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function compileRequest(\Alama\LaravelArazzo\Dto\Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): \Psr\Http\Message\RequestInterface
+    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         throw new \LogicException('not used by StepOutcomeHandler tests');
     }
 
-    public function extractOutputs(\Alama\LaravelArazzo\Dto\Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
         return [];
     }
 
-    public function evaluateSuccessCriteria(\Alama\LaravelArazzo\Dto\Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {
         return true;
     }
@@ -98,7 +104,7 @@ class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
     // Test convention: an empty criteria list always matches (unconditional action); a
     // non-empty list matches only when its first criterion's condition is the literal
     // string 'MATCH'. Keeps these tests independent of the real criterion evaluator.
-    public function evaluateCriteria(array $criteria, \Alama\LaravelArazzo\Dto\Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {
         if ($criteria === []) {
             return true;
@@ -144,7 +150,7 @@ function stepOutcomeDocument(array $workflows, ?Components $components = null): 
     );
 }
 
-class StepOutcomeMockStateStore implements \Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface
+class StepOutcomeMockStateStore implements StateStoreInterface
 {
     public array $saves = [];
 
@@ -418,7 +424,7 @@ it('goto to an unknown workflowId throws GotoTargetNotFoundException', function 
     $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
 
     expect(fn () => $handler->handle($document, $workflow, $step, $context, 'exec_1', false))
-        ->toThrow(\Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException::class);
+        ->toThrow(GotoTargetNotFoundException::class);
 });
 
 it('goto to an unknown stepId in the current workflow throws GotoTargetNotFoundException', function (): void {
@@ -431,13 +437,13 @@ it('goto to an unknown stepId in the current workflow throws GotoTargetNotFoundE
     $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
 
     expect(fn () => $handler->handle($document, $workflow, $step, $context, 'exec_1', false))
-        ->toThrow(\Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException::class);
+        ->toThrow(GotoTargetNotFoundException::class);
 });
 
 it('SuccessEndAction terminates the execution as succeeded', function (): void {
     [$handler, $queue, $executionRegistry, $eventLedger] = makeStepOutcomeHandler();
 
-    $end = new \Alama\LaravelArazzo\Dto\Action\SuccessEndAction('end-ok', []);
+    $end = new SuccessEndAction('end-ok', []);
     $step = stepOutcomeStep('A', onSuccess: [$end]);
     $workflow = stepOutcomeWorkflow('wf_1', [$step]);
     $document = stepOutcomeDocument([$workflow]);
@@ -453,7 +459,7 @@ it('SuccessEndAction terminates the execution as succeeded', function (): void {
 it('FailureEndAction terminates the execution as failed', function (): void {
     [$handler, , $executionRegistry, $eventLedger] = makeStepOutcomeHandler();
 
-    $end = new \Alama\LaravelArazzo\Dto\Action\FailureEndAction('end-fail', []);
+    $end = new FailureEndAction('end-fail', []);
     $step = stepOutcomeStep('A', onFailure: [$end]);
     $workflow = stepOutcomeWorkflow('wf_1', [$step]);
     $document = stepOutcomeDocument([$workflow]);

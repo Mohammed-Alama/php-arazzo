@@ -298,13 +298,13 @@ it('evaluateCriteria evaluates an arbitrary criteria list against the current st
     ]);
 
     $criteria = [
-        new SuccessCriterion('{$statusCode}', '^5\d\d$', CriterionType::Regex)
+        new SuccessCriterion('{$statusCode}', '^5\d\d$', CriterionType::Regex),
     ];
 
     expect($resolver->evaluateCriteria($criteria, $step, $context))->toBeTrue();
 
     $failCriteria = [
-        new SuccessCriterion('{$statusCode}', '^2\d\d$', CriterionType::Regex)
+        new SuccessCriterion('{$statusCode}', '^2\d\d$', CriterionType::Regex),
     ];
 
     expect($resolver->evaluateCriteria($failCriteria, $step, $context))->toBeFalse();
