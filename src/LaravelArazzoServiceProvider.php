@@ -90,6 +90,12 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'arazzo');
+
+        \Illuminate\Support\Facades\Route::get('/arazzo-builder', function () {
+            return view('arazzo::arazzo');
+        })->middleware('web');
+
         \Illuminate\Support\Facades\Route::prefix('api/arazzo')
             ->middleware('api')
             ->group(function () {
