@@ -24,3 +24,15 @@ it('throws for an unresolvable pointer', function (): void {
 
     expect(fn () => $source->extract('/channels/missing'))->toThrow(UnresolvableReferenceException::class);
 });
+
+it('throws for an invalid json pointer format', function (): void {
+    $source = new AsyncApiResolvedSource(['channels' => []]);
+
+    expect(fn () => $source->extract('channels/missing'))->toThrow(UnresolvableReferenceException::class);
+});
+
+it('extracts a nested value from a numeric array by json pointer', function (): void {
+    $source = new AsyncApiResolvedSource(['channels' => ['item0', 'item1']]);
+
+    expect($source->extract('/channels/1'))->toBe('item1');
+});
