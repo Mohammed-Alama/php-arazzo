@@ -30,6 +30,9 @@ final readonly class Step
         public array $onFailure,
         public array $outputs,
         public array $dependsOn = [],
+        public ?string $action = null,
+        public ?string $channelPath = null,
+        public ?Expression $correlationId = null,
     ) {
     }
 }
