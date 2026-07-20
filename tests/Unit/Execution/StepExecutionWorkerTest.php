@@ -4,9 +4,12 @@ namespace Tests\Unit\Execution;
 use Alama\LaravelArazzo\Execution\StepExecutionWorker;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Dto\Step;
+use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
+use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
+use Alama\LaravelArazzo\Execution\SyncQueueDriver;
 use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
@@ -51,17 +54,18 @@ class StepExecutionWorkerTest extends TestCase
         $store = new StepExecutionMockStateStore();
         $resolver = new StepExecutionMockExpressionResolver();
         $client = new StepExecutionMockHttpClient();
-        $queue = new StepExecutionMockQueueDriver();
+        $queue = new SyncQueueDriver();
         $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        
-        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver);
-        
+        $definitionRegistry = new InMemoryDefinitionRegistry();
+
+        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry);
+
         $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
         $context = (new WorkflowContext('def_1'))->withStepResult('A', ['success' => true]);
-        
+
         $job = new ExecuteStepJob($step, $context);
         $worker->handle($job);
-        
+
         // Lock should be acquired, but skipped execution
         $this->assertEquals(1, $lockManager->acquireCount);
         $this->assertEmpty($store->saves); // Shouldn't save state if skipped
@@ -73,19 +77,50 @@ class StepExecutionWorkerTest extends TestCase
         $store = new StepExecutionMockStateStore();
         $resolver = new StepExecutionMockExpressionResolver();
         $client = new StepExecutionMockHttpClient();
-        $queue = new StepExecutionMockQueueDriver();
+        $queue = new SyncQueueDriver();
         $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        
-        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver);
-        
+        $definitionRegistry = new InMemoryDefinitionRegistry();
+
         $step = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
-        $context = new WorkflowContext('def_1');
-        
+        $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+        $definitionId = $definitionRegistry->register($workflow);
+
+        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry);
+
+        $context = new WorkflowContext($definitionId);
+
         $job = new ExecuteStepJob($step, $context);
         $worker->handle($job);
-        
-        $this->assertArrayHasKey('def_1', $store->saves);
-        $savedContext = $store->saves['def_1'];
+
+        $this->assertArrayHasKey($definitionId, $store->saves);
+        $savedContext = $store->saves[$definitionId];
         $this->assertArrayHasKey('B', $savedContext['steps']);
+    }
+
+    public function test_dispatches_newly_unlocked_downstream_step_after_success(): void
+    {
+        $lockManager = new StepExecutionMockLockManager();
+        $store = new StepExecutionMockStateStore();
+        $resolver = new StepExecutionMockExpressionResolver();
+        $client = new StepExecutionMockHttpClient();
+        $queue = new SyncQueueDriver();
+        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+        $definitionRegistry = new InMemoryDefinitionRegistry();
+
+        $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+        $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+        $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB], [], [], [], []);
+        $definitionId = $definitionRegistry->register($workflow);
+
+        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry);
+
+        $context = new WorkflowContext($definitionId);
+
+        $job = new ExecuteStepJob($stepA, $context);
+        $worker->handle($job);
+
+        $this->assertCount(1, $queue->dispatched);
+        $dispatchedJob = $queue->dispatched[0]['job'];
+        $this->assertSame('B', $dispatchedJob->step->stepId);
     }
 }
