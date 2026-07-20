@@ -110,4 +110,30 @@ final class WorkflowContext
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
     }
+
+    public function getStepStatus(string $stepId): ?StepStatus
+    {
+        return $this->steps[$stepId]['status'] ?? null;
+    }
+
+    public function withStepStatus(string $stepId, StepStatus $status): self
+    {
+        $newSteps = $this->steps;
+        $newSteps[$stepId]['status'] = $status;
+
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+    }
+
+    public function getStepAttempts(string $stepId): int
+    {
+        return $this->steps[$stepId]['attempts'] ?? 0;
+    }
+
+    public function withStepAttemptIncremented(string $stepId): self
+    {
+        $newSteps = $this->steps;
+        $newSteps[$stepId]['attempts'] = ($newSteps[$stepId]['attempts'] ?? 0) + 1;
+
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+    }
 }
