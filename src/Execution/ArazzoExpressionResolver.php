@@ -10,12 +10,15 @@ use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
+use Alama\LaravelArazzo\Expression\Ast\StepRef;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Parameter as OpenApiParameter;
 use cebe\openapi\spec\RequestBody;
+use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
 use GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
@@ -140,7 +143,22 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
      */
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
-        return [];
+        $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
+
+        $outputs = [];
+        foreach ($step->outputs as $outputName => $expression) {
+            $raw = trim($expression->raw);
+
+            if (str_starts_with($raw, '$.')) {
+                $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
+                continue;
+            }
+
+            $value = $this->evaluator->evaluate($expression, $context, $step->stepId);
+            $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
+        }
+
+        return $outputs;
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
@@ -231,5 +249,51 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
             return $value;
         }
+    }
+
+    private function castOutputAgainstResponseSchema(
+        Step $step,
+        WorkflowContext $context,
+        ?ArazzoDocument $document,
+        Expression $expression,
+        mixed $value,
+    ): mixed {
+        if ($document === null || !$step->operationId) {
+            return $value;
+        }
+
+        $ast = $expression->ast();
+        if (!$ast instanceof StepRef || !$ast->part instanceof ResponsePart || $ast->part->httpPart !== 'body' || $ast->part->jsonPointer === null) {
+            return $value;
+        }
+
+        $sourceDesc = $document->sourceDescriptions[0] ?? null;
+        if ($sourceDesc === null) {
+            return $value;
+        }
+
+        $openApi = $this->resolveOpenApiDocument($sourceDesc);
+        if ($openApi === null) {
+            return $value;
+        }
+
+        $opId = str_contains($step->operationId, '.') ? explode('.', $step->operationId, 2)[1] : $step->operationId;
+
+        try {
+            [, , $operation] = OpenApiParser::findOperation($openApi, $opId);
+        } catch (\RuntimeException) {
+            return $value;
+        }
+
+        $statusCode = (string) ($context->getSteps()[$step->stepId]['response']['statusCode'] ?? '');
+        $response = $operation->responses->getResponse($statusCode) ?? $operation->responses->getResponse('default');
+        if (!$response instanceof Response) {
+            return $value;
+        }
+
+        $schema = $response->content['application/json']->schema ?? null;
+        $leafSchema = $this->resolveSchemaAtPointer($schema, $ast->part->jsonPointer);
+
+        return $this->castToSchemaType($value, $leafSchema);
     }
 }

@@ -172,4 +172,62 @@ class ArazzoExpressionResolverTest extends TestCase
         $this->assertSame('GET', $request->getMethod());
         $this->assertSame('http://api.example.com/users', (string) $request->getUri());
     }
+    public function test_extracts_output_via_runtime_expression_with_schema_cast(): void
+    {
+        $resolver = $this->makeResolver();
+        $document = $this->makeDocument();
+
+        $step = new Step(
+            stepId: 'create-user',
+            description: null,
+            operationId: 'createUser',
+            operationPath: null,
+            workflowId: null,
+            parameters: [],
+            requestBody: null,
+            successCriteria: [],
+            onSuccess: [],
+            onFailure: [],
+            outputs: ['userId' => new Expression('{$steps.create-user.response.body#/id}')],
+        );
+
+        $context = (new WorkflowContext('def_1'))->withStepResponse('create-user', [
+            'statusCode' => 201,
+            'headers' => [],
+            'body' => ['id' => '123'],
+        ]);
+
+        $outputs = $resolver->extractOutputs($step, $context, $document);
+
+        $this->assertSame(123, $outputs['userId']);
+    }
+
+    public function test_extracts_output_via_bare_jsonpath(): void
+    {
+        $resolver = $this->makeResolver();
+
+        $step = new Step(
+            stepId: 'step1',
+            description: null,
+            operationId: null,
+            operationPath: null,
+            workflowId: null,
+            parameters: [],
+            requestBody: null,
+            successCriteria: [],
+            onSuccess: [],
+            onFailure: [],
+            outputs: ['firstId' => new Expression('$.users[0].id')],
+        );
+
+        $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+            'statusCode' => 200,
+            'headers' => [],
+            'body' => ['users' => [['id' => 1], ['id' => 2]]],
+        ]);
+
+        $outputs = $resolver->extractOutputs($step, $context);
+
+        $this->assertSame(1, $outputs['firstId']);
+    }
 }
