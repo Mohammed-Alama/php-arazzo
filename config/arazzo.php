@@ -15,4 +15,8 @@ return [
     'definitions_table' => 'arazzo_definitions',
     'executions_table' => 'arazzo_executions',
     'events_table' => 'arazzo_events',
+
+    'pending_correlations_table' => 'arazzo_pending_correlations',
+    /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
+    'max_retry_attempts' => env('ARAZZO_MAX_RETRY_ATTEMPTS', 10),
 ];
