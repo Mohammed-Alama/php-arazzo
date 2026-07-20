@@ -69,7 +69,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 'create_arazzo_definitions_table',
                 'create_arazzo_executions_table',
                 'create_arazzo_events_table',
-                'add_status_to_arazzo_executions_table',
+                'update_arazzo_executions_table_add_status',
                 'create_arazzo_pending_correlations_table',
             ])
             ->runsMigrations();
