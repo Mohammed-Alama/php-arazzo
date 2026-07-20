@@ -1,0 +1,178 @@
+# Arazzo 1.1.0 fixture — targets features NOT YET supported by this engine's
+# Parser/Validator (which only accepts arazzo: "1.0.0" and SourceType::{Openapi,Arazzo}).
+# Kept out of the passing parser test suite until Selector Object, asyncapi
+# sourceDescriptions, querystring params, and $self are implemented.
+# See: docs/superpowers/roadmap/09-cross-module-bounded-context-bridges.md,
+#      docs/superpowers/roadmap/10-ai-agent-epistemic-protocol-routing.md,
+#      docs/superpowers/roadmap/07-automated-saga-compensation-engine.md
+
+arazzo: "1.1.0"
+$self: https://arazzo.example.com/specs/place-order-saga.arazzo.yaml
+
+info:
+  title: Place Order Saga
+  version: "1.1.0"
+  description: >-
+    Cross-protocol order placement: REST create, AsyncAPI event confirmation,
+    saga compensation on failure, sub-workflow composition for loyalty points.
+
+sourceDescriptions:
+  - name: orderApi
+    url: https://api.example.com/openapi.yaml
+    type: openapi
+  - name: orderEvents
+    url: https://api.example.com/asyncapi.yaml
+    type: asyncapi
+
+workflows:
+  - workflowId: placeOrderSaga
+    summary: Create order, await async confirmation, compensate on failure
+    inputs:
+      type: object
+      required: [cartId, customerId]
+      properties:
+        cartId:
+          type: string
+        customerId:
+          type: string
+
+    steps:
+      - stepId: createOrder
+        description: REST call — querystring param maps the whole query as one value
+        operationId: orderApi.createOrder
+        parameters:
+          - name: filter
+            in: querystring
+            value: "status=pending&expand=items"
+        requestBody:
+          contentType: application/json
+          payload:
+            cartId: "{$inputs.cartId}"
+            customerId: "{$inputs.customerId}"
+        successCriteria:
+          - context: $response.body
+            condition: "$.status == 'CREATED'"
+            type:
+              type: jsonpath
+              version: rfc9535
+        outputs:
+          orderId:
+            context: $response.body
+            selector: "$.id"
+            type:
+              type: jsonpath
+              version: rfc9535
+          totalAmount:
+            context: $response.body
+            selector: "$.total"
+            type:
+              type: jsonpath
+              version: rfc9535
+        onSuccess:
+          - name: awardLoyaltyPoints
+            type: goto
+            workflowId: loyaltyPointsWorkflow
+            parameters:
+              - name: customerId
+                value: "{$inputs.customerId}"
+              - name: orderTotal
+                value: "{$steps.createOrder.outputs.totalAmount}"
+        onFailure:
+          - name: compensateFailedOrder
+            type: goto
+            workflowId: cancelOrderSaga
+            criteria:
+              - context: $statusCode
+                condition: "$statusCode == 409"
+                type: simple
+            parameters:
+              - name: orderId
+                value: "{$steps.createOrder.outputs.orderId}"
+        x-laravel-action: App\Domain\Orders\Actions\BridgeCreateOrder
+
+      - stepId: awaitConfirmation
+        description: AsyncAPI receive — blocks until the confirmation event arrives
+        action: receive
+        channelPath: "{$sourceDescriptions.orderEvents}#/channels/orderConfirmed"
+        correlationId: "{$steps.createOrder.outputs.orderId}"
+        dependsOn:
+          - createOrder
+        successCriteria:
+          - context: $message.payload
+            condition: "$.status == 'CONFIRMED'"
+            type:
+              type: jsonpath
+              version: rfc9535
+        outputs:
+          confirmedAt:
+            context: $message.payload
+            selector: "$.timestamp"
+            type:
+              type: jsonpath
+              version: rfc9535
+
+      - stepId: notifyShipping
+        description: AsyncAPI send — fire-and-forget event, no response expected
+        action: send
+        channelPath: "{$sourceDescriptions.orderEvents}#/channels/shipmentRequested"
+        dependsOn:
+          - awaitConfirmation
+        requestBody:
+          contentType: application/json
+          payload:
+            orderId: "{$steps.createOrder.outputs.orderId}"
+
+    outputs:
+      orderId: "{$steps.createOrder.outputs.orderId}"
+      confirmedAt: "{$steps.awaitConfirmation.outputs.confirmedAt}"
+
+  - workflowId: loyaltyPointsWorkflow
+    summary: Reusable sub-workflow — awards points, called via parameters mapping
+    inputs:
+      type: object
+      required: [customerId, orderTotal]
+      properties:
+        customerId:
+          type: string
+        orderTotal:
+          type: number
+    steps:
+      - stepId: awardPoints
+        operationId: orderApi.awardLoyaltyPoints
+        requestBody:
+          contentType: application/json
+          payload:
+            customerId: "{$inputs.customerId}"
+            points: "{$inputs.orderTotal}"
+        successCriteria:
+          - context: $statusCode
+            condition: "$statusCode == 200"
+            type: simple
+
+  - workflowId: cancelOrderSaga
+    summary: Compensation workflow — rolls back a failed order
+    inputs:
+      type: object
+      required: [orderId]
+      properties:
+        orderId:
+          type: string
+    steps:
+      - stepId: cancelOrder
+        operationId: orderApi.cancelOrder
+        parameters:
+          - name: id
+            in: path
+            value: "{$inputs.orderId}"
+        successCriteria:
+          - context: $statusCode
+            condition: "$statusCode == 200"
+            type: simple
+
+components:
+  failureActions:
+    globalFail:
+      name: globalFail
+      type: end
+
+x-ai-fallback-model: null
