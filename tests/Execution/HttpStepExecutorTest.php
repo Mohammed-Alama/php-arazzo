@@ -8,6 +8,7 @@ use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
+use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
 use Alama\LaravelArazzo\Execution\HttpStepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
@@ -16,7 +17,7 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class HttpStepExecutorMockResolver implements \Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface
+class HttpStepExecutorMockResolver implements ExpressionResolverInterface
 {
     public ?WorkflowContext $lastContextSeenByExtractOutputs = null;
 

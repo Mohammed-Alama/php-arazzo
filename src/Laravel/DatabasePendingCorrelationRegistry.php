@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Laravel;
 
-use Illuminate\Database\ConnectionInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\PendingCorrelation;
-use stdClass;
+use Illuminate\Database\ConnectionInterface;
 
 class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
     public function __construct(
-        private readonly ConnectionInterface $db
+        private readonly ConnectionInterface $db,
+        private readonly string $table = 'arazzo_pending_correlations',
     ) {
     }
 
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
     {
-        $this->db->table('arazzo_pending_correlations')->insert([
+        $this->db->table($this->table)->insert([
             'correlation_id' => $correlationId,
             'execution_id' => $executionId,
             'step_id' => $stepId,
@@ -27,11 +29,11 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
-        $row = $this->db->table('arazzo_pending_correlations')
+        $row = $this->db->table($this->table)
             ->where('correlation_id', $correlationId)
             ->first();
 
-        if (! $row) {
+        if (!$row) {
             return null;
         }
 
@@ -39,20 +41,20 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
             $row->correlation_id,
             $row->execution_id,
             $row->step_id,
-            $row->channel_path
+            $row->channel_path,
         );
     }
 
     public function consume(string $correlationId): void
     {
-        $this->db->table('arazzo_pending_correlations')
+        $this->db->table($this->table)
             ->where('correlation_id', $correlationId)
             ->delete();
     }
 
     public function existsForExecution(string $executionId): bool
     {
-        return $this->db->table('arazzo_pending_correlations')
+        return $this->db->table($this->table)
             ->where('execution_id', $executionId)
             ->exists();
     }

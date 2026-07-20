@@ -45,7 +45,7 @@ class StepExecutionWorker
 
         if ($executionId === null) {
             throw new LogicException(
-                "ExecuteStepJob for step '{$step->stepId}' has no executionId -- the workflow run was not initialized before dispatch."
+                "ExecuteStepJob for step '{$step->stepId}' has no executionId -- the workflow run was not initialized before dispatch.",
             );
         }
 

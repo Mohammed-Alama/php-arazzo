@@ -108,7 +108,7 @@ it('is immutable on withStepAttemptIncremented', function (): void {
     expect($newContext)->not->toBe($context);
     expect($context->getStepAttempts('step_1'))->toBe(0);
     expect($newContext->getStepAttempts('step_1'))->toBe(1);
-    
+
     $newContext2 = $newContext->withStepAttemptIncremented('step_1');
     expect($newContext2->getStepAttempts('step_1'))->toBe(2);
 });
@@ -129,10 +129,10 @@ it('resets status and attempts when withStepResult overwrites', function (): voi
     $context = (new WorkflowContext('def_1'))
         ->withStepStatus('step_1', StepStatus::Pending)
         ->withStepAttemptIncremented('step_1');
-        
+
     expect($context->getStepStatus('step_1'))->toBe(StepStatus::Pending);
     expect($context->getStepAttempts('step_1'))->toBe(1);
-    
+
     $context = $context->withStepResult('step_1', ['done' => true]);
 
     expect($context->getStepStatus('step_1'))->toBeNull();

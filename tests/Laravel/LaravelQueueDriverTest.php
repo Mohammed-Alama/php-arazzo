@@ -6,8 +6,10 @@ namespace Tests\Laravel;
 
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
+use Alama\LaravelArazzo\Execution\ResumeCorrelationJob;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Laravel\Jobs\RunExecuteStepJob;
+use Alama\LaravelArazzo\Laravel\Jobs\RunResumeCorrelationJob;
 use Alama\LaravelArazzo\Laravel\LaravelQueueDriver;
 use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Support\Facades\Queue;
@@ -39,7 +41,7 @@ it('wraps and dispatches via later() when a delay is given', function (): void {
 it('wraps ResumeCorrelationJob in RunResumeCorrelationJob', function (): void {
     Queue::fake();
 
-    (new LaravelQueueDriver())->dispatch(new \Alama\LaravelArazzo\Execution\Jobs\ResumeCorrelationJob('corr_1', ['x' => 1]));
+    (new LaravelQueueDriver())->dispatch(new ResumeCorrelationJob('corr_1', ['x' => 1]));
 
-    Queue::assertPushed(\Alama\LaravelArazzo\Laravel\Jobs\RunResumeCorrelationJob::class, fn ($pushed) => $pushed->inner->correlationId === 'corr_1');
+    Queue::assertPushed(RunResumeCorrelationJob::class, fn ($pushed) => $pushed->inner->correlationId === 'corr_1');
 });

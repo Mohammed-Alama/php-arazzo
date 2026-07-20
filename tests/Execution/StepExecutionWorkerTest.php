@@ -9,12 +9,12 @@ use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
-use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
@@ -51,8 +51,10 @@ class WorkerMockStateStore implements StateStoreInterface
 {
     /** @var array<string, array<string, mixed>> */
     public array $saves = [];
+
     /** @var array<string, int|null> */
     public array $ttls = [];
+
     /** @var array<string, array<string, mixed>> */
     public array $preloaded = [];
 
@@ -106,6 +108,7 @@ class WorkerMockExecutionRegistry implements ExecutionRegistryInterface
 {
     /** @var list<array{executionId: string, definitionId: string, workflowId: string}> */
     public array $started = [];
+
     /** @var list<array{executionId: string, status: ExecutionStatus}> */
     public array $completed = [];
 
@@ -173,7 +176,7 @@ function makeWorkerDocument(Workflow $workflow): ArazzoDocument
 /**
  * @return array{0: StepExecutionWorker, 1: WorkerMockLockManager, 2: WorkerMockStateStore, 3: WorkerMockEventLedger, 4: WorkerMockExecutionRegistry, 5: SyncQueueDriver}
  */
-function makeWorker(StepExecutionOutcome $outcome, \Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface $definitionRegistry): array
+function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $definitionRegistry): array
 {
     $lockManager = new WorkerMockLockManager();
     $store = new WorkerMockStateStore();
@@ -185,7 +188,7 @@ function makeWorker(StepExecutionOutcome $outcome, \Alama\LaravelArazzo\Executio
     $engine = new Engine($dependencyAnalyzer, $queue, $store);
     $outcomeHandler = new StepOutcomeHandler(
         $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger,
-        new WorkerMockPendingCorrelationRegistry(), $resolver, $store
+        new WorkerMockPendingCorrelationRegistry(), $resolver, $store,
     );
 
     $worker = new StepExecutionWorker(
