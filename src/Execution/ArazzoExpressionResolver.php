@@ -10,6 +10,7 @@ use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
+use Alama\LaravelArazzo\Dto\SuccessCriterion;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException;
 use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
@@ -168,13 +169,21 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {
-        if (empty($step->successCriteria)) {
+        return $this->evaluateCriteria($step->successCriteria, $step, $context, $document);
+    }
+
+    /**
+     * @param list<\Alama\LaravelArazzo\Dto\SuccessCriterion> $criteria
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    {
+        if (empty($criteria)) {
             return true;
         }
 
         $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
 
-        foreach ($step->successCriteria as $criterion) {
+        foreach ($criteria as $criterion) {
             $type = $criterion->type ?? CriterionType::Simple;
 
             if ($type === CriterionType::Simple) {
