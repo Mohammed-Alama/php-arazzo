@@ -17,15 +17,25 @@ function App() {
     const [loading, setLoading] = useState(false);
     const reactFlowWrapper = useRef(null);
 
-    // Hardcoded openapi spec path for V1
-    const openapiSpec = 'api.yaml'; 
+    const [specPath, setSpecPath] = useState('ST_local_api.json');
+    const [specInput, setSpecInput] = useState('ST_local_api.json');
 
-    useEffect(() => {
-        fetch(`/api/arazzo/endpoints?spec=${openapiSpec}`)
+    const fetchEndpoints = useCallback(() => {
+        setLoading(true);
+        fetch(`/api/arazzo/endpoints?spec=${specPath}`)
             .then(res => res.json())
             .then(data => setEndpoints(data))
-            .catch(err => console.error(err));
-    }, []);
+            .catch(err => console.error(err))
+            .finally(() => setLoading(false));
+    }, [specPath]);
+
+    useEffect(() => {
+        fetchEndpoints();
+    }, [fetchEndpoints]);
+
+    const handleLoadSpec = () => {
+        setSpecPath(specInput);
+    };
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
@@ -68,7 +78,7 @@ function App() {
             const res = await fetch('/api/arazzo/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ openapi: openapiSpec, graph: { nodes, edges } })
+                body: JSON.stringify({ openapi: specPath, graph: { nodes, edges } })
             });
             const data = await res.json();
             setYaml(data.yaml || 'Error generating YAML');
@@ -82,12 +92,30 @@ function App() {
         <div className="flex h-screen w-full flex-col">
             <header className="bg-gray-900 border-b border-gray-800 p-4 flex justify-between items-center">
                 <h1 className="text-xl font-bold text-white">Arazzo Flow Builder</h1>
+                
+                <div className="flex items-center space-x-2 flex-1 max-w-xl mx-8">
+                    <input 
+                        type="text" 
+                        value={specInput}
+                        onChange={(e) => setSpecInput(e.target.value)}
+                        placeholder="Path to OpenAPI Spec (e.g. ST_local_api.json)"
+                        className="flex-1 bg-gray-800 text-white px-3 py-2 rounded border border-gray-700"
+                    />
+                    <button 
+                        onClick={handleLoadSpec}
+                        disabled={loading}
+                        className="bg-gray-700 text-white px-4 py-2 rounded font-semibold hover:bg-gray-600"
+                    >
+                        Load
+                    </button>
+                </div>
+
                 <button 
                     onClick={handleGenerate} 
                     disabled={loading}
-                    className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded font-semibold disabled:opacity-50"
+                    className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded font-semibold disabled:opacity-50 whitespace-nowrap"
                 >
-                    {loading ? 'Generating...' : 'Generate YAML'}
+                    {loading ? 'Processing...' : 'Generate YAML'}
                 </button>
             </header>
             <div className="flex flex-1 overflow-hidden">
