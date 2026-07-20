@@ -24,6 +24,8 @@ use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use LogicException;
 
+use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
+
 class StepOutcomeHandler
 {
     public function __construct(
@@ -34,7 +36,9 @@ class StepOutcomeHandler
         private EventLedgerInterface $eventLedger,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private ExpressionResolverInterface $expressionResolver,
+        private StateStoreInterface $stateStore,
         private int $maxRetryAttempts = 10,
+        private int $stateTtlSeconds = 86400,
     ) {
     }
 
@@ -82,9 +86,9 @@ class StepOutcomeHandler
         }
 
         if ($matched instanceof SuccessGotoAction || $matched instanceof FailureGotoAction) {
-            $status = $criteriaMet ? StepStatus::Succeeded : StepStatus::Failed;
+            $status = $matched instanceof SuccessGotoAction ? StepStatus::Succeeded : StepStatus::Failed;
             $newContext = $context->withStepStatus($step->stepId, $status);
-            $this->handleGoto($matched, $document, $newContext);
+            $this->handleGoto($matched, $document, $newContext, $executionId);
 
             return;
         }
@@ -197,10 +201,11 @@ class StepOutcomeHandler
             $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
         }
 
+        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $action->retryAfter ?? 0);
     }
 
-    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context): void
+    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
     {
         $targetWorkflowId = $action->workflowId ?? $context->getWorkflowId();
         $targetWorkflow = $this->findWorkflow($document, $targetWorkflowId);
@@ -215,6 +220,7 @@ class StepOutcomeHandler
         if ($action->stepId === null) {
             // No specific step named -- transfer to the target workflow's start, letting
             // normal dependency-driven choreography pick its entry steps.
+            $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
             $this->engine->evaluate($targetWorkflow, $newContext);
 
             return;
@@ -226,6 +232,8 @@ class StepOutcomeHandler
         }
 
         $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
+        
+        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext));
     }
 
@@ -272,6 +280,8 @@ class StepOutcomeHandler
     private function continueNormally(Workflow $workflow, Step $step, WorkflowContext $context, string $executionId): void
     {
         $newContext = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
+        
+        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
         $this->engine->evaluate($workflow, $newContext);
 
         $runnable = $this->dependencyAnalyzer->getRunnableSteps($workflow->steps, $newContext);
@@ -282,7 +292,22 @@ class StepOutcomeHandler
 
     private function terminate(WorkflowContext $context, string $executionId, ExecutionStatus $status, string $eventType): void
     {
+        $this->stateStore->save($executionId, $this->serialize($context), $this->stateTtlSeconds);
         $this->executionRegistry->complete($executionId, $status);
         $this->eventLedger->append($executionId, $eventType, ['workflowId' => $context->getWorkflowId()]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function serialize(WorkflowContext $context): array
+    {
+        return [
+            'definitionId' => $context->getDefinitionId(),
+            'workflowId' => $context->getWorkflowId(),
+            'steps' => $context->getSteps(),
+            'inputs' => $context->getInputs(),
+            'components' => $context->getComponents(),
+        ];
     }
 }
