@@ -6,6 +6,7 @@ namespace Alama\LaravelArazzo\Dto;
 
 use Alama\LaravelArazzo\Dto\Action\FailureAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
+use Alama\LaravelArazzo\Dto\Expression;
 
 final readonly class Step
 {
@@ -30,6 +31,9 @@ final readonly class Step
         public array $onFailure,
         public array $outputs,
         public array $dependsOn = [],
+        public ?string $action = null,
+        public ?string $channelPath = null,
+        public ?Expression $correlationId = null,
     ) {
     }
 }
