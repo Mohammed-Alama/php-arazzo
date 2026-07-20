@@ -22,12 +22,15 @@ final readonly class AsyncApiResolvedSource implements ResolvedSource
     {
         $current = $this->document;
 
-        $trimmed = trim($jsonPointer, '/');
-        if ($trimmed === '') {
+        if ($jsonPointer === '') {
             return $current;
         }
 
-        $parts = explode('/', $trimmed);
+        if (!str_starts_with($jsonPointer, '/')) {
+            throw new UnresolvableReferenceException("Invalid JSON Pointer: {$jsonPointer}");
+        }
+
+        $parts = explode('/', substr($jsonPointer, 1));
 
         foreach ($parts as $part) {
             $part = str_replace(['~1', '~0'], ['/', '~'], $part);
