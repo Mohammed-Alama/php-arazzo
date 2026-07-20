@@ -42,7 +42,7 @@ class StepExecutionWorker
             $response = $this->httpClient->sendRequest($request);
 
             // Assuming successful for MVP logic. Next iteration would evaluate criteria.
-            $outputs = $this->expressionResolver->extractOutputs($step, []);
+            $outputs = $this->expressionResolver->extractOutputs($step, $context);
 
             // Mutate context
             $newContext = $context->withStepResult($step->stepId, [

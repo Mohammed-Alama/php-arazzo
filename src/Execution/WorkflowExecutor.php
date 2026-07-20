@@ -19,7 +19,8 @@ class WorkflowExecutor
 
     public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs): ExecutionResult
     {
-        $context = new VariableContext($inputs);
+        // Components should ideally be populated from $document, but keep simple for now
+        $context = new WorkflowContext($workflow->workflowId, $inputs);
 
         $stepResults = [];
 
@@ -28,11 +29,15 @@ class WorkflowExecutor
 
             $this->logger?->logStepStarted($stepId);
 
-            $result = $this->stepExecutor->execute($step, $context, $document);
+            [$context, $success] = $this->stepExecutor->execute($step, $context, $document);
+
+            $outputs = $context->getSteps()[$stepId]['outputs'] ?? [];
+            $result = new \Alama\LaravelArazzo\Execution\Dto\StepResult($stepId, $success, $outputs);
+            
             $stepResults[$stepId] = $result;
 
-            if (!$result->success) {
-                $this->logger?->logStepFailed($stepId, $result->error ?? new \RuntimeException('Step failed'));
+            if (!$success) {
+                $this->logger?->logStepFailed($stepId, new \RuntimeException('Step failed'));
                 break;
             }
 

@@ -51,14 +51,19 @@ class StepExecutionMockStateStore implements StateStoreInterface
 }
 class StepExecutionMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function compileRequest(Step $step, WorkflowContext $context): RequestInterface
+    public function compileRequest(Step $step, WorkflowContext $context, ?\Alama\LaravelArazzo\Dto\ArazzoDocument $document = null): RequestInterface
     {
         return new Request('GET', 'http://localhost');
     }
 
-    public function extractOutputs(Step $step, array $responseData): array
+    public function extractOutputs(Step $step, WorkflowContext $context, ?\Alama\LaravelArazzo\Dto\ArazzoDocument $document = null): array
     {
         return [];
+    }
+
+    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?\Alama\LaravelArazzo\Dto\ArazzoDocument $document = null): bool
+    {
+        return true;
     }
 }
 class StepExecutionMockHttpClient implements HttpClientInterface
