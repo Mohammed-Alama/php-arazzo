@@ -32,4 +32,30 @@ class TypeCasterTest extends TestCase
         $this->assertSame(['a'], TypeCaster::asArray(['a']));
         $this->assertSame(['a'], TypeCaster::asArray('a'));
     }
+    public function test_casts_to_float(): void
+    {
+        $this->assertSame(4.2, TypeCaster::asFloat('4.2'));
+        $this->assertSame(42.0, TypeCaster::asFloat(42));
+    }
+
+    public function test_throws_on_invalid_float(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        TypeCaster::asFloat('not-a-number');
+    }
+
+    public function test_casts_to_boolean(): void
+    {
+        $this->assertTrue(TypeCaster::asBoolean(true));
+        $this->assertTrue(TypeCaster::asBoolean('true'));
+        $this->assertFalse(TypeCaster::asBoolean('false'));
+        $this->assertTrue(TypeCaster::asBoolean(1));
+        $this->assertFalse(TypeCaster::asBoolean(0));
+    }
+
+    public function test_throws_on_invalid_boolean(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        TypeCaster::asBoolean('not-a-bool');
+    }
 }
