@@ -6,7 +6,6 @@ namespace Alama\LaravelArazzo\Dto;
 
 use Alama\LaravelArazzo\Dto\Action\FailureAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
-use Alama\LaravelArazzo\Dto\Expression;
 
 final readonly class Step
 {

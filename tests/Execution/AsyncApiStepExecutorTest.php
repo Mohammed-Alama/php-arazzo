@@ -10,6 +10,7 @@ use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\AsyncApiStepExecutor;
+use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
@@ -57,7 +58,7 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
     }
 }
 
-class AsyncApiExecutorMockResolver implements \Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface
+class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
 {
     public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {

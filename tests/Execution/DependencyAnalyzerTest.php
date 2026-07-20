@@ -33,11 +33,11 @@ test('does not treat a Retrying step as complete or as runnable again', function
 
     $analyzer = new DependencyAnalyzer();
     $context = new WorkflowContext('def_1');
-    
+
     // Set A to Retrying
     $context = $context->withStepResult('A', ['outputs' => []])
         ->withStepStatus('A', StepStatus::Retrying);
-    
+
     $runnable = $analyzer->getRunnableSteps([$stepA, $stepB], $context);
     expect($runnable)->toBeEmpty();
 });
@@ -48,11 +48,11 @@ test('does not treat a Suspended step as complete', function () {
 
     $analyzer = new DependencyAnalyzer();
     $context = new WorkflowContext('def_1');
-    
+
     // Set A to Suspended
     $context = $context->withStepResult('A', ['outputs' => []])
         ->withStepStatus('A', StepStatus::Suspended);
-    
+
     $runnable = $analyzer->getRunnableSteps([$stepA, $stepB], $context);
     expect($runnable)->toBeEmpty();
 });
@@ -62,11 +62,11 @@ test('treats a goto-reset Pending step as runnable again even though a steps ent
 
     $analyzer = new DependencyAnalyzer();
     $context = new WorkflowContext('def_1');
-    
+
     // Set A to Pending (but simulating it had a previous result)
     $context = $context->withStepResult('A', ['outputs' => []])
         ->withStepStatus('A', StepStatus::Pending);
-    
+
     $runnable = $analyzer->getRunnableSteps([$stepA], $context);
     expect($runnable)->toHaveCount(1)
         ->and($runnable[0]->stepId)->toBe('A');

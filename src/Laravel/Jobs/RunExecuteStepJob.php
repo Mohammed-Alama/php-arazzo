@@ -20,7 +20,9 @@ class RunExecuteStepJob implements ShouldQueue
     use SerializesModels;
 
     public string $definitionId;
+
     public ?string $workflowId;
+
     public ?string $executionId;
 
     public function __construct(public ExecuteStepJob $inner)

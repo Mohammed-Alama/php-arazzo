@@ -173,7 +173,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
     }
 
     /**
-     * @param list<\Alama\LaravelArazzo\Dto\SuccessCriterion> $criteria
+     * @param list<SuccessCriterion> $criteria
      */
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {

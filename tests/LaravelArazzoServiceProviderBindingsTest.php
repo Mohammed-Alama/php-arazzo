@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests;
 
+use Alama\LaravelArazzo\Execution\AsyncApiStepExecutor;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
-use Alama\LaravelArazzo\Execution\AsyncApiStepExecutor;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
 use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
