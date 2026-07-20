@@ -10,6 +10,7 @@ return [
         'model' => env('OPENAI_MODEL', 'gpt-4o'),
     ],
 
+    /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
     'hot_state_ttl' => env('ARAZZO_HOT_STATE_TTL', 86400),
     'definitions_table' => 'arazzo_definitions',
     'executions_table' => 'arazzo_executions',

@@ -13,7 +13,6 @@ use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use LogicException;
-use Psr\Log\LoggerInterface;
 
 class StepExecutionWorker
 {
@@ -26,7 +25,6 @@ class StepExecutionWorker
         private DefinitionRegistryInterface $definitionRegistry,
         private EventLedgerInterface $eventLedger,
         private ExecutionRegistryInterface $executionRegistry,
-        private ?LoggerInterface $logger = null,
         private int $stateTtlSeconds = 86400,
     ) {
     }
@@ -36,7 +34,7 @@ class StepExecutionWorker
         $executionId = $job->context->getExecutionId();
         if ($executionId === null) {
             throw new LogicException(
-                "ExecuteStepJob for step '{$job->step->stepId}' has no executionId -- the workflow run was not initialized before dispatch."
+                "ExecuteStepJob for step '{$job->step->stepId}' has no executionId -- the workflow run was not initialized before dispatch.",
             );
         }
 
@@ -57,7 +55,7 @@ class StepExecutionWorker
                     $latestState['steps'] ?? $context->getSteps(),
                     $latestState['components'] ?? $context->getComponents(),
                     $latestState['workflowId'] ?? $context->getWorkflowId(),
-                    $executionId
+                    $executionId,
                 );
             } else {
                 if (array_key_exists($step->stepId, $context->getSteps())) {

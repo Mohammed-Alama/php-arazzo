@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Feature;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -46,5 +47,5 @@ it('enforces the unique index on definitions and rejects duplicate content', fun
         'content_hash' => str_repeat('a', 64),
         'raw_document' => json_encode(['x' => 2]),
         'created_at' => now(),
-    ]))->toThrow(\Illuminate\Database\QueryException::class);
+    ]))->toThrow(QueryException::class);
 });
