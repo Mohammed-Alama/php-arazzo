@@ -77,7 +77,9 @@ class StepOutcomeHandler
         }
 
         if ($matched instanceof SuccessGotoAction || $matched instanceof FailureGotoAction) {
-            $this->handleGoto($matched, $document, $context, $executionId);
+            $status = $criteriaMet ? StepStatus::Succeeded : StepStatus::Failed;
+            $newContext = $context->withStepStatus($step->stepId, $status);
+            $this->handleGoto($matched, $document, $newContext);
 
             return;
         }
@@ -181,7 +183,7 @@ class StepOutcomeHandler
         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $action->retryAfter ?? 0);
     }
 
-    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
+    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context): void
     {
         $targetWorkflowId = $action->workflowId ?? $context->getWorkflowId();
         $targetWorkflow = $this->findWorkflow($document, $targetWorkflowId);
