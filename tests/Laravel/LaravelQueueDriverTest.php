@@ -35,3 +35,11 @@ it('wraps and dispatches via later() when a delay is given', function (): void {
 
     Queue::assertPushed(RunExecuteStepJob::class);
 });
+
+it('wraps ResumeCorrelationJob in RunResumeCorrelationJob', function (): void {
+    Queue::fake();
+
+    (new LaravelQueueDriver())->dispatch(new \Alama\LaravelArazzo\Execution\Jobs\ResumeCorrelationJob('corr_1', ['x' => 1]));
+
+    Queue::assertPushed(\Alama\LaravelArazzo\Laravel\Jobs\RunResumeCorrelationJob::class, fn ($pushed) => $pushed->inner->correlationId === 'corr_1');
+});
