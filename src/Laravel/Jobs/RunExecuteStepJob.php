@@ -19,8 +19,15 @@ class RunExecuteStepJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public string $definitionId;
+    public ?string $workflowId;
+    public ?string $executionId;
+
     public function __construct(public ExecuteStepJob $inner)
     {
+        $this->definitionId = $this->inner->context->getDefinitionId();
+        $this->workflowId = $this->inner->context->getWorkflowId();
+        $this->executionId = $this->inner->context->getExecutionId();
     }
 
     public function handle(StepExecutionWorker $worker): void
