@@ -19,9 +19,11 @@ use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Parameter as OpenApiParameter;
+use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\RequestBody;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
+use cebe\openapi\spec\TypeInterface;
 use GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -153,6 +155,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
             if (str_starts_with($raw, '$.')) {
                 $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
+
                 continue;
             }
 
@@ -188,6 +191,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
                 if (!preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', (string) $target)) {
                     return false;
                 }
+
                 continue;
             }
 
@@ -196,6 +200,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
                 if (empty($result)) {
                     return false;
                 }
+
                 continue;
             }
 
@@ -214,8 +219,13 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
             return $extracted;
         }
 
+        $json = json_encode($extracted);
+        if ($json === false) {
+            return null;
+        }
+
         try {
-            return Reader::readFromJson(json_encode($extracted));
+            return Reader::readFromJson($json);
         } catch (Throwable) {
             return null;
         }
@@ -225,7 +235,12 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
     {
         foreach ($operation->parameters as $parameter) {
             if ($parameter instanceof OpenApiParameter && $parameter->name === $name && $parameter->in === $in) {
-                return $parameter->schema;
+                $schema = $parameter->schema;
+                if ($schema instanceof Reference) {
+                    $schema = $schema->resolve();
+                }
+
+                return $schema instanceof Schema ? $schema : null;
             }
         }
 
@@ -241,7 +256,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         return $operation->requestBody->content['application/json']->schema ?? null;
     }
 
-    private function resolveSchemaAtPointer(?Schema $schema, string $pointer): ?Schema
+    private function resolveSchemaAtPointer(?TypeInterface $schema, string $pointer): ?Schema
     {
         if ($schema === null) {
             return null;
@@ -254,11 +269,13 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
             if ($schema->type === 'array' && $schema->items instanceof Schema) {
                 $schema = $schema->items;
+
                 continue;
             }
 
             if (isset($schema->properties[$segment]) && $schema->properties[$segment] instanceof Schema) {
                 $schema = $schema->properties[$segment];
+
                 continue;
             }
 
@@ -325,7 +342,11 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         }
 
         $statusCode = (string) ($context->getSteps()[$step->stepId]['response']['statusCode'] ?? '');
-        $response = $operation->responses->getResponse($statusCode) ?? $operation->responses->getResponse('default');
+        $responses = $operation->responses;
+        if ($responses === null) {
+            return $value;
+        }
+        $response = $responses->getResponse($statusCode) ?? $responses->getResponse('default');
         if (!$response instanceof Response) {
             return $value;
         }

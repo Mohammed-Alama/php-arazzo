@@ -19,6 +19,7 @@ class WorkflowContextTest extends TestCase
         $this->assertEquals(['success' => true], $newContext->getSteps()['step_1']);
         $this->assertEquals('def_1', $newContext->getDefinitionId());
     }
+
     public function test_with_step_request_is_immutable_and_merges_into_steps(): void
     {
         $context = new WorkflowContext('def_1');

@@ -15,6 +15,7 @@ use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\SuccessCriterion;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Execution\ArazzoExpressionResolver;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowExecutor;
@@ -94,21 +95,76 @@ it('executes a workflow end-to-end', function () {
                 {
                     return new class() implements StreamInterface
                     {
-                        public function __toString(): string { return ''; }
-                        public function close(): void {}
-                        public function detach() {}
-                        public function getSize(): ?int { return null; }
-                        public function tell(): int { return 0; }
-                        public function eof(): bool { return true; }
-                        public function isSeekable(): bool { return false; }
-                        public function seek($offset, $whence = \SEEK_SET): void {}
-                        public function rewind(): void {}
-                        public function isWritable(): bool { return false; }
-                        public function write($string): int { return 0; }
-                        public function isReadable(): bool { return true; }
-                        public function read($length): string { return ''; }
-                        public function getContents(): string { return ''; }
-                        public function getMetadata($key = null) { return null; }
+                        public function __toString(): string
+                        {
+                            return '';
+                        }
+
+                        public function close(): void
+                        {
+                        }
+
+                        public function detach()
+                        {
+                        }
+
+                        public function getSize(): ?int
+                        {
+                            return null;
+                        }
+
+                        public function tell(): int
+                        {
+                            return 0;
+                        }
+
+                        public function eof(): bool
+                        {
+                            return true;
+                        }
+
+                        public function isSeekable(): bool
+                        {
+                            return false;
+                        }
+
+                        public function seek($offset, $whence = \SEEK_SET): void
+                        {
+                        }
+
+                        public function rewind(): void
+                        {
+                        }
+
+                        public function isWritable(): bool
+                        {
+                            return false;
+                        }
+
+                        public function write($string): int
+                        {
+                            return 0;
+                        }
+
+                        public function isReadable(): bool
+                        {
+                            return true;
+                        }
+
+                        public function read($length): string
+                        {
+                            return '';
+                        }
+
+                        public function getContents(): string
+                        {
+                            return '';
+                        }
+
+                        public function getMetadata($key = null)
+                        {
+                            return null;
+                        }
                     };
                 }
 
@@ -141,26 +197,91 @@ it('executes a workflow end-to-end', function () {
                 {
                     return new class($this->uri) implements UriInterface
                     {
-                        public function __construct(private string $uri) {}
-                        public function getScheme(): string { return ''; }
-                        public function getAuthority(): string { return ''; }
-                        public function getUserInfo(): string { return ''; }
-                        public function getHost(): string { return ''; }
-                        public function getPort(): ?int { return null; }
-                        public function getPath(): string { return ''; }
-                        public function getQuery(): string {
+                        public function __construct(private string $uri)
+                        {
+                        }
+
+                        public function getScheme(): string
+                        {
+                            return '';
+                        }
+
+                        public function getAuthority(): string
+                        {
+                            return '';
+                        }
+
+                        public function getUserInfo(): string
+                        {
+                            return '';
+                        }
+
+                        public function getHost(): string
+                        {
+                            return '';
+                        }
+
+                        public function getPort(): ?int
+                        {
+                            return null;
+                        }
+
+                        public function getPath(): string
+                        {
+                            return '';
+                        }
+
+                        public function getQuery(): string
+                        {
                             $parts = explode('?', $this->uri, 2);
+
                             return isset($parts[1]) ? $parts[1] : '';
                         }
-                        public function getFragment(): string { return ''; }
-                        public function withScheme($scheme): UriInterface { return $this; }
-                        public function withUserInfo($user, $password = null): UriInterface { return $this; }
-                        public function withHost($host): UriInterface { return $this; }
-                        public function withPort($port): UriInterface { return $this; }
-                        public function withPath($path): UriInterface { return $this; }
-                        public function withQuery($query): UriInterface { return $this; }
-                        public function withFragment($fragment): UriInterface { return $this; }
-                        public function __toString(): string { return $this->uri; }
+
+                        public function getFragment(): string
+                        {
+                            return '';
+                        }
+
+                        public function withScheme($scheme): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function withUserInfo($user, $password = null): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function withHost($host): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function withPort($port): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function withPath($path): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function withQuery($query): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function withFragment($fragment): UriInterface
+                        {
+                            return $this;
+                        }
+
+                        public function __toString(): string
+                        {
+                            return $this->uri;
+                        }
                     };
                 }
 
@@ -408,7 +529,7 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $resolver = new \Alama\LaravelArazzo\Execution\ArazzoExpressionResolver($sourceResolver, $requestFactory, $evaluator);
+    $resolver = new ArazzoExpressionResolver($sourceResolver, $requestFactory, $evaluator);
 
     $stepExecutor = new StepExecutor($httpClient, $resolver);
 

@@ -8,6 +8,7 @@ use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionLoggerInterface;
 use Alama\LaravelArazzo\Execution\Dto\ExecutionResult;
+use Alama\LaravelArazzo\Execution\Dto\StepResult;
 
 class WorkflowExecutor
 {
@@ -32,8 +33,8 @@ class WorkflowExecutor
             [$context, $success] = $this->stepExecutor->execute($step, $context, $document);
 
             $outputs = $context->getSteps()[$stepId]['outputs'] ?? [];
-            $result = new \Alama\LaravelArazzo\Execution\Dto\StepResult($stepId, $success, $outputs);
-            
+            $result = new StepResult($stepId, $success, $outputs);
+
             $stepResults[$stepId] = $result;
 
             if (!$success) {

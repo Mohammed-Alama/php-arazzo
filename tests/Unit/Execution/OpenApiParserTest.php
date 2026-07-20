@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Execution;
 
 use Alama\LaravelArazzo\Execution\OpenApiParser;
-use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Operation;
 use PHPUnit\Framework\TestCase;
 
 class OpenApiParserTest extends TestCase
