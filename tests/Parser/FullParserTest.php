@@ -10,6 +10,8 @@ use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Enum\CriterionType;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\Reusable;
+use Alama\LaravelArazzo\Dto\Enum\Format;
+use Alama\LaravelArazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Exceptions\ParserException;
 use Alama\LaravelArazzo\Loader\Loader;
 use Alama\LaravelArazzo\Loader\NativeJsonDecoder;
@@ -64,3 +66,49 @@ it('parses a minimal arazzo document', function (): void {
 it('rejects missing workflows', function (): void {
     parseFixture('invalid-missing-workflows.yaml');
 })->throws(ParserException::class, 'Missing required field: /workflows');
+
+it('parses AsyncAPI action/channelPath/correlationId fields on a step', function (): void {
+    $raw = [
+        'arazzo' => '1.0.0',
+        'info' => ['title' => 'T', 'version' => '1.0'],
+        'sourceDescriptions' => [],
+        'workflows' => [
+            [
+                'workflowId' => 'wf_1',
+                'steps' => [
+                    [
+                        'stepId' => 'wait-for-ride',
+                        'action' => 'receive',
+                        'channelPath' => 'channels/rides/created',
+                        'correlationId' => '{$response.body#/rideId}',
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+    $document = (new Parser())->parse(new RawDocument($raw, 'memory://test', Format::Json));
+    $step = $document->workflows[0]->steps[0];
+
+    expect($step->action)->toBe('receive');
+    expect($step->channelPath)->toBe('channels/rides/created');
+    expect($step->correlationId->raw)->toBe('{$response.body#/rideId}');
+});
+
+it('leaves action/channelPath/correlationId null when absent', function (): void {
+    $raw = [
+        'arazzo' => '1.0.0',
+        'info' => ['title' => 'T', 'version' => '1.0'],
+        'sourceDescriptions' => [],
+        'workflows' => [
+            ['workflowId' => 'wf_1', 'steps' => [['stepId' => 's1', 'operationId' => 'op']]],
+        ],
+    ];
+
+    $document = (new Parser())->parse(new RawDocument($raw, 'memory://test', Format::Json));
+    $step = $document->workflows[0]->steps[0];
+
+    expect($step->action)->toBeNull();
+    expect($step->channelPath)->toBeNull();
+    expect($step->correlationId)->toBeNull();
+});
