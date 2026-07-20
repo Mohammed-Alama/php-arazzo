@@ -122,6 +122,10 @@ class StepExecutionMockExecutionRegistry implements ExecutionRegistryInterface
     {
         $this->started[] = ['executionId' => $executionId, 'definitionId' => $definitionId, 'workflowId' => $workflowId];
     }
+
+    public function complete(string $executionId, \Alama\LaravelArazzo\Execution\ExecutionStatus $status): void
+    {
+    }
 }
 
 function makeStepExecutionWorkerDocument(Workflow $workflow): ArazzoDocument

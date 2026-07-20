@@ -82,6 +82,7 @@ class StepExecutionWorker
             $newContext = $context->withStepResult($step->stepId, [
                 'statusCode' => $response->getStatusCode(),
                 'outputs' => $outputs,
+                'status' => \Alama\LaravelArazzo\Execution\StepStatus::Succeeded,
             ]);
 
             $this->stateStore->save($executionId, [
