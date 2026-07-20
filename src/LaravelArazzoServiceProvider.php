@@ -87,4 +87,14 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new WorkflowExecutor($app->make(StepExecutor::class));
         });
     }
+
+    public function packageBooted(): void
+    {
+        \Illuminate\Support\Facades\Route::prefix('api/arazzo')
+            ->middleware('api')
+            ->group(function () {
+                \Illuminate\Support\Facades\Route::get('/endpoints', [\Alama\LaravelArazzo\Http\Controllers\ArazzoApiController::class, 'endpoints']);
+                \Illuminate\Support\Facades\Route::post('/generate', [\Alama\LaravelArazzo\Http\Controllers\ArazzoApiController::class, 'generate']);
+            });
+    }
 }
