@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Laravel;
+namespace Tests\Laravel;
 
+use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Alama\LaravelArazzo\Laravel\DatabaseExecutionRegistry;
 use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +33,7 @@ it('inserts an execution row on start', function (): void {
         'id' => 'exec_1',
         'definition_id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
         'workflow_id' => 'wf_1',
+        'status' => 'running',
     ]);
 });
 
@@ -43,4 +45,30 @@ it('is idempotent across repeated start() calls', function (): void {
     $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
 
     expect(DB::table('arazzo_executions')->where('id', 'exec_1')->count())->toBe(1);
+});
+
+it('marks an execution succeeded and stamps completed_at', function (): void {
+    seedTestDefinitionRow();
+
+    $registry = new DatabaseExecutionRegistry(DB::connection());
+    $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
+
+    $registry->complete('exec_1', ExecutionStatus::Succeeded);
+
+    $execution = DB::table('arazzo_executions')->where('id', 'exec_1')->first();
+    expect($execution->status)->toBe('succeeded')
+        ->and($execution->completed_at)->not->toBeNull();
+});
+
+it('does not overwrite an already-completed execution', function (): void {
+    seedTestDefinitionRow();
+
+    $registry = new DatabaseExecutionRegistry(DB::connection());
+    $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
+
+    $registry->complete('exec_1', ExecutionStatus::Succeeded);
+    $registry->complete('exec_1', ExecutionStatus::Failed);
+
+    $execution = DB::table('arazzo_executions')->where('id', 'exec_1')->first();
+    expect($execution->status)->toBe('succeeded');
 });
