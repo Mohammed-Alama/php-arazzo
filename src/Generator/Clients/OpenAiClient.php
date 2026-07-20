@@ -12,27 +12,26 @@ use RuntimeException;
 
 class OpenAiClient implements AiClientInterface
 {
-    private const API_URL = 'https://api.openai.com/v1/chat/completions';
-
     public function __construct(
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private string $apiKey,
+        private string $endpoint,
         private string $model = 'gpt-4o'
     ) {}
 
-    public function generate(string $systemInstructions, string $userTrace): string
+    public function generate(string $systemPrompt, string $userPrompt): string
     {
         $payload = json_encode([
             'model' => $this->model,
             'messages' => [
-                ['role' => 'system', 'content' => $systemInstructions],
-                ['role' => 'user', 'content' => $userTrace],
+                ['role' => 'system', 'content' => $systemPrompt],
+                ['role' => 'user', 'content' => $userPrompt],
             ],
             'temperature' => 0.0,
         ]);
 
-        $request = $this->requestFactory->createRequest('POST', self::API_URL)
+        $request = $this->requestFactory->createRequest('POST', $this->endpoint)
             ->withHeader('Authorization', 'Bearer ' . $this->apiKey)
             ->withHeader('Content-Type', 'application/json');
 

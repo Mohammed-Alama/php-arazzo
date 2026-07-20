@@ -7,11 +7,11 @@ namespace Alama\LaravelArazzo\Generator\Contracts;
 interface AiClientInterface
 {
     /**
-     * Generate content based on system instructions and user trace.
+     * Generate content based on system prompt and user prompt.
      *
-     * @param string $systemInstructions
-     * @param string $userTrace
+     * @param string $systemPrompt
+     * @param string $userPrompt
      * @return string
      */
-    public function generate(string $systemInstructions, string $userTrace): string;
+    public function generate(string $systemPrompt, string $userPrompt): string;
 }
