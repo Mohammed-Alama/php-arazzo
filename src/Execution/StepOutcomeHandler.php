@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\Action\FailureAction;
+use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
+use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Reusable;
 use Alama\LaravelArazzo\Dto\Step;
@@ -70,6 +72,12 @@ class StepOutcomeHandler
 
         if ($matched instanceof RetryAction) {
             $this->handleRetry($matched, $actions, $document, $workflow, $step, $context, $executionId, $criteriaMet);
+
+            return;
+        }
+
+        if ($matched instanceof SuccessGotoAction || $matched instanceof FailureGotoAction) {
+            $this->handleGoto($matched, $document, $context, $executionId);
 
             return;
         }
@@ -171,6 +179,35 @@ class StepOutcomeHandler
         }
 
         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $action->retryAfter ?? 0);
+    }
+
+    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
+    {
+        $targetWorkflowId = $action->workflowId ?? $context->getWorkflowId();
+        $targetWorkflow = $this->findWorkflow($document, $targetWorkflowId);
+        if ($targetWorkflow === null) {
+            throw new GotoTargetNotFoundException("Goto action '{$action->name}' references unknown workflowId '{$targetWorkflowId}'.");
+        }
+
+        $newContext = $targetWorkflow->workflowId !== $context->getWorkflowId()
+            ? $context->withWorkflowId($targetWorkflow->workflowId)
+            : $context;
+
+        if ($action->stepId === null) {
+            // No specific step named -- transfer to the target workflow's start, letting
+            // normal dependency-driven choreography pick its entry steps.
+            $this->engine->evaluate($targetWorkflow, $newContext);
+
+            return;
+        }
+
+        $targetStep = $this->findStep($targetWorkflow, $action->stepId);
+        if ($targetStep === null) {
+            throw new GotoTargetNotFoundException("Goto action '{$action->name}' references unknown stepId '{$action->stepId}' in workflow '{$targetWorkflow->workflowId}'.");
+        }
+
+        $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
+        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext));
     }
 
     /**
