@@ -6,6 +6,7 @@ namespace Tests\Unit\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Enum\CriterionType;
 use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\Expression;
@@ -15,12 +16,14 @@ use Alama\LaravelArazzo\Dto\PayloadReplacement;
 use Alama\LaravelArazzo\Dto\RequestBody;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
+use Alama\LaravelArazzo\Dto\SuccessCriterion;
 use Alama\LaravelArazzo\Execution\ArazzoExpressionResolver;
+use Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
+use Alama\LaravelArazzo\Resolution\DefaultSourceResolver;
 use Alama\LaravelArazzo\Resolution\Fetchers\LocalFetcher;
 use Alama\LaravelArazzo\Resolution\Parsers\OpenApiSourceParser;
-use Alama\LaravelArazzo\Resolution\DefaultSourceResolver;
 use GuzzleHttp\Psr7\HttpFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -172,6 +175,7 @@ class ArazzoExpressionResolverTest extends TestCase
         $this->assertSame('GET', $request->getMethod());
         $this->assertSame('http://api.example.com/users', (string) $request->getUri());
     }
+
     public function test_extracts_output_via_runtime_expression_with_schema_cast(): void
     {
         $resolver = $this->makeResolver();
@@ -244,9 +248,9 @@ class ArazzoExpressionResolverTest extends TestCase
             parameters: [],
             requestBody: null,
             successCriteria: [
-                new \Alama\LaravelArazzo\Dto\SuccessCriterion(null, '{$statusCode} == 200', \Alama\LaravelArazzo\Dto\Enum\CriterionType::Simple),
-                new \Alama\LaravelArazzo\Dto\SuccessCriterion('{$statusCode}', '^20[0-1]$', \Alama\LaravelArazzo\Dto\Enum\CriterionType::Regex),
-                new \Alama\LaravelArazzo\Dto\SuccessCriterion(null, '$.users[?(@.id==1)]', \Alama\LaravelArazzo\Dto\Enum\CriterionType::JsonPath),
+                new SuccessCriterion(null, '{$statusCode} == 200', CriterionType::Simple),
+                new SuccessCriterion('{$statusCode}', '^20[0-1]$', CriterionType::Regex),
+                new SuccessCriterion(null, '$.users[?(@.id==1)]', CriterionType::JsonPath),
             ],
             onSuccess: [],
             onFailure: [],
@@ -277,7 +281,7 @@ class ArazzoExpressionResolverTest extends TestCase
             parameters: [],
             requestBody: null,
             successCriteria: [
-                new \Alama\LaravelArazzo\Dto\SuccessCriterion(null, '/users/id', \Alama\LaravelArazzo\Dto\Enum\CriterionType::XPath),
+                new SuccessCriterion(null, '/users/id', CriterionType::XPath),
             ],
             onSuccess: [],
             onFailure: [],
@@ -286,7 +290,7 @@ class ArazzoExpressionResolverTest extends TestCase
 
         $context = (new WorkflowContext('def_1'))->withStepResponse('step1', []);
 
-        $this->expectException(\Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException::class);
+        $this->expectException(UnsupportedCriterionTypeException::class);
         $resolver->evaluateSuccessCriteria($step, $context);
     }
 }

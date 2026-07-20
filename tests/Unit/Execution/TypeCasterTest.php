@@ -32,6 +32,7 @@ class TypeCasterTest extends TestCase
         $this->assertSame(['a'], TypeCaster::asArray(['a']));
         $this->assertSame(['a'], TypeCaster::asArray('a'));
     }
+
     public function test_casts_to_float(): void
     {
         $this->assertSame(4.2, TypeCaster::asFloat('4.2'));
