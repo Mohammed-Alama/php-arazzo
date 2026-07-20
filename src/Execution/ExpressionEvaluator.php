@@ -15,22 +15,20 @@ use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
 
 class ExpressionEvaluator
 {
-    public function __construct(private VariableContext $context) {}
-
-    public function evaluate(Expression $expression): mixed
+    public function evaluate(Expression $expression, VariableContext $context): mixed
     {
         $ast = $expression->ast();
-        return $this->evaluateAst($ast);
+        return $this->evaluateAst($ast, $context);
     }
 
-    private function evaluateAst(ExpressionAst $ast): mixed
+    private function evaluateAst(ExpressionAst $ast, VariableContext $context): mixed
     {
         if ($ast instanceof InputRef) {
-            return $this->context->getInputs()[$ast->name] ?? null;
+            return $context->getInputs()[$ast->name] ?? null;
         }
 
         if ($ast instanceof StepRef) {
-            $steps = $this->context->getSteps();
+            $steps = $context->getSteps();
             $stepData = $steps[$ast->stepId] ?? null;
             if (!$stepData) {
                 return null;
@@ -40,10 +38,8 @@ class ExpressionEvaluator
             
             if ($part instanceof RequestPart) {
                 $req = $stepData['request'] ?? [];
-                $target = match($part->type) {
-                    'header' => $req['headers'][$part->name] ?? null,
-                    'query' => $req['query'][$part->name] ?? null,
-                    'path' => $req['path'][$part->name] ?? null,
+                $target = match($part->httpPart) {
+                    'header' => $req['headers'][$part->headerName] ?? null,
                     'body' => JsonPointer::resolve($req['body'] ?? [], $part->jsonPointer),
                     default => null,
                 };
@@ -52,12 +48,12 @@ class ExpressionEvaluator
             
             if ($part instanceof ResponsePart) {
                 $res = $stepData['response'] ?? [];
-                if ($part->type === 'statusCode') {
+                if ($part->httpPart === 'statusCode') {
                     return $res['statusCode'] ?? null;
                 }
                 
-                $target = match($part->type) {
-                    'header' => $res['headers'][$part->name] ?? null,
+                $target = match($part->httpPart) {
+                    'header' => $res['headers'][$part->headerName] ?? null,
                     'body' => JsonPointer::resolve($res['body'] ?? [], $part->jsonPointer),
                     default => null,
                 };
@@ -70,7 +66,7 @@ class ExpressionEvaluator
         }
         
         if ($ast instanceof ComponentRef) {
-            $comps = $this->context->getComponents();
+            $comps = $context->getComponents();
             if ($ast->type === 'parameters') {
                 return $comps['parameters'][$ast->name] ?? null;
             }
