@@ -1,0 +1,26 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-DpTi1-hG.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-DkIksb4O.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true
+  },
+  "resources/js/arazzo-ui.jsx": {
+    "file": "assets/arazzo-ui-Dh2Sx9X1.js",
+    "name": "arazzo-ui",
+    "src": "resources/js/arazzo-ui.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/arazzo-ui-8hax8RNO.css"
+    ]
+  }
+}
