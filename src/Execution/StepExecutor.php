@@ -7,6 +7,7 @@ namespace Alama\LaravelArazzo\Execution;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
 use Psr\Http\Client\ClientInterface;
 use Throwable;
 
@@ -15,7 +16,13 @@ class StepExecutor
     public function __construct(
         private ClientInterface $httpClient,
         private ExpressionResolverInterface $expressionResolver,
+        private bool $strictValidationDefault = false,
     ) {
+    }
+
+    private function shouldValidateSchema(Step $step): bool
+    {
+        return $step->strictValidation ?? $this->strictValidationDefault;
     }
 
     /**
@@ -65,11 +72,24 @@ class StepExecutor
             $respBodyString = (string) $response->getBody();
             $respBody = json_decode($respBodyString, true) ?? [];
 
+            // Validating response schema if required
+            if ($this->shouldValidateSchema($step)) {
+                $this->expressionResolver->validateResponseSchema(
+                    $step,
+                    $response->getStatusCode(),
+                    $response->getHeaderLine('Content-Type'),
+                    $respBody,
+                    $document
+                );
+            }
+
             $context = $context->withStepResponse($step->stepId, [
                 'statusCode' => $statusCode,
                 'headers' => $respHeaders,
                 'body' => $respBody,
             ]);
+        } catch (SchemaValidationException $e) {
+            throw $e;
         } catch (Throwable $e) {
             $context = $context->withStepResponse($step->stepId, [
                 'statusCode' => 500,
