@@ -7,6 +7,7 @@ namespace Alama\LaravelArazzo\Execution;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
 use Alama\LaravelArazzo\Expression\Ast\ExpressionAst;
+use Alama\LaravelArazzo\Expression\Ast\HttpMetaRef;
 use Alama\LaravelArazzo\Expression\Ast\InputRef;
 use Alama\LaravelArazzo\Expression\Ast\OutputPart;
 use Alama\LaravelArazzo\Expression\Ast\RequestPart;
@@ -15,17 +16,34 @@ use Alama\LaravelArazzo\Expression\Ast\StepRef;
 
 class ExpressionEvaluator
 {
-    public function evaluate(Expression $expression, VariableContext $context): mixed
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
         $ast = $expression->ast();
 
-        return $this->evaluateAst($ast, $context);
+        return $this->evaluateAst($ast, $context, $currentStepId);
     }
 
-    private function evaluateAst(ExpressionAst $ast, VariableContext $context): mixed
+    private function evaluateAst(ExpressionAst $ast, WorkflowContext $context, ?string $currentStepId): mixed
     {
         if ($ast instanceof InputRef) {
             return $context->getInputs()[$ast->name] ?? null;
+        }
+
+        if ($ast instanceof HttpMetaRef) {
+            if ($currentStepId === null) {
+                return null;
+            }
+
+            $stepData = $context->getSteps()[$currentStepId] ?? null;
+            if (!$stepData) {
+                return null;
+            }
+
+            return match ($ast->field) {
+                'statusCode' => $stepData['response']['statusCode'] ?? null,
+                'method' => $stepData['request']['method'] ?? null,
+                'url' => $stepData['request']['url'] ?? null,
+            };
         }
 
         if ($ast instanceof StepRef) {
