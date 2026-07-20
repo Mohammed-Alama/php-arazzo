@@ -41,4 +41,28 @@ final class WorkflowContext
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
     }
+
+    public function withStepRequest(string $stepId, array $request): self
+    {
+        $newSteps = $this->steps;
+        $newSteps[$stepId]['request'] = $request;
+
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+    }
+
+    public function withStepResponse(string $stepId, array $response): self
+    {
+        $newSteps = $this->steps;
+        $newSteps[$stepId]['response'] = $response;
+
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+    }
+
+    public function withStepOutput(string $stepId, string $key, mixed $value): self
+    {
+        $newSteps = $this->steps;
+        $newSteps[$stepId]['outputs'][$key] = $value;
+
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components);
+    }
 }
