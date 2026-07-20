@@ -53,6 +53,31 @@ class StepOutcomeMockEventLedger implements EventLedgerInterface
     }
 }
 
+class StepOutcomeMockPendingCorrelationRegistry implements \Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface
+{
+    /** @var array<string, bool> */
+    public array $outstanding = [];
+
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    {
+        $this->outstanding[$executionId] = true;
+    }
+
+    public function findByCorrelationId(string $correlationId): ?\Alama\LaravelArazzo\Execution\PendingCorrelation
+    {
+        return null;
+    }
+
+    public function consume(string $correlationId): void
+    {
+    }
+
+    public function existsForExecution(string $executionId): bool
+    {
+        return $this->outstanding[$executionId] ?? false;
+    }
+}
+
 class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
 {
     public function compileRequest(\Alama\LaravelArazzo\Dto\Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): \Psr\Http\Message\RequestInterface
@@ -119,13 +144,20 @@ function stepOutcomeDocument(array $workflows, ?Components $components = null): 
     );
 }
 
-/** @return array{0: StepOutcomeHandler, 1: SyncQueueDriver, 2: StepOutcomeMockExecutionRegistry, 3: StepOutcomeMockEventLedger} */
-function makeStepOutcomeHandler(int $maxRetryAttempts = 10): array
+/**
+ * @return array{0: StepOutcomeHandler, 1: SyncQueueDriver, 2: StepOutcomeMockExecutionRegistry, 3: StepOutcomeMockEventLedger, 4: StepOutcomeMockPendingCorrelationRegistry}
+ */
+function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrelationOutstanding = false): array
 {
     $queue = new SyncQueueDriver();
     $executionRegistry = new StepOutcomeMockExecutionRegistry();
     $eventLedger = new StepOutcomeMockEventLedger();
-    $engine = new Engine(new DependencyAnalyzer(), $queue, new class implements \Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface {
+    $pendingCorrelations = new StepOutcomeMockPendingCorrelationRegistry();
+    if ($pendingCorrelationOutstanding) {
+        $pendingCorrelations->outstanding['exec_1'] = true;
+    }
+    $dependencyAnalyzer = new DependencyAnalyzer();
+    $engine = new Engine($dependencyAnalyzer, $queue, new class implements \Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface {
         public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
         {
         }
@@ -137,9 +169,9 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10): array
     });
     $resolver = new StepOutcomeMockExpressionResolver();
 
-    $handler = new StepOutcomeHandler($queue, $engine, $executionRegistry, $eventLedger, $resolver, $maxRetryAttempts);
+    $handler = new StepOutcomeHandler($queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $maxRetryAttempts);
 
-    return [$handler, $queue, $executionRegistry, $eventLedger];
+    return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations];
 }
 
 it('continues normally and dispatches the next runnable step when criteria met and no actions match', function (): void {
@@ -392,4 +424,77 @@ it('goto to an unknown stepId in the current workflow throws GotoTargetNotFoundE
 
     expect(fn () => $handler->handle($document, $workflow, $step, $context, 'exec_1', false))
         ->toThrow(\Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException::class);
+});
+
+it('SuccessEndAction terminates the execution as succeeded', function (): void {
+    [$handler, $queue, $executionRegistry, $eventLedger] = makeStepOutcomeHandler();
+
+    $end = new \Alama\LaravelArazzo\Dto\Action\SuccessEndAction('end-ok', []);
+    $step = stepOutcomeStep('A', onSuccess: [$end]);
+    $workflow = stepOutcomeWorkflow('wf_1', [$step]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow, $step, $context, 'exec_1', true);
+
+    expect($queue->dispatched)->toBeEmpty();
+    expect($executionRegistry->completed[0]['status'])->toBe(ExecutionStatus::Succeeded);
+    expect($eventLedger->appended[0]['eventType'])->toBe('execution.succeeded');
+});
+
+it('FailureEndAction terminates the execution as failed', function (): void {
+    [$handler, , $executionRegistry, $eventLedger] = makeStepOutcomeHandler();
+
+    $end = new \Alama\LaravelArazzo\Dto\Action\FailureEndAction('end-fail', []);
+    $step = stepOutcomeStep('A', onFailure: [$end]);
+    $workflow = stepOutcomeWorkflow('wf_1', [$step]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow, $step, $context, 'exec_1', false);
+
+    expect($executionRegistry->completed[0]['status'])->toBe(ExecutionStatus::Failed);
+    expect($eventLedger->appended[0]['eventType'])->toBe('execution.failed');
+});
+
+it('auto-completes the execution as succeeded once no steps are runnable and nothing is suspended', function (): void {
+    [$handler, , $executionRegistry] = makeStepOutcomeHandler();
+
+    $step = stepOutcomeStep('A');
+    $workflow = stepOutcomeWorkflow('wf_1', [$step]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow, $step, $context, 'exec_1', true);
+
+    expect($executionRegistry->completed)->toHaveCount(1);
+    expect($executionRegistry->completed[0]['status'])->toBe(ExecutionStatus::Succeeded);
+});
+
+it('does not auto-complete while a PendingCorrelation is still outstanding for the execution', function (): void {
+    [$handler, , $executionRegistry] = makeStepOutcomeHandler(pendingCorrelationOutstanding: true);
+
+    $step = stepOutcomeStep('A');
+    $workflow = stepOutcomeWorkflow('wf_1', [$step]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow, $step, $context, 'exec_1', true);
+
+    expect($executionRegistry->completed)->toBeEmpty();
+});
+
+it('does not auto-complete while downstream steps are still runnable', function (): void {
+    [$handler, $queue, $executionRegistry] = makeStepOutcomeHandler();
+
+    $stepA = stepOutcomeStep('A');
+    $stepB = stepOutcomeStep('B', dependsOn: ['A']);
+    $workflow = stepOutcomeWorkflow('wf_1', [$stepA, $stepB]);
+    $document = stepOutcomeDocument([$workflow]);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_1')->withExecutionId('exec_1');
+
+    $handler->handle($document, $workflow, $stepA, $context, 'exec_1', true);
+
+    expect($queue->dispatched)->toHaveCount(1);
+    expect($executionRegistry->completed)->toBeEmpty();
 });
