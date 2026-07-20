@@ -18,3 +18,12 @@ and wire this existing chain," not from scratch — including deciding whether i
 A native JSONPath resolver utilizing an immutable `WorkflowContext` DTO. This prevents state
 mutation between steps and supports advanced data extraction and strict type casting before
 payloads reach the HTTP client.
+
+**1.1.0 delta:** the design spec (`docs/superpowers/specs/2026-07-20-zero-code-data-pipelining-design.md`)
+and plan (`docs/superpowers/plans/2026-07-20-zero-code-data-pipelining.md`) were written before
+Arazzo 1.1.0 was confirmed real, and both made decisions that are now stale — see the addendum
+at the top of each. Short version: bare-`$.`-prefix JSONPath sniffing in `extractOutputs` and
+the hardcoded `XPath => throw UnsupportedCriterionTypeException` in `evaluateSuccessCriteria`
+were reasonable for 1.0.0-only scope but should be superseded by a real Selector Object
+(`context`/`selector`/pinned-version `type`) rather than extended further — don't add more
+prefix-sniffing heuristics on top of what's there.

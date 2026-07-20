@@ -8,6 +8,21 @@
 
 **Tech Stack:** PHP 8.4, PSR-7/17/18 HTTP interfaces, `cebe/php-openapi` for OpenAPI schema access, `guzzlehttp/psr7` for PSR-7 implementations, Pest/PHPUnit (`vendor/bin/pest`) for tests.
 
+> **Addendum (2026-07-20) — Arazzo 1.1.0 confirmed real, before this plan was executed (0/66
+> steps checked):** this plan is still correctly scoped to 1.0.0 parity — execute it as
+> written. Two things to know before starting so you don't build throwaway work:
+> - **Task 8** hardcodes `CriterionType::XPath => throw UnsupportedCriterionTypeException`.
+>   That's still the right call for *this* plan, but the underlying reason ("no XML use case")
+>   is now false — 1.1.0's Selector Object needs real `xpath` support. Don't extend the
+>   exception message or add a TODO implying it'll never be needed; it will, in a follow-up.
+> - **Task 7**'s bare-`$.`-prefix JSONPath sniffing in `extractOutputs` is a 1.0.0-appropriate
+>   convenience heuristic. It will be superseded (not extended) by a real Selector Object
+>   (`context`/`selector`/pinned-version `type`) in the 1.1.0 follow-up — don't add more
+>   prefix-detection special cases on top of it later; replace the mechanism instead.
+>
+> See `docs/superpowers/specs/2026-07-20-zero-code-data-pipelining-design.md`'s addendum and
+> `docs/superpowers/roadmap/ROADMAP.md`'s "Arazzo 1.1.0" section for the full delta.
+
 ## Global Constraints
 
 - No throwing changes to `TypeCaster`'s existing cast methods — `asInteger`/`asString`/`asArray` keep throwing `InvalidArgumentException` on bad input; best-effort fallback (catch + log + keep raw value) lives in the resolver, not in `TypeCaster`.

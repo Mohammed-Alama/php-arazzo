@@ -2,6 +2,18 @@
 
 Roadmap seed: [docs/superpowers/roadmap/01-zero-code-data-pipelining.md](../roadmap/01-zero-code-data-pipelining.md).
 
+> **Addendum (2026-07-20) — Arazzo 1.1.0 confirmed real:** two "Out of scope" calls below were
+> made before 1.1.0's release was confirmed and are now stale. `CriterionType::XPath` was
+> deferred because there was "no XML use case in this codebase" — 1.1.0's Selector Object
+> makes `xpath` a real, spec-required type (pinned to `xpath-10`/`20`/`30`/`31`). And
+> `WorkflowRef`/`SourceRef` AST nodes were deferred as "likely relevant to a future cross-module
+> item" — that future item has arrived: AsyncAPI `channelPath` values are cross-source
+> references (`{$sourceDescriptions.<name>}#/channels/...`). Neither is in scope for *this*
+> plan (still correctly scoped to 1.0.0 parity) — but don't let a future implementer read the
+> "Out of scope" bullets below as still-valid reasoning; they're historical context now, not a
+> current decision. See `docs/superpowers/roadmap/ROADMAP.md`'s "Arazzo 1.1.0" section and
+> `tests/fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml` for the target shape.
+
 ## Starting point: this is not greenfield
 
 Three pieces of scaffolding already exist (see `CHANGELOG.md`, "Added — not yet wired into the
@@ -35,10 +47,15 @@ a second, independently-maintained copy of logic `StepExecutor` already has.
 **Out of scope (explicitly deferred):**
 - Wiring `StepExecutionWorker` into a real queue/dispatch pipeline, or fixing its known
   double-dispatch/registry gaps — roadmap item 03 ("Native Async Control Flow").
-- `CriterionType::XPath` — no XML use case in this codebase. Throws a dedicated
-  "unsupported" exception rather than a fake implementation.
+- `CriterionType::XPath` — still out of scope for *this* plan (1.0.0 parity only). Throws a
+  dedicated "unsupported" exception rather than a fake implementation. Correction: the original
+  reason ("no XML use case in this codebase") no longer holds — Arazzo 1.1.0's Selector Object
+  makes `xpath` a real, spec-required type. Real scope, deferred to whichever item picks up the
+  1.1.0 Selector Object (see roadmap item 01's "1.1.0 delta"), not dropped.
 - `WorkflowRef` / `SourceRef` expression AST nodes (cross-workflow/cross-source references) — not
-  needed for step-level compile/extract/evaluate; likely relevant to a future cross-module item.
+  needed for step-level compile/extract/evaluate in this (1.0.0-scoped) plan. Correction: the
+  "future cross-module item" this was deferred to is now concrete — AsyncAPI `channelPath`
+  cross-source references, roadmap item 03's 1.1.0 delta.
 - Full OpenAPI-schema *validation* (as opposed to best-effort casting) — that's roadmap item 04
   ("Strict Runtime Schema Validation"), which depends on this item. Casting here is deliberately
   forgiving (see Error Handling) so it doesn't duplicate item 04's job.

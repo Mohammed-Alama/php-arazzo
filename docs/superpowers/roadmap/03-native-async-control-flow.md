@@ -19,3 +19,12 @@ for linear step chains (not diamond/fan-in DAGs), and the definition registry is
 Built-in engine logic to parse `retryAfter` and `successCriteria` directly from the Arazzo
 YAML. It autonomously manages sleep/re-queue cycles and webhook suspensions without relying on
 recursive queue jobs.
+
+**1.1.0 delta:** "webhook suspensions" above is now a concrete spec construct, not just an
+internal mechanism — AsyncAPI `action: receive` steps (`channelPath` + `correlationId`) need
+exactly this suspend/resume behavior: write a `PendingCorrelation` (correlationId → stepId →
+run) into the event ledger, resume when a matching event arrives. `action: send` is simpler,
+no suspension needed. Add `SourceType::Asyncapi` and a `StepProtocolExecutorInterface` with
+`HttpStepExecutor`/`AsyncApiStepExecutor` implementations so `StepExecutionWorker` doesn't grow
+protocol-specific branches inline. See `tests/fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml`
+for the target shape.

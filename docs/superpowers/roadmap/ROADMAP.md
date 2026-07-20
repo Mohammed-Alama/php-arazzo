@@ -46,6 +46,27 @@ already-shipped workflow-builder UI (`resources/js/arazzo-ui.jsx`), but is a dis
 (execution observability vs. workflow construction) — not prior art to reuse wholesale, just
 a tech-stack head start.
 
+## Arazzo 1.1.0 (cross-cutting, confirmed real spec release)
+
+The engine currently parses/validates only `arazzo: "1.0.0"` (`SourceType` enum has no
+`asyncapi` case, `ParameterIn` has no `querystring` case). 1.1.0 adds AsyncAPI
+`sourceDescriptions` (`action: send|receive`, `channelPath`, `correlationId`), a **Selector
+Object** (`context`/`selector`/`type`, with a pinned-version Expression Type Object —
+`jsonpath` + `rfc9535`, `xpath` + `xpath-10..31`, `jsonpointer` + `rfc6901`) replacing bare
+string templating for outputs/parameters, full `workflowId`+`parameters` sub-workflow
+composition on Success/Failure Action Objects, `in: querystring` params, and a root-level
+`$self` URI. A test fixture demonstrating all of these lives at
+`tests/fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml` (kept out of the passing parser
+suite until this lands — the parser hard-rejects `"1.1.0"` today).
+
+This isn't a new numbered item — it's a delta on top of items already in this roadmap. Each
+affected stub below carries a `**1.1.0 delta:**` line. Brainstorm the 1.0.0 shape first where
+a stub is still "not started"; fold the delta in during that same brainstorm rather than
+building 1.0.0-only behavior and re-doing it later. Affected: [01](01-zero-code-data-pipelining.md),
+[03](03-native-async-control-flow.md), [04](04-strict-runtime-schema-validation.md),
+[07](07-automated-saga-compensation-engine.md), [09](09-cross-module-bounded-context-bridges.md),
+[10](10-ai-agent-epistemic-protocol-routing.md).
+
 ## Phases
 
 ### Phase 0 — Engine foundation (finish what's already scaffolded)
