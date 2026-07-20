@@ -15,7 +15,13 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
     public function __construct(
         private HttpClientInterface $httpClient,
         private ExpressionResolverInterface $expressionResolver,
+        private bool $strictValidationDefault = false,
     ) {
+    }
+
+    private function shouldValidateSchema(Step $step): bool
+    {
+        return $step->strictValidation ?? $this->strictValidationDefault;
     }
 
     public function supports(Step $step, ArazzoDocument $document): bool
@@ -30,6 +36,16 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $decodedBody = json_decode((string) $response->getBody(), true);
         $body = is_array($decodedBody) ? $decodedBody : [];
+
+        if ($this->shouldValidateSchema($step)) {
+            $this->expressionResolver->validateResponseSchema(
+                $step,
+                $response->getStatusCode(),
+                $response->getHeaderLine('Content-Type'),
+                $body,
+                $document
+            );
+        }
 
         $contextWithResponse = $context->withStepResponse($step->stepId, [
             'statusCode' => $response->getStatusCode(),
