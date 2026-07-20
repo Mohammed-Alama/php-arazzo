@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Laravel;
 
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
+use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabaseExecutionRegistry implements ExecutionRegistryInterface
@@ -21,8 +22,21 @@ class DatabaseExecutionRegistry implements ExecutionRegistryInterface
             'id' => $executionId,
             'definition_id' => $definitionId,
             'workflow_id' => $workflowId,
+            'status' => ExecutionStatus::Running->value,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+    }
+
+    public function complete(string $executionId, ExecutionStatus $status): void
+    {
+        $this->db->table($this->tableName)
+            ->where('id', $executionId)
+            ->where('status', ExecutionStatus::Running->value)
+            ->update([
+                'status' => $status->value,
+                'completed_at' => now(),
+                'updated_at' => now(),
+            ]);
     }
 }
