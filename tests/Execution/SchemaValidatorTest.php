@@ -167,3 +167,39 @@ it('ignores an unrecognized format rather than flagging a violation', function (
 
     expect(SchemaValidator::validate($schema, 'anything at all'))->toBe([]);
 });
+
+it('enforces inclusive minimum/maximum by default', function (): void {
+    $schema = new Schema(['type' => 'integer', 'minimum' => 1, 'maximum' => 10]);
+
+    expect(SchemaValidator::validate($schema, 1))->toBe([]);
+    expect(SchemaValidator::validate($schema, 10))->toBe([]);
+    expect(SchemaValidator::validate($schema, 0))->toHaveCount(1);
+    expect(SchemaValidator::validate($schema, 11))->toHaveCount(1);
+});
+
+it('enforces exclusiveMinimum/exclusiveMaximum as OAS 3.0 booleans', function (): void {
+    $schema = new Schema([
+        'type' => 'integer',
+        'minimum' => 1,
+        'exclusiveMinimum' => true,
+        'maximum' => 10,
+        'exclusiveMaximum' => true,
+    ]);
+
+    expect(SchemaValidator::validate($schema, 1))->toHaveCount(1);
+    expect(SchemaValidator::validate($schema, 10))->toHaveCount(1);
+    expect(SchemaValidator::validate($schema, 5))->toBe([]);
+});
+
+it('enforces multipleOf', function (): void {
+    $schema = new Schema(['type' => 'integer', 'multipleOf' => 5]);
+
+    expect(SchemaValidator::validate($schema, 15))->toBe([]);
+    expect(SchemaValidator::validate($schema, 16))->toHaveCount(1);
+});
+
+it('tolerates float rounding drift in multipleOf', function (): void {
+    $schema = new Schema(['type' => 'number', 'multipleOf' => 0.1]);
+
+    expect(SchemaValidator::validate($schema, 0.3))->toBe([]);
+});

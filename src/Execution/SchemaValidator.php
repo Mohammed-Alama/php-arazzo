@@ -47,6 +47,10 @@ final class SchemaValidator
             $violations = [...$violations, ...self::validateString($schema, $value, $path)];
         }
 
+        if (is_int($value) || is_float($value)) {
+            $violations = [...$violations, ...self::validateNumber($schema, $value, $path)];
+        }
+
         return $violations;
     }
 
@@ -142,6 +146,42 @@ final class SchemaValidator
         $date = \DateTime::createFromFormat('!' . $format, $value);
 
         return $date !== false && $date->format($format) === $value;
+    }
+
+    /**
+     * @return list<array{path: string, message: string}>
+     */
+    private static function validateNumber(Schema $schema, int|float $value, string $path): array
+    {
+        $at = $path === '' ? '/' : $path;
+        $violations = [];
+
+        if ($schema->minimum !== null) {
+            $exclusive = $schema->exclusiveMinimum === true;
+            if ($exclusive ? $value <= $schema->minimum : $value < $schema->minimum) {
+                $bound = $exclusive ? 'greater than' : 'at least';
+                $violations[] = ['path' => $at, 'message' => "value must be {$bound} {$schema->minimum}"];
+            }
+        }
+
+        if ($schema->maximum !== null) {
+            $exclusive = $schema->exclusiveMaximum === true;
+            if ($exclusive ? $value >= $schema->maximum : $value > $schema->maximum) {
+                $bound = $exclusive ? 'less than' : 'at most';
+                $violations[] = ['path' => $at, 'message' => "value must be {$bound} {$schema->maximum}"];
+            }
+        }
+
+        if ($schema->multipleOf !== null && (float) $schema->multipleOf !== 0.0) {
+            $remainder = fmod((float) $value, (float) $schema->multipleOf);
+            $nearZero = abs($remainder) < 1e-9;
+            $nearDivisor = abs(abs($remainder) - abs((float) $schema->multipleOf)) < 1e-9;
+            if (!$nearZero && !$nearDivisor) {
+                $violations[] = ['path' => $at, 'message' => "value must be a multiple of {$schema->multipleOf}"];
+            }
+        }
+
+        return $violations;
     }
 
     private static function matchesType(string $type, mixed $value): bool
