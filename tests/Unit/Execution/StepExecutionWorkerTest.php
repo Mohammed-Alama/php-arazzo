@@ -16,30 +16,30 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class MockLockManager implements LockManagerInterface {
+class StepExecutionMockLockManager implements LockManagerInterface {
     public int $acquireCount = 0;
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed {
         $this->acquireCount++;
         return $callback();
     }
 }
-class MockStateStoreWorker implements StateStoreInterface {
+class StepExecutionMockStateStore implements StateStoreInterface {
     public array $saves = [];
     public function save(string $id, array $state): void { $this->saves[$id] = $state; }
     public function load(string $id): array { return []; }
 }
-class MockExpressionResolver implements ExpressionResolverInterface {
+class StepExecutionMockExpressionResolver implements ExpressionResolverInterface {
     public function compileRequest(Step $step, WorkflowContext $context): RequestInterface { 
         return new \GuzzleHttp\Psr7\Request('GET', 'http://localhost');
     }
     public function extractOutputs(Step $step, array $responseData): array { return []; }
 }
-class MockHttpClient implements HttpClientInterface {
+class StepExecutionMockHttpClient implements HttpClientInterface {
     public function sendRequest(RequestInterface $request): ResponseInterface { 
         return new \GuzzleHttp\Psr7\Response(200);
     }
 }
-class MockQueueDriver implements QueueDriverInterface {
+class StepExecutionMockQueueDriver implements QueueDriverInterface {
     public function dispatch(object $job, int $delaySeconds = 0): void {}
 }
 
@@ -47,11 +47,11 @@ class StepExecutionWorkerTest extends TestCase
 {
     public function test_skips_already_completed_step(): void
     {
-        $lockManager = new MockLockManager();
-        $store = new MockStateStoreWorker();
-        $resolver = new MockExpressionResolver();
-        $client = new MockHttpClient();
-        $queue = new MockQueueDriver();
+        $lockManager = new StepExecutionMockLockManager();
+        $store = new StepExecutionMockStateStore();
+        $resolver = new StepExecutionMockExpressionResolver();
+        $client = new StepExecutionMockHttpClient();
+        $queue = new StepExecutionMockQueueDriver();
         $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
         
         $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver);
@@ -69,11 +69,11 @@ class StepExecutionWorkerTest extends TestCase
 
     public function test_executes_step_and_triggers_engine(): void
     {
-        $lockManager = new MockLockManager();
-        $store = new MockStateStoreWorker();
-        $resolver = new MockExpressionResolver();
-        $client = new MockHttpClient();
-        $queue = new MockQueueDriver();
+        $lockManager = new StepExecutionMockLockManager();
+        $store = new StepExecutionMockStateStore();
+        $resolver = new StepExecutionMockExpressionResolver();
+        $client = new StepExecutionMockHttpClient();
+        $queue = new StepExecutionMockQueueDriver();
         $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
         
         $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver);
