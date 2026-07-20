@@ -1,18 +1,20 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Dto\Step;
-use Alama\LaravelArazzo\Execution\WorkflowContext;
-use Psr\Http\Message\RequestInterface;
+use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
 
 class ArazzoExpressionResolver implements ExpressionResolverInterface
 {
     public function __construct(
-        private ExpressionEvaluator $runtimeEvaluator
-    ) {}
+        private ExpressionEvaluator $runtimeEvaluator,
+    ) {
+    }
 
     public function compileRequest(Step $step, WorkflowContext $context): RequestInterface
     {
@@ -21,10 +23,10 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         // Wait, the Arazzo spec uses `operationId` or `operationPath`.
         // Let's use $step->operationPath if available.
         $uri = $step->operationPath ?? 'http://localhost';
-        
+
         // Method would come from the operation or parameters, hardcoded to GET for this simple MVP.
         $method = 'GET';
-        
+
         return new Request($method, $uri);
     }
 
@@ -42,6 +44,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
                 $outputs[$outputName] = $expressionStr; // Literal fallback
             }
         }
+
         return $outputs;
     }
 }

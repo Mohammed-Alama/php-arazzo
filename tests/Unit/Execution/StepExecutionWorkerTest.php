@@ -1,49 +1,78 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Unit\Execution;
 
-use Alama\LaravelArazzo\Execution\StepExecutionWorker;
-use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
-use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
-use Alama\LaravelArazzo\Execution\Engine;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
-use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\LaravelArazzo\Execution\SyncQueueDriver;
-use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
-use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
-use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
-use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
+use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
+use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
+use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
+use Alama\LaravelArazzo\Execution\Engine;
+use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
+use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
+use Alama\LaravelArazzo\Execution\StepExecutionWorker;
+use Alama\LaravelArazzo\Execution\SyncQueueDriver;
+use Alama\LaravelArazzo\Execution\WorkflowContext;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class StepExecutionMockLockManager implements LockManagerInterface {
+class StepExecutionMockLockManager implements LockManagerInterface
+{
     public int $acquireCount = 0;
-    public function acquire(string $key, int $ttlSeconds, callable $callback): mixed {
+
+    public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
+    {
         $this->acquireCount++;
+
         return $callback();
     }
 }
-class StepExecutionMockStateStore implements StateStoreInterface {
+class StepExecutionMockStateStore implements StateStoreInterface
+{
     public array $saves = [];
-    public function save(string $id, array $state): void { $this->saves[$id] = $state; }
-    public function load(string $id): array { return []; }
-}
-class StepExecutionMockExpressionResolver implements ExpressionResolverInterface {
-    public function compileRequest(Step $step, WorkflowContext $context): RequestInterface { 
-        return new \GuzzleHttp\Psr7\Request('GET', 'http://localhost');
+
+    public function save(string $id, array $state): void
+    {
+        $this->saves[$id] = $state;
     }
-    public function extractOutputs(Step $step, array $responseData): array { return []; }
-}
-class StepExecutionMockHttpClient implements HttpClientInterface {
-    public function sendRequest(RequestInterface $request): ResponseInterface { 
-        return new \GuzzleHttp\Psr7\Response(200);
+
+    public function load(string $id): array
+    {
+        return [];
     }
 }
-class StepExecutionMockQueueDriver implements QueueDriverInterface {
-    public function dispatch(object $job, int $delaySeconds = 0): void {}
+class StepExecutionMockExpressionResolver implements ExpressionResolverInterface
+{
+    public function compileRequest(Step $step, WorkflowContext $context): RequestInterface
+    {
+        return new Request('GET', 'http://localhost');
+    }
+
+    public function extractOutputs(Step $step, array $responseData): array
+    {
+        return [];
+    }
+}
+class StepExecutionMockHttpClient implements HttpClientInterface
+{
+    public function sendRequest(RequestInterface $request): ResponseInterface
+    {
+        return new Response(200);
+    }
+}
+class StepExecutionMockQueueDriver implements QueueDriverInterface
+{
+    public function dispatch(object $job, int $delaySeconds = 0): void
+    {
+    }
 }
 
 class StepExecutionWorkerTest extends TestCase
