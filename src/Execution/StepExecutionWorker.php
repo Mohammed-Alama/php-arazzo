@@ -31,7 +31,31 @@ class StepExecutionWorker
                 return;
             }
             
-            // Implementation continues in next task
+            $request = $this->expressionResolver->compileRequest($step, $context);
+            
+            // Note: In real scenarios, we would handle RateLimitException here
+            $response = $this->httpClient->sendRequest($request);
+            
+            // Assuming successful for MVP logic. Next iteration would evaluate criteria.
+            $outputs = $this->expressionResolver->extractOutputs($step, []);
+            
+            // Mutate context
+            $newContext = $context->withStepResult($step->stepId, [
+                'statusCode' => $response->getStatusCode(),
+                'outputs' => $outputs
+            ]);
+            
+            // Save state
+            $this->stateStore->save($newContext->getDefinitionId(), [
+                'definitionId' => $newContext->getDefinitionId(),
+                'steps' => $newContext->getSteps(),
+                'inputs' => $newContext->getInputs(),
+                'components' => $newContext->getComponents(),
+            ]);
+            
+            // Fire event (commented out for this step to avoid depending on Laravel events directly in core class if not injected, or we can use Laravel event helper later)
+            // event(new \Alama\LaravelArazzo\Execution\Events\StepExecuted(...));
+            
         });
     }
 }
