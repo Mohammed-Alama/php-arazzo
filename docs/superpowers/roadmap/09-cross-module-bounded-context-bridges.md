@@ -11,7 +11,7 @@ Extensible Action Bindings that allow the engine to map an Arazzo `stepId` direc
 local, single-responsibility PHP Action class via an internal message bus, enabling
 orchestration across strict modular boundaries without direct coupling.
 
-**1.1.0 delta:** model this as an `x-laravel-action` vendor extension (string FQCN) on a
+**1.1.0 delta:** model this as an `x-class-FQCN` vendor extension (string FQCN) on a
 `Step`, resolved via Laravel's container instead of HTTP/AsyncAPI dispatch — a third
 `StepProtocolExecutorInterface` implementation (`ActionBusStepExecutor`) alongside the
 HTTP/AsyncAPI ones from [03](03-native-async-control-flow.md)'s delta. `operationId`/
