@@ -298,6 +298,11 @@ class Parser
             $outputs = $this->parseOutputsMap($obj['outputs'], $ctx->push('outputs'));
         }
 
+        $action = $this->optionalString($obj, 'action', $ctx);
+        $channelPath = $this->optionalString($obj, 'channelPath', $ctx);
+        $correlationIdRaw = $this->optionalString($obj, 'correlationId', $ctx);
+        $correlationId = $correlationIdRaw !== null ? new Expression($correlationIdRaw) : null;
+
         return new Step(
             stepId: $this->requireString($obj, 'stepId', $ctx),
             description: $this->optionalString($obj, 'description', $ctx),
@@ -310,6 +315,9 @@ class Parser
             onSuccess: $onSuccess,
             onFailure: $onFailure,
             outputs: $outputs,
+            action: $action,
+            channelPath: $channelPath,
+            correlationId: $correlationId,
         );
     }
 
