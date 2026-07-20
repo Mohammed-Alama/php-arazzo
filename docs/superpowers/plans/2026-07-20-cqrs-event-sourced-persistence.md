@@ -26,52 +26,94 @@
 **Interfaces:**
 - Produces: `WorkflowContext::getWorkflowId(): ?string`, `getExecutionId(): ?string`, `withWorkflowId(string): self`, `withExecutionId(string): self`. Both new constructor params are optional and trail the existing ones — every existing `new WorkflowContext($definitionId, ...)` call site across the codebase keeps compiling unchanged. Consumed by Task 3 (`Engine`) and Task 13 (`StepExecutionWorker`).
 
+**Style note:** the real `tests/Unit/Execution/WorkflowContextTest.php` on disk today is written as a PHPUnit test class (`class WorkflowContextTest extends TestCase`), not Pest `it(...)`. This plan converts it to Pest syntax as part of this task — every test file this plan creates or rewrites uses Pest `it(...)`, matching the project's dominant convention (Pest's own `tests/Pest.php` plus the large majority of the suite), not the older PHPUnit-class pocket under `tests/Unit/`.
+
 - [ ] **Step 1: Write the failing tests**
 
-Add to `tests/Unit/Execution/WorkflowContextTest.php` (keep existing tests):
+Replace the full contents of `tests/Unit/Execution/WorkflowContextTest.php` (this both converts the 4 existing tests to Pest and adds the 4 new ones — read the real file first if you want to diff against what's there today):
 
 ```php
-    public function test_workflow_id_and_execution_id_default_to_null(): void
-    {
-        $context = new WorkflowContext('def_1');
+<?php
 
-        $this->assertNull($context->getWorkflowId());
-        $this->assertNull($context->getExecutionId());
-    }
+declare(strict_types=1);
 
-    public function test_with_workflow_id_is_immutable(): void
-    {
-        $context = new WorkflowContext('def_1');
-        $newContext = $context->withWorkflowId('wf_1');
+namespace Tests\Unit\Execution;
 
-        $this->assertNotSame($context, $newContext);
-        $this->assertNull($context->getWorkflowId());
-        $this->assertSame('wf_1', $newContext->getWorkflowId());
-    }
+use Alama\LaravelArazzo\Execution\WorkflowContext;
 
-    public function test_with_execution_id_is_immutable(): void
-    {
-        $context = new WorkflowContext('def_1');
-        $newContext = $context->withExecutionId('exec_1');
+it('is immutable on withStepResult', function (): void {
+    $context = new WorkflowContext('def_1', ['id' => 1]);
+    $newContext = $context->withStepResult('step_1', ['success' => true]);
 
-        $this->assertNotSame($context, $newContext);
-        $this->assertNull($context->getExecutionId());
-        $this->assertSame('exec_1', $newContext->getExecutionId());
-    }
+    expect($newContext)->not->toBe($context);
+    expect($context->getSteps())->toBeEmpty();
+    expect($newContext->getSteps()['step_1'])->toEqual(['success' => true]);
+    expect($newContext->getDefinitionId())->toBe('def_1');
+});
 
-    public function test_workflow_id_and_execution_id_survive_step_mutators(): void
-    {
-        $context = (new WorkflowContext('def_1'))
-            ->withWorkflowId('wf_1')
-            ->withExecutionId('exec_1')
-            ->withStepRequest('step_1', ['method' => 'GET'])
-            ->withStepResponse('step_1', ['statusCode' => 200])
-            ->withStepOutput('step_1', 'id', 1)
-            ->withStepResult('step_2', ['done' => true]);
+it('is immutable on withStepRequest and merges into steps', function (): void {
+    $context = new WorkflowContext('def_1');
+    $newContext = $context->withStepRequest('step_1', ['method' => 'GET', 'url' => 'http://x']);
 
-        $this->assertSame('wf_1', $context->getWorkflowId());
-        $this->assertSame('exec_1', $context->getExecutionId());
-    }
+    expect($newContext)->not->toBe($context);
+    expect($context->getSteps())->toBeEmpty();
+    expect($newContext->getSteps()['step_1']['request'])->toEqual(['method' => 'GET', 'url' => 'http://x']);
+});
+
+it('merges withStepResponse alongside an existing request', function (): void {
+    $context = (new WorkflowContext('def_1'))
+        ->withStepRequest('step_1', ['method' => 'GET'])
+        ->withStepResponse('step_1', ['statusCode' => 200]);
+
+    expect($context->getSteps()['step_1']['request'])->toEqual(['method' => 'GET']);
+    expect($context->getSteps()['step_1']['response'])->toEqual(['statusCode' => 200]);
+});
+
+it('merges withStepOutput as individual keys', function (): void {
+    $context = (new WorkflowContext('def_1'))
+        ->withStepOutput('step_1', 'id', 123)
+        ->withStepOutput('step_1', 'name', 'Alice');
+
+    expect($context->getSteps()['step_1']['outputs'])->toEqual(['id' => 123, 'name' => 'Alice']);
+});
+
+it('defaults workflowId and executionId to null', function (): void {
+    $context = new WorkflowContext('def_1');
+
+    expect($context->getWorkflowId())->toBeNull();
+    expect($context->getExecutionId())->toBeNull();
+});
+
+it('is immutable on withWorkflowId', function (): void {
+    $context = new WorkflowContext('def_1');
+    $newContext = $context->withWorkflowId('wf_1');
+
+    expect($newContext)->not->toBe($context);
+    expect($context->getWorkflowId())->toBeNull();
+    expect($newContext->getWorkflowId())->toBe('wf_1');
+});
+
+it('is immutable on withExecutionId', function (): void {
+    $context = new WorkflowContext('def_1');
+    $newContext = $context->withExecutionId('exec_1');
+
+    expect($newContext)->not->toBe($context);
+    expect($context->getExecutionId())->toBeNull();
+    expect($newContext->getExecutionId())->toBe('exec_1');
+});
+
+it('carries workflowId and executionId through every step mutator', function (): void {
+    $context = (new WorkflowContext('def_1'))
+        ->withWorkflowId('wf_1')
+        ->withExecutionId('exec_1')
+        ->withStepRequest('step_1', ['method' => 'GET'])
+        ->withStepResponse('step_1', ['statusCode' => 200])
+        ->withStepOutput('step_1', 'id', 1)
+        ->withStepResult('step_2', ['done' => true]);
+
+    expect($context->getWorkflowId())->toBe('wf_1');
+    expect($context->getExecutionId())->toBe('exec_1');
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -237,98 +279,91 @@ namespace Tests\Unit\Laravel;
 use Alama\LaravelArazzo\Laravel\RedisHotStateStore;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 use Illuminate\Redis\Connections\Connection;
-use PHPUnit\Framework\TestCase;
 
-class RedisHotStateStoreTest extends TestCase
+function makeRecordingRedisConnection(): Connection
 {
-    private function makeConnection(): Connection
+    return new class() extends Connection
     {
-        return new class() extends Connection
+        /** @var list<array<string, mixed>> */
+        public array $calls = [];
+
+        public function __construct()
         {
-            /** @var list<array<string, mixed>> */
-            public array $calls = [];
+        }
 
-            public function __construct()
-            {
-            }
-
-            public function set($key, $value)
-            {
-                $this->calls[] = ['method' => 'set', 'key' => $key, 'value' => $value];
-            }
-
-            public function setex($key, $seconds, $value)
-            {
-                $this->calls[] = ['method' => 'setex', 'key' => $key, 'seconds' => $seconds, 'value' => $value];
-            }
-
-            public function get($key)
-            {
-                $this->calls[] = ['method' => 'get', 'key' => $key];
-
-                return json_encode(['foo' => 'bar']);
-            }
-
-            public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
-            {
-            }
-        };
-    }
-
-    public function test_saves_with_default_ttl_and_loads_state(): void
-    {
-        $redisConnection = $this->makeConnection();
-        $factory = $this->createMock(RedisFactory::class);
-        $factory->method('connection')->willReturn($redisConnection);
-
-        $store = new RedisHotStateStore($factory, defaultTtlSeconds: 3600);
-        $store->save('exec_123', ['foo' => 'bar']);
-        $result = $store->load('exec_123');
-
-        $this->assertEquals(['foo' => 'bar'], $result);
-        $this->assertEquals('setex', $redisConnection->calls[0]['method']);
-        $this->assertEquals('arazzo:state:exec_123', $redisConnection->calls[0]['key']);
-        $this->assertEquals(3600, $redisConnection->calls[0]['seconds']);
-        $this->assertEquals(json_encode(['foo' => 'bar']), $redisConnection->calls[0]['value']);
-    }
-
-    public function test_explicit_ttl_overrides_the_default(): void
-    {
-        $redisConnection = $this->makeConnection();
-        $factory = $this->createMock(RedisFactory::class);
-        $factory->method('connection')->willReturn($redisConnection);
-
-        $store = new RedisHotStateStore($factory, defaultTtlSeconds: 3600);
-        $store->save('exec_123', ['foo' => 'bar'], ttlSeconds: 60);
-
-        $this->assertEquals(60, $redisConnection->calls[0]['seconds']);
-    }
-
-    public function test_returns_null_when_key_is_missing(): void
-    {
-        $redisConnection = new class() extends Connection
+        public function set($key, $value)
         {
-            public function __construct()
-            {
-            }
+            $this->calls[] = ['method' => 'set', 'key' => $key, 'value' => $value];
+        }
 
-            public function get($key)
-            {
-                return null;
-            }
+        public function setex($key, $seconds, $value)
+        {
+            $this->calls[] = ['method' => 'setex', 'key' => $key, 'seconds' => $seconds, 'value' => $value];
+        }
 
-            public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
-            {
-            }
-        };
-        $factory = $this->createMock(RedisFactory::class);
-        $factory->method('connection')->willReturn($redisConnection);
+        public function get($key)
+        {
+            $this->calls[] = ['method' => 'get', 'key' => $key];
 
-        $store = new RedisHotStateStore($factory);
+            return json_encode(['foo' => 'bar']);
+        }
 
-        $this->assertNull($store->load('missing'));
-    }
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
+        {
+        }
+    };
 }
+
+it('saves with the default TTL and loads state back', function (): void {
+    $redisConnection = makeRecordingRedisConnection();
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory, defaultTtlSeconds: 3600);
+    $store->save('exec_123', ['foo' => 'bar']);
+    $result = $store->load('exec_123');
+
+    expect($result)->toEqual(['foo' => 'bar']);
+    expect($redisConnection->calls[0]['method'])->toBe('setex');
+    expect($redisConnection->calls[0]['key'])->toBe('arazzo:state:exec_123');
+    expect($redisConnection->calls[0]['seconds'])->toBe(3600);
+    expect($redisConnection->calls[0]['value'])->toBe(json_encode(['foo' => 'bar']));
+});
+
+it('lets an explicit TTL override the default', function (): void {
+    $redisConnection = makeRecordingRedisConnection();
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory, defaultTtlSeconds: 3600);
+    $store->save('exec_123', ['foo' => 'bar'], ttlSeconds: 60);
+
+    expect($redisConnection->calls[0]['seconds'])->toBe(60);
+});
+
+it('returns null when the key is missing', function (): void {
+    $redisConnection = new class() extends Connection
+    {
+        public function __construct()
+        {
+        }
+
+        public function get($key)
+        {
+            return null;
+        }
+
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
+        {
+        }
+    };
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory);
+
+    expect($store->load('missing'))->toBeNull();
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -430,7 +465,7 @@ git commit -m "feat: add TTL support to StateStoreInterface/RedisHotStateStore"
 - Consumes: `WorkflowContext::getWorkflowId()`/`withWorkflowId()` (Task 1), `StateStoreInterface`'s 3-arg `save()` (Task 2 — the file's existing `MockStateStore` test double implements `StateStoreInterface` and must be updated to match, or it won't compile once Task 2 lands).
 - Produces: every `ExecuteStepJob` dispatched by `Engine::evaluate()` now carries a context with `workflowId` set — this is what lets `StepExecutionWorker` (Task 13) know which `Workflow` inside a multi-workflow `ArazzoDocument` it's executing.
 
-**Note:** `tests/Unit/Execution/EngineTest.php` already exists with one test (`test_engine_dispatches_runnable_steps`) and two test doubles (`MockQueueDriver`, `MockStateStore`). This task adds two new tests and fixes `MockStateStore` to match Task 2's new `StateStoreInterface` signature — it does not create a new file or rename the existing classes.
+**Note:** `tests/Unit/Execution/EngineTest.php` already exists on disk as a PHPUnit test class (`class EngineTest extends TestCase`) with one test (`test_engine_dispatches_runnable_steps`) and two test doubles (`MockQueueDriver`, `MockStateStore`). This task converts it to Pest, adds two new tests, and fixes `MockStateStore` to match Task 2's new `StateStoreInterface` signature — the test-double classes keep their existing names, only the test structure changes from a class to top-level `it(...)` calls.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -451,7 +486,6 @@ use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
-use PHPUnit\Framework\TestCase;
 
 class MockQueueDriver implements QueueDriverInterface
 {
@@ -475,59 +509,53 @@ class MockStateStore implements StateStoreInterface
     }
 }
 
-class EngineTest extends TestCase
-{
-    public function test_engine_dispatches_runnable_steps(): void
-    {
-        $queue = new MockQueueDriver();
-        $store = new MockStateStore();
-        $analyzer = new DependencyAnalyzer();
-        $engine = new Engine($analyzer, $queue, $store);
+it('dispatches every runnable step', function (): void {
+    $queue = new MockQueueDriver();
+    $store = new MockStateStore();
+    $analyzer = new DependencyAnalyzer();
+    $engine = new Engine($analyzer, $queue, $store);
 
-        $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
-        $workflow = new Workflow('w_1', null, null, [], [], [$stepA, $stepB], [], [], [], []);
+    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('w_1', null, null, [], [], [$stepA, $stepB], [], [], [], []);
 
-        $context = new WorkflowContext('def_1');
+    $context = new WorkflowContext('def_1');
 
-        $engine->evaluate($workflow, $context);
+    $engine->evaluate($workflow, $context);
 
-        $this->assertCount(2, $queue->dispatched);
-    }
+    expect($queue->dispatched)->toHaveCount(2);
+});
 
-    public function test_stamps_workflow_id_onto_dispatched_job_context(): void
-    {
-        $queue = new MockQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
+it('stamps workflowId onto the dispatched job context', function (): void {
+    $queue = new MockQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
 
-        $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-        $context = new WorkflowContext('def_1');
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $context = new WorkflowContext('def_1');
 
-        $engine->evaluate($workflow, $context);
+    $engine->evaluate($workflow, $context);
 
-        $this->assertCount(1, $queue->dispatched);
-        /** @var ExecuteStepJob $job */
-        $job = $queue->dispatched[0];
-        $this->assertSame('wf_1', $job->context->getWorkflowId());
-    }
+    expect($queue->dispatched)->toHaveCount(1);
+    /** @var ExecuteStepJob $job */
+    $job = $queue->dispatched[0];
+    expect($job->context->getWorkflowId())->toBe('wf_1');
+});
 
-    public function test_does_not_overwrite_an_already_set_workflow_id(): void
-    {
-        $queue = new MockQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
+it('does not overwrite an already-set workflowId', function (): void {
+    $queue = new MockQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
 
-        $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-        $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_original');
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf_original');
 
-        $engine->evaluate($workflow, $context);
+    $engine->evaluate($workflow, $context);
 
-        /** @var ExecuteStepJob $job */
-        $job = $queue->dispatched[0];
-        $this->assertSame('wf_original', $job->context->getWorkflowId());
-    }
-}
+    /** @var ExecuteStepJob $job */
+    $job = $queue->dispatched[0];
+    expect($job->context->getWorkflowId())->toBe('wf_original');
+});
 ```
 
 - [ ] **Step 2: Run tests to verify the new ones fail**
@@ -584,6 +612,8 @@ git commit -m "feat: stamp workflowId onto WorkflowContext in Engine::evaluate"
 **Interfaces:**
 - Produces: `EventLedgerInterface::append(string $executionId, string $eventType, array $payload): void` (renamed 1st param — semantic only, doesn't change the call signature's arity, but documents what it's always meant to identify). `DatabaseEventLedger` now catches DB write failures and logs instead of throwing. Consumed by Task 13.
 
+**Style note:** `tests/Unit/Laravel/DatabaseEventLedgerTest.php` exists on disk as a PHPUnit test class today; this task converts it to Pest as part of updating it.
+
 - [ ] **Step 1: Write the failing tests**
 
 Replace the full contents of `tests/Unit/Laravel/DatabaseEventLedgerTest.php`:
@@ -598,41 +628,33 @@ namespace Tests\Unit\Laravel;
 use Alama\LaravelArazzo\Laravel\DatabaseEventLedger;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class DatabaseEventLedgerTest extends TestCase
-{
-    public function test_appends_event_to_database(): void
-    {
-        $builder = $this->createMock(Builder::class);
-        $builder->expects($this->once())->method('insert')->willReturn(true);
+it('appends an event to the database', function (): void {
+    $builder = $this->createMock(Builder::class);
+    $builder->expects($this->once())->method('insert')->willReturn(true);
 
-        $db = $this->createMock(ConnectionInterface::class);
-        $db->method('table')->with('arazzo_events')->willReturn($builder);
+    $db = $this->createMock(ConnectionInterface::class);
+    $db->method('table')->with('arazzo_events')->willReturn($builder);
 
-        $ledger = new DatabaseEventLedger($db, 'arazzo_events');
-        $ledger->append('exec_1', 'StepExecuted', ['stepId' => 'A']);
-    }
+    $ledger = new DatabaseEventLedger($db, 'arazzo_events');
+    $ledger->append('exec_1', 'StepExecuted', ['stepId' => 'A']); // mock's expects($this->once()) is the assertion
+});
 
-    public function test_swallows_and_logs_a_database_failure_instead_of_throwing(): void
-    {
-        $builder = $this->createMock(Builder::class);
-        $builder->method('insert')->willThrowException(new \RuntimeException('connection refused'));
+it('swallows and logs a database failure instead of throwing', function (): void {
+    $builder = $this->createMock(Builder::class);
+    $builder->method('insert')->willThrowException(new \RuntimeException('connection refused'));
 
-        $db = $this->createMock(ConnectionInterface::class);
-        $db->method('table')->willReturn($builder);
+    $db = $this->createMock(ConnectionInterface::class);
+    $db->method('table')->willReturn($builder);
 
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())->method('warning');
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger->expects($this->once())->method('warning');
 
-        $ledger = new DatabaseEventLedger($db, 'arazzo_events', $logger);
+    $ledger = new DatabaseEventLedger($db, 'arazzo_events', $logger);
 
-        // Must not throw.
-        $ledger->append('exec_1', 'StepExecuted', ['stepId' => 'A']);
-        $this->addToAssertionCount(1);
-    }
-}
+    $ledger->append('exec_1', 'StepExecuted', ['stepId' => 'A']); // must not throw
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -799,23 +821,26 @@ git commit -m "feat: widen DefinitionRegistryInterface to register/return Arazzo
 
 **Files:**
 - Modify: `src/Execution/InMemoryDefinitionRegistry.php`
-- Test: `tests/Unit/Execution/InMemoryDefinitionRegistryTest.php` (create if it doesn't exist)
+- Create: `tests/Unit/Execution/InMemoryDefinitionRegistryTest.php`
+- Delete: `tests/Unit/Execution/DefinitionRegistryTest.php`
 
 **Interfaces:**
 - Consumes: `DefinitionRegistryInterface` (Task 6).
 - Produces: a fast, process-local test double — kept (not deleted) for tests that don't need real DB persistence, per the design spec's explicit decision to keep it as a test double alongside the new `DatabaseDefinitionRegistry`.
 
-- [ ] **Step 1: Check whether the test file exists**
+**Confirmed:** `tests/Unit/Execution/InMemoryDefinitionRegistryTest.php` does not exist yet (`find tests -iname "InMemoryDefinitionRegistryTest.php"` returns nothing as of this plan being written) — this is a brand-new file, written directly in Pest style.
+
+**Important — a pre-existing file will break otherwise:** `tests/Unit/Execution/DefinitionRegistryTest.php` already exists and calls `$registry->register($wf)` with a `Workflow` DTO — the old signature Task 6 removes. It has no other content worth keeping (one test, `test_registers_and_retrieves_workflow`, fully superseded by this task's new file). Delete it in this task's Step 1, in the same commit as the new file, so the suite doesn't have a file that fails to compile between Task 6 landing and this task completing.
+
+- [ ] **Step 1: Delete the superseded test file**
 
 ```bash
-find tests -iname "InMemoryDefinitionRegistryTest.php"
+rm tests/Unit/Execution/DefinitionRegistryTest.php
 ```
 
-If it exists, add to it. If not, create it as shown in Step 2.
+- [ ] **Step 3: Write the failing test**
 
-- [ ] **Step 2: Write the failing test**
-
-Create (or add to) `tests/Unit/Execution/InMemoryDefinitionRegistryTest.php`:
+Create `tests/Unit/Execution/InMemoryDefinitionRegistryTest.php`:
 
 ```php
 <?php
@@ -828,47 +853,41 @@ use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
-use PHPUnit\Framework\TestCase;
 
-class InMemoryDefinitionRegistryTest extends TestCase
+function makeEmptyArazzoDocument(): ArazzoDocument
 {
-    private function makeDocument(): ArazzoDocument
-    {
-        return new ArazzoDocument(
-            arazzo: '1.0.0',
-            info: new Info('Test', null, null, '1.0.0'),
-            sourceDescriptions: [],
-            workflows: [],
-            components: new Components([], [], [], []),
-            specificationExtensions: [],
-        );
-    }
-
-    public function test_registers_and_retrieves_a_document(): void
-    {
-        $registry = new InMemoryDefinitionRegistry();
-        $document = $this->makeDocument();
-
-        $id = $registry->register($document);
-
-        $this->assertSame($document, $registry->get($id));
-    }
-
-    public function test_returns_null_for_an_unknown_id(): void
-    {
-        $registry = new InMemoryDefinitionRegistry();
-
-        $this->assertNull($registry->get('unknown'));
-    }
+    return new ArazzoDocument(
+        arazzo: '1.0.0',
+        info: new Info('Test', null, null, '1.0.0'),
+        sourceDescriptions: [],
+        workflows: [],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+    );
 }
+
+it('registers and retrieves a document', function (): void {
+    $registry = new InMemoryDefinitionRegistry();
+    $document = makeEmptyArazzoDocument();
+
+    $id = $registry->register($document);
+
+    expect($registry->get($id))->toBe($document);
+});
+
+it('returns null for an unknown id', function (): void {
+    $registry = new InMemoryDefinitionRegistry();
+
+    expect($registry->get('unknown'))->toBeNull();
+});
 ```
 
-- [ ] **Step 3: Run test to verify it fails**
+- [ ] **Step 4: Run test to verify it fails**
 
 Run: `vendor/bin/pest tests/Unit/Execution/InMemoryDefinitionRegistryTest.php`
 Expected: FAIL — `register()` still type-hints `Workflow`, not `ArazzoDocument`.
 
-- [ ] **Step 4: Implement the change**
+- [ ] **Step 5: Implement the change**
 
 Replace the full contents of `src/Execution/InMemoryDefinitionRegistry.php`:
 
@@ -902,14 +921,15 @@ class InMemoryDefinitionRegistry implements DefinitionRegistryInterface
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [ ] **Step 6: Run test to verify it passes**
 
 Run: `vendor/bin/pest tests/Unit/Execution/InMemoryDefinitionRegistryTest.php`
 Expected: PASS (2 tests)
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
+git add -u tests/Unit/Execution/DefinitionRegistryTest.php
 git add src/Execution/InMemoryDefinitionRegistry.php tests/Unit/Execution/InMemoryDefinitionRegistryTest.php
 git commit -m "feat: update InMemoryDefinitionRegistry to register/return ArazzoDocument"
 ```
@@ -939,6 +959,8 @@ Create `tests/Feature/PersistenceMigrationsTest.php`:
 <?php
 
 declare(strict_types=1);
+
+namespace Alama\LaravelArazzo\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -1140,7 +1162,7 @@ git commit -m "feat: add migrations for arazzo_definitions/executions/events"
 - Consumes: `DefinitionRegistryInterface` (Task 6), `arazzo_definitions` table (Task 8), `Parser::parse()` (existing, unchanged), `DefinitionHydrationException` (Task 5).
 - Produces: the real, persistent registry. Consumed by Task 12 (wiring) and Task 13 (`StepExecutionWorker`).
 
-This test needs a real database, not mocks — extend the package's Testbench-backed `TestCase`, not plain PHPUnit `TestCase`.
+This test needs a real database, not mocks. `tests/Pest.php` only auto-binds `TestCase` for `tests/Feature`, `tests/Commands`, `tests/Resolution` — `tests/Unit/Laravel/` isn't in that list, so this file needs its own `uses(TestCase::class, RefreshDatabase::class)` line at the top (Pest supports per-file `uses()` alongside the global one).
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -1154,8 +1176,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Laravel;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Components;
-use Alama\LaravelArazzo\Dto\Info;
+use Alama\LaravelArazzo\Dto\Enum\Format;
+use Alama\LaravelArazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Execution\Exceptions\DefinitionHydrationException;
 use Alama\LaravelArazzo\Laravel\DatabaseDefinitionRegistry;
 use Alama\LaravelArazzo\Parser\Parser;
@@ -1163,111 +1185,98 @@ use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseDefinitionRegistryTest extends TestCase
-{
-    use RefreshDatabase;
+uses(TestCase::class, RefreshDatabase::class);
 
-    private function rawRoot(string $title = 'Test Doc'): array
-    {
-        return [
-            'arazzo' => '1.0.0',
-            'info' => ['title' => $title, 'version' => '1.0'],
-            'sourceDescriptions' => [],
-            'workflows' => [
-                [
-                    'workflowId' => 'wf_1',
-                    'steps' => [
-                        ['stepId' => 'step_1', 'operationId' => 'op_1'],
-                    ],
+function definitionRawRoot(string $title = 'Test Doc'): array
+{
+    return [
+        'arazzo' => '1.0.0',
+        'info' => ['title' => $title, 'version' => '1.0'],
+        'sourceDescriptions' => [],
+        'workflows' => [
+            [
+                'workflowId' => 'wf_1',
+                'steps' => [
+                    ['stepId' => 'step_1', 'operationId' => 'op_1'],
                 ],
             ],
-        ];
-    }
-
-    private function documentFor(array $rawRoot): ArazzoDocument
-    {
-        return (new Parser())->parse(new \Alama\LaravelArazzo\Dto\RawDocument(
-            $rawRoot,
-            'memory://test',
-            \Alama\LaravelArazzo\Dto\Enum\Format::Json,
-        ));
-    }
-
-    public function test_registers_and_retrieves_a_document(): void
-    {
-        $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
-        $document = $this->documentFor($this->rawRoot());
-
-        $id = $registry->register($document);
-        $fetched = $registry->get($id);
-
-        $this->assertNotNull($fetched);
-        $this->assertSame('Test Doc', $fetched->info->title);
-        $this->assertSame('wf_1', $fetched->workflows[0]->workflowId);
-    }
-
-    public function test_registering_identical_content_twice_returns_the_same_id(): void
-    {
-        $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
-        $document = $this->documentFor($this->rawRoot());
-
-        $id1 = $registry->register($document);
-        $id2 = $registry->register($document);
-
-        $this->assertSame($id1, $id2);
-        $this->assertSame(1, DB::table('arazzo_definitions')->count());
-    }
-
-    public function test_registering_different_content_produces_different_ids(): void
-    {
-        $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
-
-        $id1 = $registry->register($this->documentFor($this->rawRoot('Doc A')));
-        $id2 = $registry->register($this->documentFor($this->rawRoot('Doc B')));
-
-        $this->assertNotSame($id1, $id2);
-    }
-
-    public function test_get_returns_null_for_unknown_id(): void
-    {
-        $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
-
-        $this->assertNull($registry->get('01ARZ3NDEKTSV4RRFFQ69G5FAV'));
-    }
-
-    public function test_get_throws_hydration_exception_on_unparseable_json(): void
-    {
-        DB::table('arazzo_definitions')->insert([
-            'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
-            'document_identity' => 'Broken',
-            'content_hash' => str_repeat('a', 64),
-            'raw_document' => 'not valid json',
-            'created_at' => now(),
-        ]);
-
-        $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
-
-        $this->expectException(DefinitionHydrationException::class);
-        $registry->get('01ARZ3NDEKTSV4RRFFQ69G5FAV');
-    }
-
-    public function test_get_throws_hydration_exception_when_content_no_longer_validates(): void
-    {
-        // Missing required "workflows" field -- Parser::parse() will reject this.
-        DB::table('arazzo_definitions')->insert([
-            'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
-            'document_identity' => 'Invalid',
-            'content_hash' => str_repeat('a', 64),
-            'raw_document' => json_encode(['arazzo' => '1.0.0', 'info' => ['title' => 'x', 'version' => '1.0']]),
-            'created_at' => now(),
-        ]);
-
-        $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
-
-        $this->expectException(DefinitionHydrationException::class);
-        $registry->get('01ARZ3NDEKTSV4RRFFQ69G5FAV');
-    }
+        ],
+    ];
 }
+
+function definitionDocumentFor(array $rawRoot): ArazzoDocument
+{
+    return (new Parser())->parse(new RawDocument($rawRoot, 'memory://test', Format::Json));
+}
+
+it('registers and retrieves a document', function (): void {
+    $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
+    $document = definitionDocumentFor(definitionRawRoot());
+
+    $id = $registry->register($document);
+    $fetched = $registry->get($id);
+
+    expect($fetched)->not->toBeNull();
+    expect($fetched->info->title)->toBe('Test Doc');
+    expect($fetched->workflows[0]->workflowId)->toBe('wf_1');
+});
+
+it('returns the same id when registering identical content twice', function (): void {
+    $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
+    $document = definitionDocumentFor(definitionRawRoot());
+
+    $id1 = $registry->register($document);
+    $id2 = $registry->register($document);
+
+    expect($id2)->toBe($id1);
+    expect(DB::table('arazzo_definitions')->count())->toBe(1);
+});
+
+it('produces different ids for different content', function (): void {
+    $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
+
+    $id1 = $registry->register(definitionDocumentFor(definitionRawRoot('Doc A')));
+    $id2 = $registry->register(definitionDocumentFor(definitionRawRoot('Doc B')));
+
+    expect($id2)->not->toBe($id1);
+});
+
+it('returns null from get() for an unknown id', function (): void {
+    $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
+
+    expect($registry->get('01ARZ3NDEKTSV4RRFFQ69G5FAV'))->toBeNull();
+});
+
+it('throws a hydration exception on unparseable JSON', function (): void {
+    DB::table('arazzo_definitions')->insert([
+        'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
+        'document_identity' => 'Broken',
+        'content_hash' => str_repeat('a', 64),
+        'raw_document' => 'not valid json',
+        'created_at' => now(),
+    ]);
+
+    $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
+
+    expect(fn () => $registry->get('01ARZ3NDEKTSV4RRFFQ69G5FAV'))
+        ->toThrow(DefinitionHydrationException::class);
+});
+
+it('throws a hydration exception when content no longer validates', function (): void {
+    // Missing required "workflows" field -- Parser::parse() will reject this.
+    DB::table('arazzo_definitions')->insert([
+        'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
+        'document_identity' => 'Invalid',
+        'content_hash' => str_repeat('a', 64),
+        'raw_document' => json_encode(['arazzo' => '1.0.0', 'info' => ['title' => 'x', 'version' => '1.0']]),
+        'created_at' => now(),
+    ]);
+
+    $registry = new DatabaseDefinitionRegistry(DB::connection(), new Parser());
+
+    expect(fn () => $registry->get('01ARZ3NDEKTSV4RRFFQ69G5FAV'))
+        ->toThrow(DefinitionHydrationException::class);
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
@@ -1416,6 +1425,8 @@ git commit -m "feat: implement DatabaseDefinitionRegistry backed by ArazzoDocume
 **Interfaces:**
 - Produces: `ExecutionRegistryInterface::start(string $executionId, string $definitionId, string $workflowId): void` — idempotent (safe to call once per step in a run, not just once per run). Consumed by Task 13 (`StepExecutionWorker`).
 
+**Style note:** same as Task 9 — `tests/Unit/Laravel/` isn't auto-bound by `tests/Pest.php`, so this file needs its own `uses(TestCase::class, RefreshDatabase::class)` line.
+
 - [ ] **Step 1: Write the failing test**
 
 Create `tests/Unit/Laravel/DatabaseExecutionRegistryTest.php`:
@@ -1432,47 +1443,41 @@ use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseExecutionRegistryTest extends TestCase
+uses(TestCase::class, RefreshDatabase::class);
+
+function seedTestDefinitionRow(): void
 {
-    use RefreshDatabase;
-
-    public function test_start_inserts_an_execution_row(): void
-    {
-        DB::table('arazzo_definitions')->insert([
-            'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
-            'document_identity' => 'Test',
-            'content_hash' => str_repeat('a', 64),
-            'raw_document' => json_encode(['x' => 1]),
-            'created_at' => now(),
-        ]);
-
-        $registry = new DatabaseExecutionRegistry(DB::connection());
-        $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
-
-        $this->assertDatabaseHas('arazzo_executions', [
-            'id' => 'exec_1',
-            'definition_id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
-            'workflow_id' => 'wf_1',
-        ]);
-    }
-
-    public function test_start_is_idempotent_across_repeated_calls(): void
-    {
-        DB::table('arazzo_definitions')->insert([
-            'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
-            'document_identity' => 'Test',
-            'content_hash' => str_repeat('a', 64),
-            'raw_document' => json_encode(['x' => 1]),
-            'created_at' => now(),
-        ]);
-
-        $registry = new DatabaseExecutionRegistry(DB::connection());
-        $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
-        $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
-
-        $this->assertSame(1, DB::table('arazzo_executions')->where('id', 'exec_1')->count());
-    }
+    DB::table('arazzo_definitions')->insert([
+        'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
+        'document_identity' => 'Test',
+        'content_hash' => str_repeat('a', 64),
+        'raw_document' => json_encode(['x' => 1]),
+        'created_at' => now(),
+    ]);
 }
+
+it('inserts an execution row on start', function (): void {
+    seedTestDefinitionRow();
+
+    $registry = new DatabaseExecutionRegistry(DB::connection());
+    $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
+
+    $this->assertDatabaseHas('arazzo_executions', [
+        'id' => 'exec_1',
+        'definition_id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',
+        'workflow_id' => 'wf_1',
+    ]);
+});
+
+it('is idempotent across repeated start() calls', function (): void {
+    seedTestDefinitionRow();
+
+    $registry = new DatabaseExecutionRegistry(DB::connection());
+    $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
+    $registry->start('exec_1', '01ARZ3NDEKTSV4RRFFQ69G5FAV', 'wf_1');
+
+    expect(DB::table('arazzo_executions')->where('id', 'exec_1')->count())->toBe(1);
+});
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -1752,7 +1757,6 @@ use Alama\LaravelArazzo\Execution\SyncQueueDriver;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -1844,167 +1848,158 @@ class StepExecutionMockExecutionRegistry implements ExecutionRegistryInterface
     }
 }
 
-class StepExecutionWorkerTest extends TestCase
+function makeStepExecutionWorkerDocument(Workflow $workflow): ArazzoDocument
 {
-    private function makeDocument(Workflow $workflow): ArazzoDocument
-    {
-        return new ArazzoDocument(
-            arazzo: '1.0.0',
-            info: new Info('Test', null, null, '1.0.0'),
-            sourceDescriptions: [],
-            workflows: [$workflow],
-            components: new Components([], [], [], []),
-            specificationExtensions: [],
-        );
-    }
-
-    public function test_skips_already_completed_step(): void
-    {
-        $lockManager = new StepExecutionMockLockManager();
-        $store = new StepExecutionMockStateStore();
-        $resolver = new StepExecutionMockExpressionResolver();
-        $client = new StepExecutionMockHttpClient();
-        $queue = new SyncQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        $definitionRegistry = new InMemoryDefinitionRegistry();
-        $eventLedger = new StepExecutionMockEventLedger();
-        $executionRegistry = new StepExecutionMockExecutionRegistry();
-
-        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
-
-        $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $context = (new WorkflowContext('def_1'))->withExecutionId('exec_1')->withStepResult('A', ['success' => true]);
-
-        $job = new ExecuteStepJob($step, $context);
-        $worker->handle($job);
-
-        $this->assertEquals(1, $lockManager->acquireCount);
-        $this->assertEmpty($store->saves);
-        $this->assertEmpty($eventLedger->appended);
-    }
-
-    public function test_throws_when_context_has_no_execution_id(): void
-    {
-        $lockManager = new StepExecutionMockLockManager();
-        $store = new StepExecutionMockStateStore();
-        $resolver = new StepExecutionMockExpressionResolver();
-        $client = new StepExecutionMockHttpClient();
-        $queue = new SyncQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        $definitionRegistry = new InMemoryDefinitionRegistry();
-        $eventLedger = new StepExecutionMockEventLedger();
-        $executionRegistry = new StepExecutionMockExecutionRegistry();
-
-        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
-
-        $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $context = new WorkflowContext('def_1'); // no executionId set
-
-        $job = new ExecuteStepJob($step, $context);
-
-        $this->expectException(\LogicException::class);
-        $worker->handle($job);
-    }
-
-    public function test_appends_definition_missing_event_when_registry_returns_null(): void
-    {
-        $lockManager = new StepExecutionMockLockManager();
-        $store = new StepExecutionMockStateStore();
-        $resolver = new StepExecutionMockExpressionResolver();
-        $client = new StepExecutionMockHttpClient();
-        $queue = new SyncQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        $definitionRegistry = new InMemoryDefinitionRegistry(); // nothing registered
-        $eventLedger = new StepExecutionMockEventLedger();
-        $executionRegistry = new StepExecutionMockExecutionRegistry();
-
-        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
-
-        $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $context = (new WorkflowContext('missing_def'))->withExecutionId('exec_1');
-
-        $job = new ExecuteStepJob($step, $context);
-        $worker->handle($job);
-
-        $this->assertCount(1, $eventLedger->appended);
-        $this->assertSame('execution.definition_missing', $eventLedger->appended[0]['eventType']);
-        $this->assertEmpty($store->saves);
-    }
-
-    public function test_executes_step_saves_state_with_ttl_appends_event_and_starts_execution(): void
-    {
-        $lockManager = new StepExecutionMockLockManager();
-        $store = new StepExecutionMockStateStore();
-        $resolver = new StepExecutionMockExpressionResolver();
-        $client = new StepExecutionMockHttpClient();
-        $queue = new SyncQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        $definitionRegistry = new InMemoryDefinitionRegistry();
-        $eventLedger = new StepExecutionMockEventLedger();
-        $executionRegistry = new StepExecutionMockExecutionRegistry();
-
-        $step = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
-        $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-        $document = $this->makeDocument($workflow);
-        $definitionId = $definitionRegistry->register($document);
-
-        $worker = new StepExecutionWorker(
-            $lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry,
-            stateTtlSeconds: 3600,
-        );
-
-        $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
-
-        $job = new ExecuteStepJob($step, $context);
-        $worker->handle($job);
-
-        $this->assertArrayHasKey('exec_1', $store->saves);
-        $this->assertSame(3600, $store->ttls['exec_1']);
-        $this->assertArrayHasKey('B', $store->saves['exec_1']['steps']);
-
-        $this->assertCount(1, $eventLedger->appended);
-        $this->assertSame('step.executed', $eventLedger->appended[0]['eventType']);
-        $this->assertSame('exec_1', $eventLedger->appended[0]['executionId']);
-
-        $this->assertCount(1, $executionRegistry->started);
-        $this->assertSame('exec_1', $executionRegistry->started[0]['executionId']);
-        $this->assertSame('wf_1', $executionRegistry->started[0]['workflowId']);
-
-        // compileRequest/extractOutputs should have received the real document, not null.
-        $this->assertNotNull($resolver->lastDocumentSeenByCompileRequest);
-        $this->assertSame($document, $resolver->lastDocumentSeenByCompileRequest);
-    }
-
-    public function test_dispatches_newly_unlocked_downstream_step_after_success(): void
-    {
-        $lockManager = new StepExecutionMockLockManager();
-        $store = new StepExecutionMockStateStore();
-        $resolver = new StepExecutionMockExpressionResolver();
-        $client = new StepExecutionMockHttpClient();
-        $queue = new SyncQueueDriver();
-        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
-        $definitionRegistry = new InMemoryDefinitionRegistry();
-        $eventLedger = new StepExecutionMockEventLedger();
-        $executionRegistry = new StepExecutionMockExecutionRegistry();
-
-        $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-        $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
-        $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB], [], [], [], []);
-        $document = $this->makeDocument($workflow);
-        $definitionId = $definitionRegistry->register($document);
-
-        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
-
-        $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
-
-        $job = new ExecuteStepJob($stepA, $context);
-        $worker->handle($job);
-
-        $this->assertCount(1, $queue->dispatched);
-        $dispatchedJob = $queue->dispatched[0]['job'];
-        $this->assertSame('B', $dispatchedJob->step->stepId);
-    }
+    return new ArazzoDocument(
+        arazzo: '1.0.0',
+        info: new Info('Test', null, null, '1.0.0'),
+        sourceDescriptions: [],
+        workflows: [$workflow],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
+    );
 }
+
+it('skips an already-completed step', function (): void {
+    $lockManager = new StepExecutionMockLockManager();
+    $store = new StepExecutionMockStateStore();
+    $resolver = new StepExecutionMockExpressionResolver();
+    $client = new StepExecutionMockHttpClient();
+    $queue = new SyncQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+    $definitionRegistry = new InMemoryDefinitionRegistry();
+    $eventLedger = new StepExecutionMockEventLedger();
+    $executionRegistry = new StepExecutionMockExecutionRegistry();
+
+    $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
+
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $context = (new WorkflowContext('def_1'))->withExecutionId('exec_1')->withStepResult('A', ['success' => true]);
+
+    $job = new ExecuteStepJob($step, $context);
+    $worker->handle($job);
+
+    expect($lockManager->acquireCount)->toBe(1);
+    expect($store->saves)->toBeEmpty();
+    expect($eventLedger->appended)->toBeEmpty();
+});
+
+it('throws when the context has no executionId', function (): void {
+    $lockManager = new StepExecutionMockLockManager();
+    $store = new StepExecutionMockStateStore();
+    $resolver = new StepExecutionMockExpressionResolver();
+    $client = new StepExecutionMockHttpClient();
+    $queue = new SyncQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+    $definitionRegistry = new InMemoryDefinitionRegistry();
+    $eventLedger = new StepExecutionMockEventLedger();
+    $executionRegistry = new StepExecutionMockExecutionRegistry();
+
+    $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
+
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $context = new WorkflowContext('def_1'); // no executionId set
+
+    $job = new ExecuteStepJob($step, $context);
+
+    expect(fn () => $worker->handle($job))->toThrow(\LogicException::class);
+});
+
+it('appends a definition_missing event when the registry returns null', function (): void {
+    $lockManager = new StepExecutionMockLockManager();
+    $store = new StepExecutionMockStateStore();
+    $resolver = new StepExecutionMockExpressionResolver();
+    $client = new StepExecutionMockHttpClient();
+    $queue = new SyncQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+    $definitionRegistry = new InMemoryDefinitionRegistry(); // nothing registered
+    $eventLedger = new StepExecutionMockEventLedger();
+    $executionRegistry = new StepExecutionMockExecutionRegistry();
+
+    $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
+
+    $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $context = (new WorkflowContext('missing_def'))->withExecutionId('exec_1');
+
+    $job = new ExecuteStepJob($step, $context);
+    $worker->handle($job);
+
+    expect($eventLedger->appended)->toHaveCount(1);
+    expect($eventLedger->appended[0]['eventType'])->toBe('execution.definition_missing');
+    expect($store->saves)->toBeEmpty();
+});
+
+it('executes a step, saves state with TTL, appends an event, and starts the execution', function (): void {
+    $lockManager = new StepExecutionMockLockManager();
+    $store = new StepExecutionMockStateStore();
+    $resolver = new StepExecutionMockExpressionResolver();
+    $client = new StepExecutionMockHttpClient();
+    $queue = new SyncQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+    $definitionRegistry = new InMemoryDefinitionRegistry();
+    $eventLedger = new StepExecutionMockEventLedger();
+    $executionRegistry = new StepExecutionMockExecutionRegistry();
+
+    $step = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = makeStepExecutionWorkerDocument($workflow);
+    $definitionId = $definitionRegistry->register($document);
+
+    $worker = new StepExecutionWorker(
+        $lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry,
+        stateTtlSeconds: 3600,
+    );
+
+    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
+
+    $job = new ExecuteStepJob($step, $context);
+    $worker->handle($job);
+
+    expect($store->saves)->toHaveKey('exec_1');
+    expect($store->ttls['exec_1'])->toBe(3600);
+    expect($store->saves['exec_1']['steps'])->toHaveKey('B');
+
+    expect($eventLedger->appended)->toHaveCount(1);
+    expect($eventLedger->appended[0]['eventType'])->toBe('step.executed');
+    expect($eventLedger->appended[0]['executionId'])->toBe('exec_1');
+
+    expect($executionRegistry->started)->toHaveCount(1);
+    expect($executionRegistry->started[0]['executionId'])->toBe('exec_1');
+    expect($executionRegistry->started[0]['workflowId'])->toBe('wf_1');
+
+    // compileRequest/extractOutputs should have received the real document, not null.
+    expect($resolver->lastDocumentSeenByCompileRequest)->not->toBeNull();
+    expect($resolver->lastDocumentSeenByCompileRequest)->toBe($document);
+});
+
+it('dispatches a newly-unlocked downstream step after success', function (): void {
+    $lockManager = new StepExecutionMockLockManager();
+    $store = new StepExecutionMockStateStore();
+    $resolver = new StepExecutionMockExpressionResolver();
+    $client = new StepExecutionMockHttpClient();
+    $queue = new SyncQueueDriver();
+    $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+    $definitionRegistry = new InMemoryDefinitionRegistry();
+    $eventLedger = new StepExecutionMockEventLedger();
+    $executionRegistry = new StepExecutionMockExecutionRegistry();
+
+    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB], [], [], [], []);
+    $document = makeStepExecutionWorkerDocument($workflow);
+    $definitionId = $definitionRegistry->register($document);
+
+    $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver, $definitionRegistry, $eventLedger, $executionRegistry);
+
+    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
+
+    $job = new ExecuteStepJob($stepA, $context);
+    $worker->handle($job);
+
+    expect($queue->dispatched)->toHaveCount(1);
+    $dispatchedJob = $queue->dispatched[0]['job'];
+    expect($dispatchedJob->step->stepId)->toBe('B');
+});
 ```
 
 - [ ] **Step 2: Run tests to verify they fail**
