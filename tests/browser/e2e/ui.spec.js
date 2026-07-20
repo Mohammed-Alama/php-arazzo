@@ -9,7 +9,7 @@ test('Arazzo Builder page loads successfully', async ({ page }) => {
 
 test('loads endpoints and allows drag to canvas', async ({ page }) => {
   // Mock the API response to provide a consistent test environment
-  await page.route('**/api/arazzo/endpoints*', async route => {
+  await page.route('**/api/arazzo/endpoints*ST_local_api.json*', async route => {
     const json = [
       { method: 'GET', path: '/users', operationId: 'getUsers' },
       { method: 'POST', path: '/users', operationId: 'createUser' }
@@ -38,7 +38,7 @@ test('loads endpoints and allows drag to canvas', async ({ page }) => {
 
 test('generates yaml successfully', async ({ page }) => {
   // Mock endpoints
-  await page.route('**/api/arazzo/endpoints*', async route => {
+  await page.route('**/api/arazzo/endpoints*ST_local_api.json*', async route => {
     const json = [{ method: 'GET', path: '/users', operationId: 'getUsers' }];
     await route.fulfill({ json });
   });
