@@ -29,11 +29,15 @@ class MockStateStoreWorker implements StateStoreInterface {
     public function load(string $id): array { return []; }
 }
 class MockExpressionResolver implements ExpressionResolverInterface {
-    public function compileRequest(Step $step, WorkflowContext $context): RequestInterface { return $this->createMock(RequestInterface::class); }
+    public function compileRequest(Step $step, WorkflowContext $context): RequestInterface { 
+        return new \GuzzleHttp\Psr7\Request('GET', 'http://localhost');
+    }
     public function extractOutputs(Step $step, array $responseData): array { return []; }
 }
 class MockHttpClient implements HttpClientInterface {
-    public function sendRequest(RequestInterface $request): ResponseInterface { return $this->createMock(ResponseInterface::class); }
+    public function sendRequest(RequestInterface $request): ResponseInterface { 
+        return new \GuzzleHttp\Psr7\Response(200);
+    }
 }
 class MockQueueDriver implements QueueDriverInterface {
     public function dispatch(object $job, int $delaySeconds = 0): void {}
@@ -61,5 +65,27 @@ class StepExecutionWorkerTest extends TestCase
         // Lock should be acquired, but skipped execution
         $this->assertEquals(1, $lockManager->acquireCount);
         $this->assertEmpty($store->saves); // Shouldn't save state if skipped
+    }
+
+    public function test_executes_step_and_triggers_engine(): void
+    {
+        $lockManager = new MockLockManager();
+        $store = new MockStateStoreWorker();
+        $resolver = new MockExpressionResolver();
+        $client = new MockHttpClient();
+        $queue = new MockQueueDriver();
+        $engine = new Engine(new DependencyAnalyzer(), $queue, $store);
+        
+        $worker = new StepExecutionWorker($lockManager, $store, $engine, $client, $resolver);
+        
+        $step = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
+        $context = new WorkflowContext('def_1');
+        
+        $job = new ExecuteStepJob($step, $context);
+        $worker->handle($job);
+        
+        $this->assertArrayHasKey('def_1', $store->saves);
+        $savedContext = $store->saves['def_1'];
+        $this->assertArrayHasKey('B', $savedContext['steps']);
     }
 }
