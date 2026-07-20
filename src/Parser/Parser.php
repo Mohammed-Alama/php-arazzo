@@ -318,6 +318,7 @@ class Parser
             action: $action,
             channelPath: $channelPath,
             correlationId: $correlationId,
+            strictValidation: $obj['x-strict-validation'] ?? null,
         );
     }
 
@@ -388,7 +389,19 @@ class Parser
     {
         $obj = $this->requireObjectMap($node, $ctx);
         $type = null;
-        if (($t = $this->optionalString($obj, 'type', $ctx)) !== null) {
+        $version = null;
+
+        if (array_key_exists('type', $obj) && $obj['type'] !== null) {
+            $rawType = $obj['type'];
+
+            if (is_array($rawType)) {
+                $typeCtx = $ctx->push('type');
+                $t = $this->requireString($rawType, 'type', $typeCtx);
+                $version = $this->optionalString($rawType, 'version', $typeCtx);
+            } else {
+                $t = $this->optionalString($obj, 'type', $ctx);
+            }
+
             $type = CriterionType::tryFrom($t)
                 ?? throw ParserException::invalidEnum(
                     $ctx->push('type'), 'simple|regex|jsonpath|xpath', $t,
@@ -399,6 +412,7 @@ class Parser
             context: $this->optionalString($obj, 'context', $ctx),
             condition: $this->requireString($obj, 'condition', $ctx),
             type: $type,
+            version: $version,
         );
     }
 

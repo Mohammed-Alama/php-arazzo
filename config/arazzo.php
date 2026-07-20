@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 return [
+    'strict_schema_validation' => false,
+
     'openai' => [
         /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
         'api_key' => env('OPENAI_API_KEY', ''),

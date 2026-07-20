@@ -25,4 +25,13 @@ interface ExpressionResolverInterface
      * @param list<SuccessCriterion> $criteria
      */
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;
+
+    /**
+     * Validates a decoded response body against the step's OpenAPI schema.
+     * Throws SchemaValidationException if validation fails.
+     * Does nothing if no matching schema is found.
+     *
+     * @throws \Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException
+     */
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;
 }
