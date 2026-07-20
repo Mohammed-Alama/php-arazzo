@@ -373,4 +373,88 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
         return $this->castToSchemaType($value, $leafSchema);
     }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
+    {
+        $schema = $this->findResponseSchema($step, $statusCode, $contentType, $document);
+
+        if ($schema === null) {
+            return; // No schema to validate against, so it's "valid" by default
+        }
+
+        $violations = SchemaValidator::validate($schema, $decodedBody);
+
+        if ($violations !== []) {
+            throw new Exceptions\SchemaValidationException($step->stepId, $violations);
+        }
+    }
+
+    /**
+     * @return \cebe\openapi\spec\Schema|null
+     */
+    protected function findResponseSchema(Step $step, int $statusCode, string $contentType, ?ArazzoDocument $document = null): ?\cebe\openapi\spec\Schema
+    {
+        $operation = $this->findOperation($step, $document);
+        if ($operation === null || $operation->responses === null) {
+            return null;
+        }
+
+        $response = $operation->responses->getResponse((string) $statusCode);
+        if ($response === null) {
+            // Fallback to "default" response if specific status code isn't defined
+            $response = $operation->responses->getResponse('default');
+            if ($response === null) {
+                return null;
+            }
+        }
+
+        if ($response instanceof \cebe\openapi\spec\Reference) {
+            $response = $response->resolve();
+        }
+
+        if (!$response instanceof \cebe\openapi\spec\Response || $response->content === null) {
+            return null;
+        }
+
+        // OpenAPI content types often have charsets, e.g. "application/json; charset=utf-8"
+        // We match strictly the base media type for simplicity here.
+        $baseContentType = explode(';', $contentType)[0];
+
+        $mediaType = $response->content[$baseContentType] ?? null;
+        if ($mediaType === null) {
+            return null;
+        }
+
+        $schema = $mediaType->schema;
+        if ($schema instanceof \cebe\openapi\spec\Reference) {
+            $schema = $schema->resolve();
+        }
+
+        return $schema instanceof \cebe\openapi\spec\Schema ? $schema : null;
+    }
+
+    protected function findOperation(Step $step, ?ArazzoDocument $document = null): ?Operation
+    {
+        if ($document === null || !$step->operationId) {
+            return null;
+        }
+
+        $sourceDesc = $document->sourceDescriptions[0] ?? null;
+        if ($sourceDesc === null) {
+            return null;
+        }
+
+        $openApi = $this->resolveOpenApiDocument($sourceDesc);
+        if ($openApi === null) {
+            return null;
+        }
+
+        $opId = str_contains($step->operationId, '.') ? explode('.', $step->operationId, 2)[1] : $step->operationId;
+
+        try {
+            [, , $operation] = OpenApiParser::findOperation($openApi, $opId);
+            return $operation;
+        } catch (\RuntimeException) {
+            return null;
+        }
+    }
 }

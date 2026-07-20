@@ -21,6 +21,10 @@ class HttpStepExecutorMockResolver implements ExpressionResolverInterface
 {
     public ?WorkflowContext $lastContextSeenByExtractOutputs = null;
 
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
+    {
+    }
+
     public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         return new Request('GET', 'http://localhost/thing');
@@ -105,4 +109,43 @@ it('stores the response on the context before calling extractOutputs, fixing the
     $executor->execute($step, $context, httpStepExecutorDocument(), 'exec_1');
 
     expect($resolver->lastContextSeenByExtractOutputs->getSteps()['s1']['response']['body'])->toBe(['x' => 1]);
+});
+
+use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
+
+it('validates response schema and fails fast on failure', function (): void {
+    $resolver = \Mockery::mock(ExpressionResolverInterface::class);
+    $resolver->shouldReceive('compileRequest')->andReturn(new Request('GET', '/'));
+    $resolver->shouldReceive('validateResponseSchema')->once()->andThrow(
+        new SchemaValidationException('sync-step', [['path' => '/', 'message' => 'bad schema']])
+    );
+    $resolver->shouldReceive('extractOutputs')->never();
+
+    $client = \Mockery::mock(HttpClientInterface::class);
+    $client->shouldReceive('sendRequest')->andReturn(new Response(200, [], '{"bad": true}'));
+
+    $executor = new HttpStepExecutor($client, $resolver, true); // strict default
+    $step = new Step(
+        stepId: 'sync-step',
+        description: null,
+        operationId: 'op',
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+        strictValidation: true
+    );
+
+    $document = httpStepExecutorDocument();
+
+    try {
+        $executor->execute($step, new WorkflowContext('wf_1'), $document, 'exec_1');
+        $this->fail('Expected exception');
+    } catch (SchemaValidationException $e) {
+        expect($e->stepId)->toBe('sync-step');
+    }
 });

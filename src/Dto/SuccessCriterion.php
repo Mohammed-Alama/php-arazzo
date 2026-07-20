@@ -12,6 +12,7 @@ final readonly class SuccessCriterion
         public ?string $context,
         public string $condition,
         public ?CriterionType $type,
+        public ?string $version = null,
     ) {
     }
 }

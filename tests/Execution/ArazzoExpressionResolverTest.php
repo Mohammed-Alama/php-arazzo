@@ -24,6 +24,9 @@ use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Resolution\DefaultSourceResolver;
 use Alama\LaravelArazzo\Resolution\Fetchers\LocalFetcher;
 use Alama\LaravelArazzo\Resolution\Parsers\OpenApiSourceParser;
+use cebe\openapi\spec\Operation;
+use cebe\openapi\spec\Response;
+use cebe\openapi\spec\Schema;
 use GuzzleHttp\Psr7\HttpFactory;
 
 beforeEach(function () {
@@ -330,4 +333,62 @@ it('evaluateCriteria returns true for an empty criteria list', function () {
     $context = new WorkflowContext('def_1');
 
     expect($resolver->evaluateCriteria([], $step, $context))->toBeTrue();
+});
+
+it('validates a response against the OpenAPI schema', function (): void {
+    // Setup a dummy OpenAPI operation with a schema
+    $operation = new Operation([
+        'responses' => [
+            '200' => new Response([
+                'description' => 'Success',
+                'content' => [
+                    'application/json' => [
+                        'schema' => new Schema([
+                            'type' => 'object',
+                            'required' => ['id'],
+                            'properties' => ['id' => ['type' => 'integer']],
+                        ]),
+                    ],
+                ],
+            ]),
+        ],
+    ]);
+
+    // We need to subclass or mock ArazzoExpressionResolver to intercept findOperation since it's an internal OpenAPI lookup
+    $resolver = new class(
+        new \Alama\LaravelArazzo\Resolution\DefaultSourceResolver([], []),
+        new \GuzzleHttp\Psr7\HttpFactory(),
+        new \Alama\LaravelArazzo\Execution\ExpressionEvaluator()
+    ) extends \Alama\LaravelArazzo\Execution\ArazzoExpressionResolver {
+        public ?Operation $mockOperation = null;
+        public function __construct($sourceResolver, $requestFactory, $evaluator) {
+            parent::__construct($sourceResolver, $requestFactory, $evaluator);
+        }
+        protected function findOperation(\Alama\LaravelArazzo\Dto\Step $step, ?\Alama\LaravelArazzo\Dto\ArazzoDocument $document = null): ?Operation {
+            return $this->mockOperation;
+        }
+    };
+    $resolver->mockOperation = $operation;
+
+    $step = new \Alama\LaravelArazzo\Dto\Step('test-step', null, 'operationId', null, null, [], null, [], [], [], []);
+
+    // 1. Valid data -> no exception
+    $resolver->validateResponseSchema($step, 200, 'application/json', ['id' => 123]);
+    expect(true)->toBeTrue(); // If we reached here, no exception was thrown
+
+    // 2. Invalid data -> throws SchemaValidationException
+    try {
+        $resolver->validateResponseSchema($step, 200, 'application/json', ['name' => 'wrong']);
+        $this->fail('Expected SchemaValidationException');
+    } catch (\Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException $e) {
+        expect($e->stepId)->toBe('test-step')
+            ->and($e->violations)->toHaveCount(1)
+            ->and($e->getMessage())->toContain("missing required property 'id'");
+    }
+
+    // 3. Different status code -> no schema found -> no exception (ignores)
+    $resolver->validateResponseSchema($step, 201, 'application/json', ['name' => 'wrong']);
+
+    // 4. Different content type -> no schema found -> no exception (ignores)
+    $resolver->validateResponseSchema($step, 200, 'application/xml', ['name' => 'wrong']);
 });
