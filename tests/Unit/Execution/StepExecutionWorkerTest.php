@@ -31,6 +31,7 @@ use Psr\Http\Message\ResponseInterface;
 class StepExecutionMockLockManager implements LockManagerInterface
 {
     public int $acquireCount = 0;
+
     public ?string $lastLockKey = null;
 
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
@@ -45,6 +46,7 @@ class StepExecutionMockStateStore implements StateStoreInterface
 {
     /** @var array<string, array<string, mixed>> */
     public array $saves = [];
+
     /** @var array<string, int|null> */
     public array $ttls = [];
 
@@ -59,6 +61,7 @@ class StepExecutionMockStateStore implements StateStoreInterface
     public function load(string $executionId): ?array
     {
         $this->loadCount++;
+
         return $this->saves[$executionId] ?? null;
     }
 }

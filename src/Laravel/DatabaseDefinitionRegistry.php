@@ -94,6 +94,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
 
     /**
      * @param array<string, mixed> $data
+     *
      * @return array<string, mixed>
      */
     private function sortRecursive(array $data): array
