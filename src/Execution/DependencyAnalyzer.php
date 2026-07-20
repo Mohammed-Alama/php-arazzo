@@ -16,11 +16,12 @@ class DependencyAnalyzer
     public function getRunnableSteps(array $allSteps, WorkflowContext $context): array
     {
         $runnable = [];
-        $completedStepIds = array_keys($context->getSteps());
 
         foreach ($allSteps as $step) {
-            // If already completed, skip
-            if (in_array($step->stepId, $completedStepIds, true)) {
+            $status = $context->getStepStatus($step->stepId);
+
+            // A step is only runnable if it hasn't been executed yet (null) or has been reset (Pending)
+            if ($status !== null && $status !== StepStatus::Pending) {
                 continue;
             }
 
@@ -31,10 +32,10 @@ class DependencyAnalyzer
                 continue;
             }
 
-            // Check if all dependencies are completed
+            // Check if all dependencies are completed (succeeded)
             $dependenciesMet = true;
             foreach ($step->dependsOn as $dependencyId) {
-                if (!in_array($dependencyId, $completedStepIds, true)) {
+                if ($context->getStepStatus($dependencyId) !== StepStatus::Succeeded) {
                     $dependenciesMet = false;
                     break;
                 }
