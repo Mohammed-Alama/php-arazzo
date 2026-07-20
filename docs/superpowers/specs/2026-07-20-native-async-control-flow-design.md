@@ -180,9 +180,12 @@ class RunExecuteStepJob implements ShouldQueue
 
 ## Testing strategy
 
-- **Unit — `StepOutcomeHandler`:** full decision-table coverage (success/failure × retry/goto/end/no-match × criteria-match/no-match), fake `QueueDriverInterface`/`ExecutionRegistryInterface`/`EventLedgerInterface`.
-- **Unit — retry counter:** attempts increment across simulated redispatch cycles; ceiling enforcement independent of document `retryLimit`.
-- **Unit — goto:** same-workflow stepId jump (including loop-back onto an already-`Succeeded` step), cross-workflow jump via a multi-workflow `ArazzoDocument` fixture, unknown-target exception.
-- **Feature — diamond DAG regression:** two `StepExecutionWorker::handle()` calls simulating B/C finishing concurrently against a shared real `StateStore` + real lock manager; assert D dispatches exactly once and final persisted state has all of A/B/C/D.
-- **Feature — AsyncAPI suspend/resume round-trip:** using `tests/fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml` (referenced by the roadmap doc, does not exist yet — created as part of this spec's implementation plan). Dispatch a step, assert `Suspended` status + a `PendingCorrelation` row, `POST` the webhook route, assert resumed context and eventual execution completion.
-- **Feature — real queue round-trip:** `RunExecuteStepJob` actually serializes/deserializes through a real (sync-driver) Laravel queue connection, directly covering the "plain object" bug class.
+Test paths mirror `src/` 1:1 (the repo's dominant convention — `tests/Dto`, `tests/Execution`, `tests/Http/Controllers`, etc. — not the `tests/Unit`/`tests/Feature` split doc 02's plan uses for its own new files; this spec's tests do not follow that split):
+
+- **`tests/Execution/StepOutcomeHandlerTest.php`:** full decision-table coverage (success/failure × retry/goto/end/no-match × criteria-match/no-match), fake `QueueDriverInterface`/`ExecutionRegistryInterface`/`EventLedgerInterface`.
+- **`tests/Execution/StepOutcomeHandlerTest.php` (retry cases):** attempts increment across simulated redispatch cycles; ceiling enforcement independent of document `retryLimit`.
+- **`tests/Execution/StepOutcomeHandlerTest.php` (goto cases):** same-workflow stepId jump (including loop-back onto an already-`Succeeded` step), cross-workflow jump via a multi-workflow `ArazzoDocument` fixture, unknown-target exception.
+- **`tests/Execution/DependencyAnalyzerTest.php`:** status-gated (not key-existence-gated) runnable-step detection covering `Retrying`/`Suspended`/goto-reset-to-`Pending` steps.
+- **`tests/Execution/StepExecutionWorkerTest.php`:** diamond DAG regression — two `StepExecutionWorker::handle()` calls simulating B/C finishing concurrently against a shared real `StateStore` + real lock manager; assert D dispatches exactly once and final persisted state has all of A/B/C/D.
+- **`tests/Http/Controllers/WebhookResumeControllerTest.php`:** AsyncAPI suspend/resume round-trip using `tests/fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml` (referenced by the roadmap doc, does not exist yet — created as part of this spec's implementation plan). Dispatch a step, assert `Suspended` status + a `PendingCorrelation` row, `POST` the webhook route, assert resumed context and eventual execution completion.
+- **`tests/Laravel/Jobs/RunExecuteStepJobTest.php`:** `RunExecuteStepJob` actually serializes/deserializes through a real (sync-driver) Laravel queue connection, directly covering the "plain object" bug class.
