@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution\Contracts;
 
-use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
 
 interface DefinitionRegistryInterface
 {
-    public function register(Workflow $workflow): string;
-
-    public function get(string $definitionId): ?Workflow;
+    public function get(string $definitionId): ?ArazzoDocument;
 }

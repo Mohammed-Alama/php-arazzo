@@ -21,6 +21,10 @@ class Engine
 
     public function evaluate(Workflow $workflow, WorkflowContext $context): void
     {
+        if ($context->getWorkflowId() === null) {
+            $context = $context->withWorkflowId($workflow->workflowId);
+        }
+
         $runnableSteps = $this->analyzer->getRunnableSteps($workflow->steps, $context);
 
         if (empty($runnableSteps)) {

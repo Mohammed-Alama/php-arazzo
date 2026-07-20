@@ -9,10 +9,10 @@ interface StateStoreInterface
     /**
      * @param array<string, mixed> $state
      */
-    public function save(string $workflowId, array $state): void;
+    public function save(string $executionId, array $state, ?int $ttlSeconds = null): void;
 
     /**
      * @return array<string, mixed>|null
      */
-    public function load(string $workflowId): ?array;
+    public function load(string $executionId): ?array;
 }

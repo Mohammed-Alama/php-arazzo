@@ -9,5 +9,5 @@ interface EventLedgerInterface
     /**
      * @param array<string, mixed> $payload
      */
-    public function append(string $workflowId, string $eventType, array $payload): void;
+    public function append(string $executionId, string $eventType, array $payload): void;
 }
