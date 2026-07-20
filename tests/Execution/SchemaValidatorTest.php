@@ -65,3 +65,67 @@ it('path-qualifies violations at a nested path argument', function (): void {
 
     expect($violations[0]['path'])->toBe('/user/age');
 });
+
+it('flags a missing required property', function (): void {
+    $schema = new Schema([
+        'type' => 'object',
+        'required' => ['id'],
+        'properties' => ['id' => ['type' => 'integer']],
+    ]);
+
+    $violations = SchemaValidator::validate($schema, ['name' => 'x']);
+
+    expect($violations)->toHaveCount(1)
+        ->and($violations[0]['path'])->toBe('/id')
+        ->and($violations[0]['message'])->toContain('id');
+});
+
+it('recurses into a nested object property and path-qualifies the violation', function (): void {
+    $schema = new Schema([
+        'type' => 'object',
+        'properties' => [
+            'user' => [
+                'type' => 'object',
+                'properties' => ['age' => ['type' => 'integer']],
+            ],
+        ],
+    ]);
+
+    $violations = SchemaValidator::validate($schema, ['user' => ['age' => 'old']]);
+
+    expect($violations)->toHaveCount(1)
+        ->and($violations[0]['path'])->toBe('/user/age');
+});
+
+it('does not check a property absent from the value', function (): void {
+    $schema = new Schema([
+        'type' => 'object',
+        'properties' => ['age' => ['type' => 'integer']],
+    ]);
+
+    expect(SchemaValidator::validate($schema, []))->toBe([]);
+});
+
+it('recurses into array items and path-qualifies by index', function (): void {
+    $schema = new Schema([
+        'type' => 'array',
+        'items' => ['type' => 'integer'],
+    ]);
+
+    $violations = SchemaValidator::validate($schema, [1, 'two', 3]);
+
+    expect($violations)->toHaveCount(1)
+        ->and($violations[0]['path'])->toBe('/1');
+});
+
+it('checks required/minItems against an empty array, ambiguous with empty object', function (): void {
+    $schema = new Schema([
+        'required' => ['id'],
+        'minItems' => 1,
+    ]);
+
+    $violations = SchemaValidator::validate($schema, []);
+
+    $messages = array_column($violations, 'message');
+    expect($messages)->toContain('missing required property \'id\'');
+});
