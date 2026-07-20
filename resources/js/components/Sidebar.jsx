@@ -19,6 +19,7 @@ export default function Sidebar({ endpoints }) {
                 >
                     <div className="text-xs font-bold text-blue-400">{ep.method}</div>
                     <div className="text-sm font-mono truncate">{ep.path}</div>
+                    <div className="text-xs text-gray-500">{ep.operationId}</div>
                 </div>
             ))}
         </aside>
