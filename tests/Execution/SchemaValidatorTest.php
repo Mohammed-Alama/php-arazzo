@@ -240,3 +240,42 @@ it('enforces minProperties/maxProperties', function (): void {
     expect(SchemaValidator::validate($schema, []))->toHaveCount(1);
     expect(SchemaValidator::validate($schema, ['a' => 1, 'b' => 2, 'c' => 3]))->toHaveCount(1);
 });
+
+it('enforces allOf by aggregating all violations', function (): void {
+    $schema = new Schema([
+        'allOf' => [
+            ['type' => 'string'],
+            ['minLength' => 2],
+        ],
+    ]);
+
+    expect(SchemaValidator::validate($schema, 'a'))->toHaveCount(1)
+        ->and(SchemaValidator::validate($schema, 'ab'))->toBe([]);
+});
+
+it('enforces anyOf by succeeding if at least one passes', function (): void {
+    $schema = new Schema([
+        'anyOf' => [
+            ['type' => 'string'],
+            ['type' => 'integer'],
+        ],
+    ]);
+
+    expect(SchemaValidator::validate($schema, 'a'))->toBe([]);
+    expect(SchemaValidator::validate($schema, 1))->toBe([]);
+    expect(SchemaValidator::validate($schema, true))->toHaveCount(1);
+});
+
+it('enforces oneOf by succeeding if exactly one passes', function (): void {
+    $schema = new Schema([
+        'oneOf' => [
+            ['type' => 'string', 'maxLength' => 3],
+            ['type' => 'string', 'minLength' => 3],
+        ],
+    ]);
+
+    expect(SchemaValidator::validate($schema, 'ab'))->toBe([]); // only first matches
+    expect(SchemaValidator::validate($schema, 'abcd'))->toBe([]); // only second matches
+    expect(SchemaValidator::validate($schema, 'abc'))->toHaveCount(1); // both match (fails oneOf)
+    expect(SchemaValidator::validate($schema, 1))->toHaveCount(1); // neither match (fails oneOf)
+});

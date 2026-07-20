@@ -16,6 +16,50 @@ final class SchemaValidator
     {
         $at = $path === '' ? '/' : $path;
 
+        $violations = [];
+
+        if ($schema->allOf !== null && $schema->allOf !== []) {
+            foreach ($schema->allOf as $subSchema) {
+                $resolved = self::resolveSchema($subSchema);
+                if ($resolved !== null) {
+                    $violations = [...$violations, ...self::validate($resolved, $value, $path)];
+                }
+            }
+        }
+
+        if ($schema->anyOf !== null && $schema->anyOf !== []) {
+            $anyPassed = false;
+            foreach ($schema->anyOf as $subSchema) {
+                $resolved = self::resolveSchema($subSchema);
+                if ($resolved !== null && self::validate($resolved, $value, $path) === []) {
+                    $anyPassed = true;
+                    break;
+                }
+            }
+            if (!$anyPassed) {
+                $violations[] = ['path' => $at, 'message' => 'value does not match any of the required schemas (anyOf)'];
+            }
+        }
+
+        if ($schema->oneOf !== null && $schema->oneOf !== []) {
+            $passes = 0;
+            foreach ($schema->oneOf as $subSchema) {
+                $resolved = self::resolveSchema($subSchema);
+                if ($resolved !== null && self::validate($resolved, $value, $path) === []) {
+                    $passes++;
+                }
+            }
+            if ($passes !== 1) {
+                $violations[] = ['path' => $at, 'message' => "value matches {$passes} schemas instead of exactly 1 (oneOf)"];
+            }
+        }
+
+        // Return immediately if composition rules failed -- the rest of the current schema
+        // level might just be structural and we don't want to emit noisy duplicate violations.
+        if ($violations !== []) {
+            return $violations;
+        }
+
         if ($value === null) {
             if ($schema->nullable === true || $schema->type === null) {
                 return [];
