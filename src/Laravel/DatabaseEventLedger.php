@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Laravel;
 
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
@@ -9,8 +11,9 @@ class DatabaseEventLedger implements EventLedgerInterface
 {
     public function __construct(
         private ConnectionInterface $db,
-        private string $tableName = 'arazzo_events'
-    ) {}
+        private string $tableName = 'arazzo_events',
+    ) {
+    }
 
     public function append(string $workflowId, string $eventType, array $payload): void
     {

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\LaravelArazzo\Execution\Events;
 
 class StepExecuted
@@ -8,6 +10,7 @@ class StepExecuted
         public string $workflowId,
         public string $stepId,
         public array $requestData,
-        public array $responseData
-    ) {}
+        public array $responseData,
+    ) {
+    }
 }
