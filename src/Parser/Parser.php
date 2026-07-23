@@ -302,6 +302,7 @@ class Parser
         $channelPath = $this->optionalString($obj, 'channelPath', $ctx);
         $correlationIdRaw = $this->optionalString($obj, 'correlationId', $ctx);
         $correlationId = $correlationIdRaw !== null ? new Expression($correlationIdRaw) : null;
+        $strictValidation = $this->optionalBool($obj, 'x-strict-validation', $ctx);
 
         return new Step(
             stepId: $this->requireString($obj, 'stepId', $ctx),
@@ -318,7 +319,7 @@ class Parser
             action: $action,
             channelPath: $channelPath,
             correlationId: $correlationId,
-            strictValidation: $obj['x-strict-validation'] ?? null,
+            strictValidation: $strictValidation,
         );
     }
 

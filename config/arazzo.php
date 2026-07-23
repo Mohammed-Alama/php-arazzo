@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 return [
-    'strict_schema_validation' => false,
+    /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
+    'strict_schema_validation' => env('ARAZZO_STRICT_SCHEMA_VALIDATION', false),
 
     'openai' => [
         /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
