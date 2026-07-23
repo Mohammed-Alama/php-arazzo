@@ -130,6 +130,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new StepExecutor(
                 $app->make(ClientInterface::class),
                 $app->make(ExpressionResolverInterface::class),
+                (bool) config('arazzo.strict_schema_validation', false),
             );
         });
 
@@ -207,6 +208,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new HttpStepExecutor(
                 $app->make(HttpClientInterface::class),
                 $app->make(ExpressionResolverInterface::class),
+                (bool) config('arazzo.strict_schema_validation', false),
             );
         });
 
