@@ -8,7 +8,7 @@
 - [x] Task 6: `SchemaValidator` — `allOf`/`oneOf`/`anyOf` composition
 - [x] Task 7: `SchemaValidationException`
 - [x] Task 8: `ExpressionResolverInterface::validateResponseSchema()` + `ArazzoExpressionResolver` implementation
-- [ ] Task 9: Config flag + `Step::$strictValidation` + `x-strict-validation` parsing
+- [x] Task 9: Config flag + `Step::$strictValidation` + `x-strict-validation` parsing
 - [x] Task 10: Wire validation into `StepExecutor` (sync path)
 - [x] Task 11: Wire validation into `HttpStepExecutor` (async path)
 - [x] Task 12: `SuccessCriterion` version field + rejection rule
