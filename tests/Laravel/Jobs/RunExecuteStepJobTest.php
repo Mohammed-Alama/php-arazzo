@@ -10,9 +10,10 @@ use Alama\LaravelArazzo\Execution\StepExecutionWorker;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Laravel\Jobs\RunExecuteStepJob;
 use Alama\LaravelArazzo\Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
-uses(TestCase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 class RecordingStepExecutionWorker extends StepExecutionWorker
 {
@@ -53,4 +54,60 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     // A genuinely different instance -- confirms it went through real serialize/unserialize,
     // not just an in-memory closure call.
     expect($recorder->handled[0])->not->toBe($innerJob);
+});
+
+use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Psr\Http\Client\ClientInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Info;
+use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
+use Alama\LaravelArazzo\Dto\Workflow;
+
+it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
+    // 1. Setup minimal step & workflow context
+    $step = new Step('step-1', null, 'op', null, null, [], null, [], [], [], []);
+    $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId('exec-1');
+    $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);
+    $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [], [$workflow], new Components([], [], [], []), []);
+
+    // 2. We mock the expression resolver to yield a POST request without the header
+    $resolver = \Mockery::mock(ExpressionResolverInterface::class);
+    $resolver->shouldReceive('compileRequest')
+        ->once()
+        ->andReturn(new Request('POST', 'https://api.example.com/charges', [], '{"amount":100}'));
+    $resolver->shouldReceive('extractOutputs')->andReturn([]);
+    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+
+    // 3. We intercept the actual HttpClient call to verify the header WAS injected
+    $capturedRequest = null;
+    $client = \Mockery::mock(ClientInterface::class);
+    $client->shouldReceive('sendRequest')
+        ->once()
+        ->andReturnUsing(function ($req) use (&$capturedRequest) {
+            $capturedRequest = $req;
+            return new Response(200, [], '{}');
+        });
+
+    // 4. Bind these into Laravel's container because the Job resolves them natively
+    app()->instance(ExpressionResolverInterface::class, $resolver);
+    app()->instance(ClientInterface::class, $client);
+
+    $registry = \Mockery::mock(DefinitionRegistryInterface::class);
+    $registry->shouldReceive('get')->with('def-1')->andReturn($document);
+    app()->instance(DefinitionRegistryInterface::class, $registry);
+
+    // Enable the idempotency feature in config so the binding passes it to the Job's dependencies
+    config(['arazzo.idempotency.enabled' => true]);
+
+    $job = new RunExecuteStepJob(new ExecuteStepJob($step, $context));
+    
+    $worker = app(StepExecutionWorker::class);
+    $job->handle($worker);
+
+    // 5. Assert the header is present and valid
+    expect($capturedRequest)->not->toBeNull();
+    expect($capturedRequest->getHeaderLine('Idempotency-Key'))->toMatch('/^[0-9a-f]{64}$/');
 });

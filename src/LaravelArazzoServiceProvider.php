@@ -126,11 +126,19 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             );
         });
 
+        $this->app->singleton(\Alama\LaravelArazzo\Execution\IdempotencyKeyInjector::class, function ($app) {
+            return new \Alama\LaravelArazzo\Execution\IdempotencyKeyInjector(
+                enabledDefault: (bool) config('arazzo.idempotency.enabled', false),
+                headerDefault: (string) config('arazzo.idempotency.header', 'Idempotency-Key'),
+            );
+        });
+
         $this->app->singleton(StepExecutor::class, function ($app) {
             return new StepExecutor(
                 $app->make(ClientInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 (bool) config('arazzo.strict_schema_validation', false),
+                $app->make(\Alama\LaravelArazzo\Execution\IdempotencyKeyInjector::class),
             );
         });
 
@@ -209,6 +217,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(HttpClientInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 (bool) config('arazzo.strict_schema_validation', false),
+                $app->make(\Alama\LaravelArazzo\Execution\IdempotencyKeyInjector::class),
             );
         });
 
