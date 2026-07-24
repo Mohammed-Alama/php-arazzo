@@ -82,6 +82,7 @@ final class IdempotencyKeyInjector
 
     /**
      * @param array<int|string,mixed> $value
+     *
      * @return array<int|string,mixed>
      */
     private function recursivelySortAssociativeKeys(array $value): array

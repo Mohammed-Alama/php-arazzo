@@ -56,15 +56,15 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     expect($recorder->handled[0])->not->toBe($innerJob);
 });
 
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Info;
+use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
-use Psr\Http\Client\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Info;
-use Alama\LaravelArazzo\Dto\Components;
-use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\LaravelArazzo\Dto\Workflow;
+use Psr\Http\Client\ClientInterface;
 
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context
@@ -88,6 +88,7 @@ it('injects idempotency key natively during job execution independently of StepE
         ->once()
         ->andReturnUsing(function ($req) use (&$capturedRequest) {
             $capturedRequest = $req;
+
             return new Response(200, [], '{}');
         });
 
@@ -103,7 +104,7 @@ it('injects idempotency key natively during job execution independently of StepE
     config(['arazzo.idempotency.enabled' => true]);
 
     $job = new RunExecuteStepJob(new ExecuteStepJob($step, $context));
-    
+
     $worker = app(StepExecutionWorker::class);
     $job->handle($worker);
 

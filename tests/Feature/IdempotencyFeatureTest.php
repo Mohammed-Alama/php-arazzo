@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Alama\LaravelArazzo\Execution\WorkflowContext;
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Info;
+use Alama\LaravelArazzo\Dto\Step;
+use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\StepExecutor;
+use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Tests\TestCase;
-use Psr\Http\Client\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Psr\Http\Client\ClientInterface;
 
 // uses(TestCase::class); removed since Pest.php binds it for the Feature folder
 
@@ -21,6 +25,7 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
     $capturedRequest = null;
     $client->shouldReceive('sendRequest')->once()->andReturnUsing(function ($request) use (&$capturedRequest) {
         $capturedRequest = $request;
+
         return new Response(201, [], '{"status":"ok"}');
     });
 
@@ -31,15 +36,15 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
     $resolver->shouldReceive('compileRequest')->andReturn(new Request('POST', 'https://api.example.com/charges', [], '{"amount":100}'));
     $resolver->shouldReceive('extractOutputs')->andReturn([]);
     $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
-    
+
     app()->instance(ExpressionResolverInterface::class, $resolver);
 
     $executor = app(StepExecutor::class);
 
-    $step = new \Alama\LaravelArazzo\Dto\Step('charge-step', null, 'chargeOp', null, null, [], null, [], [], [], []);
+    $step = new Step('charge-step', null, 'chargeOp', null, null, [], null, [], [], [], []);
     $context = new WorkflowContext('def-1', [], [], [], 'wf-1', 'exec-1');
-    $document = new \Alama\LaravelArazzo\Dto\ArazzoDocument('1.0.0', new \Alama\LaravelArazzo\Dto\Info('t', null, null, '1'), [], [], new \Alama\LaravelArazzo\Dto\Components([], [], [], []), []);
-    
+    $document = new ArazzoDocument('1.0.0', new Info('t', null, null, '1'), [], [], new Components([], [], [], []), []);
+
     $executor->execute($step, $context, $document);
 
     expect($capturedRequest)->not->toBeNull();

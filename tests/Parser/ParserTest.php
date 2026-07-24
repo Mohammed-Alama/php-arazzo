@@ -37,9 +37,9 @@ it('parses x-strict-validation boolean from a step', function (): void {
     expect($steps[2]->strictValidation)->toBeNull();
 });
 
-use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
-use Alama\LaravelArazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Dto\Enum\Format;
+use Alama\LaravelArazzo\Dto\RawDocument;
+use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
 
 it('parses x-idempotency-key boolean from a step', function (): void {
     $yaml = <<<'YAML'
