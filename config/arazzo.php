@@ -6,6 +6,13 @@ return [
     /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
     'strict_schema_validation' => env('ARAZZO_STRICT_SCHEMA_VALIDATION', false),
 
+    'idempotency' => [
+        /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
+        'enabled' => env('ARAZZO_IDEMPOTENCY_ENABLED', false),
+        /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
+        'header' => env('ARAZZO_IDEMPOTENCY_HEADER', 'Idempotency-Key'),
+    ],
+
     'openai' => [
         /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
         'api_key' => env('OPENAI_API_KEY', ''),
