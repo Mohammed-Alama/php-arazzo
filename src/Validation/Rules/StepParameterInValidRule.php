@@ -33,5 +33,15 @@ final class StepParameterInValidRule implements Rule
                 }
             }
         }
+
+        foreach ($doc->components->parameters as $name => $p) {
+            if ($p->in === ParameterIn::Querystring && $doc->specVersion === SpecVersion::V1_0) {
+                $errors->error(
+                    $this->code(),
+                    "Parameter 'in' value 'querystring' requires Arazzo 1.1.0.",
+                    "/components/parameters/{$name}/in"
+                );
+            }
+        }
     }
 }

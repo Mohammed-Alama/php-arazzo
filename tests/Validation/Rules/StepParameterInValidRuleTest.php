@@ -53,3 +53,30 @@ it('rejects querystring on 1.0 docs', function () {
     expect($errs)->toHaveCount(1)
         ->and($errs[0]->message)->toBe("Parameter 'in' value 'querystring' requires Arazzo 1.1.0.");
 });
+
+it('rejects querystring in component parameters on 1.0 docs', function () {
+    $errors = new ErrorCollector();
+    $doc = new ArazzoDocument(
+        arazzo: '1.0.0',
+        info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [],
+        components: new Components(
+            [],
+            ['myParam' => new Parameter('p', ParameterIn::Querystring, 'x')],
+            [],
+            []
+        ),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_0,
+    );
+    (new StepParameterInValidRule())->check(
+        $doc,
+        SymbolTable::build($doc),
+        $errors,
+    );
+    $errs = $errors->errors();
+    expect($errs)->toHaveCount(1)
+        ->and($errs[0]->message)->toBe("Parameter 'in' value 'querystring' requires Arazzo 1.1.0.")
+        ->and($errs[0]->path)->toBe('/components/parameters/myParam/in');
+});
