@@ -58,7 +58,7 @@ final class SubWorkflowInvoker
 
         return new SubWorkflowResult(
             outputs:    $outcome->outputs,
-            terminal:   $outcome->terminal ?? null,
+            status:     $outcome->status,
             childRunId: (string) $child->getExecutionId(),
         );
     }
