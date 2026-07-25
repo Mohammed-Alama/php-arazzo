@@ -32,7 +32,24 @@ final class SelectorTypeSupportedRule implements Rule
         }
 
         foreach ($doc->workflows as $wi => $wf) {
+            foreach ($wf->parameters as $pi => $p) {
+                if ($p->value instanceof Selector) {
+                    $this->validateSelector($p->value, $errors, "/workflows/{$wi}/parameters/{$pi}/value");
+                }
+            }
             foreach ($wf->steps as $si => $step) {
+                foreach ($step->parameters as $pi => $p) {
+                    if ($p->value instanceof Selector) {
+                        $this->validateSelector($p->value, $errors, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value");
+                    }
+                }
+                if ($step->requestBody !== null) {
+                    foreach ($step->requestBody->replacements as $ri => $r) {
+                        if ($r->value instanceof Selector) {
+                            $this->validateSelector($r->value, $errors, "/workflows/{$wi}/steps/{$si}/requestBody/replacements/{$ri}/value");
+                        }
+                    }
+                }
                 foreach ($step->outputs as $name => $value) {
                     if ($value instanceof Selector) {
                         $this->validateSelector(
@@ -49,6 +66,11 @@ final class SelectorTypeSupportedRule implements Rule
                         "/workflows/{$wi}/outputs/{$name}",
                     );
                 }
+            }
+        }
+        foreach ($doc->components->parameters as $name => $p) {
+            if ($p->value instanceof Selector) {
+                $this->validateSelector($p->value, $errors, "/components/parameters/{$name}/value");
             }
         }
     }
