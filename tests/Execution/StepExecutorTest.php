@@ -8,6 +8,7 @@ use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
+use Alama\LaravelArazzo\Execution\IdempotencyKeyInjector;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use GuzzleHttp\Psr7\Request;
@@ -73,4 +74,85 @@ it('skips validation if configured off globally and locally', function (): void 
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), $document);
     expect($result[1])->toBeTrue();
+});
+
+it('injects the Idempotency-Key header into the request when the injector is enabled', function (): void {
+    $resolver = Mockery::mock(ExpressionResolverInterface::class);
+    $resolver->shouldReceive('compileRequest')->andReturn(new Request('POST', 'https://api.example.com/x', [], '{"a":1}'));
+    $resolver->shouldReceive('extractOutputs')->andReturn([]);
+    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+
+    $capturedRequest = null;
+    $client = Mockery::mock(ClientInterface::class);
+    $client->shouldReceive('sendRequest')->andReturnUsing(function ($request) use (&$capturedRequest) {
+        $capturedRequest = $request;
+
+        return new Response(200, [], '{}');
+    });
+
+    $executor = new StepExecutor(
+        httpClient: $client,
+        expressionResolver: $resolver,
+        strictValidationDefault: false,
+        injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
+    );
+    $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
+    $document = new ArazzoDocument('1.0.0', new Info('t', null, null, '1'), [], [], new Components([], [], [], []), []);
+
+    [$context] = $executor->execute($step, new WorkflowContext('def-1', [], [], [], 'wf-1', 'exec-1'), $document);
+
+    expect($capturedRequest->getHeaderLine('Idempotency-Key'))->toMatch('/^[0-9a-f]{64}$/');
+    expect($context->getSteps()['test-step']['request']['headers']['Idempotency-Key'] ?? null)
+        ->toMatch('/^[0-9a-f]{64}$/');
+});
+
+it('does not inject a header when no injector is passed', function (): void {
+    $resolver = Mockery::mock(ExpressionResolverInterface::class);
+    $resolver->shouldReceive('compileRequest')->andReturn(new Request('POST', 'https://api.example.com/x', [], '{"a":1}'));
+    $resolver->shouldReceive('extractOutputs')->andReturn([]);
+    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+
+    $capturedRequest = null;
+    $client = Mockery::mock(ClientInterface::class);
+    $client->shouldReceive('sendRequest')->andReturnUsing(function ($request) use (&$capturedRequest) {
+        $capturedRequest = $request;
+
+        return new Response(200, [], '{}');
+    });
+
+    $executor = new StepExecutor($client, $resolver);
+    $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
+    $document = new ArazzoDocument('1.0.0', new Info('t', null, null, '1'), [], [], new Components([], [], [], []), []);
+
+    $executor->execute($step, new WorkflowContext('def-1'), $document);
+
+    expect($capturedRequest->getHeaderLine('Idempotency-Key'))->toBe('');
+});
+
+it('does not inject a header on non-mutating verbs even when the injector is enabled', function (): void {
+    $resolver = Mockery::mock(ExpressionResolverInterface::class);
+    $resolver->shouldReceive('compileRequest')->andReturn(new Request('GET', 'https://api.example.com/x'));
+    $resolver->shouldReceive('extractOutputs')->andReturn([]);
+    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+
+    $capturedRequest = null;
+    $client = Mockery::mock(ClientInterface::class);
+    $client->shouldReceive('sendRequest')->andReturnUsing(function ($request) use (&$capturedRequest) {
+        $capturedRequest = $request;
+
+        return new Response(200, [], '{}');
+    });
+
+    $executor = new StepExecutor(
+        httpClient: $client,
+        expressionResolver: $resolver,
+        strictValidationDefault: false,
+        injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
+    );
+    $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
+    $document = new ArazzoDocument('1.0.0', new Info('t', null, null, '1'), [], [], new Components([], [], [], []), []);
+
+    $executor->execute($step, new WorkflowContext('def-1'), $document);
+
+    expect($capturedRequest->getHeaderLine('Idempotency-Key'))->toBe('');
 });

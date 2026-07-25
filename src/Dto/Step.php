@@ -34,6 +34,8 @@ final readonly class Step
         public ?string $channelPath = null,
         public ?Expression $correlationId = null,
         public readonly ?bool $strictValidation = null,
+        public readonly ?bool $idempotencyKey = null,
+        public readonly ?string $idempotencyHeader = null,
     ) {
     }
 }

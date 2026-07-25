@@ -17,6 +17,7 @@ class StepExecutor
         private ClientInterface $httpClient,
         private ExpressionResolverInterface $expressionResolver,
         private bool $strictValidationDefault = false,
+        private ?IdempotencyKeyInjector $injector = null,
     ) {
     }
 
@@ -34,6 +35,10 @@ class StepExecutor
     {
         // 1. Compile Request
         $request = $this->expressionResolver->compileRequest($step, $context, $document);
+
+        if ($this->injector !== null) {
+            $request = $this->injector->inject($request, $step, $context)->request;
+        }
 
         // Parse body back to array for context storage
         $bodyStream = $request->getBody();

@@ -113,7 +113,13 @@ final class WorkflowContext
 
     public function getStepStatus(string $stepId): ?StepStatus
     {
-        return $this->steps[$stepId]['status'] ?? null;
+        $status = $this->steps[$stepId]['status'] ?? null;
+
+        if ($status instanceof StepStatus) {
+            return $status;
+        }
+
+        return is_string($status) ? StepStatus::tryFrom($status) : null;
     }
 
     public function withStepStatus(string $stepId, StepStatus $status): self
