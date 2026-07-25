@@ -14,7 +14,7 @@ use Alama\LaravelArazzo\Laravel\LaravelQueueDriver;
 use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Support\Facades\Queue;
 
-uses(TestCase::class);
+
 
 it('wraps ExecuteStepJob in RunExecuteStepJob and pushes immediately when no delay is given', function (): void {
     Queue::fake();

@@ -584,7 +584,17 @@ class Parser
         }
 
         if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
-            $typeStr = $this->requireString($value, 'type', $ctx);
+            $rawType = $value['type'];
+            $version = null;
+
+            if (is_array($rawType)) {
+                $typeCtx = $ctx->push('type');
+                $typeStr = $this->requireString($rawType, 'type', $typeCtx);
+                $version = $this->optionalString($rawType, 'version', $typeCtx);
+            } else {
+                $typeStr = $this->requireString($value, 'type', $ctx);
+            }
+
             $type = ExpressionType::tryFrom($typeStr);
             if ($type === null) {
                 throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
@@ -594,7 +604,7 @@ class Parser
                 context: $this->optionalString($value, 'context', $ctx),
                 selector: $this->requireString($value, 'selector', $ctx),
                 type: $type,
-                version: $this->optionalString($value, 'version', $ctx),
+                version: $version ?? $this->optionalString($value, 'version', $ctx),
             );
         }
 

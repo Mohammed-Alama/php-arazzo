@@ -1,18 +1,51 @@
-arazzo: 1.0.0
+arazzo: 1.1.0
+$self: https://example.com/rides/spec.arazzo.yaml
 info:
-  title: Cross-Protocol Saga
+  title: Cross-Protocol Saga (1.1.0)
   version: 1.0.0
-sourceDescriptions: []
+sourceDescriptions:
+  - name: rides-openapi
+    url: https://api.example.com/openapi.yaml
+    type: openapi
+  - name: rides-broker
+    url: https://broker.example.com/asyncapi.yaml
+    type: asyncapi
 workflows:
   - workflowId: ride-saga
     steps:
       - stepId: create-ride
-        operationPath: http://api.example.com/rides
+        operationPath: "{$sourceDescriptions.rides-openapi.url}#/paths/~1rides/post"
+        parameters:
+          - name: idempotencyKey
+            in: querystring
+            value: "{$workflow.inputs.key}"
         outputs:
-          rideId: $.rideId
-      - stepId: wait-for-ride-status
+          rideId:
+            context: $response.body
+            selector: $.rideId
+            type:
+              type: jsonpath
+              version: rfc9535
+      - stepId: wait-for-status
         action: receive
         channelPath: channels/rides/status
-        correlationId: "{$steps.create-ride.response.body#/rideId}"
+        correlationId: "{$steps.create-ride.outputs.rideId}"
         dependsOn:
           - create-ride
+        outputs:
+          status:
+            context: $message.payload
+            selector: /status
+            type:
+              type: jsonpointer
+              version: rfc6901
+        onSuccess:
+          - name: reconcile
+            type: invoke
+            workflowId: ride-reconcile
+            parameters:
+              rideId: "{$steps.create-ride.outputs.rideId}"
+  - workflowId: ride-reconcile
+    steps:
+      - stepId: log
+        operationId: recordReconciliation
