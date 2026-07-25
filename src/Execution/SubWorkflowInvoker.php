@@ -12,7 +12,7 @@ use Alama\LaravelArazzo\Exceptions\ExecutionException;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
 
-final class SubWorkflowInvoker
+class SubWorkflowInvoker
 {
     public function __construct(
         private DefinitionRegistryInterface $registry,

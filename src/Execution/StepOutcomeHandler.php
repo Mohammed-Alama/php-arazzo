@@ -23,6 +23,10 @@ use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
+use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
+use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
 use LogicException;
 
 class StepOutcomeHandler
@@ -36,6 +40,9 @@ class StepOutcomeHandler
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private ExpressionResolverInterface $expressionResolver,
         private StateStoreInterface $stateStore,
+        private SubWorkflowInvoker $invoker,
+        private SelectorEvaluator $selectors,
+        private ExpressionEvaluator $expressions,
         private int $maxRetryAttempts = 10,
         private int $stateTtlSeconds = 86400,
     ) {
@@ -49,6 +56,17 @@ class StepOutcomeHandler
         string $executionId,
         bool $criteriaMet,
     ): void {
+        foreach ($step->outputs as $name => $value) {
+            $resolved = match (true) {
+                $value instanceof \Alama\LaravelArazzo\Dto\Selector =>
+                    $this->selectors->evaluate($value, $context, $step->stepId),
+                $value instanceof \Alama\LaravelArazzo\Dto\Expression =>
+                    $this->expressions->evaluate($value, $context, $step->stepId),
+                default => $value,
+            };
+            $context = $context->withStepOutput($step->stepId, $name, $resolved);
+        }
+
         $actions = $this->resolveActionList($document, $workflow, $step, $criteriaMet);
 
         $this->applyFirstMatch($actions, $document, $workflow, $step, $context, $executionId, $criteriaMet);
@@ -101,6 +119,13 @@ class StepOutcomeHandler
                 $status === ExecutionStatus::Succeeded ? 'execution.succeeded' : 'execution.failed',
             );
 
+            return;
+        }
+
+        if ($matched instanceof SubWorkflowSuccessAction || $matched instanceof SubWorkflowFailureAction) {
+            $result = $this->invoker->invoke($matched, $context);
+            $context = $context->withStepOutput($step->stepId, $matched->name, $result->outputs);
+            $this->continueNormally($workflow, $step, $context, $executionId);
             return;
         }
 

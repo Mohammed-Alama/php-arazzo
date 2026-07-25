@@ -198,6 +198,22 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             );
         });
 
+        $this->app->singleton(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class, function ($app) {
+            return new \Alama\LaravelArazzo\Resolution\SelectorEvaluator(
+                new \Alama\LaravelArazzo\Resolution\Xpath\DomXpathEvaluator(),
+                new ExpressionEvaluator()
+            );
+        });
+
+        $this->app->singleton(\Alama\LaravelArazzo\Execution\SubWorkflowInvoker::class, function ($app) {
+            return new \Alama\LaravelArazzo\Execution\SubWorkflowInvoker(
+                $app->make(DefinitionRegistryInterface::class),
+                $app->make(\Alama\LaravelArazzo\Execution\WorkflowExecutor::class),
+                new ExpressionEvaluator(),
+                $app->make(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class),
+            );
+        });
+
         $this->app->singleton(StepOutcomeHandler::class, function ($app) {
             return new StepOutcomeHandler(
                 $app->make(QueueDriverInterface::class),
@@ -208,6 +224,9 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(PendingCorrelationRegistryInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 $app->make(StateStoreInterface::class),
+                $app->make(\Alama\LaravelArazzo\Execution\SubWorkflowInvoker::class),
+                $app->make(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class),
+                new ExpressionEvaluator(),
                 (int) config('arazzo.retry_ceiling', 10),
                 (int) config('arazzo.state_ttl', 86400),
             );
