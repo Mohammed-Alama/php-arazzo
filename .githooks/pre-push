@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Mirrors CI gates: pint --test, phpstan, pest.
+# Skip with `git push --no-verify` if you truly need to.
+set -euo pipefail
+
+remote="${1:-}"
+ref="${2:-}"
+
+# Only gate pushes to protected branches.
+protected_re='^(refs/heads/main|refs/heads/master)$'
+run_checks=false
+while read -r local_ref local_sha remote_ref remote_sha; do
+    [[ -z "${remote_ref:-}" ]] && continue
+    if [[ "$remote_ref" =~ $protected_re ]]; then
+        run_checks=true
+        break
+    fi
+done
+
+if [[ "$run_checks" != true ]]; then
+    exit 0
+fi
+
+echo "==> pre-push: running CI-equivalent gates before push to protected branch"
+
+fail() { echo "!! pre-push blocked: $1" >&2; exit 1; }
+
+command -v php >/dev/null || fail "php not found on PATH"
+[[ -x vendor/bin/pint ]]    || fail "vendor/bin/pint missing — run composer install"
+[[ -x vendor/bin/phpstan ]] || fail "vendor/bin/phpstan missing — run composer install"
+[[ -x vendor/bin/pest ]]    || fail "vendor/bin/pest missing — run composer install"
+
+echo "--> pint --test"
+vendor/bin/pint --test || fail "code style violations (run: make format)"
+
+echo "--> phpstan"
+vendor/bin/phpstan analyse --no-progress --memory-limit=1G || fail "phpstan errors"
+
+echo "--> pest"
+vendor/bin/pest --ci || fail "test failures"
+
+echo "==> pre-push: all checks passed"
