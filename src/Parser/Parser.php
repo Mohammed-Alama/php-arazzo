@@ -11,6 +11,8 @@ use Alama\LaravelArazzo\Dto\Action\RetryAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Enum\CriterionType;
@@ -452,8 +454,27 @@ class Parser
                 criteria: $criteria,
             ),
             'end' => new SuccessEndAction($name, $criteria),
+            'invoke' => $this->parseSubWorkflowSuccessAction($name, $obj, $criteria, $ctx),
             default => throw ParserException::invalidActionType($ctx->push('type'), $type),
         };
+    }
+
+    /**
+     * @param array<string,mixed> $d
+     * @param list<SuccessCriterion> $criteria
+     */
+    private function parseSubWorkflowSuccessAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowSuccessAction
+    {
+        $workflowId = $this->requireString($d, 'workflowId', $ctx);
+        $parameters = [];
+        if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
+            $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
+            foreach ($paramsMap as $k => $v) {
+                $parameters[(string)$k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string)$k), true);
+            }
+        }
+
+        return new SubWorkflowSuccessAction($name, $workflowId, $parameters, $criteria);
     }
 
     protected function parseReusable(mixed $node, ParseContext $ctx): Reusable
@@ -511,8 +532,27 @@ class Parser
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
                 criteria: $criteria,
             ),
+            'invoke' => $this->parseSubWorkflowFailureAction($name, $obj, $criteria, $ctx),
             default => throw ParserException::invalidActionType($ctx->push('type'), $type),
         };
+    }
+
+    /**
+     * @param array<string,mixed> $d
+     * @param list<SuccessCriterion> $criteria
+     */
+    private function parseSubWorkflowFailureAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowFailureAction
+    {
+        $workflowId = $this->requireString($d, 'workflowId', $ctx);
+        $parameters = [];
+        if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
+            $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
+            foreach ($paramsMap as $k => $v) {
+                $parameters[(string)$k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string)$k), true);
+            }
+        }
+
+        return new SubWorkflowFailureAction($name, $workflowId, $parameters, $criteria);
     }
 
     /** @param array<string,mixed> $arr */
