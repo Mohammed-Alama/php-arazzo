@@ -16,6 +16,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         private HttpClientInterface $httpClient,
         private ExpressionResolverInterface $expressionResolver,
         private bool $strictValidationDefault = false,
+        private ?IdempotencyKeyInjector $injector = null,
     ) {
     }
 
@@ -32,6 +33,11 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
         $request = $this->expressionResolver->compileRequest($step, $context, $document);
+
+        if ($this->injector !== null) {
+            $request = $this->injector->inject($request, $step, $context)->request;
+        }
+
         $response = $this->httpClient->sendRequest($request);
 
         $decodedBody = json_decode((string) $response->getBody(), true);

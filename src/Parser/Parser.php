@@ -303,6 +303,8 @@ class Parser
         $correlationIdRaw = $this->optionalString($obj, 'correlationId', $ctx);
         $correlationId = $correlationIdRaw !== null ? new Expression($correlationIdRaw) : null;
         $strictValidation = $this->optionalBool($obj, 'x-strict-validation', $ctx);
+        $idempotencyKey = $this->optionalBool($obj, 'x-idempotency-key', $ctx);
+        $idempotencyHeader = $this->optionalString($obj, 'x-idempotency-header', $ctx);
 
         return new Step(
             stepId: $this->requireString($obj, 'stepId', $ctx),
@@ -320,6 +322,8 @@ class Parser
             channelPath: $channelPath,
             correlationId: $correlationId,
             strictValidation: $strictValidation,
+            idempotencyKey: $idempotencyKey,
+            idempotencyHeader: $idempotencyHeader,
         );
     }
 
