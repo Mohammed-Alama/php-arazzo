@@ -17,7 +17,6 @@ use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\CorrelationResumer;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\HttpStepExecutor;
@@ -188,7 +187,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(Engine::class, function ($app) {
             return new Engine(
-                new DependencyAnalyzer(),
                 $app->make(QueueDriverInterface::class),
                 $app->make(StateStoreInterface::class),
             );
@@ -226,7 +224,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new StepOutcomeHandler(
                 $app->make(QueueDriverInterface::class),
                 $app->make(Engine::class),
-                new DependencyAnalyzer(),
                 $app->make(ExecutionRegistryInterface::class),
                 $app->make(EventLedgerInterface::class),
                 $app->make(PendingCorrelationRegistryInterface::class),
