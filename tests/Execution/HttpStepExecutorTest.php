@@ -117,7 +117,7 @@ it('validates response schema and fails fast on failure', function (): void {
     $resolver = \Mockery::mock(ExpressionResolverInterface::class);
     $resolver->shouldReceive('compileRequest')->andReturn(new Request('GET', '/'));
     $resolver->shouldReceive('validateResponseSchema')->once()->andThrow(
-        new SchemaValidationException('sync-step', [['path' => '/', 'message' => 'bad schema']])
+        new SchemaValidationException('sync-step', [['path' => '/', 'message' => 'bad schema']]),
     );
     $resolver->shouldReceive('extractOutputs')->never();
 
@@ -137,7 +137,7 @@ it('validates response schema and fails fast on failure', function (): void {
         onSuccess: [],
         onFailure: [],
         outputs: [],
-        strictValidation: true
+        strictValidation: true,
     );
 
     $document = httpStepExecutorDocument();

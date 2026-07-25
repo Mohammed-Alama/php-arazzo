@@ -18,6 +18,7 @@ use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\SuccessCriterion;
 use Alama\LaravelArazzo\Execution\ArazzoExpressionResolver;
+use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
 use Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
@@ -355,22 +356,23 @@ it('validates a response against the OpenAPI schema', function (): void {
     ]);
 
     // We need to subclass or mock ArazzoExpressionResolver to intercept findOperation since it's an internal OpenAPI lookup
-    $resolver = new class(
-        new \Alama\LaravelArazzo\Resolution\DefaultSourceResolver([], []),
-        new \GuzzleHttp\Psr7\HttpFactory(),
-        new \Alama\LaravelArazzo\Execution\ExpressionEvaluator()
-    ) extends \Alama\LaravelArazzo\Execution\ArazzoExpressionResolver {
+    $resolver = new class(new DefaultSourceResolver([], []), new HttpFactory(), new ExpressionEvaluator()) extends ArazzoExpressionResolver
+    {
         public ?Operation $mockOperation = null;
-        public function __construct($sourceResolver, $requestFactory, $evaluator) {
+
+        public function __construct($sourceResolver, $requestFactory, $evaluator)
+        {
             parent::__construct($sourceResolver, $requestFactory, $evaluator);
         }
-        protected function findOperation(\Alama\LaravelArazzo\Dto\Step $step, ?\Alama\LaravelArazzo\Dto\ArazzoDocument $document = null): ?Operation {
+
+        protected function findOperation(Step $step, ?ArazzoDocument $document = null): ?Operation
+        {
             return $this->mockOperation;
         }
     };
     $resolver->mockOperation = $operation;
 
-    $step = new \Alama\LaravelArazzo\Dto\Step('test-step', null, 'operationId', null, null, [], null, [], [], [], []);
+    $step = new Step('test-step', null, 'operationId', null, null, [], null, [], [], [], []);
 
     // 1. Valid data -> no exception
     $resolver->validateResponseSchema($step, 200, 'application/json', ['id' => 123]);
@@ -380,7 +382,7 @@ it('validates a response against the OpenAPI schema', function (): void {
     try {
         $resolver->validateResponseSchema($step, 200, 'application/json', ['name' => 'wrong']);
         $this->fail('Expected SchemaValidationException');
-    } catch (\Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException $e) {
+    } catch (SchemaValidationException $e) {
         expect($e->stepId)->toBe('test-step')
             ->and($e->violations)->toHaveCount(1)
             ->and($e->getMessage())->toContain("missing required property 'id'");
