@@ -198,6 +198,10 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             );
         });
 
+        $this->app->singleton(\Alama\LaravelArazzo\Resolution\Xpath\XpathEvaluator::class, function () {
+            return new \Alama\LaravelArazzo\Resolution\Xpath\DomXpathEvaluator();
+        });
+
         $this->app->singleton(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class, function ($app) {
             return new \Alama\LaravelArazzo\Resolution\SelectorEvaluator(
                 new \Alama\LaravelArazzo\Resolution\Xpath\DomXpathEvaluator(),
