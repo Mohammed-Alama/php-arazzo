@@ -12,7 +12,7 @@ use Alama\LaravelArazzo\Dto\SuccessCriterion;
 final readonly class SubWorkflowFailureAction extends FailureAction
 {
     /**
-     * @param array<string, Expression|Selector|scalar|array<mixed>> $parameters
+     * @param array<string, Expression|Selector|scalar|array<mixed>|null> $parameters
      * @param list<SuccessCriterion> $criteria
      */
     public function __construct(
