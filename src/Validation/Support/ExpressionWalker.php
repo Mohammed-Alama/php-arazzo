@@ -68,9 +68,6 @@ final class ExpressionWalker
             if ($value->context !== null && str_starts_with($value->context, '$')) {
                 yield new ExpressionSite("{$pointer}/context", new Expression('{' . $value->context . '}'), $syms, $stepId, $context);
             }
-            if (str_starts_with($value->selector, '$')) {
-                yield new ExpressionSite("{$pointer}/selector", new Expression('{' . $value->selector . '}'), $syms, $stepId, $context);
-            }
         }
     }
 }

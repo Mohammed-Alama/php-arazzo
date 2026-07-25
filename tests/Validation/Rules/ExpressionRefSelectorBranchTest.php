@@ -29,5 +29,6 @@ it('detects unresolved $steps ref inside a Selector context', function () {
 
     (new ExpressionUnresolvedStepRefRule())->check($doc, $symbols, $errors);
 
-    expect($errors->errors())->not->toBe([]);
+    expect($errors->errors())->toHaveCount(1)
+        ->and($errors->errors()[0]->message)->toContain("unknown step 'does-not-exist'");
 });
