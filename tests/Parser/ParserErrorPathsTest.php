@@ -94,14 +94,14 @@ it('throws when optionalInt value is not an int', function (): void {
     ])))->toThrow(ParserException::class);
 });
 
-it('throws when outputs map value is not a string', function (): void {
+it('throws when outputs map selector has unknown type', function (): void {
     expect(fn () => (new Parser())->parse(rawWith([
         'arazzo' => '1.0.0',
         'info' => ['title' => 't', 'version' => '1'],
         'workflows' => [[
             'workflowId' => 'w', 'steps' => [[
                 'stepId' => 's', 'operationId' => 'op',
-                'outputs' => ['o' => 123],
+                'outputs' => ['o' => ['selector' => 'foo', 'type' => 'invalid']],
             ]],
         ]],
     ])))->toThrow(ParserException::class);
