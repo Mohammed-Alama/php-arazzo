@@ -102,7 +102,9 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
             if ($step->requestBody->replacements) {
                 foreach ($step->requestBody->replacements as $replacement) {
                     $targetPtr = $replacement->target;
-                    $val = $this->evaluator->evaluate($replacement->value, $context, $step->stepId);
+                    $val = $replacement->value instanceof Expression
+                        ? $this->evaluator->evaluate($replacement->value, $context, $step->stepId)
+                        : $replacement->value;
                     $val = $this->castToSchemaType($val, $this->resolveSchemaAtPointer($bodySchema, $targetPtr));
 
                     $segments = explode('/', ltrim($targetPtr, '/'));
@@ -152,16 +154,20 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
         $outputs = [];
         foreach ($step->outputs as $outputName => $expression) {
-            $raw = trim($expression->raw);
+            if ($expression instanceof Expression) {
+                $raw = trim($expression->raw);
 
-            if (str_starts_with($raw, '$.')) {
-                $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
+                if (str_starts_with($raw, '$.')) {
+                    $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
 
-                continue;
+                    continue;
+                }
+
+                $value = $this->evaluator->evaluate($expression, $context, $step->stepId);
+                $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
+            } else {
+                $outputs[$outputName] = $expression;
             }
-
-            $value = $this->evaluator->evaluate($expression, $context, $step->stepId);
-            $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
         }
 
         return $outputs;

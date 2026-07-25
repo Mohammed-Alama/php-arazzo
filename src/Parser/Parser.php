@@ -357,7 +357,7 @@ class Parser
         return new Parameter(
             name: $this->requireString($obj, 'name', $ctx),
             in: $in,
-            value: $this->parseExpressionOrValue($obj['value']),
+            value: $this->parseValueOrSelector($obj['value'], $ctx->push('value'), false),
         );
     }
 
@@ -399,7 +399,7 @@ class Parser
 
         return new PayloadReplacement(
             target: $this->requireString($obj, 'target', $ctx),
-            value: $this->parseExpressionOrValue($obj['value']),
+            value: $this->parseValueOrSelector($obj['value'], $ctx->push('value'), false),
         );
     }
 
@@ -532,10 +532,13 @@ class Parser
     /**
      * @return Expression|Selector|scalar|array<mixed>|null
      */
-    private function parseValueOrSelector(mixed $value, ParseContext $ctx): mixed
+    private function parseValueOrSelector(mixed $value, ParseContext $ctx, bool $forceStringExpression = false): mixed
     {
         if (is_string($value)) {
-            return new Expression($value);
+            if ($forceStringExpression || preg_match('/^\{\$.+\}$/', $value) === 1) {
+                return new Expression($value);
+            }
+            return $value;
         }
 
         if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
@@ -556,7 +559,7 @@ class Parser
         if (is_array($value)) {
             $parsed = [];
             foreach ($value as $k => $v) {
-                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string)$k));
+                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string)$k), $forceStringExpression);
             }
             return $parsed;
         }
@@ -570,7 +573,7 @@ class Parser
         $obj = $this->requireObjectMap($node, $ctx);
         $out = [];
         foreach ($obj as $k => $v) {
-            $out[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k));
+            $out[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k), true);
         }
 
         return $out;
