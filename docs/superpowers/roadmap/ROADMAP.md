@@ -44,6 +44,12 @@ stubs land here going forward.
 | Stub | Tier | Purpose |
 |---|---|---|
 | [core-34-arazzo-1.1.0-spec](backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md) | OSS | Full Arazzo 1.1.0 support: AsyncAPI, Selector Object, sub-workflow composition, `in: querystring`, `$self` |
+| [core-35-cli-arazzo-bin](backend/phase-0-foundation/core-35-cli-arazzo-bin.md) | OSS | Standalone `bin/arazzo` CLI (`validate`, `run`, `list`, `lint`, `generate:from-openapi`) — no framework dep |
+| [core-36-license-verifier](backend/phase-0-foundation/core-36-license-verifier.md) | OSS | `LicenseVerifierInterface` + `NullLicenseVerifier` — hook for every `arazzo-pro-*` package |
+| [core-37-dependency-graph](backend/phase-0-foundation/core-37-dependency-graph.md) | OSS | `DependencyGraph` topological sort + cycle detection — closes known workflow-executor debt |
+| [core-38-event-dispatcher-wiring](backend/phase-0-foundation/core-38-event-dispatcher-wiring.md) | OSS | PSR-14 event dispatcher + 9-event catalog for lifecycle observability |
+| [core-39-metrics-recorder-interface](backend/phase-0-foundation/core-39-metrics-recorder-interface.md) | OSS | `MetricsRecorderInterface` (counter/gauge/histogram/timer) with namespaced `arazzo.*` metrics |
+| [core-40-workflow-snapshot-serialization](backend/phase-0-foundation/core-40-workflow-snapshot-serialization.md) | OSS | Canonical byte-identical `WorkflowSnapshot` for cross-worker transfer, replay, signed audit |
 
 See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for filing convention.
 
@@ -61,6 +67,9 @@ See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for fil
 | Stub | Tier | Purpose |
 |---|---|---|
 | [rel-06-sla-monitors-dlq](backend/phase-1-reliability/rel-06-sla-monitors-dlq.md) | pro | SLA monitors + dead-letter workflows |
+| [rel-41-retry-policy-interface](backend/phase-1-reliability/rel-41-retry-policy-interface.md) | OSS + pro | `RetryPolicyInterface` — pluggable strategies (fixed, exponential, jitter, decorrelated, budget) |
+| [rel-42-idempotency-store-interface](backend/phase-1-reliability/rel-42-idempotency-store-interface.md) | OSS + pro | `IdempotencyStoreInterface` — engine-side dedup ledger beyond HTTP header injection |
+| [rel-43-circuit-breaker-interface](backend/phase-1-reliability/rel-43-circuit-breaker-interface.md) | OSS + pro | `CircuitBreakerInterface` — per-downstream trip on failure stampede |
 
 ### `backend/phase-2-orchestration/`
 
@@ -84,6 +93,8 @@ See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for fil
 | [dx-12-pest-mocking](backend/phase-4-dx/dx-12-pest-mocking.md) | OSS | Local mocking engine (Pest v3+) |
 | [dx-13-repl-hooks](backend/phase-4-dx/dx-13-repl-hooks.md) | pro | Interactive REPL debugging hooks |
 | [dx-14-linter](backend/phase-4-dx/dx-14-linter.md) | OSS | Pre-flight linter (`arazzo lint`, `--against-openapi` drift check) |
+| [dx-44-conformance-harness](backend/phase-4-dx/dx-44-conformance-harness.md) | OSS | Shared fixture suite for cross-bridge (and cross-language) parity |
+| [dx-45-expression-fuzz-suite](backend/phase-4-dx/dx-45-expression-fuzz-suite.md) | OSS | Fuzz + differential + corpus tests hardening `ExpressionResolver` (threat-model requirement) |
 
 ## Frontend
 
