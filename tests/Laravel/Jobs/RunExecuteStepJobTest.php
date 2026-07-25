@@ -62,6 +62,7 @@ use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
+use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;
@@ -100,6 +101,23 @@ it('injects idempotency key natively during job execution independently of StepE
     $registry = \Mockery::mock(DefinitionRegistryInterface::class);
     $registry->shouldReceive('get')->with('def-1')->andReturn($document);
     app()->instance(DefinitionRegistryInterface::class, $registry);
+
+    app()->instance(StateStoreInterface::class, new class() implements StateStoreInterface
+    {
+        /** @var array<string, array<string, mixed>> */
+        private array $store = [];
+
+        public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
+        {
+            $this->store[$executionId] = $state;
+        }
+
+        public function load(string $executionId): ?array
+        {
+            return $this->store[$executionId] ?? null;
+        }
+    });
+    app()->forgetInstance(StepExecutionWorker::class);
 
     // Enable the idempotency feature in config so the binding passes it to the Job's dependencies
     config(['arazzo.idempotency.enabled' => true]);
