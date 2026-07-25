@@ -6,7 +6,6 @@ namespace Tests\Laravel;
 
 use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Alama\LaravelArazzo\Laravel\DatabaseExecutionRegistry;
-use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 

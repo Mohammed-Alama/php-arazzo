@@ -37,6 +37,7 @@ final class ParameterQuerystringOperationShapeRule implements Rule
                             "Cannot verify 'querystring' parameter operation shape at /workflows/{$wi}/steps/{$si}/parameters/{$pi}: no source descriptions loaded.",
                             "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/in",
                         );
+
                         continue;
                     }
 

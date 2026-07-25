@@ -6,6 +6,7 @@ namespace Tests\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
@@ -87,7 +88,7 @@ class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
 
 function asyncApiExecutorDocument(): ArazzoDocument
 {
-    return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), [], null, \Alama\LaravelArazzo\Dto\Enum\SpecVersion::V1_1);
+    return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), [], null, SpecVersion::V1_1);
 }
 
 it('supports steps with action send or receive, not steps without an action', function (): void {

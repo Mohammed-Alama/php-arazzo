@@ -25,6 +25,7 @@ use Alama\LaravelArazzo\Execution\IdempotencyKeyInjector;
 use Alama\LaravelArazzo\Execution\StepExecutionWorker;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\StepOutcomeHandler;
+use Alama\LaravelArazzo\Execution\SubWorkflowInvoker;
 use Alama\LaravelArazzo\Execution\WorkflowExecutor;
 use Alama\LaravelArazzo\Generator\ArazzoGenerator;
 use Alama\LaravelArazzo\Generator\Clients\OpenAiClient;
@@ -47,7 +48,10 @@ use Alama\LaravelArazzo\Resolution\Fetchers\LocalFetcher;
 use Alama\LaravelArazzo\Resolution\Parsers\ArazzoSourceParser;
 use Alama\LaravelArazzo\Resolution\Parsers\AsyncApiSourceParser;
 use Alama\LaravelArazzo\Resolution\Parsers\OpenApiSourceParser;
+use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
+use Alama\LaravelArazzo\Resolution\Xpath\DomXpathEvaluator;
+use Alama\LaravelArazzo\Resolution\Xpath\XpathEvaluator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
@@ -198,23 +202,23 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             );
         });
 
-        $this->app->singleton(\Alama\LaravelArazzo\Resolution\Xpath\XpathEvaluator::class, function () {
-            return new \Alama\LaravelArazzo\Resolution\Xpath\DomXpathEvaluator();
+        $this->app->singleton(XpathEvaluator::class, function () {
+            return new DomXpathEvaluator();
         });
 
-        $this->app->singleton(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class, function ($app) {
-            return new \Alama\LaravelArazzo\Resolution\SelectorEvaluator(
-                new \Alama\LaravelArazzo\Resolution\Xpath\DomXpathEvaluator(),
-                new ExpressionEvaluator()
+        $this->app->singleton(SelectorEvaluator::class, function ($app) {
+            return new SelectorEvaluator(
+                new DomXpathEvaluator(),
+                new ExpressionEvaluator(),
             );
         });
 
-        $this->app->singleton(\Alama\LaravelArazzo\Execution\SubWorkflowInvoker::class, function ($app) {
-            return new \Alama\LaravelArazzo\Execution\SubWorkflowInvoker(
+        $this->app->singleton(SubWorkflowInvoker::class, function ($app) {
+            return new SubWorkflowInvoker(
                 $app->make(DefinitionRegistryInterface::class),
-                $app->make(\Alama\LaravelArazzo\Execution\WorkflowExecutor::class),
+                $app->make(WorkflowExecutor::class),
                 new ExpressionEvaluator(),
-                $app->make(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class),
+                $app->make(SelectorEvaluator::class),
             );
         });
 
@@ -228,8 +232,8 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(PendingCorrelationRegistryInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 $app->make(StateStoreInterface::class),
-                $app->make(\Alama\LaravelArazzo\Execution\SubWorkflowInvoker::class),
-                $app->make(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class),
+                $app->make(SubWorkflowInvoker::class),
+                $app->make(SelectorEvaluator::class),
                 new ExpressionEvaluator(),
                 (int) config('arazzo.retry_ceiling', 10),
                 (int) config('arazzo.state_ttl', 86400),

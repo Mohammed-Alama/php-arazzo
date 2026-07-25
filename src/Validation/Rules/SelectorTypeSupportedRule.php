@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Validation\Rules;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Enum\ExpressionType;
 use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
 use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Expression\SymbolTable;
@@ -15,8 +14,8 @@ use Alama\LaravelArazzo\Validation\Rule;
 final class SelectorTypeSupportedRule implements Rule
 {
     private const KNOWN_VERSIONS = [
-        'jsonpath'    => ['rfc9535'],
-        'xpath'       => ['xpath-10', 'xpath-20', 'xpath-30', 'xpath-31'],
+        'jsonpath' => ['rfc9535'],
+        'xpath' => ['xpath-10', 'xpath-20', 'xpath-30', 'xpath-31'],
         'jsonpointer' => ['rfc6901'],
     ];
 

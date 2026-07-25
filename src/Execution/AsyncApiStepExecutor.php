@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\HttpClientInterface;
@@ -29,8 +30,8 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
-        if ($document->specVersion === \Alama\LaravelArazzo\Dto\Enum\SpecVersion::V1_0) {
-            throw new \LogicException(
+        if ($document->specVersion === SpecVersion::V1_0) {
+            throw new LogicException(
                 "AsyncAPI step '{$step->stepId}' encountered under a 1.0.0 document; upgrade to arazzo: 1.1.0.",
             );
         }

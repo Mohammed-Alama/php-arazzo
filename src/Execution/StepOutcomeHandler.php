@@ -8,11 +8,15 @@ use Alama\LaravelArazzo\Dto\Action\FailureAction;
 use Alama\LaravelArazzo\Dto\Action\FailureEndAction;
 use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Reusable;
+use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
@@ -23,10 +27,7 @@ use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
-use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
-use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
 use LogicException;
 
 class StepOutcomeHandler
@@ -58,10 +59,8 @@ class StepOutcomeHandler
     ): void {
         foreach ($step->outputs as $name => $value) {
             $resolved = match (true) {
-                $value instanceof \Alama\LaravelArazzo\Dto\Selector =>
-                    $this->selectors->evaluate($value, $context, $step->stepId),
-                $value instanceof \Alama\LaravelArazzo\Dto\Expression =>
-                    $this->expressions->evaluate($value, $context, $step->stepId),
+                $value instanceof Selector => $this->selectors->evaluate($value, $context, $step->stepId),
+                $value instanceof Expression => $this->expressions->evaluate($value, $context, $step->stepId),
                 default => $value,
             };
             $context = $context->withStepOutput($step->stepId, $name, $resolved);
@@ -126,6 +125,7 @@ class StepOutcomeHandler
             $result = $this->invoker->invoke($matched, $context);
             $context = $context->withStepOutput($step->stepId, $matched->name, $result->outputs);
             $this->continueNormally($workflow, $step, $context, $executionId);
+
             return;
         }
 

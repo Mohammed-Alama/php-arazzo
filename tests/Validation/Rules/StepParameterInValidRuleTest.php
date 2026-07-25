@@ -17,6 +17,7 @@ use Alama\LaravelArazzo\Validation\Rules\StepParameterInValidRule;
 function docWithParams(array $params, SpecVersion $sv = SpecVersion::V1_1): ArazzoDocument
 {
     $arazzo = $sv === SpecVersion::V1_1 ? '1.1.0' : '1.0.0';
+
     return new ArazzoDocument(
         arazzo: $arazzo,
         info: new Info('t', null, null, '1'),
@@ -65,7 +66,7 @@ it('rejects querystring in component parameters on 1.0 docs', function () {
             [],
             ['myParam' => new Parameter('p', ParameterIn::Querystring, 'x')],
             [],
-            []
+            [],
         ),
         specificationExtensions: [],
         specVersion: SpecVersion::V1_0,

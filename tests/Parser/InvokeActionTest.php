@@ -25,9 +25,9 @@ it('parses invoke action in onSuccess and onFailure', function () {
                                 'type' => 'invoke',
                                 'workflowId' => 'child-workflow',
                                 'parameters' => [
-                                    'p1' => 'abc'
+                                    'p1' => 'abc',
                                 ],
-                            ]
+                            ],
                         ],
                         'onFailure' => [
                             [
@@ -35,8 +35,8 @@ it('parses invoke action in onSuccess and onFailure', function () {
                                 'type' => 'invoke',
                                 'workflowId' => 'child-2',
                                 'version' => '2.0',
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -44,7 +44,7 @@ it('parses invoke action in onSuccess and onFailure', function () {
     ], '/tmp/x.yaml', Format::Yaml);
 
     $doc = (new Parser())->parse($raw);
-    
+
     $success = $doc->workflows[0]->steps[0]->onSuccess[0];
     expect($success)->toBeInstanceOf(SubWorkflowSuccessAction::class)
         ->and($success->workflowId)->toBe('child-workflow')

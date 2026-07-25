@@ -27,7 +27,7 @@ class SubWorkflowInvoker
         WorkflowContext $parent,
     ): SubWorkflowResult {
         $document = $this->registry->get($parent->getDefinitionId());
-        
+
         if ($document === null) {
             throw ExecutionException::subWorkflowNotFound($action->workflowId);
         }
@@ -48,8 +48,8 @@ class SubWorkflowInvoker
         foreach ($action->parameters as $name => $spec) {
             $bound[$name] = match (true) {
                 $spec instanceof Expression => $this->expressions->evaluate($spec, $parent, '__invoke__'),
-                $spec instanceof Selector   => $this->selectors->evaluate($spec, $parent, '__invoke__'),
-                default                     => $spec,
+                $spec instanceof Selector => $this->selectors->evaluate($spec, $parent, '__invoke__'),
+                default => $spec,
             };
         }
 
@@ -57,8 +57,8 @@ class SubWorkflowInvoker
         $outcome = $this->executor->execute($target, $document, $bound, $child);
 
         return new SubWorkflowResult(
-            outputs:    $outcome->outputs,
-            status:     $outcome->status,
+            outputs: $outcome->outputs,
+            status: $outcome->status,
             childRunId: (string) $child->getExecutionId(),
         );
     }
