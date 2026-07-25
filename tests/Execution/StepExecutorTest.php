@@ -8,6 +8,7 @@ use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
+use Alama\LaravelArazzo\Execution\IdempotencyKeyInjector;
 use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use GuzzleHttp\Psr7\Request;
@@ -74,18 +75,6 @@ it('skips validation if configured off globally and locally', function (): void 
     $result = $executor->execute($step, new WorkflowContext('test-def'), $document);
     expect($result[1])->toBeTrue();
 });
-
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Components;
-use Alama\LaravelArazzo\Dto\Info;
-use Alama\LaravelArazzo\Dto\Step;
-use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
-use Alama\LaravelArazzo\Execution\IdempotencyKeyInjector;
-use Alama\LaravelArazzo\Execution\StepExecutor;
-use Alama\LaravelArazzo\Execution\WorkflowContext;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Client\ClientInterface;
 
 it('injects the Idempotency-Key header into the request when the injector is enabled', function (): void {
     $resolver = Mockery::mock(ExpressionResolverInterface::class);
