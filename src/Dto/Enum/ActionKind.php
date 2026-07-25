@@ -9,4 +9,5 @@ enum ActionKind: string
     case Goto = 'goto';
     case End = 'end';
     case Retry = 'retry';
+    case Invoke = 'invoke';
 }
