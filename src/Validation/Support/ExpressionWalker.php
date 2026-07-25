@@ -6,7 +6,9 @@ namespace Alama\LaravelArazzo\Validation\Support;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Expression;
+use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Expression\SymbolTable;
+use Alama\LaravelArazzo\Expression\WorkflowSymbols;
 
 final class ExpressionWalker
 {
@@ -19,38 +21,20 @@ final class ExpressionWalker
             $syms = $symbols->workflows[$wf->workflowId] ?? null;
 
             foreach ($wf->parameters as $pi => $p) {
-                if ($p->value instanceof Expression) {
-                    yield new ExpressionSite(
-                        "/workflows/{$wi}/parameters/{$pi}/value", $p->value, $syms, null, 'wf.parameters',
-                    );
-                }
+                yield from $this->extract($p->value, "/workflows/{$wi}/parameters/{$pi}/value", $syms, null, 'wf.parameters');
             }
             foreach ($wf->outputs as $name => $expr) {
-                yield new ExpressionSite(
-                    "/workflows/{$wi}/outputs/{$name}", $expr, $syms, null, 'wf.outputs',
-                );
+                yield from $this->extract($expr, "/workflows/{$wi}/outputs/{$name}", $syms, null, 'wf.outputs');
             }
 
             foreach ($wf->steps as $si => $s) {
                 foreach ($s->parameters as $pi => $p) {
-                    if ($p->value instanceof Expression) {
-                        yield new ExpressionSite(
-                            "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value", $p->value, $syms, $s->stepId, 'parameters',
-                        );
-                    }
+                    yield from $this->extract($p->value, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value", $syms, $s->stepId, 'parameters');
                 }
                 if ($s->requestBody !== null) {
-                    if ($s->requestBody->payload instanceof Expression) {
-                        yield new ExpressionSite(
-                            "/workflows/{$wi}/steps/{$si}/requestBody/payload", $s->requestBody->payload, $syms, $s->stepId, 'requestBody',
-                        );
-                    }
+                    yield from $this->extract($s->requestBody->payload, "/workflows/{$wi}/steps/{$si}/requestBody/payload", $syms, $s->stepId, 'requestBody');
                     foreach ($s->requestBody->replacements as $ri => $r) {
-                        if ($r->value instanceof Expression) {
-                            yield new ExpressionSite(
-                                "/workflows/{$wi}/steps/{$si}/requestBody/replacements/{$ri}/value", $r->value, $syms, $s->stepId, 'requestBody',
-                            );
-                        }
+                        yield from $this->extract($r->value, "/workflows/{$wi}/steps/{$si}/requestBody/replacements/{$ri}/value", $syms, $s->stepId, 'requestBody');
                     }
                 }
                 foreach ($s->successCriteria as $ci => $c) {
@@ -66,10 +50,23 @@ final class ExpressionWalker
                     }
                 }
                 foreach ($s->outputs as $name => $expr) {
-                    yield new ExpressionSite(
-                        "/workflows/{$wi}/steps/{$si}/outputs/{$name}", $expr, $syms, $s->stepId, 'outputs',
-                    );
+                    yield from $this->extract($expr, "/workflows/{$wi}/steps/{$si}/outputs/{$name}", $syms, $s->stepId, 'outputs');
                 }
+            }
+        }
+    }
+
+    /**
+     * @param 'components'|'criteria'|'onFailure'|'onSuccess'|'outputs'|'parameters'|'requestBody'|'wf.outputs'|'wf.parameters' $context
+     * @return iterable<ExpressionSite>
+     */
+    private function extract(mixed $value, string $pointer, ?WorkflowSymbols $syms, ?string $stepId, string $context): iterable
+    {
+        if ($value instanceof Expression) {
+            yield new ExpressionSite($pointer, $value, $syms, $stepId, $context);
+        } elseif ($value instanceof Selector) {
+            if ($value->context !== null && str_starts_with($value->context, '$')) {
+                yield new ExpressionSite("{$pointer}/context", new Expression('{' . $value->context . '}'), $syms, $stepId, $context);
             }
         }
     }

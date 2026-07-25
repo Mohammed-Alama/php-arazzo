@@ -1,0 +1,17 @@
+arazzo: 1.1.0
+info: { title: inv, version: '1' }
+workflows:
+  - workflowId: caller
+    steps:
+      - stepId: s
+        operationId: op
+        onSuccess:
+          - name: call
+            type: invoke
+            workflowId: callee
+            parameters:
+              x: "{$steps.s.outputs.y}"
+  - workflowId: callee
+    steps:
+      - stepId: s2
+        operationId: op2

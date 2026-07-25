@@ -13,7 +13,7 @@ use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
-uses(TestCase::class, RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 class RecordingStepExecutionWorker extends StepExecutionWorker
 {

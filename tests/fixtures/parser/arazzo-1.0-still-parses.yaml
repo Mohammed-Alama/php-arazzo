@@ -1,0 +1,9 @@
+arazzo: 1.0.0
+info: { title: legacy, version: '1' }
+workflows:
+  - workflowId: w
+    steps:
+      - stepId: s
+        operationId: op
+        outputs:
+          id: $response.body#/id

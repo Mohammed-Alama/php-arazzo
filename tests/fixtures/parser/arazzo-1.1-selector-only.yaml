@@ -1,0 +1,12 @@
+arazzo: 1.1.0
+info: { title: sel, version: '1' }
+workflows:
+  - workflowId: w
+    steps:
+      - stepId: s
+        operationId: op
+        outputs:
+          id:
+            context: $response.body
+            selector: $.id
+            type: { type: jsonpath, version: rfc9535 }

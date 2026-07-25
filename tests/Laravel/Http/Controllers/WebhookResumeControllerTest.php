@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
 
 use function Pest\Laravel\postJson;
 
-uses(TestCase::class, RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 class WebhookControllerMockPendingCorrelations implements PendingCorrelationRegistryInterface
 {
@@ -116,11 +116,11 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         }
     });
 
-    $rawYaml = file_get_contents(__DIR__ . '/../../../fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml');
+    $rawYaml = file_get_contents(__DIR__ . '/../../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
     $decoded = (new SymfonyYamlDecoder())->decode($rawYaml);
     $document = (new Parser())->parse(new RawDocument(
         (array) $decoded,
-        'file://arazzo-1.1-cross-protocol-saga.yaml',
+        'file://arazzo-1.0-webhook-saga.yaml',
         Format::Yaml,
     ));
 
