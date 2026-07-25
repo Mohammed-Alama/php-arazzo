@@ -58,3 +58,27 @@ it('skips on 1.0.0 documents', function () {
     );
     expect($errors->errors())->toBe([]);
 });
+
+function docWithVariousSelectors(Selector $s, SpecVersion $sv = SpecVersion::V1_1): ArazzoDocument
+{
+    return new ArazzoDocument(
+        arazzo: $sv->value,
+        info: new Info('t', null, null, '1'),
+        sourceDescriptions: [],
+        workflows: [new Workflow('w', null, null, null, [], [
+            new Step('s', null, 'op', null, null, [new \Alama\LaravelArazzo\Dto\Parameter('p2', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header, $s)], new \Alama\LaravelArazzo\Dto\RequestBody(null, null, [new \Alama\LaravelArazzo\Dto\PayloadReplacement('/a', $s)]), [], [], [], []),
+        ], [], [], [], [new \Alama\LaravelArazzo\Dto\Parameter('p', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header, $s)])],
+        components: new Components([], [
+            'p' => new \Alama\LaravelArazzo\Dto\Parameter('p3', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header, $s)
+        ], [], []),
+        specificationExtensions: [],
+        specVersion: $sv,
+    );
+}
+
+it('errors on unknown pinned version in parameters', function () {
+    $errors = new ErrorCollector();
+    $doc = docWithVariousSelectors(new Selector(null, '$.x', ExpressionType::JsonPath, 'draft-99'));
+    (new SelectorTypeSupportedRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect(count($errors->errors()))->toBe(4);
+});

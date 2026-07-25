@@ -41,6 +41,17 @@ final class SubWorkflowInvokeTargetResolvesRule implements Rule
                 }
             }
         }
+
+        foreach ($doc->components->successActions as $name => $action) {
+            if ($action instanceof SubWorkflowSuccessAction) {
+                $this->assertResolves($action->workflowId, $localIds, $errors, "/components/successActions/{$name}");
+            }
+        }
+        foreach ($doc->components->failureActions as $name => $action) {
+            if ($action instanceof SubWorkflowFailureAction) {
+                $this->assertResolves($action->workflowId, $localIds, $errors, "/components/failureActions/{$name}");
+            }
+        }
     }
 
     /** @param list<string> $localIds */

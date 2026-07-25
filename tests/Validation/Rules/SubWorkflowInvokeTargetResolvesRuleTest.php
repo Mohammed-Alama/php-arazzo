@@ -53,3 +53,20 @@ it('errors when invoke target does not resolve', function () {
     );
     expect($errors->errors())->not->toBe([]);
 });
+
+it('errors when component invoke target does not resolve', function () {
+    $doc = new ArazzoDocument(
+        arazzo: '1.1.0', info: new Info('t', null, null, '1'),
+        sourceDescriptions: [], workflows: [],
+        components: new Components([], [], [
+            'bad' => new SubWorkflowSuccessAction('call', 'ghost-workflow', [], []),
+        ], [
+            'bad_fail' => new \Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction('call', 'ghost-workflow', [], []),
+        ]),
+        specificationExtensions: [],
+        specVersion: SpecVersion::V1_1,
+    );
+    $errors = new ErrorCollector();
+    (new SubWorkflowInvokeTargetResolvesRule())->check($doc, SymbolTable::build($doc), $errors);
+    expect(count($errors->errors()))->toBe(2);
+});
