@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Tests\Parser;
 
+use Alama\LaravelArazzo\Dto\Enum\Format;
+use Alama\LaravelArazzo\Dto\RawDocument;
+use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
 use Alama\LaravelArazzo\Parser\Parser;
 
 it('parses x-strict-validation boolean from a step', function (): void {
-    $yaml = <<<YAML
+    $yaml = <<<'YAML'
     arazzo: 1.0.0
     info: { title: "Test", version: "1.0.0" }
     sourceDescriptions: []
@@ -24,8 +27,8 @@ it('parses x-strict-validation boolean from a step', function (): void {
             operationId: op3
     YAML;
 
-    $decoder = new \Alama\LaravelArazzo\Loader\SymfonyYamlDecoder();
-    $raw = new \Alama\LaravelArazzo\Dto\RawDocument($decoder->decode($yaml), 'memory://test', \Alama\LaravelArazzo\Dto\Enum\Format::Yaml);
+    $decoder = new SymfonyYamlDecoder();
+    $raw = new RawDocument($decoder->decode($yaml), 'memory://test', Format::Yaml);
     $document = (new Parser())->parse($raw);
     $steps = $document->workflows[0]->steps;
 

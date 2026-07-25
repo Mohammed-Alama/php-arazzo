@@ -43,7 +43,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
                 $response->getStatusCode(),
                 $response->getHeaderLine('Content-Type'),
                 $body,
-                $document
+                $document,
             );
         }
 

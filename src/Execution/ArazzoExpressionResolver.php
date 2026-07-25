@@ -373,6 +373,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
         return $this->castToSchemaType($value, $leafSchema);
     }
+
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
         $schema = $this->findResponseSchema($step, $statusCode, $contentType, $document);
@@ -388,10 +389,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         }
     }
 
-    /**
-     * @return \cebe\openapi\spec\Schema|null
-     */
-    protected function findResponseSchema(Step $step, int $statusCode, string $contentType, ?ArazzoDocument $document = null): ?\cebe\openapi\spec\Schema
+    protected function findResponseSchema(Step $step, int $statusCode, string $contentType, ?ArazzoDocument $document = null): ?Schema
     {
         $operation = $this->findOperation($step, $document);
         if ($operation === null || $operation->responses === null) {
@@ -407,11 +405,11 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
             }
         }
 
-        if ($response instanceof \cebe\openapi\spec\Reference) {
+        if ($response instanceof Reference) {
             $response = $response->resolve();
         }
 
-        if (!$response instanceof \cebe\openapi\spec\Response || $response->content === null) {
+        if (!$response instanceof Response || $response->content === null) {
             return null;
         }
 
@@ -425,11 +423,11 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         }
 
         $schema = $mediaType->schema;
-        if ($schema instanceof \cebe\openapi\spec\Reference) {
+        if ($schema instanceof Reference) {
             $schema = $schema->resolve();
         }
 
-        return $schema instanceof \cebe\openapi\spec\Schema ? $schema : null;
+        return $schema instanceof Schema ? $schema : null;
     }
 
     protected function findOperation(Step $step, ?ArazzoDocument $document = null): ?Operation
@@ -452,6 +450,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
         try {
             [, , $operation] = OpenApiParser::findOperation($openApi, $opId);
+
             return $operation;
         } catch (\RuntimeException) {
             return null;

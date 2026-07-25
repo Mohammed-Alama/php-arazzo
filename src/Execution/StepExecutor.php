@@ -79,7 +79,7 @@ class StepExecutor
                     $response->getStatusCode(),
                     $response->getHeaderLine('Content-Type'),
                     $respBody,
-                    $document
+                    $document,
                 );
             }
 

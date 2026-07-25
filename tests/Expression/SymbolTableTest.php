@@ -55,7 +55,7 @@ it('builds symbol table from document', function (): void {
 it('does not throw on missing or malformed data', function (): void {
     // We instantiate ArazzoDocument with invalid types internally to simulate what
     // could happen before strict validation is run, since SymbolTable is defensive.
-    $doc = new \ReflectionClass(ArazzoDocument::class)->newInstanceWithoutConstructor();
+    $doc = (new \ReflectionClass(ArazzoDocument::class))->newInstanceWithoutConstructor();
 
     // Uninitialized properties shouldn't crash it
     $sym = SymbolTable::build($doc);
@@ -65,11 +65,11 @@ it('does not throw on missing or malformed data', function (): void {
 });
 
 it('extracts valid parts even when other parts are malformed or missing', function (): void {
-    $doc = new \ReflectionClass(ArazzoDocument::class)->newInstanceWithoutConstructor();
+    $doc = (new \ReflectionClass(ArazzoDocument::class))->newInstanceWithoutConstructor();
 
     // Give it valid workflows but NO source descriptions or components
     // Instantiate Workflow without constructor to leave its identifiers and collections uninitialized
-    $wf = new \ReflectionClass(Workflow::class)->newInstanceWithoutConstructor();
+    $wf = (new \ReflectionClass(Workflow::class))->newInstanceWithoutConstructor();
 
     // Set ONLY the workflowId to simulate a partially hydrated object
     $wfProp = new \ReflectionProperty(Workflow::class, 'workflowId');

@@ -7,6 +7,7 @@ namespace Alama\LaravelArazzo\Execution\Contracts;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\SuccessCriterion;
+use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Psr\Http\Message\RequestInterface;
 
@@ -31,7 +32,7 @@ interface ExpressionResolverInterface
      * Throws SchemaValidationException if validation fails.
      * Does nothing if no matching schema is found.
      *
-     * @throws \Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException
+     * @throws SchemaValidationException
      */
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;
 }
