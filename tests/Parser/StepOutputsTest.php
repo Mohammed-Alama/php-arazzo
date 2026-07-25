@@ -39,10 +39,16 @@ it('parses 1.1.0 Selector objects in step outputs', function () {
 
     expect($outputs)->toHaveKey('extractedId')
         ->and($outputs['extractedId'])->toBeInstanceOf(Selector::class)
-        ->and($outputs['extractedId']->selector)->toBe('$.id')
-        ->and($outputs['extractedId']->type)->toBe(ExpressionType::JsonPath)
-        ->and($outputs['extractedId']->context)->toBe('$response.body')
-        ->and($outputs['extractedId']->version)->toBe('rfc9535')
-        ->and($outputs['plainValue'])->toBeInstanceOf(\Alama\LaravelArazzo\Dto\Expression::class)
-        ->and($outputs['plainValue']->raw)->toBe('abc');
+        ->and($outputs['plainValue'])->toBeInstanceOf(\Alama\LaravelArazzo\Dto\Expression::class);
+
+    /** @var Selector $extractedId */
+    $extractedId = $outputs['extractedId'];
+    expect($extractedId->selector)->toBe('$.id')
+        ->and($extractedId->type)->toBe(ExpressionType::JsonPath)
+        ->and($extractedId->context)->toBe('$response.body')
+        ->and($extractedId->version)->toBe('rfc9535');
+
+    /** @var \Alama\LaravelArazzo\Dto\Expression $plainValue */
+    $plainValue = $outputs['plainValue'];
+    expect($plainValue->raw)->toBe('abc');
 });

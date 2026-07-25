@@ -14,7 +14,7 @@ final readonly class Step
      * @param list<SuccessCriterion> $successCriteria
      * @param list<SuccessAction|Reusable> $onSuccess
      * @param list<FailureAction|Reusable> $onFailure
-     * @param array<string,Expression> $outputs
+     * @param array<string,Expression|Selector|scalar|array<mixed>|null> $outputs
      * @param array<string, mixed> $dependsOn
      */
     public function __construct(

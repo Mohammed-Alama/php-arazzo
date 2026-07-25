@@ -15,7 +15,7 @@ final readonly class Workflow
      * @param list<Step> $steps
      * @param list<SuccessAction|Reusable> $successActions
      * @param list<FailureAction|Reusable> $failureActions
-     * @param array<string,Expression> $outputs
+     * @param array<string,Expression|Selector|scalar|array<mixed>|null> $outputs
      * @param list<Parameter> $parameters
      */
     public function __construct(
