@@ -69,7 +69,7 @@ use Psr\Http\Client\ClientInterface;
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context
     $step = new Step('step-1', null, 'op', null, null, [], null, [], [], [], []);
-    $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId('exec-1');
+    $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId('exec-idempotency-test');
     $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);
     $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [], [$workflow], new Components([], [], [], []), []);
 
