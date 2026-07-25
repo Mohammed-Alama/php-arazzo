@@ -400,7 +400,7 @@ class Parser
                 $t = $this->requireString($rawType, 'type', $typeCtx);
                 $version = $this->optionalString($rawType, 'version', $typeCtx);
             } else {
-                $t = $this->optionalString($obj, 'type', $ctx);
+                $t = $this->requireString($obj, 'type', $ctx);
             }
 
             $type = CriterionType::tryFrom($t)
