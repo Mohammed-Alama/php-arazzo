@@ -20,6 +20,7 @@ final readonly class SubWorkflowSuccessAction extends SuccessAction
         public string $workflowId,
         public array $parameters,
         array $criteria,
+        public ?string $version = null,
     ) {
         parent::__construct($name, ActionKind::Invoke, $criteria);
     }

@@ -466,6 +466,7 @@ class Parser
     private function parseSubWorkflowSuccessAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowSuccessAction
     {
         $workflowId = $this->requireString($d, 'workflowId', $ctx);
+        $version = $this->optionalString($d, 'version', $ctx);
         $parameters = [];
         if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
             $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
@@ -474,7 +475,7 @@ class Parser
             }
         }
 
-        return new SubWorkflowSuccessAction($name, $workflowId, $parameters, $criteria);
+        return new SubWorkflowSuccessAction($name, $workflowId, $parameters, $criteria, $version);
     }
 
     protected function parseReusable(mixed $node, ParseContext $ctx): Reusable
@@ -544,6 +545,7 @@ class Parser
     private function parseSubWorkflowFailureAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowFailureAction
     {
         $workflowId = $this->requireString($d, 'workflowId', $ctx);
+        $version = $this->optionalString($d, 'version', $ctx);
         $parameters = [];
         if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
             $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
@@ -552,7 +554,7 @@ class Parser
             }
         }
 
-        return new SubWorkflowFailureAction($name, $workflowId, $parameters, $criteria);
+        return new SubWorkflowFailureAction($name, $workflowId, $parameters, $criteria, $version);
     }
 
     /** @param array<string,mixed> $arr */
