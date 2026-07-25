@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\LaravelArazzo\Validation\Rules;
+
+use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
+use Alama\LaravelArazzo\Expression\SymbolTable;
+use Alama\LaravelArazzo\Validation\ErrorCollector;
+use Alama\LaravelArazzo\Validation\Rule;
+
+final class AsyncApiFieldsRequire11Rule implements Rule
+{
+    public function code(): string
+    {
+        return 'asyncapi.fields_require_11';
+    }
+
+    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
+    {
+        if ($doc->specVersion !== SpecVersion::V1_0) {
+            return;
+        }
+
+        foreach ($doc->workflows as $wi => $wf) {
+            foreach ($wf->steps as $si => $step) {
+                foreach (['action', 'channelPath', 'correlationId'] as $field) {
+                    if ($step->{$field} !== null) {
+                        $errors->error(
+                            $this->code(),
+                            "Field '{$field}' requires arazzo 1.1.0+ at /workflows/{$wi}/steps/{$si}/{$field}",
+                            "/workflows/{$wi}/steps/{$si}/{$field}",
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
