@@ -26,9 +26,11 @@ final class ExpressionWalker
                 }
             }
             foreach ($wf->outputs as $name => $expr) {
-                yield new ExpressionSite(
-                    "/workflows/{$wi}/outputs/{$name}", $expr, $syms, null, 'wf.outputs',
-                );
+                if ($expr instanceof Expression) {
+                    yield new ExpressionSite(
+                        "/workflows/{$wi}/outputs/{$name}", $expr, $syms, null, 'wf.outputs',
+                    );
+                }
             }
 
             foreach ($wf->steps as $si => $s) {
@@ -66,9 +68,11 @@ final class ExpressionWalker
                     }
                 }
                 foreach ($s->outputs as $name => $expr) {
-                    yield new ExpressionSite(
-                        "/workflows/{$wi}/steps/{$si}/outputs/{$name}", $expr, $syms, $s->stepId, 'outputs',
-                    );
+                    if ($expr instanceof Expression) {
+                        yield new ExpressionSite(
+                            "/workflows/{$wi}/steps/{$si}/outputs/{$name}", $expr, $syms, $s->stepId, 'outputs',
+                        );
+                    }
                 }
             }
         }
