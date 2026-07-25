@@ -1,0 +1,17 @@
+arazzo: 1.1.0
+info:
+  title: Cross-Protocol Saga
+  version: 1.0.0
+sourceDescriptions: []
+workflows:
+  - workflowId: ride-saga
+    steps:
+      - stepId: create-ride
+        operationPath: http://api.example.com/rides
+
+      - stepId: wait-for-ride-status
+        action: receive
+        channelPath: channels/rides/status
+        correlationId: "{$steps.create-ride.response.body#/rideId}"
+        dependsOn:
+          - create-ride

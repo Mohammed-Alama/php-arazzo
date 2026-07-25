@@ -186,7 +186,13 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
     }
     $resolver = new StepOutcomeMockExpressionResolver();
 
-    $handler = new StepOutcomeHandler($queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $store, $maxRetryAttempts);
+    $handler = new StepOutcomeHandler(
+        $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $store,
+        \Mockery::mock(\Alama\LaravelArazzo\Execution\SubWorkflowInvoker::class),
+        \Mockery::mock(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class),
+        \Mockery::mock(\Alama\LaravelArazzo\Execution\ExpressionEvaluator::class),
+        $maxRetryAttempts
+    );
 
     return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations, $store];
 }

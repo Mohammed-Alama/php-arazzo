@@ -11,4 +11,5 @@ enum ParameterIn: string
     case Header = 'header';
     case Cookie = 'cookie';
     case Body = 'body';
+    case Querystring = 'querystring';
 }

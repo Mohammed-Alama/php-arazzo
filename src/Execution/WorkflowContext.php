@@ -6,6 +6,8 @@ namespace Alama\LaravelArazzo\Execution;
 
 final class WorkflowContext
 {
+    public ?string $parentRunId = null;
+
     /**
      * @param array<string, mixed> $inputs
      * @param array<string, mixed> $steps
@@ -19,6 +21,29 @@ final class WorkflowContext
         private ?string $workflowId = null,
         private ?string $executionId = null,
     ) {
+        if ($this->executionId === null) {
+            $this->executionId = (string) \Illuminate\Support\Str::uuid();
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $inputs
+     */
+    public static function forChildInvocation(
+        WorkflowContext $parent,
+        \Alama\LaravelArazzo\Dto\Workflow $target,
+        array $inputs,
+    ): self {
+        $child = new self(
+            definitionId: $parent->getDefinitionId(),
+            inputs: $inputs,
+            steps: [],
+            components: $parent->getComponents(),
+            workflowId: $target->workflowId,
+            executionId: (string) \Illuminate\Support\Str::uuid(),
+        );
+        $child->parentRunId = $parent->getExecutionId();
+        return $child;
     }
 
     public function getDefinitionId(): string
@@ -141,5 +166,17 @@ final class WorkflowContext
         $newSteps[$stepId]['attempts'] = ($newSteps[$stepId]['attempts'] ?? 0) + 1;
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function rootScope(): array
+    {
+        return [
+            'inputs' => $this->inputs,
+            'steps' => $this->steps,
+            'components' => $this->components,
+        ];
     }
 }

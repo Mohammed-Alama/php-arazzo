@@ -36,4 +36,15 @@ final class ParserException extends ArazzoException
 
         return new self("Invalid action type '{$actual}' at {$pointer}", $pointer, 'parser.invalid_action_type');
     }
+
+    public static function unsupportedVersion(ParseContext $ctx, string $actual): self
+    {
+        $pointer = $ctx->push('arazzo')->pointer();
+
+        return new self(
+            "Unsupported arazzo version '{$actual}' at {$pointer}; only 1.0.x and 1.1.x are supported.",
+            $pointer,
+            'parser.unsupported_version',
+        );
+    }
 }

@@ -6,7 +6,23 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ## Unreleased
 
+### Added
+
+- Full Arazzo 1.1.0 spec support: parser, validator, resolver, and executor now natively handle 1.1.0 documents alongside existing 1.0.0.
+- `SpecVersion` enum, `Selector` DTO, `ExpressionType` enum, `SubWorkflowSuccessAction` / `SubWorkflowFailureAction`, `ArazzoDocument::$self`, `ActionKind::Invoke`, `ParameterIn::Querystring`.
+- `XpathEvaluator` interface + `DomXpathEvaluator` (XPath 1.0 built-in via `ext-dom`). Bind a custom implementation to enable XPath 2.0 / 3.0 / 3.1.
+- `SelectorEvaluator` routes Selector-shaped outputs / parameters by expression type (jsonpath / jsonpointer / xpath).
+- `SubWorkflowInvoker` composes child workflows in-process; child `WorkflowContext` is isolated from parent `$steps.*` scope.
+- 5 new validator rules: `selector.type_supported`, `subworkflow.invoke_target_resolves`, `parameter.querystring_operation_shape`, `document.self_uri_syntax`, `asyncapi.fields_require_11`.
+
+### Changed
+
+- `arazzo` field is now strictly guarded: only `1.0.x` and `1.1.x` values are accepted. Documents with other versions are rejected at parse time.
+- AsyncAPI-specific step fields (`action`, `channelPath`, `correlationId`) are now rejected on `1.0.0` documents. Move such workflows to `arazzo: 1.1.0`.
+
 ### Shipped
+
+- **Arazzo 1.1.0 Spec Support** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md`](../roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Blocks: `ai-10-agent-routing`, `exec-07-saga-compensation`, `tenant-09-context-bridges`
 
 - **Parser & Validator** — Loader → Parser → Validator pipeline for Arazzo 1.0.0 YAML/JSON documents: typed readonly DTOs, an expression lexer/AST/symbol table, and 39 validation rule classes across document/workflow/step/expression/action scopes.
 - **Source Resolution** — `SourceResolver` with local/HTTP/cached fetchers and OpenAPI/Arazzo parsers, producing a `ResolvedSource` that extracts data via JSON Pointer.

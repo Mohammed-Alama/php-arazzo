@@ -87,7 +87,7 @@ class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
 
 function asyncApiExecutorDocument(): ArazzoDocument
 {
-    return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), []);
+    return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), [], null, \Alama\LaravelArazzo\Dto\Enum\SpecVersion::V1_1);
 }
 
 it('supports steps with action send or receive, not steps without an action', function (): void {

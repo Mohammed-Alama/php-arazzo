@@ -29,6 +29,12 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
+        if ($document->specVersion === \Alama\LaravelArazzo\Dto\Enum\SpecVersion::V1_0) {
+            throw new \LogicException(
+                "AsyncAPI step '{$step->stepId}' encountered under a 1.0.0 document; upgrade to arazzo: 1.1.0.",
+            );
+        }
+
         if ($step->action === 'send') {
             $request = $this->expressionResolver->compileRequest($step, $context, $document);
             $response = $this->httpClient->sendRequest($request);

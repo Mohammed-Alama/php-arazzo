@@ -45,11 +45,11 @@ it('is immutable on withStepOutput and merges as individual keys', function (): 
     expect($newContext->getSteps()['step_1']['outputs'])->toEqual(['id' => 123, 'name' => 'Alice']);
 });
 
-it('defaults workflowId and executionId to null', function (): void {
+it('defaults workflowId to null and executionId to a UUID', function (): void {
     $context = new WorkflowContext('def_1');
 
     expect($context->getWorkflowId())->toBeNull();
-    expect($context->getExecutionId())->toBeNull();
+    expect($context->getExecutionId())->not->toBeNull();
 });
 
 it('is immutable on withWorkflowId', function (): void {
@@ -66,7 +66,7 @@ it('is immutable on withExecutionId', function (): void {
     $newContext = $context->withExecutionId('exec_1');
 
     expect($newContext)->not->toBe($context);
-    expect($context->getExecutionId())->toBeNull();
+    expect($context->getExecutionId())->not->toBe('exec_1');
     expect($newContext->getExecutionId())->toBe('exec_1');
 });
 

@@ -1,0 +1,11 @@
+arazzo: 1.1.0
+info: { title: qs, version: '1' }
+workflows:
+  - workflowId: w
+    steps:
+      - stepId: s
+        operationId: getSomething
+        parameters:
+          - name: q
+            in: querystring
+            value: "{$workflow.inputs.q}"

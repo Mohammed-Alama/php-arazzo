@@ -11,6 +11,7 @@ use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\SuccessCriterion;
+use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException;
 use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
@@ -76,6 +77,10 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         $pathReplacements = [];
 
         foreach ($step->parameters as $param) {
+            if ($param->value instanceof Selector) {
+                throw new \RuntimeException("Selector evaluation is supported in parser but runtime evaluation requires a separate plugin");
+            }
+
             $val = $param->value instanceof Expression
                 ? $this->evaluator->evaluate($param->value, $context, $step->stepId)
                 : $param->value;
@@ -101,8 +106,14 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
             if ($step->requestBody->replacements) {
                 foreach ($step->requestBody->replacements as $replacement) {
+                    if ($replacement->value instanceof Selector) {
+                        throw new \RuntimeException("Selector evaluation is supported in parser but runtime evaluation requires a separate plugin");
+                    }
+
                     $targetPtr = $replacement->target;
-                    $val = $this->evaluator->evaluate($replacement->value, $context, $step->stepId);
+                    $val = $replacement->value instanceof Expression
+                        ? $this->evaluator->evaluate($replacement->value, $context, $step->stepId)
+                        : $replacement->value;
                     $val = $this->castToSchemaType($val, $this->resolveSchemaAtPointer($bodySchema, $targetPtr));
 
                     $segments = explode('/', ltrim($targetPtr, '/'));
@@ -152,16 +163,24 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
         $outputs = [];
         foreach ($step->outputs as $outputName => $expression) {
-            $raw = trim($expression->raw);
-
-            if (str_starts_with($raw, '$.')) {
-                $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
-
-                continue;
+            if ($expression instanceof Selector) {
+                throw new \RuntimeException("Selector evaluation is supported in parser but runtime evaluation requires a separate plugin");
             }
 
-            $value = $this->evaluator->evaluate($expression, $context, $step->stepId);
-            $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
+            if ($expression instanceof Expression) {
+                $raw = trim($expression->raw);
+
+                if (str_starts_with($raw, '$.')) {
+                    $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
+
+                    continue;
+                }
+
+                $value = $this->evaluator->evaluate($expression, $context, $step->stepId);
+                $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
+            } else {
+                $outputs[$outputName] = $expression;
+            }
         }
 
         return $outputs;
