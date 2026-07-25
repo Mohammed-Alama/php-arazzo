@@ -22,6 +22,8 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ### Shipped
 
+- **Arazzo 1.1.0 Spec Support** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md`](../roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Blocks: `ai-10-agent-routing`, `exec-07-saga-compensation`, `tenant-09-context-bridges`
+
 - **Parser & Validator** — Loader → Parser → Validator pipeline for Arazzo 1.0.0 YAML/JSON documents: typed readonly DTOs, an expression lexer/AST/symbol table, and 39 validation rule classes across document/workflow/step/expression/action scopes.
 - **Source Resolution** — `SourceResolver` with local/HTTP/cached fetchers and OpenAPI/Arazzo parsers, producing a `ResolvedSource` that extracts data via JSON Pointer.
 - **Workflow Executor** — Framework-agnostic execution engine in `Alama\LaravelArazzo\Execution` on PSR-18/17/3 interfaces; consumes parsed `Workflow` DTOs, threads an immutable `WorkflowContext`, evaluates expressions through `ExpressionEvaluator`.
