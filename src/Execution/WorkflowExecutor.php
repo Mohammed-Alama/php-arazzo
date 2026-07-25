@@ -21,10 +21,10 @@ class WorkflowExecutor
     /**
      * @param array<string, mixed> $inputs
      */
-    public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs): ExecutionResult
+    public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult
     {
         // Components should ideally be populated from $document, but keep simple for now
-        $context = new WorkflowContext($workflow->workflowId, $inputs);
+        $context ??= new WorkflowContext($workflow->workflowId, $inputs);
 
         $stepResults = [];
 
