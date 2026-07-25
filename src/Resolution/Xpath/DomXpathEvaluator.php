@@ -58,14 +58,14 @@ final class DomXpathEvaluator implements XpathEvaluator
         }
 
         if (!is_string($rootValue)) {
-            throw SelectorEvaluationException::xpathRequiresXml();
+            throw SelectorEvaluationException::xpathRequiresXml('/');
         }
 
         $doc = new DOMDocument();
         $previous = libxml_use_internal_errors(true);
         try {
             if (!$doc->loadXML($rootValue)) {
-                throw SelectorEvaluationException::xpathRequiresXml();
+                throw SelectorEvaluationException::xpathRequiresXml('/');
             }
         } finally {
             libxml_clear_errors();

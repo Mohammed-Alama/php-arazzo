@@ -18,11 +18,11 @@ final class SelectorEvaluationException extends ArazzoException
         );
     }
 
-    public static function xpathRequiresXml(): self
+    public static function xpathRequiresXml(string $pointer): self
     {
         return new self(
             'XPath selector requires XML string or DOMNode input; got non-XML value.',
-            '/',
+            $pointer,
             'selector.xpath_requires_xml',
         );
     }
