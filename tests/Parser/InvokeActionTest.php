@@ -34,6 +34,7 @@ it('parses invoke action in onSuccess and onFailure', function () {
                                 'name' => 'sub2',
                                 'type' => 'invoke',
                                 'workflowId' => 'child-2',
+                                'version' => '2.0',
                             ]
                         ]
                     ],
@@ -52,5 +53,6 @@ it('parses invoke action in onSuccess and onFailure', function () {
     $fail = $doc->workflows[0]->steps[0]->onFailure[0];
     expect($fail)->toBeInstanceOf(SubWorkflowFailureAction::class)
         ->and($fail->workflowId)->toBe('child-2')
+        ->and($fail->version)->toBe('2.0')
         ->and($fail->parameters)->toBe([]);
 });
