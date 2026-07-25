@@ -1,130 +1,144 @@
 # Laravel Arazzo — Feature Roadmap
 
-Master index of proposed features, deduplicated from three source dumps and split into one
-spec stub per feature (`docs/superpowers/roadmap/NN-slug.md`). Each stub is a **brainstorming
-seed**, not a design spec — run `superpowers:brainstorming` on a stub to turn it into a real
-spec (which then lives in `docs/superpowers/specs/`) and plan (`docs/superpowers/plans/`),
-same as every already-shipped feature in `CHANGELOG.md`.
+Split into **backend** (framework-agnostic engine features + AI + orchestration primitives)
+and **frontend** (observability / debugging surfaces, each delivered through several bridges).
 
-Files are numbered in the order this roadmap recommends tackling them (roughly: dependency
-order, foundation before the features built on top of it). The number is not a priority
-ranking beyond that — reorder freely if priorities change, just keep filenames matching their
-position so the list stays self-documenting.
+- Backend stubs live under `backend/phase-N-<name>/` — each file is prefixed with a
+  category tag (`core`, `exec`, `ai`, `rel`, `tenant`, `dx`) so the domain reads at a glance.
+- Frontend features live once under `frontend/features/` and are delivered by one or more
+  bridges under `frontend/bridges/` (own-ui, filament, easyadmin, drupal-admin, standalone).
 
-## Deduplication notes
+Shipped items no longer appear here; they moved into `CHANGELOG.md` via
+`scripts/ship-plan.sh <slug>`. Their plans + specs live under
+`docs/superpowers/plans/shipped/` and `docs/superpowers/specs/shipped/`.
 
-Three source documents were merged:
+## Ship convention
 
-- **Doc A** ("core backend features") and **Doc B**'s sections 5–8 ("...Backend") are the
-  same 14 features, verbatim. Only counted once.
-- **Doc C** ("expanded UI feature deep-dives") re-describes 6 features already listed tersely
-  in Doc B's UI sections, with more detail (problem statement + feature description). Where
-  that happened, the richer Doc C text was kept as the stub's canonical description instead
-  of Doc B's one-liner: Interactive Time-Travel Debugger, JSONPath Visual Diffing, Webhook
-  Payload Interception, Blast Radius Analyzer, Visual Saga Tracing, Golden Path Overlay.
-- Net result: **29 unique features** (14 backend, 15 UI), not the ~35 the raw line count
-  suggested.
+Every roadmap stub follows the same lifecycle:
 
-## Overlap with what's already built
+1. **Brainstorm** the stub via `superpowers:brainstorming` → produces a design spec in
+   `docs/superpowers/specs/<date>-<slug>-design.md`.
+2. **Plan** the spec via `superpowers:writing-plans` → produces a plan in
+   `docs/superpowers/plans/<date>-<slug>.md`.
+3. **Execute** the plan (usually via `superpowers:subagent-driven-development`).
+4. **Ship** via `scripts/ship-plan.sh <slug>` — deterministically moves plan + spec to
+   `shipped/`, deletes the roadmap stub, and appends a bullet under `## Unreleased` →
+   `### Shipped` in `CHANGELOG.md`.
 
-Three of the "Core Orchestration Engine" backend features are **not greenfield** — they
-already have real (unit-tested but unwired) scaffolding in the codebase, per `CHANGELOG.md`'s
-"Added — not yet wired into the runtime" section. Brainstorming for these should start from
-"how do we wire and complete the existing code," not "how do we design this from scratch":
+The script is idempotent, no interactive prompts, safe to re-run.
 
-- [01 — Zero-Code Data Pipelining](01-zero-code-data-pipelining.md) — `TypeCaster`,
-  `JsonPathEvaluator`, `ArazzoExpressionResolver` (stub) exist.
-- [02 — CQRS & Event-Sourced Persistence](02-cqrs-event-sourced-persistence.md) —
-  `RedisHotStateStore`, `DatabaseEventLedger`, `InMemoryDefinitionRegistry` exist.
-- [03 — Native Asynchronous Control Flow](03-native-async-control-flow.md) — `Engine`,
-  `StepExecutionWorker` choreography, `QueueDriverInterface`/`LaravelQueueDriver`,
-  `LockManagerInterface` exist and are partially wired (see queue-integration entry in
-  `CHANGELOG.md` and its known double-dispatch/registry gaps).
+## Prioritization
 
-[15 — Graph Explorer](15-graph-explorer.md) shares its `reactflow` foundation with the
-already-shipped workflow-builder UI (`resources/js/arazzo-ui.jsx`), but is a distinct feature
-(execution observability vs. workflow construction) — not prior art to reuse wholesale, just
-a tech-stack head start.
+**Phase 0 runs on two parallel tracks:** foundation (already largely shipped) and AI
+(prioritized from day one — Arazzo YAML is designed to be LLM-legible; the AI features are
+the flagship product story, not a "later" enhancement).
 
-## Arazzo 1.1.0 (cross-cutting, confirmed real spec release)
+## Backend
 
-The engine currently parses/validates only `arazzo: "1.0.0"` (`SourceType` enum has no
-`asyncapi` case, `ParameterIn` has no `querystring` case). 1.1.0 adds AsyncAPI
-`sourceDescriptions` (`action: send|receive`, `channelPath`, `correlationId`), a **Selector
-Object** (`context`/`selector`/`type`, with a pinned-version Expression Type Object —
-`jsonpath` + `rfc9535`, `xpath` + `xpath-10..31`, `jsonpointer` + `rfc6901`) replacing bare
-string templating for outputs/parameters, full `workflowId`+`parameters` sub-workflow
-composition on Success/Failure Action Objects, `in: querystring` params, and a root-level
-`$self` URI. A test fixture demonstrating all of these lives at
-`tests/fixtures/parser/arazzo-1.1-cross-protocol-saga.yaml` (kept out of the passing parser
-suite until this lands — the parser hard-rejects `"1.1.0"` today).
+### `backend/phase-0-foundation/` — engine core
 
-This isn't a new numbered item — it's a delta on top of items already in this roadmap. Each
-affected stub below carries a `**1.1.0 delta:**` line. Brainstorm the 1.0.0 shape first where
-a stub is still "not started"; fold the delta in during that same brainstorm rather than
-building 1.0.0-only behavior and re-doing it later. Affected: [01](01-zero-code-data-pipelining.md),
-[03](03-native-async-control-flow.md), [04](04-strict-runtime-schema-validation.md),
-[07](07-automated-saga-compensation-engine.md), [09](09-cross-module-bounded-context-bridges.md),
-[10](10-ai-agent-epistemic-protocol-routing.md).
+Initial foundation shipped (parser, validator, executor, expression resolver, event ledger,
+async control flow, schema validation, idempotency — see CHANGELOG). New foundation-layer
+stubs land here going forward.
 
-## Phases
+| Stub | Tier | Purpose |
+|---|---|---|
+| [core-34-arazzo-1.1.0-spec](backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md) | OSS | Full Arazzo 1.1.0 support: AsyncAPI, Selector Object, sub-workflow composition, `in: querystring`, `$self` |
 
-### Phase 0 — Engine foundation (finish what's already scaffolded)
-Almost everything else in this roadmap reads from or dispatches through these three. Do them
-first, in this order — persistence before control flow, since the worker needs somewhere to
-read/write state; data pipelining before control flow, since success-criteria/retry parsing
-needs real output extraction to evaluate against.
+See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for filing convention.
 
-1. [Zero-Code Data Pipelining](01-zero-code-data-pipelining.md)
-2. [CQRS & Event-Sourced Persistence](02-cqrs-event-sourced-persistence.md)
-3. [Native Asynchronous Control Flow](03-native-async-control-flow.md)
+### `backend/phase-0-ai/` — AI, prioritized from day one
 
-### Phase 1 — Core reliability primitives (depend on Phase 0)
-4. [Strict Runtime Schema Validation](04-strict-runtime-schema-validation.md)
-5. [Idempotency & Replay Safeguards](05-idempotency-replay-safeguards.md)
-6. [SLA Monitors & Dead Letter Workflows](06-sla-monitors-dead-letter-workflows.md)
+| Stub | Tier | Purpose |
+|---|---|---|
+| [ai-10-agent-routing](backend/phase-0-ai/ai-10-agent-routing.md) | pro | Epistemic protocol routing for multi-agent orchestrations |
+| [ai-30-openapi-deterministic-gen](backend/phase-0-ai/ai-30-openapi-deterministic-gen.md) | OSS | Deterministic OpenAPI → Arazzo scaffold |
+| [ai-31-openapi-refined-gen](backend/phase-0-ai/ai-31-openapi-refined-gen.md) | pro | LLM-refined generator (OpenAI / Anthropic / Ollama) |
+| [ai-32-workflow-designer-agent](backend/phase-0-ai/ai-32-workflow-designer-agent.md) | pro | Interactive multi-turn designer with graph-aware mutations |
 
-### Phase 2 — Advanced orchestration (depend on Phase 0 + 1)
-7. [Automated Saga Pattern (Compensation Engine)](07-automated-saga-compensation-engine.md)
-8. [Dynamic Fan-Out / Fan-In](08-dynamic-fan-out-fan-in.md)
+### `backend/phase-1-reliability/`
 
-### Phase 3 — Modular systems & AI integration (depend on Phase 0)
-9. [Cross-Module Bounded Context Bridges](09-cross-module-bounded-context-bridges.md)
-10. [AI Agent & Epistemic Protocol Routing](10-ai-agent-epistemic-protocol-routing.md)
-11. [Multi-Tenancy Isolation](11-multi-tenancy-isolation.md)
+| Stub | Tier | Purpose |
+|---|---|---|
+| [rel-06-sla-monitors-dlq](backend/phase-1-reliability/rel-06-sla-monitors-dlq.md) | pro | SLA monitors + dead-letter workflows |
 
-### Phase 4 — Testing & developer tooling (can start once Phase 0 exists, parallelizable)
-12. [Local Mocking Engine (Pest v3 Integration)](12-local-mocking-engine-pest.md)
-13. [Interactive REPL Debugging Hooks](13-interactive-repl-debugging-hooks.md)
-14. [Pre-Flight Linter](14-pre-flight-linter.md)
+### `backend/phase-2-orchestration/`
 
-### Phase 5 — UI: core execution & observability (needs Phase 0's event ledger to have data)
-15. [The Graph Explorer](15-graph-explorer.md)
-16. [The Event Ledger](16-event-ledger.md)
-17. [The Payload Inspector](17-payload-inspector.md)
-18. [Retry & Intervention Controls](18-retry-intervention-controls.md)
+| Stub | Tier | Purpose |
+|---|---|---|
+| [exec-07-saga-compensation](backend/phase-2-orchestration/exec-07-saga-compensation.md) | pro | Automated saga compensation engine |
+| [exec-08-fan-out-in](backend/phase-2-orchestration/exec-08-fan-out-in.md) | pro | Dynamic fan-out / fan-in |
 
-### Phase 6 — UI: advanced debugging (needs Phase 5's views to hang off of)
-19. [Interactive Time-Travel Debugger](19-interactive-time-travel-debugger.md)
-20. [JSONPath Visual Diffing](20-jsonpath-visual-diffing.md)
-21. [Webhook Payload Interception UI](21-webhook-payload-interception-ui.md)
+### `backend/phase-3-modularity/`
 
-### Phase 7 — UI: system health & scaling ops (needs real traffic/volume across workflows)
-22. [Blast Radius Analyzer (Heatmap)](22-blast-radius-analyzer.md)
-23. [Error Triage Board](23-error-triage-board.md)
-24. [Golden Path Overlay](24-golden-path-overlay.md)
+| Stub | Tier | Purpose |
+|---|---|---|
+| [tenant-09-context-bridges](backend/phase-3-modularity/tenant-09-context-bridges.md) | pro | Cross-module bounded-context bridges |
+| [tenant-11-multitenancy](backend/phase-3-modularity/tenant-11-multitenancy.md) | pro | Multi-tenancy isolation |
+| [tenant-33-oak-catalog](backend/phase-3-modularity/tenant-33-oak-catalog.md) | OSS + pro | Jentic OAK catalog bridge (6000-API library) |
 
-### Phase 8 — UI: DX & ecosystem integration (depend on most everything above existing)
-25. [Execution Waterfall (Performance Profiler)](25-execution-waterfall-profiler.md)
-26. [Visual Version Diffing](26-visual-version-diffing.md)
-27. [Visual Saga Tracing](27-visual-saga-tracing.md) — needs [07](07-automated-saga-compensation-engine.md)
-28. [The Ecosystem Bridge](28-ecosystem-bridge-horizon-telescope.md)
-29. [Dry-Run Sandbox](29-dry-run-sandbox.md) — needs [12](12-local-mocking-engine-pest.md)
+### `backend/phase-4-dx/`
 
-## How to use this
+| Stub | Tier | Purpose |
+|---|---|---|
+| [dx-12-pest-mocking](backend/phase-4-dx/dx-12-pest-mocking.md) | OSS | Local mocking engine (Pest v3+) |
+| [dx-13-repl-hooks](backend/phase-4-dx/dx-13-repl-hooks.md) | pro | Interactive REPL debugging hooks |
+| [dx-14-linter](backend/phase-4-dx/dx-14-linter.md) | OSS | Pre-flight linter (`arazzo lint`, `--against-openapi` drift check) |
 
-For each stub, when it's time to design it: run `superpowers:brainstorming` on that file. The
-output becomes `docs/superpowers/specs/<date>-<slug>-design.md` and
-`docs/superpowers/plans/<date>-<slug>.md`, same convention as every shipped feature. Once
-implemented and reviewed, its summary moves into `CHANGELOG.md` and this roadmap stub can be
-deleted (or marked done) — same cleanup pattern already used for queue-integration.
+## Frontend
+
+Each feature is specified once under `frontend/features/`. Bridges implement or embed the
+same feature across delivery surfaces (own-ui, Filament, EasyAdmin, Drupal admin, standalone).
+
+### `frontend/features/` — per-feature specs
+
+| Stub | Category | Purpose |
+|---|---|---|
+| [obs-15-graph-explorer](frontend/features/obs-15-graph-explorer.md) | observability | Live execution graph |
+| [obs-16-event-ledger](frontend/features/obs-16-event-ledger.md) | observability | Immutable event stream per run |
+| [obs-17-payload-inspector](frontend/features/obs-17-payload-inspector.md) | observability | Per-step input/output snapshots |
+| [obs-18-retry-controls](frontend/features/obs-18-retry-controls.md) | observability | Retry / intervention actions |
+| [debug-19-time-travel](frontend/features/debug-19-time-travel.md) | debugging | Interactive time-travel debugger |
+| [debug-20-jsonpath-diff](frontend/features/debug-20-jsonpath-diff.md) | debugging | Visual JSONPath diffing between runs |
+| [debug-21-webhook-interception](frontend/features/debug-21-webhook-interception.md) | debugging | Live webhook payload interception UI |
+| [health-22-blast-radius](frontend/features/health-22-blast-radius.md) | system-health | Blast-radius heatmap for failing workflows |
+| [health-23-error-triage](frontend/features/health-23-error-triage.md) | system-health | Error triage board |
+| [health-24-golden-path](frontend/features/health-24-golden-path.md) | system-health | Golden-path overlay |
+| [perf-25-waterfall](frontend/features/perf-25-waterfall.md) | performance | Execution waterfall profiler |
+| [diff-26-version-diff](frontend/features/diff-26-version-diff.md) | dx | Visual version diffing |
+| [saga-27-saga-tracing](frontend/features/saga-27-saga-tracing.md) | debugging | Visual saga tracing — needs exec-07 |
+| [bridge-28-horizon-telescope](frontend/features/bridge-28-horizon-telescope.md) | ecosystem | Horizon / Telescope cross-linking |
+| [test-29-dry-run-sandbox](frontend/features/test-29-dry-run-sandbox.md) | dx | Dry-run sandbox — needs dx-12 |
+
+### `frontend/bridges/` — per-framework delivery
+
+| Bridge | Package | Phase |
+|---|---|---|
+| [own-ui](frontend/bridges/own-ui/README.md) | `alama/arazzo-pro-ui` + OSS shell `alama/arazzo-ui-oss` | C |
+| [filament](frontend/bridges/filament/README.md) | `alama/arazzo-pro-filament` | C (primary agency surface) |
+| [easyadmin](frontend/bridges/easyadmin/README.md) | `alama/arazzo-pro-symfony-easyadmin` | E |
+| [drupal-admin](frontend/bridges/drupal-admin/README.md) | `alama/arazzo-pro-drupal-admin` | E |
+| [standalone](frontend/bridges/standalone/README.md) | `alama/arazzo-ui-standalone` (OSS) + pro overlay | C |
+
+Phase letters match the commercial plan in
+[docs/superpowers/specs/2026-07-24-commercial-tier-and-multi-framework-design.md](../specs/2026-07-24-commercial-tier-and-multi-framework-design.md).
+
+## Arazzo 1.1.0 delta
+
+The 1.1.0 spec support work is now its own stub — [core-34-arazzo-1.1.0-spec](backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md).
+Land it before (or alongside) the downstream stubs that use 1.1.0 constructs so they are
+1.1.0-native from day one:
+
+- [ai-10-agent-routing](backend/phase-0-ai/ai-10-agent-routing.md) — Selector + AsyncAPI routing
+- [exec-07-saga-compensation](backend/phase-2-orchestration/exec-07-saga-compensation.md) — sub-workflow composition on Failure Actions
+- [tenant-09-context-bridges](backend/phase-3-modularity/tenant-09-context-bridges.md) — AsyncAPI cross-context messaging
+
+## How to use this document
+
+- **Picking what to work on next?** Start at Phase 0-AI, then walk down phases. Within a
+  phase, prefer OSS before pro (broader test surface first).
+- **Adding a new roadmap idea?** Drop a stub in the appropriate `backend/phase-*/` or
+  `frontend/features/` folder using the naming convention `<category>-<NN>-<slug>.md`, then
+  link it from the tables above.
+- **Shipping a plan?** `scripts/ship-plan.sh <slug>` — everything else (CHANGELOG update,
+  stub removal, plan/spec move to `shipped/`) is handled deterministically.

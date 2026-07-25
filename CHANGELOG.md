@@ -2,34 +2,27 @@
 
 All notable changes to `alama/laravel-arazzo` will be documented in this file.
 
+Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-plan.sh <slug>` — a deterministic promotion that moves the plan/spec under `docs/superpowers/plans/shipped/` + `docs/superpowers/specs/shipped/`, removes the roadmap stub, and appends this section.
+
 ## Unreleased
 
-### Added
+### Shipped
 
 - **Parser & Validator** — Loader → Parser → Validator pipeline for Arazzo 1.0.0 YAML/JSON documents: typed readonly DTOs, an expression lexer/AST/symbol table, and 39 validation rule classes across document/workflow/step/expression/action scopes.
 - **Source Resolution** — `SourceResolver` with local/HTTP/cached fetchers and OpenAPI/Arazzo parsers, producing a `ResolvedSource` that extracts data via JSON Pointer.
-- **Workflow Execution Logic** — `ExpressionEvaluator` (full AST visitor over input/step/request/response/output/component references) and `StepExecutor` (operation resolution, parameter/body resolution, HTTP dispatch, output extraction, success-criteria evaluation). Proven end-to-end by a real workflow execution test.
+- **Workflow Executor** — Framework-agnostic execution engine in `Alama\LaravelArazzo\Execution` on PSR-18/17/3 interfaces; consumes parsed `Workflow` DTOs, threads an immutable `WorkflowContext`, evaluates expressions through `ExpressionEvaluator`.
+- **Workflow Execution Logic** — `ExpressionEvaluator` (full AST visitor over input/step/request/response/output/component references) and `StepExecutor` (operation resolution, parameter/body resolution, HTTP dispatch, output extraction, success-criteria evaluation).
+- **Zero-Code Data Pipelining** — `ArazzoExpressionResolver` resolves OpenAPI operations, builds requests, extracts outputs (spec runtime expressions or JSONPath), and evaluates success criteria (simple/regex/jsonpath). `StepExecutor` orchestrates compile → send → record → extract → evaluate. `TypeCaster` + `JsonPathEvaluator` utilities.
+- **CQRS & Event-Sourced Persistence** — Three IDs (`definitionId`/`workflowId`/`executionId`) replace the single overloaded `WorkflowContext::$definitionId`. `RedisHotStateStore` (hot state), `DatabaseEventLedger` (append-only audit log), `InMemoryDefinitionRegistry` (workflow versioning). Definition registry persists `ArazzoDocument::$rawRoot` verbatim and reconstructs via `Parser::parse()` on read.
+- **Native Asynchronous Control Flow** — `StepOutcomeHandler` owns all retry/goto/end decision logic, called by `StepExecutionWorker` (HTTP path) and `CorrelationResumer` (AsyncAPI resume path). `StepProtocolExecutorInterface` (`HttpStepExecutor` / `AsyncApiStepExecutor`) removes protocol branching. `RunExecuteStepJob` (real `ShouldQueue`), `LaravelQueueDriver`, `LaravelRedisLockManager`, `Psr18HttpClient`, `WebhookResumeController`, `ResumeCorrelationJob`, `PendingCorrelationRegistryInterface` / `DatabasePendingCorrelationRegistry`.
+- **Strict Runtime Schema Validation** — `arazzo.strict_schema_validation` config + type-safe `x-strict-validation` parsing; `SchemaValidationException`; full JSON Schema keyword coverage on inputs, outputs, parameters, request bodies.
+- **Idempotency & Replay Safeguards** — `IdempotencyKeyInjector` wired into both `StepExecutor` (sync) and `HttpStepExecutor` (async). Per-step `idempotencyKey` / `idempotencyHeader` DTO fields (parsed from `x-idempotency-key` / `x-idempotency-header`). `arazzo.idempotency.enabled` / `.header` config. Deterministic key computation + method-filter + end-to-end verification.
 - **AI Generator** — `ArazzoGenerator` converts a natural-language trace into Arazzo YAML via a PSR-18 `AiClientInterface` (`OpenAiClient` implementation), injecting OpenAPI context and spec rules into the prompt.
-- **React Flow UI** — Drag-and-drop OpenAPI endpoint canvas (`reactflow` + `@monaco-editor/react`) backed by `/api/arazzo/endpoints` and `/api/arazzo/generate`, plus refinements for per-node parameter/request-body/success-criteria/output configuration and dynamic spec loading.
+- **React Flow UI** — Drag-and-drop OpenAPI endpoint canvas (`reactflow` + `@monaco-editor/react`) backed by `/api/arazzo/endpoints` and `/api/arazzo/generate`; per-node parameter/request-body/success-criteria/output configuration and dynamic spec loading.
 - **Laravel Integration** — Service provider wiring for PSR-18/17 HTTP client bindings (Guzzle), publishable config, and container bindings for the generator and executor.
 - **Playwright Browser Testing** — End-to-end browser test suite against the live UI (sidebar rendering, canvas drag, YAML generation).
-- **Queue Integration (partial)** — `StepExecutionWorker` now closes the choreography loop: after a step succeeds, it resolves the owning `Workflow` via `DefinitionRegistryInterface` and calls `Engine::evaluate()` to dispatch newly-unlocked downstream steps. Added `SyncQueueDriver`, an in-memory recording implementation of `QueueDriverInterface` for tests.
-
-### Added — not yet wired into the runtime
-
-The following async execution subsystem is fully built and unit-tested in isolation, but **not bound in `LaravelArazzoServiceProvider` and not reachable from the app's actual (synchronous) execution path** (`WorkflowExecutor`/`StepExecutor`). Treat as scaffolding for a future event-driven engine, not a shipped feature:
-
-- **Core Execution Engine** — framework-agnostic `Engine`, `DependencyAnalyzer`, immutable `WorkflowContext`, and `QueueDriverInterface`/`LockManagerInterface`/`HttpClientInterface` contracts with Laravel adapters (`LaravelQueueDriver`, `LaravelRedisLockManager`).
-- **Dual-Store Persistence** — `RedisHotStateStore` (hot execution state), `DatabaseEventLedger` (append-only audit log; no migration shipped yet), `InMemoryDefinitionRegistry` (workflow versioning; process-local only, not viable across queue workers).
-- **Step Execution Worker** — `StepExecutionWorker` (locking, idempotency, HTTP dispatch, engine re-entry) and the `StepExecuted` event. `ExecuteStepJob` is a plain object, not a real `ShouldQueue` Laravel job.
-- **Zero-Code Data Pipelining** — `TypeCaster` and `JsonPathEvaluator` utilities, and `ArazzoExpressionResolver` (the async path's request/output compiler — still a stub: hardcoded `GET`, no OpenAPI operation resolution, no query/body params, no success-criteria evaluation). Not used by the live `StepExecutor`, which uses `ExpressionEvaluator`/`JsonPointer` instead.
-
-Known gaps in this async chain, to resolve before it's wired up: double-dispatch prevention only holds for linear step chains, not diamond/fan-in DAGs (the idempotency check and `Engine::evaluate` both run against the job's own snapshot context rather than reloaded/merged persisted state); `InMemoryDefinitionRegistry` needs a shared/persistent backing store before choreography can work across real queue worker processes.
-
-### In progress
-
-- **Workflow Executor** — `DependencyGraph` (topological sort, cycle detection) described in the plan was never built; `WorkflowExecutor::execute()` still iterates `$workflow->steps` in array order with no dependency ordering.
 
 ### Known design debt
 
-- `docs/superpowers/specs/2026-07-20-edge-mapping-ui-design.md` describes an edge-click configuration modal for data mapping between nodes. Never implemented; the UI refinement work instead solved node-level mapping via free-text textareas. Spec kept as-is pending a decision on whether to build it.
+- `docs/superpowers/specs/2026-07-20-edge-mapping-ui-design.md` describes an edge-click configuration modal for data mapping between nodes. Never implemented; UI refinement solved node-level mapping via free-text textareas. Spec kept as-is pending a decision on whether to build it.
+- `DependencyGraph` (topological sort, cycle detection) described in the workflow-executor plan was never built; `WorkflowExecutor::execute()` still iterates `$workflow->steps` in array order with no dependency ordering. Async path uses proper dispatch (`Engine`/`StepExecutionWorker`), so this is a gap only in the sync path.
