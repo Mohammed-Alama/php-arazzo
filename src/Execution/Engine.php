@@ -12,7 +12,6 @@ use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 class Engine
 {
     public function __construct(
-        private DependencyAnalyzer $analyzer,
         private QueueDriverInterface $queueDriver,
         /** @phpstan-ignore property.onlyWritten */
         private StateStoreInterface $stateStore,
@@ -25,7 +24,9 @@ class Engine
             $context = $context->withWorkflowId($workflow->workflowId);
         }
 
-        $runnableSteps = $this->analyzer->getRunnableSteps($workflow->steps, $context);
+        $graph = new DependencyGraph($workflow->steps);
+        $analyzer = new DependencyAnalyzer($graph);
+        $runnableSteps = $analyzer->getRunnableSteps($context);
 
         if (empty($runnableSteps)) {
             // Workflow complete or waiting. We will handle completion logic later.

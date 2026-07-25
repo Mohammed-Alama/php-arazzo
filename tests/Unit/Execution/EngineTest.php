@@ -8,7 +8,6 @@ use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
@@ -38,8 +37,7 @@ class MockStateStore implements StateStoreInterface
 it('dispatches every runnable step', function (): void {
     $queue = new MockQueueDriver();
     $store = new MockStateStore();
-    $analyzer = new DependencyAnalyzer();
-    $engine = new Engine($analyzer, $queue, $store);
+    $engine = new Engine($queue, $store);
 
     $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
     $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], []);
@@ -54,7 +52,7 @@ it('dispatches every runnable step', function (): void {
 
 it('stamps workflowId onto the dispatched job context', function (): void {
     $queue = new MockQueueDriver();
-    $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
+    $engine = new Engine($queue, new MockStateStore());
 
     $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -70,7 +68,7 @@ it('stamps workflowId onto the dispatched job context', function (): void {
 
 it('does not overwrite an already-set workflowId', function (): void {
     $queue = new MockQueueDriver();
-    $engine = new Engine(new DependencyAnalyzer(), $queue, new MockStateStore());
+    $engine = new Engine($queue, new MockStateStore());
 
     $step = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);

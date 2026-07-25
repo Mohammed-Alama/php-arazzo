@@ -8,15 +8,20 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ### Added
 
+- `DependencyGraph` class representing topological ordering of workflow steps with cycle detection and unresolved reference checking.
+- `StepDependsOnNoCycleRule` validator rule (error codes `step.dependson_no_cycle` and `step.dependson_unresolved_reference`).
 - Full Arazzo 1.1.0 spec support: parser, validator, resolver, and executor now natively handle 1.1.0 documents alongside existing 1.0.0.
 - `SpecVersion` enum, `Selector` DTO, `ExpressionType` enum, `SubWorkflowSuccessAction` / `SubWorkflowFailureAction`, `ArazzoDocument::$self`, `ActionKind::Invoke`, `ParameterIn::Querystring`.
 - `XpathEvaluator` interface + `DomXpathEvaluator` (XPath 1.0 built-in via `ext-dom`). Bind a custom implementation to enable XPath 2.0 / 3.0 / 3.1.
 - `SelectorEvaluator` routes Selector-shaped outputs / parameters by expression type (jsonpath / jsonpointer / xpath).
 - `SubWorkflowInvoker` composes child workflows in-process; child `WorkflowContext` is isolated from parent `$steps.*` scope.
-- 5 new validator rules: `selector.type_supported`, `subworkflow.invoke_target_resolves`, `parameter.querystring_operation_shape`, `document.self_uri_syntax`, `asyncapi.fields_require_11`.
+- 6 new validator rules: `step.dependson_validation` (cycle and unresolved refs), `selector.type_supported`, `subworkflow.invoke_target_resolves`, `parameter.querystring_operation_shape`, `document.self_uri_syntax`, `asyncapi.fields_require_11`.
 
 ### Changed
 
+- Refactored `WorkflowExecutor` (sync mode) to execute steps in topological order rather than document array order, fixing an execution sequencing bug.
+- **Breaking (Internal):** `Engine` and `StepOutcomeHandler` no longer accept `DependencyAnalyzer` in their constructors. They now instantiate it dynamically per-workflow.
+- **Breaking (Internal):** `DependencyAnalyzer::__construct(DependencyGraph)` is now required, and `getRunnableSteps()` no longer takes an `$allSteps` parameter (it queries the bound graph instead).
 - `arazzo` field is now strictly guarded: only `1.0.x` and `1.1.x` values are accepted. Documents with other versions are rejected at parse time.
 - AsyncAPI-specific step fields (`action`, `channelPath`, `correlationId`) are now rejected on `1.0.0` documents. Move such workflows to `arazzo: 1.1.0`.
 
@@ -41,4 +46,3 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 ### Known design debt
 
 - `docs/superpowers/specs/2026-07-20-edge-mapping-ui-design.md` describes an edge-click configuration modal for data mapping between nodes. Never implemented; UI refinement solved node-level mapping via free-text textareas. Spec kept as-is pending a decision on whether to build it.
-- `DependencyGraph` (topological sort, cycle detection) described in the workflow-executor plan was never built; `WorkflowExecutor::execute()` still iterates `$workflow->steps` in array order with no dependency ordering. Async path uses proper dispatch (`Engine`/`StepExecutionWorker`), so this is a gap only in the sync path.

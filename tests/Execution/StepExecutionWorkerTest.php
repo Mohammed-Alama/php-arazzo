@@ -17,7 +17,6 @@ use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StepProtocolExecutorInterface;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
@@ -191,10 +190,9 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $executionRegistry = new WorkerMockExecutionRegistry();
     $resolver = new WorkerMockExpressionResolver();
     $queue = new SyncQueueDriver();
-    $dependencyAnalyzer = new DependencyAnalyzer();
-    $engine = new Engine($dependencyAnalyzer, $queue, $store);
+    $engine = new Engine($queue, $store);
     $outcomeHandler = new StepOutcomeHandler(
-        $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger,
+        $queue, $engine, $executionRegistry, $eventLedger,
         new WorkerMockPendingCorrelationRegistry(), $resolver, $store,
         \Mockery::mock(SubWorkflowInvoker::class),
         \Mockery::mock(SelectorEvaluator::class),

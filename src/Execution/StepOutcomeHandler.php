@@ -35,7 +35,6 @@ class StepOutcomeHandler
     public function __construct(
         private QueueDriverInterface $queueDriver,
         private Engine $engine,
-        private DependencyAnalyzer $dependencyAnalyzer,
         private ExecutionRegistryInterface $executionRegistry,
         private EventLedgerInterface $eventLedger,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
@@ -308,7 +307,9 @@ class StepOutcomeHandler
         $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
         $this->engine->evaluate($workflow, $newContext);
 
-        $runnable = $this->dependencyAnalyzer->getRunnableSteps($workflow->steps, $newContext);
+        $graph = new DependencyGraph($workflow->steps);
+        $analyzer = new DependencyAnalyzer($graph);
+        $runnable = $analyzer->getRunnableSteps($newContext);
         if ($runnable === [] && !$this->pendingCorrelations->existsForExecution($executionId)) {
             $this->terminate($newContext, $executionId, ExecutionStatus::Succeeded, 'execution.succeeded');
         }

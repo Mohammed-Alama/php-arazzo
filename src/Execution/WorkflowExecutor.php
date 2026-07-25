@@ -27,9 +27,10 @@ class WorkflowExecutor
         $context ??= new WorkflowContext($workflow->workflowId, $inputs);
 
         $stepResults = [];
+        $graph = new DependencyGraph($workflow->steps);
 
-        foreach ($workflow->steps as $step) {
-            $stepId = $step->stepId;
+        foreach ($graph->getTopologicalOrder() as $stepId) {
+            $step = $graph->getStepsById()[$stepId];
 
             $this->logger?->logStepStarted($stepId);
 
