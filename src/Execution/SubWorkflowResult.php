@@ -9,7 +9,7 @@ final readonly class SubWorkflowResult
     /** @param array<string, mixed> $outputs */
     public function __construct(
         public array $outputs,
-        public mixed $terminal,
+        public string $status,
         public string $childRunId,
     ) {
     }

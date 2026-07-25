@@ -8,6 +8,7 @@ use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Exceptions\ExecutionException;
 use Alama\LaravelArazzo\Execution\Dto\ExecutionResult;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
@@ -70,5 +71,36 @@ it('binds parameters, executes child workflow, returns SubWorkflowResult', funct
 
     expect($result)->toBeInstanceOf(SubWorkflowResult::class)
         ->and($result->childRunId)->not->toBe($parent->getExecutionId())
-        ->and($result->outputs)->toBe(['some_output' => 'val']);
+        ->and($result->outputs)->toBe(['some_output' => 'val'])
+        ->and($result->status)->toBe('completed');
+});
+
+it('throws ExecutionException when sub workflow cannot be found', function () {
+    $document = new ArazzoDocument(
+        arazzo: '1.0.0',
+        info: new Info('test', null, null, '1.0.0'),
+        sourceDescriptions: [],
+        workflows: [],
+        components: new Components([], [], [], []),
+        specificationExtensions: []
+    );
+
+    $registry = new InMemoryDefinitionRegistry();
+    $definitionId = $registry->register($document);
+
+    $executor = Mockery::mock(WorkflowExecutor::class);
+    $exprEval = new ExpressionEvaluator();
+    $selEval = new SelectorEvaluator(new DomXpathEvaluator(), $exprEval);
+
+    $parent = new WorkflowContext($definitionId, []);
+    $action = new SubWorkflowSuccessAction(
+        'call', 'not-found-workflow',
+        [],
+        [],
+    );
+
+    $invoker = new SubWorkflowInvoker($registry, $executor, $exprEval, $selEval);
+    
+    expect(fn() => $invoker->invoke($action, $parent))
+        ->toThrow(ExecutionException::class, "Sub-workflow 'not-found-workflow' not found in registry.");
 });
