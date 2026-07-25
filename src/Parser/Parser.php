@@ -16,6 +16,7 @@ use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Enum\CriterionType;
 use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
+use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
 use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Parameter;
@@ -37,6 +38,14 @@ class Parser
         $d = $raw->data;
 
         $arazzo = $this->requireString($d, 'arazzo', $ctx);
+
+        try {
+            $specVersion = SpecVersion::fromRaw($arazzo);
+        } catch (\InvalidArgumentException) {
+            throw ParserException::unsupportedVersion($ctx, $arazzo);
+        }
+
+        $self = $this->optionalString($d, '$self', $ctx);
 
         if (!array_key_exists('info', $d)) {
             throw ParserException::missingField($ctx, 'info');
@@ -76,6 +85,8 @@ class Parser
             components: $components,
             specificationExtensions: $extensions,
             rawRoot: $d,
+            specVersion: $specVersion,
+            self: $self,
         );
     }
 
@@ -334,7 +345,7 @@ class Parser
         if (($rawIn = $this->optionalString($obj, 'in', $ctx)) !== null) {
             $in = ParameterIn::tryFrom($rawIn)
                 ?? throw ParserException::invalidEnum(
-                    $ctx->push('in'), 'path|query|header|cookie|body', $rawIn,
+                    $ctx->push('in'), 'path|query|header|cookie|body|querystring', $rawIn,
                 );
         }
         if (!array_key_exists('value', $obj)) {
