@@ -142,4 +142,16 @@ final class WorkflowContext
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function rootScope(): array
+    {
+        return [
+            'inputs' => $this->inputs,
+            'steps' => $this->steps,
+            'components' => $this->components,
+        ];
+    }
 }
