@@ -27,7 +27,7 @@ final class StepParameterInValidRule implements Rule
                         $errors->error(
                             $this->code(),
                             "Parameter 'in' value 'querystring' requires Arazzo 1.1.0.",
-                            "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/in"
+                            "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/in",
                         );
                     }
                 }
@@ -39,7 +39,7 @@ final class StepParameterInValidRule implements Rule
                 $errors->error(
                     $this->code(),
                     "Parameter 'in' value 'querystring' requires Arazzo 1.1.0.",
-                    "/components/parameters/{$name}/in"
+                    "/components/parameters/{$name}/in",
                 );
             }
         }

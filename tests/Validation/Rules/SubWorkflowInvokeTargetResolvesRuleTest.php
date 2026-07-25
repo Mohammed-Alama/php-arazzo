@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
 use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
@@ -61,7 +62,7 @@ it('errors when component invoke target does not resolve', function () {
         components: new Components([], [], [
             'bad' => new SubWorkflowSuccessAction('call', 'ghost-workflow', [], []),
         ], [
-            'bad_fail' => new \Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction('call', 'ghost-workflow', [], []),
+            'bad_fail' => new SubWorkflowFailureAction('call', 'ghost-workflow', [], []),
         ]),
         specificationExtensions: [],
         specVersion: SpecVersion::V1_1,

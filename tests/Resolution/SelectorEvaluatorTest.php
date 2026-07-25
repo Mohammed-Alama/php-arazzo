@@ -24,7 +24,7 @@ it('evaluates JSONPath selector', function () {
 
     $context = new WorkflowContext(
         definitionId: 'test',
-        inputs: ['userId' => 'user-123']
+        inputs: ['userId' => 'user-123'],
     );
 
     $result = $evaluator->evaluate($selector, $context, 'step1');
@@ -45,7 +45,7 @@ it('evaluates JSONPointer selector', function () {
 
     $context = new WorkflowContext(
         definitionId: 'test',
-        inputs: ['userId' => 'user-123']
+        inputs: ['userId' => 'user-123'],
     );
 
     $result = $evaluator->evaluate($selector, $context, 'step1');
@@ -68,7 +68,7 @@ it('evaluates XPath selector', function () {
 
     $context = new WorkflowContext(
         definitionId: 'test',
-        inputs: ['xmlData' => $xml]
+        inputs: ['xmlData' => $xml],
     );
 
     $result = $evaluator->evaluate($selector, $context, 'step1');
@@ -92,9 +92,9 @@ it('evaluates selector with context expression', function () {
         inputs: [
             'userObject' => [
                 'userId' => 'user-123',
-                'name' => 'John Doe'
-            ]
-        ]
+                'name' => 'John Doe',
+            ],
+        ],
     );
 
     $result = $evaluator->evaluate($selector, $context, 'step1');

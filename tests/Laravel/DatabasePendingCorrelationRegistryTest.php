@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Alama\LaravelArazzo\Laravel\DatabasePendingCorrelationRegistry;
-use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 

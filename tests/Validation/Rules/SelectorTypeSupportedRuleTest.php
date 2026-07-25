@@ -5,8 +5,12 @@ declare(strict_types=1);
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Enum\ExpressionType;
+use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
 use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
 use Alama\LaravelArazzo\Dto\Info;
+use Alama\LaravelArazzo\Dto\Parameter;
+use Alama\LaravelArazzo\Dto\PayloadReplacement;
+use Alama\LaravelArazzo\Dto\RequestBody;
 use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
@@ -66,10 +70,10 @@ function docWithVariousSelectors(Selector $s, SpecVersion $sv = SpecVersion::V1_
         info: new Info('t', null, null, '1'),
         sourceDescriptions: [],
         workflows: [new Workflow('w', null, null, null, [], [
-            new Step('s', null, 'op', null, null, [new \Alama\LaravelArazzo\Dto\Parameter('p2', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header, $s)], new \Alama\LaravelArazzo\Dto\RequestBody(null, null, [new \Alama\LaravelArazzo\Dto\PayloadReplacement('/a', $s)]), [], [], [], []),
-        ], [], [], [], [new \Alama\LaravelArazzo\Dto\Parameter('p', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header, $s)])],
+            new Step('s', null, 'op', null, null, [new Parameter('p2', ParameterIn::Header, $s)], new RequestBody(null, null, [new PayloadReplacement('/a', $s)]), [], [], [], []),
+        ], [], [], [], [new Parameter('p', ParameterIn::Header, $s)])],
         components: new Components([], [
-            'p' => new \Alama\LaravelArazzo\Dto\Parameter('p3', \Alama\LaravelArazzo\Dto\Enum\ParameterIn::Header, $s)
+            'p' => new Parameter('p3', ParameterIn::Header, $s),
         ], [], []),
         specificationExtensions: [],
         specVersion: $sv,

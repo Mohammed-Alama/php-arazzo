@@ -6,7 +6,6 @@ use Alama\LaravelArazzo\Dto\Enum\Format;
 use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
 use Alama\LaravelArazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Parser\Parser;
-use Alama\LaravelArazzo\Validation\RuleSet;
 use Alama\LaravelArazzo\Validation\Rules\AsyncApiFieldsRequire11Rule;
 use Alama\LaravelArazzo\Validation\Rules\DocumentArazzoVersionRule;
 use Alama\LaravelArazzo\Validation\Rules\ParameterQuerystringOperationShapeRule;
@@ -14,12 +13,14 @@ use Alama\LaravelArazzo\Validation\Rules\SelectorTypeSupportedRule;
 use Alama\LaravelArazzo\Validation\Rules\SelfUriSyntaxRule;
 use Alama\LaravelArazzo\Validation\Rules\StepParameterInValidRule;
 use Alama\LaravelArazzo\Validation\Rules\SubWorkflowInvokeTargetResolvesRule;
+use Alama\LaravelArazzo\Validation\RuleSet;
 use Alama\LaravelArazzo\Validation\Validator;
 use Symfony\Component\Yaml\Yaml;
 
 function loadFixture(string $filename): RawDocument
 {
     $path = __DIR__ . '/../fixtures/parser/' . $filename;
+
     return new RawDocument(Yaml::parseFile($path), $path, Format::Yaml);
 }
 

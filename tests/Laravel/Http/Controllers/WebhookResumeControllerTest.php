@@ -20,7 +20,6 @@ use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Laravel\Jobs\RunResumeCorrelationJob;
 use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
 use Alama\LaravelArazzo\Parser\Parser;
-use Alama\LaravelArazzo\Tests\TestCase;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

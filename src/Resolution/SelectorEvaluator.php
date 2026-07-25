@@ -37,7 +37,7 @@ class SelectorEvaluator
             ExpressionType::XPath => $this->xpath->query(
                 $root,
                 $sel->selector,
-                $sel->version ?? 'xpath-10'
+                $sel->version ?? 'xpath-10',
             ),
         };
     }

@@ -35,11 +35,11 @@ it('binds parameters, executes child workflow, returns SubWorkflowResult', funct
                 successActions: [],
                 failureActions: [],
                 outputs: ['some_output' => 'val'],
-                parameters: []
-            )
+                parameters: [],
+            ),
         ],
         components: new Components([], [], [], []),
-        specificationExtensions: []
+        specificationExtensions: [],
     );
 
     $registry = new InMemoryDefinitionRegistry();
@@ -49,7 +49,7 @@ it('binds parameters, executes child workflow, returns SubWorkflowResult', funct
     $executor->shouldReceive('execute')
         ->once()
         ->withArgs(function ($workflow, $doc, $boundInputs, $childCtx) {
-            return $workflow->workflowId === 'reconcile' 
+            return $workflow->workflowId === 'reconcile'
                 && $boundInputs === ['ride' => 'r-42']
                 && $childCtx instanceof WorkflowContext
                 && $childCtx->parentRunId !== null;
@@ -82,7 +82,7 @@ it('throws ExecutionException when sub workflow cannot be found', function () {
         sourceDescriptions: [],
         workflows: [],
         components: new Components([], [], [], []),
-        specificationExtensions: []
+        specificationExtensions: [],
     );
 
     $registry = new InMemoryDefinitionRegistry();
@@ -100,7 +100,7 @@ it('throws ExecutionException when sub workflow cannot be found', function () {
     );
 
     $invoker = new SubWorkflowInvoker($registry, $executor, $exprEval, $selEval);
-    
-    expect(fn() => $invoker->invoke($action, $parent))
+
+    expect(fn () => $invoker->invoke($action, $parent))
         ->toThrow(ExecutionException::class, "Sub-workflow 'not-found-workflow' not found in registry.");
 });

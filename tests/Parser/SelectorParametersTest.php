@@ -21,8 +21,8 @@ it('parses Selectors in parameters and payload replacements', function () {
                         'value' => [
                             'type' => 'jsonpath',
                             'selector' => '$.auth',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 'steps' => [
                     [
@@ -36,10 +36,10 @@ it('parses Selectors in parameters and payload replacements', function () {
                                     'value' => [
                                         'type' => 'xpath',
                                         'selector' => '/user/id',
-                                    ]
-                                ]
-                            ]
-                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -47,7 +47,7 @@ it('parses Selectors in parameters and payload replacements', function () {
     ], '/tmp/x.yaml', Format::Yaml);
 
     $doc = (new Parser())->parse($raw);
-    
+
     $param = $doc->workflows[0]->parameters[0];
     expect($param->value)->toBeInstanceOf(Selector::class)
         ->and($param->value->selector)->toBe('$.auth');

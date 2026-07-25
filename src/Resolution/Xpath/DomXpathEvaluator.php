@@ -34,6 +34,7 @@ final class DomXpathEvaluator implements XpathEvaluator
             }
             if ($result->length === 1) {
                 $node = $result->item(0);
+
                 return $node?->nodeValue;
             }
 
@@ -41,6 +42,7 @@ final class DomXpathEvaluator implements XpathEvaluator
             foreach ($result as $node) {
                 $out[] = $node->nodeValue;
             }
+
             return $out;
         }
 

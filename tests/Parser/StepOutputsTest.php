@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\LaravelArazzo\Dto\Enum\ExpressionType;
 use Alama\LaravelArazzo\Dto\Enum\Format;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Parser\Parser;
@@ -39,7 +40,7 @@ it('parses 1.1.0 Selector objects in step outputs', function () {
 
     expect($outputs)->toHaveKey('extractedId')
         ->and($outputs['extractedId'])->toBeInstanceOf(Selector::class)
-        ->and($outputs['plainValue'])->toBeInstanceOf(\Alama\LaravelArazzo\Dto\Expression::class);
+        ->and($outputs['plainValue'])->toBeInstanceOf(Expression::class);
 
     /** @var Selector $extractedId */
     $extractedId = $outputs['extractedId'];
@@ -48,7 +49,7 @@ it('parses 1.1.0 Selector objects in step outputs', function () {
         ->and($extractedId->context)->toBe('$response.body')
         ->and($extractedId->version)->toBe('rfc9535');
 
-    /** @var \Alama\LaravelArazzo\Dto\Expression $plainValue */
+    /** @var Expression $plainValue */
     $plainValue = $outputs['plainValue'];
     expect($plainValue->raw)->toBe('abc');
 });

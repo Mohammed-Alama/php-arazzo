@@ -58,6 +58,7 @@ final class ExpressionWalker
 
     /**
      * @param 'components'|'criteria'|'onFailure'|'onSuccess'|'outputs'|'parameters'|'requestBody'|'wf.outputs'|'wf.parameters' $context
+     *
      * @return iterable<ExpressionSite>
      */
     private function extract(mixed $value, string $pointer, ?WorkflowSymbols $syms, ?string $stepId, string $context): iterable

@@ -9,7 +9,6 @@ use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use Alama\LaravelArazzo\Execution\StepExecutionWorker;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Laravel\Jobs\RunExecuteStepJob;
-use Alama\LaravelArazzo\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 

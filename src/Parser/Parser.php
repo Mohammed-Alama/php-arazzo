@@ -8,11 +8,11 @@ use Alama\LaravelArazzo\Dto\Action\FailureAction;
 use Alama\LaravelArazzo\Dto\Action\FailureEndAction;
 use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
 use Alama\LaravelArazzo\Dto\Action\RetryAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
+use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
-use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
-use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Enum\CriterionType;
@@ -471,7 +471,7 @@ class Parser
         if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
             $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
             foreach ($paramsMap as $k => $v) {
-                $parameters[(string)$k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string)$k), true);
+                $parameters[(string) $k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string) $k), true);
             }
         }
 
@@ -550,7 +550,7 @@ class Parser
         if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
             $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
             foreach ($paramsMap as $k => $v) {
-                $parameters[(string)$k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string)$k), true);
+                $parameters[(string) $k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string) $k), true);
             }
         }
 
@@ -580,6 +580,7 @@ class Parser
             if ($forceStringExpression || preg_match('/^\{\$.+\}$/', $value) === 1) {
                 return new Expression($value);
             }
+
             return $value;
         }
 
@@ -611,8 +612,9 @@ class Parser
         if (is_array($value)) {
             $parsed = [];
             foreach ($value as $k => $v) {
-                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string)$k), $forceStringExpression);
+                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k), $forceStringExpression);
             }
+
             return $parsed;
         }
 
