@@ -35,7 +35,7 @@ final class SelectorEvaluator
                 ? JsonPointer::resolve($root, $sel->selector)
                 : null,
             ExpressionType::XPath => $this->xpath->query(
-                is_string($root) ? $root : (is_array($root) ? json_encode($root) : (string) $root),
+                $root,
                 $sel->selector,
                 $sel->version ?? 'xpath-10'
             ),
