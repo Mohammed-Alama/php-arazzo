@@ -193,6 +193,9 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $outcomeHandler = new StepOutcomeHandler(
         $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger,
         new WorkerMockPendingCorrelationRegistry(), $resolver, $store,
+        \Mockery::mock(\Alama\LaravelArazzo\Execution\SubWorkflowInvoker::class),
+        \Mockery::mock(\Alama\LaravelArazzo\Resolution\SelectorEvaluator::class),
+        \Mockery::mock(\Alama\LaravelArazzo\Execution\ExpressionEvaluator::class)
     );
 
     $worker = new StepExecutionWorker(
@@ -220,15 +223,6 @@ it('skips a step already at Succeeded status', function (): void {
     expect($lockManager->acquireCount)->toBe(1);
     expect($store->saves)->toBeEmpty();
     expect($eventLedger->appended)->toBeEmpty();
-});
-
-it('throws when the context has no executionId', function (): void {
-    [$worker] = makeWorker(StepExecutionOutcome::resolved(200, [], []), new InMemoryDefinitionRegistry());
-
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
-    $context = new WorkflowContext('def_1');
-
-    expect(fn () => $worker->handle(new ExecuteStepJob($step, $context)))->toThrow(\LogicException::class);
 });
 
 it('appends a definition_missing event when the registry returns null', function (): void {

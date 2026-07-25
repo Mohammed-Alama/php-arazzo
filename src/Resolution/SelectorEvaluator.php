@@ -13,7 +13,7 @@ use Alama\LaravelArazzo\Execution\JsonPointer;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Resolution\Xpath\XpathEvaluator;
 
-final class SelectorEvaluator
+class SelectorEvaluator
 {
     public function __construct(
         private XpathEvaluator $xpath,
