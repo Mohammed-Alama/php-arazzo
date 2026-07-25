@@ -14,6 +14,7 @@ use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
 use Alama\LaravelArazzo\Dto\Enum\CriterionType;
+use Alama\LaravelArazzo\Dto\Enum\ExpressionType;
 use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Dto\Enum\SpecVersion;
@@ -24,6 +25,7 @@ use Alama\LaravelArazzo\Dto\PayloadReplacement;
 use Alama\LaravelArazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Dto\RequestBody;
 use Alama\LaravelArazzo\Dto\Reusable;
+use Alama\LaravelArazzo\Dto\Selector;
 use Alama\LaravelArazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\SuccessCriterion;
@@ -527,16 +529,48 @@ class Parser
         return $v;
     }
 
-    /** @return array<string,Expression> */
+    /**
+     * @return Expression|Selector|scalar|array<mixed>|null
+     */
+    private function parseValueOrSelector(mixed $value, ParseContext $ctx): mixed
+    {
+        if (is_string($value)) {
+            return new Expression($value);
+        }
+
+        if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
+            $typeStr = $this->requireString($value, 'type', $ctx);
+            $type = ExpressionType::tryFrom($typeStr);
+            if ($type === null) {
+                throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
+            }
+
+            return new Selector(
+                context: $this->optionalString($value, 'context', $ctx),
+                selector: $this->requireString($value, 'selector', $ctx),
+                type: $type,
+                version: $this->optionalString($value, 'version', $ctx),
+            );
+        }
+
+        if (is_array($value)) {
+            $parsed = [];
+            foreach ($value as $k => $v) {
+                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string)$k));
+            }
+            return $parsed;
+        }
+
+        return $value;
+    }
+
+    /** @return array<string,Expression|Selector|scalar|array<mixed>|null> */
     protected function parseOutputsMap(mixed $node, ParseContext $ctx): array
     {
         $obj = $this->requireObjectMap($node, $ctx);
         $out = [];
         foreach ($obj as $k => $v) {
-            if (!is_string($v)) {
-                throw ParserException::wrongType($ctx->push((string) $k), 'string (expression)', $v);
-            }
-            $out[$k] = new Expression($v);
+            $out[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k));
         }
 
         return $out;
