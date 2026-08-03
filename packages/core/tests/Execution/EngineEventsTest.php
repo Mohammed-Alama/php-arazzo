@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\Workflow;
-use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\LaravelArazzo\Events\RunStarted;
+use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Events\RunStarted;
 use Alama\Arazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Execution\Contracts\StateStoreInterface;
 use Alama\Arazzo\Execution\Engine;
