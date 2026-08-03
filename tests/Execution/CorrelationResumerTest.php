@@ -88,6 +88,11 @@ class ResumerMockEventLedger implements EventLedgerInterface
 
 class ResumerMockExpressionResolver implements ExpressionResolverInterface
 {
+    public function evaluate(\Alama\LaravelArazzo\Dto\Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    {
+        return $expression->raw;
+    }
+
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
     }
