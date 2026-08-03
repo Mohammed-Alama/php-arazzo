@@ -18,19 +18,27 @@ use Alama\LaravelArazzo\Execution\StepExecutor;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Execution\WorkflowExecutor;
 
-function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null): StepExecutor {
-    return new class($succeed, $throw) extends StepExecutor {
-        public function __construct(private bool $succeed, private ?Throwable $throw) {}
-        public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array {
+function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null): StepExecutor
+{
+    return new class($succeed, $throw) extends StepExecutor
+    {
+        public function __construct(private bool $succeed, private ?Throwable $throw)
+        {
+        }
+
+        public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
+        {
             if ($this->throw) {
                 throw $this->throw;
             }
+
             return [$context->withStepResult($step->stepId, ['outputs' => ['x' => 1]]), $this->succeed];
         }
     };
 }
 
-function docWithWorkflow(Workflow $wf): ArazzoDocument {
+function docWithWorkflow(Workflow $wf): ArazzoDocument
+{
     return new ArazzoDocument(
         arazzo: '1.0.0', info: new Info('t', null, null, '1'),
         sourceDescriptions: [], workflows: [$wf],
@@ -39,10 +47,13 @@ function docWithWorkflow(Workflow $wf): ArazzoDocument {
     );
 }
 
-function captureEvents(SimpleEventDispatcher $d, array &$log): void {
+function captureEvents(SimpleEventDispatcher $d, array &$log): void
+{
     foreach ([RunStarted::class, RunCompleted::class, RunFailed::class,
-              StepStarted::class, EventStepExecuted::class, StepFailed::class] as $cls) {
-        $d->subscribe($cls, function ($e) use (&$log, $cls) { $log[] = basename(str_replace('\\', '/', $cls)); });
+        StepStarted::class, EventStepExecuted::class, StepFailed::class] as $cls) {
+        $d->subscribe($cls, function ($e) use (&$log, $cls) {
+            $log[] = basename(str_replace('\\', '/', $cls));
+        });
     }
 }
 
@@ -81,8 +92,8 @@ it('dispatches RunFailed and rethrows on caught exception', function () {
     captureEvents($d, $log);
 
     $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), null, $d);
-    
-    expect(fn() => $executor->execute($wf, docWithWorkflow($wf), []))
+
+    expect(fn () => $executor->execute($wf, docWithWorkflow($wf), []))
         ->toThrow(RuntimeException::class, 'crash');
 
     expect($log)->toBe(['RunStarted', 'StepStarted', 'RunFailed']);

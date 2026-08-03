@@ -6,9 +6,12 @@ namespace Tests\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
@@ -74,7 +77,7 @@ class WorkerMockStateStore implements StateStoreInterface
 
 class WorkerMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function evaluate(\Alama\LaravelArazzo\Dto\Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
         return $expression->raw;
     }
@@ -195,8 +198,8 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $executionRegistry = new WorkerMockExecutionRegistry();
     $resolver = new WorkerMockExpressionResolver();
     $queue = new SyncQueueDriver();
-    $dispatcher = new \Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher();
-    \Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener::registerAll($dispatcher, $eventLedger);
+    $dispatcher = new SimpleEventDispatcher();
+    LedgerAppendingListener::registerAll($dispatcher, $eventLedger);
 
     $engine = new Engine($queue, $store, $dispatcher);
     $outcomeHandler = new StepOutcomeHandler(

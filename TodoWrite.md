@@ -8,5 +8,5 @@
 - [x] **Task 6: StepOutcomeHandler — terminal + retry dispatch** (Complete)
 - [x] **Task 7: CorrelationResumer + StepExecutor — dispatch + placeholder inject** (Complete)
 - [x] **Task 8: Service Provider — default binding + auto-wire** (Complete)
-- [ ] **Task 9: IlluminatePsrEventDispatcher opt-in adapter**
+- [x] **Task 9: IlluminatePsrEventDispatcher opt-in adapter** (Complete)
 - [ ] **Task 10: Ledger regression, CHANGELOG, ship**

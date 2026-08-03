@@ -13,7 +13,6 @@ use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\LaravelArazzo\Events\StepExecuted as EventStepExecuted;
 use Alama\LaravelArazzo\Events\StepFailed;
 use Alama\LaravelArazzo\Events\StepStarted;
-use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
@@ -22,6 +21,7 @@ use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\LaravelArazzo\Execution\Engine;
+use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
@@ -33,6 +33,7 @@ use Alama\LaravelArazzo\Execution\SubWorkflowInvoker;
 use Alama\LaravelArazzo\Execution\SyncQueueDriver;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
+use Psr\Http\Message\RequestInterface;
 
 class WorkerEventsMockLockManager implements LockManagerInterface
 {
@@ -73,7 +74,7 @@ class WorkerEventsMockExecutionRegistry implements ExecutionRegistryInterface
     {
     }
 
-    public function complete(string $executionId, \Alama\LaravelArazzo\Execution\ExecutionStatus $status): void
+    public function complete(string $executionId, ExecutionStatus $status): void
     {
     }
 }
@@ -89,7 +90,7 @@ class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
     {
     }
 
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): \Psr\Http\Message\RequestInterface
+    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         throw new LogicException('not used');
     }
