@@ -61,7 +61,7 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
 
 class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
 {
-    public function evaluate(\Alama\LaravelArazzo\Dto\Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
         return $expression->raw;
     }

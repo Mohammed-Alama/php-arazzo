@@ -7,6 +7,7 @@ use Alama\LaravelArazzo\Dto\Action\RetryAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
@@ -92,7 +93,7 @@ class OutcomeEventsMockPendingCorrelationRegistry implements PendingCorrelationR
 
 class OutcomeEventsMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function evaluate(\Alama\LaravelArazzo\Dto\Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
         return $expression->raw;
     }

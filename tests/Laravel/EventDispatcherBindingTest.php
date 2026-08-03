@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener;
 use Alama\LaravelArazzo\Events\RunStarted;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -17,9 +16,12 @@ it('resolves same SimpleEventDispatcher instance across calls (singleton)', func
 });
 
 it('auto-wires LedgerAppendingListener when EventLedgerInterface is bound', function () {
-    $ledger = new class implements EventLedgerInterface {
+    $ledger = new class() implements EventLedgerInterface
+    {
         public array $entries = [];
-        public function append(string $executionId, string $eventType, array $payload): void {
+
+        public function append(string $executionId, string $eventType, array $payload): void
+        {
             $this->entries[] = [$executionId, $eventType, $payload];
         }
     };
@@ -28,7 +30,7 @@ it('auto-wires LedgerAppendingListener when EventLedgerInterface is bound', func
     app()->forgetInstance(SimpleEventDispatcher::class);
 
     $d = app(SimpleEventDispatcher::class);
-    $d->dispatch(new RunStarted('e', 'w', 'd', [], new \DateTimeImmutable()));
+    $d->dispatch(new RunStarted('e', 'w', 'd', [], new DateTimeImmutable()));
 
     expect($ledger->entries)->toHaveCount(1)
         ->and($ledger->entries[0][1])->toBe('run.started');

@@ -15,16 +15,21 @@ use Alama\LaravelArazzo\Events\StepRetried;
 use Alama\LaravelArazzo\Events\StepStarted;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 
-class SpyLedger implements EventLedgerInterface {
+class SpyLedger implements EventLedgerInterface
+{
     /** @var list<array{executionId: string, type: string, payload: array<string, mixed>}> */
     public array $appended = [];
-    public function append(string $executionId, string $eventType, array $payload): void {
+
+    public function append(string $executionId, string $eventType, array $payload): void
+    {
         $this->appended[] = ['executionId' => $executionId, 'type' => $eventType, 'payload' => $payload];
     }
 }
 
-function ledgerListener(): array {
+function ledgerListener(): array
+{
     $spy = new SpyLedger();
+
     return [$spy, new LedgerAppendingListener($spy)];
 }
 

@@ -18,7 +18,9 @@ use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 
 final class LedgerAppendingListener
 {
-    public function __construct(private EventLedgerInterface $ledger) {}
+    public function __construct(private EventLedgerInterface $ledger)
+    {
+    }
 
     public function __invoke(object $event): void
     {

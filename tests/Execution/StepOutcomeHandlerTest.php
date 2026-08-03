@@ -12,6 +12,7 @@ use Alama\LaravelArazzo\Dto\Action\SuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Reusable;
 use Alama\LaravelArazzo\Dto\Step;
@@ -88,7 +89,7 @@ class StepOutcomeMockPendingCorrelationRegistry implements PendingCorrelationReg
 
 class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function evaluate(\Alama\LaravelArazzo\Dto\Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
         return $expression->raw;
     }
