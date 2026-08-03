@@ -67,6 +67,23 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 final class LaravelArazzoServiceProvider extends PackageServiceProvider
 {
+    public function register(): void
+    {
+        if (class_exists(\Illuminate\Foundation\AliasLoader::class)) {
+            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+            $loader->alias('Alama\LaravelArazzo\LaravelArazzoServiceProvider', self::class);
+            $loader->alias('Alama\LaravelArazzo\Http\Controllers\ArazzoApiController', \Alama\Arazzo\Laravel\Http\Controllers\ArazzoApiController::class);
+            $loader->alias('Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController', \Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController::class);
+        } else {
+            // Fallback for non-facade environments (e.g. testing)
+            class_alias(self::class, 'Alama\LaravelArazzo\LaravelArazzoServiceProvider');
+            class_alias(\Alama\Arazzo\Laravel\Http\Controllers\ArazzoApiController::class, 'Alama\LaravelArazzo\Http\Controllers\ArazzoApiController');
+            class_alias(\Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController::class, 'Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController');
+        }
+
+        parent::register();
+    }
+
     public function configurePackage(Package $package): void
     {
         $package
