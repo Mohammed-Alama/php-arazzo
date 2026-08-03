@@ -10,6 +10,8 @@ use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Events\CorrelationResumed;
+use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
@@ -22,7 +24,7 @@ use Alama\LaravelArazzo\Execution\StepOutcomeHandler;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 use Psr\Http\Message\RequestInterface;
 
-class ResumerMockLockManager implements LockManagerInterface
+class CorrelationResumerEventsLockManager implements LockManagerInterface
 {
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
     {
@@ -30,7 +32,7 @@ class ResumerMockLockManager implements LockManagerInterface
     }
 }
 
-class ResumerMockPendingCorrelations implements PendingCorrelationRegistryInterface
+class CorrelationResumerEventsPendingCorrelations implements PendingCorrelationRegistryInterface
 {
     public ?PendingCorrelation $toReturn = null;
 
@@ -57,7 +59,7 @@ class ResumerMockPendingCorrelations implements PendingCorrelationRegistryInterf
     }
 }
 
-class ResumerMockStateStore implements StateStoreInterface
+class CorrelationResumerEventsStateStore implements StateStoreInterface
 {
     /** @var array<string, array<string, mixed>> */
     public array $preloaded = [];
@@ -76,7 +78,7 @@ class ResumerMockStateStore implements StateStoreInterface
     }
 }
 
-class ResumerMockEventLedger implements EventLedgerInterface
+class CorrelationResumerEventsEventLedger implements EventLedgerInterface
 {
     /** @var list<array{executionId: string, eventType: string, payload: array<string, mixed>}> */
     public array $appended = [];
@@ -87,7 +89,7 @@ class ResumerMockEventLedger implements EventLedgerInterface
     }
 }
 
-class ResumerMockExpressionResolver implements ExpressionResolverInterface
+class CorrelationResumerEventsExpressionResolver implements ExpressionResolverInterface
 {
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
@@ -119,7 +121,7 @@ class ResumerMockExpressionResolver implements ExpressionResolverInterface
     }
 }
 
-class RecordingStepOutcomeHandler extends StepOutcomeHandler
+class CorrelationResumerEventsRecordingStepOutcomeHandler extends StepOutcomeHandler
 {
     /** @var list<array{document: ArazzoDocument, workflow: Workflow, step: Step, context: WorkflowContext, executionId: string, criteriaMet: bool}> */
     public array $calls = [];
@@ -134,7 +136,7 @@ class RecordingStepOutcomeHandler extends StepOutcomeHandler
     }
 }
 
-function resumerDocument(): array
+function correlationResumerEventsDocument(): array
 {
     $definitionRegistry = new InMemoryDefinitionRegistry();
     $step = new Step('wait-for-ride', null, null, null, null, [], null, [], [], [], [], [], 'receive', 'channels/rides/created');
@@ -145,43 +147,20 @@ function resumerDocument(): array
     return [$definitionRegistry, $definitionId, $workflow, $step];
 }
 
-it('does nothing when the correlation is not found', function (): void {
-    $pendingCorrelations = new ResumerMockPendingCorrelations();
-    $stateStore = new ResumerMockStateStore();
-    [$definitionRegistry] = resumerDocument();
-    $outcomeHandler = new RecordingStepOutcomeHandler();
+it('dispatches CorrelationResumed after successful consume', function () {
+    $dispatcher = new SimpleEventDispatcher();
+    /** @var list<CorrelationResumed> $dispatched */
+    $dispatched = [];
+    $dispatcher->subscribe(CorrelationResumed::class, function (CorrelationResumed $event) use (&$dispatched) {
+        $dispatched[] = $event;
+    });
 
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, new ResumerMockEventLedger(), new ResumerMockLockManager());
-
-    $resumer->resume('missing', ['body' => ['x' => 1]]);
-
-    expect($outcomeHandler->calls)->toBeEmpty();
-    expect($pendingCorrelations->consumed)->toBeEmpty();
-});
-
-it('logs and does nothing when persisted state is missing', function (): void {
-    $pendingCorrelations = new ResumerMockPendingCorrelations();
-    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
-    $stateStore = new ResumerMockStateStore(); // nothing preloaded
-    [$definitionRegistry] = resumerDocument();
-    $eventLedger = new ResumerMockEventLedger();
-    $outcomeHandler = new RecordingStepOutcomeHandler();
-
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger, new ResumerMockLockManager());
-
-    $resumer->resume('corr_1', ['body' => ['x' => 1]]);
-
-    expect($outcomeHandler->calls)->toBeEmpty();
-    expect($eventLedger->appended[0]['eventType'])->toBe('execution.state_missing');
-});
-
-it('merges the payload, consumes the correlation, saves state, and calls StepOutcomeHandler', function (): void {
-    $pendingCorrelations = new ResumerMockPendingCorrelations();
+    $pendingCorrelations = new CorrelationResumerEventsPendingCorrelations();
     $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
 
-    [$definitionRegistry, $definitionId, $workflow, $step] = resumerDocument();
+    [$definitionRegistry, $definitionId, $workflow, $step] = correlationResumerEventsDocument();
 
-    $stateStore = new ResumerMockStateStore();
+    $stateStore = new CorrelationResumerEventsStateStore();
     $stateStore->preloaded['exec_1'] = [
         'definitionId' => $definitionId,
         'workflowId' => 'wf_1',
@@ -190,23 +169,26 @@ it('merges the payload, consumes the correlation, saves state, and calls StepOut
         'components' => [],
     ];
 
-    $eventLedger = new ResumerMockEventLedger();
-    $outcomeHandler = new RecordingStepOutcomeHandler();
+    $eventLedger = new CorrelationResumerEventsEventLedger();
+    $outcomeHandler = new CorrelationResumerEventsRecordingStepOutcomeHandler();
 
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger, new ResumerMockLockManager());
+    $resumer = new CorrelationResumer(
+        $pendingCorrelations,
+        $stateStore,
+        $definitionRegistry,
+        new CorrelationResumerEventsExpressionResolver(),
+        $outcomeHandler,
+        $eventLedger,
+        new CorrelationResumerEventsLockManager(),
+        $dispatcher,
+    );
 
     $resumer->resume('corr_1', ['body' => ['rideId' => 'r_1']]);
 
-    expect($pendingCorrelations->consumed)->toBe(['corr_1']);
-    expect($stateStore->saves['exec_1']['steps']['wait-for-ride']['response']['body'])->toBe(['rideId' => 'r_1']);
-    expect($eventLedger->appended)->toContainEqual([
-        'executionId' => 'exec_1',
-        'eventType' => 'step.resumed',
-        'payload' => ['stepId' => 'wait-for-ride', 'correlationId' => 'corr_1'],
-    ]);
-
-    expect($outcomeHandler->calls)->toHaveCount(1);
-    expect($outcomeHandler->calls[0]['executionId'])->toBe('exec_1');
-    expect($outcomeHandler->calls[0]['criteriaMet'])->toBeTrue();
-    expect($outcomeHandler->calls[0]['step']->stepId)->toBe('wait-for-ride');
+    expect($dispatched)->toHaveCount(1);
+    expect($dispatched[0]->executionId)->toBe('exec_1');
+    expect($dispatched[0]->workflowId)->toBe('wf_1');
+    expect($dispatched[0]->stepId)->toBe('wait-for-ride');
+    expect($dispatched[0]->correlationId)->toBe('corr_1');
+    expect($dispatched[0]->at)->toBeInstanceOf(\DateTimeImmutable::class);
 });

@@ -5,18 +5,27 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
+use Alama\LaravelArazzo\Events\RunStarted;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class Engine
 {
+    private EventDispatcherInterface $events;
+
+    /** @var array<string, true> executionIds for which RunStarted has fired */
+    private array $started = [];
+
     public function __construct(
-        private DependencyAnalyzer $analyzer,
         private QueueDriverInterface $queueDriver,
         /** @phpstan-ignore property.onlyWritten */
         private StateStoreInterface $stateStore,
+        ?EventDispatcherInterface $events = null,
     ) {
+        $this->events = $events ?? new NullEventDispatcher();
     }
 
     public function evaluate(Workflow $workflow, WorkflowContext $context): void
@@ -25,7 +34,21 @@ class Engine
             $context = $context->withWorkflowId($workflow->workflowId);
         }
 
-        $runnableSteps = $this->analyzer->getRunnableSteps($workflow->steps, $context);
+        $executionId = $context->getExecutionId();
+        if ($executionId !== null && !isset($this->started[$executionId])) {
+            $this->started[$executionId] = true;
+            $this->events->dispatch(new RunStarted(
+                $executionId,
+                $workflow->workflowId,
+                $context->getDefinitionId(),
+                $context->getInputs(),
+                new \DateTimeImmutable(),
+            ));
+        }
+
+        $graph = new DependencyGraph($workflow->steps);
+        $analyzer = new DependencyAnalyzer($graph);
+        $runnableSteps = $analyzer->getRunnableSteps($context);
 
         if (empty($runnableSteps)) {
             // Workflow complete or waiting. We will handle completion logic later.

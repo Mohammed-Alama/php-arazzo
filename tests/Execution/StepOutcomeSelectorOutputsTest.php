@@ -15,7 +15,6 @@ use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\StepOutcomeHandler;
@@ -33,9 +32,6 @@ it('resolves a Selector output through SelectorEvaluator', function () {
     $store = Mockery::mock(StateStoreInterface::class);
     $store->shouldReceive('save');
 
-    $analyzer = Mockery::mock(DependencyAnalyzer::class);
-    $analyzer->shouldReceive('getRunnableSteps')->once()->andReturn([]);
-
     $pending = Mockery::mock(PendingCorrelationRegistryInterface::class);
     $pending->shouldReceive('existsForExecution')->once()->andReturn(false);
 
@@ -48,7 +44,7 @@ it('resolves a Selector output through SelectorEvaluator', function () {
     $handler = new StepOutcomeHandler(
         Mockery::mock(QueueDriverInterface::class),
         $engine,
-        $analyzer,
+
         $exec,
         $ledger,
         $pending,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution\Contracts;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\SuccessCriterion;
 use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
@@ -13,6 +14,8 @@ use Psr\Http\Message\RequestInterface;
 
 interface ExpressionResolverInterface
 {
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;
+
     public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface;
 
     /**
