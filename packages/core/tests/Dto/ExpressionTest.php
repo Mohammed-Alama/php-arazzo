@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Dto;
 
 use Alama\Arazzo\Dto\Expression;
-use Alama\LaravelArazzo\Expression\Ast\ExpressionAst;
-use Alama\LaravelArazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Ast\ExpressionAst;
+use Alama\Arazzo\Expression\ExpressionSyntaxException;
 
 it('caches parsed AST across calls', function (): void {
     $e = new Expression('{$inputs.userId}');

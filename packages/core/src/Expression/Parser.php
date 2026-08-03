@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Expression;
+namespace Alama\Arazzo\Expression;
 
-use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
-use Alama\LaravelArazzo\Expression\Ast\ExpressionAst;
-use Alama\LaravelArazzo\Expression\Ast\HttpMetaRef;
-use Alama\LaravelArazzo\Expression\Ast\InputPart;
-use Alama\LaravelArazzo\Expression\Ast\InputRef;
-use Alama\LaravelArazzo\Expression\Ast\OutputPart;
-use Alama\LaravelArazzo\Expression\Ast\OutputRef;
-use Alama\LaravelArazzo\Expression\Ast\RequestPart;
-use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
-use Alama\LaravelArazzo\Expression\Ast\SourceRef;
-use Alama\LaravelArazzo\Expression\Ast\StepRef;
-use Alama\LaravelArazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Ast\ComponentRef;
+use Alama\Arazzo\Expression\Ast\ExpressionAst;
+use Alama\Arazzo\Expression\Ast\HttpMetaRef;
+use Alama\Arazzo\Expression\Ast\InputPart;
+use Alama\Arazzo\Expression\Ast\InputRef;
+use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\OutputRef;
+use Alama\Arazzo\Expression\Ast\RequestPart;
+use Alama\Arazzo\Expression\Ast\ResponsePart;
+use Alama\Arazzo\Expression\Ast\SourceRef;
+use Alama\Arazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\Ast\WorkflowRef;
 
 final class Parser
 {

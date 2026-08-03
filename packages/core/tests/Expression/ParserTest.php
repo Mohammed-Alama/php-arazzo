@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Tests\Expression;
+namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\LaravelArazzo\Dto\Expression;
-use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
-use Alama\LaravelArazzo\Expression\Ast\HttpMetaRef;
-use Alama\LaravelArazzo\Expression\Ast\InputRef;
-use Alama\LaravelArazzo\Expression\Ast\OutputPart;
-use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
-use Alama\LaravelArazzo\Expression\Ast\SourceRef;
-use Alama\LaravelArazzo\Expression\Ast\StepRef;
-use Alama\LaravelArazzo\Expression\Ast\WorkflowRef;
-use Alama\LaravelArazzo\Expression\ExpressionSyntaxException;
-use Alama\LaravelArazzo\Expression\Parser as ExprParser;
+use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Expression\Ast\ComponentRef;
+use Alama\Arazzo\Expression\Ast\HttpMetaRef;
+use Alama\Arazzo\Expression\Ast\InputRef;
+use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\ResponsePart;
+use Alama\Arazzo\Expression\Ast\SourceRef;
+use Alama\Arazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Parser as ExprParser;
 
 it('parses $inputs.name', function (): void {
     $ast = (new ExprParser())->parse('{$inputs.userId}');

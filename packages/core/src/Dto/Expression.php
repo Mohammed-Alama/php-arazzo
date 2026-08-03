@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Dto;
 
-use Alama\LaravelArazzo\Expression\Ast\ExpressionAst;
-use Alama\LaravelArazzo\Expression\ExpressionSyntaxException;
-use Alama\LaravelArazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\Ast\ExpressionAst;
+use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 final class Expression
 {

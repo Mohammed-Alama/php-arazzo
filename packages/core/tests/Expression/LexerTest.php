@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Tests\Expression;
+namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\LaravelArazzo\Expression\ExpressionSyntaxException;
-use Alama\LaravelArazzo\Expression\Lexer;
-use Alama\LaravelArazzo\Expression\TokenKind;
+use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Lexer;
+use Alama\Arazzo\Expression\TokenKind;
 
 it('tokenises inputs.userId', function (): void {
     $tokens = (new Lexer())->tokenize('{$inputs.userId}');
