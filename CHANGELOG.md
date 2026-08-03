@@ -8,6 +8,17 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ### Added
 
+- Framework-agnostic PSR-14 event bus with 9 canonical lifecycle events (`RunStarted`, `RunCompleted`, `RunFailed`, `StepStarted`, `StepExecuted`, `StepRetried`, `StepFailed`, `CorrelationPending`, `CorrelationResumed`) under `Alama\LaravelArazzo\Events\`.
+- `SimpleEventDispatcher` (in-memory) and `NullEventDispatcher` (no-op) — both PSR-14.
+- `LedgerAppendingListener` — bridges the bus to existing `EventLedgerInterface` (auto-registered by the Laravel service provider when both `EventLedgerInterface` and `SimpleEventDispatcher` are container-bound).
+- `IlluminatePsrEventDispatcher` — opt-in adapter, wires PSR-14 to `Illuminate\Events\Dispatcher`. Consumers bind manually:
+  ```php
+  $this->app->bind(
+      \Psr\EventDispatcher\EventDispatcherInterface::class,
+      \Alama\LaravelArazzo\Laravel\Events\IlluminatePsrEventDispatcher::class,
+  );
+  ```
+- Requires `psr/event-dispatcher ^1.0`.
 - `DependencyGraph` class representing topological ordering of workflow steps with cycle detection and unresolved reference checking.
 - `StepDependsOnNoCycleRule` validator rule (error codes `step.dependson_no_cycle` and `step.dependson_unresolved_reference`).
 - Full Arazzo 1.1.0 spec support: parser, validator, resolver, and executor now natively handle 1.1.0 documents alongside existing 1.0.0.
@@ -19,11 +30,17 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ### Changed
 
+- `Engine`, `WorkflowExecutor`, `StepExecutor`, `StepExecutionWorker`, `StepOutcomeHandler`, `CorrelationResumer` constructors gain an optional `Psr\EventDispatcher\EventDispatcherInterface` param (defaults to `NullEventDispatcher`). Existing consumers unaffected; container users get `SimpleEventDispatcher` automatically.
+- The 9 event names that previously reached the ledger via direct `EventLedger::append` now flow through the bus + `LedgerAppendingListener`. Ledger output byte-identical (verified by `LedgerRegressionTest`).
 - Refactored `WorkflowExecutor` (sync mode) to execute steps in topological order rather than document array order, fixing an execution sequencing bug.
 - **Breaking (Internal):** `Engine` and `StepOutcomeHandler` no longer accept `DependencyAnalyzer` in their constructors. They now instantiate it dynamically per-workflow.
 - **Breaking (Internal):** `DependencyAnalyzer::__construct(DependencyGraph)` is now required, and `getRunnableSteps()` no longer takes an `$allSteps` parameter (it queries the bound graph instead).
 - `arazzo` field is now strictly guarded: only `1.0.x` and `1.1.x` values are accepted. Documents with other versions are rejected at parse time.
 - AsyncAPI-specific step fields (`action`, `channelPath`, `correlationId`) are now rejected on `1.0.0` documents. Move such workflows to `arazzo: 1.1.0`.
+
+### Deprecated
+
+- `Alama\LaravelArazzo\Execution\Events\StepExecuted` (unused by engine flow) in favor of `Alama\LaravelArazzo\Events\StepExecuted`. Removed in a future major.
 
 ### Shipped
 
