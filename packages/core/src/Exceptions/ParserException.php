@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Exceptions;
 
-use Alama\LaravelArazzo\Parser\ParseContext;
+use Alama\Arazzo\Parser\ParseContext;
 
 final class ParserException extends ArazzoException
 {

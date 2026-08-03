@@ -25,7 +25,7 @@ final class WorkflowContext
         private ?string $executionId = null,
     ) {
         if ($this->executionId === null) {
-            $this->executionId = (string) Str::uuid();
+            $this->executionId = uniqid('run_', true);
         }
     }
 
@@ -43,7 +43,7 @@ final class WorkflowContext
             steps: [],
             components: $parent->getComponents(),
             workflowId: $target->workflowId,
-            executionId: (string) Str::uuid(),
+            executionId: uniqid('run_', true),
         );
         $child->parentRunId = $parent->getExecutionId();
 

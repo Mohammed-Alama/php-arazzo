@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo\Execution;
 
 use Alama\Arazzo\Dto\Expression;
-use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
-use Alama\LaravelArazzo\Expression\Ast\ExpressionAst;
-use Alama\LaravelArazzo\Expression\Ast\HttpMetaRef;
-use Alama\LaravelArazzo\Expression\Ast\InputRef;
-use Alama\LaravelArazzo\Expression\Ast\OutputPart;
-use Alama\LaravelArazzo\Expression\Ast\RequestPart;
-use Alama\LaravelArazzo\Expression\Ast\ResponsePart;
-use Alama\LaravelArazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\Ast\ComponentRef;
+use Alama\Arazzo\Expression\Ast\ExpressionAst;
+use Alama\Arazzo\Expression\Ast\HttpMetaRef;
+use Alama\Arazzo\Expression\Ast\InputRef;
+use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\RequestPart;
+use Alama\Arazzo\Expression\Ast\ResponsePart;
+use Alama\Arazzo\Expression\Ast\StepRef;
 
 class ExpressionEvaluator
 {
