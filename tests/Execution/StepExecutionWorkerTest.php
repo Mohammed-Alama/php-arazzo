@@ -6,9 +6,12 @@ namespace Tests\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
@@ -17,7 +20,6 @@ use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StepProtocolExecutorInterface;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\ExecutionStatus;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
@@ -75,6 +77,11 @@ class WorkerMockStateStore implements StateStoreInterface
 
 class WorkerMockExpressionResolver implements ExpressionResolverInterface
 {
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    {
+        return $expression->raw;
+    }
+
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
     }
@@ -191,10 +198,12 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $executionRegistry = new WorkerMockExecutionRegistry();
     $resolver = new WorkerMockExpressionResolver();
     $queue = new SyncQueueDriver();
-    $dependencyAnalyzer = new DependencyAnalyzer();
-    $engine = new Engine($dependencyAnalyzer, $queue, $store);
+    $dispatcher = new SimpleEventDispatcher();
+    LedgerAppendingListener::registerAll($dispatcher, $eventLedger);
+
+    $engine = new Engine($queue, $store, $dispatcher);
     $outcomeHandler = new StepOutcomeHandler(
-        $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger,
+        $queue, $engine, $executionRegistry, $eventLedger,
         new WorkerMockPendingCorrelationRegistry(), $resolver, $store,
         \Mockery::mock(SubWorkflowInvoker::class),
         \Mockery::mock(SelectorEvaluator::class),
@@ -203,7 +212,7 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
 
     $worker = new StepExecutionWorker(
         $lockManager, $store, $definitionRegistry, $eventLedger, $executionRegistry, $resolver,
-        [new WorkerFakeProtocolExecutor($outcome)], $outcomeHandler,
+        [new WorkerFakeProtocolExecutor($outcome)], $outcomeHandler, null, 86400, $dispatcher,
     );
 
     return [$worker, $lockManager, $store, $eventLedger, $executionRegistry, $queue];
@@ -279,7 +288,7 @@ it('executes a step, saves state with TTL, appends step.executed, starts the exe
 
     expect($store->saves)->toHaveKey('exec_1');
     expect($store->saves['exec_1']['steps'])->toHaveKey('A');
-    expect($eventLedger->appended[0]['eventType'])->toBe('step.executed');
+    expect(array_column($eventLedger->appended, 'eventType'))->toContain('step.executed');
     expect($executionRegistry->started)->toHaveCount(1);
     expect($queue->dispatched)->toHaveCount(1);
     expect($queue->dispatched[0]['job']->step->stepId)->toBe('B');
@@ -299,7 +308,7 @@ it('suspends when the protocol executor returns a suspended outcome, without inv
     $worker->handle(new ExecuteStepJob($step, $context));
 
     expect($store->saves['exec_1']['steps']['A']['status'])->toBe(StepStatus::Suspended);
-    expect($eventLedger->appended[0]['eventType'])->toBe('step.suspended');
+    expect(array_column($eventLedger->appended, 'eventType'))->toContain('step.suspended');
     expect($queue->dispatched)->toBeEmpty(); // StepOutcomeHandler never called, so no choreography dispatch
 });
 

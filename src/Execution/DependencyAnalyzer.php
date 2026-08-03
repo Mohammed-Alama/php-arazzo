@@ -8,16 +8,20 @@ use Alama\LaravelArazzo\Dto\Step;
 
 class DependencyAnalyzer
 {
+    public function __construct(
+        private DependencyGraph $graph,
+    ) {
+    }
+
     /**
-     * @param Step[] $allSteps
-     *
      * @return Step[]
      */
-    public function getRunnableSteps(array $allSteps, WorkflowContext $context): array
+    public function getRunnableSteps(WorkflowContext $context): array
     {
         $runnable = [];
 
-        foreach ($allSteps as $step) {
+        foreach ($this->graph->getTopologicalOrder() as $stepId) {
+            $step = $this->graph->getStepsById()[$stepId];
             $status = $context->getStepStatus($step->stepId);
 
             // A step is only runnable if it hasn't been executed yet (null) or has been reset (Pending)

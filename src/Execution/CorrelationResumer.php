@@ -7,15 +7,20 @@ namespace Alama\LaravelArazzo\Execution;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Events\CorrelationResumed;
+use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\LockManagerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class CorrelationResumer
 {
+    private EventDispatcherInterface $events;
+
     public function __construct(
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private StateStoreInterface $stateStore,
@@ -24,7 +29,9 @@ class CorrelationResumer
         private StepOutcomeHandler $outcomeHandler,
         private EventLedgerInterface $eventLedger,
         private LockManagerInterface $lockManager,
+        ?EventDispatcherInterface $events = null,
     ) {
+        $this->events = $events ?? new NullEventDispatcher();
     }
 
     /**
@@ -94,6 +101,10 @@ class CorrelationResumer
             ]);
 
             $this->pendingCorrelations->consume($correlationId);
+
+            $this->events->dispatch(new CorrelationResumed(
+                $executionId, $workflow->workflowId, $step->stepId, $correlationId, new \DateTimeImmutable(),
+            ));
 
             $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
 

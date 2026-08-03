@@ -61,6 +61,11 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
 
 class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
 {
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    {
+        return $expression->raw;
+    }
+
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
     }

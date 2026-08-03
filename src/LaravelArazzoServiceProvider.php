@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Alama\LaravelArazzo;
 
 use Alama\LaravelArazzo\Dto\Enum\SourceType;
+use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener;
 use Alama\LaravelArazzo\Execution\ArazzoExpressionResolver;
 use Alama\LaravelArazzo\Execution\AsyncApiStepExecutor;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
@@ -17,7 +19,6 @@ use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\CorrelationResumer;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\HttpStepExecutor;
@@ -56,6 +57,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 use Illuminate\Support\Facades\Route;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -90,6 +92,25 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->app->singleton(HttpClientInterface::class, function ($app) {
             return new Psr18HttpClient($app->make(ClientInterface::class));
         });
+
+        // Event Dispatcher
+        $this->app->singleton(SimpleEventDispatcher::class, function ($app) {
+            $dispatcher = new SimpleEventDispatcher();
+
+            if ($app->bound(EventLedgerInterface::class)) {
+                LedgerAppendingListener::registerAll(
+                    $dispatcher,
+                    $app->make(EventLedgerInterface::class),
+                );
+            }
+
+            return $dispatcher;
+        });
+
+        $this->app->bindIf(
+            EventDispatcherInterface::class,
+            fn ($app) => $app->make(SimpleEventDispatcher::class),
+        );
 
         // Core Resolver
         $this->app->singleton(SourceResolver::class, function () {
@@ -188,7 +209,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(Engine::class, function ($app) {
             return new Engine(
-                new DependencyAnalyzer(),
                 $app->make(QueueDriverInterface::class),
                 $app->make(StateStoreInterface::class),
             );
@@ -226,7 +246,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new StepOutcomeHandler(
                 $app->make(QueueDriverInterface::class),
                 $app->make(Engine::class),
-                new DependencyAnalyzer(),
                 $app->make(ExecutionRegistryInterface::class),
                 $app->make(EventLedgerInterface::class),
                 $app->make(PendingCorrelationRegistryInterface::class),

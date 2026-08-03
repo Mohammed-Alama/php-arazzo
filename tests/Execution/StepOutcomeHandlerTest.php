@@ -12,6 +12,7 @@ use Alama\LaravelArazzo\Dto\Action\SuccessAction;
 use Alama\LaravelArazzo\Dto\Action\SuccessEndAction;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Components;
+use Alama\LaravelArazzo\Dto\Expression;
 use Alama\LaravelArazzo\Dto\Info;
 use Alama\LaravelArazzo\Dto\Reusable;
 use Alama\LaravelArazzo\Dto\Step;
@@ -22,7 +23,6 @@ use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
-use Alama\LaravelArazzo\Execution\DependencyAnalyzer;
 use Alama\LaravelArazzo\Execution\Engine;
 use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\ExecutionStatus;
@@ -89,6 +89,11 @@ class StepOutcomeMockPendingCorrelationRegistry implements PendingCorrelationReg
 
 class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
 {
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    {
+        return $expression->raw;
+    }
+
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
     }
@@ -178,9 +183,8 @@ class StepOutcomeMockStateStore implements StateStoreInterface
 function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrelationOutstanding = false): array
 {
     $queue = new SyncQueueDriver();
-    $dependencyAnalyzer = new DependencyAnalyzer();
     $store = new StepOutcomeMockStateStore();
-    $engine = new Engine($dependencyAnalyzer, $queue, $store);
+    $engine = new Engine($queue, $store);
     $executionRegistry = new StepOutcomeMockExecutionRegistry();
     $eventLedger = new StepOutcomeMockEventLedger();
     $pendingCorrelations = new StepOutcomeMockPendingCorrelationRegistry();
@@ -190,7 +194,7 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
     $resolver = new StepOutcomeMockExpressionResolver();
 
     $handler = new StepOutcomeHandler(
-        $queue, $engine, $dependencyAnalyzer, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $store,
+        $queue, $engine, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $store,
         \Mockery::mock(SubWorkflowInvoker::class),
         \Mockery::mock(SelectorEvaluator::class),
         \Mockery::mock(ExpressionEvaluator::class),

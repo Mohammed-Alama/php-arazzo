@@ -7,6 +7,11 @@ namespace Alama\LaravelArazzo\Execution;
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Step;
 use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\LaravelArazzo\Events\CorrelationPending;
+use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
+use Alama\LaravelArazzo\Events\StepExecuted as StepExecutedEvent;
+use Alama\LaravelArazzo\Events\StepFailed as StepFailedEvent;
+use Alama\LaravelArazzo\Events\StepStarted;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
 use Alama\LaravelArazzo\Execution\Contracts\ExecutionRegistryInterface;
@@ -16,11 +21,14 @@ use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
 use LogicException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
 class StepExecutionWorker
 {
+    private EventDispatcherInterface $events;
+
     /**
      * @param list<StepProtocolExecutorInterface> $protocolExecutors
      */
@@ -33,9 +41,12 @@ class StepExecutionWorker
         private ExpressionResolverInterface $expressionResolver,
         private array $protocolExecutors,
         private StepOutcomeHandler $outcomeHandler,
+        /** @phpstan-ignore property.onlyWritten */
         private ?LoggerInterface $logger = null,
         private int $stateTtlSeconds = 86400,
+        ?EventDispatcherInterface $events = null,
     ) {
+        $this->events = $events ?? new NullEventDispatcher();
     }
 
     public function handle(ExecuteStepJob $job): void
@@ -54,66 +65,97 @@ class StepExecutionWorker
         $this->lockManager->acquire($lockKey, 30, function () use ($step, $job, $executionId) {
             $context = $this->reconcileWithPersistedState($job->context, $executionId);
 
-            if ($context->getStepStatus($step->stepId) === StepStatus::Succeeded) {
-                return;
-            }
-
-            $document = $this->definitionRegistry->get($context->getDefinitionId());
-            if ($document === null) {
-                $this->eventLedger->append($executionId, 'execution.definition_missing', [
-                    'definitionId' => $context->getDefinitionId(),
-                ]);
-
-                return;
-            }
-
-            $workflow = $this->findWorkflow($document, $context->getWorkflowId());
-            if ($workflow === null) {
-                $this->eventLedger->append($executionId, 'execution.workflow_missing', [
-                    'workflowId' => $context->getWorkflowId(),
-                ]);
-
-                return;
-            }
-
-            $executor = $this->findExecutor($step, $document);
-            if ($executor === null) {
-                throw new LogicException("No StepProtocolExecutorInterface supports step '{$step->stepId}'.");
-            }
-
-            $outcome = $executor->execute($step, $context, $document, $executionId);
-
-            if ($outcome->suspended) {
-                $newContext = $context->withStepStatus($step->stepId, StepStatus::Suspended);
-                $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
-                $this->executionRegistry->start($executionId, $newContext->getDefinitionId(), $workflow->workflowId);
-                $this->eventLedger->append($executionId, 'step.suspended', ['stepId' => $step->stepId]);
-
-                return;
-            }
-
-            $contextWithResult = $context->withStepResult($step->stepId, [
-                'statusCode' => $outcome->statusCode,
-                'response' => ['statusCode' => $outcome->statusCode, 'body' => $outcome->responseBody],
-                'outputs' => $outcome->outputs,
-            ]);
-
-            $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
-
-            $this->executionRegistry->start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId);
-
             try {
-                $this->eventLedger->append($executionId, 'step.executed', [
-                    'stepId' => $step->stepId,
-                    'statusCode' => $outcome->statusCode,
-                    'outputs' => $outcome->outputs,
-                    'criteriaMet' => $criteriaMet,
-                ]);
-            } catch (Throwable $e) {
-                $this->logger?->warning("Failed to append event ledger entry for step '{$step->stepId}': {$e->getMessage()}");
-            }
+                if ($context->getStepStatus($step->stepId) === StepStatus::Succeeded) {
+                    return;
+                }
 
-            $this->outcomeHandler->handle($document, $workflow, $step, $contextWithResult, $executionId, $criteriaMet);
+                $document = $this->definitionRegistry->get($context->getDefinitionId());
+                if ($document === null) {
+                    $this->eventLedger->append($executionId, 'execution.definition_missing', [
+                        'definitionId' => $context->getDefinitionId(),
+                    ]);
+
+                    return;
+                }
+
+                $workflow = $this->findWorkflow($document, $context->getWorkflowId());
+                if ($workflow === null) {
+                    $this->eventLedger->append($executionId, 'execution.workflow_missing', [
+                        'workflowId' => $context->getWorkflowId(),
+                    ]);
+
+                    return;
+                }
+
+                $attempt = $context->getStepAttempts($step->stepId) + 1;
+                $this->events->dispatch(new StepStarted(
+                    $executionId,
+                    $context->getWorkflowId() ?? '',
+                    $step->stepId,
+                    $attempt,
+                    new \DateTimeImmutable(),
+                ));
+
+                $executor = $this->findExecutor($step, $document);
+                if ($executor === null) {
+                    throw new LogicException("No StepProtocolExecutorInterface supports step '{$step->stepId}'.");
+                }
+
+                $outcome = $executor->execute($step, $context, $document, $executionId);
+
+                if ($outcome->suspended) {
+                    $newContext = $context->withStepStatus($step->stepId, StepStatus::Suspended);
+                    $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
+                    $this->executionRegistry->start($executionId, $newContext->getDefinitionId(), $workflow->workflowId);
+                    $this->eventLedger->append($executionId, 'step.suspended', ['stepId' => $step->stepId]);
+
+                    if ($step->action === 'receive' && $step->correlationId !== null && $step->channelPath !== null) {
+                        $correlationIdValue = (string) $this->expressionResolver->evaluate($step->correlationId, $context, $step->stepId);
+                        $this->events->dispatch(new CorrelationPending(
+                            $executionId,
+                            $context->getWorkflowId() ?? '',
+                            $step->stepId,
+                            $correlationIdValue,
+                            $step->channelPath,
+                            new \DateTimeImmutable(),
+                        ));
+                    }
+
+                    return;
+                }
+
+                $contextWithResult = $context->withStepResult($step->stepId, [
+                    'statusCode' => $outcome->statusCode,
+                    'response' => ['statusCode' => $outcome->statusCode, 'body' => $outcome->responseBody],
+                    'outputs' => $outcome->outputs,
+                ]);
+
+                $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
+
+                $this->executionRegistry->start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId);
+
+                $this->outcomeHandler->handle($document, $workflow, $step, $contextWithResult, $executionId, $criteriaMet);
+
+                $this->events->dispatch(new StepExecutedEvent(
+                    $executionId,
+                    $workflow->workflowId,
+                    $step->stepId,
+                    $outcome->statusCode ?? 0,
+                    $outcome->outputs,
+                    $criteriaMet,
+                    new \DateTimeImmutable(),
+                ));
+            } catch (Throwable $t) {
+                $this->events->dispatch(new StepFailedEvent(
+                    $executionId,
+                    $context->getWorkflowId() ?? '',
+                    $step->stepId,
+                    $t,
+                    new \DateTimeImmutable(),
+                ));
+                throw $t;
+            }
         });
     }
 
