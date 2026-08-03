@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Tests\Resolution;
 
 use Alama\Arazzo\Dto\Enum\ExpressionType;
 use Alama\Arazzo\Dto\Selector;
-use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
-use Alama\LaravelArazzo\Execution\WorkflowContext;
+use Alama\Arazzo\Execution\ExpressionEvaluator;
+use Alama\Arazzo\Execution\WorkflowContext;
 use Alama\Arazzo\Resolution\SelectorEvaluator;
 use Alama\Arazzo\Resolution\Xpath\DomXpathEvaluator;
 

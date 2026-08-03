@@ -14,7 +14,7 @@ use Alama\LaravelArazzo\Events\StepExecuted;
 use Alama\LaravelArazzo\Events\StepFailed;
 use Alama\LaravelArazzo\Events\StepRetried;
 use Alama\LaravelArazzo\Events\StepStarted;
-use Alama\LaravelArazzo\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Execution\Contracts\EventLedgerInterface;
 
 final class LedgerAppendingListener
 {

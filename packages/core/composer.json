@@ -37,7 +37,8 @@
     "autoload-dev": {
         "psr-4": {
             "Alama\\Arazzo\\Tests\\": "tests/",
-            "Alama\\LaravelArazzo\\Execution\\": "../../src/Execution/"            
+            "Alama\\LaravelArazzo\\Execution\\": "../../src/Execution/",
+            "Alama\\LaravelArazzo\\Events\\": "../../src/Events/"            
         }
     },
     "config": {

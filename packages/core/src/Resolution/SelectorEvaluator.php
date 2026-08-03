@@ -7,10 +7,10 @@ namespace Alama\Arazzo\Resolution;
 use Alama\Arazzo\Dto\Enum\ExpressionType;
 use Alama\Arazzo\Dto\Expression;
 use Alama\Arazzo\Dto\Selector;
-use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
-use Alama\LaravelArazzo\Execution\JsonPathEvaluator;
-use Alama\LaravelArazzo\Execution\JsonPointer;
-use Alama\LaravelArazzo\Execution\WorkflowContext;
+use Alama\Arazzo\Execution\ExpressionEvaluator;
+use Alama\Arazzo\Execution\JsonPathEvaluator;
+use Alama\Arazzo\Execution\JsonPointer;
+use Alama\Arazzo\Execution\WorkflowContext;
 use Alama\Arazzo\Resolution\Xpath\XpathEvaluator;
 
 class SelectorEvaluator
