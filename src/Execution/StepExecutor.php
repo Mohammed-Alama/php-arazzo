@@ -6,19 +6,26 @@ namespace Alama\LaravelArazzo\Execution;
 
 use Alama\LaravelArazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Dto\Step;
+use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\SchemaValidationException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Client\ClientInterface;
 use Throwable;
 
 class StepExecutor
 {
+    /** @phpstan-ignore property.onlyWritten */
+    private EventDispatcherInterface $events;
+
     public function __construct(
         private ClientInterface $httpClient,
         private ExpressionResolverInterface $expressionResolver,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
+        ?EventDispatcherInterface $events = null,
     ) {
+        $this->events = $events ?? new NullEventDispatcher();
     }
 
     private function shouldValidateSchema(Step $step): bool
