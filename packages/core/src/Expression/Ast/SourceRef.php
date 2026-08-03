@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Expression\Ast;
+namespace Alama\Arazzo\Expression\Ast;
 
 final readonly class SourceRef extends ExpressionAst
 {

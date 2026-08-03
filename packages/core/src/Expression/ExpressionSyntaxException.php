@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Expression;
+namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Exceptions\ArazzoException;
 

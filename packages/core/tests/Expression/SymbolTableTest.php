@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Tests\Expression;
+namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Components;
-use Alama\LaravelArazzo\Dto\Enum\SourceType;
-use Alama\LaravelArazzo\Dto\Expression;
-use Alama\LaravelArazzo\Dto\Info;
-use Alama\LaravelArazzo\Dto\SourceDescription;
-use Alama\LaravelArazzo\Dto\Step;
-use Alama\LaravelArazzo\Dto\Workflow;
-use Alama\LaravelArazzo\Expression\SymbolTable;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Components;
+use Alama\Arazzo\Dto\Enum\SourceType;
+use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Info;
+use Alama\Arazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\Step;
+use Alama\Arazzo\Dto\Workflow;
+use Alama\Arazzo\Expression\SymbolTable;
 
 it('builds symbol table from document', function (): void {
     $step = new Step(

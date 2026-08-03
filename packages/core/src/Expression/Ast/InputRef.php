@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Expression\Ast;
+namespace Alama\Arazzo\Expression\Ast;
 
-final readonly class OutputPart extends StepPart
+final readonly class InputRef extends ExpressionAst
 {
     public function __construct(public string $name)
     {

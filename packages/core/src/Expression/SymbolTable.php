@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Expression;
+namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Components;
