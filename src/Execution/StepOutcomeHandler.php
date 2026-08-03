@@ -27,11 +27,18 @@ use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\LaravelArazzo\Execution\Contracts\StateStoreInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\LaravelArazzo\Execution\Jobs\ExecuteStepJob;
+use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
+use Alama\LaravelArazzo\Events\RunCompleted;
+use Alama\LaravelArazzo\Events\RunFailed;
+use Alama\LaravelArazzo\Events\StepRetried;
 use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
 use LogicException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class StepOutcomeHandler
 {
+    private EventDispatcherInterface $events;
+
     public function __construct(
         private QueueDriverInterface $queueDriver,
         private Engine $engine,
@@ -45,7 +52,9 @@ class StepOutcomeHandler
         private ExpressionEvaluator $expressions,
         private int $maxRetryAttempts = 10,
         private int $stateTtlSeconds = 86400,
+        ?EventDispatcherInterface $events = null,
     ) {
+        $this->events = $events ?? new NullEventDispatcher();
     }
 
     public function handle(
@@ -116,6 +125,22 @@ class StepOutcomeHandler
                 $status,
                 $status === ExecutionStatus::Succeeded ? 'execution.succeeded' : 'execution.failed',
             );
+
+            if ($matched instanceof SuccessEndAction) {
+                $this->events->dispatch(new RunCompleted(
+                    $executionId,
+                    $workflow->workflowId,
+                    $context->getSteps()[$step->stepId]['outputs'] ?? [],
+                    new \DateTimeImmutable(),
+                ));
+            } else {
+                $this->events->dispatch(new RunFailed(
+                    $executionId,
+                    $workflow->workflowId,
+                    new \RuntimeException("Workflow '{$workflow->workflowId}' ended in failure at step '{$step->stepId}'"),
+                    new \DateTimeImmutable(),
+                ));
+            }
 
             return;
         }
@@ -225,6 +250,17 @@ class StepOutcomeHandler
         }
 
         $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
+
+        $attempt = $context->getStepAttempts($step->stepId);
+        $this->events->dispatch(new StepRetried(
+            $executionId,
+            $workflow->workflowId,
+            $step->stepId,
+            $attempt,
+            null,
+            new \DateTimeImmutable(),
+        ));
+
         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $action->retryAfter ?? 0);
     }
 
