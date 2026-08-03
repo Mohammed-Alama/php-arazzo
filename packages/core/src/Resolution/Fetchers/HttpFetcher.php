@@ -14,8 +14,9 @@ final class HttpFetcher implements SourceFetcher
 {
     public function __construct(
         private readonly ClientInterface $client,
-        private readonly RequestFactoryInterface $requestFactory
-    ) {}
+        private readonly RequestFactoryInterface $requestFactory,
+    ) {
+    }
 
     public function fetch(string $urlOrPath, string $basePath): string
     {

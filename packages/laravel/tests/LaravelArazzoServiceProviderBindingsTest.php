@@ -24,21 +24,19 @@ use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Generator\Contracts\AiClientInterface;
+use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
+use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;
 use Alama\Arazzo\Laravel\Persistence\DatabaseEventLedger;
 use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
-use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
-use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-
-
 
 it('binds psr interfaces to guzzle', function () {
     expect(app(ClientInterface::class))->toBeInstanceOf(Client::class);

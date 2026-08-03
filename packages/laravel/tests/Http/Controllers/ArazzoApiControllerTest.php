@@ -7,13 +7,10 @@ namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Resolution\ResolvedSource;
 use Alama\Arazzo\Resolution\SourceResolver;
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Mockery;
 
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
-
-
 
 it('returns endpoints list from openapi spec', function () {
     $resolver = Mockery::mock(SourceResolver::class);

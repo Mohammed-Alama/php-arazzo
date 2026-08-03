@@ -1,6 +1,9 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Alama\Arazzo\Tests\License;
+
 use Alama\Arazzo\License\LicenseVerifierInterface;
 use Alama\Arazzo\License\NullLicenseVerifier;
 
