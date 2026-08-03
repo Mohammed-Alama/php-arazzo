@@ -8,6 +8,15 @@
 
 **Tech Stack:** PHP 8.4, `symplify/monorepo-builder ^12`, Pest 4, Larastan 3, Orchestra Testbench 11, `spatie/laravel-package-tools ^1.16`, PSR-3/7/11/14/16/17/18/20, `softcreatr/jsonpath ^0.10`, `cebe/php-openapi ^1.7`, `symfony/yaml ^7`, Guzzle 7 (bridge only), GitHub Actions for monorepo split.
 
+## Execution Scope for This Pass
+
+This pass targets **local completion only**:
+
+- Tasks 1–12 (full monorepo split) run to completion, verified via `composer test` locally after each task as written.
+- Task 15 Steps 1–7 are the actual success criteria for this pass: clean install, full test suite, static analysis, Pint, a subtree-split dry run, and — critically — the two manual smoke tests: standalone `alama/arazzo-core` install, and a fresh Laravel app successfully requiring `alama/laravel-arazzo` via a local path repo. Step 7 (fresh Laravel app smoke test) is upgraded from "optional" to **required** for this pass — it's the concrete proof that the bridge package works standalone, which is the actual goal.
+- **Deferred to a later pass:** Task 13 (GitHub Actions workflow rewrites), Task 14 Step 1 (split-workflow tag-prefix update), and Task 15 Steps 8–10 (merge to `main`, tag, push, Packagist publish). These depend on external setup — an `ACCESS_TOKEN` PAT with `repo` scope on the not-yet-created `alama/arazzo-core` / `alama/laravel-arazzo` GitHub repos — that isn't in place yet. Skip them for now; each is marked inline below where it applies.
+- Before Task 13 is eventually resumed: confirm `symplify/monorepo-split-github-action@v2.3.0` is a real, current tag on the GitHub Marketplace — pinned action versions drift and this plan predates that check.
+
 ## Global Constraints
 
 - PHP version floor: `^8.4` (matches current `composer.json`).
@@ -1332,6 +1341,8 @@ find packages/laravel/src -name '*.php' -print0 \
 
 Manually spot-check `packages/laravel/src/LaravelArazzoServiceProvider.php` after the rewrite for stragglers.
 
+> ⚠️ **This regex is order-dependent.** The more specific patterns (`Laravel\Jobs`, `Execution\Jobs`, `Http\Controllers`) must fire before the generic `Alama\LaravelArazzo\Laravel` and catch-all `Alama\LaravelArazzo` patterns, or a later pattern can double-rewrite or clobber an already-correct namespace. A wrong `use` statement on an unused import won't fail tests — it'll pass silently and only surface as a PHPStan error or a runtime `class not found` later. After this step, run `git diff packages/laravel/src` and manually read every changed `namespace`/`use` line before moving to Step 5 — don't rely on test-pass alone here.
+
 - [ ] **Step 5: Move Laravel-specific tests**
 
 ```bash
@@ -1788,7 +1799,9 @@ git commit -m "chore(plan-a): retire root-level tool configs, retarget Makefile 
 
 ---
 
-## Task 13: Update GitHub Actions Workflows
+## Task 13: Update GitHub Actions Workflows — DEFERRED, do not execute this pass
+
+> This entire task depends on the `alama/arazzo-core` and `alama/laravel-arazzo` GitHub repos existing and an `ACCESS_TOKEN` PAT being configured — neither is set up yet. Skip this task after Task 12 and go straight to Task 15 Steps 1–7 (local verification). Return here once GitHub-side setup is ready.
 
 **Files:**
 - Modify: `.github/workflows/run-tests.yml` — matrix over `packages/core` + `packages/laravel`
@@ -1930,6 +1943,8 @@ git commit -m "ci(plan-a): matrix per-package tests/phpstan, add split workflow"
 ---
 
 ## Task 14: Version Bumps, Changelog, and Alpha Tag Preparation
+
+> **Step 1 is deferred** — it modifies the split workflow from Task 13, which is itself deferred. Steps 2–4 (CHANGELOG + UPGRADING docs) are still worth doing now; they document the real repo state and cost nothing to write early.
 
 **Files:**
 - Modify: `packages/core/composer.json` — no `version` field (Composer prefers tags), but ensure `extra.branch-alias` if desired
@@ -2127,7 +2142,7 @@ git commit -m "docs(plan-a): CHANGELOG + UPGRADING guides for 2.x extraction, ta
 
 ---
 
-## Task 15: Final Verification + Alpha Tag
+## Task 15: Final Verification + Alpha Tag — Steps 1–7 are this pass's goal, Steps 8–10 deferred
 
 **Files:**
 - No new files
@@ -2224,6 +2239,10 @@ php artisan arazzo:validate --help
 ```
 
 Expected: command discovered without errors.
+
+> **Steps 6–7 above are the real finish line for this pass.** A locally installable `arazzo-core` and a fresh Laravel app successfully requiring `alama/laravel-arazzo` via path repos is the concrete goal — once both smoke tests pass, this plan's scope for now is complete.
+
+> **Steps 8–10 below are DEFERRED.** They depend on the GitHub Actions split workflow (Task 13, deferred) and repos/PAT that don't exist yet. Do not execute them this pass — stop after Step 7 and revisit once GitHub-side setup (Task 13) is done.
 
 - [ ] **Step 8: Merge worktree back to main**
 

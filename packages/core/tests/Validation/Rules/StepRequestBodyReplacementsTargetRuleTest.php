@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests\Validation\Rules;
+
+use Alama\Arazzo\Dto\PayloadReplacement;
+use Alama\Arazzo\Dto\RequestBody;
+use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Tests\Support\Fx;
+use Alama\Arazzo\Validation\ErrorCollector;
+use Alama\Arazzo\Validation\Rules\StepRequestBodyReplacementsTargetRule;
+
+it('skips steps without body and flags empty/non-slash targets', function (): void {
+    $doc = Fx::doc(workflows: [
+        Fx::wf('w', [
+            Fx::step('a', 'op', body: null),
+            Fx::step('b', 'op', body: new RequestBody(null, null, [
+                new PayloadReplacement('', 'v'),
+                new PayloadReplacement('/ok', 'v'),
+            ])),
+        ]),
+    ]);
+    $ec = new ErrorCollector();
+    (new StepRequestBodyReplacementsTargetRule())->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toHaveCount(1);
+});

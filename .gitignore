@@ -33,3 +33,6 @@ testbench.yaml
 /playwright-report
 /test-results/
 .worktrees/
+/packages/*/vendor/
+/packages/*/composer.lock
+/packages/*/.phpunit.cache/

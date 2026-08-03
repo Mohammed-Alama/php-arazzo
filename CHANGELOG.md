@@ -4,7 +4,19 @@ All notable changes to `alama/laravel-arazzo` will be documented in this file.
 
 Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-plan.sh <slug>` — a deterministic promotion that moves the plan/spec under `docs/superpowers/plans/shipped/` + `docs/superpowers/specs/shipped/`, removes the roadmap stub, and appends this section.
 
-## Unreleased
+## [Unreleased]
+
+### Changed
+- **BREAKING (Laravel bridge only)**: extracted framework-agnostic engine into new package `alama/arazzo-core`. `alama/laravel-arazzo` is now a thin bridge depending on the core. Existing consumers upgrade via `composer require alama/laravel-arazzo:^2.0@alpha` and (optionally) update FQCNs to `Alama\Arazzo\*`. Old `Alama\LaravelArazzo\*` FQCNs continue to resolve via `class_alias` throughout the 2.x line — planned removal in 3.0.
+- Repository restructured as a Symplify monorepo hosting `packages/core` and `packages/laravel`. Tag-based subtree splits publish each package independently.
+
+### Added
+- `alama/arazzo-core` initial release (`1.0.0-alpha.1`): parser, validator, execution engine with in-memory reference drivers, expression resolver, schema validator, generator skeleton, OAK-ready contracts, `LicenseVerifierInterface` for future pro-tier gating.
+- `LicenseVerifierInterface` + `NullLicenseVerifier` — foundation for future pro-tier entitlement enforcement (currently a no-op in OSS).
+
+### Migration
+- See `packages/laravel/UPGRADING.md` for consumer migration guide.
+- See `packages/core/UPGRADING.md` for standalone core usage.
 
 ### Added
 
