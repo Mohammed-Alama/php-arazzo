@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener;
-use Alama\LaravelArazzo\Events\RunStarted;
-use Alama\LaravelArazzo\Events\StepExecuted as EventStepExecuted;
+use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
+use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Events\StepExecuted as EventStepExecuted;
 use Alama\Arazzo\Execution\Contracts\EventLedgerInterface;
 
 it('routes catalog events through the bus into the same ledger strings that pre-refactor code emitted', function () {

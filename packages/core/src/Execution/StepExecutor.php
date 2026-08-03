@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Step;
-use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Execution\Exceptions\SchemaValidationException;
 use Psr\EventDispatcher\EventDispatcherInterface;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dto\Workflow;
-use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
-use Alama\LaravelArazzo\Events\RunStarted;
+use Alama\Arazzo\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Events\RunStarted;
 use Alama\Arazzo\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Execution\Contracts\StateStoreInterface;
 use Alama\Arazzo\Execution\Jobs\ExecuteStepJob;
