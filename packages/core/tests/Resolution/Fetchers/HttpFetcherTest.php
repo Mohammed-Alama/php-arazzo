@@ -10,6 +10,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 it('fetches an http url', function (): void {
     $client = \Mockery::mock(ClientInterface::class);
@@ -17,7 +18,7 @@ it('fetches an http url', function (): void {
     $request = \Mockery::mock(RequestInterface::class);
     $response = \Mockery::mock(ResponseInterface::class);
 
-    $stream = \Mockery::mock(\Psr\Http\Message\StreamInterface::class);
+    $stream = \Mockery::mock(StreamInterface::class);
     $stream->shouldReceive('__toString')->andReturn('fetched content');
     $reqFactory->shouldReceive('createRequest')->with('GET', 'http://example.com/spec.yaml')->andReturn($request);
     $client->shouldReceive('sendRequest')->with($request)->andReturn($response);

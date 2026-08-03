@@ -11,7 +11,6 @@ use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowContext;
-use Alama\Arazzo\Tests\TestCase;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;

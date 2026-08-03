@@ -32,14 +32,14 @@ use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Generator\Contracts\AiClientInterface;
 use Alama\Arazzo\Laravel\Http\Controllers\ArazzoApiController;
+use Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController;
+use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
+use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;
 use Alama\Arazzo\Laravel\Persistence\DatabaseEventLedger;
 use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
-use Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
-use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
-use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Resolution\DefaultSourceResolver;
@@ -56,12 +56,14 @@ use Alama\Arazzo\Resolution\Xpath\XpathEvaluator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Route;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -69,16 +71,16 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 {
     public function register(): void
     {
-        if (class_exists(\Illuminate\Foundation\AliasLoader::class)) {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        if (class_exists(AliasLoader::class)) {
+            $loader = AliasLoader::getInstance();
             $loader->alias('Alama\LaravelArazzo\LaravelArazzoServiceProvider', self::class);
-            $loader->alias('Alama\LaravelArazzo\Http\Controllers\ArazzoApiController', \Alama\Arazzo\Laravel\Http\Controllers\ArazzoApiController::class);
-            $loader->alias('Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController', \Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController::class);
+            $loader->alias('Alama\LaravelArazzo\Http\Controllers\ArazzoApiController', ArazzoApiController::class);
+            $loader->alias('Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController', WebhookResumeController::class);
         } else {
             // Fallback for non-facade environments (e.g. testing)
             class_alias(self::class, 'Alama\LaravelArazzo\LaravelArazzoServiceProvider');
-            class_alias(\Alama\Arazzo\Laravel\Http\Controllers\ArazzoApiController::class, 'Alama\LaravelArazzo\Http\Controllers\ArazzoApiController');
-            class_alias(\Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController::class, 'Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController');
+            class_alias(ArazzoApiController::class, 'Alama\LaravelArazzo\Http\Controllers\ArazzoApiController');
+            class_alias(WebhookResumeController::class, 'Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController');
         }
 
         parent::register();
@@ -133,8 +135,8 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->app->singleton(SourceResolver::class, function ($app) {
             return new DefaultSourceResolver(
                 fetchers: [
-                    'http' => new CachedFetcher(new HttpFetcher($app->make(ClientInterface::class), $app->make(RequestFactoryInterface::class)), $app->make(\Psr\SimpleCache\CacheInterface::class), 3600),
-                    'https' => new CachedFetcher(new HttpFetcher($app->make(ClientInterface::class), $app->make(RequestFactoryInterface::class)), $app->make(\Psr\SimpleCache\CacheInterface::class), 3600),
+                    'http' => new CachedFetcher(new HttpFetcher($app->make(ClientInterface::class), $app->make(RequestFactoryInterface::class)), $app->make(CacheInterface::class), 3600),
+                    'https' => new CachedFetcher(new HttpFetcher($app->make(ClientInterface::class), $app->make(RequestFactoryInterface::class)), $app->make(CacheInterface::class), 3600),
                     'file' => new LocalFetcher(),
                 ],
                 parsers: [
