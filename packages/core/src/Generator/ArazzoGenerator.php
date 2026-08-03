@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Generator;
+namespace Alama\Arazzo\Generator;
 
-use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
+use Alama\Arazzo\Generator\Contracts\AiClientInterface;
 
 class ArazzoGenerator
 {

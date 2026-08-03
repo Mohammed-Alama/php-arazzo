@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Tests\Generator\Clients;
+namespace Alama\Arazzo\Tests\Generator\Clients;
 
-use Alama\LaravelArazzo\Generator\Clients\OpenAiClient;
+use Alama\Arazzo\Generator\Clients\OpenAiClient;
 use Mockery;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;

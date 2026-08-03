@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Tests\Generator;
+namespace Alama\Arazzo\Tests\Generator;
 
-use Alama\LaravelArazzo\Generator\ArazzoGenerator;
-use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
+use Alama\Arazzo\Generator\ArazzoGenerator;
+use Alama\Arazzo\Generator\Contracts\AiClientInterface;
 
 it('generates arazzo yaml from openapi and trace', function () {
     $aiClient = new class() implements AiClientInterface
