@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Generator\Contracts;
+namespace Alama\Arazzo\Generator\Contracts;
 
 interface AiClientInterface
 {

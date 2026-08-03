@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\LaravelArazzo\Generator\Clients;
+namespace Alama\Arazzo\Generator\Clients;
 
-use Alama\LaravelArazzo\Generator\Contracts\AiClientInterface;
+use Alama\Arazzo\Generator\Contracts\AiClientInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
