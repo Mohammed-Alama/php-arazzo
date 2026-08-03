@@ -44,6 +44,8 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ### Shipped
 
+- **PSR-14 Event Dispatcher Wiring** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-38-event-dispatcher-wiring.md`](../roadmap/backend/phase-0-foundation/core-38-event-dispatcher-wiring.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Enables: pro-observability, `bridge-28` (Horizon/Telescope), `tenant-09` (context bridges), `health-23` (error triage).
+
 - **DependencyGraph** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-37-dependency-graph.md`](../roadmap/backend/phase-0-foundation/core-37-dependency-graph.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Closes known workflow-executor debt.
 
 - **Arazzo 1.1.0 Spec Support** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md`](../roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Blocks: `ai-10-agent-routing`, `exec-07-saga-compensation`, `tenant-09-context-bridges`
