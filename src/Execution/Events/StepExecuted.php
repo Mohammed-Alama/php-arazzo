@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution\Events;
 
+/**
+ * @deprecated Since core-38. Use \Alama\LaravelArazzo\Events\StepExecuted (PSR-14 event). Will be removed in a future major.
+ */
 class StepExecuted
 {
     /**
