@@ -20,8 +20,8 @@
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
         "prepare": "@php packages/laravel/vendor/bin/testbench package:discover --ansi || true",
-        "analyse-core": "cd packages/core && vendor/bin/phpstan analyse",
-        "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse",
+        "analyse-core": "cd packages/core && vendor/bin/phpstan analyse --memory-limit=1G",
+        "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
         "analyse": ["@analyse-core", "@analyse-laravel"],
         "test-core": "cd packages/core && vendor/bin/pest",
         "test-laravel": "cd packages/laravel && vendor/bin/pest",
