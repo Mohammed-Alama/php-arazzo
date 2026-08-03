@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\Arazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
 use Alama\LaravelArazzo\Events\RunStarted;
 use Alama\LaravelArazzo\Execution\Contracts\QueueDriverInterface;

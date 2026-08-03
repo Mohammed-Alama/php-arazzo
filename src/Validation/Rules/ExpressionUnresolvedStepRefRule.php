@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Validation\Rules;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Expression\Ast\OutputPart;
 use Alama\LaravelArazzo\Expression\Ast\StepRef;
 use Alama\LaravelArazzo\Expression\ExpressionSyntaxException;

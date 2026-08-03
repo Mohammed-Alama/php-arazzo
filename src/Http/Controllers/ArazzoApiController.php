@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Http\Controllers;
 
-use Alama\LaravelArazzo\Dto\Enum\SourceType;
-use Alama\LaravelArazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\Enum\SourceType;
+use Alama\Arazzo\Dto\SourceDescription;
 use Alama\LaravelArazzo\Generator\ArazzoGenerator;
 use Alama\LaravelArazzo\Resolution\SourceResolver;
 use Illuminate\Http\JsonResponse;

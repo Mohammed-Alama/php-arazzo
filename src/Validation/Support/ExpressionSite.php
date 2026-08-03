@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Validation\Support;
 
-use Alama\LaravelArazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Expression;
 use Alama\LaravelArazzo\Expression\WorkflowSymbols;
 
 final readonly class ExpressionSite

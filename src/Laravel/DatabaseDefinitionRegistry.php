@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Laravel;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Enum\Format;
-use Alama\LaravelArazzo\Dto\RawDocument;
-use Alama\LaravelArazzo\Exceptions\ParserException;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Dto\RawDocument;
+use Alama\Arazzo\Exceptions\ParserException;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\DefinitionHydrationException;
 use Alama\LaravelArazzo\Parser\Parser;

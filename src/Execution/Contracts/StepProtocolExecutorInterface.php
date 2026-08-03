@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution\Contracts;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Step;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\StepExecutionOutcome;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 

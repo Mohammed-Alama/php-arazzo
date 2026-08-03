@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo;
 
-use Alama\LaravelArazzo\Dto\Enum\SourceType;
+use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener;
 use Alama\LaravelArazzo\Execution\ArazzoExpressionResolver;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Resolution\Parsers;
 
-use Alama\LaravelArazzo\Dto\Enum\Format;
-use Alama\LaravelArazzo\Dto\RawDocument;
+use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Dto\RawDocument;
 use Alama\LaravelArazzo\Loader\NativeJsonDecoder;
 use Alama\LaravelArazzo\Loader\SymfonyYamlDecoder;
 use Alama\LaravelArazzo\Parser\Parser;

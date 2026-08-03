@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\Action\SubWorkflowFailureAction;
-use Alama\LaravelArazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\LaravelArazzo\Dto\Expression;
-use Alama\LaravelArazzo\Dto\Selector;
-use Alama\LaravelArazzo\Exceptions\ExecutionException;
+use Alama\Arazzo\Dto\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Dto\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Selector;
+use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\LaravelArazzo\Resolution\SelectorEvaluator;
 

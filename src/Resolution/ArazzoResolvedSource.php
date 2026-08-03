@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Resolution;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Resolution\Exceptions\UnresolvableReferenceException;
 
 final readonly class ArazzoResolvedSource implements ResolvedSource

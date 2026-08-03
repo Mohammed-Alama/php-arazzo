@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Resolution;
 
-use Alama\LaravelArazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\SourceDescription;
 
 interface SourceResolver
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\Step;
+use Alama\Arazzo\Dto\Step;
 use Psr\Http\Message\RequestInterface;
 
 final class IdempotencyKeyInjector

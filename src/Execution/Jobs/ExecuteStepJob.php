@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution\Jobs;
 
-use Alama\LaravelArazzo\Dto\Step;
+use Alama\Arazzo\Dto\Step;
 use Alama\LaravelArazzo\Execution\WorkflowContext;
 
 class ExecuteStepJob

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Validation\Rules;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Reusable;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Reusable;
 use Alama\LaravelArazzo\Expression\SymbolTable;
 use Alama\LaravelArazzo\Validation\ErrorCollector;
 use Alama\LaravelArazzo\Validation\Rule;

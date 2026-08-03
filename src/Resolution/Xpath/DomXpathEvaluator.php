@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Resolution\Xpath;
 
-use Alama\LaravelArazzo\Exceptions\SelectorEvaluationException;
+use Alama\Arazzo\Exceptions\SelectorEvaluationException;
 use DOMDocument;
 use DOMNode;
 use DOMNodeList;
