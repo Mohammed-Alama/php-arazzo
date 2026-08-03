@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Exceptions;
 
-use Alama\LaravelArazzo\Validation\ValidationResult;
+use Alama\Arazzo\Validation\ValidationResult;
 
 final class ValidationException extends ArazzoException
 {
