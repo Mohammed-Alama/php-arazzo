@@ -27,6 +27,8 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ### Shipped
 
+- **DependencyGraph** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-37-dependency-graph.md`](../roadmap/backend/phase-0-foundation/core-37-dependency-graph.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Closes known workflow-executor debt.
+
 - **Arazzo 1.1.0 Spec Support** — Stub: [`docs/superpowers/roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md`](../roadmap/backend/phase-0-foundation/core-34-arazzo-1.1.0-spec.md) Category: **core** · Phase: **0-foundation** · Tier: **OSS** Blocks: `ai-10-agent-routing`, `exec-07-saga-compensation`, `tenant-09-context-bridges`
 
 - **Parser & Validator** — Loader → Parser → Validator pipeline for Arazzo 1.0.0 YAML/JSON documents: typed readonly DTOs, an expression lexer/AST/symbol table, and 39 validation rule classes across document/workflow/step/expression/action scopes.
