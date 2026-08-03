@@ -1,0 +1,607 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 2
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''criteria'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''data'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 7
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''edges'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''method'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''nodes'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''operationId'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''parameters'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''path'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''paths'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''requestBody'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''source'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Cannot access offset ''target'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Parameter \#1 \$openapiSpec of method Alama\\Arazzo\\Generator\\ArazzoGenerator\:\:generate\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Part \$edge\[''source''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Part \$edge\[''target''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Part \$node\[''data''\]\[''method''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Part \$node\[''data''\]\[''operationId''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Part \$node\[''data''\]\[''path''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Part \$node\[''id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Http/Controllers/ArazzoApiController.php
+
+		-
+			message: '#^Parameter \#2 \$response of class Alama\\Arazzo\\Execution\\ResumeCorrelationJob constructor expects array\{statusCode\?\: int, headers\?\: array\<string, mixed\>, body\?\: mixed\}, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Http/Controllers/WebhookResumeController.php
+
+		-
+			message: '#^Cannot call method bound\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Cannot call method connection\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Cannot call method make\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 61
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 3
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$aiClient of class Alama\\Arazzo\\Generator\\ArazzoGenerator constructor expects Alama\\Arazzo\\Generator\\Contracts\\AiClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$client of class Alama\\Arazzo\\Laravel\\Http\\Psr18HttpClient constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$client of class Alama\\Arazzo\\Resolution\\Fetchers\\HttpFetcher constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$db of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseDefinitionRegistry constructor expects Illuminate\\Database\\ConnectionInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$db of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseEventLedger constructor expects Illuminate\\Database\\ConnectionInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$db of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseExecutionRegistry constructor expects Illuminate\\Database\\ConnectionInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$db of class Alama\\Arazzo\\Laravel\\Persistence\\DatabasePendingCorrelationRegistry constructor expects Illuminate\\Database\\ConnectionInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$httpClient of class Alama\\Arazzo\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Execution\\Contracts\\HttpClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$httpClient of class Alama\\Arazzo\\Execution\\StepExecutor constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$httpClient of class Alama\\Arazzo\\Generator\\Clients\\OpenAiClient constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$lockManager of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\Contracts\\LockManagerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$pendingCorrelations of class Alama\\Arazzo\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Execution\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$pendingCorrelations of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$prefix of static method Illuminate\\Support\\Facades\\Route\:\:prefix\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$queueDriver of class Alama\\Arazzo\\Execution\\Engine constructor expects Alama\\Arazzo\\Execution\\Contracts\\QueueDriverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$queueDriver of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Contracts\\QueueDriverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$redis of class Alama\\Arazzo\\Laravel\\State\\RedisHotStateStore constructor expects Illuminate\\Contracts\\Redis\\Factory, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$registry of class Alama\\Arazzo\\Execution\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Execution\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Execution\\ArazzoExpressionResolver constructor expects Alama\\Arazzo\\Resolution\\SourceResolver, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$stepExecutor of class Alama\\Arazzo\\Execution\\WorkflowExecutor constructor expects Alama\\Arazzo\\Execution\\StepExecutor, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$cache of class Alama\\Arazzo\\Resolution\\Fetchers\\CachedFetcher constructor expects Psr\\SimpleCache\\CacheInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$engine of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Engine, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$executor of class Alama\\Arazzo\\Execution\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Execution\\WorkflowExecutor, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$expressionResolver of class Alama\\Arazzo\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$expressionResolver of class Alama\\Arazzo\\Execution\\StepExecutor constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$ledger of static method Alama\\Arazzo\\Events\\Listener\\LedgerAppendingListener\:\:registerAll\(\) expects Alama\\Arazzo\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Execution\\ArazzoExpressionResolver constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Generator\\Clients\\OpenAiClient constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Resolution\\Fetchers\\HttpFetcher constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\Contracts\\StateStoreInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Execution\\Engine constructor expects Alama\\Arazzo\\Execution\\Contracts\\StateStoreInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\Contracts\\StateStoreInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$table of class Alama\\Arazzo\\Laravel\\Persistence\\DatabasePendingCorrelationRegistry constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$tableName of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseEventLedger constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$tableName of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseExecutionRegistry constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$definitionRegistry of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$definitionRegistry of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$executionRegistry of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExecutionRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$httpClient of class Alama\\Arazzo\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Execution\\Contracts\\HttpClientInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$logger of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseEventLedger constructor expects Psr\\Log\\LoggerInterface\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$streamFactory of class Alama\\Arazzo\\Generator\\Clients\\OpenAiClient constructor expects Psr\\Http\\Message\\StreamFactoryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$tableName of class Alama\\Arazzo\\Laravel\\Persistence\\DatabaseDefinitionRegistry constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$apiKey of class Alama\\Arazzo\\Generator\\Clients\\OpenAiClient constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$injector of class Alama\\Arazzo\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Execution\\IdempotencyKeyInjector\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$injector of class Alama\\Arazzo\\Execution\\StepExecutor constructor expects Alama\\Arazzo\\Execution\\IdempotencyKeyInjector\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#4 \$selectors of class Alama\\Arazzo\\Execution\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Resolution\\SelectorEvaluator, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#5 \$endpoint of class Alama\\Arazzo\\Generator\\Clients\\OpenAiClient constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#5 \$executionRegistry of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExecutionRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#5 \$outcomeHandler of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\StepOutcomeHandler, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#5 \$pendingCorrelations of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#6 \$eventLedger of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#6 \$expressionResolver of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#6 \$expressionResolver of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#7 \$lockManager of class Alama\\Arazzo\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Execution\\Contracts\\LockManagerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#7 \$protocolExecutors of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects list\<Alama\\Arazzo\\Execution\\Contracts\\StepProtocolExecutorInterface\>, array\{mixed, mixed\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#7 \$stateStore of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\Contracts\\StateStoreInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#8 \$invoker of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Execution\\SubWorkflowInvoker, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#8 \$outcomeHandler of class Alama\\Arazzo\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Execution\\StepOutcomeHandler, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#9 \$selectors of class Alama\\Arazzo\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Resolution\\SelectorEvaluator, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: src/Persistence/DatabaseDefinitionRegistry.php
+
+		-
+			message: '#^Parameter \#1 \$data of class Alama\\Arazzo\\Dto\\RawDocument constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/DatabaseDefinitionRegistry.php
+
+		-
+			message: '#^Parameter \#1 \$data of method Alama\\Arazzo\\Laravel\\Persistence\\DatabaseDefinitionRegistry\:\:sortRecursive\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/DatabaseDefinitionRegistry.php
+
+		-
+			message: '#^Parameter \#1 \$correlationId of class Alama\\Arazzo\\Execution\\PendingCorrelation constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/DatabasePendingCorrelationRegistry.php
+
+		-
+			message: '#^Parameter \#2 \$executionId of class Alama\\Arazzo\\Execution\\PendingCorrelation constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/DatabasePendingCorrelationRegistry.php
+
+		-
+			message: '#^Parameter \#3 \$stepId of class Alama\\Arazzo\\Execution\\PendingCorrelation constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/DatabasePendingCorrelationRegistry.php
+
+		-
+			message: '#^Parameter \#4 \$channelPath of class Alama\\Arazzo\\Execution\\PendingCorrelation constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Persistence/DatabasePendingCorrelationRegistry.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Laravel\\State\\RedisHotStateStore\:\:load\(\) should return array\<string, mixed\>\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/State/RedisHotStateStore.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/State/RedisHotStateStore.php
