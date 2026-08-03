@@ -74,6 +74,11 @@ class WorkerMockStateStore implements StateStoreInterface
 
 class WorkerMockExpressionResolver implements ExpressionResolverInterface
 {
+    public function evaluate(\Alama\LaravelArazzo\Dto\Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    {
+        return $expression->raw;
+    }
+
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
     }
@@ -190,7 +195,10 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $executionRegistry = new WorkerMockExecutionRegistry();
     $resolver = new WorkerMockExpressionResolver();
     $queue = new SyncQueueDriver();
-    $engine = new Engine($queue, $store);
+    $dispatcher = new \Alama\LaravelArazzo\Events\Dispatcher\SimpleEventDispatcher();
+    \Alama\LaravelArazzo\Events\Listener\LedgerAppendingListener::registerAll($dispatcher, $eventLedger);
+
+    $engine = new Engine($queue, $store, $dispatcher);
     $outcomeHandler = new StepOutcomeHandler(
         $queue, $engine, $executionRegistry, $eventLedger,
         new WorkerMockPendingCorrelationRegistry(), $resolver, $store,
@@ -201,7 +209,7 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
 
     $worker = new StepExecutionWorker(
         $lockManager, $store, $definitionRegistry, $eventLedger, $executionRegistry, $resolver,
-        [new WorkerFakeProtocolExecutor($outcome)], $outcomeHandler,
+        [new WorkerFakeProtocolExecutor($outcome)], $outcomeHandler, null, 86400, $dispatcher,
     );
 
     return [$worker, $lockManager, $store, $eventLedger, $executionRegistry, $queue];
@@ -277,7 +285,7 @@ it('executes a step, saves state with TTL, appends step.executed, starts the exe
 
     expect($store->saves)->toHaveKey('exec_1');
     expect($store->saves['exec_1']['steps'])->toHaveKey('A');
-    expect($eventLedger->appended[0]['eventType'])->toBe('step.executed');
+    expect(array_column($eventLedger->appended, 'eventType'))->toContain('step.executed');
     expect($executionRegistry->started)->toHaveCount(1);
     expect($queue->dispatched)->toHaveCount(1);
     expect($queue->dispatched[0]['job']->step->stepId)->toBe('B');
@@ -297,7 +305,7 @@ it('suspends when the protocol executor returns a suspended outcome, without inv
     $worker->handle(new ExecuteStepJob($step, $context));
 
     expect($store->saves['exec_1']['steps']['A']['status'])->toBe(StepStatus::Suspended);
-    expect($eventLedger->appended[0]['eventType'])->toBe('step.suspended');
+    expect(array_column($eventLedger->appended, 'eventType'))->toContain('step.suspended');
     expect($queue->dispatched)->toBeEmpty(); // StepOutcomeHandler never called, so no choreography dispatch
 });
 

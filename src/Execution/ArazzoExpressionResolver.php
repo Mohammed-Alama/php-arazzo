@@ -43,6 +43,11 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
     ) {
     }
 
+    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    {
+        return $this->evaluator->evaluate($expression, $context, $currentStepId);
+    }
+
     public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
     {
         $method = 'GET';
