@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Loader;
 
-use Alama\LaravelArazzo\Dto\Enum\Format;
-use Alama\LaravelArazzo\Dto\RawDocument;
-use Alama\LaravelArazzo\Exceptions\LoaderException;
+use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Dto\RawDocument;
+use Alama\Arazzo\Exceptions\LoaderException;
 
 final class Loader
 {

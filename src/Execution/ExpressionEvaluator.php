@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Expression;
 use Alama\LaravelArazzo\Expression\Ast\ComponentRef;
 use Alama\LaravelArazzo\Expression\Ast\ExpressionAst;
 use Alama\LaravelArazzo\Expression\Ast\HttpMetaRef;

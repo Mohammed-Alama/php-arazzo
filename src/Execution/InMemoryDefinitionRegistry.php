@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Execution\Contracts\DefinitionRegistryInterface;
 
 class InMemoryDefinitionRegistry implements DefinitionRegistryInterface

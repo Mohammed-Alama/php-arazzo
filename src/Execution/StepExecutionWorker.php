@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Step;
-use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Step;
+use Alama\Arazzo\Dto\Workflow;
 use Alama\LaravelArazzo\Events\CorrelationPending;
 use Alama\LaravelArazzo\Events\Dispatcher\NullEventDispatcher;
 use Alama\LaravelArazzo\Events\StepExecuted as StepExecutedEvent;

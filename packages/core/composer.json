@@ -34,7 +34,10 @@
         "psr-4": {"Alama\\Arazzo\\": "src/"}
     },
     "autoload-dev": {
-        "psr-4": {"Alama\\Arazzo\\Tests\\": "tests/"}
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\": "tests/",
+            "Alama\\LaravelArazzo\\": "../../src/"
+        }
     },
     "config": {
         "sort-packages": true,

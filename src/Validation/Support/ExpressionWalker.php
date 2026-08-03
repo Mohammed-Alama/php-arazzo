@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Validation\Support;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Expression;
-use Alama\LaravelArazzo\Dto\Selector;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Selector;
 use Alama\LaravelArazzo\Expression\SymbolTable;
 use Alama\LaravelArazzo\Expression\WorkflowSymbols;
 

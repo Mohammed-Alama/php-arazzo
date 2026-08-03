@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Execution;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Enum\CriterionType;
-use Alama\LaravelArazzo\Dto\Enum\ParameterIn;
-use Alama\LaravelArazzo\Dto\Expression;
-use Alama\LaravelArazzo\Dto\Selector;
-use Alama\LaravelArazzo\Dto\SourceDescription;
-use Alama\LaravelArazzo\Dto\Step;
-use Alama\LaravelArazzo\Dto\SuccessCriterion;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Enum\CriterionType;
+use Alama\Arazzo\Dto\Enum\ParameterIn;
+use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Selector;
+use Alama\Arazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\Step;
+use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\LaravelArazzo\Execution\Contracts\ExpressionResolverInterface;
 use Alama\LaravelArazzo\Execution\Exceptions\UnsupportedCriterionTypeException;
 use Alama\LaravelArazzo\Expression\Ast\ResponsePart;

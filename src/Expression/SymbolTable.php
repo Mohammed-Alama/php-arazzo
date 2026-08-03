@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Expression;
 
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
-use Alama\LaravelArazzo\Dto\Components;
-use Alama\LaravelArazzo\Dto\Parameter;
-use Alama\LaravelArazzo\Dto\SourceDescription;
-use Alama\LaravelArazzo\Dto\Step;
-use Alama\LaravelArazzo\Dto\Workflow;
+use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Components;
+use Alama\Arazzo\Dto\Parameter;
+use Alama\Arazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\Step;
+use Alama\Arazzo\Dto\Workflow;
 
 final readonly class SymbolTable
 {

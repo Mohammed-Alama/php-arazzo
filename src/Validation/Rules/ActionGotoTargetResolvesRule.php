@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Validation\Rules;
 
-use Alama\LaravelArazzo\Dto\Action\FailureGotoAction;
-use Alama\LaravelArazzo\Dto\Action\RetryAction;
-use Alama\LaravelArazzo\Dto\Action\SuccessGotoAction;
-use Alama\LaravelArazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Action\FailureGotoAction;
+use Alama\Arazzo\Dto\Action\RetryAction;
+use Alama\Arazzo\Dto\Action\SuccessGotoAction;
+use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\LaravelArazzo\Expression\SymbolTable;
 use Alama\LaravelArazzo\Expression\WorkflowSymbols;
 use Alama\LaravelArazzo\Validation\ErrorCollector;

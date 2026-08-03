@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\LaravelArazzo\Resolution;
 
-use Alama\LaravelArazzo\Dto\Enum\ExpressionType;
-use Alama\LaravelArazzo\Dto\Expression;
-use Alama\LaravelArazzo\Dto\Selector;
+use Alama\Arazzo\Dto\Enum\ExpressionType;
+use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Dto\Selector;
 use Alama\LaravelArazzo\Execution\ExpressionEvaluator;
 use Alama\LaravelArazzo\Execution\JsonPathEvaluator;
 use Alama\LaravelArazzo\Execution\JsonPointer;
