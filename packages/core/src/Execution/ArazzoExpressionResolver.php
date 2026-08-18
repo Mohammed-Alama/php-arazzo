@@ -153,7 +153,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         }
         if (!empty($bodyData)) {
             $request = $request->withHeader('Content-Type', 'application/json');
-            $request = $request->withBody(Utils::streamFor(json_encode($bodyData)));
+            $request = $request->withBody(Utils::streamFor(json_encode($bodyData, JSON_THROW_ON_ERROR)));
         }
 
         return $request;
