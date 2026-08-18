@@ -16,7 +16,6 @@ use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Resolution\SourceResolver;
 use cebe\openapi\Reader;
 use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Responses;
