@@ -1,27 +1,67 @@
-name: run-tests
+name: CI
 
 on:
   push:
     paths:
       - '**.php'
-      - '.github/workflows/run-tests.yml'
+      - '.github/workflows/ci.yml'
       - 'phpunit.xml.dist'
       - 'composer.json'
       - 'composer.lock'
+      - 'phpstan.neon.dist'
+      - 'pint.json'
   pull_request:
     paths:
       - '**.php'
-      - '.github/workflows/run-tests.yml'
+      - '.github/workflows/ci.yml'
       - 'phpunit.xml.dist'
       - 'composer.json'
       - 'composer.lock'
+      - 'phpstan.neon.dist'
+      - 'pint.json'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  style:
+    name: Code Style
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check PHP code style
+        uses: aglipanci/laravel-pint-action@2.6
+        with:
+          testMode: true
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Install composer dependencies
+        run: |
+          composer update --prefer-dist --no-interaction
+          cd packages/core
+          composer update --prefer-dist --no-interaction
+          cd ../laravel
+          composer update --prefer-dist --no-interaction
+          cd ../..
+      - name: Run PHPStan
+        run: composer run analyse
+
   test:
+    name: Test P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     strategy:
@@ -36,25 +76,19 @@ jobs:
             testbench: 11.*
           - laravel: 12.*
             testbench: 10.*
-
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
-
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
       - name: Install dependencies
         run: |
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
@@ -64,6 +98,5 @@ jobs:
           composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
           cd ../..
-
       - name: Execute tests
         run: composer run test
