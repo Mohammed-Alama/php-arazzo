@@ -13,7 +13,7 @@ use Alama\Arazzo\Events\StepExecuted;
 use Alama\Arazzo\Events\StepFailed;
 use Alama\Arazzo\Events\StepRetried;
 use Alama\Arazzo\Events\StepStarted;
-use Alama\Arazzo\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
 
 class SpyLedger implements EventLedgerInterface
 {

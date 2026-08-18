@@ -6,11 +6,11 @@ namespace Tests\Unit\Execution;
 
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Execution\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Execution\Contracts\StateStoreInterface;
-use Alama\Arazzo\Execution\Engine;
-use Alama\Arazzo\Execution\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Execution\WorkflowContext;
+use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Engine;
+use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\WorkflowContext;
 
 class MockQueueDriver implements QueueDriverInterface
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Execution\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Execution\PendingCorrelation;
+use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\PendingCorrelation;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryInterface

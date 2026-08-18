@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\SyncQueueDriver;
 use PHPUnit\Framework\TestCase;
 
 class SyncQueueDriverTest extends TestCase

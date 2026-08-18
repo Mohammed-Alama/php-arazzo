@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 it('binds EventDispatcherInterface to SimpleEventDispatcher by default', function () {

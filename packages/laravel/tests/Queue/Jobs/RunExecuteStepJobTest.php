@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Laravel\Jobs;
 
 use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Execution\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Execution\StepExecutionWorker;
-use Alama\Arazzo\Execution\WorkflowContext;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
+use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\StepExecutionWorker;
+use Alama\Arazzo\Runner\WorkflowContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
@@ -59,9 +59,9 @@ use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Components;
 use Alama\Arazzo\Dto\Info;
 use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Execution\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Execution\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;

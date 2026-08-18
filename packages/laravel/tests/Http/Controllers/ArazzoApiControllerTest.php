@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
 use Alama\Arazzo\Generator\ArazzoGenerator;
-use Alama\Arazzo\Resolution\ResolvedSource;
-use Alama\Arazzo\Resolution\SourceResolver;
+use Alama\Arazzo\Resolver\ResolvedSource;
+use Alama\Arazzo\Resolver\SourceResolver;
 use Mockery;
 
 use function Pest\Laravel\getJson;

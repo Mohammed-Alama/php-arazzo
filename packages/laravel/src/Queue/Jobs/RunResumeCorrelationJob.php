@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Queue\Jobs;
 
-use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Execution\ResumeCorrelationJob;
+use Alama\Arazzo\Runner\CorrelationResumer;
+use Alama\Arazzo\Runner\ResumeCorrelationJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
