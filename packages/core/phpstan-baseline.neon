@@ -1,6 +1,633 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Cannot access offset ''body'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ArazzoCriteriaEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ArazzoCriteriaEvaluator.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Execution/ArazzoCriteriaEvaluator.php
+
+		-
+			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Execution\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/ArazzoCriteriaEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''body'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ArazzoOutputExtractor.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ArazzoOutputExtractor.php
+
+		-
+			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ArazzoOutputExtractor.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Execution/ArazzoOutputExtractor.php
+
+		-
+			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Execution\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/ArazzoOutputExtractor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Execution/ArazzoOutputExtractor.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/Execution/ArazzoRequestCompiler.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: src/Execution/ArazzoRequestCompiler.php
+
+		-
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 1
+			path: src/Execution/ArazzoRequestCompiler.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Execution/ArazzoRequestCompiler.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between array\<cebe\\openapi\\spec\\MediaType\> and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Execution/ArazzoSchemaValidator.php
+
+		-
+			message: '''
+				#^Call to method compileRequest\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/AsyncApiStepExecutor.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Execution/AsyncApiStepExecutor.php
+
+		-
+			message: '''
+				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Execution\\AsyncApiStepExecutor\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: parameter.deprecatedInterface
+			count: 1
+			path: src/Execution/AsyncApiStepExecutor.php
+
+		-
+			message: '''
+				#^Call to method evaluateSuccessCriteria\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '''
+				#^Call to method extractOutputs\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '#^Parameter \#2 \$inputs of class Alama\\Arazzo\\Execution\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '#^Parameter \#3 \$steps of class Alama\\Arazzo\\Execution\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '#^Parameter \#4 \$components of class Alama\\Arazzo\\Execution\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '''
+				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Execution\\CorrelationResumer\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: parameter.deprecatedInterface
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '#^Parameter \#1 \$stepId of method Alama\\Arazzo\\Execution\\WorkflowContext\:\:getStepStatus\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/DependencyAnalyzer.php
+
+		-
+			message: '#^Parameter \#1 \$node of closure expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/DependencyGraph.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: src/Execution/DependencyGraph.php
+
+		-
+			message: '#^Property Alama\\Arazzo\\Execution\\DependencyGraph\:\:\$cycle \(array\<string\>\|null\) does not accept array\<mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Execution/DependencyGraph.php
+
+		-
+			message: '#^Property Alama\\Arazzo\\Execution\\DependencyGraph\:\:\$unresolvedReferences \(array\<string, array\<string\>\>\) does not accept array\<string, array\<mixed\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Execution/DependencyGraph.php
+
+		-
+			message: '#^Cannot access offset ''body'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''headers'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''method'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''request'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''url'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset string\|null on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method Alama\\Arazzo\\Execution\\JsonPointer\:\:resolve\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Execution/ExpressionEvaluator.php
+
+		-
+			message: '''
+				#^Call to method compileRequest\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/HttpStepExecutor.php
+
+		-
+			message: '''
+				#^Call to method extractOutputs\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/HttpStepExecutor.php
+
+		-
+			message: '''
+				#^Call to method validateResponseSchema\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/HttpStepExecutor.php
+
+		-
+			message: '#^Parameter \#3 \$responseBody of static method Alama\\Arazzo\\Execution\\StepExecutionOutcome\:\:resolved\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/HttpStepExecutor.php
+
+		-
+			message: '''
+				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Execution\\HttpStepExecutor\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: parameter.deprecatedInterface
+			count: 1
+			path: src/Execution/HttpStepExecutor.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/JsonPathEvaluator.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/JsonPathEvaluator.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Execution/OpenApiParser.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Parameter \#2 \$value of static method Alama\\Arazzo\\Execution\\SchemaValidator\:\:validateObject\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array\<cebe\\openapi\\spec\\Reference\|cebe\\openapi\\spec\\Schema\> and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between float\|int and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 6
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '''
+				#^Call to method evaluate\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '''
+				#^Call to method evaluateSuccessCriteria\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Parameter \#3 \$steps of class Alama\\Arazzo\\Execution\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '''
+				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Execution\\StepExecutionWorker\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: parameter.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '''
+				#^Call to method compileRequest\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutor.php
+
+		-
+			message: '''
+				#^Call to method evaluateSuccessCriteria\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutor.php
+
+		-
+			message: '''
+				#^Call to method extractOutputs\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutor.php
+
+		-
+			message: '''
+				#^Call to method validateResponseSchema\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutor.php
+
+		-
+			message: '''
+				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Execution\\StepExecutor\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: parameter.deprecatedInterface
+			count: 1
+			path: src/Execution/StepExecutor.php
+
+		-
+			message: '''
+				#^Call to method evaluateCriteria\(\) of deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: method.deprecatedInterface
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Events\\RunCompleted constructor expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '''
+				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Execution\\StepOutcomeHandler\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: parameter.deprecatedInterface
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/VariableContext.php
+
+		-
+			message: '#^Cannot access offset ''request'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/VariableContext.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/VariableContext.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/VariableContext.php
+
+		-
+			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset ''request'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset ''status'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Execution\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Execution/WorkflowContext.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\RunCompleted constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\RunFailed constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\RunStarted constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\StepExecuted constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\StepFailed constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\StepStarted constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Execution\\Dto\\StepResult constructor expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Parameter \#5 \$outputs of class Alama\\Arazzo\\Events\\StepExecuted constructor expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
 			message: '#^Call to function is_int\(\) with \*NEVER\* will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -142,478 +769,58 @@ parameters:
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 1
-			path: src/Resolver/Fetchers/CachedFetcher.php
+			path: src/Resolution/Fetchers/CachedFetcher.php
 
 		-
-			message: '#^Parameter \#1 \$data of static method Alama\\Arazzo\\Runner\\JsonPointer\:\:resolve\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			message: '#^Parameter \#1 \$data of static method Alama\\Arazzo\\Execution\\JsonPointer\:\:resolve\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Resolver/SelectorEvaluator.php
+			path: src/Resolution/SelectorEvaluator.php
 
 		-
-			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed, mixed\>\|object given\.$#'
+			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Execution\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed, mixed\>\|object given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Resolver/SelectorEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''body'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 4
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
-			identifier: greater.alwaysTrue
-			count: 1
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between array\<cebe\\openapi\\spec\\MediaType\> and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Runner/ArazzoExpressionResolver.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/AsyncApiStepExecutor.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 4
-			path: src/Runner/CorrelationResumer.php
-
-		-
-			message: '#^Parameter \#2 \$inputs of class Alama\\Arazzo\\Runner\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/CorrelationResumer.php
-
-		-
-			message: '#^Parameter \#3 \$steps of class Alama\\Arazzo\\Runner\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/CorrelationResumer.php
-
-		-
-			message: '#^Parameter \#4 \$components of class Alama\\Arazzo\\Runner\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/CorrelationResumer.php
-
-		-
-			message: '#^Parameter \#1 \$stepId of method Alama\\Arazzo\\Runner\\WorkflowContext\:\:getStepStatus\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/DependencyAnalyzer.php
-
-		-
-			message: '#^Parameter \#1 \$node of closure expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/DependencyGraph.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 3
-			path: src/Runner/DependencyGraph.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\DependencyGraph\:\:\$cycle \(array\<string\>\|null\) does not accept array\<mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/DependencyGraph.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\DependencyGraph\:\:\$unresolvedReferences \(array\<string, array\<string\>\>\) does not accept array\<string, array\<mixed\>\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/DependencyGraph.php
-
-		-
-			message: '#^Cannot access offset ''body'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''headers'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''method'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''request'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''url'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset string\|null on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Parameter \#1 \$data of static method Alama\\Arazzo\\Runner\\JsonPointer\:\:resolve\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Runner/ExpressionEvaluator.php
-
-		-
-			message: '#^Parameter \#3 \$responseBody of static method Alama\\Arazzo\\Runner\\StepExecutionOutcome\:\:resolved\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/HttpStepExecutor.php
-
-		-
-			message: '#^Cannot access offset 0 on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/JsonPathEvaluator.php
-
-		-
-			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/JsonPathEvaluator.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/OpenApiParser.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Parameter \#2 \$value of static method Alama\\Arazzo\\Runner\\SchemaValidator\:\:validateObject\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between array and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between array\<cebe\\openapi\\spec\\Reference\|cebe\\openapi\\spec\\Schema\> and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between float\|int and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 6
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Runner/SchemaValidator.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/StepExecutionWorker.php
-
-		-
-			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/StepExecutionWorker.php
-
-		-
-			message: '#^Parameter \#3 \$steps of class Alama\\Arazzo\\Runner\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/StepExecutionWorker.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/StepOutcomeHandler.php
-
-		-
-			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Events\\RunCompleted constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/StepOutcomeHandler.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/VariableContext.php
-
-		-
-			message: '#^Cannot access offset ''request'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/VariableContext.php
-
-		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/VariableContext.php
-
-		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/VariableContext.php
-
-		-
-			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''request'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''status'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Runner\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Runner/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\RunCompleted constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\RunFailed constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\RunStarted constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\StepExecuted constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\StepFailed constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$executionId of class Alama\\Arazzo\\Events\\StepStarted constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Runner\\Dto\\StepResult constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
-
-		-
-			message: '#^Parameter \#5 \$outputs of class Alama\\Arazzo\\Events\\StepExecuted constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowExecutor.php
+			path: src/Resolution/SelectorEvaluator.php
 
 		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
-			path: src/Validator/Rules/DocUnknownFieldRule.php
+			path: src/Validation/Rules/DocUnknownFieldRule.php
 
 		-
 			message: '#^Offset ''jsonpath''\|''jsonpointer''\|''xpath'' on array\{jsonpath\: array\{''rfc9535''\}, xpath\: array\{''xpath\-10'', ''xpath\-20'', ''xpath\-30'', ''xpath\-31''\}, jsonpointer\: array\{''rfc6901''\}\} on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
-			path: src/Validator/Rules/SelectorTypeSupportedRule.php
+			path: src/Validation/Rules/SelectorTypeSupportedRule.php
 
 		-
 			message: '#^Call to function is_scalar\(\) with string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
-			path: src/Validator/Rules/WorkflowDependsOnExistsRule.php
+			path: src/Validation/Rules/WorkflowDependsOnExistsRule.php
 
 		-
 			message: '#^Left side of && is always true\.$#'
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
+			path: src/Validation/Rules/WorkflowInputsValidSchemaRule.php
 
 		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
+			path: src/Validation/Rules/WorkflowInputsValidSchemaRule.php
 
 		-
 			message: '#^Right side of && is always false\.$#'
 			identifier: booleanAnd.rightAlwaysFalse
 			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
+			path: src/Validation/Rules/WorkflowInputsValidSchemaRule.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between \*NEVER\* and array\{\} will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
+			path: src/Validation/Rules/WorkflowInputsValidSchemaRule.php

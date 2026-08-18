@@ -15,12 +15,16 @@ use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Resolver\ResolvedSource;
-use Alama\Arazzo\Resolver\SourceResolver;
+use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
+use Alama\Arazzo\Runner\ArazzoOutputExtractor;
+use Alama\Arazzo\Runner\ArazzoRequestCompiler;
+use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\WorkflowExecutor;
+use Alama\Arazzo\Resolver\ResolvedSource;
+use Alama\Arazzo\Resolver\SourceResolver;
 use cebe\openapi\spec\OpenApi;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -529,7 +533,11 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $resolver = new ArazzoExpressionResolver($sourceResolver, $requestFactory, $evaluator);
+    $requestCompiler = new ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
+    $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+    $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
+    $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+    $resolver = new ArazzoExpressionResolver($evaluator, $requestCompiler, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $stepExecutor = new StepExecutor($httpClient, $resolver);
 

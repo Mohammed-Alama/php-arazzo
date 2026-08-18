@@ -7,6 +7,31 @@ namespace Alama\Arazzo\Laravel;
 use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
+use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Runner\ArazzoExpressionResolver;
+use Alama\Arazzo\Runner\ArazzoOutputExtractor;
+use Alama\Arazzo\Runner\ArazzoRequestCompiler;
+use Alama\Arazzo\Runner\ArazzoSchemaValidator;
+use Alama\Arazzo\Runner\AsyncApiStepExecutor;
+use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Contracts\HttpClientInterface;
+use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
+use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\CorrelationResumer;
+use Alama\Arazzo\Runner\Engine;
+use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\HttpStepExecutor;
+use Alama\Arazzo\Runner\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\StepExecutionWorker;
+use Alama\Arazzo\Runner\StepExecutor;
+use Alama\Arazzo\Runner\StepOutcomeHandler;
+use Alama\Arazzo\Runner\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\WorkflowExecutor;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Generator\Contracts\AiClientInterface;
@@ -32,27 +57,6 @@ use Alama\Arazzo\Resolver\SelectorEvaluator;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Resolver\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Resolver\Xpath\XpathEvaluator;
-use Alama\Arazzo\Runner\ArazzoExpressionResolver;
-use Alama\Arazzo\Runner\AsyncApiStepExecutor;
-use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Contracts\HttpClientInterface;
-use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\CorrelationResumer;
-use Alama\Arazzo\Runner\Engine;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\HttpStepExecutor;
-use Alama\Arazzo\Runner\IdempotencyKeyInjector;
-use Alama\Arazzo\Runner\StepExecutionWorker;
-use Alama\Arazzo\Runner\StepExecutor;
-use Alama\Arazzo\Runner\StepOutcomeHandler;
-use Alama\Arazzo\Runner\SubWorkflowInvoker;
-use Alama\Arazzo\Runner\WorkflowExecutor;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
@@ -164,10 +168,21 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         // Workflow Execution
         $this->app->singleton(ExpressionResolverInterface::class, function ($app) {
+            $evaluator = new ExpressionEvaluator();
+            $sourceResolver = $app->make(SourceResolver::class);
+            $requestFactory = $app->make(RequestFactoryInterface::class);
+
+            $requestCompiler = new ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
+            $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+            $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
+            $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+
             return new ArazzoExpressionResolver(
-                $app->make(SourceResolver::class),
-                $app->make(RequestFactoryInterface::class),
-                new ExpressionEvaluator(),
+                $evaluator,
+                $requestCompiler,
+                $outputExtractor,
+                $criteriaEvaluator,
+                $schemaValidator,
             );
         });
 
