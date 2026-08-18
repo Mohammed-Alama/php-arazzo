@@ -75,29 +75,75 @@ Arazzo::workflow('path/to/workflow.arazzo.yaml')
 
 ### Core Engine Example (Framework-Agnostic)
 
-Using the core executor manually:
+Using the core executor manually. You can test this exact setup natively by running `php scripts/manual_test.php` in the root of this repository.
 
 ```php
-use Alama\Arazzo\Parser\ArazzoParser;
+use Alama\Arazzo\Dto\RawDocument;
+use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\ArazzoExpressionResolver;
+use Alama\Arazzo\Execution\ExpressionEvaluator;
+use Alama\Arazzo\Resolution\DefaultSourceResolver;
+use Alama\Arazzo\Resolution\Fetchers\HttpFetcher;
+use Alama\Arazzo\Resolution\Fetchers\LocalFetcher;
+use Alama\Arazzo\Resolution\Parsers\ArazzoSourceParser;
+use Alama\Arazzo\Resolution\Parsers\OpenApiSourceParser;
+use Symfony\Component\Yaml\Yaml;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
 
-$parser = new ArazzoParser();
-$document = $parser->parseFile('workflow.arazzo.yaml');
-$workflow = $document->getWorkflow('complete-ride-booking');
+$path = 'LoginAndRetrievePets.arazzo.yaml';
+$raw = new RawDocument(Yaml::parseFile($path), $path, Format::Yaml);
 
-$executor = new WorkflowExecutor(
-    httpClient: $psr18Client,
-    logger: $psr3Logger
-);
+$parser = new Parser();
+$document = $parser->parse($raw);
 
-$result = $executor->run($workflow, inputs: [
-    'departure_polygon_id' => 123,
-    'destination_polygon_id' => 456,
-    'customer_id' => 789,
+// Find the workflow by ID
+$workflow = null;
+foreach ($document->workflows as $w) {
+    if ($w->workflowId === 'loginUserRetrievePet') {
+        $workflow = $w;
+        break;
+    }
+}
+
+// Wire up the core engine dependencies manually (Framework-Agnostic)
+$client = new Client();
+$httpFactory = new HttpFactory();
+
+$fetchers = [
+    'http' => new HttpFetcher($client, $httpFactory),
+    'https' => new HttpFetcher($client, $httpFactory),
+    'file' => new LocalFetcher(),
+];
+
+$parsers = [
+    'arazzo' => new ArazzoSourceParser($parser),
+    'openapi' => new OpenApiSourceParser(),
+];
+
+$sourceResolver = new DefaultSourceResolver($fetchers, $parsers);
+$evaluator = new ExpressionEvaluator();
+$expressionResolver = new ArazzoExpressionResolver($sourceResolver, $httpFactory, $evaluator);
+$stepExecutor = new StepExecutor($client, $expressionResolver);
+
+$executor = new WorkflowExecutor($stepExecutor);
+
+$result = $executor->execute($workflow, $document, [
+    'username' => 'testuser',
+    'password' => 'password123',
 ]);
+        
+echo "Workflow execution finished with status: {$result->status}\n";
 
-if ($result->isSuccessful()) {
-    echo "Workflow completed successfully!";
+foreach ($result->stepResults as $stepId => $stepResult) {
+    $status = $stepResult->success ? 'Success' : 'Failed';
+    echo " - Step {$stepId}: {$status}\n";
+    if (!empty($stepResult->outputs)) {
+        print_r($stepResult->outputs);
+    }
 }
 ```
 
