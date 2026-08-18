@@ -27,16 +27,8 @@ fail() { echo "!! pre-push blocked: $1" >&2; exit 1; }
 
 command -v php >/dev/null || fail "php not found on PATH"
 [[ -x vendor/bin/pint ]]    || fail "vendor/bin/pint missing — run composer install"
-[[ -x vendor/bin/phpstan ]] || fail "vendor/bin/phpstan missing — run composer install"
-[[ -x vendor/bin/pest ]]    || fail "vendor/bin/pest missing — run composer install"
 
-echo "--> pint --test"
-vendor/bin/pint --test || fail "code style violations (run: make format)"
-
-echo "--> phpstan"
-vendor/bin/phpstan analyse --no-progress --memory-limit=1G || fail "phpstan errors"
-
-echo "--> pest"
-vendor/bin/pest --ci || fail "test failures"
+echo "--> make verify"
+make verify || fail "make verify failed"
 
 echo "==> pre-push: all checks passed"

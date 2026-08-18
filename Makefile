@@ -4,19 +4,21 @@ help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 test: ## Run Pest tests
-	vendor/bin/pest
+	composer run test
 
 test-coverage: ## Run Pest tests with coverage
-	vendor/bin/pest --coverage
+	cd packages/core && vendor/bin/pest --coverage
+	cd packages/laravel && vendor/bin/pest --coverage
 
 test-mutate: ## Run Pest mutation testing
-	vendor/bin/pest --mutate --covered-only
+	cd packages/core && vendor/bin/pest --mutate --covered-only
+	cd packages/laravel && vendor/bin/pest --mutate --covered-only
 
 format: ## Format code using Laravel Pint
 	vendor/bin/pint
 
 analyse: ## Run PHPStan static analysis
-	vendor/bin/phpstan analyse
+	composer run analyse
 
 ci-all: ## Run all GitHub Actions locally using act
 	act --container-architecture linux/amd64
@@ -36,5 +38,5 @@ hooks-install: ## Point git at .githooks/ (one-time per clone)
 
 verify: ## Run the same gates the pre-push hook runs
 	vendor/bin/pint --test
-	vendor/bin/phpstan analyse --no-progress --memory-limit=1G
-	vendor/bin/pest --ci
+	composer run analyse
+	composer run test
