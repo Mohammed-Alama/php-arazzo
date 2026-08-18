@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Execution\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Execution\Events\StepExecuted;
+use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Events\StepExecuted;
 use PHPUnit\Framework\TestCase;
 
 class WorkerStubsTest extends TestCase

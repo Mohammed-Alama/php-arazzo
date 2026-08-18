@@ -7,7 +7,7 @@ namespace Tests\Unit\Execution;
 use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Components;
 use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\InMemoryDefinitionRegistry;
 
 function makeEmptyArazzoDocument(): ArazzoDocument
 {

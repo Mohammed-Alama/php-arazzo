@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Execution\ExecutionStatus;
+use Alama\Arazzo\Runner\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\ExecutionStatus;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabaseExecutionRegistry implements ExecutionRegistryInterface

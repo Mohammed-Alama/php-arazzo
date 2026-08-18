@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Lock;
 
-use Alama\Arazzo\Execution\Contracts\LockManagerInterface;
+use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
 use Illuminate\Support\Facades\Cache;
 
 class LaravelRedisLockManager implements LockManagerInterface

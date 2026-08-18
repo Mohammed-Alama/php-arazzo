@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Execution\Contracts\HttpClientInterface;
-use Alama\Arazzo\Execution\Contracts\LockManagerInterface;
-use Alama\Arazzo\Execution\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Contracts\HttpClientInterface;
+use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
+use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
 use PHPUnit\Framework\TestCase;
 
 class ContractsTest extends TestCase

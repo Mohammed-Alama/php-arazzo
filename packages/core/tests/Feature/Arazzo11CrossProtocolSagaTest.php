@@ -6,15 +6,15 @@ use Alama\Arazzo\Dto\Enum\Format;
 use Alama\Arazzo\Dto\Enum\SpecVersion;
 use Alama\Arazzo\Dto\RawDocument;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Validation\Rules\AsyncApiFieldsRequire11Rule;
-use Alama\Arazzo\Validation\Rules\DocumentArazzoVersionRule;
-use Alama\Arazzo\Validation\Rules\ParameterQuerystringOperationShapeRule;
-use Alama\Arazzo\Validation\Rules\SelectorTypeSupportedRule;
-use Alama\Arazzo\Validation\Rules\SelfUriSyntaxRule;
-use Alama\Arazzo\Validation\Rules\StepParameterInValidRule;
-use Alama\Arazzo\Validation\Rules\SubWorkflowInvokeTargetResolvesRule;
-use Alama\Arazzo\Validation\RuleSet;
-use Alama\Arazzo\Validation\Validator;
+use Alama\Arazzo\Validator\Rules\AsyncApiFieldsRequire11Rule;
+use Alama\Arazzo\Validator\Rules\DocumentArazzoVersionRule;
+use Alama\Arazzo\Validator\Rules\ParameterQuerystringOperationShapeRule;
+use Alama\Arazzo\Validator\Rules\SelectorTypeSupportedRule;
+use Alama\Arazzo\Validator\Rules\SelfUriSyntaxRule;
+use Alama\Arazzo\Validator\Rules\StepParameterInValidRule;
+use Alama\Arazzo\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
+use Alama\Arazzo\Validator\RuleSet;
+use Alama\Arazzo\Validator\Validator;
 use Symfony\Component\Yaml\Yaml;
 
 function loadFixture(string $filename): RawDocument

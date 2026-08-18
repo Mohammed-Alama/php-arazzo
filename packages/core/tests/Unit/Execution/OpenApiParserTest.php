@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Execution\OpenApiParser;
+use Alama\Arazzo\Runner\OpenApiParser;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use PHPUnit\Framework\TestCase;

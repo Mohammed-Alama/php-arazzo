@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Laravel\Http\Controllers;
 use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Generator\ArazzoGenerator;
-use Alama\Arazzo\Resolution\SourceResolver;
+use Alama\Arazzo\Resolver\SourceResolver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

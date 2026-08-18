@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Execution\JsonPathEvaluator;
+use Alama\Arazzo\Runner\JsonPathEvaluator;
 use PHPUnit\Framework\TestCase;
 
 class JsonPathEvaluatorTest extends TestCase
