@@ -6,9 +6,9 @@ namespace Tests\Execution;
 
 use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Step;
+use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;

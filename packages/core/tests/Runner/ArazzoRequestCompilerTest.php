@@ -15,12 +15,12 @@ use Alama\Arazzo\Dto\PayloadReplacement;
 use Alama\Arazzo\Dto\RequestBody;
 use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Runner\ArazzoRequestCompiler;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\WorkflowContext;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Resolver\Parsers\OpenApiSourceParser;
+use Alama\Arazzo\Runner\ArazzoRequestCompiler;
+use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\WorkflowContext;
 use GuzzleHttp\Psr7\HttpFactory;
 
 beforeEach(function () {
