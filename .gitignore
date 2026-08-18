@@ -37,3 +37,4 @@ testbench.yaml
 /packages/*/composer.lock
 /packages/*/.phpunit.cache/
 public/ST_local_api.json
+/docs_ignored/
