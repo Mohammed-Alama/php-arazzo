@@ -48,7 +48,8 @@ class ExpressionEvaluator
 
         if ($ast instanceof StepRef) {
             $steps = $context->getSteps();
-            $stepData = $steps[$ast->stepId] ?? null;
+            $targetStepId = $ast->stepId ?? $currentStepId;
+            $stepData = $steps[$targetStepId] ?? null;
             if (!$stepData) {
                 return null;
             }

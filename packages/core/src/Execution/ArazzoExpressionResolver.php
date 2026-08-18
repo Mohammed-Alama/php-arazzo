@@ -66,9 +66,14 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
                     }
 
                     if ($step->operationId) {
-                        $opId = str_contains($step->operationId, '.')
-                            ? explode('.', $step->operationId, 2)[1]
-                            : $step->operationId;
+                        $opId = $step->operationId;
+                        if (str_starts_with($opId, '$sourceDescriptions.')) {
+                            // Format: $sourceDescriptions.sourceName.operationId
+                            $parts = explode('.', $opId);
+                            $opId = array_pop($parts);
+                        } elseif (str_contains($opId, '.')) {
+                            $opId = explode('.', $opId, 2)[1];
+                        }
                         [$method, $urlPath, $operation] = OpenApiParser::findOperation($openApi, $opId);
                     } elseif ($step->operationPath && preg_match('/~\d/', $step->operationPath)) {
                         $urlPath = '/test';
@@ -371,7 +376,13 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
             return $value;
         }
 
-        $opId = str_contains($step->operationId, '.') ? explode('.', $step->operationId, 2)[1] : $step->operationId;
+        $opId = $step->operationId;
+        if (str_starts_with($opId, '$sourceDescriptions.')) {
+            $parts = explode('.', $opId);
+            $opId = array_pop($parts);
+        } elseif (str_contains($opId, '.')) {
+            $opId = explode('.', $opId, 2)[1];
+        }
 
         try {
             [, , $operation] = OpenApiParser::findOperation($openApi, $opId);
@@ -470,7 +481,13 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
             return null;
         }
 
-        $opId = str_contains($step->operationId, '.') ? explode('.', $step->operationId, 2)[1] : $step->operationId;
+        $opId = $step->operationId;
+        if (str_starts_with($opId, '$sourceDescriptions.')) {
+            $parts = explode('.', $opId);
+            $opId = array_pop($parts);
+        } elseif (str_contains($opId, '.')) {
+            $opId = explode('.', $opId, 2)[1];
+        }
 
         try {
             [, , $operation] = OpenApiParser::findOperation($openApi, $opId);

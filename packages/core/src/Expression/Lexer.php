@@ -15,13 +15,21 @@ final class Lexer
     /** @return list<Token> */
     public function tokenize(string $raw): array
     {
-        if (!str_starts_with($raw, '{$') || !str_ends_with($raw, '}')) {
+        $inner = $raw;
+        $absOffsetBase = 0;
+        if (str_starts_with($raw, '{$') && str_ends_with($raw, '}')) {
+            $inner = substr($raw, 2, -1);
+            $absOffsetBase = 2;
+        } elseif (str_starts_with($raw, '$')) {
+            $inner = substr($raw, 1);
+            $absOffsetBase = 1;
+        } else {
             throw new ExpressionSyntaxException(
-                "Expression must be wrapped in {\$...}: {$raw}",
+                "Expression must start with $ or be wrapped in {\$...}: {$raw}",
                 '', 'expr.syntax',
             );
         }
-        $inner = substr($raw, 2, -1);
+
         if ($inner === '') {
             throw new ExpressionSyntaxException("Empty expression: {$raw}", '', 'expr.syntax');
         }
@@ -34,7 +42,7 @@ final class Lexer
         while ($i < $len) {
             $ch = $inner[$i];
 
-            $absOffset = $i + 2;
+            $absOffset = $i + $absOffsetBase;
 
             if ($ch === '$') {
                 $tokens[] = new Token(TokenKind::Dollar, '$', $absOffset);

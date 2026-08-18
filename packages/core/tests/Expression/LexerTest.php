@@ -44,8 +44,14 @@ it('tokenises extended characters like %, @, +, :', function (): void {
     expect($values)->toBe(['components', '.', 'schemas', '.', 'User%20Profile@v1+new:id']);
 });
 
-it('rejects missing braces', function (): void {
-    (new Lexer())->tokenize('$inputs.x');
+it('accepts expressions without braces', function (): void {
+    $t = (new Lexer())->tokenize('$inputs.x');
+    $values = array_map(fn ($tok) => $tok->value, $t);
+    expect($values)->toBe(['inputs', '.', 'x']);
+});
+
+it('rejects missing dollar sign', function (): void {
+    (new Lexer())->tokenize('inputs.x');
 })->throws(ExpressionSyntaxException::class);
 
 it('rejects illegal characters', function (): void {

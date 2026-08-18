@@ -52,8 +52,9 @@ final class Parser
             'workflows' => $this->parseWorkflowRef($tokens, $raw, $i),
             'sourceDescriptions' => $this->parseSourceRef($tokens, $raw, $i),
             'components' => $this->parseComponentRef($tokens, $raw, $i),
-            'request', 'response' => throw new ExpressionSyntaxException(
-                "Bare \${$head->value} must appear inside a \$steps.* expression: {$raw}", '', 'expr.syntax',
+            'request', 'response' => new StepRef(
+                null,
+                $this->parseHttpPart(array_slice($tokens, $i + 1), $head->value === 'request' ? RequestPart::class : ResponsePart::class, $raw),
             ),
             default => throw new ExpressionSyntaxException("Unknown root '{$head->value}' in expression: {$raw}", '', 'expr.syntax'),
         };
