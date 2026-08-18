@@ -164,10 +164,21 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         // Workflow Execution
         $this->app->singleton(ExpressionResolverInterface::class, function ($app) {
+            $evaluator = new ExpressionEvaluator();
+            $sourceResolver = $app->make(SourceResolver::class);
+            $requestFactory = $app->make(RequestFactoryInterface::class);
+
+            $requestCompiler = new \Alama\Arazzo\Execution\ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
+            $outputExtractor = new \Alama\Arazzo\Execution\ArazzoOutputExtractor($sourceResolver, $evaluator);
+            $criteriaEvaluator = new \Alama\Arazzo\Execution\ArazzoCriteriaEvaluator($evaluator);
+            $schemaValidator = new \Alama\Arazzo\Execution\ArazzoSchemaValidator($sourceResolver);
+
             return new ArazzoExpressionResolver(
-                $app->make(SourceResolver::class),
-                $app->make(RequestFactoryInterface::class),
-                new ExpressionEvaluator(),
+                $evaluator,
+                $requestCompiler,
+                $outputExtractor,
+                $criteriaEvaluator,
+                $schemaValidator
             );
         });
 

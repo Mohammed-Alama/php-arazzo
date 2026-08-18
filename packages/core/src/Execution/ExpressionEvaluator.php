@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Execution\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
 use Alama\Arazzo\Expression\Ast\InputRef;
+use Alama\Arazzo\Expression\Ast\Node;
 use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\Part;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\Parser;
+use RuntimeException;
 
-class ExpressionEvaluator
+class ExpressionEvaluator implements ExpressionEvaluatorInterface
 {
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {

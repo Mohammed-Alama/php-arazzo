@@ -12,6 +12,9 @@ use Alama\Arazzo\Execution\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Execution\WorkflowContext;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * @deprecated Use specific interfaces instead (RequestCompilerInterface, OutputExtractorInterface, etc.)
+ */
 interface ExpressionResolverInterface
 {
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;

@@ -529,7 +529,11 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $resolver = new ArazzoExpressionResolver($sourceResolver, $requestFactory, $evaluator);
+    $requestCompiler = new \Alama\Arazzo\Execution\ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
+    $outputExtractor = new \Alama\Arazzo\Execution\ArazzoOutputExtractor($sourceResolver, $evaluator);
+    $criteriaEvaluator = new \Alama\Arazzo\Execution\ArazzoCriteriaEvaluator($evaluator);
+    $schemaValidator = new \Alama\Arazzo\Execution\ArazzoSchemaValidator($sourceResolver);
+    $resolver = new ArazzoExpressionResolver($evaluator, $requestCompiler, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $stepExecutor = new StepExecutor($httpClient, $resolver);
 

@@ -145,6 +145,24 @@ parameters:
 			path: src/Http/Controllers/WebhookResumeController.php
 
 		-
+			message: '''
+				#^Access to constant on deprecated interface Alama\\Arazzo\\Execution\\Contracts\\ExpressionResolverInterface\:
+				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
+			'''
+			identifier: classConstant.deprecatedInterface
+			count: 7
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '''
+				#^Call to method __construct\(\) of deprecated class Alama\\Arazzo\\Execution\\ArazzoExpressionResolver\:
+				Use specific implementations instead$#
+			'''
+			identifier: method.deprecatedClass
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
 			message: '#^Cannot call method bound\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 2
@@ -171,6 +189,15 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '''
+				#^Instantiation of deprecated class Alama\\Arazzo\\Execution\\ArazzoExpressionResolver\:
+				Use specific implementations instead$#
+			'''
+			identifier: new.deprecatedClass
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
@@ -283,7 +310,19 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Execution\\ArazzoExpressionResolver constructor expects Alama\\Arazzo\\Resolution\\SourceResolver, mixed given\.$#'
+			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Execution\\ArazzoOutputExtractor constructor expects Alama\\Arazzo\\Resolution\\SourceResolver, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Execution\\ArazzoRequestCompiler constructor expects Alama\\Arazzo\\Resolution\\SourceResolver, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Execution\\ArazzoSchemaValidator constructor expects Alama\\Arazzo\\Resolution\\SourceResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -331,7 +370,7 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Execution\\ArazzoExpressionResolver constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Execution\\ArazzoRequestCompiler constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
