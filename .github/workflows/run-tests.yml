@@ -57,10 +57,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd packages/laravel
-          composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          cd ../..
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          cd packages/core
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          cd ../laravel
+          composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          cd ../..
 
       - name: Execute tests
         run: composer run test

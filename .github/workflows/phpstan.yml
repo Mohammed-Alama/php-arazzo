@@ -31,7 +31,13 @@ jobs:
           coverage: none
 
       - name: Install composer dependencies
-        uses: ramsey/composer-install@v4
+        run: |
+          composer update --prefer-dist --no-interaction
+          cd packages/core
+          composer update --prefer-dist --no-interaction
+          cd ../laravel
+          composer update --prefer-dist --no-interaction
+          cd ../..
 
       - name: Run PHPStan
         run: composer run analyse
