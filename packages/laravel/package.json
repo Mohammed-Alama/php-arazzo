@@ -1,5 +1,5 @@
 {
-  "name": "laravel-arrazo",
+  "name": "php-arazzo",
   "version": "1.0.0",
   "description": "Laravel bridge for Arazzo workflow engine.",
   "main": "index.js",

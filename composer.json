@@ -1,5 +1,5 @@
 {
-    "name": "alama/arazzo-monorepo",
+    "name": "alama/php-arazzo",
     "description": "Monorepo hosting alama/arazzo-core + alama/laravel-arazzo. Not published.",
     "license": "MIT",
     "type": "project",
