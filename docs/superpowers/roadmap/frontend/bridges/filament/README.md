@@ -1,7 +1,15 @@
 # Bridge: Filament (Laravel)
 
 Package: `alama/arazzo-pro-filament` (pro)
-Requires: `filament/filament ^3.2`, `alama/laravel-arazzo ^2`, `alama/arazzo-pro-observability ^1`, `alama/arazzo-pro-ui ^1`.
+Requires: `filament/filament ^3.2`, `alama/laravel-arazzo ^2`.
+Depends on: `persist-46-normalized-schema` (migrations + Eloquent models this bridge reads).
+
+> **Scoping note:** earlier drafts of this stub also required `alama/arazzo-pro-observability`
+> and `alama/arazzo-pro-ui` — neither exists yet, and requiring them turns the first Filament
+> slice into a 3-package dependency chain with nothing built in any of them. Dropped for now:
+> build `DefinitionResource`/`ExecutionResource` directly against `alama/laravel-arazzo`'s new
+> Eloquent models (`persist-46`). Revisit the pro-package split once there's something real to
+> split — see `docs/database-schema.md` and the conversation that led here.
 
 Primary agency-facing UI surface. Everything in `frontend/features/*` lives here as a
 Resource, Page, or Widget under the "Workflows" nav group.

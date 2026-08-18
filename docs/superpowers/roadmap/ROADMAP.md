@@ -4,7 +4,7 @@ Split into **backend** (framework-agnostic engine features + AI + orchestration 
 and **frontend** (observability / debugging surfaces, each delivered through several bridges).
 
 - Backend stubs live under `backend/phase-N-<name>/` — each file is prefixed with a
-  category tag (`core`, `exec`, `ai`, `rel`, `tenant`, `dx`) so the domain reads at a glance.
+  category tag (`core`, `exec`, `ai`, `rel`, `tenant`, `dx`, `persist`) so the domain reads at a glance.
 - Frontend features live once under `frontend/features/` and are delivered by one or more
   bridges under `frontend/bridges/` (own-ui, filament, easyadmin, drupal-admin, standalone).
 
@@ -50,6 +50,7 @@ stubs land here going forward.
 | [core-38-event-dispatcher-wiring](backend/phase-0-foundation/core-38-event-dispatcher-wiring.md) | OSS | PSR-14 event dispatcher + 9-event catalog for lifecycle observability |
 | [core-39-metrics-recorder-interface](backend/phase-0-foundation/core-39-metrics-recorder-interface.md) | OSS | `MetricsRecorderInterface` (counter/gauge/histogram/timer) with namespaced `arazzo.*` metrics |
 | [core-40-workflow-snapshot-serialization](backend/phase-0-foundation/core-40-workflow-snapshot-serialization.md) | OSS | Canonical byte-identical `WorkflowSnapshot` for cross-worker transfer, replay, signed audit |
+| [persist-46-normalized-schema](backend/phase-0-foundation/persist-46-normalized-schema.md) | OSS | Normalized relational schema (migrations + write-side indexer + Eloquent models) over the Arazzo document/execution/event data — blocks the Filament bridge |
 
 See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for filing convention.
 
@@ -70,6 +71,7 @@ See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for fil
 | [rel-41-retry-policy-interface](backend/phase-1-reliability/rel-41-retry-policy-interface.md) | OSS + pro | `RetryPolicyInterface` — pluggable strategies (fixed, exponential, jitter, decorrelated, budget) |
 | [rel-42-idempotency-store-interface](backend/phase-1-reliability/rel-42-idempotency-store-interface.md) | OSS + pro | `IdempotencyStoreInterface` — engine-side dedup ledger beyond HTTP header injection |
 | [rel-43-circuit-breaker-interface](backend/phase-1-reliability/rel-43-circuit-breaker-interface.md) | OSS + pro | `CircuitBreakerInterface` — per-downstream trip on failure stampede |
+| [rel-49-heartbeat-interface](backend/phase-1-reliability/rel-49-heartbeat-interface.md) | OSS + pro | `HeartbeatInterface` — step-level liveness signal (gap-based, not total-duration timeout), feeds rel-06's DLQ monitor |
 
 ### `backend/phase-2-orchestration/`
 
@@ -77,6 +79,10 @@ See [phase-0-foundation/README.md](backend/phase-0-foundation/README.md) for fil
 |---|---|---|
 | [exec-07-saga-compensation](backend/phase-2-orchestration/exec-07-saga-compensation.md) | pro | Automated saga compensation engine |
 | [exec-08-fan-out-in](backend/phase-2-orchestration/exec-08-fan-out-in.md) | pro | Dynamic fan-out / fan-in |
+| [exec-47-signals-and-queries](backend/phase-2-orchestration/exec-47-signals-and-queries.md) | OSS | `x-await-signal` step extension + `SignalRegistryInterface`/`QueryHandlerInterface` — human-in-the-loop and live state reads |
+| [exec-48-durable-timers](backend/phase-2-orchestration/exec-48-durable-timers.md) | OSS | `x-wait` step extension + `DurableTimerInterface` — durable pause independent of any step, races against exec-47 signals |
+| [core-50-iteration-constructs](backend/phase-2-orchestration/core-50-iteration-constructs.md) | OSS | `x-loop` / `x-until` extensions for declarative iterative processing and pagination |
+| [exec-51-mutating-updates](backend/phase-2-orchestration/exec-51-mutating-updates.md) | OSS | `UpdateHandlerInterface` and `OutboxInterface` for mutating queries and replay-safe outgoing messages |
 
 ### `backend/phase-3-modularity/`
 

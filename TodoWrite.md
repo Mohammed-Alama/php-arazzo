@@ -9,4 +9,4 @@
 - [x] **Task 7: CorrelationResumer + StepExecutor — dispatch + placeholder inject** (Complete)
 - [x] **Task 8: Service Provider — default binding + auto-wire** (Complete)
 - [x] **Task 9: IlluminatePsrEventDispatcher opt-in adapter** (Complete)
-- [ ] **Task 10: Ledger regression, CHANGELOG, ship**
+- [x] **Task 10: Ledger regression, CHANGELOG, ship** (Complete)
