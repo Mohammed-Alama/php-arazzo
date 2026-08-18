@@ -7,7 +7,11 @@ namespace Alama\Arazzo\Laravel;
 use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
+use Alama\Arazzo\Execution\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Execution\ArazzoExpressionResolver;
+use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\ArazzoRequestCompiler;
+use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\AsyncApiStepExecutor;
 use Alama\Arazzo\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Execution\Contracts\EventLedgerInterface;
@@ -164,10 +168,21 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         // Workflow Execution
         $this->app->singleton(ExpressionResolverInterface::class, function ($app) {
+            $evaluator = new ExpressionEvaluator();
+            $sourceResolver = $app->make(SourceResolver::class);
+            $requestFactory = $app->make(RequestFactoryInterface::class);
+
+            $requestCompiler = new ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
+            $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+            $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
+            $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+
             return new ArazzoExpressionResolver(
-                $app->make(SourceResolver::class),
-                $app->make(RequestFactoryInterface::class),
-                new ExpressionEvaluator(),
+                $evaluator,
+                $requestCompiler,
+                $outputExtractor,
+                $criteriaEvaluator,
+                $schemaValidator,
             );
         });
 

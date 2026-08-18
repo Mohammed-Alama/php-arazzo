@@ -15,7 +15,11 @@ use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Dto\Workflow;
+use Alama\Arazzo\Execution\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Execution\ArazzoExpressionResolver;
+use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\ArazzoRequestCompiler;
+use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\ExpressionEvaluator;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowExecutor;
@@ -529,7 +533,11 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $resolver = new ArazzoExpressionResolver($sourceResolver, $requestFactory, $evaluator);
+    $requestCompiler = new ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
+    $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+    $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
+    $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+    $resolver = new ArazzoExpressionResolver($evaluator, $requestCompiler, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $stepExecutor = new StepExecutor($httpClient, $resolver);
 
