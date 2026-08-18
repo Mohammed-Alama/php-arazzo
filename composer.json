@@ -15,7 +15,7 @@
     "require-dev": {
         "symplify/monorepo-builder": "^12.0",
         "laravel/pint": "^1.14",
-        "pestphp/pest": "^4.0"
+        "pestphp/pest": "^5.1"
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
