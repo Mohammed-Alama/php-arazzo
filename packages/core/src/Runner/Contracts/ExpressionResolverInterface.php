@@ -19,7 +19,6 @@ interface ExpressionResolverInterface
 {
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;
 
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface;
 
     /**
      * @return array<string, mixed>

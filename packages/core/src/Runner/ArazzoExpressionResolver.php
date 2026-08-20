@@ -11,9 +11,7 @@ use Alama\Arazzo\Runner\Contracts\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Runner\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\OutputExtractorInterface;
-use Alama\Arazzo\Runner\Contracts\RequestCompilerInterface;
 use Alama\Arazzo\Runner\Contracts\SchemaValidatorInterface;
-use Psr\Http\Message\RequestInterface;
 
 /**
  * @deprecated Use specific implementations instead
@@ -22,7 +20,6 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 {
     public function __construct(
         private ExpressionEvaluatorInterface $evaluator,
-        private RequestCompilerInterface $requestCompiler,
         private OutputExtractorInterface $outputExtractor,
         private CriteriaEvaluatorInterface $criteriaEvaluator,
         private SchemaValidatorInterface $schemaValidator,
@@ -32,11 +29,6 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
         return $this->evaluator->evaluate($expression, $context, $currentStepId);
-    }
-
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
-    {
-        return $this->requestCompiler->compileRequest($step, $context, $document);
     }
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array

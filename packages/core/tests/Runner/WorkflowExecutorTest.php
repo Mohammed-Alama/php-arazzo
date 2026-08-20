@@ -533,13 +533,13 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $requestCompiler = new ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
     $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
     $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
     $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
-    $resolver = new ArazzoExpressionResolver($evaluator, $requestCompiler, $outputExtractor, $criteriaEvaluator, $schemaValidator);
+    $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
-    $stepExecutor = new StepExecutor($httpClient, $resolver);
+    $openApiExecutor = new \Alama\Arazzo\Runner\DefaultOpenApiExecutor($sourceResolver, $httpClient, $requestFactory);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);
 

@@ -170,19 +170,16 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->app->singleton(ExpressionResolverInterface::class, function ($app) {
             $evaluator = new ExpressionEvaluator();
             $sourceResolver = $app->make(SourceResolver::class);
-            $requestFactory = $app->make(RequestFactoryInterface::class);
 
-            $requestCompiler = new ArazzoRequestCompiler($sourceResolver, $requestFactory, $evaluator);
             $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
             $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
             $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
 
             return new ArazzoExpressionResolver(
                 $evaluator,
-                $requestCompiler,
                 $outputExtractor,
                 $criteriaEvaluator,
-                $schemaValidator,
+                $schemaValidator
             );
         });
 
@@ -193,9 +190,18 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             );
         });
 
+        $this->app->singleton(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class, function ($app) {
+            return new \Alama\Arazzo\Runner\DefaultOpenApiExecutor(
+                $app->make(SourceResolver::class),
+                $app->make(ClientInterface::class),
+                $app->make(RequestFactoryInterface::class),
+                $app->make(\Psr\Log\LoggerInterface::class)
+            );
+        });
+
         $this->app->singleton(StepExecutor::class, function ($app) {
             return new StepExecutor(
-                $app->make(ClientInterface::class),
+                $app->make(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 (bool) config('arazzo.strict_schema_validation', false),
                 $app->make(IdempotencyKeyInjector::class),
