@@ -58,8 +58,8 @@ class ArazzoRequestCompiler implements RequestCompilerInterface
                         $opId = $step->operationId;
                         if (str_starts_with($opId, '$sourceDescriptions.')) {
                             // Format: $sourceDescriptions.sourceName.operationId
-                            $parts = explode('.', $opId);
-                            $opId = array_pop($parts);
+                            $parts = explode('.', $opId, 3);
+                            $opId = $parts[2] ?? '';
                         } elseif (str_contains($opId, '.')) {
                             $opId = explode('.', $opId, 2)[1];
                         }
@@ -99,7 +99,7 @@ class ArazzoRequestCompiler implements RequestCompilerInterface
         }
 
         $bodyData = [];
-        if ($step->requestBody && $step->requestBody->payload) {
+        if ($step->requestBody && $step->requestBody->payload !== null) {
             $bodyData = $step->requestBody->payload;
             $bodySchema = $operation !== null ? $this->findRequestBodySchema($operation) : null;
 

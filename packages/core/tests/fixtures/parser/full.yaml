@@ -5,7 +5,7 @@ info:
   description: Exhaustive fixture
 sourceDescriptions:
   - name: api
-    url: /openapi.yaml
+    url: http://localhost:8002/docs/api.json
     type: openapi
 workflows:
   - workflowId: main
