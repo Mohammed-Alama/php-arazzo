@@ -8,43 +8,75 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 
 use Alama\Arazzo\Dto\Enum\Format;
 use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Execution\ArazzoExpressionResolver;
-use Alama\Arazzo\Execution\ExpressionEvaluator;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Runner\ArazzoExpressionResolver;
+use Alama\Arazzo\Runner\ArazzoOutputExtractor;
+use Alama\Arazzo\Runner\ArazzoRequestCompiler;
+use Alama\Arazzo\Runner\ArazzoSchemaValidator;
+use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\StepExecutor;
+use Alama\Arazzo\Runner\WorkflowExecutor;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolution\DefaultSourceResolver;
-use Alama\Arazzo\Resolution\Fetchers\HttpFetcher;
-use Alama\Arazzo\Resolution\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolution\Parsers\ArazzoSourceParser;
-use Alama\Arazzo\Resolution\Parsers\OpenApiSourceParser;
+use Alama\Arazzo\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Resolver\Parsers\ArazzoSourceParser;
+use Alama\Arazzo\Resolver\Parsers\OpenApiSourceParser;
+use Alama\Arazzo\Resolver\Parsers\AsyncApiSourceParser;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Symfony\Component\Yaml\Yaml;
 
-$path = __DIR__ . '/../LoginAndRetrievePets.arazzo.yaml';
-if (!file_exists($path)) {
-    echo "Downloading LoginAndRetrievePets.arazzo.yaml...\n";
-    file_put_contents($path, file_get_contents('https://raw.githubusercontent.com/OAI/Arazzo-Specification/main/examples/1.0.0/LoginAndRetrievePets.arazzo.yaml'));
-}
+use Alama\Arazzo\Loader\Loader;
+use Alama\Arazzo\Loader\NativeJsonDecoder;
+use Alama\Arazzo\Loader\SymfonyYamlDecoder;
 
-echo "Testing Arazzo workflow...\n";
-
-$raw = new RawDocument(Yaml::parseFile($path), $path, Format::Yaml);
-$parser = new Parser();
-$document = $parser->parse($raw);
-
-$workflow = null;
-foreach ($document->workflows as $w) {
-    if ($w->workflowId === 'loginUserRetrievePet') {
-        $workflow = $w;
-        break;
+$fixturesDir = __DIR__ . '/../packages/core/tests/fixtures/';
+$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($fixturesDir));
+$yamlFiles = [];
+foreach ($iterator as $file) {
+    if ($file->isFile() && (str_ends_with($file->getFilename(), '.yaml') || str_ends_with($file->getFilename(), '.json'))) {
+        $yamlFiles[] = $file->getPathname();
     }
 }
+
+// Predefined inputs for workflows that require them
+$workflowInputs = [
+    'apply-coupon' => [
+        'my_product_category' => 'electronics',
+        'store_id' => 'store.example.com',
+    ],
+    'buy-available-product' => [
+        'store_id' => 'store.example.com',
+    ],
+    'place-order' => [
+        'product_id' => 1,
+        'quantity' => 1,
+        'coupon_code' => 'DISCOUNT20'
+    ],
+    'ApplyForLoanAtCheckout' => [
+        'customer' => [
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'dateOfBirth' => '1990-01-01',
+            'postalCode' => '12345'
+        ],
+        'amount' => [
+            'currency' => 'USD',
+            'value' => 100.0
+        ],
+        'orderReference' => 'ORD-12345'
+    ]
+];
+
+echo "Testing all Arazzo workflows against local dummy app (http://localhost:8002)...\n";
+echo "Found " . count($yamlFiles) . " fixture files.\n\n";
 
 // Wire up the core engine dependencies manually (Framework-Agnostic)
 $client = new Client();
 $httpFactory = new HttpFactory();
+$parser = new Parser();
 
 $fetchers = [
     'http' => new HttpFetcher($client, $httpFactory),
@@ -55,33 +87,47 @@ $fetchers = [
 $parsers = [
     'arazzo' => new ArazzoSourceParser($parser),
     'openapi' => new OpenApiSourceParser(),
+    'asyncapi' => new AsyncApiSourceParser(),
 ];
 
 $sourceResolver = new DefaultSourceResolver($fetchers, $parsers);
 $evaluator = new ExpressionEvaluator();
-$expressionResolver = new ArazzoExpressionResolver($sourceResolver, $httpFactory, $evaluator);
-$stepExecutor = new StepExecutor($client, $expressionResolver);
+$requestCompiler = new ArazzoRequestCompiler($sourceResolver, $httpFactory, $evaluator);
+$outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+$criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
+$schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+$expressionResolver = new ArazzoExpressionResolver($evaluator, $requestCompiler, $outputExtractor, $criteriaEvaluator, $schemaValidator);
+$idempotencyKeyInjector = new IdempotencyKeyInjector(false, 'Idempotency-Key');
+$stepExecutor = new StepExecutor($client, $expressionResolver, false, $idempotencyKeyInjector);
 $executor = new WorkflowExecutor($stepExecutor);
 
-try {
-    echo "Executing workflow '{$workflow->workflowId}'...\n";
+$loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
 
-    $result = $executor->execute($workflow, $document, [
-        'username' => 'testuser',
-        'password' => 'password123',
-    ]);
+foreach ($yamlFiles as $path) {
+    echo "=================================================\n";
+    $relPath = str_replace(__DIR__ . '/../packages/core/tests/fixtures/', '', $path);
+    echo "Loading fixture: {$relPath}\n";
+    
+    try {
+        $raw = $loader->load($path);
+        $document = $parser->parse($raw);
+        
+        foreach ($document->workflows as $workflow) {
+            echo "-------------------------------------------------\n";
+            echo "Executing workflow '{$workflow->workflowId}'...\n";
+            
+            $inputs = $workflowInputs[$workflow->workflowId] ?? [];
+            $result = $executor->execute($workflow, $document, $inputs);
 
-    echo "Workflow execution finished with status: {$result->status}\n";
-
-    echo "Step Results:\n";
-    foreach ($result->stepResults as $stepId => $stepResult) {
-        $status = $stepResult->success ? 'Success' : 'Failed';
-        echo " - Step {$stepId}: {$status}\n";
-        if (!empty($stepResult->outputs)) {
-            print_r($stepResult->outputs);
+            echo "Workflow status: {$result->status}\n";
+            foreach ($result->stepResults as $stepId => $stepResult) {
+                $status = $stepResult->success ? 'Success' : 'Failed';
+                echo " - Step '{$stepId}': {$status}\n";
+            }
         }
+    } catch (Throwable $e) {
+        echo "Failed processing fixture!\n";
+        echo $e->getMessage() . "\n";
     }
-} catch (Throwable $e) {
-    echo "Workflow Execution Failed!\n";
-    echo $e->getMessage() . "\n";
+    echo "\n";
 }

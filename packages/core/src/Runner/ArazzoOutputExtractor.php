@@ -93,8 +93,8 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
 
         $opId = $step->operationId;
         if (str_starts_with($opId, '$sourceDescriptions.')) {
-            $parts = explode('.', $opId);
-            $opId = array_pop($parts);
+            $parts = explode('.', $opId, 3);
+            $opId = $parts[2] ?? '';
         } elseif (str_contains($opId, '.')) {
             $opId = explode('.', $opId, 2)[1];
         }
