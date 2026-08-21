@@ -12,21 +12,40 @@ use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\WorkflowContext;
+use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 function createTestDocument(): ArazzoDocument
 {
     return new ArazzoDocument(
-        '1.0.0',
-        new Info('test', null, null, '1.0'),
-        [new SourceDescription('test', 'test.json', SourceType::Openapi)],
-        [],
-        new Components([], [], [], []),
-        [],
+        arazzo: '1.0.0',
+        info: new Info('Test', null, 'desc', '1.0.0'),
+        sourceDescriptions: [new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi)],
+        workflows: [],
+        components: new Components([], [], [], []),
+        specificationExtensions: [],
     );
+}
+
+function createMockOperationResolver(): OpenApiOperationResolver
+{
+    $mock = Mockery::mock(OpenApiOperationResolver::class);
+    $mock->shouldReceive('resolve')->andReturn(new ResolvedOperation(
+        new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
+        new NormalizedOpenApiOperation('get', null, [], [], [], [], [], []),
+        new OpenApi([]),
+        [],
+        new Operation([]),
+    ));
+
+    return $mock;
 }
 
 it('validates response schema if configured globally or locally', function (): void {
@@ -46,7 +65,7 @@ it('validates response schema if configured globally or locally', function (): v
         return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver);
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], [], [], null, null, null, true);
 
     try {
@@ -72,7 +91,7 @@ it('skips validation if configured off globally and locally', function (): void 
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver);
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], [], [], null, null, null, null);
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
@@ -98,6 +117,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
     $executor = new StepExecutor(
         openApiExecutor: $openApiExecutor,
         expressionResolver: $resolver,
+        operationResolver: createMockOperationResolver(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
     );
@@ -126,7 +146,7 @@ it('does not inject a header when no injector is passed', function (): void {
         return new Response(200, [], '{}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver);
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
 
     $executor->execute($step, new WorkflowContext('def-1'), createTestDocument());
@@ -153,6 +173,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
     $executor = new StepExecutor(
         openApiExecutor: $openApiExecutor,
         expressionResolver: $resolver,
+        operationResolver: createMockOperationResolver(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
     );

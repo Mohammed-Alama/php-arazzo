@@ -17,13 +17,17 @@ use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Runner\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
 use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\WorkflowExecutor;
 use cebe\openapi\spec\OpenApi;
@@ -520,13 +524,14 @@ it('executes a workflow end-to-end', function () {
     };
     $evaluator = new ExpressionEvaluator();
     $openApiLoader = new OpenApiDocumentLoader($sourceResolver);
-    $outputExtractor = new ArazzoOutputExtractor($openApiLoader, $evaluator);
+    $operationResolver = new OpenApiOperationResolver($openApiLoader, new OpenApiVersionDetector(), new OpenApi30Normalizer(), new OpenApi31Normalizer());
+    $outputExtractor = new ArazzoOutputExtractor($operationResolver, $evaluator);
     $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
-    $schemaValidator = new ArazzoSchemaValidator($openApiLoader);
+    $schemaValidator = new ArazzoSchemaValidator($operationResolver);
     $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($openApiLoader, $httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);
 

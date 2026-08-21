@@ -11,12 +11,14 @@ use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 
 final class HttpStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
+        private OpenApiOperationResolver $operationResolver,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
     ) {
@@ -81,11 +83,8 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         }
         $payload->body = empty($bodyData) ? null : $bodyData;
 
-        $sourceDesc = $document->sourceDescriptions[0] ?? null;
-        if ($sourceDesc === null) {
-            throw new \RuntimeException('No SourceDescription found in document');
-        }
-
+        $resolved = $this->operationResolver->resolve($step, $document);
+        $sourceDesc = $resolved->source;
         $operation = $step->operationId ?? $step->operationPath ?? '/';
 
         $response = $this->openApiExecutor->execute(

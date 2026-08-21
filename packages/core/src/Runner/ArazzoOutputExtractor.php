@@ -7,27 +7,23 @@ namespace Alama\Arazzo\Runner;
 use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Expression;
 use Alama\Arazzo\Dto\Selector;
-use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Contracts\OutputExtractorInterface;
-use cebe\openapi\Reader;
-use cebe\openapi\spec\OpenApi;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Responses;
 use cebe\openapi\spec\Schema;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 class ArazzoOutputExtractor implements OutputExtractorInterface
 {
     public function __construct(
-        private OpenApiDocumentLoader $openApiLoader,
+        private OpenApiOperationResolver $operationResolver,
         private ExpressionEvaluatorInterface $evaluator,
         private ?LoggerInterface $logger = null,
     ) {
@@ -72,7 +68,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         Expression $expression,
         mixed $value,
     ): mixed {
-        if ($document === null || !$step->operationId) {
+        if ($document === null) {
             return $value;
         }
 
@@ -81,26 +77,9 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
             return $value;
         }
 
-        $sourceDesc = $document->sourceDescriptions[0] ?? null;
-        if ($sourceDesc === null) {
-            return $value;
-        }
-
-        $openApi = $this->openApiLoader->load($sourceDesc, getcwd() ?: '');
-        if ($openApi === null) {
-            return $value;
-        }
-
-        $opId = $step->operationId;
-        if (str_starts_with($opId, '$sourceDescriptions.')) {
-            $parts = explode('.', $opId, 3);
-            $opId = $parts[2] ?? '';
-        } elseif (str_contains($opId, '.')) {
-            $opId = explode('.', $opId, 2)[1];
-        }
-
         try {
-            [, , $operation] = OpenApiParser::findOperation($openApi, $opId);
+            $resolved = $this->operationResolver->resolve($step, $document);
+            $operation = $resolved->cebeOperation;
         } catch (\RuntimeException) {
             return $value;
         }

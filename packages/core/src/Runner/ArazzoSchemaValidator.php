@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\Contracts\SchemaValidatorInterface;
-use cebe\openapi\Reader;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
-use Throwable;
 
 class ArazzoSchemaValidator implements SchemaValidatorInterface
 {
     public function __construct(
-        private OpenApiDocumentLoader $openApiLoader,
+        private OpenApiOperationResolver $operationResolver,
     ) {
     }
 
@@ -82,32 +79,14 @@ class ArazzoSchemaValidator implements SchemaValidatorInterface
 
     protected function findOperation(Step $step, ?ArazzoDocument $document = null): ?Operation
     {
-        if ($document === null || !$step->operationId) {
+        if ($document === null) {
             return null;
-        }
-
-        $sourceDesc = $document->sourceDescriptions[0] ?? null;
-        if ($sourceDesc === null) {
-            return null;
-        }
-
-        $openApi = $this->openApiLoader->load($sourceDesc, getcwd() ?: '');
-        if ($openApi === null) {
-            return null;
-        }
-
-        $opId = $step->operationId;
-        if (str_starts_with($opId, '$sourceDescriptions.')) {
-            $parts = explode('.', $opId, 3);
-            $opId = $parts[2] ?? '';
-        } elseif (str_contains($opId, '.')) {
-            $opId = explode('.', $opId, 2)[1];
         }
 
         try {
-            [, , $operation] = OpenApiParser::findOperation($openApi, $opId);
+            $resolved = $this->operationResolver->resolve($step, $document);
 
-            return $operation;
+            return $resolved->cebeOperation;
         } catch (\RuntimeException) {
             return null;
         }

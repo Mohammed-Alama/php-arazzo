@@ -8,6 +8,7 @@ use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
 use cebe\openapi\Reader;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -57,7 +58,7 @@ it('builds and sends an openapi request using the schema to route parameters', f
     });
 
     $executor = new DefaultOpenApiExecutor(
-        new \Alama\Arazzo\Runner\OpenApiDocumentLoader($sourceResolver),
+        new OpenApiDocumentLoader($sourceResolver),
         $httpClient,
         $requestFactory,
         new NullLogger(),

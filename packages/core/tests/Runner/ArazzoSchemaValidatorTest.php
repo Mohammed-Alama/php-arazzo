@@ -9,6 +9,11 @@ use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
@@ -32,7 +37,16 @@ it('validates a response against the OpenAPI schema', function (): void {
         ],
     ]);
 
-    $validator = new class(new \Alama\Arazzo\Runner\OpenApiDocumentLoader(new DefaultSourceResolver([]))) extends ArazzoSchemaValidator
+    $resolver = new DefaultSourceResolver([]);
+    $loader = new OpenApiDocumentLoader($resolver);
+    $opResolver = new OpenApiOperationResolver(
+        $loader,
+        new OpenApiVersionDetector(),
+        new OpenApi30Normalizer(),
+        new OpenApi31Normalizer(),
+    );
+
+    $validator = new class($opResolver) extends ArazzoSchemaValidator
     {
         public ?Operation $mockOperation = null;
 

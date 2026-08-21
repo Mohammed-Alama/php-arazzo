@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
-use cebe\openapi\Reader;
-use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Parameter as OpenApiParameter;
 use cebe\openapi\spec\Reference;
@@ -19,7 +16,6 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {

@@ -15,6 +15,11 @@ use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\WorkflowContext;
 
 beforeEach(function () {
@@ -53,8 +58,15 @@ beforeEach(function () {
         $sourceResolver = new DefaultSourceResolver(
             fetchers: ['file' => new LocalFetcher()],
         );
+        $loader = new OpenApiDocumentLoader($sourceResolver);
+        $resolver = new OpenApiOperationResolver(
+            $loader,
+            new OpenApiVersionDetector(),
+            new OpenApi30Normalizer(),
+            new OpenApi31Normalizer(),
+        );
 
-        return new ArazzoOutputExtractor(new \Alama\Arazzo\Runner\OpenApiDocumentLoader($sourceResolver), new ExpressionEvaluator());
+        return new ArazzoOutputExtractor($resolver, new ExpressionEvaluator());
     };
 
     $this->makeDocument = function (): ArazzoDocument {
