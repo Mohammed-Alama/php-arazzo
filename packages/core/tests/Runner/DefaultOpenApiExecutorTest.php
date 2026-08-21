@@ -61,7 +61,7 @@ it('builds and sends an openapi request using the schema to route parameters', f
     $executor = new DefaultOpenApiExecutor(
         $httpClient,
         $requestFactory,
-        new NullLogger(),
+        new NullLogger,
     );
 
     $payload = new OpenApiPayload(
@@ -73,9 +73,15 @@ it('builds and sends an openapi request using the schema to route parameters', f
         path: '/users/{userId}',
         method: 'get',
         resolvedServerUrl: 'https://api.example.com/v1',
-        pathParameters: [],
-        queryParameters: [],
-        headerParameters: [],
+        pathParameters: [
+            'userId' => ['name' => 'userId', 'in' => 'path', 'schema' => ['type' => 'integer']],
+        ],
+        queryParameters: [
+            'limit' => ['name' => 'limit', 'in' => 'query', 'schema' => ['type' => 'integer']],
+        ],
+        headerParameters: [
+            'X-Auth' => ['name' => 'X-Auth', 'in' => 'header', 'schema' => ['type' => 'string']],
+        ],
         cookieParameters: [],
         requestBodies: [],
         responses: [],
