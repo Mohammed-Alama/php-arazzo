@@ -127,7 +127,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
     private function resolveOpenApiDocument(SourceDescription $sourceDesc): ?OpenApi
     {
         $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
-        $extracted = $resolvedSource->extract('');
+        $extracted = $resolvedSource->content;
 
         if ($extracted instanceof OpenApi) {
             return $extracted;

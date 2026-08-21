@@ -12,10 +12,10 @@ use Alama\Arazzo\Dto\Expression;
 use Alama\Arazzo\Dto\Info;
 use Alama\Arazzo\Dto\Parameter;
 use Alama\Arazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Resolver\ResolvedSource;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
@@ -510,26 +510,11 @@ it('executes a workflow end-to-end', function () {
 
     $sourceResolver = new class() implements SourceResolver
     {
-        public function resolve(SourceDescription $description, string $basePath): ResolvedSource
+        public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {
-            return new class($description->url) implements ResolvedSource
-            {
-                public function __construct(private string $file)
-                {
-                }
+            $json = json_decode(file_get_contents($description->url), true);
 
-                public function getBaseUrl(): ?string
-                {
-                    return null;
-                }
-
-                public function extract(string $jsonPointer): mixed
-                {
-                    $json = json_decode(file_get_contents($this->file), true);
-
-                    return new OpenApi($json);
-                }
-            };
+            return new SourceDocument($description->name, $description->type, $description->url, $json);
         }
     };
     $evaluator = new ExpressionEvaluator();

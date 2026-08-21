@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Resolver;
 
 use Alama\Arazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\SourceDocument;
+use Alama\Arazzo\Loader\NativeJsonDecoder;
+use Alama\Arazzo\Loader\SymfonyYamlDecoder;
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Resolver\Exceptions\SourceParseException;
+use Throwable;
 
 final readonly class DefaultSourceResolver implements SourceResolver
 {
     public function __construct(
         /** @var array<string, SourceFetcher> */
         private array $fetchers,
-        /** @var array<string, SourceParser> */
-        private array $parsers,
     ) {
     }
 
-    public function resolve(SourceDescription $source, string $basePath): ResolvedSource
+    public function resolve(SourceDescription $source, string $basePath): SourceDocument
     {
         $scheme = parse_url($source->url, PHP_URL_SCHEME);
         if (!is_string($scheme) || $scheme === '') {
@@ -32,11 +34,62 @@ final readonly class DefaultSourceResolver implements SourceResolver
 
         $content = $fetcher->fetch($source->url, $basePath);
 
-        $parser = $this->parsers[$source->type->value] ?? null;
-        if ($parser === null) {
-            throw new SourceParseException("No parser configured for source type '{$source->type->value}'.");
+        $isYaml = !str_starts_with(trim($content), '{');
+        try {
+            $decoded = $isYaml
+                ? (new SymfonyYamlDecoder())->decode($content)
+                : (new NativeJsonDecoder())->decode($content);
+        } catch (Throwable $e) {
+            throw new SourceParseException("Failed to parse source '{$source->name}': " . $e->getMessage(), 0, $e);
         }
 
-        return $parser->parse($content);
+        if (!is_array($decoded)) {
+            throw new SourceParseException("Parsed document for '{$source->name}' must be an array.");
+        }
+
+        // Canonical URI determination can be simple for now.
+        // If it's a file scheme, and relative, it should be resolved against basePath.
+        $canonicalUri = $this->resolveCanonicalUri($source->url, $basePath);
+
+        return new SourceDocument(
+            name: $source->name,
+            type: $source->type,
+            canonicalUri: $canonicalUri,
+            content: $decoded,
+        );
+    }
+
+    private function resolveCanonicalUri(string $url, string $basePath): string
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if (is_string($scheme) && $scheme !== '') {
+            return $url; // Already absolute with scheme
+        }
+
+        // Relative file path
+        if (str_starts_with($url, '/')) {
+            return 'file://' . $url;
+        }
+
+        $base = rtrim($basePath, '/');
+
+        // Let's do basic relative path resolution
+        $path = $base . '/' . $url;
+
+        // Resolve . and ..
+        $parts = explode('/', $path);
+        $resolved = [];
+        foreach ($parts as $part) {
+            if ($part === '.' || $part === '') {
+                continue;
+            }
+            if ($part === '..') {
+                array_pop($resolved);
+            } else {
+                $resolved[] = $part;
+            }
+        }
+
+        return 'file:///' . implode('/', $resolved);
     }
 }

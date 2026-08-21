@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Resolver\ResolvedSource;
+use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
@@ -38,11 +38,9 @@ it('builds and sends an openapi request using the schema to route parameters', f
 
     $openApi = Reader::readFromJson($openapiJson);
 
-    $resolvedSource = Mockery::mock(ResolvedSource::class);
-    $resolvedSource->shouldReceive('extract')->with('')->andReturn($openApi);
-
+    $sourceDoc = new SourceDocument('test', SourceType::Openapi, 'http://test', json_decode($openapiJson, true));
     $sourceResolver = Mockery::mock(SourceResolver::class);
-    $sourceResolver->shouldReceive('resolve')->andReturn($resolvedSource);
+    $sourceResolver->shouldReceive('resolve')->andReturn($sourceDoc);
 
     $httpClient = Mockery::mock(ClientInterface::class);
     $httpClient->shouldReceive('sendRequest')->withArgs(function ($request) {

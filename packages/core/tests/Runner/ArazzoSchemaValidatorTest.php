@@ -32,8 +32,7 @@ it('validates a response against the OpenAPI schema', function (): void {
         ],
     ]);
 
-    // We need to subclass or mock ArazzoSchemaValidator to intercept findOperation since it's an internal OpenAPI lookup
-    $validator = new class(new DefaultSourceResolver([], [])) extends ArazzoSchemaValidator
+    $validator = new class(new DefaultSourceResolver([])) extends ArazzoSchemaValidator
     {
         public ?Operation $mockOperation = null;
 

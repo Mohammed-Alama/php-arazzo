@@ -13,7 +13,6 @@ use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolver\Parsers\OpenApiSourceParser;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
 use Alama\Arazzo\Runner\WorkflowContext;
@@ -53,7 +52,6 @@ beforeEach(function () {
     $this->makeExtractor = function (): ArazzoOutputExtractor {
         $sourceResolver = new DefaultSourceResolver(
             fetchers: ['file' => new LocalFetcher()],
-            parsers: [SourceType::Openapi->value => new OpenApiSourceParser()],
         );
 
         return new ArazzoOutputExtractor($sourceResolver, new ExpressionEvaluator());
