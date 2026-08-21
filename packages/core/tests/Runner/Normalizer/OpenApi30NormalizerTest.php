@@ -114,24 +114,16 @@ class OpenApi30NormalizerTest extends TestCase
 
         $op = $this->normalizer->normalize($document, '/users/{userId}', 'get');
 
-        $this->assertCount(2, $op->parameters);
+        $this->assertCount(1, $op->pathParameters);
+        $this->assertCount(1, $op->headerParameters);
+        $this->assertCount(0, $op->queryParameters);
+        $this->assertCount(0, $op->cookieParameters);
 
-        // Find userId param
-        $userIdParam = null;
-        $headerParam = null;
-        foreach ($op->parameters as $p) {
-            if ($p['name'] === 'userId') {
-                $userIdParam = $p;
-            } elseif ($p['name'] === 'X-Token') {
-                $headerParam = $p;
-            }
-        }
+        $this->assertArrayHasKey('userId', $op->pathParameters);
+        $this->assertArrayHasKey('X-Token', $op->headerParameters);
 
-        $this->assertNotNull($userIdParam);
-        $this->assertEquals('Overridden description', $userIdParam['description']);
-
-        $this->assertNotNull($headerParam);
-        $this->assertEquals('header', $headerParam['in']);
+        $this->assertEquals('Overridden description', $op->pathParameters['userId']['description']);
+        $this->assertEquals('header', $op->headerParameters['X-Token']['in']);
     }
 
     public function test_resolves_request_body_with_ref(): void
@@ -169,16 +161,9 @@ class OpenApi30NormalizerTest extends TestCase
         $this->assertEquals(['$ref' => '#/components/schemas/User'], $op->requestBodies['application/json']['schema']);
     }
 
-    public function test_resolves_responses_with_ref(): void
+    public function test_does_not_resolve_responses_with_ref(): void
     {
         $document = [
-            'components' => [
-                'responses' => [
-                    'NotFound' => [
-                        'description' => 'Not found',
-                    ],
-                ],
-            ],
             'paths' => [
                 '/users' => [
                     'get' => [
@@ -199,7 +184,6 @@ class OpenApi30NormalizerTest extends TestCase
 
         $this->assertCount(2, $op->responses);
         $this->assertEquals('Success', $op->responses['200']['description']);
-        $this->assertEquals('Not found', $op->responses['404']['description']);
-        $this->assertArrayNotHasKey('$ref', $op->responses['404']);
+        $this->assertEquals('#/components/responses/NotFound', $op->responses['404']['$ref']);
     }
 }

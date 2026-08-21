@@ -37,7 +37,10 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         return new NormalizedOpenApiOperation(
             method: $method,
             resolvedServerUrl: $resolvedServerUrl,
-            parameters: $parameters,
+            pathParameters: $parameters['path'],
+            queryParameters: $parameters['query'],
+            headerParameters: $parameters['header'],
+            cookieParameters: $parameters['cookie'],
             requestBodies: $requestBodies,
             responses: $responses,
         );
@@ -60,6 +63,9 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         return null; // Fallback or default could be '/' depending on context, but null is fine
     }
 
+    /**
+     * @return array{path: array, query: array, header: array, cookie: array}
+     */
     private function resolveParameters(array $document, array $pathItem, array $operation): array
     {
         $pathParams = $pathItem['parameters'] ?? [];
@@ -84,7 +90,21 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
             }
         }
 
-        return array_values($merged);
+        $grouped = [
+            'path' => [],
+            'query' => [],
+            'header' => [],
+            'cookie' => [],
+        ];
+
+        foreach ($merged as $param) {
+            $in = $param['in'];
+            if (isset($grouped[$in])) {
+                $grouped[$in][$param['name']] = $param;
+            }
+        }
+
+        return $grouped;
     }
 
     private function resolveRequestBodies(array $document, array $operation): array
@@ -115,7 +135,7 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
 
         $responses = [];
         foreach ($operation['responses'] as $status => $response) {
-            $responses[(string) $status] = $this->resolveLocalRef($document, $response);
+            $responses[(string) $status] = $response;
         }
 
         return $responses;
