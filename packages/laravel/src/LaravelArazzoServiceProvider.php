@@ -57,6 +57,7 @@ use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\StepOutcomeHandler;
 use Alama\Arazzo\Runner\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\WorkflowExecutor;
+use Alama\Arazzo\Runner\WorkflowEngine;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
@@ -209,7 +210,10 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(WorkflowExecutor::class, function ($app) {
-            return new WorkflowExecutor($app->make(StepExecutor::class));
+            return new WorkflowExecutor(
+                $app->make(StepExecutor::class),
+                workflowEngine: $app->make(WorkflowEngine::class),
+            );
         });
 
         // Persistence (doc 02)
@@ -251,6 +255,13 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new Engine(
                 $app->make(QueueDriverInterface::class),
                 $app->make(StateStoreInterface::class),
+            );
+        });
+
+        $this->app->singleton(WorkflowEngine::class, function ($app) {
+            return new WorkflowEngine(
+                $app->make(ExpressionResolverInterface::class),
+                (int) config('arazzo.retry_ceiling', 10),
             );
         });
 
@@ -342,6 +353,8 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                     $app->make(AsyncApiStepExecutor::class),
                 ],
                 $app->make(StepOutcomeHandler::class),
+                workflowEngine: $app->make(WorkflowEngine::class),
+                queueDriver: $app->make(QueueDriverInterface::class),
             );
         });
     }
