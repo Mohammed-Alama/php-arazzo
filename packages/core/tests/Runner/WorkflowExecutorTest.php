@@ -12,10 +12,10 @@ use Alama\Arazzo\Dto\Expression;
 use Alama\Arazzo\Dto\Info;
 use Alama\Arazzo\Dto\Parameter;
 use Alama\Arazzo\Dto\SourceDescription;
+use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Resolver\ResolvedSource;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
@@ -23,6 +23,11 @@ use Alama\Arazzo\Runner\ArazzoOutputExtractor;
 use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\WorkflowExecutor;
 use cebe\openapi\spec\OpenApi;
@@ -510,36 +515,23 @@ it('executes a workflow end-to-end', function () {
 
     $sourceResolver = new class() implements SourceResolver
     {
-        public function resolve(SourceDescription $description, string $basePath): ResolvedSource
+        public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {
-            return new class($description->url) implements ResolvedSource
-            {
-                public function __construct(private string $file)
-                {
-                }
+            $json = json_decode(file_get_contents($description->url), true);
 
-                public function getBaseUrl(): ?string
-                {
-                    return null;
-                }
-
-                public function extract(string $jsonPointer): mixed
-                {
-                    $json = json_decode(file_get_contents($this->file), true);
-
-                    return new OpenApi($json);
-                }
-            };
+            return new SourceDocument($description->name, $description->type, $description->url, $json);
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+    $openApiLoader = new OpenApiDocumentLoader($sourceResolver);
+    $operationResolver = new OpenApiOperationResolver($openApiLoader, new OpenApiVersionDetector(), new OpenApi30Normalizer(), new OpenApi31Normalizer());
+    $outputExtractor = new ArazzoOutputExtractor($operationResolver, $evaluator);
     $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
-    $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+    $schemaValidator = new ArazzoSchemaValidator($operationResolver);
     $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
-    $openApiExecutor = new DefaultOpenApiExecutor($sourceResolver, $httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver);
+    $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);
 

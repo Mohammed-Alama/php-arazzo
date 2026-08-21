@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Resolver\ResolvedSource;
+use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
+use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use cebe\openapi\Reader;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -38,11 +40,9 @@ it('builds and sends an openapi request using the schema to route parameters', f
 
     $openApi = Reader::readFromJson($openapiJson);
 
-    $resolvedSource = Mockery::mock(ResolvedSource::class);
-    $resolvedSource->shouldReceive('extract')->with('')->andReturn($openApi);
-
+    $sourceDoc = new SourceDocument('test', SourceType::Openapi, 'http://test', json_decode($openapiJson, true));
     $sourceResolver = Mockery::mock(SourceResolver::class);
-    $sourceResolver->shouldReceive('resolve')->andReturn($resolvedSource);
+    $sourceResolver->shouldReceive('resolve')->andReturn($sourceDoc);
 
     $httpClient = Mockery::mock(ClientInterface::class);
     $httpClient->shouldReceive('sendRequest')->withArgs(function ($request) {
@@ -59,7 +59,6 @@ it('builds and sends an openapi request using the schema to route parameters', f
     });
 
     $executor = new DefaultOpenApiExecutor(
-        $sourceResolver,
         $httpClient,
         $requestFactory,
         new NullLogger(),
@@ -70,8 +69,33 @@ it('builds and sends an openapi request using the schema to route parameters', f
     );
 
     $source = new SourceDescription('test', 'test.json', SourceType::Openapi);
+    $normalized = new NormalizedOpenApiOperation(
+        path: '/users/{userId}',
+        method: 'get',
+        resolvedServerUrl: 'https://api.example.com/v1',
+        pathParameters: [
+            'userId' => ['name' => 'userId', 'in' => 'path', 'schema' => ['type' => 'integer']],
+        ],
+        queryParameters: [
+            'limit' => ['name' => 'limit', 'in' => 'query', 'schema' => ['type' => 'integer']],
+        ],
+        headerParameters: [
+            'X-Auth' => ['name' => 'X-Auth', 'in' => 'header', 'schema' => ['type' => 'string']],
+        ],
+        cookieParameters: [],
+        requestBodies: [],
+        responses: [],
+    );
 
-    $response = $executor->execute($source, 'getUser', $payload);
+    $resolved = new ResolvedOperation(
+        source: $source,
+        normalized: $normalized,
+        openApi: $openApi,
+        rawDocument: json_decode($openapiJson, true),
+        cebeOperation: clone $openApi->paths->getPath('/users/{userId}')->get,
+    );
+
+    $response = $executor->execute($resolved, $payload);
 
     expect($response->getStatusCode())->toBe(200);
 });

@@ -301,26 +301,8 @@ parameters:
 			path: src/Runner/CorrelationResumer.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 2
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
 			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
 			identifier: greater.alwaysTrue
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor\:\:castParameters\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor\:\:castParameters\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Runner/DefaultOpenApiExecutor.php
 
@@ -333,42 +315,6 @@ parameters:
 		-
 			message: '#^Property Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor\:\:\$logger is never read, only written\.$#'
 			identifier: property.onlyWritten
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\Dto\\OpenApiPayload\:\:\$header \(array\<string, mixed\>\) does not accept array\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\Dto\\OpenApiPayload\:\:\$path \(array\<string, mixed\>\) does not accept array\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\Dto\\OpenApiPayload\:\:\$query \(array\<string, mixed\>\) does not accept array\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between cebe\\openapi\\spec\\OpenApi and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between cebe\\openapi\\spec\\Operation and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
 			count: 1
 			path: src/Runner/DefaultOpenApiExecutor.php
 
@@ -713,12 +659,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Runner/JsonPathEvaluator.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/OpenApiParser.php
 
 		-
 			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'

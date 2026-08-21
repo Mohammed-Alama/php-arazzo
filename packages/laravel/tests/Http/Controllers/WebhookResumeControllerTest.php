@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
 use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Dto\RawDocument;
+use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Loader\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Parser;
@@ -16,10 +18,16 @@ use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\CorrelationResumer;
+use Alama\Arazzo\Runner\Dto\OpenApiPayload;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Runner\PendingCorrelation;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Alama\Arazzo\Runner\StepExecutionWorker;
 use Alama\Arazzo\Runner\WorkflowContext;
+use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -108,11 +116,23 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
 
     $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface
     {
-        public function execute($source, $operation, $payload, $interceptor = null): ResponseInterface
+        public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null): ResponseInterface
         {
             return new Response(201, [], json_encode(['rideId' => 'r_1']));
         }
     });
+
+    $opResolver = \Mockery::mock(OpenApiOperationResolver::class);
+    $opResolver->shouldReceive('resolve')->andReturn(
+        new ResolvedOperation(
+            new SourceDescription('src', 'openapi.yaml', SourceType::Openapi),
+            new NormalizedOpenApiOperation('/paths/~1rides/post', 'post', 'http://api.example.com', [], [], [], [], [], []),
+            new OpenApi([]),
+            [],
+            new Operation([]),
+        ),
+    );
+    $this->app->instance(OpenApiOperationResolver::class, $opResolver);
 
     $rawYaml = file_get_contents(__DIR__ . '/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
     $decoded = (new SymfonyYamlDecoder())->decode($rawYaml);

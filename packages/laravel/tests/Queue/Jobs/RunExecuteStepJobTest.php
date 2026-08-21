@@ -65,6 +65,11 @@ use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
+use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
@@ -78,7 +83,7 @@ it('injects idempotency key natively during job execution independently of StepE
 
     $capturedRequest = null;
     $openApiMock = \Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiMock->shouldReceive('execute')->once()->andReturnUsing(function ($source, $op, $payload, $interceptor) use (&$capturedRequest) {
+    $openApiMock->shouldReceive('execute')->once()->andReturnUsing(function ($op, $payload, $interceptor) use (&$capturedRequest) {
         $request = new Request('POST', 'https://api.example.com/charges', [], '{"amount":100}');
         if ($interceptor) {
             $request = $interceptor($request);
@@ -88,6 +93,18 @@ it('injects idempotency key natively during job execution independently of StepE
         return new Response(201, [], '{}');
     });
     app()->instance(OpenApiExecutorInterface::class, $openApiMock);
+
+    $opResolver = \Mockery::mock(OpenApiOperationResolver::class);
+    $opResolver->shouldReceive('resolve')->andReturn(
+        new ResolvedOperation(
+            new SourceDescription('src', 'http://api.example.com', SourceType::Openapi),
+            new NormalizedOpenApiOperation('/charges', 'post', 'http://api.example.com', [], [], [], [], [], []),
+            new OpenApi([]),
+            [],
+            new Operation([]),
+        ),
+    );
+    app()->instance(OpenApiOperationResolver::class, $opResolver);
 
     $resolver = \Mockery::mock(ExpressionResolverInterface::class);
     $resolver->shouldReceive('extractOutputs')->andReturn([]);

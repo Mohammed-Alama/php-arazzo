@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel;
 
-use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
 use Alama\Arazzo\Generator\ArazzoGenerator;
@@ -25,10 +24,8 @@ use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\CachedFetcher;
 use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolver\Parsers\ArazzoSourceParser;
-use Alama\Arazzo\Resolver\Parsers\AsyncApiSourceParser;
-use Alama\Arazzo\Resolver\Parsers\OpenApiSourceParser;
 use Alama\Arazzo\Resolver\SelectorEvaluator;
+use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Resolver\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Resolver\Xpath\XpathEvaluator;
@@ -53,6 +50,11 @@ use Alama\Arazzo\Runner\Engine;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
 use Alama\Arazzo\Runner\HttpStepExecutor;
 use Alama\Arazzo\Runner\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\StepExecutionWorker;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\StepOutcomeHandler;
@@ -139,18 +141,15 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         // Core Resolver
         $this->app->singleton(SourceResolver::class, function ($app) {
-            return new DefaultSourceResolver(
+            $defaultResolver = new DefaultSourceResolver(
                 fetchers: [
                     'http' => new CachedFetcher(new HttpFetcher($app->make(ClientInterface::class), $app->make(RequestFactoryInterface::class)), $app->make(CacheInterface::class), 3600),
                     'https' => new CachedFetcher(new HttpFetcher($app->make(ClientInterface::class), $app->make(RequestFactoryInterface::class)), $app->make(CacheInterface::class), 3600),
                     'file' => new LocalFetcher(),
                 ],
-                parsers: [
-                    SourceType::Openapi->value => new OpenApiSourceParser(),
-                    SourceType::Arazzo->value => new ArazzoSourceParser(new Parser()),
-                    SourceType::Asyncapi->value => new AsyncApiSourceParser(),
-                ],
             );
+
+            return new SourceRegistry($defaultResolver);
         });
 
         // AI Generator
@@ -168,14 +167,27 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new ArazzoGenerator($app->make(AiClientInterface::class));
         });
 
+        $this->app->singleton(OpenApiDocumentLoader::class, function ($app) {
+            return new OpenApiDocumentLoader($app->make(SourceResolver::class));
+        });
+
+        $this->app->singleton(OpenApiOperationResolver::class, function ($app) {
+            return new OpenApiOperationResolver(
+                $app->make(OpenApiDocumentLoader::class),
+                $app->make(OpenApiVersionDetector::class),
+                $app->make(OpenApi30Normalizer::class),
+                $app->make(OpenApi31Normalizer::class),
+            );
+        });
+
         // Workflow Execution
         $this->app->singleton(ExpressionResolverInterface::class, function ($app) {
             $evaluator = new ExpressionEvaluator();
-            $sourceResolver = $app->make(SourceResolver::class);
+            $operationResolver = $app->make(OpenApiOperationResolver::class);
 
-            $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+            $outputExtractor = new ArazzoOutputExtractor($operationResolver, $evaluator);
             $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
-            $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+            $schemaValidator = new ArazzoSchemaValidator($operationResolver);
 
             return new ArazzoExpressionResolver(
                 $evaluator,
@@ -194,7 +206,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(OpenApiExecutorInterface::class, function ($app) {
             return new DefaultOpenApiExecutor(
-                $app->make(SourceResolver::class),
                 $app->make(ClientInterface::class),
                 $app->make(RequestFactoryInterface::class),
                 $app->make(LoggerInterface::class),
@@ -205,6 +216,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new StepExecutor(
                 $app->make(OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
+                $app->make(OpenApiOperationResolver::class),
                 (bool) config('arazzo.strict_schema_validation', false),
                 $app->make(IdempotencyKeyInjector::class),
             );
@@ -315,6 +327,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new HttpStepExecutor(
                 $app->make(OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
+                $app->make(OpenApiOperationResolver::class),
                 (bool) config('arazzo.strict_schema_validation', false),
                 $app->make(IdempotencyKeyInjector::class),
             );

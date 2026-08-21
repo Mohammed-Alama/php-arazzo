@@ -12,6 +12,7 @@ use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Throwable;
 
@@ -23,6 +24,7 @@ class StepExecutor
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
+        private OpenApiOperationResolver $operationResolver,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
@@ -89,17 +91,11 @@ class StepExecutor
         }
         $payload->body = empty($bodyData) ? null : $bodyData;
 
-        $sourceDesc = $document->sourceDescriptions[0] ?? null;
-        if ($sourceDesc === null) {
-            throw new \RuntimeException('No SourceDescription found in document');
-        }
-
-        $operation = $step->operationId ?? $step->operationPath ?? '/';
+        $resolved = $this->operationResolver->resolve($step, $document);
 
         try {
             $response = $this->openApiExecutor->execute(
-                $sourceDesc,
-                $operation,
+                $resolved,
                 $payload,
                 function ($request) use (&$context, $step) {
                     if ($this->injector !== null) {

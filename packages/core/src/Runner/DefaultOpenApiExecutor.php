@@ -4,27 +4,18 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
-use cebe\openapi\Reader;
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Operation;
-use cebe\openapi\spec\Parameter as OpenApiParameter;
-use cebe\openapi\spec\Reference;
-use cebe\openapi\spec\Schema;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {
     public function __construct(
-        private SourceResolver $sourceResolver,
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ?LoggerInterface $logger = null,
@@ -32,75 +23,75 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     public function execute(
-        SourceDescription $source,
-        string $operationIdOrPath,
+        ResolvedOperation $resolvedOperation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
     ): ResponseInterface {
-        $openApi = $this->resolveOpenApiDocument($source);
-        if ($openApi === null) {
-            throw new \RuntimeException('Failed to resolve OpenAPI document');
-        }
+        $openApi = $resolvedOperation->openApi;
 
         $baseUrl = '';
         if ($openApi->servers && count($openApi->servers) > 0) {
             $baseUrl = rtrim($openApi->servers[0]->url, '/');
         }
 
-        $opId = $operationIdOrPath;
-        if (str_starts_with($opId, '$sourceDescriptions.')) {
-            $parts = explode('.', $opId, 3);
-            $opId = $parts[2] ?? '';
-        } elseif (str_contains($opId, '.')) {
-            $opId = explode('.', $opId, 2)[1];
-        }
+        $method = strtoupper($resolvedOperation->normalized->method);
+        $urlPath = $resolvedOperation->normalized->path;
 
-        $method = 'GET';
-        $urlPath = '/';
-        $operation = null;
-
-        if ($openApi !== null) {
-            [$method, $urlPath, $operation] = OpenApiParser::findOperation($openApi, $opId);
-        }
-
-        if ($operation !== null) {
-            foreach ($payload->auto as $name => $value) {
-                $in = $this->findParameterLocation($operation, $name);
-                if ($in === 'path') {
-                    $payload->path[$name] = $value;
-                } elseif ($in === 'header') {
-                    $payload->header[$name] = $value;
-                } else {
-                    // Default to query if unknown, since Arazzo says "query" is the most common default
-                    $payload->query[$name] = $value;
-                }
+        foreach ($payload->auto as $name => $value) {
+            if (isset($resolvedOperation->normalized->pathParameters[$name])) {
+                $payload->path[$name] = $value;
+            } elseif (isset($resolvedOperation->normalized->headerParameters[$name])) {
+                $payload->header[$name] = $value;
+            } elseif (isset($resolvedOperation->normalized->cookieParameters[$name])) {
+                $payload->cookie[$name] = $value;
+            } else {
+                $payload->query[$name] = $value;
             }
-
-            $payload->path = $this->castParameters($operation, $payload->path, 'path');
-            $payload->query = $this->castParameters($operation, $payload->query, 'query');
-            $payload->header = $this->castParameters($operation, $payload->header, 'header');
-        } else {
-            // Fallback if operation not found in schema
-            $payload->query = array_merge($payload->query, $payload->auto);
         }
 
-        foreach ($payload->path as $name => $value) {
-            $urlPath = str_replace('{' . $name . '}', (string) $value, $urlPath);
+        $payload->path = $this->castParameters($resolvedOperation->normalized->pathParameters, $payload->path);
+        $payload->query = $this->castParameters($resolvedOperation->normalized->queryParameters, $payload->query);
+        $payload->header = $this->castParameters($resolvedOperation->normalized->headerParameters, $payload->header);
+        $payload->cookie = $this->castParameters($resolvedOperation->normalized->cookieParameters, $payload->cookie);
+
+        $serializedPath = ParameterSerializer::serialize('path', $resolvedOperation->normalized->pathParameters, $payload->path);
+        foreach ($serializedPath as $name => $value) {
+            $style = $resolvedOperation->normalized->pathParameters[$name]['style'] ?? 'simple';
+            $replacement = $style === 'simple' ? urlencode($value) : $value;
+            // matrix and label include the prefix in the serialized value,
+            // so we replace the template
+            $urlPath = str_replace('{' . $name . '}', $replacement, $urlPath);
         }
 
         $url = $baseUrl . $urlPath;
-        if (!empty($payload->query)) {
-            $url .= '?' . http_build_query($payload->query);
+
+        $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $payload->query);
+        $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
+        if (!empty($filteredQuery)) {
+            $url .= '?' . implode('&', array_values($filteredQuery));
         }
 
         $request = $this->requestFactory->createRequest($method, $url);
-        foreach ($payload->header as $k => $v) {
+
+        $serializedHeader = ParameterSerializer::serialize('header', $resolvedOperation->normalized->headerParameters, $payload->header);
+        foreach ($serializedHeader as $k => $v) {
             $request = $request->withHeader($k, (string) $v);
         }
 
+        $serializedCookie = ParameterSerializer::serialize('cookie', $resolvedOperation->normalized->cookieParameters, $payload->cookie);
+        if (!empty($serializedCookie)) {
+            $cookieString = implode('; ', array_values($serializedCookie));
+            $request = $request->withHeader('Cookie', $cookieString);
+        }
+
         if ($payload->body !== null) {
-            $request = $request->withHeader('Content-Type', 'application/json');
-            $request = $request->withBody(Utils::streamFor(json_encode($payload->body, JSON_THROW_ON_ERROR)));
+            $mediaType = $payload->bodyMediaType ?? 'application/json';
+            $request = $request->withHeader('Content-Type', $mediaType);
+
+            $bodyStream = $mediaType === 'application/json'
+                ? json_encode($payload->body, JSON_THROW_ON_ERROR)
+                : (is_scalar($payload->body) ? (string) $payload->body : http_build_query((array) $payload->body));
+            $request = $request->withBody(Utils::streamFor($bodyStream));
         }
 
         if ($requestInterceptor !== null) {
@@ -110,73 +101,35 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         return $this->httpClient->sendRequest($request);
     }
 
-    private function resolveOpenApiDocument(SourceDescription $sourceDesc): ?OpenApi
-    {
-        $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
-        $extracted = $resolvedSource->extract('');
-
-        if ($extracted instanceof OpenApi) {
-            return $extracted;
-        }
-
-        $json = json_encode($extracted);
-        if ($json === false) {
-            return null;
-        }
-
-        try {
-            return Reader::readFromJson($json);
-        } catch (Throwable) {
-            return null;
-        }
-    }
-
-    private function findParameterLocation(Operation $operation, string $name): ?string
-    {
-        foreach ($operation->parameters as $parameter) {
-            if ($parameter instanceof OpenApiParameter && $parameter->name === $name) {
-                return $parameter->in;
-            }
-        }
-
-        return null;
-    }
-
-    private function castParameters(Operation $operation, array $params, string $in): array
+    /**
+     * @param array<string, array<string, mixed>> $normalizedParams
+     * @param array<string, mixed> $payloadParams
+     *
+     * @return array<string, mixed>
+     */
+    private function castParameters(array $normalizedParams, array $payloadParams): array
     {
         $result = [];
-        foreach ($params as $name => $value) {
-            $schema = $this->findParameterSchema($operation, $name, $in);
+        foreach ($payloadParams as $name => $value) {
+            /** @var array<string, mixed>|null $schema */
+            $schema = $normalizedParams[$name]['schema'] ?? null;
             $result[$name] = $this->castToSchemaType($value, $schema);
         }
 
         return $result;
     }
 
-    private function findParameterSchema(Operation $operation, string $name, string $in): ?Schema
+    /**
+     * @param array<string, mixed>|null $schema
+     */
+    private function castToSchemaType(mixed $value, ?array $schema): mixed
     {
-        foreach ($operation->parameters as $parameter) {
-            if ($parameter instanceof OpenApiParameter && $parameter->name === $name && $parameter->in === $in) {
-                $schema = $parameter->schema;
-                if ($schema instanceof Reference) {
-                    $schema = $schema->resolve();
-                }
-
-                return $schema instanceof Schema ? $schema : null;
-            }
-        }
-
-        return null;
-    }
-
-    private function castToSchemaType(mixed $value, ?Schema $schema): mixed
-    {
-        if ($schema === null || $schema->type === null) {
+        if ($schema === null || !isset($schema['type'])) {
             return $value;
         }
 
         try {
-            return match ($schema->type) {
+            return match ($schema['type']) {
                 'integer' => TypeCaster::asInteger($value),
                 'number' => TypeCaster::asFloat($value),
                 'string' => TypeCaster::asString($value),
