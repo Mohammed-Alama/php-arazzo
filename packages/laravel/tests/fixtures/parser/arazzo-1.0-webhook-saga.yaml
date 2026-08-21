@@ -2,7 +2,10 @@ arazzo: 1.1.0
 info:
   title: Cross-Protocol Saga
   version: 1.0.0
-sourceDescriptions: []
+sourceDescriptions:
+  - name: example-api
+    url: openapi.yaml
+    type: openapi
 workflows:
   - workflowId: ride-saga
     steps:

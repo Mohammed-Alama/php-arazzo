@@ -14,6 +14,6 @@ interface OpenApiExecutorInterface
         SourceDescription $source,
         string $operationIdOrPath,
         OpenApiPayload $payload,
-        ?callable $requestInterceptor = null
+        ?callable $requestInterceptor = null,
     ): ResponseInterface;
 }

@@ -10,8 +10,8 @@ use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Loader\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\HttpClientInterface;
 use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
+use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
@@ -24,7 +24,6 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 use function Pest\Laravel\postJson;
@@ -107,9 +106,9 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         }
     });
 
-    $this->app->instance(HttpClientInterface::class, new class() implements HttpClientInterface
+    $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface
     {
-        public function sendRequest(RequestInterface $request): ResponseInterface
+        public function execute($source, $operation, $payload, $interceptor = null): ResponseInterface
         {
             return new Response(201, [], json_encode(['rideId' => 'r_1']));
         }

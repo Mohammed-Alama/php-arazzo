@@ -42,6 +42,7 @@ it('validates response schema if configured globally or locally', function (): v
         if ($interceptor) {
             $interceptor(new Request('GET', '/'));
         }
+
         return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
     });
 
@@ -67,6 +68,7 @@ it('skips validation if configured off globally and locally', function (): void 
         if ($interceptor) {
             $interceptor(new Request('GET', '/'));
         }
+
         return new Response(200, [], '{"bad": true}');
     });
 
@@ -89,6 +91,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
         if ($interceptor) {
             $capturedRequest = $interceptor($request);
         }
+
         return new Response(200, [], '{}');
     });
 
@@ -119,6 +122,7 @@ it('does not inject a header when no injector is passed', function (): void {
         if ($interceptor) {
             $capturedRequest = $interceptor($request);
         }
+
         return new Response(200, [], '{}');
     });
 
@@ -142,6 +146,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
         if ($interceptor) {
             $capturedRequest = $interceptor($request);
         }
+
         return new Response(200, [], '{}');
     });
 

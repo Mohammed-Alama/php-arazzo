@@ -35,7 +35,6 @@ use Alama\Arazzo\Resolver\Xpath\XpathEvaluator;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\ArazzoRequestCompiler;
 use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
@@ -44,10 +43,12 @@ use Alama\Arazzo\Runner\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\HttpClientInterface;
 use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
+use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\CorrelationResumer;
+use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Engine;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
 use Alama\Arazzo\Runner\HttpStepExecutor;
@@ -56,6 +57,7 @@ use Alama\Arazzo\Runner\StepExecutionWorker;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\StepOutcomeHandler;
 use Alama\Arazzo\Runner\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\WorkflowEngine;
 use Alama\Arazzo\Runner\WorkflowExecutor;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -179,7 +181,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $evaluator,
                 $outputExtractor,
                 $criteriaEvaluator,
-                $schemaValidator
+                $schemaValidator,
             );
         });
 
@@ -190,18 +192,18 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             );
         });
 
-        $this->app->singleton(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class, function ($app) {
-            return new \Alama\Arazzo\Runner\DefaultOpenApiExecutor(
+        $this->app->singleton(OpenApiExecutorInterface::class, function ($app) {
+            return new DefaultOpenApiExecutor(
                 $app->make(SourceResolver::class),
                 $app->make(ClientInterface::class),
                 $app->make(RequestFactoryInterface::class),
-                $app->make(\Psr\Log\LoggerInterface::class)
+                $app->make(LoggerInterface::class),
             );
         });
 
         $this->app->singleton(StepExecutor::class, function ($app) {
             return new StepExecutor(
-                $app->make(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class),
+                $app->make(OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 (bool) config('arazzo.strict_schema_validation', false),
                 $app->make(IdempotencyKeyInjector::class),
@@ -209,7 +211,10 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(WorkflowExecutor::class, function ($app) {
-            return new WorkflowExecutor($app->make(StepExecutor::class));
+            return new WorkflowExecutor(
+                $app->make(StepExecutor::class),
+                workflowEngine: $app->make(WorkflowEngine::class),
+            );
         });
 
         // Persistence (doc 02)
@@ -251,6 +256,13 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new Engine(
                 $app->make(QueueDriverInterface::class),
                 $app->make(StateStoreInterface::class),
+            );
+        });
+
+        $this->app->singleton(WorkflowEngine::class, function ($app) {
+            return new WorkflowEngine(
+                $app->make(ExpressionResolverInterface::class),
+                (int) config('arazzo.retry_ceiling', 10),
             );
         });
 
@@ -301,7 +313,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(HttpStepExecutor::class, function ($app) {
             return new HttpStepExecutor(
-                $app->make(HttpClientInterface::class),
+                $app->make(OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 (bool) config('arazzo.strict_schema_validation', false),
                 $app->make(IdempotencyKeyInjector::class),
@@ -342,6 +354,8 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                     $app->make(AsyncApiStepExecutor::class),
                 ],
                 $app->make(StepOutcomeHandler::class),
+                workflowEngine: $app->make(WorkflowEngine::class),
+                queueDriver: $app->make(QueueDriverInterface::class),
             );
         });
     }

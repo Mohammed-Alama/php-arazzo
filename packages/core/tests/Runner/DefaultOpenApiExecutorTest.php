@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Resolver\ResolvedSource;
 use Alama\Arazzo\Resolver\SourceResolver;
@@ -13,7 +16,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\NullLogger;
 
 it('builds and sends an openapi request using the schema to route parameters', function () {
-    $openapiJson = <<<JSON
+    $openapiJson = <<<'JSON'
     {
       "openapi": "3.0.0",
       "info": { "title": "API", "version": "1.0" },
@@ -44,8 +47,9 @@ it('builds and sends an openapi request using the schema to route parameters', f
     $httpClient = Mockery::mock(ClientInterface::class);
     $httpClient->shouldReceive('sendRequest')->withArgs(function ($request) {
         expect($request->getMethod())->toBe('GET');
-        expect((string)$request->getUri())->toBe('https://api.example.com/v1/users/42?limit=10');
+        expect((string) $request->getUri())->toBe('https://api.example.com/v1/users/42?limit=10');
         expect($request->getHeaderLine('X-Auth'))->toBe('token123');
+
         return true;
     })->andReturn(new Response(200));
 
@@ -58,15 +62,15 @@ it('builds and sends an openapi request using the schema to route parameters', f
         $sourceResolver,
         $httpClient,
         $requestFactory,
-        new NullLogger()
+        new NullLogger(),
     );
 
     $payload = new OpenApiPayload(
-        auto: ['userId' => '42', 'limit' => '10', 'X-Auth' => 'token123']
+        auto: ['userId' => '42', 'limit' => '10', 'X-Auth' => 'token123'],
     );
 
-    $source = new SourceDescription('test', 'test.json', \Alama\Arazzo\Dto\Enum\SourceType::Openapi);
-    
+    $source = new SourceDescription('test', 'test.json', SourceType::Openapi);
+
     $response = $executor->execute($source, 'getUser', $payload);
 
     expect($response->getStatusCode())->toBe(200);

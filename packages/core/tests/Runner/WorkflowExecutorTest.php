@@ -20,8 +20,8 @@ use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\ArazzoRequestCompiler;
 use Alama\Arazzo\Runner\ArazzoSchemaValidator;
+use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\ExpressionEvaluator;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\WorkflowExecutor;
@@ -538,7 +538,7 @@ it('executes a workflow end-to-end', function () {
     $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
     $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
-    $openApiExecutor = new \Alama\Arazzo\Runner\DefaultOpenApiExecutor($sourceResolver, $httpClient, $requestFactory);
+    $openApiExecutor = new DefaultOpenApiExecutor($sourceResolver, $httpClient, $requestFactory);
     $stepExecutor = new StepExecutor($openApiExecutor, $resolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);

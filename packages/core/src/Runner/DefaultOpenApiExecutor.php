@@ -30,12 +30,12 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         private ?LoggerInterface $logger = null,
     ) {
     }
-    
+
     public function execute(
         SourceDescription $source,
         string $operationIdOrPath,
         OpenApiPayload $payload,
-        ?callable $requestInterceptor = null
+        ?callable $requestInterceptor = null,
     ): ResponseInterface {
         $openApi = $this->resolveOpenApiDocument($source);
         if ($openApi === null) {
@@ -58,7 +58,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         $method = 'GET';
         $urlPath = '/';
         $operation = null;
-        
+
         if ($openApi !== null) {
             [$method, $urlPath, $operation] = OpenApiParser::findOperation($openApi, $opId);
         }
@@ -75,7 +75,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
                     $payload->query[$name] = $value;
                 }
             }
-            
+
             $payload->path = $this->castParameters($operation, $payload->path, 'path');
             $payload->query = $this->castParameters($operation, $payload->query, 'query');
             $payload->header = $this->castParameters($operation, $payload->header, 'header');
@@ -109,7 +109,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         return $this->httpClient->sendRequest($request);
     }
-    
+
     private function resolveOpenApiDocument(SourceDescription $sourceDesc): ?OpenApi
     {
         $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
@@ -130,7 +130,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
             return null;
         }
     }
-    
+
     private function findParameterLocation(Operation $operation, string $name): ?string
     {
         foreach ($operation->parameters as $parameter) {
@@ -138,9 +138,10 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
                 return $parameter->in;
             }
         }
+
         return null;
     }
-    
+
     private function castParameters(Operation $operation, array $params, string $in): array
     {
         $result = [];
@@ -148,6 +149,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
             $schema = $this->findParameterSchema($operation, $name, $in);
             $result[$name] = $this->castToSchemaType($value, $schema);
         }
+
         return $result;
     }
 

@@ -13,6 +13,7 @@ use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Dto\OpenApiPayload;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\HttpStepExecutor;
 use Alama\Arazzo\Runner\WorkflowContext;
@@ -61,12 +62,13 @@ class HttpStepExecutorMockOpenApiExecutor implements OpenApiExecutorInterface
     public function execute(
         SourceDescription $source,
         string $operationIdOrPath,
-        \Alama\Arazzo\Runner\Dto\OpenApiPayload $payload,
-        ?callable $requestInterceptor = null
+        OpenApiPayload $payload,
+        ?callable $requestInterceptor = null,
     ): ResponseInterface {
         if ($requestInterceptor) {
             $requestInterceptor(new Request('GET', 'http://localhost/thing'));
         }
+
         return $this->response;
     }
 }
@@ -74,12 +76,12 @@ class HttpStepExecutorMockOpenApiExecutor implements OpenApiExecutorInterface
 function httpStepExecutorDocument(): ArazzoDocument
 {
     return new ArazzoDocument(
-        '1.0.0', 
-        new Info('T', null, null, '1'), 
-        [new SourceDescription('test', 'test.json', SourceType::Openapi)], 
-        [], 
-        new Components([], [], [], []), 
-        []
+        '1.0.0',
+        new Info('T', null, null, '1'),
+        [new SourceDescription('test', 'test.json', SourceType::Openapi)],
+        [],
+        new Components([], [], [], []),
+        [],
     );
 }
 
@@ -140,6 +142,7 @@ it('validates response schema and fails fast on failure', function (): void {
         if ($interceptor) {
             $interceptor(new Request('GET', '/'));
         }
+
         return new Response(200, [], '{"bad": true}');
     });
 
