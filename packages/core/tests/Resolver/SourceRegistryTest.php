@@ -20,10 +20,10 @@ it('registers and resolves sources by name explicitly', function (): void {
         }
     };
 
-    $registry = new SourceRegistry($resolver, '/base');
+    $registry = new SourceRegistry($resolver);
     $source = new SourceDescription('test-api', 'api.json', SourceType::Openapi);
 
-    $doc = $registry->resolve($source);
+    $doc = $registry->resolve($source, '/base');
 
     expect($doc->name)->toBe('test-api')
         ->and($doc->canonicalUri)->toBe('file:///base/api.json')
@@ -39,18 +39,18 @@ it('detects circular references during source acquisition', function (): void {
         public function resolve(SourceDescription $source, string $basePath): SourceDocument
         {
             // Trigger a resolution of the SAME source to simulate circular dependency
-            $this->registry->resolve(new SourceDescription('test-api', 'api.json', SourceType::Openapi));
+            $this->registry->resolve(new SourceDescription('test-api', 'api.json', SourceType::Openapi), $basePath);
 
             return new SourceDocument($source->name, $source->type, 'file://' . $basePath . '/' . $source->url, []);
         }
     };
 
-    $registry = new SourceRegistry($resolver, '/base');
+    $registry = new SourceRegistry($resolver);
     $resolver->registry = $registry;
 
     $source = new SourceDescription('test-api', 'api.json', SourceType::Openapi);
 
-    expect(fn () => $registry->resolve($source))
+    expect(fn () => $registry->resolve($source, '/base'))
         ->toThrow(UnresolvableReferenceException::class, "Circular reference detected when resolving source 'test-api'");
 });
 
@@ -62,7 +62,7 @@ it('returns null for missing sources', function (): void {
             return new SourceDocument($source->name, $source->type, '', []);
         }
     };
-    $registry = new SourceRegistry($resolver, '/base');
+    $registry = new SourceRegistry($resolver);
 
     expect($registry->get('non-existent'))->toBeNull();
 });

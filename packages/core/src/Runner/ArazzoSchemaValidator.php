@@ -20,7 +20,7 @@ use Throwable;
 class ArazzoSchemaValidator implements SchemaValidatorInterface
 {
     public function __construct(
-        private SourceResolver $sourceResolver,
+        private OpenApiDocumentLoader $openApiLoader,
     ) {
     }
 
@@ -91,7 +91,7 @@ class ArazzoSchemaValidator implements SchemaValidatorInterface
             return null;
         }
 
-        $openApi = $this->resolveOpenApiDocument($sourceDesc);
+        $openApi = $this->openApiLoader->load($sourceDesc, getcwd() ?: '');
         if ($openApi === null) {
             return null;
         }
@@ -109,23 +109,6 @@ class ArazzoSchemaValidator implements SchemaValidatorInterface
 
             return $operation;
         } catch (\RuntimeException) {
-            return null;
-        }
-    }
-
-    private function resolveOpenApiDocument(SourceDescription $sourceDesc): ?OpenApi
-    {
-        $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
-        $extracted = $resolvedSource->content;
-
-        $json = json_encode($extracted);
-        if ($json === false) {
-            return null;
-        }
-
-        try {
-            return Reader::readFromJson($json);
-        } catch (Throwable) {
             return null;
         }
     }

@@ -27,7 +27,7 @@ use Throwable;
 class ArazzoOutputExtractor implements OutputExtractorInterface
 {
     public function __construct(
-        private SourceResolver $sourceResolver,
+        private OpenApiDocumentLoader $openApiLoader,
         private ExpressionEvaluatorInterface $evaluator,
         private ?LoggerInterface $logger = null,
     ) {
@@ -86,7 +86,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
             return $value;
         }
 
-        $openApi = $this->resolveOpenApiDocument($sourceDesc);
+        $openApi = $this->openApiLoader->load($sourceDesc, getcwd() ?: '');
         if ($openApi === null) {
             return $value;
         }
@@ -122,23 +122,6 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         $leafSchema = $this->resolveSchemaAtPointer($schema instanceof Schema ? $schema : null, $ast->part->jsonPointer);
 
         return $this->castToSchemaType($value, $leafSchema);
-    }
-
-    private function resolveOpenApiDocument(SourceDescription $sourceDesc): ?OpenApi
-    {
-        $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
-        $extracted = $resolvedSource->content;
-
-        $json = json_encode($extracted);
-        if ($json === false) {
-            return null;
-        }
-
-        try {
-            return Reader::readFromJson($json);
-        } catch (Throwable) {
-            return null;
-        }
     }
 
     private function resolveSchemaAtPointer(?Schema $schema, string $pointer): ?Schema

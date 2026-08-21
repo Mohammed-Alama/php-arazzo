@@ -32,7 +32,7 @@ it('validates a response against the OpenAPI schema', function (): void {
         ],
     ]);
 
-    $validator = new class(new DefaultSourceResolver([])) extends ArazzoSchemaValidator
+    $validator = new class(new \Alama\Arazzo\Runner\OpenApiDocumentLoader(new DefaultSourceResolver([]))) extends ArazzoSchemaValidator
     {
         public ?Operation $mockOperation = null;
 

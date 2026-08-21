@@ -57,7 +57,7 @@ it('builds and sends an openapi request using the schema to route parameters', f
     });
 
     $executor = new DefaultOpenApiExecutor(
-        $sourceResolver,
+        new \Alama\Arazzo\Runner\OpenApiDocumentLoader($sourceResolver),
         $httpClient,
         $requestFactory,
         new NullLogger(),

@@ -8,7 +8,7 @@ use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
 
-final class SourceRegistry
+final class SourceRegistry implements SourceResolver
 {
     /** @var array<string, SourceDocument> */
     private array $documents = [];
@@ -18,7 +18,6 @@ final class SourceRegistry
 
     public function __construct(
         private readonly SourceResolver $resolver,
-        private readonly string $basePath,
     ) {
     }
 
@@ -32,7 +31,7 @@ final class SourceRegistry
         return $this->documents[$name] ?? null;
     }
 
-    public function resolve(SourceDescription $source): SourceDocument
+    public function resolve(SourceDescription $source, string $basePath): SourceDocument
     {
         if (isset($this->documents[$source->name])) {
             return $this->documents[$source->name];
@@ -45,7 +44,7 @@ final class SourceRegistry
         $this->resolving[$source->name] = true;
 
         try {
-            $document = $this->resolver->resolve($source, $this->basePath);
+            $document = $this->resolver->resolve($source, $basePath);
             $this->register($document);
 
             return $document;

@@ -54,7 +54,7 @@ beforeEach(function () {
             fetchers: ['file' => new LocalFetcher()],
         );
 
-        return new ArazzoOutputExtractor($sourceResolver, new ExpressionEvaluator());
+        return new ArazzoOutputExtractor(new \Alama\Arazzo\Runner\OpenApiDocumentLoader($sourceResolver), new ExpressionEvaluator());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

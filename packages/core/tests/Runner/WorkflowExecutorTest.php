@@ -17,6 +17,7 @@ use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Resolver\SourceResolver;
+use Alama\Arazzo\Runner\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
@@ -518,12 +519,13 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $evaluator = new ExpressionEvaluator();
-    $outputExtractor = new ArazzoOutputExtractor($sourceResolver, $evaluator);
+    $openApiLoader = new OpenApiDocumentLoader($sourceResolver);
+    $outputExtractor = new ArazzoOutputExtractor($openApiLoader, $evaluator);
     $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
-    $schemaValidator = new ArazzoSchemaValidator($sourceResolver);
+    $schemaValidator = new ArazzoSchemaValidator($openApiLoader);
     $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
-    $openApiExecutor = new DefaultOpenApiExecutor($sourceResolver, $httpClient, $requestFactory);
+    $openApiExecutor = new DefaultOpenApiExecutor($openApiLoader, $httpClient, $requestFactory);
     $stepExecutor = new StepExecutor($openApiExecutor, $resolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);

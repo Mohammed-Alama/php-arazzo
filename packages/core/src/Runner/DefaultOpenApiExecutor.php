@@ -24,7 +24,7 @@ use Throwable;
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {
     public function __construct(
-        private SourceResolver $sourceResolver,
+        private OpenApiDocumentLoader $openApiLoader,
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ?LoggerInterface $logger = null,
@@ -37,7 +37,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
     ): ResponseInterface {
-        $openApi = $this->resolveOpenApiDocument($source);
+        $openApi = $this->openApiLoader->load($source, getcwd() ?: '');
         if ($openApi === null) {
             throw new \RuntimeException('Failed to resolve OpenAPI document');
         }
@@ -108,23 +108,6 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         }
 
         return $this->httpClient->sendRequest($request);
-    }
-
-    private function resolveOpenApiDocument(SourceDescription $sourceDesc): ?OpenApi
-    {
-        $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
-        $extracted = $resolvedSource->content;
-
-        $json = json_encode($extracted);
-        if ($json === false) {
-            return null;
-        }
-
-        try {
-            return Reader::readFromJson($json);
-        } catch (Throwable) {
-            return null;
-        }
     }
 
     private function findParameterLocation(Operation $operation, string $name): ?string
