@@ -24,7 +24,7 @@ class ArazzoApiController extends Controller
         $source = new SourceDescription('api', is_string($specPath) ? $specPath : '', SourceType::Openapi);
         $resolved = $resolver->resolve($source, getcwd() ?: '');
 
-        $data = json_decode((string) json_encode($resolved->extract('/')), true);
+        $data = json_decode((string) json_encode($resolved->content), true);
         $endpoints = [];
 
         if (isset($data['paths']) && is_array($data['paths'])) {

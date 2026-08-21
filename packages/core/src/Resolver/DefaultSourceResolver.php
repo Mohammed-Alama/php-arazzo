@@ -62,6 +62,8 @@ final readonly class DefaultSourceResolver implements SourceResolver
 
     private function resolveCanonicalUri(string $url, string $basePath): string
     {
+        $url = str_replace('\\', '/', $url);
+        $basePath = str_replace('\\', '/', $basePath);
         $scheme = parse_url($url, PHP_URL_SCHEME);
         if (is_string($scheme) && $scheme !== '') {
             return $url; // Already absolute with scheme
