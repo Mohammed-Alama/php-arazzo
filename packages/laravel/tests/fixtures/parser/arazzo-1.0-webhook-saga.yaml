@@ -10,7 +10,7 @@ workflows:
   - workflowId: ride-saga
     steps:
       - stepId: create-ride
-        operationPath: http://api.example.com/rides
+        operationPath: '{$sourceDescriptions.example-api.url}#/paths/~1rides/post'
 
       - stepId: wait-for-ride-status
         action: receive

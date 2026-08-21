@@ -1,0 +1,594 @@
+diff --git a/packages/core/phpstan-baseline.neon b/packages/core/phpstan-baseline.neon
+index 2e1a193..9fecccc 100644
+--- a/packages/core/phpstan-baseline.neon
++++ b/packages/core/phpstan-baseline.neon
+@@ -300,30 +300,12 @@ parameters:
+ 			count: 1
+ 			path: src/Runner/CorrelationResumer.php
+ 
+-		-
+-			message: '#^Cannot cast mixed to string\.$#'
+-			identifier: cast.string
+-			count: 2
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+ 		-
+ 			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+ 			identifier: greater.alwaysTrue
+ 			count: 1
+ 			path: src/Runner/DefaultOpenApiExecutor.php
+ 
+-		-
+-			message: '#^Method Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor\:\:castParameters\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+-			identifier: missingType.iterableValue
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+-		-
+-			message: '#^Method Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor\:\:castParameters\(\) return type has no value type specified in iterable type array\.$#'
+-			identifier: missingType.iterableValue
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+ 		-
+ 			message: '#^Parameter \#1 \$request of method Psr\\Http\\Client\\ClientInterface\:\:sendRequest\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
+ 			identifier: argument.type
+@@ -336,36 +318,6 @@ parameters:
+ 			count: 1
+ 			path: src/Runner/DefaultOpenApiExecutor.php
+ 
+-		-
+-			message: '#^Property Alama\\Arazzo\\Runner\\Dto\\OpenApiPayload\:\:\$header \(array\<string, mixed\>\) does not accept array\.$#'
+-			identifier: assign.propertyType
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+-		-
+-			message: '#^Property Alama\\Arazzo\\Runner\\Dto\\OpenApiPayload\:\:\$path \(array\<string, mixed\>\) does not accept array\.$#'
+-			identifier: assign.propertyType
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+-		-
+-			message: '#^Property Alama\\Arazzo\\Runner\\Dto\\OpenApiPayload\:\:\$query \(array\<string, mixed\>\) does not accept array\.$#'
+-			identifier: assign.propertyType
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+-		-
+-			message: '#^Strict comparison using \!\=\= between cebe\\openapi\\spec\\Operation and null will always evaluate to true\.$#'
+-			identifier: notIdentical.alwaysTrue
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+-		-
+-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+-			identifier: identical.alwaysFalse
+-			count: 1
+-			path: src/Runner/DefaultOpenApiExecutor.php
+-
+ 		-
+ 			message: '#^Parameter \#1 \$stepId of method Alama\\Arazzo\\Runner\\WorkflowContext\:\:getStepStatus\(\) expects string, mixed given\.$#'
+ 			identifier: argument.type
+diff --git a/packages/core/src/Runner/DefaultOpenApiExecutor.php b/packages/core/src/Runner/DefaultOpenApiExecutor.php
+index d17a75b..a65bd7b 100644
+--- a/packages/core/src/Runner/DefaultOpenApiExecutor.php
++++ b/packages/core/src/Runner/DefaultOpenApiExecutor.php
+@@ -7,10 +7,6 @@ namespace Alama\Arazzo\Runner;
+ use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
+ use Alama\Arazzo\Runner\Dto\OpenApiPayload;
+ use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
+-use cebe\openapi\spec\Operation;
+-use cebe\openapi\spec\Parameter as OpenApiParameter;
+-use cebe\openapi\spec\Reference;
+-use cebe\openapi\spec\Schema;
+ use GuzzleHttp\Psr7\Utils;
+ use Psr\Http\Client\ClientInterface;
+ use Psr\Http\Message\RequestFactoryInterface;
+@@ -23,8 +19,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
+         private ClientInterface $httpClient,
+         private RequestFactoryInterface $requestFactory,
+         private ?LoggerInterface $logger = null,
+-    ) {
+-    }
++    ) {}
+ 
+     public function execute(
+         ResolvedOperation $resolvedOperation,
+@@ -40,46 +35,59 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
+ 
+         $method = strtoupper($resolvedOperation->normalized->method);
+         $urlPath = $resolvedOperation->normalized->path;
+-        $operation = $resolvedOperation->cebeOperation;
+-
+-        if ($operation !== null) {
+-            foreach ($payload->auto as $name => $value) {
+-                $in = $this->findParameterLocation($operation, $name);
+-                if ($in === 'path') {
+-                    $payload->path[$name] = $value;
+-                } elseif ($in === 'header') {
+-                    $payload->header[$name] = $value;
+-                } else {
+-                    // Default to query if unknown, since Arazzo says "query" is the most common default
+-                    $payload->query[$name] = $value;
+-                }
+-            }
+ 
+-            $payload->path = $this->castParameters($operation, $payload->path, 'path');
+-            $payload->query = $this->castParameters($operation, $payload->query, 'query');
+-            $payload->header = $this->castParameters($operation, $payload->header, 'header');
+-        } else {
+-            // Fallback if operation not found in schema
+-            $payload->query = array_merge($payload->query, $payload->auto);
++        foreach ($payload->auto as $name => $value) {
++            if (isset($resolvedOperation->normalized->pathParameters[$name])) {
++                $payload->path[$name] = $value;
++            } elseif (isset($resolvedOperation->normalized->headerParameters[$name])) {
++                $payload->header[$name] = $value;
++            } elseif (isset($resolvedOperation->normalized->cookieParameters[$name])) {
++                $payload->cookie[$name] = $value;
++            } else {
++                $payload->query[$name] = $value;
++            }
+         }
+ 
+-        foreach ($payload->path as $name => $value) {
+-            $urlPath = str_replace('{' . $name . '}', (string) $value, $urlPath);
++        $payload->path = $this->castParameters($resolvedOperation->normalized->pathParameters, $payload->path);
++        $payload->query = $this->castParameters($resolvedOperation->normalized->queryParameters, $payload->query);
++        $payload->header = $this->castParameters($resolvedOperation->normalized->headerParameters, $payload->header);
++        $payload->cookie = $this->castParameters($resolvedOperation->normalized->cookieParameters, $payload->cookie);
++
++        $serializedPath = ParameterSerializer::serialize('path', $resolvedOperation->normalized->pathParameters, $payload->path);
++        foreach ($serializedPath as $name => $value) {
++            // matrix and label include the prefix in the serialized value,
++            // so we replace the template
++            $urlPath = str_replace('{'.$name.'}', $value, $urlPath);
+         }
+ 
+-        $url = $baseUrl . $urlPath;
+-        if (!empty($payload->query)) {
+-            $url .= '?' . http_build_query($payload->query);
++        $url = $baseUrl.$urlPath;
++
++        $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $payload->query);
++        if (! empty($serializedQuery)) {
++            $url .= '?'.implode('&', array_values($serializedQuery));
+         }
+ 
+         $request = $this->requestFactory->createRequest($method, $url);
+-        foreach ($payload->header as $k => $v) {
++
++        $serializedHeader = ParameterSerializer::serialize('header', $resolvedOperation->normalized->headerParameters, $payload->header);
++        foreach ($serializedHeader as $k => $v) {
+             $request = $request->withHeader($k, (string) $v);
+         }
+ 
++        $serializedCookie = ParameterSerializer::serialize('cookie', $resolvedOperation->normalized->cookieParameters, $payload->cookie);
++        if (! empty($serializedCookie)) {
++            $cookieString = implode('; ', array_values($serializedCookie));
++            $request = $request->withHeader('Cookie', $cookieString);
++        }
++
+         if ($payload->body !== null) {
+-            $request = $request->withHeader('Content-Type', 'application/json');
+-            $request = $request->withBody(Utils::streamFor(json_encode($payload->body, JSON_THROW_ON_ERROR)));
++            $mediaType = $payload->bodyMediaType ?? 'application/json';
++            $request = $request->withHeader('Content-Type', $mediaType);
++
++            $bodyStream = $mediaType === 'application/json'
++                ? json_encode($payload->body, JSON_THROW_ON_ERROR)
++                : (is_scalar($payload->body) ? (string) $payload->body : http_build_query((array) $payload->body));
++            $request = $request->withBody(Utils::streamFor($bodyStream));
+         }
+ 
+         if ($requestInterceptor !== null) {
+@@ -89,52 +97,34 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
+         return $this->httpClient->sendRequest($request);
+     }
+ 
+-    private function findParameterLocation(Operation $operation, string $name): ?string
+-    {
+-        foreach ($operation->parameters as $parameter) {
+-            if ($parameter instanceof OpenApiParameter && $parameter->name === $name) {
+-                return $parameter->in;
+-            }
+-        }
+-
+-        return null;
+-    }
+-
+-    private function castParameters(Operation $operation, array $params, string $in): array
++    /**
++     * @param  array<string, array<string, mixed>>  $normalizedParams
++     * @param  array<string, mixed>  $payloadParams
++     * @return array<string, mixed>
++     */
++    private function castParameters(array $normalizedParams, array $payloadParams): array
+     {
+         $result = [];
+-        foreach ($params as $name => $value) {
+-            $schema = $this->findParameterSchema($operation, $name, $in);
++        foreach ($payloadParams as $name => $value) {
++            /** @var array<string, mixed>|null $schema */
++            $schema = $normalizedParams[$name]['schema'] ?? null;
+             $result[$name] = $this->castToSchemaType($value, $schema);
+         }
+ 
+         return $result;
+     }
+ 
+-    private function findParameterSchema(Operation $operation, string $name, string $in): ?Schema
+-    {
+-        foreach ($operation->parameters as $parameter) {
+-            if ($parameter instanceof OpenApiParameter && $parameter->name === $name && $parameter->in === $in) {
+-                $schema = $parameter->schema;
+-                if ($schema instanceof Reference) {
+-                    $schema = $schema->resolve();
+-                }
+-
+-                return $schema instanceof Schema ? $schema : null;
+-            }
+-        }
+-
+-        return null;
+-    }
+-
+-    private function castToSchemaType(mixed $value, ?Schema $schema): mixed
++    /**
++     * @param  array<string, mixed>|null  $schema
++     */
++    private function castToSchemaType(mixed $value, ?array $schema): mixed
+     {
+-        if ($schema === null || $schema->type === null) {
++        if ($schema === null || ! isset($schema['type'])) {
+             return $value;
+         }
+ 
+         try {
+-            return match ($schema->type) {
++            return match ($schema['type']) {
+                 'integer' => TypeCaster::asInteger($value),
+                 'number' => TypeCaster::asFloat($value),
+                 'string' => TypeCaster::asString($value),
+diff --git a/packages/core/src/Runner/Dto/OpenApiPayload.php b/packages/core/src/Runner/Dto/OpenApiPayload.php
+index 4f4ea57..aa26375 100644
+--- a/packages/core/src/Runner/Dto/OpenApiPayload.php
++++ b/packages/core/src/Runner/Dto/OpenApiPayload.php
+@@ -7,17 +7,19 @@ namespace Alama\Arazzo\Runner\Dto;
+ class OpenApiPayload
+ {
+     /**
+-     * @param array<string, mixed> $path
+-     * @param array<string, mixed> $query
+-     * @param array<string, mixed> $header
+-     * @param array<string, mixed> $auto
++     * @param  array<string, mixed>  $path
++     * @param  array<string, mixed>  $query
++     * @param  array<string, mixed>  $header
++     * @param  array<string, mixed>  $cookie
++     * @param  array<string, mixed>  $auto
+      */
+     public function __construct(
+         public array $path = [],
+         public array $query = [],
+         public array $header = [],
++        public array $cookie = [],
+         public array $auto = [],
+         public mixed $body = null,
+-    ) {
+-    }
++        public ?string $bodyMediaType = null,
++    ) {}
+ }
+diff --git a/packages/core/src/Runner/Exceptions/UnsupportedSerializationStyleException.php b/packages/core/src/Runner/Exceptions/UnsupportedSerializationStyleException.php
+new file mode 100644
+index 0000000..38d505f
+--- /dev/null
++++ b/packages/core/src/Runner/Exceptions/UnsupportedSerializationStyleException.php
+@@ -0,0 +1,15 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Alama\Arazzo\Runner\Exceptions;
++
++use RuntimeException;
++
++class UnsupportedSerializationStyleException extends RuntimeException
++{
++    public function __construct(string $style, string $location)
++    {
++        parent::__construct(sprintf('Unsupported serialization style "%s" for location "%s".', $style, $location));
++    }
++}
+diff --git a/packages/core/src/Runner/ParameterSerializer.php b/packages/core/src/Runner/ParameterSerializer.php
+new file mode 100644
+index 0000000..1256fe8
+--- /dev/null
++++ b/packages/core/src/Runner/ParameterSerializer.php
+@@ -0,0 +1,194 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Alama\Arazzo\Runner;
++
++use Alama\Arazzo\Runner\Exceptions\UnsupportedSerializationStyleException;
++
++class ParameterSerializer
++{
++    /**
++     * @param  array<string, array<string, mixed>>  $normalizedParams
++     * @param  array<string, mixed>  $payload
++     * @return array<string, string>
++     */
++    public static function serialize(string $location, array $normalizedParams, array $payload): array
++    {
++        $serialized = [];
++        foreach ($payload as $name => $value) {
++            $def = $normalizedParams[$name] ?? [];
++            /** @var string $style */
++            $style = $def['style'] ?? self::getDefaultStyle($location);
++            /** @var bool $explode */
++            $explode = $def['explode'] ?? self::getDefaultExplode($style);
++
++            $serialized[$name] = self::serializeValue($name, $value, $style, $explode, $location);
++        }
++
++        return $serialized;
++    }
++
++    public static function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string
++    {
++        return match ($style) {
++            'simple' => self::serializeSimple($name, $value, $explode),
++            'form' => self::serializeForm($name, $value, $explode),
++            'matrix' => self::serializeMatrix($name, $value, $explode),
++            'label' => self::serializeLabel($name, $value, $explode),
++            'spaceDelimited' => self::serializeDelimited($name, $value, $explode, ' '),
++            'pipeDelimited' => self::serializeDelimited($name, $value, $explode, '|'),
++            default => throw new UnsupportedSerializationStyleException($style, $location),
++        };
++    }
++
++    private static function asString(mixed $val): string
++    {
++        if (is_scalar($val)) {
++            return (string) $val;
++        }
++
++        return is_array($val) || is_object($val) ? json_encode($val) ?: '' : '';
++    }
++
++    private static function serializeSimple(string $name, mixed $value, bool $explode): string
++    {
++        if (is_array($value)) {
++            // associative vs sequential
++            if (array_is_list($value)) {
++                $mapped = array_map(fn ($v) => self::asString($v), $value);
++
++                return implode(',', $mapped);
++            }
++            $parts = [];
++            foreach ($value as $k => $v) {
++                if ($explode) {
++                    $parts[] = self::asString($k).'='.self::asString($v);
++                } else {
++                    $parts[] = self::asString($k).','.self::asString($v);
++                }
++            }
++
++            return implode(',', $parts);
++        }
++
++        return self::asString($value);
++    }
++
++    private static function serializeForm(string $name, mixed $value, bool $explode): string
++    {
++        if (is_array($value)) {
++            if (array_is_list($value)) {
++                if ($explode) {
++                    // ?id=3&id=4&id=5
++                    $parts = array_map(fn ($v) => $name.'='.urlencode(self::asString($v)), $value);
++
++                    return implode('&', $parts);
++                }
++
++                // ?id=3,4,5
++                return $name.'='.implode(',', array_map(fn ($v) => urlencode(self::asString($v)), $value));
++            }
++            // associative
++            if ($explode) {
++                $parts = [];
++                foreach ($value as $k => $v) {
++                    $parts[] = self::asString($k).'='.urlencode(self::asString($v));
++                }
++
++                return implode('&', $parts);
++            }
++            $parts = [];
++            foreach ($value as $k => $v) {
++                $parts[] = self::asString($k).','.urlencode(self::asString($v));
++            }
++
++            return $name.'='.implode(',', $parts);
++        }
++
++        return $name.'='.urlencode(self::asString($value));
++    }
++
++    private static function serializeMatrix(string $name, mixed $value, bool $explode): string
++    {
++        if (is_array($value)) {
++            if (array_is_list($value)) {
++                if ($explode) {
++                    $parts = array_map(fn ($v) => ';'.$name.'='.urlencode(self::asString($v)), $value);
++
++                    return implode('', $parts);
++                }
++
++                return ';'.$name.'='.implode(',', array_map(fn ($v) => urlencode(self::asString($v)), $value));
++            }
++
++            if ($explode) {
++                $parts = [];
++                foreach ($value as $k => $v) {
++                    $parts[] = ';'.self::asString($k).'='.urlencode(self::asString($v));
++                }
++
++                return implode('', $parts);
++            }
++            $parts = [];
++            foreach ($value as $k => $v) {
++                $parts[] = self::asString($k).','.urlencode(self::asString($v));
++            }
++
++            return ';'.$name.'='.implode(',', $parts);
++        }
++
++        return ';'.$name.'='.urlencode(self::asString($value));
++    }
++
++    private static function serializeLabel(string $name, mixed $value, bool $explode): string
++    {
++        if (is_array($value)) {
++            if (array_is_list($value)) {
++                return '.'.implode($explode ? '.' : ',', array_map(fn ($v) => urlencode(self::asString($v)), $value));
++            }
++            $parts = [];
++            foreach ($value as $k => $v) {
++                if ($explode) {
++                    $parts[] = self::asString($k).'='.urlencode(self::asString($v));
++                } else {
++                    $parts[] = self::asString($k).','.urlencode(self::asString($v));
++                }
++            }
++
++            return '.'.implode($explode ? '.' : ',', $parts);
++        }
++
++        return '.'.urlencode(self::asString($value));
++    }
++
++    private static function serializeDelimited(string $name, mixed $value, bool $explode, string $delimiter): string
++    {
++        $encodedDelimiter = urlencode($delimiter);
++        if (is_array($value)) {
++            if ($explode) {
++                $parts = array_map(fn ($v) => $name.'='.urlencode(self::asString($v)), $value);
++
++                return implode('&', $parts);
++            }
++
++            return $name.'='.implode($encodedDelimiter, array_map(fn ($v) => urlencode(self::asString($v)), $value));
++        }
++
++        return $name.'='.urlencode(self::asString($value));
++    }
++
++    private static function getDefaultStyle(string $location): string
++    {
++        return match ($location) {
++            'query', 'cookie' => 'form',
++            'path', 'header' => 'simple',
++            default => 'simple',
++        };
++    }
++
++    private static function getDefaultExplode(string $style): bool
++    {
++        return $style === 'form';
++    }
++}
+diff --git a/packages/core/tests/Runner/DefaultOpenApiExecutorTest.php b/packages/core/tests/Runner/DefaultOpenApiExecutorTest.php
+index 0b9b78b..270a335 100644
+--- a/packages/core/tests/Runner/DefaultOpenApiExecutorTest.php
++++ b/packages/core/tests/Runner/DefaultOpenApiExecutorTest.php
+@@ -61,7 +61,7 @@ it('builds and sends an openapi request using the schema to route parameters', f
+     $executor = new DefaultOpenApiExecutor(
+         $httpClient,
+         $requestFactory,
+-        new NullLogger(),
++        new NullLogger,
+     );
+ 
+     $payload = new OpenApiPayload(
+@@ -73,9 +73,15 @@ it('builds and sends an openapi request using the schema to route parameters', f
+         path: '/users/{userId}',
+         method: 'get',
+         resolvedServerUrl: 'https://api.example.com/v1',
+-        pathParameters: [],
+-        queryParameters: [],
+-        headerParameters: [],
++        pathParameters: [
++            'userId' => ['name' => 'userId', 'in' => 'path', 'schema' => ['type' => 'integer']],
++        ],
++        queryParameters: [
++            'limit' => ['name' => 'limit', 'in' => 'query', 'schema' => ['type' => 'integer']],
++        ],
++        headerParameters: [
++            'X-Auth' => ['name' => 'X-Auth', 'in' => 'header', 'schema' => ['type' => 'string']],
++        ],
+         cookieParameters: [],
+         requestBodies: [],
+         responses: [],
+diff --git a/packages/core/tests/Runner/ParameterSerializerTest.php b/packages/core/tests/Runner/ParameterSerializerTest.php
+new file mode 100644
+index 0000000..a183921
+--- /dev/null
++++ b/packages/core/tests/Runner/ParameterSerializerTest.php
+@@ -0,0 +1,52 @@
++<?php
++
++declare(strict_types=1);
++
++use Alama\Arazzo\Runner\Exceptions\UnsupportedSerializationStyleException;
++use Alama\Arazzo\Runner\ParameterSerializer;
++
++it('serializes simple style', function () {
++    expect(ParameterSerializer::serializeValue('color', 'blue', 'simple', false, 'path'))->toBe('blue');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'simple', false, 'path'))->toBe('blue,black,brown');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'simple', true, 'path'))->toBe('blue,black,brown');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'simple', false, 'path'))->toBe('R,100,G,200,B,150');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'simple', true, 'path'))->toBe('R=100,G=200,B=150');
++});
++
++it('serializes label style', function () {
++    expect(ParameterSerializer::serializeValue('color', 'blue', 'label', false, 'path'))->toBe('.blue');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'label', false, 'path'))->toBe('.blue,black,brown');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'label', true, 'path'))->toBe('.blue.black.brown');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'label', false, 'path'))->toBe('.R,100,G,200,B,150');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'label', true, 'path'))->toBe('.R=100.G=200.B=150');
++});
++
++it('serializes matrix style', function () {
++    expect(ParameterSerializer::serializeValue('color', 'blue', 'matrix', false, 'path'))->toBe(';color=blue');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'matrix', false, 'path'))->toBe(';color=blue,black,brown');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'matrix', true, 'path'))->toBe(';color=blue;color=black;color=brown');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'matrix', false, 'path'))->toBe(';color=R,100,G,200,B,150');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'matrix', true, 'path'))->toBe(';R=100;G=200;B=150');
++});
++
++it('serializes form style', function () {
++    expect(ParameterSerializer::serializeValue('color', 'blue', 'form', false, 'query'))->toBe('color=blue');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'form', false, 'query'))->toBe('color=blue,black,brown');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'form', true, 'query'))->toBe('color=blue&color=black&color=brown');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'form', false, 'query'))->toBe('color=R,100,G,200,B,150');
++    expect(ParameterSerializer::serializeValue('color', ['R' => '100', 'G' => '200', 'B' => '150'], 'form', true, 'query'))->toBe('R=100&G=200&B=150');
++});
++
++it('serializes spaceDelimited style', function () {
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'spaceDelimited', false, 'query'))->toBe('color=blue+black+brown');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'spaceDelimited', true, 'query'))->toBe('color=blue&color=black&color=brown');
++});
++
++it('serializes pipeDelimited style', function () {
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'pipeDelimited', false, 'query'))->toBe('color=blue%7Cblack%7Cbrown');
++    expect(ParameterSerializer::serializeValue('color', ['blue', 'black', 'brown'], 'pipeDelimited', true, 'query'))->toBe('color=blue&color=black&color=brown');
++});
++
++it('throws on unsupported style', function () {
++    ParameterSerializer::serializeValue('color', 'blue', 'deepObject', false, 'query');
++})->throws(UnsupportedSerializationStyleException::class, 'Unsupported serialization style "deepObject" for location "query".');

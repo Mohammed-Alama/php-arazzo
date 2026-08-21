@@ -661,12 +661,6 @@ parameters:
 			path: src/Runner/JsonPathEvaluator.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/OpenApiParser.php
-
-		-
 			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1

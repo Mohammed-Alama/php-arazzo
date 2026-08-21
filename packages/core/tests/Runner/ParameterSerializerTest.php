@@ -50,3 +50,23 @@ it('serializes pipeDelimited style', function () {
 it('throws on unsupported style', function () {
     ParameterSerializer::serializeValue('color', 'blue', 'deepObject', false, 'query');
 })->throws(UnsupportedSerializationStyleException::class, 'Unsupported serialization style "deepObject" for location "query".');
+
+it('serializes identically across OpenAPI versions (2.0/3.0/3.1)', function (array $normalizedParams, array $payload, array $expected) {
+    expect(ParameterSerializer::serialize('query', $normalizedParams, $payload))->toBe($expected);
+})->with([
+    'OpenAPI 2.0 (implicit style/explode)' => [
+        ['color' => []],
+        ['color' => ['blue', 'black', 'brown']],
+        ['color' => 'color=blue&color=black&color=brown'],
+    ],
+    'OpenAPI 3.0 (explicit form explode false)' => [
+        ['color' => ['style' => 'form', 'explode' => false]],
+        ['color' => ['blue', 'black', 'brown']],
+        ['color' => 'color=blue,black,brown'],
+    ],
+    'OpenAPI 3.1 (explicit form explode true)' => [
+        ['color' => ['style' => 'form', 'explode' => true]],
+        ['color' => ['blue', 'black', 'brown']],
+        ['color' => 'color=blue&color=black&color=brown'],
+    ],
+]);

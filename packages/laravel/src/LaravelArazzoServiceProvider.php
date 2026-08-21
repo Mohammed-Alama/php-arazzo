@@ -206,7 +206,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(OpenApiExecutorInterface::class, function ($app) {
             return new DefaultOpenApiExecutor(
-                $app->make(OpenApiDocumentLoader::class),
                 $app->make(ClientInterface::class),
                 $app->make(RequestFactoryInterface::class),
                 $app->make(LoggerInterface::class),

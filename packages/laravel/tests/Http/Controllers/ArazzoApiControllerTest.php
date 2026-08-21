@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
+use Alama\Arazzo\Dto\Enum\SourceType;
+use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Generator\ArazzoGenerator;
-use Alama\Arazzo\Resolver\ResolvedSource;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Mockery;
 
@@ -14,15 +15,19 @@ use function Pest\Laravel\postJson;
 
 it('returns endpoints list from openapi spec', function () {
     $resolver = Mockery::mock(SourceResolver::class);
-    $resolved = Mockery::mock(ResolvedSource::class);
 
-    $resolved->shouldReceive('extract')->with('/')->andReturn([
-        'paths' => [
-            '/test' => [
-                'get' => ['operationId' => 'getTest', 'summary' => 'Test', 'tags' => ['API']],
+    $resolved = new SourceDocument(
+        name: 'test',
+        type: SourceType::Openapi,
+        canonicalUri: 'http://test',
+        content: [
+            'paths' => [
+                '/test' => [
+                    'get' => ['operationId' => 'getTest', 'summary' => 'Test', 'tags' => ['API']],
+                ],
             ],
         ],
-    ]);
+    );
 
     $resolver->shouldReceive('resolve')->andReturn($resolved);
     $this->app->instance(SourceResolver::class, $resolver);
