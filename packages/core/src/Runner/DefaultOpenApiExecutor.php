@@ -19,7 +19,8 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ?LoggerInterface $logger = null,
-    ) {}
+    ) {
+    }
 
     public function execute(
         ResolvedOperation $resolvedOperation,
@@ -55,16 +56,19 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $serializedPath = ParameterSerializer::serialize('path', $resolvedOperation->normalized->pathParameters, $payload->path);
         foreach ($serializedPath as $name => $value) {
+            $style = $resolvedOperation->normalized->pathParameters[$name]['style'] ?? 'simple';
+            $replacement = $style === 'simple' ? urlencode($value) : $value;
             // matrix and label include the prefix in the serialized value,
             // so we replace the template
-            $urlPath = str_replace('{'.$name.'}', $value, $urlPath);
+            $urlPath = str_replace('{' . $name . '}', $replacement, $urlPath);
         }
 
-        $url = $baseUrl.$urlPath;
+        $url = $baseUrl . $urlPath;
 
         $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $payload->query);
-        if (! empty($serializedQuery)) {
-            $url .= '?'.implode('&', array_values($serializedQuery));
+        $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
+        if (!empty($filteredQuery)) {
+            $url .= '?' . implode('&', array_values($filteredQuery));
         }
 
         $request = $this->requestFactory->createRequest($method, $url);
@@ -75,7 +79,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         }
 
         $serializedCookie = ParameterSerializer::serialize('cookie', $resolvedOperation->normalized->cookieParameters, $payload->cookie);
-        if (! empty($serializedCookie)) {
+        if (!empty($serializedCookie)) {
             $cookieString = implode('; ', array_values($serializedCookie));
             $request = $request->withHeader('Cookie', $cookieString);
         }
@@ -98,8 +102,9 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     /**
-     * @param  array<string, array<string, mixed>>  $normalizedParams
-     * @param  array<string, mixed>  $payloadParams
+     * @param array<string, array<string, mixed>> $normalizedParams
+     * @param array<string, mixed> $payloadParams
+     *
      * @return array<string, mixed>
      */
     private function castParameters(array $normalizedParams, array $payloadParams): array
@@ -115,11 +120,11 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     /**
-     * @param  array<string, mixed>|null  $schema
+     * @param array<string, mixed>|null $schema
      */
     private function castToSchemaType(mixed $value, ?array $schema): mixed
     {
-        if ($schema === null || ! isset($schema['type'])) {
+        if ($schema === null || !isset($schema['type'])) {
             return $value;
         }
 

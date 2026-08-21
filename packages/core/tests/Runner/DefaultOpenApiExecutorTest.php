@@ -61,7 +61,7 @@ it('builds and sends an openapi request using the schema to route parameters', f
     $executor = new DefaultOpenApiExecutor(
         $httpClient,
         $requestFactory,
-        new NullLogger,
+        new NullLogger(),
     );
 
     $payload = new OpenApiPayload(
