@@ -146,15 +146,6 @@ parameters:
 
 		-
 			message: '''
-				#^Access to constant on deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: classConstant.deprecatedInterface
-			count: 8
-			path: src/LaravelArazzoServiceProvider.php
-
-		-
-			message: '''
 				#^Call to method __construct\(\) of deprecated class Alama\\Arazzo\\Runner\\ArazzoExpressionResolver\:
 				Use specific implementations instead$#
 			'''

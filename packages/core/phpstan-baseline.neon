@@ -241,33 +241,6 @@ parameters:
 			path: src/Runner/AsyncApiStepExecutor.php
 
 		-
-			message: '''
-				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Runner\\AsyncApiStepExecutor\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
-			count: 1
-			path: src/Runner/AsyncApiStepExecutor.php
-
-		-
-			message: '''
-				#^Call to method evaluateSuccessCriteria\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/CorrelationResumer.php
-
-		-
-			message: '''
-				#^Call to method extractOutputs\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/CorrelationResumer.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 4
@@ -288,15 +261,6 @@ parameters:
 		-
 			message: '#^Parameter \#4 \$components of class Alama\\Arazzo\\Runner\\WorkflowContext constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Runner/CorrelationResumer.php
-
-		-
-			message: '''
-				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Runner\\CorrelationResumer\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
 			count: 1
 			path: src/Runner/CorrelationResumer.php
 
@@ -589,33 +553,6 @@ parameters:
 			path: src/Runner/ExpressionEvaluator.php
 
 		-
-			message: '''
-				#^Call to method evaluate\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 2
-			path: src/Runner/HttpStepExecutor.php
-
-		-
-			message: '''
-				#^Call to method extractOutputs\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/HttpStepExecutor.php
-
-		-
-			message: '''
-				#^Call to method validateResponseSchema\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/HttpStepExecutor.php
-
-		-
 			message: '#^Cannot access offset string on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
@@ -630,15 +567,6 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$responseBody of static method Alama\\Arazzo\\Runner\\StepExecutionOutcome\:\:resolved\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Runner/HttpStepExecutor.php
-
-		-
-			message: '''
-				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Runner\\HttpStepExecutor\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
 			count: 1
 			path: src/Runner/HttpStepExecutor.php
 
@@ -709,24 +637,6 @@ parameters:
 			path: src/Runner/SchemaValidator.php
 
 		-
-			message: '''
-				#^Call to method evaluate\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/StepExecutionWorker.php
-
-		-
-			message: '''
-				#^Call to method evaluateSuccessCriteria\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/StepExecutionWorker.php
-
-		-
 			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -763,53 +673,8 @@ parameters:
 			path: src/Runner/StepExecutionWorker.php
 
 		-
-			message: '''
-				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Runner\\StepExecutionWorker\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
-			count: 1
-			path: src/Runner/StepExecutionWorker.php
-
-		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
-			count: 1
-			path: src/Runner/StepExecutor.php
-
-		-
-			message: '''
-				#^Call to method evaluate\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 2
-			path: src/Runner/StepExecutor.php
-
-		-
-			message: '''
-				#^Call to method evaluateSuccessCriteria\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/StepExecutor.php
-
-		-
-			message: '''
-				#^Call to method extractOutputs\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/StepExecutor.php
-
-		-
-			message: '''
-				#^Call to method validateResponseSchema\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
 			count: 1
 			path: src/Runner/StepExecutor.php
 
@@ -892,15 +757,6 @@ parameters:
 			path: src/Runner/StepExecutor.php
 
 		-
-			message: '''
-				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Runner\\StepExecutor\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
-			count: 1
-			path: src/Runner/StepExecutor.php
-
-		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
 			count: 1
@@ -913,15 +769,6 @@ parameters:
 			path: src/Runner/StepExecutor.php
 
 		-
-			message: '''
-				#^Call to method evaluateCriteria\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/StepOutcomeHandler.php
-
-		-
 			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -930,15 +777,6 @@ parameters:
 		-
 			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Events\\RunCompleted constructor expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Runner/StepOutcomeHandler.php
-
-		-
-			message: '''
-				#^Parameter \$expressionResolver of method Alama\\Arazzo\\Runner\\StepOutcomeHandler\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
 			count: 1
 			path: src/Runner/StepOutcomeHandler.php
 
@@ -1015,15 +853,6 @@ parameters:
 			path: src/Runner/WorkflowContext.php
 
 		-
-			message: '''
-				#^Call to method evaluateCriteria\(\) of deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: method.deprecatedInterface
-			count: 1
-			path: src/Runner/WorkflowEngine.php
-
-		-
 			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -1038,15 +867,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Runner\\Dto\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Runner/WorkflowEngine.php
-
-		-
-			message: '''
-				#^Parameter \$expressions of method Alama\\Arazzo\\Runner\\WorkflowEngine\:\:__construct\(\) has typehint with deprecated interface Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface\:
-				Use specific interfaces instead \(RequestCompilerInterface, OutputExtractorInterface, etc\.\)$#
-			'''
-			identifier: parameter.deprecatedInterface
 			count: 1
 			path: src/Runner/WorkflowEngine.php
 

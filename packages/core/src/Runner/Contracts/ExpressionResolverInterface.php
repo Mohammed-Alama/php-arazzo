@@ -11,9 +11,6 @@ use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\WorkflowContext;
 
-/**
- * @deprecated Use specific interfaces instead (RequestCompilerInterface, OutputExtractorInterface, etc.)
- */
 interface ExpressionResolverInterface
 {
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;

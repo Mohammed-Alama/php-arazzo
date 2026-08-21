@@ -54,5 +54,6 @@
 ### Task 5: Regression checks and cleanup
 - [ ] Write a regression test verifying `ArazzoRequestCompiler` and `RequestCompilerInterface` are entirely absent (removed in commit 5b88b0d) and no logic depends on them.
 - [ ] Run multi-version serialization test matrix (2.0/3.0/3.1 data providers).
+- [ ] Remove `cebe/php-openapi` dependency from `packages/core/composer.json` and ensure no references remain.
 - [ ] Run `composer run analyse` and `composer run test`.
 - [ ] Commit `refactor: finalize Arazzo source resolution and normalizer architecture`.
