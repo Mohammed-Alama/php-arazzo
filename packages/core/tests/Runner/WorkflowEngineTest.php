@@ -11,6 +11,7 @@ use Alama\Arazzo\Dto\Info;
 use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Dto\Enum\TransitionType;
 use Alama\Arazzo\Runner\Dto\ExecutionState;
 use Alama\Arazzo\Runner\Dto\Transition;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;
@@ -70,11 +71,11 @@ function workflowEngineStep(string $id, array $dependsOn = []): Step
 it('creates every transition kind with its explicit state', function (): void {
     $state = ExecutionState::start('exec_1', 'definition_1', 'workflow_1');
 
-    expect(Transition::next($state, 'step_2')->type)->toBe(\Alama\Arazzo\Runner\Dto\Enum\TransitionType::Next)
+    expect(Transition::next($state, 'step_2')->type)->toBe(TransitionType::Next)
         ->and(Transition::retry($state, 'step_1', 3)->delaySeconds)->toBe(3)
         ->and(Transition::goto($state, 'step_2', 'workflow_2')->workflowId)->toBe('workflow_2')
         ->and(Transition::end($state, 'succeeded')->status)->toBe('succeeded')
-        ->and(Transition::suspend($state)->type)->toBe(\Alama\Arazzo\Runner\Dto\Enum\TransitionType::Suspend);
+        ->and(Transition::suspend($state)->type)->toBe(TransitionType::Suspend);
 });
 
 it('moves to the next dependency-ready step after a successful attempt', function (): void {
@@ -85,7 +86,7 @@ it('moves to the next dependency-ready step after a successful attempt', functio
 
     $transition = (new WorkflowEngine(workflowEngineResolver()))->transition(workflowEngineDocument($workflow), $workflow, $first, $state, true);
 
-    expect($transition->type)->toBe(\Alama\Arazzo\Runner\Dto\Enum\TransitionType::Next)->and($transition->stepId)->toBe('second');
+    expect($transition->type)->toBe(TransitionType::Next)->and($transition->stepId)->toBe('second');
 });
 
 it('enforces the shared step budget before an attempt', function (): void {

@@ -20,6 +20,7 @@ use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
 use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Contracts\StepProtocolExecutorInterface;
+use Alama\Arazzo\Runner\Dto\Enum\TransitionType;
 use Alama\Arazzo\Runner\Dto\ExecutionState;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use LogicException;
@@ -158,7 +159,7 @@ class StepExecutionWorker
                     if ($transition->isTerminal()) {
                         $this->executionRegistry->complete($executionId, $transition->status === 'succeeded' ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
                         $this->eventLedger->append($executionId, $transition->status === 'succeeded' ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
-                    } elseif ($this->queueDriver !== null && $transition->type !== \Alama\Arazzo\Runner\Dto\Enum\TransitionType::Suspend) {
+                    } elseif ($this->queueDriver !== null && $transition->type !== TransitionType::Suspend) {
                         $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
                         $targetStep = $this->findStep($targetWorkflow, $transition->stepId ?? '');
                         if ($targetStep !== null) {
