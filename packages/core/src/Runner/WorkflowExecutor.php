@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Dto\ArazzoDocument;
+use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Events\RunCompleted;
@@ -140,7 +141,9 @@ class WorkflowExecutor
         try {
             while ($stepId !== null) {
                 $step = $this->step($currentWorkflow, $stepId);
-                if ($step === null) { throw new \LogicException("Unknown step '{$stepId}' in workflow '{$currentWorkflow->workflowId}'."); }
+                if ($step === null) {
+                    throw new \LogicException("Unknown step '{$stepId}' in workflow '{$currentWorkflow->workflowId}'.");
+                }
                 $attempt = $state->attemptFor($stepId) + 1;
                 $this->logger?->logStepStarted($stepId);
                 $this->events->dispatch(new StepStarted($executionId, $currentWorkflow->workflowId, $stepId, $attempt, new \DateTimeImmutable()));
@@ -153,8 +156,12 @@ class WorkflowExecutor
                 $state = $transition->state;
                 $this->events->dispatch(new StepExecutedEvent($executionId, $currentWorkflow->workflowId, $stepId, (int) ($raw['statusCode'] ?? 0), $result->outputs, $success, new \DateTimeImmutable()));
                 if ($transition->isTerminal()) {
-                    if ($transition->status === 'failed') { $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new \RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new \DateTimeImmutable())); }
-                    else { $this->events->dispatch(new RunCompleted($executionId, $currentWorkflow->workflowId, $state->outputs, new \DateTimeImmutable())); }
+                    if ($transition->status === 'failed') {
+                        $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new \RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new \DateTimeImmutable()));
+                    } else {
+                        $this->events->dispatch(new RunCompleted($executionId, $currentWorkflow->workflowId, $state->outputs, new \DateTimeImmutable()));
+                    }
+
                     return new ExecutionResult($currentWorkflow->workflowId, $transition->status ?? 'failed', $state->outputs, $results);
                 }
                 if ($transition->workflowId !== null && $transition->workflowId !== $currentWorkflow->workflowId) {
@@ -166,10 +173,32 @@ class WorkflowExecutor
             $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, $t, new \DateTimeImmutable()));
             throw $t;
         }
+
         return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $state->outputs, $results);
     }
 
-    private function firstStep(Workflow $workflow): ?string { return $workflow->steps[0]->stepId ?? null; }
-    private function step(Workflow $workflow, string $id): ?\Alama\Arazzo\Dto\Step { foreach ($workflow->steps as $step) { if ($step->stepId === $id) { return $step; } } return null; }
-    private function workflow(ArazzoDocument $document, string $id): Workflow { foreach ($document->workflows as $workflow) { if ($workflow->workflowId === $id) { return $workflow; } } throw new \LogicException("Unknown workflow '{$id}'."); }
+    private function firstStep(Workflow $workflow): ?string
+    {
+        return $workflow->steps[0]->stepId ?? null;
+    }
+
+    private function step(Workflow $workflow, string $id): ?Step
+    {
+        foreach ($workflow->steps as $step) {
+            if ($step->stepId === $id) {
+                return $step;
+            }
+        }
+
+return null;
+    }
+
+    private function workflow(ArazzoDocument $document, string $id): Workflow
+    {
+        foreach ($document->workflows as $workflow) {
+            if ($workflow->workflowId === $id) {
+                return $workflow;
+            }
+        } throw new \LogicException("Unknown workflow '{$id}'.");
+    }
 }

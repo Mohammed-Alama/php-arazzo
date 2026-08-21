@@ -10,7 +10,6 @@ use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Dto\SuccessCriterion;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\WorkflowContext;
-use Psr\Http\Message\RequestInterface;
 
 /**
  * @deprecated Use specific interfaces instead (RequestCompilerInterface, OutputExtractorInterface, etc.)
@@ -18,7 +17,6 @@ use Psr\Http\Message\RequestInterface;
 interface ExpressionResolverInterface
 {
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;
-
 
     /**
      * @return array<string, mixed>

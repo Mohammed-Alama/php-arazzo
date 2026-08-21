@@ -20,20 +20,52 @@ use Psr\Http\Message\RequestInterface;
 
 function workflowEngineResolver(): ExpressionResolverInterface
 {
-    return new class implements ExpressionResolverInterface {
-        public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed { return $expression->raw; }
-        public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-        public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface { throw new \LogicException('not used'); }
-        public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array { return []; }
-        public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool { return true; }
-        public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool { return true; }
+    return new class() implements ExpressionResolverInterface
+    {
+        public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+        {
+            return $expression->raw;
+        }
+
+        public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
+        {
+        }
+
+        public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
+        {
+            throw new \LogicException('not used');
+        }
+
+        public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+        {
+            return [];
+        }
+
+        public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+        {
+            return true;
+        }
+
+        public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+        {
+            return true;
+        }
     };
 }
 
 /** @param list<Step> $steps */
-function workflowEngineWorkflow(array $steps): Workflow { return new Workflow('workflow_1', null, null, null, [], $steps, [], [], [], []); }
-function workflowEngineDocument(Workflow $workflow): ArazzoDocument { return new ArazzoDocument('1.0.0', new Info('Test', null, null, '1.0.0'), [], [$workflow], new Components([], [], [], []), []); }
-function workflowEngineStep(string $id, array $dependsOn = []): Step { return new Step($id, null, null, null, null, [], null, [], [], [], [], $dependsOn); }
+function workflowEngineWorkflow(array $steps): Workflow
+{
+    return new Workflow('workflow_1', null, null, null, [], $steps, [], [], [], []);
+}
+function workflowEngineDocument(Workflow $workflow): ArazzoDocument
+{
+    return new ArazzoDocument('1.0.0', new Info('Test', null, null, '1.0.0'), [], [$workflow], new Components([], [], [], []), []);
+}
+function workflowEngineStep(string $id, array $dependsOn = []): Step
+{
+    return new Step($id, null, null, null, null, [], null, [], [], [], [], $dependsOn);
+}
 
 it('creates every transition kind with its explicit state', function (): void {
     $state = ExecutionState::start('exec_1', 'definition_1', 'workflow_1');

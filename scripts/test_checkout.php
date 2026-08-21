@@ -8,6 +8,12 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 
 use Alama\Arazzo\Dto\Enum\Format;
 use Alama\Arazzo\Dto\RawDocument;
+use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Resolver\Parsers\ArazzoSourceParser;
+use Alama\Arazzo\Resolver\Parsers\OpenApiSourceParser;
 use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\ArazzoOutputExtractor;
@@ -17,12 +23,6 @@ use Alama\Arazzo\Runner\ExpressionEvaluator;
 use Alama\Arazzo\Runner\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\StepExecutor;
 use Alama\Arazzo\Runner\WorkflowExecutor;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
-use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolver\Parsers\ArazzoSourceParser;
-use Alama\Arazzo\Resolver\Parsers\OpenApiSourceParser;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Symfony\Component\Yaml\Yaml;
@@ -74,7 +74,7 @@ try {
     $result = $executor->execute($workflow, $document, [
         'product_id' => 101,
         'quantity' => 2,
-        'payment_method' => 'credit_card'
+        'payment_method' => 'credit_card',
     ]);
 
     echo "Workflow execution finished with status: {$result->status}\n";
@@ -87,7 +87,7 @@ try {
             print_r($stepResult->outputs);
         }
     }
-    
+
     echo "Workflow Outputs:\n";
     print_r($result->outputs);
 } catch (Throwable $e) {

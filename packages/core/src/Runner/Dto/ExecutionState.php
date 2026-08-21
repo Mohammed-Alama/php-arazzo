@@ -80,19 +80,79 @@ final readonly class ExecutionState implements JsonSerializable
         return $this->toArray();
     }
 
-    public function attemptFor(string $stepId): int { return $this->stepAttempts[$stepId] ?? 0; }
-    public function withCurrentStep(?string $stepId): self { return new self($this->executionId, $this->definitionId, $this->workflowId, $stepId, $this->inputs, $this->stepAttempts, $this->stepResults, $this->dependencies, $this->outputs, $this->errors, $this->stepsSpent, $this->maxSteps, $this->workflowCallStack, $this->maxWorkflowDepth, $this->components, $this->status); }
-    public function withStatus(string $status): self { return $this->copy(status: $status); }
-    public function withWorkflow(string $workflowId): self { return $this->copy(workflowId: $workflowId); }
-    public function withOutput(string $name, mixed $value): self { $outputs = $this->outputs; $outputs[$name] = $value; return $this->copy(outputs: $outputs); }
+    public function attemptFor(string $stepId): int
+    {
+        return $this->stepAttempts[$stepId] ?? 0;
+    }
+
+    public function withCurrentStep(?string $stepId): self
+    {
+        return new self($this->executionId, $this->definitionId, $this->workflowId, $stepId, $this->inputs, $this->stepAttempts, $this->stepResults, $this->dependencies, $this->outputs, $this->errors, $this->stepsSpent, $this->maxSteps, $this->workflowCallStack, $this->maxWorkflowDepth, $this->components, $this->status);
+    }
+
+    public function withStatus(string $status): self
+    {
+        return $this->copy(status: $status);
+    }
+
+    public function withWorkflow(string $workflowId): self
+    {
+        return $this->copy(workflowId: $workflowId);
+    }
+
+    public function withOutput(string $name, mixed $value): self
+    {
+        $outputs = $this->outputs;
+        $outputs[$name] = $value;
+
+        return $this->copy(outputs: $outputs);
+    }
+
     /** @param array<string, mixed> $result */
-    public function withStepResult(string $stepId, array $result): self { $results = $this->stepResults; $results[$stepId] = $result; return $this->copy(stepResults: $results); }
-    public function withStepAttempt(string $stepId): self { $attempts = $this->stepAttempts; $attempts[$stepId] = ($attempts[$stepId] ?? 0) + 1; return $this->copy(stepAttempts: $attempts); }
-    public function spendStep(): self { return $this->copy(stepsSpent: $this->stepsSpent + 1); }
-    /** @param mixed $error */
-    public function withError(mixed $error): self { $errors = $this->errors; $errors[] = $error; return $this->copy(errors: $errors); }
-    public function enterWorkflow(string $workflowId): self { $stack = $this->workflowCallStack; $stack[] = $workflowId; return $this->copy(workflowId: $workflowId, workflowCallStack: $stack); }
-    public function leaveWorkflow(): self { $stack = $this->workflowCallStack; array_pop($stack); return $this->copy(workflowCallStack: $stack); }
+    public function withStepResult(string $stepId, array $result): self
+    {
+        $results = $this->stepResults;
+        $results[$stepId] = $result;
+
+        return $this->copy(stepResults: $results);
+    }
+
+    public function withStepAttempt(string $stepId): self
+    {
+        $attempts = $this->stepAttempts;
+        $attempts[$stepId] = ($attempts[$stepId] ?? 0) + 1;
+
+        return $this->copy(stepAttempts: $attempts);
+    }
+
+    public function spendStep(): self
+    {
+        return $this->copy(stepsSpent: $this->stepsSpent + 1);
+    }
+
+    public function withError(mixed $error): self
+    {
+        $errors = $this->errors;
+        $errors[] = $error;
+
+        return $this->copy(errors: $errors);
+    }
+
+    public function enterWorkflow(string $workflowId): self
+    {
+        $stack = $this->workflowCallStack;
+        $stack[] = $workflowId;
+
+        return $this->copy(workflowId: $workflowId, workflowCallStack: $stack);
+    }
+
+    public function leaveWorkflow(): self
+    {
+        $stack = $this->workflowCallStack;
+        array_pop($stack);
+
+        return $this->copy(workflowCallStack: $stack);
+    }
 
     private function copy(
         ?string $executionId = null, ?string $definitionId = null, ?string $workflowId = null,

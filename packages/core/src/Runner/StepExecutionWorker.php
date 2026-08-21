@@ -17,10 +17,10 @@ use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Dto\ExecutionState;
+use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Contracts\StepProtocolExecutorInterface;
+use Alama\Arazzo\Runner\Dto\ExecutionState;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -148,7 +148,9 @@ class StepExecutionWorker
                         $state = $state->withStepResult($completedStepId, $completedResult);
                     }
                     foreach ($this->attemptsFrom($contextWithResult) as $attemptedStepId => $attempts) {
-                        while ($state->attemptFor($attemptedStepId) < $attempts) { $state = $state->withStepAttempt($attemptedStepId); }
+                        while ($state->attemptFor($attemptedStepId) < $attempts) {
+                            $state = $state->withStepAttempt($attemptedStepId);
+                        }
                     }
                     $state = $state->withStepResult($step->stepId, $contextWithResult->getSteps()[$step->stepId] ?? []);
                     $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
@@ -232,7 +234,12 @@ class StepExecutionWorker
 
     private function findStep(Workflow $workflow, string $stepId): ?Step
     {
-        foreach ($workflow->steps as $step) { if ($step->stepId === $stepId) { return $step; } }
+        foreach ($workflow->steps as $step) {
+            if ($step->stepId === $stepId) {
+                return $step;
+            }
+        }
+
         return null;
     }
 
@@ -245,7 +252,10 @@ class StepExecutionWorker
     private function attemptsFrom(WorkflowContext $context): array
     {
         $attempts = [];
-        foreach ($context->getSteps() as $id => $step) { $attempts[$id] = (int) ($step['attempts'] ?? 0); }
+        foreach ($context->getSteps() as $id => $step) {
+            $attempts[$id] = (int) ($step['attempts'] ?? 0);
+        }
+
         return $attempts;
     }
 

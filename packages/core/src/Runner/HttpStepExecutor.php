@@ -83,7 +83,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $sourceDesc = $document->sourceDescriptions[0] ?? null;
         if ($sourceDesc === null) {
-            throw new \RuntimeException("No SourceDescription found in document");
+            throw new \RuntimeException('No SourceDescription found in document');
         }
 
         $operation = $step->operationId ?? $step->operationPath ?? '/';
@@ -96,8 +96,9 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
                 if ($this->injector !== null) {
                     return $this->injector->inject($request, $step, $context)->request;
                 }
+
                 return $request;
-            }
+            },
         );
 
         $decodedBody = json_decode((string) $response->getBody(), true);

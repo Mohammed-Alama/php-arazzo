@@ -57,14 +57,16 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
 
 use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Dto\Components;
+use Alama\Arazzo\Dto\Enum\SourceType;
 use Alama\Arazzo\Dto\Info;
+use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Runner\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Psr\Http\Client\ClientInterface;
 
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context
@@ -72,19 +74,20 @@ it('injects idempotency key natively during job execution independently of StepE
     $executionId = 'exec-idempotency-test-' . bin2hex(random_bytes(8));
     $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId($executionId);
     $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);
-    $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [new \Alama\Arazzo\Dto\SourceDescription('src', 'http://api.example.com', \Alama\Arazzo\Dto\Enum\SourceType::Openapi)], [$workflow], new Components([], [], [], []), []);
+    $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [new SourceDescription('src', 'http://api.example.com', SourceType::Openapi)], [$workflow], new Components([], [], [], []), []);
 
     $capturedRequest = null;
-    $openApiMock = \Mockery::mock(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class);
+    $openApiMock = \Mockery::mock(OpenApiExecutorInterface::class);
     $openApiMock->shouldReceive('execute')->once()->andReturnUsing(function ($source, $op, $payload, $interceptor) use (&$capturedRequest) {
         $request = new Request('POST', 'https://api.example.com/charges', [], '{"amount":100}');
         if ($interceptor) {
             $request = $interceptor($request);
         }
         $capturedRequest = $request;
+
         return new Response(201, [], '{}');
     });
-    app()->instance(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class, $openApiMock);
+    app()->instance(OpenApiExecutorInterface::class, $openApiMock);
 
     $resolver = \Mockery::mock(ExpressionResolverInterface::class);
     $resolver->shouldReceive('extractOutputs')->andReturn([]);

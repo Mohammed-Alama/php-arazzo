@@ -91,7 +91,7 @@ class StepExecutor
 
         $sourceDesc = $document->sourceDescriptions[0] ?? null;
         if ($sourceDesc === null) {
-            throw new \RuntimeException("No SourceDescription found in document");
+            throw new \RuntimeException('No SourceDescription found in document');
         }
 
         $operation = $step->operationId ?? $step->operationPath ?? '/';
@@ -128,7 +128,7 @@ class StepExecutor
                     ]);
 
                     return $request;
-                }
+                },
             );
 
             $statusCode = $response->getStatusCode();
