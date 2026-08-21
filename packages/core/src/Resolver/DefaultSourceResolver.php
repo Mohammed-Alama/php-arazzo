@@ -51,6 +51,7 @@ final readonly class DefaultSourceResolver implements SourceResolver
         // If it's a file scheme, and relative, it should be resolved against basePath.
         $canonicalUri = $this->resolveCanonicalUri($source->url, $basePath);
 
+        /** @var array<string, mixed> $decoded */
         return new SourceDocument(
             name: $source->name,
             type: $source->type,

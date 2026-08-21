@@ -129,10 +129,6 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         $resolvedSource = $this->sourceResolver->resolve($sourceDesc, getcwd() ?: '');
         $extracted = $resolvedSource->content;
 
-        if ($extracted instanceof OpenApi) {
-            return $extracted;
-        }
-
         $json = json_encode($extracted);
         if ($json === false) {
             return null;
