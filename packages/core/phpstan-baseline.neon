@@ -355,12 +355,6 @@ parameters:
 			path: src/Runner/DefaultOpenApiExecutor.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between cebe\\openapi\\spec\\OpenApi and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Runner/DefaultOpenApiExecutor.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between cebe\\openapi\\spec\\Operation and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1

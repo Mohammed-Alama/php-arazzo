@@ -82,10 +82,21 @@ class OpenApiOperationResolver
             throw new RuntimeException("Failed to load source '{$sourceName}'.");
         }
 
-        $rawDocument = json_decode(json_encode($openApi->getSerializableData()), true);
+        $encoded = json_encode($openApi->getSerializableData());
+        if ($encoded === false) {
+            throw new RuntimeException('Failed to encode OpenAPI document');
+        }
+        $rawDocument = json_decode($encoded, true);
+        if (!is_array($rawDocument)) {
+            throw new RuntimeException('Failed to decode OpenAPI document into an array');
+        }
+        /** @var array<string, mixed> $rawDocument */
 
+        /** @var string|null $foundPath */
         $foundPath = null;
+        /** @var string|null $foundMethod */
         $foundMethod = null;
+        /** @var Operation|null $cebeOperation */
         $cebeOperation = null;
 
         if ($isPath) {
@@ -98,15 +109,23 @@ class OpenApiOperationResolver
 
             $pathItem = $openApi->paths->getPath($foundPath);
             if ($pathItem && isset($pathItem->{$foundMethod})) {
-                $cebeOperation = $pathItem->{$foundMethod};
+                $op = $pathItem->{$foundMethod};
+                if ($op instanceof Operation) {
+                    $cebeOperation = $op;
+                }
             }
         } else {
             foreach ($openApi->paths as $path => $pathItem) {
                 foreach (['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as $method) {
                     if (isset($pathItem->{$method})) {
                         $op = $pathItem->{$method};
+                        /** @phpstan-ignore-next-line */
                         if ($op instanceof Operation && $op->operationId === $operationReference) {
-                            $foundPath = $path;
+                            if (is_string($path)) {
+                                $foundPath = $path;
+                            } elseif (is_scalar($path)) {
+                                $foundPath = (string) $path;
+                            }
                             $foundMethod = $method;
                             $cebeOperation = $op;
                             break 2;
@@ -128,7 +147,7 @@ class OpenApiOperationResolver
             default => throw new RuntimeException("Unsupported OpenAPI version: {$version}"),
         };
 
-        $normalized = $normalizer->normalize($rawDocument, $foundPath, $foundMethod);
+        $normalized = $normalizer->normalize($rawDocument, (string) $foundPath, (string) $foundMethod);
 
         return new ResolvedOperation(
             $targetSource,

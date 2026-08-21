@@ -11,6 +11,9 @@ use cebe\openapi\spec\Operation;
 
 class ResolvedOperation
 {
+    /**
+     * @param array<string, mixed> $rawDocument
+     */
     public function __construct(
         public readonly SourceDescription $source,
         public readonly NormalizedOpenApiOperation $normalized,

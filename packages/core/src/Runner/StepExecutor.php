@@ -92,13 +92,10 @@ class StepExecutor
         $payload->body = empty($bodyData) ? null : $bodyData;
 
         $resolved = $this->operationResolver->resolve($step, $document);
-        $sourceDesc = $resolved->source;
-        $operation = $step->operationId ?? $step->operationPath ?? '/';
 
         try {
             $response = $this->openApiExecutor->execute(
-                $sourceDesc,
-                $operation,
+                $resolved,
                 $payload,
                 function ($request) use (&$context, $step) {
                     if ($this->injector !== null) {

@@ -530,7 +530,7 @@ it('executes a workflow end-to-end', function () {
     $schemaValidator = new ArazzoSchemaValidator($operationResolver);
     $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
-    $openApiExecutor = new DefaultOpenApiExecutor($openApiLoader, $httpClient, $requestFactory);
+    $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
     $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor);

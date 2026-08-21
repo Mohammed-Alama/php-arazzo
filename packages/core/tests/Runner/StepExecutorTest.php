@@ -39,7 +39,7 @@ function createMockOperationResolver(): OpenApiOperationResolver
     $mock = Mockery::mock(OpenApiOperationResolver::class);
     $mock->shouldReceive('resolve')->andReturn(new ResolvedOperation(
         new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
-        new NormalizedOpenApiOperation('get', null, [], [], [], [], [], []),
+        new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
         new OpenApi([]),
         [],
         new Operation([]),
@@ -57,7 +57,7 @@ it('validates response schema if configured globally or locally', function (): v
     $resolver->shouldReceive('evaluateSuccessCriteria')->never();
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($s, $op, $p, $interceptor) {
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
         if ($interceptor) {
             $interceptor(new Request('GET', '/'));
         }
@@ -83,7 +83,7 @@ it('skips validation if configured off globally and locally', function (): void 
     $resolver->shouldReceive('evaluateSuccessCriteria')->once()->andReturn(true);
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($s, $op, $p, $interceptor) {
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
         if ($interceptor) {
             $interceptor(new Request('GET', '/'));
         }
@@ -105,7 +105,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
 
     $capturedRequest = null;
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($s, $op, $p, $interceptor) use (&$capturedRequest) {
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) use (&$capturedRequest) {
         $request = new Request('POST', 'https://api.example.com/x', [], '{"a":1}');
         if ($interceptor) {
             $capturedRequest = $interceptor($request);
@@ -137,7 +137,7 @@ it('does not inject a header when no injector is passed', function (): void {
 
     $capturedRequest = null;
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($s, $op, $p, $interceptor) use (&$capturedRequest) {
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) use (&$capturedRequest) {
         $request = new Request('POST', 'https://api.example.com/x', [], '{"a":1}');
         if ($interceptor) {
             $capturedRequest = $interceptor($request);
@@ -161,7 +161,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
 
     $capturedRequest = null;
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($s, $op, $p, $interceptor) use (&$capturedRequest) {
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) use (&$capturedRequest) {
         $request = new Request('GET', 'https://api.example.com/x');
         if ($interceptor) {
             $capturedRequest = $interceptor($request);

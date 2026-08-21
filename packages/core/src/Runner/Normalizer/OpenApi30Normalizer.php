@@ -8,18 +8,23 @@ use InvalidArgumentException;
 
 class OpenApi30Normalizer implements OpenApiNormalizerInterface
 {
+    /**
+     * @param array<string, mixed> $document
+     */
     public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation
     {
         $method = strtolower($method);
 
-        if (!isset($document['paths'][$path])) {
+        if (!isset($document['paths']) || !is_array($document['paths']) || !isset($document['paths'][$path]) || !is_array($document['paths'][$path])) {
             throw new InvalidArgumentException("Path '{$path}' not found in document.");
         }
+        /** @var array<string, mixed> $pathItem */
         $pathItem = $document['paths'][$path];
 
-        if (!isset($pathItem[$method])) {
+        if (!isset($pathItem[$method]) || !is_array($pathItem[$method])) {
             throw new InvalidArgumentException("Method '{$method}' not found for path '{$path}'.");
         }
+        /** @var array<string, mixed> $operation */
         $operation = $pathItem[$method];
 
         // 1. Resolve Server URL
@@ -35,6 +40,7 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         $responses = $this->resolveResponses($document, $operation);
 
         return new NormalizedOpenApiOperation(
+            path: $path,
             method: $method,
             resolvedServerUrl: $resolvedServerUrl,
             pathParameters: $parameters['path'],
@@ -46,46 +52,55 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $document
+     * @param array<string, mixed> $pathItem
+     * @param array<string, mixed> $operation
+     */
     private function resolveServerUrl(array $document, array $pathItem, array $operation): ?string
     {
         if (isset($operation['servers']) && is_array($operation['servers']) && count($operation['servers']) > 0) {
-            return $operation['servers'][0]['url'] ?? null;
+            return is_array($operation['servers'][0]) && isset($operation['servers'][0]['url']) && is_string($operation['servers'][0]['url']) ? $operation['servers'][0]['url'] : null;
         }
 
         if (isset($pathItem['servers']) && is_array($pathItem['servers']) && count($pathItem['servers']) > 0) {
-            return $pathItem['servers'][0]['url'] ?? null;
+            return is_array($pathItem['servers'][0]) && isset($pathItem['servers'][0]['url']) && is_string($pathItem['servers'][0]['url']) ? $pathItem['servers'][0]['url'] : null;
         }
 
         if (isset($document['servers']) && is_array($document['servers']) && count($document['servers']) > 0) {
-            return $document['servers'][0]['url'] ?? null;
+            return is_array($document['servers'][0]) && isset($document['servers'][0]['url']) && is_string($document['servers'][0]['url']) ? $document['servers'][0]['url'] : null;
         }
 
-        return null; // Fallback or default could be '/' depending on context, but null is fine
+        return null;
     }
 
     /**
-     * @return array{path: array, query: array, header: array, cookie: array}
+     * @param array<string, mixed> $document
+     * @param array<string, mixed> $pathItem
+     * @param array<string, mixed> $operation
+     *
+     * @return array{path: array<string, array<string, mixed>>, query: array<string, array<string, mixed>>, header: array<string, array<string, mixed>>, cookie: array<string, array<string, mixed>>}
      */
     private function resolveParameters(array $document, array $pathItem, array $operation): array
     {
-        $pathParams = $pathItem['parameters'] ?? [];
-        $opParams = $operation['parameters'] ?? [];
+        /** @var array<array<string, mixed>> $pathParams */
+        $pathParams = isset($pathItem['parameters']) && is_array($pathItem['parameters']) ? $pathItem['parameters'] : [];
+        /** @var array<array<string, mixed>> $opParams */
+        $opParams = isset($operation['parameters']) && is_array($operation['parameters']) ? $operation['parameters'] : [];
 
-        // Normalize refs
-        $pathParams = array_map(fn ($p) => $this->resolveLocalRef($document, $p), $pathParams);
-        $opParams = array_map(fn ($p) => $this->resolveLocalRef($document, $p), $opParams);
+        $pathParams = array_map(fn (array $p): array => $this->resolveLocalRef($document, $p), $pathParams);
+        $opParams = array_map(fn (array $p): array => $this->resolveLocalRef($document, $p), $opParams);
 
         $merged = [];
 
-        // Path parameters can be overridden by operation parameters if they have the same name and in.
         foreach ($pathParams as $param) {
-            if (isset($param['name']) && isset($param['in'])) {
+            if (isset($param['name'], $param['in']) && is_string($param['name']) && is_string($param['in'])) {
                 $merged[$param['name'] . '|' . $param['in']] = $param;
             }
         }
 
         foreach ($opParams as $param) {
-            if (isset($param['name']) && isset($param['in'])) {
+            if (isset($param['name'], $param['in']) && is_string($param['name']) && is_string($param['in'])) {
                 $merged[$param['name'] . '|' . $param['in']] = $param;
             }
         }
@@ -98,22 +113,31 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         ];
 
         foreach ($merged as $param) {
-            $in = $param['in'];
-            if (isset($grouped[$in])) {
-                $grouped[$in][$param['name']] = $param;
+
+            if (isset($grouped[$param['in']])) {
+
+                $grouped[$param['in']][$param['name']] = $param;
             }
         }
 
         return $grouped;
     }
 
+    /**
+     * @param array<string, mixed> $document
+     * @param array<string, mixed> $operation
+     *
+     * @return array<string, mixed>
+     */
     private function resolveRequestBodies(array $document, array $operation): array
     {
-        if (!isset($operation['requestBody'])) {
+        if (!isset($operation['requestBody']) || !is_array($operation['requestBody'])) {
             return [];
         }
 
-        $requestBody = $this->resolveLocalRef($document, $operation['requestBody']);
+        /** @var array<string, mixed> $reqBody */
+        $reqBody = $operation['requestBody'];
+        $requestBody = $this->resolveLocalRef($document, $reqBody);
 
         if (!isset($requestBody['content']) || !is_array($requestBody['content'])) {
             return [];
@@ -121,12 +145,18 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
 
         $bodies = [];
         foreach ($requestBody['content'] as $mediaType => $mediaTypeObj) {
-            $bodies[$mediaType] = $mediaTypeObj; // We might want to resolve refs inside schema if needed, but for now just returning the media type structure
+            $bodies[(string) $mediaType] = $mediaTypeObj;
         }
 
         return $bodies;
     }
 
+    /**
+     * @param array<string, mixed> $document
+     * @param array<string, mixed> $operation
+     *
+     * @return array<string, mixed>
+     */
     private function resolveResponses(array $document, array $operation): array
     {
         if (!isset($operation['responses']) || !is_array($operation['responses'])) {
@@ -156,20 +186,17 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         $ref = $item['$ref'];
 
         if (!is_string($ref) || !str_starts_with($ref, '#/')) {
-            // We only handle local JSON pointers starting with #/
             return $item;
         }
 
-        $pointer = substr($ref, 2); // remove #/
+        $pointer = substr($ref, 2);
         $parts = explode('/', $pointer);
 
         $current = $document;
         foreach ($parts as $part) {
-            // Unescape JSON pointer: ~1 -> /, ~0 -> ~
             $part = str_replace(['~1', '~0'], ['/', '~'], $part);
 
-            if (!isset($current[$part])) {
-                // If we can't resolve, return the original item (or throw?)
+            if (!is_array($current) || !isset($current[$part])) {
                 return $item;
             }
             $current = $current[$part];
@@ -179,8 +206,6 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
             return $item;
         }
 
-        // Merge resolved item with any original properties in the reference object (except $ref)
-        // OpenAPI 3.1 allows overriding, OpenAPI 3.0 mostly ignores siblings, but merging is safe.
         $result = array_merge($current, $item);
         unset($result['$ref']);
 

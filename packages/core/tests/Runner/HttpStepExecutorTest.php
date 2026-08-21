@@ -65,8 +65,7 @@ class HttpStepExecutorMockOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     public function execute(
-        SourceDescription $source,
-        string $operationIdOrPath,
+        ResolvedOperation $resolvedOperation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
     ): ResponseInterface {
@@ -83,7 +82,7 @@ function createMockOperationResolver(): OpenApiOperationResolver
     $mock = \Mockery::mock(OpenApiOperationResolver::class);
     $mock->shouldReceive('resolve')->andReturn(new ResolvedOperation(
         new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
-        new NormalizedOpenApiOperation('get', null, [], [], [], [], [], []),
+        new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
         new OpenApi([]),
         [],
         new Operation([]),
@@ -169,7 +168,7 @@ it('validates response schema and fails fast on failure', function (): void {
     $resolver->shouldReceive('extractOutputs')->never();
 
     $openApiExecutor = \Mockery::mock(OpenApiExecutorInterface::class);
-    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($s, $op, $p, $interceptor) {
+    $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
         if ($interceptor) {
             $interceptor(new Request('GET', '/'));
         }

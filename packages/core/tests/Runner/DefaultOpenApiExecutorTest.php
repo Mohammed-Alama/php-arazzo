@@ -8,7 +8,8 @@ use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
-use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use cebe\openapi\Reader;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -58,7 +59,6 @@ it('builds and sends an openapi request using the schema to route parameters', f
     });
 
     $executor = new DefaultOpenApiExecutor(
-        new OpenApiDocumentLoader($sourceResolver),
         $httpClient,
         $requestFactory,
         new NullLogger(),
@@ -69,8 +69,27 @@ it('builds and sends an openapi request using the schema to route parameters', f
     );
 
     $source = new SourceDescription('test', 'test.json', SourceType::Openapi);
+    $normalized = new NormalizedOpenApiOperation(
+        path: '/users/{userId}',
+        method: 'get',
+        resolvedServerUrl: 'https://api.example.com/v1',
+        pathParameters: [],
+        queryParameters: [],
+        headerParameters: [],
+        cookieParameters: [],
+        requestBodies: [],
+        responses: [],
+    );
 
-    $response = $executor->execute($source, 'getUser', $payload);
+    $resolved = new ResolvedOperation(
+        source: $source,
+        normalized: $normalized,
+        openApi: $openApi,
+        rawDocument: json_decode($openapiJson, true),
+        cebeOperation: clone $openApi->paths->getPath('/users/{userId}')->get,
+    );
+
+    $response = $executor->execute($resolved, $payload);
 
     expect($response->getStatusCode())->toBe(200);
 });

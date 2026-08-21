@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
-use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Dto\OpenApiPayload;
+use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Parameter as OpenApiParameter;
 use cebe\openapi\spec\Reference;
@@ -20,7 +20,6 @@ use Psr\Log\LoggerInterface;
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {
     public function __construct(
-        private OpenApiDocumentLoader $openApiLoader,
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ?LoggerInterface $logger = null,
@@ -28,36 +27,20 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     public function execute(
-        SourceDescription $source,
-        string $operationIdOrPath,
+        ResolvedOperation $resolvedOperation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
     ): ResponseInterface {
-        $openApi = $this->openApiLoader->load($source, getcwd() ?: '');
-        if ($openApi === null) {
-            throw new \RuntimeException('Failed to resolve OpenAPI document');
-        }
+        $openApi = $resolvedOperation->openApi;
 
         $baseUrl = '';
         if ($openApi->servers && count($openApi->servers) > 0) {
             $baseUrl = rtrim($openApi->servers[0]->url, '/');
         }
 
-        $opId = $operationIdOrPath;
-        if (str_starts_with($opId, '$sourceDescriptions.')) {
-            $parts = explode('.', $opId, 3);
-            $opId = $parts[2] ?? '';
-        } elseif (str_contains($opId, '.')) {
-            $opId = explode('.', $opId, 2)[1];
-        }
-
-        $method = 'GET';
-        $urlPath = '/';
-        $operation = null;
-
-        if ($openApi !== null) {
-            [$method, $urlPath, $operation] = OpenApiParser::findOperation($openApi, $opId);
-        }
+        $method = strtoupper($resolvedOperation->normalized->method);
+        $urlPath = $resolvedOperation->normalized->path;
+        $operation = $resolvedOperation->cebeOperation;
 
         if ($operation !== null) {
             foreach ($payload->auto as $name => $value) {
