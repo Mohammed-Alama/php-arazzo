@@ -2,65 +2,57 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Resolve named Arazzo sources and normalize OpenAPI operations before dispatch.
+**Goal:** Resolve named Arazzo sources, decouple from `cebe/php-openapi`, and normalize multi-version OpenAPI operations (2.0/3.0/3.1) before dispatch.
 
-**Architecture:** A named `SourceRegistry` resolves and caches source documents. An `OpenApiOperationResolver` converts an operation reference into a normalized operation. `DefaultOpenApiExecutor` consumes the normalized operation and an evaluated payload; it does not decide Arazzo control flow.
+**Architecture:** A named `SourceRegistry` manages raw source documents and their canonical URIs. A version-aware pipeline (`VersionDetector` → `NormalizerStrategy`) parses raw arrays into a `NormalizedOpenApiOperation`. Consumers (`StepExecutor`, `HttpStepExecutor`) use this normalized object to execute requests.
 
-**Tech Stack:** PHP 8.4, PSR-7/PSR-18, `cebe/php-openapi`, Symfony YAML, Pest PHP.
+**Tech Stack:** PHP 8.4, PSR-7/PSR-18, Symfony YAML, Pest PHP.
 
 ---
 
 ## File map
 
 - Create `packages/core/src/Resolver/SourceRegistry.php` and `SourceDocument.php`.
-- Modify `packages/core/src/Resolver/DefaultSourceResolver.php`, `SourceResolver.php`, fetchers, and parsers.
-- Create `packages/core/src/Runner/OpenApiOperationResolver.php` and `NormalizedOpenApiOperation.php`.
-- Modify `packages/core/src/Runner/DefaultOpenApiExecutor.php`, `OpenApiParser.php`, and `Dto/OpenApiPayload.php`.
-- Modify `packages/core/src/Runner/ArazzoOutputExtractor.php` and `ArazzoSchemaValidator.php` to use named source resolution.
-- Modify `packages/core/tests/Resolver/DefaultSourceResolverTest.php`, parser tests, `DefaultOpenApiExecutorTest.php`, and `OpenApiParserTest.php`.
-- Add multi-source and OpenAPI-version fixtures under `packages/core/tests/fixtures/`.
+- Modify `packages/core/src/Resolver/DefaultSourceResolver.php`.
+- Create `packages/core/src/Runner/Normalizer/NormalizedOpenApiOperation.php`, `OpenApiVersionDetector.php`, and `OpenApiNormalizerInterface.php`.
+- Create Normalizers: `Swagger2Normalizer.php`, `OpenApi30Normalizer.php`, `OpenApi31Normalizer.php`.
+- Create `packages/core/src/Runner/OpenApiOperationResolver.php`.
+- Modify `packages/core/src/Runner/DefaultOpenApiExecutor.php`, `Dto/OpenApiPayload.php`.
+- Modify `packages/core/src/Runner/StepExecutor.php` and `HttpStepExecutor.php`.
+- Modify `packages/core/src/Runner/ArazzoOutputExtractor.php` and `ArazzoSchemaValidator.php`.
 
-### Task 1: Define named source registry contracts
+### Task 1: Define explicit named source registry boundaries
+- [ ] Create `SourceDocument` DTO holding the raw parsed array, source name, type, and canonical retrieval URI.
+- [ ] Create `SourceRegistry` to explicitly register and resolve sources by name. It must handle circular detection for source acquisition.
+- [ ] Update `DefaultSourceResolver` to parse JSON/YAML into raw PHP arrays (dropping `cebe/php-openapi` dependency for initial load).
+- [ ] Write failing/passing tests for relative URLs against canonical URIs, circular references, and missing sources.
+- [ ] Commit `feat: add strict named source registry with canonical URIs`.
 
-- [ ] Write failing tests for two named sources, relative URLs, cache hits, missing names, and circular references.
-- [ ] Create `SourceDocument` with source name, type, canonical URI, parsed document, and retrieval metadata.
-- [ ] Create `SourceRegistry` with `register`, `resolveByName`, `acquire`, and `clear` methods; inject fetchers/parsers rather than using globals.
-- [ ] Update `DefaultSourceResolver` to resolve relative URLs against the caller’s retrieval URI, not `getcwd()`.
-- [ ] Run `cd packages/core && vendor/bin/pest tests/Resolver/DefaultSourceResolverTest.php`; expect PASS.
-- [ ] Commit `feat: add named source registry`.
+### Task 2: Build the Version-Aware Normalizer Pipeline
+- [ ] Create `NormalizedOpenApiOperation` containing: method, resolved server URL, explicit parameters (path/query/header/cookie), request bodies (with media types), and responses.
+- [ ] Create `OpenApiVersionDetector` to inspect raw arrays and determine specification (Swagger 2.0 vs OpenAPI 3.0 vs OpenAPI 3.1).
+- [ ] Create `OpenApiNormalizerInterface` and concrete normalizers (`OpenApi30Normalizer` as a priority, others returning `NotImplementedException` temporarily or fully implemented if time permits).
+- [ ] Implement server resolution precedence in the normalizer: operation server → path-item server → document server.
+- [ ] Implement local `$ref` resolution inside the normalizers for parameters and request bodies.
+- [ ] Commit `feat: implement raw array to NormalizedOpenApiOperation pipeline`.
 
-### Task 2: Resolve operation references structurally
+### Task 3: Resolve operation references using Arazzo runtime grammar
+- [ ] Create `OpenApiOperationResolver` that uses the normalizer pipeline.
+- [ ] Support the Arazzo reference grammar for `operationPath` (e.g., `{$sourceDescriptions.api.url}#/paths/~1pets/get`).
+- [ ] Support plain `operationId` only if exactly one non-Arazzo source exists; otherwise require source-qualified IDs (e.g., `{$sourceDescriptions.api.url}#operationId`).
+- [ ] Update `StepExecutor` and `HttpStepExecutor` to obtain the specific source dynamically, removing the hardcoded `sourceDescriptions[0]` fallback.
+- [ ] Replace direct `OpenApiParser::findOperation` calls in `ArazzoOutputExtractor` and `ArazzoSchemaValidator`.
+- [ ] Commit `feat: resolve operations using formal Arazzo reference grammar`.
 
-- [ ] Add failing tests for plain operation IDs, `$sourceDescriptions.api.operationId`, operation paths, unknown sources, ambiguous references, and missing operations.
-- [ ] Create `NormalizedOpenApiOperation` with source identity, method, URI template, parameters, request bodies, security, and responses.
-- [ ] Create `OpenApiOperationResolver` that parses reference syntax and looks up the source by name; never use the first source description as a fallback.
-- [ ] Replace direct `OpenApiParser::findOperation` calls in `DefaultOpenApiExecutor`, `ArazzoOutputExtractor`, and `ArazzoSchemaValidator`.
-- [ ] Run focused resolver and runner tests; expect PASS.
-- [ ] Commit `feat: resolve OpenAPI operations by source name`.
+### Task 4: Standards-aware request serialization & Payload
+- [ ] Expand `OpenApiPayload` to explicitly support `cookie` and a `$bodyMediaType` property.
+- [ ] Move request construction into `DefaultOpenApiExecutor.php` consuming `NormalizedOpenApiOperation` and `OpenApiPayload`.
+- [ ] Implement custom parameter serialization tests based on OpenAPI 3 styles (`matrix`, `label`, `form`, `spaceDelimited`, `pipeDelimited`). Throw a typed authoring error for unsupported serialization styles instead of silently falling back to `http_build_query()`.
+- [ ] Retain explicit media types for non-JSON bodies.
+- [ ] Commit `feat: serialize normalized operations strictly`.
 
-### Task 3: Normalize OpenAPI versions and inherited data
-
-- [ ] Add fixtures and failing tests for OpenAPI 2.0, 3.0, and 3.1 documents, path-level parameters, operation-level parameters, servers, and referenced schemas.
-- [ ] Implement version-specific normalization in `OpenApiOperationResolver`; retain a stable normalized contract for the executor.
-- [ ] Resolve server variables and the selected server explicitly; make server selection injectable/configurable.
-- [ ] Preserve content types, response schemas, and security requirements in the normalized object.
-- [ ] Run `cd packages/core && vendor/bin/pest tests/Runner/DefaultOpenApiExecutorTest.php tests/Unit/Execution/OpenApiParserTest.php`; expect PASS.
-- [ ] Commit `feat: normalize supported OpenAPI operation versions`.
-
-### Task 4: Implement standards-aware request serialization
-
-- [ ] Add failing tests for path/query/header/cookie parameters, arrays, objects, reserved characters, booleans, numbers, request bodies, content types, and JSON Pointer replacements.
-- [ ] Move request construction into `DefaultOpenApiExecutor.php` using normalized parameter definitions and `OpenApiPayload`.
-- [ ] Implement explicit parameter serialization instead of relying only on `http_build_query()`.
-- [ ] Preserve non-JSON request bodies and select the declared media type.
-- [ ] Propagate HTTP client failures unchanged through typed transport exceptions.
-- [ ] Run `cd packages/core && vendor/bin/pest tests/Runner/DefaultOpenApiExecutorTest.php`; expect PASS.
-- [ ] Commit `feat: serialize OpenAPI requests from normalized operations`.
-
-### Task 5: Update integrations and remove obsolete compiler logic
-
-- [ ] Update `StepExecutor.php`, `HttpStepExecutor.php`, and Laravel service bindings to use the normalized executor contract.
-- [ ] Remove `ArazzoRequestCompiler.php` and `RequestCompilerInterface.php` only after `rg -n 'ArazzoRequestCompiler|RequestCompilerInterface' packages` returns no runtime references.
-- [ ] Update schema/output resolution to obtain the operation through `OpenApiOperationResolver`.
+### Task 5: Regression checks and cleanup
+- [ ] Write a regression test verifying `ArazzoRequestCompiler` and `RequestCompilerInterface` are entirely absent (removed in commit 5b88b0d) and no logic depends on them.
+- [ ] Run multi-version serialization test matrix (2.0/3.0/3.1 data providers).
 - [ ] Run `composer run analyse` and `composer run test`.
-- [ ] Commit `refactor: complete OpenAPI operation executor migration`.
+- [ ] Commit `refactor: finalize Arazzo source resolution and normalizer architecture`.
