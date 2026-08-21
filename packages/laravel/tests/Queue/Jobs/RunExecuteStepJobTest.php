@@ -72,30 +72,24 @@ it('injects idempotency key natively during job execution independently of StepE
     $executionId = 'exec-idempotency-test-' . bin2hex(random_bytes(8));
     $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId($executionId);
     $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);
-    $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [], [$workflow], new Components([], [], [], []), []);
+    $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [new \Alama\Arazzo\Dto\SourceDescription('src', 'http://api.example.com', \Alama\Arazzo\Dto\Enum\SourceType::Openapi)], [$workflow], new Components([], [], [], []), []);
 
-    // 2. We mock the expression resolver to yield a POST request without the header
+    $capturedRequest = null;
+    $openApiMock = \Mockery::mock(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class);
+    $openApiMock->shouldReceive('execute')->once()->andReturnUsing(function ($source, $op, $payload, $interceptor) use (&$capturedRequest) {
+        $request = new Request('POST', 'https://api.example.com/charges', [], '{"amount":100}');
+        if ($interceptor) {
+            $request = $interceptor($request);
+        }
+        $capturedRequest = $request;
+        return new Response(201, [], '{}');
+    });
+    app()->instance(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class, $openApiMock);
+
     $resolver = \Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('compileRequest')
-        ->once()
-        ->andReturn(new Request('POST', 'https://api.example.com/charges', [], '{"amount":100}'));
     $resolver->shouldReceive('extractOutputs')->andReturn([]);
     $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
-
-    // 3. We intercept the actual HttpClient call to verify the header WAS injected
-    $capturedRequest = null;
-    $client = \Mockery::mock(ClientInterface::class);
-    $client->shouldReceive('sendRequest')
-        ->once()
-        ->andReturnUsing(function ($req) use (&$capturedRequest) {
-            $capturedRequest = $req;
-
-            return new Response(200, [], '{}');
-        });
-
-    // 4. Bind these into Laravel's container because the Job resolves them natively
     app()->instance(ExpressionResolverInterface::class, $resolver);
-    app()->instance(ClientInterface::class, $client);
 
     $registry = \Mockery::mock(DefinitionRegistryInterface::class);
     $registry->shouldReceive('get')->with('def-1')->andReturn($document);

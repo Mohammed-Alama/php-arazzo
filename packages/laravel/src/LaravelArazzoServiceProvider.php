@@ -312,7 +312,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(HttpStepExecutor::class, function ($app) {
             return new HttpStepExecutor(
-                $app->make(HttpClientInterface::class),
+                $app->make(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 (bool) config('arazzo.strict_schema_validation', false),
                 $app->make(IdempotencyKeyInjector::class),

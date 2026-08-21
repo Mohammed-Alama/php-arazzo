@@ -107,9 +107,9 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         }
     });
 
-    $this->app->instance(HttpClientInterface::class, new class() implements HttpClientInterface
+    $this->app->instance(\Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface::class, new class() implements \Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface
     {
-        public function sendRequest(RequestInterface $request): ResponseInterface
+        public function execute($source, $operation, $payload, $interceptor = null): ResponseInterface
         {
             return new Response(201, [], json_encode(['rideId' => 'r_1']));
         }
