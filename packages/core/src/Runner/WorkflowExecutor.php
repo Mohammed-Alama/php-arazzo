@@ -190,7 +190,7 @@ class WorkflowExecutor
             }
         }
 
-return null;
+        return null;
     }
 
     private function workflow(ArazzoDocument $document, string $id): Workflow
