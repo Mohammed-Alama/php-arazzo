@@ -158,7 +158,7 @@ class StepExecutionWorker
                     if ($transition->isTerminal()) {
                         $this->executionRegistry->complete($executionId, $transition->status === 'succeeded' ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
                         $this->eventLedger->append($executionId, $transition->status === 'succeeded' ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
-                    } elseif ($this->queueDriver !== null && $transition->type !== 'suspend') {
+                    } elseif ($this->queueDriver !== null && $transition->type !== \Alama\Arazzo\Runner\Dto\Enum\TransitionType::Suspend) {
                         $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
                         $targetStep = $this->findStep($targetWorkflow, $transition->stepId ?? '');
                         if ($targetStep !== null) {
