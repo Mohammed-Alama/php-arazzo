@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\ParameterIn;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
 final class StepParameterInValidRule implements Rule
 {
-    public function code(): string
-    {
-        return 'step.parameter_in_valid';
-    }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ($doc->workflows as $wi => $w) {
@@ -43,5 +38,10 @@ final class StepParameterInValidRule implements Rule
                 );
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'step.parameter_in_valid';
     }
 }

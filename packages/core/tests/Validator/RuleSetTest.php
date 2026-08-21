@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 use Alama\Arazzo\Validator\RuleSet;

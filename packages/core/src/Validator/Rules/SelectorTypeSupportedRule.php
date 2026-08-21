@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
-use Alama\Arazzo\Dto\Selector;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
@@ -18,11 +18,6 @@ final class SelectorTypeSupportedRule implements Rule
         'xpath' => ['xpath-10', 'xpath-20', 'xpath-30', 'xpath-31'],
         'jsonpointer' => ['rfc6901'],
     ];
-
-    public function code(): string
-    {
-        return 'selector.type_supported';
-    }
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
@@ -88,5 +83,10 @@ final class SelectorTypeSupportedRule implements Rule
                 $pointer,
             );
         }
+    }
+
+    public function code(): string
+    {
+        return 'selector.type_supported';
     }
 }

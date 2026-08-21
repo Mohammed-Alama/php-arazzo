@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Dto\Enum\TransitionType;
-use Alama\Arazzo\Runner\Dto\ExecutionState;
-use Alama\Arazzo\Runner\Dto\Transition;
+use Alama\Arazzo\Runner\Context\ExecutionState;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Runner\WorkflowContext;
-use Alama\Arazzo\Runner\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\Execution\Transition;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 use Psr\Http\Message\RequestInterface;
 
 function workflowEngineResolver(): ExpressionResolverInterface

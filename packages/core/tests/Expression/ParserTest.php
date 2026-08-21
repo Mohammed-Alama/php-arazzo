@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\Arazzo\Dto\Expression;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
 use Alama\Arazzo\Expression\Ast\InputRef;
@@ -15,6 +14,7 @@ use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExprParser;
+use Alama\Arazzo\Spec\Expression;
 
 it('parses $inputs.name', function (): void {
     $ast = (new ExprParser())->parse('{$inputs.userId}');

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Engine;
+use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 
 class MockQueueDriver implements QueueDriverInterface
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
-use Alama\Arazzo\Dto\Action\FailureGotoAction;
-use Alama\Arazzo\Dto\Action\RetryAction;
-use Alama\Arazzo\Dto\Action\SuccessGotoAction;
-use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Expression\WorkflowSymbols;
+use Alama\Arazzo\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Spec\Action\RetryAction;
+use Alama\Arazzo\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 

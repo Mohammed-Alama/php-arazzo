@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\RawDocument;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\RawDocument;
 
 it('parses invoke action in onSuccess and onFailure', function () {
     $raw = new RawDocument([

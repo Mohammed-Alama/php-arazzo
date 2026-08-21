@@ -6,9 +6,9 @@ namespace Alama\Arazzo\Laravel\Queue;
 
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
-use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\ResumeCorrelationJob;
+use Alama\Arazzo\Runner\Jobs\ResumeCorrelationJob;
 use Illuminate\Support\Facades\Queue;
 
 class LaravelQueueDriver implements QueueDriverInterface

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Resolver;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\Step;
+use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\OpenApiDocumentLoader;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\Step;
 use cebe\openapi\spec\Operation;
 use RuntimeException;
 

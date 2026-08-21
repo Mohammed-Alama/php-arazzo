@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
 final class AsyncApiFieldsRequire11Rule implements Rule
 {
-    public function code(): string
-    {
-        return 'asyncapi.fields_require_11';
-    }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         if ($doc->specVersion !== SpecVersion::V1_0) {
@@ -36,5 +31,10 @@ final class AsyncApiFieldsRequire11Rule implements Rule
                 }
             }
         }
+    }
+
+    public function code(): string
+    {
+        return 'asyncapi.fields_require_11';
     }
 }

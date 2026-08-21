@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Resolver;
 
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\SourceDocument;
 
 final class SourceRegistry implements SourceResolver
 {
@@ -19,11 +19,6 @@ final class SourceRegistry implements SourceResolver
     public function __construct(
         private readonly SourceResolver $resolver,
     ) {
-    }
-
-    public function register(SourceDocument $document): void
-    {
-        $this->documents[$document->name] = $document;
     }
 
     public function get(string $name): ?SourceDocument
@@ -51,5 +46,10 @@ final class SourceRegistry implements SourceResolver
         } finally {
             unset($this->resolving[$source->name]);
         }
+    }
+
+    public function register(SourceDocument $document): void
+    {
+        $this->documents[$document->name] = $document;
     }
 }

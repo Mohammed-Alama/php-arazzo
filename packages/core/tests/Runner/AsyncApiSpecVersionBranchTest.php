@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Runner\AsyncApiStepExecutor;
-use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Contracts\HttpClientInterface;
-use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Execution\AsyncApiStepExecutor;
+use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Step;
 
 it('rejects async fields on 1.0 doc at execution', function () {
     $executor = new AsyncApiStepExecutor(

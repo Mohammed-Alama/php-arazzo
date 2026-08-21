@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Exceptions\ParserException;
+use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\ParseContext;
 use Alama\Arazzo\Parser\Parser;
 

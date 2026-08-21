@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\SourceDocument;
 
 it('registers and resolves sources by name explicitly', function (): void {
     $resolver = new class() implements SourceResolver

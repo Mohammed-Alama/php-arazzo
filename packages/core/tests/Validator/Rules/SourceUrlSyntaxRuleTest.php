@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rules\SourceUrlSyntaxRule;
 

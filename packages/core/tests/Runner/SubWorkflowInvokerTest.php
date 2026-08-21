@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Exceptions\ExecutionException;
-use Alama\Arazzo\Resolver\SelectorEvaluator;
-use Alama\Arazzo\Resolver\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Runner\Dto\ExecutionResult;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\SubWorkflowInvoker;
-use Alama\Arazzo\Runner\SubWorkflowResult;
-use Alama\Arazzo\Runner\WorkflowContext;
-use Alama\Arazzo\Runner\WorkflowExecutor;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Runner\Exceptions\ExecutionException;
+use Alama\Arazzo\Runner\Execution\ExecutionResult;
+use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\Execution\SubWorkflowResult;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Workflow;
 
 it('binds parameters, executes child workflow, returns SubWorkflowResult', function () {
     $document = new ArazzoDocument(

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Runner\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Step;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;

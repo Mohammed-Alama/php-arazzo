@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
-use Alama\Arazzo\Dto\Action\FailureGotoAction;
-use Alama\Arazzo\Dto\Action\RetryAction;
-use Alama\Arazzo\Dto\Action\SuccessEndAction;
-use Alama\Arazzo\Dto\Action\SuccessGotoAction;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Spec\Action\RetryAction;
+use Alama\Arazzo\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rules\ActionGotoTargetResolvesRule;

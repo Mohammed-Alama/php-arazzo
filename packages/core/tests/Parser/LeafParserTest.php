@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Dto\Enum\CriterionType;
-use Alama\Arazzo\Dto\Enum\ParameterIn;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Exceptions\ParserException;
+use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\ParseContext;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Enum\CriterionType;
+use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Expression;
 
 class LeafProbe extends Parser
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
-use Alama\Arazzo\Dto\Enum\ExpressionType;
-use Alama\Arazzo\Dto\Selector;
-use Alama\Arazzo\Resolver\SelectorEvaluator;
-use Alama\Arazzo\Resolver\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Spec\Selector;
 
 it('evaluates JSONPath selector', function () {
     $xpath = new DomXpathEvaluator();

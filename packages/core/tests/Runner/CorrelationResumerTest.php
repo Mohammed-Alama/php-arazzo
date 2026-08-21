@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\CorrelationResumer;
-use Alama\Arazzo\Runner\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\PendingCorrelation;
-use Alama\Arazzo\Runner\StepOutcomeHandler;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Context\PendingCorrelation;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
+use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 use Psr\Http\Message\RequestInterface;
 
 class ResumerMockLockManager implements LockManagerInterface

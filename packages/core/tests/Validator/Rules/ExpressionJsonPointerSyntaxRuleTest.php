@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\RequestBody;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rules\ExpressionJsonPointerSyntaxRule;

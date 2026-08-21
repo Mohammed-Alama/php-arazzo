@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Exceptions\ParserException;
+use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\RawDocument;
 
 /** @param array<string,mixed> $data */
 function rawWith(array $data): RawDocument

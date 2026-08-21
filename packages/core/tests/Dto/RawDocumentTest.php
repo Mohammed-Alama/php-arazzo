@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\RawDocument;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\RawDocument;
 
 it('holds raw data, path and format', function (): void {
     $doc = new RawDocument(['arazzo' => '1.0.0'], '/tmp/foo.yaml', Format::Yaml);

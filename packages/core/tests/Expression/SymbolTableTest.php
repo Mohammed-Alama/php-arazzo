@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 
 it('builds symbol table from document', function (): void {
     $step = new Step(

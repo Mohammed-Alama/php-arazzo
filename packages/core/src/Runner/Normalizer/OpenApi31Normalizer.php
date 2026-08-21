@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Normalizer;
 
-use Alama\Arazzo\Exceptions\NotImplementedException;
+use Alama\Arazzo\Support\Exceptions\NotImplementedException;
 
 class OpenApi31Normalizer implements OpenApiNormalizerInterface
 {

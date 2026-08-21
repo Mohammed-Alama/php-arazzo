@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Events\CorrelationPending;
-use Alama\Arazzo\Events\CorrelationResumed;
-use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepRetried;
-use Alama\Arazzo\Events\StepStarted;
-use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Events\CorrelationPending;
+use Alama\Arazzo\Runner\Events\CorrelationResumed;
+use Alama\Arazzo\Runner\Events\RunCompleted;
+use Alama\Arazzo\Runner\Events\RunFailed;
+use Alama\Arazzo\Runner\Events\RunStarted;
+use Alama\Arazzo\Runner\Events\StepExecuted;
+use Alama\Arazzo\Runner\Events\StepFailed;
+use Alama\Arazzo\Runner\Events\StepRetried;
+use Alama\Arazzo\Runner\Events\StepStarted;
+use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener;
 
 class SpyLedger implements EventLedgerInterface
 {

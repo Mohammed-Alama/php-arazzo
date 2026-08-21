@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Engine;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Events\RunStarted;
+use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Execution\Engine;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 class EngineEventsNoopQueue implements QueueDriverInterface
 {

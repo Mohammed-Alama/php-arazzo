@@ -40,6 +40,8 @@ public/ST_local_api.json
 /docs_ignored/
 
 # Temporary Arazzo parser fixtures
+/packages/core/coverage-report
+/packages/laravel/coverage-report
 /packages/core/tests/fixtures/valid/
 /packages/core/tests/fixtures/invalid/
 /packages/core/tests/fixtures/edge-cases/

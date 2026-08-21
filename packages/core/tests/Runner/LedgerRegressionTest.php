@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted as EventStepExecuted;
-use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Events\RunStarted;
+use Alama\Arazzo\Runner\Events\StepExecuted as EventStepExecuted;
+use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener;
 
 it('routes catalog events through the bus into the same ledger strings that pre-refactor code emitted', function () {
     $spy = new class() implements EventLedgerInterface

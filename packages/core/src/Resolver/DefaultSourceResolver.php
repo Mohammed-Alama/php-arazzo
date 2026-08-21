@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Resolver;
 
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\SourceDocument;
-use Alama\Arazzo\Loader\NativeJsonDecoder;
-use Alama\Arazzo\Loader\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Resolver\Exceptions\SourceParseException;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\SourceDocument;
 use Throwable;
 
 final readonly class DefaultSourceResolver implements SourceResolver

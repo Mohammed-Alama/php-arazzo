@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
-use Alama\Arazzo\Dto\Expression;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Spec\Expression;
 
 it('caches parsed AST across calls', function (): void {
     $e = new Expression('{$inputs.userId}');

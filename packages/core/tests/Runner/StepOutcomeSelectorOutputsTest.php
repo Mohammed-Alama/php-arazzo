@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\ExpressionType;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Selector;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Resolver\SelectorEvaluator;
-use Alama\Arazzo\Runner\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Engine;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\StepOutcomeHandler;
-use Alama\Arazzo\Runner\SubWorkflowInvoker;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Execution\Engine;
+use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 
 it('resolves a Selector output through SelectorEvaluator', function () {
     $selectors = Mockery::mock(SelectorEvaluator::class);

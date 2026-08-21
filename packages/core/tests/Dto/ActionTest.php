@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
-use Alama\Arazzo\Dto\Action\FailureEndAction;
-use Alama\Arazzo\Dto\Action\FailureGotoAction;
-use Alama\Arazzo\Dto\Action\RetryAction;
-use Alama\Arazzo\Dto\Action\SuccessEndAction;
-use Alama\Arazzo\Dto\Action\SuccessGotoAction;
-use Alama\Arazzo\Dto\Enum\ActionKind;
+use Alama\Arazzo\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Spec\Action\RetryAction;
+use Alama\Arazzo\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Spec\Enum\ActionKind;
 
 it('builds success actions', function (): void {
     $g = new SuccessGotoAction('go', 'step2', null, []);

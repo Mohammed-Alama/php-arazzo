@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\SourceDocument;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Resolver\SourceResolver;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\SourceDocument;
 use Mockery;
 
 use function Pest\Laravel\getJson;

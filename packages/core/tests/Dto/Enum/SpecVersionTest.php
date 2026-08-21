@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
 
 it('accepts 1.0.x', function (string $raw) {
     expect(SpecVersion::fromRaw($raw))->toBe(SpecVersion::V1_0);

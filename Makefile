@@ -1,4 +1,4 @@
-.PHONY: help test test-coverage test-mutate format analyse ci-all ci-test ci-phpstan ci-format hooks-install verify
+.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -19,6 +19,10 @@ format: ## Format code using Laravel Pint
 
 analyse: ## Run PHPStan static analysis
 	composer run analyse
+
+analyse-baseline: ## Regenerate PHPStan baselines
+	cd packages/core && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G
+	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G
 
 ci-all: ## Run all GitHub Actions locally using act
 	act --container-architecture linux/amd64

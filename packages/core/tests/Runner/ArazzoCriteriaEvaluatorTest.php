@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Dto\Enum\CriterionType;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\SuccessCriterion;
-use Alama\Arazzo\Runner\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Exceptions\UnsupportedCriterionTypeException;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Spec\Enum\CriterionType;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\SuccessCriterion;
 
 beforeEach(function () {
     $this->evaluator = new ArazzoCriteriaEvaluator(new ExpressionEvaluator());

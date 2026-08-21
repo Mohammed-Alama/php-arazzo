@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\ParameterIn;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Parameter;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Parameter;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rules\ParameterQuerystringOperationShapeRule;
 

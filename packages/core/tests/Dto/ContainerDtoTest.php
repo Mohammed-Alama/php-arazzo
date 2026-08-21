@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\Workflow;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\Workflow;
 
 it('builds full document tree', function (): void {
     $step = new Step('s1', null, 'getFoo', null, null, [], null, [], [], [], []);

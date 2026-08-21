@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Loader;
 
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Exceptions\LoaderException;
-use Alama\Arazzo\Loader\Loader;
-use Alama\Arazzo\Loader\NativeJsonDecoder;
-use Alama\Arazzo\Loader\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Parser\Loader;
+use Alama\Arazzo\Spec\Enum\Format;
 
 function makeLoader(): Loader
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Runner\SchemaValidator;
+use Alama\Arazzo\Runner\Execution\SchemaValidator;
 use cebe\openapi\spec\Schema;
 
 it('passes a matching type with no violations', function (): void {

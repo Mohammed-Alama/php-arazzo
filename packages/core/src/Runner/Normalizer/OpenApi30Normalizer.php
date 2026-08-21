@@ -125,6 +125,47 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
 
     /**
      * @param array<string, mixed> $document
+     * @param array<string, mixed> $item
+     *
+     * @return array<string, mixed>
+     */
+    private function resolveLocalRef(array $document, array $item): array
+    {
+        if (!isset($item['$ref'])) {
+            return $item;
+        }
+
+        $ref = $item['$ref'];
+
+        if (!is_string($ref) || !str_starts_with($ref, '#/')) {
+            return $item;
+        }
+
+        $pointer = substr($ref, 2);
+        $parts = explode('/', $pointer);
+
+        $current = $document;
+        foreach ($parts as $part) {
+            $part = str_replace(['~1', '~0'], ['/', '~'], $part);
+
+            if (!is_array($current) || !isset($current[$part])) {
+                return $item;
+            }
+            $current = $current[$part];
+        }
+
+        if (!is_array($current)) {
+            return $item;
+        }
+
+        $result = array_merge($current, $item);
+        unset($result['$ref']);
+
+        return $result;
+    }
+
+    /**
+     * @param array<string, mixed> $document
      * @param array<string, mixed> $operation
      *
      * @return array<string, mixed>
@@ -169,46 +210,5 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         }
 
         return $responses;
-    }
-
-    /**
-     * @param array<string, mixed> $document
-     * @param array<string, mixed> $item
-     *
-     * @return array<string, mixed>
-     */
-    private function resolveLocalRef(array $document, array $item): array
-    {
-        if (!isset($item['$ref'])) {
-            return $item;
-        }
-
-        $ref = $item['$ref'];
-
-        if (!is_string($ref) || !str_starts_with($ref, '#/')) {
-            return $item;
-        }
-
-        $pointer = substr($ref, 2);
-        $parts = explode('/', $pointer);
-
-        $current = $document;
-        foreach ($parts as $part) {
-            $part = str_replace(['~1', '~0'], ['/', '~'], $part);
-
-            if (!is_array($current) || !isset($current[$part])) {
-                return $item;
-            }
-            $current = $current[$part];
-        }
-
-        if (!is_array($current)) {
-            return $item;
-        }
-
-        $result = array_merge($current, $item);
-        unset($result['$ref']);
-
-        return $result;
     }
 }

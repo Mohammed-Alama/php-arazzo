@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
-use Alama\Arazzo\Dto\Enum\ParameterIn;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Parameter;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Parameter;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rules\ExpressionContextMisuseRule;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Jobs;
 
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Spec\Step;
 
 class ExecuteStepJob
 {

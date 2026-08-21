@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Runner\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Info;
 
 function makeEmptyArazzoDocument(): ArazzoDocument
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Persistence;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\RawDocument;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Runner\Exceptions\DefinitionHydrationException;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\RawDocument;
 use Illuminate\Support\Facades\DB;
 
 function definitionRawRoot(string $title = 'Test Doc'): array

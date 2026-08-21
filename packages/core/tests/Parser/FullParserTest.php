@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Dto\Action\RetryAction;
-use Alama\Arazzo\Dto\Action\SuccessEndAction;
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\CriterionType;
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Dto\Reusable;
-use Alama\Arazzo\Exceptions\ParserException;
-use Alama\Arazzo\Loader\Loader;
-use Alama\Arazzo\Loader\NativeJsonDecoder;
-use Alama\Arazzo\Loader\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Exceptions\ParserException;
+use Alama\Arazzo\Parser\Loader;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Action\RetryAction;
+use Alama\Arazzo\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\CriterionType;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Spec\Reusable;
 
 function parseFixture(string $rel): ArazzoDocument
 {

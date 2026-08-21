@@ -4,35 +4,36 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Parser;
 
-use Alama\Arazzo\Dto\Action\FailureAction;
-use Alama\Arazzo\Dto\Action\FailureEndAction;
-use Alama\Arazzo\Dto\Action\FailureGotoAction;
-use Alama\Arazzo\Dto\Action\RetryAction;
-use Alama\Arazzo\Dto\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Dto\Action\SuccessAction;
-use Alama\Arazzo\Dto\Action\SuccessEndAction;
-use Alama\Arazzo\Dto\Action\SuccessGotoAction;
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\CriterionType;
-use Alama\Arazzo\Dto\Enum\ExpressionType;
-use Alama\Arazzo\Dto\Enum\ParameterIn;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\Parameter;
-use Alama\Arazzo\Dto\PayloadReplacement;
-use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Dto\RequestBody;
-use Alama\Arazzo\Dto\Reusable;
-use Alama\Arazzo\Dto\Selector;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Dto\SuccessCriterion;
-use Alama\Arazzo\Dto\Workflow;
-use Alama\Arazzo\Exceptions\ParserException;
+use Alama\Arazzo\Parser\Exceptions\ParserException;
+use Alama\Arazzo\Spec\Action\FailureAction;
+use Alama\Arazzo\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Spec\Action\RetryAction;
+use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Spec\Action\SuccessAction;
+use Alama\Arazzo\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\CriterionType;
+use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Parameter;
+use Alama\Arazzo\Spec\PayloadReplacement;
+use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Spec\RequestBody;
+use Alama\Arazzo\Spec\Reusable;
+use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\Spec\Workflow;
+use InvalidArgumentException;
 
 class Parser
 {
@@ -45,7 +46,7 @@ class Parser
 
         try {
             $specVersion = SpecVersion::fromRaw($arazzo);
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             throw ParserException::unsupportedVersion($ctx, $arazzo);
         }
 
@@ -108,6 +109,20 @@ class Parser
         return $v;
     }
 
+    /** @param array<string,mixed> $arr */
+    protected function optionalString(array $arr, string $key, ParseContext $ctx): ?string
+    {
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
+        $v = $arr[$key];
+        if (!is_string($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'string', $v);
+        }
+
+        return $v;
+    }
+
     protected function parseInfo(mixed $node, ParseContext $ctx): Info
     {
         $obj = $this->requireObjectMap($node, $ctx);
@@ -129,20 +144,6 @@ class Parser
 
         /** @var array<string,mixed> $node */
         return $node;
-    }
-
-    /** @param array<string,mixed> $arr */
-    protected function optionalString(array $arr, string $key, ParseContext $ctx): ?string
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_string($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'string', $v);
-        }
-
-        return $v;
     }
 
     /** @return list<mixed> */
@@ -363,13 +364,54 @@ class Parser
         );
     }
 
-    protected function parseExpressionOrValue(mixed $node): mixed
+    /**
+     * @return Expression|Selector|scalar|array<mixed>|null
+     */
+    private function parseValueOrSelector(mixed $value, ParseContext $ctx, bool $forceStringExpression = false): mixed
     {
-        if (is_string($node) && preg_match('/^\{\$.+\}$/', $node) === 1) {
-            return new Expression($node);
+        if (is_string($value)) {
+            if ($forceStringExpression || preg_match('/^\{\$.+\}$/', $value) === 1) {
+                return new Expression($value);
+            }
+
+            return $value;
         }
 
-        return $node;
+        if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
+            $rawType = $value['type'];
+            $version = null;
+
+            if (is_array($rawType)) {
+                $typeCtx = $ctx->push('type');
+                $typeStr = $this->requireString($rawType, 'type', $typeCtx);
+                $version = $this->optionalString($rawType, 'version', $typeCtx);
+            } else {
+                $typeStr = $this->requireString($value, 'type', $ctx);
+            }
+
+            $type = ExpressionType::tryFrom($typeStr);
+            if ($type === null) {
+                throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
+            }
+
+            return new Selector(
+                context: $this->optionalString($value, 'context', $ctx),
+                selector: $this->requireString($value, 'selector', $ctx),
+                type: $type,
+                version: $version ?? $this->optionalString($value, 'version', $ctx),
+            );
+        }
+
+        if (is_array($value)) {
+            $parsed = [];
+            foreach ($value as $k => $v) {
+                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k), $forceStringExpression);
+            }
+
+            return $parsed;
+        }
+
+        return $value;
     }
 
     protected function parseRequestBody(mixed $node, ParseContext $ctx): RequestBody
@@ -403,6 +445,15 @@ class Parser
             target: $this->requireString($obj, 'target', $ctx),
             value: $this->parseValueOrSelector($obj['value'], $ctx->push('value'), false),
         );
+    }
+
+    protected function parseExpressionOrValue(mixed $node): mixed
+    {
+        if (is_string($node) && preg_match('/^\{\$.+\}$/', $node) === 1) {
+            return new Expression($node);
+        }
+
+        return $node;
     }
 
     protected function parseSuccessCriterion(mixed $node, ParseContext $ctx): SuccessCriterion
@@ -459,25 +510,6 @@ class Parser
         };
     }
 
-    /**
-     * @param array<string,mixed> $d
-     * @param list<SuccessCriterion> $criteria
-     */
-    private function parseSubWorkflowSuccessAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowSuccessAction
-    {
-        $workflowId = $this->requireString($d, 'workflowId', $ctx);
-        $version = $this->optionalString($d, 'version', $ctx);
-        $parameters = [];
-        if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
-            $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
-            foreach ($paramsMap as $k => $v) {
-                $parameters[(string) $k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string) $k), true);
-            }
-        }
-
-        return new SubWorkflowSuccessAction($name, $workflowId, $parameters, $criteria, $version);
-    }
-
     protected function parseReusable(mixed $node, ParseContext $ctx): Reusable
     {
         $obj = $this->requireObjectMap($node, $ctx);
@@ -505,6 +537,25 @@ class Parser
         }
 
         return $out;
+    }
+
+    /**
+     * @param array<string,mixed> $d
+     * @param list<SuccessCriterion> $criteria
+     */
+    private function parseSubWorkflowSuccessAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowSuccessAction
+    {
+        $workflowId = $this->requireString($d, 'workflowId', $ctx);
+        $version = $this->optionalString($d, 'version', $ctx);
+        $parameters = [];
+        if (array_key_exists('parameters', $d) && $d['parameters'] !== null) {
+            $paramsMap = $this->requireObjectMap($d['parameters'], $ctx->push('parameters'));
+            foreach ($paramsMap as $k => $v) {
+                $parameters[(string) $k] = $this->parseValueOrSelector($v, $ctx->push('parameters')->push((string) $k), true);
+            }
+        }
+
+        return new SubWorkflowSuccessAction($name, $workflowId, $parameters, $criteria, $version);
     }
 
     protected function parseFailureAction(mixed $node, ParseContext $ctx): FailureAction|Reusable
@@ -538,6 +589,20 @@ class Parser
         };
     }
 
+    /** @param array<string,mixed> $arr */
+    protected function optionalInt(array $arr, string $key, ParseContext $ctx): ?int
+    {
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
+        $v = $arr[$key];
+        if (!is_int($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'int', $v);
+        }
+
+        return $v;
+    }
+
     /**
      * @param array<string,mixed> $d
      * @param list<SuccessCriterion> $criteria
@@ -557,70 +622,6 @@ class Parser
         return new SubWorkflowFailureAction($name, $workflowId, $parameters, $criteria, $version);
     }
 
-    /** @param array<string,mixed> $arr */
-    protected function optionalInt(array $arr, string $key, ParseContext $ctx): ?int
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_int($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'int', $v);
-        }
-
-        return $v;
-    }
-
-    /**
-     * @return Expression|Selector|scalar|array<mixed>|null
-     */
-    private function parseValueOrSelector(mixed $value, ParseContext $ctx, bool $forceStringExpression = false): mixed
-    {
-        if (is_string($value)) {
-            if ($forceStringExpression || preg_match('/^\{\$.+\}$/', $value) === 1) {
-                return new Expression($value);
-            }
-
-            return $value;
-        }
-
-        if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
-            $rawType = $value['type'];
-            $version = null;
-
-            if (is_array($rawType)) {
-                $typeCtx = $ctx->push('type');
-                $typeStr = $this->requireString($rawType, 'type', $typeCtx);
-                $version = $this->optionalString($rawType, 'version', $typeCtx);
-            } else {
-                $typeStr = $this->requireString($value, 'type', $ctx);
-            }
-
-            $type = ExpressionType::tryFrom($typeStr);
-            if ($type === null) {
-                throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
-            }
-
-            return new Selector(
-                context: $this->optionalString($value, 'context', $ctx),
-                selector: $this->requireString($value, 'selector', $ctx),
-                type: $type,
-                version: $version ?? $this->optionalString($value, 'version', $ctx),
-            );
-        }
-
-        if (is_array($value)) {
-            $parsed = [];
-            foreach ($value as $k => $v) {
-                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k), $forceStringExpression);
-            }
-
-            return $parsed;
-        }
-
-        return $value;
-    }
-
     /** @return array<string,Expression|Selector|scalar|array<mixed>|null> */
     protected function parseOutputsMap(mixed $node, ParseContext $ctx): array
     {
@@ -631,6 +632,20 @@ class Parser
         }
 
         return $out;
+    }
+
+    /** @param array<string,mixed> $arr */
+    protected function optionalBool(array $arr, string $key, ParseContext $ctx): ?bool
+    {
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
+        $v = $arr[$key];
+        if (!is_bool($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'bool', $v);
+        }
+
+        return $v;
     }
 
     protected function parseComponents(mixed $node, ParseContext $ctx): Components
@@ -704,20 +719,6 @@ class Parser
         $v = $arr[$key];
         if (!is_array($v)) {
             throw ParserException::wrongType($ctx->push($key), 'array', $v);
-        }
-
-        return $v;
-    }
-
-    /** @param array<string,mixed> $arr */
-    protected function optionalBool(array $arr, string $key, ParseContext $ctx): ?bool
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_bool($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'bool', $v);
         }
 
         return $v;

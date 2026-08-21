@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\Step;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Runner\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\Step;
 
 beforeEach(function () {
     $openApiJson = json_encode([

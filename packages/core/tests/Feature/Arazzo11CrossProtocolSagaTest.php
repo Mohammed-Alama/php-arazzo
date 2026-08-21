@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
-use Alama\Arazzo\Dto\RawDocument;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Validator\Rules\AsyncApiFieldsRequire11Rule;
 use Alama\Arazzo\Validator\Rules\DocumentArazzoVersionRule;
 use Alama\Arazzo\Validator\Rules\ParameterQuerystringOperationShapeRule;

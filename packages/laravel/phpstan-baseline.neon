@@ -139,14 +139,14 @@ parameters:
 			path: src/Http/Controllers/ArazzoApiController.php
 
 		-
-			message: '#^Parameter \#2 \$response of class Alama\\Arazzo\\Runner\\ResumeCorrelationJob constructor expects array\{statusCode\?\: int, headers\?\: array\<string, mixed\>, body\?\: mixed\}, array\<string, mixed\> given\.$#'
+			message: '#^Parameter \#2 \$response of class Alama\\Arazzo\\Runner\\Jobs\\ResumeCorrelationJob constructor expects array\{statusCode\?\: int, headers\?\: array\<string, mixed\>, body\?\: mixed\}, array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Http/Controllers/WebhookResumeController.php
 
 		-
 			message: '''
-				#^Call to method __construct\(\) of deprecated class Alama\\Arazzo\\Runner\\ArazzoExpressionResolver\:
+				#^Call to method __construct\(\) of deprecated class Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionResolver\:
 				Use specific implementations instead$#
 			'''
 			identifier: method.deprecatedClass
@@ -185,7 +185,7 @@ parameters:
 
 		-
 			message: '''
-				#^Instantiation of deprecated class Alama\\Arazzo\\Runner\\ArazzoExpressionResolver\:
+				#^Instantiation of deprecated class Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionResolver\:
 				Use specific implementations instead$#
 			'''
 			identifier: new.deprecatedClass
@@ -235,7 +235,7 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$expressions of class Alama\\Arazzo\\Runner\\WorkflowEngine constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$expressions of class Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -247,55 +247,55 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$httpClient of class Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$httpClient of class Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$loader of class Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver constructor expects Alama\\Arazzo\\Runner\\OpenApiDocumentLoader, mixed given\.$#'
+			message: '#^Parameter \#1 \$loader of class Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver constructor expects Alama\\Arazzo\\Runner\\Execution\\OpenApiDocumentLoader, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$lockManager of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\LockManagerInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$lockManager of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\LockManagerInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$openApiExecutor of class Alama\\Arazzo\\Runner\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\OpenApiExecutorInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$openApiExecutor of class Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\OpenApiExecutorInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$openApiExecutor of class Alama\\Arazzo\\Runner\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\OpenApiExecutorInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$openApiExecutor of class Alama\\Arazzo\\Runner\\Execution\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\OpenApiExecutorInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$operationResolver of class Alama\\Arazzo\\Runner\\ArazzoOutputExtractor constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
+			message: '#^Parameter \#1 \$operationResolver of class Alama\\Arazzo\\Runner\\Execution\\ArazzoOutputExtractor constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$operationResolver of class Alama\\Arazzo\\Runner\\ArazzoSchemaValidator constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
+			message: '#^Parameter \#1 \$operationResolver of class Alama\\Arazzo\\Runner\\Execution\\ArazzoSchemaValidator constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$pendingCorrelations of class Alama\\Arazzo\\Runner\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$pendingCorrelations of class Alama\\Arazzo\\Runner\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$pendingCorrelations of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$pendingCorrelations of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -307,13 +307,13 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$queueDriver of class Alama\\Arazzo\\Runner\\Engine constructor expects Alama\\Arazzo\\Runner\\Contracts\\QueueDriverInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$queueDriver of class Alama\\Arazzo\\Runner\\Execution\\Engine constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\QueueDriverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$queueDriver of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Contracts\\QueueDriverInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$queueDriver of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\QueueDriverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -325,19 +325,19 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$registry of class Alama\\Arazzo\\Runner\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Runner\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$registry of class Alama\\Arazzo\\Runner\\Execution\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Runner\\OpenApiDocumentLoader constructor expects Alama\\Arazzo\\Resolver\\SourceResolver, mixed given\.$#'
+			message: '#^Parameter \#1 \$sourceResolver of class Alama\\Arazzo\\Runner\\Execution\\OpenApiDocumentLoader constructor expects Alama\\Arazzo\\Resolver\\SourceResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$stepExecutor of class Alama\\Arazzo\\Runner\\WorkflowExecutor constructor expects Alama\\Arazzo\\Runner\\StepExecutor, mixed given\.$#'
+			message: '#^Parameter \#1 \$stepExecutor of class Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\StepExecutor, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -349,31 +349,31 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$engine of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Engine, mixed given\.$#'
+			message: '#^Parameter \#2 \$engine of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Execution\\Engine, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$executor of class Alama\\Arazzo\\Runner\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Runner\\WorkflowExecutor, mixed given\.$#'
+			message: '#^Parameter \#2 \$executor of class Alama\\Arazzo\\Runner\\Execution\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$expressionResolver of class Alama\\Arazzo\\Runner\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$expressionResolver of class Alama\\Arazzo\\Runner\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$ledger of static method Alama\\Arazzo\\Events\\Listener\\LedgerAppendingListener\:\:registerAll\(\) expects Alama\\Arazzo\\Runner\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$ledger of static method Alama\\Arazzo\\Support\\Events\\Listener\\LedgerAppendingListener\:\:registerAll\(\) expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -391,25 +391,25 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$requestFactory of class Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor constructor expects Psr\\Http\\Message\\RequestFactoryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Contracts\\StateStoreInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\StateStoreInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Runner\\Engine constructor expects Alama\\Arazzo\\Runner\\Contracts\\StateStoreInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Runner\\Execution\\Engine constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\StateStoreInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\StateStoreInterface, mixed given\.$#'
+			message: '#^Parameter \#2 \$stateStore of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\StateStoreInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -439,25 +439,25 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$definitionRegistry of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#3 \$definitionRegistry of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$definitionRegistry of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#3 \$definitionRegistry of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\DefinitionRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$executionRegistry of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExecutionRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#3 \$executionRegistry of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\ExecutionRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$httpClient of class Alama\\Arazzo\\Runner\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\HttpClientInterface, mixed given\.$#'
+			message: '#^Parameter \#3 \$httpClient of class Alama\\Arazzo\\Runner\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\HttpClientInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -469,7 +469,7 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$logger of class Alama\\Arazzo\\Runner\\DefaultOpenApiExecutor constructor expects Psr\\Log\\LoggerInterface\|null, mixed given\.$#'
+			message: '#^Parameter \#3 \$logger of class Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor constructor expects Psr\\Log\\LoggerInterface\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -481,13 +481,13 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$operationResolver of class Alama\\Arazzo\\Runner\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
+			message: '#^Parameter \#3 \$operationResolver of class Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#3 \$operationResolver of class Alama\\Arazzo\\Runner\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
+			message: '#^Parameter \#3 \$operationResolver of class Alama\\Arazzo\\Runner\\Execution\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -511,25 +511,25 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Runner\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -541,7 +541,7 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#4 \$selectors of class Alama\\Arazzo\\Runner\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Resolver\\SelectorEvaluator, mixed given\.$#'
+			message: '#^Parameter \#4 \$selectors of class Alama\\Arazzo\\Runner\\Execution\\SubWorkflowInvoker constructor expects Alama\\Arazzo\\Runner\\Evaluation\\SelectorEvaluator, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -553,103 +553,103 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#5 \$executionRegistry of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExecutionRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#5 \$executionRegistry of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\ExecutionRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#5 \$injector of class Alama\\Arazzo\\Runner\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\IdempotencyKeyInjector\|null, mixed given\.$#'
+			message: '#^Parameter \#5 \$injector of class Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\IdempotencyKeyInjector\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#5 \$injector of class Alama\\Arazzo\\Runner\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\IdempotencyKeyInjector\|null, mixed given\.$#'
+			message: '#^Parameter \#5 \$injector of class Alama\\Arazzo\\Runner\\Execution\\StepExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\IdempotencyKeyInjector\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#5 \$outcomeHandler of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\StepOutcomeHandler, mixed given\.$#'
+			message: '#^Parameter \#5 \$outcomeHandler of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#5 \$pendingCorrelations of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			message: '#^Parameter \#5 \$pendingCorrelations of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#6 \$eventLedger of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			message: '#^Parameter \#6 \$eventLedger of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#6 \$expressionResolver of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#6 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#6 \$expressionResolver of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
+			message: '#^Parameter \#6 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#7 \$lockManager of class Alama\\Arazzo\\Runner\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Contracts\\LockManagerInterface, mixed given\.$#'
+			message: '#^Parameter \#7 \$lockManager of class Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\LockManagerInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#7 \$protocolExecutors of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects list\<Alama\\Arazzo\\Runner\\Contracts\\StepProtocolExecutorInterface\>, array\{mixed, mixed\} given\.$#'
+			message: '#^Parameter \#7 \$protocolExecutors of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects list\<Alama\\Arazzo\\Runner\\Execution\\Contracts\\StepProtocolExecutorInterface\>, array\{mixed, mixed\} given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#7 \$stateStore of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Contracts\\StateStoreInterface, mixed given\.$#'
+			message: '#^Parameter \#7 \$stateStore of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\StateStoreInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#8 \$invoker of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\SubWorkflowInvoker, mixed given\.$#'
+			message: '#^Parameter \#8 \$invoker of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Execution\\SubWorkflowInvoker, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#8 \$outcomeHandler of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\StepOutcomeHandler, mixed given\.$#'
+			message: '#^Parameter \#8 \$outcomeHandler of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#9 \$selectors of class Alama\\Arazzo\\Runner\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Resolver\\SelectorEvaluator, mixed given\.$#'
+			message: '#^Parameter \#9 \$selectors of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Evaluation\\SelectorEvaluator, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \$queueDriver of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Contracts\\QueueDriverInterface\|null, mixed given\.$#'
+			message: '#^Parameter \$queueDriver of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\QueueDriverInterface\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \$workflowEngine of class Alama\\Arazzo\\Runner\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\WorkflowEngine\|null, mixed given\.$#'
+			message: '#^Parameter \$workflowEngine of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \$workflowEngine of class Alama\\Arazzo\\Runner\\WorkflowExecutor constructor expects Alama\\Arazzo\\Runner\\WorkflowEngine\|null, mixed given\.$#'
+			message: '#^Parameter \$workflowEngine of class Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -661,7 +661,7 @@ parameters:
 			path: src/Persistence/DatabaseDefinitionRegistry.php
 
 		-
-			message: '#^Parameter \#1 \$data of class Alama\\Arazzo\\Dto\\RawDocument constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			message: '#^Parameter \#1 \$data of class Alama\\Arazzo\\Spec\\RawDocument constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabaseDefinitionRegistry.php
@@ -673,25 +673,25 @@ parameters:
 			path: src/Persistence/DatabaseDefinitionRegistry.php
 
 		-
-			message: '#^Parameter \#1 \$correlationId of class Alama\\Arazzo\\Runner\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$correlationId of class Alama\\Arazzo\\Runner\\Context\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php
 
 		-
-			message: '#^Parameter \#2 \$executionId of class Alama\\Arazzo\\Runner\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#2 \$executionId of class Alama\\Arazzo\\Runner\\Context\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php
 
 		-
-			message: '#^Parameter \#3 \$stepId of class Alama\\Arazzo\\Runner\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#3 \$stepId of class Alama\\Arazzo\\Runner\\Context\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php
 
 		-
-			message: '#^Parameter \#4 \$channelPath of class Alama\\Arazzo\\Runner\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#4 \$channelPath of class Alama\\Arazzo\\Runner\\Context\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php

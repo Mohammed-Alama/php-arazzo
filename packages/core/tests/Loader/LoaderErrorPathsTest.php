@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Loader;
 
-use Alama\Arazzo\Exceptions\LoaderException;
-use Alama\Arazzo\Loader\Loader;
-use Alama\Arazzo\Loader\NativeJsonDecoder;
-use Alama\Arazzo\Loader\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Parser\Loader;
 
 it('throws on missing file', function (): void {
     $l = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());

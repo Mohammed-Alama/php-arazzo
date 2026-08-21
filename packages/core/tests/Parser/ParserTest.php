@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Loader\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\RawDocument;
 
 it('parses x-strict-validation boolean from a step', function (): void {
     $yaml = <<<'YAML'

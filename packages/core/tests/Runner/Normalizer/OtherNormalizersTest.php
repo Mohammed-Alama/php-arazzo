@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Normalizer;
 
-use Alama\Arazzo\Exceptions\NotImplementedException;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Runner\Normalizer\Swagger2Normalizer;
+use Alama\Arazzo\Support\Exceptions\NotImplementedException;
 use PHPUnit\Framework\TestCase;
 
 class OtherNormalizersTest extends TestCase

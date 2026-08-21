@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto\Enum;
 
-use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Spec\Enum\Format;
 
 it('resolves yaml/yml/json extensions case-insensitively', function (): void {
     expect(Format::fromExtension('YAML'))->toBe(Format::Yaml)

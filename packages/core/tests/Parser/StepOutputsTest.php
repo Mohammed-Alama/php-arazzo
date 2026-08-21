@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Enum\ExpressionType;
-use Alama\Arazzo\Dto\Enum\Format;
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Dto\Selector;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Spec\Selector;
 
 it('parses 1.1.0 Selector objects in step outputs', function () {
     $raw = new RawDocument([

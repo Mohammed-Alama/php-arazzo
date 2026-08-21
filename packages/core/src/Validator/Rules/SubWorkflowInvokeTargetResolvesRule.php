@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
-use Alama\Arazzo\Dto\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Enum\SpecVersion;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
 final class SubWorkflowInvokeTargetResolvesRule implements Rule
 {
-    public function code(): string
-    {
-        return 'subworkflow.invoke_target_resolves';
-    }
-
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         if ($doc->specVersion === SpecVersion::V1_0) {
@@ -66,5 +61,10 @@ final class SubWorkflowInvokeTargetResolvesRule implements Rule
             "Sub-workflow invoke target '{$target}' does not resolve to any workflow in this document.",
             $pointer,
         );
+    }
+
+    public function code(): string
+    {
+        return 'subworkflow.invoke_target_resolves';
     }
 }

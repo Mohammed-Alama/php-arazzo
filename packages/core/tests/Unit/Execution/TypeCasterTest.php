@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Runner\TypeCaster;
+use Alama\Arazzo\Runner\Evaluation\TypeCaster;
 use PHPUnit\Framework\TestCase;
 
 class TypeCasterTest extends TestCase

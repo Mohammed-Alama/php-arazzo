@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
-use Alama\Arazzo\Dto\PayloadReplacement;
-use Alama\Arazzo\Dto\RequestBody;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\PayloadReplacement;
+use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rules\StepRequestBodyReplacementsTargetRule;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Runner\DependencyAnalyzer;
-use Alama\Arazzo\Runner\DependencyGraph;
-use Alama\Arazzo\Runner\StepStatus;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\DependencyAnalyzer;
+use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
+use Alama\Arazzo\Runner\Execution\StepStatus;
+use Alama\Arazzo\Spec\Step;
 
 test('finds runnable steps based on dependsOn', function () {
     $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);

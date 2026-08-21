@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\ArazzoDocument;
-use Alama\Arazzo\Dto\Components;
-use Alama\Arazzo\Dto\Enum\SourceType;
-use Alama\Arazzo\Dto\Info;
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Runner\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Runner\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
-use Alama\Arazzo\Runner\StepExecutor;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Spec\Step;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Runner\Exceptions\UnsupportedSerializationStyleException;
-use Alama\Arazzo\Runner\ParameterSerializer;
+use Alama\Arazzo\Runner\Execution\ParameterSerializer;
 
 it('serializes simple style', function () {
     expect(ParameterSerializer::serializeValue('color', 'blue', 'simple', false, 'path'))->toBe('blue');

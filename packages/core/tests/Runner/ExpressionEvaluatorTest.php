@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Dto\Expression;
-use Alama\Arazzo\Runner\ExpressionEvaluator;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Spec\Expression;
 
 it('evaluates input references', function () {
     $context = new WorkflowContext('def_1', ['userId' => 123]);

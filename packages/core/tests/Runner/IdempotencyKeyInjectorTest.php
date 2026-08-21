@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Dto\Step;
-use Alama\Arazzo\Runner\IdempotencyKeyInjector;
-use Alama\Arazzo\Runner\WorkflowContext;
+use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Spec\Step;
 use GuzzleHttp\Psr7\Request;
 
 function idempotencyStep(?bool $idempotencyKey = null, ?string $idempotencyHeader = null): Step

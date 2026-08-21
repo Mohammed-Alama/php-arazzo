@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Dto\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Dto\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Dto\Enum\ActionKind;
-use Alama\Arazzo\Dto\Expression;
+use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Spec\Enum\ActionKind;
+use Alama\Arazzo\Spec\Expression;
 
 it('constructs a success invoke action', function () {
     $a = new SubWorkflowSuccessAction(

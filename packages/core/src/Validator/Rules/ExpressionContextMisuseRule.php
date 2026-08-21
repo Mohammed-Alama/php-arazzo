@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
-use Alama\Arazzo\Dto\ArazzoDocument;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 use Alama\Arazzo\Validator\Support\ExpressionWalker;

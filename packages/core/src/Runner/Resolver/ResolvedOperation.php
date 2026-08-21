@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Resolver;
 
-use Alama\Arazzo\Dto\SourceDescription;
 use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Spec\SourceDescription;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 
