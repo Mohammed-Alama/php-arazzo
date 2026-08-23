@@ -403,12 +403,6 @@ parameters:
 			path: src/Runner/Evaluation/ArazzoCriteriaEvaluator.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/Evaluation/ArazzoCriteriaEvaluator.php
-
-		-
 			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed\> given\.$#'
 			identifier: argument.type
 			count: 1

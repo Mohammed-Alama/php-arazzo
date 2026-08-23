@@ -63,10 +63,16 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
 
             if ($type === CriterionType::Regex) {
                 if ($criterion->context === null) {
-                    continue; // Skip invalid regex criteria
+                    // A regex criterion without a context cannot be evaluated; fail deterministically.
+                    return false;
                 }
+
                 $target = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $step->stepId, $document));
-                if (!preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', (string) $target)) {
+                if ($target === null) {
+                    return false;
+                }
+
+                if (!preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', self::stringify($target))) {
                     return false;
                 }
 
@@ -74,7 +80,18 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
             }
 
             if ($type === CriterionType::JsonPath) {
-                $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($responseBody) ? $responseBody : []);
+                if ($criterion->context !== null) {
+                    try {
+                        $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $step->stepId, $document));
+                    } catch (\Throwable) {
+                        // Evaluation errors fail the criterion deterministically.
+                        return false;
+                    }
+                } else {
+                    $root = $responseBody;
+                }
+
+                $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($root) ? $root : []);
                 if (empty($result)) {
                     return false;
                 }
@@ -86,5 +103,31 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
         }
 
         return true;
+    }
+
+    private static function stringify(mixed $value): string
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+
+        if (is_scalar($value)) {
+            return (string) $value;
+        }
+
+        if (is_array($value) && !array_is_list($value)) {
+            // Non-list arrays stringify as JSON for regex matching convenience.
+            try {
+                return json_encode($value, JSON_THROW_ON_ERROR);
+            } catch (\JsonException) {
+                return '';
+            }
+        }
+
+        if (is_array($value)) {
+            return implode(',', array_map(self::stringify(...), $value));
+        }
+
+        return '';
     }
 }

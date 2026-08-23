@@ -20,9 +20,17 @@ class SelectorEvaluator
 
     public function evaluate(Selector $sel, WorkflowContext $wf, string $stepId): mixed
     {
-        $root = $sel->context !== null
-            ? $this->expressions->evaluate(new Expression($sel->context), new EvaluationContext($wf, $stepId))
-            : $wf->rootScope();
+        // Spec default when context is omitted: the current step's response body.
+        if ($sel->context !== null) {
+            $root = $this->expressions->evaluate(new Expression($sel->context), new EvaluationContext($wf, $stepId));
+        } else {
+            $steps = $wf->getSteps();
+            $stepData = $steps[$stepId] ?? null;
+            $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+            $body = is_array($response) ? ($response['body'] ?? []) : [];
+
+            $root = is_array($body) ? $body : [];
+        }
 
         return match ($sel->type) {
             ExpressionType::JsonPath => is_array($root) || is_object($root)

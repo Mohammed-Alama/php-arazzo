@@ -11,42 +11,44 @@ use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Spec\Selector;
 
-it('evaluates JSONPath selector', function () {
+it('evaluates JSONPath selector against the default response body context', function () {
     $xpath = new DomXpathEvaluator();
     $expressions = new ExpressionEvaluator();
     $evaluator = new SelectorEvaluator($xpath, $expressions);
 
     $selector = new Selector(
         type: ExpressionType::JsonPath,
-        selector: '$.inputs.userId',
+        selector: '$.userId',
         context: null,
     );
 
-    $context = new WorkflowContext(
-        definitionId: 'test',
-        inputs: ['userId' => 'user-123'],
-    );
+    $context = (new WorkflowContext('test'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => ['userId' => 'user-123'],
+    ]);
 
     $result = $evaluator->evaluate($selector, $context, 'step1');
 
     expect($result)->toBe('user-123');
 });
 
-it('evaluates JSONPointer selector', function () {
+it('evaluates JSONPointer selector against the default response body context', function () {
     $xpath = new DomXpathEvaluator();
     $expressions = new ExpressionEvaluator();
     $evaluator = new SelectorEvaluator($xpath, $expressions);
 
     $selector = new Selector(
         type: ExpressionType::JsonPointer,
-        selector: '/inputs/userId',
+        selector: '/userId',
         context: null,
     );
 
-    $context = new WorkflowContext(
-        definitionId: 'test',
-        inputs: ['userId' => 'user-123'],
-    );
+    $context = (new WorkflowContext('test'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => ['userId' => 'user-123'],
+    ]);
 
     $result = $evaluator->evaluate($selector, $context, 'step1');
 

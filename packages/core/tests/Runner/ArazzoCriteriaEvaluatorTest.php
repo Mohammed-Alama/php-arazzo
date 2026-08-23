@@ -176,3 +176,103 @@ it('malformed simple criteria fail deterministically instead of throwing', funct
 
     expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeFalse();
 });
+
+it('jsonpath criteria evaluate against the declared context node', function () {
+    $evaluator = $this->evaluator;
+
+    $makeStep = fn (string $context) => new Step(
+        stepId: 's2',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [new SuccessCriterion($context, '$[?(@.ok == true)]', CriterionType::JsonPath)],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $context = (new WorkflowContext('def_1'))
+        ->withStepResponse('s1', ['statusCode' => 200, 'headers' => [], 'body' => ['items' => [['ok' => true]]]])
+        ->withStepOutput('s1', 'list', [['ok' => true]]);
+
+    expect($evaluator->evaluateSuccessCriteria($makeStep('{$steps.s1.outputs.list}'), $context))->toBeTrue();
+
+    $emptyContext = (new WorkflowContext('def_1'))
+        ->withStepResponse('s1', ['statusCode' => 200, 'headers' => [], 'body' => []])
+        ->withStepOutput('s1', 'list', []);
+
+    expect($evaluator->evaluateSuccessCriteria($makeStep('{$steps.s1.outputs.list}'), $emptyContext))->toBeFalse();
+});
+
+it('jsonpath criteria without context fall back to the current response body', function () {
+    $evaluator = $this->evaluator;
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [new SuccessCriterion(null, '$.users[*].id', CriterionType::JsonPath)],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => ['users' => [['id' => 1], ['id' => 2]]],
+    ]);
+
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeTrue();
+});
+
+it('regex criteria without a context fail instead of being skipped', function () {
+    $evaluator = $this->evaluator;
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [new SuccessCriterion(null, '^20[0-1]$', CriterionType::Regex)],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
+
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeFalse();
+});
+
+it('regex criteria against a missing context value fail deterministically', function () {
+    $evaluator = $this->evaluator;
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [new SuccessCriterion('{$response.header.X-Missing}', '^.*$', CriterionType::Regex)],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
+
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeFalse();
+});

@@ -7,10 +7,12 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Evaluation\TypeCaster;
+use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Execution\Contracts\OutputExtractorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
@@ -23,13 +25,14 @@ use cebe\openapi\spec\Responses;
 use cebe\openapi\spec\Schema;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 
 class ArazzoOutputExtractor implements OutputExtractorInterface
 {
+    private ?SelectorEvaluator $selectorEvaluator = null;
+
     public function __construct(
         private OpenApiOperationResolver $operationResolver,
-        private ExpressionEvaluatorInterface $evaluator,
+        private ExpressionEvaluator $evaluator,
         private ?LoggerInterface $logger = null,
     ) {
     }
@@ -44,7 +47,9 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         $outputs = [];
         foreach ($step->outputs as $outputName => $expression) {
             if ($expression instanceof Selector) {
-                throw new RuntimeException('Selector evaluation is supported in parser but runtime evaluation requires a separate plugin');
+                $outputs[$outputName] = $this->selectors()->evaluate($expression, $context, $step->stepId);
+
+                continue;
             }
 
             if ($expression instanceof Expression) {
@@ -66,6 +71,11 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         return $outputs;
     }
 
+    private function selectors(): SelectorEvaluator
+    {
+        return $this->selectorEvaluator ??= new SelectorEvaluator(new DomXpathEvaluator(), $this->evaluator);
+    }
+
     private function castOutputAgainstResponseSchema(
         Step $step,
         WorkflowContext $context,
@@ -85,7 +95,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         try {
             $resolved = $this->operationResolver->resolve($step, $document);
             $operation = $resolved->cebeOperation;
-        } catch (RuntimeException) {
+        } catch (\RuntimeException) {
             return $value;
         }
 
