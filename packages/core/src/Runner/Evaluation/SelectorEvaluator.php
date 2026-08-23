@@ -21,7 +21,7 @@ class SelectorEvaluator
     public function evaluate(Selector $sel, WorkflowContext $wf, string $stepId): mixed
     {
         $root = $sel->context !== null
-            ? $this->expressions->evaluate(new Expression($sel->context), $wf, $stepId)
+            ? $this->expressions->evaluate(new Expression($sel->context), new EvaluationContext($wf, $stepId))
             : $wf->rootScope();
 
         return match ($sel->type) {

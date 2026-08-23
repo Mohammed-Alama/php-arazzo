@@ -11,32 +11,32 @@ use Alama\Arazzo\Expression\Ast\InputRef;
 use Alama\Arazzo\Expression\Ast\OutputPart;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
+use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\Expression;
 
 class ExpressionEvaluator implements ExpressionEvaluatorInterface
 {
-    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, EvaluationContext $context): mixed
     {
         $ast = $expression->ast();
 
-        return $this->evaluateAst($ast, $context, $currentStepId);
+        return $this->evaluateAst($ast, $context);
     }
 
-    private function evaluateAst(ExpressionAst $ast, WorkflowContext $context, ?string $currentStepId): mixed
+    private function evaluateAst(ExpressionAst $ast, EvaluationContext $context): mixed
     {
         if ($ast instanceof InputRef) {
-            return $context->getInputs()[$ast->name] ?? null;
+            return $context->workflowContext->getInputs()[$ast->name] ?? null;
         }
 
         if ($ast instanceof HttpMetaRef) {
-            if ($currentStepId === null) {
+            if ($context->currentStepId === null) {
                 return null;
             }
 
-            $stepData = $context->getSteps()[$currentStepId] ?? null;
+            $stepData = $context->workflowContext->getSteps()[$context->currentStepId] ?? null;
             if (!$stepData) {
                 return null;
             }
@@ -49,8 +49,8 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof StepRef) {
-            $steps = $context->getSteps();
-            $targetStepId = $ast->stepId ?? $currentStepId;
+            $steps = $context->workflowContext->getSteps();
+            $targetStepId = $ast->stepId ?? $context->currentStepId;
             $stepData = $steps[$targetStepId] ?? null;
             if (!$stepData) {
                 return null;
@@ -60,13 +60,12 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
 
             if ($part instanceof RequestPart) {
                 $req = $stepData['request'] ?? [];
-                $target = match ($part->httpPart) {
+
+                return match ($part->httpPart) {
                     'header' => $req['headers'][$part->headerName] ?? null,
                     'body' => JsonPointer::resolve($req['body'] ?? [], $part->jsonPointer),
                     default => null,
                 };
-
-                return $target;
             }
 
             if ($part instanceof ResponsePart) {
@@ -75,13 +74,11 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
                     return $res['statusCode'] ?? null;
                 }
 
-                $target = match ($part->httpPart) {
+                return match ($part->httpPart) {
                     'header' => $res['headers'][$part->headerName] ?? null,
                     'body' => JsonPointer::resolve($res['body'] ?? [], $part->jsonPointer),
                     default => null,
                 };
-
-                return $target;
             }
 
             if ($part instanceof OutputPart) {
@@ -90,10 +87,25 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof ComponentRef) {
-            $comps = $context->getComponents();
+            $comps = $context->workflowContext->getComponents();
             if ($ast->type === 'parameters') {
                 return $comps['parameters'][$ast->name] ?? null;
             }
+        }
+
+        if ($ast instanceof SourceRef && $context->document) {
+            foreach ($context->document->sourceDescriptions as $sourceDesc) {
+                if ($sourceDesc->name === $ast->name) {
+                    if ($ast->subPath === 'url') {
+                        return $sourceDesc->url;
+                    }
+                    if ($ast->subPath === 'type') {
+                        return $sourceDesc->type->value;
+                    }
+                }
+            }
+
+            return null;
         }
 
         return null;

@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\StringInterpolator;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
@@ -21,6 +22,8 @@ class StepExecutor
     /** @phpstan-ignore property.onlyWritten */
     private EventDispatcherInterface $events;
 
+    private StringInterpolator $interpolator;
+
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
@@ -28,8 +31,10 @@ class StepExecutor
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
+        ?StringInterpolator $interpolator = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
+        $this->interpolator = $interpolator ?? new StringInterpolator($this->expressionResolver);
     }
 
     /**
@@ -42,9 +47,7 @@ class StepExecutor
         $payload = new OpenApiPayload();
 
         foreach ($step->parameters as $param) {
-            $val = $param->value instanceof Expression
-                ? $this->expressionResolver->evaluate($param->value, $context, $step->stepId)
-                : $param->value;
+            $val = $this->resolveValue($param->value, $context, $step->stepId);
 
             $in = $param->in?->value ?? 'auto';
             if ($in === 'query') {
@@ -64,9 +67,7 @@ class StepExecutor
             if ($step->requestBody->replacements) {
                 foreach ($step->requestBody->replacements as $replacement) {
                     $targetPtr = $replacement->target;
-                    $val = $replacement->value instanceof Expression
-                        ? $this->expressionResolver->evaluate($replacement->value, $context, $step->stepId)
-                        : $replacement->value;
+                    $val = $this->resolveValue($replacement->value, $context, $step->stepId);
 
                     $segments = explode('/', ltrim($targetPtr, '/'));
                     $current = &$bodyData;
@@ -169,5 +170,18 @@ class StepExecutor
     private function shouldValidateSchema(Step $step): bool
     {
         return $step->strictValidation ?? $this->strictValidationDefault;
+    }
+
+    private function resolveValue(mixed $value, WorkflowContext $context, string $stepId): mixed
+    {
+        if ($value instanceof Expression) {
+            return $this->expressionResolver->evaluate($value, $context, $stepId);
+        }
+
+        if (is_string($value) && str_contains($value, '{$')) {
+            return $this->interpolator->interpolate($value, $context, $stepId);
+        }
+
+        return $value;
     }
 }

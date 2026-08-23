@@ -24,20 +24,19 @@ final class StepOperationIdSourceScopedRule implements Rule
                 if ($s->operationId === null) {
                     continue;
                 }
-                if (str_contains($s->operationId, '#')) {
-                    [$src] = explode('#', $s->operationId, 2);
-                    if (!isset($symbols->sourceDescriptions[$src])) {
-                        $errors->error(
-                            $this->code(),
-                            "Step '{$s->stepId}' operationId references unknown source '{$src}'.",
-                            "/workflows/{$i}/steps/{$j}/operationId",
-                        );
+                $isQualified = false;
+                foreach ($symbols->sourceDescriptions as $srcName => $source) {
+                    if (str_starts_with($s->operationId, $srcName . '.')) {
+                        $isQualified = true;
+                        break;
                     }
-                } else {
-                    if (count($openapiSources) !== 1) {
+                }
+
+                if (!$isQualified) {
+                    if (count($doc->sourceDescriptions) !== 1) {
                         $errors->error(
                             $this->code(),
-                            "Step '{$s->stepId}' uses unqualified operationId '{$s->operationId}' but the document does not declare exactly one openapi sourceDescription.",
+                            "Step '{$s->stepId}' uses unqualified operationId '{$s->operationId}' but the document does not declare exactly one sourceDescription.",
                             "/workflows/{$i}/steps/{$j}/operationId",
                         );
                     }

@@ -15,7 +15,7 @@ final readonly class Step
      * @param list<SuccessAction|Reusable> $onSuccess
      * @param list<FailureAction|Reusable> $onFailure
      * @param array<string,Expression|Selector|scalar|array<mixed>|null> $outputs
-     * @param array<string, mixed> $dependsOn
+     * @param list<string> $dependsOn
      */
     public function __construct(
         public string $stepId,

@@ -415,36 +415,6 @@ parameters:
 			path: src/Runner/Evaluation/ArazzoCriteriaEvaluator.php
 
 		-
-			message: '#^Parameter \#1 \$stepId of method Alama\\Arazzo\\Runner\\Context\\WorkflowContext\:\:getStepStatus\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Evaluation/DependencyAnalyzer.php
-
-		-
-			message: '#^Parameter \#1 \$node of closure expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Evaluation/DependencyGraph.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 3
-			path: src/Runner/Evaluation/DependencyGraph.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\Evaluation\\DependencyGraph\:\:\$cycle \(array\<string\>\|null\) does not accept array\<mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/Evaluation/DependencyGraph.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\Evaluation\\DependencyGraph\:\:\$unresolvedReferences \(array\<string, array\<string\>\>\) does not accept array\<string, array\<mixed\>\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Runner/Evaluation/DependencyGraph.php
-
-		-
 			message: '#^Cannot access offset ''body'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
@@ -867,12 +837,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Runner\\Context\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Runner/Execution/WorkflowEngine.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
 			count: 1
 			path: src/Runner/Execution/WorkflowEngine.php
 

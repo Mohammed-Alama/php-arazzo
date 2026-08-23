@@ -124,7 +124,11 @@ final readonly class SymbolTable
                             $outs[(string) $k] = true;
                         }
                     }
-                    $steps[$s->stepId] = new StepSymbols($outs, (int) $i);
+                    $stepDependsOn = [];
+                    foreach ($s->dependsOn as $d) {
+                        $stepDependsOn[$d] = true;
+                    }
+                    $steps[$s->stepId] = new StepSymbols($outs, (int) $i, $stepDependsOn);
                 }
             }
         }

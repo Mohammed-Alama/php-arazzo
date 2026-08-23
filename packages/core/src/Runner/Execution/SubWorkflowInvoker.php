@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Exceptions\ExecutionException;
@@ -49,7 +50,7 @@ class SubWorkflowInvoker
         $bound = [];
         foreach ($action->parameters as $name => $spec) {
             $bound[$name] = match (true) {
-                $spec instanceof Expression => $this->expressions->evaluate($spec, $parent, '__invoke__'),
+                $spec instanceof Expression => $this->expressions->evaluate($spec, new EvaluationContext($parent, '__invoke__')),
                 $spec instanceof Selector => $this->selectors->evaluate($spec, $parent, '__invoke__'),
                 default => $spec,
             };

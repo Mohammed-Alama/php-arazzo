@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
@@ -56,7 +57,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no channelPath.");
         }
 
-        $correlationId = (string) $this->evaluator->evaluate($step->correlationId, $context, $step->stepId);
+        $correlationId = (string) $this->evaluator->evaluate($step->correlationId, new EvaluationContext($context, $step->stepId, $document));
 
         $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->channelPath);
 

@@ -8,11 +8,9 @@ use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
-final class Expression
+final readonly class Expression
 {
-    private ExpressionAst|ExpressionSyntaxException|null $cached = null;
-
-    public function __construct(public readonly string $raw)
+    public function __construct(public string $raw)
     {
     }
 
@@ -28,13 +26,10 @@ final class Expression
 
     public function astOrError(): ExpressionAst|ExpressionSyntaxException
     {
-        if ($this->cached !== null) {
-            return $this->cached;
-        }
         try {
-            return $this->cached = (new ExpressionParser())->parse($this->raw);
+            return (new ExpressionParser())->parse($this->raw);
         } catch (ExpressionSyntaxException $e) {
-            return $this->cached = $e;
+            return $e;
         }
     }
 }

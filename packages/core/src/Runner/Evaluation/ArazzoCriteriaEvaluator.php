@@ -50,7 +50,7 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
                 if ($criterion->context === null) {
                     continue; // Skip invalid regex criteria
                 }
-                $target = $this->evaluator->evaluate(new Expression($criterion->context), $context, $step->stepId);
+                $target = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $step->stepId, $document));
                 if (!preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', (string) $target)) {
                     return false;
                 }

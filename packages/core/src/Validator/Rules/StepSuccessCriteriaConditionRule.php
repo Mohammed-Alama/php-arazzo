@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Validator\Rules;
 
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
@@ -16,12 +17,35 @@ final class StepSuccessCriteriaConditionRule implements Rule
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
                 foreach ($s->successCriteria as $k => $c) {
-                    if (trim($c->condition) === '') {
+                    $condition = trim($c->condition);
+                    if ($condition === '') {
                         $errors->error(
                             $this->code(),
                             "successCriteria[{$k}].condition must not be empty or whitespace.",
                             "/workflows/{$i}/steps/{$j}/successCriteria/{$k}/condition",
                         );
+
+                        continue;
+                    }
+
+                    $type = $c->type ?? CriterionType::Simple;
+                    if ($type === CriterionType::Simple) {
+                        // Look for a valid operator: ==, !=, >, <, >=, <=, ^=
+                        if (!preg_match('/(==|!=|<=|>=|<|>|\^=)/', $condition)) {
+                            if (preg_match('/[^=!<>^]=([^=]|$)/', $condition)) {
+                                $errors->error(
+                                    $this->code(),
+                                    "successCriteria[{$k}].condition uses invalid assignment operator '='. Use '==' for equality.",
+                                    "/workflows/{$i}/steps/{$j}/successCriteria/{$k}/condition",
+                                );
+                            } else {
+                                $errors->error(
+                                    $this->code(),
+                                    "successCriteria[{$k}].condition is missing a valid operator (==, !=, <, >, <=, >=, ^=).",
+                                    "/workflows/{$i}/steps/{$j}/successCriteria/{$k}/condition",
+                                );
+                            }
+                        }
                     }
                 }
             }

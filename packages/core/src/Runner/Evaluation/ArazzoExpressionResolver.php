@@ -29,7 +29,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
 
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {
-        return $this->evaluator->evaluate($expression, $context, $currentStepId);
+        return $this->evaluator->evaluate($expression, new EvaluationContext($context, $currentStepId));
     }
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array

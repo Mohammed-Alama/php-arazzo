@@ -322,6 +322,18 @@ class Parser
         $idempotencyKey = $this->optionalBool($obj, 'x-idempotency-key', $ctx);
         $idempotencyHeader = $this->optionalString($obj, 'x-idempotency-header', $ctx);
 
+        $dependsOn = [];
+        if (($d = $this->optionalList($obj, 'dependsOn', $ctx)) !== null) {
+            foreach (array_values($d) as $i => $item) {
+                if (!is_string($item)) {
+                    throw ParserException::wrongType(
+                        $ctx->push('dependsOn')->push((string) $i), 'string', $item,
+                    );
+                }
+                $dependsOn[] = $item;
+            }
+        }
+
         return new Step(
             stepId: $this->requireString($obj, 'stepId', $ctx),
             description: $this->optionalString($obj, 'description', $ctx),
@@ -334,6 +346,7 @@ class Parser
             onSuccess: $onSuccess,
             onFailure: $onFailure,
             outputs: $outputs,
+            dependsOn: $dependsOn,
             action: $action,
             channelPath: $channelPath,
             correlationId: $correlationId,
@@ -532,7 +545,7 @@ class Parser
             return [];
         }
         $out = [];
-        foreach (array_values($list) as $i => $item) {
+        foreach ($list as $i => $item) {
             $out[] = $this->parseSuccessCriterion($item, $ctx->push('criteria')->push($i));
         }
 

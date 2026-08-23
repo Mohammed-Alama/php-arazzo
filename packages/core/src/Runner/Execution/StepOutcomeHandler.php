@@ -10,6 +10,7 @@ use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\DependencyAnalyzer;
 use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
+use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Events\RunCompleted;
@@ -74,7 +75,7 @@ class StepOutcomeHandler
         foreach ($step->outputs as $name => $value) {
             $resolved = match (true) {
                 $value instanceof Selector => $this->selectors->evaluate($value, $context, $step->stepId),
-                $value instanceof Expression => $this->expressions->evaluate($value, $context, $step->stepId),
+                $value instanceof Expression => $this->expressions->evaluate($value, new EvaluationContext($context, $step->stepId)),
                 default => $value,
             };
             $context = $context->withStepOutput($step->stepId, $name, $resolved);

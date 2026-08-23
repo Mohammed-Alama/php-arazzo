@@ -19,11 +19,13 @@ final class StepNestedWorkflowExistsRule implements Rule
                     continue;
                 }
                 if (!isset($symbols->workflows[$s->workflowId])) {
-                    $errors->error(
-                        $this->code(),
-                        "step.workflowId '{$s->workflowId}' does not resolve to a declared workflow.",
-                        "/workflows/{$i}/steps/{$j}/workflowId",
-                    );
+                    if (!$doc->hasExternalSourceFor($s->workflowId)) {
+                        $errors->error(
+                            $this->code(),
+                            "step.workflowId '{$s->workflowId}' does not resolve to a declared local workflow or an external arazzo source.",
+                            "/workflows/{$i}/steps/{$j}/workflowId",
+                        );
+                    }
                 }
             }
         }

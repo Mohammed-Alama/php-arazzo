@@ -14,7 +14,6 @@ use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExprParser;
-use Alama\Arazzo\Spec\Expression;
 
 it('parses $inputs.name', function (): void {
     $ast = (new ExprParser())->parse('{$inputs.userId}');
@@ -68,8 +67,3 @@ it('parses $statusCode', function (): void {
 it('rejects unknown root token', function (): void {
     (new ExprParser())->parse('{$foobar}');
 })->throws(ExpressionSyntaxException::class);
-
-it('caches ast on Expression VO', function (): void {
-    $e = new Expression('{$inputs.x}');
-    expect($e->ast())->toBe($e->ast());
-});

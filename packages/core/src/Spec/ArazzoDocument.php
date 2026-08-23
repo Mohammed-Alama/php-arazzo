@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Spec;
 
+use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 
 final readonly class ArazzoDocument
@@ -25,5 +26,16 @@ final readonly class ArazzoDocument
         public SpecVersion $specVersion = SpecVersion::V1_0,
         public ?string $self = null,
     ) {
+    }
+
+    public function hasExternalSourceFor(string $workflowId): bool
+    {
+        foreach ($this->sourceDescriptions as $sourceDesc) {
+            if ($sourceDesc->type === SourceType::Arazzo && str_starts_with($workflowId, $sourceDesc->name . '.')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

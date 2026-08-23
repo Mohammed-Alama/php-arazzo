@@ -8,6 +8,7 @@ use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\JsonPathEvaluator;
 use Alama\Arazzo\Runner\Evaluation\TypeCaster;
 use Alama\Arazzo\Runner\Execution\Contracts\OutputExtractorInterface;
@@ -55,7 +56,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
                     continue;
                 }
 
-                $value = $this->evaluator->evaluate($expression, $context, $step->stepId);
+                $value = $this->evaluator->evaluate($expression, new EvaluationContext($context, $step->stepId, $document));
                 $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
             } else {
                 $outputs[$outputName] = $expression;

@@ -35,7 +35,7 @@ it('is immutable — withRule returns new instance', function (): void {
 });
 
 it('honours disabled list', function (): void {
-    $set = RuleSet::default(disabled: ['x'], strict: false)
+    $set = (new RuleSet([], ['x'], false))
         ->withRule(new DummyRule('x'))
         ->withRule(new DummyRule('y'));
     $codes = array_map(fn (Rule $r) => $r->code(), $set->activeRules());

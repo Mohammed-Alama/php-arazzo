@@ -6,8 +6,11 @@ namespace Alama\Arazzo\Expression;
 
 final readonly class StepSymbols
 {
-    /** @param array<string,true> $outputs */
-    public function __construct(public array $outputs, public int $index)
+    /**
+     * @param array<string,true> $outputs
+     * @param array<string,true> $dependsOn
+     */
+    public function __construct(public array $outputs, public int $index, public array $dependsOn = [])
     {
     }
 }
