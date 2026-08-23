@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Resolver;
 
+use Alama\Arazzo\Runner\Exceptions\UnsupportedSourceVersionException;
 use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
@@ -92,6 +93,12 @@ class OpenApiOperationResolver
         }
         /** @var array<string, mixed> $rawDocument */
 
+        // Fail fast on unsupported source versions before any operation lookup.
+        $detected = $this->versionDetector->detect($rawDocument);
+        if (!in_array($detected, ['3.0', '3.1'], true)) {
+            throw UnsupportedSourceVersionException::forVersion($detected, (string) $sourceName);
+        }
+
         /** @var string|null $foundPath */
         $foundPath = null;
         /** @var string|null $foundMethod */
@@ -139,13 +146,7 @@ class OpenApiOperationResolver
             throw new RuntimeException("Operation '{$operationReference}' not found in source '{$sourceName}'.");
         }
 
-        $version = $this->versionDetector->detect($rawDocument);
-
-        $normalizer = match ($version) {
-            '2.0', '3.0' => $this->normalizer30,
-            '3.1' => $this->normalizer31,
-            default => throw new RuntimeException("Unsupported OpenAPI version: {$version}"),
-        };
+        $normalizer = $detected === '3.0' ? $this->normalizer30 : $this->normalizer31;
 
         $normalized = $normalizer->normalize($rawDocument, (string) $foundPath, (string) $foundMethod);
 
