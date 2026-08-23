@@ -14,6 +14,13 @@ use Alama\Arazzo\Spec\Expression;
 
 final class Parser
 {
+    private const TERMINAL_KINDS = [
+        TokenKind::Number,
+        TokenKind::String,
+        TokenKind::Ident,
+        TokenKind::Expr,
+    ];
+
     private Lexer $lexer;
 
     /** @var list<Token> */
@@ -49,9 +56,9 @@ final class Parser
     {
         $left = $this->parseAnd();
 
-        while ($this->isNext('or')) {
+        while ($this->isNext(TokenKind::Or)) {
             $this->advance();
-            $left = new LogicalOp('or', $left, $this->parseAnd());
+            $left = new LogicalOp(LogicalOperator::Or, $left, $this->parseAnd());
         }
 
         return $left;
@@ -61,9 +68,9 @@ final class Parser
     {
         $left = $this->parseComparison();
 
-        while ($this->isNext('and')) {
+        while ($this->isNext(TokenKind::And)) {
             $this->advance();
-            $left = new LogicalOp('and', $left, $this->parseComparison());
+            $left = new LogicalOp(LogicalOperator::And, $left, $this->parseComparison());
         }
 
         return $left;
@@ -74,18 +81,31 @@ final class Parser
         $left = $this->parseOperand();
 
         $token = $this->peek();
-        if ($token !== null && in_array($token->kind, ['eq', 'neq', 'gt', 'gte', 'lt', 'lte'], true)) {
+        if ($token !== null && ($operator = $this->comparisonOperator($token->kind)) !== null) {
             $this->advance();
 
-            return new Comparison($token->kind, $left, $this->parseOperand());
+            return new Comparison($operator, $left, $this->parseOperand());
         }
 
         return $left;
     }
 
+    private function comparisonOperator(TokenKind $kind): ?ComparisonOperator
+    {
+        return match ($kind) {
+            TokenKind::Eq => ComparisonOperator::Eq,
+            TokenKind::Neq => ComparisonOperator::Neq,
+            TokenKind::Gt => ComparisonOperator::Gt,
+            TokenKind::Gte => ComparisonOperator::Gte,
+            TokenKind::Lt => ComparisonOperator::Lt,
+            TokenKind::Lte => ComparisonOperator::Lte,
+            default => null,
+        };
+    }
+
     private function parseOperand(): ConditionNode
     {
-        if ($this->isNext('not')) {
+        if ($this->isNext(TokenKind::Not)) {
             $this->advance();
 
             return new UnaryNot($this->parseOperand());
@@ -96,11 +116,11 @@ final class Parser
             throw new ConditionSyntaxException('Unexpected end of condition.');
         }
 
-        if ($token->kind === 'lparen') {
+        if ($token->kind === TokenKind::LParen) {
             return $this->parseGroup();
         }
 
-        if (in_array($token->kind, ['number', 'string', 'ident', 'expr'], true)) {
+        if (in_array($token->kind, self::TERMINAL_KINDS, true)) {
             return $this->parseTerminal();
         }
 
@@ -112,15 +132,14 @@ final class Parser
         $token = $this->advance();
 
         $node = match ($token->kind) {
-            'number' => new Literal(str_contains($token->value, '.') ? (float) $token->value : (int) $token->value),
-            'string' => new Literal($token->value),
-            'ident' => $this->parseIdentLiteral($token),
-            'expr' => new RuntimeExpr(new Expression('{' . $token->value . '}'), $token->value),
-            default => throw new ConditionSyntaxException("Unexpected '{$token->value}' in condition."),
+            TokenKind::Number => new Literal(str_contains($token->value, '.') ? (float) $token->value : (int) $token->value),
+            TokenKind::String => new Literal($token->value),
+            TokenKind::Ident => $this->parseIdentLiteral($token),
+            default => new RuntimeExpr(new Expression('{' . $token->value . '}'), $token->value),
         };
 
         $next = $this->peek();
-        if ($next !== null && in_array($next->kind, ['number', 'string', 'ident', 'expr'], true)) {
+        if ($next !== null && in_array($next->kind, self::TERMINAL_KINDS, true)) {
             throw new ConditionSyntaxException("Unexpected operand '{$next->value}' in condition.");
         }
 
@@ -145,7 +164,7 @@ final class Parser
         $inner = $this->parseOr();
 
         $closing = $this->peek();
-        if ($closing === null || $closing->kind !== 'rparen') {
+        if ($closing === null || $closing->kind !== TokenKind::RParen) {
             throw new ConditionSyntaxException("Expected closing parenthesis in condition near '{$closing?->value}'.");
         }
         $this->advance();
@@ -153,7 +172,7 @@ final class Parser
         return $inner;
     }
 
-    private function isNext(string $kind): bool
+    private function isNext(TokenKind $kind): bool
     {
         $token = $this->peek();
 

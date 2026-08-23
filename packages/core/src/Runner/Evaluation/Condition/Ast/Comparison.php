@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Evaluation\Condition\Ast;
 
+use Alama\Arazzo\Runner\Evaluation\Condition\ComparisonOperator;
+
 final readonly class Comparison implements ConditionNode
 {
-    /** @param 'eq'|'neq'|'gt'|'gte'|'lt'|'lte' $op */
     public function __construct(
-        public string $op,
+        public ComparisonOperator $op,
         public ConditionNode $left,
         public ConditionNode $right,
     ) {

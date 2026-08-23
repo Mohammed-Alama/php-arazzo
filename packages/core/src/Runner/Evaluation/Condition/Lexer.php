@@ -7,17 +7,17 @@ namespace Alama\Arazzo\Runner\Evaluation\Condition;
 final class Lexer
 {
     private const OPERATORS = [
-        '&&' => 'and',
-        '||' => 'or',
-        '==' => 'eq',
-        '!=' => 'neq',
-        '>=' => 'gte',
-        '<=' => 'lte',
-        '>' => 'gt',
-        '<' => 'lt',
-        '!' => 'not',
-        '(' => 'lparen',
-        ')' => 'rparen',
+        '&&' => TokenKind::And,
+        '||' => TokenKind::Or,
+        '==' => TokenKind::Eq,
+        '!=' => TokenKind::Neq,
+        '>=' => TokenKind::Gte,
+        '<=' => TokenKind::Lte,
+        '>' => TokenKind::Gt,
+        '<' => TokenKind::Lt,
+        '!' => TokenKind::Not,
+        '(' => TokenKind::LParen,
+        ')' => TokenKind::RParen,
     ];
 
     /** @return list<Token> */
@@ -57,14 +57,14 @@ final class Lexer
                     throw new ConditionSyntaxException("Unterminated string literal in condition at offset {$i}.");
                 }
 
-                $tokens[] = new Token('string', substr($condition, $i + 1, $end - $i - 1), $i);
+                $tokens[] = new Token(TokenKind::String, substr($condition, $i + 1, $end - $i - 1), $i);
                 $i = $end + 1;
 
                 continue;
             }
 
             if (preg_match('/-?\d+(?:\.\d+)?/', $condition, $m, PREG_OFFSET_CAPTURE, $i) === 1 && $m[0][1] === $i) {
-                $tokens[] = new Token('number', $m[0][0], $i);
+                $tokens[] = new Token(TokenKind::Number, $m[0][0], $i);
                 $i += strlen($m[0][0]);
 
                 continue;
@@ -88,14 +88,14 @@ final class Lexer
                     throw new ConditionSyntaxException("Malformed runtime expression in condition at offset {$i}.");
                 }
 
-                $tokens[] = new Token('expr', $raw, $i);
+                $tokens[] = new Token(TokenKind::Expr, $raw, $i);
                 $i = $end;
 
                 continue;
             }
 
             if (preg_match('/[A-Za-z_][A-Za-z0-9_.\-\/]*/', $condition, $m, PREG_OFFSET_CAPTURE, $i) === 1 && $m[0][1] === $i) {
-                $tokens[] = new Token('ident', $m[0][0], $i);
+                $tokens[] = new Token(TokenKind::Ident, $m[0][0], $i);
                 $i += strlen($m[0][0]);
 
                 continue;

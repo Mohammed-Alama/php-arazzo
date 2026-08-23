@@ -36,8 +36,8 @@ final class ConditionEvaluator
             $left = $this->resolve($node->left, $context);
 
             return match ($node->op) {
-                'and' => $left && $this->resolve($node->right, $context),
-                'or' => $left || $this->resolve($node->right, $context),
+                LogicalOperator::And => $left && $this->resolve($node->right, $context),
+                LogicalOperator::Or => $left || $this->resolve($node->right, $context),
             };
         }
 
@@ -83,10 +83,10 @@ final class ConditionEvaluator
 
     private function compare(Ast\Comparison $comparison, mixed $left, mixed $right): bool
     {
-        if (in_array($comparison->op, ['eq', 'neq'], true)) {
+        if ($comparison->op === ComparisonOperator::Eq || $comparison->op === ComparisonOperator::Neq) {
             $equal = $this->looseEquals($left, $right);
 
-            return $comparison->op === 'eq' ? $equal : !$equal;
+            return $comparison->op === ComparisonOperator::Eq ? $equal : !$equal;
         }
 
         $a = self::asNumber($left);
@@ -96,10 +96,10 @@ final class ConditionEvaluator
         }
 
         return match ($comparison->op) {
-            'gt' => $a > $b,
-            'gte' => $a >= $b,
-            'lt' => $a < $b,
-            'lte' => $a <= $b,
+            ComparisonOperator::Gt => $a > $b,
+            ComparisonOperator::Gte => $a >= $b,
+            ComparisonOperator::Lt => $a < $b,
+            ComparisonOperator::Lte => $a <= $b,
         };
     }
 
