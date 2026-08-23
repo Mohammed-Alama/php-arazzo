@@ -8,11 +8,13 @@ use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
 use Alama\Arazzo\Expression\Ast\InputRef;
 use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Parser;
 use Alama\Arazzo\Expression\Parser as ExprParser;
 
 it('parses $inputs.name', function (): void {
@@ -67,3 +69,34 @@ it('parses $statusCode', function (): void {
 it('rejects unknown root token', function (): void {
     (new ExprParser())->parse('{$foobar}');
 })->throws(ExpressionSyntaxException::class);
+
+it('parses $request.query.name', function () {
+    $ast = (new Parser())->parse('$request.query.page');
+    expect($ast)->toBeInstanceOf(StepRef::class)
+        ->and($ast->stepId)->toBeNull()
+        ->and($ast->part)->toBeInstanceOf(RequestPart::class)
+        ->and($ast->part->httpPart)->toBe('query')
+        ->and($ast->part->headerName)->toBe('page');
+});
+
+it('parses $request.path.id', function () {
+    $ast = (new Parser())->parse('$request.path.id');
+    expect($ast)->toBeInstanceOf(StepRef::class)
+        ->and($ast->part)->toBeInstanceOf(RequestPart::class)
+        ->and($ast->part->httpPart)->toBe('path')
+        ->and($ast->part->headerName)->toBe('id');
+});
+
+it('parses $steps.s.request.query.name and $steps.s.request.path.id', function () {
+    $parser = new Parser();
+
+    $query = $parser->parse('$steps.s.request.query.page');
+    expect($query)->toBeInstanceOf(StepRef::class)
+        ->and($query->part)->toBeInstanceOf(RequestPart::class)
+        ->and($query->part->httpPart)->toBe('query')
+        ->and($query->part->headerName)->toBe('page');
+
+    $path = $parser->parse('$steps.s.request.path.id');
+    expect($path->part->httpPart)->toBe('path')
+        ->and($path->part->headerName)->toBe('id');
+});

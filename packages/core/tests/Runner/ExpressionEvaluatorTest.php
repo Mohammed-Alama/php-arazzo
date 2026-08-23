@@ -153,3 +153,19 @@ it('evaluates source descriptions', function () {
     expect($evaluator->evaluate(new Expression('{$sourceDescriptions.api.type}'), new EvaluationContext($context, null, $doc)))->toBe('openapi');
     expect($evaluator->evaluate(new Expression('{$sourceDescriptions.missing.url}'), new EvaluationContext($context, null, $doc)))->toBeNull();
 });
+
+it('evaluates request query and path parts', function () {
+    $context = (new WorkflowContext('def_1'))->withStepRequest('step1', [
+        'method' => 'GET',
+        'url' => 'http://x/pets/42?page=2',
+        'query' => ['page' => '2'],
+        'path' => ['petId' => 42],
+    ]);
+
+    $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$request.query.page}'), new EvaluationContext($context, 'step1')))->toBe('2');
+    expect($evaluator->evaluate(new Expression('{$request.path.petId}'), new EvaluationContext($context, 'step1')))->toBe(42);
+    expect($evaluator->evaluate(new Expression('{$steps.step1.request.query.page}'), new EvaluationContext($context, 'step1')))->toBe('2');
+    expect($evaluator->evaluate(new Expression('{$steps.step1.request.path.missing}'), new EvaluationContext($context, 'step1')))->toBeNull();
+});

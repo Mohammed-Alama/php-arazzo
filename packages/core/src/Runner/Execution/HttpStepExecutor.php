@@ -12,6 +12,7 @@ use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
+use Psr\Http\Message\RequestInterface as Psr7Request;
 
 final class HttpStepExecutor implements StepProtocolExecutorInterface
 {
@@ -83,10 +84,13 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $resolved = $this->operationResolver->resolve($step, $document);
 
+        $capturedRequest = null;
         $response = $this->openApiExecutor->execute(
             $resolved,
             $payload,
-            function ($request) use ($context, $step) {
+            function (Psr7Request $request) use ($context, $step, &$capturedRequest) {
+                $capturedRequest = $request;
+
                 if ($this->injector !== null) {
                     return $this->injector->inject($request, $step, $context)->request;
                 }
@@ -108,14 +112,33 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
             );
         }
 
-        $contextWithResponse = $context->withStepResponse($step->stepId, [
-            'statusCode' => $response->getStatusCode(),
-            'body' => $body,
-        ]);
+        $queryParams = [];
+        parse_str($capturedRequest?->getUri()->getQuery() ?? '', $queryParams);
+
+        $requestHeaders = [];
+        foreach ($capturedRequest?->getHeaders() ?? [] as $name => $values) {
+            $requestHeaders[$name] = implode(', ', $values);
+        }
+
+        $requestRecord = [
+            'method' => $capturedRequest?->getMethod(),
+            'url' => $capturedRequest !== null ? (string) $capturedRequest->getUri() : '',
+            'query' => $queryParams,
+            'path' => $payload->path,
+            'headers' => $requestHeaders,
+            'body' => is_array($payload->body) ? $payload->body : [],
+        ];
+
+        $contextWithResponse = $context
+            ->withStepRequest($step->stepId, $requestRecord)
+            ->withStepResponse($step->stepId, [
+                'statusCode' => $response->getStatusCode(),
+                'body' => $body,
+            ]);
 
         $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
-        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs);
+        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs, $requestRecord);
     }
 
     private function shouldValidateSchema(Step $step): bool

@@ -64,23 +64,25 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
             $part = $ast->part;
 
             if ($part instanceof RequestPart) {
-                $req = $stepData['request'] ?? [];
+                $req = is_array($stepData['request'] ?? null) ? $stepData['request'] : [];
 
                 return match ($part->httpPart) {
-                    'header' => $req['headers'][$part->headerName] ?? null,
+                    'header' => $this->mapOrEmpty($req, 'headers')[$part->headerName] ?? null,
+                    'query' => $this->mapOrEmpty($req, 'query')[$part->headerName] ?? null,
+                    'path' => $this->mapOrEmpty($req, 'path')[$part->headerName] ?? null,
                     'body' => JsonPointer::resolve($req['body'] ?? [], $part->jsonPointer),
                     default => null,
                 };
             }
 
             if ($part instanceof ResponsePart) {
-                $res = $stepData['response'] ?? [];
+                $res = is_array($stepData['response'] ?? null) ? $stepData['response'] : [];
                 if ($part->httpPart === 'statusCode') {
                     return $res['statusCode'] ?? null;
                 }
 
                 return match ($part->httpPart) {
-                    'header' => $res['headers'][$part->headerName] ?? null,
+                    'header' => $this->mapOrEmpty($res, 'headers')[$part->headerName] ?? null,
                     'body' => JsonPointer::resolve($res['body'] ?? [], $part->jsonPointer),
                     default => null,
                 };
@@ -130,7 +132,7 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<array-key, mixed> $data
      *
      * @return array<array-key, mixed>
      */

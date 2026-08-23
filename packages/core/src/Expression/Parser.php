@@ -149,7 +149,7 @@ final class Parser
 
         return match ($kw) {
             'body' => new $cls('body', null, $this->parseJsonPointer($tail, $raw)),
-            'header' => new $cls('header', $this->parseHeaderName($tail, $raw), null),
+            'header', 'query', 'path' => new $cls($kw, $this->parseHeaderName($tail, $raw), null),
             'url', 'method', 'statusCode' => (function () use ($cls, $kw, $tail, $raw) {
                 if ($tail !== []) {
                     throw new ExpressionSyntaxException("Unexpected tokens after '{$kw}' in: {$raw}", '', 'expr.syntax');
