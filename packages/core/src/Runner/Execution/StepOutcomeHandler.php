@@ -189,6 +189,7 @@ class StepOutcomeHandler
 
         if ($matched instanceof SubWorkflowSuccessAction || $matched instanceof SubWorkflowFailureAction) {
             $result = $this->invoker->invoke($matched, $context);
+            $context = $context->withWorkflowData($matched->workflowId, ['inputs' => $result->inputs, 'outputs' => $result->outputs]);
             $context = $context->withStepOutput($step->stepId, $matched->name, $result->outputs);
             $this->continueNormally($workflow, $step, $context, $executionId);
 

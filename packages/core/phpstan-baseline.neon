@@ -433,21 +433,15 @@ parameters:
 			path: src/Runner/Evaluation/ExpressionEvaluator.php
 
 		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Runner/Evaluation/ExpressionEvaluator.php
-
-		-
 			message: '#^Cannot access offset ''request'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
+			count: 2
 			path: src/Runner/Evaluation/ExpressionEvaluator.php
 
 		-
 			message: '#^Cannot access offset ''response'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
+			count: 1
 			path: src/Runner/Evaluation/ExpressionEvaluator.php
 
 		-
@@ -465,7 +459,7 @@ parameters:
 		-
 			message: '#^Cannot access offset string on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
+			count: 1
 			path: src/Runner/Evaluation/ExpressionEvaluator.php
 
 		-

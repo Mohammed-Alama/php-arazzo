@@ -129,3 +129,50 @@ it('evaluateCriteria returns true for an empty criteria list', function () {
 
     expect($evaluator->evaluateCriteria([], $step, $context))->toBeTrue();
 });
+
+it('simple criteria fail the step when the status code does not match', function () {
+    $evaluator = $this->evaluator;
+
+    $makeStep = fn (string $condition) => new Step(
+        stepId: 'step1',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [new SuccessCriterion(null, $condition, CriterionType::Simple)],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $ok = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
+    $serverError = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 500, 'headers' => [], 'body' => []]);
+
+    expect($evaluator->evaluateSuccessCriteria($makeStep('$statusCode == 200'), $ok))->toBeTrue();
+    expect($evaluator->evaluateSuccessCriteria($makeStep('$statusCode == 200'), $serverError))->toBeFalse();
+    expect($evaluator->evaluateSuccessCriteria($makeStep('{$statusCode} == 200 && $statusCode < 300'), $ok))->toBeTrue();
+});
+
+it('malformed simple criteria fail deterministically instead of throwing', function () {
+    $evaluator = $this->evaluator;
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [new SuccessCriterion(null, '$statusCode === 200', CriterionType::Simple)],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
+
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeFalse();
+});

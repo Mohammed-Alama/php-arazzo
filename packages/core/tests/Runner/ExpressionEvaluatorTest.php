@@ -106,12 +106,36 @@ it('evaluates component parameters', function () {
     expect($evaluator->evaluate(new Expression('{$components.parameters.missing}'), new EvaluationContext($context)))->toBeNull();
 });
 
-it('evaluates workflow outputs', function () {
-    $context = new WorkflowContext('def_1');
-    // We need a way to mock or set workflows in the context. If it's missing, let's see what happens.
-    // Assuming context gets a withWorkflowOutput method or similar.
-    // For now, let's just create it and see it fail.
+it('evaluates step input references', function () {
+    $context = (new WorkflowContext('def_1'))->withStepInputs('create-user', ['name' => 'Alice', 'age' => 30]);
     $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$steps.create-user.inputs.name}'), new EvaluationContext($context)))->toBe('Alice');
+    expect($evaluator->evaluate(new Expression('{$steps.create-user.inputs.age}'), new EvaluationContext($context)))->toBe(30);
+    expect($evaluator->evaluate(new Expression('{$steps.create-user.inputs.missing}'), new EvaluationContext($context)))->toBeNull();
+});
+
+it('returns null for step inputs when the step has not run', function () {
+    $context = new WorkflowContext('def_1');
+    $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$steps.ghost.inputs.name}'), new EvaluationContext($context)))->toBeNull();
+});
+
+it('evaluates workflow inputs and outputs references', function () {
+    $context = (new WorkflowContext('def_1'))
+        ->withWorkflowData('login', ['inputs' => ['user' => 'amy'], 'outputs' => ['token' => 'jwt-123']]);
+
+    $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$workflows.login.outputs.token}'), new EvaluationContext($context)))->toBe('jwt-123');
+    expect($evaluator->evaluate(new Expression('{$workflows.login.inputs.user}'), new EvaluationContext($context)))->toBe('amy');
+});
+
+it('returns null for unknown workflow references', function () {
+    $context = new WorkflowContext('def_1');
+    $evaluator = new ExpressionEvaluator();
+
     expect($evaluator->evaluate(new Expression('{$workflows.login.outputs.token}'), new EvaluationContext($context)))->toBeNull();
 });
 

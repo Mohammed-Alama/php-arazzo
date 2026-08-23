@@ -63,6 +63,7 @@ class SubWorkflowInvoker
             outputs: $outcome->outputs,
             status: $outcome->status,
             childRunId: (string) $child->getExecutionId(),
+            inputs: $bound,
         );
     }
 }

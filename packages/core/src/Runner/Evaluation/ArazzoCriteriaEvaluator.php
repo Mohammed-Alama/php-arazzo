@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Evaluation;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Condition\ConditionEvaluator;
+use Alama\Arazzo\Runner\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Runner\Evaluation\Contracts\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Exceptions\UnsupportedCriterionTypeException;
@@ -16,9 +18,13 @@ use Alama\Arazzo\Spec\SuccessCriterion;
 
 class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
 {
+    private ConditionEvaluator $conditionEvaluator;
+
     public function __construct(
         private ExpressionEvaluatorInterface $evaluator,
+        ?ConditionEvaluator $conditionEvaluator = null,
     ) {
+        $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
@@ -41,8 +47,17 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
             $type = $criterion->type ?? CriterionType::Simple;
 
             if ($type === CriterionType::Simple) {
-                // Not fully implemented evaluating logic yet, just returning true for now
-                // Needs a real expression parser for boolean logic
+                try {
+                    $passed = $this->conditionEvaluator->evaluate($criterion->condition, $context, $step->stepId, $document);
+                } catch (ConditionSyntaxException) {
+                    // Evaluation errors fail the criterion deterministically.
+                    return false;
+                }
+
+                if (!$passed) {
+                    return false;
+                }
+
                 continue;
             }
 

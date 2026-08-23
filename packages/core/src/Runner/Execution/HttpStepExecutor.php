@@ -33,10 +33,13 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
     {
         $payload = new OpenApiPayload();
 
+        $resolvedInputs = [];
         foreach ($step->parameters as $param) {
             $val = $param->value instanceof Expression
                 ? $this->expressionResolver->evaluate($param->value, $context, $step->stepId)
                 : $param->value;
+
+            $resolvedInputs[$param->name] = $val;
 
             $in = $param->in?->value ?? 'auto';
             if ($in === 'query') {
@@ -112,7 +115,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
-        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body);
+        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs);
     }
 
     private function shouldValidateSchema(Step $step): bool

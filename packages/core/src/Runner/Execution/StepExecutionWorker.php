@@ -136,6 +136,7 @@ class StepExecutionWorker
                     'statusCode' => $outcome->statusCode,
                     'response' => ['statusCode' => $outcome->statusCode, 'body' => $outcome->responseBody],
                     'outputs' => $outcome->outputs,
+                    'inputs' => $outcome->inputs,
                 ]);
 
                 $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);

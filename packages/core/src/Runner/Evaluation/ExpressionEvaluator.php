@@ -7,12 +7,14 @@ namespace Alama\Arazzo\Runner\Evaluation;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
+use Alama\Arazzo\Expression\Ast\InputPart;
 use Alama\Arazzo\Expression\Ast\InputRef;
 use Alama\Arazzo\Expression\Ast\OutputPart;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\Expression;
 
@@ -51,10 +53,13 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         if ($ast instanceof StepRef) {
             $steps = $context->workflowContext->getSteps();
             $targetStepId = $ast->stepId ?? $context->currentStepId;
-            $stepData = $steps[$targetStepId] ?? null;
-            if (!$stepData) {
+            $rawStepData = $steps[$targetStepId] ?? null;
+            if (!is_array($rawStepData)) {
                 return null;
             }
+
+            /** @var array<string, mixed> $stepData */
+            $stepData = $rawStepData;
 
             $part = $ast->part;
 
@@ -82,8 +87,21 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
             }
 
             if ($part instanceof OutputPart) {
-                return $stepData['outputs'][$part->name] ?? null;
+                return $this->mapOrEmpty($stepData, 'outputs')[$part->name] ?? null;
             }
+
+            if ($part instanceof InputPart) {
+                return $this->mapOrEmpty($stepData, 'inputs')[$part->name] ?? null;
+            }
+        }
+
+        if ($ast instanceof WorkflowRef) {
+            $workflowData = $context->workflowContext->getWorkflows()[$ast->workflowId] ?? null;
+            if ($workflowData === null) {
+                return null;
+            }
+
+            return $workflowData[$ast->partKind][$ast->name] ?? null;
         }
 
         if ($ast instanceof ComponentRef) {
@@ -109,5 +127,17 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     *
+     * @return array<array-key, mixed>
+     */
+    private function mapOrEmpty(array $data, string $key): array
+    {
+        $value = $data[$key] ?? [];
+
+        return is_array($value) ? $value : [];
     }
 }

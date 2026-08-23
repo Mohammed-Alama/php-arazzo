@@ -15,6 +15,7 @@ final class WorkflowContext
      * @param array<string, mixed> $inputs
      * @param array<string, mixed> $steps
      * @param array<string, mixed> $components
+     * @param array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}> $workflows
      */
     public function __construct(
         private string $definitionId,
@@ -23,6 +24,7 @@ final class WorkflowContext
         private array $components = [],
         private ?string $workflowId = null,
         private ?string $executionId = null,
+        private array $workflows = [],
     ) {
         if ($this->executionId === null) {
             $this->executionId = uniqid('run_', true);
@@ -82,6 +84,29 @@ final class WorkflowContext
     }
 
     /**
+     * @return array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>
+     */
+    public function getWorkflows(): array
+    {
+        return $this->workflows;
+    }
+
+    /**
+     * @param array{inputs?: array<string, mixed>, outputs?: array<string, mixed>} $data
+     */
+    public function withWorkflowData(string $workflowId, array $data): self
+    {
+        $newWorkflows = $this->workflows;
+        $existing = $newWorkflows[$workflowId] ?? ['inputs' => [], 'outputs' => []];
+        $newWorkflows[$workflowId] = [
+            'inputs' => $data['inputs'] ?? $existing['inputs'],
+            'outputs' => $data['outputs'] ?? $existing['outputs'],
+        ];
+
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $newWorkflows);
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function getSteps(): array
@@ -91,12 +116,12 @@ final class WorkflowContext
 
     public function withWorkflowId(string $workflowId): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     public function withExecutionId(string $executionId): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId, workflows: $this->workflows);
     }
 
     /**
@@ -107,7 +132,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId] = $result;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     /**
@@ -118,7 +143,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['request'] = $request;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     /**
@@ -129,7 +154,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['response'] = $response;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     public function withStepOutput(string $stepId, string $key, mixed $value): self
@@ -137,7 +162,21 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['outputs'][$key] = $value;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+    }
+
+    /**
+     * @param array<string, mixed> $inputs
+     */
+    public function withStepInputs(string $stepId, array $inputs): self
+    {
+        $newSteps = $this->steps;
+        $existing = $newSteps[$stepId] ?? [];
+        $existing = is_array($existing) ? $existing : [];
+        $existing['inputs'] = $inputs;
+        $newSteps[$stepId] = $existing;
+
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     public function getStepStatus(string $stepId): ?StepStatus
@@ -156,7 +195,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['status'] = $status;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     public function getStepAttempts(string $stepId): int
@@ -169,7 +208,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['attempts'] = ($newSteps[$stepId]['attempts'] ?? 0) + 1;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
     }
 
     /**

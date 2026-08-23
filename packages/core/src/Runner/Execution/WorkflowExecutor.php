@@ -44,6 +44,7 @@ class WorkflowExecutor
     {
         $executionId = $inputs['__executionId'] ?? bin2hex(random_bytes(8));
         $context ??= new WorkflowContext($workflow->workflowId, $inputs);
+        $context = $context->withWorkflowData($workflow->workflowId, ['inputs' => $inputs]);
 
         $this->events->dispatch(new RunStarted(
             $executionId,
