@@ -21,4 +21,24 @@ enum TokenKind: string
     case String = 'string';
     case Ident = 'ident';
     case Expr = 'expr';
+
+    /**
+     * Operator symbols mapped to their token kind. Two-character symbols
+     * must precede their one-character prefixes so the lexer matches greedily.
+     *
+     * @var array<non-empty-string, self>
+     */
+    public const OPERATORS = [
+        '&&' => self::And,
+        '||' => self::Or,
+        '==' => self::Eq,
+        '!=' => self::Neq,
+        '>=' => self::Gte,
+        '<=' => self::Lte,
+        '>' => self::Gt,
+        '<' => self::Lt,
+        '!' => self::Not,
+        '(' => self::LParen,
+        ')' => self::RParen,
+    ];
 }

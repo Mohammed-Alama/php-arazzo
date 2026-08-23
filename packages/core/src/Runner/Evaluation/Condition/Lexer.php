@@ -6,20 +6,6 @@ namespace Alama\Arazzo\Runner\Evaluation\Condition;
 
 final class Lexer
 {
-    private const OPERATORS = [
-        '&&' => TokenKind::And,
-        '||' => TokenKind::Or,
-        '==' => TokenKind::Eq,
-        '!=' => TokenKind::Neq,
-        '>=' => TokenKind::Gte,
-        '<=' => TokenKind::Lte,
-        '>' => TokenKind::Gt,
-        '<' => TokenKind::Lt,
-        '!' => TokenKind::Not,
-        '(' => TokenKind::LParen,
-        ')' => TokenKind::RParen,
-    ];
-
     /** @return list<Token> */
     public function lex(string $condition): array
     {
@@ -37,15 +23,15 @@ final class Lexer
             }
 
             $two = substr($condition, $i, 2);
-            if (isset(self::OPERATORS[$two])) {
-                $tokens[] = new Token(self::OPERATORS[$two], $two, $i);
+            if (isset(TokenKind::OPERATORS[$two])) {
+                $tokens[] = new Token(TokenKind::OPERATORS[$two], $two, $i);
                 $i += 2;
 
                 continue;
             }
 
-            if (isset(self::OPERATORS[$char])) {
-                $tokens[] = new Token(self::OPERATORS[$char], $char, $i);
+            if (isset(TokenKind::OPERATORS[$char])) {
+                $tokens[] = new Token(TokenKind::OPERATORS[$char], $char, $i);
                 $i++;
 
                 continue;
