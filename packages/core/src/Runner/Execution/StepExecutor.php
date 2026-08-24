@@ -169,6 +169,15 @@ class StepExecutor
             return $this->interpolator->interpolate($value, $context, $stepId);
         }
 
+        // Arazzo parameter/payload values may use the bare runtime-expression
+        // spellings (`$inputs.x`, `${inputs.x}`); normalize them into the
+        // interpolator's `{$...}` template form before evaluation.
+        if (is_string($value) && preg_match('/^\$[{$]?[A-Za-z]/', $value) === 1 && !str_contains($value, ' ')) {
+            $template = $value[1] === '{' ? $value : '{' . $value . '}';
+
+            return $this->interpolator->interpolate($template, $context, $stepId);
+        }
+
         return $value;
     }
 }

@@ -135,7 +135,13 @@ final class Parser
             TokenKind::Number => new Literal(str_contains($token->value, '.') ? (float) $token->value : (int) $token->value),
             TokenKind::String => new Literal($token->value),
             TokenKind::Ident => $this->parseIdentLiteral($token),
-            default => new RuntimeExpr(new Expression('{' . $token->value . '}'), $token->value),
+            // Normalize both runtime-expression spellings to the canonical
+            // `{$...}` form. The lexer captures `${token}` verbatim including
+            // its closing brace, so re-wrapping must not duplicate it.
+            default => new RuntimeExpr(
+                new Expression(self::canonicalExpression($token->value)),
+                $token->value,
+            ),
         };
 
         $next = $this->peek();
@@ -144,6 +150,20 @@ final class Parser
         }
 
         return $node;
+    }
+
+    private static function canonicalExpression(string $captured): string
+    {
+        // The lexer captures runtime expressions verbatim: either bare
+        // `$steps.A.outputs.x` or the braced `${...}` spelling including its
+        // closing brace. Normalize both to the canonical `{$...}` form.
+        $body = str_ends_with($captured, '}') ? substr($captured, 0, -1) : $captured;
+
+        if (str_starts_with($body, '${')) {
+            $body = '$' . substr($body, 2);
+        }
+
+        return '{' . $body . '}';
     }
 
     private function parseIdentLiteral(Token $token): Literal

@@ -26,6 +26,7 @@ flowchart LR
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Runner</small>"] -->|dispatches| E_StepFailed
     S_Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer<br/><small>Runner</small>"] -->|dispatches| E_CorrelationResumed
     S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>Runner</small>"] -->|dispatches| E_StepRetried
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Runner</small>"] -->|dispatches| E_StepRetried
     S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>Runner</small>"] -->|dispatches| E_RunCompleted
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Runner</small>"] -->|dispatches| E_RunCompleted
     S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>Runner</small>"] -->|dispatches| E_RunFailed
@@ -44,5 +45,5 @@ flowchart LR
 | **RunStarted** | `WorkflowExecutor` |
 | **StepExecuted** | `StepExecutionWorker`, `WorkflowExecutor` |
 | **StepFailed** | `StepExecutionWorker`, `WorkflowExecutor` |
-| **StepRetried** | `StepOutcomeHandler` |
+| **StepRetried** | `StepOutcomeHandler`, `WorkflowExecutor` |
 | **StepStarted** | `StepExecutionWorker`, `WorkflowExecutor` |

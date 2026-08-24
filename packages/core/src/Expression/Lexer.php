@@ -20,6 +20,11 @@ final class Lexer
         if (str_starts_with($raw, '{$') && str_ends_with($raw, '}')) {
             $inner = substr($raw, 2, -1);
             $absOffsetBase = 2;
+        } elseif (str_starts_with($raw, '${') && str_ends_with($raw, '}')) {
+            // `${token}` is the alternate Arazzo spelling of `{$token}`:
+            // drop the wrapper braces but keep the leading `$`.
+            $inner = '$' . substr($raw, 2, -1);
+            $absOffsetBase = 0;
         } elseif (str_starts_with($raw, '$')) {
             $inner = substr($raw, 1);
             $absOffsetBase = 1;

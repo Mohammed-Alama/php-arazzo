@@ -1,0 +1,155 @@
+{
+    "name": "openapi-request-construction",
+    "description": "Path, query, and header parameters are serialized onto the outgoing request per the OpenAPI operation.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {
+            "title": "Conformance",
+            "version": "1.0.0"
+        },
+        "sourceDescriptions": [
+            {
+                "name": "api",
+                "url": "https://conformance.invalid/api.json",
+                "type": "openapi"
+            }
+        ],
+        "workflows": [
+            {
+                "workflowId": "searchRides",
+                "inputs": {
+                    "type": "object",
+                    "properties": {
+                        "city": {
+                            "type": "string"
+                        },
+                        "limit": {
+                            "type": "integer"
+                        },
+                        "apiKey": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "city"
+                    ]
+                },
+                "steps": [
+                    {
+                        "stepId": "search",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1rides/get",
+                        "parameters": [
+                            {
+                                "name": "city",
+                                "in": "query",
+                                "value": "$inputs.city"
+                            },
+                            {
+                                "name": "limit",
+                                "in": "query",
+                                "value": "$inputs.limit"
+                            },
+                            {
+                                "name": "X-Api-Key",
+                                "in": "header",
+                                "value": "$inputs.apiKey"
+                            }
+                        ],
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 200"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {
+                "title": "API",
+                "version": "1.0.0"
+            },
+            "servers": [
+                {
+                    "url": "https://api.test"
+                }
+            ],
+            "paths": {
+                "/rides": {
+                    "get": {
+                        "operationId": "listRides",
+                        "parameters": [
+                            {
+                                "name": "city",
+                                "in": "query",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "name": "limit",
+                                "in": "query",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            {
+                                "name": "X-Api-Key",
+                                "in": "header",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "responses": [
+        {
+            "status": 200,
+            "body": {
+                "rides": []
+            }
+        }
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {
+                "stepId": "search",
+                "status": "success",
+                "attempts": 1
+            }
+        ],
+        "requests": [
+            "GET https://api.test/rides?city=paris&limit=10"
+        ],
+        "requestHeaders": {
+            "X-Api-Key": "secret"
+        },
+        "outputs": {},
+        "errors": []
+    },
+    "inputs": {
+        "city": "paris",
+        "limit": 10,
+        "apiKey": "secret"
+    }
+}

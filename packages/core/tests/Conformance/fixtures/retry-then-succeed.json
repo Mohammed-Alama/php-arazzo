@@ -1,0 +1,110 @@
+{
+    "name": "retry-then-succeed",
+    "description": "A failing step retried per its failure retry action succeeds on the second attempt.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {
+            "title": "Conformance",
+            "version": "1.0.0"
+        },
+        "sourceDescriptions": [
+            {
+                "name": "api",
+                "url": "https://conformance.invalid/api.json",
+                "type": "openapi"
+            }
+        ],
+        "workflows": [
+            {
+                "workflowId": "flakyFetch",
+                "steps": [
+                    {
+                        "stepId": "fetch",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1flaky/get",
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 200"
+                            }
+                        ],
+                        "onFailure": [
+                            {
+                                "type": "retry",
+                                "retryAfter": 0,
+                                "name": "retry-fetch"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {
+                "title": "API",
+                "version": "1.0.0"
+            },
+            "servers": [
+                {
+                    "url": "https://api.test"
+                }
+            ],
+            "paths": {
+                "/flaky": {
+                    "get": {
+                        "operationId": "getFlaky",
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "responses": [
+        {
+            "status": 500,
+            "body": {
+                "error": "boom"
+            }
+        },
+        {
+            "status": 200,
+            "body": {
+                "ok": true
+            }
+        }
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {
+                "stepId": "fetch",
+                "status": "success",
+                "attempts": 2
+            }
+        ],
+        "requests": [
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky"
+        ],
+        "outputs": {},
+        "errors": [],
+        "retries": {
+            "fetch": 1
+        },
+        "eventsContain": [
+            "Alama\\Arazzo\\Runner\\Events\\StepRetried"
+        ]
+    }
+}

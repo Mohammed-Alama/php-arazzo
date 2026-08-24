@@ -1,0 +1,201 @@
+{
+    "name": "linear-success-with-outputs",
+    "description": "Two dependent steps execute in order; workflow outputs are evaluated from step outputs.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {
+            "title": "Conformance",
+            "version": "1.0.0"
+        },
+        "sourceDescriptions": [
+            {
+                "name": "api",
+                "url": "https://conformance.invalid/api.json",
+                "type": "openapi"
+            }
+        ],
+        "workflows": [
+            {
+                "workflowId": "createRide",
+                "inputs": {
+                    "type": "object",
+                    "properties": {
+                        "customerId": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": [
+                        "customerId"
+                    ]
+                },
+                "steps": [
+                    {
+                        "stepId": "createRide",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1rides/post",
+                        "requestBody": {
+                            "contentType": "application/json",
+                            "payload": {
+                                "customer_id": "$inputs.customerId"
+                            }
+                        },
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 201"
+                            }
+                        ],
+                        "outputs": {
+                            "rideId": "$response.body#/id"
+                        }
+                    },
+                    {
+                        "stepId": "getRide",
+                        "dependsOn": [
+                            "createRide"
+                        ],
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1rides~1{rideId}/get",
+                        "parameters": [
+                            {
+                                "name": "rideId",
+                                "in": "path",
+                                "value": "$steps.createRide.outputs.rideId"
+                            }
+                        ],
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 200"
+                            }
+                        ],
+                        "outputs": {
+                            "status": "$response.body#/status"
+                        }
+                    }
+                ],
+                "outputs": {
+                    "rideId": "$steps.createRide.outputs.rideId",
+                    "status": "$steps.getRide.outputs.status"
+                }
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {
+                "title": "API",
+                "version": "1.0.0"
+            },
+            "servers": [
+                {
+                    "url": "https://api.test"
+                }
+            ],
+            "paths": {
+                "/rides": {
+                    "post": {
+                        "operationId": "createRide",
+                        "requestBody": {
+                            "required": true,
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        },
+                        "responses": {
+                            "201": {
+                                "description": "created",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "/rides/{rideId}": {
+                    "get": {
+                        "operationId": "getRide",
+                        "parameters": [
+                            {
+                                "name": "rideId",
+                                "in": "path",
+                                "required": true,
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "responses": [
+        {
+            "status": 201,
+            "body": {
+                "id": 42
+            }
+        },
+        {
+            "status": 200,
+            "body": {
+                "status": "confirmed"
+            }
+        }
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {
+                "stepId": "createRide",
+                "status": "success",
+                "attempts": 1
+            },
+            {
+                "stepId": "getRide",
+                "status": "success",
+                "attempts": 1
+            }
+        ],
+        "requests": [
+            "POST https://api.test/rides",
+            "GET https://api.test/rides/42"
+        ],
+        "outputs": {
+            "rideId": 42,
+            "status": "confirmed"
+        },
+        "errors": []
+    },
+    "inputs": {
+        "customerId": 7
+    }
+}

@@ -270,4 +270,51 @@ final class WorkflowEngine
 
         return null;
     }
+
+    /**
+     * Evaluates the workflow-level `outputs` expressions against the final
+     * step results. Unresolvable expressions evaluate to null instead of
+     * failing the run.
+     *
+     * @return array<string, mixed>
+     */
+    public function evaluateWorkflowOutputs(ArazzoDocument $document, Workflow $workflow, ExecutionState $state): array
+    {
+        if ($workflow->outputs === []) {
+            return [];
+        }
+
+        $context = new WorkflowContext(
+            $state->definitionId,
+            $state->inputs,
+            workflowId: $workflow->workflowId,
+            executionId: $state->executionId,
+        );
+
+        foreach ($state->stepResults as $stepId => $result) {
+            $outputs = match (true) {
+                $result instanceof StepResult => $result->outputs,
+                is_array($result) && is_array($result['outputs'] ?? null) => $result['outputs'],
+                default => [],
+            };
+
+            foreach ($outputs as $key => $value) {
+                $context = $context->withStepOutput($stepId, $key, $value);
+            }
+        }
+
+        $outputs = [];
+
+        foreach ($workflow->outputs as $name => $expression) {
+            try {
+                $outputs[$name] = $expression instanceof Expression
+                    ? $this->expressions->evaluate($expression, $context)
+                    : $expression;
+            } catch (\Throwable) {
+                $outputs[$name] = null;
+            }
+        }
+
+        return $outputs;
+    }
 }

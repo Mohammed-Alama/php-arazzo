@@ -11,6 +11,7 @@ use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\RunStarted;
 use Alama\Arazzo\Runner\Events\StepExecuted as StepExecutedEvent;
 use Alama\Arazzo\Runner\Events\StepFailed as StepFailedEvent;
+use Alama\Arazzo\Runner\Events\StepRetried;
 use Alama\Arazzo\Runner\Events\StepStarted;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionLoggerInterface;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
@@ -77,23 +78,18 @@ class WorkflowExecutor
                 $raw = $stepContext->getSteps()[$stepId] ?? [];
                 /** @var array<string, mixed> $raw */
                 $state = $state->withStepResult($stepId, $raw);
-                $result = new StepResult($stepId, $success, is_array($raw['outputs'] ?? null) ? $raw['outputs'] : []);
+                $result = new StepResult(
+                    $stepId,
+                    $success,
+                    is_array($raw['outputs'] ?? null) ? $raw['outputs'] : [],
+                    $success ? null : new RuntimeException("Step '{$stepId}' failed"),
+                );
                 $results[$stepId] = $result;
                 $transition = $this->workflowEngine->transition($document, $currentWorkflow, $step, $state, $success);
                 $state = $transition->state;
-                if ($transition->type === TransitionType::Goto && $transition->workflowId !== $currentWorkflow->workflowId) {
-                    $targetWf = null;
-                    foreach ($document->workflows as $w) {
-                        if ($w->workflowId === $transition->workflowId) {
-                            $targetWf = $w;
-                            break;
-                        }
-                    }
-                    $currentWorkflow = $targetWf ?? $currentWorkflow;
+                if ($transition->type === TransitionType::Retry) {
+                    $this->events->dispatch(new StepRetried($executionId, $currentWorkflow->workflowId, $stepId, $state->attemptFor($stepId), null, new DateTimeImmutable()));
                 }
-                $results[$stepId] = $result;
-                $transition = $this->workflowEngine->transition($document, $currentWorkflow, $step, $state, $success);
-                $state = $transition->state;
                 if (!$success) {
                     $this->events->dispatch(new StepFailedEvent(
                         $executionId,
@@ -108,11 +104,13 @@ class WorkflowExecutor
                 if ($transition->isTerminal()) {
                     if ($transition->status === 'failed') {
                         $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable()));
-                    } else {
-                        $this->events->dispatch(new RunCompleted($executionId, $currentWorkflow->workflowId, $state->outputs, new DateTimeImmutable()));
-                    }
 
-                    return new ExecutionResult($currentWorkflow->workflowId, $transition->status ?? 'failed', $state->outputs, $results);
+                        return new ExecutionResult($currentWorkflow->workflowId, 'failed', [], $results);
+                    }
+                    $outputs = $this->workflowEngine->evaluateWorkflowOutputs($document, $currentWorkflow, $state);
+                    $this->events->dispatch(new RunCompleted($executionId, $currentWorkflow->workflowId, $outputs, new DateTimeImmutable()));
+
+                    return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $outputs, $results);
                 }
                 if ($transition->workflowId !== null && $transition->workflowId !== $currentWorkflow->workflowId) {
                     $currentWorkflow = $this->workflow($document, $transition->workflowId);
