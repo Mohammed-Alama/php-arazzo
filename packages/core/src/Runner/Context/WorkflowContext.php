@@ -46,6 +46,94 @@ final class WorkflowContext
     }
 
     /**
+     * Persistence payload: the canonical serialized shape of a run's
+     * state, including budget/call-stack so queue resumes stay exact.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'definitionId' => $this->definitionId,
+            'workflowId' => $this->workflowId,
+            'steps' => $this->steps,
+            'inputs' => $this->inputs,
+            'components' => $this->components,
+            'stepsSpent' => $this->stepsSpent,
+            'workflowCallStack' => $this->workflowCallStack,
+        ];
+    }
+
+    /**
+     * Hydrates a context from a persisted payload (CorrelationResumer).
+     *
+     * @param array<string, mixed> $persisted
+     */
+    public static function fromPersisted(array $persisted, string $executionId): self
+    {
+        $definitionId = is_string($persisted['definitionId'] ?? null) ? $persisted['definitionId'] : '';
+        $workflowId = is_string($persisted['workflowId'] ?? null) ? $persisted['workflowId'] : '';
+
+        /** @var array<string, mixed> $inputs */
+        $inputs = is_array($persisted['inputs'] ?? null) ? $persisted['inputs'] : [];
+
+        /** @var array<string, array<string, mixed>> $steps */
+        $steps = is_array($persisted['steps'] ?? null) ? $persisted['steps'] : [];
+
+        /** @var array<string, mixed> $components */
+        $components = is_array($persisted['components'] ?? null) ? $persisted['components'] : [];
+
+        $context = new self($definitionId, $inputs, $steps, $components, $workflowId, $executionId);
+
+        if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
+            $stack = is_array($persisted['workflowCallStack'] ?? null) ? $persisted['workflowCallStack'] : [];
+
+            $context = $context->withBudget(
+                is_int($persisted['stepsSpent'] ?? null) ? $persisted['stepsSpent'] : 0,
+                array_values(array_filter($stack, 'is_string')),
+            );
+        }
+
+        return $context;
+    }
+
+    /**
+     * Reconciles an incoming job context with the persisted payload:
+     * persisted steps win on conflict (they are newer), and the stored
+     * budget/call-stack is authoritative.
+     *
+     * @param array<string, mixed> $persisted
+     */
+    public static function reconciled(self $incoming, array $persisted, string $executionId): self
+    {
+        /** @var array<string, array<string, mixed>> $persistedSteps */
+        $persistedSteps = is_array($persisted['steps'] ?? null) ? $persisted['steps'] : [];
+
+        /** @var array<string, array<string, mixed>> $mergedSteps */
+        $mergedSteps = array_merge($incoming->getSteps(), $persistedSteps);
+
+        $restored = new self(
+            $incoming->getDefinitionId(),
+            $incoming->getInputs(),
+            $mergedSteps,
+            $incoming->getComponents(),
+            $incoming->getWorkflowId(),
+            $executionId,
+        );
+
+        if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
+            $stack = is_array($persisted['workflowCallStack'] ?? null) ? $persisted['workflowCallStack'] : [];
+
+            $restored = $restored->withBudget(
+                is_int($persisted['stepsSpent'] ?? null) ? $persisted['stepsSpent'] : 0,
+                array_values(array_filter($stack, 'is_string')),
+            );
+        }
+
+        return $restored;
+    }
+
+    /**
      * @param list<string> $workflowCallStack
      */
     public function withBudget(int $stepsSpent, array $workflowCallStack): self

@@ -280,30 +280,10 @@ class StepExecutionWorker
     private function reconcileWithPersistedState(WorkflowContext $context, string $executionId): WorkflowContext
     {
         $persisted = $this->stateStore->load($executionId);
-        if ($persisted === null) {
-            return $context;
-        }
 
-        $mergedSteps = array_merge($context->getSteps(), $persisted['steps'] ?? []);
-
-        $restored = new WorkflowContext(
-            $context->getDefinitionId(),
-            $context->getInputs(),
-            $mergedSteps,
-            $context->getComponents(),
-            $context->getWorkflowId(),
-            $executionId,
-        );
-
-        if (array_key_exists('stepsSpent', $persisted) || array_key_exists('workflowCallStack', $persisted)) {
-            $stack = is_array($persisted['workflowCallStack'] ?? null) ? $persisted['workflowCallStack'] : [];
-            $restored = $restored->withBudget(
-                is_int($persisted['stepsSpent'] ?? null) ? $persisted['stepsSpent'] : 0,
-                array_values(array_filter($stack, 'is_string')),
-            );
-        }
-
-        return $restored;
+        return $persisted === null
+            ? $context
+            : WorkflowContext::reconciled($context, $persisted, $executionId);
     }
 
     private function findWorkflow(ArazzoDocument $document, ?string $workflowId): ?Workflow
@@ -333,17 +313,7 @@ class StepExecutionWorker
      */
     private function serialize(WorkflowContext $context): array
     {
-        return [
-            'definitionId' => $context->getDefinitionId(),
-            'workflowId' => $context->getWorkflowId(),
-            'steps' => $context->getSteps(),
-            'inputs' => $context->getInputs(),
-            'components' => $context->getComponents(),
-            // Budget/call-stack survive job boundaries so retry ceilings,
-            // step budgets, and workflow depth guards stay authoritative.
-            'stepsSpent' => $context->getStepsSpent(),
-            'workflowCallStack' => $context->getWorkflowCallStack(),
-        ];
+        return $context->toArray();
     }
 
     /** @return array<string, int> */
@@ -370,15 +340,6 @@ class StepExecutionWorker
 
     private function contextFromState(ExecutionState $state): WorkflowContext
     {
-        return new WorkflowContext(
-            $state->definitionId,
-            $state->inputs,
-            $state->stepResults,
-            $state->components,
-            $state->workflowId,
-            $state->executionId,
-            stepsSpent: $state->stepsSpent,
-            workflowCallStack: $state->workflowCallStack,
-        );
+        return $state->toContext();
     }
 }

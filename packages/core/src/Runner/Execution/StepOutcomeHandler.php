@@ -329,25 +329,7 @@ class StepOutcomeHandler
 
     private function stateFrom(WorkflowContext $context): ExecutionState
     {
-        $state = ExecutionState::start(
-            (string) $context->getExecutionId(),
-            $context->getDefinitionId(),
-            (string) $context->getWorkflowId(),
-            $context->getInputs(),
-            components: $context->getComponents(),
-        );
-
-        foreach ($context->getSteps() as $stepId => $result) {
-            /** @var array<string, mixed> $result */
-            $state = $state->withStepResult($stepId, $result);
-            if (($result['attempts'] ?? 0) > 0) {
-                while ($result['attempts'] > $state->attemptFor((string) $stepId)) {
-                    $state = $state->withStepAttempt((string) $stepId);
-                }
-            }
-        }
-
-        return $state;
+        return ExecutionState::fromContext($context);
     }
 
     /**
@@ -355,13 +337,7 @@ class StepOutcomeHandler
      */
     private function serialize(WorkflowContext $context): array
     {
-        return [
-            'definitionId' => $context->getDefinitionId(),
-            'workflowId' => $context->getWorkflowId(),
-            'steps' => $context->getSteps(),
-            'inputs' => $context->getInputs(),
-            'components' => $context->getComponents(),
-        ];
+        return $context->toArray();
     }
 
     private function terminate(WorkflowContext $context, string $executionId, ExecutionStatus $status, string $eventType): void

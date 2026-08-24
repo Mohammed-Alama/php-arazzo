@@ -128,6 +128,77 @@ final readonly class ExecutionState implements JsonSerializable
         return $this->copy(workflowId: $workflowId);
     }
 
+    /**
+     * Canonical state → context mapping. Folds the step-attempt counters
+     * into the step records and carries budget/call-stack, so every
+     * consumer sees the same shape (single owner of the mapping).
+     */
+    public function toContext(): WorkflowContext
+    {
+        /** @var array<string, array<string, mixed>> $steps */
+        $steps = $this->stepResults;
+
+        foreach ($this->stepAttempts as $id => $attempt) {
+            $record = is_array($steps[$id] ?? null) ? $steps[$id] : [];
+
+            $record['attempts'] = $attempt;
+            $steps[$id] = $record;
+        }
+
+        return new WorkflowContext(
+            $this->definitionId,
+            $this->inputs,
+            $steps,
+            $this->components,
+            $this->workflowId,
+            $this->executionId,
+            stepsSpent: $this->stepsSpent,
+            workflowCallStack: $this->workflowCallStack,
+        );
+    }
+
+    /**
+     * Canonical context → state mapping: replays per-record attempt counts
+     * back into the attempt map and inherits budget/call-stack when present.
+     */
+    public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self
+    {
+        $state = new self(
+            (string) $context->getExecutionId(),
+            $context->getDefinitionId(),
+            (string) $context->getWorkflowId(),
+            null,
+            $context->getInputs(),
+            [],
+            [],
+            [],
+            [],
+            [],
+            $context->getStepsSpent(),
+            $maxSteps ?? 1000,
+            $context->getWorkflowCallStack() ?: [(string) $context->getWorkflowId()],
+            $maxWorkflowDepth ?? 32,
+            $context->getComponents(),
+        );
+
+        foreach ($context->getSteps() as $stepId => $result) {
+            if (!is_array($result)) {
+                continue;
+            }
+
+            /** @var array<string, mixed> $result */
+            $attempts = is_int($result['attempts'] ?? null) ? $result['attempts'] : 0;
+
+            $state = $state->withStepResult($stepId, $result);
+
+            while ($state->attemptFor((string) $stepId) < $attempts) {
+                $state = $state->withStepAttempt((string) $stepId);
+            }
+        }
+
+        return $state;
+    }
+
     public function withOutput(string $name, mixed $value): self
     {
         $outputs = $this->outputs;

@@ -56,7 +56,7 @@ final class WorkflowEngine
         $state = $state->withStepResult($step->stepId, $record);
         $actions = $this->actions($document, $workflow, $step, $criteriaMet);
         foreach ($actions as $position => $action) {
-            if (!$this->expressions->evaluateCriteria($action->criteria, $step, $this->context($state), $document)) {
+            if (!$this->expressions->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
                 continue;
             }
             if ($action instanceof RetryAction) {
@@ -77,7 +77,7 @@ final class WorkflowEngine
                 $this->target($document, $targetWorkflowId, $targetStepId);
                 $next = $state->withStepAttempt($step->stepId)->withWorkflow($targetWorkflowId)->withCurrentStep($targetStepId);
 
-                return Transition::retry($next, $targetStepId, $this->retryDelaySeconds($action, $step, $this->context($state), $attemptsSoFar + 1), $targetWorkflowId);
+                return Transition::retry($next, $targetStepId, $this->retryDelaySeconds($action, $step, $state->toContext(), $attemptsSoFar + 1), $targetWorkflowId);
             }
             if ($action instanceof SuccessGotoAction || $action instanceof FailureGotoAction) {
                 $targetWorkflowId = $action->workflowId ?? $workflow->workflowId;
@@ -97,7 +97,7 @@ final class WorkflowEngine
                     }
 
                     $value = $parameter->value instanceof Expression
-                        ? $this->expressions->evaluate($parameter->value, $this->context($gotoState), $step->stepId)
+                        ? $this->expressions->evaluate($parameter->value, $gotoState->toContext(), $step->stepId)
                         : $parameter->value;
 
                     $inputs = $gotoState->inputs;
@@ -151,16 +151,6 @@ final class WorkflowEngine
 
             return $resolved;
         }, $actions);
-    }
-
-    private function context(ExecutionState $state): WorkflowContext
-    {
-        $steps = $state->stepResults;
-        foreach ($state->stepAttempts as $id => $attempt) {
-            $steps[$id]['attempts'] = $attempt;
-        }
-
-        return new WorkflowContext($state->definitionId, $state->inputs, $steps, $state->components, $state->workflowId, $state->executionId);
     }
 
     /** @return array{0: Workflow, 1: Step} */
@@ -284,24 +274,7 @@ final class WorkflowEngine
             return [];
         }
 
-        $context = new WorkflowContext(
-            $state->definitionId,
-            $state->inputs,
-            workflowId: $workflow->workflowId,
-            executionId: $state->executionId,
-        );
-
-        foreach ($state->stepResults as $stepId => $result) {
-            $outputs = match (true) {
-                $result instanceof StepResult => $result->outputs,
-                is_array($result) && is_array($result['outputs'] ?? null) => $result['outputs'],
-                default => [],
-            };
-
-            foreach ($outputs as $key => $value) {
-                $context = $context->withStepOutput($stepId, $key, $value);
-            }
-        }
+        $context = $state->toContext();
 
         $outputs = [];
 

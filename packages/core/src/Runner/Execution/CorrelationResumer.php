@@ -145,15 +145,7 @@ class CorrelationResumer
      */
     private function hydrateContext(array $persisted, string $executionId): WorkflowContext
     {
-
-        return new WorkflowContext(
-            (string) $persisted['definitionId'],
-            (array) ($persisted['inputs'] ?? []),
-            (array) ($persisted['steps'] ?? []),
-            (array) ($persisted['components'] ?? []),
-            (string) $persisted['workflowId'],
-            $executionId,
-        );
+        return WorkflowContext::fromPersisted($persisted, $executionId);
     }
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
