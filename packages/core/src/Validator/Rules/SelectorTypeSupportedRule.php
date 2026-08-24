@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Validator\Rules;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
@@ -27,12 +28,20 @@ final class SelectorTypeSupportedRule implements Rule
 
         foreach ($doc->workflows as $wi => $wf) {
             foreach ($wf->parameters as $pi => $p) {
+                if ($p instanceof Reusable) {
+                    continue;
+                }
+
                 if ($p->value instanceof Selector) {
                     $this->validateSelector($p->value, $errors, "/workflows/{$wi}/parameters/{$pi}/value");
                 }
             }
             foreach ($wf->steps as $si => $step) {
                 foreach ($step->parameters as $pi => $p) {
+                    if ($p instanceof Reusable) {
+                        continue;
+                    }
+
                     if ($p->value instanceof Selector) {
                         $this->validateSelector($p->value, $errors, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value");
                     }

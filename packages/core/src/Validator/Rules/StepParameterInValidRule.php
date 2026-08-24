@@ -8,6 +8,7 @@ use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
@@ -18,6 +19,10 @@ final class StepParameterInValidRule implements Rule
         foreach ($doc->workflows as $wi => $w) {
             foreach ($w->steps as $si => $s) {
                 foreach ($s->parameters as $pi => $p) {
+                    if ($p instanceof Reusable) {
+                        continue;
+                    }
+
                     if ($p->in === ParameterIn::Querystring && $doc->specVersion === SpecVersion::V1_0) {
                         $errors->error(
                             $this->code(),

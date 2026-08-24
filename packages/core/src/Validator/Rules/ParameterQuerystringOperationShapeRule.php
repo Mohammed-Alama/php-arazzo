@@ -8,6 +8,7 @@ use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
@@ -22,6 +23,10 @@ final class ParameterQuerystringOperationShapeRule implements Rule
         foreach ($doc->workflows as $wi => $wf) {
             foreach ($wf->steps as $si => $step) {
                 foreach ($step->parameters as $pi => $param) {
+                    if ($param instanceof Reusable) {
+                        continue;
+                    }
+
                     if ($param->in !== ParameterIn::Querystring) {
                         continue;
                     }

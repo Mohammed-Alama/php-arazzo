@@ -356,9 +356,17 @@ class Parser
         );
     }
 
-    protected function parseParameter(mixed $node, ParseContext $ctx): Parameter
+    protected function parseParameter(mixed $node, ParseContext $ctx): Parameter|Reusable
     {
         $obj = $this->requireObjectMap($node, $ctx);
+
+        if (array_key_exists('reference', $obj)) {
+            return new Reusable(
+                reference: $this->requireString($obj, 'reference', $ctx),
+                value: $this->normalizeReusableValue($obj['value'] ?? null, $ctx->push('value')),
+            );
+        }
+
         $in = null;
         if (($rawIn = $this->optionalString($obj, 'in', $ctx)) !== null) {
             $in = ParameterIn::tryFrom($rawIn)
@@ -529,8 +537,20 @@ class Parser
 
         return new Reusable(
             reference: $this->requireString($obj, 'reference', $ctx),
-            value: $obj['value'] ?? null,
+            value: $this->normalizeReusableValue($obj['value'] ?? null, $ctx->push('value')),
         );
+    }
+
+    /**
+     * @return Expression|Selector|scalar|array<mixed>|null
+     */
+    protected function normalizeReusableValue(mixed $value, ParseContext $ctx): mixed
+    {
+        if ($value === null || is_scalar($value) || is_array($value)) {
+            return $value;
+        }
+
+        throw ParserException::wrongType($ctx, 'scalar, array, expression or selector', $value);
     }
 
     /**
@@ -684,7 +704,14 @@ class Parser
         $parameters = [];
         if (($p = $this->optionalArray($obj, 'parameters', $ctx)) !== null) {
             foreach ($p as $k => $v) {
-                $parameters[(string) $k] = $this->parseParameter($v, $ctx->push('parameters')->push((string) $k));
+                $parsed = $this->parseParameter($v, $ctx->push('parameters')->push((string) $k));
+                if ($parsed instanceof Reusable) {
+                    throw ParserException::wrongType(
+                        $ctx->push('parameters')->push((string) $k),
+                        'parameter (not a reusable ref)', $v,
+                    );
+                }
+                $parameters[(string) $k] = $parsed;
             }
         }
 

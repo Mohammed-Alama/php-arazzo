@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Validator\Rules;
 
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
@@ -16,6 +17,10 @@ final class StepParametersHaveNameRule implements Rule
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
                 foreach ($s->parameters as $k => $p) {
+                    if ($p instanceof Reusable) {
+                        continue;
+                    }
+
                     if (trim($p->name) === '') {
                         $errors->error(
                             $this->code(),

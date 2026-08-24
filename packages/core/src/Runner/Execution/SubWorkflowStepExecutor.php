@@ -49,7 +49,9 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
         $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
 
         $bound = [];
-        foreach ($step->parameters as $parameter) {
+        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+
+        foreach ($parameters as $parameter) {
             $bound[$parameter->name] = $parameter->value instanceof Expression
                 ? $this->evaluator->evaluate($parameter->value, $evaluationContext)
                 : $parameter->value;

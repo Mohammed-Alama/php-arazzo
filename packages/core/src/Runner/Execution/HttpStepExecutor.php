@@ -35,7 +35,8 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         $payload = new OpenApiPayload();
 
         $resolvedInputs = [];
-        foreach ($step->parameters as $param) {
+        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+        foreach ($parameters as $param) {
             $val = $param->value instanceof Expression
                 ? $this->expressionResolver->evaluate($param->value, $context, $step->stepId)
                 : $param->value;

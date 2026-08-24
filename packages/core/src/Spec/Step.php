@@ -10,7 +10,7 @@ use Alama\Arazzo\Spec\Action\SuccessAction;
 final readonly class Step
 {
     /**
-     * @param list<Parameter> $parameters
+     * @param list<Parameter|Reusable> $parameters
      * @param list<SuccessCriterion> $successCriteria
      * @param list<SuccessAction|Reusable> $onSuccess
      * @param list<FailureAction|Reusable> $onFailure

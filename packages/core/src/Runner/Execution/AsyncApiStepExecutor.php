@@ -94,7 +94,8 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $query = [];
         $headers = [];
-        foreach ($step->parameters as $parameter) {
+        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+        foreach ($parameters as $parameter) {
             $value = $parameter->value instanceof Expression
                 ? $this->evaluator->evaluate($parameter->value, $evaluationContext)
                 : $parameter->value;

@@ -46,7 +46,8 @@ class StepExecutor
     {
         $payload = new OpenApiPayload();
 
-        foreach ($step->parameters as $param) {
+        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+        foreach ($parameters as $param) {
             $val = $this->resolveValue($param->value, $context, $step->stepId);
 
             $in = $param->in?->value ?? 'auto';

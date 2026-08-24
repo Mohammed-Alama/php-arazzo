@@ -19,12 +19,6 @@ parameters:
 			path: src/Expression/SymbolTable.php
 
 		-
-			message: '#^Instanceof between Alama\\Arazzo\\Spec\\Parameter and Alama\\Arazzo\\Spec\\Parameter will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Expression/SymbolTable.php
-
-		-
 			message: '#^Instanceof between Alama\\Arazzo\\Spec\\SourceDescription and Alama\\Arazzo\\Spec\\SourceDescription will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -45,7 +39,7 @@ parameters:
 		-
 			message: '#^Result of && is always true\.$#'
 			identifier: booleanAnd.alwaysTrue
-			count: 4
+			count: 3
 			path: src/Expression/SymbolTable.php
 
 		-
@@ -894,26 +888,3 @@ parameters:
 			count: 1
 			path: src/Validator/Rules/WorkflowDependsOnExistsRule.php
 
-		-
-			message: '#^Left side of && is always true\.$#'
-			identifier: booleanAnd.leftAlwaysTrue
-			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
-
-		-
-			message: '#^Right side of && is always false\.$#'
-			identifier: booleanAnd.rightAlwaysFalse
-			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between \*NEVER\* and array\{\} will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Validator/Rules/WorkflowInputsValidSchemaRule.php

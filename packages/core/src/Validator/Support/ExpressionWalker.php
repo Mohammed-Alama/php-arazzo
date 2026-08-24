@@ -8,6 +8,7 @@ use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Expression\WorkflowSymbols;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;
 
 final class ExpressionWalker
@@ -21,6 +22,10 @@ final class ExpressionWalker
             $syms = $symbols->workflows[$wf->workflowId] ?? null;
 
             foreach ($wf->parameters as $pi => $p) {
+                if ($p instanceof Reusable) {
+                    continue;
+                }
+
                 yield from $this->extract($p->value, "/workflows/{$wi}/parameters/{$pi}/value", $syms, null, 'wf.parameters');
             }
             foreach ($wf->outputs as $name => $expr) {
@@ -29,6 +34,10 @@ final class ExpressionWalker
 
             foreach ($wf->steps as $si => $s) {
                 foreach ($s->parameters as $pi => $p) {
+                    if ($p instanceof Reusable) {
+                        continue;
+                    }
+
                     yield from $this->extract($p->value, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value", $syms, $s->stepId, 'parameters');
                 }
                 if ($s->requestBody !== null) {

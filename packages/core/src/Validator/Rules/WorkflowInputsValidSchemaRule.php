@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Validator\Rules;
 
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Support\InputSchemaResolver;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;
 
@@ -18,17 +19,21 @@ final class WorkflowInputsValidSchemaRule implements Rule
                 continue;
             }
             $path = "/workflows/{$i}/inputs";
-            if (is_array($w->inputs) && array_is_list($w->inputs) && $w->inputs !== []) {
+
+            // Local references into components.inputs resolve before shape checks.
+            $inputs = InputSchemaResolver::resolve($w->inputs, $doc->components->inputs) ?? [];
+
+            if (array_is_list($inputs) && $inputs !== []) {
                 $errors->error($this->code(), 'workflow inputs must be an object.', $path);
 
                 continue;
             }
-            if (isset($w->inputs['type']) && $w->inputs['type'] !== 'object') {
+            if (isset($inputs['type']) && $inputs['type'] !== 'object') {
                 $errors->error($this->code(), "workflow inputs schema must be of type 'object'.", $path . '/type');
 
                 continue;
             }
-            if (isset($w->inputs['properties']) && !is_array($w->inputs['properties'])) {
+            if (isset($inputs['properties']) && !is_array($inputs['properties'])) {
                 $errors->error($this->code(), 'workflow inputs.properties must be an object.', $path . '/properties');
             }
         }
