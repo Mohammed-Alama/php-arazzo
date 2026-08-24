@@ -1,0 +1,54 @@
+{
+    "name": "explicit-end-action",
+    "description": "An explicit success end action terminates the workflow after the first step; the remaining step never executes.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {"title": "Conformance", "version": "1.0.0"},
+        "sourceDescriptions": [
+            {"name": "api", "url": "https://conformance.invalid/api.json", "type": "openapi"}
+        ],
+        "workflows": [
+            {
+                "workflowId": "stopEarly",
+                "steps": [
+                    {
+                        "stepId": "only",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1only/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}],
+                        "onSuccess": [
+                            {"type": "end", "name": "done"}
+                        ]
+                    },
+                    {
+                        "stepId": "never",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1never/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}]
+                    }
+                ]
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {"title": "API", "version": "1.0.0"},
+            "servers": [{"url": "https://api.test"}],
+            "paths": {
+                "/only": {"get": {"operationId": "opOnly", "responses": {"200": {"description": "ok"}}}},
+                "/never": {"get": {"operationId": "opNever", "responses": {"200": {"description": "ok"}}}}
+            }
+        }
+    },
+    "responses": [
+        {"status": 200, "body": {}}
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {"stepId": "only", "status": "success", "attempts": 1}
+        ],
+        "requests": ["GET https://api.test/only"],
+        "outputs": {},
+        "errors": []
+    }
+}

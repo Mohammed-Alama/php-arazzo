@@ -68,20 +68,27 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         $resolved = $this->operationResolver->resolve($step, $document);
 
         $capturedRequest = null;
-        $response = $this->openApiExecutor->execute(
-            $resolved,
-            $payload,
-            function (Psr7Request $request) use ($context, $step, &$capturedRequest) {
-                $capturedRequest = $request;
+        try {
+            $response = $this->openApiExecutor->execute(
+                $resolved,
+                $payload,
+                function (Psr7Request $request) use ($context, $step, &$capturedRequest) {
+                    $capturedRequest = $request;
 
-                if ($this->injector !== null) {
-                    return $this->injector->inject($request, $step, $context)->request;
-                }
+                    if ($this->injector !== null) {
+                        return $this->injector->inject($request, $step, $context)->request;
+                    }
 
-                return $request;
-            },
-            $step->timeout !== null ? $step->timeout / 1000 : null,
-        );
+                    return $request;
+                },
+                $step->timeout !== null ? $step->timeout / 1000 : null,
+            );
+        } catch (\Throwable $e) {
+            // Transport-level failures become a synthetic 500 response so
+            // failureActions (e.g. retry) apply identically to the sync
+            // adapter's StepExecutor policy.
+            return StepExecutionOutcome::resolved(500, [], ['error' => $e->getMessage()]);
+        }
 
         $decodedBody = json_decode((string) $response->getBody(), true);
         $body = is_array($decodedBody) ? $decodedBody : [];

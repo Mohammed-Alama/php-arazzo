@@ -1,0 +1,86 @@
+{
+    "name": "invoke-workflow-composition",
+    "description": "A step's success action invokes another workflow in the same document; the child runs to completion and its outputs are evaluated.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {"title": "Conformance", "version": "1.0.0"},
+        "sourceDescriptions": [
+            {"name": "api", "url": "https://conformance.invalid/api.json", "type": "openapi"}
+        ],
+        "workflows": [
+            {
+                "workflowId": "parent",
+                "steps": [
+                    {
+                        "stepId": "begin",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1start/post",
+                        "successCriteria": [{"condition": "${response.statusCode} == 201"}],
+                        "onSuccess": [
+                            {"type": "invoke", "workflowId": "child", "name": "run-child"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "workflowId": "child",
+                "steps": [
+                    {
+                        "stepId": "childFetch",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1status/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}],
+                        "outputs": {"state": "$response.body#/state"}
+                    }
+                ],
+                "outputs": {"finalState": "$steps.childFetch.outputs.state"}
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {"title": "API", "version": "1.0.0"},
+            "servers": [{"url": "https://api.test"}],
+            "paths": {
+                "/start": {
+                    "post": {
+                        "operationId": "startOp",
+                        "responses": {
+                            "201": {
+                                "description": "created",
+                                "content": {"application/json": {"schema": {"type": "object"}}}
+                            }
+                        }
+                    }
+                },
+                "/status": {
+                    "get": {
+                        "operationId": "statusOp",
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {"application/json": {"schema": {"type": "object", "properties": {"state": {"type": "string"}}}}}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "responses": [
+        {"status": 201, "body": {"started": true}},
+        {"status": 200, "body": {"state": "ready"}}
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {"stepId": "begin", "status": "success", "attempts": 1},
+            {"stepId": "childFetch", "status": "success", "attempts": 1}
+        ],
+        "requests": [
+            "POST https://api.test/start",
+            "GET https://api.test/status"
+        ],
+        "outputs": {"finalState": "ready"},
+        "errors": []
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "name": "cross-document-invoke-rejection",
+    "description": "Invoking a workflowId that does not exist in the current document (an unresolvable cross-document reference) fails the run cleanly instead of stalling.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {"title": "Conformance", "version": "1.0.0"},
+        "sourceDescriptions": [
+            {"name": "api", "url": "https://conformance.invalid/api.json", "type": "openapi"}
+        ],
+        "workflows": [
+            {
+                "workflowId": "caller",
+                "steps": [
+                    {
+                        "stepId": "hop",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1hop/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}],
+                        "onSuccess": [
+                            {"type": "invoke", "workflowId": "workflowInAnotherDocument", "name": "cross-doc"}
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {"title": "API", "version": "1.0.0"},
+            "servers": [{"url": "https://api.test"}],
+            "paths": {
+                "/hop": {"get": {"operationId": "opHop", "responses": {"200": {"description": "ok"}}}}
+            }
+        }
+    },
+    "responses": [
+        {"status": 200, "body": {}}
+    ],
+    "expect": {
+        "status": "failed",
+        "steps": [
+            {"stepId": "hop", "status": "success", "attempts": 1}
+        ],
+        "requests": ["GET https://api.test/hop"],
+        "outputs": {},
+        "errorsContain": ["Unknown workflow 'workflowInAnotherDocument'"]
+    }
+}

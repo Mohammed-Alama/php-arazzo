@@ -1,0 +1,111 @@
+{
+    "name": "transport-failure-retry-exhaustion",
+    "description": "The HTTP transport itself fails on both attempts; the retry action exhausts and the run terminates as failed.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {
+            "title": "Conformance",
+            "version": "1.0.0"
+        },
+        "sourceDescriptions": [
+            {
+                "name": "api",
+                "url": "https://conformance.invalid/api.json",
+                "type": "openapi"
+            }
+        ],
+        "workflows": [
+            {
+                "workflowId": "flakyTransport",
+                "steps": [
+                    {
+                        "stepId": "fetch",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1flaky/get",
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 200"
+                            }
+                        ],
+                        "onFailure": [
+                            {
+                                "type": "retry",
+                                "retryAfter": 0,
+                                "name": "try-again"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {
+                "title": "API",
+                "version": "1.0.0"
+            },
+            "servers": [
+                {
+                    "url": "https://api.test"
+                }
+            ],
+            "paths": {
+                "/flaky": {
+                    "get": {
+                        "operationId": "getFlaky",
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "transportErrors": [
+        {
+            "message": "connection refused",
+            "times": 12
+        }
+    ],
+    "responses": [],
+    "expect": {
+        "status": "failed",
+        "steps": [
+            {
+                "stepId": "fetch",
+                "status": "failure",
+                "attempts": 11
+            }
+        ],
+        "requests": [
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky",
+            "GET https://api.test/flaky"
+        ],
+        "outputs": {},
+        "errorsContain": [
+            "connection refused"
+        ],
+        "retries": {
+            "fetch": 10
+        }
+    }
+}

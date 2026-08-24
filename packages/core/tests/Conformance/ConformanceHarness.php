@@ -32,6 +32,7 @@ use Alama\Arazzo\Spec\SourceDocument;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
 use GuzzleHttp\Psr7\Response;
+use RuntimeException;
 
 /**
  * Shared harness for conformance fixtures: parses the fixture document,
@@ -62,6 +63,18 @@ abstract class ConformanceHarness
         $this->events = new RecordingEventDispatcher();
         $this->http = new FakePsr18Client();
         $this->sourceRegistry = new SourceRegistry(new DefaultSourceResolver([]));
+
+        // Transport failures replay before any scripted response. Each entry
+        // is either a message string or {message, times} for repeated faults
+        // (e.g. exhausting a retry ceiling).
+        foreach ($fixture['transportErrors'] ?? [] as $fault) {
+            $message = is_array($fault) ? (string) ($fault['message'] ?? 'transport error') : (string) $fault;
+            $times = is_array($fault) ? (int) ($fault['times'] ?? 1) : 1;
+
+            for ($i = 0; $i < $times; $i++) {
+                $this->http->failWith(new RuntimeException($message));
+            }
+        }
 
         foreach ($fixture['responses'] ?? [] as $response) {
             $this->http->enqueue(new Response(

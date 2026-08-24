@@ -97,7 +97,10 @@ class StepExecutionWorker
                     return;
                 }
 
-                $attempt = $context->getStepAttempts($step->stepId) + 1;
+                // Record the attempt on the persisted context so retry
+                // ceilings survive job boundaries (parity with the sync loop).
+                $context = $context->withStepAttemptIncremented($step->stepId);
+                $attempt = $context->getStepAttempts($step->stepId);
                 $this->events->dispatch(new StepStarted(
                     $executionId,
                     $context->getWorkflowId() ?? '',
@@ -142,6 +145,7 @@ class StepExecutionWorker
                     'response' => ['statusCode' => $outcome->statusCode, 'headers' => $outcome->responseHeaders, 'body' => $outcome->responseBody],
                     'outputs' => $outcome->outputs,
                     'inputs' => $outcome->inputs,
+                    'attempts' => $attempt,
                 ]);
 
                 $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
@@ -156,7 +160,10 @@ class StepExecutionWorker
                     $state = $state->withStepResult($completedStepId, $completedResult);
                 }
                 foreach ($this->attemptsFrom($contextWithResult) as $attemptedStepId => $attempts) {
-                    while ($state->attemptFor($attemptedStepId) < $attempts) {
+                    // Persisted 'attempts' is the 1-based number of the attempt
+                    // that just ran; at decision time the engine must see the
+                    // count of PREVIOUS attempts, matching the sync loop.
+                    while ($state->attemptFor($attemptedStepId) < $attempts - 1) {
                         $state = $state->withStepAttempt($attemptedStepId);
                     }
                 }
@@ -187,8 +194,27 @@ class StepExecutionWorker
                         ));
                     }
                 } elseif ($transition->type !== TransitionType::Suspend) {
-                    $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
-                    $targetStep = $this->findStep($targetWorkflow, $transition->stepId ?? '');
+                    $targetWorkflowId = $transition->workflowId ?? $workflow->workflowId;
+                    $targetWorkflow = $this->findWorkflow($document, $targetWorkflowId);
+
+                    if ($targetWorkflow === null) {
+                        // An invoke/goto pointed at a workflow that does not
+                        // exist in the document: fail the run cleanly.
+                        $this->eventLedger->append($executionId, 'execution.workflow_missing', ['workflowId' => $targetWorkflowId]);
+                        $this->events->dispatch(new RunFailed(
+                            $executionId,
+                            $targetWorkflowId,
+                            new LogicException("Unknown workflow '{$targetWorkflowId}'."),
+                            new DateTimeImmutable(),
+                        ));
+
+                        return;
+                    }
+
+                    $targetStep = $transition->stepId !== null
+                        ? $this->findStep($targetWorkflow, $transition->stepId)
+                        : ($targetWorkflow->steps[0] ?? null);
+
                     if ($targetStep !== null) {
                         $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $this->contextFromState($transition->state)), $transition->delaySeconds);
                     }
@@ -208,6 +234,12 @@ class StepExecutionWorker
                     $executionId,
                     $context->getWorkflowId() ?? '',
                     $step->stepId,
+                    $t,
+                    new DateTimeImmutable(),
+                ));
+                $this->events->dispatch(new RunFailed(
+                    $executionId,
+                    $context->getWorkflowId() ?? '',
                     $t,
                     new DateTimeImmutable(),
                 ));

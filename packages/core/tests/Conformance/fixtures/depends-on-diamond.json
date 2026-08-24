@@ -1,0 +1,89 @@
+{
+    "name": "depends-on-diamond",
+    "description": "A diamond dependency: B and C both depend on A, D depends on B and C. All four steps execute with dependencies respected.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {"title": "Conformance", "version": "1.0.0"},
+        "sourceDescriptions": [
+            {"name": "api", "url": "https://conformance.invalid/api.json", "type": "openapi"}
+        ],
+        "workflows": [
+            {
+                "workflowId": "diamond",
+                "steps": [
+                    {
+                        "stepId": "a",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1a/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}]
+                    },
+                    {
+                        "stepId": "b",
+                        "dependsOn": ["a"],
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1b/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}]
+                    },
+                    {
+                        "stepId": "c",
+                        "dependsOn": ["a"],
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1c/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}]
+                    },
+                    {
+                        "stepId": "d",
+                        "dependsOn": ["b", "c"],
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1d/get",
+                        "successCriteria": [{"condition": "${response.statusCode} == 200"}],
+                        "outputs": {"done": "$response.body#/ok"}
+                    }
+                ],
+                "outputs": {"result": "$steps.d.outputs.done"}
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {"title": "API", "version": "1.0.0"},
+            "servers": [{"url": "https://api.test"}],
+            "paths": {
+                "/a": {"get": {"operationId": "opA", "responses": {"200": {"description": "ok"}}}},
+                "/b": {"get": {"operationId": "opB", "responses": {"200": {"description": "ok"}}}},
+                "/c": {"get": {"operationId": "opC", "responses": {"200": {"description": "ok"}}}},
+                "/d": {
+                    "get": {
+                        "operationId": "opD",
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {"application/json": {"schema": {"type": "object", "properties": {"ok": {"type": "boolean"}}}}}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "responses": [
+        {"status": 200, "body": {}},
+        {"status": 200, "body": {}},
+        {"status": 200, "body": {}},
+        {"status": 200, "body": {"ok": true}}
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {"stepId": "a", "status": "success", "attempts": 1},
+            {"stepId": "b", "status": "success", "attempts": 1},
+            {"stepId": "c", "status": "success", "attempts": 1},
+            {"stepId": "d", "status": "success", "attempts": 1}
+        ],
+        "requests": [
+            "GET https://api.test/a",
+            "GET https://api.test/b",
+            "GET https://api.test/c",
+            "GET https://api.test/d"
+        ],
+        "outputs": {"result": true},
+        "errors": []
+    }
+}
