@@ -20,6 +20,9 @@ class DependencyGraph
     /** @var array<string, string[]> */
     private array $unresolvedReferences = [];
 
+    /** @var array<string, list<string>> explicit dependsOn + implicit output-reference deps */
+    private array $effectiveDependencies = [];
+
     /**
      * @param Step[] $steps
      */
@@ -34,6 +37,16 @@ class DependencyGraph
 
     private function analyze(): void
     {
+        foreach ($this->stepsById as $id => $step) {
+            $deps = $step->dependsOn;
+            foreach (ImplicitDependencies::fromStep($step) as $implicit) {
+                if (!in_array($implicit, $deps, true)) {
+                    $deps[] = $implicit;
+                }
+            }
+            $this->effectiveDependencies[$id] = $deps;
+        }
+
         /** @var array<string,int> $color 0=white,1=grey,2=black */
         $color = [];
         foreach (array_keys($this->stepsById) as $id) {
@@ -56,7 +69,7 @@ class DependencyGraph
             $path[] = $node;
 
             $step = $this->stepsById[$node];
-            foreach ($step->dependsOn as $next) {
+            foreach ($this->effectiveDependencies[$node] ?? [] as $next) {
                 if (!isset($this->stepsById[$next])) {
                     $this->unresolvedReferences[$node][] = $next;
 
@@ -122,6 +135,16 @@ class DependencyGraph
     public function getUnresolvedReferences(): array
     {
         return $this->unresolvedReferences;
+    }
+
+    /**
+     * Explicit dependsOn merged with implicit output-reference dependencies.
+     *
+     * @return list<string>
+     */
+    public function getEffectiveDependencies(string $stepId): array
+    {
+        return $this->effectiveDependencies[$stepId] ?? [];
     }
 
     /**

@@ -31,8 +31,10 @@ class DependencyAnalyzer
                 continue;
             }
 
+            $dependencies = $this->graph->getEffectiveDependencies($step->stepId);
+
             // If no dependencies, it's runnable
-            if (empty($step->dependsOn)) {
+            if ($dependencies === []) {
                 $runnable[] = $step;
 
                 continue;
@@ -40,7 +42,7 @@ class DependencyAnalyzer
 
             // Check if all dependencies are completed (succeeded)
             $dependenciesMet = true;
-            foreach ($step->dependsOn as $dependencyId) {
+            foreach ($dependencies as $dependencyId) {
                 if ($context->getStepStatus($dependencyId) !== StepStatus::Succeeded) {
                     $dependenciesMet = false;
                     break;
