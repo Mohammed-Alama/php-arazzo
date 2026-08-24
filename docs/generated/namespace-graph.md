@@ -10,11 +10,13 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 flowchart LR
     Expression["Alama\Arazzo\Expression"]:::coreNode
     Generator["Alama\Arazzo\Generator"]:::coreNode
+    Laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
     Laravel_Http["Alama\Arazzo\Laravel\Http"]:::laravelNode
     Laravel_Lock["Alama\Arazzo\Laravel\Lock"]:::laravelNode
     Laravel_Persistence["Alama\Arazzo\Laravel\Persistence"]:::laravelNode
     Laravel_Queue["Alama\Arazzo\Laravel\Queue"]:::laravelNode
     Laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
+    Laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     Laravel__["(Laravel package root)"]:::laravelNode
     Parser["Alama\Arazzo\Parser"]:::coreNode
     Resolver["Alama\Arazzo\Resolver"]:::coreNode
@@ -40,6 +42,18 @@ flowchart LR
     Validator --> Resolver
     Validator --> Runner
     Validator --> Support
+    Laravel_Bindings --> Laravel_Support
+    Laravel_Bindings --> Runner
+    Laravel_Bindings --> Validator
+    Laravel_Bindings --> Laravel_Http
+    Laravel_Bindings --> Support
+    Laravel_Bindings --> Laravel_Lock
+    Laravel_Bindings --> Laravel_Persistence
+    Laravel_Bindings --> Laravel_Queue
+    Laravel_Bindings --> Laravel_State
+    Laravel_Bindings --> Parser
+    Laravel_Bindings --> Resolver
+    Laravel_Bindings --> Generator
     Laravel_Http --> Runner
     Laravel_Http --> Generator
     Laravel_Http --> Resolver
@@ -50,17 +64,8 @@ flowchart LR
     Laravel_Persistence --> Spec
     Laravel_Queue --> Runner
     Laravel_State --> Runner
-    Laravel__ --> Generator
+    Laravel__ --> Laravel_Bindings
     Laravel__ --> Laravel_Http
-    Laravel__ --> Laravel_Lock
-    Laravel__ --> Laravel_Persistence
-    Laravel__ --> Laravel_Queue
-    Laravel__ --> Laravel_State
-    Laravel__ --> Parser
-    Laravel__ --> Resolver
-    Laravel__ --> Runner
-    Laravel__ --> Support
-    Laravel__ --> Validator
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
 ```

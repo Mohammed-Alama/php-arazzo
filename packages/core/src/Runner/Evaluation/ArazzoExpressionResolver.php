@@ -14,9 +14,6 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 
-/**
- * @deprecated Use specific implementations instead
- */
 class ArazzoExpressionResolver implements ExpressionResolverInterface
 {
     public function __construct(
