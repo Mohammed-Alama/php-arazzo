@@ -171,3 +171,10 @@ Steps resolve operations against OpenAPI **3.0.x** and **3.1.x** sources. Swagge
 ## License
 
 MIT — see [`LICENSE.md`](../../LICENSE.md).
+
+## Conformance
+
+The official OAI example corpus is vendored under
+`tests/Conformance/corpus/oai/` and executed (parse → validate → run against
+a deterministic mock transport) as part of the test suite. See
+[`docs/CONFORMANCE.md`](../../docs/CONFORMANCE.md) for the generated matrix.

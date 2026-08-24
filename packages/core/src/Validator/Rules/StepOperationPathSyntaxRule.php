@@ -25,8 +25,22 @@ final class StepOperationPathSyntaxRule implements Rule
                     continue;
                 }
                 [$src, $ptr] = explode('#', $s->operationPath, 2);
-                if ($src === '' || !isset($symbols->sourceDescriptions[$src])) {
-                    $errors->error($this->code(), "operationPath source '{$src}' is not a declared sourceDescription.", $path);
+                $sourceName = null;
+
+                // The source part must be the runtime expression
+                // `{$sourceDescriptions.NAME.url}`; extract NAME.
+                if (preg_match('/^\{\$sourceDescriptions\.([^}]+)\.url\}$/', $src, $m) === 1) {
+                    $sourceName = $m[1];
+                }
+
+                if ($sourceName === null) {
+                    $errors->error($this->code(), "operationPath source '{$src}' must be the expression '{{\$sourceDescriptions.NAME.url}}'.", $path);
+
+                    continue;
+                }
+
+                if (!isset($symbols->sourceDescriptions[$sourceName])) {
+                    $errors->error($this->code(), "operationPath source '{$sourceName}' is not a declared sourceDescription.", $path);
                 }
                 if ($ptr === '' || $ptr[0] !== '/') {
                     $errors->error($this->code(), "operationPath JSON Pointer '{$ptr}' must start with '/'.", $path);

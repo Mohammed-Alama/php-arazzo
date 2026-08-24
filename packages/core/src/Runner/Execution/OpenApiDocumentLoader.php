@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Spec\SourceDescription;
 use cebe\openapi\Reader;
+use cebe\openapi\ReferenceContext;
 use cebe\openapi\spec\OpenApi;
 use Throwable;
 
@@ -35,6 +36,12 @@ final class OpenApiDocumentLoader
 
         try {
             $openapi = Reader::readFromJson($json);
+            // Plain readFromJson() leaves References WITHOUT a resolution
+            // context; walk the tree once so lazy ->resolve() calls work.
+            $openapi->resolveReferences(new ReferenceContext(
+                $openapi,
+                $resolvedSource->canonicalUri !== '' ? $resolvedSource->canonicalUri : 'memory://source',
+            ));
             $this->cache[$sourceDesc->name] = $openapi;
 
             return $openapi;

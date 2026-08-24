@@ -20,12 +20,24 @@ class OtherNormalizersTest extends TestCase
         $normalizer->normalize([], '/test', 'get');
     }
 
-    public function test_open_api31_normalizer_throws(): void
+    public function test_open_api31_normalizer_normalizes_like_30(): void
     {
-        $this->expectException(NotImplementedException::class);
-        $this->expectExceptionMessage('OpenAPI 3.1 normalization is not yet implemented.');
-
+        // 3.1 documents are structurally identical for everything this
+        // pipeline consumes; the normalizer is a documented passthrough.
         $normalizer = new OpenApi31Normalizer();
-        $normalizer->normalize([], '/test', 'get');
+        $normalized = $normalizer->normalize([
+            'servers' => [['url' => 'https://api.test']],
+            'paths' => [
+                '/test' => [
+                    'get' => [
+                        'responses' => ['200' => ['description' => 'ok']],
+                    ],
+                ],
+            ],
+        ], '/test', 'get');
+
+        expect($normalized->path)->toBe('/test')
+            ->and($normalized->method)->toBe('get')
+            ->and($normalized->resolvedServerUrl)->toBe('https://api.test');
     }
 }

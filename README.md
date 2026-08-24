@@ -224,3 +224,10 @@ We welcome contributions! Please see the issue tracker to report bugs, suggest f
 ## 📄 License
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
+
+## Conformance
+
+`alama/arazzo-core` runs the **official OAI example corpus** through both its
+synchronous and queued adapters on every change. The current results live in
+[`docs/CONFORMANCE.md`](docs/CONFORMANCE.md); regenerate with
+`php scripts/generate-conformance-matrix.php`.

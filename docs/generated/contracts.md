@@ -96,8 +96,6 @@ flowchart LR
     C_core_Runner_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_core_Runner_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Runner</small>"]:::implCore
     C_core_Runner_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_core_Runner_OpenApi31Normalizer["OpenApi31Normalizer<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_OpenApi31Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_core_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>Validator</small>"]:::implCore
     C_core_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_core_Validator_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolvesRule<br/><small>Validator</small>"]:::implCore

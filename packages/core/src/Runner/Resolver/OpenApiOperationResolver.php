@@ -55,6 +55,11 @@ class OpenApiOperationResolver
                 }
                 $sourceName = substr($parts[0], 21, -5);
                 $operationReference = $parts[1];
+            } elseif (preg_match('/^\$sourceDescriptions\.([^.]+)\.(.+)$/', $opId, $m) === 1) {
+                // Spec grammar: `$sourceDescriptions.NAME.OPERATION_ID` (dotted,
+                // no braces) - used by the official OAI examples.
+                $sourceName = $m[1];
+                $operationReference = $m[2];
             } else {
                 $nonArazzoSources = array_filter($document->sourceDescriptions, fn (SourceDescription $s) => $s->type !== SourceType::Arazzo);
                 if (count($nonArazzoSources) !== 1) {
@@ -107,12 +112,22 @@ class OpenApiOperationResolver
         $cebeOperation = null;
 
         if ($isPath) {
+            // JSON Pointer segments are split BEFORE unescaping so multi-
+            // segment paths like /pet/findByStatus (~1pet~1findByStatus)
+            // stay a single PATH token.
             $refParts = explode('/', ltrim($operationReference, '/'));
-            if (count($refParts) !== 3 || $refParts[0] !== 'paths') {
+            $unescaped = array_map(
+                fn (string $segment): string => str_replace(['~1', '~0'], ['/', '~'], $segment),
+                $refParts,
+            );
+
+            if (count($unescaped) < 3 || $unescaped[0] !== 'paths') {
                 throw new RuntimeException("Invalid operationPath reference '{$operationReference}'. Expected /paths/PATH/METHOD.");
             }
-            $foundPath = str_replace(['~1', '~0'], ['/', '~'], $refParts[1]);
-            $foundMethod = strtolower($refParts[2]);
+
+            $foundMethod = strtolower((string) array_pop($unescaped));
+            array_shift($unescaped);
+            $foundPath = implode('/', $unescaped);
 
             $pathItem = $openApi->paths->getPath($foundPath);
             if ($pathItem && isset($pathItem->{$foundMethod})) {

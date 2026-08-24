@@ -117,7 +117,7 @@ final class Parser
             || $rest[1]->kind !== TokenKind::Dot
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)
             || $rest[3]->kind !== TokenKind::Dot
-            || $rest[4]->kind !== TokenKind::Keyword) {
+            || ($rest[4]->kind !== TokenKind::Keyword && $rest[4]->kind !== TokenKind::Name)) {
             throw new ExpressionSyntaxException("Malformed step reference: {$raw}", $raw, -1, '', 'expr.syntax');
         }
         $stepId = $rest[2]->value;
@@ -129,8 +129,26 @@ final class Parser
             'inputs' => $this->parseNamedPart($tail, InputPart::class, $raw),
             'request' => $this->parseHttpPart($tail, RequestPart::class, $raw),
             'response' => $this->parseHttpPart($tail, ResponsePart::class, $raw),
-            default => throw new ExpressionSyntaxException("Unknown step part '{$sub}' in: {$raw}", $raw, -1, '', 'expr.syntax'),
+            // Spec shortcut: `$steps.<stepId>.<outputName>` (the `outputs`
+            // infix is optional) - used by the official OAI examples.
+            default => $this->parseOutputShortcut($tail, $sub, $raw),
         });
+    }
+
+    /**
+     * @param list<Token> $tail
+     */
+    private function parseOutputShortcut(array $tail, string $name, string $raw): OutputPart
+    {
+        if ($tail === []) {
+            return new OutputPart($name);
+        }
+
+        if ($tail[0]->kind === TokenKind::Hash) {
+            return new OutputPart($name, $this->parseJsonPointer($tail, $raw));
+        }
+
+        throw new ExpressionSyntaxException("Malformed output reference after step name in: {$raw}", $raw, -1, '', 'expr.syntax');
     }
 
     /**
