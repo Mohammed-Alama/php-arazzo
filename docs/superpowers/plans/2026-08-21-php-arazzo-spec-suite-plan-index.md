@@ -38,12 +38,12 @@ Verified against the working tree; each plan file carries per-checkbox notes.
 
 | Plan | State |
 | --- | --- |
-| 1 Canonical execution core | Done. WorkflowEngine is the single decision path (603806a); gaps: budget/call-stack not persisted in queue payload, inline sub-workflow resets shared budget, no clock/sleep abstraction, cycle/depth exceptions lack dedicated tests. |
+| 1 Canonical execution core | Done. WorkflowEngine is the single decision path (603806a). Budget/call-stack now persist across queue jobs and are SHARED with nested invocations (636546e). Remaining: no clock/sleep abstraction; cycle/depth/goto-loop bound exceptions lack dedicated tests. |
 | 2 Source resolution / OpenAPI | Done except removing cebe/php-openapi (still used by OpenApiDocumentLoader) and circular-source detection in SourceRegistry. Swagger 2.0 + 3.0 + 3.1 normalizers all implemented. |
 | 3 Runtime semantics | Done except a failure-class taxonomy of dedicated exception classes (transport failures intentionally become retryable synthetic-500 outcomes) and a malformed-body test. |
 | 4 Parser / validator | Tasks 1-2 done (49 rules incl. OfficialSchemaRule; codes + severities). Task 3 preflight stage NOT started. Task 4 fixture set exists; explicit side-effect-count assertions added for invalid fixtures. |
 | 5 Testing / adapter parity | Done. 9 golden fixtures run through sync + queued adapters with normalized parity; deterministic fakes, property tests, mutation-target docs. Infection not installed yet. |
-| 6 Release readiness | Not started except metadata verification and full local gate runs. README still shows stale one-arg WorkflowExecutor example. |
+| 6 Release readiness | Essentials landed (f9a64ff): README corrected, CHANGELOG entries, release checklist, clean-install smoke script, compatibility table. Still open: CI path-filter/act alignment, Laravel version matrix in CI, doc-example CI checks. |
 
 ## Superseded overlap
 
