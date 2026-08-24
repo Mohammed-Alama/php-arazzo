@@ -41,6 +41,7 @@ use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Loader;
 use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Validator\PreflightValidator;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
@@ -55,6 +56,7 @@ use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
@@ -103,7 +105,23 @@ $stepExecutor = new StepExecutor(
     injector: new IdempotencyKeyInjector(enabledDefault: false, headerDefault: 'Idempotency-Key'),
 );
 
-$executor = new WorkflowExecutor($stepExecutor);
+// Optional: execution preflight (resolves sources/operations/versions
+// with zero side effects before the run starts).
+$preflight = new PreflightValidator(
+    $sourceResolver,
+    $operationResolver,
+    new DomXpathEvaluator(),
+);
+
+// The canonical engine makes every control-flow decision; adapters apply
+// its transitions. It is required.
+$engine = new WorkflowEngine($expressionResolver, maxRetryAttempts: 10);
+
+$executor = new WorkflowExecutor(
+    $stepExecutor,
+    workflowEngine: $engine,
+    preflight: $preflight, // optional but recommended
+);
 
 // 4. Run it.
 $workflow = $document->workflows[0];
@@ -111,7 +129,7 @@ $result = $executor->execute($workflow, $document, inputs: [
     'customer_id' => 789,
 ]);
 
-echo $result->status . "\n"; // 'completed' or 'failed'
+echo $result->status . "\n"; // 'succeeded' or 'failed'
 foreach ($result->stepResults as $stepId => $stepResult) {
     echo " - {$stepId}: " . ($stepResult->success ? 'ok' : 'failed') . "\n";
 }

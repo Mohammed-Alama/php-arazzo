@@ -6,6 +6,27 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 
 ## [Unreleased]
 
+### Added
+- **Execution preflight** (`PreflightValidator` + `PreflightFailureException`): resolves source descriptions, operation references, OpenAPI versions, reusable action components, and selector XPath versions with zero side effects before a run starts. Wired into both the synchronous executor and queue worker (fresh runs only); non-locally-registered sources downgrade to warnings so remote-fetched sources keep working. Laravel SP binds it automatically.
+- **Shared step budget across nested invocations and queue jobs**: `ExecutionState`/`WorkflowContext` carry `stepsSpent` + workflow call stack; sub-workflow children inherit the parent pool (never reset), worker state payloads persist both fields across job boundaries; `ExecutionResult`/`SubWorkflowResult` expose final consumption.
+- **Failure categories**: `StepFailed`/`RunFailed` events gain `category` (`criteria`, `schema`, `transport`, `authoring`, `execution`).
+- **Raw response retention**: `StepExecutionOutcome` carries `rawBody` + `contentType`; step records persist them.
+- **Severity model**: validator `Error`/`Warning` gain a `Severity` enum exposed via `toArray()`.
+- Deterministic conformance harness: 9 golden fixtures executed through BOTH sync and queued adapters with normalized parity assertions; property tests for pointer round-trips, expression spelling equivalence, DAG acyclicity, retry ceilings, and state serialization.
+
+### Changed
+- **BREAKING**: single control-flow path - legacy `Engine` dispatcher deleted; `WorkflowEngine` is the only decision point and `StepOutcomeHandler` is now a thin adapter over it. `StepExecutionWorker` requires `WorkflowEngine` + `QueueDriverInterface`. Custom subclasses of these classes must be updated.
+- **BREAKING**: `WorkflowExecutor` requires a `WorkflowEngine` as its second constructor argument.
+- Transport-level HTTP failures are now converted into retryable synthetic-500 step outcomes (category `transport`) so `onFailure` retry actions apply uniformly in both adapters.
+- Worker step attempts are stamped onto persisted state (`attempts`) so retry ceilings survive job boundaries.
+- Expression engine: `${...}` runtime-expression spelling is now accepted everywhere (previously a syntax error); condition parsing normalizes both spellings to canonical `{$...}` form; bare `$expr` parameter/payload values resolve instead of being emitted literally.
+
+### Fixed
+- Duplicated `transition()` invocation in the synchronous loop (double retry accounting).
+- Queue runs silently stalling on unknown goto/invoke target workflows (now ledger `execution.workflow_missing` + `RunFailed`).
+- Missing terminal `RunCompleted`/`RunFailed` events on the queued adapter.
+
+
 ### Changed
 - **BREAKING (Laravel bridge only)**: extracted framework-agnostic engine into new package `alama/arazzo-core`. `alama/laravel-arazzo` is now a thin bridge depending on the core. Existing consumers upgrade via `composer require alama/laravel-arazzo:^2.0@alpha` and (optionally) update FQCNs to `Alama\Arazzo\*`. Old `Alama\LaravelArazzo\*` FQCNs continue to resolve via `class_alias` throughout the 2.x line — planned removal in 3.0.
 - Repository restructured as a Symplify monorepo hosting `packages/core` and `packages/laravel`. Tag-based subtree splits publish each package independently.
