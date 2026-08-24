@@ -53,6 +53,7 @@ use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\Execution\SubWorkflowStepExecutor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
@@ -367,6 +368,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 $app->make(ExecutionRegistryInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 [
+                    $app->make(SubWorkflowStepExecutor::class),
                     $app->make(HttpStepExecutor::class),
                     $app->make(AsyncApiStepExecutor::class),
                 ],

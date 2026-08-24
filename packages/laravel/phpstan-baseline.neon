@@ -168,7 +168,7 @@ parameters:
 		-
 			message: '#^Cannot call method make\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 73
+			count: 74
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
@@ -601,7 +601,7 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#7 \$protocolExecutors of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects list\<Alama\\Arazzo\\Runner\\Execution\\Contracts\\StepProtocolExecutorInterface\>, array\{mixed, mixed\} given\.$#'
+			message: '#^Parameter \#7 \$protocolExecutors of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects list\<Alama\\Arazzo\\Runner\\Execution\\Contracts\\StepProtocolExecutorInterface\>, array\{mixed, mixed, mixed\} given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
