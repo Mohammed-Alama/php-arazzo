@@ -82,7 +82,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
                 return $request;
             },
-            $step->timeout,
+            $step->timeout !== null ? $step->timeout / 1000 : null,
         );
 
         $decodedBody = json_decode((string) $response->getBody(), true);

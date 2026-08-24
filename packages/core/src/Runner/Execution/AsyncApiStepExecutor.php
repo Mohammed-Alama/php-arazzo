@@ -52,7 +52,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         if ($step->action === 'send') {
             $message = $this->compileMessage($step, $context, $document);
-            $response = $this->httpClient->sendRequest($message, $step->timeout);
+            $response = $this->httpClient->sendRequest($message, $step->timeout !== null ? $step->timeout / 1000 : null);
 
             return StepExecutionOutcome::resolved($response->getStatusCode(), [], []);
         }
@@ -70,7 +70,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $correlationId = (string) $this->evaluator->evaluate($step->correlationId, new EvaluationContext($context, $step->stepId, $document));
 
-        $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->channelPath, $step->timeout !== null ? (int) ceil($step->timeout) : null);
+        $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->channelPath, $step->timeout !== null ? $step->timeout : null);
 
         return StepExecutionOutcome::suspended();
     }

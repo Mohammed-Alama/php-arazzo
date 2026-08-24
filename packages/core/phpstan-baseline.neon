@@ -385,12 +385,6 @@ parameters:
 			path: src/Runner/Context/WorkflowContext.php
 
 		-
-			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Evaluation/ArazzoCriteriaEvaluator.php
-
-		-
 			message: '#^Cannot access offset ''method'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -439,12 +433,6 @@ parameters:
 			path: src/Runner/Evaluation/JsonPathEvaluator.php
 
 		-
-			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed, mixed\>\|object given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Evaluation/SelectorEvaluator.php
-
-		-
 			message: '#^Cannot access offset ''body'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -465,12 +453,6 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 1
-			path: src/Runner/Execution/ArazzoOutputExtractor.php
-
-		-
-			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Runner/Execution/ArazzoOutputExtractor.php
 

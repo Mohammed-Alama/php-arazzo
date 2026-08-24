@@ -36,7 +36,7 @@ final readonly class Step
         public readonly ?bool $strictValidation = null,
         public readonly ?bool $idempotencyKey = null,
         public readonly ?string $idempotencyHeader = null,
-        public readonly ?float $timeout = null,
+        public readonly ?int $timeout = null, // duration in milliseconds
     ) {
     }
 }

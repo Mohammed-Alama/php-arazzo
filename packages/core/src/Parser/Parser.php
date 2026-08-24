@@ -353,7 +353,7 @@ class Parser
             strictValidation: $strictValidation,
             idempotencyKey: $idempotencyKey,
             idempotencyHeader: $idempotencyHeader,
-            timeout: $this->optionalNumber($obj, 'timeout', $ctx),
+            timeout: $this->optionalInt($obj, 'timeout', $ctx),
         );
     }
 
@@ -463,9 +463,21 @@ class Parser
             throw ParserException::missingField($ctx, 'value');
         }
 
+        $selectorType = null;
+        if (($raw = $this->optionalString($obj, 'targetSelectorType', $ctx)) !== null) {
+            $selectorType = in_array($raw, ['jsonpointer', 'jsonpath', 'xpath'], true)
+                ? $raw
+                : throw ParserException::invalidEnum($ctx->push('targetSelectorType'), 'jsonpointer|jsonpath|xpath', $raw);
+        } elseif (($tst = $obj['targetSelectorType'] ?? null) !== null && is_array($tst) && !array_is_list($tst)) {
+            // Expression Type Object form {type, version} - kept raw; validated by selector rules.
+            /** @var array<string, mixed> $tst */
+            $selectorType = $tst;
+        }
+
         return new PayloadReplacement(
             target: $this->requireString($obj, 'target', $ctx),
             value: $this->parseValueOrSelector($obj['value'], $ctx->push('value'), false),
+            targetSelectorType: $selectorType,
         );
     }
 
@@ -525,11 +537,41 @@ class Parser
                 stepId: $this->optionalString($obj, 'stepId', $ctx),
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
                 criteria: $criteria,
+                parameters: $this->parseActionParameters($obj, $ctx, $name),
             ),
             'end' => new SuccessEndAction($name, $criteria),
             'invoke' => $this->parseSubWorkflowSuccessAction($name, $obj, $criteria, $ctx),
             default => throw ParserException::invalidActionType($ctx->push('type'), $type),
         };
+    }
+
+    /**
+     * 1.1 Action Object `parameters` (goto actions): list of Parameter Objects
+     * or Reusables. Spec requires workflowId on the action when present.
+     *
+     * @return list<Parameter|Reusable>
+     */
+    /**
+     * @param array<string,mixed> $obj
+     *
+     * @return list<Parameter|Reusable>
+     */
+    protected function parseActionParameters(array $obj, ParseContext $ctx, string $actionName): array
+    {
+        if (!isset($obj['parameters']) || !is_array($obj['parameters'])) {
+            return [];
+        }
+
+        if (!isset($obj['workflowId'])) {
+            throw ParserException::missingField($ctx->push('parameters')->push('workflowId'), 'workflowId');
+        }
+
+        $params = [];
+        foreach (array_values($obj['parameters']) as $i => $item) {
+            $params[] = $this->parseParameter($item, $ctx->push('parameters')->push((string) $i));
+        }
+
+        return $params;
     }
 
     protected function parseReusable(mixed $node, ParseContext $ctx): Reusable
@@ -608,6 +650,7 @@ class Parser
                 stepId: $this->optionalString($obj, 'stepId', $ctx),
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
                 criteria: $criteria,
+                parameters: $this->parseActionParameters($obj, $ctx, $name),
             ),
             'end' => new FailureEndAction($name, $criteria),
             'retry' => new RetryAction(

@@ -36,7 +36,7 @@ function timeoutDoc(string $arazzoVersion): ArazzoDocument
         strictValidation: null,
         idempotencyKey: null,
         idempotencyHeader: null,
-        timeout: 4.5,
+        timeout: 4500,
     );
 
     return new ArazzoDocument(
@@ -51,8 +51,8 @@ function timeoutDoc(string $arazzoVersion): ArazzoDocument
     );
 }
 
-it('parses decimal timeout on steps', function (): void {
-    expect(timeoutDoc('1.1.0')->workflows[0]->steps[0]->timeout)->toBe(4.5);
+it('parses timeout in milliseconds on steps', function (): void {
+    expect(timeoutDoc('1.1.0')->workflows[0]->steps[0]->timeout)->toBe(4500);
 });
 
 it('flags timeout on 1.0 documents and non-positive values', function (): void {

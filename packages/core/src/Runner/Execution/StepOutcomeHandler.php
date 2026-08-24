@@ -155,7 +155,7 @@ class StepOutcomeHandler
         if ($matched instanceof SuccessGotoAction || $matched instanceof FailureGotoAction) {
             $status = $matched instanceof SuccessGotoAction ? StepStatus::Succeeded : StepStatus::Failed;
             $newContext = $context->withStepStatus($step->stepId, $status);
-            $this->handleGoto($matched, $document, $newContext, $executionId);
+            $this->handleGoto($matched, $step, $document, $newContext, $executionId);
 
             return;
         }
@@ -402,7 +402,7 @@ class StepOutcomeHandler
         return null;
     }
 
-    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
+    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, Step $step, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
     {
         $targetWorkflowId = $action->workflowId ?? $context->getWorkflowId();
         $targetWorkflow = $this->findWorkflow($document, (string) $targetWorkflowId);
@@ -413,6 +413,25 @@ class StepOutcomeHandler
         $newContext = $targetWorkflow->workflowId !== $context->getWorkflowId()
             ? $context->withWorkflowId($targetWorkflow->workflowId)
             : $context;
+
+        // 1.1: goto parameters bind values into the target workflow's input scope.
+        if ($action->parameters !== []) {
+            $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
+            $bound = [];
+            foreach ($action->parameters as $parameter) {
+                if ($parameter instanceof Reusable) {
+                    continue; // component defaults resolve inside the target scope
+                }
+
+                $bound[$parameter->name] = $parameter->value instanceof Expression
+                    ? $this->expressions->evaluate($parameter->value, $evaluationContext)
+                    : $parameter->value;
+            }
+
+            foreach ($bound as $k => $v) {
+                $newContext = $newContext->withInput($k, $v);
+            }
+        }
 
         if ($action->stepId === null) {
             // No specific step named -- transfer to the target workflow's start, letting

@@ -11,7 +11,7 @@ use Alama\Arazzo\Validator\Rule;
 
 final class DocUnknownFieldRule implements Rule
 {
-    private const array KNOWN = ['arazzo', 'info', 'sourceDescriptions', 'workflows', 'components'];
+    private const array KNOWN = ['arazzo', 'info', 'sourceDescriptions', 'workflows', 'components', '$self'];
 
     public function __construct(public readonly bool $strict = true)
     {

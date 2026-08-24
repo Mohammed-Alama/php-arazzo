@@ -59,48 +59,73 @@ composer require alama/arazzo-core
 
 ### Laravel Example
 
-With the Laravel package, executing an Arazzo workflow can be natively dispatched to your queues:
+> There is currently no `Arazzo` facade. Resolve the core classes from the container instead (constructor injection or `app()->make()`):
 
 ```php
-use Alama\Arazzo\Laravel\Facades\Arazzo;
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Loader;
+use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 
-// Execute an Arazzo workflow definition
-Arazzo::workflow('path/to/workflow.arazzo.yaml')
-    ->execute('complete-ride-booking', [
-        'departure_polygon_id' => 123,
-        'destination_polygon_id' => 456,
-        'customer_id' => 789,
-    ]);
+class RunsRideBooking
+{
+    public function __construct(private WorkflowExecutor $executor)
+    {
+    }
+
+    public function __invoke(): void
+    {
+        $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
+        $document = (new Parser())->parse($loader->load(resource_path('arazzo/ride-booking.arazzo.yaml')));
+
+        $result = $this->executor->execute($document->workflows[0], $document, [
+            'departure_polygon_id' => 123,
+            'destination_polygon_id' => 456,
+            'customer_id' => 789,
+        ]);
+
+        // $result->status is 'succeeded' or 'failed'
+    }
+}
 ```
+
+`WorkflowExecutor` is bound as a singleton by `LaravelArazzoServiceProvider`, already wired for the canonical, action-following execution path. See [`packages/laravel/README.md`](packages/laravel) for durable, queue-driven execution and the full container binding list.
 
 ### Core Engine Example (Framework-Agnostic)
 
-Using the core executor manually. You can test this exact setup natively by running `php scripts/manual_test.php` in the root of this repository.
+Using the core executor manually, with no framework at all:
 
 ```php
-use Alama\Arazzo\Dto\RawDocument;
-use Alama\Arazzo\Dto\Enum\Format;
+use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Parser\Loader;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Execution\WorkflowExecutor;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\ArazzoExpressionResolver;
-use Alama\Arazzo\Execution\ExpressionEvaluator;
-use Alama\Arazzo\Resolution\DefaultSourceResolver;
-use Alama\Arazzo\Resolution\Fetchers\HttpFetcher;
-use Alama\Arazzo\Resolution\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolution\Parsers\ArazzoSourceParser;
-use Alama\Arazzo\Resolution\Parsers\OpenApiSourceParser;
-use Symfony\Component\Yaml\Yaml;
+use Alama\Arazzo\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Resolver\SourceRegistry;
+use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
-$path = 'LoginAndRetrievePets.arazzo.yaml';
-$raw = new RawDocument(Yaml::parseFile($path), $path, Format::Yaml);
+// 1. Parse the Arazzo document.
+$loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
+$document = (new Parser())->parse($loader->load('LoginAndRetrievePets.arazzo.yaml'));
 
-$parser = new Parser();
-$document = $parser->parse($raw);
-
-// Find the workflow by ID
 $workflow = null;
 foreach ($document->workflows as $w) {
     if ($w->workflowId === 'loginUserRetrievePet') {
@@ -109,33 +134,48 @@ foreach ($document->workflows as $w) {
     }
 }
 
-// Wire up the core engine dependencies manually (Framework-Agnostic)
+// 2. Wire up PSR HTTP + source resolution (fetches the OpenAPI docs the workflow references).
 $client = new Client();
 $httpFactory = new HttpFactory();
 
-$fetchers = [
+$sourceResolver = new SourceRegistry(new DefaultSourceResolver([
     'http' => new HttpFetcher($client, $httpFactory),
     'https' => new HttpFetcher($client, $httpFactory),
     'file' => new LocalFetcher(),
-];
+]));
 
-$parsers = [
-    'arazzo' => new ArazzoSourceParser($parser),
-    'openapi' => new OpenApiSourceParser(),
-];
-
-$sourceResolver = new DefaultSourceResolver($fetchers, $parsers);
+// 3. Wire up the execution pipeline.
 $evaluator = new ExpressionEvaluator();
-$expressionResolver = new ArazzoExpressionResolver($sourceResolver, $httpFactory, $evaluator);
-$stepExecutor = new StepExecutor($client, $expressionResolver);
+$operationResolver = new OpenApiOperationResolver(
+    new OpenApiDocumentLoader($sourceResolver),
+    new OpenApiVersionDetector(),
+    new OpenApi30Normalizer(),
+    new OpenApi31Normalizer(),
+);
+
+$expressionResolver = new ArazzoExpressionResolver(
+    $evaluator,
+    new ArazzoOutputExtractor($operationResolver, $evaluator),
+    new ArazzoCriteriaEvaluator($evaluator),
+    new ArazzoSchemaValidator($operationResolver),
+);
+
+$stepExecutor = new StepExecutor(
+    new DefaultOpenApiExecutor($client, $httpFactory),
+    $expressionResolver,
+    $operationResolver,
+    strictValidationDefault: false,
+    injector: new IdempotencyKeyInjector(enabledDefault: false, headerDefault: 'Idempotency-Key'),
+);
 
 $executor = new WorkflowExecutor($stepExecutor);
 
+// 4. Run it.
 $result = $executor->execute($workflow, $document, [
     'username' => 'testuser',
     'password' => 'password123',
 ]);
-        
+
 echo "Workflow execution finished with status: {$result->status}\n";
 
 foreach ($result->stepResults as $stepId => $stepResult) {
@@ -146,6 +186,8 @@ foreach ($result->stepResults as $stepId => $stepResult) {
     }
 }
 ```
+
+For the full picture of what happens under the hood, see [`docs/architecture/`](docs/architecture) and [`packages/core/README.md`](packages/core).
 
 ---
 

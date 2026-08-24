@@ -12,6 +12,7 @@ use Alama\Arazzo\Validator\Rules\AsyncApiFieldsRequire11Rule;
 use Alama\Arazzo\Validator\Rules\ComponentsUniqueNamesRule;
 use Alama\Arazzo\Validator\Rules\DocumentArazzoVersionRule;
 use Alama\Arazzo\Validator\Rules\DocumentInfoRequiredRule;
+use Alama\Arazzo\Validator\Rules\DocumentSourceDescriptionsPresentRule;
 use Alama\Arazzo\Validator\Rules\DocUnknownFieldRule;
 use Alama\Arazzo\Validator\Rules\ExpressionContextMisuseRule;
 use Alama\Arazzo\Validator\Rules\ExpressionJsonPointerSyntaxRule;
@@ -72,6 +73,7 @@ final readonly class RuleSet
     public static function default(array $disabled = [], bool $strict = true): self
     {
         return new self([
+            new OfficialSchemaRule(),
             new ActionGotoTargetResolvesRule(),
             new ActionRetryLimitsRule(),
             new ActionReusableRefResolvesRule(),
@@ -80,6 +82,7 @@ final readonly class RuleSet
             new ComponentsUniqueNamesRule(),
             new DocUnknownFieldRule(),
             new DocumentArazzoVersionRule(),
+            new DocumentSourceDescriptionsPresentRule(),
             new DocumentInfoRequiredRule(),
             new ExpressionContextMisuseRule(),
             new ExpressionJsonPointerSyntaxRule(),
