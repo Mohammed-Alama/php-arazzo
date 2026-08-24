@@ -199,12 +199,6 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
-			message: '#^Parameter \#1 \$client of class Alama\\Arazzo\\Laravel\\Http\\Psr18HttpClient constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/LaravelArazzoServiceProvider.php
-
-		-
 			message: '#^Parameter \#1 \$client of class Alama\\Arazzo\\Resolver\\Fetchers\\HttpFetcher constructor expects Psr\\Http\\Client\\ClientInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 2

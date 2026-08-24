@@ -14,5 +14,6 @@ interface OpenApiExecutorInterface
         ResolvedOperation $operation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
+        ?float $timeoutSeconds = null,
     ): ResponseInterface;
 }

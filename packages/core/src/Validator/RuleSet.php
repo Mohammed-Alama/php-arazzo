@@ -42,6 +42,7 @@ use Alama\Arazzo\Validator\Rules\StepParameterInValidRule;
 use Alama\Arazzo\Validator\Rules\StepParametersHaveNameRule;
 use Alama\Arazzo\Validator\Rules\StepRequestBodyReplacementsTargetRule;
 use Alama\Arazzo\Validator\Rules\StepSuccessCriteriaConditionRule;
+use Alama\Arazzo\Validator\Rules\StepTimeoutRequires11Rule;
 use Alama\Arazzo\Validator\Rules\StepUniqueIdRule;
 use Alama\Arazzo\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
 use Alama\Arazzo\Validator\Rules\SuccessCriteriaVersionSupportedRule;
@@ -104,6 +105,7 @@ final readonly class RuleSet
             new StepOperationIdSourceScopedRule(),
             new StepOperationPathSyntaxRule(),
             new StepOperationTargetPresentRule(),
+            new StepTimeoutRequires11Rule(),
             new StepOutputsUniqueRule(),
             new StepParameterInValidRule(),
             new StepParametersHaveNameRule(),

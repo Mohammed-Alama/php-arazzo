@@ -38,7 +38,7 @@ class CorrelationResumerEventsPendingCorrelations implements PendingCorrelationR
     /** @var list<string> */
     public array $consumed = [];
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {
     }
 

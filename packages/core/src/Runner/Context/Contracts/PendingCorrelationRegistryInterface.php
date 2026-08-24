@@ -8,7 +8,7 @@ use Alama\Arazzo\Runner\Context\PendingCorrelation;
 
 interface PendingCorrelationRegistryInterface
 {
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void;
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void;
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation;
 

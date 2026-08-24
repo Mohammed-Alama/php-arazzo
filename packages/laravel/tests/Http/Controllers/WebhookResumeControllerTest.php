@@ -42,7 +42,7 @@ class WebhookControllerMockPendingCorrelations implements PendingCorrelationRegi
 {
     public ?PendingCorrelation $toReturn = null;
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {
     }
 
@@ -116,7 +116,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
 
     $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface
     {
-        public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null): ResponseInterface
+        public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null): ResponseInterface
         {
             return new Response(201, [], json_encode(['rideId' => 'r_1']));
         }

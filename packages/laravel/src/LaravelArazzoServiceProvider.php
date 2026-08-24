@@ -118,7 +118,9 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->app->bindIf(StreamFactoryInterface::class, HttpFactory::class);
 
         $this->app->singleton(HttpClientInterface::class, function ($app) {
-            return new Psr18HttpClient($app->make(ClientInterface::class));
+            $client = $app->make(Client::class);
+
+            return new Psr18HttpClient($client instanceof Client ? $client : new Client());
         });
 
         // Event Dispatcher

@@ -32,6 +32,13 @@ it('creates the arazzo_events table with expected columns', function (): void {
     ]))->toBeTrue();
 });
 
+it('creates the arazzo_pending_correlations table with expected columns', function (): void {
+    expect(Schema::hasTable('arazzo_pending_correlations'))->toBeTrue();
+    expect(Schema::hasColumns('arazzo_pending_correlations', [
+        'id', 'correlation_id', 'execution_id', 'step_id', 'channel_path', 'expires_at', 'created_at',
+    ]))->toBeTrue();
+});
+
 it('enforces the unique index on definitions and rejects duplicate content', function (): void {
     DB::table('arazzo_definitions')->insert([
         'id' => '01ARZ3NDEKTSV4RRFFQ69G5FAV',

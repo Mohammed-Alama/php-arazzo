@@ -66,7 +66,7 @@ class StepOutcomeMockPendingCorrelationRegistry implements PendingCorrelationReg
     /** @var array<string, bool> */
     public array $outstanding = [];
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {
         $this->outstanding[$executionId] = true;
     }

@@ -523,12 +523,6 @@ parameters:
 			path: src/Runner/Execution/DefaultOpenApiExecutor.php
 
 		-
-			message: '#^Parameter \#1 \$request of method Psr\\Http\\Client\\ClientInterface\:\:sendRequest\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Execution/DefaultOpenApiExecutor.php
-
-		-
 			message: '#^Property Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor\:\:\$logger is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1

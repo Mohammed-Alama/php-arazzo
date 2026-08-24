@@ -46,7 +46,7 @@ it('rejects async fields on 1.0 doc at execution', function () {
 
 it('accepts async fields on 1.1 doc', function () {
     $pending = Mockery::mock(PendingCorrelationRegistryInterface::class);
-    $pending->shouldReceive('create')->with('corr-1', 'exec_1', 'step1', 'test/channel')->once();
+    $pending->shouldReceive('create')->with('corr-1', 'exec_1', 'step1', 'test/channel', null)->once();
 
     $evaluator = Mockery::mock(ExpressionEvaluator::class);
     $evaluator->shouldReceive('evaluate')->once()->andReturn('corr-1');

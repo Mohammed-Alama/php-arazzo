@@ -353,6 +353,7 @@ class Parser
             strictValidation: $strictValidation,
             idempotencyKey: $idempotencyKey,
             idempotencyHeader: $idempotencyHeader,
+            timeout: $this->optionalNumber($obj, 'timeout', $ctx),
         );
     }
 

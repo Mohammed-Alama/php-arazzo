@@ -455,7 +455,7 @@ it('executes a workflow end-to-end', function () {
         {
         }
 
-        public function sendRequest(RequestInterface $request): ResponseInterface
+        public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
         {
             $this->requests[] = $request;
 

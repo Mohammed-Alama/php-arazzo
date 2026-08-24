@@ -11,6 +11,7 @@ use Exception;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -27,6 +28,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         ResolvedOperation $resolvedOperation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
+        ?float $timeoutSeconds = null,
     ): ResponseInterface {
         $openApi = $resolvedOperation->openApi;
 
@@ -96,7 +98,23 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         }
 
         if ($requestInterceptor !== null) {
-            $request = $requestInterceptor($request);
+            $intercepted = $requestInterceptor($request);
+            $request = $intercepted instanceof RequestInterface ? $intercepted : $request;
+        }
+
+        // PSR-18 cannot express per-request timeouts; delegate to Guzzle when
+        // available so declared step timeouts are actually enforced.
+        if ($timeoutSeconds !== null && $this->httpClient instanceof \GuzzleHttp\ClientInterface) {
+            return $this->httpClient->request(
+                $request->getMethod(),
+                (string) $request->getUri(),
+                [
+                    'headers' => $request->getHeaders(),
+                    'body' => (string) $request->getBody(),
+                    'version' => $request->getProtocolVersion(),
+                    'timeout' => $timeoutSeconds,
+                ],
+            );
         }
 
         return $this->httpClient->sendRequest($request);

@@ -9,5 +9,5 @@ use Psr\Http\Message\ResponseInterface;
 
 interface HttpClientInterface
 {
-    public function sendRequest(RequestInterface $request): ResponseInterface;
+    public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface;
 }

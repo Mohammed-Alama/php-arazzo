@@ -68,6 +68,7 @@ class HttpStepExecutorMockOpenApiExecutor implements OpenApiExecutorInterface
         ResolvedOperation $resolvedOperation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
+        ?float $timeoutSeconds = null,
     ): ResponseInterface {
         if ($requestInterceptor) {
             $requestInterceptor(new Request('GET', 'http://localhost/thing'));

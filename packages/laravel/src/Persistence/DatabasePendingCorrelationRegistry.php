@@ -16,13 +16,14 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
     ) {
     }
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {
         $this->db->table($this->table)->insert([
             'correlation_id' => $correlationId,
             'execution_id' => $executionId,
             'step_id' => $stepId,
             'channel_path' => $channelPath,
+            'expires_at' => $timeoutSeconds !== null ? now()->addSeconds($timeoutSeconds) : null,
             'created_at' => now(),
         ]);
     }
@@ -42,6 +43,7 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
             $row->execution_id,
             $row->step_id,
             $row->channel_path,
+            $row->expires_at !== null && $row->expires_at instanceof \DateTimeInterface ? \DateTimeImmutable::createFromInterface($row->expires_at) : null,
         );
     }
 

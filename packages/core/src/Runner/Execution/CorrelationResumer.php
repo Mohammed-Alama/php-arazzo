@@ -78,14 +78,30 @@ class CorrelationResumer
                 return;
             }
 
-            $context = new WorkflowContext(
-                (string) $persisted['definitionId'],
-                (array) ($persisted['inputs'] ?? []),
-                (array) ($persisted['steps'] ?? []),
-                (array) ($persisted['components'] ?? []),
-                (string) $persisted['workflowId'],
-                $executionId,
-            );
+            // Step timeout enforcement for receive steps: an expired correlation is
+            // consumed and routed through the failure path with a synthesized 504,
+            // so onFailure actions (retry/goto/end) apply normally.
+            if ($correlation->expiresAt !== null && new DateTimeImmutable() > $correlation->expiresAt) {
+                $this->pendingCorrelations->consume($correlationId);
+                $this->eventLedger->append($executionId, 'step.correlation_expired', [
+                    'stepId' => $correlation->stepId,
+                    'correlationId' => $correlationId,
+                    'expiresAt' => $correlation->expiresAt->format(DATE_ATOM),
+                ]);
+
+                $timedOut = $this->hydrateContext($persisted, $executionId)
+                    ->withStepResponse($step->stepId, [
+                        'statusCode' => 504,
+                        'headers' => [],
+                        'body' => [],
+                    ]);
+
+                $this->outcomeHandler->handle($document, $workflow, $step, $timedOut, $executionId, false);
+
+                return;
+            }
+
+            $context = $this->hydrateContext($persisted, $executionId);
 
             $statusCode = $response['statusCode'] ?? 200;
             $body = $response['body'] ?? null;
@@ -122,6 +138,22 @@ class CorrelationResumer
 
             $this->outcomeHandler->handle($document, $workflow, $step, $contextWithResult, $executionId, $criteriaMet);
         });
+    }
+
+    /**
+     * @param array<string, mixed> $persisted
+     */
+    private function hydrateContext(array $persisted, string $executionId): WorkflowContext
+    {
+
+        return new WorkflowContext(
+            (string) $persisted['definitionId'],
+            (array) ($persisted['inputs'] ?? []),
+            (array) ($persisted['steps'] ?? []),
+            (array) ($persisted['components'] ?? []),
+            (string) $persisted['workflowId'],
+            $executionId,
+        );
     }
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow

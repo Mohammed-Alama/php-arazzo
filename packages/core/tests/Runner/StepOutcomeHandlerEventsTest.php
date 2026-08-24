@@ -71,7 +71,7 @@ class OutcomeEventsMockExecutionRegistry implements ExecutionRegistryInterface
 
 class OutcomeEventsMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {
     }
 

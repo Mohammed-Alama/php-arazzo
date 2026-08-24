@@ -29,7 +29,7 @@ class AsyncApiExecutorMockClient implements HttpClientInterface
 {
     public ?RequestInterface $lastRequest = null;
 
-    public function sendRequest(RequestInterface $request): ResponseInterface
+    public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
     {
         $this->lastRequest = $request;
 
@@ -42,7 +42,7 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
     /** @var list<array{correlationId: string, executionId: string, stepId: string, channelPath: string}> */
     public array $created = [];
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath): void
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {
         $this->created[] = compact('correlationId', 'executionId', 'stepId', 'channelPath');
     }

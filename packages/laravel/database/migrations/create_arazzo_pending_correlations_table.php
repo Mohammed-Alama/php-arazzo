@@ -16,6 +16,7 @@ return new class() extends Migration
             $table->ulid('execution_id')->index();
             $table->string('step_id');
             $table->string('channel_path');
+            $table->timestamp('expires_at')->nullable()->index();
             $table->timestamp('created_at')->nullable();
         });
     }
