@@ -11,7 +11,6 @@ use Alama\Arazzo\Runner\Evaluation\Contracts\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Evaluation\Xpath\XpathEvaluator;
-use Alama\Arazzo\Runner\Exceptions\UnsupportedCriterionTypeException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Expression;
@@ -38,7 +37,11 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
         // Default success behavior: an operation step without explicit criteria
         // passes on any 2xx response (community/spec-tooling convention).
         if ($this->hasOperationTarget($step) && $step->successCriteria === []) {
-            return self::isSuccessStatusCode($context->getSteps()[$step->stepId]['response']['statusCode'] ?? null);
+            $steps = $context->getSteps();
+            $stepData = $steps[$step->stepId] ?? null;
+            $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+
+            return self::isSuccessStatusCode(is_array($response) ? ($response['statusCode'] ?? null) : null);
         }
 
         return $this->evaluateCriteria($step->successCriteria, $step, $context, $document);
@@ -53,77 +56,76 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
             return true;
         }
 
-        $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
+        $steps = $context->getSteps();
+        $stepData = $steps[$step->stepId] ?? null;
+        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+        $responseBody = is_array($response) ? ($response['body'] ?? []) : [];
 
         foreach ($criteria as $criterion) {
             $type = $criterion->type ?? CriterionType::Simple;
 
-            if ($type === CriterionType::Simple) {
-                try {
-                    $passed = $this->conditionEvaluator->evaluate($criterion->condition, $context, $step->stepId, $document);
-                } catch (ConditionSyntaxException) {
-                    // Evaluation errors fail the criterion deterministically.
-                    return false;
-                }
+            // Evaluation errors inside each branch fail the criterion deterministically.
+            $passed = match ($type) {
+                CriterionType::Simple => $this->evaluateSimple($criterion, $context, $step->stepId, $document),
+                CriterionType::Regex => $this->evaluateRegex($criterion, $context, $step->stepId, $document),
+                CriterionType::JsonPath => $this->evaluateJsonPath($criterion, $responseBody, $context, $step->stepId, $document),
+                CriterionType::XPath => $this->evaluateXPath($criterion, $context, $step->stepId, $document),
+            };
 
-                if (!$passed) {
-                    return false;
-                }
-
-                continue;
+            if (!$passed) {
+                return false;
             }
-
-            if ($type === CriterionType::Regex) {
-                if ($criterion->context === null) {
-                    // A regex criterion without a context cannot be evaluated; fail deterministically.
-                    return false;
-                }
-
-                $target = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $step->stepId, $document));
-                if ($target === null) {
-                    return false;
-                }
-
-                if (!preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', self::stringify($target))) {
-                    return false;
-                }
-
-                continue;
-            }
-
-            if ($type === CriterionType::JsonPath) {
-                if ($criterion->context !== null) {
-                    try {
-                        $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $step->stepId, $document));
-                    } catch (\Throwable) {
-                        // Evaluation errors fail the criterion deterministically.
-                        return false;
-                    }
-                } else {
-                    $root = $responseBody;
-                }
-
-                $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($root) ? $root : []);
-                if (empty($result)) {
-                    return false;
-                }
-
-                continue;
-            }
-
-            if ($type === CriterionType::XPath) {
-                $passed = $this->evaluateXPath($criterion, $context, $step->stepId, $document);
-                if (!$passed) {
-                    return false;
-                }
-
-                continue;
-            }
-
-            throw new UnsupportedCriterionTypeException("Criterion type '{$type->value}' is not supported.");
         }
 
         return true;
+    }
+
+    private function evaluateSimple(SuccessCriterion $criterion, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    {
+        try {
+            return $this->conditionEvaluator->evaluate($criterion->condition, $context, $stepId, $document);
+        } catch (ConditionSyntaxException) {
+            // Evaluation errors fail the criterion deterministically.
+            return false;
+        }
+    }
+
+    private function evaluateRegex(SuccessCriterion $criterion, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    {
+        if ($criterion->context === null) {
+            // A regex criterion without a context cannot be evaluated; fail deterministically.
+            return false;
+        }
+
+        try {
+            $target = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
+        } catch (\Throwable) {
+            return false;
+        }
+
+        if ($target === null) {
+            return false;
+        }
+
+        return preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', self::stringify($target)) === 1;
+    }
+
+    private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseBody, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    {
+        if ($criterion->context !== null) {
+            try {
+                $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
+            } catch (\Throwable) {
+                // Evaluation errors fail the criterion deterministically.
+                return false;
+            }
+        } else {
+            $root = $responseBody;
+        }
+
+        $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($root) ? $root : []);
+
+        return !empty($result);
     }
 
     private function hasOperationTarget(Step $step): bool
@@ -152,7 +154,10 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
                 return false;
             }
         } else {
-            $root = $context->getSteps()[$stepId]['response']['body'] ?? [];
+            $steps = $context->getSteps();
+            $stepData = $steps[$stepId] ?? null;
+            $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+            $root = is_array($response) ? ($response['body'] ?? []) : [];
         }
 
         $version = $criterion->version ?? 'xpath-10';

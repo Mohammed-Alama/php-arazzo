@@ -60,6 +60,7 @@ class StepOutcomeHandler
         private int $maxRetryAttempts = 10,
         private int $stateTtlSeconds = 86400,
         ?EventDispatcherInterface $events = null,
+        private float $retryBackoffMultiplier = 1.0,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -305,7 +306,59 @@ class StepOutcomeHandler
             new DateTimeImmutable(),
         ));
 
-        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $action->retryAfter ?? 0);
+        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $this->retryDelaySeconds($action, $step, $context, $attempt));
+    }
+
+    /**
+     * Resolves the retry delay in whole seconds. The HTTP Retry-After header
+     * overrules the declared retryAfter when parseable; otherwise the declared
+     * delay is scaled by the configured backoff multiplier per prior attempt.
+     */
+    private function retryDelaySeconds(RetryAction $action, Step $step, WorkflowContext $context, int $attempt): int
+    {
+        $headerValue = self::lookupHeader($context, $step->stepId, 'Retry-After');
+
+        if ($headerValue !== null) {
+            if (preg_match('/^\d+$/', trim($headerValue)) === 1) {
+                return max(0, (int) trim($headerValue));
+            }
+
+            $date = DateTimeImmutable::createFromFormat(DATE_RFC7231, trim($headerValue));
+            if ($date !== false) {
+                return max(0, $date->getTimestamp() - time());
+            }
+        }
+
+        $base = $action->retryAfter ?? 0;
+        $scaled = $base * ($this->retryBackoffMultiplier ** max(0, $attempt - 1));
+
+        return max(0, (int) ceil($scaled));
+    }
+
+    /**
+     * Case-insensitive header lookup against the current step's recorded response.
+     */
+    private static function lookupHeader(WorkflowContext $context, string $stepId, string $name): ?string
+    {
+        $steps = $context->getSteps();
+        $stepData = $steps[$stepId] ?? null;
+        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+        if (!is_array($response)) {
+            return null;
+        }
+
+        $headers = $response['headers'] ?? [];
+        if (!is_array($headers)) {
+            return null;
+        }
+
+        foreach ($headers as $key => $value) {
+            if (is_string($key) && strcasecmp($key, $name) === 0 && is_scalar($value)) {
+                return (string) $value;
+            }
+        }
+
+        return null;
     }
 
     /**
