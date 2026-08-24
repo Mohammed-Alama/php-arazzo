@@ -7,7 +7,6 @@ namespace Tests\Execution;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Exceptions\UnsupportedCriterionTypeException;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
@@ -48,7 +47,7 @@ it('evaluates success criteria simple regex jsonpath', function () {
     expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeTrue();
 });
 
-it('evaluates success criteria unsupported', function () {
+it('evaluates xpath criteria against xml response bodies', function () {
     $evaluator = $this->evaluator;
 
     $step = new Step(
@@ -60,17 +59,58 @@ it('evaluates success criteria unsupported', function () {
         parameters: [],
         requestBody: null,
         successCriteria: [
-            new SuccessCriterion(null, '/users/id', CriterionType::XPath),
+            new SuccessCriterion(null, '/users/user[id="1"]/name', CriterionType::XPath),
         ],
         onSuccess: [],
         onFailure: [],
         outputs: [],
     );
 
-    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', []);
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => '<?xml version="1.0"?><users><user id="1"><name>Amy</name></user></users>',
+    ]);
 
-    $evaluator->evaluateSuccessCriteria($step, $context);
-})->throws(UnsupportedCriterionTypeException::class);
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeTrue();
+
+    $missingMatch = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => '<?xml version="1.0"?><users/>',
+    ]);
+
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeTrue()
+        ->and($evaluator->evaluateSuccessCriteria($step, $missingMatch))->toBeFalse();
+});
+
+it('fails xpath criteria deterministically on non-xml bodies', function () {
+    $evaluator = $this->evaluator;
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        operationId: null,
+        operationPath: null,
+        workflowId: null,
+        parameters: [],
+        requestBody: null,
+        successCriteria: [
+            new SuccessCriterion(null, '/users', CriterionType::XPath),
+        ],
+        onSuccess: [],
+        onFailure: [],
+        outputs: [],
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => ['not' => 'xml'],
+    ]);
+
+    expect($evaluator->evaluateSuccessCriteria($step, $context))->toBeFalse();
+});
 
 it('evaluateCriteria evaluates an arbitrary criteria list against the current step response, independent of successCriteria', function () {
     $evaluator = $this->evaluator;

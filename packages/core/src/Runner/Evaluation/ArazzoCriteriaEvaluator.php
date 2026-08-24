@@ -9,6 +9,8 @@ use Alama\Arazzo\Runner\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Runner\Evaluation\Contracts\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Runner\Evaluation\Xpath\XpathEvaluator;
 use Alama\Arazzo\Runner\Exceptions\UnsupportedCriterionTypeException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
@@ -20,15 +22,25 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
 {
     private ConditionEvaluator $conditionEvaluator;
 
+    private ?XpathEvaluator $xpathEvaluator = null;
+
     public function __construct(
         private ExpressionEvaluatorInterface $evaluator,
         ?ConditionEvaluator $conditionEvaluator = null,
+        ?XpathEvaluator $xpathEvaluator = null,
     ) {
         $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
+        $this->xpathEvaluator = $xpathEvaluator;
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {
+        // Default success behavior: an operation step without explicit criteria
+        // passes on any 2xx response (community/spec-tooling convention).
+        if ($this->hasOperationTarget($step) && $step->successCriteria === []) {
+            return self::isSuccessStatusCode($context->getSteps()[$step->stepId]['response']['statusCode'] ?? null);
+        }
+
         return $this->evaluateCriteria($step->successCriteria, $step, $context, $document);
     }
 
@@ -99,10 +111,65 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
                 continue;
             }
 
+            if ($type === CriterionType::XPath) {
+                $passed = $this->evaluateXPath($criterion, $context, $step->stepId, $document);
+                if (!$passed) {
+                    return false;
+                }
+
+                continue;
+            }
+
             throw new UnsupportedCriterionTypeException("Criterion type '{$type->value}' is not supported.");
         }
 
         return true;
+    }
+
+    private function hasOperationTarget(Step $step): bool
+    {
+        return $step->operationId !== null || $step->operationPath !== null;
+    }
+
+    private static function isSuccessStatusCode(mixed $statusCode): bool
+    {
+        if (!is_int($statusCode) && !is_string($statusCode)) {
+            // No status code recorded yet (e.g. mocked transports); fall back to pass.
+            return true;
+        }
+
+        $code = (int) $statusCode;
+
+        return $code >= 200 && $code < 300;
+    }
+
+    private function evaluateXPath(SuccessCriterion $criterion, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    {
+        if ($criterion->context !== null) {
+            try {
+                $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
+            } catch (\Throwable) {
+                return false;
+            }
+        } else {
+            $root = $context->getSteps()[$stepId]['response']['body'] ?? [];
+        }
+
+        $version = $criterion->version ?? 'xpath-10';
+
+        try {
+            $result = $this->xpath()->query($root, $criterion->condition, $version);
+        } catch (\Throwable) {
+            // Evaluation errors fail the criterion deterministically.
+            return false;
+        }
+
+        return ConditionEvaluator::truthy($result);
+    }
+
+    private function xpath(): XpathEvaluator
+    {
+        return $this->xpathEvaluator ??= new DomXpathEvaluator();
     }
 
     private static function stringify(mixed $value): string
