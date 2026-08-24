@@ -16,7 +16,6 @@ use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
@@ -25,6 +24,7 @@ use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\StepStatus;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
@@ -195,10 +195,9 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $dispatcher = new SimpleEventDispatcher();
     LedgerAppendingListener::registerAll($dispatcher, $eventLedger);
 
-    $engine = new Engine($queue, $store, $dispatcher);
     $outcomeHandler = new StepOutcomeHandler(
-        $queue, $engine, $executionRegistry, $eventLedger,
-        new WorkerMockPendingCorrelationRegistry(), $resolver, $store,
+        $queue, new WorkflowEngine($resolver), $executionRegistry, $eventLedger,
+        new WorkerMockPendingCorrelationRegistry(), $store,
         \Mockery::mock(SubWorkflowInvoker::class),
         \Mockery::mock(SelectorEvaluator::class),
         \Mockery::mock(ExpressionEvaluator::class),
@@ -206,7 +205,7 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
 
     $worker = new StepExecutionWorker(
         $lockManager, $store, $definitionRegistry, $eventLedger, $executionRegistry, $resolver,
-        [new WorkerFakeProtocolExecutor($outcome)], $outcomeHandler, null, 86400, $dispatcher,
+        [new WorkerFakeProtocolExecutor($outcome)], new WorkflowEngine($resolver), $queue, null, 86400, $dispatcher,
     );
 
     return [$worker, $lockManager, $store, $eventLedger, $executionRegistry, $queue];

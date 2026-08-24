@@ -26,11 +26,11 @@ use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\HttpStepExecutor;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -66,7 +66,6 @@ it('binds the persistence interfaces to their Laravel implementations', function
 
 it('binds StepExecutionWorker', function () {
     app()->bind(LockManagerInterface::class, fn () => \Mockery::mock(LockManagerInterface::class));
-    app()->bind(Engine::class, fn () => \Mockery::mock(Engine::class));
     app()->bind(HttpClientInterface::class, fn () => \Mockery::mock(HttpClientInterface::class));
     app()->bind(ExpressionResolverInterface::class, fn () => \Mockery::mock(ExpressionResolverInterface::class));
 
@@ -77,7 +76,7 @@ it('binds the queue/lock/http infra', function () {
     expect(app(HttpClientInterface::class))->toBeInstanceOf(Psr18HttpClient::class);
     expect(app(LockManagerInterface::class))->toBeInstanceOf(LaravelRedisLockManager::class);
     expect(app(QueueDriverInterface::class))->toBeInstanceOf(LaravelQueueDriver::class);
-    expect(app(Engine::class))->toBeInstanceOf(Engine::class);
+    expect(app(WorkflowEngine::class))->toBeInstanceOf(WorkflowEngine::class);
 });
 
 it('binds the async control flow classes', function () {

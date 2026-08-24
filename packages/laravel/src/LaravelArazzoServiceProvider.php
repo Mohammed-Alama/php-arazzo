@@ -45,7 +45,6 @@ use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\HttpStepExecutor;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
@@ -267,17 +266,11 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         $this->app->singleton(LockManagerInterface::class, LaravelRedisLockManager::class);
         $this->app->singleton(QueueDriverInterface::class, LaravelQueueDriver::class);
 
-        $this->app->singleton(Engine::class, function ($app) {
-            return new Engine(
-                $app->make(QueueDriverInterface::class),
-                $app->make(StateStoreInterface::class),
-            );
-        });
-
         $this->app->singleton(WorkflowEngine::class, function ($app) {
             return new WorkflowEngine(
                 $app->make(ExpressionResolverInterface::class),
                 (int) config('arazzo.retry_ceiling', 10),
+                (float) config('arazzo.retry_backoff_multiplier', 1.0),
             );
         });
 
@@ -311,18 +304,16 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(StepOutcomeHandler::class, function ($app) {
             return new StepOutcomeHandler(
-                $app->make(QueueDriverInterface::class),
-                $app->make(Engine::class),
-                $app->make(ExecutionRegistryInterface::class),
-                $app->make(EventLedgerInterface::class),
-                $app->make(PendingCorrelationRegistryInterface::class),
-                $app->make(ExpressionResolverInterface::class),
-                $app->make(StateStoreInterface::class),
-                $app->make(SubWorkflowInvoker::class),
-                $app->make(SelectorEvaluator::class),
-                new ExpressionEvaluator(),
-                (int) config('arazzo.retry_ceiling', 10),
-                (int) config('arazzo.state_ttl', 86400),
+                queueDriver: $app->make(QueueDriverInterface::class),
+                workflowEngine: $app->make(WorkflowEngine::class),
+                executionRegistry: $app->make(ExecutionRegistryInterface::class),
+                eventLedger: $app->make(EventLedgerInterface::class),
+                pendingCorrelations: $app->make(PendingCorrelationRegistryInterface::class),
+                stateStore: $app->make(StateStoreInterface::class),
+                invoker: $app->make(SubWorkflowInvoker::class),
+                selectors: $app->make(SelectorEvaluator::class),
+                expressions: new ExpressionEvaluator(),
+                stateTtlSeconds: (int) config('arazzo.state_ttl', 86400),
             );
         });
 
@@ -374,7 +365,6 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                     $app->make(HttpStepExecutor::class),
                     $app->make(AsyncApiStepExecutor::class),
                 ],
-                $app->make(StepOutcomeHandler::class),
                 workflowEngine: $app->make(WorkflowEngine::class),
                 queueDriver: $app->make(QueueDriverInterface::class),
             );

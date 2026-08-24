@@ -17,7 +17,6 @@ use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
@@ -25,6 +24,7 @@ use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
@@ -182,11 +182,9 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
     $execRegistry = new WorkerEventsMockExecutionRegistry();
     $resolver = new WorkerEventsMockExpressionResolver();
     $queue = new SyncQueueDriver();
-    $engine = new Engine($queue, $store, $dispatcher);
-
     $outcomeHandler = new StepOutcomeHandler(
-        $queue, $engine, $execRegistry, $ledger,
-        new WorkerEventsMockPendingCorrelationRegistry(), $resolver, $store,
+        $queue, new WorkflowEngine($resolver), $execRegistry, $ledger,
+        new WorkerEventsMockPendingCorrelationRegistry(), $store,
         Mockery::mock(SubWorkflowInvoker::class),
         Mockery::mock(SelectorEvaluator::class),
         Mockery::mock(ExpressionEvaluator::class),
@@ -196,7 +194,7 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
 
     $worker = new StepExecutionWorker(
         $lockManager, $store, $defRegistry, $ledger, $execRegistry, $resolver,
-        [$executor], $outcomeHandler, null, 86400, $dispatcher,
+        [$executor], new WorkflowEngine($resolver), $queue, null, 86400, $dispatcher,
     );
 
     return [$worker, $defRegistry, $collector];

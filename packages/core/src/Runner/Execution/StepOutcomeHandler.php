@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\DependencyAnalyzer;
 use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
@@ -16,20 +16,13 @@ use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Events\RunCompleted;
 use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\StepRetried;
-use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Spec\Action\FailureAction;
-use Alama\Arazzo\Spec\Action\FailureEndAction;
-use Alama\Arazzo\Spec\Action\FailureGotoAction;
-use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Spec\Action\SuccessAction;
-use Alama\Arazzo\Spec\Action\SuccessEndAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
@@ -38,29 +31,33 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use DateTimeImmutable;
-use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 
+/**
+ * Queue/sync adapter around the canonical {@see WorkflowEngine}.
+ *
+ * All control-flow decisions come from the engine as Transition objects;
+ * this class performs only the side effects those transitions describe:
+ * persisting state, dispatching follow-up jobs, completing the registry,
+ * appending ledger entries, and emitting framework events.
+ */
 class StepOutcomeHandler
 {
     private EventDispatcherInterface $events;
 
     public function __construct(
         private QueueDriverInterface $queueDriver,
-        private Engine $engine,
+        private WorkflowEngine $workflowEngine,
         private ExecutionRegistryInterface $executionRegistry,
         private EventLedgerInterface $eventLedger,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
-        private ExpressionResolverInterface $expressionResolver,
         private StateStoreInterface $stateStore,
         private SubWorkflowInvoker $invoker,
         private SelectorEvaluator $selectors,
         private ExpressionEvaluator $expressions,
-        private int $maxRetryAttempts = 10,
         private int $stateTtlSeconds = 86400,
         ?EventDispatcherInterface $events = null,
-        private float $retryBackoffMultiplier = 1.0,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -82,51 +79,91 @@ class StepOutcomeHandler
             $context = $context->withStepOutput($step->stepId, $name, $resolved);
         }
 
-        $actions = $this->resolveActionList($document, $workflow, $step, $criteriaMet);
+        $state = $this->stateFrom($context);
+        $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
 
-        $this->applyFirstMatch($actions, $document, $workflow, $step, $context, $executionId, $criteriaMet);
-    }
-
-    /**
-     * @return list<SuccessAction|FailureAction>
-     */
-    private function resolveActionList(ArazzoDocument $document, Workflow $workflow, Step $step, bool $criteriaMet): array
-    {
-        $stepList = $criteriaMet ? $step->onSuccess : $step->onFailure;
-        $list = $stepList !== [] ? $stepList : ($criteriaMet ? $workflow->successActions : $workflow->failureActions);
-        $componentType = $criteriaMet ? 'successActions' : 'failureActions';
-
-        return array_map(fn ($action) => $this->resolveReusable($action, $document, $componentType), $list);
-    }
-
-    private function resolveReusable(SuccessAction|FailureAction|Reusable $action, ArazzoDocument $document, string $componentType): SuccessAction|FailureAction
-    {
-        if (!$action instanceof Reusable) {
-            return $action;
+        /** @var array<string, mixed> $error */
+        foreach ($transition->state->errors as $error) {
+            if (($error['type'] ?? null) === 'retry_exhausted') {
+                $this->eventLedger->append($executionId, 'step.retry_exhausted', [
+                    'stepId' => $error['stepId'],
+                    'attempts' => $error['attempts'],
+                ]);
+            }
         }
 
-        $prefix = "\$components.{$componentType}.";
-        if (!str_starts_with($action->reference, $prefix)) {
-            throw new GotoTargetNotFoundException("Reusable reference '{$action->reference}' does not target components.{$componentType}.");
-        }
-
-        $name = substr($action->reference, strlen($prefix));
-        $resolved = $componentType === 'successActions'
-            ? ($document->components->successActions[$name] ?? null)
-            : ($document->components->failureActions[$name] ?? null);
-
-        if ($resolved === null) {
-            throw new GotoTargetNotFoundException("Reusable reference '{$action->reference}' does not resolve.");
-        }
-
-        return $resolved;
+        match ($transition->type) {
+            TransitionType::Next => $this->applyNext($transition, $workflow, $step, $context, $executionId),
+            TransitionType::Retry => $this->applyRetry($transition, $document, $workflow, $step, $context, $executionId),
+            TransitionType::Goto => $this->applyGoto($transition, $document, $workflow, $step, $context, $executionId, $criteriaMet),
+            TransitionType::Invoke => $this->applyInvoke($document, $workflow, $step, $context, $executionId),
+            TransitionType::End => $this->applyEnd($transition, $workflow, $step, $context, $executionId),
+            TransitionType::Suspend => null, // suspension handled by the executor layer
+        };
     }
 
-    /**
-     * @param list<SuccessAction|FailureAction> $actions
-     */
-    private function applyFirstMatch(
-        array $actions,
+    private function applyNext(
+        Transition $transition,
+        Workflow $workflow,
+        Step $step,
+        WorkflowContext $context,
+        string $executionId,
+    ): void {
+        $newContext = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
+        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
+
+        if ($transition->stepId === null) {
+            return;
+        }
+
+        $targetStep = $this->findStep($workflow, $transition->stepId);
+        if ($targetStep === null) {
+            return;
+        }
+
+        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext));
+    }
+
+    private function applyRetry(
+        Transition $transition,
+        ArazzoDocument $document,
+        Workflow $workflow,
+        Step $step,
+        WorkflowContext $context,
+        string $executionId,
+    ): void {
+        $newContext = $context
+            ->withStepAttemptIncremented($step->stepId)
+            ->withStepStatus($step->stepId, StepStatus::Retrying);
+
+        if ($transition->workflowId !== null && $transition->workflowId !== $context->getWorkflowId()) {
+            $newContext = $newContext->withWorkflowId($transition->workflowId);
+        }
+        if ($transition->stepId !== null && $transition->stepId !== $step->stepId) {
+            $newContext = $newContext->withStepStatus($transition->stepId, StepStatus::Pending);
+        }
+
+        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
+
+        $attempt = $context->getStepAttempts($step->stepId);
+        $this->events->dispatch(new StepRetried(
+            $executionId,
+            $workflow->workflowId,
+            $step->stepId,
+            $attempt,
+            null,
+            new DateTimeImmutable(),
+        ));
+
+        $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
+        $targetStep = $transition->stepId !== null ? $this->findStep($targetWorkflow, $transition->stepId) : null;
+        if ($targetStep !== null) {
+            $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $transition->delaySeconds);
+        }
+    }
+
+    private function applyGoto(
+        Transition $transition,
         ArazzoDocument $document,
         Workflow $workflow,
         Step $step,
@@ -134,99 +171,172 @@ class StepOutcomeHandler
         string $executionId,
         bool $criteriaMet,
     ): void {
-        $matched = $this->firstMatchingAction($actions, $step, $context, $document);
+        $status = $criteriaMet ? StepStatus::Succeeded : StepStatus::Failed;
 
-        if ($matched === null) {
-            if ($criteriaMet) {
-                $this->continueNormally($workflow, $step, $context, $executionId);
-            } else {
-                $this->terminate($context, $executionId, ExecutionStatus::Failed, 'execution.failed');
+        // Bind any parameters carried on the transition state's inputs.
+        $newContext = $context
+            ->withWorkflowId($transition->state->workflowId)
+            ->withStepStatus($step->stepId, $status)
+            ->withInputs($transition->state->inputs);
+
+        $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? (string) $context->getWorkflowId());
+        if ($targetWorkflow === null) {
+            return;
+        }
+
+        if ($transition->stepId === null) {
+            // Transfer to the start of the target workflow: dispatch its runnable steps.
+            $analyzer = new DependencyAnalyzer(new DependencyGraph($targetWorkflow->steps));
+            $runnable = $analyzer->getRunnableSteps($newContext);
+
+            $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
+            foreach ($runnable as $runnableStep) {
+                $this->queueDriver->dispatch(new ExecuteStepJob($runnableStep, $newContext));
             }
 
             return;
         }
 
-        if ($matched instanceof RetryAction) {
-            $this->handleRetry($matched, $actions, $document, $workflow, $step, $context, $executionId, $criteriaMet);
+        $targetStep = $this->findStep($targetWorkflow, $transition->stepId);
+        if ($targetStep === null) {
+            return;
+        }
+
+        $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
+        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
+        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext));
+    }
+
+    private function applyInvoke(
+        ArazzoDocument $document,
+        Workflow $workflow,
+        Step $step,
+        WorkflowContext $context,
+        string $executionId,
+    ): void {
+        // Reconstruct the original invoke action to run through the invoker.
+        $invoke = $this->findAction($document, $workflow, $step, SubWorkflowSuccessAction::class)
+            ?? $this->findAction($document, $workflow, $step, SubWorkflowFailureAction::class);
+
+        if (!$invoke instanceof SubWorkflowSuccessAction && !$invoke instanceof SubWorkflowFailureAction) {
+            return;
+        }
+
+        $result = $this->invoker->invoke($invoke, $context);
+        $context = $context->withWorkflowData($invoke->workflowId, ['inputs' => $result->inputs, 'outputs' => $result->outputs]);
+        $context = $context->withStepOutput($step->stepId, $invoke->name, $result->outputs);
+        $context = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
+
+        $this->continueFrom($document, $workflow, $step, $context, $executionId);
+    }
+
+    private function applyEnd(
+        Transition $transition,
+        Workflow $workflow,
+        Step $step,
+        WorkflowContext $context,
+        string $executionId,
+    ): void {
+        $succeeded = ($transition->status ?? 'failed') === 'succeeded';
+
+        // Do not auto-complete while a receiving correlation may still land.
+        if ($succeeded && $this->pendingCorrelations->existsForExecution($executionId)) {
+            $this->stateStore->save($executionId, $this->serialize($context), $this->stateTtlSeconds);
 
             return;
         }
 
-        if ($matched instanceof SuccessGotoAction || $matched instanceof FailureGotoAction) {
-            $status = $matched instanceof SuccessGotoAction ? StepStatus::Succeeded : StepStatus::Failed;
-            $newContext = $context->withStepStatus($step->stepId, $status);
-            $this->handleGoto($matched, $step, $document, $newContext, $executionId);
+        $status = $succeeded ? ExecutionStatus::Succeeded : ExecutionStatus::Failed;
+        $this->terminate($context, $executionId, $status, $succeeded ? 'execution.succeeded' : 'execution.failed');
 
-            return;
-        }
-
-        if ($matched instanceof SuccessEndAction || $matched instanceof FailureEndAction) {
-            $status = $matched instanceof SuccessEndAction ? ExecutionStatus::Succeeded : ExecutionStatus::Failed;
-            $this->terminate(
-                $context,
+        if ($succeeded) {
+            $this->events->dispatch(new RunCompleted(
                 $executionId,
-                $status,
-                $status === ExecutionStatus::Succeeded ? 'execution.succeeded' : 'execution.failed',
-            );
-
-            if ($matched instanceof SuccessEndAction) {
-                $this->events->dispatch(new RunCompleted(
-                    $executionId,
-                    $workflow->workflowId,
-                    $context->getSteps()[$step->stepId]['outputs'] ?? [],
-                    new DateTimeImmutable(),
-                ));
-            } else {
-                $this->events->dispatch(new RunFailed(
-                    $executionId,
-                    $workflow->workflowId,
-                    new RuntimeException("Workflow '{$workflow->workflowId}' ended in failure at step '{$step->stepId}'"),
-                    new DateTimeImmutable(),
-                ));
-            }
-
-            return;
+                $workflow->workflowId,
+                $context->getSteps()[$step->stepId]['outputs'] ?? [],
+                new DateTimeImmutable(),
+            ));
+        } else {
+            $this->events->dispatch(new RunFailed(
+                $executionId,
+                $workflow->workflowId,
+                new RuntimeException("Workflow '{$workflow->workflowId}' ended in failure at step '{$step->stepId}'"),
+                new DateTimeImmutable(),
+            ));
         }
-
-        if ($matched instanceof SubWorkflowSuccessAction || $matched instanceof SubWorkflowFailureAction) {
-            $result = $this->invoker->invoke($matched, $context);
-            $context = $context->withWorkflowData($matched->workflowId, ['inputs' => $result->inputs, 'outputs' => $result->outputs]);
-            $context = $context->withStepOutput($step->stepId, $matched->name, $result->outputs);
-            $this->continueNormally($workflow, $step, $context, $executionId);
-
-            return;
-        }
-
-        throw new LogicException('Unhandled action type: ' . $matched::class);
     }
 
     /**
-     * @param list<SuccessAction|FailureAction> $actions
+     * Continues execution after an inline sub-workflow invocation resolved:
+     * computes the next runnable step and dispatches or completes.
      */
-    private function firstMatchingAction(array $actions, Step $step, WorkflowContext $context, ArazzoDocument $document): SuccessAction|FailureAction|null
+    private function continueFrom(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId): void
     {
-        foreach ($actions as $action) {
-            if ($this->expressionResolver->evaluateCriteria($action->criteria, $step, $context, $document)) {
-                return $action;
+        $this->stateStore->save($executionId, $this->serialize($context), $this->stateTtlSeconds);
+
+        $graph = new DependencyGraph($workflow->steps);
+        $runnable = new DependencyAnalyzer($graph)->getRunnableSteps($context);
+
+        if ($runnable !== []) {
+            foreach ($runnable as $runnableStep) {
+                $this->queueDriver->dispatch(new ExecuteStepJob($runnableStep, $context));
+            }
+
+            return;
+        }
+
+        if (!$this->pendingCorrelations->existsForExecution($executionId)) {
+            $this->terminate($context, $executionId, ExecutionStatus::Succeeded, 'execution.succeeded');
+        }
+    }
+
+    private function findAction(ArazzoDocument $document, Workflow $workflow, Step $step, string $class): ?object
+    {
+        foreach ([$step->onSuccess, $step->onFailure, $workflow->successActions, $workflow->failureActions] as $list) {
+            foreach ($list as $action) {
+                if ($action instanceof $class) {
+                    return $action;
+                }
+                if ($action instanceof Reusable) {
+                    $resolved = str_contains($action->reference, 'failureActions')
+                        ? ($document->components->failureActions[$this->referenceName($action->reference)] ?? null)
+                        : ($document->components->successActions[$this->referenceName($action->reference)] ?? null);
+                    if ($resolved !== null && $resolved instanceof $class) {
+                        return $resolved;
+                    }
+                }
             }
         }
 
         return null;
     }
 
-    private function continueNormally(Workflow $workflow, Step $step, WorkflowContext $context, string $executionId): void
+    private function referenceName(string $reference): string
     {
-        $newContext = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
+        return substr($reference, (int) strrpos($reference, '.') + 1);
+    }
 
-        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
-        $this->engine->evaluate($workflow, $newContext);
+    private function stateFrom(WorkflowContext $context): ExecutionState
+    {
+        $state = ExecutionState::start(
+            (string) $context->getExecutionId(),
+            $context->getDefinitionId(),
+            (string) $context->getWorkflowId(),
+            $context->getInputs(),
+            components: $context->getComponents(),
+        );
 
-        $graph = new DependencyGraph($workflow->steps);
-        $analyzer = new DependencyAnalyzer($graph);
-        $runnable = $analyzer->getRunnableSteps($newContext);
-        if ($runnable === [] && !$this->pendingCorrelations->existsForExecution($executionId)) {
-            $this->terminate($newContext, $executionId, ExecutionStatus::Succeeded, 'execution.succeeded');
+        foreach ($context->getSteps() as $stepId => $result) {
+            /** @var array<string, mixed> $result */
+            $state = $state->withStepResult($stepId, $result);
+            if (($result['attempts'] ?? 0) > 0) {
+                while ($result['attempts'] > $state->attemptFor((string) $stepId)) {
+                    $state = $state->withStepAttempt((string) $stepId);
+                }
+            }
         }
+
+        return $state;
     }
 
     /**
@@ -250,136 +360,6 @@ class StepOutcomeHandler
         $this->eventLedger->append($executionId, $eventType, ['workflowId' => $context->getWorkflowId()]);
     }
 
-    /**
-     * @param list<SuccessAction|FailureAction> $actionsConsidered
-     */
-    private function handleRetry(
-        RetryAction $action,
-        array $actionsConsidered,
-        ArazzoDocument $document,
-        Workflow $workflow,
-        Step $step,
-        WorkflowContext $context,
-        string $executionId,
-        bool $criteriaMet,
-    ): void {
-        $attempts = $context->getStepAttempts($step->stepId);
-        $limit = min($action->retryLimit ?? PHP_INT_MAX, $this->maxRetryAttempts);
-
-        if ($attempts >= $limit) {
-            $this->eventLedger->append($executionId, 'step.retry_exhausted', [
-                'stepId' => $step->stepId,
-                'attempts' => $attempts,
-            ]);
-
-            $index = array_search($action, $actionsConsidered, true);
-            $remaining = array_slice($actionsConsidered, $index + 1);
-            $this->applyFirstMatch($remaining, $document, $workflow, $step, $context, $executionId, $criteriaMet);
-
-            return;
-        }
-
-        $targetStepId = $action->stepId ?? $step->stepId;
-        $targetWorkflowId = $action->workflowId ?? $workflow->workflowId;
-        [$targetWorkflow, $targetStep] = $this->resolveTarget($document, $targetWorkflowId, $targetStepId);
-
-        $newContext = $context
-            ->withStepAttemptIncremented($step->stepId)
-            ->withStepStatus($step->stepId, StepStatus::Retrying);
-
-        if ($targetWorkflow->workflowId !== $context->getWorkflowId()) {
-            $newContext = $newContext->withWorkflowId($targetWorkflow->workflowId);
-        }
-        if ($targetStep->stepId !== $step->stepId) {
-            $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
-        }
-
-        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
-
-        $attempt = $context->getStepAttempts($step->stepId);
-        $this->events->dispatch(new StepRetried(
-            $executionId,
-            $workflow->workflowId,
-            $step->stepId,
-            $attempt,
-            null,
-            new DateTimeImmutable(),
-        ));
-
-        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $this->retryDelaySeconds($action, $step, $context, $attempt + 1));
-    }
-
-    /**
-     * Resolves the retry delay in whole seconds. The HTTP Retry-After header
-     * overrules the declared retryAfter when parseable; otherwise the declared
-     * delay is scaled by the configured backoff multiplier per attempt number
-     * (the upcoming attempt, 1-based).
-     */
-    private function retryDelaySeconds(RetryAction $action, Step $step, WorkflowContext $context, int $upcomingAttempt): int
-    {
-        $headerValue = self::lookupHeader($context, $step->stepId, 'Retry-After');
-
-        if ($headerValue !== null) {
-            if (preg_match('/^\d+$/', trim($headerValue)) === 1) {
-                return max(0, (int) trim($headerValue));
-            }
-
-            $date = DateTimeImmutable::createFromFormat(DATE_RFC7231, trim($headerValue));
-            if ($date !== false) {
-                return max(0, $date->getTimestamp() - time());
-            }
-        }
-
-        $base = $action->retryAfter ?? 0;
-        $scaled = $base * ($this->retryBackoffMultiplier ** max(0, $upcomingAttempt - 1));
-
-        return max(0, (int) ceil($scaled));
-    }
-
-    /**
-     * Case-insensitive header lookup against the current step's recorded response.
-     */
-    private static function lookupHeader(WorkflowContext $context, string $stepId, string $name): ?string
-    {
-        $steps = $context->getSteps();
-        $stepData = $steps[$stepId] ?? null;
-        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
-        if (!is_array($response)) {
-            return null;
-        }
-
-        $headers = $response['headers'] ?? [];
-        if (!is_array($headers)) {
-            return null;
-        }
-
-        foreach ($headers as $key => $value) {
-            if (is_string($key) && strcasecmp($key, $name) === 0 && is_scalar($value)) {
-                return (string) $value;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return array{0: Workflow, 1: Step}
-     */
-    private function resolveTarget(ArazzoDocument $document, string $workflowId, string $stepId): array
-    {
-        $workflow = $this->findWorkflow($document, $workflowId);
-        if ($workflow === null) {
-            throw new GotoTargetNotFoundException("Action references unknown workflowId '{$workflowId}'.");
-        }
-
-        $step = $this->findStep($workflow, $stepId);
-        if ($step === null) {
-            throw new GotoTargetNotFoundException("Action references unknown stepId '{$stepId}' in workflow '{$workflow->workflowId}'.");
-        }
-
-        return [$workflow, $step];
-    }
-
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
     {
         foreach ($document->workflows as $workflow) {
@@ -393,63 +373,6 @@ class StepOutcomeHandler
 
     private function findStep(Workflow $workflow, string $stepId): ?Step
     {
-        foreach ($workflow->steps as $step) {
-            if ($step->stepId === $stepId) {
-                return $step;
-            }
-        }
-
-        return null;
-    }
-
-    private function handleGoto(SuccessGotoAction|FailureGotoAction $action, Step $step, ArazzoDocument $document, WorkflowContext $context, string $executionId): void
-    {
-        $targetWorkflowId = $action->workflowId ?? $context->getWorkflowId();
-        $targetWorkflow = $this->findWorkflow($document, (string) $targetWorkflowId);
-        if ($targetWorkflow === null) {
-            throw new GotoTargetNotFoundException("Goto action '{$action->name}' references unknown workflowId '{$targetWorkflowId}'.");
-        }
-
-        $newContext = $targetWorkflow->workflowId !== $context->getWorkflowId()
-            ? $context->withWorkflowId($targetWorkflow->workflowId)
-            : $context;
-
-        // 1.1: goto parameters bind values into the target workflow's input scope.
-        if ($action->parameters !== []) {
-            $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
-            $bound = [];
-            foreach ($action->parameters as $parameter) {
-                if ($parameter instanceof Reusable) {
-                    continue; // component defaults resolve inside the target scope
-                }
-
-                $bound[$parameter->name] = $parameter->value instanceof Expression
-                    ? $this->expressions->evaluate($parameter->value, $evaluationContext)
-                    : $parameter->value;
-            }
-
-            foreach ($bound as $k => $v) {
-                $newContext = $newContext->withInput($k, $v);
-            }
-        }
-
-        if ($action->stepId === null) {
-            // No specific step named -- transfer to the target workflow's start, letting
-            // normal dependency-driven choreography pick its entry steps.
-            $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
-            $this->engine->evaluate($targetWorkflow, $newContext);
-
-            return;
-        }
-
-        $targetStep = $this->findStep($targetWorkflow, $action->stepId);
-        if ($targetStep === null) {
-            throw new GotoTargetNotFoundException("Goto action '{$action->name}' references unknown stepId '{$action->stepId}' in workflow '{$targetWorkflow->workflowId}'.");
-        }
-
-        $newContext = $newContext->withStepStatus($targetStep->stepId, StepStatus::Pending);
-
-        $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
-        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext));
+        return array_find($workflow->steps, fn ($step) => $step->stepId === $stepId);
     }
 }

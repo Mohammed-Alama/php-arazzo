@@ -13,6 +13,7 @@ use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
@@ -30,6 +31,7 @@ use Alama\Arazzo\Spec\SourceDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 use cebe\openapi\spec\OpenApi;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -533,11 +535,11 @@ it('executes a workflow end-to-end', function () {
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
     $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver);
 
-    $workflowExecutor = new WorkflowExecutor($stepExecutor);
+    $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver()));
 
     $result = $workflowExecutor->execute($workflow, $doc, ['customerId' => 12345]);
 
-    expect($result->status)->toBe('completed');
+    expect($result->status)->toBe('succeeded');
     expect($result->stepResults['create-ride']->success)->toBeTrue();
     expect($result->stepResults['create-ride']->outputs['rideId'])->toBe(99);
     expect($httpClient->requests)->toHaveCount(1);

@@ -168,4 +168,57 @@ final readonly class ExecutionState implements JsonSerializable
 
         return $this->copy(workflowCallStack: $stack);
     }
+
+    /**
+     * @param array<string, mixed> $entry
+     */
+    public function withErrorEntry(array $entry): self
+    {
+        $errors = $this->errors;
+        $errors[] = $entry;
+
+        return new self(
+            executionId: $this->executionId,
+            definitionId: $this->definitionId,
+            workflowId: $this->workflowId,
+            currentStepId: $this->currentStepId,
+            inputs: $this->inputs,
+            stepAttempts: $this->stepAttempts,
+            stepResults: $this->stepResults,
+            dependencies: $this->dependencies,
+            outputs: $this->outputs,
+            errors: $errors,
+            stepsSpent: $this->stepsSpent,
+            maxSteps: $this->maxSteps,
+            workflowCallStack: $this->workflowCallStack,
+            maxWorkflowDepth: $this->maxWorkflowDepth,
+            components: $this->components,
+            status: $this->status,
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $inputs
+     */
+    public function withInputs(array $inputs): self
+    {
+        return new self(
+            executionId: $this->executionId,
+            definitionId: $this->definitionId,
+            workflowId: $this->workflowId,
+            currentStepId: $this->currentStepId,
+            inputs: $inputs,
+            stepAttempts: $this->stepAttempts,
+            stepResults: $this->stepResults,
+            dependencies: $this->dependencies,
+            outputs: $this->outputs,
+            errors: $this->errors,
+            stepsSpent: $this->stepsSpent,
+            maxSteps: $this->maxSteps,
+            workflowCallStack: $this->workflowCallStack,
+            maxWorkflowDepth: $this->maxWorkflowDepth,
+            components: $this->components,
+            status: $this->status,
+        );
+    }
 }

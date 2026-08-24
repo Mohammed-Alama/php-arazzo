@@ -11,4 +11,5 @@ enum TransitionType: string
     case Goto = 'goto';
     case End = 'end';
     case Suspend = 'suspend';
+    case Invoke = 'invoke';
 }

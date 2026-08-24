@@ -14,7 +14,7 @@ require_once __DIR__ . '/StepOutcomeHandlerTest.php';
 
 function makeRetryHandler(float $retryBackoffMultiplier = 1.0): array
 {
-    [$handler, $queue] = makeStepOutcomeHandler(10, retryBackoffMultiplier: $retryBackoffMultiplier);
+    [$handler, $queue] = makeStepOutcomeHandler(retryBackoffMultiplier: $retryBackoffMultiplier);
 
     return [$handler, $queue];
 }

@@ -45,13 +45,12 @@ class StepExecutionWorker
         private ExecutionRegistryInterface $executionRegistry,
         private ExpressionResolverInterface $expressionResolver,
         private array $protocolExecutors,
-        private StepOutcomeHandler $outcomeHandler,
+        private WorkflowEngine $workflowEngine,
+        private QueueDriverInterface $queueDriver,
         /** @phpstan-ignore property.onlyWritten */
         private ?LoggerInterface $logger = null,
         private int $stateTtlSeconds = 86400,
         ?EventDispatcherInterface $events = null,
-        private ?WorkflowEngine $workflowEngine = null,
-        private ?QueueDriverInterface $queueDriver = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -146,34 +145,33 @@ class StepExecutionWorker
 
                 $this->executionRegistry->start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId);
 
-                if ($this->workflowEngine !== null) {
-                    $persisted = $this->stateStore->load($executionId);
-                    $state = $persisted !== null && isset($persisted['executionId'])
-                        ? ExecutionState::fromArray($persisted)
-                        : ExecutionState::start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId, $contextWithResult->getInputs(), components: $contextWithResult->getComponents());
-                    foreach ($contextWithResult->getSteps() as $completedStepId => $completedResult) {
-                        $state = $state->withStepResult($completedStepId, $completedResult);
+                $persisted = $this->stateStore->load($executionId);
+                $state = $persisted !== null && isset($persisted['executionId'])
+                    ? ExecutionState::fromArray($persisted)
+                    : ExecutionState::start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId, $contextWithResult->getInputs(), components: $contextWithResult->getComponents());
+                foreach ($contextWithResult->getSteps() as $completedStepId => $completedResult) {
+                    $state = $state->withStepResult($completedStepId, $completedResult);
+                }
+                foreach ($this->attemptsFrom($contextWithResult) as $attemptedStepId => $attempts) {
+                    while ($state->attemptFor($attemptedStepId) < $attempts) {
+                        $state = $state->withStepAttempt($attemptedStepId);
                     }
-                    foreach ($this->attemptsFrom($contextWithResult) as $attemptedStepId => $attempts) {
-                        while ($state->attemptFor($attemptedStepId) < $attempts) {
-                            $state = $state->withStepAttempt($attemptedStepId);
-                        }
+                }
+                $state = $state->withStepResult($step->stepId, $contextWithResult->getSteps()[$step->stepId] ?? []);
+                $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
+                // Persist in WorkflowContext shape so reconcileWithPersistedState
+                // and CorrelationResumer keep reading the same keys.
+                $this->stateStore->save($executionId, $this->serialize($this->contextFromState($transition->state)), $this->stateTtlSeconds);
+
+                if ($transition->isTerminal()) {
+                    $this->executionRegistry->complete($executionId, $transition->status === 'succeeded' ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
+                    $this->eventLedger->append($executionId, $transition->status === 'succeeded' ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
+                } elseif ($transition->type !== TransitionType::Suspend) {
+                    $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
+                    $targetStep = $this->findStep($targetWorkflow, $transition->stepId ?? '');
+                    if ($targetStep !== null) {
+                        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $this->contextFromState($transition->state)), $transition->delaySeconds);
                     }
-                    $state = $state->withStepResult($step->stepId, $contextWithResult->getSteps()[$step->stepId] ?? []);
-                    $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
-                    $this->stateStore->save($executionId, $transition->state->toArray(), $this->stateTtlSeconds);
-                    if ($transition->isTerminal()) {
-                        $this->executionRegistry->complete($executionId, $transition->status === 'succeeded' ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
-                        $this->eventLedger->append($executionId, $transition->status === 'succeeded' ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
-                    } elseif ($this->queueDriver !== null && $transition->type !== TransitionType::Suspend) {
-                        $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
-                        $targetStep = $this->findStep($targetWorkflow, $transition->stepId ?? '');
-                        if ($targetStep !== null) {
-                            $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $this->contextFromState($transition->state)), $transition->delaySeconds);
-                        }
-                    }
-                } else {
-                    $this->outcomeHandler->handle($document, $workflow, $step, $contextWithResult, $executionId, $criteriaMet);
                 }
 
                 $this->events->dispatch(new StepExecutedEvent(

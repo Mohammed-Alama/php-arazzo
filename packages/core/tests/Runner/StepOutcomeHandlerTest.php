@@ -14,12 +14,12 @@ use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\StepStatus;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\FailureGotoAction;
@@ -178,7 +178,6 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
 {
     $queue = new SyncQueueDriver();
     $store = new StepOutcomeMockStateStore();
-    $engine = new Engine($queue, $store);
     $executionRegistry = new StepOutcomeMockExecutionRegistry();
     $eventLedger = new StepOutcomeMockEventLedger();
     $pendingCorrelations = new StepOutcomeMockPendingCorrelationRegistry();
@@ -187,15 +186,14 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
     }
     $resolver = new StepOutcomeMockExpressionResolver();
 
+    $workflowEngine = new WorkflowEngine($resolver, $maxRetryAttempts, $retryBackoffMultiplier);
     $handler = new StepOutcomeHandler(
-        $queue, $engine, $executionRegistry, $eventLedger, $pendingCorrelations, $resolver, $store,
+        $queue, $workflowEngine, $executionRegistry, $eventLedger, $pendingCorrelations, $store,
         \Mockery::mock(SubWorkflowInvoker::class),
         \Mockery::mock(SelectorEvaluator::class),
         \Mockery::mock(ExpressionEvaluator::class),
-        $maxRetryAttempts,
         86400,
         null,
-        $retryBackoffMultiplier,
     );
 
     return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations, $store];

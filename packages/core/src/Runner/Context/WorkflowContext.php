@@ -176,6 +176,14 @@ final class WorkflowContext
     /**
      * @param array<string, mixed> $inputs
      */
+    public function withInputs(array $inputs): self
+    {
+        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+    }
+
+    /**
+     * @param array<string, mixed> $inputs
+     */
     public function withStepInputs(string $stepId, array $inputs): self
     {
         $newSteps = $this->steps;

@@ -39,6 +39,11 @@ final readonly class Transition
         return new self(TransitionType::End, $state->withStatus($status), null, null, 0, $status);
     }
 
+    public static function invoke(ExecutionState $state, string $workflowId): self
+    {
+        return new self(TransitionType::Invoke, $state->enterWorkflow($workflowId), null, $workflowId);
+    }
+
     public static function suspend(ExecutionState $state): self
     {
         return new self(TransitionType::Suspend, $state->withStatus('suspended'));

@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Exceptions\WorkflowCycleException;
@@ -21,6 +22,7 @@ use Alama\Arazzo\Spec\Action\SuccessAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
@@ -28,8 +30,11 @@ use Alama\Arazzo\Spec\Workflow;
 /** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events. */
 final class WorkflowEngine
 {
-    public function __construct(private ExpressionResolverInterface $expressions, private int $maxRetryAttempts = 10)
-    {
+    public function __construct(
+        private ExpressionResolverInterface $expressions,
+        private int $maxRetryAttempts = 10,
+        private float $retryBackoffMultiplier = 1.0,
+    ) {
     }
 
     /**
@@ -56,23 +61,52 @@ final class WorkflowEngine
             }
             if ($action instanceof RetryAction) {
                 $limit = min($action->retryLimit ?? PHP_INT_MAX, $this->maxRetryAttempts);
-                if ($state->attemptFor($step->stepId) >= $limit) {
-                    continue;
+                $attemptsSoFar = $state->attemptFor($step->stepId);
+                if ($attemptsSoFar >= $limit) {
+                    // Observable exhaustion marker; adapters may surface it.
+                    $state = $state->withErrorEntry([
+                        'type' => 'retry_exhausted',
+                        'stepId' => $step->stepId,
+                        'attempts' => $attemptsSoFar,
+                    ]);
+
+                    continue; // exhausted - fall through to later actions
                 }
                 $targetWorkflowId = $action->workflowId ?? $workflow->workflowId;
                 $targetStepId = $action->stepId ?? $step->stepId;
                 $this->target($document, $targetWorkflowId, $targetStepId);
                 $next = $state->withStepAttempt($step->stepId)->withWorkflow($targetWorkflowId)->withCurrentStep($targetStepId);
 
-                return Transition::retry($next, $targetStepId, (int) ceil($action->retryAfter ?? 0), $targetWorkflowId);
+                return Transition::retry($next, $targetStepId, $this->retryDelaySeconds($action, $step, $this->context($state), $attemptsSoFar + 1), $targetWorkflowId);
             }
             if ($action instanceof SuccessGotoAction || $action instanceof FailureGotoAction) {
                 $targetWorkflowId = $action->workflowId ?? $workflow->workflowId;
+                if ($this->findWorkflow($document, $targetWorkflowId) === null) {
+                    throw new GotoTargetNotFoundException("Goto action '{$action->name}' references unknown workflowId '{$targetWorkflowId}'.");
+                }
                 if ($action->stepId !== null) {
                     $this->target($document, $targetWorkflowId, $action->stepId);
                 }
 
-                return Transition::goto($state->withWorkflow($targetWorkflowId)->withCurrentStep($action->stepId), $action->stepId, $targetWorkflowId);
+                $gotoState = $state->withWorkflow($targetWorkflowId)->withCurrentStep($action->stepId);
+
+                // 1.1: goto parameters bind values into the target workflow input scope.
+                foreach ($action->parameters as $parameter) {
+                    if ($parameter instanceof Reusable) {
+                        continue; // component defaults resolve inside the target scope
+                    }
+
+                    $value = $parameter->value instanceof Expression
+                        ? $this->expressions->evaluate($parameter->value, $this->context($gotoState), $step->stepId)
+                        : $parameter->value;
+
+                    $inputs = $gotoState->inputs;
+                    $inputs[$parameter->name] = $value;
+                    /** @var ExecutionState $gotoState */
+                    $gotoState = $gotoState->withInputs($inputs);
+                }
+
+                return Transition::goto($gotoState, $action->stepId, $targetWorkflowId);
             }
             if ($action instanceof SuccessEndAction || $action instanceof FailureEndAction) {
                 return Transition::end($state, $action instanceof SuccessEndAction ? 'succeeded' : 'failed');
@@ -82,7 +116,7 @@ final class WorkflowEngine
 
                 // Invocation is deliberately represented as a transition. An adapter can run
                 // the nested engine using the shared budget and stack before resuming here.
-                return Transition::goto($state->enterWorkflow($action->workflowId), null, $action->workflowId);
+                return Transition::invoke($state, $action->workflowId);
             }
         }
 
@@ -146,6 +180,66 @@ final class WorkflowEngine
         throw new GotoTargetNotFoundException("Action references unknown stepId '{$stepId}' in workflow '{$workflowId}'.");
     }
 
+    /**
+     * Resolves the retry delay in whole seconds. The HTTP Retry-After header
+     * overrules the declared retryAfter when parseable; otherwise the declared
+     * delay is scaled by the configured backoff multiplier per upcoming attempt.
+     */
+    private function retryDelaySeconds(RetryAction $action, Step $step, WorkflowContext $context, int $upcomingAttempt): int
+    {
+        $headerValue = self::lookupHeader($context, $step->stepId, 'Retry-After');
+
+        if ($headerValue !== null) {
+            if (preg_match('/^\d+$/', trim($headerValue)) === 1) {
+                return max(0, (int) trim($headerValue));
+            }
+
+            $date = \DateTimeImmutable::createFromFormat(DATE_RFC7231, trim($headerValue));
+            if ($date !== false) {
+                return max(0, $date->getTimestamp() - time());
+            }
+        }
+
+        $base = $action->retryAfter ?? 0;
+        $scaled = $base * ($this->retryBackoffMultiplier ** max(0, $upcomingAttempt - 1));
+
+        return max(0, (int) ceil($scaled));
+    }
+
+    private static function lookupHeader(WorkflowContext $context, string $stepId, string $name): ?string
+    {
+        $steps = $context->getSteps();
+        $stepData = $steps[$stepId] ?? null;
+        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+        if (!is_array($response)) {
+            return null;
+        }
+
+        $headers = $response['headers'] ?? [];
+        if (!is_array($headers)) {
+            return null;
+        }
+
+        foreach ($headers as $key => $value) {
+            if (is_string($key) && strcasecmp($key, $name) === 0 && is_scalar($value)) {
+                return (string) $value;
+            }
+        }
+
+        return null;
+    }
+
+    private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
+    {
+        foreach ($document->workflows as $workflow) {
+            if ($workflow->workflowId === $workflowId) {
+                return $workflow;
+            }
+        }
+
+        return null;
+    }
+
     private function assertCanEnter(ExecutionState $state, string $workflowId): void
     {
         if (in_array($workflowId, $state->workflowCallStack, true)) {
@@ -158,18 +252,20 @@ final class WorkflowEngine
 
     private function nextRunnable(Workflow $workflow, ExecutionState $state, string $completed): ?string
     {
-        foreach ($workflow->steps as $candidate) {
-            if ($candidate->stepId === $completed || isset($state->stepResults[$candidate->stepId])) {
+        $graph = new DependencyGraph($workflow->steps);
+
+        foreach ($graph->getTopologicalOrder() as $candidateId) {
+            if ($candidateId === $completed || isset($state->stepResults[$candidateId])) {
                 continue;
             }
-            $dependencies = $candidate->dependsOn;
-            foreach ($dependencies as $dependency) {
+
+            foreach ($graph->getEffectiveDependencies($candidateId) as $dependency) {
                 if (!isset($state->stepResults[$dependency])) {
                     continue 2;
                 }
             }
 
-            return $candidate->stepId;
+            return $candidateId;
         }
 
         return null;

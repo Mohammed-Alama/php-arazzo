@@ -96,7 +96,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $query = [];
         $headers = [];
-        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+        $parameters = new ReusableParameterResolver()->resolve($step->parameters, $document);
         foreach ($parameters as $parameter) {
             $value = $parameter->value instanceof Expression
                 ? $this->evaluator->evaluate($parameter->value, $evaluationContext)
@@ -155,7 +155,8 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
     private function buildPayload(Step $step, EvaluationContext $context): array
     {
         $requestBody = $step->requestBody;
-        $bodyData = $requestBody !== null && is_array($requestBody->payload)
+
+        return $requestBody !== null && is_array($requestBody->payload)
             ? PayloadReplacer::apply(
                 $step,
                 $requestBody->payload,
@@ -164,8 +165,6 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
                     : $replacement->value,
             )
             : [];
-
-        return $bodyData;
     }
 
     private static function stringify(mixed $value): string

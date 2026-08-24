@@ -9,7 +9,7 @@ use DateTimeImmutable;
 final readonly class StepExecuted
 {
     /**
-     * @param array<string, mixed> $outputs
+     * @param array<array-key, mixed> $outputs
      */
     public function __construct(
         public string $executionId,

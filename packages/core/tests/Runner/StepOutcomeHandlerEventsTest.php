@@ -14,11 +14,11 @@ use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\StepRetried;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
@@ -29,6 +29,7 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 class OutcomeEventsMockStateStore implements StateStoreInterface
 {
@@ -138,7 +139,7 @@ function createStepOutcomeEventsHarness(): array
 
     $queue = new SyncQueueDriver();
     $store = new OutcomeEventsMockStateStore();
-    $engine = new Engine($queue, $store, $dispatcher);
+    $engine = new WorkflowEngine(new TestExpressionResolver());
     $execRegistry = new OutcomeEventsMockExecutionRegistry();
     $ledger = new OutcomeEventsMockEventLedger();
     $correlations = new OutcomeEventsMockPendingCorrelationRegistry();
@@ -146,11 +147,10 @@ function createStepOutcomeEventsHarness(): array
 
     $handler = new StepOutcomeHandler(
         queueDriver: $queue,
-        engine: $engine,
+        workflowEngine: new WorkflowEngine($resolver),
         executionRegistry: $execRegistry,
         eventLedger: $ledger,
         pendingCorrelations: $correlations,
-        expressionResolver: $resolver,
         stateStore: $store,
         invoker: Mockery::mock(SubWorkflowInvoker::class),
         selectors: Mockery::mock(SelectorEvaluator::class),

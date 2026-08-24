@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Runner\Events\RunCompleted;
 use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\RunStarted;
@@ -14,6 +13,7 @@ use Alama\Arazzo\Runner\Events\StepExecuted as StepExecutedEvent;
 use Alama\Arazzo\Runner\Events\StepFailed as StepFailedEvent;
 use Alama\Arazzo\Runner\Events\StepStarted;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionLoggerInterface;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
@@ -30,9 +30,9 @@ class WorkflowExecutor
 
     public function __construct(
         private StepExecutor $stepExecutor,
+        private WorkflowEngine $workflowEngine,
         private ?ExecutionLoggerInterface $logger = null,
         ?EventDispatcherInterface $events = null,
-        private ?WorkflowEngine $workflowEngine = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -42,7 +42,7 @@ class WorkflowExecutor
      */
     public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult
     {
-        $executionId = $inputs['__executionId'] ?? bin2hex(random_bytes(8));
+        $executionId = is_string($inputs['__executionId'] ?? null) ? $inputs['__executionId'] : bin2hex(random_bytes(8));
         $context ??= new WorkflowContext($workflow->workflowId, $inputs);
         $context = $context->withWorkflowData($workflow->workflowId, ['inputs' => $inputs]);
 
@@ -54,85 +54,7 @@ class WorkflowExecutor
             new DateTimeImmutable(),
         ));
 
-        $stepResults = [];
-        if ($this->workflowEngine !== null) {
-            return $this->executeCanonically($workflow, $document, $inputs, $context, $executionId);
-        }
-        try {
-            $graph = new DependencyGraph($workflow->steps);
-            foreach ($graph->getTopologicalOrder() as $stepId) {
-                $step = $graph->getStepsById()[$stepId];
-
-                $this->logger?->logStepStarted($stepId);
-                $this->events->dispatch(new StepStarted(
-                    $executionId,
-                    $workflow->workflowId,
-                    $stepId,
-                    1,
-                    new DateTimeImmutable(),
-                ));
-
-                [$context, $success] = $this->stepExecutor->execute(StepParameterMerger::merge($step, $workflow), $context, $document);
-
-                $outputs = $context->getSteps()[$stepId]['outputs'] ?? [];
-                $result = new StepResult($stepId, $success, $outputs);
-
-                $stepResults[$stepId] = $result;
-
-                if (!$success) {
-                    $cause = new RuntimeException("Step '{$stepId}' failed");
-                    $this->logger?->logStepFailed($stepId, $cause);
-                    $this->events->dispatch(new StepFailedEvent(
-                        $executionId,
-                        $workflow->workflowId,
-                        $stepId,
-                        $cause,
-                        new DateTimeImmutable(),
-                    ));
-                    $this->events->dispatch(new RunFailed(
-                        $executionId,
-                        $workflow->workflowId,
-                        $cause,
-                        new DateTimeImmutable(),
-                    ));
-
-                    return new ExecutionResult($workflow->workflowId, 'failed', [], $stepResults);
-                }
-
-                $this->events->dispatch(new StepExecutedEvent(
-                    $executionId,
-                    $workflow->workflowId,
-                    $stepId,
-                    (int) ($context->getSteps()[$stepId]['statusCode'] ?? 0),
-                    $outputs,
-                    true,
-                    new DateTimeImmutable(),
-                ));
-                $this->logger?->logStepCompleted($workflow->workflowId, $stepId, $result->outputs);
-            }
-        } catch (Throwable $t) {
-            $this->events->dispatch(new RunFailed(
-                $executionId,
-                $workflow->workflowId,
-                $t,
-                new DateTimeImmutable(),
-            ));
-
-            throw $t;
-        }
-
-        $aggregatedOutputs = [];
-        foreach ($stepResults as $sid => $r) {
-            $aggregatedOutputs[$sid] = $r->outputs;
-        }
-        $this->events->dispatch(new RunCompleted(
-            $executionId,
-            $workflow->workflowId,
-            $aggregatedOutputs,
-            new DateTimeImmutable(),
-        ));
-
-        return new ExecutionResult($workflow->workflowId, 'completed', [], $stepResults);
+        return $this->executeCanonically($workflow, $document, $inputs, $context, $executionId);
     }
 
     /** @param array<string, mixed> $inputs */
@@ -153,12 +75,36 @@ class WorkflowExecutor
                 $this->events->dispatch(new StepStarted($executionId, $currentWorkflow->workflowId, $stepId, $attempt, new DateTimeImmutable()));
                 [$stepContext, $success] = $this->stepExecutor->execute(StepParameterMerger::merge($step, $currentWorkflow), new WorkflowContext($state->definitionId, $state->inputs, $state->stepResults, $state->components, $state->workflowId, $state->executionId), $document);
                 $raw = $stepContext->getSteps()[$stepId] ?? [];
+                /** @var array<string, mixed> $raw */
                 $state = $state->withStepResult($stepId, $raw);
-                $result = new StepResult($stepId, $success, $raw['outputs'] ?? []);
+                $result = new StepResult($stepId, $success, is_array($raw['outputs'] ?? null) ? $raw['outputs'] : []);
                 $results[$stepId] = $result;
                 $transition = $this->workflowEngine->transition($document, $currentWorkflow, $step, $state, $success);
                 $state = $transition->state;
-                $this->events->dispatch(new StepExecutedEvent($executionId, $currentWorkflow->workflowId, $stepId, (int) ($raw['statusCode'] ?? 0), $result->outputs, $success, new DateTimeImmutable()));
+                if ($transition->type === TransitionType::Goto && $transition->workflowId !== $currentWorkflow->workflowId) {
+                    $targetWf = null;
+                    foreach ($document->workflows as $w) {
+                        if ($w->workflowId === $transition->workflowId) {
+                            $targetWf = $w;
+                            break;
+                        }
+                    }
+                    $currentWorkflow = $targetWf ?? $currentWorkflow;
+                }
+                $results[$stepId] = $result;
+                $transition = $this->workflowEngine->transition($document, $currentWorkflow, $step, $state, $success);
+                $state = $transition->state;
+                if (!$success) {
+                    $this->events->dispatch(new StepFailedEvent(
+                        $executionId,
+                        $currentWorkflow->workflowId,
+                        $stepId,
+                        new RuntimeException("Step '{$stepId}' failed"),
+                        new DateTimeImmutable(),
+                    ));
+                } else {
+                    $this->events->dispatch(new StepExecutedEvent($executionId, $currentWorkflow->workflowId, $stepId, (int) (is_scalar($raw['statusCode'] ?? null) ? $raw['statusCode'] : 0), $result->outputs, $success, new DateTimeImmutable()));
+                }
                 if ($transition->isTerminal()) {
                     if ($transition->status === 'failed') {
                         $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable()));

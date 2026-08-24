@@ -11,9 +11,9 @@ use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
@@ -26,8 +26,7 @@ it('resolves a Selector output through SelectorEvaluator', function () {
     $selectors = Mockery::mock(SelectorEvaluator::class);
     $selectors->shouldReceive('evaluate')->once()->andReturn('bar');
 
-    $engine = Mockery::mock(Engine::class);
-    $engine->shouldReceive('evaluate')->once();
+    $engine = new WorkflowEngine(Mockery::mock(ExpressionResolverInterface::class));
 
     $store = Mockery::mock(StateStoreInterface::class);
     $store->shouldReceive('save');
@@ -43,12 +42,11 @@ it('resolves a Selector output through SelectorEvaluator', function () {
 
     $handler = new StepOutcomeHandler(
         Mockery::mock(QueueDriverInterface::class),
-        $engine,
+        new WorkflowEngine(Mockery::mock(ExpressionResolverInterface::class)),
 
         $exec,
         $ledger,
         $pending,
-        Mockery::mock(ExpressionResolverInterface::class),
         $store,
         Mockery::mock(SubWorkflowInvoker::class),
         $selectors,

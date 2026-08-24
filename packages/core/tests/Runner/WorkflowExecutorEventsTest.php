@@ -10,6 +10,7 @@ use Alama\Arazzo\Runner\Events\StepExecuted as EventStepExecuted;
 use Alama\Arazzo\Runner\Events\StepFailed;
 use Alama\Arazzo\Runner\Events\StepStarted;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
@@ -17,6 +18,7 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null): StepExecutor
 {
@@ -65,7 +67,7 @@ it('dispatches happy-path sequence RunStarted -> StepStarted -> StepExecuted -> 
     $log = [];
     captureEvents($d, $log);
 
-    (new WorkflowExecutor(createRecordingStepExec(), null, $d))->execute($wf, docWithWorkflow($wf), []);
+    (new WorkflowExecutor(createRecordingStepExec(), new WorkflowEngine(new TestExpressionResolver()), null, $d))->execute($wf, docWithWorkflow($wf), []);
 
     expect($log)->toBe(['RunStarted', 'StepStarted', 'StepExecuted', 'RunCompleted']);
 });
@@ -78,7 +80,7 @@ it('dispatches StepFailed + RunFailed on step failure', function () {
     $log = [];
     captureEvents($d, $log);
 
-    (new WorkflowExecutor(createRecordingStepExec(succeed: false), null, $d))->execute($wf, docWithWorkflow($wf), []);
+    (new WorkflowExecutor(createRecordingStepExec(succeed: false), new WorkflowEngine(new TestExpressionResolver()), null, $d))->execute($wf, docWithWorkflow($wf), []);
 
     expect($log)->toBe(['RunStarted', 'StepStarted', 'StepFailed', 'RunFailed']);
 });
@@ -91,7 +93,7 @@ it('dispatches RunFailed and rethrows on caught exception', function () {
     $log = [];
     captureEvents($d, $log);
 
-    $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), null, $d);
+    $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), new WorkflowEngine(new TestExpressionResolver()), null, $d);
 
     expect(fn () => $executor->execute($wf, docWithWorkflow($wf), []))
         ->toThrow(RuntimeException::class, 'crash');

@@ -11,11 +11,11 @@ use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Execution\Engine;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SubWorkflowResult;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
@@ -27,9 +27,6 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
     $invoker = Mockery::mock(SubWorkflowInvoker::class);
     $action = new SubWorkflowSuccessAction('sub1', 'workflow_2', [], []);
     $invoker->shouldReceive('invoke')->with($action, Mockery::type(WorkflowContext::class))->once()->andReturn(new SubWorkflowResult(['subOut' => 'abc'], ExecutionStatus::Succeeded->value, 'child_1'));
-
-    $engine = Mockery::mock(Engine::class);
-    $engine->shouldReceive('evaluate')->once();
 
     $store = Mockery::mock(StateStoreInterface::class);
     $store->shouldReceive('save');
@@ -48,12 +45,11 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
 
     $handler = new StepOutcomeHandler(
         Mockery::mock(QueueDriverInterface::class),
-        $engine,
+        new WorkflowEngine($resolver),
 
         $exec,
         $ledger,
         $pending,
-        $resolver,
         $store,
         $invoker,
         Mockery::mock(SelectorEvaluator::class),
