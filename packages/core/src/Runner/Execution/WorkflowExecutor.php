@@ -20,6 +20,8 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Validator\PreflightFailureException;
+use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -35,6 +37,7 @@ class WorkflowExecutor
         private WorkflowEngine $workflowEngine,
         private ?ExecutionLoggerInterface $logger = null,
         ?EventDispatcherInterface $events = null,
+        private ?PreflightValidator $preflight = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -44,6 +47,17 @@ class WorkflowExecutor
      */
     public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult
     {
+        // Preflight runs before the first side effect (no events, no state).
+        if ($this->preflight !== null) {
+            $result = $this->preflight->validate($document);
+            if (!$result->isValid()) {
+                throw new PreflightFailureException(
+                    'Preflight validation failed with ' . count($result->errors) . ' error(s).',
+                    $result,
+                );
+            }
+        }
+
         $executionId = is_string($inputs['__executionId'] ?? null) ? $inputs['__executionId'] : bin2hex(random_bytes(8));
         $context ??= new WorkflowContext($workflow->workflowId, $inputs);
         $context = $context->withWorkflowData($workflow->workflowId, ['inputs' => $inputs]);
@@ -130,7 +144,11 @@ class WorkflowExecutor
                 $stepId = $transition->stepId ?? $this->firstStep($currentWorkflow);
             }
         } catch (Throwable $t) {
-            $category = $t instanceof SchemaValidationException ? 'schema' : 'execution';
+            $category = match (true) {
+                $t instanceof PreflightFailureException => 'authoring',
+                $t instanceof SchemaValidationException => 'schema',
+                default => 'execution',
+            };
             $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, $t, new DateTimeImmutable(), $category));
             throw $t;
         }

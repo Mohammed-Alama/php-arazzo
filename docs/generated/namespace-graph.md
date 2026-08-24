@@ -31,13 +31,15 @@ flowchart LR
     Runner --> Spec
     Runner --> Support
     Runner --> Resolver
+    Runner --> Validator
     Runner --> Expression
     Spec --> Expression
     Support --> Runner
     Validator --> Expression
     Validator --> Spec
-    Validator --> Support
+    Validator --> Resolver
     Validator --> Runner
+    Validator --> Support
     Laravel_Http --> Runner
     Laravel_Http --> Generator
     Laravel_Http --> Resolver

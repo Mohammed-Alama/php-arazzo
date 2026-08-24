@@ -27,6 +27,8 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Validator\PreflightFailureException;
+use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -55,6 +57,7 @@ class StepExecutionWorker
         private ?LoggerInterface $logger = null,
         private int $stateTtlSeconds = 86400,
         ?EventDispatcherInterface $events = null,
+        private ?PreflightValidator $preflight = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -76,6 +79,20 @@ class StepExecutionWorker
             $context = $this->reconcileWithPersistedState($job->context, $executionId);
 
             try {
+                // Preflight only guards a FRESH run; resumed jobs already passed it.
+                if ($this->preflight !== null && $context->getSteps() === []) {
+                    $documentForPreflight = $this->definitionRegistry->get($context->getDefinitionId());
+                    if ($documentForPreflight !== null) {
+                        $preflightResult = $this->preflight->validate($documentForPreflight);
+                        if (!$preflightResult->isValid()) {
+                            throw new PreflightFailureException(
+                                'Preflight validation failed with ' . count($preflightResult->errors) . ' error(s).',
+                                $preflightResult,
+                            );
+                        }
+                    }
+                }
+
                 if ($context->getStepStatus($step->stepId) === StepStatus::Succeeded) {
                     return;
                 }
@@ -236,6 +253,7 @@ class StepExecutionWorker
                 ));
             } catch (Throwable $t) {
                 $category = match (true) {
+                    $t instanceof PreflightFailureException => 'authoring',
                     $t instanceof SchemaValidationException => 'schema',
                     default => 'execution',
                 };

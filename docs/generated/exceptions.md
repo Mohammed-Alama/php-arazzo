@@ -21,6 +21,7 @@ classDiagram
     class E_LoaderException["LoaderException<br/><small>Parser</small>"]:::domain
     class E_NotImplementedException["NotImplementedException<br/><small>Support</small>"]:::domain
     class E_ParserException["ParserException<br/><small>Parser</small>"]:::domain
+    class E_PreflightFailureException["PreflightFailureException<br/><small>Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>Runner</small>"]:::domain
     class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>Runner</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>Resolver</small>"]:::domain
@@ -45,6 +46,7 @@ classDiagram
     E_ArazzoException <|-- E_LoaderException
     E_ArazzoException <|-- E_NotImplementedException
     E_ArazzoException <|-- E_ParserException
+    E_ArazzoException <|-- E_PreflightFailureException
     E_RuntimeException <|-- E_SchemaValidationException
     E_ArazzoException <|-- E_SelectorEvaluationException
     E_SourceResolutionException <|-- E_SourceFetchException
@@ -75,6 +77,7 @@ classDiagram
 | `LoaderException` | `ArazzoException` | Parser |
 | `NotImplementedException` | `ArazzoException` | Support |
 | `ParserException` | `ArazzoException` | Parser |
+| `PreflightFailureException` | `ArazzoException` | Validator |
 | `SchemaValidationException` | `RuntimeException` | Runner |
 | `SelectorEvaluationException` | `ArazzoException` | Runner |
 | `SourceFetchException` | `SourceResolutionException` | Resolver |

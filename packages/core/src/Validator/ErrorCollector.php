@@ -22,6 +22,17 @@ final class ErrorCollector
         $this->warnings[] = new Warning($code, $message, $path, $line);
     }
 
+    public function add(Error|Warning $diagnostic): void
+    {
+        if ($diagnostic instanceof Error) {
+            $this->errors[] = $diagnostic;
+
+            return;
+        }
+
+        $this->warnings[] = $diagnostic;
+    }
+
     /** @return list<Error> */
     public function errors(): array
     {
