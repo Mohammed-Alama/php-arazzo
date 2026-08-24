@@ -1,5 +1,7 @@
 # OpenAPI Executor Implementation Plan
 
+> **Status (2026-08-24):** SUPERSEDED/ABSORBED - this work landed via `2026-08-21-php-arazzo-02-source-resolution-openapi-plan.md`. All steps are implemented (with evolved signatures: DTOs live under `Runner/Execution`, the executor consumes `ResolvedOperation`+`OpenApiPayload`, and transport failures deliberately become retryable synthetic-500 outcomes). Boxes checked for reference.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Decouple HTTP dispatching from `StepExecutor` by introducing a dedicated `OpenApiExecutor` that builds and sends PSR-7 requests independently of Arazzo models.
@@ -16,7 +18,7 @@
 - Create: `packages/core/src/Runner/Dto/OpenApiPayload.php`
 - Create: `packages/core/src/Runner/Contracts/OpenApiExecutorInterface.php`
 
-- [ ] **Step 1: Create `OpenApiPayload` DTO**
+- [x] **Step 1: Create `OpenApiPayload` DTO**
 
 ```php
 <?php
@@ -44,7 +46,7 @@ class OpenApiPayload
 }
 ```
 
-- [ ] **Step 2: Create `OpenApiExecutorInterface`**
+- [x] **Step 2: Create `OpenApiExecutorInterface`**
 
 ```php
 <?php
@@ -74,7 +76,7 @@ interface OpenApiExecutorInterface
 **Files:**
 - Create: `packages/core/src/Runner/DefaultOpenApiExecutor.php`
 
-- [ ] **Step 1: Scaffold `DefaultOpenApiExecutor`**
+- [x] **Step 1: Scaffold `DefaultOpenApiExecutor`**
 
 ```php
 <?php
@@ -118,13 +120,13 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 ```
 *(Note: A `createResponse` method doesn't exist on `RequestFactoryInterface`, you'll need `ResponseFactoryInterface` or just use Guzzle's `Response` class for the stub, but we will fully implement it in the next step).*
 
-- [ ] **Step 2: Port OpenAPI parsing and request building logic from `ArazzoRequestCompiler`**
+- [x] **Step 2: Port OpenAPI parsing and request building logic from `ArazzoRequestCompiler`**
 
 Move the logic that finds the OpenAPI document, locates the operation, and resolves parameters. Update it to use `$payload->auto` to determine the parameter location using the OpenAPI schema, and merge them into `$payload->path`, `$payload->query`, and `$payload->header`. Cast values based on schema. Finally, build the PSR-7 request and use `$this->httpClient->sendRequest($request)`.
 
 *(The implementer will need to adapt the extensive OpenAPI parsing code previously in `ArazzoRequestCompiler` to read from the new `OpenApiPayload`).*
 
-- [ ] **Step 3: Test `DefaultOpenApiExecutor`**
+- [x] **Step 3: Test `DefaultOpenApiExecutor`**
 Write a Pest test in `packages/core/tests/Runner/DefaultOpenApiExecutorTest.php` that verifies parameter routing and HTTP dispatching works.
 
 ---
@@ -134,7 +136,7 @@ Write a Pest test in `packages/core/tests/Runner/DefaultOpenApiExecutorTest.php`
 **Files:**
 - Modify: `packages/core/src/Runner/StepExecutor.php`
 
-- [ ] **Step 1: Replace Dependencies**
+- [x] **Step 1: Replace Dependencies**
 
 Replace `ClientInterface` and `ExpressionResolverInterface::compileRequest` usage with `OpenApiExecutorInterface`.
 
@@ -146,7 +148,7 @@ Replace `ClientInterface` and `ExpressionResolverInterface::compileRequest` usag
     ) {
 ```
 
-- [ ] **Step 2: Update `execute` method to build `OpenApiPayload`**
+- [x] **Step 2: Update `execute` method to build `OpenApiPayload`**
 
 ```php
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
@@ -195,7 +197,7 @@ Replace `ClientInterface` and `ExpressionResolverInterface::compileRequest` usag
             // ... (keep existing schema validation and context updating logic)
 ```
 
-- [ ] **Step 3: Fix tests for `StepExecutor`**
+- [x] **Step 3: Fix tests for `StepExecutor`**
 Update `packages/core/tests/Runner/StepExecutorTest.php` to mock `OpenApiExecutorInterface` instead of `ClientInterface`.
 
 ---
@@ -207,11 +209,11 @@ Update `packages/core/tests/Runner/StepExecutorTest.php` to mock `OpenApiExecuto
 - Delete: `packages/core/src/Runner/Contracts/RequestCompilerInterface.php`
 - Modify: `packages/core/src/Runner/ArazzoExpressionResolver.php`
 
-- [ ] **Step 1: Remove RequestCompiler**
+- [x] **Step 1: Remove RequestCompiler**
 Delete the deprecated RequestCompiler interface and its implementation, as this logic now lives in `DefaultOpenApiExecutor`.
 
-- [ ] **Step 2: Remove from ArazzoExpressionResolver**
+- [x] **Step 2: Remove from ArazzoExpressionResolver**
 Remove `RequestCompilerInterface` from `ArazzoExpressionResolver` constructor and throw an exception if `compileRequest` is called, or remove the method entirely if no longer required by the interface.
 
-- [ ] **Step 3: Run all tests**
+- [x] **Step 3: Run all tests**
 Run `composer test` to ensure everything is green.

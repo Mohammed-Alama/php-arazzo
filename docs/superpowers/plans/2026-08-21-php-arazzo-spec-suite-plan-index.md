@@ -32,6 +32,19 @@ Plan 1 may begin from existing seams, but its final behavior depends on the cont
 5. `2026-08-21-php-arazzo-05-testing-adapter-parity-plan.md`
 6. `2026-08-21-php-arazzo-06-release-readiness-plan.md`
 
+## Status (2026-08-24)
+
+Verified against the working tree; each plan file carries per-checkbox notes.
+
+| Plan | State |
+| --- | --- |
+| 1 Canonical execution core | Done. WorkflowEngine is the single decision path (603806a); gaps: budget/call-stack not persisted in queue payload, inline sub-workflow resets shared budget, no clock/sleep abstraction, cycle/depth exceptions lack dedicated tests. |
+| 2 Source resolution / OpenAPI | Done except removing cebe/php-openapi (still used by OpenApiDocumentLoader) and circular-source detection in SourceRegistry. Swagger 2.0 + 3.0 + 3.1 normalizers all implemented. |
+| 3 Runtime semantics | Mostly done. Gaps: exception-context fields, failure taxonomy classes, raw body/content-type retention, error category field, selector parameter-value evaluation at runtime. Transport failures intentionally become retryable synthetic-500 outcomes. |
+| 4 Parser / validator | Tasks 1-2 done (49 rules incl. OfficialSchemaRule). Task 3 preflight stage NOT started. Task 4 fixture set exists; side-effect-count assertions missing. Severity field absent on Error/Warning. |
+| 5 Testing / adapter parity | Done. 9 golden fixtures run through sync + queued adapters with normalized parity; deterministic fakes, property tests, mutation-target docs. Infection not installed yet. |
+| 6 Release readiness | Not started except metadata verification and full local gate runs. README still shows stale one-arg WorkflowExecutor example. |
+
 ## Superseded overlap
 
 The new plans absorb the existing `unify-control-flow`, `circuit-breaker`, and `openapi-executor` plans. Specifically:
