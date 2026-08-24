@@ -6,16 +6,15 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Runner\Evaluation\StringInterpolator;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\RequestInterface as Psr7Request;
 use Throwable;
 
 class StepExecutor
@@ -43,33 +42,8 @@ class StepExecutor
      */
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
     {
-        $payload = new OpenApiPayload();
-
-        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
-        foreach ($parameters as $param) {
-            $val = $this->resolveValue($param->value, $context, $step->stepId);
-
-            $in = $param->in?->value ?? 'auto';
-            if ($in === 'query') {
-                $payload->query[$param->name] = $val;
-            } elseif ($in === 'header') {
-                $payload->header[$param->name] = $val;
-            } elseif ($in === 'path') {
-                $payload->path[$param->name] = $val;
-            } else {
-                $payload->auto[$param->name] = $val;
-            }
-        }
-
-        $bodyData = [];
-        if ($step->requestBody && $step->requestBody->payload !== null) {
-            $bodyData = PayloadReplacer::apply(
-                $step,
-                is_array($step->requestBody->payload) ? $step->requestBody->payload : [],
-                fn (PayloadReplacement $replacement) => $this->resolveValue($replacement->value, $context, $step->stepId),
-            );
-        }
-        $payload->body = empty($bodyData) ? null : $bodyData;
+        ['payload' => $payload] =
+            (new RequestCompiler(new ExpressionValueResolver($this->expressionResolver)))->compile($step, $document, $context);
 
         $resolved = $this->operationResolver->resolve($step, $document);
 
@@ -77,7 +51,7 @@ class StepExecutor
             $response = $this->openApiExecutor->execute(
                 $resolved,
                 $payload,
-                function ($request) use (&$context, $step) {
+                function ($request) use (&$context, $step, $payload) {
                     if ($this->injector !== null) {
                         $request = $this->injector->inject($request, $step, $context)->request;
                     }
@@ -95,26 +69,19 @@ class StepExecutor
                         $headers[$name] = implode(', ', $values);
                     }
 
-                    $context = $context->withStepRequest($step->stepId, [
-                        'method' => $request->getMethod(),
-                        'url' => (string) $request->getUri(),
-                        'query' => $queryParams,
-                        'headers' => $headers,
-                        'body' => $bodyData,
-                    ]);
+                    $captured = $request instanceof Psr7Request ? $request : null;
+                    $context = $context->withStepRequest($step->stepId, RequestCompiler::requestRecord($captured, $payload));
 
                     return $request;
                 },
+                $step->timeout !== null ? $step->timeout / 1000 : null,
             );
 
-            $statusCode = $response->getStatusCode();
-            $respHeaders = [];
-            foreach ($response->getHeaders() as $name => $values) {
-                $respHeaders[$name] = implode(', ', $values);
-            }
-
-            $respBodyString = (string) $response->getBody();
-            $respBody = json_decode($respBodyString, true) ?? [];
+            $decoded = RequestCompiler::decodeResponse($response);
+            $statusCode = $decoded['statusCode'];
+            $respHeaders = $decoded['headers'];
+            $respBody = $decoded['body'];
+            $respBodyString = $decoded['rawBody'];
 
             if ($this->shouldValidateSchema($step)) {
                 $this->expressionResolver->validateResponseSchema(
@@ -157,10 +124,5 @@ class StepExecutor
     private function shouldValidateSchema(Step $step): bool
     {
         return $step->strictValidation ?? $this->strictValidationDefault;
-    }
-
-    private function resolveValue(mixed $value, WorkflowContext $context, string $stepId): mixed
-    {
-        return (new ExpressionValueResolver($this->expressionResolver))->resolve($value, $context, $stepId);
     }
 }

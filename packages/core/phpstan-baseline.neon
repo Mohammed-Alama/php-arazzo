@@ -493,18 +493,6 @@ parameters:
 			path: src/Runner/Execution/DefaultOpenApiExecutor.php
 
 		-
-			message: '#^Parameter \#3 \$responseBody of static method Alama\\Arazzo\\Runner\\Execution\\StepExecutionOutcome\:\:resolved\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Execution/HttpStepExecutor.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/Runner/Execution/HttpStepExecutor.php
-
-		-
 			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
@@ -602,11 +590,6 @@ parameters:
 			count: 1
 			path: src/Runner/Execution/StepExecutor.php
 
-		-
-			message: '#^Cannot call method getMethod\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Runner/Execution/StepExecutor.php
 
 		-
 			message: '#^Cannot call method getQuery\(\) on mixed\.$#'
@@ -617,7 +600,7 @@ parameters:
 		-
 			message: '#^Cannot call method getUri\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 2
+			count: 1
 			path: src/Runner/Execution/StepExecutor.php
 
 		-
@@ -626,11 +609,6 @@ parameters:
 			count: 2
 			path: src/Runner/Execution/StepExecutor.php
 
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Runner/Execution/StepExecutor.php
 
 		-
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
@@ -659,12 +637,6 @@ parameters:
 		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: src/Runner/Execution/StepExecutor.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
 			count: 1
 			path: src/Runner/Execution/StepExecutor.php
 
