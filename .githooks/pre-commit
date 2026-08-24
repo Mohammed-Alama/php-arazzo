@@ -9,6 +9,22 @@ echo "========================================"
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 cd "$PROJECT_ROOT"
 
+echo "0. Regenerating architecture docs (mermaid)..."
+if ! php scripts/generate-docs.php; then
+    echo "========================================"
+    echo "❌ Doc generation failed!"
+    echo "💡 Fix the error from scripts/generate-docs.php shown above."
+    echo "   (skip with: git commit --no-verify)"
+    echo "========================================"
+    exit 1
+fi
+if [ -n "$(git status --porcelain -- docs/generated)" ]; then
+    git add docs/generated
+    echo "   📚 docs/generated changed — staged automatically."
+fi
+echo "✅ Docs up to date."
+echo ""
+
 echo "1. Checking Code Style (Pint)..."
 if ! vendor/bin/pint --test -v; then
     echo "========================================"

@@ -1,4 +1,7 @@
-.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify
+.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify docs
+
+docs: ## Regenerate architecture diagrams into docs/generated/
+	php scripts/generate-docs.php
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)

@@ -15,6 +15,23 @@ Both are merged into a single **effective dependency list** before any ordering 
 
 ## Building the graph: `DependencyGraph`
 
+```mermaid
+flowchart LR
+    subgraph INPUTS["Dependency sources"]
+        EXPL["Step::dependsOn<br/><small>explicit edges</small>"]
+        IMPL["ImplicitDependencies::fromStep()<br/><small>scanned from \$steps.X.outputs refs in<br/>parameters · payload · replacements ·<br/>criteria · correlationId · outputs</small>"]
+    end
+    EXPL --> MERGE["effective dependency list<br/><small>deduplicated, self-refs removed</small>"]
+    IMPL --> MERGE
+    MERGE --> DFS["three-color DFS<br/><small>white → grey → black</small>"]
+    DFS -->|"grey edge hit"| CYCLE["cycle captured<br/>getCycle()"]
+    DFS -->|"edge to unknown step"| UNRES["unresolved reference recorded<br/>getUnresolvedReferences()"]
+    DFS --> ORDER["topologicalOrder: string[]"]
+
+    style CYCLE fill:#fce8e6,stroke:#ea4335;
+    style UNRES fill:#fef7e0,stroke:#f9ab00;
+```
+
 Constructed with a workflow's full `Step[]` list:
 
 ```php
@@ -53,6 +70,35 @@ When a dependency edge points to a **grey** node, that's a cycle: the path from 
 The result, `getTopologicalOrder(): string[]`, is a valid execution order for the DAG (assuming no cycle) — but note this is a *static* order computed once from the full step list; it's a convenience for the synchronous execution path (doc 02, Stage 3A), not the ordering mechanism used by production runs.
 
 ## Determining runnability at any point in time: `DependencyAnalyzer`
+
+Example DAG and how it fans out — independent branches dispatch concurrently; there is no separate "parallel executor":
+
+```mermaid
+flowchart TD
+    A["step: createCustomer"] --> C["step: createOrder"]
+    B["step: lookupAddress"] --> D["step: estimateShipping"]
+    C --> E["step: placeOrder"]
+    D --> E
+    A -.->|"no data dependency,<br/>explicit dependsOn only"| B
+
+    style A fill:#e8f0fe,stroke:#4285f4;
+    style B fill:#fef7e0,stroke:#f9ab00;
+    style E fill:#e6f4ea,stroke:#34a853;
+```
+
+After the first tick, `A` and `B` are runnable simultaneously → two `ExecuteStepJob`s dispatched at once. `E` stays unrunnable until *both* `C` *and* `D` report `Succeeded`:
+
+```mermaid
+flowchart TD
+    START["for each step in topological order"] --> STATUS{"status is null<br/>or Pending?"}
+    STATUS -->|no| SKIP["skip"]
+    STATUS -->|yes| DEPS{"every effective<br/>dependency Succeeded?"}
+    DEPS -->|no| BLOCKED["not runnable<br/><small>failed deps never unblock</small>"]
+    DEPS -->|yes| RUN["runnable → dispatch ExecuteStepJob"]
+
+    style RUN fill:#e6f4ea,stroke:#34a853;
+    style BLOCKED fill:#fce8e6,stroke:#ea4335;
+```
 
 The topological order tells you *a* valid sequence, but production execution is driven by runnability, not by walking a fixed list — steps can be dispatched to a queue, retried, or reached via `goto`, so "what can run right now" has to be recomputed against live state. `DependencyAnalyzer::getRunnableSteps(WorkflowContext $context)` does exactly this:
 

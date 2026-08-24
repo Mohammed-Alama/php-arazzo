@@ -20,6 +20,24 @@ One method, one job: given a `SourceDescription` and a base path/URL to resolve 
 
 ## `DefaultSourceResolver`: scheme dispatch + decode
 
+```mermaid
+flowchart TD
+    SD["SourceDescription<br/><small>name · url · type</small>"] --> SCHEME{"parse_url scheme<br/><small>default: file</small>"}
+    SCHEME -->|"http / https"| HTTP["HttpFetcher"]
+    SCHEME -->|file| LOCAL["LocalFetcher"]
+    HTTP -.->|"decorated with"| CACHE["CachedFetcher<br/><small>PSR-16, TTL 3600s</small>"]
+    CACHE --> RAW["raw document text"]
+    LOCAL --> RAW
+    RAW --> SNIFF{"starts with '{'?"}
+    SNIFF -->|yes| JSON["NativeJsonDecoder"]
+    SNIFF -->|no| YAML["SymfonyYamlDecoder"]
+    JSON --> URI["canonicalUri computed<br/><small>relative → file:/// normalization</small>"]
+    YAML --> URI
+    URI --> OUT["SourceDocument"]
+
+    style OUT fill:#e8f0fe,stroke:#4285f4;
+```
+
 `DefaultSourceResolver` (the only concrete `SourceResolver` implementation in `core`) is constructed with a `array<string, SourceFetcher>` map keyed by URL scheme (`'http'`, `'https'`, `'file'`). Its `resolve()`:
 
 1. Parses the scheme out of `$source->url` via `parse_url(..., PHP_URL_SCHEME)`, defaulting to `'file'` when the URL has no scheme (a bare relative/absolute path).
@@ -41,6 +59,26 @@ Each implements the one-method `SourceFetcher` interface (`fetch(string $urlOrPa
 Fetchers are pure I/O — they know nothing about YAML/JSON decoding or the Arazzo document model; that's `DefaultSourceResolver`'s job, one layer up.
 
 ## Avoiding duplicate work and cycles: `SourceRegistry`
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Consumer (StepExecutor / SubWorkflowInvoker)
+    participant SR as SourceRegistry
+    participant DSR as DefaultSourceResolver
+
+    C->>SR: resolve(sourceDescription, basePath)
+    alt already resolved
+        SR-->>C: memoized SourceDocument
+    else currently resolving (cycle)
+        SR-->>C: UnresolvableReferenceException
+    else first request
+        SR->>DSR: resolve(sourceDescription, basePath)
+        DSR-->>SR: SourceDocument
+        SR->>SR: register(document)
+        SR-->>C: SourceDocument
+    end
+```
 
 `SourceRegistry` wraps an inner `SourceResolver` and adds memoization plus circular-reference protection, while itself implementing `SourceResolver` (decorator pattern):
 
@@ -70,6 +108,23 @@ In the Laravel service provider (doc 06), the bound `SourceResolver::class` sing
 
 ## From `SourceDocument` to an executable operation: the OpenAPI path
 
+```mermaid
+flowchart TD
+    REF["Step.operationId / operationPath<br/><small>'{$sourceDescriptions.NAME.url}#...'</small>"] --> P["parse reference<br/><small>~1/~0 unescape, source-qualified vs bare ID</small>"]
+    P --> LOAD["OpenApiDocumentLoader<br/><small>via SourceRegistry chain → cebe/php-openapi</small>"]
+    LOAD --> RT["round-trip to plain array<br/><small>getSerializableData()</small>"]
+    RT --> VER{"OpenApiVersionDetector"}
+    VER -->|"3.0"| N30["OpenApi30Normalizer"]
+    VER -->|"3.1"| N31["OpenApi31Normalizer"]
+    VER -->|"2.0 / other"| REJ["UnsupportedSourceVersionException"]
+    N30 --> LOCATE["locate Operation<br/><small>/paths/{path}/{method} or operationId scan</small>"]
+    N31 --> LOCATE
+    LOCATE --> RO["ResolvedOperation<br/><small>NormalizedOpenApiOperation + cebe Operation + raw array</small>"]
+
+    style REJ fill:#fce8e6,stroke:#ea4335;
+    style RO fill:#e6f4ea,stroke:#34a853;
+```
+
 Resolving a *source* only gets you the raw decoded document. Turning a step's `operationId`/`operationPath` into something `StepExecutor` can call against is a separate, more involved step, handled by `Runner\Resolver\OpenApiOperationResolver` in coordination with `Runner\Execution\OpenApiDocumentLoader` and `Runner\Normalizer\*`:
 
 1. **Parse the operation reference.** A step identifies its target operation one of two ways:
@@ -85,21 +140,18 @@ The result, `Runner\Resolver\ResolvedOperation`, bundles the target `SourceDescr
 
 ## Summary
 
-```
- Step.operationId / operationPath
-        │  parse "{$sourceDescriptions.NAME.url}#..."
-        ▼
- SourceDescription (by name, from ArazzoDocument)
-        │  SourceRegistry::resolve()  ── memoized, cycle-guarded
-        ▼
- DefaultSourceResolver::resolve()
-        │  scheme dispatch → SourceFetcher (Http | Local, optionally Cached)
-        ▼
- SourceDocument (raw decoded array)
-        │  OpenApiDocumentLoader → cebe\openapi\spec\OpenApi
-        ▼
- OpenApiVersionDetector → OpenApi30Normalizer | OpenApi31Normalizer
-        ▼
- ResolvedOperation (NormalizedOpenApiOperation + cebe Operation)
-        │  consumed by StepExecutor / ArazzoOutputExtractor / ArazzoSchemaValidator
+The end-to-end path from a step reference to a consumable operation (see also the diagrams above):
+
+```mermaid
+flowchart LR
+    A["Step.operationId<br/>operationPath"] --> B["SourceDescription"]
+    B --> C["SourceRegistry<br/><small>memoized, cycle-guarded</small>"]
+    C --> D["DefaultSourceResolver"]
+    D --> E["SourceDocument"]
+    E --> F["OpenApiDocumentLoader<br/><small>cebe OpenApi</small>"]
+    F --> G["Version detect +<br/>Normalizer 3.0 / 3.1"]
+    G --> H["ResolvedOperation"]
+    H --> I["StepExecutor ·<br/>ArazzoOutputExtractor ·<br/>ArazzoSchemaValidator"]
+
+    style I fill:#e6f4ea,stroke:#34a853;
 ```

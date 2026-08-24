@@ -21,6 +21,45 @@ Technical deep-dive into the Laravel bridge internals: how workflows are dispatc
 
 All wiring happens in exactly one place: `LaravelArazzoServiceProvider::packageRegistered()`.
 
+```mermaid
+flowchart LR
+    subgraph CORE["alama/arazzo-core — contracts"]
+        direction TB
+        QI["QueueDriverInterface"]
+        LI["LockManagerInterface"]
+        SI["StateStoreInterface"]
+        DI["DefinitionRegistryInterface"]
+        EI["ExecutionRegistryInterface"]
+        ELI["EventLedgerInterface"]
+        PCI["PendingCorrelationRegistryInterface"]
+        HI["HttpClientInterface"]
+    end
+    subgraph LARAVEL["alama/laravel-arazzo — adapters"]
+        direction TB
+        Q["LaravelQueueDriver<br/><small>Queue::push / Queue::later</small>"]
+        L["LaravelRedisLockManager<br/><small>Cache::lock()->block()</small>"]
+        S["RedisHotStateStore<br/><small>SETEX, TTL arazzo.state_ttl</small>"]
+        D["DatabaseDefinitionRegistry"]
+        E["DatabaseExecutionRegistry"]
+        EL["DatabaseEventLedger"]
+        PC["DatabasePendingCorrelationRegistry"]
+        H["Psr18HttpClient<br/><small>wraps Guzzle</small>"]
+    end
+    QI -.-> Q
+    LI -.-> L
+    SI -.-> S
+    DI -.-> D
+    EI -.-> E
+    ELI -.-> EL
+    PCI -.-> PC
+    HI -.-> H
+
+    style CORE fill:#f8fafc,stroke:#cbd5e1;
+    style LARAVEL fill:#fef7e0,stroke:#f9ab00;
+```
+
+The full live contract→implementation map is generated from source on every commit into [`docs/generated/contracts.md`](../generated/contracts.md).
+
 ## Dispatching workflows to Laravel's async queues
 
 The queue boundary in `core` is a single job type, `Runner\Jobs\ExecuteStepJob` — a plain data carrier (a `Step` + a `WorkflowContext`), *not* itself a Laravel queueable job. `LaravelQueueDriver::dispatch()` is the adapter that bridges the two:
@@ -48,6 +87,30 @@ class LaravelQueueDriver implements QueueDriverInterface
 It pattern-matches the core job type and wraps it in a real `Illuminate\Contracts\Queue\ShouldQueue` job (`RunExecuteStepJob` / `RunResumeCorrelationJob`, under `Queue/Jobs/`), which uses the standard `Dispatchable`/`InteractsWithQueue`/`Queueable`/`SerializesModels` traits so it behaves like any other Laravel queued job (retries, backoff, failure handling all follow Laravel's normal queue configuration). `$delaySeconds > 0` — set by `WorkflowEngine`'s retry transitions honoring `retryAfter` — becomes `Queue::later()`; otherwise it's an immediate `Queue::push()`.
 
 `RunExecuteStepJob::handle()` is intentionally thin — it just unwraps and forwards to the real logic:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant APP as App code (Arazzo facade / Engine)
+    participant QD as LaravelQueueDriver
+    participant LQ as Laravel Queue
+    participant WJ as RunExecuteStepJob (worker proc)
+    participant SEW as StepExecutionWorker
+    participant LM as LockManager (Redis)
+    participant SS as StateStore (Redis)
+
+    APP->>QD: dispatch(ExecuteStepJob)
+    QD->>LQ: Queue::push(RunExecuteStepJob)<br/>or Queue::later(delay)
+    Note over LQ: job may sit behind other work;<br/>siblings of the same DAG branch run concurrently
+    LQ->>WJ: handle()
+    WJ->>SEW: handle(inner ExecuteStepJob)
+    SEW->>LM: acquire("execution_lock_{id}", 30s, block 5s)
+    SEW->>SS: load(executionId) → reconcile state
+    SEW->>SEW: skip if step already Succeeded (idempotency)
+    SEW->>SEW: findExecutor() → SubWorkflow | Http | AsyncApi
+    SEW->>SS: save(new ExecutionState)
+    SEW-->>QD: next ExecuteStepJob(s) via QueueDriverInterface
+```
 
 ```php
 public function handle(StepExecutionWorker $worker): void
@@ -131,6 +194,28 @@ All actual dependency wiring happens in `packageRegistered()`, almost entirely v
 - **Legacy alias shim.** `register()` conditionally uses Laravel's `AliasLoader` (or `class_alias()` as a fallback for non-facade/testing environments) to keep the old `Alama\LaravelArazzo\...` namespace resolvable after a package rename to `Alama\Arazzo\Laravel\...` — a pattern to be aware of if you're renaming any other public-facing class in the bridge.
 
 ## HTTP and route surface
+
+The suspend/resume loop for AsyncAPI receive-steps is what ties the webhook route to the engine's correlation machinery:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Q as Queue worker
+    participant SEW as StepExecutionWorker
+    participant PCR as PendingCorrelationRegistry (DB)
+    participant EXT as External system
+    participant WRC as WebhookResumeController<br/>POST api/arazzo/webhooks/{correlationId}
+    participant CR as CorrelationResumer
+
+    Q->>SEW: handle(AsyncApiStepExecutor outcome: suspended)
+    SEW->>PCR: store(PendingCorrelation)
+    SEW->>SEW: dispatch CorrelationPending event,<br/>state persisted as Suspended
+    Note over EXT: ... time passes ...
+    EXT->>WRC: POST payload with correlationId
+    WRC->>CR: resume(correlationId, response)
+    CR->>PCR: consume(correlationId)
+    CR->>Q: dispatch ResumeCorrelationJob → RunResumeCorrelationJob
+```
 
 `packageBooted()` registers a `GET /arazzo-builder` view route (`web` middleware) and, under `config('arazzo.webhook_prefix', 'api/arazzo')` with `api` middleware: `GET /endpoints` and `POST /generate` (`ArazzoApiController`, tooling for the builder UI and AI-assisted generation via `ArazzoGenerator`/`OpenAiClient`), and `POST /webhooks/{correlationId}` (`WebhookResumeController`) — the external entry point that lets an outside system resume a workflow suspended on an AsyncAPI "receive" step by supplying the awaited correlation ID (feeding into `CorrelationResumer`, doc 02).
 

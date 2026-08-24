@@ -17,6 +17,18 @@ Both ultimately read from the same source of truth: the current `WorkflowContext
 
 `Alama\Arazzo\Expression\` (note: **not** under `Runner/`) contains a small hand-written `Lexer`/`Parser`/`Token` pipeline that turns an expression's raw text into one of the AST node types under `Expression/Ast/`:
 
+```mermaid
+flowchart LR
+    RAW["raw string<br/><small>'{$steps.auth.outputs.token}'</small>"] -->|"matches /^\{\$.+\}$/<br/>at parse time"| EXPR["Spec\\Expression<br/><small>lazy: compiled on first ast()</small>"]
+    EXPR --> LEX["Expression\\Lexer<br/><small>→ Token[]</small>"]
+    LEX --> PARSE["Expression\\Parser"]
+    PARSE --> AST["Ast node<br/><small>InputRef · StepRef · WorkflowRef · …</small>"]
+    AST --> EVAL["Evaluation\\ExpressionEvaluator<br/><small>reads WorkflowContext</small>"]
+    EVAL --> VAL["value (or null)<br/><small>missing data never throws</small>"]
+
+    INTERP["StringInterpolator<br/><small>'Bearer {$steps.a.outputs.t}'</small>"] -.->|embedded exprs| EXPR
+```
+
 | AST node | Matches |
 |---|---|
 | `InputRef` | `$inputs.name` (optionally with a JSON Pointer suffix) |
@@ -27,6 +39,17 @@ Both ultimately read from the same source of truth: the current `WorkflowContext
 | `SelfRef` | `$self` |
 | `HttpMetaRef` | `$statusCode`, `$method`, `$url` (of the *current* step) |
 | `MessageRef` | `$message.<header\|payload>` (AsyncAPI steps) |
+
+```mermaid
+flowchart TD
+    STEPREF["Ast\\StepRef<br/><small>stepId + part</small>"]
+    STEPREF --> REQ["RequestPart"]
+    STEPREF --> RESP["ResponsePart<br/><small>httpPart + jsonPointer</small>"]
+    STEPREF --> OUT["OutputPart<br/><small>outputName + jsonPointer</small>"]
+    STEPREF --> IN["InputPart"]
+
+    style STEPREF fill:#e8f0fe,stroke:#4285f4;
+```
 
 `StepRef` further carries a `part`, one of `RequestPart`, `ResponsePart`, `OutputPart`, or `InputPart` — e.g. `{$steps.step1.response.body#/data/id}` parses to a `StepRef(stepId: 'step1', part: ResponsePart(httpPart: 'body', jsonPointer: '/data/id'))`.
 
@@ -51,7 +74,32 @@ Two independent evaluators exist for structured extraction, used differently:
 
 `SelectorEvaluator` (constructed with a `DomXpathEvaluator` and an `ExpressionEvaluator`) dispatches on `Selector::$type` (`simple` | `regex` | `jsonpath` | `xpath`), first resolving `Selector::$context` (itself often an `Expression`, e.g. `{$response.body}`) via the injected `ExpressionEvaluator`, then applying the selector's extraction logic against that resolved context value.
 
+```mermaid
+flowchart TD
+    SEL["Spec\\Selector<br/><small>selector + type + context</small>"] --> CTX["resolve context via<br/>ExpressionEvaluator"]
+    CTX --> TYPE{"Selector::type"}
+    TYPE -->|simple| S["value as-is / comparison"]
+    TYPE -->|regex| R["preg_match against string"]
+    TYPE -->|jsonpath| J["JsonPathEvaluator<br/><small>(softcreatr/jsonpath)</small>"]
+    TYPE -->|xpath| X["DomXpathEvaluator"]
+
+    style S fill:#e6f4ea,stroke:#34a853;
+    style J fill:#e8f0fe,stroke:#4285f4;
+```
+
 ## Success criteria and the Criteria/Condition sub-language
+
+```mermaid
+flowchart LR
+    C["condition string<br/><small>e.g. $statusCode == 200 && $response.body#/status == 'ok'</small>"] --> L2["Condition\\Lexer → Token[]"]
+    L2 --> P2["Condition\\Parser"]
+    P2 --> A2["Condition AST<br/><small>Comparison · LogicalOp · UnaryNot ·<br/>RuntimeExpr · Literal</small>"]
+    A2 --> CEV["ConditionEvaluator"]
+    RE["RuntimeExpr leaves resolved through the<br/>same ExpressionEvaluator as everywhere else"] -.-> CEV
+    CEV --> BOOL["true / false"]
+
+    style BOOL fill:#e6f4ea,stroke:#34a853;
+```
 
 `successCriteria` entries are evaluated by `ArazzoCriteriaEvaluator`, which for `condition`-bearing criteria delegates to a **separate** small grammar under `Runner/Evaluation/Condition/` (`Lexer`, `Parser`, `ConditionEvaluator`, and an AST of `Comparison`, `LogicalOp`, `UnaryNot`, `RuntimeExpr`, `Literal`). This lets a single criterion express boolean logic like `$statusCode == 200 && $response.body#/status == 'ok'`, where each `RuntimeExpr` leaf is itself resolved through the same `ExpressionEvaluator` described above. This is a distinct parser from the top-level `Expression\Parser` — don't confuse the two when navigating the codebase.
 
@@ -62,6 +110,22 @@ Not every dynamic value is a bare expression — a `Parameter`'s value or a head
 ## Output extraction and schema-aware casting
 
 `ArazzoOutputExtractor::extractOutputs()` is the point where a step's declared `outputs` map becomes concrete values written into context:
+
+```mermaid
+flowchart TD
+    OUT["step.outputs entry"] --> K{"value type"}
+    K -->|Selector| SEL["SelectorEvaluator<br/><small>simple · regex · jsonpath · xpath</small>"]
+    K -->|"Expression starting '$.'"| JP["JsonPathEvaluator against<br/>the current step's response body"]
+    K -->|other Expression| EVALV["ExpressionEvaluator.evaluate"]
+    K -->|literal value| LIT["passthrough unchanged"]
+    EVALV --> CAST{"AST is StepRef →<br/>ResponsePart(body, jsonPointer)?"}
+    CAST -->|no| KEEP["value kept as-is"]
+    CAST -->|yes| SCHEMA["resolve operation schema at actual statusCode<br/>(falling back to default), walk JSON pointer,<br/>TypeCaster::asInteger/asFloat/asString/<br/>asBoolean/asArray"]
+    SCHEMA -->|"cast fails"| WARN["log warning, keep raw value"]
+
+    style WARN fill:#fef7e0,stroke:#f9ab00;
+    style SCHEMA fill:#e8f0fe,stroke:#4285f4;
+```
 
 1. `Selector` values → `SelectorEvaluator`.
 2. `Expression` values starting with `$.` → direct `JsonPathEvaluator` against the response body.

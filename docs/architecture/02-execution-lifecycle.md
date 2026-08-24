@@ -63,6 +63,76 @@ A `Reusable` action reference (`$components.successActions.NAME`) is resolved ag
 
 `ExecutionState::spendStep()` increments `stepsSpent` on every `transition()` call; exceeding `maxSteps` throws `StepBudgetExceededException` — a hard circuit breaker against runaway `goto`/`retry` loops.
 
+### Transition decision tree
+
+Exactly what `WorkflowEngine::transition()` evaluates, in order:
+
+```mermaid
+flowchart TD
+    IN["transition(document, workflow, step, state,<br/>criteriaMet, suspended)"] --> SUSP{"suspended?"}
+    SUSP -->|yes| TSUSP["Transition::suspend<br/><small>CorrelationPending path</small>"]
+    SUSP -->|no| BUDGET{"stepsSpent ≥ maxSteps?"}
+    BUDGET -->|yes| XB["throw StepBudgetExceededException"]
+    BUDGET -->|no| SPEND["spendStep() · mark step<br/>Succeeded / Failed"]
+    SPEND --> ACTIONS["pick actions: step onSuccess/onFailure,<br/>falling back to workflow-level;<br/>resolve Reusable against components"]
+    ACTIONS --> LOOP{"next action"}
+    LOOP -->|yes| CRIT{"action's criteria evaluate true?"}
+    CRIT -->|no| LOOP
+    CRIT -->|yes| KIND{"action kind"}
+    KIND -->|RetryAction| LIMIT{"attempts < min(retryLimit,<br/>arazzo.retry_ceiling)?"}
+    LIMIT -->|"exhausted: record 'retry_exhausted',<br/>fall through to later actions"| LOOP
+    LIMIT -->|ok| TRETRY["Transition::retry<br/><small>delay: Retry-After header wins,<br/>else retryAfter × backoffⁿ</small>"]
+    KIND -->|GotoAction| GVAL{"workflow + step targets exist?"}
+    GVAL -->|no| XG["throw GotoTargetNotFoundException"]
+    GVAL -->|yes| TGOTO["bind goto parameters into target inputs<br/>Transition::goto"]
+    KIND -->|EndAction| TEND["Transition::end(succeeded | failed)"]
+    KIND -->|SubWorkflowAction| DEPTH{"already on callStack? depth < max?"}
+    DEPTH -->|violation| XD["WorkflowCycleException /<br/>WorkflowDepthExceededException"]
+    DEPTH -->|ok| TINV["Transition::invoke(workflowId)"]
+    LOOP -->|"none matched"| MET{"criteriaMet?"}
+    MET -->|no| TFAIL["Transition::end(failed)"]
+    MET -->|yes| NEXT{"unvisited step with all deps<br/>present in results?"}
+    NEXT -->|yes| TNEXT["Transition::next(stepId)"]
+    NEXT -->|no| TOK["Transition::end(succeeded)"]
+
+    style TSUSP fill:#fef7e0,stroke:#f9ab00;
+    style TRETRY fill:#fef7e0,stroke:#f9ab00;
+    style XB fill:#fce8e6,stroke:#ea4335;
+    style XG fill:#fce8e6,stroke:#ea4335;
+    style XD fill:#fce8e6,stroke:#ea4335;
+```
+
+### Inside one attempt: what `StepExecutor::execute()` actually does
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant CALLER as WorkflowExecutor / StepExecutionWorker
+    participant SE as StepExecutor
+    participant OAR as OpenApiOperationResolver
+    participant OE as OpenApiExecutor (PSR-18)
+    participant ER as ExpressionResolverInterface
+
+    CALLER->>SE: execute(step, context, document)
+    SE->>SE: ReusableParameterResolver → resolve values<br/>(Expression → evaluator, "{$…}" → interpolator)
+    SE->>SE: bucket params into OpenApiPayload<br/>(query / header / path / auto)<br/>PayloadReplacer applies requestBody replacements
+    SE->>OAR: resolve(step, document)
+    OAR-->>SE: ResolvedOperation (normalized op + cebe model)
+    SE->>OE: execute(resolved, payload, onRequest callback)
+    Note over OE: IdempotencyKeyInjector adds header if enabled;<br/>request snapshot stored via context.withStepRequest
+    OE-->>SE: PSR-7 Response
+    SE->>SE: decode JSON body
+    opt strict schema validation (step or global default)
+        SE->>ER: validateResponseSchema(step, status, contentType, body, document)
+        Note over ER: SchemaValidationException propagates — never swallowed
+    end
+    SE->>SE: context := withStepResponse(statusCode / headers / body)
+    Note over SE: any other Throwable becomes a synthesized<br/>statusCode 500 response with error body
+    SE->>ER: extractOutputs(step, context, document)
+    SE->>ER: evaluateSuccessCriteria(step, context, document)
+    SE-->>CALLER: [context′, success]
+```
+
 ### The queue-driven variant in detail: `StepExecutionWorker`
 
 In production, each step doesn't run inline — it runs as a queued job. `Engine::evaluate()` finds all currently-runnable steps (via `DependencyAnalyzer`, doc 03) and dispatches one `ExecuteStepJob` per step onto the `QueueDriverInterface`. When a worker picks up that job, `StepExecutionWorker::handle()`:
@@ -77,33 +147,110 @@ In production, each step doesn't run inline — it runs as a queued job. `Engine
 
 Every meaningful state change also appends to `EventLedgerInterface` and dispatches a PSR-14 event (`StepStarted`, `StepExecuted`, `StepFailed`, `RunStarted`, `RunCompleted`, `RunFailed`, `CorrelationPending`) — see `Runner/Events/`.
 
+### Sub-workflow invocation and the call stack
+
+`SubWorkflowStepExecutor` (first in the protocol-executor order) delegates to `SubWorkflowInvoker`, which runs the child workflow through the *same* executor, sharing the parent's step budget and call stack:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant WE as WorkflowEngine
+    participant SW as SubWorkflowStepExecutor /<br/>SubWorkflowInvoker
+    participant REG as DefinitionRegistry
+    participant WFE as WorkflowExecutor (child run)
+
+    WE->>WE: assertCanEnter(state, workflowId)
+    Note over WE: WorkflowCycleException if workflowId already<br/>on callStack · WorkflowDepthExceededException<br/>at maxWorkflowDepth
+    WE-->>SW: Transition::invoke(workflowId)
+    SW->>REG: get(parent definitionId)
+    REG-->>SW: ArazzoDocument → find target Workflow
+    SW->>SW: bind action parameters against parent context<br/>(Expression → evaluator · Selector → selector evaluator)
+    Note over SW: child context = forChildInvocation(parent, target, bound)<br/>— shares budget + extends callStack
+    SW->>WFE: execute(targetWorkflow, document, bound, childContext)
+    Note over WFE: the child runs the full canonical loop itself;<br/>it may invoke further sub-workflows while depth allows
+    WFE-->>SW: ExecutionResult
+    SW-->>SW: SubWorkflowResult recorded on the parent step,<br/>parent loop resumes at its next transition
+```
+
 ## Stage 4 — Completion
 
 A run ends when `WorkflowEngine::transition()` returns a terminal `Transition` (`isTerminal()` true for `end` and `suspend`... note: `suspend` pauses rather than truly terminates). On success, `RunCompleted` is dispatched with the aggregated `outputs`; on failure, `RunFailed` carries the triggering exception or a synthesized `RuntimeException` describing which step failed.
 
-## Summary diagram
+## Summary diagrams
 
+### Pipeline (file → executed run)
+
+```mermaid
+flowchart TD
+    FILE["YAML/JSON file"] -->|"Loader::load()"| RAW["RawDocument"]
+    RAW -->|"Parser::parse()"| DOC["ArazzoDocument"]
+    DOC --> CTX["WorkflowContext / ExecutionState<br/><small>inputs seeded</small>"]
+    REG["DefinitionRegistryInterface"] -.->|"document reload"| WORKER
+    CTX --> GRAPH["DependencyGraph / DependencyAnalyzer"]
+    GRAPH -->|"runnable step(s)"| EXEC["StepExecutor / StepProtocolExecutorInterface<br/><small>HTTP · AsyncAPI · sub-workflow</small>"]
+    EXEC -->|"outcome + criteria"| TRANS["WorkflowEngine::transition()"]
+    TRANS -->|next| GRAPH
+    TRANS -->|retry / goto| EXEC
+    TRANS -->|"suspend"| SUSP["CorrelationResumer<br/><small>resumes on external trigger</small>"]
+    TRANS -->|end| DONE["RunCompleted / RunFailed"]
+
+    style DONE fill:#f0fdf4,stroke:#34a853;
+    style SUSP fill:#fef7e0,stroke:#f9ab00;
 ```
- YAML/JSON file
-      │  Loader::load()
-      ▼
-  RawDocument
-      │  Parser::parse()
-      ▼
- ArazzoDocument  ──────────────────────────┐
-      │                                    │ (DefinitionRegistryInterface,
-      │  WorkflowContext / ExecutionState  │  doc 06)
-      │  (inputs seeded)                   │
-      ▼                                    │
- DependencyGraph / DependencyAnalyzer  ◄───┘   (doc 03)
-      │  runnable step(s)
-      ▼
- StepExecutor / StepProtocolExecutorInterface   (HTTP call, output extraction — doc 04)
-      │  outcome
-      ▼
- WorkflowEngine::transition()                   (retry / goto / end / enter sub-workflow)
-      │
-      ├─▶ next step  ──▶ (loop)
-      ├─▶ suspend     ──▶ CorrelationResumer (later)
-      └─▶ end         ──▶ RunCompleted / RunFailed
+
+### Run lifecycle state machine (`ExecutionStatus`)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Running : RunStarted
+    Running --> Succeeded : terminal end(succeeded)<br/>RunCompleted
+    Running --> Failed : terminal end(failed) / exception<br/>RunFailed
+    note right of Running : suspend pauses the run:<br/>status stays Running,<br/>a PendingCorrelation waits
+    Succeeded --> [*]
+    Failed --> [*]
+```
+
+### Step lifecycle state machine (`StepStatus`)
+
+```mermaid
+stateDiagram-v2
+    [*] --> Pending
+    Pending --> Succeeded : criteria met
+    Pending --> Retrying : RetryAction fired<br/>StepRetried
+    Pending --> Suspended : async correlation wait<br/>CorrelationPending
+    Pending --> Failed : no action matched
+    Retrying --> Pending : re-dispatch after retryAfter
+    Suspended --> Pending : CorrelationResumed
+    Failed --> [*]
+    Succeeded --> [*]
+```
+
+### Canonical loop (sequence)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant WFE as WorkflowExecutor
+    participant SE as StepExecutor
+    participant WE as WorkflowEngine
+    participant EV as EventDispatcher
+
+    WFE->>EV: RunStarted
+    loop until terminal Transition or no next runnable step
+        WFE->>EV: StepStarted(attempt)
+        WFE->>SE: execute(step, context, document)
+        SE-->>WFE: [context', success]
+        WFE->>WE: transition(document, workflow, step, state, success)
+        WE-->>WFE: Transition (next | retry | goto | suspend | end)
+        WFE->>EV: StepExecuted
+        alt terminal end
+            alt status = succeeded
+                WFE->>EV: RunCompleted(outputs)
+            else status = failed
+                WFE->>EV: RunFailed(cause)
+            end
+        else workflow change (goto/sub-workflow)
+            WFE->>WFE: currentWorkflow := resolve(transition.workflowId)
+        end
+    end
 ```

@@ -1,5 +1,8 @@
 # Arazzo Database Schema
 
+> An ER diagram of the four shipped tables is generated from the migrations on every
+> commit into [`docs/generated/database-schema.md`](./generated/database-schema.md).
+
 This documents the normalized relational schema for `alama/laravel-arazzo` persistence: the
 shipped execution/event/definition tables, plus a proposed normalized index over the Arazzo
 document structure itself.

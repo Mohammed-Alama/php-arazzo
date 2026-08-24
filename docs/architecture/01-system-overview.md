@@ -6,6 +6,34 @@ This document orients a new contributor to `php-arazzo`: what the Arazzo Specifi
 
 ## What Arazzo describes, and how this engine models it
 
+### Where the engine sits at runtime
+
+Before diving into code: the pieces a production deployment actually involves, and who talks to what.
+
+```mermaid
+flowchart TB
+    AUTHOR["Workflow author<br/><small>Arazzo YAML checked into your repo</small>"] --> APP
+
+    subgraph HOST["Your PHP / Laravel host"]
+        APP["Application process<br/><small>Arazzo::workflow(...)->execute(...)</small>"]
+        WORKERS["Queue workers<br/><small>RunExecuteStepJob / RunResumeCorrelationJob</small>"]
+    end
+
+    APP -->|"dispatch jobs"| QUEUE[("Queue driver<br/><small>redis / sqs / database…</small>")]
+    QUEUE --> WORKERS
+    APP --> STATE[("Redis hot state<br/>+ cache locks")]
+    WORKERS --> STATE
+    APP --> DB[("Database<br/><small>definitions · executions ·<br/>events · pending correlations</small>")]
+    WORKERS --> DB
+    WORKERS -->|"PSR-18 HTTP"| APIS["External APIs<br/><small>the systems your OpenAPI<br/>documents describe</small>"]
+    APIS -.->|"POST api/arazzo/webhooks/{correlationId}<br/><small>resumes suspended receive-steps</small>"| APP
+    OPENAI["OpenAI API"] -.->|"optional: ArazzoGenerator"| APP
+
+    style APP fill:#e8f0fe,stroke:#4285f4;
+    style WORKERS fill:#fef7e0,stroke:#f9ab00;
+    style APIS fill:#f0fdf4,stroke:#34a853;
+```
+
 [OpenAPI](https://www.openapis.org/) describes the individual endpoints an API exposes. [Arazzo](https://github.com/OAI/Arazzo-Specification) sits a layer above it: it describes **workflows** — ordered sequences of calls against one or more OpenAPI-described sources, with data flowing from one call's response into the next call's request.
 
 An Arazzo YAML/JSON document parses into an `Alama\Arazzo\Spec\ArazzoDocument` — an immutable, `readonly` value object tree. The spec vocabulary maps directly onto PHP classes in `packages/core/src/Spec/`:
@@ -21,19 +49,72 @@ An Arazzo YAML/JSON document parses into an `Alama\Arazzo\Spec\ArazzoDocument` �
 | Reusable component references (`$components.*`) | `Reusable` | Resolved against `Components` at execution/transition time |
 | `onSuccess`/`onFailure` action definitions | `Action` subclasses | `SuccessGotoAction`, `SuccessEndAction`, `SubWorkflowSuccessAction`, `FailureGotoAction`, `FailureEndAction`, `RetryAction`, `SubWorkflowFailureAction` — see `Spec/Action/` |
 
-These `Spec/` classes are pure data — they know nothing about HTTP, queues, or persistence. Everything that *does* something with a `Spec\Workflow` lives in `Runner/`.
+These `Spec/` classes are pure data — they know nothing about HTTP, queues, or persistence. Everything that *does* something with a `Spec\Workflow` lives in `Runner/`. The full composition tree is generated from source on every commit into [`docs/generated/document-model.md`](../generated/document-model.md).
+
+## Core modules and their data flow
+
+```mermaid
+flowchart TD
+    FILE["Arazzo YAML / JSON file"] --> LOADER
+    subgraph PARSING["Parsing"]
+        LOADER["Parser\\Loader<br/><small>decode by extension</small>"] --> RAW["Spec\\RawDocument"]
+        RAW --> PARSER["Parser\\Parser<br/><small>strict recursive descent</small>"]
+        PARSER --> DOC["Spec\\ArazzoDocument<br/><small>immutable value tree</small>"]
+    end
+    DOC --> VALIDATOR
+    DOC --> RUNTIME
+    subgraph VALIDATION["Validation (offline)"]
+        VALIDATOR["Validator\\Validator<br/><small>~40 conformance rules</small>"]
+    end
+    subgraph RUNTIME["Execution (Runner/)"]
+        RESOLVER["Resolver\\SourceResolver<br/><small>fetch + parse sources</small>"]
+        GRAPH["Evaluation\\DependencyGraph<br/><small>explicit + implicit deps</small>"]
+        STEP["Execution\\StepExecutor<br/><small>HTTP / AsyncAPI / sub-workflow</small>"]
+        ENGINE["Execution\\WorkflowEngine<br/><small>pure transition machine</small>"]
+        STATE["Context\\ExecutionState<br/><small>persisted snapshot</small>"]
+        RESOLVER --> STEP
+        GRAPH --> STEP
+        STEP --> ENGINE
+        ENGINE -->|"Transition"| STEP
+        ENGINE --> STATE
+    end
+    EXPR["Expression\\Lexer → Parser → AST<br/><small>runtime expressions</small>"] -.->|"used by"| STEP
+    EXPR -.-> ENGINE
+
+    style PARSING fill:#f8fafc,stroke:#cbd5e1;
+    style VALIDATION fill:#fef2f2,stroke:#fecaca;
+    style RUNTIME fill:#f0fdf4,stroke:#bbf7d0;
+```
 
 ## Monorepo structure
 
 The repository is a Composer monorepo with two publishable packages plus root-level tooling:
+
+```mermaid
+flowchart LR
+    subgraph repo["php-arazzo monorepo"]
+        direction LR
+        CORE["alama/arazzo-core<br/>framework-agnostic engine<br/><small>PSR-7/11/14/16/18 only</small>"]:::core
+        LARAVEL["alama/laravel-arazzo<br/>Laravel bridge<br/><small>queues · locks · Eloquent · Redis</small>"]:::laravel
+        DOCS["docs/<br/>architecture &amp; generated diagrams"]
+        SCRIPTS["scripts/<br/>manual test + doc generator"]
+    end
+
+    LARAVEL -->|"implements core contracts"| CORE
+    LARAVEL -.->|illuminate/*| LARAVEL
+    SCRIPTS -->|"scans src/ → docs/generated/"| DOCS
+
+    classDef core fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
+    classDef laravel fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
+```
 
 ```
 php-arazzo/
 ├── packages/
 │   ├── core/       alama/arazzo-core     — framework-agnostic engine
 │   └── laravel/    alama/laravel-arazzo  — Laravel bridge
-├── docs/           architecture, roadmap, and conformance docs (this directory)
-├── scripts/        manual test / dev scripts
+├── docs/           architecture, roadmap, generated diagrams
+├── scripts/        manual test / dev scripts / generate-docs.php
 └── monorepo-builder.php
 ```
 

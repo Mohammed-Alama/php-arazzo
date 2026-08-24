@@ -30,6 +30,7 @@
         "test-core": "cd packages/core && vendor/bin/pest",
         "test-laravel": "cd packages/laravel && vendor/bin/pest",
         "test": ["@test-core", "@test-laravel"],
+        "docs": "@php scripts/generate-docs.php",
         "format": "vendor/bin/pint"
     },
     "minimum-stability": "dev",
