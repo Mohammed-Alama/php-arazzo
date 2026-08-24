@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Architecture review — php-arazzo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  .seam { stroke-dasharray: 4 4; }
+  .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+  .band { border-left-width: 4px; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+
+<header class="space-y-3">
+  <h1 class="font-serif text-3xl font-semibold">Architecture review — <span class="text-indigo-700">php-arazzo</span></h1>
+  <p class="text-sm text-slate-500">Aug 2026 · scoped to the <strong>last 300 commits (≈86% of all history — repo has 350)</strong> · hot spots: LaravelArazzoServiceProvider ×19, Runner/Execution cluster, Parser, Expression · no ADRs on file · one buried decision recovered: the Request Compiler module was dissolved in 5b88b0d</p>
+  <div class="flex flex-wrap gap-4 text-xs text-slate-600 pt-1">
+    <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 border border-slate-500 bg-white inline-block"></span> module</span>
+    <span class="inline-flex items-center gap-1.5"><svg width="20" height="10"><line x1="0" y1="5" x2="20" y2="5" stroke="#64748b" stroke-dasharray="4 4"/></svg> seam</span>
+    <span class="inline-flex items-center gap-1.5"><svg width="20" height="10"><line x1="0" y1="5" x2="20" y2="5" stroke="#dc2626" stroke-width="2"/></svg> leakage / divergence</span>
+    <span class="inline-flex items-center gap-1.5"><span class="w-4 h-3 deep inline-block rounded-sm"></span> deep module</span>
+    <span class="inline-flex items-center gap-1.5"><span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded font-medium">Strong</span><span class="px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">Worth exploring</span></span>
+  </div>
+</header>
+
+<section id="candidates" class="space-y-12">
+
+<!-- ============ CARD A ============ -->
+<article id="card-a" class="rounded-xl border border-slate-200 bg-white shadow-sm p-7 space-y-5">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl font-semibold">A — Unify the run-state module</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 rounded">Strong</span>
+      <span class="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded">in-process</span>
+    </div>
+  </div>
+  <p class="font-mono text-sm text-slate-600 leading-relaxed">
+    src/Runner/Context/WorkflowContext.php · src/Runner/Context/ExecutionState.php<br/>
+    converters: WorkflowEngine.php:156 · WorkflowExecutor.php:76 · StepExecutionWorker.php:276,243 · StepOutcomeHandler.php:319,345 · CorrelationResumer.php:146
+  </p>
+
+  <p><strong>Problem.</strong> Workflow Context and Execution State are two interfaces over one concept — a run's inputs, per-step results, components, position. Four hand-rolled converters and two duplicate serializers implement the mapping inline; nobody owns it, so they drift.</p>
+  <p><strong>Solution.</strong> One deep run-state module owns both directions of the mapping; every converter call site collapses to <code class="font-mono text-xs bg-slate-100 px-1 rounded">state→context</code> / <code class="font-mono text-xs bg-slate-100 px-1 rounded">context→state</code>.</p>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — mapping knowledge scattered (red = divergent)</p>
+      <pre class="mermaid">
+flowchart TD
+    WE["WorkflowEngine::context()"] -->|"merges stepAttempts ✓"| MAP{{"hand-rolled<br/>mapping"}}
+    WX["WorkflowExecutor:76"] -->|"attempts ✗ lost"| MAP
+    SW["StepExecutionWorker:276"] -->|"attempts ✗ lost"| MAP
+    CR["CorrelationResumer:146"] -->|"attempts ✗ lost"| MAP
+    MAP -.-> CTX["WorkflowContext"]
+    MAP -.-> ST["ExecutionState"]
+    SO["StepOutcomeHandler:345"] -.->|"duplicate serializer"| ST
+    SW2["StepExecutionWorker:243"] -.->|"duplicate serializer"| ST
+    classDef leak stroke:#dc2626,stroke-width:2px;
+    class WX,SW,CR,SO,SW2 leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — one deep module at one seam</p>
+      <div class="relative h-[300px] flex items-center justify-center">
+        <div class="absolute top-2 left-1/2 -translate-x-1/2 flex gap-16">
+          <div class="border border-slate-400 bg-white rounded px-3 py-2 text-xs uppercase tracking-wider">ExecutionState</div>
+          <div class="border border-slate-400 bg-white rounded px-3 py-2 text-xs uppercase tracking-wider">WorkflowContext</div>
+        </div>
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 300" preserveAspectRatio="none">
+          <line x1="140" y1="55" x2="185" y2="105" stroke="#64748b" stroke-dasharray="4 4"/>
+          <line x1="260" y1="55" x2="215" y2="105" stroke="#64748b" stroke-dasharray="4 4"/>
+        </svg>
+        <div class="deep text-white rounded-lg px-8 py-6 text-center shadow-lg z-10">
+          <div class="text-xs uppercase tracking-wider text-slate-400 mb-1">deep module</div>
+          <div class="font-serif text-lg">Run state mapping</div>
+          <div class="text-xs text-slate-400 mt-2">toContext() · toState()<br/>attempts merge lives here — once</div>
+        </div>
+        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-slate-500">5 callers → 2 methods · tests hit one interface</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-900">
+    <strong>Divergence is already a latent bug:</strong> only <code class="font-mono text-xs">WorkflowEngine::context()</code> merges <code class="font-mono text-xs">stepAttempts</code>; the other three sites silently report attempts = 0.
+  </div>
+
+  <ul class="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm list-disc list-inside text-slate-700">
+    <li><span class="font-medium">locality:</span> mapping bugs concentrate in one module</li>
+    <li><span class="font-medium">leverage:</span> two methods replace five hand-rolled copies</li>
+    <li>interface shrinks; implementation absorbs the converters</li>
+    <li>deletion test passes: deleting the scatter concentrates complexity</li>
+  </ul>
+</article>
+
+<!-- ============ CARD B ============ -->
+<article id="card-b" class="rounded-xl border border-slate-200 bg-white shadow-sm p-7 space-y-5">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl font-semibold">B — The canonical loop burns two budget units per step</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 rounded">Strong · bug</span>
+      <span class="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded">in-process</span>
+    </div>
+  </div>
+  <p class="font-mono text-sm text-slate-600 leading-relaxed">src/Runner/Execution/WorkflowExecutor.php:82–96 · src/Runner/Execution/WorkflowEngine.php:52–53</p>
+
+  <p><strong>Problem.</strong> <code class="font-mono text-xs bg-slate-100 px-1 rounded">executeCanonically()</code> calls <code class="font-mono text-xs bg-slate-100 px-1 rounded">transition()</code> twice per step; each call runs <code class="font-mono text-xs bg-slate-100 px-1 rounded">spendStep()</code>, so every step spends 2 of the maxSteps budget — and action criteria evaluate twice against mutated state.</p>
+  <p><strong>Solution.</strong> One transition per completed attempt. Card A's run-state module removes the tangle that hid this; until then it's a two-line fix.</p>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — one step, two transitions</p>
+      <div class="space-y-2 text-xs font-mono">
+        <div class="band border-slate-400 bg-slate-50 pl-3 py-2">step executes → success</div>
+        <div class="band border-red-400 bg-red-50 pl-3 py-2">transition() #1 → spendStep() <span class="text-red-600 font-semibold">(budget 1)</span></div>
+        <div class="band border-red-400 bg-red-50 pl-3 py-2">transition() #2 → spendStep() <span class="text-red-600 font-semibold">(budget 2)</span></div>
+        <div class="band border-slate-400 bg-slate-50 pl-3 py-2">next step…</div>
+      </div>
+      <p class="text-xs text-red-700 mt-3">maxSteps budget halves for every workflow; retry/goto criteria run twice</p>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — one transition per attempt</p>
+      <div class="space-y-2 text-xs font-mono">
+        <div class="band border-slate-400 bg-slate-50 pl-3 py-2">step executes → success</div>
+        <div class="band border-emerald-400 bg-emerald-50 pl-3 py-2">transition() → spendStep() <span class="text-emerald-700 font-semibold">(budget 1)</span></div>
+        <div class="band border-slate-400 bg-slate-50 pl-3 py-2">next step…</div>
+      </div>
+      <p class="text-xs text-emerald-700 mt-3">budget semantics match StepBudgetExceededException's contract</p>
+    </div>
+  </div>
+
+  <ul class="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm list-disc list-inside text-slate-700">
+    <li>correctness: budget matches its declared meaning</li>
+    <li><span class="font-medium">locality:</span> transition evaluation happens once, in one place</li>
+  </ul>
+</article>
+
+<!-- ============ CARD C ============ -->
+<article id="card-c" class="rounded-xl border border-slate-200 bg-white shadow-sm p-7 space-y-5">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl font-semibold">C — Give compilation a home again</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 rounded">Strong</span>
+      <span class="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded">ports &amp; adapters</span>
+    </div>
+  </div>
+  <p class="font-mono text-sm text-slate-600 leading-relaxed">
+    src/Runner/Execution/StepExecutor.php · HttpStepExecutor.php:40–125 (×8 commits) · AsyncApiStepExecutor.php:99–168 (×8)<br/>
+    ArazzoOutputExtractor (×6) · ArazzoSchemaValidator (×6) · ExpressionResolverInterface (×4) · ArazzoExpressionResolver (@deprecated, still bound)<br/>
+    history: ArazzoRequestCompiler.php (257 lines) deleted in 5b88b0d, Aug 21
+  </p>
+
+  <p><strong>Problem.</strong> Three days ago 5b88b0d deleted the standalone Request Compiler and pushed its compile logic into HttpStepExecutor (+72 lines) and StepExecutor (+119 lines). Compilation now has three homes — StepExecutor, HttpStepExecutor, AsyncApiStepExecutor each re-implement "parameters + payload → request" — with visible drift between the sync and queued pipelines' request records, while Output Extractor and Schema Validator churn fused into the same call paths. The glossary still names a Request Compiler; the code says it must not exist as its own module, yet its behaviour keeps multiplying across executors.</p>
+  <p><strong>Solution.</strong> Not the old module back — a home *behind the seams 5b88b0d created*: compilation lives inside the OpenApi executor / protocol-executor seam as shared implementation, consumed by all three call sites. One interface, three adapters' worth of callers, zero duplication.</p>
+
+  <div class="bg-amber-50 border border-amber-300 rounded-lg p-3 text-sm text-amber-900">
+    <strong>Contradicts the decision in 5b88b0d — but worth reopening:</strong> that commit traded one shared compiler for triplicated compilation. The seam it created (OpenApiExecutorInterface, StepProtocolExecutorInterface) is the right place for compilation to live again — as internal implementation behind those seams, not as the parallel module that was dissolved.
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — after 5b88b0d: logic triplicated</p>
+      <pre class="mermaid">
+flowchart LR
+    SE["StepExecutor::execute()"] --> R["resolve params"]
+    SE --> P["build payload"]
+    SE --> S["send via OpenApiExecutor"]
+    SE --> F["fold response + 500 fallback"]
+    SE --> O["Output Extractor"]
+    SE --> C["Criteria Evaluator"]
+    H["HttpStepExecutor"] --> R2["resolve params"]
+    H --> P2["build payload"]
+    A["AsyncApiStepExecutor"] --> R3["resolve params"]
+    A --> P3["build payload"]
+    classDef dup fill:#fef2f2,stroke:#dc2626;
+    class R,P,R2,P2,R3,P3 dup
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — compilation behind existing seams</p>
+      <div class="relative h-[300px]">
+        <div class="absolute top-4 inset-x-4 deep text-white rounded-lg px-4 py-3 text-center">
+          <div class="text-xs uppercase tracking-wider text-slate-400">implementation, hidden</div>
+          <div class="font-serif">compilation</div>
+          <div class="text-xs text-slate-400 mt-1">params · reusable · payload · placement<br/>lives once, inside the executor seam</div>
+        </div>
+        <svg class="absolute inset-x-0 top-[104px] h-[40px] w-full" viewBox="0 0 400 40" preserveAspectRatio="none">
+          <line x1="70" y1="0" x2="70" y2="40" stroke="#64748b" stroke-dasharray="4 4"/>
+          <line x1="200" y1="0" x2="200" y2="40" stroke="#64748b" stroke-dasharray="4 4"/>
+          <line x1="330" y1="0" x2="330" y2="40" stroke="#64748b" stroke-dasharray="4 4"/>
+        </svg>
+        <div class="absolute top-[150px] inset-x-4 grid grid-cols-3 gap-2 text-center">
+          <div class="border border-slate-300 rounded px-1 py-2"><div class="text-xs uppercase tracking-wider">Http pipeline</div></div>
+          <div class="border border-slate-300 rounded px-1 py-2"><div class="text-xs uppercase tracking-wider">AsyncApi pipeline</div></div>
+          <div class="border border-slate-300 rounded px-1 py-2"><div class="text-xs uppercase tracking-wider">sync path</div></div>
+        </div>
+        <div class="absolute bottom-4 inset-x-4 grid grid-cols-3 gap-2 text-center text-xs">
+          <div class="border border-indigo-200 bg-indigo-50 rounded px-1 py-2">Output Extractor</div>
+          <div class="border border-indigo-200 bg-indigo-50 rounded px-1 py-2">Criteria Evaluator</div>
+          <div class="border border-indigo-200 bg-indigo-50 rounded px-1 py-2">Schema Validator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm list-disc list-inside text-slate-700">
+    <li><span class="font-medium">locality:</span> compile bugs fixed once, all pipelines inherit</li>
+    <li><span class="font-medium">leverage:</span> three implementations share one interface</li>
+    <li>request-record shapes stop drifting between pipelines</li>
+    <li>tests hit compile through one interface, not three graphs</li>
+    <li>god-interface splits; capabilities substitutable singly</li>
+  </ul>
+</article>
+
+<!-- ============ CARD F ============ -->
+<article id="card-f" class="rounded-xl border border-slate-200 bg-white shadow-sm p-7 space-y-5">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl font-semibold">F — The composition root is the #1 hot spot</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 rounded">Strong</span>
+      <span class="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded">composition</span>
+    </div>
+  </div>
+  <p class="font-mono text-sm text-slate-600 leading-relaxed">
+    packages/laravel/src/LaravelArazzoServiceProvider.php — 393 lines · 28 singleton bindings · touched by 19 of the last 300 commits (unchallenged #1 across ~86% of project history)
+  </p>
+
+  <p><strong>Problem.</strong> The most-churned file in the codebase contains no domain behaviour — it's pure composition. Because core modules have wide interfaces (Card D), every internal refactor leaks into this file: widening one constructor means re-editing a hand-ordered 28-binding graph here. It happened again this week — StepOutcomeHandler grew a parameter and the provider broke with 28 static-analysis errors. Concentration is right for a composition root; this much surface area is not.</p>
+  <p><strong>Solution.</strong> Modules compose their own internals: each deep module exposes how to build itself from the ports it truly varies across, so the provider only binds framework-varying seams. Provider edits become rare because module-internal rewiring stops escaping.</p>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — every module change radiates outward</p>
+      <pre class="mermaid">
+flowchart TD
+    P0["LaravelArazzoServiceProvider<br/><small>393 lines · 28 bindings · ×19 commits</small>"]
+    P0 --> W["Worker (12 deps)"]
+    P0 --> OH["OutcomeHandler (11 deps)"]
+    P0 --> SE["StepExecutor (7 deps)"]
+    P0 --> ER["ExpressionResolver bundle"]
+    P0 --> SR["SourceRegistry stack"]
+    W -.->|"param added"| P0
+    OH -.->|"param added"| P0
+    SE -.->|"dep swapped"| P0
+    classDef hot fill:#fef2f2,stroke:#dc2626,stroke-width:2px;
+    classDef leak stroke:#dc2626;
+    class P0 hot
+    class W,OH,SE leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">After — modules own their wiring</p>
+      <div class="relative h-[300px] flex flex-col items-center justify-center gap-3">
+        <div class="border border-slate-400 bg-white rounded-lg px-5 py-3 text-center">
+          <div class="text-xs uppercase tracking-wider">Provider</div>
+          <div class="text-[11px] text-slate-500">binds only framework ports:<br/>queue · lock · state · db · http</div>
+        </div>
+        <svg width="220" height="30"><line x1="110" y1="0" x2="110" y2="30" stroke="#64748b" stroke-dasharray="4 4"/></svg>
+        <div class="deep text-white rounded-lg px-8 py-4 text-center shadow">
+          <div class="text-xs uppercase tracking-wider text-slate-400">each deep module</div>
+          <div class="font-serif">composes its own internals</div>
+          <div class="text-xs text-slate-400 mt-1">internal refactors stop leaking out</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm list-disc list-inside text-slate-700">
+    <li><span class="font-medium">locality:</span> rewiring happens inside the changed module</li>
+    <li><span class="font-medium">leverage:</span> deepening pays off — provider stops paying</li>
+    <li>hot-spot churn moves from composition into domain code</li>
+  </ul>
+</article>
+
+<!-- ============ CARD D ============ -->
+<article id="card-d" class="rounded-xl border border-slate-200 bg-white shadow-sm p-7 space-y-5">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl font-semibold">D — Shrink the queued pipeline's interfaces</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded">Worth exploring</span>
+      <span class="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded">in-process</span>
+    </div>
+  </div>
+  <p class="font-mono text-sm text-slate-600 leading-relaxed">
+    src/Runner/Execution/StepExecutionWorker.php:40–54 (12 params) · StepOutcomeHandler.php:49–61 (11 params)<br/>
+    tests: StepExecutionWorkerTest (6 bespoke mocks, ~60 new X) · StepOutcomeHandlerTest (~51 new X)
+  </p>
+
+  <p><strong>Problem.</strong> Both orchestrators are shallow — their constructors expose nearly everything the implementation does, so every test must rebuild the whole graph by hand before it can cross the interface. Card F is this same shallowness seen from the caller's side.</p>
+  <p><strong>Solution.</strong> Group collaborators into two cohesive capabilities (persistence, control-flow) that the worker accepts; the wide constructor becomes an internal concern of composition code, not part of the interface every test must learn.</p>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">Before — mass diagram: interface as tall as implementation</p>
+      <div class="flex justify-center gap-10 items-end h-[240px]">
+        <div class="text-center">
+          <div class="w-28 mx-auto border-2 border-red-400 bg-red-50 rounded-t" style="height:130px">
+            <div class="text-[10px] uppercase tracking-wider text-red-700 pt-1">interface: 12 params</div>
+          </div>
+          <div class="w-28 mx-auto border-2 border-slate-400 bg-white" style="height:80px">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 pt-1">implementation</div>
+          </div>
+          <div class="text-xs mt-2 font-mono">StepExecutionWorker</div>
+        </div>
+        <div class="text-center">
+          <div class="w-28 mx-auto border-2 border-red-400 bg-red-50 rounded-t" style="height:115px">
+            <div class="text-[10px] uppercase tracking-wider text-red-700 pt-1">interface: 11 params</div>
+          </div>
+          <div class="w-28 mx-auto border-2 border-slate-400 bg-white" style="height:90px">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 pt-1">implementation</div>
+          </div>
+          <div class="text-xs mt-2 font-mono">StepOutcomeHandler</div>
+        </div>
+      </div>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-3">After — depth: small interface, absorbed wiring</p>
+      <div class="flex justify-center gap-10 items-end h-[240px]">
+        <div class="text-center">
+          <div class="w-28 mx-auto border-2 border-emerald-500 bg-emerald-50 rounded-t" style="height:38px">
+            <div class="text-[10px] uppercase tracking-wider text-emerald-700 pt-0.5">handle(job) + 2 deps</div>
+          </div>
+          <div class="w-28 mx-auto border-2 border-slate-400 bg-white" style="height:170px">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 pt-1">implementation absorbs<br/>lock · reconcile · persist</div>
+          </div>
+          <div class="text-xs mt-2 font-mono">StepExecutionWorker</div>
+        </div>
+        <div class="text-center">
+          <div class="w-28 mx-auto border-2 border-emerald-500 bg-emerald-50 rounded-t" style="height:34px">
+            <div class="text-[10px] uppercase tracking-wider text-emerald-700 pt-0.5">handle(outcome)</div>
+          </div>
+          <div class="w-28 mx-auto border-2 border-slate-400 bg-white" style="height:175px">
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 pt-1">implementation absorbs<br/>transition routing</div>
+          </div>
+          <div class="text-xs mt-2 font-mono">StepOutcomeHandler</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="grid md:grid-cols-2 gap-x-6 gap-y-1 text-sm list-disc list-inside text-slate-700">
+    <li>interface is the test surface: fakes get cheap</li>
+    <li>six bespoke mock classes collapse toward one fake per seam</li>
+    <li><span class="font-medium">leverage:</span> container wiring moves out of callers</li>
+  </ul>
+</article>
+
+<!-- ============ CARD E ============ -->
+<article id="card-e" class="rounded-xl border border-slate-200 bg-white shadow-sm p-7 space-y-5">
+  <div class="flex items-start justify-between gap-4">
+    <h2 class="font-serif text-xl font-semibold">E — Seam hygiene: keep the ports, delete the dead seams</h2>
+    <div class="flex gap-2 shrink-0">
+      <span class="px-2 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded">Worth exploring</span>
+      <span class="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-600 rounded">ports &amp; adapters</span>
+    </div>
+  </div>
+  <p class="font-mono text-sm text-slate-600 leading-relaxed">
+    Runner/*/Contracts/*Interface.php · ArazzoExpressionEvaluator.php · ExecutionLoggerInterface.php
+  </p>
+
+  <p><strong>Problem.</strong> Six infrastructure interfaces have exactly one adapter each — hypothetical seams. They earn a documented exception (core must not know Illuminate; the Laravel adapter is the point), but two seams have zero or fake variation: ExecutionLoggerInterface has no adapter anywhere, and ArazzoExpressionEvaluator is a pass-through over ExpressionEvaluator invented for a single implementation.</p>
+  <p><strong>Solution.</strong> Keep the six ports with a one-line rationale where they're defined; delete the logger interface (and its unused optional consumer), inline the pass-through evaluator.</p>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-4">
+      <p class="text-xs uppercase tracking-wider text-slate-400 mb-2">Before — seam inventory</p>
+      <table class="w-full text-xs">
+        <thead><tr class="text-left text-slate-400 uppercase tracking-wider"><th class="py-1">seam</th><th>adapters</th><th>verdict</th></tr></thead>
+        <tbody class="font-mono align-top">
+          <tr class="border-t border-slate-100"><td class="py-1">QueueDriver</td><td>2</td><td class="text-emerald-700">real</td></tr>
+          <tr class="border-t border-slate-100"><td class="py-1">DefinitionRegistry</td><td>2</td><td class="text-emerald-700">real</td></tr>
+          <tr class="border-t border-slate-100"><td class="py-1">StepProtocolExecutor</td><td>3</td><td class="text-emerald-700">real</td></tr>
+          <tr class="border-t border-slate-100"><td class="py-1">StateStore / LockManager / EventLedger / ExecutionRegistry / PendingCorrelations / HttpClient</td><td>1 each</td><td class="text-amber-700">hypothetical — keep, framework port</td></tr>
+          <tr class="border-t border-slate-100"><td class="py-1">ExecutionLogger</td><td class="text-red-600">0</td><td class="text-red-600">dead — delete</td></tr>
+          <tr class="border-t border-slate-100"><td class="py-1">ExpressionEvaluator wrapper</td><td class="text-red-600">1 pass-through</td><td class="text-red-600">fake — inline</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-4 flex flex-col justify-center space-y-3">
+      <p class="text-xs uppercase tracking-wider text-slate-400">After</p>
+      <div class="border border-emerald-200 bg-emerald-50 rounded px-4 py-2 text-sm">6 ports kept — rationale comment sits at the interface</div>
+      <div class="border border-red-200 bg-red-50 rounded px-4 py-2 text-sm line-through decoration-red-400">ExecutionLoggerInterface + optional consumer param</div>
+      <div class="border border-red-200 bg-red-50 rounded px-4 py-2 text-sm line-through decoration-red-400">ArazzoExpressionEvaluator pass-through</div>
+      <p class="text-xs text-slate-500">one adapter = hypothetical seam; zero adapters = not a seam at all</p>
+    </div>
+  </div>
+
+  <ul class="grid grid-cols-2 gap-x-6 gap-y-1 text-sm list-disc list-inside text-slate-700">
+    <li>readers stop hunting for adapters that don't exist</li>
+    <li>interface count drops without losing a real seam</li>
+    <li>deprecation resolved: pass-through deleted, god-interface split in Card C</li>
+  </ul>
+</article>
+
+</section>
+
+<!-- ============ TOP RECOMMENDATION ============ -->
+<section id="top-recommendation" class="rounded-xl border-2 border-indigo-300 bg-indigo-50 p-8 space-y-3">
+  <p class="text-xs uppercase tracking-wider text-indigo-500">Top recommendation</p>
+  <h2 class="font-serif text-2xl font-semibold"><a href="#card-a" class="underline decoration-indigo-400 underline-offset-4">A — Unify the run-state module</a>, taking B with it</h2>
+  <p class="text-slate-700">The double-transition bug (B) was findable only because mapping knowledge has no locality — the same shallowness that hides it also spreads it. Build the run-state module first and B becomes a one-line consequence instead of a patch on a loop you don't fully see. Then follow the churn: C gives compilation a home behind the seams 5b88b0d created, D shrinks what the worker exposes, and F stops being the #1 hot spot precisely because C and D take the wiring back inside the modules.</p>
+</section>
+
+<footer class="text-xs text-slate-400 pt-4">php-arazzo architecture review · last 300 commits (~86% of history) · generated by improve-codebase-architecture · vocabulary: module / interface / depth / seam / adapter / leverage / locality</footer>
+
+</main>
+</body>
+</html>
