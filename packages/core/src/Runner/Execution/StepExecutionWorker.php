@@ -137,7 +137,7 @@ class StepExecutionWorker
                 $contextWithResult = $context->withStepResult($step->stepId, [
                     'statusCode' => $outcome->statusCode,
                     'request' => $outcome->request ?? [],
-                    'response' => ['statusCode' => $outcome->statusCode, 'body' => $outcome->responseBody],
+                    'response' => ['statusCode' => $outcome->statusCode, 'headers' => $outcome->responseHeaders, 'body' => $outcome->responseBody],
                     'outputs' => $outcome->outputs,
                     'inputs' => $outcome->inputs,
                 ]);

@@ -59,7 +59,7 @@ it('evaluates xpath criteria against xml response bodies', function () {
         parameters: [],
         requestBody: null,
         successCriteria: [
-            new SuccessCriterion(null, '/users/user[id="1"]/name', CriterionType::XPath),
+            new SuccessCriterion(null, '/users/user[@id="1"]/name', CriterionType::XPath),
         ],
         onSuccess: [],
         onFailure: [],

@@ -12,7 +12,7 @@ final readonly class RetryAction extends FailureAction
     /** @param list<SuccessCriterion> $criteria */
     public function __construct(
         string $name,
-        public ?int $retryAfter,
+        public ?float $retryAfter,
         public ?int $retryLimit,
         public ?string $stepId,
         public ?string $workflowId,

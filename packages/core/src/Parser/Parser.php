@@ -611,7 +611,7 @@ class Parser
             'end' => new FailureEndAction($name, $criteria),
             'retry' => new RetryAction(
                 name: $name,
-                retryAfter: $this->optionalInt($obj, 'retryAfter', $ctx),
+                retryAfter: $this->optionalNumber($obj, 'retryAfter', $ctx),
                 retryLimit: $this->optionalInt($obj, 'retryLimit', $ctx),
                 stepId: $this->optionalString($obj, 'stepId', $ctx),
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
@@ -620,6 +620,20 @@ class Parser
             'invoke' => $this->parseSubWorkflowFailureAction($name, $obj, $criteria, $ctx),
             default => throw ParserException::invalidActionType($ctx->push('type'), $type),
         };
+    }
+
+    /** @param array<string,mixed> $arr */
+    protected function optionalNumber(array $arr, string $key, ParseContext $ctx): int|float|null
+    {
+        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
+            return null;
+        }
+        $v = $arr[$key];
+        if (!is_int($v) && !is_float($v)) {
+            throw ParserException::wrongType($ctx->push($key), 'number', $v);
+        }
+
+        return $v;
     }
 
     /** @param array<string,mixed> $arr */

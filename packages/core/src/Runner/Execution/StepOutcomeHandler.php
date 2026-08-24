@@ -306,15 +306,16 @@ class StepOutcomeHandler
             new DateTimeImmutable(),
         ));
 
-        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $this->retryDelaySeconds($action, $step, $context, $attempt));
+        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $newContext), $this->retryDelaySeconds($action, $step, $context, $attempt + 1));
     }
 
     /**
      * Resolves the retry delay in whole seconds. The HTTP Retry-After header
      * overrules the declared retryAfter when parseable; otherwise the declared
-     * delay is scaled by the configured backoff multiplier per prior attempt.
+     * delay is scaled by the configured backoff multiplier per attempt number
+     * (the upcoming attempt, 1-based).
      */
-    private function retryDelaySeconds(RetryAction $action, Step $step, WorkflowContext $context, int $attempt): int
+    private function retryDelaySeconds(RetryAction $action, Step $step, WorkflowContext $context, int $upcomingAttempt): int
     {
         $headerValue = self::lookupHeader($context, $step->stepId, 'Retry-After');
 
@@ -330,7 +331,7 @@ class StepOutcomeHandler
         }
 
         $base = $action->retryAfter ?? 0;
-        $scaled = $base * ($this->retryBackoffMultiplier ** max(0, $attempt - 1));
+        $scaled = $base * ($this->retryBackoffMultiplier ** max(0, $upcomingAttempt - 1));
 
         return max(0, (int) ceil($scaled));
     }

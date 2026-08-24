@@ -59,7 +59,7 @@ it('parses failure goto', function () use ($c): void {
 it('parses retry action', function () use ($c): void {
     $r = (new ActionProbe())->pFA(['name' => 'r', 'type' => 'retry', 'retryAfter' => 500, 'retryLimit' => 2], $c());
     expect($r)->toBeInstanceOf(RetryAction::class)
-        ->and($r->retryAfter)->toBe(500);
+        ->and($r->retryAfter)->toBe(500.0);
 });
 
 it('rejects invalid success action type', function () use ($c): void {

@@ -174,7 +174,7 @@ class StepOutcomeMockStateStore implements StateStoreInterface
 /**
  * @return array{0: StepOutcomeHandler, 1: SyncQueueDriver, 2: StepOutcomeMockExecutionRegistry, 3: StepOutcomeMockEventLedger, 4: StepOutcomeMockPendingCorrelationRegistry, 5: StepOutcomeMockStateStore}
  */
-function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrelationOutstanding = false): array
+function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrelationOutstanding = false, float $retryBackoffMultiplier = 1.0): array
 {
     $queue = new SyncQueueDriver();
     $store = new StepOutcomeMockStateStore();
@@ -193,6 +193,9 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
         \Mockery::mock(SelectorEvaluator::class),
         \Mockery::mock(ExpressionEvaluator::class),
         $maxRetryAttempts,
+        86400,
+        null,
+        $retryBackoffMultiplier,
     );
 
     return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations, $store];

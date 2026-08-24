@@ -64,7 +64,7 @@ final class WorkflowEngine
                 $this->target($document, $targetWorkflowId, $targetStepId);
                 $next = $state->withStepAttempt($step->stepId)->withWorkflow($targetWorkflowId)->withCurrentStep($targetStepId);
 
-                return Transition::retry($next, $targetStepId, $action->retryAfter ?? 0, $targetWorkflowId);
+                return Transition::retry($next, $targetStepId, (int) ceil($action->retryAfter ?? 0), $targetWorkflowId);
             }
             if ($action instanceof SuccessGotoAction || $action instanceof FailureGotoAction) {
                 $targetWorkflowId = $action->workflowId ?? $workflow->workflowId;

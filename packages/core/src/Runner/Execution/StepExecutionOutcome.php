@@ -11,6 +11,7 @@ final readonly class StepExecutionOutcome
      * @param array<string, mixed> $responseBody
      * @param array<string, mixed> $inputs
      * @param array<string, mixed>|null $request
+     * @param array<string, string> $responseHeaders
      */
     private function __construct(
         public bool $suspended,
@@ -19,6 +20,7 @@ final readonly class StepExecutionOutcome
         public array $responseBody = [],
         public array $inputs = [],
         public ?array $request = null,
+        public array $responseHeaders = [],
     ) {
     }
 
@@ -27,10 +29,11 @@ final readonly class StepExecutionOutcome
      * @param array<string, mixed> $responseBody
      * @param array<string, mixed> $inputs
      * @param array<string, mixed>|null $request
+     * @param array<string, string> $responseHeaders
      */
-    public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null): self
+    public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = []): self
     {
-        return new self(false, $statusCode, $outputs, $responseBody, $inputs, $request);
+        return new self(false, $statusCode, $outputs, $responseBody, $inputs, $request, $responseHeaders);
     }
 
     public static function suspended(): self

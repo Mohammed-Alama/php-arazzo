@@ -103,6 +103,15 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         $decodedBody = json_decode((string) $response->getBody(), true);
         $body = is_array($decodedBody) ? $decodedBody : [];
 
+        $responseHeaders = [];
+        foreach ($response->getHeaders() as $name => $values) {
+            if (!is_string($name)) {
+                continue;
+            }
+
+            $responseHeaders[$name] = implode(', ', array_map(strval(...), $values));
+        }
+
         if ($this->shouldValidateSchema($step)) {
             $this->expressionResolver->validateResponseSchema(
                 $step,
@@ -134,12 +143,13 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
             ->withStepRequest($step->stepId, $requestRecord)
             ->withStepResponse($step->stepId, [
                 'statusCode' => $response->getStatusCode(),
+                'headers' => $responseHeaders,
                 'body' => $body,
             ]);
 
         $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
-        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs, $requestRecord);
+        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs, $requestRecord, $responseHeaders);
     }
 
     private function shouldValidateSchema(Step $step): bool
