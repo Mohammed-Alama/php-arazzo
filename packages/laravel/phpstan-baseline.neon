@@ -168,7 +168,7 @@ parameters:
 		-
 			message: '#^Cannot call method make\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 70
+			count: 74
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
@@ -325,6 +325,12 @@ parameters:
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
+			message: '#^Parameter \#1 \$sources of class Alama\\Arazzo\\Validator\\PreflightValidator constructor expects Alama\\Arazzo\\Resolver\\SourceRegistry, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
 			message: '#^Parameter \#1 \$stepExecutor of class Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor constructor expects Alama\\Arazzo\\Runner\\Execution\\StepExecutor, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -356,6 +362,12 @@ parameters:
 
 		-
 			message: '#^Parameter \#2 \$ledger of static method Alama\\Arazzo\\Support\\Events\\Listener\\LedgerAppendingListener\:\:registerAll\(\) expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$operations of class Alama\\Arazzo\\Validator\\PreflightValidator constructor expects Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php
@@ -578,6 +590,18 @@ parameters:
 
 		-
 			message: '#^Parameter \$pendingCorrelations of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Context\\Contracts\\PendingCorrelationRegistryInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \$preflight of class Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker constructor expects Alama\\Arazzo\\Validator\\PreflightValidator\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/LaravelArazzoServiceProvider.php
+
+		-
+			message: '#^Parameter \$preflight of class Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor constructor expects Alama\\Arazzo\\Validator\\PreflightValidator\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php

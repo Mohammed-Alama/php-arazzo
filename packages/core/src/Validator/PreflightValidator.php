@@ -75,11 +75,12 @@ final class PreflightValidator
             }
 
             if ($this->sources->get($sourceName) === null) {
-                $errors->add(new Error(
+                // Non-blocking: remote sources are legitimate at runtime;
+                // preflight simply cannot verify them without a fetch.
+                $errors->add(new Warning(
                     'preflight.source_not_local',
                     "Source '{$sourceName}' is not pre-registered; preflight cannot resolve it without a fetch.",
                     $base . '/operationPath',
-                    severity: Severity::Warning,
                 ));
 
                 return;

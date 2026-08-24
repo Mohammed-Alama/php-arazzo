@@ -9,7 +9,6 @@ use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Runner\Events\EventInterface;
 use Alama\Arazzo\Runner\Events\RunStarted;
 use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
@@ -106,15 +105,12 @@ it('passes a fully resolvable document with zero diagnostics', function (): void
     expect($result->isValid())->toBeTrue(json_encode($result->errors));
 });
 
-it('flags references to unknown source descriptions as errors', function (): void {
-    $doc = preflightDocument();
-    // Rebuild with a mismatched source name is complex post-parse; instead
-    // unregister the source so it cannot be found locally.
-    $result = preflightValidator()->validate($doc);
+it('treats non-local sources as warnings so remote sources stay usable at runtime', function (): void {
+    $result = preflightValidator()->validate(preflightDocument());
 
-    expect($result->isValid())->toBeFalse()
-        ->and($result->errors[0]->code)->toBe('preflight.source_not_local')
-        ->and($result->errors[0]->severity)->toBe(Severity::Warning);
+    expect($result->isValid())->toBeTrue('warnings do not block execution')
+        ->and($result->warnings[0]->code)->toBe('preflight.source_not_local')
+        ->and($result->warnings[0]->severity)->toBe(Severity::Warning);
 });
 
 it('reports unresolvable operation references against local sources', function (): void {
@@ -145,11 +141,17 @@ it('rejects unsupported OpenAPI versions in local sources', function (): void {
 it('guards the synchronous adapter before any side effect or event fires', function (): void {
     $events = new SimpleEventDispatcher();
     $fired = [];
-    $events->subscribe(RunStarted::class, function (EventInterface $e) use (&$fired): void {
+    $events->subscribe(RunStarted::class, function (object $e) use (&$fired): void {
         $fired[] = $e::class;
     });
 
-    $document = preflightDocument(); // source NOT registered -> preflight warning? no: warnings keep valid=false
+    // Reference a source description that does not exist at all:
+    // a hard preflight ERROR (unlike merely non-local sources).
+    $document = preflightDocument([
+        'sourceDescriptions' => [
+            ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
+        ],
+    ]);
     $resolver = new ArazzoExpressionResolver(
         new ExpressionEvaluator(),
         new ArazzoOutputExtractor(

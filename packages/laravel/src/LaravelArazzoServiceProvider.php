@@ -61,6 +61,7 @@ use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener;
+use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
@@ -228,6 +229,15 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return new WorkflowExecutor(
                 $app->make(StepExecutor::class),
                 workflowEngine: $app->make(WorkflowEngine::class),
+                preflight: $app->make(PreflightValidator::class),
+            );
+        });
+
+        $this->app->singleton(PreflightValidator::class, function ($app) {
+            return new PreflightValidator(
+                $app->make(SourceRegistry::class),
+                $app->make(OpenApiOperationResolver::class),
+                new DomXpathEvaluator(),
             );
         });
 
@@ -367,6 +377,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
                 ],
                 workflowEngine: $app->make(WorkflowEngine::class),
                 queueDriver: $app->make(QueueDriverInterface::class),
+                preflight: $app->make(PreflightValidator::class),
             );
         });
     }

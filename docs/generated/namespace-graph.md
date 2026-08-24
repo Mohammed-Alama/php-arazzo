@@ -60,6 +60,7 @@ flowchart LR
     Laravel__ --> Resolver
     Laravel__ --> Runner
     Laravel__ --> Support
+    Laravel__ --> Validator
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
 ```
