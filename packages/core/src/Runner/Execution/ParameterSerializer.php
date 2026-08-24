@@ -54,6 +54,7 @@ class ParameterSerializer
             'label' => self::serializeLabel($name, $value, $explode),
             'spaceDelimited' => self::serializeDelimited($name, $value, $explode, ' '),
             'pipeDelimited' => self::serializeDelimited($name, $value, $explode, '|'),
+            'deepObject' => self::serializeDeepObject($name, $value),
             default => throw new UnsupportedSerializationStyleException($style, $location),
         };
     }
@@ -180,6 +181,47 @@ class ParameterSerializer
         }
 
         return '.' . urlencode(self::asString($value));
+    }
+
+    /**
+     * deepObject (query only): ?param[prop]=value&param[prop2]=value2 —
+     * nested objects recurse as param[a][b]=v.
+     */
+    private static function serializeDeepObject(string $name, mixed $value): string
+    {
+        if (!is_array($value) || array_is_list($value)) {
+            // Non-object values degrade to a plain form pair.
+            return urlencode($name) . '=' . urlencode(self::asString($value));
+        }
+
+        $parts = [];
+        foreach ($value as $k => $v) {
+            foreach (self::deepObjectPairs(urlencode($name) . '[' . urlencode(self::asString($k)) . ']', $v) as $pair) {
+                $parts[] = $pair;
+            }
+        }
+
+        return implode('&', $parts);
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function deepObjectPairs(string $prefix, mixed $value): array
+    {
+        if (is_array($value) && !array_is_list($value)) {
+            /** @var list<string> $pairs */
+            $pairs = [];
+            foreach ($value as $k => $v) {
+                foreach (self::deepObjectPairs($prefix . '[' . urlencode(self::asString($k)) . ']', $v) as $pair) {
+                    $pairs[] = $pair;
+                }
+            }
+
+            return $pairs;
+        }
+
+        return [$prefix . '=' . urlencode(self::asString($value))];
     }
 
     private static function serializeDelimited(string $name, mixed $value, bool $explode, string $delimiter): string

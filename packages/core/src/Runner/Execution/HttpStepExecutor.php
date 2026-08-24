@@ -6,11 +6,13 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
@@ -57,29 +59,11 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $bodyData = [];
         if ($step->requestBody && $step->requestBody->payload !== null) {
-            $bodyData = $step->requestBody->payload;
-            if ($step->requestBody->replacements) {
-                foreach ($step->requestBody->replacements as $replacement) {
-                    $targetPtr = $replacement->target;
-                    $val = $replacement->value instanceof Expression
-                        ? $this->expressionResolver->evaluate($replacement->value, $context, $step->stepId)
-                        : $replacement->value;
-
-                    $segments = explode('/', ltrim($targetPtr, '/'));
-                    $current = &$bodyData;
-                    foreach ($segments as $i => $segment) {
-                        $segment = str_replace(['~1', '~0'], ['/', '~'], $segment);
-                        if ($i === count($segments) - 1) {
-                            $current[$segment] = $val;
-                        } else {
-                            if (!isset($current[$segment])) {
-                                $current[$segment] = [];
-                            }
-                            $current = &$current[$segment];
-                        }
-                    }
-                }
-            }
+            $bodyData = PayloadReplacer::apply(
+                $step,
+                is_array($step->requestBody->payload) ? $step->requestBody->payload : [],
+                fn (mixed $replacement) => $this->resolveReplacementValue($replacement, $context),
+            );
         }
         $payload->body = empty($bodyData) ? null : $bodyData;
 
@@ -151,6 +135,15 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
         return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs, $requestRecord, $responseHeaders);
+    }
+
+    private function resolveReplacementValue(PayloadReplacement $replacement, WorkflowContext $context): mixed
+    {
+        $value = $replacement->value;
+
+        return $value instanceof Expression
+            ? $this->expressionResolver->evaluate($value, $context, null)
+            : $value;
     }
 
     private function shouldValidateSchema(Step $step): bool

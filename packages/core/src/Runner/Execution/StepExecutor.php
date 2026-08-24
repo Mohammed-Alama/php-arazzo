@@ -6,12 +6,14 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Runner\Evaluation\StringInterpolator;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -64,27 +66,11 @@ class StepExecutor
 
         $bodyData = [];
         if ($step->requestBody && $step->requestBody->payload !== null) {
-            $bodyData = $step->requestBody->payload;
-            if ($step->requestBody->replacements) {
-                foreach ($step->requestBody->replacements as $replacement) {
-                    $targetPtr = $replacement->target;
-                    $val = $this->resolveValue($replacement->value, $context, $step->stepId);
-
-                    $segments = explode('/', ltrim($targetPtr, '/'));
-                    $current = &$bodyData;
-                    foreach ($segments as $i => $segment) {
-                        $segment = str_replace(['~1', '~0'], ['/', '~'], $segment);
-                        if ($i === count($segments) - 1) {
-                            $current[$segment] = $val;
-                        } else {
-                            if (!isset($current[$segment])) {
-                                $current[$segment] = [];
-                            }
-                            $current = &$current[$segment];
-                        }
-                    }
-                }
-            }
+            $bodyData = PayloadReplacer::apply(
+                $step,
+                is_array($step->requestBody->payload) ? $step->requestBody->payload : [],
+                fn (PayloadReplacement $replacement) => $this->resolveValue($replacement->value, $context, $step->stepId),
+            );
         }
         $payload->body = empty($bodyData) ? null : $bodyData;
 

@@ -48,8 +48,8 @@ it('serializes pipeDelimited style', function () {
 });
 
 it('throws on unsupported style', function () {
-    ParameterSerializer::serializeValue('color', 'blue', 'deepObject', false, 'query');
-})->throws(UnsupportedSerializationStyleException::class, 'Unsupported serialization style "deepObject" for location "query".');
+    ParameterSerializer::serializeValue('color', 'blue', 'unknownStyle', false, 'query');
+})->throws(UnsupportedSerializationStyleException::class, 'Unsupported serialization style "unknownStyle" for location "query".');
 
 it('serializes identically across OpenAPI versions (2.0/3.0/3.1)', function (array $normalizedParams, array $payload, array $expected) {
     expect(ParameterSerializer::serialize('query', $normalizedParams, $payload))->toBe($expected);
@@ -70,3 +70,33 @@ it('serializes identically across OpenAPI versions (2.0/3.0/3.1)', function (arr
         ['color' => 'color=blue&color=black&color=brown'],
     ],
 ]);
+
+it('serializes deepObject style', function (): void {
+    $params = ['filter' => ['style' => 'deepObject']];
+
+    expect(ParameterSerializer::serialize('query', $params, [
+        'filter' => ['color' => 'black', 'size' => 'L'],
+    ]))->toBe([
+        'filter' => 'filter[color]=black&filter[size]=L',
+    ]);
+});
+
+it('serializes nested deepObject style recursively', function (): void {
+    $params = ['filter' => ['style' => 'deepObject']];
+
+    expect(ParameterSerializer::serialize('query', $params, [
+        'filter' => ['range' => ['from' => 1, 'to' => 9]],
+    ]))->toBe([
+        'filter' => 'filter[range][from]=1&filter[range][to]=9',
+    ]);
+});
+
+it('degrades deepObject scalars and lists to a plain pair', function (): void {
+    $params = ['x' => ['style' => 'deepObject']];
+
+    expect(ParameterSerializer::serialize('query', $params, ['x' => 'scalar']))
+        ->toBe(['x' => 'x=scalar']);
+
+    expect(ParameterSerializer::serialize('query', $params, ['x' => [1, 2]]))
+        ->toBe(['x' => 'x=%5B1%2C2%5D']); // lists degrade to JSON
+});

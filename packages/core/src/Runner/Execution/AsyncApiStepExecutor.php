@@ -8,12 +8,14 @@ use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Runner\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
 use JsonException;
 use LogicException;
@@ -152,32 +154,16 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
      */
     private function buildPayload(Step $step, EvaluationContext $context): array
     {
-        $bodyData = [];
         $requestBody = $step->requestBody;
-        if ($requestBody !== null && is_array($requestBody->payload)) {
-            $bodyData = $requestBody->payload;
-
-            foreach ($requestBody->replacements as $replacement) {
-                $value = $replacement->value instanceof Expression
+        $bodyData = $requestBody !== null && is_array($requestBody->payload)
+            ? PayloadReplacer::apply(
+                $step,
+                $requestBody->payload,
+                fn (PayloadReplacement $replacement) => $replacement->value instanceof Expression
                     ? $this->evaluator->evaluate($replacement->value, $context)
-                    : $replacement->value;
-
-                $segments = explode('/', ltrim($replacement->target, '/'));
-                $current = &$bodyData;
-                foreach ($segments as $i => $segment) {
-                    $segment = str_replace(['~1', '~0'], ['/', '~'], $segment);
-                    if ($i === count($segments) - 1) {
-                        $current[$segment] = $value;
-                    } else {
-                        if (!isset($current[$segment]) || !is_array($current[$segment])) {
-                            $current[$segment] = [];
-                        }
-                        $current = &$current[$segment];
-                    }
-                }
-                unset($current);
-            }
-        }
+                    : $replacement->value,
+            )
+            : [];
 
         return $bodyData;
     }
