@@ -15,6 +15,7 @@ final readonly class StepFailed
         public string $stepId,
         public Throwable $cause,
         public DateTimeImmutable $at,
+        public string $category = 'execution',
     ) {
     }
 }

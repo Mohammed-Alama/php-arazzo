@@ -31,12 +31,12 @@ final class Lexer
         } else {
             throw new ExpressionSyntaxException(
                 "Expression must start with $ or be wrapped in {\$...}: {$raw}",
-                '', 'expr.syntax',
+                $raw, 0, '', 'expr.syntax',
             );
         }
 
         if ($inner === '') {
-            throw new ExpressionSyntaxException("Empty expression: {$raw}", '', 'expr.syntax');
+            throw new ExpressionSyntaxException("Empty expression: {$raw}", $raw, -1, '', 'expr.syntax');
         }
 
         $tokens = [];
@@ -94,7 +94,7 @@ final class Lexer
 
             throw new ExpressionSyntaxException(
                 "Illegal character '{$ch}' at offset {$absOffset} in expression: {$raw}",
-                '', 'expr.syntax',
+                $raw, $absOffset, '', 'expr.syntax',
             );
         }
 

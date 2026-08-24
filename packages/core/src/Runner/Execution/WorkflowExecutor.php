@@ -13,6 +13,7 @@ use Alama\Arazzo\Runner\Events\StepExecuted as StepExecutedEvent;
 use Alama\Arazzo\Runner\Events\StepFailed as StepFailedEvent;
 use Alama\Arazzo\Runner\Events\StepRetried;
 use Alama\Arazzo\Runner\Events\StepStarted;
+use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionLoggerInterface;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Spec\ArazzoDocument;
@@ -97,13 +98,14 @@ class WorkflowExecutor
                         $stepId,
                         new RuntimeException("Step '{$stepId}' failed"),
                         new DateTimeImmutable(),
+                        is_string($raw['failureCategory'] ?? null) ? $raw['failureCategory'] : 'criteria',
                     ));
                 } else {
                     $this->events->dispatch(new StepExecutedEvent($executionId, $currentWorkflow->workflowId, $stepId, (int) (is_scalar($raw['statusCode'] ?? null) ? $raw['statusCode'] : 0), $result->outputs, $success, new DateTimeImmutable()));
                 }
                 if ($transition->isTerminal()) {
                     if ($transition->status === 'failed') {
-                        $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable()));
+                        $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable(), 'criteria'));
 
                         return new ExecutionResult($currentWorkflow->workflowId, 'failed', [], $results);
                     }
@@ -118,7 +120,8 @@ class WorkflowExecutor
                 $stepId = $transition->stepId ?? $this->firstStep($currentWorkflow);
             }
         } catch (Throwable $t) {
-            $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, $t, new DateTimeImmutable()));
+            $category = $t instanceof SchemaValidationException ? 'schema' : 'execution';
+            $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, $t, new DateTimeImmutable(), $category));
             throw $t;
         }
 

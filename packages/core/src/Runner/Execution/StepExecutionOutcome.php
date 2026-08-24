@@ -21,6 +21,9 @@ final readonly class StepExecutionOutcome
         public array $inputs = [],
         public ?array $request = null,
         public array $responseHeaders = [],
+        public ?string $rawBody = null,
+        public ?string $contentType = null,
+        public ?string $failureCategory = null,
     ) {
     }
 
@@ -31,9 +34,9 @@ final readonly class StepExecutionOutcome
      * @param array<string, mixed>|null $request
      * @param array<string, string> $responseHeaders
      */
-    public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = []): self
+    public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = [], ?string $rawBody = null, ?string $contentType = null, ?string $failureCategory = null): self
     {
-        return new self(false, $statusCode, $outputs, $responseBody, $inputs, $request, $responseHeaders);
+        return new self(false, $statusCode, $outputs, $responseBody, $inputs, $request, $responseHeaders, $rawBody, $contentType, $failureCategory);
     }
 
     public static function suspended(): self

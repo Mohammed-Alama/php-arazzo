@@ -9,13 +9,13 @@ use Alama\Arazzo\Support\Exceptions\ArazzoException;
 final class SelectorEvaluationException extends ArazzoException
 {
     /** @param list<string> $supported */
-    public static function unsupportedXpathVersion(string $requested, array $supported): self
+    public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self
     {
         $list = implode(', ', $supported);
 
         return new self(
             "Requested XPath version '{$requested}' not supported by bound XpathEvaluator (supports: {$list}). Bind a custom XpathEvaluator to enable it.",
-            '/',
+            $location,
             'selector.unsupported_xpath_version',
         );
     }

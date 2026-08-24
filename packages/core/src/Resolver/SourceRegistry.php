@@ -33,7 +33,10 @@ final class SourceRegistry implements SourceResolver
         }
 
         if (isset($this->resolving[$source->name])) {
-            throw new UnresolvableReferenceException("Circular reference detected when resolving source '{$source->name}'");
+            throw new UnresolvableReferenceException(
+                "Circular reference detected when resolving source '{$source->name}'",
+                $source->name,
+            );
         }
 
         $this->resolving[$source->name] = true;

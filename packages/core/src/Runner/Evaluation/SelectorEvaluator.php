@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Evaluation;
 
 use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Runner\Evaluation\Exceptions\SelectorEvaluationException;
 use Alama\Arazzo\Runner\Evaluation\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Spec\Expression;
@@ -39,11 +40,20 @@ class SelectorEvaluator
             ExpressionType::JsonPointer => is_array($root)
                 ? JsonPointer::resolve($root, $sel->selector)
                 : null,
-            ExpressionType::XPath => $this->xpath->query(
-                $root,
-                $sel->selector,
-                $sel->version ?? 'xpath-10',
-            ),
+            ExpressionType::XPath => (function () use ($root, $sel, $wf, $stepId) {
+                try {
+                    return $this->xpath->query(
+                        $root,
+                        $sel->selector,
+                        $sel->version ?? 'xpath-10',
+                    );
+                } catch (SelectorEvaluationException $e) {
+                    // Enrich capability errors with the document location.
+                    $location = 'workflows/' . ($wf->getWorkflowId() ?? 'unknown') . '/steps/' . $stepId;
+
+                    throw new SelectorEvaluationException($e->getMessage(), $location, $e->codeId, $e);
+                }
+            })(),
         };
     }
 }

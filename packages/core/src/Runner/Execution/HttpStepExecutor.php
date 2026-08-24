@@ -87,10 +87,12 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
             // Transport-level failures become a synthetic 500 response so
             // failureActions (e.g. retry) apply identically to the sync
             // adapter's StepExecutor policy.
-            return StepExecutionOutcome::resolved(500, [], ['error' => $e->getMessage()]);
+            return StepExecutionOutcome::resolved(500, [], ['error' => $e->getMessage()], failureCategory: 'transport');
         }
 
-        $decodedBody = json_decode((string) $response->getBody(), true);
+        $rawBody = (string) $response->getBody();
+        $contentType = $response->getHeaderLine('Content-Type');
+        $decodedBody = json_decode($rawBody, true);
         $body = is_array($decodedBody) ? $decodedBody : [];
 
         $responseHeaders = [];
@@ -139,7 +141,16 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
-        return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs, $requestRecord, $responseHeaders);
+        return StepExecutionOutcome::resolved(
+            $response->getStatusCode(),
+            $outputs,
+            $body,
+            $resolvedInputs,
+            $requestRecord,
+            $responseHeaders,
+            rawBody: $rawBody,
+            contentType: $contentType,
+        );
     }
 
     private function shouldValidateSchema(Step $step): bool

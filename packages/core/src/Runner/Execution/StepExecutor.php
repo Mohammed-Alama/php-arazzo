@@ -130,6 +130,8 @@ class StepExecutor
                 'statusCode' => $statusCode,
                 'headers' => $respHeaders,
                 'body' => $respBody,
+                'rawBody' => $respBodyString,
+                'contentType' => $response->getHeaderLine('Content-Type'),
             ]);
         } catch (SchemaValidationException $e) {
             throw $e;
@@ -138,6 +140,7 @@ class StepExecutor
                 'statusCode' => 500,
                 'headers' => [],
                 'body' => ['error' => $e->getMessage()],
+                'failureCategory' => 'transport',
             ]);
         }
 

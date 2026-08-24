@@ -8,7 +8,7 @@ use Alama\Arazzo\Validator\Error;
 
 it('Error toArray returns full shape', function (): void {
     $e = new Error('code.a', 'msg', '/p', 12);
-    expect($e->toArray())->toBe(['code' => 'code.a', 'message' => 'msg', 'path' => '/p', 'line' => 12]);
+    expect($e->toArray())->toBe(['code' => 'code.a', 'message' => 'msg', 'path' => '/p', 'line' => 12, 'severity' => 'error']);
 });
 
 it('Error defaults line to null', function (): void {

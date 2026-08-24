@@ -14,6 +14,7 @@ use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\StepExecuted as StepExecutedEvent;
 use Alama\Arazzo\Runner\Events\StepFailed as StepFailedEvent;
 use Alama\Arazzo\Runner\Events\StepStarted;
+use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
@@ -143,6 +144,9 @@ class StepExecutionWorker
                     'statusCode' => $outcome->statusCode,
                     'request' => $outcome->request ?? [],
                     'response' => ['statusCode' => $outcome->statusCode, 'headers' => $outcome->responseHeaders, 'body' => $outcome->responseBody],
+                    'rawBody' => $outcome->rawBody,
+                    'contentType' => $outcome->contentType,
+                    'failureCategory' => $outcome->failureCategory,
                     'outputs' => $outcome->outputs,
                     'inputs' => $outcome->inputs,
                     'attempts' => $attempt,
@@ -230,18 +234,24 @@ class StepExecutionWorker
                     new DateTimeImmutable(),
                 ));
             } catch (Throwable $t) {
+                $category = match (true) {
+                    $t instanceof SchemaValidationException => 'schema',
+                    default => 'execution',
+                };
                 $this->events->dispatch(new StepFailedEvent(
                     $executionId,
                     $context->getWorkflowId() ?? '',
                     $step->stepId,
                     $t,
                     new DateTimeImmutable(),
+                    $category,
                 ));
                 $this->events->dispatch(new RunFailed(
                     $executionId,
                     $context->getWorkflowId() ?? '',
                     $t,
                     new DateTimeImmutable(),
+                    $category,
                 ));
                 throw $t;
             }

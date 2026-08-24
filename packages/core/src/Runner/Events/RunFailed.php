@@ -14,6 +14,7 @@ final readonly class RunFailed
         public string $workflowId,
         public Throwable $cause,
         public DateTimeImmutable $at,
+        public string $category = 'execution',
     ) {
     }
 }

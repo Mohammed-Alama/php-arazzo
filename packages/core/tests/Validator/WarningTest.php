@@ -8,7 +8,7 @@ use Alama\Arazzo\Validator\Warning;
 
 it('Warning toArray returns full shape', function (): void {
     $w = new Warning('code.w', 'wmsg', '/x', 5);
-    expect($w->toArray())->toBe(['code' => 'code.w', 'message' => 'wmsg', 'path' => '/x', 'line' => 5]);
+    expect($w->toArray())->toBe(['code' => 'code.w', 'message' => 'wmsg', 'path' => '/x', 'line' => 5, 'severity' => 'warning']);
 });
 
 it('Warning defaults line to null', function (): void {
