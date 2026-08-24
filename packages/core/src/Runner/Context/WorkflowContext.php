@@ -25,10 +25,36 @@ final class WorkflowContext
         private ?string $workflowId = null,
         private ?string $executionId = null,
         private array $workflows = [],
+        private int $stepsSpent = 0,
+        /** @var list<string> */
+        private array $workflowCallStack = [],
     ) {
         if ($this->executionId === null) {
             $this->executionId = uniqid('run_', true);
         }
+    }
+
+    public function getStepsSpent(): int
+    {
+        return $this->stepsSpent;
+    }
+
+    /** @return list<string> */
+    public function getWorkflowCallStack(): array
+    {
+        return $this->workflowCallStack;
+    }
+
+    /**
+     * @param list<string> $workflowCallStack
+     */
+    public function withBudget(int $stepsSpent, array $workflowCallStack): self
+    {
+        $new = new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
+        $new->stepsSpent = $stepsSpent;
+        $new->workflowCallStack = $workflowCallStack;
+
+        return $new;
     }
 
     /**
@@ -39,6 +65,11 @@ final class WorkflowContext
         Workflow $target,
         array $inputs,
     ): self {
+        // Children SHARE the parent's step budget and call stack: nested
+        // attempts consume from the same pool and depth guards still apply.
+        $callStack = $parent->getWorkflowCallStack();
+        $callStack[] = $target->workflowId;
+
         $child = new self(
             definitionId: $parent->getDefinitionId(),
             inputs: $inputs,
@@ -46,6 +77,8 @@ final class WorkflowContext
             components: $parent->getComponents(),
             workflowId: $target->workflowId,
             executionId: uniqid('run_', true),
+            stepsSpent: $parent->getStepsSpent(),
+            workflowCallStack: $callStack,
         );
         $child->parentRunId = $parent->getExecutionId();
 
@@ -116,12 +149,12 @@ final class WorkflowContext
 
     public function withWorkflowId(string $workflowId): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     public function withExecutionId(string $executionId): self
     {
-        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $this->steps, $this->components, $this->workflowId, $executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     /**
@@ -132,7 +165,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId] = $result;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     /**
@@ -143,7 +176,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['request'] = $request;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     /**
@@ -154,7 +187,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['response'] = $response;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     public function withStepOutput(string $stepId, string $key, mixed $value): self
@@ -162,7 +195,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['outputs'][$key] = $value;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     public function withInput(string $name, mixed $value): self
@@ -170,7 +203,7 @@ final class WorkflowContext
         $inputs = $this->inputs;
         $inputs[$name] = $value;
 
-        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     /**
@@ -178,7 +211,7 @@ final class WorkflowContext
      */
     public function withInputs(array $inputs): self
     {
-        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $inputs, $this->steps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     /**
@@ -192,7 +225,7 @@ final class WorkflowContext
         $existing['inputs'] = $inputs;
         $newSteps[$stepId] = $existing;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     public function getStepStatus(string $stepId): ?StepStatus
@@ -211,7 +244,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['status'] = $status;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     public function getStepAttempts(string $stepId): int
@@ -224,7 +257,7 @@ final class WorkflowContext
         $newSteps = $this->steps;
         $newSteps[$stepId]['attempts'] = ($newSteps[$stepId]['attempts'] ?? 0) + 1;
 
-        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows);
+        return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     /**

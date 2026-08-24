@@ -45,10 +45,23 @@ final readonly class ExecutionState implements JsonSerializable
     ) {
     }
 
-    /** @param array<string, mixed> $inputs */
-    public static function start(string $executionId, string $definitionId, string $workflowId, array $inputs = [], int $maxSteps = 1000, int $maxWorkflowDepth = 32, array $components = []): self
+    /**
+     * @param array<string, mixed> $inputs
+     * @param list<string>|null $workflowCallStack
+     */
+    public static function start(string $executionId, string $definitionId, string $workflowId, array $inputs = [], int $maxSteps = 1000, int $maxWorkflowDepth = 32, array $components = [], int $stepsSpent = 0, ?array $workflowCallStack = null): self
     {
-        return new self($executionId, $definitionId, $workflowId, null, $inputs, [], [], [], [], [], 0, $maxSteps, [$workflowId], $maxWorkflowDepth, $components);
+        return new self($executionId, $definitionId, $workflowId, null, $inputs, [], [], [], [], [], $stepsSpent, $maxSteps, $workflowCallStack ?? [$workflowId], $maxWorkflowDepth, $components);
+    }
+
+    /**
+     * Re-seeds budget/call-stack from a persisted context (queue resume).
+     *
+     * @param list<string> $workflowCallStack
+     */
+    public function restoreBudget(int $stepsSpent, array $workflowCallStack): self
+    {
+        return $this->copy(stepsSpent: $stepsSpent, workflowCallStack: $workflowCallStack);
     }
 
     /** @param array<string, mixed> $values */

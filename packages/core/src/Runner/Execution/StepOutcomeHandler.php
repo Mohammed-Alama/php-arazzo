@@ -223,6 +223,17 @@ class StepOutcomeHandler
         }
 
         $result = $this->invoker->invoke($invoke, $context);
+
+        // The child drew from the shared budget; the parent advances to at
+        // least the child's final consumption.
+        $stack = $context->getWorkflowCallStack();
+        foreach ($result->workflowCallStack as $wfId) {
+            if (!in_array($wfId, $stack, true)) {
+                $stack[] = $wfId;
+            }
+        }
+        $context = $context->withBudget(max($context->getStepsSpent(), $result->stepsSpent), $stack);
+
         $context = $context->withWorkflowData($invoke->workflowId, ['inputs' => $result->inputs, 'outputs' => $result->outputs]);
         $context = $context->withStepOutput($step->stepId, $invoke->name, $result->outputs);
         $context = $context->withStepStatus($step->stepId, StepStatus::Succeeded);

@@ -62,7 +62,17 @@ class WorkflowExecutor
     /** @param array<string, mixed> $inputs */
     private function executeCanonically(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context, string $executionId): ExecutionResult
     {
-        $state = ExecutionState::start($executionId, $context?->getDefinitionId() ?? $workflow->workflowId, $workflow->workflowId, $inputs, components: $context?->getComponents() ?? []);
+        // A caller-provided context may carry an inherited budget (nested
+        // invocation): children continue from it instead of resetting.
+        $state = ExecutionState::start(
+            $executionId,
+            $context?->getDefinitionId() ?? $workflow->workflowId,
+            $workflow->workflowId,
+            $inputs,
+            components: $context?->getComponents() ?? [],
+            stepsSpent: $context?->getStepsSpent() ?? 0,
+            workflowCallStack: $context !== null && $context->getWorkflowCallStack() !== [] ? $context->getWorkflowCallStack() : null,
+        );
         $currentWorkflow = $workflow;
         $stepId = $this->firstStep($workflow);
         $results = [];
@@ -107,12 +117,12 @@ class WorkflowExecutor
                     if ($transition->status === 'failed') {
                         $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable(), 'criteria'));
 
-                        return new ExecutionResult($currentWorkflow->workflowId, 'failed', [], $results);
+                        return new ExecutionResult($currentWorkflow->workflowId, 'failed', [], $results, $state->stepsSpent, $state->workflowCallStack);
                     }
                     $outputs = $this->workflowEngine->evaluateWorkflowOutputs($document, $currentWorkflow, $state);
                     $this->events->dispatch(new RunCompleted($executionId, $currentWorkflow->workflowId, $outputs, new DateTimeImmutable()));
 
-                    return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $outputs, $results);
+                    return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $outputs, $results, $state->stepsSpent, $state->workflowCallStack);
                 }
                 if ($transition->workflowId !== null && $transition->workflowId !== $currentWorkflow->workflowId) {
                     $currentWorkflow = $this->workflow($document, $transition->workflowId);
@@ -125,7 +135,7 @@ class WorkflowExecutor
             throw $t;
         }
 
-        return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $state->outputs, $results);
+        return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $state->outputs, $results, $state->stepsSpent, $state->workflowCallStack);
     }
 
     private function firstStep(Workflow $workflow): ?string

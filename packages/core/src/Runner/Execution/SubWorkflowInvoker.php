@@ -64,6 +64,8 @@ class SubWorkflowInvoker
             status: $outcome->status,
             childRunId: (string) $child->getExecutionId(),
             inputs: $bound,
+            stepsSpent: $outcome->stepsSpent,
+            workflowCallStack: $outcome->workflowCallStack,
         );
     }
 }
