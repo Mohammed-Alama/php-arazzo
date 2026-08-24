@@ -517,20 +517,8 @@ parameters:
 			path: src/Runner/Execution/ArazzoSchemaValidator.php
 
 		-
-			message: '#^Call to an undefined method Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface\:\:compileRequest\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Runner/Execution/AsyncApiStepExecutor.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 1
-			path: src/Runner/Execution/AsyncApiStepExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\Runner\\Execution\\Contracts\\HttpClientInterface\:\:sendRequest\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Runner/Execution/AsyncApiStepExecutor.php
 

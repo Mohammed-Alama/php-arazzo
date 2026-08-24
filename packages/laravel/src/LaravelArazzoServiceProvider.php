@@ -334,11 +334,15 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton(AsyncApiStepExecutor::class, function ($app) {
+            $httpFactory = new HttpFactory();
+
             return new AsyncApiStepExecutor(
                 $app->make(PendingCorrelationRegistryInterface::class),
                 new ExpressionEvaluator(),
                 $app->make(HttpClientInterface::class),
-                $app->make(ExpressionResolverInterface::class),
+                $httpFactory,
+                $httpFactory,
+                $httpFactory,
             );
         });
 

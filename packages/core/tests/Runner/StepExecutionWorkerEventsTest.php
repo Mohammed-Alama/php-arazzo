@@ -33,7 +33,6 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Psr\Http\Message\RequestInterface;
 
 class WorkerEventsMockLockManager implements LockManagerInterface
 {
@@ -88,11 +87,6 @@ class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
 
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
-    }
-
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
-    {
-        throw new LogicException('not used');
     }
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array

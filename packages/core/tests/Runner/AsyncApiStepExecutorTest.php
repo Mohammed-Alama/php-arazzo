@@ -7,17 +7,20 @@ namespace Tests\Execution;
 use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\PendingCorrelation;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Parameter;
+use Alama\Arazzo\Spec\PayloadReplacement;
+use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Spec\Step;
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -59,38 +62,6 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
     }
 }
 
-class AsyncApiExecutorMockResolver implements ExpressionResolverInterface
-{
-    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
-    {
-        return $expression->raw;
-    }
-
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
-
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
-    {
-        return new Request('POST', 'http://broker.local/publish');
-    }
-
-    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
-    {
-        return [];
-    }
-
-    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
-    {
-        return true;
-    }
-
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
-    {
-        return true;
-    }
-}
-
 function asyncApiExecutorDocument(): ArazzoDocument
 {
     return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), [], null, SpecVersion::V1_1);
@@ -101,7 +72,6 @@ it('supports steps with action send or receive, not steps without an action', fu
         new AsyncApiExecutorMockPendingCorrelations(),
         new ExpressionEvaluator(),
         new AsyncApiExecutorMockClient(),
-        new AsyncApiExecutorMockResolver(),
     );
 
     $plainStep = new Step('s1', null, null, null, null, [], null, [], [], [], []);
@@ -115,21 +85,75 @@ it('supports steps with action send or receive, not steps without an action', fu
 
 it('publishes and resolves immediately for action send', function (): void {
     $client = new AsyncApiExecutorMockClient();
+    $httpFactory = new HttpFactory();
     $executor = new AsyncApiStepExecutor(
         new AsyncApiExecutorMockPendingCorrelations(),
         new ExpressionEvaluator(),
         $client,
-        new AsyncApiExecutorMockResolver(),
+        $httpFactory,
+        $httpFactory,
+        $httpFactory,
     );
 
-    $step = new Step('publish-ride', null, null, null, null, [], null, [], [], [], [], [], 'send');
+    $step = new Step(
+        'publish-ride', null, null, null, null, [], null, [], [], [], [], [],
+        'send',
+        'https://broker.local/publish/rides',
+    );
     $context = new WorkflowContext('def_1', [], [], [], 'wf_1', 'exec_1');
 
     $outcome = $executor->execute($step, $context, asyncApiExecutorDocument(), 'exec_1');
 
     expect($outcome->suspended)->toBeFalse();
     expect($outcome->statusCode)->toBe(202);
+    expect($client->lastRequest)->not->toBeNull()
+        ->and($client->lastRequest->getMethod())->toBe('POST')
+        ->and((string) $client->lastRequest->getUri())->toBe('https://broker.local/publish/rides');
+});
+
+it('compiles parameters and requestBody replacements into the message', function (): void {
+    $client = new AsyncApiExecutorMockClient();
+    $httpFactory = new HttpFactory();
+    $executor = new AsyncApiStepExecutor(
+        new AsyncApiExecutorMockPendingCorrelations(),
+        new ExpressionEvaluator(),
+        $client,
+        $httpFactory,
+        $httpFactory,
+        $httpFactory,
+    );
+
+    $step = new Step(
+        'publish-order',
+        null, null, null, null,
+        [
+            new Parameter('source', ParameterIn::Query, new Expression('{$inputs.origin}')),
+            new Parameter('X-Trace', ParameterIn::Header, 'trace-123'),
+        ],
+        new RequestBody(
+            'application/json',
+            ['orderId' => 'old'],
+            [new PayloadReplacement('/orderId', new Expression('{$inputs.orderId}'))],
+        ),
+        [], [], [], [], [],
+        'send',
+        'https://broker.local/publish/orders?apiVersion=2',
+    );
+    $context = new WorkflowContext('def_1', ['origin' => 'web', 'orderId' => 'ord_42'], [], [], 'wf_1', 'exec_1');
+
+    $outcome = $executor->execute($step, $context, asyncApiExecutorDocument(), 'exec_1');
+
+    expect($outcome->statusCode)->toBe(202);
     expect($client->lastRequest)->not->toBeNull();
+
+    $uri = $client->lastRequest->getUri();
+    expect((string) $uri)->toContain('https://broker.local/publish/orders')
+        ->and((string) $uri)->toContain('apiVersion=2')
+        ->and((string) $uri)->toContain('source=web');
+
+    $body = json_decode($client->lastRequest->getBody()->getContents(), true);
+    expect($body)->toBe(['orderId' => 'ord_42'])
+        ->and($client->lastRequest->getHeaderLine('X-Trace'))->toBe('trace-123');
 });
 
 it('writes a PendingCorrelation and suspends for action receive', function (): void {
@@ -138,7 +162,6 @@ it('writes a PendingCorrelation and suspends for action receive', function (): v
         $pendingCorrelations,
         new ExpressionEvaluator(),
         new AsyncApiExecutorMockClient(),
-        new AsyncApiExecutorMockResolver(),
     );
 
     $step = new Step(
@@ -162,7 +185,6 @@ it('throws when a receive step has no correlationId expression', function (): vo
         new AsyncApiExecutorMockPendingCorrelations(),
         new ExpressionEvaluator(),
         new AsyncApiExecutorMockClient(),
-        new AsyncApiExecutorMockResolver(),
     );
 
     $step = new Step('wait', null, null, null, null, [], null, [], [], [], [], [], 'receive', 'channels/x', null);

@@ -168,7 +168,7 @@ parameters:
 		-
 			message: '#^Cannot call method make\(\) on mixed\.$#'
 			identifier: method.nonObject
-			count: 74
+			count: 73
 			path: src/LaravelArazzoServiceProvider.php
 
 		-
@@ -518,12 +518,6 @@ parameters:
 
 		-
 			message: '#^Parameter \#4 \$eventLedger of class Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler constructor expects Alama\\Arazzo\\Runner\\Execution\\Contracts\\EventLedgerInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/LaravelArazzoServiceProvider.php
-
-		-
-			message: '#^Parameter \#4 \$expressionResolver of class Alama\\Arazzo\\Runner\\Execution\\AsyncApiStepExecutor constructor expects Alama\\Arazzo\\Runner\\Evaluation\\Contracts\\ExpressionResolverInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/LaravelArazzoServiceProvider.php

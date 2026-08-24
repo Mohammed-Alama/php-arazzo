@@ -34,7 +34,6 @@ use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 use Alama\Arazzo\Spec\Workflow;
-use Psr\Http\Message\RequestInterface;
 
 class StepOutcomeMockExecutionRegistry implements ExecutionRegistryInterface
 {
@@ -96,11 +95,6 @@ class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
 
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
-    }
-
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
-    {
-        throw new \LogicException('not used by StepOutcomeHandler tests');
     }
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array

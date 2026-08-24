@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
@@ -20,7 +19,6 @@ it('rejects async fields on 1.0 doc at execution', function () {
         Mockery::mock(PendingCorrelationRegistryInterface::class),
         Mockery::mock(ExpressionEvaluator::class),
         Mockery::mock(HttpClientInterface::class),
-        Mockery::mock(ExpressionResolverInterface::class),
     );
 
     $step = new Step(
@@ -57,7 +55,6 @@ it('accepts async fields on 1.1 doc', function () {
         $pending,
         $evaluator,
         Mockery::mock(HttpClientInterface::class),
-        Mockery::mock(ExpressionResolverInterface::class),
     );
 
     $step = new Step(

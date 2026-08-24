@@ -34,7 +34,6 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener;
-use Psr\Http\Message\RequestInterface;
 
 class WorkerMockLockManager implements LockManagerInterface
 {
@@ -84,11 +83,6 @@ class WorkerMockExpressionResolver implements ExpressionResolverInterface
 
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {
-    }
-
-    public function compileRequest(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): RequestInterface
-    {
-        throw new \LogicException('not used -- protocol dispatch is faked directly in these tests');
     }
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array

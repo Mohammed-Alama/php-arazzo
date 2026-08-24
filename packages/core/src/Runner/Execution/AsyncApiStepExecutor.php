@@ -6,15 +6,22 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
+use JsonException;
 use LogicException;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
+use Psr\Http\Message\UriInterface;
 
 final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 {
@@ -22,7 +29,9 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private ExpressionEvaluator $evaluator,
         private HttpClientInterface $httpClient,
-        private ExpressionResolverInterface $expressionResolver,
+        private ?RequestFactoryInterface $requestFactory = null,
+        private ?StreamFactoryInterface $streamFactory = null,
+        private ?UriFactoryInterface $uriFactory = null,
     ) {
     }
 
@@ -40,8 +49,8 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
         }
 
         if ($step->action === 'send') {
-            $request = $this->expressionResolver->compileRequest($step, $context, $document);
-            $response = $this->httpClient->sendRequest($request);
+            $message = $this->compileMessage($step, $context, $document);
+            $response = $this->httpClient->sendRequest($message);
 
             return StepExecutionOutcome::resolved($response->getStatusCode(), [], []);
         }
@@ -62,5 +71,122 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
         $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->channelPath);
 
         return StepExecutionOutcome::suspended();
+    }
+
+    /**
+     * Compiles an outgoing message into a POST request targeting the step's
+     * channelPath. Parameters become query arguments (or headers when declared
+     * `in: header`); the requestBody payload, with its replacements applied,
+     * becomes the JSON body.
+     */
+    private function compileMessage(Step $step, WorkflowContext $context, ArazzoDocument $document): RequestInterface
+    {
+        $factory = $this->requestFactory
+            ?? throw ExecutionException::messageFactoryMissing($step->stepId);
+        $streams = $this->streamFactory
+            ?? throw ExecutionException::messageFactoryMissing($step->stepId);
+        $uris = $this->uriFactory
+            ?? throw ExecutionException::messageFactoryMissing($step->stepId);
+
+        $uri = $this->resolveChannelUri($step);
+
+        $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
+
+        $query = [];
+        $headers = [];
+        foreach ($step->parameters as $parameter) {
+            $value = $parameter->value instanceof Expression
+                ? $this->evaluator->evaluate($parameter->value, $evaluationContext)
+                : $parameter->value;
+
+            if ($parameter->in?->value === 'header') {
+                $headers[$parameter->name] = self::stringify($value);
+
+                continue;
+            }
+
+            $query[$parameter->name] = $value;
+        }
+
+        $payload = $this->buildPayload($step, $evaluationContext);
+
+        try {
+            $encoded = json_encode($payload, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new LogicException("Step '{$step->stepId}' produced an unencodable message payload: {$e->getMessage()}");
+        }
+
+        // Merge step parameters over any query arguments embedded in the channel URI.
+        $existing = [];
+        parse_str($uri->getQuery(), $existing);
+
+        $target = $uri->withQuery(http_build_query(array_merge($existing, $query)));
+
+        $request = $factory
+            ->createRequest('POST', $target)
+            ->withHeader('Content-Type', 'application/json');
+
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
+        return $request->withBody($streams->createStream($encoded));
+    }
+
+    private function resolveChannelUri(Step $step): UriInterface
+    {
+        $channelPath = $step->channelPath
+            ?? throw new LogicException("Send step '{$step->stepId}' has no channelPath.");
+
+        if (preg_match('#^https?://#i', $channelPath) !== 1) {
+            throw ExecutionException::unresolvableChannelTarget($step->stepId, $channelPath);
+        }
+
+        return ($this->uriFactory ?? throw ExecutionException::messageFactoryMissing($step->stepId))
+            ->createUri($channelPath);
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    private function buildPayload(Step $step, EvaluationContext $context): array
+    {
+        $bodyData = [];
+        $requestBody = $step->requestBody;
+        if ($requestBody !== null && is_array($requestBody->payload)) {
+            $bodyData = $requestBody->payload;
+
+            foreach ($requestBody->replacements as $replacement) {
+                $value = $replacement->value instanceof Expression
+                    ? $this->evaluator->evaluate($replacement->value, $context)
+                    : $replacement->value;
+
+                $segments = explode('/', ltrim($replacement->target, '/'));
+                $current = &$bodyData;
+                foreach ($segments as $i => $segment) {
+                    $segment = str_replace(['~1', '~0'], ['/', '~'], $segment);
+                    if ($i === count($segments) - 1) {
+                        $current[$segment] = $value;
+                    } else {
+                        if (!isset($current[$segment]) || !is_array($current[$segment])) {
+                            $current[$segment] = [];
+                        }
+                        $current = &$current[$segment];
+                    }
+                }
+                unset($current);
+            }
+        }
+
+        return $bodyData;
+    }
+
+    private static function stringify(mixed $value): string
+    {
+        return match (true) {
+            is_string($value) => $value,
+            is_scalar($value) => (string) $value,
+            default => '',
+        };
     }
 }
