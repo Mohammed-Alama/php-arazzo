@@ -7,9 +7,12 @@ namespace Alama\Arazzo\Tests\Expression;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
 use Alama\Arazzo\Expression\Ast\InputRef;
+use Alama\Arazzo\Expression\Ast\MessageRef;
 use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\OutputRef;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
+use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
@@ -100,3 +103,52 @@ it('parses $steps.s.request.query.name and $steps.s.request.path.id', function (
     expect($path->part->httpPart)->toBe('path')
         ->and($path->part->headerName)->toBe('id');
 });
+
+it('parses $inputs.name#/pointer (1.1)', function () {
+    $ast = (new Parser())->parse('$inputs.user#/address/city');
+    expect($ast)->toBeInstanceOf(InputRef::class)
+        ->and($ast->name)->toBe('user')
+        ->and($ast->jsonPointer)->toBe('/address/city');
+});
+
+it('parses $outputs.name#/pointer (1.1)', function () {
+    $ast = (new Parser())->parse('$outputs.token');
+    expect($ast)->toBeInstanceOf(OutputRef::class)
+        ->and($ast->jsonPointer)->toBeNull();
+
+    $withPtr = (new Parser())->parse('$outputs.token#/claims/sub');
+    expect($withPtr->jsonPointer)->toBe('/claims/sub');
+});
+
+it('parses $steps.s.outputs.o#/pointer (1.1)', function () {
+    $ast = (new Parser())->parse('$steps.fetch.outputs.user#/profile/email');
+    expect($ast)->toBeInstanceOf(StepRef::class)
+        ->and($ast->part)->toBeInstanceOf(OutputPart::class)
+        ->and($ast->part->jsonPointer)->toBe('/profile/email');
+});
+
+it('parses $message.header.Name and $message.payload#/ptr (1.1)', function () {
+    $parser = new Parser();
+
+    $header = $parser->parse('$message.header.X-Trace');
+    expect($header)->toBeInstanceOf(MessageRef::class)
+        ->and($header->part)->toBe('header')
+        ->and($header->name)->toBe('X-Trace');
+
+    $payload = $parser->parse('$message.payload#/order/id');
+    expect($payload)->toBeInstanceOf(MessageRef::class)
+        ->and($payload->part)->toBe('payload')
+        ->and($payload->jsonPointer)->toBe('/order/id');
+});
+
+it('parses bare $self (1.1)', function () {
+    expect((new Parser())->parse('$self'))->toBeInstanceOf(SelfRef::class);
+});
+
+it('rejects malformed message and self forms', function (string $raw): void {
+    (new Parser())->parse($raw);
+})->throws(ExpressionSyntaxException::class)->with([
+    '$message',
+    '$message.payload.extra',
+    '$self.url',
+]);

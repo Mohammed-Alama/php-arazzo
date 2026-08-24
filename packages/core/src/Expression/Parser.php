@@ -9,10 +9,12 @@ use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
 use Alama\Arazzo\Expression\Ast\InputPart;
 use Alama\Arazzo\Expression\Ast\InputRef;
+use Alama\Arazzo\Expression\Ast\MessageRef;
 use Alama\Arazzo\Expression\Ast\OutputPart;
 use Alama\Arazzo\Expression\Ast\OutputRef;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
+use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
@@ -47,6 +49,14 @@ final class Parser
         return match ($head->value) {
             'inputs' => $this->parseSimpleRef($tokens, InputRef::class, $raw, $i),
             'outputs' => $this->parseSimpleRef($tokens, OutputRef::class, $raw, $i),
+            'message' => $this->parseMessageRef(array_slice($tokens, $i), $raw),
+            'self' => (static function () use ($tokens, $raw, $i) {
+                if (count(array_slice($tokens, $i)) !== 1) {
+                    throw new ExpressionSyntaxException("Malformed \$self reference: {$raw}", '', 'expr.syntax');
+                }
+
+                return new SelfRef();
+            })(),
             'url', 'method', 'statusCode' => $this->parseHttpMeta($tokens, $raw, $i),
             'steps' => $this->parseStepRef($tokens, $raw, $i),
             'workflows' => $this->parseWorkflowRef($tokens, $raw, $i),
@@ -66,11 +76,19 @@ final class Parser
      */
     private function parseSimpleRef(array $tokens, string $refClass, string $raw, int $i): InputRef|OutputRef
     {
-        // keyword . name  (expect exactly 3 tokens from $i)
+        // keyword . name [ # /pointer ]  (3 tokens, or 4+ with a JSON Pointer suffix)
         $rest = array_slice($tokens, $i);
-        if (count($rest) !== 3
+        if (count($rest) < 3
             || $rest[1]->kind !== TokenKind::Dot
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)) {
+            throw new ExpressionSyntaxException("Malformed reference: {$raw}", '', 'expr.syntax');
+        }
+
+        if (count($rest) > 3) {
+            if ($rest[3]->kind === TokenKind::Hash) {
+                return new $refClass($rest[2]->value, $this->parseJsonPointer(array_slice($rest, 3), $raw));
+            }
+
             throw new ExpressionSyntaxException("Malformed reference: {$raw}", '', 'expr.syntax');
         }
 
@@ -107,7 +125,7 @@ final class Parser
         $tail = array_slice($rest, 5);
 
         return new StepRef($stepId, match ($sub) {
-            'outputs' => $this->parseNamedPart($tail, OutputPart::class, $raw),
+            'outputs' => $this->parseNamedPart($tail, OutputPart::class, $raw, allowPointer: true),
             'inputs' => $this->parseNamedPart($tail, InputPart::class, $raw),
             'request' => $this->parseHttpPart($tail, RequestPart::class, $raw),
             'response' => $this->parseHttpPart($tail, ResponsePart::class, $raw),
@@ -119,13 +137,49 @@ final class Parser
      * @param list<Token> $rest
      * @param class-string<OutputPart|InputPart> $cls
      */
-    private function parseNamedPart(array $rest, string $cls, string $raw): OutputPart|InputPart
+    private function parseNamedPart(array $rest, string $cls, string $raw, bool $allowPointer = false): OutputPart|InputPart
     {
-        if (count($rest) !== 2 || $rest[0]->kind !== TokenKind::Dot || ($rest[1]->kind !== TokenKind::Name && $rest[1]->kind !== TokenKind::Keyword)) {
+        if (count($rest) < 2 || $rest[0]->kind !== TokenKind::Dot || ($rest[1]->kind !== TokenKind::Name && $rest[1]->kind !== TokenKind::Keyword)) {
+            throw new ExpressionSyntaxException("Malformed reference: {$raw}", '', 'expr.syntax');
+        }
+
+        if ($allowPointer && count($rest) > 2) {
+            if ($rest[2]->kind === TokenKind::Hash && $cls === OutputPart::class) {
+                return new OutputPart($rest[1]->value, $this->parseJsonPointer(array_slice($rest, 2), $raw));
+            }
+
+            throw new ExpressionSyntaxException("Unexpected tokens after '{$rest[1]->value}' in: {$raw}", '', 'expr.syntax');
+        }
+
+        if (count($rest) !== 2) {
             throw new ExpressionSyntaxException("Malformed reference: {$raw}", '', 'expr.syntax');
         }
 
         return new $cls($rest[1]->value);
+    }
+
+    /** @param list<Token> $rest */
+    private function parseMessageRef(array $rest, string $raw): MessageRef
+    {
+        // message . header . <name>   |   message . payload [ # /pointer ]
+        if (count($rest) < 3
+            || $rest[1]->kind !== TokenKind::Dot
+            || $rest[2]->kind !== TokenKind::Keyword) {
+            throw new ExpressionSyntaxException("Malformed message reference: {$raw}", '', 'expr.syntax');
+        }
+
+        $part = $rest[2]->value;
+        $tail = array_slice($rest, 3);
+
+        if ($part === 'header') {
+            return new MessageRef('header', $this->parseHeaderName($tail, $raw), null);
+        }
+
+        if ($part === 'payload') {
+            return new MessageRef('payload', null, $this->parseJsonPointer($tail, $raw));
+        }
+
+        throw new ExpressionSyntaxException("Message part must be header or payload in: {$raw}", '', 'expr.syntax');
     }
 
     /**

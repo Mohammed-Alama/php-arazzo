@@ -9,7 +9,7 @@ final class Lexer
     private const KEYWORDS = [
         'inputs', 'outputs', 'steps', 'workflows', 'sourceDescriptions',
         'components', 'response', 'request', 'url', 'method', 'statusCode',
-        'body', 'header', 'query', 'path',
+        'body', 'header', 'query', 'path', 'message', 'payload', 'self',
     ];
 
     /** @return list<Token> */

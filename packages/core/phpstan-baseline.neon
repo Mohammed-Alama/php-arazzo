@@ -427,12 +427,6 @@ parameters:
 			path: src/Runner/Evaluation/ExpressionEvaluator.php
 
 		-
-			message: '#^Parameter \#1 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPointer\:\:resolve\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Runner/Evaluation/ExpressionEvaluator.php
-
-		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -443,12 +437,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Runner/Evaluation/JsonPathEvaluator.php
-
-		-
-			message: '#^Parameter \#1 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPointer\:\:resolve\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Runner/Evaluation/SelectorEvaluator.php
 
 		-
 			message: '#^Parameter \#2 \$data of static method Alama\\Arazzo\\Runner\\Evaluation\\JsonPathEvaluator\:\:evaluate\(\) expects array\<string, mixed\>\|object, array\<mixed, mixed\>\|object given\.$#'

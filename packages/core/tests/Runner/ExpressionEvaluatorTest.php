@@ -169,3 +169,43 @@ it('evaluates request query and path parts', function () {
     expect($evaluator->evaluate(new Expression('{$steps.step1.request.query.page}'), new EvaluationContext($context, 'step1')))->toBe('2');
     expect($evaluator->evaluate(new Expression('{$steps.step1.request.path.missing}'), new EvaluationContext($context, 'step1')))->toBeNull();
 });
+
+it('resolves json pointer suffixes on inputs and outputs (1.1)', function () {
+    $context = (new WorkflowContext('def_1'))
+        ->withStepOutput('fetch', 'user', ['profile' => ['email' => 'a@b.c']]);
+
+    $evaluator = new ExpressionEvaluator();
+
+    // inputs pointer
+    $inputsCtx = new WorkflowContext('def_1', ['user' => ['address' => ['city' => 'Berlin']]]);
+    expect($evaluator->evaluate(new Expression('{$inputs.user#/address/city}'), new EvaluationContext($inputsCtx, 's1')))->toBe('Berlin');
+
+    // step-outputs pointer
+    expect($evaluator->evaluate(new Expression('{$steps.fetch.outputs.user#/profile/email}'), new EvaluationContext($context, 'other')))
+        ->toBe('a@b.c');
+});
+
+it('resolves $message.header and $message.payload against the current step response (1.1)', function () {
+    $context = (new WorkflowContext('def_1'))->withStepResponse('consume', [
+        'statusCode' => 200,
+        'headers' => ['X-Trace' => 'tr-9'],
+        'body' => ['order' => ['id' => 'ord_7']],
+    ]);
+
+    $evaluator = new ExpressionEvaluator();
+    $ctx = new EvaluationContext($context, 'consume');
+
+    expect($evaluator->evaluate(new Expression('{$message.header.X-Trace}'), $ctx))->toBe('tr-9')
+        ->and($evaluator->evaluate(new Expression('{$message.payload#/order/id}'), $ctx))->toBe('ord_7');
+});
+
+it('resolves $self to the document self URI (1.1)', function () {
+    $doc = (new \ReflectionClass(ArazzoDocument::class))->newInstanceWithoutConstructor();
+    $prop = new \ReflectionProperty(ArazzoDocument::class, 'self');
+    $prop->setValue($doc, 'https://api.example.com/workflows.arazzo.yaml');
+
+    $evaluator = new ExpressionEvaluator();
+
+    expect($evaluator->evaluate(new Expression('{$self}'), new EvaluationContext(new WorkflowContext('d'), null, $doc)))
+        ->toBe('https://api.example.com/workflows.arazzo.yaml');
+});

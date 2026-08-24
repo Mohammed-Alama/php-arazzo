@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Runner\Evaluation;
 class JsonPointer
 {
     /**
-     * @param array<string, mixed> $data
+     * @param array<array-key, mixed> $data
      */
     public static function resolve(array $data, ?string $pointer): mixed
     {
