@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Context\Contracts;
 
+// Framework port (kept as a seam): hot state may live in Redis, DB, or memory depending on the adapter.
+
 interface StateStoreInterface
 {
     /**

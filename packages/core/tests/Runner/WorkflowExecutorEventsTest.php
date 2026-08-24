@@ -67,7 +67,7 @@ it('dispatches happy-path sequence RunStarted -> StepStarted -> StepExecuted -> 
     $log = [];
     captureEvents($d, $log);
 
-    (new WorkflowExecutor(createRecordingStepExec(), new WorkflowEngine(new TestExpressionResolver()), null, $d))->execute($wf, docWithWorkflow($wf), []);
+    (new WorkflowExecutor(createRecordingStepExec(), new WorkflowEngine(new TestExpressionResolver()), events: $d))->execute($wf, docWithWorkflow($wf), []);
 
     expect($log)->toBe(['RunStarted', 'StepStarted', 'StepExecuted', 'RunCompleted']);
 });
@@ -80,7 +80,7 @@ it('dispatches StepFailed + RunFailed on step failure', function () {
     $log = [];
     captureEvents($d, $log);
 
-    (new WorkflowExecutor(createRecordingStepExec(succeed: false), new WorkflowEngine(new TestExpressionResolver()), null, $d))->execute($wf, docWithWorkflow($wf), []);
+    (new WorkflowExecutor(createRecordingStepExec(succeed: false), new WorkflowEngine(new TestExpressionResolver()), events: $d))->execute($wf, docWithWorkflow($wf), []);
 
     expect($log)->toBe(['RunStarted', 'StepStarted', 'StepFailed', 'RunFailed']);
 });
@@ -93,7 +93,7 @@ it('dispatches RunFailed and rethrows on caught exception', function () {
     $log = [];
     captureEvents($d, $log);
 
-    $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), new WorkflowEngine(new TestExpressionResolver()), null, $d);
+    $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), new WorkflowEngine(new TestExpressionResolver()), events: $d);
 
     expect(fn () => $executor->execute($wf, docWithWorkflow($wf), []))
         ->toThrow(RuntimeException::class, 'crash');

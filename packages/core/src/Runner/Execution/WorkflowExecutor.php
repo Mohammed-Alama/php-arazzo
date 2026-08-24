@@ -14,7 +14,6 @@ use Alama\Arazzo\Runner\Events\StepFailed as StepFailedEvent;
 use Alama\Arazzo\Runner\Events\StepRetried;
 use Alama\Arazzo\Runner\Events\StepStarted;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionLoggerInterface;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
@@ -35,7 +34,6 @@ class WorkflowExecutor
     public function __construct(
         private StepExecutor $stepExecutor,
         private WorkflowEngine $workflowEngine,
-        private ?ExecutionLoggerInterface $logger = null,
         ?EventDispatcherInterface $events = null,
         private ?PreflightValidator $preflight = null,
     ) {
@@ -97,7 +95,6 @@ class WorkflowExecutor
                     throw new LogicException("Unknown step '{$stepId}' in workflow '{$currentWorkflow->workflowId}'.");
                 }
                 $attempt = $state->attemptFor($stepId) + 1;
-                $this->logger?->logStepStarted($stepId);
                 $this->events->dispatch(new StepStarted($executionId, $currentWorkflow->workflowId, $stepId, $attempt, new DateTimeImmutable()));
                 [$stepContext, $success] = $this->stepExecutor->execute(StepParameterMerger::merge($step, $currentWorkflow), $state->toContext(), $document);
                 $raw = $stepContext->getSteps()[$stepId] ?? [];

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution\Contracts;
 
+// Framework port (kept as a seam): durable event append targets differ per deployment (DB table today).
+
 interface EventLedgerInterface
 {
     /**

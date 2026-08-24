@@ -13,7 +13,6 @@ flowchart LR
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Runner</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>Runner</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>Runner</small>"]:::contract
-    I_ExecutionLoggerInterface["ExecutionLoggerInterface<br/><small>Runner</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>Runner</small>"]:::contract
     I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Runner</small>"]:::contract
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Runner</small>"]:::contract
@@ -78,8 +77,6 @@ flowchart LR
     C_core_Runner_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_core_Runner_ExpressionEvaluator["ExpressionEvaluator<br/><small>Runner</small>"]:::implCore
     C_core_Runner_ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
-    C_core_Runner_ArazzoExpressionEvaluator["ArazzoExpressionEvaluator<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_ArazzoExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
     C_core_Runner_Literal["Literal<br/><small>Runner</small>"]:::implCore
     C_core_Runner_Literal -.->|implements| I_ConditionNode
     C_core_Runner_LogicalOp["LogicalOp<br/><small>Runner</small>"]:::implCore
@@ -208,7 +205,6 @@ flowchart LR
     C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
     C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
     C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
-    N_ExecutionLoggerInterface["no implementation found"]:::orphan --> I_ExecutionLoggerInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
