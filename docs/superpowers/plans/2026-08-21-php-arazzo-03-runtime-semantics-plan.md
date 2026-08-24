@@ -26,27 +26,27 @@
 - [x] Add failing tests for every expression context, escaped JSON Pointer tokens, absent values, null, false, zero, empty strings, and empty arrays. _(falsy survival additionally pinned by ExecutionState round-trip tests)_
 - [x] Update `packages/core/src/Expression/Parser.php` and AST nodes to preserve typed context and pointer segments.
 - [x] Update `ExpressionEvaluator.php` and `VariableContext.php` so missing values are not confused with valid falsy values. _(superseded: evaluator now takes EvaluationContext after the namespace restructure; missing-vs-null distinction covered by ConditionEvaluatorTest)_
-- [ ] Add contextual fields to `ExpressionSyntaxException` and unresolved-reference exceptions. _(not done: both remain bare ArazzoException subclasses)_
+- [x] Add contextual fields to `ExpressionSyntaxException` and unresolved-reference exceptions. _(a3cdc51: expression+offset / sourceName)_
 - [x] Run `cd packages/core && vendor/bin/pest tests/Expression tests/Runner/ExpressionEvaluatorTest.php`; expect PASS.
 - [x] Commit `fix: preserve typed Arazzo expression values and context`. _(landed across expression/evaluation commits)_
 
 ### Task 2: Complete selector capability interfaces
 
-- [ ] Add failing tests for selectors in parameters, request-body replacements, outputs, success criteria, and action criteria. _(partial: outputs/replacements/criteria covered; Selector parameter VALUES are validated but not evaluated at runtime by ExpressionValueResolver)_
+- [x] Add failing tests for selectors in parameters, request-body replacements, outputs, success criteria, and action criteria. _(a3cdc51: Selector values now resolved at runtime by ExpressionValueResolver in both adapters)_
 - [x] Define a selector evaluator contract with selector type/version, context, and typed result/error. _(now at Runner/Evaluation/SelectorEvaluator.php; returns mixed with typed errors)_
 - [x] Implement JSONPath and supported XPath versions through existing evaluator classes; reject unsupported versions explicitly. (xpath-10 only)
 - [x] Remove generic `RuntimeException` selector failures from `DefaultOpenApiExecutor.php` and `ArazzoOutputExtractor.php`. _(selectors raise typed SelectorEvaluationException)_
-- [ ] Add capability errors identifying selector type/version and document location. _(partial: exception carries type/version codes; document location is hardcoded to "/")_
+- [x] Add capability errors identifying selector type/version and document location. _(a3cdc51: location = workflows/<id>/steps/<stepId>)_
 - [x] Run `cd packages/core && vendor/bin/pest tests/Resolver/SelectorEvaluatorTest.php tests/Resolver/Xpath tests/Runner/ArazzoOutputExtractorTest.php`; expect PASS.
 - [x] Commit `feat: evaluate Arazzo selectors through typed capabilities`. _(landed as 48f01ef + follow-ups)_
 
 ### Task 3: Separate transport, protocol, and execution failures
 
-- [ ] Add failing tests for timeout/connection errors, malformed response bodies, response schema failures, unmet criteria, and cancellation. _(partial: timeouts/schema/criteria covered incl. conformance fixtures; malformed-body and cancellation lack dedicated tests)_
+- [ ] Add failing tests for timeout/connection errors, malformed response bodies, response schema failures, unmet criteria, and cancellation. _(partial: timeouts/schema/criteria/transport covered; cancellation has no concept in core and malformed-body still lacks a dedicated test)_
 - [ ] Create stable exception classes/codes for transport, protocol, schema, authoring, execution, and cancellation failures. _(not done as a taxonomy: schema/execution/goto/budget exceptions exist, but no TransportException/ProtocolException/CancellationException; transport failures deliberately become retryable synthetic-500 outcomes instead)_
 - [x] Modify `StepExecutor.php` so only expected response decoding/protocol cases become step outcomes; transport exceptions propagate as transport failures. _(superseded by design: StepExecutor and HttpStepExecutor convert transport throwables into synthetic 500 step outcomes so onFailure/retry applies - pinned by the transport-failure-retry-exhaustion fixture)_
-- [ ] Preserve raw response body and content type alongside decoded JSON. _(not done: only decoded body + flattened headers are kept on the outcome/context)_
-- [ ] Update event and result payloads to retain error category and cause. _(partial: Throwable causes are carried on StepFailed/RunFailed and retry_exhausted entries exist; there is no category field)_
+- [x] Preserve raw response body and content type alongside decoded JSON. _(a3cdc51: on StepExecutionOutcome, worker step records, and sync step responses)_
+- [x] Update event and result payloads to retain error category and cause. _(a3cdc51: category on StepFailed/RunFailed - criteria/schema/transport/execution)_
 - [x] Run focused runner tests and `composer run analyse`; expect PASS.
 - [x] Commit `feat: classify runtime and transport failures`. _(landed as the transport-policy work in a4522a8/0b06d0a)_
 

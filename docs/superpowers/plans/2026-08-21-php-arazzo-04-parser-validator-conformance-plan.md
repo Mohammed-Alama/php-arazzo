@@ -32,7 +32,7 @@
 
 - [x] Add failing tests for duplicate IDs, unknown fields, invalid action targets, dependency cycles, invalid operation references, invalid expression contexts, and invalid replacement pointers. _(49 rules under Validator/Rules with dedicated tests)_
 - [x] Register all active rules in `Validator.php` and ensure disabled rules are observable in the result. _(RuleSet::default(disabled) + RuleSetTest)_
-- [ ] Add stable rule codes and severity to `Error.php`, `Warning.php`, and `ValidationResult.php`. _(partial: stable codes exist; there is no separate severity field on Error/Warning)_
+- [x] Add stable rule codes and severity to `Error.php`, `Warning.php`, and `ValidationResult.php`. _(a3cdc51: Severity enum with error/warning defaults, exposed via toArray)_
 - [x] Ensure strict mode rejects unsupported content while permissive mode preserves extensions and reports diagnostics.
 - [x] Run `cd packages/core && vendor/bin/pest tests/Validator`; expect PASS.
 - [x] Commit `feat: complete structural and semantic Arazzo validation`. _(landed across the validator commits incl. OfficialSchemaRule)_
