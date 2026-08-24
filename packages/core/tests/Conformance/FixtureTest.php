@@ -3,8 +3,11 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Tests\Conformance\FixtureRunner;
+use Alama\Arazzo\Tests\Conformance\QueueFixtureRunner;
 
-foreach (glob(__DIR__ . '/fixtures/*.json') ?: [] as $fixtureFile) {
+$fixtureFiles = glob(__DIR__ . '/fixtures/*.json') ?: [];
+
+foreach ($fixtureFiles as $fixtureFile) {
     $fixture = json_decode((string) file_get_contents($fixtureFile), true, 512, JSON_THROW_ON_ERROR);
     $name = $fixture['name'] ?? basename($fixtureFile);
 
@@ -31,6 +34,20 @@ foreach (glob(__DIR__ . '/fixtures/*.json') ?: [] as $fixtureFile) {
 
         foreach ($expectation['eventsContain'] ?? [] as $eventClass) {
             expect($observed['events'])->toContain($eventClass);
+        }
+    });
+
+    test("queue adapter parity: {$name}", function () use ($fixture, $name) {
+        $sync = (new FixtureRunner())->run($fixture);
+        $queued = (new QueueFixtureRunner())->run($fixture);
+
+        // The queued adapter must produce the same observable outcome as
+        // the synchronous one for every golden fixture.
+        foreach (['status', 'steps', 'requests', 'outputs'] as $key) {
+            expect($queued[$key])->toBe(
+                $sync[$key],
+                "queue parity mismatch on '{$key}' for fixture '{$name}'",
+            );
         }
     });
 }

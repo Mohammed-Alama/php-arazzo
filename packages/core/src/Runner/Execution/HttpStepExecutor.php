@@ -11,8 +11,6 @@ use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
@@ -38,10 +36,10 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
         $resolvedInputs = [];
         $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+        $valueResolver = new ExpressionValueResolver($this->expressionResolver);
+
         foreach ($parameters as $param) {
-            $val = $param->value instanceof Expression
-                ? $this->expressionResolver->evaluate($param->value, $context, $step->stepId)
-                : $param->value;
+            $val = $valueResolver->resolve($param->value, $context, $step->stepId);
 
             $resolvedInputs[$param->name] = $val;
 
@@ -62,7 +60,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
             $bodyData = PayloadReplacer::apply(
                 $step,
                 is_array($step->requestBody->payload) ? $step->requestBody->payload : [],
-                fn (mixed $replacement) => $this->resolveReplacementValue($replacement, $context),
+                fn (mixed $replacement) => $valueResolver->resolve($replacement->value, $context, $step->stepId),
             );
         }
         $payload->body = empty($bodyData) ? null : $bodyData;
@@ -135,15 +133,6 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
 
         return StepExecutionOutcome::resolved($response->getStatusCode(), $outputs, $body, $resolvedInputs, $requestRecord, $responseHeaders);
-    }
-
-    private function resolveReplacementValue(PayloadReplacement $replacement, WorkflowContext $context): mixed
-    {
-        $value = $replacement->value;
-
-        return $value instanceof Expression
-            ? $this->expressionResolver->evaluate($value, $context, null)
-            : $value;
     }
 
     private function shouldValidateSchema(Step $step): bool

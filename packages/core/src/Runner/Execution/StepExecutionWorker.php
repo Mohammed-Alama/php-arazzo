@@ -9,6 +9,8 @@ use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\CorrelationPending;
+use Alama\Arazzo\Runner\Events\RunCompleted;
+use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\StepExecuted as StepExecutedEvent;
 use Alama\Arazzo\Runner\Events\StepFailed as StepFailedEvent;
 use Alama\Arazzo\Runner\Events\StepStarted;
@@ -28,6 +30,7 @@ use DateTimeImmutable;
 use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Throwable;
 
 class StepExecutionWorker
@@ -164,8 +167,25 @@ class StepExecutionWorker
                 $this->stateStore->save($executionId, $this->serialize($this->contextFromState($transition->state)), $this->stateTtlSeconds);
 
                 if ($transition->isTerminal()) {
-                    $this->executionRegistry->complete($executionId, $transition->status === 'succeeded' ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
-                    $this->eventLedger->append($executionId, $transition->status === 'succeeded' ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
+                    $succeeded = $transition->status === 'succeeded';
+                    $this->executionRegistry->complete($executionId, $succeeded ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
+                    $this->eventLedger->append($executionId, $succeeded ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
+
+                    if ($succeeded) {
+                        $this->events->dispatch(new RunCompleted(
+                            $executionId,
+                            $transition->state->workflowId,
+                            $this->workflowEngine->evaluateWorkflowOutputs($document, $workflow, $transition->state),
+                            new DateTimeImmutable(),
+                        ));
+                    } else {
+                        $this->events->dispatch(new RunFailed(
+                            $executionId,
+                            $transition->state->workflowId,
+                            new RuntimeException("Workflow '{$transition->state->workflowId}' failed at step '{$step->stepId}'."),
+                            new DateTimeImmutable(),
+                        ));
+                    }
                 } elseif ($transition->type !== TransitionType::Suspend) {
                     $targetWorkflow = $this->findWorkflow($document, $transition->workflowId ?? $workflow->workflowId) ?? $workflow;
                     $targetStep = $this->findStep($targetWorkflow, $transition->stepId ?? '');

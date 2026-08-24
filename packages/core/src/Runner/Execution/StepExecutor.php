@@ -12,7 +12,6 @@ use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
@@ -24,8 +23,6 @@ class StepExecutor
     /** @phpstan-ignore property.onlyWritten */
     private EventDispatcherInterface $events;
 
-    private StringInterpolator $interpolator;
-
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
@@ -36,7 +33,7 @@ class StepExecutor
         ?StringInterpolator $interpolator = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
-        $this->interpolator = $interpolator ?? new StringInterpolator($this->expressionResolver);
+        unset($interpolator); // kept for BC; interpolation now flows through ExpressionValueResolver
     }
 
     /**
@@ -161,23 +158,6 @@ class StepExecutor
 
     private function resolveValue(mixed $value, WorkflowContext $context, string $stepId): mixed
     {
-        if ($value instanceof Expression) {
-            return $this->expressionResolver->evaluate($value, $context, $stepId);
-        }
-
-        if (is_string($value) && str_contains($value, '{$')) {
-            return $this->interpolator->interpolate($value, $context, $stepId);
-        }
-
-        // Arazzo parameter/payload values may use the bare runtime-expression
-        // spellings (`$inputs.x`, `${inputs.x}`); normalize them into the
-        // interpolator's `{$...}` template form before evaluation.
-        if (is_string($value) && preg_match('/^\$[{$]?[A-Za-z]/', $value) === 1 && !str_contains($value, ' ')) {
-            $template = $value[1] === '{' ? $value : '{' . $value . '}';
-
-            return $this->interpolator->interpolate($template, $context, $stepId);
-        }
-
-        return $value;
+        return (new ExpressionValueResolver($this->expressionResolver))->resolve($value, $context, $stepId);
     }
 }
