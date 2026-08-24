@@ -104,6 +104,8 @@ class StepExecutionWorker
                     new DateTimeImmutable(),
                 ));
 
+                $step = StepParameterMerger::merge($step, $workflow);
+
                 $executor = $this->findExecutor($step, $document);
                 if ($executor === null) {
                     throw new LogicException("No StepProtocolExecutorInterface supports step '{$step->stepId}'.");

@@ -72,7 +72,7 @@ class WorkflowExecutor
                     new DateTimeImmutable(),
                 ));
 
-                [$context, $success] = $this->stepExecutor->execute($step, $context, $document);
+                [$context, $success] = $this->stepExecutor->execute(StepParameterMerger::merge($step, $workflow), $context, $document);
 
                 $outputs = $context->getSteps()[$stepId]['outputs'] ?? [];
                 $result = new StepResult($stepId, $success, $outputs);
@@ -151,7 +151,7 @@ class WorkflowExecutor
                 $attempt = $state->attemptFor($stepId) + 1;
                 $this->logger?->logStepStarted($stepId);
                 $this->events->dispatch(new StepStarted($executionId, $currentWorkflow->workflowId, $stepId, $attempt, new DateTimeImmutable()));
-                [$stepContext, $success] = $this->stepExecutor->execute($step, new WorkflowContext($state->definitionId, $state->inputs, $state->stepResults, $state->components, $state->workflowId, $state->executionId), $document);
+                [$stepContext, $success] = $this->stepExecutor->execute(StepParameterMerger::merge($step, $currentWorkflow), new WorkflowContext($state->definitionId, $state->inputs, $state->stepResults, $state->components, $state->workflowId, $state->executionId), $document);
                 $raw = $stepContext->getSteps()[$stepId] ?? [];
                 $state = $state->withStepResult($stepId, $raw);
                 $result = new StepResult($stepId, $success, $raw['outputs'] ?? []);
