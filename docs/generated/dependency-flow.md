@@ -3,10 +3,13 @@
 
 # Generated: Dependency Flow
 
-The same weighted coupling data as the metrics table, rendered as a flow:
+The weighted coupling data from the metrics table, rendered as a flow:
 band thickness = number of `use` references from one module to another. Read
 it as "where the architectural mass moves" — thick bands into one module mean
 changes there ripple widely.
+
+Sankey diagrams must be acyclic; where dependencies are bidirectional only
+the heavier direction is drawn and the folded side is listed below the chart.
 
 ```mermaid
 sankey-beta
@@ -52,12 +55,19 @@ Runner,Expression,15
 Runner,Resolver,1
 Runner,Spec,115
 Runner,Support,12
-Runner,Validator,5
-Spec,Expression,3
-Support,Runner,10
+Runner,Validator,6
 Validator,Expression,78
 Validator,Resolver,1
-Validator,Runner,4
 Validator,Spec,88
 Validator,Support,3
 ```
+
+## Folded flows
+
+These references exist in the code but are not drawn: drawing them would close a dependency cycle and Sankey diagrams must stay acyclic. The heavier direction of each cycle is shown above.
+
+| From | To | References |
+|---|---|---:|
+| `Spec` | `Expression` | 3 |
+| `Support` | `Runner` | 10 |
+| `Validator` | `Runner` | 4 |

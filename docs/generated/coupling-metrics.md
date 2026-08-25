@@ -26,12 +26,12 @@ targets. Regenerated before every commit.
 | `Parser` | 10 | 1077 | 4 | 2 | 0.33 |  |
 | `Renderer` | 1 | 253 | 1 | 1 | 0.50 |  |
 | `Resolver` | 11 | 346 | 5 | 2 | 0.29 |  |
-| `Runner` | 113 | 7644 | 9 | 5 | 0.36 |  |
+| `Runner` | 113 | 7662 | 9 | 5 | 0.36 |  |
 | `Spec` | 32 | 691 | 9 | 1 | 0.10 |  |
 | `Support` | 6 | 263 | 5 | 1 | 0.17 |  |
-| `Validator` | 63 | 2948 | 3 | 5 | 0.63 |  |
+| `Validator` | 63 | 3049 | 3 | 5 | 0.63 |  |
 
-Total cross-module edges: **532**
+Total cross-module edges: **533**
 
 ## Most entangled module pairs
 

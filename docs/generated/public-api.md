@@ -799,6 +799,7 @@ file on a commit is a public API change — review it deliberately.
 ### `PreflightValidator` class
 - `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly XpathEvaluator $xpath)`
 - `public function validate(ArazzoDocument $document): ValidationResult`
+- `public function validateInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
 
 ### `Rule` interface
 - `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors, ): void;`

@@ -21,9 +21,9 @@ Analyzed 126 total file-touches across 18 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Runner` | 56 | 44% | 7,757 | 7.2 |
+| `Runner` | 56 | 44% | 7,775 | 7.2 |
 | `Expression` | 10 | 8% | 910 | 11 |
-| `Validator` | 10 | 8% | 3,011 | 3.3 |
+| `Validator` | 10 | 8% | 3,112 | 3.2 |
 | `Parser` | 7 | 6% | 1,087 | 6.4 |
 | `Resolver` | 7 | 6% | 357 | 19.6 |
 | `Laravel/Http` | 6 | 5% | 163 | 36.8 |

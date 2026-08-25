@@ -14,10 +14,13 @@ const BANNER = <<<'MD'
 
 # Generated: Dependency Flow
 
-The same weighted coupling data as the metrics table, rendered as a flow:
+The weighted coupling data from the metrics table, rendered as a flow:
 band thickness = number of `use` references from one module to another. Read
 it as "where the architectural mass moves" — thick bands into one module mean
 changes there ripple widely.
+
+Sankey diagrams must be acyclic; where dependencies are bidirectional only
+the heavier direction is drawn and the folded side is listed below the chart.
 
 MD;
 
@@ -41,20 +44,83 @@ function render(array $core, array $laravel): string
     $rows = [];
     foreach ($pairWeight as $from => $targets) {
         foreach ($targets as $to => $weight) {
-            $rows[] = [$from, $to, $weight];
+            $rows[] = ['from' => $from, 'to' => $to, 'weight' => $weight];
         }
     }
-    usort($rows, fn (array $a, array $b): int => strcmp($a[0], $b[0]) ?: strcmp($a[1], $b[1]));
 
     if ($rows === []) {
         return BANNER . "_No cross-module dependencies found._\n";
     }
 
+    // Sankey must be free of DIRECTED cycles; GitHub rejects circular links.
+    // Keep the heavier edges first (greedy, weight-desc); fold an edge only
+    // when its target can already reach its source through kept edges.
+    usort($rows, fn (array $a, array $b): int => $b['weight'] <=> $a['weight']
+        ?: strcmp((string) $a['from'], (string) $b['from'])
+        ?: strcmp((string) $a['to'], (string) $b['to']));
+
+    $adjacency = [];
+    $reaches = function (string $from, string $to) use (&$adjacency): bool {
+        if ($from === $to) {
+            return true;
+        }
+        $seen = [];
+        $stack = [$from];
+        while ($stack !== []) {
+            $node = array_pop($stack);
+            foreach ($adjacency[$node] ?? [] as $next) {
+                if ($next === $to) {
+                    return true;
+                }
+                if (!isset($seen[$next])) {
+                    $seen[$next] = true;
+                    $stack[] = $next;
+                }
+            }
+        }
+
+        return false;
+    };
+
+    $kept = [];
+    $folded = [];
+    foreach ($rows as $row) {
+        $from = (string) $row['from'];
+        $to = (string) $row['to'];
+        if ($reaches($to, $from)) {
+            // to ->* from already drawn; adding from->to would close a directed cycle
+            $folded[] = $row;
+
+            continue;
+        }
+        $adjacency[$from][] = $to;
+        $kept[] = $row;
+    }
+    usort($kept, fn (array $a, array $b): int => strcmp((string) $a['from'], (string) $b['from'])
+        ?: strcmp((string) $a['to'], (string) $b['to']));
+
     $lines = [BANNER, '```mermaid', 'sankey-beta', ''];
-    foreach ($rows as [$from, $to, $weight]) {
-        $lines[] = sprintf('%s,%s,%d', label($from), label($to), $weight);
+    foreach ($kept as $row) {
+        $lines[] = sprintf('%s,%s,%d', label($row['from']), label($row['to']), $row['weight']);
     }
     $lines[] = '```';
+
+    if ($folded !== []) {
+        $lines[] = '';
+        $lines[] = '## Folded flows';
+        $lines[] = '';
+        $lines[] = 'These references exist in the code but are not drawn: drawing them would'
+            . ' close a dependency cycle and Sankey diagrams must stay acyclic. The heavier'
+            . ' direction of each cycle is shown above.';
+        $lines[] = '';
+        $lines[] = '| From | To | References |';
+        $lines[] = '|---|---|---:|';
+        usort($folded, fn (array $a, array $b): int => strcmp((string) $a['from'], (string) $b['from'])
+            ?: strcmp((string) $a['to'], (string) $b['to']));
+        foreach ($folded as $row) {
+            $lines[] = sprintf('| `%s` | `%s` | %d |', label($row['from']), label($row['to']), $row['weight']);
+        }
+    }
 
     return implode("\n", $lines) . "\n";
 }
