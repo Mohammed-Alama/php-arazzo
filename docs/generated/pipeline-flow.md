@@ -25,7 +25,6 @@ flowchart TD
         Alama_Arazzo_Runner_Evaluation_DependencyGraph["DependencyGraph"]:::service
         Alama_Arazzo_Runner_Evaluation_EvaluationContext["EvaluationContext"]:::service
         Alama_Arazzo_Runner_Evaluation_ExpressionEvaluator["ExpressionEvaluator"]:::service
-        Alama_Arazzo_Runner_Evaluation_PayloadReplacer["PayloadReplacer"]:::entry
         Alama_Arazzo_Runner_Evaluation_SelectorEvaluator["SelectorEvaluator"]:::service
         Alama_Arazzo_Runner_Evaluation_StringInterpolator["StringInterpolator"]:::service
     end
@@ -42,9 +41,6 @@ flowchart TD
         Alama_Arazzo_Runner_Evaluation_Condition_Ast_RuntimeExpr["RuntimeExpr"]:::service
         Alama_Arazzo_Runner_Evaluation_Condition_Ast_UnaryNot["UnaryNot"]:::service
     end
-    subgraph G_Runner_Evaluation_Xpath["Runner/Evaluation/Xpath"]
-        Alama_Arazzo_Runner_Evaluation_Xpath_DomXpathEvaluator["DomXpathEvaluator"]:::service
-    end
     subgraph G_Runner_Execution["Runner/Execution"]
         Alama_Arazzo_Runner_Execution_ArazzoOutputExtractor["ArazzoOutputExtractor"]:::entry
         Alama_Arazzo_Runner_Execution_ArazzoSchemaValidator["ArazzoSchemaValidator"]:::entry
@@ -56,7 +52,6 @@ flowchart TD
         Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector["IdempotencyKeyInjector"]:::service
         Alama_Arazzo_Runner_Execution_InjectionResult["InjectionResult"]:::service
         Alama_Arazzo_Runner_Execution_OpenApiDocumentLoader["OpenApiDocumentLoader"]:::service
-        Alama_Arazzo_Runner_Execution_OpenApiPayload["OpenApiPayload"]:::service
         Alama_Arazzo_Runner_Execution_RequestCompiler["RequestCompiler"]:::service
         Alama_Arazzo_Runner_Execution_ReusableParameterResolver["ReusableParameterResolver"]:::service
         Alama_Arazzo_Runner_Execution_RunControlFlow["RunControlFlow"]:::entry
@@ -81,16 +76,25 @@ flowchart TD
         Alama_Arazzo_Runner_Normalizer_OpenApi31Normalizer["OpenApi31Normalizer"]:::service
         Alama_Arazzo_Runner_Normalizer_OpenApiVersionDetector["OpenApiVersionDetector"]:::service
     end
+    subgraph G_Runner_Policy["Runner/Policy"]
+        Alama_Arazzo_Runner_Policy_RetryPolicy["RetryPolicy"]:::service
+    end
+    subgraph G_Runner_Protocol["Runner/Protocol"]
+        Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor["SubWorkflowExecutor"]:::entry
+    end
     subgraph G_Runner_Resolver["Runner/Resolver"]
         Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver["OpenApiOperationResolver"]:::service
         Alama_Arazzo_Runner_Resolver_ResolvedOperation["ResolvedOperation"]:::service
+    end
+    subgraph G_Runner_State["Runner/State"]
+        Alama_Arazzo_Runner_State_Budget["Budget"]:::service
+        Alama_Arazzo_Runner_State_ExecutionContext["ExecutionContext"]:::service
     end
     Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
     Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob
     Alama_Arazzo_Runner_Context_ExecutionState --> Alama_Arazzo_Runner_Context_WorkflowContext
     Alama_Arazzo_Runner_Evaluation_ArazzoCriteriaEvaluator --> Alama_Arazzo_Runner_Evaluation_Condition_ConditionEvaluator
     Alama_Arazzo_Runner_Evaluation_ArazzoCriteriaEvaluator --> Alama_Arazzo_Runner_Evaluation_EvaluationContext
-    Alama_Arazzo_Runner_Evaluation_ArazzoCriteriaEvaluator --> Alama_Arazzo_Runner_Evaluation_Xpath_DomXpathEvaluator
     Alama_Arazzo_Runner_Evaluation_ArazzoExpressionResolver --> Alama_Arazzo_Runner_Evaluation_EvaluationContext
     Alama_Arazzo_Runner_Evaluation_Condition_ConditionEvaluator --> Alama_Arazzo_Runner_Evaluation_Condition_Lexer
     Alama_Arazzo_Runner_Evaluation_Condition_ConditionEvaluator --> Alama_Arazzo_Runner_Evaluation_Condition_Parser
@@ -104,30 +108,25 @@ flowchart TD
     Alama_Arazzo_Runner_Evaluation_Condition_Parser --> Alama_Arazzo_Runner_Evaluation_Condition_Lexer
     Alama_Arazzo_Runner_Evaluation_DependencyAnalyzer --> Alama_Arazzo_Runner_Evaluation_DependencyGraph
     Alama_Arazzo_Runner_Evaluation_EvaluationContext --> Alama_Arazzo_Runner_Context_WorkflowContext
-    Alama_Arazzo_Runner_Evaluation_PayloadReplacer --> Alama_Arazzo_Runner_Evaluation_Xpath_DomXpathEvaluator
     Alama_Arazzo_Runner_Evaluation_SelectorEvaluator --> Alama_Arazzo_Runner_Evaluation_EvaluationContext
     Alama_Arazzo_Runner_Evaluation_SelectorEvaluator --> Alama_Arazzo_Runner_Evaluation_ExpressionEvaluator
     Alama_Arazzo_Runner_Execution_ArazzoOutputExtractor --> Alama_Arazzo_Runner_Evaluation_EvaluationContext
     Alama_Arazzo_Runner_Execution_ArazzoOutputExtractor --> Alama_Arazzo_Runner_Evaluation_ExpressionEvaluator
     Alama_Arazzo_Runner_Execution_ArazzoOutputExtractor --> Alama_Arazzo_Runner_Evaluation_SelectorEvaluator
-    Alama_Arazzo_Runner_Execution_ArazzoOutputExtractor --> Alama_Arazzo_Runner_Evaluation_Xpath_DomXpathEvaluator
     Alama_Arazzo_Runner_Execution_ArazzoOutputExtractor --> Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver
     Alama_Arazzo_Runner_Execution_ArazzoSchemaValidator --> Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver
     Alama_Arazzo_Runner_Execution_AsyncApiStepExecutor --> Alama_Arazzo_Runner_Evaluation_EvaluationContext
     Alama_Arazzo_Runner_Execution_AsyncApiStepExecutor --> Alama_Arazzo_Runner_Evaluation_ExpressionEvaluator
     Alama_Arazzo_Runner_Execution_AsyncApiStepExecutor --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
     Alama_Arazzo_Runner_Execution_CorrelationResumer --> Alama_Arazzo_Runner_Execution_StepOutcomeHandler
-    Alama_Arazzo_Runner_Execution_ExpressionValueResolver --> Alama_Arazzo_Runner_Evaluation_ExpressionEvaluator
     Alama_Arazzo_Runner_Execution_ExpressionValueResolver --> Alama_Arazzo_Runner_Evaluation_SelectorEvaluator
     Alama_Arazzo_Runner_Execution_ExpressionValueResolver --> Alama_Arazzo_Runner_Evaluation_StringInterpolator
-    Alama_Arazzo_Runner_Execution_ExpressionValueResolver --> Alama_Arazzo_Runner_Evaluation_Xpath_DomXpathEvaluator
     Alama_Arazzo_Runner_Execution_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
     Alama_Arazzo_Runner_Execution_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector
     Alama_Arazzo_Runner_Execution_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_RequestCompiler
     Alama_Arazzo_Runner_Execution_HttpStepExecutor --> Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver
     Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector --> Alama_Arazzo_Runner_Execution_InjectionResult
     Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
-    Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_OpenApiPayload
     Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
     Alama_Arazzo_Runner_Execution_RunControlFlow --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Execution_WorkflowEngine
@@ -151,10 +150,11 @@ flowchart TD
     Alama_Arazzo_Runner_Execution_SubWorkflowInvoker --> Alama_Arazzo_Runner_Execution_WorkflowExecutor
     Alama_Arazzo_Runner_Execution_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Evaluation_EvaluationContext
     Alama_Arazzo_Runner_Execution_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Evaluation_ExpressionEvaluator
-    Alama_Arazzo_Runner_Execution_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
     Alama_Arazzo_Runner_Execution_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_WorkflowExecutor
     Alama_Arazzo_Runner_Execution_Transition --> Alama_Arazzo_Runner_Context_ExecutionState
+    Alama_Arazzo_Runner_Execution_Transition --> Alama_Arazzo_Runner_State_ExecutionContext
     Alama_Arazzo_Runner_Execution_WorkflowEngine --> Alama_Arazzo_Runner_Evaluation_DependencyGraph
+    Alama_Arazzo_Runner_Execution_WorkflowEngine --> Alama_Arazzo_Runner_Policy_RetryPolicy
     Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Context_WorkflowContext
     Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_ExecutionResult
     Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_StepExecutor
@@ -162,12 +162,16 @@ flowchart TD
     Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Jobs_ExecuteStepJob --> Alama_Arazzo_Runner_Context_WorkflowContext
     Alama_Arazzo_Runner_Normalizer_OpenApi30Normalizer --> Alama_Arazzo_Runner_Normalizer_NormalizedOpenApiOperation
+    Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor --> Alama_Arazzo_Runner_Evaluation_DependencyGraph
+    Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver --> Alama_Arazzo_Runner_Execution_OpenApiDocumentLoader
     Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver --> Alama_Arazzo_Runner_Normalizer_OpenApi30Normalizer
     Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver --> Alama_Arazzo_Runner_Normalizer_OpenApi31Normalizer
     Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver --> Alama_Arazzo_Runner_Normalizer_OpenApiVersionDetector
     Alama_Arazzo_Runner_Resolver_OpenApiOperationResolver --> Alama_Arazzo_Runner_Resolver_ResolvedOperation
     Alama_Arazzo_Runner_Resolver_ResolvedOperation --> Alama_Arazzo_Runner_Normalizer_NormalizedOpenApiOperation
+    Alama_Arazzo_Runner_State_ExecutionContext --> Alama_Arazzo_Runner_Context_WorkflowContext
+    Alama_Arazzo_Runner_State_ExecutionContext --> Alama_Arazzo_Runner_State_Budget
     classDef entry fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef service fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
@@ -178,8 +182,8 @@ flowchart TD
 | **RunExecuteStepJob** | laravel | `ExecuteStepJob` | — | — |
 | **RunResumeCorrelationJob** | laravel | `ResumeCorrelationJob` | — | — |
 | **ExecutionState** | core | `WorkflowContext` | `Transition` | — |
-| **WorkflowContext** | core | — | `ExecutionState`, `EvaluationContext`, `WorkflowExecutor`, `ExecuteStepJob` | — |
-| **ArazzoCriteriaEvaluator** | core | `ConditionEvaluator`, `EvaluationContext`, `DomXpathEvaluator` | — | — |
+| **WorkflowContext** | core | — | `ExecutionState`, `EvaluationContext`, `WorkflowExecutor`, `ExecuteStepJob`, `ExecutionContext` | — |
+| **ArazzoCriteriaEvaluator** | core | `ConditionEvaluator`, `EvaluationContext` | — | — |
 | **ArazzoExpressionResolver** | core | `EvaluationContext` | — | — |
 | **Comparison** | core | — | `Parser` | — |
 | **Literal** | core | — | `Parser` | — |
@@ -191,26 +195,23 @@ flowchart TD
 | **Parser** | core | `Comparison`, `Literal`, `LogicalOp`, `RuntimeExpr`, `UnaryNot`, `Lexer` | `ConditionEvaluator` | — |
 | **Token** | core | — | `Lexer` | — |
 | **DependencyAnalyzer** | core | `DependencyGraph` | `StepOutcomeHandler` | — |
-| **DependencyGraph** | core | — | `DependencyAnalyzer`, `StepOutcomeHandler`, `WorkflowEngine` | — |
+| **DependencyGraph** | core | — | `DependencyAnalyzer`, `StepOutcomeHandler`, `WorkflowEngine`, `SubWorkflowExecutor` | — |
 | **EvaluationContext** | core | `WorkflowContext` | `ArazzoCriteriaEvaluator`, `ArazzoExpressionResolver`, `ConditionEvaluator`, `SelectorEvaluator`, `ArazzoOutputExtractor`, `AsyncApiStepExecutor`, `StepOutcomeHandler`, `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | — |
-| **ExpressionEvaluator** | core | — | `SelectorEvaluator`, `ArazzoOutputExtractor`, `AsyncApiStepExecutor`, `ExpressionValueResolver`, `StepOutcomeHandler`, `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | — |
-| **PayloadReplacer** | core | `DomXpathEvaluator` | — | — |
+| **ExpressionEvaluator** | core | — | `SelectorEvaluator`, `ArazzoOutputExtractor`, `AsyncApiStepExecutor`, `StepOutcomeHandler`, `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | — |
 | **SelectorEvaluator** | core | `EvaluationContext`, `ExpressionEvaluator` | `ArazzoOutputExtractor`, `ExpressionValueResolver`, `StepOutcomeHandler`, `SubWorkflowInvoker` | — |
 | **StringInterpolator** | core | — | `ExpressionValueResolver` | — |
-| **DomXpathEvaluator** | core | — | `ArazzoCriteriaEvaluator`, `PayloadReplacer`, `ArazzoOutputExtractor`, `ExpressionValueResolver` | — |
-| **ArazzoOutputExtractor** | core | `EvaluationContext`, `ExpressionEvaluator`, `SelectorEvaluator`, `DomXpathEvaluator`, `OpenApiOperationResolver` | — | — |
+| **ArazzoOutputExtractor** | core | `EvaluationContext`, `ExpressionEvaluator`, `SelectorEvaluator`, `OpenApiOperationResolver` | — | — |
 | **ArazzoSchemaValidator** | core | `OpenApiOperationResolver` | — | — |
 | **AsyncApiStepExecutor** | core | `EvaluationContext`, `ExpressionEvaluator`, `ReusableParameterResolver` | — | — |
 | **CorrelationResumer** | core | `StepOutcomeHandler` | — | `CorrelationResumed` |
 | **ExecutionResult** | core | — | `WorkflowExecutor` | — |
-| **ExpressionValueResolver** | core | `ExpressionEvaluator`, `SelectorEvaluator`, `StringInterpolator`, `DomXpathEvaluator` | `HttpStepExecutor`, `RequestCompiler`, `StepExecutor` | — |
+| **ExpressionValueResolver** | core | `SelectorEvaluator`, `StringInterpolator` | `HttpStepExecutor`, `RequestCompiler`, `StepExecutor` | — |
 | **HttpStepExecutor** | core | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler`, `OpenApiOperationResolver` | — | — |
 | **IdempotencyKeyInjector** | core | `InjectionResult` | `HttpStepExecutor`, `StepExecutor` | — |
 | **InjectionResult** | core | — | `IdempotencyKeyInjector` | — |
 | **OpenApiDocumentLoader** | core | — | `OpenApiOperationResolver` | — |
-| **OpenApiPayload** | core | — | `RequestCompiler` | — |
-| **RequestCompiler** | core | `ExpressionValueResolver`, `OpenApiPayload`, `ReusableParameterResolver` | `HttpStepExecutor`, `StepExecutor` | — |
-| **ReusableParameterResolver** | core | — | `AsyncApiStepExecutor`, `RequestCompiler`, `SubWorkflowStepExecutor` | — |
+| **RequestCompiler** | core | `ExpressionValueResolver`, `ReusableParameterResolver` | `HttpStepExecutor`, `StepExecutor` | — |
+| **ReusableParameterResolver** | core | — | `AsyncApiStepExecutor`, `RequestCompiler` | — |
 | **RunControlFlow** | core | `WorkflowEngine` | — | — |
 | **StepExecutionWorker** | core | `WorkflowEngine`, `ExecuteStepJob` | — | `CorrelationPending`, `RunCompleted`, `RunFailed`, `StepExecuted`, `StepFailed`, `StepStarted` |
 | **StepExecutor** | core | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler`, `OpenApiOperationResolver` | `WorkflowExecutor` | — |
@@ -218,9 +219,9 @@ flowchart TD
 | **StepResult** | core | — | `WorkflowExecutor` | — |
 | **SubWorkflowInvoker** | core | `EvaluationContext`, `ExpressionEvaluator`, `SelectorEvaluator`, `SubWorkflowResult`, `WorkflowExecutor` | `StepOutcomeHandler` | — |
 | **SubWorkflowResult** | core | — | `SubWorkflowInvoker` | — |
-| **SubWorkflowStepExecutor** | core | `EvaluationContext`, `ExpressionEvaluator`, `ReusableParameterResolver`, `WorkflowExecutor` | — | — |
-| **Transition** | core | `ExecutionState` | — | — |
-| **WorkflowEngine** | core | `DependencyGraph` | `RunControlFlow`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
+| **SubWorkflowStepExecutor** | core | `EvaluationContext`, `ExpressionEvaluator`, `WorkflowExecutor` | — | — |
+| **Transition** | core | `ExecutionState`, `ExecutionContext` | — | — |
+| **WorkflowEngine** | core | `DependencyGraph`, `RetryPolicy` | `RunControlFlow`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor`, `SubWorkflowExecutor` | — |
 | **WorkflowExecutor** | core | `WorkflowContext`, `ExecutionResult`, `StepExecutor`, `StepResult`, `WorkflowEngine` | `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | `RunCompleted`, `RunFailed`, `RunStarted`, `StepExecuted`, `StepFailed`, `StepRetried`, `StepStarted` |
 | **ExecuteStepJob** | core | `WorkflowContext` | `RunExecuteStepJob`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
 | **ResumeCorrelationJob** | core | — | `RunResumeCorrelationJob` | — |
@@ -228,5 +229,9 @@ flowchart TD
 | **OpenApi30Normalizer** | core | `NormalizedOpenApiOperation` | `OpenApiOperationResolver` | — |
 | **OpenApi31Normalizer** | core | — | `OpenApiOperationResolver` | — |
 | **OpenApiVersionDetector** | core | — | `OpenApiOperationResolver` | — |
+| **RetryPolicy** | core | — | `WorkflowEngine` | — |
+| **SubWorkflowExecutor** | core | `DependencyGraph`, `WorkflowEngine` | — | — |
 | **OpenApiOperationResolver** | core | `OpenApiDocumentLoader`, `OpenApi30Normalizer`, `OpenApi31Normalizer`, `OpenApiVersionDetector`, `ResolvedOperation` | `ArazzoOutputExtractor`, `ArazzoSchemaValidator`, `HttpStepExecutor`, `StepExecutor` | — |
 | **ResolvedOperation** | core | `NormalizedOpenApiOperation` | `OpenApiOperationResolver` | — |
+| **Budget** | core | — | `ExecutionContext` | — |
+| **ExecutionContext** | core | `WorkflowContext`, `Budget` | `Transition` | — |

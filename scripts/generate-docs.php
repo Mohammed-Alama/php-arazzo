@@ -41,8 +41,18 @@ require __DIR__ . '/generate-docs/IntegrationContextDoc.php';
 require __DIR__ . '/generate-docs/ExtensionPointsDoc.php';
 require __DIR__ . '/generate-docs/TrustBoundaryFlowDoc.php';
 require __DIR__ . '/generate-docs/GateTrendDoc.php';
+require __DIR__ . '/generate-docs/ModularizationProgressDoc.php';
+require __DIR__ . '/generate-docs/FitnessFunctionsDoc.php';
+require __DIR__ . '/generate-docs/TestEconomicsDoc.php';
+require __DIR__ . '/generate-docs/SolidMetricsDoc.php';
+require __DIR__ . '/generate-docs/BoundariesAuditDoc.php';
+require __DIR__ . '/generate-docs/UbiquitousLanguageAuditDoc.php';
+require __DIR__ . '/generate-docs/SubdomainMapDoc.php';
+require __DIR__ . '/generate-docs/AggregateMapDoc.php';
 
+use ArazzoDocs\AggregateMapDoc;
 use ArazzoDocs\BcDiffDoc;
+use ArazzoDocs\BoundariesAuditDoc;
 use ArazzoDocs\ChurnHotspotsDoc;
 use ArazzoDocs\CliReferenceDoc;
 use ArazzoDocs\ContractsDoc;
@@ -56,9 +66,11 @@ use ArazzoDocs\ExceptionTreeDoc;
 use ArazzoDocs\ExpressionAstDoc;
 use ArazzoDocs\ExtensionPointsDoc;
 use ArazzoDocs\FailureModesDoc;
+use ArazzoDocs\FitnessFunctionsDoc;
 use ArazzoDocs\GateTrendDoc;
 use ArazzoDocs\IntegrationContextDoc;
 use ArazzoDocs\LayeringDoc;
+use ArazzoDocs\ModularizationProgressDoc;
 use ArazzoDocs\NamespaceGraphDoc;
 use ArazzoDocs\ObservabilityDoc;
 use ArazzoDocs\PipelineFlowDoc;
@@ -66,9 +78,13 @@ use ArazzoDocs\PublicApiDoc;
 use ArazzoDocs\QualityGatesDoc;
 use ArazzoDocs\Scanner;
 use ArazzoDocs\SecuritySurfaceDoc;
+use ArazzoDocs\SolidMetricsDoc;
 use ArazzoDocs\StateMachineDoc;
+use ArazzoDocs\SubdomainMapDoc;
 use ArazzoDocs\TestCompositionDoc;
+use ArazzoDocs\TestEconomicsDoc;
 use ArazzoDocs\TrustBoundaryFlowDoc;
+use ArazzoDocs\UbiquitousLanguageAuditDoc;
 use ArazzoDocs\ValidatorRulesDoc;
 
 if (!is_dir($outDir)) {
@@ -106,6 +122,14 @@ $generated = [
     'extension-points.md' => ExtensionPointsDoc\render($core, $laravel),
     'trust-boundary-flow.md' => TrustBoundaryFlowDoc\render($core, $laravel),
     'gate-trend.md' => GateTrendDoc\render(historyPath: $root . '/storage/quality-history.jsonl'),
+    'modularization-progress.md' => ModularizationProgressDoc\render($root),
+    'fitness-functions.md' => FitnessFunctionsDoc\render($root),
+    'test-economics.md' => TestEconomicsDoc\render($core, $laravel, $root),
+    'solid-metrics.md' => SolidMetricsDoc\render($core, $laravel),
+    'boundaries-audit.md' => BoundariesAuditDoc\render($core, $laravel),
+    'ubiquitous-language-audit.md' => UbiquitousLanguageAuditDoc\render($core, $laravel),
+    'subdomain-map.md' => SubdomainMapDoc\render($core, $laravel),
+    'aggregate-map.md' => AggregateMapDoc\render($core, $laravel),
 ];
 
 foreach ($generated as $file => $content) {

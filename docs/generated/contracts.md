@@ -9,6 +9,7 @@ from both packages. Core defines contracts; Laravel implements them.
 ```mermaid
 flowchart LR
     I_AiClientInterface["AiClientInterface<br/><small>Generator</small>"]:::contract
+    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Runner</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>Runner</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Runner</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>Runner</small>"]:::contract
@@ -19,10 +20,12 @@ flowchart LR
     I_HttpClientInterface["HttpClientInterface<br/><small>Runner</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
     I_LockManagerInterface["LockManagerInterface<br/><small>Runner</small>"]:::contract
+    I_LockStrategyInterface["LockStrategyInterface<br/><small>Runner</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Runner</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Runner</small>"]:::contract
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Runner</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>Runner</small>"]:::contract
+    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Runner</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>Runner</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
     I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Runner</small>"]:::contract
@@ -48,16 +51,26 @@ flowchart LR
     C_core_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_core_Resolver_SourceRegistry["SourceRegistry<br/><small>Resolver</small>"]:::implCore
     C_core_Resolver_SourceRegistry -.->|implements| I_SourceResolver
-    C_core_Runner_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_InMemoryDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
-    C_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    C_core_Runner_FileLockStrategy["FileLockStrategy<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_FileLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Runner_NullLockStrategy["NullLockStrategy<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_NullLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Runner_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Runner_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_core_Runner_HttpStepExecutor["HttpStepExecutor<br/><small>Runner</small>"]:::implCore
     C_core_Runner_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_core_Runner_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>Runner</small>"]:::implCore
     C_core_Runner_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_core_Runner_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>Runner</small>"]:::implCore
     C_core_Runner_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Runner_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
+    C_core_Runner_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_InMemoryDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    C_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_core_Runner_ArazzoSchemaValidator["ArazzoSchemaValidator<br/><small>Runner</small>"]:::implCore
     C_core_Runner_ArazzoSchemaValidator -.->|implements| I_SchemaValidatorInterface
     C_core_Runner_ArazzoOutputExtractor["ArazzoOutputExtractor<br/><small>Runner</small>"]:::implCore
@@ -90,6 +103,8 @@ flowchart LR
     C_core_Runner_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_core_Runner_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Runner</small>"]:::implCore
     C_core_Runner_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_core_Runner_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
     C_core_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>Validator</small>"]:::implCore
     C_core_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_core_Validator_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolvesRule<br/><small>Validator</small>"]:::implCore

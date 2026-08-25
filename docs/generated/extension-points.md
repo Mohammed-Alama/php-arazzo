@@ -14,6 +14,8 @@ mindmap
   root((SPI contracts))
     AiClientInterface
       OpenAiClient
+    BackoffCalculatorInterface
+      ExponentialBackoffCalculator
     CriteriaEvaluatorInterface
       ArazzoCriteriaEvaluator
     DefinitionRegistryInterface
@@ -31,6 +33,10 @@ mindmap
       Psr18HttpClient
     LockManagerInterface
       LaravelRedisLockManager
+    LockStrategyInterface
+      FileLockStrategy
+      NullLockStrategy
+      PessimisticLockStrategy
     OpenApiExecutorInterface
       DefaultOpenApiExecutor
     OpenApiNormalizerInterface
@@ -40,6 +46,8 @@ mindmap
       ArazzoOutputExtractor
     PendingCorrelationRegistryInterface
       DatabasePendingCorrelationRegistry
+    ProtocolExecutorRegistryInterface
+      ProtocolExecutorRegistry
     QueueDriverInterface
       SyncQueueDriver
       LaravelQueueDriver
@@ -48,6 +56,7 @@ mindmap
     StateStoreInterface
       RedisHotStateStore
     StepProtocolExecutorInterface
+      SubWorkflowExecutor
       HttpStepExecutor
       AsyncApiStepExecutor
       SubWorkflowStepExecutor
@@ -56,6 +65,7 @@ mindmap
 | Contract | SPI dir | Implementations |
 |---|---|---|
 | `AiClientInterface` | **yes** | `OpenAiClient` <small>core</small> |
+| `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | **yes** | `ArazzoCriteriaEvaluator` <small>core</small> |
 | `DefinitionRegistryInterface` | **yes** | `InMemoryDefinitionRegistry` <small>core</small>, `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `EventLedgerInterface` | **yes** | `DatabaseEventLedger` <small>laravel</small> |
@@ -64,11 +74,13 @@ mindmap
 | `ExpressionResolverInterface` | **yes** | `ArazzoExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | **yes** | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | **yes** | `LaravelRedisLockManager` <small>laravel</small> |
+| `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | **yes** | `DefaultOpenApiExecutor` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `Swagger2Normalizer` <small>core</small>, `OpenApi30Normalizer` <small>core</small> |
 | `OutputExtractorInterface` | **yes** | `ArazzoOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | **yes** | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
+| `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `SchemaValidatorInterface` | **yes** | `ArazzoSchemaValidator` <small>core</small> |
 | `StateStoreInterface` | **yes** | `RedisHotStateStore` <small>laravel</small> |
-| `StepProtocolExecutorInterface` | **yes** | `HttpStepExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `StepProtocolExecutorInterface` | **yes** | `SubWorkflowExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |

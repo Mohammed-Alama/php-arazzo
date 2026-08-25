@@ -25,7 +25,7 @@ Regenerated before every commit.
 | **LogicException** | `AsyncApiStepExecutor` <small>Runner/Execution</small>, `StepExecutionWorker` <small>Runner/Execution</small>, `WorkflowExecutor` <small>Runner/Execution</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>Runner/Normalizer</small> |
 | **PreflightFailureException** | `StepExecutionWorker` <small>Runner/Execution</small>, `WorkflowExecutor` <small>Runner/Execution</small> |
-| **RuntimeException** | `OpenAiClient` <small>Generator/Clients</small>, `ReusableParameterResolver` <small>Runner/Execution</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small> |
+| **RuntimeException** | `OpenAiClient` <small>Generator/Clients</small>, `FileLockStrategy` <small>Runner/Contract</small>, `ReusableParameterResolver` <small>Runner/Execution</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small>, `OtelSetup` <small>Runner/Telemetry</small> |
 | **SchemaValidationException** | `ArazzoSchemaValidator` <small>Runner/Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>Runner/Evaluation</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |
@@ -78,4 +78,3 @@ Regenerated before every commit.
 | prop ttlSeconds | `CachedFetcher` | `3600` |
 | prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
-| prop maxRetryAttempts | `WorkflowEngine` | `10` |
