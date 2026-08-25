@@ -1,0 +1,23 @@
+{
+    "id": "ab318f44d6897dcbdc2bf07439f401b40567b5b602d9f8746155ca00093f2359",
+    "source": "usearazzo/website.ecosystem.atom",
+    "type": "commit",
+    "title": "feat(ecosystem): extend the list with bpedro links",
+    "url": "https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f",
+    "publishedAt": "2026-08-24T19:11:23+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website.ecosystem.atom",
+        "type": "commit",
+        "externalId": "atom:941fc7a2bc575b1d5cd97e793ceeeb85",
+        "title": "feat(ecosystem): extend the list with bpedro links",
+        "url": "https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f",
+        "publishedAt": "2026-08-24T19:11:23+00:00",
+        "body": "\n      <pre style='white-space:pre-wrap;width:81ex'>feat(ecosystem): extend the list with bpedro links</pre>\n    ",
+        "labels": []
+    }
+}

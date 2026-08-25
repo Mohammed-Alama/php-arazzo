@@ -1,0 +1,24 @@
+{
+    "id": "d45a3212c178756b5a80d89c99cce4f797dafd5b7c0d2fcaef974bc7904a2d65",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "feat(ecosystem): emphasized add button",
+    "url": "https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6",
+    "publishedAt": "2026-08-24T19:43:55Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:924fd96",
+        "title": "feat(ecosystem): emphasized add button",
+        "url": "https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6",
+        "publishedAt": "2026-08-24T19:43:55Z",
+        "body": "feat(ecosystem): emphasized add button",
+        "labels": [],
+        "state": ""
+    }
+}

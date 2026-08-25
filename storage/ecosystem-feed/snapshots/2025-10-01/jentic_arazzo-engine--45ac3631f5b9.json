@@ -1,0 +1,25 @@
+{
+    "id": "45ac3631f5b9f687d57213490f8757410ae10db67802167bb4c054f856a810fa",
+    "source": "jentic/arazzo-engine",
+    "type": "release",
+    "title": "Arazzo Runner v0.9.2",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2",
+    "publishedAt": "2025-10-01T08:44:53Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "release",
+        "externalId": "release:arazzo_runner/v0.9.2",
+        "title": "Arazzo Runner v0.9.2",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2",
+        "publishedAt": "2025-10-01T08:44:53Z",
+        "body": "## Features\r\n\r\n- implement support for extracting application/x-www-form-urlencoded request/response bodies by @DavidAtJentic in https://github.com/jentic/arazzo-engine/pull/116\r\n* allow oneOf and anyOf structures to be passed to the inputs field of an io object by @DavidAtJentic in https://github.com/jentic/arazzo-engine/pull/117\r\n\r\n## Bugfixes\r\n* ensure JSON Schema allOf keyword flattening and merging by @DavidAtJentic in https://github.com/jentic/arazzo-engine/pull/115\r\n\r\n## Enhancements\r\n\r\n* runner: provide development setup documentation\r\n\r\n## New Contributors\r\n\r\n* @Shrihari25-hub made their first contribution in https://github.com/jentic/arazzo-engine/pull/112 enhancing the state of the documentation\r\n\r\n**Full Changelog**: https://github.com/jentic/arazzo-engine/compare/arazzo_runner/v0.9.1...arazzo_runner/v0.9.2",
+        "labels": [],
+        "state": "published"
+    }
+}

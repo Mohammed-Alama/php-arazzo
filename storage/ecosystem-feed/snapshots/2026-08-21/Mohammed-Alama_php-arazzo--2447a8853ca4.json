@@ -1,0 +1,26 @@
+{
+    "id": "2447a8853ca4bc81c9cdc1fa5178921f3d0b14c1b8b5ebfdc6ccf0ab1d109f90",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "feat: Source Resolution and OpenAPI Operations Architecture",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/14",
+    "publishedAt": "2026-08-21T13:45:48Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:14",
+        "title": "feat: Source Resolution and OpenAPI Operations Architecture",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/14",
+        "publishedAt": "2026-08-21T13:45:48Z",
+        "body": "## Description\nResolves named Arazzo sources, decouples from `cebe/php-openapi` for initial parsing, and normalizes multi-version OpenAPI operations (2.0/3.0/3.1) before dispatch.\n\n## Architecture Changes\n- **SourceRegistry**: Explicitly manages raw source documents and their canonical URIs.\n- **Version-Aware Normalizer Pipeline**: `VersionDetector` → `NormalizerStrategy` parses raw arrays into a `NormalizedOpenApiOperation`.\n- **Parameter Serialization**: Correctly handles OpenAPI 3 structural variables (e.g. `matrix`, `label`, `form`, `spaceDelimited`).\n- **Arazzo Reference Grammar execution**: Consumers natively use `ResolvedOperation` mapped efficiently from structural strings without hacky serialization.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

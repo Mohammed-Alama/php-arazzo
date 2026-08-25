@@ -1,0 +1,22 @@
+{
+    "id": "8a99e6d1c20f53346f3ce0a93df34271d8af09a4e4e1013b38d366dcd39bbc4e",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "Allow versioning at path:method level",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/13",
+    "publishedAt": "2026-08-21T18:26:32Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:13",
+        "title": "Allow versioning at path:method level",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/13",
+        "publishedAt": "2026-08-21T18:26:32Z",
+        "body": "To facilitate the option of media-type versioning, it would be helpful to version at the path:method level.  Here is the gist of my proposal:  **move version from root level to path:method level and represent as an array of versions**.  In making the change as described, my hope is that none of the existing functionality is sacrificed.\r\n\r\n## Single version example\r\n```\r\n/pets/{id}:\r\n  put:\r\n    tags:\r\n    - \"pets\"\r\n    versions:\r\n    - version: \"default\"\r\n      summary: \"...\"\r\n      description: \"...\"\r\n      ... all other properties formerly defined in the path-item\r\n```\r\n## Multiple version example\r\n```\r\n/pets/{id}:\r\n  put:\r\n    tags:\r\n    - \"pets\"\r\n    versions:\r\n    - version: \"1\"\r\n      summary: \"...\"\r\n      description: \"...\"\r\n      operationId: \"updatePet_v1\"\r\n      consumes:\r\n      - \"application/json\"\r\n      - \"application/vnd.vendor.v1+json\"\r\n      deprecated: true\r\n      ... all other properties currently defined in the path-item\r\n    - version: \"2\"\r\n      summary: \"...\"\r\n      description: \"...\"\r\n      operationId: \"updatePet_v2\"\r\n      consumes:\r\n      - \"application/vnd.vendor.v2+json\"\r\n      ... all other properties currently defined in the path-item\r\n```",
+        "labels": [],
+        "state": "open"
+    }
+}

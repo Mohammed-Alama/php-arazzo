@@ -1,0 +1,24 @@
+{
+    "id": "5090c2438a5eb803f10f39a1ff2e0f9d36ae5d63c2c2e3319a502168d20f8931",
+    "source": "jentic/arazzo-engine",
+    "type": "tag",
+    "title": "tag arazzo_runner/v0.9.2",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2",
+    "publishedAt": "2026-08-25T11:05:53+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "tag",
+        "externalId": "tag:arazzo_runner/v0.9.2",
+        "title": "tag arazzo_runner/v0.9.2",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2",
+        "publishedAt": "2026-08-25T11:05:53+00:00",
+        "body": "fc19ea0ba8dde349cf06c0063b8ccda0e2e96ebb",
+        "labels": [],
+        "state": "published"
+    }
+}

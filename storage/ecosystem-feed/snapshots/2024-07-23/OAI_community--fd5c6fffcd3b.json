@@ -1,0 +1,22 @@
+{
+    "id": "fd5c6fffcd3bbb54c2347d2af5b7ab34339019021a5318a45034c34ea798d7e5",
+    "source": "OAI/community",
+    "type": "issue",
+    "title": "Distribution entry was not updated properly. Need manual operator handling.",
+    "url": "https://github.com/OAI/community/issues/20",
+    "publishedAt": "2024-07-23T22:27:07Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "issue",
+        "externalId": "issue:20",
+        "title": "Distribution entry was not updated properly. Need manual operator handling.",
+        "url": "https://github.com/OAI/community/issues/20",
+        "publishedAt": "2024-07-23T22:27:07Z",
+        "body": "Distribution entry was not updated properly. Need manual operator handling.\n\n_Originally posted by @dimaru-coti in https://github.com/coti-io/coti-node/issues/33_",
+        "labels": [],
+        "state": "open"
+    }
+}

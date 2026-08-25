@@ -1,0 +1,26 @@
+{
+    "id": "7d034d67f474f2974eb8d143ee035e7a9f7c556ad6cf67c804e30dd3140dc10a",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "Proposal: Add externalLinks, like externalDocs but allow more than one",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5467",
+    "publishedAt": "2026-08-23T19:39:51Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5467",
+        "title": "Proposal: Add externalLinks, like externalDocs but allow more than one",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5467",
+        "publishedAt": "2026-08-23T19:39:51Z",
+        "body": "This proposal is a suggested approach for addressing this long-standing issue https://github.com/OAI/OpenAPI-Specification/issues/1034 where quite a lot of people have asked for the ability to add more than one resource at a time.\r\n\r\nAI disclosure: talked through with Claude and got the sillier ideas out of the way before proposing this approach, but the writing is my own.\r\n\r\n- [x] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

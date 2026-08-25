@@ -1,0 +1,25 @@
+{
+    "id": "589162a76823fde02d5470a9a7306027c0b9c4842ef53cbff094dad1b036719e",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #545 from OAI/dependabot/npm_and_yarn/highlight.js-11.12.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/0ca33e2649225d7035a1e0d66ef07a5eb0f517e1",
+    "publishedAt": "2026-08-19T07:11:42Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:0ca33e2",
+        "title": "Merge pull request #545 from OAI/dependabot/npm_and_yarn/highlight.js-11.12.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/0ca33e2649225d7035a1e0d66ef07a5eb0f517e1",
+        "publishedAt": "2026-08-19T07:11:42Z",
+        "body": "Merge pull request #545 from OAI/dependabot/npm_and_yarn/highlight.js-11.12.0\n\nchore(deps): bump highlight.js from 11.11.1 to 11.12.0",
+        "labels": [],
+        "state": ""
+    }
+}

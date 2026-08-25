@@ -1,0 +1,24 @@
+{
+    "id": "87761fc423d47d0825bbe06a752373af4d579c20706d136d3c2b03dfd2ea0dc7",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": "Write ADR for identity vs location",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/92",
+    "publishedAt": "2026-03-17T18:46:59Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:92",
+        "title": "Write ADR for identity vs location",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/92",
+        "publishedAt": "2026-03-17T18:46:59Z",
+        "body": "As part of the larger discussion on referencing and imports (#72, #73), @darrelmiller suggested deciding on using IRIs as identifiers rather than locators as a first step.  Part of the context is his [discussions with his team](https://github.com/microsoft/OpenAPI.NET/issues/805#issuecomment-1962428388) around the impact of using `$ref` URLs as strict locators that must be read _separately_ each time, plus the complexity of how to write changes back to such a separately-loaded reference that may be loaded in many different (possibly somehow conflicting) places within the OAD.",
+        "labels": [],
+        "state": "closed"
+    }
+}

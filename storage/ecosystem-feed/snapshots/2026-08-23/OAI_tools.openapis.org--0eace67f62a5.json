@@ -1,0 +1,24 @@
+{
+    "id": "0eace67f62a575b7d80bd69625938d5f7f169a78937c8fa265f09f0e5b2d0311",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "Tool discovery (`full` workflow) has failed on every scheduled run since 2025-07-13 — dead source URL in metadata.json",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/285",
+    "publishedAt": "2026-08-23T20:42:10Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:285",
+        "title": "Tool discovery (`full` workflow) has failed on every scheduled run since 2025-07-13 — dead source URL in metadata.json",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/285",
+        "publishedAt": "2026-08-23T20:42:10Z",
+        "body": "## Summary\n\nThe `full` workflow — the one that discovers new tools — has failed on **every scheduled run in the retained history: 59 consecutive failures**, the oldest dating to **2025-07-13**. There is not a single success on record.\n\n`metadata.yaml` (Mon–Sat) continues to succeed daily, so existing entries keep refreshing and the site looks healthy. Only *discovery* is broken, which makes this easy to miss.\n\n## Evidence\n\nMost recent run: [#239, 2026-08-23](https://github.com/OAI/tools.openapis.org/actions/runs/32616434193) — job `get-data-from-sources`, failing step `Run yarn run build:data:full`:\n\n```\n[03:53:08] 'full' errored after 302 ms\n[03:53:08] Error in plugin 'gulp-transform'\n    Request failed with status code 404\n    isAxiosError: true\n```\n\nIt fails after ~300ms, i.e. on the first HTTP request rather than partway through a harvest.\n\n## Root cause\n\nThe first entry in [`gulpfile.js/metadata.json`](https://github.com/OAI/tools.openapis.org/blob/main/gulpfile.js/metadata.json) is:\n\n```json\n{\n  \"title\": \"https://openapi.tools/\",\n  \"url\": \"https://raw.githubusercontent.com/apisyouwonthate/openapi.tools/master/_data/tools.yml\",\n  \"processor\": \"../processors/openapi-tools-processor.js\"\n}\n```\n\nThat URL is dead. `apisyouwonthate/openapi.tools` has restructured:\n\n| | |\n|---|---|\n| `master/_data/tools.yml` | **404** |\n| `main/_data/tools.yml` | **404** |\n| `_data/` directory | no longer exists |\n| default branch | `main` (not `master`) |\n| tools now live in | `src/content/tools/` — 351 individual `.md` files, one per tool |\n\nSo it is not just a branch rename: the single aggregated `tools.yml` no longer exists in any branch. Each tool is now its own markdown file with YAML front matter.\n\n## Impact\n\nRepositories tagged `openapi3` / `openapi31` per the [README](https://github.com/OAI/tools.openapis.org#readme) are never picked up, because the run aborts before reaching the `tagged-repository-processor` sources.\n\nThis appears to be why several \"Add …\" issues have sat open — the authors followed the documented process correctly and nothing happened: #282, #281, #273, #272, #270, #255, #211, #193, #191, #190, #189, #188.\n\n## Possible fixes\n\n1. **Point the processor at the new layout** — enumerate `src/content/tools/*.md` (via the GitHub contents API or a tarball) and parse each file's front matter, replacing `openapi-tools-processor.js`'s single-file assumption.\n2. **Make source fetches non-fatal** — a 404 from one source currently aborts the whole build, so the `openapi3` / `openapi31` topic harvest never runs even though it is independent and presumably still healthy. Failing soft per-source would have kept discovery alive for the last 13 months and made this visible far sooner.\n\n(2) looks worth doing regardless of (1), since it limits the blast radius of any future upstream change.\n\nI'm happy to open a PR if that would help — just say which direction you'd prefer.\n\n## How I found this\n\nI tagged my own repositories with `openapi3` / `openapi31` as the README describes, noticed nothing appeared, and went looking for why. Reporting it here rather than adding another \"Add my tool\" issue, since this looks like the thing blocking all of them.\n",
+        "labels": [],
+        "state": "open"
+    }
+}

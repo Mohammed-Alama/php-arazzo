@@ -1,0 +1,27 @@
+{
+    "id": "6349ad6da59d592be6c2b484a05714bd10db37c5ac04dfe009e88579b191a253",
+    "source": "strefethen/arazzo-cli",
+    "type": "issue",
+    "title": "Fetch remote sourceDescriptions OpenAPI documents (opt-in)",
+    "url": "https://github.com/strefethen/arazzo-cli/issues/4",
+    "publishedAt": "2026-08-05T06:12:17Z",
+    "tags": [
+        "mcp",
+        "cli",
+        "loop",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "issue",
+        "externalId": "issue:4",
+        "title": "Fetch remote sourceDescriptions OpenAPI documents (opt-in)",
+        "url": "https://github.com/strefethen/arazzo-cli/issues/4",
+        "publishedAt": "2026-08-05T06:12:17Z",
+        "body": "### Problem\n\n`sourceDescriptions[].url` may point at a remote OpenAPI document, which is the spec-conformant reading of the field. arazzo-cli does not fetch remote documents, so workflows that target an `operationId` fail with:\n\n```\noperationId \"<id>\" not found in loaded OpenAPI specs\n```\n\nReported in #2, where a spec-conformant Arazzo file points at a hosted document:\n\n```yaml\nsourceDescriptions:\n  - name: bankApiV1\n    url: https://example.com/v1/openapi/spec.json\n    type: openapi\n```\n\nThere is no workaround inside a debug session other than vendoring the document locally, because the debug launch config has no equivalent of the CLI's `--openapi`.\n\n### Current behavior\n\nSemantics are classified by URL shape, decided from the Arazzo document text alone:\n\n| `sourceDescriptions[].url` | Meaning today |\n|---|---|\n| Relative URI-reference | The OpenAPI **document**: resolved against the Arazzo file's directory, loaded, indexed; request base derived from its `servers` |\n| Absolute `http(s)` | The request **base URL** (legacy). Not fetched. |\n\nThe absolute case is a deliberate compatibility choice, not an oversight: generated workflows and examples have always used that field as the base URL, and silently reinterpreting it as \"fetch this document\" would change where existing workflows send requests.\n\n### Proposed\n\nAdd opt-in remote fetching. `--fetch-remote-sources` is a **semantic disambiguator**, not a security gate: it selects document semantics for absolute URLs, resolving the collision with the legacy meaning above. Once `generate` emits document-pointing urls and legacy files age out, fetching can become the default with `--no-fetch` for offline/CI determinism.\n\nDestination policy while fetching (decidable from URL text alone, no DNS resolution in the decision):\n\n| Fetch target | Policy |\n|---|---|\n| `https://` any host | allowed |\n| `http://` loopback (`localhost`, `*.localhost`, `127.0.0.0/8`, `[::1]`) | allowed — W3C Secure Contexts / RFC 8252 precedent |\n| `http://` any other host | allowed with explicit `--insecure-http-sources` |\n\nEvery row is reachable; the second flag is the user's signature on accepting a MITM-able network, in the same spirit as `curl -k`. The fetch layer gets a stricter default than step execution deliberately: step URLs are first-party content of a document the user reviewed and chose to run, whereas a fetched document is second-order content nobody reviews whose `servers[]` steers credentialed traffic. This mirrors how package managers require TLS for dependency resolution while restricting nothing about what the installed code then does.\n\n### Constraints\n\n- **Fail closed.** A failed fetch is an error, never a silent fallback to base-URL semantics.\n- **`--dry-run` stays network-free**, so its output remains a trustworthy statement of what would be sent. Remediation message points at vendoring or `--openapi`.\n- **MCP** exposes fetching via server-side config rather than inheriting a CLI flag — there the operator is an agent, so the config is how the absent owner exercises the trust decision.\n- Fetches reuse the workflow `ClientConfig` (timeouts, transport trust) plus a response size cap.\n- Resolved base URLs stay visible in dry-run/trace output.\n\n### Related\n\n- #2 — reporter's blocked debug session; also wants an `openapi` option on the debug launch config, worth deciding alongside this.\n- #3 — same reporter's OpenAPI 3.2 `generate` failure (independent: `run`/debug index 3.2 documents fine).\n- Design rationale recorded in `plans/assessments/openapi-32-and-sourcedescriptions-options.md` §5.\n",
+        "labels": [],
+        "state": "open"
+    }
+}

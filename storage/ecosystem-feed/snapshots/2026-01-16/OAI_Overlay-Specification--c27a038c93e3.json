@@ -1,0 +1,24 @@
+{
+    "id": "c27a038c93e3c5de1d5be373d7ddb69eb7fd31c8e3f5bb5e729c99709ab3e9e0",
+    "source": "OAI/Overlay-Specification",
+    "type": "release",
+    "title": "",
+    "url": "https://github.com/OAI/Overlay-Specification/releases/tag/1.1.0",
+    "publishedAt": "2026-01-16T12:59:30Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "release",
+        "externalId": "release:1.1.0",
+        "title": "",
+        "url": "https://github.com/OAI/Overlay-Specification/releases/tag/1.1.0",
+        "publishedAt": "2026-01-16T12:59:30Z",
+        "body": "# Overlay 1.1 Released!\r\n\r\n## New features\r\n\r\n- New `copy` action that can be used to copy/move an element in the OpenAPI document.\r\n- New `description` field for the Overlay info object.\r\n- Better update/delete capabilities for primitive values.\r\n- [RFC9535](https://tools.ietf.org/html/rfc9535) compliance for better interoperability.\r\n- File naming convention for better tools integration.\r\n- More details on the different formats supported by the specification.\r\n\r\nMore information on the [upgrade documentation](https://learn.openapis.org/upgrading/overlay-v1.0-to-v1.1.html).\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

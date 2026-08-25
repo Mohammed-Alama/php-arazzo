@@ -1,0 +1,25 @@
+{
+    "id": "11fcc4387afdd4f8899a3b48360ecd5ca44ce30f202e9a3d041b9f87c3bee7a6",
+    "source": "OAI/Arazzo-Specification",
+    "type": "pr",
+    "title": "fix(spec): specify ECMA-262 dialect for regex Criterion",
+    "url": "https://github.com/OAI/Arazzo-Specification/pull/516",
+    "publishedAt": "2026-07-09T00:00:00Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "externalId": "pr:516",
+        "title": "fix(spec): specify ECMA-262 dialect for regex Criterion",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/516",
+        "publishedAt": "2026-07-09T00:00:00Z",
+        "body": "regex Criterion ECMA-262",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

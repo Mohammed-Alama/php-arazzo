@@ -1,0 +1,23 @@
+{
+    "id": "db7e2f72026e2170460b90ec280ed19306ae0c2424dd9df1c3502e18d4633b7d",
+    "source": "usearazzo/website.feed",
+    "type": "article",
+    "title": "API Workflows Are Still Improvised. Here Is What We Are Doing About It",
+    "url": "https://usearazzo.com/blog/api-workflows-are-still-improvised/",
+    "publishedAt": "2026-08-18T00:00:00+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website.feed",
+        "type": "article",
+        "externalId": "atom:aa6548430471829233e6a1a56164d112",
+        "title": "API Workflows Are Still Improvised. Here Is What We Are Doing About It",
+        "url": "https://usearazzo.com/blog/api-workflows-are-still-improvised/",
+        "publishedAt": "2026-08-18T00:00:00+00:00",
+        "body": "OpenAPI describes endpoints, not the order you call them in. Arazzo fixes that on paper. UseArazzo is building the tooling that makes it real, in the open.",
+        "labels": []
+    }
+}

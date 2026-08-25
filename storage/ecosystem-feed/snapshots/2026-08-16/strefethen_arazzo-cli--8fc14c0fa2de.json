@@ -1,0 +1,25 @@
+{
+    "id": "8fc14c0fa2de76d10f3c88d4397dc5f2612e194997046e4c1ae309eb9734fdc6",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "plan: decompose arazzo validate",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/04ee2879e9f30396b80d99aa24968ac5cd9a9fca",
+    "publishedAt": "2026-08-16T17:33:03Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:04ee287",
+        "title": "plan: decompose arazzo validate",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/04ee2879e9f30396b80d99aa24968ac5cd9a9fca",
+        "publishedAt": "2026-08-16T17:33:03Z",
+        "body": "plan: decompose arazzo validate",
+        "labels": [],
+        "state": ""
+    }
+}

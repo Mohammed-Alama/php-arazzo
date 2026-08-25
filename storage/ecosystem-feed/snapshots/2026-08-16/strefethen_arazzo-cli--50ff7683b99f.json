@@ -1,0 +1,25 @@
+{
+    "id": "50ff7683b99f90ec20e6bf6d50a9bd0fb12dc909a0de3fc5398307eda2546224",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "Constrain simple criterion grammar",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/bbcae7fb36b56b31623417fc16ed5113ef97f062",
+    "publishedAt": "2026-08-16T15:28:50Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:bbcae7f",
+        "title": "Constrain simple criterion grammar",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/bbcae7fb36b56b31623417fc16ed5113ef97f062",
+        "publishedAt": "2026-08-16T15:28:50Z",
+        "body": "Constrain simple criterion grammar",
+        "labels": [],
+        "state": ""
+    }
+}

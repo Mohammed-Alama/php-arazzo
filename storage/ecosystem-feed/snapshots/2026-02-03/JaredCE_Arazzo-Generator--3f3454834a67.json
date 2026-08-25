@@ -1,0 +1,24 @@
+{
+    "id": "3f3454834a677e9b44249b6045179501e51bdb262d7bfd4b1064124abc3f8126",
+    "source": "JaredCE/Arazzo-Generator",
+    "type": "release",
+    "title": "0.0.4",
+    "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.4",
+    "publishedAt": "2026-02-03T09:17:42Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "JaredCE/Arazzo-Generator",
+        "type": "release",
+        "externalId": "release:0.0.4",
+        "title": "0.0.4",
+        "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.4",
+        "publishedAt": "2026-02-03T09:17:42Z",
+        "body": "## What's Changed\r\n* Config by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/11\r\n\r\n\r\n**Full Changelog**: https://github.com/JaredCE/Arazzo-Generator/compare/0.0.3...0.0.4",
+        "labels": [],
+        "state": "published"
+    }
+}

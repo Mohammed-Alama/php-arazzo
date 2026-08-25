@@ -1,0 +1,25 @@
+{
+    "id": "67243c8af1d37fe563464f83ee7266f71785e15bfe11f1ef4dd93390e63ab038",
+    "source": "workflows-guru/awesome-arazzo",
+    "type": "commit",
+    "title": "add Readlocly CLI Arazzo linter",
+    "url": "https://github.com/workflows-guru/awesome-arazzo/commit/880ff98e55e9e36be60c50b8db285a6c57c3b63c",
+    "publishedAt": "2025-03-27T16:42:10Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "workflows-guru/awesome-arazzo",
+        "type": "commit",
+        "externalId": "commit:880ff98",
+        "title": "add Readlocly CLI Arazzo linter",
+        "url": "https://github.com/workflows-guru/awesome-arazzo/commit/880ff98e55e9e36be60c50b8db285a6c57c3b63c",
+        "publishedAt": "2025-03-27T16:42:10Z",
+        "body": "add Readlocly CLI Arazzo linter",
+        "labels": [],
+        "state": ""
+    }
+}

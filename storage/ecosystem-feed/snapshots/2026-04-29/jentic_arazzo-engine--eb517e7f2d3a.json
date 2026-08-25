@@ -1,0 +1,25 @@
+{
+    "id": "eb517e7f2d3a3812b570baba9de6e685bc9e55a1c75ad00057688ea39bc2ba7b",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "fix: forward step response to action criteria evaluation context",
+    "url": "https://github.com/jentic/arazzo-engine/pull/144",
+    "publishedAt": "2026-04-29T12:35:32Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:144",
+        "title": "fix: forward step response to action criteria evaluation context",
+        "url": "https://github.com/jentic/arazzo-engine/pull/144",
+        "publishedAt": "2026-04-29T12:35:32Z",
+        "body": "## Summary\r\nThis PR fixes an issue where conditional actions (`goto`, `end`, `retry`) silently fail when their nested `criteria` block tries to evaluate `$statusCode` or `$response`. It updates the execution chain to forward the HTTP response object into the evaluation context.\r\n\r\n## Testing\r\n- Tested locally against Arazzo workflows containing nested action criteria.\r\n- Ran the existing `pytest` suite.\r\n  - **Results:** `2 failed, 309 passed, 8 skipped, 2 warnings in 4.36s`\r\n  - **Note:** The 2 test failures also occur on the clean `v0.9.6` / `main` branch on Windows, confirming they are baseline environment discrepancies and completely unrelated to this change.\r\n\r\nFixes #143",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}
