@@ -35,13 +35,22 @@ final class OpenApiDocumentLoader
         }
 
         try {
-            $openapi = Reader::readFromJson($json);
-            // Plain readFromJson() leaves References WITHOUT a resolution
-            // context; walk the tree once so lazy ->resolve() calls work.
-            $openapi->resolveReferences(new ReferenceContext(
-                $openapi,
-                $resolvedSource->canonicalUri !== '' ? $resolvedSource->canonicalUri : 'memory://source',
-            ));
+            // cebe emits PHP-8.4 nullable-param deprecations while its spec
+            // classes compile AND when walking references; both are vendor
+            // noise, so silence E_DEPRECATED for the whole load.
+            set_error_handler(static fn (): bool => true, E_DEPRECATED);
+
+            try {
+                $openapi = Reader::readFromJson($json);
+                // Plain readFromJson() leaves References WITHOUT a resolution
+                // context; walk the tree once so lazy ->resolve() calls work.
+                $openapi->resolveReferences(new ReferenceContext(
+                    $openapi,
+                    $resolvedSource->canonicalUri !== '' ? $resolvedSource->canonicalUri : 'memory://source',
+                ));
+            } finally {
+                restore_error_handler();
+            }
 
             $this->cache[$sourceDesc->name] = $openapi;
 

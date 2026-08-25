@@ -10,8 +10,14 @@ file on a commit is a public API change — review it deliberately.
 
 ## core · `Alama\Arazzo\Console`
 
+### `Application` class
+- `public function __construct()`
+
 ### `DocumentLoader` class
 - `public static function load(string $file): ArazzoDocument`
+
+### `RunCommand` class
+- `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
 
 ## core · `Alama\Arazzo\Expression`
 

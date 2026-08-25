@@ -28,21 +28,33 @@ require __DIR__ . '/generate-docs/CouplingMetricsDoc.php';
 require __DIR__ . '/generate-docs/QualityGatesDoc.php';
 require __DIR__ . '/generate-docs/FailureModesDoc.php';
 require __DIR__ . '/generate-docs/SecuritySurfaceDoc.php';
+require __DIR__ . '/generate-docs/StateMachineDoc.php';
+require __DIR__ . '/generate-docs/LayeringDoc.php';
+require __DIR__ . '/generate-docs/CoverageRiskDoc.php';
+require __DIR__ . '/generate-docs/ChurnHotspotsDoc.php';
+require __DIR__ . '/generate-docs/DependencyFlowDoc.php';
+require __DIR__ . '/generate-docs/TestCompositionDoc.php';
 
+use ArazzoDocs\ChurnHotspotsDoc;
 use ArazzoDocs\ContractsDoc;
 use ArazzoDocs\CouplingMetricsDoc;
+use ArazzoDocs\CoverageRiskDoc;
 use ArazzoDocs\DatabaseSchemaDoc;
+use ArazzoDocs\DependencyFlowDoc;
 use ArazzoDocs\DocumentModelDoc;
 use ArazzoDocs\EventsDoc;
 use ArazzoDocs\ExceptionTreeDoc;
 use ArazzoDocs\ExpressionAstDoc;
 use ArazzoDocs\FailureModesDoc;
+use ArazzoDocs\LayeringDoc;
 use ArazzoDocs\NamespaceGraphDoc;
 use ArazzoDocs\PipelineFlowDoc;
 use ArazzoDocs\PublicApiDoc;
 use ArazzoDocs\QualityGatesDoc;
 use ArazzoDocs\Scanner;
 use ArazzoDocs\SecuritySurfaceDoc;
+use ArazzoDocs\StateMachineDoc;
+use ArazzoDocs\TestCompositionDoc;
 use ArazzoDocs\ValidatorRulesDoc;
 
 if (!is_dir($outDir)) {
@@ -67,6 +79,12 @@ $generated = [
     'quality-gates.md' => QualityGatesDoc\render($root . '/storage/quality-gates.json'),
     'failure-modes.md' => FailureModesDoc\render($core, $laravel),
     'security-surface.md' => SecuritySurfaceDoc\render($core, $laravel),
+    'state-machine.md' => StateMachineDoc\render($core, $laravel),
+    'layering.md' => LayeringDoc\render($core, $laravel),
+    'coverage-risk.md' => CoverageRiskDoc\render($core, $laravel, $root),
+    'churn-hotspots.md' => ChurnHotspotsDoc\render($core, $laravel, $root),
+    'dependency-flow.md' => DependencyFlowDoc\render($core, $laravel),
+    'test-composition.md' => TestCompositionDoc\render(root: $root),
 ];
 
 foreach ($generated as $file => $content) {

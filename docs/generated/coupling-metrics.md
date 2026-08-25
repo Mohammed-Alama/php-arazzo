@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Console` | 3 | 150 | 0 | 3 | 1.00 |  |
+| `Console` | 6 | 405 | 0 | 5 | 1.00 |  |
 | `Expression` | 23 | 887 | 3 | 2 | 0.40 |  |
 | `Generator` | 3 | 119 | 2 | 0 | 0.00 |  |
 | `Laravel:Bindings` | 6 | 442 | 1 | 12 | 0.92 |  |
@@ -24,13 +24,13 @@ targets. Regenerated before every commit.
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
 | `Parser` | 10 | 1077 | 4 | 2 | 0.33 |  |
-| `Resolver` | 11 | 346 | 4 | 2 | 0.33 |  |
-| `Runner` | 113 | 7635 | 8 | 5 | 0.38 |  |
+| `Resolver` | 11 | 346 | 5 | 2 | 0.29 |  |
+| `Runner` | 113 | 7644 | 9 | 5 | 0.36 |  |
 | `Spec` | 32 | 691 | 8 | 1 | 0.11 |  |
 | `Support` | 6 | 263 | 5 | 1 | 0.17 |  |
 | `Validator` | 63 | 2948 | 3 | 5 | 0.63 |  |
 
-Total cross-module edges: **504**
+Total cross-module edges: **523**
 
 ## Most entangled module pairs
 
@@ -41,10 +41,10 @@ Total cross-module edges: **504**
 | `Validator` → `Expression` | 78 |
 | `Laravel:Bindings` → `Runner` | 49 |
 | `Parser` → `Spec` | 30 |
+| `Console` → `Runner` | 15 |
 | `Runner` → `Expression` | 15 |
 | `Runner` → `Support` | 12 |
 | `Support` → `Runner` | 10 |
 | `Console` → `Parser` | 8 |
 | `Laravel:Persistence` → `Runner` | 7 |
 | `Laravel:Queue` → `Runner` | 7 |
-| `(laravel root)` → `Laravel:Bindings` | 6 |

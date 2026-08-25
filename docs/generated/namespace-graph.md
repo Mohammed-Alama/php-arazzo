@@ -28,6 +28,8 @@ flowchart LR
     Console --> Parser
     Console --> Spec
     Console --> Validator
+    Console --> Runner
+    Console --> Resolver
     Expression --> Spec
     Expression --> Support
     Parser --> Spec

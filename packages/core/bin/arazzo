@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+if (is_file(dirname(__DIR__, 3).'/vendor/autoload.php')) {
+    // Monorepo checkout: packages/core/bin/arazzo -> root vendor
+    require dirname(__DIR__, 3).'/vendor/autoload.php';
+} else {
+    require dirname(__DIR__).'/vendor/autoload.php';
+}
+
+use Alama\Arazzo\Console\Application;
+
+exit((new Application)->run());
