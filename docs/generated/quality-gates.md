@@ -15,12 +15,10 @@ byte-deterministic per measurement.
 
 | Gate | Status | Metrics | Command |
 |---|---|---|---|
-| Code Style (Pint) | **FAIL** | files-reported: **0** | `vendor/bin/pint --test` |
-| Static Analysis · core | **FAIL** | errors: **71** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
-| Static Analysis · laravel | **FAIL** | errors: **17** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
-| Tests · core | **FAIL** | failed: **49** · skipped: **3** · passed: **654** · assertions: **1783** | `vendor/bin/pest --no-coverage` |
-| Tests · laravel | **FAIL** | failed: **4** · passed: **52** · assertions: **111** | `vendor/bin/pest --no-coverage` |
+| Code Style (Pint) | **PASS** | files-reported: **0** | `vendor/bin/pint --test` |
+| Static Analysis · core | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
+| Static Analysis · laravel | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
+| Tests · core | **PASS** | skipped: **3** · passed: **714** · assertions: **1990** | `vendor/bin/pest --no-coverage` |
+| Tests · laravel | **PASS** | passed: **56** · assertions: **125** | `vendor/bin/pest --no-coverage` |
 
-**0/5 gates passing.**
-
-Failing: `pint`, `phpstan-core`, `phpstan-laravel`, `pest-core`, `pest-laravel`
+**5/5 gates passing.**

@@ -12,16 +12,16 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["Runner", "Expression", "Validator", "Parser", "Resolver", "Laravel/Http", "Spec", "Laravel/Persistence", "Laravel/Lock", "Laravel/Queue", "Laravel/State", "Console"]
+    x-axis ["Runner", "Expression", "Validator", "Parser", "Resolver", "Laravel/Http", "Spec", "Laravel/Persistence", "Console", "Laravel/Lock", "Laravel/Queue", "Laravel/State"]
     y-axis "Touches" 0 --> 70
-    bar [56, 10, 10, 7, 7, 6, 6, 4, 3, 3, 3, 2]
+    bar [56, 10, 10, 7, 7, 6, 6, 4, 3, 3, 3, 3]
 ```
 
-Analyzed 124 total file-touches across 18 modules.
+Analyzed 126 total file-touches across 18 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Runner` | 56 | 45% | 7,757 | 7.2 |
+| `Runner` | 56 | 44% | 7,757 | 7.2 |
 | `Expression` | 10 | 8% | 910 | 11 |
 | `Validator` | 10 | 8% | 3,011 | 3.3 |
 | `Parser` | 7 | 6% | 1,087 | 6.4 |
@@ -29,15 +29,15 @@ Analyzed 124 total file-touches across 18 modules.
 | `Laravel/Http` | 6 | 5% | 163 | 36.8 |
 | `Spec` | 6 | 5% | 723 | 8.3 |
 | `Laravel/Persistence` | 4 | 3% | 257 | 15.6 |
+| `Console` | 3 | 2% | 481 | 6.2 |
 | `Laravel/Lock` | 3 | 2% | 17 | 176.5 |
 | `Laravel/Queue` | 3 | 2% | 102 | 29.4 |
 | `Laravel/State` | 3 | 2% | 39 | 76.9 |
-| `Console` | 2 | 2% | 481 | 4.2 |
 | `Laravel/Bindings` | 2 | 2% | 448 | 4.5 |
 | `Support` | 2 | 2% | 269 | 7.4 |
 | `Generator` | 1 | 1% | 122 | 8.2 |
 | `Laravel/Events` | 1 | 1% | 23 | 43.5 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Renderer` | 0 | 0% | 254 | 0 |
+| `Renderer` | 1 | 1% | 254 | 3.9 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (36.8), `Resolver` (19.6), `Expression` (11)
