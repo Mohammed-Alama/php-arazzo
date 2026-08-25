@@ -1,7 +1,182 @@
-# Ecosystem Feed
+# Ecosystem Feed — Human Dashboard
 
-> Generated 2026-08-25T10:22:25+00:00 by `php scripts/ecosystem/poll.php` · Internal · Daily · Repo-local
-> Sources: `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` (30 OAI repos). See `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`.
+> **Generated:** 2026-08-25T11:06:49+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Sources:** 54 github (`30 OAI/*` + `4 usearazzo/*` + `20 runners/validators/generators`) from `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` — see `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`
+> **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php` → `.scratch/ecosystem-triage/<date>.md` (10 tasks, `RelevanceMapper` P0-6/P1-6/P2-1/P2-2)
+
+## Summary
+
+- **Total events:** 149 (showing 200 newest)
+- **Severity:** breaking **19** · actionable **69** · watch **61**
+- **Top relevance:** `Conformance / schema validation` (64) · `P2-1 CLI binary` (33) · `uncategorized` (15) · `Potential breaking change (2.0)` (11) · `P1-7 JSON Schema layer` (9)
+- **Top sources:** `strefethen/arazzo-cli` (34) · `OAI/Arazzo-Specification` (12) · `jentic/arazzo-engine` (6) · `OAI/OpenAPI-Specification` (5) · `b-lab-io/pyarazzo` (4)
+- **Links:** [Raw JSON](storage/ecosystem-feed/feed.json) · [Generated JSON](docs/generated/ecosystem-feed.json) · [Snapshots](storage/ecosystem-feed/snapshots/) · [Plan](docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md)
+
+## Legend
+
+- **Severity:** `breaking` = requires immediate planning (spec 2.0, wsdl, schema) · `actionable` = new release/tag worth reviewing · `watch` = commit/issue for context
+- **Relevance:** `P0-6 source routing (wsdl)` · `P1-6/P0-5 xml/xpath` · `P1-7 schema` · `P2-1 CLI` · `P2-2 MCP` (from `scripts/ecosystem/RelevanceMapper.php`)
+- **Tags:** `soap,wsdl,xml,xpath,mcp,cli,actor,loop,a2a,grpc,graphql` derived from title/body/labels
+
+## Breaking — needs attention
+
+### Potential breaking change (2.0) (11)
+
+- `2026-08-25` [build(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group](https://github.com/OAI/Overlay-Specification/pull/384) — `OAI/Overlay-Specification` · `pr` · _breaking,spec_
+- `2026-08-25` [chore(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group](https://github.com/OAI/Arazzo-Specification/pull/550) — `OAI/Arazzo-Specification` · `pr` · _breaking,spec_
+- `2026-08-24` [Bump the vitest group with 2 updates](https://github.com/OAI/build-infra/pull/27) — `OAI/build-infra` · `pr` · _breaking,spec_
+- `2026-08-24` [Bump respec from 37.2.0 to 37.3.0 in the publishing group across 1 directory](https://github.com/OAI/build-infra/pull/20) — `OAI/build-infra` · `pr` · _breaking,schema,spec_
+- `2026-08-24` [chore(deps): bump respec from 37.3.0 to 37.3.1](https://github.com/OAI/Arazzo-Specification/pull/549) — `OAI/Arazzo-Specification` · `pr` · _breaking,spec_
+- `2026-08-21` [https://1.gravatar.com/avatar/505a6c892236ba3e5df5dcf22e5123eab57fe2d5326a29d765a4b9a356308f09?s=256&d=initials](https://github.com/OAI/tools.openapis.org/issues/284) — `OAI/tools.openapis.org` · `issue` · _breaking,spec_
+- `2026-08-21` [feat: Source Resolution and OpenAPI Operations Architecture](https://github.com/Mohammed-Alama/php-arazzo/pull/14) — `Mohammed-Alama/php-arazzo` · `pr` · _breaking,spec_
+- `2026-08-19` [Merge pull request #546 from OAI/dependabot/npm_and_yarn/respec-37.3.0](https://github.com/OAI/Arazzo-Specification/commit/fc140d26c440291b0061c62a53e45a8fb07cc369) — `OAI/Arazzo-Specification` · `commit` · _breaking,spec_
+- … and 3 more in this group (see All events table)
+
+### P1-6 payload XPath / P0-5 XPath criteria (2)
+
+- `2026-05-17` [Arazzo 1.1.0 Released!](https://github.com/OAI/Arazzo-Specification/releases/tag/1.1.0) — `OAI/Arazzo-Specification` · `release` · _xml,xpath,spec_
+- `2025-09-19` [OAS 3.2.0 Released!](https://github.com/OAI/OpenAPI-Specification/releases/tag/3.2.0) — `OAI/OpenAPI-Specification` · `release` · _xml,breaking,schema,spec_
+
+### P2-1 CLI binary (2)
+
+- `2026-08-25` [tag v0.2.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.0) — `strefethen/arazzo-cli` · `tag` · _cli,breaking,spec_
+- `2026-03-21` [v0.2.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.0) — `strefethen/arazzo-cli` · `release` · _cli,breaking,spec_
+
+### P2-2 MCP server exposure (2)
+
+- `2026-03-29` [v0.2.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1) — `strefethen/arazzo-cli` · `release` · _mcp,cli,breaking,schema,spec_
+- `2025-11-27` [1.2 - start of discussion/ideas/breaking changes](https://github.com/OAI/Arazzo-Specification/issues/410) — `OAI/Arazzo-Specification` · `issue` · _mcp,actor,human,loop,breaking,spec_
+
+### P0-6 source routing (wsdl type) (1)
+
+- `2026-07-27` [feat(spec): add SOAP support](https://github.com/OAI/Arazzo-Specification/pull/533) — `OAI/Arazzo-Specification` · `pr` · _soap,wsdl,breaking,schema,spec_
+
+### P1-7 JSON Schema layer (1)
+
+- `2025-01-20` [Arazzo 1.0.1 Released!](https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.1) — `OAI/Arazzo-Specification` · `release` · _schema,spec_
+
+
+## Actionable — new releases/tags to review
+
+### Conformance / schema validation (39)
+
+- `2026-08-25` [tag v1.0.2](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
+- `2026-08-25` [tag v1.0.1](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.1) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
+- `2026-08-25` [tag v0.0.7](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.7) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-08-25` [tag v0.0.6](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.6) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-08-25` [tag 0.0.4](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.4) — `JaredCE/Arazzo-Generator` · `tag` · _spec_
+- `2026-08-25` [tag 0.0.3](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.3) — `JaredCE/Arazzo-Generator` · `tag` · _spec_
+- `2026-08-25` [tag v5.1.1](https://github.com/speclynx/apidom/releases/tag/v5.1.1) — `speclynx/apidom` · `tag` · _spec_
+- `2026-08-25` [tag v5.1.0](https://github.com/speclynx/apidom/releases/tag/v5.1.0) — `speclynx/apidom` · `tag` · _spec_
+- … and 31 more in this group (see All events table)
+
+### P2-1 CLI binary (18)
+
+- `2026-08-25` [tag v0.3.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag v0.2.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.2) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag v0.2.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag v0.1.3](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.3) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag v0.1.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.2) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag v0.1.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag v0.1.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.0) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- `2026-08-25` [tag vscode-v0.0.6](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.6) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
+- … and 10 more in this group (see All events table)
+
+### P1-6 payload XPath / P0-5 XPath criteria (5)
+
+- `2026-08-03` [v0.3.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0) — `strefethen/arazzo-cli` · `release` · _xml,mcp,cli,loop,schema,spec_
+- `2026-07-08` [v1.0.0](https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.0) — `swaggerexpert/arazzo-criterion` · `release` · _xml,spec_
+- `2026-04-06` [v0.2.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.2) — `strefethen/arazzo-cli` · `release` · _xml,cli,loop,spec_
+- `2026-03-13` [v0.1.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.0) — `strefethen/arazzo-cli` · `release` · _xml,xpath,cli,spec_
+- `2025-09-19` [OAS 3.1.2 Released!](https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.2) — `OAI/OpenAPI-Specification` · `release` · _xml,schema,spec_
+
+### uncategorized (3)
+
+- `2026-08-25` [tag v1.0.0](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0) — `Redocly/redocly-cli` · `tag` · _no tags_
+- `2026-08-25` [tag v1.0.0-rc.3](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.3) — `Redocly/redocly-cli` · `tag` · _no tags_
+- `2026-07-27` [feat: June 2026 newsletter](https://github.com/OAI/Outreach/pull/75) — `OAI/Outreach` · `pr` · _no tags_
+
+### P1-7 JSON Schema layer (2)
+
+- `2026-08-24` [v3.3: Fix RFC reference with stray space](https://github.com/OAI/OpenAPI-Specification/pull/5516) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
+- `2025-10-01` [Arazzo Runner v0.9.2](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2) — `jentic/arazzo-engine` · `release` · _schema,spec_
+
+### Issue #410 kind discriminator / human-in-loop (1)
+
+- `2026-08-09` [v5.1.0](https://github.com/speclynx/apidom/releases/tag/v5.1.0) — `speclynx/apidom` · `release` · _actor,spec_
+
+### Issue #410 loops vs goto (1)
+
+- `2026-08-24` [chore(deps-dev): bump eslint from 10.8.1 to 10.9.0](https://github.com/usearazzo/arazzo-toolkit/pull/91) — `usearazzo/arazzo-toolkit` · `pr` · _loop,spec_
+
+
+## Watch — context (commits/issues/checksums)
+
+### Conformance / schema validation (25)
+
+- `2026-08-25` [openapi.tools checksum 8815db2e440e](https://openapi.tools/collections/arazzo) — `openapi.tools` · `tool_collection` · _spec_
+- `2026-08-24` [feat(ecosystem): emphasized add button](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) — `usearazzo/website` · `commit` · _spec_
+- `2026-08-24` [
+        feat(ecosystem): emphasized add button
+    ](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) — `usearazzo/website.ecosystem.atom` · `commit` · _spec_
+- `2026-08-24` [feat(ecosystem): extend the list with bpedro links](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) — `usearazzo/website` · `commit` · _spec_
+- `2026-08-24` [
+        feat(ecosystem): extend the list with bpedro links
+    ](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) — `usearazzo/website.ecosystem.atom` · `commit` · _spec_
+- `2026-08-23` [Tool discovery (`full` workflow) has failed on every scheduled run since 2025-07-13 — dead source URL in metadata.json](https://github.com/OAI/tools.openapis.org/issues/285) — `OAI/tools.openapis.org` · `issue` · _spec_
+- `2026-08-23` [Open Community (TDC) Meeting, Thursday 27 August 2026](https://github.com/OAI/OpenAPI-Specification/issues/5505) — `OAI/OpenAPI-Specification` · `issue` · _spec_
+- `2026-08-22` [I Went Looking for Everything Arazzo](https://usearazzo.com/blog/arazzo-ecosystem/) — `usearazzo/website.feed` · `article` · _spec_
+- … and 17 more in this group (see All events table)
+
+### P2-1 CLI binary (13)
+
+- `2026-08-16` [plan: decompose arazzo validate](https://github.com/strefethen/arazzo-cli/commit/04ee2879e9f30396b80d99aa24968ac5cd9a9fca) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [revert: reset ac-67bf5 for fail-closed redesign](https://github.com/strefethen/arazzo-cli/commit/e252c979af1eca064af757f0c71559bc172f116d) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [Harden simple criterion parser](https://github.com/strefethen/arazzo-cli/commit/6b2a8eb6565b743e61cdf36cb472f4e92df8b592) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [Constrain simple criterion grammar](https://github.com/strefethen/arazzo-cli/commit/bbcae7fb36b56b31623417fc16ed5113ef97f062) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [fix: support decimal retry delays and string comparisons](https://github.com/strefethen/arazzo-cli/commit/1bef98b9668ddb88c54f7a3f236e806484c9a159) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [fix: preserve retry limits at numeric boundaries](https://github.com/strefethen/arazzo-cli/commit/708266ab06876d9b57de75aa180db134fb637c1e) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [fix: honor retry limits and failure fallthrough](https://github.com/strefethen/arazzo-cli/commit/f5890be5e02a48f609feafae75d6d145481a3e49) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-08-16` [fix: enforce action fixed fields](https://github.com/strefethen/arazzo-cli/commit/14ccda521eaba0f84b0b6767053cc7f1d2b7eb8c) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- … and 5 more in this group (see All events table)
+
+### uncategorized (12)
+
+- `2026-08-25` [Rebuild apis.json, scores.json, and API browsing indexes (#22081)](https://github.com/jentic/jentic-public-apis/commit/4b6a7e3ed01524ca366de0e340e6464cc4c8dc20) — `jentic/jentic-public-apis` · `commit` · _no tags_
+- `2026-08-24` [Update Landscape from LFX 2026-08-24 (#187)](https://github.com/OAI/landscape/commit/7bbb234a9420058e987566baac8129a727e904fb) — `OAI/landscape` · `commit` · _no tags_
+- `2026-08-24` [Add overlay to set apify.com info.version (fixes import: missing version) (#22078)](https://github.com/jentic/jentic-public-apis/commit/2ec421d6d468fd9507560f8592b9fe32aeed4de5) — `jentic/jentic-public-apis` · `commit` · _no tags_
+- `2026-08-23` [Update Landscape from LFX 2026-08-23 (#186)](https://github.com/OAI/landscape/commit/fa54f124ce01a0ecafd424904fafa593914b3e72) — `OAI/landscape` · `commit` · _no tags_
+- `2026-08-21` [Allow versioning at path:method level](https://github.com/OAI/sig-lifecycle/issues/13) — `OAI/sig-lifecycle` · `issue` · _no tags_
+- `2026-08-20` [Merge pull request #24 from handrews/yarn-package-management](https://github.com/OAI/build-infra/commit/b9b8777366b3d636ce18d2fe43f4449f6f8f67ea) — `OAI/build-infra` · `commit` · _no tags_
+- `2026-08-18` [Make Git dependency test deterministic in CI](https://github.com/OAI/build-infra/commit/7825bbc07eb56b7359f8a91cb2fa3cc46d09cf79) — `OAI/build-infra` · `commit` · _no tags_
+- `2026-07-27` [feat: Website redesign notes](https://github.com/OAI/Outreach/issues/53) — `OAI/Outreach` · `issue` · _no tags_
+- … and 4 more in this group (see All events table)
+
+### P1-7 JSON Schema layer (6)
+
+- `2026-08-24` [Prepare for new Build Infra](https://github.com/OAI/Overlay-Specification/pull/379) — `OAI/Overlay-Specification` · `pr` · _schema,spec_
+- `2026-08-23` [Proposal: Add externalLinks, like externalDocs but allow more than one](https://github.com/OAI/OpenAPI-Specification/pull/5467) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
+- `2026-08-22` [Support for message level security](https://github.com/OAI/sig-security/issues/22) — `OAI/sig-security` · `issue` · _schema,spec_
+- `2026-08-10` [spec.arazzo.schema.1.1 checksum 37be908409bd](https://spec.openapis.org/arazzo/1.1/schema/2026-04-15) — `spec.arazzo.schema.1.1` · `schema_checksum` · _schema,spec_
+- `2026-08-10` [spec.arazzo.schema.1.0 checksum b8715bd824ff](https://spec.openapis.org/arazzo/1.0/schema/2025-10-15) — `spec.arazzo.schema.1.0` · `schema_checksum` · _schema,spec_
+- `2026-08-02` [Add Gesso (PHP OpenAPI 3.0/3.1/3.2 contract testing library)](https://github.com/OAI/tools.openapis.org/pull/273) — `OAI/tools.openapis.org` · `pr` · _schema,spec_
+
+### Issue #410 kind discriminator / human-in-loop (2)
+
+- `2026-08-24` [chore(deps): bump @speclynx/apidom-json-pointer from 5.1.0 to 5.1.1](https://github.com/usearazzo/arazzo-toolkit/pull/90) — `usearazzo/arazzo-toolkit` · `pr` · _actor,spec_
+- `2026-08-19` [Enhance lifecycle.md with abstract and version info](https://github.com/OAI/sig-lifecycle/pull/3) — `OAI/sig-lifecycle` · `pr` · _actor,spec_
+
+### P2-2 MCP server exposure (2)
+
+- `2026-08-23` [refactor: derive describe method/target from the canonical classifier](https://github.com/strefethen/arazzo-cli/commit/92d3058cc63c1dcedefbdc78dacceee82daecd16) — `strefethen/arazzo-cli` · `commit` · _mcp,cli,actor,schema,spec_
+- `2026-08-05` [Fetch remote sourceDescriptions OpenAPI documents (opt-in)](https://github.com/strefethen/arazzo-cli/issues/4) — `strefethen/arazzo-cli` · `issue` · _mcp,cli,loop,spec_
+
+### P1-6 payload XPath / P0-5 XPath criteria (1)
+
+- `2026-08-23` [fix: decide xpath criteria by effective boolean value](https://github.com/strefethen/arazzo-cli/commit/301174a63d1148f0d57d60fc8faef857706c9eab) — `strefethen/arazzo-cli` · `commit` · _xml,xpath,cli,spec_
+
+
+## All events — newest 200
 
 | Date | Source | Type | Title | Tags | Severity | Relevance |
 |---|---|---|---|---|---|---|
@@ -161,8 +336,8 @@
 
 ## How to use
 
-- Poll: `composer ecosystem:poll` or `php scripts/ecosystem/poll.php --dry-run`
-- Commit: `php scripts/ecosystem/poll.php --commit`
-- Filter: `php scripts/ecosystem/poll.php --dry-run --source=OAI/Arazzo-Specification --limit=5`
-- Snapshots: `storage/ecosystem-feed/snapshots/YYYY-MM-DD/`
-- Feed: `storage/ecosystem-feed/feed.json` + `docs/generated/ecosystem-feed.json`
+- **Human:** read `Summary` → `Breaking` → `Triage` (`php .agents/skills/ecosystem-triage/scripts/analyze.php`)
+- **Poll:** `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) — uses `gh` when available, `curl` fallback + `GITHUB_TOKEN`
+- **Filter:** `php scripts/ecosystem/poll.php --dry-run --source=strefethen/arazzo-cli --limit=5`
+- **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php --since=2026-08-18 --verbose`
+- **Snapshots:** `storage/ecosystem-feed/snapshots/YYYY-MM-DD/` (30-day prune) · **Feed:** `storage/ecosystem-feed/feed.json` + `docs/generated/ecosystem-feed.json`

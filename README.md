@@ -1,6 +1,7 @@
 # Arazzo Workflow Engine for PHP & Laravel
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![Ecosystem Feed](https://img.shields.io/badge/docs-ecosystem%20feed-informational)](docs/ECOSYSTEM_FEED.md)
 
 > [!WARNING]
 > **Work in Progress:** This project is currently under active development and is not yet ready for production use.
@@ -225,13 +226,18 @@ We welcome contributions! Please see the issue tracker to report bugs, suggest f
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
-## Ecosystem feed
+## 📡 Ecosystem feed — Human Dashboard
 
-Daily internal poll of all `OAI/*` repos (30), `usearazzo/*` (`arazzo-toolkit`, `website`), and runner/validator ecosystem (`arazzo-cli`, `arazzo-engine`, `itarazzo`, etc.) — see `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json`. Captures SOAP/WSDL, `application/xml` payloads, actor-in-loop, `MCP`/`CLI`/`A2A`/`gRPC` proposals early and maps each event to `P0-P2` gaps.
+Daily **human-readable** poll of 54 github sources via `gh` (30 `OAI/*`, 4 `usearazzo/*`, 20 runners/validators/generators) — see `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json`. Captures SOAP/WSDL, `application/xml` payloads, actor-in-loop, `MCP`/`CLI`/`A2A`/`gRPC` proposals early and maps each event to `P0-P2` gaps.
 
-* Dashboard: [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) · Raw: `storage/ecosystem-feed/feed.json` + `docs/generated/ecosystem-feed.json`
-* Poll locally: `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) or `php scripts/ecosystem/poll.php --fixtures --dry-run` (offline fixtures including `OAI/Arazzo-Specification#533` SOAP + `#410` actor/loop)
-* Workflow: `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags, 30-day snapshot prune.
+> **Human dashboard:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) — regrouped by severity (Breaking / Actionable / Watch),levance, with summary stats, legend, and newest-200 table. Any contributor can open it without running a command.
+
+* **Human:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated `Human Dashboard`) · **Raw:** `storage/ecosystem-feed/feed.json` + [`docs/generated/ecosystem-feed.json`](docs/generated/ecosystem-feed.json) · **Snapshots:** `storage/ecosystem-feed/snapshots/`
+* **Poll locally:** `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) or `php scripts/ecosystem/poll.php --fixtures --dry-run` (offline fixtures including `OAI/Arazzo-Specification#533` SOAP + `#410` actor/loop)
+* **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php --verbose` → `.scratch/ecosystem-triage/<date>.md` → `/to-tickets`
+* **Workflow:** `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags, 30-day prune
+
+All 54 sources polled via `gh api` (`gh` CLI) with `GITHUB_TOKEN` fallback — see `scripts/ecosystem/GhCli.php`.
 
 ## Conformance
 
