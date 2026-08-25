@@ -105,11 +105,18 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         // PSR-18 cannot express per-request timeouts; delegate to Guzzle when
         // available so declared step timeouts are actually enforced.
         if ($timeoutSeconds !== null && $this->httpClient instanceof \GuzzleHttp\ClientInterface) {
+            // Guzzle's options stub requires non-empty header value lists.
+            $headers = [];
+
+            foreach ($request->getHeaders() as $name => $values) {
+                $headers[$name] = $values === [] ? [''] : array_values(array_map(strval(...), $values));
+            }
+
             return $this->httpClient->request(
                 $request->getMethod(),
                 (string) $request->getUri(),
                 [
-                    'headers' => $request->getHeaders(),
+                    'headers' => $headers,
                     'body' => (string) $request->getBody(),
                     'timeout' => $timeoutSeconds,
                 ],

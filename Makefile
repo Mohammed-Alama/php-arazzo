@@ -1,4 +1,4 @@
-.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify docs
+.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights
 
 docs: ## Regenerate architecture diagrams into docs/generated/
 	php scripts/generate-docs.php
@@ -47,3 +47,8 @@ verify: ## Run the same gates the pre-push hook runs
 	vendor/bin/pint --test
 	composer run analyse
 	composer run test
+
+INSIGHTS := $(HOME)/Code/Me/software-development-dashboard/bin/insights
+
+insights: ## Query code-quality insights (usage: make insights ARGS="hotspots")
+	@$(INSIGHTS) $(ARGS)
