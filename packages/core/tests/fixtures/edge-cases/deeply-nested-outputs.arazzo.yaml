@@ -1,0 +1,18 @@
+arazzo: "1.0.0"
+info:
+  title: Deep Outputs
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: deep-workflow
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo
+        outputs:
+          level1:
+            level2:
+              level3:
+                level4: $response.body#/data

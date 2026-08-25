@@ -1,0 +1,21 @@
+arazzo: "1.0.0"
+info:
+  title: Scope Violation
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: workflow-a
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo
+        outputs:
+          result: $response.body#/data
+      - stepId: step-two
+        operationId: my-api.bar
+        parameters:
+          - name: data
+            in: query
+            value: $steps.step-one.outputs.result

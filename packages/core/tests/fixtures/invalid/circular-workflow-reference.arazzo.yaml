@@ -1,0 +1,17 @@
+arazzo: "1.0.0"
+info:
+  title: Circular Workflow Ref
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: workflow-a
+    steps:
+      - stepId: call-b
+        workflowId: workflow-b
+  - workflowId: workflow-b
+    steps:
+      - stepId: call-a
+        workflowId: workflow-a

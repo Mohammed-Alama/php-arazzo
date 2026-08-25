@@ -1,0 +1,36 @@
+arazzo: 1.0.0
+info:
+  title: Complex Cyclic Dependency
+  version: 1.0.1
+sourceDescriptions:
+  - name: dummyApi
+    url: https://api.example.com
+    type: openapi
+workflows:
+  - workflowId: complexCycleWorkflow
+    steps:
+      - stepId: stepA
+        dependsOn: [stepB]
+        operationId: $sourceDescriptions.dummyApi.ping
+
+      - stepId: stepB
+        dependsOn: [stepC]
+        operationId: $sourceDescriptions.dummyApi.ping
+
+      - stepId: stepC
+        dependsOn: [stepD]
+        operationId: $sourceDescriptions.dummyApi.ping
+
+      - stepId: stepD
+        dependsOn: [stepE]
+        operationId: $sourceDescriptions.dummyApi.ping
+
+      # Here is the cycle! E depends on B. Cycle: B -> C -> D -> E -> B
+      - stepId: stepE
+        dependsOn: [stepB]
+        operationId: $sourceDescriptions.dummyApi.ping
+        
+      # F depends on A, which ultimately hits the cycle
+      - stepId: stepF
+        dependsOn: [stepA]
+        operationId: $sourceDescriptions.dummyApi.ping

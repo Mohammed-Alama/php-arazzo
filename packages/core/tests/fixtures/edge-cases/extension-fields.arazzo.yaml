@@ -1,0 +1,17 @@
+arazzo: "1.0.0"
+info:
+  title: Extension Fields
+  version: "1.0.0"
+  x-custom-author: "Jane Doe"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+    x-my-extension: true
+workflows:
+  - workflowId: extension-workflow
+    x-workflow-tag: test
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo
+        x-step-retry: 3

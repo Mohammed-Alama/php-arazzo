@@ -1,0 +1,18 @@
+arazzo: "1.0.0"
+info:
+  title: Multiple Source Descriptions
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-openapi
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+  - name: my-arazzo
+    url: ./minimal.arazzo.yaml
+    type: arazzo
+workflows:
+  - workflowId: multiple-source-descriptions
+    summary: Multiple source descriptions
+    steps:
+      - stepId: simple-step
+        description: Just a simple step
+        operationId: my-openapi.getProducts

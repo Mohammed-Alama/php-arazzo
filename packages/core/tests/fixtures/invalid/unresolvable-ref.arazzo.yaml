@@ -1,0 +1,15 @@
+arazzo: "1.0.0"
+info:
+  title: Unresolvable Ref
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: simple-workflow
+    parameters:
+      - $ref: '#/components/parameters/DoesNotExist'
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo

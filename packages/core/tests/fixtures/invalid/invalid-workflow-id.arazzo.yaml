@@ -1,0 +1,13 @@
+arazzo: "1.0.0"
+info:
+  title: Invalid Workflow ID
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: invalid id with spaces!
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo

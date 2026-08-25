@@ -1,0 +1,13 @@
+arazzo: "1.1.0"
+info:
+  title: AsyncAPI Source
+  version: "1.0.0"
+sourceDescriptions:
+  - name: ecom-asyncapi
+    url: /Users/mohammedalama/Code/Me/php-arazzo/packages/core/tests/fixtures/valid/v1.1.0/asyncapi.yaml
+    type: asyncapi
+workflows:
+  - workflowId: async-workflow
+    steps:
+      - stepId: publish-event
+        operationId: ecom-asyncapi.orderPlaced

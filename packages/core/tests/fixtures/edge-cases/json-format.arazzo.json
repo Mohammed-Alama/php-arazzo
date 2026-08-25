@@ -1,0 +1,25 @@
+{
+  "arazzo": "1.0.0",
+  "info": {
+    "title": "JSON Format",
+    "version": "1.0.0"
+  },
+  "sourceDescriptions": [
+    {
+      "name": "my-api",
+      "url": "http://localhost:8002/docs/api.json",
+      "type": "openapi"
+    }
+  ],
+  "workflows": [
+    {
+      "workflowId": "json-workflow",
+      "steps": [
+        {
+          "stepId": "step-one",
+          "operationId": "my-api.foo"
+        }
+      ]
+    }
+  ]
+}

@@ -111,7 +111,6 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
                 [
                     'headers' => $request->getHeaders(),
                     'body' => (string) $request->getBody(),
-                    'version' => $request->getProtocolVersion(),
                     'timeout' => $timeoutSeconds,
                 ],
             );

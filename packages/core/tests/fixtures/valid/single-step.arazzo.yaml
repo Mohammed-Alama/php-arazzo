@@ -1,0 +1,17 @@
+arazzo: "1.0.0"
+info:
+  title: Single Step
+  version: "1.0.0"
+sourceDescriptions:
+  - name: ecom-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: single-step-workflow
+    summary: A single step workflow
+    steps:
+      - stepId: the-step
+        description: Doing the only step
+        operationId: ecom-api.calculateShipping
+        successCriteria:
+          - condition: $statusCode == 200

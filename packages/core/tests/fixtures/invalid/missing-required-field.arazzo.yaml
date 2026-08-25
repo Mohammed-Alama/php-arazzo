@@ -1,0 +1,11 @@
+arazzo: "1.0.0"
+# Missing info object completely
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: simple-workflow
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo

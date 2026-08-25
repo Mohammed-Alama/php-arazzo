@@ -1,0 +1,9 @@
+arazzo: "1.0.0"
+info:
+  title: Empty Workflows
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows: []

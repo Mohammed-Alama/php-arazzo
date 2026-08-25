@@ -1,0 +1,15 @@
+arazzo: "1.0.0"
+info:
+  title: Invalid Runtime Expression
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: simple-workflow
+    steps:
+      - stepId: step-one
+        operationId: my-api.foo
+        successCriteria:
+          - condition: $statusCode = 200 # invalid syntax, should be ==

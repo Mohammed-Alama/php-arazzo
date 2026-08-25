@@ -1,0 +1,13 @@
+arazzo: "1.0.0"
+info:
+  title: Syntax Error
+  version: "1.0.0"
+sourceDescriptions:
+  - name: my-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: simple-workflow
+    steps:
+      - stepId: broken-step
+        operationId my-api.foo # missing colon

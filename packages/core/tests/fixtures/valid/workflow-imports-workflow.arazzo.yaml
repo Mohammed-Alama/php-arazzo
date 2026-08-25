@@ -1,0 +1,13 @@
+arazzo: "1.0.0"
+info:
+  title: Workflow Imports
+  version: "1.0.0"
+sourceDescriptions:
+  - name: other-arazzo
+    url: ./minimal.arazzo.yaml
+    type: arazzo
+workflows:
+  - workflowId: main-workflow
+    steps:
+      - stepId: call-other
+        workflowId: other-arazzo.minimal-workflow

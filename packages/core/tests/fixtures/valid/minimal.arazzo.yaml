@@ -1,0 +1,15 @@
+arazzo: "1.0.0"
+info:
+  title: Minimal Arazzo
+  version: "1.0.0"
+sourceDescriptions:
+  - name: ecom-api
+    url: http://localhost:8002/docs/api.json
+    type: openapi
+workflows:
+  - workflowId: minimal-workflow
+    summary: A minimal workflow
+    steps:
+      - stepId: simple-step
+        description: Just a simple step
+        operationId: ecom-api.getProducts
