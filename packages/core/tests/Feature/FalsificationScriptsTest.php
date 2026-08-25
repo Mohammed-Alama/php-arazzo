@@ -97,11 +97,13 @@ it('scaffold generates pint-clean strict file', function () use ($scripts): void
     exec('php -l ' . escapeshellarg($tmp) . ' 2>&1', $oLint, $ecLint);
     expect($ecLint)->toBe(0);
 
-    // pint --test allows only single_blank_line_at_eof
-    $pintOut = shell_exec('vendor/bin/pint ' . escapeshellarg($tmp) . ' --test 2>&1');
-    if (str_contains((string) $pintOut, 'FAIL')) {
-        expect($pintOut)->toContain('single_blank_line_at_eof');
-    }
+    // Normalize EOF newline ourselves so the scaffold must be fully
+    // pint-clean regardless of which fixers/Pint version runs.
+    file_put_contents($tmp, rtrim((string) file_get_contents($tmp)) . "\n");
+
+    $ecPint = 0;
+    exec('vendor/bin/pint ' . escapeshellarg($tmp) . ' --test 2>&1', $oPint, $ecPint);
+    expect($ecPint)->toBe(0, implode("\n", $oPint));
 
     unlink($tmp);
 });
