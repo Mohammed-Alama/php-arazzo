@@ -1,0 +1,55 @@
+name: Ecosystem update (automated)
+description: Breaking or actionable change detected by the ecosystem feed — disabled by default, enable when feed creates issues.
+title: 'chore(ecosystem): [breaking] '
+labels: [ecosystem, breaking]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is reserved for the ecosystem feed (`php scripts/ecosystem/poll.php`).
+        It is not shown in the chooser until `blank_issues_enabled` is toggled or the feed automation creates an issue via `gh issue create`.
+        Feed snapshot: `storage/ecosystem-feed/feed.json` · Markdown: `docs/ECOSYSTEM_FEED.md` · Workflow: `.github/workflows/ecosystem-feed.yml` (daily 06:17 UTC).
+
+        **Do not file manually** — use Bug report for defects.
+
+        Automation will set `severity=breaking|actionable` (release publish, schema date change, PR merged to `v1.2-dev`).
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      placeholder: e.g. OAI/Arazzo-Specification
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Upstream URL
+      placeholder: https://github.com/OAI/Arazzo-Specification/pull/533
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact on php-arazzo
+      description: Map tags to roadmap (Relevance column) and note required action.
+      placeholder: tags=soap,wsdl sev=breaking rel=P0-6 source routing — requires wsdl source type handling
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: [breaking, actionable, watch]
+      default: breaking
+    validations:
+      required: true
+
+  - type: textarea
+    id: snapshot
+    attributes:
+      label: Raw snapshot excerpt
+      render: json

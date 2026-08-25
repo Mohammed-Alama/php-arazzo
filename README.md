@@ -225,6 +225,14 @@ We welcome contributions! Please see the issue tracker to report bugs, suggest f
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
+## Ecosystem feed
+
+Daily internal poll of all `OAI/*` repos (30), `usearazzo/*` (`arazzo-toolkit`, `website`), and runner/validator ecosystem (`arazzo-cli`, `arazzo-engine`, `itarazzo`, etc.) — see `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json`. Captures SOAP/WSDL, `application/xml` payloads, actor-in-loop, `MCP`/`CLI`/`A2A`/`gRPC` proposals early and maps each event to `P0-P2` gaps.
+
+* Dashboard: [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) · Raw: `storage/ecosystem-feed/feed.json` + `docs/generated/ecosystem-feed.json`
+* Poll locally: `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) or `php scripts/ecosystem/poll.php --fixtures --dry-run` (offline fixtures including `OAI/Arazzo-Specification#533` SOAP + `#410` actor/loop)
+* Workflow: `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags, 30-day snapshot prune.
+
 ## Conformance
 
 `alama/arazzo-core` runs the **official OAI example corpus** through both its

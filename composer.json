@@ -31,6 +31,8 @@
         "test-laravel": "cd packages/laravel && vendor/bin/pest",
         "test": ["@test-core", "@test-laravel"],
         "docs": "@php scripts/generate-docs.php",
+        "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",
+        "ecosystem:poll:dry": "@php scripts/ecosystem/poll.php --dry-run",
         "format": "vendor/bin/pint"
     },
     "minimum-stability": "dev",

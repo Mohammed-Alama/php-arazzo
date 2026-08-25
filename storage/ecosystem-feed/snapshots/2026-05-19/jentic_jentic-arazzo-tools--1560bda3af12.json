@@ -1,0 +1,24 @@
+{
+    "id": "1560bda3af123562dd3502a88bdbc47cd3c96f0059397ff14c75e3d9a4bacafa",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.31",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.31",
+    "publishedAt": "2026-05-19T09:39:37Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.31",
+        "title": "v1.0.0-alpha.31",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.31",
+        "publishedAt": "2026-05-19T09:39:37Z",
+        "body": "# [1.0.0-alpha.31](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.30...v1.0.0-alpha.31) (2026-05-19)\n\n\n### Bug Fixes\n\n* **release:** use GitHub App token instead of GITHUB_TOKEN ([#221](https://github.com/jentic/jentic-arazzo-tools/issues/221)) ([ae64b36](https://github.com/jentic/jentic-arazzo-tools/commit/ae64b363ed19fb8372bb32d707229584e105bbd8))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

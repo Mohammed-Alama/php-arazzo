@@ -1,0 +1,25 @@
+{
+    "id": "888fdce0e723f75c52bd63d482c782117a32fd6ca83941274cbe197e94afef03",
+    "source": "strefethen/arazzo-cli",
+    "type": "release",
+    "title": "v0.1.1",
+    "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1",
+    "publishedAt": "2026-03-15T21:17:40Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "release",
+        "externalId": "release:v0.1.1",
+        "title": "v0.1.1",
+        "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1",
+        "publishedAt": "2026-03-15T21:17:40Z",
+        "body": "## Bug Fixes\n\n- **NOT operator precedence** — `!true || true` now correctly evaluates to `true` (NOT binds tighter than OR/AND)\n- **Bracket key access** — `$response.body['key-with-special-chars']` now resolves correctly\n- **Escaped quotes** — string comparisons with `\\\"` inside quoted values no longer break the parser\n- **Array query parameters** — arrays are now serialized as exploded form (`?ids=a&ids=b`) instead of JSON\n- **Cookie encoding** — special characters in cookie values are percent-encoded to prevent header corruption\n- **Goto interpolation** — dynamic goto targets like `{$inputs.target}` are now expression-resolved\n- **Complex parameter values** — YAML mappings and sequences in parameters are serialized to JSON instead of YAML\n\n## Spec Compliance\n\n- **`!` NOT operator** in simple conditions\n- **`()` parenthesis grouping** in compound conditions\n- **`Retry-After` response header** overrides configured retry delay per spec §4.6.6\n- **`$workflows.<id>.inputs/outputs`** expression root for cross-workflow data access\n\n## Dependencies\n\n- Migrated from `serde_yml` (unmaintained) to `serde_yaml_ng` — clears RUSTSEC-2025-0068\n\n## Stats\n\n- 363 tests passing (up from 339 in v0.1.0)\n\n**Full Changelog**: https://github.com/strefethen/arazzo-cli/compare/v0.1.0...v0.1.1",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "c97719ecc8011449522263e9d05df5207eda5259d01239248130630c4be0acf4",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "docs: adds an upgrade guide for overlay 1.2",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/206",
+    "publishedAt": "2026-08-11T15:29:56Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:206",
+        "title": "docs: adds an upgrade guide for overlay 1.2",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/206",
+        "publishedAt": "2026-08-11T15:29:56Z",
+        "body": "related https://github.com/OAI/Overlay-Specification/pull/378",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "601c7c9a245b71ad3104c77ac0c10a840609829f493d434806447fe751e07284",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: upgrade axios to 1.13.5, 0.30.3 (CVE-2026-25639)",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/275",
+    "publishedAt": "2026-08-05T06:28:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:275",
+        "title": "fix: upgrade axios to 1.13.5, 0.30.3 (CVE-2026-25639)",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/275",
+        "publishedAt": "2026-08-05T06:28:31Z",
+        "body": "## Summary\nUpgrade axios from 0.24.0 to 1.13.5, 0.30.3 to fix CVE-2026-25639.\n\n## Vulnerability\n| Field | Value |\n|-------|-------|\n| **ID** | CVE-2026-25639 |\n| **Severity** | HIGH |\n| **Scanner** | trivy |\n| **Rule** | `CVE-2026-25639` |\n| **File** | `yarn.lock` (dependency: `axios`) |\n| **Assessment** | Likely exploitable |\n\n**Description**: axios: Axios affected by Denial of Service via __proto__ Key in mergeConfig\n\n## Evidence\n\n**Scanner confirmation**: trivy rule `CVE-2026-25639` flagged this pattern.\n\n## Changes\n- `package.json`\n- `yarn.lock`\n\n## Behavior Preservation\nThe change is scoped to 2 files on the vulnerable path; it only tightens handling of untrusted input and leaves valid inputs unaffected.\n\n---\n*This change addresses a pattern flagged by static analysis. The code path handles user-influenced input and the fix reduces the attack surface against both manual and automated exploitation.*\n\n---\n*Automated security fix by [OrbisAI Security](https://orbisappsec.com)*\n",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

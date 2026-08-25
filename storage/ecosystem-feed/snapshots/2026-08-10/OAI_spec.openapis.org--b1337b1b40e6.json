@@ -1,0 +1,24 @@
+{
+    "id": "b1337b1b40e627a3730a9de430ca3e1a0e21a94561c82c626e79443a0926a8a0",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #38 from ioggstream/ioggstream-37",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/f2113ca5095295af925012f19fe3cfc8d28874ef",
+    "publishedAt": "2026-08-10T20:07:29Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:f2113ca",
+        "title": "Merge pull request #38 from ioggstream/ioggstream-37",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/f2113ca5095295af925012f19fe3cfc8d28874ef",
+        "publishedAt": "2026-08-10T20:07:29Z",
+        "body": "Merge pull request #38 from ioggstream/ioggstream-37\n\nFix: #37. x-jsonld keywords.",
+        "labels": [],
+        "state": ""
+    }
+}

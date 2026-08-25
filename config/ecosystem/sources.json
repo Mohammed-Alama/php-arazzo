@@ -1,0 +1,715 @@
+{
+    "version": 1,
+    "generated": "2026-08-25",
+    "notes": "Tiers: P0 must-poll daily, P1 weekly, UseArazzo daily, runners/validators daily. Enumerator syncs OAI org into sources.oai.json.",
+    "ingestors": {
+        "github": "scripts/ecosystem/Ingestors/GithubApiIngestor.php",
+        "atom": "scripts/ecosystem/Ingestors/AtomRssIngestor.php",
+        "npm": "scripts/ecosystem/Ingestors/NpmRegistryIngestor.php",
+        "scrape": "scripts/ecosystem/Ingestors/WebScrapeIngestor.php"
+    },
+    "sources": [
+        {
+            "id": "OAI/Arazzo-Specification",
+            "repo": "OAI/Arazzo-Specification",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags",
+                "pulls",
+                "issues",
+                "commits"
+            ],
+            "branches": [
+                "main",
+                "v1.2-dev"
+            ],
+            "watch_files": [
+                "versions/*.md",
+                "examples/**",
+                "_archive_/schemas/**"
+            ]
+        },
+        {
+            "id": "OAI/OpenAPI-Specification",
+            "repo": "OAI/OpenAPI-Specification",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "pulls",
+                "issues"
+            ]
+        },
+        {
+            "id": "OAI/Overlay-Specification",
+            "repo": "OAI/Overlay-Specification",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "pulls",
+                "issues"
+            ]
+        },
+        {
+            "id": "OAI/spec.openapis.org",
+            "repo": "OAI/spec.openapis.org",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "commits",
+                "pulls"
+            ]
+        },
+        {
+            "id": "spec.arazzo.html",
+            "url": "https://spec.openapis.org/arazzo/latest.html",
+            "tier": "P0",
+            "ingestor": "scrape",
+            "poll": "daily",
+            "kind": "spec_html_checksum"
+        },
+        {
+            "id": "spec.arazzo.schema.1.1",
+            "url": "https://spec.openapis.org/arazzo/1.1/schema/2026-04-15",
+            "tier": "P0",
+            "ingestor": "scrape",
+            "poll": "weekly",
+            "kind": "schema_checksum"
+        },
+        {
+            "id": "spec.arazzo.schema.1.0",
+            "url": "https://spec.openapis.org/arazzo/1.0/schema/2025-10-15",
+            "tier": "P0",
+            "ingestor": "scrape",
+            "poll": "weekly",
+            "kind": "schema_checksum"
+        },
+        {
+            "id": "OAI/tools.openapis.org",
+            "repo": "OAI/tools.openapis.org",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "pulls",
+                "issues"
+            ]
+        },
+        {
+            "id": "OAI/learn.openapis.org",
+            "repo": "OAI/learn.openapis.org",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "pulls",
+                "issues"
+            ]
+        },
+        {
+            "id": "OAI/build-infra",
+            "repo": "OAI/build-infra",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "pulls",
+                "issues",
+                "commits"
+            ]
+        },
+        {
+            "id": "OAI/landscape",
+            "repo": "OAI/landscape",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "commits"
+            ]
+        },
+        {
+            "id": "OAI/sig-moonwalk",
+            "repo": "OAI/sig-moonwalk",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "issues",
+                "pulls"
+            ]
+        },
+        {
+            "id": "OAI/sig-security",
+            "repo": "OAI/sig-security",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "issues"
+            ]
+        },
+        {
+            "id": "OAI/sig-lifecycle",
+            "repo": "OAI/sig-lifecycle",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "issues",
+                "pulls"
+            ]
+        },
+        {
+            "id": "OAI/community",
+            "repo": "OAI/community",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "issues",
+                "pulls"
+            ]
+        },
+        {
+            "id": "OAI/Outreach",
+            "repo": "OAI/Outreach",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "issues",
+                "pulls"
+            ]
+        },
+        {
+            "id": "usearazzo/arazzo-toolkit",
+            "repo": "usearazzo/arazzo-toolkit",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags",
+                "pulls",
+                "issues"
+            ]
+        },
+        {
+            "id": "usearazzo/website",
+            "repo": "usearazzo/website",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "commits"
+            ],
+            "atom": "https://github.com/usearazzo/website/commits/main/pages/ecosystem.html.atom"
+        },
+        {
+            "id": "usearazzo/website.ecosystem.atom",
+            "url": "https://github.com/usearazzo/website/commits/main/pages/ecosystem.html.atom",
+            "tier": "P0",
+            "ingestor": "atom",
+            "poll": "daily"
+        },
+        {
+            "id": "usearazzo/website.feed",
+            "url": "https://usearazzo.com/feed.xml",
+            "tier": "P0",
+            "ingestor": "atom",
+            "poll": "daily"
+        },
+        {
+            "id": "npm.@usearazzo/parser",
+            "package": "@usearazzo/parser",
+            "tier": "P0",
+            "ingestor": "npm",
+            "poll": "daily"
+        },
+        {
+            "id": "npm.@usearazzo/resolver",
+            "package": "@usearazzo/resolver",
+            "tier": "P0",
+            "ingestor": "npm",
+            "poll": "daily"
+        },
+        {
+            "id": "npm.@usearazzo/validator",
+            "package": "@usearazzo/validator",
+            "tier": "P0",
+            "ingestor": "npm",
+            "poll": "daily"
+        },
+        {
+            "id": "npm.@usearazzo/runner",
+            "package": "@usearazzo/runner",
+            "tier": "P0",
+            "ingestor": "npm",
+            "poll": "daily"
+        },
+        {
+            "id": "npm.@usearazzo/cli",
+            "package": "@usearazzo/cli",
+            "tier": "P0",
+            "ingestor": "npm",
+            "poll": "daily"
+        },
+        {
+            "id": "jentic/arazzo-engine",
+            "repo": "jentic/arazzo-engine",
+            "tier": "runner",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags",
+                "pulls"
+            ]
+        },
+        {
+            "id": "strefethen/arazzo-cli",
+            "repo": "strefethen/arazzo-cli",
+            "tier": "runner",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags",
+                "pulls",
+                "issues",
+                "commits"
+            ],
+            "notes": "Requested source https://github.com/strefethen/arazzo-cli — standalone executor + debugger + MCP server"
+        },
+        {
+            "id": "leidenheit/itarazzo-library",
+            "repo": "leidenheit/itarazzo-library",
+            "tier": "runner",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "Redocly/redocly-cli",
+            "repo": "Redocly/redocly-cli",
+            "tier": "runner",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "Specmatic/specmatic",
+            "repo": "Specmatic/specmatic",
+            "tier": "runner",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "jentic/jentic-arazzo-tools",
+            "repo": "jentic/jentic-arazzo-tools",
+            "tier": "validator",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "stoplightio/spectral",
+            "repo": "stoplightio/spectral",
+            "tier": "validator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ]
+        },
+        {
+            "id": "speakeasy-api/openapi",
+            "repo": "speakeasy-api/openapi",
+            "tier": "validator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ]
+        },
+        {
+            "id": "swaggerexpert/arazzo-runtime-expression",
+            "repo": "swaggerexpert/arazzo-runtime-expression",
+            "tier": "validator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "swaggerexpert/arazzo-criterion",
+            "repo": "swaggerexpert/arazzo-criterion",
+            "tier": "validator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "speclynx/apidom",
+            "repo": "speclynx/apidom",
+            "tier": "validator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "JaredCE/Arazzo-Generator",
+            "repo": "JaredCE/Arazzo-Generator",
+            "tier": "generator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "b-lab-io/pyarazzo",
+            "repo": "b-lab-io/pyarazzo",
+            "tier": "generator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "frankkilcommins/arazzo2openapi",
+            "repo": "frankkilcommins/arazzo2openapi",
+            "tier": "generator",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "API-Flows/api-flows-studio",
+            "repo": "API-Flows/api-flows-studio",
+            "tier": "editor",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "lornajane/apitapviz",
+            "repo": "lornajane/apitapviz",
+            "tier": "editor",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "imminent-technology/tapestry",
+            "repo": "imminent-technology/tapestry",
+            "tier": "editor",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases",
+                "tags"
+            ]
+        },
+        {
+            "id": "jentic/jentic-public-apis",
+            "repo": "jentic/jentic-public-apis",
+            "tier": "editor",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "commits"
+            ]
+        },
+        {
+            "id": "openapi.tools",
+            "url": "https://openapi.tools/collections/arazzo",
+            "tier": "P1",
+            "ingestor": "scrape",
+            "poll": "weekly",
+            "kind": "tool_collection"
+        },
+        {
+            "id": "openapis.org.blog",
+            "url": "https://www.openapis.org/blog",
+            "tier": "P1",
+            "ingestor": "atom",
+            "poll": "weekly"
+        },
+        {
+            "id": "OAI/OpenAPI-Style-Guide",
+            "repo": "OAI/OpenAPI-Style-Guide",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/Gluecon-Workshop",
+            "repo": "OAI/Gluecon-Workshop",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/OSSNA-OpenAPI-Workshop",
+            "repo": "OAI/OSSNA-OpenAPI-Workshop",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/Talks-and-Workshops",
+            "repo": "OAI/Talks-and-Workshops",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/apidays-paris-2018-unconference",
+            "repo": "OAI/apidays-paris-2018-unconference",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/Stories",
+            "repo": "OAI/Stories",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/Projects",
+            "repo": "OAI/Projects",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/sig-travel",
+            "repo": "OAI/sig-travel",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/sig-formats",
+            "repo": "OAI/sig-formats",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/sig-finance",
+            "repo": "OAI/sig-finance",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/.github",
+            "repo": "OAI/.github",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/oascomply",
+            "repo": "OAI/oascomply",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/1password-teams-open-source",
+            "repo": "OAI/1password-teams-open-source",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/OAI-Courses",
+            "repo": "OAI/OAI-Courses",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/sig-industry-standards",
+            "repo": "OAI/sig-industry-standards",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/conference",
+            "repo": "OAI/conference",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "OAI/events.openapis.org",
+            "repo": "OAI/events.openapis.org",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ],
+            "auto": true
+        },
+        {
+            "id": "usearazzo/.github",
+            "repo": "usearazzo/.github",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ]
+        },
+        {
+            "id": "usearazzo/community",
+            "repo": "usearazzo/community",
+            "tier": "auto",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "releases"
+            ]
+        },
+        {
+            "id": "Mohammed-Alama/php-arazzo",
+            "repo": "Mohammed-Alama/php-arazzo",
+            "tier": "P0",
+            "ingestor": "github",
+            "poll": "daily",
+            "endpoints": [
+                "releases",
+                "tags",
+                "pulls",
+                "issues"
+            ],
+            "notes": "self - track own releases for changelog"
+        },
+        {
+            "id": "workflows-guru/awesome-arazzo",
+            "repo": "workflows-guru/awesome-arazzo",
+            "tier": "P1",
+            "ingestor": "github",
+            "poll": "weekly",
+            "endpoints": [
+                "commits",
+                "pulls"
+            ],
+            "notes": "curated awesome list referenced in ecosystem curation policy"
+        }
+    ]
+}

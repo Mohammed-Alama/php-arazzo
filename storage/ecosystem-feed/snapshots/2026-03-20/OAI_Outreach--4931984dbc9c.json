@@ -1,0 +1,23 @@
+{
+    "id": "4931984dbc9c6723d3e8c808f766fd5cb17b680289601edf601c897ddbb94a1b",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "test: Social workflow",
+    "url": "https://github.com/OAI/Outreach/pull/65",
+    "publishedAt": "2026-03-20T16:01:22Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:65",
+        "title": "test: Social workflow",
+        "url": "https://github.com/OAI/Outreach/pull/65",
+        "publishedAt": "2026-03-20T16:01:22Z",
+        "body": "Closes #64 ",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

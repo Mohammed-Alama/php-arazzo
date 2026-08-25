@@ -1,0 +1,25 @@
+{
+    "id": "4da0484e4d653087a968247a35bb582143c0064062b8c4e00d0a3bf5a2eaa0d1",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "release",
+    "title": "v3.0.0",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.0.0",
+    "publishedAt": "2026-07-07T08:50:23Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "release",
+        "externalId": "release:v3.0.0",
+        "title": "v3.0.0",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.0.0",
+        "publishedAt": "2026-07-07T08:50:23Z",
+        "body": "# [3.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/compare/v2.0.3...v3.0.0) (2026-07-07)\n\n\n### Features\n\n* add $message expression and payload source (Arazzo 1.1.0) ([#146](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/146)) ([87fad7a](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/87fad7a741e47a6e8a871d1bb8a59e9e1cb986f8))\n* add support for Arazzo 1.1.0 ([#116](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/116)) ([9bedacc](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/9bedacc0fd4f0cf3f96bbba4689a669bac67ad8d))\n\n\n### BREAKING CHANGES\n\n* this changes the shape of AST, which warrants for a new major release\n",
+        "labels": [],
+        "state": "published"
+    }
+}

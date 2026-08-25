@@ -1,0 +1,25 @@
+{
+    "id": "6662fbe3d3ab9d76814d47dde7e3c94bc398e5ff4cd11a30b4c077cc04e8bc17",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix: preserve retry limits at numeric boundaries",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/708266ab06876d9b57de75aa180db134fb637c1e",
+    "publishedAt": "2026-08-16T13:58:55Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:708266a",
+        "title": "fix: preserve retry limits at numeric boundaries",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/708266ab06876d9b57de75aa180db134fb637c1e",
+        "publishedAt": "2026-08-16T13:58:55Z",
+        "body": "fix: preserve retry limits at numeric boundaries",
+        "labels": [],
+        "state": ""
+    }
+}

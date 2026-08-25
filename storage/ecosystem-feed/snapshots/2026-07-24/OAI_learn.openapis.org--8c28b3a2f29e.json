@@ -1,0 +1,25 @@
+{
+    "id": "8c28b3a2f29e451b23fc286e30de1c95e49eb1143ce444abf43951d8667ebaef",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "Reorganization of best practices and addition of overlays for globals",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/201",
+    "publishedAt": "2026-07-24T18:32:56Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:201",
+        "title": "Reorganization of best practices and addition of overlays for globals",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/201",
+        "publishedAt": "2026-07-24T18:32:56Z",
+        "body": "fixes #200\r\nThis does a couple of things:\r\n- Makes the best practices into a section\r\n- Moves the topics under best practices to dedicated pages (verbatim, no changes were made besides links)\r\n- Adds a new best practice to use overlays for globals\r\n\r\nHeavy use of GH Copilot to help with the reorganization and the wording",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

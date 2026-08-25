@@ -1,0 +1,24 @@
+{
+    "id": "189460c3cb8e45d73de60c8b7fb256b4dfbb28ca8781a3b12973f42116aaee26",
+    "source": "frankkilcommins/arazzo2openapi",
+    "type": "tag",
+    "title": "tag v1.0.2",
+    "url": "https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2",
+    "publishedAt": "2026-08-25T09:47:02+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "frankkilcommins/arazzo2openapi",
+        "type": "tag",
+        "externalId": "tag:v1.0.2",
+        "title": "tag v1.0.2",
+        "url": "https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2",
+        "publishedAt": "2026-08-25T09:47:02+00:00",
+        "body": "f8f844fb999d02feae621ec5e5021916fe94dd9e",
+        "labels": [],
+        "state": "published"
+    }
+}

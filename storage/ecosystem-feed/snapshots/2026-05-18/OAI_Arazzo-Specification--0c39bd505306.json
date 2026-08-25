@@ -1,0 +1,28 @@
+{
+    "id": "0c39bd5053063d8e4f0850fbe67e735e9b9e5ecd15eef4279e29159ae5772bda",
+    "source": "OAI/Arazzo-Specification",
+    "type": "release",
+    "title": "Arazzo 1.1.0 Released!",
+    "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.1.0",
+    "publishedAt": "2026-05-18T11:11:50Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "actor",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "release",
+        "externalId": "release:1.1.0",
+        "title": "Arazzo 1.1.0 Released!",
+        "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.1.0",
+        "publishedAt": "2026-05-18T11:11:50Z",
+        "body": "## What's Changed\r\n\r\n* feat(spec): added support for AsyncAPI v3 by @nashjain in https://github.com/OAI/Arazzo-Specification/pull/367\r\n* Clarify origin or runtime expressions ABNF non-terminals by @char0n in https://github.com/OAI/Arazzo-Specification/pull/325\r\n* fix: fix referenced stepId in examples by @char0n in https://github.com/OAI/Arazzo-Specification/pull/358\r\n* fix(schema): remove conditional statement for type: retry in failure action object by @jeremyfiel in https://github.com/OAI/Arazzo-Specification/pull/343\r\n* fix(schema): remove enumeration in failure action object by @jeremyfiel in https://github.com/OAI/Arazzo-Specification/pull/348\r\n* refactor(arazzo): remove brackets around condition by @char0n in https://github.com/OAI/Arazzo-Specification/pull/362\r\n* feat(spec): Add support for JSONPath and XPath where JSONPointer is supported by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/409\r\n* feat(spec): Allow workflow inputs to be passed in success and failure actions by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/416\r\n* feat(spec): Add `querystring` support compatible with OAS 3.2 by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/443\r\n* feat(runtime-expressions): improve ABNF grammar clarity by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/454\r\n* feat(spec): Add $self for identity-based referencing by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/451\r\n* Clarify Criterion Object condition evaluation semantics by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/475\r\n* Add missing schema validation fixtures for async, OpenAPI, and workflow steps by @nashjain in https://github.com/OAI/Arazzo-Specification/pull/476\r\n\r\n## House Keeping\r\n* example: match ABNF for runtime expressions by @markus-96 in https://github.com/OAI/Arazzo-Specification/pull/339\r\n* fix(examples): Update JSON Path condition to conform to RFC 9535, and show two valid condition flavours by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/478\r\n* chore(repo): Update README for 1.1 release prep by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/477\r\n\r\n## Infrastructure Items\r\n* main: Create publishing PRs in new site repo by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/376\r\n* chore: fixes dark theme rendering by @baywet in https://github.com/OAI/Arazzo-Specification/pull/381\r\n* ci: adds a dependabot configuration to maintain workflow and test projects up to date by @baywet in https://github.com/OAI/Arazzo-Specification/pull/382\r\n* ci: adds a code owners configuration so reviewers get automatically notified by @baywet in https://github.com/OAI/Arazzo-Specification/pull/383\r\n* Fix md2html yargs initialization by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/483\r\n* spec publishing script: create/update minor-version softlink for all versions by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/484\r\n* schema-publish.sh: sync with OAS sibling by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/486\r\n* V1.1 release prep by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/481\r\n* 1.1.0 minor version by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/482\r\n\r\n## New Contributors\r\n* @markus-96 made their first contribution in https://github.com/OAI/Arazzo-Specification/pull/339\r\n* @baywet made their first contribution in https://github.com/OAI/Arazzo-Specification/pull/381\r\n* @nashjain made their first contribution in https://github.com/OAI/Arazzo-Specification/pull/367\r\n\r\n**Full Changelog**: https://github.com/OAI/Arazzo-Specification/compare/1.0.1...1.1.0",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "id": "fd7aea786a63377b6558891f7fb9246e31934760ea45a6aea649346832c8074a",
+    "source": "workflows-guru/awesome-arazzo",
+    "type": "pr",
+    "title": "Add Redocly CLI Arazzo linter",
+    "url": "https://github.com/workflows-guru/awesome-arazzo/pull/2",
+    "publishedAt": "2025-03-28T08:29:40Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "workflows-guru/awesome-arazzo",
+        "type": "pr",
+        "externalId": "pr:2",
+        "title": "Add Redocly CLI Arazzo linter",
+        "url": "https://github.com/workflows-guru/awesome-arazzo/pull/2",
+        "publishedAt": "2025-03-28T08:29:40Z",
+        "body": "Fixes #1 \r\nAdds Redocly CLI linter to the list of tools for Arazzo.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

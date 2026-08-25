@@ -1,0 +1,25 @@
+{
+    "id": "6f665b9f8cafc4906414d9a9bbaeace44610ddacbd58a51e8bbcedcec2a3d0d9",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #546 from OAI/dependabot/npm_and_yarn/respec-37.3.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/fc140d26c440291b0061c62a53e45a8fb07cc369",
+    "publishedAt": "2026-08-19T07:12:59Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:fc140d2",
+        "title": "Merge pull request #546 from OAI/dependabot/npm_and_yarn/respec-37.3.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/fc140d26c440291b0061c62a53e45a8fb07cc369",
+        "publishedAt": "2026-08-19T07:12:59Z",
+        "body": "Merge pull request #546 from OAI/dependabot/npm_and_yarn/respec-37.3.0\n\nchore(deps): bump respec from 37.2.0 to 37.3.0",
+        "labels": [],
+        "state": ""
+    }
+}

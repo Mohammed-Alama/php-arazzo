@@ -1,0 +1,29 @@
+{
+    "id": "d16e135ab68f19d4e926ef19b087a66baba30efd92532c39d92a1dae542a9fad",
+    "source": "OAI/Arazzo-Specification",
+    "type": "issue",
+    "title": "1.2 - start of discussion/ideas/breaking changes",
+    "url": "https://github.com/OAI/Arazzo-Specification/issues/410",
+    "publishedAt": "2025-11-27T00:00:00Z",
+    "tags": [
+        "mcp",
+        "actor",
+        "human",
+        "loop",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "issue",
+        "externalId": "issue:410",
+        "title": "1.2 - start of discussion/ideas/breaking changes",
+        "url": "https://github.com/OAI/Arazzo-Specification/issues/410",
+        "publishedAt": "2025-11-27T00:00:00Z",
+        "body": "kind discriminator human in the loop and mcp types transformation function type loops goto conditional",
+        "labels": [],
+        "state": "open"
+    }
+}

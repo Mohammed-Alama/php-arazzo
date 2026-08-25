@@ -1,0 +1,24 @@
+{
+    "id": "f727dc892c7f2ec62e1fa03cde227f5606b898ba69788cd9e7910943f40efcdf",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.32",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.32",
+    "publishedAt": "2026-07-21T10:20:02Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.32",
+        "title": "v1.0.0-alpha.32",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.32",
+        "publishedAt": "2026-07-21T10:20:02Z",
+        "body": "# [1.0.0-alpha.32](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.31...v1.0.0-alpha.32) (2026-07-21)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* **validator:** bump @speclynx/apidom-ls to 2.11.6 ([#282](https://github.com/jentic/jentic-arazzo-tools/issues/282)) ([ec63fe6](https://github.com/jentic/jentic-arazzo-tools/commit/ec63fe6bfa3698663e5ad4087f6abdfe813294f2))\r\n\r\n\r\n\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

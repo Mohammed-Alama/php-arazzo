@@ -1,0 +1,23 @@
+{
+    "id": "7a6094321b4195273b4497b28a6fd6b5c75681a4b727cc2c39560c9d084a3ed4",
+    "source": "usearazzo/website.ecosystem.atom",
+    "type": "commit",
+    "title": "\n        feat(ecosystem): emphasized add button\n    ",
+    "url": "https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6",
+    "publishedAt": "2026-08-24T19:43:55+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website.ecosystem.atom",
+        "type": "commit",
+        "externalId": "atom:13393f1bce67dd4a3047b79269395804",
+        "title": "\n        feat(ecosystem): emphasized add button\n    ",
+        "url": "https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6",
+        "publishedAt": "2026-08-24T19:43:55+00:00",
+        "body": "\n      <pre style='white-space:pre-wrap;width:81ex'>feat(ecosystem): emphasized add button</pre>\n    ",
+        "labels": []
+    }
+}

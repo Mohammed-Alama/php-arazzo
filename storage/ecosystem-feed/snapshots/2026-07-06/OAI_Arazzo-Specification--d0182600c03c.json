@@ -1,0 +1,25 @@
+{
+    "id": "d0182600c03c1b7c7c3ef28598b8e9ccb62fbd1d5fa58b296e72e22c9e14b427",
+    "source": "OAI/Arazzo-Specification",
+    "type": "pr",
+    "title": "Clarify when Criterion context is required",
+    "url": "https://github.com/OAI/Arazzo-Specification/pull/499",
+    "publishedAt": "2026-07-06T00:00:00Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "externalId": "pr:499",
+        "title": "Clarify when Criterion context is required",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/499",
+        "publishedAt": "2026-07-06T00:00:00Z",
+        "body": "Criterion context $steps",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

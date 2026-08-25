@@ -1,0 +1,22 @@
+{
+    "id": "ad90add3bf34dc756a47b7ba3160c647898031d5e8fcf7fdf32e00f68cb56ea1",
+    "source": "jentic/jentic-public-apis",
+    "type": "commit",
+    "title": "Add overlay to set apify.com info.version (fixes import: missing version) (#22078)",
+    "url": "https://github.com/jentic/jentic-public-apis/commit/2ec421d6d468fd9507560f8592b9fe32aeed4de5",
+    "publishedAt": "2026-08-24T12:26:32Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "jentic/jentic-public-apis",
+        "type": "commit",
+        "externalId": "commit:2ec421d",
+        "title": "Add overlay to set apify.com info.version (fixes import: missing version) (#22078)",
+        "url": "https://github.com/jentic/jentic-public-apis/commit/2ec421d6d468fd9507560f8592b9fe32aeed4de5",
+        "publishedAt": "2026-08-24T12:26:32Z",
+        "body": "Add overlay to set apify.com info.version (fixes import: missing version) (#22078)",
+        "labels": [],
+        "state": ""
+    }
+}

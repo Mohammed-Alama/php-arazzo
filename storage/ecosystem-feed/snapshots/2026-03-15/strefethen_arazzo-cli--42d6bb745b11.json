@@ -1,0 +1,25 @@
+{
+    "id": "42d6bb745b11f89589e1e3476e04eef2b5a1afb5dd1b5df9fc89d0e7a8b90e81",
+    "source": "strefethen/arazzo-cli",
+    "type": "release",
+    "title": "v0.1.2",
+    "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.2",
+    "publishedAt": "2026-03-15T21:59:05Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "release",
+        "externalId": "release:v0.1.2",
+        "title": "v0.1.2",
+        "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.2",
+        "publishedAt": "2026-03-15T21:59:05Z",
+        "body": "## Critical Bug Fixes\n\n- **Runtime errors now route through onFailure handlers** — HTTP timeouts, connection failures, and response-too-large errors previously bypassed `onFailure` entirely. They now flow through the action dispatch, enabling retry and goto actions for network failures. This is a spec compliance fix.\n- **Original error kinds preserved** — when a step fails and `onFailure: end` fires, the error now reflects the root cause (e.g. `RUNTIME_RESPONSE_TOO_LARGE`) instead of being masked as `RUNTIME_SUCCESS_CRITERIA_FAILED`.\n- **`step_result_error` preserves error context** — the fallback error path (no matching action) now uses the original error kind from the step result.\n\n## Bug Fixes (from v0.1.1)\n\n- NOT operator precedence, bracket key access, escaped quotes, array query params, cookie encoding, goto interpolation, complex parameter values — all included in this release.\n\n## Stats\n\n- 363 tests passing\n\n**Full Changelog**: https://github.com/strefethen/arazzo-cli/compare/v0.1.1...v0.1.2",
+        "labels": [],
+        "state": "published"
+    }
+}

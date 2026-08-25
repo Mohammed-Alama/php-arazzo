@@ -1,0 +1,26 @@
+{
+    "id": "6646c5109cf544f10e03f94524ac284c894513243a6def9d5af693dc5db8eca7",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.1.2 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.2",
+    "publishedAt": "2025-09-19T15:45:02Z",
+    "tags": [
+        "xml",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.1.2",
+        "title": "OAS 3.1.2 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.2",
+        "publishedAt": "2025-09-19T15:45:02Z",
+        "body": "Version 3.1.2 has no material changes but does contain editorial fixes, additional examples, and clarifications.\r\n\r\n- Clarify that `$ref` in a Schema Object is a JSON Schema `$ref` keyword.\r\n- Detailed explanation of percent-encoding and -decoding, updated examples and references to match, including the Style Examples table.\r\n- Better explanation and examples for using Encoding and Serialization, and a note not to apply percent-encoding to headers.\r\n- Clarify that Request Body Objects need to specify at least one media type to be meaningful.\r\n- How to more clearly indicate that no response will have a body.\r\n- How to handle `null` in XML as an advisory note; since the functionality cannot be changed it is implementation-defined for 3.1 tooling.\r\n- Clarify that the root schema of an XML object should use the component name.",
+        "labels": [],
+        "state": "published"
+    }
+}

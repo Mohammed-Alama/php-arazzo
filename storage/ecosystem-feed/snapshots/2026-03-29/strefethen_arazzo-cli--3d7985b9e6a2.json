@@ -1,0 +1,28 @@
+{
+    "id": "3d7985b9e6a2b6e3124e59330bed4234df28132809fd408e67d62fb45108618f",
+    "source": "strefethen/arazzo-cli",
+    "type": "release",
+    "title": "v0.2.1",
+    "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1",
+    "publishedAt": "2026-03-29T15:57:30Z",
+    "tags": [
+        "mcp",
+        "cli",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "release",
+        "externalId": "release:v0.2.1",
+        "title": "v0.2.1",
+        "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1",
+        "publishedAt": "2026-03-29T15:57:30Z",
+        "body": "## What's New\n\n### MCP Server: New AI Agent Tools\n- **`generate_workflow`** — Generate Arazzo workflow YAML from natural language descriptions\n- **`describe_openapi`** — Summarize an OpenAPI spec's endpoints, schemas, and auth for AI consumption\n- **`generate_example`** — Produce realistic example values for OpenAPI request/response schemas\n\n### Improved Example Generation\n- Better OpenAPI example value generation with realistic data for common field patterns\n\n### New `arazzo-generate` Crate\n- Extracted generation logic into its own workspace crate (`arazzo-generate`), decoupling it from the CLI binary\n\n### Performance\n- 6–38% faster expression evaluation via `Cow<str>`, `&'static str` operator returns, and `Arc`-wrapped step outputs\n- Eliminated O(n²) BTreeMap cloning in workflow output building\n- Replaced O(n×m) parameter merge with O(n+m) HashSet dedup\n- Zero-copy ID validation in the spec validator\n\n### Security\n- Upgraded `rustls-webpki` to 0.103.10 (RUSTSEC-2026-0049)\n\n**Full Changelog**: https://github.com/strefethen/arazzo-cli/compare/v0.2.0...v0.2.1",
+        "labels": [],
+        "state": "published"
+    }
+}

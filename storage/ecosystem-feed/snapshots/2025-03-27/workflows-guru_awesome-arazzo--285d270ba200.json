@@ -1,0 +1,25 @@
+{
+    "id": "285d270ba20090f6afbfd90f53fac622c354215ad1e3aa01c4449526af5a47da",
+    "source": "workflows-guru/awesome-arazzo",
+    "type": "commit",
+    "title": "Merge pull request #2 from tsolakoua/add-redocly-cli-linter",
+    "url": "https://github.com/workflows-guru/awesome-arazzo/commit/4539edc132aad782abecaf1ba8cc41a114b97bf0",
+    "publishedAt": "2025-03-27T20:20:14Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "workflows-guru/awesome-arazzo",
+        "type": "commit",
+        "externalId": "commit:4539edc",
+        "title": "Merge pull request #2 from tsolakoua/add-redocly-cli-linter",
+        "url": "https://github.com/workflows-guru/awesome-arazzo/commit/4539edc132aad782abecaf1ba8cc41a114b97bf0",
+        "publishedAt": "2025-03-27T20:20:14Z",
+        "body": "Merge pull request #2 from tsolakoua/add-redocly-cli-linter\n\nAdd Redocly CLI Arazzo linter",
+        "labels": [],
+        "state": ""
+    }
+}

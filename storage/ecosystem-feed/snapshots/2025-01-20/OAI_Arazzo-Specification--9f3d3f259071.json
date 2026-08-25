@@ -1,0 +1,25 @@
+{
+    "id": "9f3d3f2590715cf31298243a169ceb8b8e3c3766d0a92d12329802e090f683c3",
+    "source": "OAI/Arazzo-Specification",
+    "type": "release",
+    "title": "Arazzo 1.0.1 Released!",
+    "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.1",
+    "publishedAt": "2025-01-20T11:32:23Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "release",
+        "externalId": "release:1.0.1",
+        "title": "Arazzo 1.0.1 Released!",
+        "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.1",
+        "publishedAt": "2025-01-20T11:32:23Z",
+        "body": "The OAI is pleased to announce the official release of the Arazzo Specification 1.0.1!\r\n\r\n## What's Changed\r\n* Fix example documents for LoginAndRetrievePets workflow by @apalm in https://github.com/OAI/Arazzo-Specification/pull/214\r\n* Fix example issues by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/260\r\n* Fix retryAfter description to match available `types` by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/230\r\n* Fix type in WorkflowId description by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/301\r\n* Improve clarity around `workflowId` in success and failure actions by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/301\r\n* Use RFC 9110 instead of RFC 7230 for Header Field guidance by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/301\r\n* Use RFC 9110 instead of RFC 7231 for payload (or request content) guidance by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/301\r\n* sourceDescription typo and emphasis on MUST by @jeremyfiel in https://github.com/OAI/Arazzo-Specification/pull/234\r\n* fix typo in Step Object description by @bpedro in https://github.com/OAI/Arazzo-Specification/pull/249\r\n* Remove mentions of `message` from the expression syntax for 1.0.* by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/269\r\n* Remove `body` from possible values of the `in` field within ParameterObject by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/284\r\n* Fix typo in Step Object `operationPath` fixed field description by @frankkilcommins in https://github.com/OAI/Arazzo-Specification/pull/284\r\n\r\n## JSON Schema\r\n* Add JSON Schema for the Arazzo Specification by @jeremyfiel in https://github.com/OAI/Arazzo-Specification/pull/230 \r\n\r\n## Infrastructure Items\r\n* respec build script: create minor-version symlinks by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/289\r\n* schema-publish workflow by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/290\r\n* Temporary fix for schema-publish.yaml: reduce list of reviewers by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/294\r\n* spec build workflow: dynamically determine latest spec version by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/296\r\n* Workflows with app-generated access token by @ralfhandl in https://github.com/OAI/Arazzo-Specification/pull/302\r\n\r\n## New Contributors\r\n* @apalm made their first contribution in https://github.com/OAI/Arazzo-Specification/pull/214\r\n* @bpedro made their first contribution in https://github.com/OAI/Arazzo-Specification/pull/249\r\n\r\n**Full Changelog**: https://github.com/OAI/Arazzo-Specification/compare/1.0.0...1.0.1",
+        "labels": [],
+        "state": "published"
+    }
+}

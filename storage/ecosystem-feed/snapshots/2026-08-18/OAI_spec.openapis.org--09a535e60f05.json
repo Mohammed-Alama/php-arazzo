@@ -1,0 +1,25 @@
+{
+    "id": "09a535e60f053801bee792c517a9b797101911274f571fc9bf55d9b0be4f38e0",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "Update date-time formats to RFC 9557\r",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/119",
+    "publishedAt": "2026-08-18T11:23:11Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:119",
+        "title": "Update date-time formats to RFC 9557\r",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/119",
+        "publishedAt": "2026-08-18T11:23:11Z",
+        "body": "RFC 3339 is updated by RFC 9557. By specifying all formats as\rRFC 9557, values in RFC 9557 format are now also allowed, not just values RFC 3339 format.\n\r\nAll entries also use consistent formatting and naming now,\rincluding which URL to link to and what the `source_label` is.",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

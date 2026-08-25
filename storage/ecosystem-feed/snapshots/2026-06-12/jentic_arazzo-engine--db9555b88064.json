@@ -1,0 +1,25 @@
+{
+    "id": "db9555b88064c360bc71ad938626de1113ea5439c47450b1ffe420a1e5f42609",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Update community contact email to hello@jentic.com",
+    "url": "https://github.com/jentic/arazzo-engine/pull/146",
+    "publishedAt": "2026-06-12T11:11:30Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:146",
+        "title": "Update community contact email to hello@jentic.com",
+        "url": "https://github.com/jentic/arazzo-engine/pull/146",
+        "publishedAt": "2026-06-12T11:11:30Z",
+        "body": "## Summary\n- Replace community@jentic.com with hello@jentic.com in CODE_OF_CONDUCT.md\n\n## Context\nUpdating community contact email across all Jentic repositories to use the new hello@jentic.com address.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

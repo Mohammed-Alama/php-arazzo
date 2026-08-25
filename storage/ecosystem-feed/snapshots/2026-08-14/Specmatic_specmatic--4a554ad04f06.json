@@ -1,0 +1,25 @@
+{
+    "id": "4a554ad04f06856b1a7413f3a91c57bf3c3d637cd1e9f8f4147961e35f178529",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.53.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.53.0",
+    "publishedAt": "2026-08-14T11:05:42Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.53.0",
+        "title": "2.53.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.53.0",
+        "publishedAt": "2026-08-14T11:05:42Z",
+        "body": "## What's Changed\r\n* Fix ref-based path parameter change tracking by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2687\r\n* Fix OpenAPI inline refrenced example loading by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2681\r\n* Fix form-data body pattern and content encoding conversion by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2688\r\n* Clarify backward compatibility logging for new specs by @joelrosario in https://github.com/specmatic/specmatic/pull/2689\r\n* Backward compatibility check log message fix for new spec file creation by @joelrosario in https://github.com/specmatic/specmatic/pull/2692\r\n* Fix substitutions in nullable array responses by @joelrosario in https://github.com/specmatic/specmatic/pull/2693\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.52.0...2.53.0",
+        "labels": [],
+        "state": "published"
+    }
+}
