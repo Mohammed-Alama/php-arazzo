@@ -8,6 +8,8 @@ use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\HttpStepExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
@@ -47,20 +49,20 @@ final class QueueFixtureRunner extends ConformanceHarness
         $queue = new SyncQueueDriver();
 
         $worker = new StepExecutionWorker(
+            new RunPersistence(
+                new RecordingStateStore(),
+                new RecordingEventLedger(),
+                new RecordingExecutionRegistry(),
+            ),
             new FakeLockManager(),
-            new RecordingStateStore(),
             $definitionRegistry,
-            new RecordingEventLedger(),
-            new RecordingExecutionRegistry(),
             $resolver,
             [new HttpStepExecutor(
                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                 $resolver,
                 $operationResolver,
             )],
-            new WorkflowEngine($resolver),
-            $queue,
-            events: $this->events,
+            new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),
         );
 
         $executionId = 'parity_' . bin2hex(random_bytes(4));

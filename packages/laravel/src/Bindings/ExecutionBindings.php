@@ -26,6 +26,8 @@ use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\HttpStepExecutor;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
@@ -110,12 +112,16 @@ final class ExecutionBindings
 
         $app->singleton(StepOutcomeHandler::class, function (Container $app) {
             return new StepOutcomeHandler(
-                queueDriver: $app->make(QueueDriverInterface::class),
-                workflowEngine: $app->make(WorkflowEngine::class),
-                executionRegistry: $app->make(ExecutionRegistryInterface::class),
-                eventLedger: $app->make(EventLedgerInterface::class),
+                new RunPersistence(
+                    $app->make(StateStoreInterface::class),
+                    $app->make(EventLedgerInterface::class),
+                    $app->make(ExecutionRegistryInterface::class),
+                ),
+                new RunControlFlow(
+                    workflowEngine: $app->make(WorkflowEngine::class),
+                    queueDriver: $app->make(QueueDriverInterface::class),
+                ),
                 pendingCorrelations: $app->make(PendingCorrelationRegistryInterface::class),
-                stateStore: $app->make(StateStoreInterface::class),
                 invoker: $app->make(SubWorkflowInvoker::class),
                 selectors: $app->make(SelectorEvaluator::class),
                 expressions: new ExpressionEvaluator(),
@@ -160,20 +166,24 @@ final class ExecutionBindings
 
         $app->singleton(StepExecutionWorker::class, function (Container $app) {
             return new StepExecutionWorker(
+                new RunPersistence(
+                    $app->make(StateStoreInterface::class),
+                    $app->make(EventLedgerInterface::class),
+                    $app->make(ExecutionRegistryInterface::class),
+                ),
                 $app->make(LockManagerInterface::class),
-                $app->make(StateStoreInterface::class),
                 $app->make(DefinitionRegistryInterface::class),
-                $app->make(EventLedgerInterface::class),
-                $app->make(ExecutionRegistryInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 [
                     $app->make(SubWorkflowStepExecutor::class),
                     $app->make(HttpStepExecutor::class),
                     $app->make(AsyncApiStepExecutor::class),
                 ],
-                workflowEngine: $app->make(WorkflowEngine::class),
-                queueDriver: $app->make(QueueDriverInterface::class),
-                preflight: $app->make(PreflightValidator::class),
+                new RunControlFlow(
+                    workflowEngine: $app->make(WorkflowEngine::class),
+                    queueDriver: $app->make(QueueDriverInterface::class),
+                    preflight: $app->make(PreflightValidator::class),
+                ),
             );
         });
     }

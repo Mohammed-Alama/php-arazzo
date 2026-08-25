@@ -15,6 +15,8 @@ use Alama\Arazzo\Runner\Events\StepRetried;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
@@ -146,16 +148,12 @@ function createStepOutcomeEventsHarness(): array
     $resolver = new OutcomeEventsMockExpressionResolver();
 
     $handler = new StepOutcomeHandler(
-        queueDriver: $queue,
-        workflowEngine: new WorkflowEngine($resolver),
-        executionRegistry: $execRegistry,
-        eventLedger: $ledger,
+        new RunPersistence($store, $ledger, $execRegistry),
+        new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $dispatcher),
         pendingCorrelations: $correlations,
-        stateStore: $store,
         invoker: Mockery::mock(SubWorkflowInvoker::class),
         selectors: Mockery::mock(SelectorEvaluator::class),
         expressions: new ExpressionEvaluator(),
-        events: $dispatcher,
     );
 
     return [$handler, $collector];

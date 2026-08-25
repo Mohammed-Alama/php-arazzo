@@ -15,6 +15,8 @@ use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\StepStatus;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
@@ -188,12 +190,13 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
 
     $workflowEngine = new WorkflowEngine($resolver, $maxRetryAttempts, $retryBackoffMultiplier);
     $handler = new StepOutcomeHandler(
-        $queue, $workflowEngine, $executionRegistry, $eventLedger, $pendingCorrelations, $store,
-        \Mockery::mock(SubWorkflowInvoker::class),
-        \Mockery::mock(SelectorEvaluator::class),
-        \Mockery::mock(ExpressionEvaluator::class),
-        86400,
-        null,
+        new RunPersistence($store, $eventLedger, $executionRegistry),
+        new RunControlFlow($workflowEngine, $queue),
+        pendingCorrelations: $pendingCorrelations,
+        invoker: \Mockery::mock(SubWorkflowInvoker::class),
+        selectors: \Mockery::mock(SelectorEvaluator::class),
+        expressions: \Mockery::mock(ExpressionEvaluator::class),
+        stateTtlSeconds: 86400,
     );
 
     return [$handler, $queue, $executionRegistry, $eventLedger, $pendingCorrelations, $store];

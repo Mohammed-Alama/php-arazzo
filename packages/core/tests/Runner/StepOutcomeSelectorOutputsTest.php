@@ -11,6 +11,8 @@ use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
@@ -41,16 +43,12 @@ it('resolves a Selector output through SelectorEvaluator', function () {
     $ledger->shouldReceive('append')->once();
 
     $handler = new StepOutcomeHandler(
-        Mockery::mock(QueueDriverInterface::class),
-        new WorkflowEngine(Mockery::mock(ExpressionResolverInterface::class)),
-
-        $exec,
-        $ledger,
-        $pending,
-        $store,
-        Mockery::mock(SubWorkflowInvoker::class),
-        $selectors,
-        Mockery::mock(ExpressionEvaluator::class),
+        new RunPersistence($store, $ledger, $exec),
+        new RunControlFlow(new WorkflowEngine(Mockery::mock(ExpressionResolverInterface::class)), Mockery::mock(QueueDriverInterface::class)),
+        pendingCorrelations: $pending,
+        invoker: Mockery::mock(SubWorkflowInvoker::class),
+        selectors: $selectors,
+        expressions: Mockery::mock(ExpressionEvaluator::class),
     );
 
     $step = new Step(

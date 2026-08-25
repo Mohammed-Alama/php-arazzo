@@ -46,20 +46,31 @@ class StepOutcomeHandler
 {
     private EventDispatcherInterface $events;
 
+    private QueueDriverInterface $queueDriver;
+
+    private WorkflowEngine $workflowEngine;
+
+    private ExecutionRegistryInterface $executionRegistry;
+
+    private EventLedgerInterface $eventLedger;
+
+    private StateStoreInterface $stateStore;
+
     public function __construct(
-        private QueueDriverInterface $queueDriver,
-        private WorkflowEngine $workflowEngine,
-        private ExecutionRegistryInterface $executionRegistry,
-        private EventLedgerInterface $eventLedger,
+        RunPersistence $persistence,
+        RunControlFlow $controlFlow,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
-        private StateStoreInterface $stateStore,
         private SubWorkflowInvoker $invoker,
         private SelectorEvaluator $selectors,
         private ExpressionEvaluator $expressions,
         private int $stateTtlSeconds = 86400,
-        ?EventDispatcherInterface $events = null,
     ) {
-        $this->events = $events ?? new NullEventDispatcher();
+        $this->queueDriver = $controlFlow->queueDriver;
+        $this->workflowEngine = $controlFlow->workflowEngine;
+        $this->events = $controlFlow->events ?? new NullEventDispatcher();
+        $this->executionRegistry = $persistence->executionRegistry;
+        $this->eventLedger = $persistence->eventLedger;
+        $this->stateStore = $persistence->stateStore;
     }
 
     public function handle(

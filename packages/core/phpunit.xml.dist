@@ -9,6 +9,8 @@
     stopOnFailure="false"
     executionOrder="random"
     failOnWarning="true"
+    displayDetailsOnTestsThatTriggerDeprecations="false"
+    failOnDeprecation="false"
     failOnRisky="true"
     failOnEmptyTestSuite="true"
     beStrictAboutOutputDuringTests="true"
@@ -25,4 +27,9 @@
             <directory suffix=".php">./src</directory>
         </include>
     </source>
+    <php>
+        <!-- cebe/php-openapi emits PHP-8.4 nullable-param deprecations on
+             class load; they are vendor noise, not suite signal. -->
+        <ini name="error_reporting" value="24575"/>
+    </php>
 </phpunit>

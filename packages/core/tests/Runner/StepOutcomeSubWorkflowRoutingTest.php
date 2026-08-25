@@ -12,6 +12,8 @@ use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SubWorkflowResult;
@@ -44,16 +46,12 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
     $resolver->shouldReceive('evaluateCriteria')->andReturn(true);
 
     $handler = new StepOutcomeHandler(
-        Mockery::mock(QueueDriverInterface::class),
-        new WorkflowEngine($resolver),
-
-        $exec,
-        $ledger,
-        $pending,
-        $store,
-        $invoker,
-        Mockery::mock(SelectorEvaluator::class),
-        Mockery::mock(ExpressionEvaluator::class),
+        new RunPersistence($store, $ledger, $exec),
+        new RunControlFlow(new WorkflowEngine($resolver), Mockery::mock(QueueDriverInterface::class)),
+        pendingCorrelations: $pending,
+        invoker: $invoker,
+        selectors: Mockery::mock(SelectorEvaluator::class),
+        expressions: Mockery::mock(ExpressionEvaluator::class),
     );
 
     $step = new Step(

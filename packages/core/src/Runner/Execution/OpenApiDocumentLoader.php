@@ -42,6 +42,7 @@ final class OpenApiDocumentLoader
                 $openapi,
                 $resolvedSource->canonicalUri !== '' ? $resolvedSource->canonicalUri : 'memory://source',
             ));
+
             $this->cache[$sourceDesc->name] = $openapi;
 
             return $openapi;

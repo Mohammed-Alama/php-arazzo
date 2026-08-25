@@ -1,0 +1,2453 @@
+{
+  "meta": {
+    "generated_at": "2026-08-25T09:43:31.666659Z",
+    "package": "core",
+    "skill": "falsification-testing comprehensive"
+  },
+  "detect_fake": {
+    "files": 206,
+    "tests": 674,
+    "violations": [
+      {
+        "file": "packages/core/tests/Dto/ContainerDtoTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Dto/Enum/FormatTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Dto/Action/SubWorkflowActionTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Dto/ExpressionTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Ecosystem/FeedTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/ValidatorTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/RuleSetTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ComponentsUniqueNamesRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/StepOutputsUniqueRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionContextMisuseRuleTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/SourceUrlSyntaxRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/StepNestedWorkflowExistsRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/DocumentArazzoVersionRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionRefSelectorBranchTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionUnresolvedInputRefRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/SourceTypeMatchesRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ActionReusableRefResolvesRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ActionReusableRefResolvesRuleTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/StepOperationIdSourceScopedRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExtensionsXPrefixRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExtensionsXPrefixRuleTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionUnresolvedSourceRefRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionUnresolvedSourceRefRuleTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/StepOperationPathSyntaxRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/WorkflowInputsValidSchemaRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ActionTypeValidRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/StepRequestBodyReplacementsTargetRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ActionRetryLimitsRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionUnresolvedComponentRefRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionUnresolvedComponentRefRuleTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/WorkflowDependsOnExistsRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Validator/Rules/ExpressionJsonPointerSyntaxRuleTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/AsyncApiStepExecutorTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSelectorOutputsTest.php",
+        "code": "FAKE-1",
+        "message": "file has 1 test(s) but zero expect()/assert calls",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSelectorOutputsTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSelectorOutputsTest.php",
+        "code": "FAKE-4",
+        "message": "uses Mockery shouldReceive (5x) but no expect() on observable behavior",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSelectorOutputsTest.php",
+        "code": "FAKE-4",
+        "message": "mocks interactions but never asserts on WorkflowContext/ExecutionState/Transition/status",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/WorkflowExecutorTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/ArazzoSchemaValidatorTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/IdempotencyKeyInjectorTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/RuntimeFailureClassificationTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/DefaultOpenApiExecutorTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/RegressionTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/RegressionTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/Execution/StateMergeTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/Execution/StateMergeTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/Execution/StepExecutorTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/Evaluation/ImplicitDependenciesTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/CorrelationResumerEventsTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSubWorkflowRoutingTest.php",
+        "code": "FAKE-1",
+        "message": "file has 1 test(s) but zero expect()/assert calls",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSubWorkflowRoutingTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSubWorkflowRoutingTest.php",
+        "code": "FAKE-4",
+        "message": "uses Mockery shouldReceive (6x) but no expect() on observable behavior",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/StepOutcomeSubWorkflowRoutingTest.php",
+        "code": "FAKE-4",
+        "message": "mocks interactions but never asserts on WorkflowContext/ExecutionState/Transition/status",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/DependencyGraphTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/WorkflowContextTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/LedgerRegressionTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/LedgerRegressionTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/Resolver/OpenApiOperationResolverVersionTest.php",
+        "code": "FAKE-1",
+        "message": "file has 1 test(s) but zero expect()/assert calls",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/Resolver/OpenApiOperationResolverVersionTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/AsyncApiSpecVersionBranchTest.php",
+        "code": "FAKE-1",
+        "message": "file has 2 test(s) but zero expect()/assert calls",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/AsyncApiSpecVersionBranchTest.php",
+        "code": "FAKE-4",
+        "message": "uses Mockery shouldReceive (2x) but no expect() on observable behavior",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Runner/AsyncApiSpecVersionBranchTest.php",
+        "code": "FAKE-4",
+        "message": "mocks interactions but never asserts on WorkflowContext/ExecutionState/Transition/status",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Parser/InvokeActionTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Parser/InvokeActionTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Parser/StepOutputsTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Parser/StepOutputsTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Parser/SelectorParametersTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Parser/SelectorParametersTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Generator/ArazzoGeneratorTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Architecture/CoreIsFrameworkAgnosticTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Architecture/CoreIsFrameworkAgnosticTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Feature/EdgeCaseFixturesTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Feature/FalsificationScriptsTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Feature/FalsificationScriptsTest.php",
+        "code": "NAMING",
+        "message": "test named after method under test (calls/test) \u2014 name after falsifiable claim instead",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Events/Dispatcher/NullEventDispatcherTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Resolver/Fetchers/CachedFetcherTest.php",
+        "code": "NAMING",
+        "message": "test named after method under test (calls/test) \u2014 name after falsifiable claim instead",
+        "line": null
+      },
+      {
+        "file": "packages/core/tests/Conformance/OaiConformanceTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/BackwardCompatibilityTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/BackwardCompatibilityTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/LaravelArazzoServiceProviderTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/LaravelArazzoServiceProviderTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Http/Controllers/ArazzoApiControllerTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Http/Controllers/ArazzoApiControllerTest.php",
+        "code": "FAKE-4",
+        "message": "uses Mockery shouldReceive (2x) but no expect() on observable behavior",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Http/Controllers/ArazzoApiControllerTest.php",
+        "code": "FAKE-4",
+        "message": "mocks interactions but never asserts on WorkflowContext/ExecutionState/Transition/status",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Http/Controllers/WebhookResumeControllerTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Http/Psr18HttpClientTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Persistence/DatabaseDefinitionRegistryTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Persistence/DatabasePendingCorrelationRegistryTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Queue/Jobs/RunExecuteStepJobTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/LaravelArazzoServiceProviderBindingsTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Feature/IdempotencyFeatureTest.php",
+        "code": "FAKE-1",
+        "message": "uses not->toBeNull() instead of specific expectation (would pass on wrong value)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Feature/IdempotencyFeatureTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Events/EventDispatcherBindingTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Events/IlluminatePsrEventDispatcherTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Resolver/ResolutionServiceProviderBindingTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Resolver/ResolutionServiceProviderBindingTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Resolver/XpathEvaluatorBindingTest.php",
+        "code": "FAKE-3",
+        "message": "only one test case in file \u2014 likely missing empty / boundary / invalid paths (Hume)",
+        "line": null
+      },
+      {
+        "file": "packages/laravel/tests/Resolver/XpathEvaluatorBindingTest.php",
+        "code": "FAKE-3",
+        "message": "no edge-case keyword (empty/null/invalid/exception/fails/cycle) found \u2014 likely happy-path only",
+        "line": null
+      }
+    ]
+  },
+  "audit_boundaries": {
+    "target": "WorkflowEngine",
+    "resolved": "WorkflowEngine",
+    "testsDir": "/Users/mohammedalama/Code/Me/php-arazzo/packages/core/tests",
+    "boundaries": [
+      "empty workflow (0 steps)",
+      "single step",
+      "maxSteps at budget / stepsSpent==maxSteps",
+      "maxWorkflowDepth at ceiling",
+      "dependsOn diamond vs linear vs cycle",
+      "onSuccess goto missing target",
+      "onFailure end vs goto vs retry",
+      "suspend/receive without correlation",
+      "retryLimit vs retry_ceiling (10)"
+    ],
+    "hits": [
+      "empty workflow (0 steps)",
+      "single step",
+      "maxSteps at budget / stepsSpent==maxSteps",
+      "maxWorkflowDepth at ceiling",
+      "dependsOn diamond vs linear vs cycle",
+      "onSuccess goto missing target",
+      "onFailure end vs goto vs retry",
+      "retryLimit vs retry_ceiling (10)"
+    ],
+    "misses": [
+      "suspend/receive without correlation"
+    ]
+  },
+  "coverage_overview": {
+    "package": "core",
+    "report": "packages/core/coverage-report/index.html",
+    "total": {
+      "lines_percent": 87.55,
+      "lines_covered": 2896,
+      "lines_total": 3308,
+      "functions_percent": 77.57,
+      "classes_percent": 72.53
+    },
+    "directories": [
+      {
+        "name": "Expression",
+        "lines_percent": 88.24,
+        "lines_covered": 225,
+        "lines_total": 255,
+        "functions_percent": 54.84,
+        "classes_percent": 76.47
+      },
+      {
+        "name": "Generator",
+        "lines_percent": 100,
+        "lines_covered": 33,
+        "lines_total": 33,
+        "functions_percent": 100,
+        "classes_percent": 100
+      },
+      {
+        "name": "License",
+        "lines_percent": 60,
+        "lines_covered": 3,
+        "lines_total": 5,
+        "functions_percent": 60,
+        "classes_percent": 50
+      },
+      {
+        "name": "Parser",
+        "lines_percent": 97.48,
+        "lines_covered": 426,
+        "lines_total": 437,
+        "functions_percent": 87.23,
+        "classes_percent": 71.43
+      },
+      {
+        "name": "Resolver",
+        "lines_percent": 88.51,
+        "lines_covered": 77,
+        "lines_total": 87,
+        "functions_percent": 71.43,
+        "classes_percent": 40
+      },
+      {
+        "name": "Runner",
+        "lines_percent": 80.78,
+        "lines_covered": 1421,
+        "lines_total": 1759,
+        "functions_percent": 67.89,
+        "classes_percent": 52.38
+      },
+      {
+        "name": "Spec",
+        "lines_percent": 100,
+        "lines_covered": 46,
+        "lines_total": 46,
+        "functions_percent": 100,
+        "classes_percent": 100
+      },
+      {
+        "name": "Support",
+        "lines_percent": 96.77,
+        "lines_covered": 60,
+        "lines_total": 62,
+        "functions_percent": 88.89,
+        "classes_percent": 75
+      },
+      {
+        "name": "Validator",
+        "lines_percent": 96.96,
+        "lines_covered": 605,
+        "lines_total": 624,
+        "functions_percent": 91.67,
+        "classes_percent": 83.64
+      }
+    ],
+    "hotspots": [
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\InputPart",
+        "coverage": 0,
+        "href": "Expression/Ast/InputPart.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\OutputRef",
+        "coverage": 0,
+        "href": "Expression/Ast/OutputRef.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\License\\LicenseException",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#9"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Context\\VariableContext",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionEvaluator",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#11"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Jobs\\ResumeCorrelationJob",
+        "coverage": 0,
+        "href": "Runner/Jobs/ResumeCorrelationJob.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Exceptions\\ValidationException",
+        "coverage": 0,
+        "href": "Validator/Exceptions/ValidationException.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine",
+        "coverage": 32,
+        "href": "Runner/Execution/WorkflowEngine.php.html#29"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor",
+        "coverage": 54,
+        "href": "Runner/Execution/HttpStepExecutor.php.html#16"
+      },
+      {
+        "class": "Alama\\Arazzo\\Resolver\\Fetchers\\HttpFetcher",
+        "coverage": 61,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#13"
+      }
+    ],
+    "insufficient": [
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\InputPart",
+        "coverage": 0,
+        "href": "Expression/Ast/InputPart.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\OutputRef",
+        "coverage": 0,
+        "href": "Expression/Ast/OutputRef.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\License\\LicenseException",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#9"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Context\\VariableContext",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionEvaluator",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#11"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Jobs\\ResumeCorrelationJob",
+        "coverage": 0,
+        "href": "Runner/Jobs/ResumeCorrelationJob.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Exceptions\\ValidationException",
+        "coverage": 0,
+        "href": "Validator/Exceptions/ValidationException.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine",
+        "coverage": 32,
+        "href": "Runner/Execution/WorkflowEngine.php.html#29"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor",
+        "coverage": 54,
+        "href": "Runner/Execution/HttpStepExecutor.php.html#16"
+      },
+      {
+        "class": "Alama\\Arazzo\\Resolver\\Fetchers\\HttpFetcher",
+        "coverage": 61,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#13"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver",
+        "coverage": 62,
+        "href": "Runner/Resolver/OpenApiOperationResolver.php.html#18"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor",
+        "coverage": 63,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#27"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionResolver",
+        "coverage": 66,
+        "href": "Runner/Evaluation/ArazzoExpressionResolver.php.html#20"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\ArazzoOutputExtractor",
+        "coverage": 69,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#27"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\StepExecutor",
+        "coverage": 69,
+        "href": "Runner/Execution/StepExecutor.php.html#19"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\ArazzoSchemaValidator",
+        "coverage": 69,
+        "href": "Runner/Execution/ArazzoSchemaValidator.php.html#17"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\Xpath\\DomXpathEvaluator",
+        "coverage": 70,
+        "href": "Runner/Evaluation/Xpath/DomXpathEvaluator.php.html#13"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker",
+        "coverage": 75,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#33"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\OpenApiDocumentLoader",
+        "coverage": 76,
+        "href": "Runner/Execution/OpenApiDocumentLoader.php.html#13"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor",
+        "coverage": 78,
+        "href": "Runner/Execution/DefaultOpenApiExecutor.php.html#17"
+      },
+      {
+        "class": "Alama\\Arazzo\\Expression\\Parser",
+        "coverage": 79,
+        "href": "Expression/Parser.php.html#20"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ExpressionEvaluator",
+        "coverage": 80,
+        "href": "Runner/Evaluation/ExpressionEvaluator.php.html#19"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Context\\ExecutionState",
+        "coverage": 81,
+        "href": "Runner/Context/ExecutionState.php.html#16"
+      },
+      {
+        "class": "Alama\\Arazzo\\Parser\\Exceptions\\LoaderException",
+        "coverage": 83,
+        "href": "Parser/Exceptions/LoaderException.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Rules\\SelectorTypeSupportedRule",
+        "coverage": 84,
+        "href": "Validator/Rules/SelectorTypeSupportedRule.php.html#14"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\Transition",
+        "coverage": 85,
+        "href": "Runner/Execution/Transition.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Rules\\ExpressionUnresolvedInputRefRule",
+        "coverage": 87,
+        "href": "Validator/Rules/ExpressionUnresolvedInputRefRule.php.html#15"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer",
+        "coverage": 87,
+        "href": "Runner/Execution/CorrelationResumer.php.html#22"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\SubWorkflowInvoker",
+        "coverage": 88,
+        "href": "Runner/Execution/SubWorkflowInvoker.php.html#17"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Rules\\SubWorkflowInvokeTargetResolvesRule",
+        "coverage": 88,
+        "href": "Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php.html#15"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\AsyncApiStepExecutor",
+        "coverage": 89,
+        "href": "Runner/Execution/AsyncApiStepExecutor.php.html#18"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Expression/Ast/InputPart.php.html#9"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Expression/Ast/OutputRef.php.html#9"
+      },
+      {
+        "class": "notLicensed",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#11"
+      },
+      {
+        "class": "expired",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#16"
+      },
+      {
+        "class": "readFailed",
+        "coverage": 0,
+        "href": "Parser/Exceptions/LoaderException.php.html#27"
+      },
+      {
+        "class": "jsonSerialize",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#72"
+      },
+      {
+        "class": "withWorkflow",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#113"
+      },
+      {
+        "class": "withError",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#148"
+      },
+      {
+        "class": "leaveWorkflow",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#164"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#14"
+      },
+      {
+        "class": "setInput",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#21"
+      },
+      {
+        "class": "getInputs",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#29"
+      },
+      {
+        "class": "setStepOutput",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#34"
+      },
+      {
+        "class": "getSteps",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#42"
+      },
+      {
+        "class": "setStepRequest",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#50"
+      },
+      {
+        "class": "setStepResponse",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#58"
+      },
+      {
+        "class": "getComponents",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#66"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#13"
+      },
+      {
+        "class": "evaluate",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#17"
+      },
+      {
+        "class": "evaluateCriteria",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionResolver.php.html#45"
+      },
+      {
+        "class": "validateResponseSchema",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionResolver.php.html#50"
+      },
+      {
+        "class": "findOperation",
+        "coverage": 0,
+        "href": "Runner/Execution/ArazzoSchemaValidator.php.html#80"
+      },
+      {
+        "class": "attemptsFrom",
+        "coverage": 0,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#253"
+      },
+      {
+        "class": "findStep",
+        "coverage": 0,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#263"
+      },
+      {
+        "class": "contextFromState",
+        "coverage": 0,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#274"
+      },
+      {
+        "class": "isTerminal",
+        "coverage": 0,
+        "href": "Runner/Execution/Transition.php.html#47"
+      },
+      {
+        "class": "context",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowEngine.php.html#122"
+      },
+      {
+        "class": "target",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowEngine.php.html#133"
+      },
+      {
+        "class": "assertCanEnter",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowEngine.php.html#149"
+      },
+      {
+        "class": "executeCanonically",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#138"
+      },
+      {
+        "class": "firstStep",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#183"
+      },
+      {
+        "class": "step",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#188"
+      },
+      {
+        "class": "workflow",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#199"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Runner/Jobs/ResumeCorrelationJob.php.html#12"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Validator/Exceptions/ValidationException.php.html#12"
+      },
+      {
+        "class": "code",
+        "coverage": 0,
+        "href": "Validator/Rules/StepDependsOnNoCycleRule.php.html#50"
+      },
+      {
+        "class": "resolveUrl",
+        "coverage": 28,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#41"
+      },
+      {
+        "class": "actions",
+        "coverage": 33,
+        "href": "Runner/Execution/WorkflowEngine.php.html#98"
+      },
+      {
+        "class": "transition",
+        "coverage": 34,
+        "href": "Runner/Execution/WorkflowEngine.php.html#39"
+      },
+      {
+        "class": "asString",
+        "coverage": 40,
+        "href": "Runner/Execution/ParameterSerializer.php.html#85"
+      },
+      {
+        "class": "parseCriteriaList",
+        "coverage": 42,
+        "href": "Parser/Parser.php.html#528"
+      },
+      {
+        "class": "castToSchemaType",
+        "coverage": 46,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#139"
+      },
+      {
+        "class": "execute",
+        "coverage": 51,
+        "href": "Runner/Execution/HttpStepExecutor.php.html#32"
+      },
+      {
+        "class": "castToSchemaType",
+        "coverage": 58,
+        "href": "Runner/Execution/DefaultOpenApiExecutor.php.html#126"
+      },
+      {
+        "class": "resolve",
+        "coverage": 61,
+        "href": "Runner/Resolver/OpenApiOperationResolver.php.html#28"
+      },
+      {
+        "class": "parseSubWorkflowFailureAction",
+        "coverage": 62,
+        "href": "Parser/Parser.php.html#610"
+      },
+      {
+        "class": "query",
+        "coverage": 62,
+        "href": "Runner/Evaluation/Xpath/DomXpathEvaluator.php.html#15"
+      },
+      {
+        "class": "parse",
+        "coverage": 64,
+        "href": "Expression/Parser.php.html#26"
+      },
+      {
+        "class": "parseNamedPart",
+        "coverage": 66,
+        "href": "Expression/Parser.php.html#122"
+      },
+      {
+        "class": "parseHeaderName",
+        "coverage": 66,
+        "href": "Expression/Parser.php.html#191"
+      },
+      {
+        "class": "asString",
+        "coverage": 66,
+        "href": "Runner/Evaluation/TypeCaster.php.html#41"
+      },
+      {
+        "class": "castOutputAgainstResponseSchema",
+        "coverage": 66,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#68"
+      },
+      {
+        "class": "resolveSchema",
+        "coverage": 66,
+        "href": "Runner/Execution/SchemaValidator.php.html#103"
+      },
+      {
+        "class": "execute",
+        "coverage": 68,
+        "href": "Runner/Execution/StepExecutor.php.html#40"
+      },
+      {
+        "class": "resolveTarget",
+        "coverage": 71,
+        "href": "Runner/Execution/StepOutcomeHandler.php.html#312"
+      },
+      {
+        "class": "findWorkflow",
+        "coverage": 75,
+        "href": "Runner/Execution/CorrelationResumer.php.html#127"
+      },
+      {
+        "class": "findStep",
+        "coverage": 75,
+        "href": "Runner/Execution/CorrelationResumer.php.html#138"
+      },
+      {
+        "class": "load",
+        "coverage": 75,
+        "href": "Runner/Execution/OpenApiDocumentLoader.php.html#22"
+      },
+      {
+        "class": "findExecutor",
+        "coverage": 75,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#227"
+      },
+      {
+        "class": "resolveReusable",
+        "coverage": 75,
+        "href": "Runner/Execution/StepOutcomeHandler.php.html#100"
+      },
+      {
+        "class": "handle",
+        "coverage": 75,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#59"
+      },
+      {
+        "class": "coerceDocument",
+        "coverage": 76,
+        "href": "Runner/Evaluation/Xpath/DomXpathEvaluator.php.html#52"
+      },
+      {
+        "class": "resolveSchemaAtPointer",
+        "coverage": 76,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#110"
+      },
+      {
+        "class": "parseHttpPart",
+        "coverage": 77,
+        "href": "Expression/Parser.php.html#135"
+      },
+      {
+        "class": "nextRunnable",
+        "coverage": 77,
+        "href": "Runner/Execution/WorkflowEngine.php.html#159"
+      },
+      {
+        "class": "parseHttpMeta",
+        "coverage": 80,
+        "href": "Expression/Parser.php.html#81"
+      },
+      {
+        "class": "parseSourceRef",
+        "coverage": 80,
+        "href": "Expression/Parser.php.html#224"
+      },
+      {
+        "class": "fetch",
+        "coverage": 80,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#21"
+      },
+      {
+        "class": "evaluateAst",
+        "coverage": 80,
+        "href": "Runner/Evaluation/ExpressionEvaluator.php.html#28"
+      },
+      {
+        "class": "findResponseSchema",
+        "coverage": 80,
+        "href": "Runner/Execution/ArazzoSchemaValidator.php.html#39"
+      },
+      {
+        "class": "execute",
+        "coverage": 80,
+        "href": "Runner/Execution/DefaultOpenApiExecutor.php.html#26"
+      },
+      {
+        "class": "check",
+        "coverage": 82,
+        "href": "Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php.html#17"
+      },
+      {
+        "class": "check",
+        "coverage": 82,
+        "href": "Validator/Rules/SelectorTypeSupportedRule.php.html#22"
+      },
+      {
+        "class": "parseSimpleRef",
+        "coverage": 83,
+        "href": "Expression/Parser.php.html#67"
+      },
+      {
+        "class": "optionalArray",
+        "coverage": 83,
+        "href": "Parser/Parser.php.html#248"
+      },
+      {
+        "class": "optionalBool",
+        "coverage": 83,
+        "href": "Parser/Parser.php.html#638"
+      },
+      {
+        "class": "requireArray",
+        "coverage": 83,
+        "href": "Parser/Parser.php.html#714"
+      },
+      {
+        "class": "resolveLocalRef",
+        "coverage": 83,
+        "href": "Runner/Normalizer/OpenApi30Normalizer.php.html#132"
+      },
+      {
+        "class": "parseWorkflowRef",
+        "coverage": 84,
+        "href": "Expression/Parser.php.html#201"
+      },
+      {
+        "class": "extractOutputs",
+        "coverage": 85,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#39"
+      },
+      {
+        "class": "serializeDelimited",
+        "coverage": 85,
+        "href": "Runner/Execution/ParameterSerializer.php.html#185"
+      },
+      {
+        "class": "parseJsonPointer",
+        "coverage": 86,
+        "href": "Expression/Parser.php.html#165"
+      },
+      {
+        "class": "check",
+        "coverage": 86,
+        "href": "Validator/Rules/ExpressionUnresolvedInputRefRule.php.html#17"
+      },
+      {
+        "class": "parseComponentRef",
+        "coverage": 87,
+        "href": "Expression/Parser.php.html#251"
+      },
+      {
+        "class": "canonicalizeBody",
+        "coverage": 87,
+        "href": "Runner/Execution/IdempotencyKeyInjector.php.html#66"
+      },
+      {
+        "class": "invoke",
+        "coverage": 87,
+        "href": "Runner/Execution/SubWorkflowInvoker.php.html#27"
+      },
+      {
+        "class": "parseStepRef",
+        "coverage": 88,
+        "href": "Expression/Parser.php.html#94"
+      },
+      {
+        "class": "execute",
+        "coverage": 88,
+        "href": "Runner/Execution/AsyncApiStepExecutor.php.html#33"
+      },
+      {
+        "class": "resolve",
+        "coverage": 88,
+        "href": "Resolver/SourceRegistry.php.html#29"
+      },
+      {
+        "class": "matchesType",
+        "coverage": 88,
+        "href": "Runner/Execution/SchemaValidator.php.html#112"
+      },
+      {
+        "class": "validateSelector",
+        "coverage": 88,
+        "href": "Validator/Rules/SelectorTypeSupportedRule.php.html#72"
+      },
+      {
+        "class": "resume",
+        "coverage": 89,
+        "href": "Runner/Execution/CorrelationResumer.php.html#42"
+      }
+    ]
+  },
+  "coverage_hotspots": {
+    "package": "core",
+    "report": "packages/core/coverage-report/index.html",
+    "total": {
+      "lines_percent": 87.55,
+      "lines_covered": 2896,
+      "lines_total": 3308,
+      "functions_percent": 77.57,
+      "classes_percent": 72.53
+    },
+    "directories": [
+      {
+        "name": "Expression",
+        "lines_percent": 88.24,
+        "lines_covered": 225,
+        "lines_total": 255,
+        "functions_percent": 54.84,
+        "classes_percent": 76.47
+      },
+      {
+        "name": "Generator",
+        "lines_percent": 100,
+        "lines_covered": 33,
+        "lines_total": 33,
+        "functions_percent": 100,
+        "classes_percent": 100
+      },
+      {
+        "name": "License",
+        "lines_percent": 60,
+        "lines_covered": 3,
+        "lines_total": 5,
+        "functions_percent": 60,
+        "classes_percent": 50
+      },
+      {
+        "name": "Parser",
+        "lines_percent": 97.48,
+        "lines_covered": 426,
+        "lines_total": 437,
+        "functions_percent": 87.23,
+        "classes_percent": 71.43
+      },
+      {
+        "name": "Resolver",
+        "lines_percent": 88.51,
+        "lines_covered": 77,
+        "lines_total": 87,
+        "functions_percent": 71.43,
+        "classes_percent": 40
+      },
+      {
+        "name": "Runner",
+        "lines_percent": 80.78,
+        "lines_covered": 1421,
+        "lines_total": 1759,
+        "functions_percent": 67.89,
+        "classes_percent": 52.38
+      },
+      {
+        "name": "Spec",
+        "lines_percent": 100,
+        "lines_covered": 46,
+        "lines_total": 46,
+        "functions_percent": 100,
+        "classes_percent": 100
+      },
+      {
+        "name": "Support",
+        "lines_percent": 96.77,
+        "lines_covered": 60,
+        "lines_total": 62,
+        "functions_percent": 88.89,
+        "classes_percent": 75
+      },
+      {
+        "name": "Validator",
+        "lines_percent": 96.96,
+        "lines_covered": 605,
+        "lines_total": 624,
+        "functions_percent": 91.67,
+        "classes_percent": 83.64
+      }
+    ],
+    "hotspots": [
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\InputPart",
+        "coverage": 0,
+        "href": "Expression/Ast/InputPart.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\OutputRef",
+        "coverage": 0,
+        "href": "Expression/Ast/OutputRef.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\License\\LicenseException",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#9"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Context\\VariableContext",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionEvaluator",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#11"
+      }
+    ],
+    "insufficient": [
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\InputPart",
+        "coverage": 0,
+        "href": "Expression/Ast/InputPart.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Expression\\Ast\\OutputRef",
+        "coverage": 0,
+        "href": "Expression/Ast/OutputRef.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\License\\LicenseException",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#9"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Context\\VariableContext",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionEvaluator",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#11"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Jobs\\ResumeCorrelationJob",
+        "coverage": 0,
+        "href": "Runner/Jobs/ResumeCorrelationJob.php.html#7"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Exceptions\\ValidationException",
+        "coverage": 0,
+        "href": "Validator/Exceptions/ValidationException.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine",
+        "coverage": 32,
+        "href": "Runner/Execution/WorkflowEngine.php.html#29"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\HttpStepExecutor",
+        "coverage": 54,
+        "href": "Runner/Execution/HttpStepExecutor.php.html#16"
+      },
+      {
+        "class": "Alama\\Arazzo\\Resolver\\Fetchers\\HttpFetcher",
+        "coverage": 61,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#13"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Resolver\\OpenApiOperationResolver",
+        "coverage": 62,
+        "href": "Runner/Resolver/OpenApiOperationResolver.php.html#18"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor",
+        "coverage": 63,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#27"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ArazzoExpressionResolver",
+        "coverage": 66,
+        "href": "Runner/Evaluation/ArazzoExpressionResolver.php.html#20"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\ArazzoOutputExtractor",
+        "coverage": 69,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#27"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\StepExecutor",
+        "coverage": 69,
+        "href": "Runner/Execution/StepExecutor.php.html#19"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\ArazzoSchemaValidator",
+        "coverage": 69,
+        "href": "Runner/Execution/ArazzoSchemaValidator.php.html#17"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\Xpath\\DomXpathEvaluator",
+        "coverage": 70,
+        "href": "Runner/Evaluation/Xpath/DomXpathEvaluator.php.html#13"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker",
+        "coverage": 75,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#33"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\OpenApiDocumentLoader",
+        "coverage": 76,
+        "href": "Runner/Execution/OpenApiDocumentLoader.php.html#13"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor",
+        "coverage": 78,
+        "href": "Runner/Execution/DefaultOpenApiExecutor.php.html#17"
+      },
+      {
+        "class": "Alama\\Arazzo\\Expression\\Parser",
+        "coverage": 79,
+        "href": "Expression/Parser.php.html#20"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Evaluation\\ExpressionEvaluator",
+        "coverage": 80,
+        "href": "Runner/Evaluation/ExpressionEvaluator.php.html#19"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Context\\ExecutionState",
+        "coverage": 81,
+        "href": "Runner/Context/ExecutionState.php.html#16"
+      },
+      {
+        "class": "Alama\\Arazzo\\Parser\\Exceptions\\LoaderException",
+        "coverage": 83,
+        "href": "Parser/Exceptions/LoaderException.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Rules\\SelectorTypeSupportedRule",
+        "coverage": 84,
+        "href": "Validator/Rules/SelectorTypeSupportedRule.php.html#14"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\Transition",
+        "coverage": 85,
+        "href": "Runner/Execution/Transition.php.html#10"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Rules\\ExpressionUnresolvedInputRefRule",
+        "coverage": 87,
+        "href": "Validator/Rules/ExpressionUnresolvedInputRefRule.php.html#15"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer",
+        "coverage": 87,
+        "href": "Runner/Execution/CorrelationResumer.php.html#22"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\SubWorkflowInvoker",
+        "coverage": 88,
+        "href": "Runner/Execution/SubWorkflowInvoker.php.html#17"
+      },
+      {
+        "class": "Alama\\Arazzo\\Validator\\Rules\\SubWorkflowInvokeTargetResolvesRule",
+        "coverage": 88,
+        "href": "Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php.html#15"
+      },
+      {
+        "class": "Alama\\Arazzo\\Runner\\Execution\\AsyncApiStepExecutor",
+        "coverage": 89,
+        "href": "Runner/Execution/AsyncApiStepExecutor.php.html#18"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Expression/Ast/InputPart.php.html#9"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Expression/Ast/OutputRef.php.html#9"
+      },
+      {
+        "class": "notLicensed",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#11"
+      },
+      {
+        "class": "expired",
+        "coverage": 0,
+        "href": "License/LicenseException.php.html#16"
+      },
+      {
+        "class": "readFailed",
+        "coverage": 0,
+        "href": "Parser/Exceptions/LoaderException.php.html#27"
+      },
+      {
+        "class": "jsonSerialize",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#72"
+      },
+      {
+        "class": "withWorkflow",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#113"
+      },
+      {
+        "class": "withError",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#148"
+      },
+      {
+        "class": "leaveWorkflow",
+        "coverage": 0,
+        "href": "Runner/Context/ExecutionState.php.html#164"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#14"
+      },
+      {
+        "class": "setInput",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#21"
+      },
+      {
+        "class": "getInputs",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#29"
+      },
+      {
+        "class": "setStepOutput",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#34"
+      },
+      {
+        "class": "getSteps",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#42"
+      },
+      {
+        "class": "setStepRequest",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#50"
+      },
+      {
+        "class": "setStepResponse",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#58"
+      },
+      {
+        "class": "getComponents",
+        "coverage": 0,
+        "href": "Runner/Context/VariableContext.php.html#66"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#13"
+      },
+      {
+        "class": "evaluate",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionEvaluator.php.html#17"
+      },
+      {
+        "class": "evaluateCriteria",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionResolver.php.html#45"
+      },
+      {
+        "class": "validateResponseSchema",
+        "coverage": 0,
+        "href": "Runner/Evaluation/ArazzoExpressionResolver.php.html#50"
+      },
+      {
+        "class": "findOperation",
+        "coverage": 0,
+        "href": "Runner/Execution/ArazzoSchemaValidator.php.html#80"
+      },
+      {
+        "class": "attemptsFrom",
+        "coverage": 0,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#253"
+      },
+      {
+        "class": "findStep",
+        "coverage": 0,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#263"
+      },
+      {
+        "class": "contextFromState",
+        "coverage": 0,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#274"
+      },
+      {
+        "class": "isTerminal",
+        "coverage": 0,
+        "href": "Runner/Execution/Transition.php.html#47"
+      },
+      {
+        "class": "context",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowEngine.php.html#122"
+      },
+      {
+        "class": "target",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowEngine.php.html#133"
+      },
+      {
+        "class": "assertCanEnter",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowEngine.php.html#149"
+      },
+      {
+        "class": "executeCanonically",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#138"
+      },
+      {
+        "class": "firstStep",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#183"
+      },
+      {
+        "class": "step",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#188"
+      },
+      {
+        "class": "workflow",
+        "coverage": 0,
+        "href": "Runner/Execution/WorkflowExecutor.php.html#199"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Runner/Jobs/ResumeCorrelationJob.php.html#12"
+      },
+      {
+        "class": "__construct",
+        "coverage": 0,
+        "href": "Validator/Exceptions/ValidationException.php.html#12"
+      },
+      {
+        "class": "code",
+        "coverage": 0,
+        "href": "Validator/Rules/StepDependsOnNoCycleRule.php.html#50"
+      },
+      {
+        "class": "resolveUrl",
+        "coverage": 28,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#41"
+      },
+      {
+        "class": "actions",
+        "coverage": 33,
+        "href": "Runner/Execution/WorkflowEngine.php.html#98"
+      },
+      {
+        "class": "transition",
+        "coverage": 34,
+        "href": "Runner/Execution/WorkflowEngine.php.html#39"
+      },
+      {
+        "class": "asString",
+        "coverage": 40,
+        "href": "Runner/Execution/ParameterSerializer.php.html#85"
+      },
+      {
+        "class": "parseCriteriaList",
+        "coverage": 42,
+        "href": "Parser/Parser.php.html#528"
+      },
+      {
+        "class": "castToSchemaType",
+        "coverage": 46,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#139"
+      },
+      {
+        "class": "execute",
+        "coverage": 51,
+        "href": "Runner/Execution/HttpStepExecutor.php.html#32"
+      },
+      {
+        "class": "castToSchemaType",
+        "coverage": 58,
+        "href": "Runner/Execution/DefaultOpenApiExecutor.php.html#126"
+      },
+      {
+        "class": "resolve",
+        "coverage": 61,
+        "href": "Runner/Resolver/OpenApiOperationResolver.php.html#28"
+      },
+      {
+        "class": "parseSubWorkflowFailureAction",
+        "coverage": 62,
+        "href": "Parser/Parser.php.html#610"
+      },
+      {
+        "class": "query",
+        "coverage": 62,
+        "href": "Runner/Evaluation/Xpath/DomXpathEvaluator.php.html#15"
+      },
+      {
+        "class": "parse",
+        "coverage": 64,
+        "href": "Expression/Parser.php.html#26"
+      },
+      {
+        "class": "parseNamedPart",
+        "coverage": 66,
+        "href": "Expression/Parser.php.html#122"
+      },
+      {
+        "class": "parseHeaderName",
+        "coverage": 66,
+        "href": "Expression/Parser.php.html#191"
+      },
+      {
+        "class": "asString",
+        "coverage": 66,
+        "href": "Runner/Evaluation/TypeCaster.php.html#41"
+      },
+      {
+        "class": "castOutputAgainstResponseSchema",
+        "coverage": 66,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#68"
+      },
+      {
+        "class": "resolveSchema",
+        "coverage": 66,
+        "href": "Runner/Execution/SchemaValidator.php.html#103"
+      },
+      {
+        "class": "execute",
+        "coverage": 68,
+        "href": "Runner/Execution/StepExecutor.php.html#40"
+      },
+      {
+        "class": "resolveTarget",
+        "coverage": 71,
+        "href": "Runner/Execution/StepOutcomeHandler.php.html#312"
+      },
+      {
+        "class": "findWorkflow",
+        "coverage": 75,
+        "href": "Runner/Execution/CorrelationResumer.php.html#127"
+      },
+      {
+        "class": "findStep",
+        "coverage": 75,
+        "href": "Runner/Execution/CorrelationResumer.php.html#138"
+      },
+      {
+        "class": "load",
+        "coverage": 75,
+        "href": "Runner/Execution/OpenApiDocumentLoader.php.html#22"
+      },
+      {
+        "class": "findExecutor",
+        "coverage": 75,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#227"
+      },
+      {
+        "class": "resolveReusable",
+        "coverage": 75,
+        "href": "Runner/Execution/StepOutcomeHandler.php.html#100"
+      },
+      {
+        "class": "handle",
+        "coverage": 75,
+        "href": "Runner/Execution/StepExecutionWorker.php.html#59"
+      },
+      {
+        "class": "coerceDocument",
+        "coverage": 76,
+        "href": "Runner/Evaluation/Xpath/DomXpathEvaluator.php.html#52"
+      },
+      {
+        "class": "resolveSchemaAtPointer",
+        "coverage": 76,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#110"
+      },
+      {
+        "class": "parseHttpPart",
+        "coverage": 77,
+        "href": "Expression/Parser.php.html#135"
+      },
+      {
+        "class": "nextRunnable",
+        "coverage": 77,
+        "href": "Runner/Execution/WorkflowEngine.php.html#159"
+      },
+      {
+        "class": "parseHttpMeta",
+        "coverage": 80,
+        "href": "Expression/Parser.php.html#81"
+      },
+      {
+        "class": "parseSourceRef",
+        "coverage": 80,
+        "href": "Expression/Parser.php.html#224"
+      },
+      {
+        "class": "fetch",
+        "coverage": 80,
+        "href": "Resolver/Fetchers/HttpFetcher.php.html#21"
+      },
+      {
+        "class": "evaluateAst",
+        "coverage": 80,
+        "href": "Runner/Evaluation/ExpressionEvaluator.php.html#28"
+      },
+      {
+        "class": "findResponseSchema",
+        "coverage": 80,
+        "href": "Runner/Execution/ArazzoSchemaValidator.php.html#39"
+      },
+      {
+        "class": "execute",
+        "coverage": 80,
+        "href": "Runner/Execution/DefaultOpenApiExecutor.php.html#26"
+      },
+      {
+        "class": "check",
+        "coverage": 82,
+        "href": "Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php.html#17"
+      },
+      {
+        "class": "check",
+        "coverage": 82,
+        "href": "Validator/Rules/SelectorTypeSupportedRule.php.html#22"
+      },
+      {
+        "class": "parseSimpleRef",
+        "coverage": 83,
+        "href": "Expression/Parser.php.html#67"
+      },
+      {
+        "class": "optionalArray",
+        "coverage": 83,
+        "href": "Parser/Parser.php.html#248"
+      },
+      {
+        "class": "optionalBool",
+        "coverage": 83,
+        "href": "Parser/Parser.php.html#638"
+      },
+      {
+        "class": "requireArray",
+        "coverage": 83,
+        "href": "Parser/Parser.php.html#714"
+      },
+      {
+        "class": "resolveLocalRef",
+        "coverage": 83,
+        "href": "Runner/Normalizer/OpenApi30Normalizer.php.html#132"
+      },
+      {
+        "class": "parseWorkflowRef",
+        "coverage": 84,
+        "href": "Expression/Parser.php.html#201"
+      },
+      {
+        "class": "extractOutputs",
+        "coverage": 85,
+        "href": "Runner/Execution/ArazzoOutputExtractor.php.html#39"
+      },
+      {
+        "class": "serializeDelimited",
+        "coverage": 85,
+        "href": "Runner/Execution/ParameterSerializer.php.html#185"
+      },
+      {
+        "class": "parseJsonPointer",
+        "coverage": 86,
+        "href": "Expression/Parser.php.html#165"
+      },
+      {
+        "class": "check",
+        "coverage": 86,
+        "href": "Validator/Rules/ExpressionUnresolvedInputRefRule.php.html#17"
+      },
+      {
+        "class": "parseComponentRef",
+        "coverage": 87,
+        "href": "Expression/Parser.php.html#251"
+      },
+      {
+        "class": "canonicalizeBody",
+        "coverage": 87,
+        "href": "Runner/Execution/IdempotencyKeyInjector.php.html#66"
+      },
+      {
+        "class": "invoke",
+        "coverage": 87,
+        "href": "Runner/Execution/SubWorkflowInvoker.php.html#27"
+      },
+      {
+        "class": "parseStepRef",
+        "coverage": 88,
+        "href": "Expression/Parser.php.html#94"
+      },
+      {
+        "class": "execute",
+        "coverage": 88,
+        "href": "Runner/Execution/AsyncApiStepExecutor.php.html#33"
+      },
+      {
+        "class": "resolve",
+        "coverage": 88,
+        "href": "Resolver/SourceRegistry.php.html#29"
+      },
+      {
+        "class": "matchesType",
+        "coverage": 88,
+        "href": "Runner/Execution/SchemaValidator.php.html#112"
+      },
+      {
+        "class": "validateSelector",
+        "coverage": 88,
+        "href": "Validator/Rules/SelectorTypeSupportedRule.php.html#72"
+      },
+      {
+        "class": "resume",
+        "coverage": 89,
+        "href": "Runner/Execution/CorrelationResumer.php.html#42"
+      }
+    ]
+  },
+  "severity": {
+    "filter": null,
+    "file": null,
+    "fake": {
+      "pass": false,
+      "violations": 98
+    },
+    "hume": {
+      "msi": 80,
+      "score": 0.8
+    },
+    "severity": 0.45,
+    "severity_label": "LOW",
+    "threshold": 0.7,
+    "pass": false,
+    "delete_fix_hint": null,
+    "advice": "not severe \u2014 add mutant-killing test, check delete-fix-check.sh --filter \"\""
+  },
+  "property": {
+    "package": "core",
+    "total_properties": 10,
+    "pinned": 2,
+    "grue_gaps": 7,
+    "properties": [
+      {
+        "id": "json_pointer_roundtrip",
+        "file": "tests/Property/InvariantsTest.php",
+        "line": "it round-trips random JSON pointers",
+        "covers": "Runner/Evaluation/JsonPointer.php",
+        "type": "property",
+        "status": "missing",
+        "coverage": 90,
+        "uncovered_lines": 1,
+        "test_exists": false
+      },
+      {
+        "id": "runtime_expr_equivalence",
+        "file": "tests/Property/InvariantsTest.php",
+        "line": "accepts equivalent runtime-expression spellings",
+        "covers": "Expression/Lexer.php",
+        "type": "property",
+        "status": "pinned",
+        "coverage": 98.15,
+        "uncovered_lines": 1,
+        "test_exists": true
+      },
+      {
+        "id": "dag_acyclic_orders",
+        "file": "tests/Property/InvariantsTest.php",
+        "line": "returns acyclic-consistent topological orders",
+        "covers": "Runner/Evaluation/DependencyGraph.php",
+        "type": "property",
+        "status": "pinned",
+        "coverage": 95.45,
+        "uncovered_lines": 2,
+        "test_exists": true
+      },
+      {
+        "id": "execution_state_immutability",
+        "file": "Runner/Context/ExecutionState.php",
+        "line": "with* immutability (withStepResult returns new)",
+        "covers": "Runner/Context/ExecutionState.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 81.82,
+        "uncovered_lines": 8,
+        "test_exists": false
+      },
+      {
+        "id": "workflow_context_immutability",
+        "file": "Runner/Context/WorkflowContext.php",
+        "line": "withStepResult immutability",
+        "covers": "Runner/Context/WorkflowContext.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 100,
+        "uncovered_lines": null,
+        "test_exists": false
+      },
+      {
+        "id": "dependency_graph_diamond",
+        "file": "Runner/Evaluation/DependencyGraph.php",
+        "line": "diamond graph",
+        "covers": "Runner/Evaluation/DependencyGraph.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 95.45,
+        "uncovered_lines": 2,
+        "test_exists": false
+      },
+      {
+        "id": "step_budget_enforcement",
+        "file": "Runner/Execution/WorkflowEngine.php",
+        "line": "maxSteps / stepsSpent at budget",
+        "covers": "Runner/Execution/WorkflowEngine.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 32.89,
+        "uncovered_lines": 51,
+        "test_exists": false
+      },
+      {
+        "id": "idempotency_header_injection",
+        "file": "Runner/Execution/IdempotencyKeyInjector.php",
+        "line": "Idempotency-Key header determinism",
+        "covers": "Runner/Execution/IdempotencyKeyInjector.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 97.73,
+        "uncovered_lines": 1,
+        "test_exists": false
+      },
+      {
+        "id": "openapi_normalizer_30_31",
+        "file": "Runner/Normalizer/OpenApi30Normalizer.php",
+        "line": "3.0 vs 3.1 normalization equivalence",
+        "covers": "Runner/Normalizer/OpenApi30Normalizer.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 95.24,
+        "uncovered_lines": 4,
+        "test_exists": false
+      },
+      {
+        "id": "expression_vs_literal",
+        "file": "Spec/Expression.php",
+        "line": "Expression vs literal string {$...} heuristic",
+        "covers": "Expression/Parser.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 79.07,
+        "uncovered_lines": 27,
+        "test_exists": false
+      }
+    ],
+    "uncovered_properties": [
+      {
+        "id": "execution_state_immutability",
+        "file": "Runner/Context/ExecutionState.php",
+        "line": "with* immutability (withStepResult returns new)",
+        "covers": "Runner/Context/ExecutionState.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 81.82,
+        "uncovered_lines": 8,
+        "test_exists": false
+      },
+      {
+        "id": "workflow_context_immutability",
+        "file": "Runner/Context/WorkflowContext.php",
+        "line": "withStepResult immutability",
+        "covers": "Runner/Context/WorkflowContext.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 100,
+        "uncovered_lines": null,
+        "test_exists": false
+      },
+      {
+        "id": "dependency_graph_diamond",
+        "file": "Runner/Evaluation/DependencyGraph.php",
+        "line": "diamond graph",
+        "covers": "Runner/Evaluation/DependencyGraph.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 95.45,
+        "uncovered_lines": 2,
+        "test_exists": false
+      },
+      {
+        "id": "step_budget_enforcement",
+        "file": "Runner/Execution/WorkflowEngine.php",
+        "line": "maxSteps / stepsSpent at budget",
+        "covers": "Runner/Execution/WorkflowEngine.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 32.89,
+        "uncovered_lines": 51,
+        "test_exists": false
+      },
+      {
+        "id": "idempotency_header_injection",
+        "file": "Runner/Execution/IdempotencyKeyInjector.php",
+        "line": "Idempotency-Key header determinism",
+        "covers": "Runner/Execution/IdempotencyKeyInjector.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 97.73,
+        "uncovered_lines": 1,
+        "test_exists": false
+      },
+      {
+        "id": "openapi_normalizer_30_31",
+        "file": "Runner/Normalizer/OpenApi30Normalizer.php",
+        "line": "3.0 vs 3.1 normalization equivalence",
+        "covers": "Runner/Normalizer/OpenApi30Normalizer.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 95.24,
+        "uncovered_lines": 4,
+        "test_exists": false
+      },
+      {
+        "id": "expression_vs_literal",
+        "file": "Spec/Expression.php",
+        "line": "Expression vs literal string {$...} heuristic",
+        "covers": "Expression/Parser.php",
+        "type": "grue",
+        "status": "grue_gap",
+        "coverage": 79.07,
+        "uncovered_lines": 27,
+        "test_exists": false
+      }
+    ],
+    "pass": false,
+    "advice": "add property test for: execution_state_immutability, workflow_context_immutability, dependency_graph_diamond, step_budget_enforcement, idempotency_header_injection, openapi_normalizer_30_31, expression_vs_literal \u2014 see tests/Property/InvariantsTest.php"
+  },
+  "socratic_fuzz": {
+    "source": "LoginAndRetrievePets.arazzo.yaml",
+    "iterations": 10,
+    "killed": 10,
+    "survived": 0,
+    "kill_rate": 1,
+    "pass": true,
+    "mutators": {
+      "duplicate_stepId": 1,
+      "cycle_dependsOn": 1,
+      "missing_source": 1,
+      "empty_workflow": 1,
+      "negative_maxSteps": 1,
+      "null_stepId": 1,
+      "goto_missing_target": 1,
+      "retry_exhaustion": 1,
+      "unicode_stepId": 1,
+      "10MB_yaml": 1
+    },
+    "results": [
+      {
+        "iteration": 1,
+        "mutator": "duplicate_stepId",
+        "killed": true
+      },
+      {
+        "iteration": 2,
+        "mutator": "cycle_dependsOn",
+        "killed": true
+      },
+      {
+        "iteration": 3,
+        "mutator": "missing_source",
+        "killed": true
+      },
+      {
+        "iteration": 4,
+        "mutator": "empty_workflow",
+        "killed": true
+      },
+      {
+        "iteration": 5,
+        "mutator": "negative_maxSteps",
+        "killed": true
+      },
+      {
+        "iteration": 6,
+        "mutator": "null_stepId",
+        "killed": true
+      },
+      {
+        "iteration": 7,
+        "mutator": "goto_missing_target",
+        "killed": true
+      },
+      {
+        "iteration": 8,
+        "mutator": "retry_exhaustion",
+        "killed": true
+      },
+      {
+        "iteration": 9,
+        "mutator": "unicode_stepId",
+        "killed": true
+      },
+      {
+        "iteration": 10,
+        "mutator": "10MB_yaml",
+        "killed": true
+      }
+    ],
+    "advice": "agon severe \u2014 fuzz hostile enough"
+  },
+  "demon_sim": {
+    "package": "core",
+    "seeds": 3,
+    "flaky_runs": 0,
+    "order_dependence": false,
+    "time_sensitive": true,
+    "time_files": [
+      "packages/core/src/License/NullLicenseVerifier.php",
+      "packages/core/src/License/LicenseVerifierInterface.php",
+      "packages/core/src/Runner/Context/PendingCorrelation.php"
+    ],
+    "results": [
+      {
+        "seed": 1000,
+        "exit": 0,
+        "passed": 659,
+        "failed": 49,
+        "order": 0
+      },
+      {
+        "seed": 1137,
+        "exit": 0,
+        "passed": 659,
+        "failed": 49,
+        "order": 1
+      },
+      {
+        "seed": 1274,
+        "exit": 0,
+        "passed": 658,
+        "failed": 49,
+        "order": 2
+      }
+    ],
+    "pass": true,
+    "advice": "demon found no flaky \u2014 corroborated"
+  },
+  "hume_audit": {
+    "raw": "=== [core] pest --mutate --covered-only  ===\n(dry-run) would run: cd /Users/mohammedalama/Code/Me/php-arazzo/packages/core && vendor/bin/pest --mutate --covered-only \n=== [laravel] pest --mutate --covered-only  ===\n(dry-run) would run: cd /Users/mohammedalama/Code/Me/php-arazzo/packages/laravel && vendor/bin/pest --mutate --covered-only \n\nHume audit: all packages meet MSI >= 80%",
+    "dry_run": true
+  },
+  "summary": {
+    "fake_violations": 98,
+    "coverage_percent": 87.55,
+    "severity": 0.45,
+    "grue_gaps": 7,
+    "fuzz_kill_rate": 1,
+    "demon_pass": true,
+    "overall": "NEEDS_WORK"
+  }
+}

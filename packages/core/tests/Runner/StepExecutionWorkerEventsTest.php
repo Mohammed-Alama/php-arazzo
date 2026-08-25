@@ -19,6 +19,8 @@ use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
@@ -183,18 +185,24 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
     $resolver = new WorkerEventsMockExpressionResolver();
     $queue = new SyncQueueDriver();
     $outcomeHandler = new StepOutcomeHandler(
-        $queue, new WorkflowEngine($resolver), $execRegistry, $ledger,
-        new WorkerEventsMockPendingCorrelationRegistry(), $store,
-        Mockery::mock(SubWorkflowInvoker::class),
-        Mockery::mock(SelectorEvaluator::class),
-        Mockery::mock(ExpressionEvaluator::class),
+        new RunPersistence($store, $ledger, $execRegistry),
+        new RunControlFlow(new WorkflowEngine($resolver), $queue),
+        pendingCorrelations: new WorkerEventsMockPendingCorrelationRegistry(),
+        invoker: Mockery::mock(SubWorkflowInvoker::class),
+        selectors: Mockery::mock(SelectorEvaluator::class),
+        expressions: Mockery::mock(ExpressionEvaluator::class),
     );
 
     $executor = new WorkerEventsFakeExecutor($outcome, $toThrow);
 
     $worker = new StepExecutionWorker(
-        $lockManager, $store, $defRegistry, $ledger, $execRegistry, $resolver,
-        [$executor], new WorkflowEngine($resolver), $queue, null, 86400, $dispatcher,
+        new RunPersistence($store, $ledger, $execRegistry),
+        $lockManager,
+        $defRegistry,
+        $resolver,
+        [$executor],
+        new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $dispatcher),
+        stateTtlSeconds: 86400,
     );
 
     return [$worker, $defRegistry, $collector];

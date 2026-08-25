@@ -32,7 +32,6 @@ use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
@@ -40,26 +39,37 @@ class StepExecutionWorker
 {
     private EventDispatcherInterface $events;
 
+    private ?PreflightValidator $preflight = null;
+
+    private StateStoreInterface $stateStore;
+
+    private EventLedgerInterface $eventLedger;
+
+    private ExecutionRegistryInterface $executionRegistry;
+
+    private WorkflowEngine $workflowEngine;
+
+    private QueueDriverInterface $queueDriver;
+
     /**
      * @param list<StepProtocolExecutorInterface> $protocolExecutors
      */
     public function __construct(
+        RunPersistence $persistence,
         private LockManagerInterface $lockManager,
-        private StateStoreInterface $stateStore,
         private DefinitionRegistryInterface $definitionRegistry,
-        private EventLedgerInterface $eventLedger,
-        private ExecutionRegistryInterface $executionRegistry,
         private ExpressionResolverInterface $expressionResolver,
         private array $protocolExecutors,
-        private WorkflowEngine $workflowEngine,
-        private QueueDriverInterface $queueDriver,
-        /** @phpstan-ignore property.onlyWritten */
-        private ?LoggerInterface $logger = null,
+        RunControlFlow $controlFlow,
         private int $stateTtlSeconds = 86400,
-        ?EventDispatcherInterface $events = null,
-        private ?PreflightValidator $preflight = null,
     ) {
-        $this->events = $events ?? new NullEventDispatcher();
+        $this->stateStore = $persistence->stateStore;
+        $this->eventLedger = $persistence->eventLedger;
+        $this->executionRegistry = $persistence->executionRegistry;
+        $this->workflowEngine = $controlFlow->workflowEngine;
+        $this->queueDriver = $controlFlow->queueDriver;
+        $this->preflight = $controlFlow->preflight;
+        $this->events = $controlFlow->events ?? new NullEventDispatcher();
     }
 
     public function handle(ExecuteStepJob $job): void

@@ -10,6 +10,8 @@ use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\HttpStepExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\SubWorkflowStepExecutor;
@@ -78,11 +80,13 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
         $queue = new SyncQueueDriver();
 
         $worker = new StepExecutionWorker(
+            new RunPersistence(
+                new RecordingStateStore(),
+                new RecordingEventLedger(),
+                new RecordingExecutionRegistry(),
+            ),
             new FakeLockManager(),
-            new RecordingStateStore(),
             $definitionRegistry,
-            new RecordingEventLedger(),
-            new RecordingExecutionRegistry(),
             $resolver,
             [
                 new SubWorkflowStepExecutor(
@@ -108,9 +112,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                     $operationResolver,
                 ),
             ],
-            new WorkflowEngine($resolver),
-            $queue,
-            events: $this->events,
+            new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),
         );
 
         $executionId = 'oai_' . bin2hex(random_bytes(4));
