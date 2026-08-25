@@ -36,7 +36,9 @@ final class AtomRssIngestor
             if ($n++ >= $limit) {
                 break;
             }
-            $title = (string) ($e->title ?? 'entry');
+            $rawTitle = (string) ($e->title ?? 'entry');
+            // Sanitize: collapse whitespace, trim — fixes atom entries like "\n        feat(ecosystem): ..."
+            $title = trim(preg_replace('/\s+/u', ' ', $rawTitle) ?? $rawTitle);
             $link = '';
             if (isset($e->link)) {
                 $attrs = $e->link->attributes();

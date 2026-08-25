@@ -42,4 +42,7 @@ public/ST_local_api.json
 /docs_ignored/
 packages/laravel/coverage-report/
 packages/core/coverage-report/
-storage/
+# Keep ecosystem feed (daily poll) but ignore other local storage artifacts
+storage/**
+!storage/ecosystem-feed/
+!storage/ecosystem-feed/**

@@ -59,14 +59,16 @@ final class Renderer
         } else {
             foreach (array_slice($feed, 0, 200) as $row) {
                 $date = substr($row['publishedAt'] ?? '', 0, 10);
-                $source = $row['source'] ?? '';
-                $type = $row['type'] ?? '';
-                $title = str_replace('|', '\\|', $row['title'] ?? '');
-                $url = $row['url'] ?? '';
-                $titleMd = $url !== '' ? "[{$title}]({$url})" : $title;
-                $tags = implode(', ', $row['tags'] ?? []);
-                $sev = $row['severity'] ?? '';
-                $rel = str_replace('|', '\\|', $row['relevance'] ?? '');
+                $source = self::sanitizeCell($row['source'] ?? '');
+                $type = self::sanitizeCell($row['type'] ?? '');
+                $title = self::sanitizeCell($row['title'] ?? '');
+                // Escape markdown link brackets inside title
+                $titleEsc = str_replace(['[', ']'], ['\\[', '\\]'], $title);
+                $url = trim($row['url'] ?? '');
+                $titleMd = $url !== '' ? "[{$titleEsc}]({$url})" : $titleEsc;
+                $tags = self::sanitizeCell(implode(', ', $row['tags'] ?? []));
+                $sev = self::sanitizeCell($row['severity'] ?? '');
+                $rel = self::sanitizeCell($row['relevance'] ?? '');
                 $out .= "| {$date} | {$source} | {$type} | {$titleMd} | {$tags} | {$sev} | {$rel} |\n";
             }
         }
@@ -78,6 +80,16 @@ final class Renderer
         $out .= "- **Snapshots:** `storage/ecosystem-feed/snapshots/YYYY-MM-DD/` (30-day prune) · **Feed:** `storage/ecosystem-feed/feed.json` + `docs/generated/ecosystem-feed.json`\n";
 
         return $out;
+    }
+
+    private static function sanitizeCell(string $value): string
+    {
+        // Collapse all whitespace (including \r\n\t and multiple spaces) to single space, trim, escape pipes
+        $value = trim(preg_replace('/\s+/u', ' ', $value) ?? $value);
+        // Escape markdown table pipe and trim again
+        $value = str_replace('|', '\\|', $value);
+
+        return $value;
     }
 
     /**
@@ -108,15 +120,18 @@ final class Renderer
         });
         $out = '';
         foreach ($byRel as $rel => $rows) {
-            $out .= '### ' . str_replace('|', '\\|', $rel) . ' (' . count($rows) . ")\n\n";
+            $relSan = self::sanitizeCell($rel);
+            $out .= '### ' . $relSan . ' (' . count($rows) . ")\n\n";
             foreach (array_slice($rows, 0, 8) as $row) {
                 $date = substr($row['publishedAt'] ?? '', 0, 10);
-                $title = $row['title'] ?? '';
-                $url = $row['url'] ?? '';
-                $src = $row['source'] ?? '';
-                $tags = implode(',', $row['tags'] ?? []);
-                $titleMd = $url !== '' ? "[{$title}]({$url})" : $title;
-                $out .= "- `{$date}` {$titleMd} — `{$src}` · `{$row['type']}` · _" . ($tags !== '' ? $tags : 'no tags') . "_\n";
+                $title = self::sanitizeCell($row['title'] ?? '');
+                $titleEsc = str_replace(['[', ']'], ['\\[', '\\]'], $title);
+                $url = trim($row['url'] ?? '');
+                $src = self::sanitizeCell($row['source'] ?? '');
+                $tags = self::sanitizeCell(implode(',', $row['tags'] ?? []));
+                $type = self::sanitizeCell($row['type'] ?? '');
+                $titleMd = $url !== '' ? "[{$titleEsc}]({$url})" : $titleEsc;
+                $out .= "- `{$date}` {$titleMd} — `{$src}` · `{$type}` · _" . ($tags !== '' ? $tags : 'no tags') . "_\n";
             }
             if (count($rows) > 8) {
                 $out .= '- … and ' . (count($rows) - 8) . " more in this group (see All events table)\n";

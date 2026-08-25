@@ -559,7 +559,7 @@
         "id": "7a6094321b4195273b4497b28a6fd6b5c75681a4b727cc2c39560c9d084a3ed4",
         "source": "usearazzo/website.ecosystem.atom",
         "type": "commit",
-        "title": "\n        feat(ecosystem): emphasized add button\n    ",
+        "title": "feat(ecosystem): emphasized add button",
         "url": "https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6",
         "publishedAt": "2026-08-24T19:43:55+00:00",
         "tags": [
@@ -585,7 +585,7 @@
         "id": "ab318f44d6897dcbdc2bf07439f401b40567b5b602d9f8746155ca00093f2359",
         "source": "usearazzo/website.ecosystem.atom",
         "type": "commit",
-        "title": "\n        feat(ecosystem): extend the list with bpedro links\n    ",
+        "title": "feat(ecosystem): extend the list with bpedro links",
         "url": "https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f",
         "publishedAt": "2026-08-24T19:11:23+00:00",
         "tags": [
@@ -970,7 +970,7 @@
         "id": "09a535e60f053801bee792c517a9b797101911274f571fc9bf55d9b0be4f38e0",
         "source": "OAI/spec.openapis.org",
         "type": "pr",
-        "title": "Update date-time formats to RFC 9557\r",
+        "title": "Update date-time formats to RFC 9557",
         "url": "https://github.com/OAI/spec.openapis.org/pull/119",
         "publishedAt": "2026-08-18T11:23:11Z",
         "tags": [

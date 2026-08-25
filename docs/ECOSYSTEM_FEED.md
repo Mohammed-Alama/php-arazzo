@@ -1,6 +1,6 @@
 # Ecosystem Feed — Human Dashboard
 
-> **Generated:** 2026-08-25T11:06:49+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-08-25T11:16:47+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** 54 github (`30 OAI/*` + `4 usearazzo/*` + `20 runners/validators/generators`) from `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` — see `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`
 > **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php` → `.scratch/ecosystem-triage/<date>.md` (10 tasks, `RelevanceMapper` P0-6/P1-6/P2-1/P2-2)
 
@@ -116,13 +116,9 @@
 
 - `2026-08-25` [openapi.tools checksum 8815db2e440e](https://openapi.tools/collections/arazzo) — `openapi.tools` · `tool_collection` · _spec_
 - `2026-08-24` [feat(ecosystem): emphasized add button](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) — `usearazzo/website` · `commit` · _spec_
-- `2026-08-24` [
-        feat(ecosystem): emphasized add button
-    ](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) — `usearazzo/website.ecosystem.atom` · `commit` · _spec_
+- `2026-08-24` [feat(ecosystem): emphasized add button](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) — `usearazzo/website.ecosystem.atom` · `commit` · _spec_
 - `2026-08-24` [feat(ecosystem): extend the list with bpedro links](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) — `usearazzo/website` · `commit` · _spec_
-- `2026-08-24` [
-        feat(ecosystem): extend the list with bpedro links
-    ](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) — `usearazzo/website.ecosystem.atom` · `commit` · _spec_
+- `2026-08-24` [feat(ecosystem): extend the list with bpedro links](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) — `usearazzo/website.ecosystem.atom` · `commit` · _spec_
 - `2026-08-23` [Tool discovery (`full` workflow) has failed on every scheduled run since 2025-07-13 — dead source URL in metadata.json](https://github.com/OAI/tools.openapis.org/issues/285) — `OAI/tools.openapis.org` · `issue` · _spec_
 - `2026-08-23` [Open Community (TDC) Meeting, Thursday 27 August 2026](https://github.com/OAI/OpenAPI-Specification/issues/5505) — `OAI/OpenAPI-Specification` · `issue` · _spec_
 - `2026-08-22` [I Went Looking for Everything Arazzo](https://usearazzo.com/blog/arazzo-ecosystem/) — `usearazzo/website.feed` · `article` · _spec_
@@ -222,13 +218,9 @@
 | 2026-08-24 | OAI/build-infra | pr | [Bump respec from 37.2.0 to 37.3.0 in the publishing group across 1 directory](https://github.com/OAI/build-infra/pull/20) | breaking, schema, spec | breaking | Potential breaking change (2.0) |
 | 2026-08-24 | OAI/landscape | commit | [Update Landscape from LFX 2026-08-24 (#187)](https://github.com/OAI/landscape/commit/7bbb234a9420058e987566baac8129a727e904fb) |  | watch |  |
 | 2026-08-24 | usearazzo/website | commit | [feat(ecosystem): emphasized add button](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) | spec | watch | Conformance / schema validation |
-| 2026-08-24 | usearazzo/website.ecosystem.atom | commit | [
-        feat(ecosystem): emphasized add button
-    ](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) | spec | watch | Conformance / schema validation |
+| 2026-08-24 | usearazzo/website.ecosystem.atom | commit | [feat(ecosystem): emphasized add button](https://github.com/usearazzo/website/commit/924fd967ce4c5edf09b9884396308cc7f71e6ae6) | spec | watch | Conformance / schema validation |
 | 2026-08-24 | usearazzo/website | commit | [feat(ecosystem): extend the list with bpedro links](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) | spec | watch | Conformance / schema validation |
-| 2026-08-24 | usearazzo/website.ecosystem.atom | commit | [
-        feat(ecosystem): extend the list with bpedro links
-    ](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) | spec | watch | Conformance / schema validation |
+| 2026-08-24 | usearazzo/website.ecosystem.atom | commit | [feat(ecosystem): extend the list with bpedro links](https://github.com/usearazzo/website/commit/7185516cbc4bd9705692ceebe6eb611db6960d2f) | spec | watch | Conformance / schema validation |
 | 2026-08-24 | OAI/OpenAPI-Specification | pr | [v3.3: Fix RFC reference with stray space](https://github.com/OAI/OpenAPI-Specification/pull/5516) | schema, spec | actionable | P1-7 JSON Schema layer |
 | 2026-08-24 | jentic/jentic-public-apis | commit | [Add overlay to set apify.com info.version (fixes import: missing version) (#22078)](https://github.com/jentic/jentic-public-apis/commit/2ec421d6d468fd9507560f8592b9fe32aeed4de5) |  | watch |  |
 | 2026-08-24 | OAI/Overlay-Specification | pr | [Prepare for new Build Infra](https://github.com/OAI/Overlay-Specification/pull/379) | schema, spec | watch | P1-7 JSON Schema layer |
@@ -257,7 +249,7 @@
 | 2026-08-19 | OAI/Arazzo-Specification | commit | [Merge pull request #545 from OAI/dependabot/npm_and_yarn/highlight.js-11.12.0](https://github.com/OAI/Arazzo-Specification/commit/0ca33e2649225d7035a1e0d66ef07a5eb0f517e1) | breaking, spec | breaking | Potential breaking change (2.0) |
 | 2026-08-18 | OAI/build-infra | commit | [Make Git dependency test deterministic in CI](https://github.com/OAI/build-infra/commit/7825bbc07eb56b7359f8a91cb2fa3cc46d09cf79) |  | watch |  |
 | 2026-08-18 | speakeasy-api/openapi | release | [v1.25.0](https://github.com/speakeasy-api/openapi/releases/tag/v1.25.0) | cli, spec | actionable | P2-1 CLI binary |
-| 2026-08-18 | OAI/spec.openapis.org | pr | [Update date-time formats to RFC 9557](https://github.com/OAI/spec.openapis.org/pull/119) | spec | watch | Conformance / schema validation |
+| 2026-08-18 | OAI/spec.openapis.org | pr | [Update date-time formats to RFC 9557](https://github.com/OAI/spec.openapis.org/pull/119) | spec | watch | Conformance / schema validation |
 | 2026-08-18 | usearazzo/website.feed | article | [API Workflows Are Still Improvised. Here Is What We Are Doing About It](https://usearazzo.com/blog/api-workflows-are-still-improvised/) | spec | watch | Conformance / schema validation |
 | 2026-08-16 | strefethen/arazzo-cli | commit | [plan: decompose arazzo validate](https://github.com/strefethen/arazzo-cli/commit/04ee2879e9f30396b80d99aa24968ac5cd9a9fca) | cli, spec | watch | P2-1 CLI binary |
 | 2026-08-16 | strefethen/arazzo-cli | commit | [revert: reset ac-67bf5 for fail-closed redesign](https://github.com/strefethen/arazzo-cli/commit/e252c979af1eca064af757f0c71559bc172f116d) | cli, spec | watch | P2-1 CLI binary |
