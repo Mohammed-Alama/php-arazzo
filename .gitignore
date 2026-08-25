@@ -42,3 +42,4 @@ public/ST_local_api.json
 /docs_ignored/
 packages/laravel/coverage-report/
 packages/core/coverage-report/
+storage/
