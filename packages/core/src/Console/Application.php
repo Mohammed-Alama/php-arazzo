@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Console;
 
 use Alama\Arazzo\Console\Command\ExplainCommand;
 use Alama\Arazzo\Console\Command\ListWorkflowsCommand;
+use Alama\Arazzo\Console\Command\RenderCommand;
 use Alama\Arazzo\Console\Command\RunCommand;
 use Alama\Arazzo\Console\Command\ValidateCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -26,6 +27,7 @@ final class Application extends SymfonyApplication
             new ListWorkflowsCommand(),
             new ExplainCommand(),
             new RunCommand(),
+            new RenderCommand(),
         ]);
     }
 }

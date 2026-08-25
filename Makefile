@@ -1,7 +1,10 @@
-.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
+.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights quality-gates detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
 
 docs: ## Regenerate architecture diagrams into docs/generated/
 	php scripts/generate-docs.php
+
+quality-gates: ## Measure quality gates into storage/quality-gates.json (ARGS="--with-mutations" adds mutation testing)
+	php scripts/quality-gates.php $(ARGS)
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)

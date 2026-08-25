@@ -17,7 +17,7 @@ xychart-beta
     bar [56, 10, 10, 7, 7, 6, 6, 4, 3, 3, 3, 2]
 ```
 
-Analyzed 124 total file-touches across 17 modules.
+Analyzed 124 total file-touches across 18 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -32,11 +32,12 @@ Analyzed 124 total file-touches across 17 modules.
 | `Laravel/Lock` | 3 | 2% | 17 | 176.5 |
 | `Laravel/Queue` | 3 | 2% | 102 | 29.4 |
 | `Laravel/State` | 3 | 2% | 39 | 76.9 |
-| `Console` | 2 | 2% | 411 | 4.9 |
+| `Console` | 2 | 2% | 481 | 4.2 |
 | `Laravel/Bindings` | 2 | 2% | 448 | 4.5 |
 | `Support` | 2 | 2% | 269 | 7.4 |
 | `Generator` | 1 | 1% | 122 | 8.2 |
 | `Laravel/Events` | 1 | 1% | 23 | 43.5 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
+| `Renderer` | 0 | 0% | 254 | 0 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (36.8), `Resolver` (19.6), `Expression` (11)

@@ -51,8 +51,10 @@ flowchart TB
     end
     subgraph L11["layer 11"]
         M_Console["Console"]:::node
+        M_Renderer["Renderer"]:::node
     end
     M_Console --> M_Parser
+    M_Console --> M_Renderer
     M_Console --> M_Resolver
     M_Console --> M_Runner
     M_Console --> M_Spec
@@ -85,6 +87,7 @@ flowchart TB
     M_Laravel__ --> M_Laravel_Http
     M_Parser --> M_Spec
     M_Parser --> M_Support
+    M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
     M_Runner --> M_Expression

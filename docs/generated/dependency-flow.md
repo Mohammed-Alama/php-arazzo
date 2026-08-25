@@ -12,6 +12,7 @@ changes there ripple widely.
 sankey-beta
 
 Console,Parser,8
+Console,Renderer,1
 Console,Resolver,4
 Console,Runner,15
 Console,Spec,1
@@ -44,6 +45,7 @@ laravel-root,Laravel-Bindings,6
 laravel-root,Laravel-Http,2
 Parser,Spec,30
 Parser,Support,2
+Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
 Runner,Expression,15

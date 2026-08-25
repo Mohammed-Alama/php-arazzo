@@ -162,7 +162,26 @@ file_put_contents(
     json_encode($snapshot, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n",
 );
 
+// trend history: one JSON line per run; docs/generated/gate-trend.md plots it
+$historyEntry = [
+    'date' => date('Y-m-d'),
+    'measured_at' => date('c'),
+    'gates' => [],
+];
+foreach ($gates as $gate) {
+    $record = ['status' => $gate['status']];
+    foreach (['errors', 'passed', 'failed', 'skipped', 'msi_percent', 'files_reported'] as $key) {
+        if (isset($gate['metrics'][$key])) {
+            $record[$key] = $gate['metrics'][$key];
+        }
+    }
+    $historyEntry['gates'][$gate['id']] = $record;
+}
+$historyFile = $root . '/storage/quality-history.jsonl';
+file_put_contents($historyFile, json_encode($historyEntry) . "\n", FILE_APPEND | LOCK_EX);
+
 $failing = array_filter($gates, fn (array $g): bool => $g['status'] === 'fail');
 echo "\nSnapshot: {$outFile}\n";
+echo "History:  {$historyFile}\n";
 echo count($gates) - count($failing) . '/' . count($gates) . " gates passing\n";
 exit($failing === [] ? 0 : 1);

@@ -138,6 +138,12 @@ file on a commit is a public API change — review it deliberately.
 ### `YamlDecoder` interface
 - `public function decode(string $source);`
 
+## core · `Alama\Arazzo\Renderer`
+
+### `Renderer` class
+- `public function toMarkdown(ArazzoDocument $document): string`
+- `public function toMermaid(ArazzoDocument $document, ?string $workflowId = null): string`
+
 ## core · `Alama\Arazzo\Resolver`
 
 ### `CachedFetcher` class

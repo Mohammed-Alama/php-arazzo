@@ -34,8 +34,17 @@ require __DIR__ . '/generate-docs/CoverageRiskDoc.php';
 require __DIR__ . '/generate-docs/ChurnHotspotsDoc.php';
 require __DIR__ . '/generate-docs/DependencyFlowDoc.php';
 require __DIR__ . '/generate-docs/TestCompositionDoc.php';
+require __DIR__ . '/generate-docs/CliReferenceDoc.php';
+require __DIR__ . '/generate-docs/BcDiffDoc.php';
+require __DIR__ . '/generate-docs/ObservabilityDoc.php';
+require __DIR__ . '/generate-docs/IntegrationContextDoc.php';
+require __DIR__ . '/generate-docs/ExtensionPointsDoc.php';
+require __DIR__ . '/generate-docs/TrustBoundaryFlowDoc.php';
+require __DIR__ . '/generate-docs/GateTrendDoc.php';
 
+use ArazzoDocs\BcDiffDoc;
 use ArazzoDocs\ChurnHotspotsDoc;
+use ArazzoDocs\CliReferenceDoc;
 use ArazzoDocs\ContractsDoc;
 use ArazzoDocs\CouplingMetricsDoc;
 use ArazzoDocs\CoverageRiskDoc;
@@ -45,9 +54,13 @@ use ArazzoDocs\DocumentModelDoc;
 use ArazzoDocs\EventsDoc;
 use ArazzoDocs\ExceptionTreeDoc;
 use ArazzoDocs\ExpressionAstDoc;
+use ArazzoDocs\ExtensionPointsDoc;
 use ArazzoDocs\FailureModesDoc;
+use ArazzoDocs\GateTrendDoc;
+use ArazzoDocs\IntegrationContextDoc;
 use ArazzoDocs\LayeringDoc;
 use ArazzoDocs\NamespaceGraphDoc;
+use ArazzoDocs\ObservabilityDoc;
 use ArazzoDocs\PipelineFlowDoc;
 use ArazzoDocs\PublicApiDoc;
 use ArazzoDocs\QualityGatesDoc;
@@ -55,6 +68,7 @@ use ArazzoDocs\Scanner;
 use ArazzoDocs\SecuritySurfaceDoc;
 use ArazzoDocs\StateMachineDoc;
 use ArazzoDocs\TestCompositionDoc;
+use ArazzoDocs\TrustBoundaryFlowDoc;
 use ArazzoDocs\ValidatorRulesDoc;
 
 if (!is_dir($outDir)) {
@@ -85,6 +99,13 @@ $generated = [
     'churn-hotspots.md' => ChurnHotspotsDoc\render($core, $laravel, $root),
     'dependency-flow.md' => DependencyFlowDoc\render($core, $laravel),
     'test-composition.md' => TestCompositionDoc\render(root: $root),
+    'cli-reference.md' => CliReferenceDoc\render($root),
+    'bc-diff.md' => BcDiffDoc\render($root),
+    'observability.md' => ObservabilityDoc\render($core, $laravel),
+    'integration-context.md' => IntegrationContextDoc\render($core, $laravel),
+    'extension-points.md' => ExtensionPointsDoc\render($core, $laravel),
+    'trust-boundary-flow.md' => TrustBoundaryFlowDoc\render($core, $laravel),
+    'gate-trend.md' => GateTrendDoc\render(historyPath: $root . '/storage/quality-history.jsonl'),
 ];
 
 foreach ($generated as $file => $content) {

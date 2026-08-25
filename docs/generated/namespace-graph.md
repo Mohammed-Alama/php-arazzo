@@ -20,6 +20,7 @@ flowchart LR
     Laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     Laravel__["(Laravel package root)"]:::laravelNode
     Parser["Alama\Arazzo\Parser"]:::coreNode
+    Renderer["Alama\Arazzo\Renderer"]:::coreNode
     Resolver["Alama\Arazzo\Resolver"]:::coreNode
     Runner["Alama\Arazzo\Runner"]:::coreNode
     Spec["Alama\Arazzo\Spec"]:::coreNode
@@ -29,11 +30,13 @@ flowchart LR
     Console --> Spec
     Console --> Validator
     Console --> Runner
+    Console --> Renderer
     Console --> Resolver
     Expression --> Spec
     Expression --> Support
     Parser --> Spec
     Parser --> Support
+    Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
     Runner --> Spec
