@@ -36,7 +36,6 @@ Regenerated before every commit.
 | **WorkflowCycleException** | `WorkflowEngine` <small>Runner/Execution</small> |
 | **WorkflowDepthExceededException** | `WorkflowEngine` <small>Runner/Execution</small> |
 | **ExecutionException** | _(never raised in src)_ |
-| **LicenseException** | _(never raised in src)_ |
 | **LoaderException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
 | **SourceResolutionException** | _(never raised in src)_ |
@@ -54,7 +53,9 @@ Regenerated before every commit.
 | `InvalidArgumentException` | `ArazzoOutputExtractor` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
 | `JsonException` | `AsyncApiStepExecutor` |  |
+| `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
+| `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |

@@ -8,6 +8,7 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 
 ```mermaid
 flowchart LR
+    Console["Alama\Arazzo\Console"]:::coreNode
     Expression["Alama\Arazzo\Expression"]:::coreNode
     Generator["Alama\Arazzo\Generator"]:::coreNode
     Laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
@@ -24,6 +25,9 @@ flowchart LR
     Spec["Alama\Arazzo\Spec"]:::coreNode
     Support["Alama\Arazzo\Support"]:::coreNode
     Validator["Alama\Arazzo\Validator"]:::coreNode
+    Console --> Parser
+    Console --> Spec
+    Console --> Validator
     Expression --> Spec
     Expression --> Support
     Parser --> Spec

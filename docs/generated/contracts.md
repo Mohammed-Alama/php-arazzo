@@ -18,7 +18,6 @@ flowchart LR
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Runner</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>Runner</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
-    I_LicenseVerifierInterface["LicenseVerifierInterface<br/><small>License</small>"]:::contract
     I_LockManagerInterface["LockManagerInterface<br/><small>Runner</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Runner</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Runner</small>"]:::contract
@@ -35,8 +34,6 @@ flowchart LR
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
     C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
     C_core_Generator_OpenAiClient -.->|implements| I_AiClientInterface
-    C_core_License_NullLicenseVerifier["NullLicenseVerifier<br/><small>License</small>"]:::implCore
-    C_core_License_NullLicenseVerifier -.->|implements| I_LicenseVerifierInterface
     C_core_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>Parser</small>"]:::implCore
     C_core_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
     C_core_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>Parser</small>"]:::implCore

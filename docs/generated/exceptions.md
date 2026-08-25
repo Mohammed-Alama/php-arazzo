@@ -17,7 +17,6 @@ classDiagram
     class E_ExecutionException["ExecutionException<br/><small>Runner</small>"]:::domain
     class E_ExpressionSyntaxException["ExpressionSyntaxException<br/><small>Expression</small>"]:::domain
     class E_GotoTargetNotFoundException["GotoTargetNotFoundException<br/><small>Runner</small>"]:::domain
-    class E_LicenseException["LicenseException<br/><small>License</small>"]:::domain
     class E_LoaderException["LoaderException<br/><small>Parser</small>"]:::domain
     class E_NotImplementedException["NotImplementedException<br/><small>Support</small>"]:::domain
     class E_ParserException["ParserException<br/><small>Parser</small>"]:::domain
@@ -42,7 +41,6 @@ classDiagram
     E_ArazzoException <|-- E_ExecutionException
     E_ArazzoException <|-- E_ExpressionSyntaxException
     E_RuntimeException <|-- E_GotoTargetNotFoundException
-    E_RuntimeException <|-- E_LicenseException
     E_ArazzoException <|-- E_LoaderException
     E_ArazzoException <|-- E_NotImplementedException
     E_ArazzoException <|-- E_ParserException
@@ -73,7 +71,6 @@ classDiagram
 | `ExecutionException` | `ArazzoException` | Runner |
 | `ExpressionSyntaxException` | `ArazzoException` | Expression |
 | `GotoTargetNotFoundException` | `RuntimeException` | Runner |
-| `LicenseException` | `RuntimeException` | License |
 | `LoaderException` | `ArazzoException` | Parser |
 | `NotImplementedException` | `ArazzoException` | Support |
 | `ParserException` | `ArazzoException` | Parser |

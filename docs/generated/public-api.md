@@ -8,6 +8,11 @@ classes/interfaces/enums in `packages/*/src`, excluding `Support`, `Internal`
 and `Exceptions` namespaces (exceptions have their own doc). Any diff in this
 file on a commit is a public API change — review it deliberately.
 
+## core · `Alama\Arazzo\Console`
+
+### `DocumentLoader` class
+- `public static function load(string $file): ArazzoDocument`
+
 ## core · `Alama\Arazzo\Expression`
 
 ### `ComponentRef` class
@@ -84,22 +89,6 @@ file on a commit is a public API change — review it deliberately.
 ### `OpenAiClient` class
 - `public function __construct(private ClientInterface $httpClient, private RequestFactoryInterface $requestFactory, private StreamFactoryInterface $streamFactory, private string $apiKey, private string $endpoint, private string $model = 'gpt-4o', private float $temperature = 0.0)`
 - `public function generate(string $systemPrompt, string $userPrompt): string`
-
-## core · `Alama\Arazzo\License`
-
-### `LicenseException` class
-- `public static function expired(string $feature): self`
-- `public static function notLicensed(string $feature): self`
-
-### `LicenseVerifierInterface` interface
-- `public function expiresAt(string $feature): ?DateTimeImmutable;`
-- `public function isValid(string $feature): bool;`
-- `public function verifyOrThrow(string $feature): void;`
-
-### `NullLicenseVerifier` class
-- `public function expiresAt(string $feature): ?DateTimeImmutable`
-- `public function isValid(string $feature): bool`
-- `public function verifyOrThrow(string $feature): void`
 
 ## core · `Alama\Arazzo\Parser`
 
