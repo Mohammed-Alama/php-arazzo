@@ -20,13 +20,19 @@ final class Psr18HttpClient implements HttpClientInterface
         // PSR-18 cannot express per-request timeouts; delegate to Guzzle's
         // request() API so declared step timeouts are actually enforced.
         if ($timeoutSeconds !== null) {
+            // Guzzle's options stub requires non-empty header value lists.
+            $headers = [];
+
+            foreach ($request->getHeaders() as $name => $values) {
+                $headers[$name] = $values === [] ? [''] : array_values(array_map(strval(...), $values));
+            }
+
             return $this->client->request(
                 $request->getMethod(),
                 (string) $request->getUri(),
                 [
-                    'headers' => $request->getHeaders(),
+                    'headers' => $headers,
                     'body' => (string) $request->getBody(),
-                    'version' => $request->getProtocolVersion(),
                     'connect_timeout' => 5.0,
                     'timeout' => $timeoutSeconds,
                 ],

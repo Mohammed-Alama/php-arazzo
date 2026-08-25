@@ -50,5 +50,17 @@ verify: ## Run the same gates the pre-push hook runs
 
 INSIGHTS := $(HOME)/Code/Me/software-development-dashboard/bin/insights
 
-insights: ## Query code-quality insights (usage: make insights ARGS="hotspots")
-	@$(INSIGHTS) $(ARGS)
+insights: ## Query code-quality insights (ARGS="command ..."; no ARGS = show options)
+	@if [ -z "$(ARGS)" ]; then \
+		$(INSIGHTS) --help; \
+		echo; \
+		echo "Examples:"; \
+		echo "  make insights ARGS=\"overview --format table\""; \
+		echo "  make insights ARGS=\"hotspots --limit 10\""; \
+		echo "  make insights ARGS=\"violations --severity critical --module core\""; \
+		echo "  make insights ARGS=\"history --metric avg_mi --since 2026-01-01\""; \
+		echo "  make insights ARGS=\"scan\"            # refresh metrics after coding"; \
+		echo "  make insights ARGS=\"schema\"           # full machine-readable contract for agents"; \
+	else \
+		$(INSIGHTS) $(ARGS); \
+	fi
