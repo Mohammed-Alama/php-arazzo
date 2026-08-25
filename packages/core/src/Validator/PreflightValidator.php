@@ -13,6 +13,9 @@ use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use JsonSchema\Constraints\Constraint;
+use JsonSchema\SchemaStorage;
+use JsonSchema\Validator;
 
 /**
  * Execution preflight: resolves every capability a workflow run will need
@@ -44,6 +47,104 @@ final class PreflightValidator
         }
 
         return new ValidationResult($document, $errors->errors(), $errors->warnings());
+    }
+
+    /**
+     * Validates supplied runtime inputs against the workflow's declared
+     * `inputs` JSON Schema (2020-12) BEFORE any side effect. First-mover
+     * capability: no surveyed Arazzo tool does this.
+     *
+     * @param array<string, mixed> $inputs
+     */
+    public function validateInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult
+    {
+        $errors = new ErrorCollector();
+
+        $workflow = null;
+
+        foreach ($document->workflows as $candidate) {
+            if ($candidate->workflowId === $workflowId) {
+                $workflow = $candidate;
+                break;
+            }
+        }
+
+        if ($workflow === null) {
+            return new ValidationResult($document, [
+                new Error('preflight.unknown_workflow', "Workflow '{$workflowId}' does not exist.", '/workflows/' . $workflowId),
+            ], []);
+        }
+
+        $schema = is_array($workflow->inputs ?? null) ? $workflow->inputs : null;
+
+        // No declared schema = anything goes.
+        if ($schema === null || $schema === []) {
+            return new ValidationResult($document, [], []);
+        }
+
+        $violations = $this->validateAgainstSchema($inputs, $schema);
+
+        foreach ($violations as $violation) {
+            $pointer = '/workflows/' . $workflowId . '/inputs'
+                . ($violation['property'] !== ''
+                    ? (string) preg_replace('/^\[([^\]]+)\]/', '/$1', $violation['property'])
+                    : '');
+
+            $errors->add(new Error(
+                'preflight.inputs_schema',
+                $violation['message'],
+                $pointer,
+                severity: Severity::Error,
+            ));
+        }
+
+        return new ValidationResult($document, $errors->errors(), $errors->warnings());
+    }
+
+    /**
+     * Runs the justinrainbow validator against a raw 2020-12 schema array.
+     *
+     * @param array<string, mixed> $inputs
+     * @param array<string, mixed> $schema
+     *
+     * @return list<array{message: string, property: string}>
+     */
+    private function validateAgainstSchema(array $inputs, array $schema): array
+    {
+        $storage = new SchemaStorage();
+        $schemaObject = \json_decode((string) \json_encode($schema), false);
+
+        if (!$schemaObject instanceof \stdClass) {
+            return [];
+        }
+
+        $schemaId = 'memory://inputs-schema';
+        $storage->addSchema($schemaId, $schemaObject);
+
+        $validator = new Validator();
+        $dataObject = \json_decode((string) \json_encode($inputs ?: new \stdClass()), false);
+
+        $validator->validate(
+            $dataObject,
+            $storage->getSchema($schemaId),
+            Constraint::CHECK_MODE_VALIDATE_SCHEMA | Constraint::CHECK_MODE_APPLY_DEFAULTS,
+        );
+
+        if ($validator->isValid()) {
+            return [];
+        }
+
+        $out = [];
+
+        /** @var array{message: string, property?: string} $error */
+        foreach ($validator->getErrors() as $error) {
+            $out[] = [
+                'message' => (string) $error['message'],
+                'property' => is_string($error['property'] ?? null) ? $error['property'] : '',
+            ];
+        }
+
+        return $out;
     }
 
     private function checkStep(ArazzoDocument $document, Workflow $workflow, Step $step, ErrorCollector $errors): void

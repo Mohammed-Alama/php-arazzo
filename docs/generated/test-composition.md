@@ -13,8 +13,8 @@ compliance — not an inverted pyramid of end-to-end tests.
 
 ```mermaid
 pie showData
-    title Core — 164 test files
-    "Module-scoped": 149
+    title Core — 165 test files
+    "Module-scoped": 150
     "Unit": 6
     "Feature": 4
     "Conformance": 2
@@ -25,7 +25,7 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 149 | 91% |
+| Module-scoped | 150 | 91% |
 | Unit | 6 | 4% |
 | Feature | 4 | 2% |
 | Conformance | 2 | 1% |

@@ -21,6 +21,7 @@ use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Validator\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
+use Alama\Arazzo\Validator\ValidationResult;
 use DateTimeImmutable;
 use LogicException;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -48,6 +49,23 @@ class WorkflowExecutor
         // Preflight runs before the first side effect (no events, no state).
         if ($this->preflight !== null) {
             $result = $this->preflight->validate($document);
+
+            // Workflow `inputs` JSON-Schema pre-validation (first-mover:
+            // no other Arazzo tool validates inputs before spending calls).
+            $inputsSchema = $workflow->inputs;
+
+            if (is_array($inputsSchema) && $inputsSchema !== []) {
+                $inputResult = $this->preflight->validateInputs($document, $workflow->workflowId, $inputs);
+
+                if ($inputResult->errors !== []) {
+                    $result = new ValidationResult(
+                        $document,
+                        [...$result->errors, ...$inputResult->errors],
+                        [...$result->warnings, ...$inputResult->warnings],
+                    );
+                }
+            }
+
             if (!$result->isValid()) {
                 throw new PreflightFailureException(
                     'Preflight validation failed with ' . count($result->errors) . ' error(s).',
