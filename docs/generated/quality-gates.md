@@ -18,7 +18,7 @@ byte-deterministic per measurement.
 | Code Style (Pint) | **PASS** | files-reported: **0** | `vendor/bin/pint --test` |
 | Static Analysis · core | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
 | Static Analysis · laravel | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
-| Tests · core | **PASS** | skipped: **3** · passed: **776** · assertions: **2169** | `vendor/bin/pest --no-coverage` |
+| Tests · core | **PASS** | skipped: **3** · passed: **775** · assertions: **2162** | `vendor/bin/pest --no-coverage` |
 | Tests · laravel | **PASS** | passed: **100** · assertions: **194** | `vendor/bin/pest --no-coverage` |
 
 **5/5 gates passing.**
