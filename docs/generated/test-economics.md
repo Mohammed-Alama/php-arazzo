@@ -16,5 +16,5 @@ test-method density, and the last measured suite cost. Cross-reference with
 
 | Suite | Duration | Passed | Assertions/test |
 |---|---:|---:|---:|
-| `pest-core` | 7.1s | 774 | 2.8 |
-| `pest-laravel` | 1.7s | 100 | 1.9 |
+| `pest-core` | 8.0s | 773 | 2.8 |
+| `pest-laravel` | 1.6s | 100 | 1.9 |

@@ -1,6 +1,10 @@
 # Ecosystem Feed — Human Dashboard
 
+<<<<<<< HEAD
 > **Generated:** 2026-08-26T07:08:49+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+=======
+> **Generated:** 2026-08-26T08:18:55+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 > **Sources:** 54 github (`30 OAI/*` + `4 usearazzo/*` + `20 runners/validators/generators`) from `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` — see `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`
 > **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php` → `.scratch/ecosystem-triage/<date>.md` (10 tasks, `RelevanceMapper` P0-6/P1-6/P2-1/P2-2)
 
@@ -8,7 +12,11 @@
 
 - **Total events:** 824 (showing 200 newest)
 - **Severity:** breaking **149** · actionable **386** · watch **289**
+<<<<<<< HEAD
 - **Top relevance:** `Conformance / schema validation` (375) · `uncategorized` (122) · `Potential breaking change (2.0)` (103) · `P2-1 CLI binary` (81) · `P1-7 JSON Schema layer` (49)
+=======
+- **Top relevance:** `Conformance / schema validation` (373) · `uncategorized` (122) · `Potential breaking change (2.0)` (103) · `P2-1 CLI binary` (81) · `P1-7 JSON Schema layer` (51)
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 - **Top sources:** `strefethen/arazzo-cli` (53) · `OAI/Arazzo-Specification` (53) · `OAI/build-infra` (42) · `speclynx/apidom` (40) · `jentic/jentic-arazzo-tools` (40)
 - **Links:** [Raw JSON](storage/ecosystem-feed/feed.json) · [Generated JSON](docs/generated/ecosystem-feed.json) · [Snapshots](storage/ecosystem-feed/snapshots/) · [Plan](docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md)
 
@@ -97,7 +105,11 @@
 
 ## Actionable — new releases/tags to review
 
+<<<<<<< HEAD
 ### Conformance / schema validation (237)
+=======
+### Conformance / schema validation (235)
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 
 - `2026-08-26` [tag v1.0.0](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
 - `2026-08-26` [tag v0.0.5](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5) — `b-lab-io/pyarazzo` · `tag` · _spec_
@@ -107,7 +119,11 @@
 - `2026-08-26` [tag v0.0.1](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.1) — `b-lab-io/pyarazzo` · `tag` · _spec_
 - `2026-08-26` [tag 0.0.2](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2) — `JaredCE/Arazzo-Generator` · `tag` · _spec_
 - `2026-08-26` [tag v5.0.2](https://github.com/speclynx/apidom/releases/tag/v5.0.2) — `speclynx/apidom` · `tag` · _spec_
+<<<<<<< HEAD
 - … and 229 more in this group (see All events table)
+=======
+- … and 227 more in this group (see All events table)
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 
 ### uncategorized (48)
 
@@ -133,17 +149,28 @@
 - `2026-08-25` [tag v0.1.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1) — `strefethen/arazzo-cli` · `tag` · _cli,spec_
 - … and 34 more in this group (see All events table)
 
+<<<<<<< HEAD
 ### P1-7 JSON Schema layer (26)
 
+=======
+### P1-7 JSON Schema layer (28)
+
+- `2026-08-26` [@redocly/openapi-core@2.48.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.48.0) — `Redocly/redocly-cli` · `release` · _schema,spec_
+- `2026-08-26` [@redocly/cli@2.48.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.48.0) — `Redocly/redocly-cli` · `release` · _schema,spec_
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 - `2026-08-24` [v3.3: Fix RFC reference with stray space](https://github.com/OAI/OpenAPI-Specification/pull/5516) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
 - `2026-08-21` [dev: sync with main](https://github.com/OAI/OpenAPI-Specification/pull/5510) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
 - `2026-08-21` [3.2: Fix formatting of 'Encoding Object' in oas.md](https://github.com/OAI/OpenAPI-Specification/pull/5515) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
 - `2026-08-20` [feat: Decouple HTTP dispatching using OpenAPI Executor](https://github.com/Mohammed-Alama/php-arazzo/pull/11) — `Mohammed-Alama/php-arazzo` · `pr` · _schema,spec_
 - `2026-08-20` [Use build-infra schema test helpers on dev branches](https://github.com/OAI/OpenAPI-Specification/pull/5499) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
 - `2026-08-20` [Migrate to yarn to avoid npm workarounds](https://github.com/OAI/OpenAPI-Specification/pull/5503) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
+<<<<<<< HEAD
 - `2026-08-20` [Remove various npm hacks, switch to yarn for package management](https://github.com/OAI/build-infra/pull/24) — `OAI/build-infra` · `pr` · _schema,spec_
 - `2026-08-18` [Remove stray duplicate schema test on the 3.1 branch.](https://github.com/OAI/OpenAPI-Specification/pull/5496) — `OAI/OpenAPI-Specification` · `pr` · _schema,spec_
 - … and 18 more in this group (see All events table)
+=======
+- … and 20 more in this group (see All events table)
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 
 ### Issue #410 kind discriminator / human-in-loop (15)
 
@@ -387,6 +414,13 @@
 | 2026-08-26 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.1.2](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2) | spec | actionable | Conformance / schema validation |
 | 2026-08-26 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.1.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1) | spec | actionable | Conformance / schema validation |
 | 2026-08-26 | OAI/Arazzo-Specification | tag | [tag 1.0.0](https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0) | spec | actionable | Conformance / schema validation |
+<<<<<<< HEAD
+=======
+| 2026-08-26 | Redocly/redocly-cli | release | [@redocly/respect-core@2.48.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/respect-core%402.48.0) | spec | actionable | Conformance / schema validation |
+| 2026-08-26 | Redocly/redocly-cli | release | [@redocly/openapi-core@2.48.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.48.0) | schema, spec | actionable | P1-7 JSON Schema layer |
+| 2026-08-26 | Redocly/redocly-cli | release | [@redocly/client-generator@0.4.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/client-generator%400.4.0) | spec | actionable | Conformance / schema validation |
+| 2026-08-26 | Redocly/redocly-cli | release | [@redocly/cli@2.48.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.48.0) | schema, spec | actionable | P1-7 JSON Schema layer |
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 | 2026-08-26 | speakeasy-api/openapi | release | [v1.25.1](https://github.com/speakeasy-api/openapi/releases/tag/v1.25.1) | cli, a2a, schema, spec | actionable | P2-1 CLI binary |
 | 2026-08-25 | usearazzo/arazzo-toolkit | pr | [chore(deps): bump @speclynx/apidom-ns-openapi-3-0 from 5.1.0 to 5.1.1](https://github.com/usearazzo/arazzo-toolkit/pull/93) | actor, breaking, spec | breaking | Issue #410 kind discriminator / human-in-loop |
 | 2026-08-25 | usearazzo/arazzo-toolkit | pr | [chore(deps): bump @speclynx/apidom-traverse from 5.1.0 to 5.1.1](https://github.com/usearazzo/arazzo-toolkit/pull/92) | actor, breaking, spec | breaking | Issue #410 kind discriminator / human-in-loop |
@@ -490,10 +524,13 @@
 | 2026-08-22 | Specmatic/specmatic | release | [2.53.1](https://github.com/specmatic/specmatic/releases/tag/2.53.1) | spec | actionable | Conformance / schema validation |
 | 2026-08-22 | usearazzo/arazzo-toolkit | issue | [cli: live execution progress rendering built on the runner event stream](https://github.com/usearazzo/arazzo-toolkit/issues/86) | cli, human, spec | watch | P2-1 CLI binary |
 | 2026-08-22 | usearazzo/arazzo-toolkit | issue | [runner: execution observability — structured event stream with logging, OpenTelemetry, and stream adapters](https://github.com/usearazzo/arazzo-toolkit/issues/85) | cli, breaking, spec | breaking | P2-1 CLI binary |
+<<<<<<< HEAD
 | 2026-08-22 | usearazzo/arazzo-toolkit | issue | [cli: new @usearazzo/cli package — proposed command surface](https://github.com/usearazzo/arazzo-toolkit/issues/84) | cli, human, schema, spec | watch | P2-1 CLI binary |
 | 2026-08-22 | usearazzo/arazzo-toolkit | issue | [runner: workflow execution profile — analyze what a run needs, pre-configure the runner with the filled artifact](https://github.com/usearazzo/arazzo-toolkit/issues/82) | cli, human, breaking, schema, spec | breaking | P2-1 CLI binary |
 | 2026-08-22 | usearazzo/arazzo-toolkit | issue | [runner: first-class workflow enumeration (listWorkflows) with a future CLI list-workflows command](https://github.com/usearazzo/arazzo-toolkit/issues/83) | cli, human, schema, spec | watch | P2-1 CLI binary |
 | 2026-08-22 | OAI/sig-security | issue | [Support for message level security](https://github.com/OAI/sig-security/issues/22) | schema, spec | watch | P1-7 JSON Schema layer |
+=======
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
 
 ## How to use
 

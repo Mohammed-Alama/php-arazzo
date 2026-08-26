@@ -5,7 +5,11 @@
         "type": "tag",
         "title": "tag v1.0.0",
         "url": "https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:27+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:21+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -18,7 +22,11 @@
         "type": "tag",
         "title": "tag v0.0.5",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:26+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:19+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -31,7 +39,11 @@
         "type": "tag",
         "title": "tag v0.0.4",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.4",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:26+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:19+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -44,7 +56,11 @@
         "type": "tag",
         "title": "tag v0.0.3",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.3",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:26+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:19+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -57,7 +73,11 @@
         "type": "tag",
         "title": "tag v0.0.2",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:26+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:19+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -70,7 +90,11 @@
         "type": "tag",
         "title": "tag v0.0.1",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:26+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:19+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -83,7 +107,11 @@
         "type": "tag",
         "title": "tag 0.0.2",
         "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:25+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:18+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -96,7 +124,11 @@
         "type": "tag",
         "title": "tag v5.0.2",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -109,7 +141,11 @@
         "type": "tag",
         "title": "tag v5.0.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -122,7 +158,11 @@
         "type": "tag",
         "title": "tag v5.0.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -135,7 +175,11 @@
         "type": "tag",
         "title": "tag v4.16.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.16.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -148,7 +192,11 @@
         "type": "tag",
         "title": "tag v4.15.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.15.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -161,7 +209,11 @@
         "type": "tag",
         "title": "tag v4.14.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.14.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -174,7 +226,11 @@
         "type": "tag",
         "title": "tag v4.13.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.13.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -187,7 +243,11 @@
         "type": "tag",
         "title": "tag v4.12.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -200,7 +260,11 @@
         "type": "tag",
         "title": "tag v4.12.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -214,7 +278,11 @@
         "type": "tag",
         "title": "tag v4.11.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.11.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -227,7 +295,11 @@
         "type": "tag",
         "title": "tag v4.11.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.11.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -240,7 +312,11 @@
         "type": "tag",
         "title": "tag v4.10.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.10.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -253,7 +329,11 @@
         "type": "tag",
         "title": "tag v4.10.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.10.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -266,7 +346,11 @@
         "type": "tag",
         "title": "tag v4.9.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -279,7 +363,11 @@
         "type": "tag",
         "title": "tag v4.9.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -292,7 +380,11 @@
         "type": "tag",
         "title": "tag v4.8.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.8.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -305,7 +397,11 @@
         "type": "tag",
         "title": "tag v4.7.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -318,7 +414,11 @@
         "type": "tag",
         "title": "tag v4.7.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:24+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:16+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -331,7 +431,11 @@
         "type": "tag",
         "title": "tag v2.0.3",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:22+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:12+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -345,7 +449,11 @@
         "type": "tag",
         "title": "tag v2.0.2",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:22+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:12+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -359,7 +467,11 @@
         "type": "tag",
         "title": "tag v2.0.1",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:22+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:12+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -373,7 +485,11 @@
         "type": "tag",
         "title": "tag v2.0.0",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:22+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:12+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -387,7 +503,11 @@
         "type": "tag",
         "title": "tag v1.0.1",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:22+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:12+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -400,7 +520,11 @@
         "type": "tag",
         "title": "tag v1.0.0",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:22+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:12+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -413,7 +537,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.30",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.30",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -426,7 +554,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.29",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.29",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -439,7 +571,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.28",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.28",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -452,7 +588,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.27",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.27",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -465,7 +605,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.26",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.26",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -478,7 +622,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.25",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.25",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -491,7 +639,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.24",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.24",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -504,7 +656,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.23",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.23",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -517,7 +673,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.22",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.22",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -530,7 +690,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.21",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.21",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -543,7 +707,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.20",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.20",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -556,7 +724,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.19",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.19",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -569,7 +741,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.18",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.18",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -582,7 +758,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.17",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.17",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -595,7 +775,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.16",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.16",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -608,7 +792,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.15",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.15",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -621,7 +809,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.14",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.14",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -634,7 +826,11 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.13",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.13",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:19+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:08+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -647,7 +843,11 @@
         "type": "tag",
         "title": "tag 2.53.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.53.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -660,7 +860,11 @@
         "type": "tag",
         "title": "tag 2.52.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.52.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -674,7 +878,11 @@
         "type": "tag",
         "title": "tag 2.51.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.51.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -687,7 +895,11 @@
         "type": "tag",
         "title": "tag 2.51.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.51.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -700,7 +912,11 @@
         "type": "tag",
         "title": "tag 2.50.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.50.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -713,7 +929,11 @@
         "type": "tag",
         "title": "tag 2.50.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.50.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -726,7 +946,11 @@
         "type": "tag",
         "title": "tag 2.49.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.49.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -739,7 +963,11 @@
         "type": "tag",
         "title": "tag 2.49.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.49.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -752,7 +980,11 @@
         "type": "tag",
         "title": "tag 2.48.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.48.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -765,7 +997,11 @@
         "type": "tag",
         "title": "tag 2.47.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.47.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -778,7 +1014,11 @@
         "type": "tag",
         "title": "tag 2.46.5",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.5",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -791,7 +1031,11 @@
         "type": "tag",
         "title": "tag 2.46.4",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.4",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -804,7 +1048,11 @@
         "type": "tag",
         "title": "tag 2.46.3",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.3",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -817,7 +1065,11 @@
         "type": "tag",
         "title": "tag 2.46.2",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -830,7 +1082,11 @@
         "type": "tag",
         "title": "tag 2.46.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -843,7 +1099,11 @@
         "type": "tag",
         "title": "tag 2.46.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -856,7 +1116,11 @@
         "type": "tag",
         "title": "tag 2.45.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.45.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -869,7 +1133,11 @@
         "type": "tag",
         "title": "tag 2.45.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.45.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:17+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:06+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -882,7 +1150,11 @@
         "type": "tag",
         "title": "tag v1.0.0-rc.2",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -893,7 +1165,11 @@
         "type": "tag",
         "title": "tag v1.0.0-rc.1",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -904,7 +1180,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.131",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.131",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -915,7 +1195,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.130",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.130",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -926,7 +1210,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.129",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.129",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -937,7 +1225,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.128",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.128",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -948,7 +1240,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.127",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.127",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -959,7 +1255,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.126",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.126",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -970,7 +1270,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.125",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.125",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -981,7 +1285,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.124",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.124",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -992,7 +1300,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.123",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.123",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1003,7 +1315,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.122",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.122",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1014,7 +1330,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.121",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.121",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1025,7 +1345,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.120",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.120",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1036,7 +1360,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.119",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.119",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1047,7 +1375,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.118",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.118",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1058,7 +1390,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.117",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.117",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1069,7 +1405,11 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.116",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.116",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:16+00:00",
+=======
+        "publishedAt": "2026-08-26T08:18:04+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1080,7 +1420,11 @@
         "type": "tag",
         "title": "tag v0.4.0",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:13+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:59+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "cli",
             "spec"
@@ -1094,7 +1438,11 @@
         "type": "tag",
         "title": "tag arazzo_runner/v0.9.1",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:11+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:55+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -1107,7 +1455,11 @@
         "type": "tag",
         "title": "tag arazzo_runner/v0.9.0",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:11+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:55+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -1120,7 +1472,11 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.2.1",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:11+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:55+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -1133,7 +1489,11 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.2.0",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:11+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:55+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "breaking",
             "spec"
@@ -1147,7 +1507,11 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.1.2",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:11+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:55+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -1160,7 +1524,11 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.1.1",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:08:11+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:55+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -1173,7 +1541,11 @@
         "type": "tag",
         "title": "tag 1.0.0",
         "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0",
+<<<<<<< HEAD
         "publishedAt": "2026-08-26T07:07:43+00:00",
+=======
+        "publishedAt": "2026-08-26T08:17:10+00:00",
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "tags": [
             "spec"
         ],
@@ -1181,6 +1553,63 @@
         "relevance": "Conformance / schema validation"
     },
     {
+<<<<<<< HEAD
+=======
+        "id": "a41fe88f613e96fad47e8d35db26aa19678ddf5252156d27397e97354403d218",
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "title": "@redocly/respect-core@2.48.0",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/respect-core%402.48.0",
+        "publishedAt": "2026-08-26T07:17:41Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "b9395b94765e42fab32287f4f81d8d8503bdb0111a332db9e8c03abe1afe2aa2",
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "title": "@redocly/openapi-core@2.48.0",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.48.0",
+        "publishedAt": "2026-08-26T07:17:41Z",
+        "tags": [
+            "schema",
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "P1-7 JSON Schema layer"
+    },
+    {
+        "id": "77543fe1dd97e3cd6c0d9b7edb453cd11f297c1f50217163625b76c37672af5a",
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "title": "@redocly/client-generator@0.4.0",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/client-generator%400.4.0",
+        "publishedAt": "2026-08-26T07:17:41Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "ab04f1aa5cea730042a163a34fbfec4bb10b8c698ab441504462e60c76feb5a6",
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "title": "@redocly/cli@2.48.0",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.48.0",
+        "publishedAt": "2026-08-26T07:17:41Z",
+        "tags": [
+            "schema",
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "P1-7 JSON Schema layer"
+    },
+    {
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "id": "21dc3c916b24e4cb2f85ab839e1ee4f3a5348c5396aadbbe63c449c1590457fa",
         "source": "speakeasy-api/openapi",
         "type": "release",
@@ -5386,6 +5815,7 @@
         "relevance": "Conformance / schema validation"
     },
     {
+<<<<<<< HEAD
         "id": "43fde3d58c07699c74e4d411065cc3932d40e5ec826b581e7295ce0e4217860c",
         "source": "Redocly/redocly-cli",
         "type": "release",
@@ -5425,6 +5855,8 @@
         "relevance": "Conformance / schema validation"
     },
     {
+=======
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "id": "93c1d5ace54b9a241987f7c48a419e6e5254c14fb20df007bc395d27c362bfe6",
         "source": "OAI/landscape",
         "type": "commit",
@@ -5501,6 +5933,7 @@
         "relevance": "Conformance / schema validation"
     },
     {
+<<<<<<< HEAD
         "id": "867264b76380263d733c5c461272ce4a087664a2481f24452d38816d988d2cc2",
         "source": "Redocly/redocly-cli",
         "type": "release",
@@ -5514,6 +5947,8 @@
         "relevance": "Conformance / schema validation"
     },
     {
+=======
+>>>>>>> 3686d91 (chore(ecosystem-feed): ignore storage snapshots, keep only relevant feed implementation)
         "id": "eb152e7fc0852ea2e69901bda254ed6e336cc0d19e3c7829b5be531b9a332385",
         "source": "speakeasy-api/openapi",
         "type": "release",

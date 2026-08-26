@@ -46,3 +46,6 @@ packages/core/coverage-report/
 storage/**
 !storage/ecosystem-feed/
 !storage/ecosystem-feed/**
+
+# Ecosystem feed (snapshots + generated feed)
+/storage/ecosystem-feed
