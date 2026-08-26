@@ -23,21 +23,21 @@ quadrantChart
     Console: [1, 0.571]
     Expression: [0.4, 1]
     Generator: [0, 1]
-    Laravel/Bindings: [0.923, 0]
+    Laravel/Bindings: [0.923, 0.333]
     Laravel/Events: [0, 1]
     Laravel/Http: [0.667, 1]
     Laravel/Lock: [0.5, 1]
     Laravel/Persistence: [0.75, 1]
     Laravel/Queue: [0.5, 1]
     Laravel/State: [0.5, 1]
-    Laravel/Support: [0, 0]
+    Laravel/Support: [0, 1]
     Parser: [0.333, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
-    Runner: [0.357, 0.897]
+    Runner: [0.357, 0.934]
     Spec: [0.1, 1]
     Support: [0.167, 1]
-    Validator: [0.625, 0.905]
+    Validator: [0.625, 0.921]
 ```
 
 | Module | Instability | Test files | Src files | Density |
@@ -45,20 +45,18 @@ quadrantChart
 | `Console` | 1.00 | 4 | 7 | 57% |
 | `Expression` | 0.40 | 81 | 23 | 100% |
 | `Generator` | 0.00 | 4 | 3 | 100% |
-| `Laravel/Bindings` | 0.92 | 0 | 6 | 0% |
+| `Laravel/Bindings` | 0.92 | 2 | 6 | 33% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
-| `Laravel/Http` | 0.67 | 3 | 3 | 100% |
-| `Laravel/Lock` | 0.50 | 2 | 1 | 100% |
-| `Laravel/Persistence` | 0.75 | 5 | 4 | 100% |
-| `Laravel/Queue` | 0.50 | 5 | 3 | 100% |
-| `Laravel/State` | 0.50 | 2 | 1 | 100% |
-| `Laravel/Support` | 0.00 | 0 | 1 | 0% |
+| `Laravel/Http` | 0.67 | 4 | 3 | 100% |
+| `Laravel/Lock` | 0.50 | 3 | 1 | 100% |
+| `Laravel/Persistence` | 0.75 | 6 | 4 | 100% |
+| `Laravel/Queue` | 0.50 | 6 | 3 | 100% |
+| `Laravel/State` | 0.50 | 3 | 1 | 100% |
+| `Laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `Parser` | 0.33 | 28 | 10 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
-| `Resolver` | 0.29 | 20 | 11 | 100% |
-| `Runner` | 0.36 | 122 | 136 | 90% |
+| `Resolver` | 0.29 | 21 | 11 | 100% |
+| `Runner` | 0.36 | 127 | 136 | 93% |
 | `Spec` | 0.10 | 133 | 32 | 100% |
-| `Support` | 0.17 | 14 | 6 | 100% |
-| `Validator` | 0.62 | 57 | 63 | 90% |
-
-**Refactor-now list** (untested churn): `Laravel/Bindings`
+| `Support` | 0.17 | 15 | 6 | 100% |
+| `Validator` | 0.62 | 58 | 63 | 92% |

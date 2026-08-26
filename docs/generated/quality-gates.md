@@ -19,6 +19,6 @@ byte-deterministic per measurement.
 | Static Analysis · core | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
 | Static Analysis · laravel | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
 | Tests · core | **PASS** | skipped: **3** · passed: **749** · assertions: **2098** | `vendor/bin/pest --no-coverage` |
-| Tests · laravel | **PASS** | passed: **56** · assertions: **125** | `vendor/bin/pest --no-coverage` |
+| Tests · laravel | **PASS** | passed: **101** · assertions: **194** | `vendor/bin/pest --no-coverage` |
 
 **5/5 gates passing.**
