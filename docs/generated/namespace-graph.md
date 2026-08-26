@@ -9,6 +9,7 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 ```mermaid
 flowchart LR
     Console["Alama\Arazzo\Console"]:::coreNode
+    Contracts["Alama\Arazzo\Contracts"]:::coreNode
     Expression["Alama\Arazzo\Expression"]:::coreNode
     Generator["Alama\Arazzo\Generator"]:::coreNode
     Laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
@@ -32,6 +33,8 @@ flowchart LR
     Console --> Runner
     Console --> Renderer
     Console --> Resolver
+    Contracts --> Runner
+    Contracts --> Spec
     Expression --> Spec
     Expression --> Support
     Parser --> Spec
@@ -43,6 +46,7 @@ flowchart LR
     Runner --> Support
     Runner --> Validator
     Runner --> Resolver
+    Runner --> Contracts
     Runner --> Expression
     Spec --> Expression
     Support --> Runner

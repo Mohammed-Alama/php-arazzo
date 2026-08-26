@@ -24,6 +24,7 @@ quadrantChart
     quadrant-3 Modular building blocks
     quadrant-4 Zone of pain
     Console: [1, 0]
+    Contracts: [0.667, 1]
     Expression: [0.4, 0]
     Generator: [0, 0.333]
     Laravel/Bindings: [0.923, 0]
@@ -37,8 +38,8 @@ quadrantChart
     Parser: [0.333, 0.2]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.273]
-    Runner: [0.357, 0.156]
-    Spec: [0.1, 0]
+    Runner: [0.375, 0.144]
+    Spec: [0.091, 0]
     Support: [0.167, 0.167]
     Validator: [0.625, 0.016]
 ```

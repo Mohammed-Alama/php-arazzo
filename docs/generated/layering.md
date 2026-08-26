@@ -51,6 +51,7 @@ flowchart TB
     end
     subgraph L11["layer 11"]
         M_Console["Console"]:::node
+        M_Contracts["Contracts"]:::node
         M_Renderer["Renderer"]:::node
     end
     M_Console --> M_Parser
@@ -59,6 +60,8 @@ flowchart TB
     M_Console --> M_Runner
     M_Console --> M_Spec
     M_Console --> M_Validator
+    M_Contracts --> M_Runner
+    M_Contracts --> M_Spec
     M_Expression -.->|violation| M_Spec
     M_Expression -.->|violation| M_Support
     M_Laravel_Bindings --> M_Generator
@@ -90,6 +93,7 @@ flowchart TB
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
+    M_Runner -.->|violation| M_Contracts
     M_Runner --> M_Expression
     M_Runner --> M_Resolver
     M_Runner --> M_Spec
@@ -107,11 +111,12 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**4 violation(s) found:**
+**5 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
 | `Support` | `Runner` | 10 |
 | `Expression` | `Spec` | 6 |
+| `Runner` | `Contracts` | 4 |
 | `Validator` | `Runner` | 4 |
 | `Expression` | `Support` | 1 |

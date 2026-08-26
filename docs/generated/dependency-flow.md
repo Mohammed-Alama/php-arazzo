@@ -20,6 +20,7 @@ Console,Resolver,4
 Console,Runner,15
 Console,Spec,1
 Console,Validator,2
+Contracts,Spec,4
 Expression,Spec,6
 Expression,Support,1
 Laravel-Bindings,Generator,3
@@ -51,9 +52,10 @@ Parser,Support,2
 Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
+Runner,Contracts,4
 Runner,Expression,15
 Runner,Resolver,1
-Runner,Spec,143
+Runner,Spec,139
 Runner,Support,13
 Runner,Validator,9
 Validator,Expression,78
@@ -68,6 +70,7 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
+| `Contracts` | `Runner` | 2 |
 | `Spec` | `Expression` | 3 |
 | `Support` | `Runner` | 10 |
 | `Validator` | `Runner` | 4 |

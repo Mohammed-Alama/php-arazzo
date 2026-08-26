@@ -21,6 +21,7 @@ quadrantChart
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
     Console: [1, 0.571]
+    Contracts: [0.667, 0]
     Expression: [0.4, 1]
     Generator: [0, 1]
     Laravel/Bindings: [0.923, 0.333]
@@ -34,8 +35,8 @@ quadrantChart
     Parser: [0.333, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
-    Runner: [0.357, 0.943]
-    Spec: [0.1, 1]
+    Runner: [0.375, 0.957]
+    Spec: [0.091, 1]
     Support: [0.167, 1]
     Validator: [0.625, 0.952]
 ```
@@ -43,6 +44,7 @@ quadrantChart
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
 | `Console` | 1.00 | 4 | 7 | 57% |
+| `Contracts` | 0.67 | 0 | 2 | 0% |
 | `Expression` | 0.40 | 82 | 23 | 100% |
 | `Generator` | 0.00 | 4 | 3 | 100% |
 | `Laravel/Bindings` | 0.92 | 2 | 6 | 33% |
@@ -56,7 +58,9 @@ quadrantChart
 | `Parser` | 0.33 | 29 | 10 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 11 | 100% |
-| `Runner` | 0.36 | 133 | 141 | 94% |
-| `Spec` | 0.10 | 139 | 33 | 100% |
+| `Runner` | 0.38 | 133 | 139 | 96% |
+| `Spec` | 0.09 | 139 | 33 | 100% |
 | `Support` | 0.17 | 18 | 6 | 100% |
 | `Validator` | 0.62 | 60 | 63 | 95% |
+
+**Refactor-now list** (untested churn): `Contracts`

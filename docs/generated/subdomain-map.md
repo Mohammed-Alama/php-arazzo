@@ -16,7 +16,7 @@ the declaration honest.
 flowchart LR
     subgraph S_core["Core domain"]
         S_Expression["Expression<br/><small>880 LOC</small>"]:::coreDomain
-        S_Runner["Runner<br/><small>10097 LOC</small>"]:::coreDomain
+        S_Runner["Runner<br/><small>10057 LOC</small>"]:::coreDomain
         S_Spec["Spec<br/><small>721 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
@@ -37,6 +37,9 @@ flowchart LR
         S_State["State<br/><small>38 LOC</small>"]:::genericDomain
         S_Support["Support<br/><small>323 LOC</small>"]:::genericDomain
     end
+    subgraph S_unclassified[""]
+        S_Contracts["Contracts<br/><small>40 LOC</small>"]:::unknownDomain
+    end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef genericDomain fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
@@ -45,6 +48,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 3 | 11,698 | 0 | 63% |
+| Core domain | 3 | 11,658 | 0 | 63% |
 | Supporting | 6 | 5,373 | 0 | 29% |
 | Generic subdomain | 8 | 263 | 1,132 | 8% |
+|  | 1 | 40 | 0 | 0% |
+
+**Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
+- `Contracts`

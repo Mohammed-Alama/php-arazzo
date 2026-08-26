@@ -19,6 +19,14 @@ file on a commit is a public API change — review it deliberately.
 ### `RunCommand` class
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
 
+## core · `Alama\Arazzo\Contracts`
+
+### `OutputExtractorInterface` interface
+- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
+
+### `SchemaValidatorInterface` interface
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
+
 ## core · `Alama\Arazzo\Expression`
 
 ### `ExpressionSyntaxException` class
@@ -391,9 +399,6 @@ file on a commit is a public API change — review it deliberately.
 - `public static function reset(): void`
 - `public static function shutdown(): void`
 
-### `OutputExtractorInterface` interface
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
-
 ### `ParameterSerializer` class
 - `public static function serialize(string $location, array $normalizedParams, array $payload): array`
 - `public static function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string`
@@ -451,9 +456,6 @@ file on a commit is a public API change — review it deliberately.
 
 ### `SchemaValidator` class
 - `public static function validate(Schema $schema, mixed $value, string $path = ''): array`
-
-### `SchemaValidatorInterface` interface
-- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 
 ### `SelectorEvaluationException` class
 - `public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self`

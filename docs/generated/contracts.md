@@ -23,12 +23,12 @@ flowchart LR
     I_LockStrategyInterface["LockStrategyInterface<br/><small>Runner</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Runner</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Runner</small>"]:::contract
-    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Runner</small>"]:::contract
+    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Contracts</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>Runner</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Runner</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>Runner</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
-    I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Runner</small>"]:::contract
+    I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Contracts</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>Runner</small>"]:::contract

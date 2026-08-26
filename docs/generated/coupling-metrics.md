@@ -12,6 +12,7 @@ targets. Regenerated before every commit.
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
 | `Console` | 7 | 474 | 0 | 6 | 1.00 |  |
+| `Contracts` | 2 | 38 | 1 | 2 | 0.67 |  |
 | `Expression` | 23 | 857 | 3 | 2 | 0.40 |  |
 | `Generator` | 3 | 116 | 2 | 0 | 0.00 |  |
 | `Laravel:Bindings` | 6 | 445 | 1 | 12 | 0.92 |  |
@@ -26,18 +27,18 @@ targets. Regenerated before every commit.
 | `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 11 | 337 | 5 | 2 | 0.29 |  |
-| `Runner` | 141 | 9956 | 9 | 5 | 0.36 |  |
-| `Spec` | 33 | 688 | 9 | 1 | 0.10 |  |
+| `Runner` | 139 | 9918 | 10 | 6 | 0.38 |  |
+| `Spec` | 33 | 688 | 10 | 1 | 0.09 |  |
 | `Support` | 6 | 257 | 5 | 1 | 0.17 |  |
 | `Validator` | 63 | 3031 | 3 | 5 | 0.63 |  |
 
-Total cross-module edges: **566**
+Total cross-module edges: **572**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Runner` → `Spec` | 143 |
+| `Runner` → `Spec` | 139 |
 | `Validator` → `Spec` | 88 |
 | `Validator` → `Expression` | 78 |
 | `Laravel:Bindings` → `Runner` | 50 |
