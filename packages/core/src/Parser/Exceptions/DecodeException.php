@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Parser\Exceptions;
 
 use RuntimeException;
 
-final class DecodeException extends RuntimeException
-{
-}
+final class DecodeException extends RuntimeException {}

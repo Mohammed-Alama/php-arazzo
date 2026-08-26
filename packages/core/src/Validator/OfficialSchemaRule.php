@@ -22,8 +22,8 @@ use JsonSchema\Validator as JsonSchemaValidator;
 final class OfficialSchemaRule implements Rule
 {
     private const SCHEMA_FILES = [
-        '1.0' => __DIR__ . '/../../resources/schemas/arazzo-1.0.schema.json',
-        '1.1' => __DIR__ . '/../../resources/schemas/arazzo-1.1.schema.json',
+        '1.0' => __DIR__.'/../../resources/schemas/arazzo-1.0.schema.json',
+        '1.1' => __DIR__.'/../../resources/schemas/arazzo-1.1.schema.json',
     ];
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
@@ -101,7 +101,7 @@ final class OfficialSchemaRule implements Rule
             $errors->error(
                 'schema.invalid',
                 sprintf('[%s] %s', $error['property'] !== '' ? $error['property'] : '(root)', $error['message']),
-                '/' . $error['pointer'],
+                '/'.$error['pointer'],
             );
         }
     }
@@ -112,8 +112,7 @@ final class OfficialSchemaRule implements Rule
     }
 
     /**
-     * @param array<array-key, mixed> $node
-     *
+     * @param  array<array-key, mixed>  $node
      * @return array<array-key, mixed>
      */
     private static function hoistSiblingRefs(array $node): array

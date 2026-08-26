@@ -20,8 +20,8 @@ objects, enums and exceptions are omitted. Regenerated before every commit.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -31,7 +31,7 @@ function render(array $core, array $laravel): string
     $packageOf += $laravelPackageOf;
 
     if ($all === []) {
-        return BANNER . "_No runner classes found._\n";
+        return BANNER."_No runner classes found._\n";
     }
 
     $shortIndex = shortNameIndex($all);
@@ -66,7 +66,7 @@ function render(array $core, array $laravel): string
 
     $groups = groupByDir($all, $kept);
     foreach ($groups as $dir => $fqcms) {
-        $gid = 'G_' . nodeId($dir === '' ? '_root' : $dir);
+        $gid = 'G_'.nodeId($dir === '' ? '_root' : $dir);
         $lines[] = sprintf('    subgraph %s["%s"]', $gid, $dir === '' ? '(package root)' : $dir);
         foreach ($fqcms as $fqcn) {
             $style = match (true) {
@@ -127,12 +127,11 @@ function render(array $core, array $laravel): string
         );
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, list<ScannedFile>> $modules
- *
+ * @param  array<string, list<ScannedFile>>  $modules
  * @return array{0: array<string, ScannedFile>, 1: array<string, string>}
  */
 function collectNodes(array $modules, string $package): array
@@ -143,7 +142,7 @@ function collectNodes(array $modules, string $package): array
             if (!isPipelineClass($file)) {
                 continue;
             }
-            $nodes[$file->namespace . '\\' . $file->className] = $file;
+            $nodes[$file->namespace.'\\'.$file->className] = $file;
         }
     }
     ksort($nodes);
@@ -179,8 +178,7 @@ function isPipelineClass(ScannedFile $file): bool
 }
 
 /**
- * @param array<string, ScannedFile> $all
- *
+ * @param  array<string, ScannedFile>  $all
  * @return array<string, string> unique short name => fqcn
  */
 function shortNameIndex(array $all): array
@@ -202,9 +200,8 @@ function shortNameIndex(array $all): array
  * Dependency FQCNs of a file via promoted properties, `new X(` and typed
  * private/protected properties assigned in the constructor.
  *
- * @param array<string, ScannedFile> $all
- * @param array<string, string> $shortIndex
- *
+ * @param  array<string, ScannedFile>  $all
+ * @param  array<string, string>  $shortIndex
  * @return list<string>
  */
 function dependenciesOf(ScannedFile $file, array $all, array $shortIndex): array
@@ -227,8 +224,8 @@ function dependenciesOf(ScannedFile $file, array $all, array $shortIndex): array
                 $candidate = $part;
             } elseif (isset($aliases[$part])) {
                 $candidate = $aliases[$part];
-            } elseif (isset($all[$file->namespace . '\\' . $part])) {
-                $candidate = $file->namespace . '\\' . $part;
+            } elseif (isset($all[$file->namespace.'\\'.$part])) {
+                $candidate = $file->namespace.'\\'.$part;
             } else {
                 $unique = $shortIndex[$part] ?? '';
                 if ($unique !== '') {
@@ -277,9 +274,8 @@ function aliasMap(ScannedFile $file): array
 /**
  * fqcn of pipeline node => event short names it constructs.
  *
- * @param array<string, ScannedFile> $pipelineNodes
- * @param array<string, string> $shortIndex
- *
+ * @param  array<string, ScannedFile>  $pipelineNodes
+ * @param  array<string, string>  $shortIndex
  * @return array<string, list<string>>
  */
 function dispatchIndex(array $core, array $laravel, array $pipelineNodes, array $shortIndex): array
@@ -296,7 +292,7 @@ function dispatchIndex(array $core, array $laravel, array $pipelineNodes, array 
                 if (str_contains($file->className, 'Dispatcher')) {
                     continue;
                 }
-                $events[$file->className] = $file->namespace . '\\' . $file->className;
+                $events[$file->className] = $file->namespace.'\\'.$file->className;
             }
         }
     }
@@ -305,7 +301,7 @@ function dispatchIndex(array $core, array $laravel, array $pipelineNodes, array 
     foreach ([[...$core], [...$laravel]] as $modules) {
         foreach ($modules as $moduleFiles) {
             foreach ($moduleFiles as $file) {
-                $byFqcn[$file->namespace . '\\' . $file->className] = $file;
+                $byFqcn[$file->namespace.'\\'.$file->className] = $file;
             }
         }
     }
@@ -333,9 +329,8 @@ function dispatchIndex(array $core, array $laravel, array $pipelineNodes, array 
 }
 
 /**
- * @param array<string, ScannedFile> $all
- * @param array<string, bool> $kept
- *
+ * @param  array<string, ScannedFile>  $all
+ * @param  array<string, bool>  $kept
  * @return array<string, list<string>> dir => sorted fqcms
  */
 function groupByDir(array $all, array $kept): array
@@ -369,7 +364,7 @@ function cells(array $names): string
         return '—';
     }
 
-    return implode(', ', array_map(fn (string $n): string => '`' . $n . '`', $names));
+    return implode(', ', array_map(fn (string $n): string => '`'.$n.'`', $names));
 }
 
 function nodeId(string $value): string

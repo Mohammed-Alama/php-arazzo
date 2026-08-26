@@ -15,11 +15,10 @@ class DatabaseEventLedger implements EventLedgerInterface
         private ConnectionInterface $db,
         private string $tableName = 'arazzo_events',
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function append(string $executionId, string $eventType, array $payload): void
     {

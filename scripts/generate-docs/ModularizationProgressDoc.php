@@ -20,9 +20,9 @@ const PLAN_GLOB = '/docs/superpowers/plans/*modularization-plan.md';
 
 function render(string $root): string
 {
-    $matches = glob($root . PLAN_GLOB) ?: [];
+    $matches = glob($root.PLAN_GLOB) ?: [];
     if ($matches === []) {
-        return BANNER . "_No modularization plan found in docs/superpowers/plans/._\n";
+        return BANNER."_No modularization plan found in docs/superpowers/plans/._\n";
     }
     sort($matches);
     $planPath = $matches[0];
@@ -39,7 +39,7 @@ function render(string $root): string
     $created = [];
     $missing = [];
     foreach ($promised as $relative) {
-        if (is_file($root . '/' . $relative)) {
+        if (is_file($root.'/'.$relative)) {
             $created[] = $relative;
         } else {
             $missing[] = $relative;
@@ -70,9 +70,9 @@ function render(string $root): string
         $lines[] = '## Not yet in the tree';
         $lines[] = '';
         foreach ($missing as $relative) {
-            $lines[] = '- `' . $relative . '`';
+            $lines[] = '- `'.$relative.'`';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }

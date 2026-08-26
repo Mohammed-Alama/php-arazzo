@@ -18,6 +18,4 @@ namespace Alama\Arazzo\Runner\Normalizer;
  *   through as opaque schema data.
  * - The `webhooks` map is not normalized (no Arazzo step can target it).
  */
-class OpenApi31Normalizer extends OpenApi30Normalizer
-{
-}
+class OpenApi31Normalizer extends OpenApi30Normalizer {}

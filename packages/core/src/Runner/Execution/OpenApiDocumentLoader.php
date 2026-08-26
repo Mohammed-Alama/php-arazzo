@@ -16,9 +16,7 @@ final class OpenApiDocumentLoader
     /** @var array<string, OpenApi> */
     private array $cache = [];
 
-    public function __construct(private readonly SourceResolver $sourceResolver)
-    {
-    }
+    public function __construct(private readonly SourceResolver $sourceResolver) {}
 
     public function load(SourceDescription $sourceDesc, string $basePath): ?OpenApi
     {

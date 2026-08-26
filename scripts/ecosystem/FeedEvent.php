@@ -10,8 +10,8 @@ namespace Ecosystem;
 final class FeedEvent
 {
     /**
-     * @param string[] $tags
-     * @param array<string,mixed> $raw
+     * @param  string[]  $tags
+     * @param  array<string,mixed>  $raw
      */
     public function __construct(
         public readonly string $id,
@@ -24,8 +24,7 @@ final class FeedEvent
         public readonly string $severity,
         public readonly array $raw = [],
         public readonly ?string $relevance = null,
-    ) {
-    }
+    ) {}
 
     /** @return array<string,mixed> */
     public function toArray(): array
@@ -45,6 +44,6 @@ final class FeedEvent
 
     public static function makeId(string $source, string $externalId): string
     {
-        return hash('sha256', $source . '|' . $externalId);
+        return hash('sha256', $source.'|'.$externalId);
     }
 }

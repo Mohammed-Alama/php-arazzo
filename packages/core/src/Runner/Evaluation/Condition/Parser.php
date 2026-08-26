@@ -160,10 +160,10 @@ final class Parser
         $body = str_ends_with($captured, '}') ? substr($captured, 0, -1) : $captured;
 
         if (str_starts_with($body, '${')) {
-            $body = '$' . substr($body, 2);
+            $body = '$'.substr($body, 2);
         }
 
-        return '{' . $body . '}';
+        return '{'.$body.'}';
     }
 
     private function parseIdentLiteral(Token $token): Literal

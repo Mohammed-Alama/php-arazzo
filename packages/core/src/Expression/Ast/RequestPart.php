@@ -10,6 +10,5 @@ final readonly class RequestPart extends StepPart
         public ?string $httpPart,
         public ?string $headerName,
         public ?string $jsonPointer,
-    ) {
-    }
+    ) {}
 }

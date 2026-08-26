@@ -21,8 +21,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     public function execute(
         ResolvedOperation $resolvedOperation,
@@ -63,15 +62,15 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
             $replacement = $style === 'simple' ? urlencode($value) : $value;
             // matrix and label include the prefix in the serialized value,
             // so we replace the template
-            $urlPath = str_replace('{' . $name . '}', $replacement, $urlPath);
+            $urlPath = str_replace('{'.$name.'}', $replacement, $urlPath);
         }
 
-        $url = $baseUrl . $urlPath;
+        $url = $baseUrl.$urlPath;
 
         $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $payload->query);
         $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
         if (!empty($filteredQuery)) {
-            $url .= '?' . implode('&', array_values($filteredQuery));
+            $url .= '?'.implode('&', array_values($filteredQuery));
         }
 
         $request = $this->requestFactory->createRequest($method, $url);
@@ -127,9 +126,8 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     /**
-     * @param array<string, array<string, mixed>> $normalizedParams
-     * @param array<string, mixed> $payloadParams
-     *
+     * @param  array<string, array<string, mixed>>  $normalizedParams
+     * @param  array<string, mixed>  $payloadParams
      * @return array<string, mixed>
      */
     private function castParameters(array $normalizedParams, array $payloadParams): array
@@ -145,7 +143,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     /**
-     * @param array<string, mixed>|null $schema
+     * @param  array<string, mixed>|null  $schema
      */
     private function castToSchemaType(mixed $value, ?array $schema): mixed
     {

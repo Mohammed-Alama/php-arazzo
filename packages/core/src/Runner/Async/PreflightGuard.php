@@ -19,8 +19,7 @@ final class PreflightGuard
     public function __construct(
         private readonly DefinitionRegistryInterface $definitions,
         private readonly ?PreflightValidator $preflight,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws PreflightFailureException when validation fails on a fresh run
@@ -41,7 +40,7 @@ final class PreflightGuard
 
         if (!$result->isValid()) {
             throw new PreflightFailureException(
-                'Preflight validation failed with ' . count($result->errors) . ' error(s).',
+                'Preflight validation failed with '.count($result->errors).' error(s).',
                 $result,
             );
         }

@@ -32,7 +32,5 @@ final class TestExpressionResolver implements ExpressionResolverInterface
         return $criteria === [];
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 }

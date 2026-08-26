@@ -12,6 +12,5 @@ final readonly class Comparison implements ConditionNode
         public ComparisonOperator $op,
         public ConditionNode $left,
         public ConditionNode $right,
-    ) {
-    }
+    ) {}
 }

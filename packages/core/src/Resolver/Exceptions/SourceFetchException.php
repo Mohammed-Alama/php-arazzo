@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Resolver\Exceptions;
 
-final class SourceFetchException extends SourceResolutionException
-{
-}
+final class SourceFetchException extends SourceResolutionException {}

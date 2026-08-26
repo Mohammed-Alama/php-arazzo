@@ -241,8 +241,7 @@ class Parser
     }
 
     /**
-     * @param array<string,mixed> $arr
-     *
+     * @param  array<string,mixed>  $arr
      * @return array<int|string,mixed>|null
      */
     protected function optionalArray(array $arr, string $key, ParseContext $ctx): ?array
@@ -259,8 +258,7 @@ class Parser
     }
 
     /**
-     * @param array<string,mixed> $arr
-     *
+     * @param  array<string,mixed>  $arr
      * @return list<mixed>|null
      */
     protected function optionalList(array $arr, string $key, ParseContext $ctx): ?array
@@ -552,8 +550,7 @@ class Parser
      * @return list<Parameter|Reusable>
      */
     /**
-     * @param array<string,mixed> $obj
-     *
+     * @param  array<string,mixed>  $obj
      * @return list<Parameter|Reusable>
      */
     protected function parseActionParameters(array $obj, ParseContext $ctx, string $actionName): array
@@ -597,8 +594,7 @@ class Parser
     }
 
     /**
-     * @param array<string,mixed> $obj
-     *
+     * @param  array<string,mixed>  $obj
      * @return list<SuccessCriterion>
      */
     private function parseCriteriaList(array $obj, ParseContext $ctx): array
@@ -616,8 +612,8 @@ class Parser
     }
 
     /**
-     * @param array<string,mixed> $d
-     * @param list<SuccessCriterion> $criteria
+     * @param  array<string,mixed>  $d
+     * @param  list<SuccessCriterion>  $criteria
      */
     private function parseSubWorkflowSuccessAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowSuccessAction
     {
@@ -695,8 +691,8 @@ class Parser
     }
 
     /**
-     * @param array<string,mixed> $d
-     * @param list<SuccessCriterion> $criteria
+     * @param  array<string,mixed>  $d
+     * @param  list<SuccessCriterion>  $criteria
      */
     private function parseSubWorkflowFailureAction(string $name, array $d, array $criteria, ParseContext $ctx): SubWorkflowFailureAction
     {
@@ -805,8 +801,7 @@ class Parser
     }
 
     /**
-     * @param array<string,mixed> $arr
-     *
+     * @param  array<string,mixed>  $arr
      * @return array<int|string,mixed>
      */
     protected function requireArray(array $arr, string $key, ParseContext $ctx): array

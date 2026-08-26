@@ -7,6 +7,4 @@ namespace Alama\Arazzo\Expression\Ast;
 /**
  * 1.1 document identity expression: resolves to the Arazzo document's $self URI.
  */
-final readonly class SelfRef extends ExpressionAst
-{
-}
+final readonly class SelfRef extends ExpressionAst {}

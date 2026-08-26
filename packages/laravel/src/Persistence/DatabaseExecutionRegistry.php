@@ -13,8 +13,7 @@ class DatabaseExecutionRegistry implements ExecutionRegistryInterface
     public function __construct(
         private ConnectionInterface $db,
         private string $tableName = 'arazzo_executions',
-    ) {
-    }
+    ) {}
 
     public function start(string $executionId, string $definitionId, string $workflowId): void
     {

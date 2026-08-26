@@ -34,7 +34,7 @@ it('rejects Swagger 2.0 sources with a typed error instead of mis-routing them t
         ],
     ]);
 
-    $swaggerFile = tempnam(sys_get_temp_dir(), 'swagger_') . '.json';
+    $swaggerFile = tempnam(sys_get_temp_dir(), 'swagger_').'.json';
     file_put_contents($swaggerFile, $swaggerJson);
 
     try {

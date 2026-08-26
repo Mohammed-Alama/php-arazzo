@@ -23,7 +23,7 @@ interface ExpressionResolverInterface
     public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;
 
     /**
-     * @param list<SuccessCriterion> $criteria
+     * @param  list<SuccessCriterion>  $criteria
      */
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;
 

@@ -48,7 +48,7 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
     }
 
     /**
-     * @param list<SuccessCriterion> $criteria
+     * @param  list<SuccessCriterion>  $criteria
      */
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
     {
@@ -107,7 +107,7 @@ class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
             return false;
         }
 
-        return preg_match('/' . str_replace('/', '\/', $criterion->condition) . '/', self::stringify($target)) === 1;
+        return preg_match('/'.str_replace('/', '\/', $criterion->condition).'/', self::stringify($target)) === 1;
     }
 
     private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseBody, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool

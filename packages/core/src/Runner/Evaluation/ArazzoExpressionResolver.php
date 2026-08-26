@@ -21,8 +21,7 @@ class ArazzoExpressionResolver implements ExpressionResolverInterface
         private OutputExtractorInterface $outputExtractor,
         private CriteriaEvaluatorInterface $criteriaEvaluator,
         private SchemaValidatorInterface $schemaValidator,
-    ) {
-    }
+    ) {}
 
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
     {

@@ -24,7 +24,5 @@ final class FakeLockManager implements LockManagerInterface
         return true;
     }
 
-    public function release(string $key): void
-    {
-    }
+    public function release(string $key): void {}
 }

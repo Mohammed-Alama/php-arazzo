@@ -13,6 +13,5 @@ final class EvaluationContext
         public readonly WorkflowContext $workflowContext,
         public readonly ?string $currentStepId = null,
         public readonly ?ArazzoDocument $document = null,
-    ) {
-    }
+    ) {}
 }

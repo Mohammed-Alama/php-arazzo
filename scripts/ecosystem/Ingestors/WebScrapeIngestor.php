@@ -29,11 +29,11 @@ final class WebScrapeIngestor
         return [[
             'source' => $sourceId,
             'type' => $kind,
-            'externalId' => 'checksum:' . substr($hash, 0, 12),
-            'title' => $sourceId . ' checksum ' . substr($hash, 0, 12),
+            'externalId' => 'checksum:'.substr($hash, 0, 12),
+            'title' => $sourceId.' checksum '.substr($hash, 0, 12),
             'url' => $url,
             'publishedAt' => $publishedAt,
-            'body' => 'etag=' . ($etag ?? 'n/a') . ' hash=' . $hash,
+            'body' => 'etag='.($etag ?? 'n/a').' hash='.$hash,
             'labels' => [],
         ]];
     }

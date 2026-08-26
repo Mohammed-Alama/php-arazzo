@@ -25,9 +25,7 @@ function suspensionResolver(): ExpressionResolverInterface
             return 'corr_from_expr';
         }
 
-        public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-        {
-        }
+        public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
         public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
         {

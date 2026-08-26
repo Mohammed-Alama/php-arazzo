@@ -38,8 +38,8 @@ const POLICY = [
 const VENDOR_ROOTS = ['Psr', 'Illuminate', 'Symfony', 'GuzzleHttp', 'OpenApi', 'cebe', 'Seld', 'PHPUnit', 'Webmozart', 'Composer'];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -52,7 +52,7 @@ function render(array $core, array $laravel): string
                     if ($root === null || str_starts_with(trim($statement), 'Alama\Arazzo')) {
                         continue;
                     }
-                    $key = $package . '|' . $module . '|' . $root;
+                    $key = $package.'|'.$module.'|'.$root;
                     $usage[$key] = ($usage[$key] ?? 0) + 1;
                 }
             }
@@ -122,7 +122,7 @@ function render(array $core, array $laravel): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function vendorRoot(string $statement): ?string
@@ -131,7 +131,7 @@ function vendorRoot(string $statement): ?string
     $statement = trim((string) preg_replace('/\s+as\s+\w+$/', '', trim((string) $statement)));
 
     foreach (VENDOR_ROOTS as $root) {
-        if (str_starts_with($statement, $root . '\\') || $statement === $root) {
+        if (str_starts_with($statement, $root.'\\') || $statement === $root) {
             return $root;
         }
     }

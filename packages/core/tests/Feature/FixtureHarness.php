@@ -19,7 +19,7 @@ final class FixtureHarness
     public static function fixtures(string $dir): array
     {
         $files = [];
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__ . '/../fixtures/' . $dir));
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__.'/../fixtures/'.$dir));
         foreach ($iterator as $file) {
             if ($file->isFile() && preg_match('/\.arazzo\.(yaml|json)$/', $file->getFilename())) {
                 $files[basename($file->getPathname())] = [$file->getPathname()];

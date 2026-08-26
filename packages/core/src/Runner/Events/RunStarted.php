@@ -9,7 +9,7 @@ use DateTimeImmutable;
 final readonly class RunStarted
 {
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function __construct(
         public string $executionId,
@@ -17,6 +17,5 @@ final readonly class RunStarted
         public string $definitionId,
         public array $inputs,
         public DateTimeImmutable $at,
-    ) {
-    }
+    ) {}
 }

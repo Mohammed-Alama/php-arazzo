@@ -66,8 +66,7 @@ final class ExpressionWalker
     }
 
     /**
-     * @param 'components'|'criteria'|'onFailure'|'onSuccess'|'outputs'|'parameters'|'requestBody'|'wf.outputs'|'wf.parameters' $context
-     *
+     * @param  'components'|'criteria'|'onFailure'|'onSuccess'|'outputs'|'parameters'|'requestBody'|'wf.outputs'|'wf.parameters'  $context
      * @return iterable<ExpressionSite>
      */
     private function extract(mixed $value, string $pointer, ?WorkflowSymbols $syms, ?string $stepId, string $context): iterable
@@ -76,7 +75,7 @@ final class ExpressionWalker
             yield new ExpressionSite($pointer, $value, $syms, $stepId, $context);
         } elseif ($value instanceof Selector) {
             if ($value->context !== null && str_starts_with($value->context, '$')) {
-                yield new ExpressionSite("{$pointer}/context", new Expression('{' . $value->context . '}'), $syms, $stepId, $context);
+                yield new ExpressionSite("{$pointer}/context", new Expression('{'.$value->context.'}'), $syms, $stepId, $context);
             }
         }
     }

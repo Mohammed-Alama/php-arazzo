@@ -15,6 +15,5 @@ final readonly class CorrelationPending
         public string $correlationId,
         public string $channelPath,
         public DateTimeImmutable $at,
-    ) {
-    }
+    ) {}
 }

@@ -23,9 +23,8 @@ use Alama\Arazzo\Spec\Step;
 final class PayloadReplacer
 {
     /**
-     * @param array<array-key, mixed> $body
-     * @param callable(PayloadReplacement): mixed|null $resolveValue invoked for each replacement (Expression evaluation etc.)
-     *
+     * @param  array<array-key, mixed>  $body
+     * @param  callable(PayloadReplacement): mixed|null  $resolveValue  invoked for each replacement (Expression evaluation etc.)
      * @return array<array-key, mixed>
      */
     public static function apply(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
@@ -77,7 +76,7 @@ final class PayloadReplacer
      * replacement value. Best-effort mapping of JSONPath dot notation onto
      * nested keys; unmatched expressions are ignored silently.
      *
-     * @param array<array-key, mixed> $body
+     * @param  array<array-key, mixed>  $body
      */
     private static function applySelectorTarget(
         array &$body,
@@ -112,7 +111,7 @@ final class PayloadReplacer
     }
 
     /**
-     * @param array<array-key, mixed> $body
+     * @param  array<array-key, mixed>  $body
      */
     private static function setAtPointer(array &$body, string $target, mixed $value): void
     {

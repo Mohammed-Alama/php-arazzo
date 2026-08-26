@@ -28,7 +28,7 @@ final class RelevanceMapper
     ];
 
     /**
-     * @param string[] $tags
+     * @param  string[]  $tags
      */
     public static function map(array $tags): ?string
     {

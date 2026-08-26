@@ -6,7 +6,5 @@ namespace Alama\Arazzo\Expression\Ast;
 
 final readonly class InputPart extends StepPart
 {
-    public function __construct(public string $name)
-    {
-    }
+    public function __construct(public string $name) {}
 }

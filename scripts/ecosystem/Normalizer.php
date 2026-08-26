@@ -10,7 +10,7 @@ final class Normalizer
      * Map raw item from an ingestor to a FeedEvent.
      * Heuristics: label/title/url -> tags, severity from type/state.
      *
-     * @param array<string,mixed> $raw must contain at least source/type/externalId/title/url/publishedAt
+     * @param  array<string,mixed>  $raw  must contain at least source/type/externalId/title/url/publishedAt
      */
     public static function normalize(array $raw): FeedEvent
     {
@@ -84,8 +84,7 @@ final class Normalizer
     }
 
     /**
-     * @param array<int,array<string,mixed>> $rawItems
-     *
+     * @param  array<int,array<string,mixed>>  $rawItems
      * @return FeedEvent[]
      */
     public static function normalizeMany(array $rawItems): array

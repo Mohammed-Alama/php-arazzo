@@ -52,9 +52,7 @@ class AsyncApiExecutorMockPendingCorrelations implements PendingCorrelationRegis
         return null;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {

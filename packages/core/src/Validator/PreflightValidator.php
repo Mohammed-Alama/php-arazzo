@@ -54,7 +54,7 @@ final class PreflightValidator
      * `inputs` JSON Schema (2020-12) BEFORE any side effect. First-mover
      * capability: no surveyed Arazzo tool does this.
      *
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function validateInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult
     {
@@ -71,7 +71,7 @@ final class PreflightValidator
 
         if ($workflow === null) {
             return new ValidationResult($document, [
-                new Error('preflight.unknown_workflow', "Workflow '{$workflowId}' does not exist.", '/workflows/' . $workflowId),
+                new Error('preflight.unknown_workflow', "Workflow '{$workflowId}' does not exist.", '/workflows/'.$workflowId),
             ], []);
         }
 
@@ -85,8 +85,8 @@ final class PreflightValidator
         $violations = $this->validateAgainstSchema($inputs, $schema);
 
         foreach ($violations as $violation) {
-            $pointer = '/workflows/' . $workflowId . '/inputs'
-                . ($violation['property'] !== ''
+            $pointer = '/workflows/'.$workflowId.'/inputs'
+                .($violation['property'] !== ''
                     ? (string) preg_replace('/^\[([^\]]+)\]/', '/$1', $violation['property'])
                     : '');
 
@@ -104,9 +104,8 @@ final class PreflightValidator
     /**
      * Runs the justinrainbow validator against a raw 2020-12 schema array.
      *
-     * @param array<string, mixed> $inputs
-     * @param array<string, mixed> $schema
-     *
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $schema
      * @return list<array{message: string, property: string}>
      */
     private function validateAgainstSchema(array $inputs, array $schema): array
@@ -149,7 +148,7 @@ final class PreflightValidator
 
     private function checkStep(ArazzoDocument $document, Workflow $workflow, Step $step, ErrorCollector $errors): void
     {
-        $base = '/workflows/' . $workflow->workflowId . '/steps/' . $step->stepId;
+        $base = '/workflows/'.$workflow->workflowId.'/steps/'.$step->stepId;
 
         // 1. The referenced source must exist and be locally available so
         //    resolution never triggers a network fetch during preflight.
@@ -168,7 +167,7 @@ final class PreflightValidator
                 $errors->add(new Error(
                     'preflight.source_unresolved',
                     "Step '{$step->stepId}' references unknown source description '{$sourceName}'.",
-                    $base . '/operationPath',
+                    $base.'/operationPath',
                     severity: Severity::Error,
                 ));
 
@@ -181,7 +180,7 @@ final class PreflightValidator
                 $errors->add(new Warning(
                     'preflight.source_not_local',
                     "Source '{$sourceName}' is not pre-registered; preflight cannot resolve it without a fetch.",
-                    $base . '/operationPath',
+                    $base.'/operationPath',
                 ));
 
                 return;
@@ -200,7 +199,7 @@ final class PreflightValidator
                     $errors->add(new Error(
                         'preflight.unsupported_openapi_version',
                         "Source '{$sourceName}' declares unsupported OpenAPI version '{$version}'.",
-                        '/sourceDescriptions/' . $sourceName,
+                        '/sourceDescriptions/'.$sourceName,
                         severity: Severity::Error,
                     ));
                 }
@@ -213,7 +212,7 @@ final class PreflightValidator
                 $errors->add(new Error(
                     'preflight.operation_unresolvable',
                     "Step '{$step->stepId}' operation reference failed: {$e->getMessage()}",
-                    $base . '/operationPath',
+                    $base.'/operationPath',
                     severity: Severity::Error,
                 ));
 
@@ -236,7 +235,7 @@ final class PreflightValidator
                     $errors->add(new Error(
                         'preflight.reusable_action_missing',
                         "Reusable action reference '{$action->reference}' does not resolve to a component.",
-                        $base . '/onSuccess',
+                        $base.'/onSuccess',
                         severity: Severity::Error,
                     ));
                 }
@@ -252,8 +251,8 @@ final class PreflightValidator
                 if (!in_array($version, $supported, true)) {
                     $errors->add(new Error(
                         'preflight.unsupported_selector_version',
-                        "Selector requests XPath version '{$version}'; evaluator supports: " . implode(', ', $supported) . '.',
-                        $base . '/parameters',
+                        "Selector requests XPath version '{$version}'; evaluator supports: ".implode(', ', $supported).'.',
+                        $base.'/parameters',
                         severity: Severity::Error,
                     ));
                 }

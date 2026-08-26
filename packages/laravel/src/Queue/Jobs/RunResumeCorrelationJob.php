@@ -19,9 +19,7 @@ class RunResumeCorrelationJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public ResumeCorrelationJob $inner)
-    {
-    }
+    public function __construct(public ResumeCorrelationJob $inner) {}
 
     public function handle(CorrelationResumer $resumer): void
     {

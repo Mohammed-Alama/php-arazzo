@@ -24,9 +24,7 @@ function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null)
 {
     return new class($succeed, $throw) extends StepExecutor
     {
-        public function __construct(private bool $succeed, private ?Throwable $throw)
-        {
-        }
+        public function __construct(private bool $succeed, private ?Throwable $throw) {}
 
         public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
         {

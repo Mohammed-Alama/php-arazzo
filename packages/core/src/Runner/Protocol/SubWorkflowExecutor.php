@@ -28,8 +28,7 @@ final class SubWorkflowExecutor implements StepProtocolExecutorInterface
     public function __construct(
         private WorkflowEngine $workflowEngine,
         private ExpressionResolverInterface $expressionResolver,
-    ) {
-    }
+    ) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 class OpenApi30Normalizer implements OpenApiNormalizerInterface
 {
     /**
-     * @param array<string, mixed> $document
+     * @param  array<string, mixed>  $document
      */
     public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation
     {
@@ -53,9 +53,9 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
     }
 
     /**
-     * @param array<string, mixed> $document
-     * @param array<string, mixed> $pathItem
-     * @param array<string, mixed> $operation
+     * @param  array<string, mixed>  $document
+     * @param  array<string, mixed>  $pathItem
+     * @param  array<string, mixed>  $operation
      */
     private function resolveServerUrl(array $document, array $pathItem, array $operation): ?string
     {
@@ -75,10 +75,9 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
     }
 
     /**
-     * @param array<string, mixed> $document
-     * @param array<string, mixed> $pathItem
-     * @param array<string, mixed> $operation
-     *
+     * @param  array<string, mixed>  $document
+     * @param  array<string, mixed>  $pathItem
+     * @param  array<string, mixed>  $operation
      * @return array{path: array<string, array<string, mixed>>, query: array<string, array<string, mixed>>, header: array<string, array<string, mixed>>, cookie: array<string, array<string, mixed>>}
      */
     private function resolveParameters(array $document, array $pathItem, array $operation): array
@@ -95,13 +94,13 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
 
         foreach ($pathParams as $param) {
             if (isset($param['name'], $param['in']) && is_string($param['name']) && is_string($param['in'])) {
-                $merged[$param['name'] . '|' . $param['in']] = $param;
+                $merged[$param['name'].'|'.$param['in']] = $param;
             }
         }
 
         foreach ($opParams as $param) {
             if (isset($param['name'], $param['in']) && is_string($param['name']) && is_string($param['in'])) {
-                $merged[$param['name'] . '|' . $param['in']] = $param;
+                $merged[$param['name'].'|'.$param['in']] = $param;
             }
         }
 
@@ -124,9 +123,8 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
     }
 
     /**
-     * @param array<string, mixed> $document
-     * @param array<string, mixed> $item
-     *
+     * @param  array<string, mixed>  $document
+     * @param  array<string, mixed>  $item
      * @return array<string, mixed>
      */
     private function resolveLocalRef(array $document, array $item): array
@@ -165,9 +163,8 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
     }
 
     /**
-     * @param array<string, mixed> $document
-     * @param array<string, mixed> $operation
-     *
+     * @param  array<string, mixed>  $document
+     * @param  array<string, mixed>  $operation
      * @return array<string, mixed>
      */
     private function resolveRequestBodies(array $document, array $operation): array
@@ -193,9 +190,8 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
     }
 
     /**
-     * @param array<string, mixed> $document
-     * @param array<string, mixed> $operation
-     *
+     * @param  array<string, mixed>  $document
+     * @param  array<string, mixed>  $operation
      * @return array<string, mixed>
      */
     private function resolveResponses(array $document, array $operation): array

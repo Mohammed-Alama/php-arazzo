@@ -9,9 +9,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class IlluminatePsrEventDispatcher implements EventDispatcherInterface
 {
-    public function __construct(private IlluminateDispatcher $dispatcher)
-    {
-    }
+    public function __construct(private IlluminateDispatcher $dispatcher) {}
 
     public function dispatch(object $event): object
     {

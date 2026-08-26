@@ -17,8 +17,7 @@ final class CliRunResult
         public readonly string $executionId,
         public readonly string $status,
         public readonly bool $suspended,
-    ) {
-    }
+    ) {}
 
     public static function fromStatus(string $executionId, ExecutionRegistryInterface $registry): self
     {

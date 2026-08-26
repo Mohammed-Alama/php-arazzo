@@ -9,7 +9,7 @@ use InvalidArgumentException;
 class OpenApiVersionDetector
 {
     /**
-     * @param array<string, mixed> $document
+     * @param  array<string, mixed>  $document
      */
     public function detect(array $document): string
     {

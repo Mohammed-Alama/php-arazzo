@@ -30,7 +30,7 @@ final class ExecutionException extends ArazzoException
     {
         return new self(
             "Send step '{$stepId}' has channelPath '{$channelPath}', which is not an absolute HTTP URI. "
-            . 'Use an absolute broker/webhook URL, or wire AsyncAPI server resolution in the executor.',
+            .'Use an absolute broker/webhook URL, or wire AsyncAPI server resolution in the executor.',
             '/',
             'execution.unresolvable_channel_target',
         );

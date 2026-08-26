@@ -174,8 +174,7 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
     }
 
     /**
-     * @param array<array-key, mixed> $data
-     *
+     * @param  array<array-key, mixed>  $data
      * @return array<array-key, mixed>
      */
     private function mapOrEmpty(array $data, string $key): array

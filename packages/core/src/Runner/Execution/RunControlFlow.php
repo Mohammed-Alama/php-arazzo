@@ -19,6 +19,5 @@ final class RunControlFlow
         public readonly QueueDriverInterface $queueDriver,
         public readonly ?EventDispatcherInterface $events = null,
         public readonly ?PreflightValidator $preflight = null,
-    ) {
-    }
+    ) {}
 }

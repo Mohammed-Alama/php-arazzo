@@ -21,8 +21,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         private OpenApiOperationResolver $operationResolver,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
-    ) {
-    }
+    ) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

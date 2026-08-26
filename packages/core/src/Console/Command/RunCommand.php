@@ -70,7 +70,7 @@ final class RunCommand extends Command
         }
 
         if ($workflow === null) {
-            $output->writeln('<error>' . sprintf("unknown workflow '%s'", (string) $workflowId) . '</error>');
+            $output->writeln('<error>'.sprintf("unknown workflow '%s'", (string) $workflowId).'</error>');
 
             return Command::FAILURE;
         }

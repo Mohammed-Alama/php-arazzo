@@ -12,7 +12,7 @@ final class UnsupportedSourceVersionException extends RuntimeException
     {
         return new self(
             "Source '{$sourceName}' declares version '{$version}', which is not supported. "
-            . 'Supported: OpenAPI 3.0.x and 3.1.x. Swagger 2.0 documents are not supported yet.',
+            .'Supported: OpenAPI 3.0.x and 3.1.x. Swagger 2.0 documents are not supported yet.',
         );
     }
 }

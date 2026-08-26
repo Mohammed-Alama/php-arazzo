@@ -23,7 +23,7 @@ dataset('invalid_fixtures', fn () => FixtureHarness::fixtures('invalid'));
 it('parses and validates valid fixtures without errors', function (string $path) {
     $result = FixtureHarness::validate($path);
 
-    expect($result->isValid())->toBeTrue("Fixture {$path} should be valid, but has errors: " . json_encode($result->errors));
+    expect($result->isValid())->toBeTrue("Fixture {$path} should be valid, but has errors: ".json_encode($result->errors));
 })->with('valid_fixtures');
 
 it('detects errors in invalid fixtures', function (string $path) {

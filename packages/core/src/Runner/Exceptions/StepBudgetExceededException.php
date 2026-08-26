@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Runner\Exceptions;
 
 use Alama\Arazzo\Support\Exceptions\ArazzoException;
 
-final class StepBudgetExceededException extends ArazzoException
-{
-}
+final class StepBudgetExceededException extends ArazzoException {}

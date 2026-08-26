@@ -10,6 +10,5 @@ final readonly class Token
         public TokenKind $kind,
         public string $value,
         public int $offset,
-    ) {
-    }
+    ) {}
 }

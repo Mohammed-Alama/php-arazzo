@@ -14,16 +14,15 @@ use Alama\Arazzo\Spec\Workflow;
 final readonly class SymbolTable
 {
     /**
-     * @param array<string,WorkflowSymbols> $workflows
-     * @param array<string,true> $sourceDescriptions
-     * @param array<string,array<string,true>> $components
+     * @param  array<string,WorkflowSymbols>  $workflows
+     * @param  array<string,true>  $sourceDescriptions
+     * @param  array<string,array<string,true>>  $components
      */
     public function __construct(
         public array $workflows,
         public array $sourceDescriptions,
         public array $components,
-    ) {
-    }
+    ) {}
 
     public static function build(ArazzoDocument $doc): self
     {

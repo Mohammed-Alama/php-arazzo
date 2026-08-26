@@ -24,8 +24,7 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
     public function __construct(
         private WorkflowExecutor $executor,
         private ExpressionEvaluator $evaluator,
-    ) {
-    }
+    ) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
@@ -63,7 +62,7 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
         // A completed sub-workflow has no HTTP semantics; 200 marks success.
         return StepExecutionOutcome::resolved(200, $result->outputs, [], $bound, [
             'method' => 'WORKFLOW',
-            'url' => '#workflows/' . $target->workflowId,
+            'url' => '#workflows/'.$target->workflowId,
         ]);
     }
 }

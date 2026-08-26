@@ -34,8 +34,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
         private ?RequestFactoryInterface $requestFactory = null,
         private ?StreamFactoryInterface $streamFactory = null,
         private ?UriFactoryInterface $uriFactory = null,
-    ) {
-    }
+    ) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

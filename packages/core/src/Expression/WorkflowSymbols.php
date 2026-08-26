@@ -7,11 +7,11 @@ namespace Alama\Arazzo\Expression;
 final readonly class WorkflowSymbols
 {
     /**
-     * @param array<string,true> $inputs
-     * @param array<string,true> $parameters
-     * @param array<string,StepSymbols> $stepsById
-     * @param array<string,true> $outputs
-     * @param array<string,true> $dependsOn
+     * @param  array<string,true>  $inputs
+     * @param  array<string,true>  $parameters
+     * @param  array<string,StepSymbols>  $stepsById
+     * @param  array<string,true>  $outputs
+     * @param  array<string,true>  $dependsOn
      */
     public function __construct(
         public array $inputs,
@@ -19,6 +19,5 @@ final readonly class WorkflowSymbols
         public array $stepsById,
         public array $outputs,
         public array $dependsOn,
-    ) {
-    }
+    ) {}
 }

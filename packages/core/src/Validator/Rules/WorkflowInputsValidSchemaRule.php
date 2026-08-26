@@ -29,12 +29,12 @@ final class WorkflowInputsValidSchemaRule implements Rule
                 continue;
             }
             if (isset($inputs['type']) && $inputs['type'] !== 'object') {
-                $errors->error($this->code(), "workflow inputs schema must be of type 'object'.", $path . '/type');
+                $errors->error($this->code(), "workflow inputs schema must be of type 'object'.", $path.'/type');
 
                 continue;
             }
             if (isset($inputs['properties']) && !is_array($inputs['properties'])) {
-                $errors->error($this->code(), 'workflow inputs.properties must be an object.', $path . '/properties');
+                $errors->error($this->code(), 'workflow inputs.properties must be an object.', $path.'/properties');
             }
         }
     }

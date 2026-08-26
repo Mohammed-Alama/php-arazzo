@@ -9,11 +9,11 @@ use Alama\Arazzo\Runner\Execution\StepStatus;
 final class StepResult
 {
     /**
-     * @param array<string, mixed> $request
-     * @param array<string, mixed> $response
-     * @param array<string, mixed> $outputs
-     * @param array<string, mixed> $inputs
-     * @param array<string, mixed> $responseHeaders
+     * @param  array<string, mixed>  $request
+     * @param  array<string, mixed>  $response
+     * @param  array<string, mixed>  $outputs
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $responseHeaders
      */
     public function __construct(
         public readonly int $statusCode,
@@ -28,14 +28,13 @@ final class StepResult
         public readonly string $responseBody = '',
         public readonly string $rawBody = '',
         public readonly array $responseHeaders = [],
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed> $outputs
-     * @param array<string, mixed> $inputs
-     * @param array<string, mixed> $responseHeaders
-     * @param array<string, mixed> $request
+     * @param  array<string, mixed>  $outputs
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $responseHeaders
+     * @param  array<string, mixed>  $request
      */
     public static function success(
         int $statusCode,
@@ -64,10 +63,10 @@ final class StepResult
     }
 
     /**
-     * @param array<string, mixed> $outputs
-     * @param array<string, mixed> $inputs
-     * @param array<string, mixed> $responseHeaders
-     * @param array<string, mixed> $request
+     * @param  array<string, mixed>  $outputs
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $responseHeaders
+     * @param  array<string, mixed>  $request
      */
     public static function failure(
         int $statusCode,

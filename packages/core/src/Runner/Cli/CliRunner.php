@@ -45,7 +45,7 @@ final class CliRunner
     private readonly LockManagerInterface $locks;
 
     /**
-     * @param list<StepProtocolExecutorInterface> $protocolExecutors
+     * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
      */
     public function __construct(
         private readonly ExpressionResolverInterface $expressions,
@@ -70,20 +70,18 @@ final class CliRunner
                 return true;
             }
 
-            public function release(string $key): void
-            {
-            }
+            public function release(string $key): void {}
         };
     }
 
     /**
      * Runs a workflow to completion (or suspension) in this process.
      *
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function run(ArazzoDocument $document, string $workflowId, array $inputs = [], ?string $executionId = null, ?string $definitionId = null): CliRunResult
     {
-        $executionId ??= 'cli_' . bin2hex(random_bytes(8));
+        $executionId ??= 'cli_'.bin2hex(random_bytes(8));
         $workflow = $this->findWorkflow($document, $workflowId);
 
         if ($workflow === null) {

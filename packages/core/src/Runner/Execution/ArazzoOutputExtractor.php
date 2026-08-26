@@ -34,8 +34,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
         private OpenApiOperationResolver $operationResolver,
         private ExpressionEvaluator $evaluator,
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, mixed>

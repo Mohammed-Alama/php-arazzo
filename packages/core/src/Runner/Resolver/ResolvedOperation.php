@@ -12,7 +12,7 @@ use cebe\openapi\spec\Operation;
 class ResolvedOperation
 {
     /**
-     * @param array<string, mixed> $rawDocument
+     * @param  array<string, mixed>  $rawDocument
      */
     public function __construct(
         public readonly SourceDescription $source,
@@ -20,6 +20,5 @@ class ResolvedOperation
         public readonly OpenApi $openApi,
         public readonly array $rawDocument,
         public readonly Operation $cebeOperation,
-    ) {
-    }
+    ) {}
 }

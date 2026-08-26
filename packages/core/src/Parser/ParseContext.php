@@ -10,8 +10,7 @@ final readonly class ParseContext
     public function __construct(
         private string $filePath,
         private array $segments = [],
-    ) {
-    }
+    ) {}
 
     public function push(string|int $segment): self
     {
@@ -22,7 +21,7 @@ final readonly class ParseContext
 
     public function pointer(): string
     {
-        return $this->segments === [] ? '' : '/' . implode('/', $this->segments);
+        return $this->segments === [] ? '' : '/'.implode('/', $this->segments);
     }
 
     public function path(): string

@@ -16,11 +16,10 @@ final class StateReconciler
 {
     public function __construct(
         private readonly StateStoreInterface $stateStore,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed>|null $persisted pre-loaded payload; null loads from the store
+     * @param  array<string, mixed>|null  $persisted  pre-loaded payload; null loads from the store
      */
     public function reconcile(WorkflowContext $jobContext, string $executionId, ?array $persisted = null): WorkflowContext
     {

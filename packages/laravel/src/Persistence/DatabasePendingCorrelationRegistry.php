@@ -13,8 +13,7 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
     public function __construct(
         private readonly ConnectionInterface $db,
         private readonly string $table = 'arazzo_pending_correlations',
-    ) {
-    }
+    ) {}
 
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {

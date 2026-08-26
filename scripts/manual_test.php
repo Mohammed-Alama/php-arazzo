@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 error_reporting(E_ALL & ~E_DEPRECATED);
 
@@ -28,7 +28,7 @@ use Alama\Arazzo\Runner\WorkflowExecutor;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
-$fixturesDir = __DIR__ . '/../packages/core/tests/fixtures/';
+$fixturesDir = __DIR__.'/../packages/core/tests/fixtures/';
 $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($fixturesDir));
 $yamlFiles = [];
 foreach ($iterator as $file) {
@@ -67,7 +67,7 @@ $workflowInputs = [
 ];
 
 echo "Testing all Arazzo workflows against local dummy app (http://localhost:8002)...\n";
-echo 'Found ' . count($yamlFiles) . " fixture files.\n\n";
+echo 'Found '.count($yamlFiles)." fixture files.\n\n";
 
 // Wire up the core engine dependencies manually (Framework-Agnostic)
 $client = new Client();
@@ -101,7 +101,7 @@ $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
 
 foreach ($yamlFiles as $path) {
     echo "=================================================\n";
-    $relPath = str_replace(__DIR__ . '/../packages/core/tests/fixtures/', '', $path);
+    $relPath = str_replace(__DIR__.'/../packages/core/tests/fixtures/', '', $path);
     echo "Loading fixture: {$relPath}\n";
 
     try {
@@ -123,7 +123,7 @@ foreach ($yamlFiles as $path) {
         }
     } catch (Throwable $e) {
         echo "Failed processing fixture!\n";
-        echo $e->getMessage() . "\n";
+        echo $e->getMessage()."\n";
     }
     echo "\n";
 }

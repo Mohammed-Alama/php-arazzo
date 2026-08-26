@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Runner\Exceptions;
 
 use RuntimeException;
 
-final class DefinitionHydrationException extends RuntimeException
-{
-}
+final class DefinitionHydrationException extends RuntimeException {}

@@ -12,8 +12,7 @@ class DependencyAnalyzer
 {
     public function __construct(
         private DependencyGraph $graph,
-    ) {
-    }
+    ) {}
 
     /**
      * @return Step[]

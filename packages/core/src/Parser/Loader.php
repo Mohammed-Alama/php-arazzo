@@ -16,8 +16,7 @@ final class Loader
     public function __construct(
         private readonly YamlDecoder $yaml,
         private readonly JsonDecoder $json,
-    ) {
-    }
+    ) {}
 
     public function load(string $path): RawDocument
     {

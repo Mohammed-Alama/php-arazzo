@@ -12,8 +12,8 @@ use Alama\Arazzo\Spec\SuccessCriterion;
 final readonly class SuccessGotoAction extends SuccessAction
 {
     /**
-     * @param list<SuccessCriterion> $criteria
-     * @param list<Parameter|Reusable> $parameters 1.1: passed to the workflowId target
+     * @param  list<SuccessCriterion>  $criteria
+     * @param  list<Parameter|Reusable>  $parameters  1.1: passed to the workflowId target
      */
     public function __construct(
         string $name,

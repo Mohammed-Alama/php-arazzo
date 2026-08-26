@@ -42,9 +42,7 @@ class StepOutcomeMockExecutionRegistry implements ExecutionRegistryInterface
     /** @var list<array{executionId: string, status: ExecutionStatus}> */
     public array $completed = [];
 
-    public function start(string $executionId, string $definitionId, string $workflowId): void
-    {
-    }
+    public function start(string $executionId, string $definitionId, string $workflowId): void {}
 
     public function complete(string $executionId, ExecutionStatus $status): void
     {
@@ -78,9 +76,7 @@ class StepOutcomeMockPendingCorrelationRegistry implements PendingCorrelationReg
         return null;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {
@@ -95,9 +91,7 @@ class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
         return $expression->raw;
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
@@ -123,9 +117,9 @@ class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
 }
 
 /**
- * @param list<FailureAction|Reusable> $onFailure
- * @param list<SuccessAction|Reusable> $onSuccess
- * @param array<int|string, mixed> $dependsOn
+ * @param  list<FailureAction|Reusable>  $onFailure
+ * @param  list<SuccessAction|Reusable>  $onSuccess
+ * @param  array<int|string, mixed>  $dependsOn
  */
 function stepOutcomeStep(string $id, array $onFailure = [], array $onSuccess = [], array $dependsOn = []): Step
 {
@@ -134,9 +128,9 @@ function stepOutcomeStep(string $id, array $onFailure = [], array $onSuccess = [
 }
 
 /**
- * @param list<Step> $steps
- * @param list<FailureAction|Reusable> $failureActions
- * @param list<SuccessAction|Reusable> $successActions
+ * @param  list<Step>  $steps
+ * @param  list<FailureAction|Reusable>  $failureActions
+ * @param  list<SuccessAction|Reusable>  $successActions
  */
 function stepOutcomeWorkflow(string $id, array $steps, array $failureActions = [], array $successActions = []): Workflow
 {
@@ -144,7 +138,7 @@ function stepOutcomeWorkflow(string $id, array $steps, array $failureActions = [
 }
 
 /**
- * @param list<Workflow> $workflows
+ * @param  list<Workflow>  $workflows
  */
 function stepOutcomeDocument(array $workflows, ?Components $components = null): ArazzoDocument
 {

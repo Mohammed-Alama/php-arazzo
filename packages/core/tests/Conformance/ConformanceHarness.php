@@ -49,14 +49,13 @@ abstract class ConformanceHarness
     protected SourceRegistry $sourceRegistry;
 
     /**
-     * @param array<string, mixed> $fixture
-     *
+     * @param  array<string, mixed>  $fixture
      * @return array<string, mixed>
      */
     abstract public function run(array $fixture): array;
 
     /**
-     * @param array<string, mixed> $fixture
+     * @param  array<string, mixed>  $fixture
      */
     protected function prepare(array $fixture): ArazzoDocument
     {
@@ -86,7 +85,7 @@ abstract class ConformanceHarness
 
         $document = (new Parser())->parse(new RawDocument(
             $fixture['arazzo'],
-            'memory://conformance/' . ($fixture['name'] ?? 'fixture') . '.json',
+            'memory://conformance/'.($fixture['name'] ?? 'fixture').'.json',
             Format::Json,
         ));
 
@@ -94,7 +93,7 @@ abstract class ConformanceHarness
             $this->sourceRegistry->register(new SourceDocument(
                 (string) $name,
                 SourceType::Openapi,
-                'https://conformance.invalid/' . $name . '.json',
+                'https://conformance.invalid/'.$name.'.json',
                 $content,
             ));
         }
@@ -195,7 +194,7 @@ abstract class ConformanceHarness
             'steps' => $steps,
             'outputs' => $outputs,
             'requests' => array_map(
-                fn ($request): string => $request->getMethod() . ' ' . $request->getUri(),
+                fn ($request): string => $request->getMethod().' '.$request->getUri(),
                 $this->http->requests,
             ),
             'requestHeaders' => $this->http->requests === [] ? [] : array_map(

@@ -108,7 +108,7 @@ it('calls the inner fetcher separately for different urls', function (): void {
         {
             $this->calls++;
 
-            return 'fetched-' . $urlOrPath;
+            return 'fetched-'.$urlOrPath;
         }
     };
 

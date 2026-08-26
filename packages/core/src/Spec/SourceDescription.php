@@ -12,6 +12,5 @@ final readonly class SourceDescription
         public string $name,
         public string $url,
         public SourceType $type,
-    ) {
-    }
+    ) {}
 }

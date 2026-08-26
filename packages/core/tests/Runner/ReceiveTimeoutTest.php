@@ -14,7 +14,7 @@ use Tests\Execution\ResumerMockLockManager;
 use Tests\Execution\ResumerMockPendingCorrelations;
 use Tests\Execution\ResumerMockStateStore;
 
-require_once __DIR__ . '/CorrelationResumerTest.php';
+require_once __DIR__.'/CorrelationResumerTest.php';
 
 function expiryRegistry(bool $expired): ResumerMockPendingCorrelations
 {

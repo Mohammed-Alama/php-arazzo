@@ -41,8 +41,8 @@ const LAYER_ORDER = [
 ];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -51,7 +51,7 @@ function render(array $core, array $laravel): string
     $classModule = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace . '\\' . $file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $module;
         }
     }
 
@@ -99,13 +99,12 @@ function render(array $core, array $laravel): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, list<ScannedFile>> $all
- * @param array<string, string> $classModule
- *
+ * @param  array<string, list<ScannedFile>>  $all
+ * @param  array<string, string>  $classModule
  * @return array{0: list<array{string, string, bool}>, 1: list<array{string, string, int}>}
  */
 function computeEdges(array $all, array $classModule): array
@@ -136,7 +135,7 @@ function computeEdges(array $all, array $classModule): array
             }
         }
     }
-    usort($edges, fn (array $a, array $b): int => strcmp($a[0] . $a[1], $b[0] . $b[1]));
+    usort($edges, fn (array $a, array $b): int => strcmp($a[0].$a[1], $b[0].$b[1]));
 
     return [$edges, $violations];
 }
@@ -160,8 +159,7 @@ function layerRank(string $module): int
 }
 
 /**
- * @param list<string> $modules
- *
+ * @param  list<string>  $modules
  * @return array<int, list<string>> rank => modules
  */
 function assignLayers(array $modules): array
@@ -186,5 +184,5 @@ function labelOf(string $module): string
 
 function nodeId(string $module): string
 {
-    return 'M_' . ((preg_replace('/[^A-Za-z0-9_]/', '_', $module)) ?? $module);
+    return 'M_'.((preg_replace('/[^A-Za-z0-9_]/', '_', $module)) ?? $module);
 }

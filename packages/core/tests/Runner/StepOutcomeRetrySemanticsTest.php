@@ -10,7 +10,7 @@ use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Tests\Support\Fx;
 
-require_once __DIR__ . '/StepOutcomeHandlerTest.php';
+require_once __DIR__.'/StepOutcomeHandlerTest.php';
 
 function makeRetryHandler(float $retryBackoffMultiplier = 1.0): array
 {

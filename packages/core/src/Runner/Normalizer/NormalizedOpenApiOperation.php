@@ -7,12 +7,12 @@ namespace Alama\Arazzo\Runner\Normalizer;
 class NormalizedOpenApiOperation
 {
     /**
-     * @param array<string, array<string, mixed>> $pathParameters
-     * @param array<string, array<string, mixed>> $queryParameters
-     * @param array<string, array<string, mixed>> $headerParameters
-     * @param array<string, array<string, mixed>> $cookieParameters
-     * @param array<string, mixed> $requestBodies
-     * @param array<string, mixed> $responses
+     * @param  array<string, array<string, mixed>>  $pathParameters
+     * @param  array<string, array<string, mixed>>  $queryParameters
+     * @param  array<string, array<string, mixed>>  $headerParameters
+     * @param  array<string, array<string, mixed>>  $cookieParameters
+     * @param  array<string, mixed>  $requestBodies
+     * @param  array<string, mixed>  $responses
      */
     public function __construct(
         public readonly string $path,
@@ -24,6 +24,5 @@ class NormalizedOpenApiOperation
         public readonly array $cookieParameters,
         public readonly array $requestBodies,
         public readonly array $responses,
-    ) {
-    }
+    ) {}
 }

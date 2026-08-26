@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Resolver\Exceptions;
 
 use RuntimeException;
 
-abstract class SourceResolutionException extends RuntimeException
-{
-}
+abstract class SourceResolutionException extends RuntimeException {}

@@ -7,9 +7,9 @@ namespace Alama\Arazzo\Runner\Normalizer;
 interface OpenApiNormalizerInterface
 {
     /**
-     * @param array<string, mixed> $document The full parsed OpenAPI document
-     * @param string $path The path to the operation
-     * @param string $method The HTTP method of the operation
+     * @param  array<string, mixed>  $document  The full parsed OpenAPI document
+     * @param  string  $path  The path to the operation
+     * @param  string  $method  The HTTP method of the operation
      */
     public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation;
 }

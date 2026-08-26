@@ -24,7 +24,7 @@ class DependencyGraph
     private array $effectiveDependencies = [];
 
     /**
-     * @param Step[] $steps
+     * @param  Step[]  $steps
      */
     public function __construct(array $steps)
     {

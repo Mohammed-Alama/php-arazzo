@@ -19,9 +19,7 @@ use Throwable;
 
 final class LedgerAppendingListener
 {
-    public function __construct(private EventLedgerInterface $ledger)
-    {
-    }
+    public function __construct(private EventLedgerInterface $ledger) {}
 
     public static function registerAll(SimpleEventDispatcher $dispatcher, EventLedgerInterface $ledger): void
     {

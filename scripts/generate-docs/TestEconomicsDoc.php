@@ -19,14 +19,14 @@ test-method density, and the last measured suite cost. Cross-reference with
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel, string $root): string
 {
     $lines = [BANNER, '| Package | Src LOC | Test LOC | Test/Src | Test files | Test methods | Methods/file |', '|---|---:|---:|---:|---:|---:|---:|'];
 
-    foreach ([['core', $core, $root . '/packages/core'], ['laravel', $laravel, $root . '/packages/laravel']] as [$label, $modules, $packageDir]) {
+    foreach ([['core', $core, $root.'/packages/core'], ['laravel', $laravel, $root.'/packages/laravel']] as [$label, $modules, $packageDir]) {
         $srcLoc = 0;
         foreach ($modules as $files) {
             foreach ($files as $file) {
@@ -34,7 +34,7 @@ function render(array $core, array $laravel, string $root): string
             }
         }
 
-        [$testLoc, $testFiles, $testMethods] = scanTests($packageDir . '/tests');
+        [$testLoc, $testFiles, $testMethods] = scanTests($packageDir.'/tests');
         $ratio = $srcLoc > 0 ? round($testLoc / $srcLoc * 100) : 0;
         $density = $testFiles > 0 ? round($testMethods / $testFiles, 1) : 0;
 
@@ -51,7 +51,7 @@ function render(array $core, array $laravel, string $root): string
     }
 
     // last measured cost from the gate snapshot
-    $snapshotPath = $root . '/storage/quality-gates.json';
+    $snapshotPath = $root.'/storage/quality-gates.json';
     if (is_file($snapshotPath)) {
         $data = json_decode((string) file_get_contents($snapshotPath), true);
         $rows = [];
@@ -85,7 +85,7 @@ function render(array $core, array $laravel, string $root): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /** @return array{0: int, 1: int, 2: int} loc, file count, test-method count */

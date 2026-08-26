@@ -13,6 +13,5 @@ final readonly class Selector
         public string $selector,
         public ExpressionType $type,
         public ?string $version = null,
-    ) {
-    }
+    ) {}
 }

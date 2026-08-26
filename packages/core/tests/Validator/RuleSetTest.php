@@ -12,9 +12,7 @@ use Alama\Arazzo\Validator\RuleSet;
 
 class DummyRule implements Rule
 {
-    public function __construct(private readonly string $c)
-    {
-    }
+    public function __construct(private readonly string $c) {}
 
     public function code(): string
     {

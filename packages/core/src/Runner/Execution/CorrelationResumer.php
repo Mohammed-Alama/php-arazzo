@@ -37,7 +37,7 @@ class CorrelationResumer
     }
 
     /**
-     * @param array{statusCode?: int, headers?: array<string, mixed>, body?: mixed} $response
+     * @param  array{statusCode?: int, headers?: array<string, mixed>, body?: mixed}  $response
      */
     public function resume(string $correlationId, array $response): void
     {
@@ -141,7 +141,7 @@ class CorrelationResumer
     }
 
     /**
-     * @param array<string, mixed> $persisted
+     * @param  array<string, mixed>  $persisted
      */
     private function hydrateContext(array $persisted, string $executionId): WorkflowContext
     {

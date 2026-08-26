@@ -21,9 +21,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class RequestCompiler
 {
-    public function __construct(private readonly ExpressionValueResolver $values)
-    {
-    }
+    public function __construct(private readonly ExpressionValueResolver $values) {}
 
     /**
      * Resolves reusable parameters, evaluates every runtime value, applies
@@ -108,8 +106,7 @@ final class RequestCompiler
     }
 
     /**
-     * @param array<array-key, mixed> $headers
-     *
+     * @param  array<array-key, mixed>  $headers
      * @return array<string, string>
      */
     public static function flattenHeaders(array $headers): array

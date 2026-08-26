@@ -39,8 +39,8 @@ const SYNONYM_GROUPS = [
 ];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -49,7 +49,7 @@ function render(array $core, array $laravel): string
         foreach ($modules as $module => $files) {
             foreach ($files as $file) {
                 $names[$file->className][] = [
-                    'fqcn' => $file->namespace . '\\' . $file->className,
+                    'fqcn' => $file->namespace.'\\'.$file->className,
                     'package' => $package,
                     'dir' => $file->relativeDir === '' ? '(root)' : $file->relativeDir,
                 ];
@@ -82,7 +82,7 @@ function render(array $core, array $laravel): string
         foreach ($present as $member => $classNames) {
             $unique = array_values(array_unique($classNames));
             sort($unique);
-            $examples = implode(', ', array_slice(array_map(fn (string $c): string => '`' . $c . '`', $unique), 0, 4));
+            $examples = implode(', ', array_slice(array_map(fn (string $c): string => '`'.$c.'`', $unique), 0, 4));
             $more = count($unique) > 4 ? sprintf(' + %d more', count($unique) - 4) : '';
             $lines[] = sprintf('- **%s**: %s%s (%d types)', $member, $examples, $more, count($unique));
         }
@@ -107,7 +107,7 @@ function render(array $core, array $laravel): string
         $cells = [];
         $packages = [];
         foreach ($locations as $loc) {
-            $cells[] = '`' . str_replace('Alama\\Arazzo\\', '', (string) $loc['fqcn']) . '`';
+            $cells[] = '`'.str_replace('Alama\\Arazzo\\', '', (string) $loc['fqcn']).'`';
             $packages[$loc['package']] = true;
         }
         $lines[] = sprintf('| `%s` | %s | %s |', $className, implode('<br/>', $cells), implode(', ', array_keys($packages)));
@@ -116,5 +116,5 @@ function render(array $core, array $laravel): string
         $lines[] = '| — | — | — |';
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }

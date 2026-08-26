@@ -15,7 +15,7 @@ final class InMemoryStateStore implements StateStoreInterface
     private array $states = [];
 
     /**
-     * @param array<string, mixed> $state
+     * @param  array<string, mixed>  $state
      */
     public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
     {

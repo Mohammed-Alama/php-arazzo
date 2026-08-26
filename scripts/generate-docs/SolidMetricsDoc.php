@@ -29,8 +29,8 @@ const FAT_INTERFACE_METHODS = 7;
 const CONCRETE_HUB_FAN_IN = 4;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -39,7 +39,7 @@ function render(array $core, array $laravel): string
     $classModule = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace . '\\' . $file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $module;
         }
     }
 
@@ -127,13 +127,12 @@ function render(array $core, array $laravel): string
     }
     $lines = [...$lines, ...($hubList === [] ? ['| — | — | — | 0 |'] : $hubList)];
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, list<ScannedFile>> $all
- * @param array<string, string> $classModule
- *
+ * @param  array<string, list<ScannedFile>>  $all
+ * @param  array<string, string>  $classModule
  * @return array<string, array<string, true>>
  */
 function hubFanIn(array $all, array $classModule): array
@@ -155,9 +154,8 @@ function hubFanIn(array $all, array $classModule): array
 }
 
 /**
- * @param array<string, list<ScannedFile>> $all
- * @param array<string, string> $classModule
- *
+ * @param  array<string, list<ScannedFile>>  $all
+ * @param  array<string, string>  $classModule
  * @return array<string, float>
  */
 function instability(array $all, array $classModule): array
@@ -190,8 +188,7 @@ function instability(array $all, array $classModule): array
 }
 
 /**
- * @param array<string, list<ScannedFile>> $all
- *
+ * @param  array<string, list<ScannedFile>>  $all
  * @return array{0: array<string, float>, 1: array<string, int>}
  */
 function abstractness(array $all): array
@@ -220,8 +217,7 @@ function abstractness(array $all): array
 }
 
 /**
- * @param array<string, list<ScannedFile>> $all
- *
+ * @param  array<string, list<ScannedFile>>  $all
  * @return array{0: list<array{string, string, int}>, 1: list<array{string, int}>, 2: list<array{string, int}>}
  */
 function structuralFindings(array $all): array
@@ -233,12 +229,12 @@ function structuralFindings(array $all): array
         foreach ($files as $file) {
             $loc = substr_count($file->content, "\n") + 1;
             if (!$file->isInterface && $loc >= GOD_CLASS_LOC) {
-                $godClasses[] = [$file->namespace . '\\' . $file->className, $module, $loc];
+                $godClasses[] = [$file->namespace.'\\'.$file->className, $module, $loc];
             }
             if ($file->isInterface) {
                 $methods = (int) preg_match_all('/^\s*(?:public\s+)?function\s+\w+/m', $file->content);
                 if ($methods > FAT_INTERFACE_METHODS) {
-                    $fatInterfaces[] = [$file->namespace . '\\' . $file->className, $methods];
+                    $fatInterfaces[] = [$file->namespace.'\\'.$file->className, $methods];
                 }
             }
         }

@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Runner\Evaluation\Condition;
 
 use Alama\Arazzo\Support\Exceptions\ArazzoException;
 
-final class ConditionSyntaxException extends ArazzoException
-{
-}
+final class ConditionSyntaxException extends ArazzoException {}

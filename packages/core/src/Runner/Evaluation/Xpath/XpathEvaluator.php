@@ -12,9 +12,9 @@ interface XpathEvaluator
     /**
      * Evaluate the XPath selector against the root value.
      *
-     * @param mixed $rootValue XML string or \DOMNode.
-     * @param string $selector XPath expression.
-     * @param string $version Requested version token e.g. 'xpath-10'.
+     * @param  mixed  $rootValue  XML string or \DOMNode.
+     * @param  string  $selector  XPath expression.
+     * @param  string  $version  Requested version token e.g. 'xpath-10'.
      */
     public function query(mixed $rootValue, string $selector, string $version): mixed;
 }

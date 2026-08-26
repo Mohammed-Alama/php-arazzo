@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Alama\Arazzo\Tests\Conformance\FixtureRunner;
 use Alama\Arazzo\Tests\Conformance\QueueFixtureRunner;
 
-$fixtureFiles = glob(__DIR__ . '/fixtures/*.json') ?: [];
+$fixtureFiles = glob(__DIR__.'/fixtures/*.json') ?: [];
 
 foreach ($fixtureFiles as $fixtureFile) {
     $fixture = json_decode((string) file_get_contents($fixtureFile), true, 512, JSON_THROW_ON_ERROR);

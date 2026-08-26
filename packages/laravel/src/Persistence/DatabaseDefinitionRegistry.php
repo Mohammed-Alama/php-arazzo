@@ -21,8 +21,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
         private ConnectionInterface $db,
         private Parser $parser,
         private string $tableName = 'arazzo_definitions',
-    ) {
-    }
+    ) {}
 
     public function register(ArazzoDocument $document): string
     {
@@ -83,7 +82,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
     }
 
     /**
-     * @param array<string, mixed> $raw
+     * @param  array<string, mixed>  $raw
      */
     private function hash(array $raw): string
     {
@@ -93,8 +92,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
     }
 
     /**
-     * @param array<string, mixed> $data
-     *
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     private function sortRecursive(array $data): array

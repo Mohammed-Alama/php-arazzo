@@ -52,8 +52,8 @@ const SUBDOMAINS = [
 const SUBDOMAIN_LABELS = ['core' => 'Core domain', 'supporting' => 'Supporting', 'generic' => 'Generic subdomain'];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -134,14 +134,14 @@ function render(array $core, array $laravel): string
         $lines[] = '';
         $lines[] = '**Unclassified modules** — classify them in `SUBDOMAINS` or delete them:';
         foreach (array_keys($grouped['unclassified']) as $module) {
-            $lines[] = '- `' . $module . '`';
+            $lines[] = '- `'.$module.'`';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function nodeId(string $value): string
 {
-    return 'S_' . ((preg_replace('/[^A-Za-z0-9_]/', '_', $value)) ?? $value);
+    return 'S_'.((preg_replace('/[^A-Za-z0-9_]/', '_', $value)) ?? $value);
 }

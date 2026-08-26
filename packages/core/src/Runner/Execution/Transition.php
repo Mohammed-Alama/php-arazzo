@@ -17,8 +17,7 @@ final readonly class Transition
         public ?string $workflowId = null,
         public int $delaySeconds = 0,
         public ?string $status = null,
-    ) {
-    }
+    ) {}
 
     public static function next(ExecutionState|ExecutionContext $state, ?string $stepId): self
     {

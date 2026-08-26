@@ -14,30 +14,30 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["Runner", "Validator", "Expression", "Resolver", "Parser", "Laravel/Http", "Spec", "Laravel/Lock", "Laravel/Persistence", "Console", "Laravel/Bindings", "Laravel/Queue"]
     y-axis "Touches" 0 --> 70
-    bar [58, 11, 10, 8, 7, 6, 6, 4, 4, 3, 3, 3]
+    bar [59, 11, 10, 8, 7, 6, 6, 4, 4, 3, 3, 3]
 ```
 
-Analyzed 132 total file-touches across 18 modules.
+Analyzed 133 total file-touches across 18 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Runner` | 58 | 44% | 10,204 | 5.7 |
-| `Validator` | 11 | 8% | 3,112 | 3.5 |
-| `Expression` | 10 | 8% | 910 | 11 |
-| `Resolver` | 8 | 6% | 358 | 22.3 |
-| `Parser` | 7 | 5% | 1,087 | 6.4 |
-| `Laravel/Http` | 6 | 5% | 163 | 36.8 |
-| `Spec` | 6 | 5% | 723 | 8.3 |
+| `Runner` | 59 | 44% | 10,109 | 5.8 |
+| `Validator` | 11 | 8% | 3,094 | 3.6 |
+| `Expression` | 10 | 8% | 880 | 11.4 |
+| `Resolver` | 8 | 6% | 348 | 23 |
+| `Parser` | 7 | 5% | 1,078 | 6.5 |
+| `Laravel/Http` | 6 | 5% | 161 | 37.3 |
+| `Spec` | 6 | 5% | 706 | 8.5 |
 | `Laravel/Lock` | 4 | 3% | 49 | 81.6 |
-| `Laravel/Persistence` | 4 | 3% | 257 | 15.6 |
+| `Laravel/Persistence` | 4 | 3% | 252 | 15.9 |
 | `Console` | 3 | 2% | 481 | 6.2 |
 | `Laravel/Bindings` | 3 | 2% | 451 | 6.7 |
-| `Laravel/Queue` | 3 | 2% | 102 | 29.4 |
-| `Laravel/State` | 3 | 2% | 39 | 76.9 |
-| `Support` | 2 | 2% | 269 | 7.4 |
-| `Generator` | 1 | 1% | 122 | 8.2 |
-| `Laravel/Events` | 1 | 1% | 23 | 43.5 |
+| `Laravel/Queue` | 3 | 2% | 100 | 30 |
+| `Laravel/State` | 3 | 2% | 38 | 78.9 |
+| `Support` | 2 | 2% | 263 | 7.6 |
+| `Generator` | 1 | 1% | 119 | 8.4 |
+| `Laravel/Events` | 1 | 1% | 21 | 47.6 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Renderer` | 1 | 1% | 254 | 3.9 |
+| `Renderer` | 1 | 1% | 253 | 4 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (36.8), `Resolver` (22.3), `Expression` (11)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (37.3), `Resolver` (23), `Expression` (11.4)

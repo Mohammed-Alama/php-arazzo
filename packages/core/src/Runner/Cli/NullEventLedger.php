@@ -12,7 +12,5 @@ use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
  */
 final class NullEventLedger implements EventLedgerInterface
 {
-    public function append(string $executionId, string $eventType, array $data = []): void
-    {
-    }
+    public function append(string $executionId, string $eventType, array $data = []): void {}
 }

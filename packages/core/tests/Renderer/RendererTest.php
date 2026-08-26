@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Alama\Arazzo\Console\DocumentLoader;
 use Alama\Arazzo\Renderer\Renderer;
 
-const RENDER_ACTIONS = __DIR__ . '/../fixtures/renderer/actions.yaml';
+const RENDER_ACTIONS = __DIR__.'/../fixtures/renderer/actions.yaml';
 
 it('renders a mermaid flowchart with retry and goto edges', function (): void {
     $document = DocumentLoader::load(RENDER_ACTIONS);

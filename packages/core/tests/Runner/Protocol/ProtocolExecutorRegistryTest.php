@@ -13,9 +13,7 @@ use Alama\Arazzo\Spec\Step;
 
 class RegistryFakeExecutor implements StepProtocolExecutorInterface
 {
-    public function __construct(private readonly bool $supports = true)
-    {
-    }
+    public function __construct(private readonly bool $supports = true) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

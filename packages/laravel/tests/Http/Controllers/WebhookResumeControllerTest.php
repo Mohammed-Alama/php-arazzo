@@ -42,18 +42,14 @@ class WebhookControllerMockPendingCorrelations implements PendingCorrelationRegi
 {
     public ?PendingCorrelation $toReturn = null;
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
-    {
-    }
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
         return $this->toReturn;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {
@@ -118,9 +114,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
             return true;
         }
 
-        public function release(string $key): void
-        {
-        }
+        public function release(string $key): void {}
     });
 
     $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface
@@ -143,7 +137,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
     );
     $this->app->instance(OpenApiOperationResolver::class, $opResolver);
 
-    $rawYaml = file_get_contents(__DIR__ . '/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
+    $rawYaml = file_get_contents(__DIR__.'/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
     $decoded = (new SymfonyYamlDecoder())->decode($rawYaml);
     $document = (new Parser())->parse(new RawDocument(
         (array) $decoded,

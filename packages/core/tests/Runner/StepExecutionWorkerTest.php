@@ -60,9 +60,7 @@ class WorkerMockLockManager implements LockManagerInterface
         return true;
     }
 
-    public function release(string $key): void
-    {
-    }
+    public function release(string $key): void {}
 }
 
 class WorkerMockStateStore implements StateStoreInterface
@@ -95,9 +93,7 @@ class WorkerMockExpressionResolver implements ExpressionResolverInterface
         return $expression->raw;
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
@@ -147,18 +143,14 @@ class WorkerMockExecutionRegistry implements ExecutionRegistryInterface
 
 class WorkerMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
-    {
-    }
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
         return null;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {
@@ -168,9 +160,7 @@ class WorkerMockPendingCorrelationRegistry implements PendingCorrelationRegistry
 
 class WorkerFakeProtocolExecutor implements StepProtocolExecutorInterface
 {
-    public function __construct(private StepExecutionOutcome $outcome)
-    {
-    }
+    public function __construct(private StepExecutionOutcome $outcome) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

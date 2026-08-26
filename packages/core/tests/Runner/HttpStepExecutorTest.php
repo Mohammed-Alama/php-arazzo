@@ -35,9 +35,7 @@ class HttpStepExecutorMockResolver implements ExpressionResolverInterface
         return $expression->raw;
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     /** @return array<string, mixed> */
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
@@ -60,9 +58,7 @@ class HttpStepExecutorMockResolver implements ExpressionResolverInterface
 
 class HttpStepExecutorMockOpenApiExecutor implements OpenApiExecutorInterface
 {
-    public function __construct(private ResponseInterface $response)
-    {
-    }
+    public function __construct(private ResponseInterface $response) {}
 
     public function execute(
         ResolvedOperation $resolvedOperation,

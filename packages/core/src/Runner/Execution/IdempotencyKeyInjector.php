@@ -15,8 +15,7 @@ final class IdempotencyKeyInjector
     public function __construct(
         private bool $enabledDefault,
         private string $headerDefault,
-    ) {
-    }
+    ) {}
 
     public function inject(RequestInterface $request, Step $step, WorkflowContext $context): InjectionResult
     {
@@ -82,8 +81,7 @@ final class IdempotencyKeyInjector
     }
 
     /**
-     * @param array<int|string,mixed> $value
-     *
+     * @param  array<int|string,mixed>  $value
      * @return array<int|string,mixed>
      */
     private function recursivelySortAssociativeKeys(array $value): array

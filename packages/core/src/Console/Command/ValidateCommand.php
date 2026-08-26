@@ -31,7 +31,7 @@ final class ValidateCommand extends Command
         try {
             $document = DocumentLoader::load($file);
         } catch (LoaderException|ParserException $e) {
-            $output->writeln('<error>PARSE ERROR</error> ' . $e->getMessage());
+            $output->writeln('<error>PARSE ERROR</error> '.$e->getMessage());
 
             return Command::FAILURE;
         }
@@ -39,12 +39,12 @@ final class ValidateCommand extends Command
         $result = (new Validator(RuleSet::default()))->validate($document);
 
         if ($result->isValid()) {
-            $output->writeln('<info>✔ valid</info> ' . $file);
+            $output->writeln('<info>✔ valid</info> '.$file);
 
             return Command::SUCCESS;
         }
 
-        $output->writeln('<error>✘ invalid</error> ' . $file);
+        $output->writeln('<error>✘ invalid</error> '.$file);
 
         foreach ($result->errors as $error) {
             $output->writeln(sprintf(

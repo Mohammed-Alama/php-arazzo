@@ -16,7 +16,5 @@ final class NullLockStrategy implements LockStrategyInterface
         return true;
     }
 
-    public function release(string $key): void
-    {
-    }
+    public function release(string $key): void {}
 }

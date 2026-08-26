@@ -33,11 +33,12 @@ final class TransitionApplier
         private readonly WorkflowEngine $workflowEngine,
         private readonly WorkerEvents $events,
         private readonly int $stateTtlSeconds = 86400,
-    ) {
-    }
+    ) {}
 
     public const OUTCOME_CONTINUE = 'continue';
+
     public const OUTCOME_TERMINAL = 'terminal';
+
     public const OUTCOME_ABORTED = 'aborted';
 
     /**

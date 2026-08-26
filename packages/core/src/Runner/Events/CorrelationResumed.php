@@ -14,6 +14,5 @@ final readonly class CorrelationResumed
         public string $stepId,
         public string $correlationId,
         public DateTimeImmutable $at,
-    ) {
-    }
+    ) {}
 }

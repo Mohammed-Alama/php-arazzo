@@ -14,9 +14,8 @@ final class InputSchemaResolver
     private const MAX_DEPTH = 16;
 
     /**
-     * @param array<array-key, mixed>|null $schema
-     * @param array<array-key, mixed> $componentInputs
-     *
+     * @param  array<array-key, mixed>|null  $schema
+     * @param  array<array-key, mixed>  $componentInputs
      * @return array<array-key, mixed>|null
      */
     public static function resolve(?array $schema, array $componentInputs): ?array
@@ -32,7 +31,7 @@ final class InputSchemaResolver
     }
 
     /**
-     * @param array<array-key, mixed> $componentInputs
+     * @param  array<array-key, mixed>  $componentInputs
      */
     private static function walk(mixed $node, array $componentInputs, int $depth): mixed
     {
@@ -64,8 +63,7 @@ final class InputSchemaResolver
     }
 
     /**
-     * @param array<array-key, mixed> $componentInputs
-     *
+     * @param  array<array-key, mixed>  $componentInputs
      * @return array<array-key, mixed>|null
      */
     private static function lookupLocalRef(string $reference, array $componentInputs): ?array

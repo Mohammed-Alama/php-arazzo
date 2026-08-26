@@ -19,17 +19,16 @@ use OpenTelemetry\Context\ContextInterface;
 final class TraceContextPropagator
 {
     private const TRACEPARENT = 'traceparent';
+
     private const TRACESTATE = 'tracestate';
 
-    public function __construct(private readonly ApiTraceContextPropagator $propagator = new ApiTraceContextPropagator())
-    {
-    }
+    public function __construct(private readonly ApiTraceContextPropagator $propagator = new ApiTraceContextPropagator()) {}
 
     /**
      * Writes traceparent/tracestate for the current (or given) context into
      * the carrier array.
      *
-     * @param array<string, mixed> $carrier
+     * @param  array<string, mixed>  $carrier
      */
     public function inject(array &$carrier, ?ContextInterface $context = null): void
     {
@@ -57,7 +56,7 @@ final class TraceContextPropagator
      * Reads traceparent/tracestate from the carrier and returns a context
      * with the remote parent applied.
      *
-     * @param array<string, mixed> $carrier
+     * @param  array<string, mixed>  $carrier
      */
     public function extract(array $carrier): ContextInterface
     {
@@ -65,7 +64,7 @@ final class TraceContextPropagator
     }
 
     /**
-     * @param array<string, mixed> $carrier
+     * @param  array<string, mixed>  $carrier
      */
     public static function traceparentOf(array $carrier): ?string
     {

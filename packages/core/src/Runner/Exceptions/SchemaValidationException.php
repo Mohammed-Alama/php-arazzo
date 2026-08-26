@@ -9,7 +9,7 @@ use RuntimeException;
 final class SchemaValidationException extends RuntimeException
 {
     /**
-     * @param list<array{path: string, message: string}> $violations
+     * @param  list<array{path: string, message: string}>  $violations
      */
     public function __construct(
         public readonly string $stepId,

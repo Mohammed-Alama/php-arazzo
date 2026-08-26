@@ -11,9 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 final class Psr18HttpClient implements HttpClientInterface
 {
-    public function __construct(private readonly Client $client)
-    {
-    }
+    public function __construct(private readonly Client $client) {}
 
     public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
     {

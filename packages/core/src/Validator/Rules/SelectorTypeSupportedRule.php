@@ -88,7 +88,7 @@ final class SelectorTypeSupportedRule implements Rule
         if (!in_array($s->version, $allowed, true)) {
             $errors->error(
                 $this->code(),
-                "Unsupported {$s->type->value} version '{$s->version}' at {$pointer}; expected one of: " . implode(', ', $allowed),
+                "Unsupported {$s->type->value} version '{$s->version}' at {$pointer}; expected one of: ".implode(', ', $allowed),
                 $pointer,
             );
         }

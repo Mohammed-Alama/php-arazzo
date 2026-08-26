@@ -49,13 +49,13 @@ Concrete types over 300 LOC:
 
 | Class | Module | LOC |
 |---|---|---:|
-| `Parser` | `Parser` | 825 |
-| `ExecutionContext` | `Runner` | 499 |
+| `Parser` | `Parser` | 820 |
+| `ExecutionContext` | `Runner` | 498 |
 | `StepExecutionWorker` | `Runner` | 391 |
 | `StepOutcomeHandler` | `Runner` | 377 |
 | `WorkflowContext` | `Runner` | 363 |
-| `Parser` | `Expression` | 338 |
-| `ExecutionState` | `Runner` | 309 |
+| `Parser` | `Expression` | 336 |
+| `ExecutionState` | `Runner` | 308 |
 
 ## Fat interfaces (ISP)
 

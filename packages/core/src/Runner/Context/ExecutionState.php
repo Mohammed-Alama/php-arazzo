@@ -16,14 +16,14 @@ use JsonSerializable;
 final readonly class ExecutionState implements JsonSerializable
 {
     /**
-     * @param array<string, mixed> $inputs
-     * @param array<string, int> $stepAttempts
-     * @param array<string, mixed> $stepResults
-     * @param array<string, list<string>> $dependencies
-     * @param array<string, mixed> $outputs
-     * @param list<mixed> $errors
-     * @param list<string> $workflowCallStack
-     * @param array<string, mixed> $components
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, int>  $stepAttempts
+     * @param  array<string, mixed>  $stepResults
+     * @param  array<string, list<string>>  $dependencies
+     * @param  array<string, mixed>  $outputs
+     * @param  list<mixed>  $errors
+     * @param  list<string>  $workflowCallStack
+     * @param  array<string, mixed>  $components
      */
     public function __construct(
         public string $executionId,
@@ -42,12 +42,11 @@ final readonly class ExecutionState implements JsonSerializable
         public int $maxWorkflowDepth = 32,
         public array $components = [],
         public string $status = 'running',
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed> $inputs
-     * @param list<string>|null $workflowCallStack
+     * @param  array<string, mixed>  $inputs
+     * @param  list<string>|null  $workflowCallStack
      */
     public static function start(string $executionId, string $definitionId, string $workflowId, array $inputs = [], int $maxSteps = 1000, int $maxWorkflowDepth = 32, array $components = [], int $stepsSpent = 0, ?array $workflowCallStack = null): self
     {
@@ -57,7 +56,7 @@ final readonly class ExecutionState implements JsonSerializable
     /**
      * Re-seeds budget/call-stack from a persisted context (queue resume).
      *
-     * @param list<string> $workflowCallStack
+     * @param  list<string>  $workflowCallStack
      */
     public function restoreBudget(int $stepsSpent, array $workflowCallStack): self
     {
@@ -254,7 +253,7 @@ final readonly class ExecutionState implements JsonSerializable
     }
 
     /**
-     * @param array<string, mixed> $entry
+     * @param  array<string, mixed>  $entry
      */
     public function withErrorEntry(array $entry): self
     {
@@ -282,7 +281,7 @@ final readonly class ExecutionState implements JsonSerializable
     }
 
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function withInputs(array $inputs): self
     {

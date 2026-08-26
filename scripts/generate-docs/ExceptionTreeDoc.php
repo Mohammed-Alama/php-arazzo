@@ -18,8 +18,8 @@ source. Use this to decide which exception to throw or catch.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -34,7 +34,7 @@ function render(array $core, array $laravel): string
                 preg_match('/^(?:final\s+)?(?:readonly\s+)?class\s+\w+(?:\s+extends\s+([\w\\\\]+))?/m', $file->content, $m);
                 $parent = basename(str_replace('\\', '/', $m[1] ?? '\RuntimeException'));
                 $exceptions[$file->className] = [
-                    'fqcn' => $file->namespace . '\\' . $file->className,
+                    'fqcn' => $file->namespace.'\\'.$file->className,
                     'parent' => $parent,
                     'module' => $module === '_' ? '(root)' : ($pkg === 'laravel' ? "Laravel:{$module}" : $module),
                 ];
@@ -81,7 +81,7 @@ function render(array $core, array $laravel): string
         $lines[] = "| `{$name}` | `{$meta['parent']}` | {$meta['module']} |";
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function nodeId(string $name): string

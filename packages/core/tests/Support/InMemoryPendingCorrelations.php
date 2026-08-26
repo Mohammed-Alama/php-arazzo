@@ -22,7 +22,7 @@ final class InMemoryPendingCorrelations implements PendingCorrelationRegistryInt
             executionId: $executionId,
             stepId: $stepId,
             channelPath: $channelPath,
-            expiresAt: $timeoutSeconds === null ? null : new \DateTimeImmutable('@' . (time() + $timeoutSeconds)),
+            expiresAt: $timeoutSeconds === null ? null : new \DateTimeImmutable('@'.(time() + $timeoutSeconds)),
         );
     }
 

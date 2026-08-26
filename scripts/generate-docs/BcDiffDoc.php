@@ -71,18 +71,18 @@ function render(string $root): string
 {
     [$tag, $reason] = resolveTag($root);
     if ($tag === null) {
-        return BANNER . sprintf("_No comparison tag available (%s). Tag a release to enable this report._\n", $reason);
+        return BANNER.sprintf("_No comparison tag available (%s). Tag a release to enable this report._\n", $reason);
     }
 
     $oldContent = shell_exec(
-        'git -C ' . escapeshellarg($root) . ' show ' . escapeshellarg($tag . ':docs/generated/public-api.md') . ' 2>/dev/null',
+        'git -C '.escapeshellarg($root).' show '.escapeshellarg($tag.':docs/generated/public-api.md').' 2>/dev/null',
     );
     if (!is_string($oldContent) || $oldContent === '') {
-        return BANNER . sprintf("_Tag `%s` has no docs/generated/public-api.md — report unavailable._\n", $tag);
+        return BANNER.sprintf("_Tag `%s` has no docs/generated/public-api.md — report unavailable._\n", $tag);
     }
 
     $old = parseApiMarkdown($oldContent);
-    $new = parseApiMarkdown((string) file_get_contents($root . '/docs/generated/public-api.md'));
+    $new = parseApiMarkdown((string) file_get_contents($root.'/docs/generated/public-api.md'));
 
     [$breakingRows, $addedRows] = diff($old, $new);
 
@@ -97,9 +97,9 @@ function render(string $root): string
         $lines[] = '';
         $lines[] = '| Kind | Class | Member | Detail |';
         $lines[] = '|---|---|---|---|';
-        usort($breakingRows, fn (array $a, array $b): int => strcmp($a[0] . $a[1] . $a[2], $b[0] . $b[1] . $b[2]));
+        usort($breakingRows, fn (array $a, array $b): int => strcmp($a[0].$a[1].$a[2], $b[0].$b[1].$b[2]));
         foreach ($breakingRows as [$kind, $class, $member, $detail]) {
-            $lines[] = sprintf('| %s | `%s` | %s | %s |', $kind, $class, $member !== '' ? '`' . $member . '`' : '—', $detail);
+            $lines[] = sprintf('| %s | `%s` | %s | %s |', $kind, $class, $member !== '' ? '`'.$member.'`' : '—', $detail);
         }
     }
 
@@ -109,19 +109,18 @@ function render(string $root): string
         $lines[] = '';
         $lines[] = '| Kind | Class | Member |';
         $lines[] = '|---|---|---|';
-        usort($addedRows, fn (array $a, array $b): int => strcmp($a[0] . $a[1] . $a[2], $b[0] . $b[1] . $b[2]));
+        usort($addedRows, fn (array $a, array $b): int => strcmp($a[0].$a[1].$a[2], $b[0].$b[1].$b[2]));
         foreach ($addedRows as [$kind, $class, $member]) {
-            $lines[] = sprintf('| %s | `%s` | %s |', $kind, $class, $member !== '' ? '`' . $member . '`' : '—');
+            $lines[] = sprintf('| %s | `%s` | %s |', $kind, $class, $member !== '' ? '`'.$member.'`' : '—');
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, array{kind: string, methods: array<string, string>, constants: list<string>, cases: list<string>}> $old
- * @param array<string, array{kind: string, methods: array<string, string>, constants: list<string>, cases: list<string>}> $new
- *
+ * @param  array<string, array{kind: string, methods: array<string, string>, constants: list<string>, cases: list<string>}>  $old
+ * @param  array<string, array{kind: string, methods: array<string, string>, constants: list<string>, cases: list<string>}>  $new
  * @return array{0: list<array{string, string, string, string}>, 1: list<array{string, string, string}>}
  */
 function diff(array $old, array $new): array
@@ -131,17 +130,17 @@ function diff(array $old, array $new): array
 
     foreach (array_keys($old) as $classKey) {
         if (!isset($new[$classKey])) {
-            $breaking[] = ['removed class', $classKey, '', 'was ' . $old[$classKey]['kind']];
+            $breaking[] = ['removed class', $classKey, '', 'was '.$old[$classKey]['kind']];
 
             continue;
         }
         foreach (array_diff_key($old[$classKey]['methods'], $new[$classKey]['methods']) as $method => $signature) {
-            $breaking[] = ['removed method', $classKey, $method, '`' . $signature . '`'];
+            $breaking[] = ['removed method', $classKey, $method, '`'.$signature.'`'];
         }
         foreach ($old[$classKey]['methods'] as $method => $signature) {
             if (isset($new[$classKey]['methods'][$method])
                 && $new[$classKey]['methods'][$method] !== $signature) {
-                $breaking[] = ['changed method', $classKey, $method, '`' . $signature . '` → `' . $new[$classKey]['methods'][$method] . '`'];
+                $breaking[] = ['changed method', $classKey, $method, '`'.$signature.'` → `'.$new[$classKey]['methods'][$method].'`'];
             }
         }
         foreach (array_diff($old[$classKey]['constants'], $new[$classKey]['constants']) as $constant) {
@@ -180,14 +179,14 @@ function resolveTag(string $root): array
         return [$override, 'via ARAZZO_BC_TAG'];
     }
 
-    exec('git -C ' . escapeshellarg($root) . ' tag --sort=-creatordate 2>/dev/null', $tags);
+    exec('git -C '.escapeshellarg($root).' tag --sort=-creatordate 2>/dev/null', $tags);
     $tags = array_values(array_filter($tags));
     if ($tags === []) {
         return [null, 'no tags exist yet'];
     }
 
     // when HEAD is exactly on the latest tag (just released), compare to the one before it
-    exec('git -C ' . escapeshellarg($root) . ' describe --tags --exact-match 2>/dev/null', $exact);
+    exec('git -C '.escapeshellarg($root).' describe --tags --exact-match 2>/dev/null', $exact);
     $onTag = $exact[0] ?? null;
 
     return $tags[0] === $onTag && isset($tags[1])

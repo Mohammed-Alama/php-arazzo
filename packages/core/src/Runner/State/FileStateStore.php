@@ -20,7 +20,7 @@ final class FileStateStore implements StateStoreInterface
 
     public function __construct(?string $dir = null)
     {
-        $this->dir = $dir ?? (getcwd() ?: '.') . '/storage/executions';
+        $this->dir = $dir ?? (getcwd() ?: '.').'/storage/executions';
 
         if (!is_dir($this->dir) && !@mkdir($this->dir, 0777, true) && !is_dir($this->dir)) {
             throw new RuntimeException("Could not create state directory: {$this->dir}");
@@ -28,7 +28,7 @@ final class FileStateStore implements StateStoreInterface
     }
 
     /**
-     * @param array<string, mixed> $state
+     * @param  array<string, mixed>  $state
      */
     public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
     {
@@ -83,7 +83,7 @@ final class FileStateStore implements StateStoreInterface
 
     public function path(string $executionId): string
     {
-        return $this->dir . '/' . $this->sanitize($executionId) . '.json';
+        return $this->dir.'/'.$this->sanitize($executionId).'.json';
     }
 
     private function sanitize(string $executionId): string

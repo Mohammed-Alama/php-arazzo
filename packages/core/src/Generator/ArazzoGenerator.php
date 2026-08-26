@@ -8,9 +8,7 @@ use Alama\Arazzo\Generator\Contracts\AiClientInterface;
 
 class ArazzoGenerator
 {
-    public function __construct(private AiClientInterface $aiClient)
-    {
-    }
+    public function __construct(private AiClientInterface $aiClient) {}
 
     public function generate(string $openapiSpec, string $workflowTrace): string
     {

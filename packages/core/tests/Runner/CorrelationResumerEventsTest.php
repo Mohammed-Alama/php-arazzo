@@ -35,9 +35,7 @@ class CorrelationResumerEventsLockManager implements LockManagerInterface
         return true;
     }
 
-    public function release(string $key): void
-    {
-    }
+    public function release(string $key): void {}
 }
 
 class CorrelationResumerEventsPendingCorrelations implements PendingCorrelationRegistryInterface
@@ -47,9 +45,7 @@ class CorrelationResumerEventsPendingCorrelations implements PendingCorrelationR
     /** @var list<string> */
     public array $consumed = [];
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
-    {
-    }
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
@@ -104,9 +100,7 @@ class CorrelationResumerEventsExpressionResolver implements ExpressionResolverIn
         return $expression->raw;
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
@@ -129,9 +123,7 @@ class CorrelationResumerEventsRecordingStepOutcomeHandler extends StepOutcomeHan
     /** @var list<array{document: ArazzoDocument, workflow: Workflow, step: Step, context: WorkflowContext, executionId: string, criteriaMet: bool}> */
     public array $calls = [];
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet): void
     {

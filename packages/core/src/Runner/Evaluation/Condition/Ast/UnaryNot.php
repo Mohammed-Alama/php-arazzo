@@ -8,6 +8,5 @@ final readonly class UnaryNot implements ConditionNode
 {
     public function __construct(
         public ConditionNode $operand,
-    ) {
-    }
+    ) {}
 }

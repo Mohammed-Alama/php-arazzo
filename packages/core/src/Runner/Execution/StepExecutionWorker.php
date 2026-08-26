@@ -55,7 +55,7 @@ class StepExecutionWorker
     private QueueDriverInterface $queueDriver;
 
     /**
-     * @param list<StepProtocolExecutorInterface> $protocolExecutors
+     * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
      */
     public function __construct(
         RunPersistence $persistence,
@@ -120,7 +120,7 @@ class StepExecutionWorker
                         $preflightResult = $this->preflight->validate($documentForPreflight);
                         if (!$preflightResult->isValid()) {
                             throw new PreflightFailureException(
-                                'Preflight validation failed with ' . count($preflightResult->errors) . ' error(s).',
+                                'Preflight validation failed with '.count($preflightResult->errors).' error(s).',
                                 $preflightResult,
                             );
                         }

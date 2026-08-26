@@ -14,7 +14,7 @@ final class SimpleEventDispatcher implements EventDispatcherInterface, ListenerP
     private array $listeners = [];
 
     /**
-     * @param class-string $eventClass
+     * @param  class-string  $eventClass
      */
     public function subscribe(string $eventClass, callable $listener): void
     {

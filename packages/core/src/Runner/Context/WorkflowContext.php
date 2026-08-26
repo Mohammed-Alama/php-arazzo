@@ -12,10 +12,10 @@ final class WorkflowContext
     public ?string $parentRunId = null;
 
     /**
-     * @param array<string, mixed> $inputs
-     * @param array<string, mixed> $steps
-     * @param array<string, mixed> $components
-     * @param array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}> $workflows
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $steps
+     * @param  array<string, mixed>  $components
+     * @param  array<string, array{inputs: array<string, mixed>, outputs: array<string, mixed>}>  $workflows
      */
     public function __construct(
         private string $definitionId,
@@ -67,7 +67,7 @@ final class WorkflowContext
     /**
      * Hydrates a context from a persisted payload (CorrelationResumer).
      *
-     * @param array<string, mixed> $persisted
+     * @param  array<string, mixed>  $persisted
      */
     public static function fromPersisted(array $persisted, string $executionId): self
     {
@@ -102,7 +102,7 @@ final class WorkflowContext
      * persisted steps win on conflict (they are newer), and the stored
      * budget/call-stack is authoritative.
      *
-     * @param array<string, mixed> $persisted
+     * @param  array<string, mixed>  $persisted
      */
     public static function reconciled(self $incoming, array $persisted, string $executionId): self
     {
@@ -134,7 +134,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param list<string> $workflowCallStack
+     * @param  list<string>  $workflowCallStack
      */
     public function withBudget(int $stepsSpent, array $workflowCallStack): self
     {
@@ -146,7 +146,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public static function forChildInvocation(
         WorkflowContext $parent,
@@ -213,7 +213,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array{inputs?: array<string, mixed>, outputs?: array<string, mixed>} $data
+     * @param  array{inputs?: array<string, mixed>, outputs?: array<string, mixed>}  $data
      */
     public function withWorkflowData(string $workflowId, array $data): self
     {
@@ -246,7 +246,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array<string, mixed> $result
+     * @param  array<string, mixed>  $result
      */
     public function withStepResult(string $stepId, array $result): self
     {
@@ -257,7 +257,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array<string, mixed> $request
+     * @param  array<string, mixed>  $request
      */
     public function withStepRequest(string $stepId, array $request): self
     {
@@ -268,7 +268,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array<string, mixed> $response
+     * @param  array<string, mixed>  $response
      */
     public function withStepResponse(string $stepId, array $response): self
     {
@@ -295,7 +295,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function withInputs(array $inputs): self
     {
@@ -303,7 +303,7 @@ final class WorkflowContext
     }
 
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function withStepInputs(string $stepId, array $inputs): self
     {

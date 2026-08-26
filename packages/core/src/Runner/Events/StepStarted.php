@@ -14,6 +14,5 @@ final readonly class StepStarted
         public string $stepId,
         public int $attempt,
         public DateTimeImmutable $at,
-    ) {
-    }
+    ) {}
 }

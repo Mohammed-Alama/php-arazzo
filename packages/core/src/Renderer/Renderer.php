@@ -30,7 +30,7 @@ final class Renderer
             $nodes = [];
 
             foreach ($workflow->steps as $step) {
-                $nodes[$step->stepId] = 'n' . (++$seq);
+                $nodes[$step->stepId] = 'n'.(++$seq);
             }
 
             $lines[] = '';
@@ -40,7 +40,7 @@ final class Renderer
 
             foreach ($workflow->steps as $step) {
                 $node = $nodes[$step->stepId];
-                $label = $step->operationId ?? $step->operationPath ?? ($step->workflowId !== null ? '→ ' . $step->workflowId : '?');
+                $label = $step->operationId ?? $step->operationPath ?? ($step->workflowId !== null ? '→ '.$step->workflowId : '?');
 
                 $lines[] = sprintf('    %s["%s<br/>%s"]', $node, $this->esc($step->stepId), $this->esc((string) $label));
 
@@ -69,19 +69,19 @@ final class Renderer
             $lines[] = '  end';
         }
 
-        return implode("\n", $lines) . "\n";
+        return implode("\n", $lines)."\n";
     }
 
     public function toMarkdown(ArazzoDocument $document): string
     {
-        $out = '# ' . $document->info->title . "\n\n";
+        $out = '# '.$document->info->title."\n\n";
 
         if (($document->info->description ?? null) !== null) {
-            $out .= $document->info->description . "\n\n";
+            $out .= $document->info->description."\n\n";
         }
 
         $out .= "- arazzo: **{$document->arazzo}**\n";
-        $out .= '- version: **' . $document->info->version . "**\n\n";
+        $out .= '- version: **'.$document->info->version."**\n\n";
 
         if ($document->sourceDescriptions !== []) {
             $out .= "## Sources\n\n| Name | Type | URL |\n|---|---|---|\n";
@@ -101,7 +101,7 @@ final class Renderer
             }
 
             if (($workflow->description ?? null) !== null) {
-                $out .= $workflow->description . "\n\n";
+                $out .= $workflow->description."\n\n";
             }
 
             if ($workflow->steps === []) {
@@ -116,7 +116,7 @@ final class Renderer
                 $criteria = [];
 
                 foreach ($step->successCriteria as $criterion) {
-                    $criteria[] = '`' . $criterion->condition . '`';
+                    $criteria[] = '`'.$criterion->condition.'`';
                 }
 
                 $outputs = [];
@@ -163,8 +163,7 @@ final class Renderer
      * @return list<array{0:string,1:string}>
      */
     /**
-     * @param array<string,string> $nodes
-     *
+     * @param  array<string,string>  $nodes
      * @return list<array{0:string,1:string}>
      */
     private function edges(Step $step, array $nodes): array
@@ -173,11 +172,11 @@ final class Renderer
 
         $push = function (bool $failure, string $label, string $targetStepId) use (&$edges, $nodes): void {
             $arrow = $failure ? '-.->|' : '-->|';
-            $text = ($failure ? '✘ ' : '✔ ') . $label;
+            $text = ($failure ? '✘ ' : '✔ ').$label;
 
             // Unknown targets (e.g. goto into another workflow) get a stub
             // node so the chart stays valid Mermaid.
-            $edges[] = [$arrow . $text . '|', $nodes[$targetStepId] ?? ('id_' . $this->id($targetStepId))];
+            $edges[] = [$arrow.$text.'|', $nodes[$targetStepId] ?? ('id_'.$this->id($targetStepId))];
         };
 
         foreach ([$step->onSuccess, $step->onFailure] as $actions) {
@@ -248,6 +247,6 @@ final class Renderer
 
     private function id(string $raw): string
     {
-        return 'id_' . preg_replace('/[^A-Za-z0-9_]/', '_', $raw);
+        return 'id_'.preg_replace('/[^A-Za-z0-9_]/', '_', $raw);
     }
 }

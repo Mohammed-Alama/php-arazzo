@@ -16,7 +16,7 @@ it('registers and resolves sources by name explicitly', function (): void {
     {
         public function resolve(SourceDescription $source, string $basePath): SourceDocument
         {
-            return new SourceDocument($source->name, $source->type, 'file://' . $basePath . '/' . $source->url, []);
+            return new SourceDocument($source->name, $source->type, 'file://'.$basePath.'/'.$source->url, []);
         }
     };
 
@@ -41,7 +41,7 @@ it('detects circular references during source acquisition', function (): void {
             // Trigger a resolution of the SAME source to simulate circular dependency
             $this->registry->resolve(new SourceDescription('test-api', 'api.json', SourceType::Openapi), $basePath);
 
-            return new SourceDocument($source->name, $source->type, 'file://' . $basePath . '/' . $source->url, []);
+            return new SourceDocument($source->name, $source->type, 'file://'.$basePath.'/'.$source->url, []);
         }
     };
 

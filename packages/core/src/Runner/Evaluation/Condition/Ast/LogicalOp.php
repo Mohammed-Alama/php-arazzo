@@ -12,6 +12,5 @@ final readonly class LogicalOp implements ConditionNode
         public LogicalOperator $op,
         public ConditionNode $left,
         public ConditionNode $right,
-    ) {
-    }
+    ) {}
 }

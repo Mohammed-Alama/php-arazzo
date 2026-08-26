@@ -7,16 +7,15 @@ namespace Alama\Arazzo\Runner\Context;
 class VariableContext
 {
     /**
-     * @param array<string, mixed> $inputs
-     * @param array<string, mixed> $steps
-     * @param array<string, mixed> $components
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $steps
+     * @param  array<string, mixed>  $components
      */
     public function __construct(
         private array $inputs = [],
         private array $steps = [],
         private array $components = [],
-    ) {
-    }
+    ) {}
 
     public function setInput(string $key, mixed $value): void
     {
@@ -45,7 +44,7 @@ class VariableContext
     }
 
     /**
-     * @param array<string, mixed> $request
+     * @param  array<string, mixed>  $request
      */
     public function setStepRequest(string $stepId, array $request): void
     {
@@ -53,7 +52,7 @@ class VariableContext
     }
 
     /**
-     * @param array<string, mixed> $response
+     * @param  array<string, mixed>  $response
      */
     public function setStepResponse(string $stepId, array $response): void
     {

@@ -24,13 +24,12 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
      * `$response.body#/FIELD` - servers must return them for the workflow
      * to be satisfiable even when the OpenAPI response omits a schema.
      *
-     * @param list<string> $referencedBodyFields
+     * @param  list<string>  $referencedBodyFields
      */
     public function __construct(
         private readonly OpenApiExecutorInterface $inner,
         private readonly array $referencedBodyFields = [],
-    ) {
-    }
+    ) {}
 
     /** @return list<string> */
     public static function referencedBodyFields(string $arazzoYaml): array
@@ -70,8 +69,7 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     /**
-     * @param array<string, mixed> $responses
-     *
+     * @param  array<string, mixed>  $responses
      * @return array<string, mixed>
      */
     /** @return array{0: int, 1: array<string, mixed>} */
@@ -125,8 +123,7 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     /**
-     * @param array<string, mixed> $schema
-     *
+     * @param  array<string, mixed>  $schema
      * @return array<string, mixed>
      */
     private static function instanceFromSchema(array $schema): array

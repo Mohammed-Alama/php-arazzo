@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Runner\Exceptions;
 
 use RuntimeException;
 
-final class GotoTargetNotFoundException extends RuntimeException
-{
-}
+final class GotoTargetNotFoundException extends RuntimeException {}

@@ -9,7 +9,7 @@ namespace Alama\Arazzo\Runner\Context\Contracts;
 interface StateStoreInterface
 {
     /**
-     * @param array<string, mixed> $state
+     * @param  array<string, mixed>  $state
      */
     public function save(string $executionId, array $state, ?int $ttlSeconds = null): void;
 

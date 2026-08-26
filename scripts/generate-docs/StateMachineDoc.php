@@ -34,8 +34,8 @@ const VERB_EDGES = [
 ];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -50,7 +50,7 @@ function render(array $core, array $laravel): string
     $engine = findEngineFile($flat);
 
     if ($engine === null || $enums === []) {
-        return BANNER . "_Engine or status enums not found — diagram unavailable._\n";
+        return BANNER."_Engine or status enums not found — diagram unavailable._\n";
     }
 
     [$edges, $guards] = extractEdgesAndGuards($engine);
@@ -90,7 +90,7 @@ function render(array $core, array $laravel): string
         foreach ($enums['StepStatus'] as $caseName) {
             $lines[] = sprintf('        %s', $caseName);
             if ($prev === null) {
-                $lines[] = '        [*] --> ' . $caseName;
+                $lines[] = '        [*] --> '.$caseName;
             } else {
                 // no invented edges between cases: enumeration only
             }
@@ -109,7 +109,7 @@ function render(array $core, array $laravel): string
     $lines[] = '|---|---|';
     ksort($enums);
     foreach ($enums as $name => $cases) {
-        $lines[] = '| `' . $name . '` | ' . implode(' · ', $cases) . ' |';
+        $lines[] = '| `'.$name.'` | '.implode(' · ', $cases).' |';
     }
 
     $lines[] = '';
@@ -118,7 +118,7 @@ function render(array $core, array $laravel): string
     $lines[] = '| Trigger (nearest condition above call) | Verb | Argument |';
     $lines[] = '|---|---|---|';
     foreach ($edges as [$trigger, $verb, $arg]) {
-        $lines[] = '| ' . escapeCell($trigger) . ' | `' . $verb . '` | ' . ($arg !== '' ? '`' . $arg . '`' : '—') . ' |';
+        $lines[] = '| '.escapeCell($trigger).' | `'.$verb.'` | '.($arg !== '' ? '`'.$arg.'`' : '—').' |';
     }
 
     $lines[] = '';
@@ -130,11 +130,11 @@ function render(array $core, array $laravel): string
         $lines[] = '| Exception | Meaning |';
         $lines[] = '|---|---|';
         foreach ($guards as $exception) {
-            $lines[] = '| `' . $exception . '` | ' . guardMeaning($exception) . ' |';
+            $lines[] = '| `'.$exception.'` | '.guardMeaning($exception).' |';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /** @param list<ScannedFile> $files */
@@ -232,7 +232,7 @@ function detectTrigger(string $windowAbove, string $verb, string $callArgs): arr
     if (preg_match_all('/instanceof\s+(\w+)\b/', $windowAbove, $m)) {
         $actions = array_values(array_filter($m[1], fn (string $c): bool => str_ends_with($c, 'Action')));
         if ($actions !== []) {
-            return ['action: ' . end($actions), []];
+            return ['action: '.end($actions), []];
         }
     }
 

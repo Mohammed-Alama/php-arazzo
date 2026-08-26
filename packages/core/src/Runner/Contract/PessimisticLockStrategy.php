@@ -10,8 +10,7 @@ final class PessimisticLockStrategy implements LockStrategyInterface
 {
     public function __construct(
         private LockManagerInterface $lockManager,
-    ) {
-    }
+    ) {}
 
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
     {

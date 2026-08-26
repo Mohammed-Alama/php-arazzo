@@ -53,7 +53,7 @@ beforeEach(function () {
         ],
     ]);
 
-    $this->openApiFile = tempnam(sys_get_temp_dir(), 'openapi_') . '.json';
+    $this->openApiFile = tempnam(sys_get_temp_dir(), 'openapi_').'.json';
     file_put_contents($this->openApiFile, $openApiJson);
 
     $this->makeExtractor = function (): ArazzoOutputExtractor {

@@ -31,8 +31,7 @@ final class SuspensionHandler
         private readonly EventDispatcherInterface $events,
         private readonly ExpressionResolverInterface $expressions,
         private readonly int $stateTtlSeconds = 86400,
-    ) {
-    }
+    ) {}
 
     public function handle(Step $step, WorkflowContext $context, Workflow $workflow, string $executionId): void
     {

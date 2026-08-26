@@ -15,27 +15,27 @@ the declaration honest.
 ```mermaid
 flowchart LR
     subgraph S_core["Core domain"]
-        S_Expression["Expression<br/><small>910 LOC</small>"]:::coreDomain
-        S_Runner["Runner<br/><small>10204 LOC</small>"]:::coreDomain
-        S_Spec["Spec<br/><small>723 LOC</small>"]:::coreDomain
+        S_Expression["Expression<br/><small>880 LOC</small>"]:::coreDomain
+        S_Runner["Runner<br/><small>10109 LOC</small>"]:::coreDomain
+        S_Spec["Spec<br/><small>706 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_Console["Console<br/><small>481 LOC</small>"]:::supportingDomain
-        S_Generator["Generator<br/><small>122 LOC</small>"]:::supportingDomain
-        S_Parser["Parser<br/><small>1087 LOC</small>"]:::supportingDomain
-        S_Renderer["Renderer<br/><small>254 LOC</small>"]:::supportingDomain
-        S_Resolver["Resolver<br/><small>358 LOC</small>"]:::supportingDomain
-        S_Validator["Validator<br/><small>3112 LOC</small>"]:::supportingDomain
+        S_Generator["Generator<br/><small>119 LOC</small>"]:::supportingDomain
+        S_Parser["Parser<br/><small>1078 LOC</small>"]:::supportingDomain
+        S_Renderer["Renderer<br/><small>253 LOC</small>"]:::supportingDomain
+        S_Resolver["Resolver<br/><small>348 LOC</small>"]:::supportingDomain
+        S_Validator["Validator<br/><small>3094 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_Bindings["Bindings<br/><small>451 LOC</small>"]:::genericDomain
-        S_Events["Events<br/><small>23 LOC</small>"]:::genericDomain
-        S_Http["Http<br/><small>163 LOC</small>"]:::genericDomain
+        S_Events["Events<br/><small>21 LOC</small>"]:::genericDomain
+        S_Http["Http<br/><small>161 LOC</small>"]:::genericDomain
         S_Lock["Lock<br/><small>49 LOC</small>"]:::genericDomain
-        S_Persistence["Persistence<br/><small>257 LOC</small>"]:::genericDomain
-        S_Queue["Queue<br/><small>102 LOC</small>"]:::genericDomain
-        S_State["State<br/><small>39 LOC</small>"]:::genericDomain
-        S_Support["Support<br/><small>329 LOC</small>"]:::genericDomain
+        S_Persistence["Persistence<br/><small>252 LOC</small>"]:::genericDomain
+        S_Queue["Queue<br/><small>100 LOC</small>"]:::genericDomain
+        S_State["State<br/><small>38 LOC</small>"]:::genericDomain
+        S_Support["Support<br/><small>323 LOC</small>"]:::genericDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -45,6 +45,6 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 3 | 11,837 | 0 | 63% |
-| Supporting | 6 | 5,414 | 0 | 29% |
-| Generic subdomain | 8 | 269 | 1,144 | 8% |
+| Core domain | 3 | 11,695 | 0 | 63% |
+| Supporting | 6 | 5,373 | 0 | 29% |
+| Generic subdomain | 8 | 263 | 1,132 | 8% |

@@ -62,9 +62,7 @@ class OutcomeEventsMockExecutionRegistry implements ExecutionRegistryInterface
 {
     public array $completed = [];
 
-    public function start(string $executionId, string $definitionId, string $workflowId): void
-    {
-    }
+    public function start(string $executionId, string $definitionId, string $workflowId): void {}
 
     public function complete(string $executionId, ExecutionStatus $status): void
     {
@@ -74,18 +72,14 @@ class OutcomeEventsMockExecutionRegistry implements ExecutionRegistryInterface
 
 class OutcomeEventsMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
-    {
-    }
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
         return null;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {
@@ -100,9 +94,7 @@ class OutcomeEventsMockExpressionResolver implements ExpressionResolverInterface
         return $expression->raw;
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {

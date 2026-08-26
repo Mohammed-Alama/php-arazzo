@@ -10,20 +10,20 @@ use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
 $tempDir = null;
 
 beforeEach(function () use (&$tempDir): void {
-    $tempDir = sys_get_temp_dir() . '/arazzo-local-fetcher-test-' . uniqid('', true);
+    $tempDir = sys_get_temp_dir().'/arazzo-local-fetcher-test-'.uniqid('', true);
     mkdir($tempDir);
     $this->tempDir = $tempDir;
 });
 
 afterEach(function (): void {
-    foreach (glob($this->tempDir . '/*') ?: [] as $file) {
+    foreach (glob($this->tempDir.'/*') ?: [] as $file) {
         unlink($file);
     }
     rmdir($this->tempDir);
 });
 
 it('fetches a local file by relative path', function (): void {
-    file_put_contents($this->tempDir . '/test.json', '{"test": true}');
+    file_put_contents($this->tempDir.'/test.json', '{"test": true}');
 
     $fetcher = new LocalFetcher();
     $content = $fetcher->fetch('test.json', $this->tempDir);
@@ -32,7 +32,7 @@ it('fetches a local file by relative path', function (): void {
 });
 
 it('fetches a local file by absolute path', function (): void {
-    $absPath = $this->tempDir . '/abs.json';
+    $absPath = $this->tempDir.'/abs.json';
     file_put_contents($absPath, '{"abs": 1}');
 
     $fetcher = new LocalFetcher();

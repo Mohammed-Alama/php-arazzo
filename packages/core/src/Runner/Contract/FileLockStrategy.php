@@ -15,7 +15,7 @@ final class FileLockStrategy implements LockStrategyInterface
 
     public function __construct(?string $lockDir = null)
     {
-        $this->lockDir = $lockDir ?? sys_get_temp_dir() . '/arazzo-locks';
+        $this->lockDir = $lockDir ?? sys_get_temp_dir().'/arazzo-locks';
         if (!is_dir($this->lockDir)) {
             @mkdir($this->lockDir, 0777, true);
         }
@@ -23,7 +23,7 @@ final class FileLockStrategy implements LockStrategyInterface
 
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
     {
-        $lockFile = $this->lockDir . '/' . $this->sanitizeKey($key) . '.lock';
+        $lockFile = $this->lockDir.'/'.$this->sanitizeKey($key).'.lock';
         $fp = @fopen($lockFile, 'c+');
 
         if ($fp === false) {
@@ -46,7 +46,7 @@ final class FileLockStrategy implements LockStrategyInterface
 
     public function tryAcquire(string $key, int $ttlSeconds): bool
     {
-        $lockFile = $this->lockDir . '/' . $this->sanitizeKey($key) . '.lock';
+        $lockFile = $this->lockDir.'/'.$this->sanitizeKey($key).'.lock';
         $fp = @fopen($lockFile, 'c+');
 
         if ($fp === false) {

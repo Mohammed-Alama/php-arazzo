@@ -48,9 +48,7 @@ class WorkerEventsMockLockManager implements LockManagerInterface
         return true;
     }
 
-    public function release(string $key): void
-    {
-    }
+    public function release(string $key): void {}
 }
 
 class WorkerEventsMockStateStore implements StateStoreInterface
@@ -80,13 +78,9 @@ class WorkerEventsMockEventLedger implements EventLedgerInterface
 
 class WorkerEventsMockExecutionRegistry implements ExecutionRegistryInterface
 {
-    public function start(string $executionId, string $definitionId, string $workflowId): void
-    {
-    }
+    public function start(string $executionId, string $definitionId, string $workflowId): void {}
 
-    public function complete(string $executionId, ExecutionStatus $status): void
-    {
-    }
+    public function complete(string $executionId, ExecutionStatus $status): void {}
 }
 
 class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
@@ -96,9 +90,7 @@ class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
         return $expression->raw;
     }
 
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
-    {
-    }
+    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
     {
@@ -118,9 +110,7 @@ class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
 
 class WorkerEventsFakeExecutor implements StepProtocolExecutorInterface
 {
-    public function __construct(private ?StepExecutionOutcome $outcome = null, private ?Throwable $toThrow = null)
-    {
-    }
+    public function __construct(private ?StepExecutionOutcome $outcome = null, private ?Throwable $toThrow = null) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
@@ -139,18 +129,14 @@ class WorkerEventsFakeExecutor implements StepProtocolExecutorInterface
 
 class WorkerEventsMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
-    {
-    }
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
         return null;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {

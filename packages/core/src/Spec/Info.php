@@ -11,6 +11,5 @@ final readonly class Info
         public ?string $summary,
         public ?string $description,
         public string $version,
-    ) {
-    }
+    ) {}
 }

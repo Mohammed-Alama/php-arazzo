@@ -12,6 +12,5 @@ final readonly class PendingCorrelation
         public string $stepId,
         public string $channelPath,
         public ?\DateTimeImmutable $expiresAt = null,
-    ) {
-    }
+    ) {}
 }

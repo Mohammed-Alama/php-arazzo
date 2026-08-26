@@ -20,8 +20,7 @@ class OpenAiClient implements AiClientInterface
         private string $endpoint,
         private string $model = 'gpt-4o',
         private float $temperature = 0.0,
-    ) {
-    }
+    ) {}
 
     public function generate(string $systemPrompt, string $userPrompt): string
     {
@@ -37,7 +36,7 @@ class OpenAiClient implements AiClientInterface
         $stream = $this->streamFactory->createStream($payload ?: '');
 
         $request = $this->requestFactory->createRequest('POST', $this->endpoint)
-            ->withHeader('Authorization', 'Bearer ' . $this->apiKey)
+            ->withHeader('Authorization', 'Bearer '.$this->apiKey)
             ->withHeader('Content-Type', 'application/json')
             ->withBody($stream);
 
@@ -48,7 +47,7 @@ class OpenAiClient implements AiClientInterface
         if ($response->getStatusCode() >= 400) {
             $data = json_decode($responseBody, true);
             $errorMessage = $data['error']['message'] ?? $response->getReasonPhrase();
-            throw new RuntimeException('API Error: ' . $errorMessage);
+            throw new RuntimeException('API Error: '.$errorMessage);
         }
 
         $data = json_decode($responseBody, true);

@@ -10,9 +10,7 @@ use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 final readonly class Expression
 {
-    public function __construct(public string $raw)
-    {
-    }
+    public function __construct(public string $raw) {}
 
     public function ast(): ExpressionAst
     {

@@ -47,7 +47,7 @@ final class GhCli
         if ($jsonStart === false && $objStart === false) {
             // Not JSON - maybe error message
             if ($verbose) {
-                fwrite(STDERR, '  gh output not JSON: ' . substr($output, 0, 200) . "\n");
+                fwrite(STDERR, '  gh output not JSON: '.substr($output, 0, 200)."\n");
             }
 
             return null;
@@ -71,7 +71,7 @@ final class GhCli
         }
         if (json_last_error() !== JSON_ERROR_NONE) {
             if ($verbose) {
-                fwrite(STDERR, '  gh json decode failed: ' . json_last_error_msg() . "\n");
+                fwrite(STDERR, '  gh json decode failed: '.json_last_error_msg()."\n");
             }
 
             return null;

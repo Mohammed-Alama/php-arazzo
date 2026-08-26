@@ -47,7 +47,7 @@ use GuzzleHttp\Psr7\Response;
 function parityFixtures(): array
 {
     $openapiJson = '{"openapi":"3.0.0","servers":[{"url":"https://api.test"}],"paths":{"/rides":{"post":{"operationId":"createRide","responses":{"201":{"description":"Created"}}}}}}';
-    $openapiFile = tempnam(sys_get_temp_dir(), 'parity_') . '.json';
+    $openapiFile = tempnam(sys_get_temp_dir(), 'parity_').'.json';
     file_put_contents($openapiFile, $openapiJson);
 
     $workflow = new Workflow('parity_wf', null, null, null, [], [
@@ -103,8 +103,7 @@ function parityFixtures(): array
         public function __construct(
             private readonly StepExecutor $stepExecutor,
             private readonly ArazzoDocument $document,
-        ) {
-        }
+        ) {}
 
         public function supports(Step $step, ArazzoDocument $document): bool
         {
@@ -140,7 +139,7 @@ it('sync and queue-driven adapters agree on terminal status and step spend', fun
     $definitions->register($document);
     $cli = new CliRunner(
         expressions: new TestExpressionResolver(),
-        stateStore: new FileStateStore(sys_get_temp_dir() . '/arazzo-parity-' . bin2hex(random_bytes(4))),
+        stateStore: new FileStateStore(sys_get_temp_dir().'/arazzo-parity-'.bin2hex(random_bytes(4))),
         definitions: $definitions,
         protocolExecutors: [$protocol],
     );

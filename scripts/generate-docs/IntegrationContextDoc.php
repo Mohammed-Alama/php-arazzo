@@ -39,8 +39,8 @@ const HTTP_MARKERS = [
 ];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -48,7 +48,7 @@ function render(array $core, array $laravel): string
     foreach ([[...$core], [...$laravel]] as $modules) {
         foreach ($modules as $moduleFiles) {
             foreach ($moduleFiles as $file) {
-                $files[$file->namespace . '\\' . $file->className] = $file;
+                $files[$file->namespace.'\\'.$file->className] = $file;
             }
         }
     }
@@ -57,7 +57,7 @@ function render(array $core, array $laravel): string
     [$infraEdges, $httpEdges] = scanEdges($files);
 
     if ($infraEdges === [] && $httpEdges === []) {
-        return BANNER . "_No integration adapters found._\n";
+        return BANNER."_No integration adapters found._\n";
     }
 
     $lines = [BANNER, '```mermaid', 'flowchart LR'];
@@ -111,14 +111,13 @@ function render(array $core, array $laravel): string
     $lines[] = '    classDef system fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;';
     $lines[] = '```';
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
  * Adapter classes → external system edges via implements + name markers.
  *
- * @param array<string, ScannedFile> $files
- *
+ * @param  array<string, ScannedFile>  $files
  * @return array{0: list<array{string, string, string}>, 1: array<string, string>}
  */
 function scanEdges(array $files): array
@@ -146,8 +145,8 @@ function scanEdges(array $files): array
 
         foreach (TECH_MARKERS as $markerPattern => [$systemId, $label]) {
             $pattern = str_contains($markerPattern, '[')
-                ? '/(?:' . $markerPattern . ')/'
-                : '/' . preg_quote($markerPattern, '/') . '/';
+                ? '/(?:'.$markerPattern.')/'
+                : '/'.preg_quote($markerPattern, '/').'/';
             if (preg_match($pattern, $file->className) !== 1 || isset($seenAdapters[$fqcn])) {
                 continue;
             }
@@ -162,8 +161,8 @@ function scanEdges(array $files): array
     foreach ($files as $fqcn => $file) {
         foreach (HTTP_MARKERS as $marker => $systemLabel) {
             $needle = str_contains($marker, '\\')
-                ? 'use ' . $marker . ';'
-                : 'class ' . $marker;
+                ? 'use '.$marker.';'
+                : 'class '.$marker;
             if (!str_contains($file->content, $needle) && $file->className !== $marker) {
                 continue;
             }
@@ -186,5 +185,5 @@ function short(string $fqcn): string
 
 function nodeId(string $value): string
 {
-    return 'A_' . ((preg_replace('/[^A-Za-z0-9_]/', '_', $value)) ?? $value);
+    return 'A_'.((preg_replace('/[^A-Za-z0-9_]/', '_', $value)) ?? $value);
 }

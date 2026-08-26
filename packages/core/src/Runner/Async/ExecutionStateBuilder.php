@@ -23,7 +23,7 @@ use Alama\Arazzo\Spec\Workflow;
 final class ExecutionStateBuilder
 {
     /**
-     * @param array<string, mixed>|null $persisted raw state-store payload for this execution
+     * @param  array<string, mixed>|null  $persisted  raw state-store payload for this execution
      */
     public function build(?array $persisted, WorkflowContext $resultContext, Workflow $workflow, ?Step $overlayStep = null): ExecutionState
     {
@@ -78,8 +78,7 @@ final class ExecutionStateBuilder
     }
 
     /**
-     * @param list<string> $stepIds
-     *
+     * @param  list<string>  $stepIds
      * @return array<string, array<string, mixed>>
      */
     private function stringKeyedRecords(WorkflowContext $context, array $stepIds): array

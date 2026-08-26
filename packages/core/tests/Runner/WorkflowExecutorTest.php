@@ -50,9 +50,7 @@ it('executes a workflow end-to-end', function () {
             {
                 private array $headers = [];
 
-                public function __construct(public string $method, public string $uri)
-                {
-                }
+                public function __construct(public string $method, public string $uri) {}
 
                 public function getProtocolVersion(): string
                 {
@@ -111,13 +109,9 @@ it('executes a workflow end-to-end', function () {
                             return '';
                         }
 
-                        public function close(): void
-                        {
-                        }
+                        public function close(): void {}
 
-                        public function detach()
-                        {
-                        }
+                        public function detach() {}
 
                         public function getSize(): ?int
                         {
@@ -139,13 +133,9 @@ it('executes a workflow end-to-end', function () {
                             return false;
                         }
 
-                        public function seek($offset, $whence = \SEEK_SET): void
-                        {
-                        }
+                        public function seek($offset, $whence = \SEEK_SET): void {}
 
-                        public function rewind(): void
-                        {
-                        }
+                        public function rewind(): void {}
 
                         public function isWritable(): bool
                         {
@@ -208,9 +198,7 @@ it('executes a workflow end-to-end', function () {
                 {
                     return new class($this->uri) implements UriInterface
                     {
-                        public function __construct(private string $uri)
-                        {
-                        }
+                        public function __construct(private string $uri) {}
 
                         public function getScheme(): string
                         {
@@ -375,13 +363,9 @@ it('executes a workflow end-to-end', function () {
                     return '{"data": {"id": 99}}';
                 }
 
-                public function close(): void
-                {
-                }
+                public function close(): void {}
 
-                public function detach()
-                {
-                }
+                public function detach() {}
 
                 public function getSize(): ?int
                 {
@@ -403,13 +387,9 @@ it('executes a workflow end-to-end', function () {
                     return false;
                 }
 
-                public function seek($offset, $whence = \SEEK_SET): void
-                {
-                }
+                public function seek($offset, $whence = \SEEK_SET): void {}
 
-                public function rewind(): void
-                {
-                }
+                public function rewind(): void {}
 
                 public function isWritable(): bool
                 {
@@ -453,9 +433,7 @@ it('executes a workflow end-to-end', function () {
     {
         public array $requests = [];
 
-        public function __construct(private ResponseInterface $response)
-        {
-        }
+        public function __construct(private ResponseInterface $response) {}
 
         public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
         {
@@ -501,7 +479,7 @@ it('executes a workflow end-to-end', function () {
 
     // Create a dummy openapi file
     $openapiJson = '{"openapi":"3.0.0","servers":[{"url":"https://api.test"}],"paths":{"/rides":{"post":{"operationId":"createRide","responses":{"201":{"description":"Created"}}}}}}';
-    $tmpFile = tempnam(sys_get_temp_dir(), 'openapi_') . '.json';
+    $tmpFile = tempnam(sys_get_temp_dir(), 'openapi_').'.json';
     file_put_contents($tmpFile, $openapiJson);
 
     $doc = new ArazzoDocument(

@@ -18,8 +18,7 @@ final class SourceRegistry implements SourceResolver
 
     public function __construct(
         private readonly SourceResolver $resolver,
-    ) {
-    }
+    ) {}
 
     public function get(string $name): ?SourceDocument
     {

@@ -43,9 +43,13 @@ use OpenTelemetry\SDK\Trace\TracerProviderBuilder;
 final class OtelSetup
 {
     public const EXPORTER_OTLP = 'otlp';
+
     public const EXPORTER_CONSOLE = 'console';
+
     public const EXPORTER_FILE = 'file';
+
     public const EXPORTER_MEMORY = 'memory';
+
     public const EXPORTER_NONE = 'none';
 
     private static bool $initialized = false;
@@ -54,7 +58,7 @@ final class OtelSetup
     public static ?InMemoryExporter $testExporter = null;
 
     /**
-     * @param array<string, string|int|float|bool> $attributes
+     * @param  array<string, string|int|float|bool>  $attributes
      */
     public static function initialize(
         ?string $exporter = null,
@@ -161,7 +165,7 @@ final class OtelSetup
     }
 
     /**
-     * @param resource|string $stream
+     * @param  resource|string  $stream
      *
      * @throws ErrorException
      */

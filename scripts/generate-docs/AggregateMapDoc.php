@@ -24,8 +24,8 @@ Where mutable state lives, and which of it crosses process boundaries:
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -33,7 +33,7 @@ function render(array $core, array $laravel): string
     foreach ([['core', $core], ['laravel', $laravel]] as [$package, $modules]) {
         foreach ($modules as $moduleFiles) {
             foreach ($moduleFiles as $file) {
-                $files[$package][$file->namespace . '\\' . $file->className] = $file;
+                $files[$package][$file->namespace.'\\'.$file->className] = $file;
             }
         }
     }
@@ -84,7 +84,7 @@ function render(array $core, array $laravel): string
             }
             $signalCells = $signals === []
                 ? ''
-                : implode(', ', array_map(fn (string $s): string => '`' . $s . '`', $signals));
+                : implode(', ', array_map(fn (string $s): string => '`'.$s.'`', $signals));
             if ($signalCells === '') {
                 continue; // keep the table focused on stateful types with IO signals
             }
@@ -103,7 +103,7 @@ function render(array $core, array $laravel): string
     $lines[] = '## Cross-process aggregates';
     $lines[] = '';
     $lines[] = 'Mutable types that serialize themselves or are carried by queue jobs —'
-        . ' each needs an explicit consistency story (versioning, TTLs, idempotency):';
+        .' each needs an explicit consistency story (versioning, TTLs, idempotency):';
     $lines[] = '';
     ksort($crossProcess);
     foreach ($crossProcess as $fqcn => $meta) {
@@ -111,14 +111,14 @@ function render(array $core, array $laravel): string
             '- `%s` <small>%s · %s</small>',
             short((string) $fqcn),
             $meta['package'],
-            implode(', ', array_map(fn (string $s): string => '`' . $s . '`', $meta['signals'])),
+            implode(', ', array_map(fn (string $s): string => '`'.$s.'`', $meta['signals'])),
         );
     }
     if ($crossProcess === []) {
         $lines[] = '_None detected._';
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function isClass(ScannedFile $file): bool

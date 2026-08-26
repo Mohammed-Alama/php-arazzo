@@ -16,8 +16,7 @@ class SelectorEvaluator
     public function __construct(
         private XpathEvaluator $xpath,
         private ExpressionEvaluator $expressions,
-    ) {
-    }
+    ) {}
 
     public function evaluate(Selector $sel, WorkflowContext $wf, string $stepId): mixed
     {
@@ -49,7 +48,7 @@ class SelectorEvaluator
                     );
                 } catch (SelectorEvaluationException $e) {
                     // Enrich capability errors with the document location.
-                    $location = 'workflows/' . ($wf->getWorkflowId() ?? 'unknown') . '/steps/' . $stepId;
+                    $location = 'workflows/'.($wf->getWorkflowId() ?? 'unknown').'/steps/'.$stepId;
 
                     throw new SelectorEvaluationException($e->getMessage(), $location, $e->codeId, $e);
                 }

@@ -44,7 +44,7 @@ function render(string $root): string
 
     $green = 0;
     foreach (FUNCTIONS as [$name, $property, $artifact, $cadence, $doc]) {
-        $exists = is_file($root . '/' . $artifact);
+        $exists = is_file($root.'/'.$artifact);
         $green += $exists ? 1 : 0;
         $status = $exists ? '**enforced**' : '⚠ **artifact missing**';
         $lines[] = sprintf(
@@ -67,5 +67,5 @@ function render(string $root): string
     $lines[] = '- `bc-diff.md` activates at the first release tag; until then BC drift has no gate, only visibility.';
     $lines[] = '- The conformance matrix generator runs out-of-band; it is not wired into `composer docs` / pre-commit.';
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }

@@ -10,12 +10,12 @@ use Alama\Arazzo\Spec\Action\SuccessAction;
 final readonly class Step
 {
     /**
-     * @param list<Parameter|Reusable> $parameters
-     * @param list<SuccessCriterion> $successCriteria
-     * @param list<SuccessAction|Reusable> $onSuccess
-     * @param list<FailureAction|Reusable> $onFailure
-     * @param array<string,Expression|Selector|scalar|array<mixed>|null> $outputs
-     * @param list<string> $dependsOn
+     * @param  list<Parameter|Reusable>  $parameters
+     * @param  list<SuccessCriterion>  $successCriteria
+     * @param  list<SuccessAction|Reusable>  $onSuccess
+     * @param  list<FailureAction|Reusable>  $onFailure
+     * @param  array<string,Expression|Selector|scalar|array<mixed>|null>  $outputs
+     * @param  list<string>  $dependsOn
      */
     public function __construct(
         public string $stepId,
@@ -37,6 +37,5 @@ final readonly class Step
         public readonly ?bool $idempotencyKey = null,
         public readonly ?string $idempotencyHeader = null,
         public readonly ?int $timeout = null, // duration in milliseconds
-    ) {
-    }
+    ) {}
 }

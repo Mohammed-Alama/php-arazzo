@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$scripts = __DIR__ . '/../../../../.agents/skills/falsification-testing/scripts';
+$scripts = __DIR__.'/../../../../.agents/skills/falsification-testing/scripts';
 $scripts = realpath($scripts) ?: $scripts;
 
 it('passes shell and php syntax for all scripts', function () use ($scripts): void {
@@ -10,7 +10,7 @@ it('passes shell and php syntax for all scripts', function () use ($scripts): vo
     foreach ($bashScripts as $f) {
         $out = [];
         $ec = 0;
-        exec('bash -n ' . escapeshellarg("{$scripts}/{$f}") . ' 2>&1', $out, $ec);
+        exec('bash -n '.escapeshellarg("{$scripts}/{$f}").' 2>&1', $out, $ec);
         expect($ec)->toBe(0, implode("\n", $out));
     }
 
@@ -18,14 +18,14 @@ it('passes shell and php syntax for all scripts', function () use ($scripts): vo
     foreach ($phpScripts as $f) {
         $out = [];
         $ec = 0;
-        exec('php -l ' . escapeshellarg("{$scripts}/{$f}") . ' 2>&1', $out, $ec);
+        exec('php -l '.escapeshellarg("{$scripts}/{$f}").' 2>&1', $out, $ec);
         expect($ec)->toBe(0, implode("\n", $out));
         expect(implode("\n", $out))->toContain('No syntax errors');
     }
 });
 
 it('detect-fake distinguishes fake from real fixtures', function () use ($scripts): void {
-    $tmp = sys_get_temp_dir() . '/falsification-' . uniqid('', true);
+    $tmp = sys_get_temp_dir().'/falsification-'.uniqid('', true);
     mkdir($tmp, 0777, true);
 
     $fake = "{$tmp}/fake.php";
@@ -47,84 +47,84 @@ it('handles empty workflows', function () { expect(fn()=> $parser->parse($empty)
 PHP);
 
     $ecFake = 0;
-    exec('php ' . escapeshellarg("{$scripts}/detect-fake-tests.php") . ' ' . escapeshellarg($fake) . ' 2>&1', $oFake, $ecFake);
+    exec('php '.escapeshellarg("{$scripts}/detect-fake-tests.php").' '.escapeshellarg($fake).' 2>&1', $oFake, $ecFake);
     expect($ecFake)->toBe(1);
     expect(implode("\n", $oFake))->toContain('FAKE-1');
 
     $ecReal = 0;
-    exec('php ' . escapeshellarg("{$scripts}/detect-fake-tests.php") . ' ' . escapeshellarg($real) . ' 2>&1', $oReal, $ecReal);
+    exec('php '.escapeshellarg("{$scripts}/detect-fake-tests.php").' '.escapeshellarg($real).' 2>&1', $oReal, $ecReal);
     expect($ecReal)->toBe(0);
     expect(implode("\n", $oReal))->toContain('No fake-test violations');
 
     // json emits FAKE-1 and NAMING
-    $json = shell_exec('php ' . escapeshellarg("{$scripts}/detect-fake-tests.php") . ' ' . escapeshellarg($fake) . ' --json 2>&1');
+    $json = shell_exec('php '.escapeshellarg("{$scripts}/detect-fake-tests.php").' '.escapeshellarg($fake).' --json 2>&1');
     expect($json)->toContain('FAKE-1')->toContain('NAMING');
 
     // repo scan must not crash (exit 0 or 1, not 2)
     $ecAll = 0;
-    exec('php ' . escapeshellarg("{$scripts}/detect-fake-tests.php") . ' --all 2>&1', $oAll, $ecAll);
+    exec('php '.escapeshellarg("{$scripts}/detect-fake-tests.php").' --all 2>&1', $oAll, $ecAll);
     expect($ecAll)->toBeIn([0, 1]);
 
-    exec('rm -rf ' . escapeshellarg($tmp));
+    exec('rm -rf '.escapeshellarg($tmp));
 });
 
 it('audit-boundaries emits workflow engine checklist', function () use ($scripts): void {
-    $json = shell_exec('php ' . escapeshellarg("{$scripts}/audit-boundaries.php") . ' WorkflowEngine --json 2>&1');
+    $json = shell_exec('php '.escapeshellarg("{$scripts}/audit-boundaries.php").' WorkflowEngine --json 2>&1');
     expect($json)->not->toBeNull();
     $data = json_decode((string) $json, true);
     expect($data)->toHaveKey('boundaries');
     expect($data['boundaries'])->toContain('maxSteps at budget / stepsSpent==maxSteps');
 
-    $text = shell_exec('php ' . escapeshellarg("{$scripts}/audit-boundaries.php") . ' packages/core/src/Validator/Validator.php 2>&1');
+    $text = shell_exec('php '.escapeshellarg("{$scripts}/audit-boundaries.php").' packages/core/src/Validator/Validator.php 2>&1');
     expect($text)->toContain('Checklist');
 });
 
 it('scaffold generates pint-clean strict file', function () use ($scripts): void {
-    $tmp = sys_get_temp_dir() . '/falsification-scaffold-' . uniqid('', true) . '.php';
+    $tmp = sys_get_temp_dir().'/falsification-scaffold-'.uniqid('', true).'.php';
 
     $ec = 0;
-    exec('php ' . escapeshellarg("{$scripts}/scaffold-falsification-test.php") . ' core ScaffoldPestTest "harness claim" --dry-run 2>&1', $oDry, $ec);
+    exec('php '.escapeshellarg("{$scripts}/scaffold-falsification-test.php").' core ScaffoldPestTest "harness claim" --dry-run 2>&1', $oDry, $ec);
     expect($ec)->toBe(0);
     expect(implode("\n", $oDry))->toContain('dry-run');
 
     $ec = 0;
-    exec('php ' . escapeshellarg("{$scripts}/scaffold-falsification-test.php") . ' core ScaffoldPestTest "harness claim" --path ' . escapeshellarg($tmp) . ' 2>&1', $oWrite, $ec);
+    exec('php '.escapeshellarg("{$scripts}/scaffold-falsification-test.php").' core ScaffoldPestTest "harness claim" --path '.escapeshellarg($tmp).' 2>&1', $oWrite, $ec);
     expect($ec)->toBe(0);
     expect(file_exists($tmp))->toBeTrue();
     expect(file_get_contents($tmp))->toContain('declare(strict_types=1)');
     expect(file_get_contents($tmp))->toContain("it('harness-claim'");
     $ecLint = 0;
-    exec('php -l ' . escapeshellarg($tmp) . ' 2>&1', $oLint, $ecLint);
+    exec('php -l '.escapeshellarg($tmp).' 2>&1', $oLint, $ecLint);
     expect($ecLint)->toBe(0);
 
     // Normalize EOF newline ourselves so the scaffold must be fully
     // pint-clean regardless of which fixers/Pint version runs.
-    file_put_contents($tmp, rtrim((string) file_get_contents($tmp)) . "\n");
+    file_put_contents($tmp, rtrim((string) file_get_contents($tmp))."\n");
 
     $ecPint = 0;
-    exec('vendor/bin/pint ' . escapeshellarg($tmp) . ' --test 2>&1', $oPint, $ecPint);
+    exec('vendor/bin/pint '.escapeshellarg($tmp).' --test 2>&1', $oPint, $ecPint);
     expect($ecPint)->toBe(0, implode("\n", $oPint));
 
     unlink($tmp);
 });
 
 it('hume-audit and delete-fix expose --help and dry-run', function () use ($scripts): void {
-    $humeHelp = shell_exec('bash ' . escapeshellarg("{$scripts}/hume-audit.sh") . ' --help 2>&1');
+    $humeHelp = shell_exec('bash '.escapeshellarg("{$scripts}/hume-audit.sh").' --help 2>&1');
     expect($humeHelp)->toContain('usage');
 
-    $humeDry = shell_exec('bash ' . escapeshellarg("{$scripts}/hume-audit.sh") . ' --dry-run --core 2>&1');
+    $humeDry = shell_exec('bash '.escapeshellarg("{$scripts}/hume-audit.sh").' --dry-run --core 2>&1');
     expect($humeDry)->toContain('dry-run');
 
-    $delHelp = shell_exec('bash ' . escapeshellarg("{$scripts}/delete-fix-check.sh") . ' --help 2>&1');
+    $delHelp = shell_exec('bash '.escapeshellarg("{$scripts}/delete-fix-check.sh").' --help 2>&1');
     expect($delHelp)->toContain('usage');
 
-    $verifyHelp = shell_exec('bash ' . escapeshellarg("{$scripts}/verify-falsification.sh") . ' --help 2>&1');
+    $verifyHelp = shell_exec('bash '.escapeshellarg("{$scripts}/verify-falsification.sh").' --help 2>&1');
     expect($verifyHelp)->toContain('usage');
 });
 
 it('self-test harness passes', function () use ($scripts): void {
     $ec = 0;
-    exec('bash ' . escapeshellarg("{$scripts}/test-scripts.sh") . ' 2>&1', $out, $ec);
+    exec('bash '.escapeshellarg("{$scripts}/test-scripts.sh").' 2>&1', $out, $ec);
     expect($ec)->toBe(0, implode("\n", $out));
     expect(implode("\n", $out))->toContain('all self-tests passed');
 });

@@ -40,7 +40,7 @@ final class WorkerEvents
     }
 
     /**
-     * @param array<string, mixed> $outputs
+     * @param  array<string, mixed>  $outputs
      */
     public function stepExecuted(string $executionId, string $workflowId, string $stepId, int $statusCode, array $outputs, bool $criteriaMet): void
     {

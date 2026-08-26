@@ -42,7 +42,7 @@ class WorkflowExecutor
     }
 
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult
     {
@@ -68,7 +68,7 @@ class WorkflowExecutor
 
             if (!$result->isValid()) {
                 throw new PreflightFailureException(
-                    'Preflight validation failed with ' . count($result->errors) . ' error(s).',
+                    'Preflight validation failed with '.count($result->errors).' error(s).',
                     $result,
                 );
             }

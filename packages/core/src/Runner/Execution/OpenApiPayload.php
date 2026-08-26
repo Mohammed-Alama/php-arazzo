@@ -7,11 +7,11 @@ namespace Alama\Arazzo\Runner\Execution;
 class OpenApiPayload
 {
     /**
-     * @param array<string, mixed> $path
-     * @param array<string, mixed> $query
-     * @param array<string, mixed> $header
-     * @param array<string, mixed> $cookie
-     * @param array<string, mixed> $auto
+     * @param  array<string, mixed>  $path
+     * @param  array<string, mixed>  $query
+     * @param  array<string, mixed>  $header
+     * @param  array<string, mixed>  $cookie
+     * @param  array<string, mixed>  $auto
      */
     public function __construct(
         public array $path = [],
@@ -21,6 +21,5 @@ class OpenApiPayload
         public array $auto = [],
         public mixed $body = null,
         public ?string $bodyMediaType = null,
-    ) {
-    }
+    ) {}
 }

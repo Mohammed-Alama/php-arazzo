@@ -18,10 +18,10 @@ use Alama\Arazzo\Spec\Workflow;
 final class Fx
 {
     /**
-     * @param list<Workflow> $workflows
-     * @param list<SourceDescription> $sources
-     * @param array<string,mixed> $extensions
-     * @param array<string,mixed>|null $rawRoot
+     * @param  list<Workflow>  $workflows
+     * @param  list<SourceDescription>  $sources
+     * @param  array<string,mixed>  $extensions
+     * @param  array<string,mixed>|null  $rawRoot
      */
     public static function doc(
         array $workflows = [],
@@ -42,11 +42,11 @@ final class Fx
     }
 
     /**
-     * @param list<Parameter> $params
-     * @param list<SuccessCriterion> $crit
-     * @param list<mixed> $onSuccess
-     * @param list<mixed> $onFailure
-     * @param array<string,Expression> $outputs
+     * @param  list<Parameter>  $params
+     * @param  list<SuccessCriterion>  $crit
+     * @param  list<mixed>  $onSuccess
+     * @param  list<mixed>  $onFailure
+     * @param  array<string,Expression>  $outputs
      */
     public static function step(
         string $id = 's',
@@ -64,11 +64,11 @@ final class Fx
     }
 
     /**
-     * @param list<Step> $steps
-     * @param list<string> $dep
-     * @param array<string,mixed>|null $inputs
-     * @param array<string,Expression> $outputs
-     * @param list<Parameter> $parameters
+     * @param  list<Step>  $steps
+     * @param  list<string>  $dep
+     * @param  array<string,mixed>|null  $inputs
+     * @param  array<string,Expression>  $outputs
+     * @param  list<Parameter>  $parameters
      */
     public static function wf(
         string $id,

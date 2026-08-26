@@ -16,6 +16,5 @@ final readonly class StepRetried
         public int $attempt,
         public ?Throwable $lastError,
         public DateTimeImmutable $at,
-    ) {
-    }
+    ) {}
 }

@@ -17,8 +17,7 @@ use RuntimeException;
 final class ReusableParameterResolver
 {
     /**
-     * @param list<Parameter|Reusable> $parameters
-     *
+     * @param  list<Parameter|Reusable>  $parameters
      * @return list<Parameter>
      */
     public function resolve(array $parameters, ?ArazzoDocument $document): array

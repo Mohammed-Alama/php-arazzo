@@ -43,7 +43,7 @@ MD;
 function render(string $snapshotPath): string
 {
     if (!is_file($snapshotPath)) {
-        return BANNER . <<<'MD'
+        return BANNER.<<<'MD'
 
 ## No measurements recorded
 
@@ -58,7 +58,7 @@ MD;
 
     $data = json_decode((string) file_get_contents($snapshotPath), true);
     if (!is_array($data) || !isset($data['gates']) || !is_array($data['gates'])) {
-        return BANNER . "_Corrupt snapshot at storage/quality-gates.json — rerun `make quality-gates`._\n";
+        return BANNER."_Corrupt snapshot at storage/quality-gates.json — rerun `make quality-gates`._\n";
     }
 
     $lines = [BANNER, '| Gate | Status | Metrics | Command |', '|---|---|---|---|'];
@@ -73,7 +73,7 @@ MD;
             default => 'UNKNOWN',
         };
         $metrics = renderMetrics(is_array($gate['metrics'] ?? null) ? $gate['metrics'] : []);
-        $command = '`' . ($gate['command'] ?? '?') . '`';
+        $command = '`'.($gate['command'] ?? '?').'`';
         $label = (string) ($gate['label'] ?? $gate['id'] ?? '?');
         $lines[] = "| {$label} | {$status} | {$metrics} | {$command} |";
     }
@@ -81,7 +81,7 @@ MD;
     $lines[] = '';
     $lines[] = renderRollup($data['gates']);
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /** @param array<string, int|float|string> $metrics */
@@ -102,7 +102,7 @@ function renderMetrics(array $metrics): string
 }
 
 /**
- * @param list<mixed> $gates
+ * @param  list<mixed>  $gates
  */
 function renderRollup(array $gates): string
 {
@@ -123,7 +123,7 @@ function renderRollup(array $gates): string
         $summary .= " ({$unmeasured} unmeasured)";
     }
     if ($failing !== []) {
-        $summary .= "\n\nFailing: " . implode(', ', array_map(fn (string $id): string => "`{$id}`", $failing));
+        $summary .= "\n\nFailing: ".implode(', ', array_map(fn (string $id): string => "`{$id}`", $failing));
     }
 
     return $summary;

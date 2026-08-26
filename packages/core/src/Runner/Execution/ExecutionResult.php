@@ -7,9 +7,9 @@ namespace Alama\Arazzo\Runner\Execution;
 class ExecutionResult
 {
     /**
-     * @param array<string, mixed> $outputs
-     * @param array<string, StepResult> $stepResults
-     * @param list<string> $workflowCallStack
+     * @param  array<string, mixed>  $outputs
+     * @param  array<string, StepResult>  $stepResults
+     * @param  list<string>  $workflowCallStack
      */
     public function __construct(
         public readonly string $workflowId,
@@ -18,6 +18,5 @@ class ExecutionResult
         public readonly array $stepResults,
         public readonly int $stepsSpent = 0,
         public readonly array $workflowCallStack = [],
-    ) {
-    }
+    ) {}
 }

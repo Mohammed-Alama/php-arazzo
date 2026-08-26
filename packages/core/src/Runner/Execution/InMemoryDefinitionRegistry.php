@@ -14,7 +14,7 @@ class InMemoryDefinitionRegistry implements WritableDefinitionRegistryInterface
 
     public function register(ArazzoDocument $document): string
     {
-        $id = 'in_memory_' . spl_object_id($document);
+        $id = 'in_memory_'.spl_object_id($document);
         $this->registry[$id] = $document;
 
         return $id;

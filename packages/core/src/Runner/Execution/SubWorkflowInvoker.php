@@ -22,8 +22,7 @@ class SubWorkflowInvoker
         private WorkflowExecutor $executor,
         private ExpressionEvaluator $expressions,
         private SelectorEvaluator $selectors,
-    ) {
-    }
+    ) {}
 
     public function invoke(
         SubWorkflowSuccessAction|SubWorkflowFailureAction $action,

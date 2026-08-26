@@ -27,7 +27,7 @@ use Alama\Arazzo\Validator\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 
-const INPUTS_SCHEMA_DOC = __DIR__ . '/../fixtures/inputs-schema/workflow.arazzo.yaml';
+const INPUTS_SCHEMA_DOC = __DIR__.'/../fixtures/inputs-schema/workflow.arazzo.yaml';
 
 it('accepts inputs matching the declared schema', function (): void {
     $document = DocumentLoader::load(INPUTS_SCHEMA_DOC);
@@ -51,7 +51,7 @@ it('rejects missing required and wrong-typed inputs before execution', function 
 });
 
 it('treats documents without an inputs schema as unconstrained', function (): void {
-    $document = DocumentLoader::load(__DIR__ . '/../fixtures/loader/minimal.yaml');
+    $document = DocumentLoader::load(__DIR__.'/../fixtures/loader/minimal.yaml');
     $validator = preflightForInputsDoc();
 
     $result = $validator->validateInputs($document, 'wf', ['anything' => ['goes' => true]]);

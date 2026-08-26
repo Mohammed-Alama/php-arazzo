@@ -20,6 +20,5 @@ final class RunPersistence
         public readonly StateStoreInterface $stateStore,
         public readonly EventLedgerInterface $eventLedger,
         public readonly ExecutionRegistryInterface $executionRegistry,
-    ) {
-    }
+    ) {}
 }

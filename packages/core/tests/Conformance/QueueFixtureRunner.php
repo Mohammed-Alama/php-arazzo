@@ -28,8 +28,7 @@ use GuzzleHttp\Psr7\HttpFactory;
 final class QueueFixtureRunner extends ConformanceHarness
 {
     /**
-     * @param array<string, mixed> $fixture
-     *
+     * @param  array<string, mixed>  $fixture
      * @return array<string, mixed>
      */
     public function run(array $fixture): array
@@ -65,7 +64,7 @@ final class QueueFixtureRunner extends ConformanceHarness
             new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),
         );
 
-        $executionId = 'parity_' . bin2hex(random_bytes(4));
+        $executionId = 'parity_'.bin2hex(random_bytes(4));
         $context = new WorkflowContext(
             definitionId: $definitionId,
             inputs: $fixture['inputs'] ?? [],

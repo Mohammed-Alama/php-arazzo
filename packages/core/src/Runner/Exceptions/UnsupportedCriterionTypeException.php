@@ -6,6 +6,4 @@ namespace Alama\Arazzo\Runner\Exceptions;
 
 use RuntimeException;
 
-final class UnsupportedCriterionTypeException extends RuntimeException
-{
-}
+final class UnsupportedCriterionTypeException extends RuntimeException {}

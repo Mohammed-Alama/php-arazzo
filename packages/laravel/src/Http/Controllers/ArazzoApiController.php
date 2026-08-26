@@ -61,16 +61,16 @@ class ArazzoApiController extends Controller
         foreach ($graph['nodes'] ?? [] as $node) {
             $trace .= "- Node {$node['id']}: Execute {$node['data']['method']} {$node['data']['path']} (Operation: {$node['data']['operationId']}).\n";
             if (!empty($node['data']['parameters'])) {
-                $trace .= '  - Parameters: ' . str_replace("\n", ' ', $node['data']['parameters']) . "\n";
+                $trace .= '  - Parameters: '.str_replace("\n", ' ', $node['data']['parameters'])."\n";
             }
             if (!empty($node['data']['requestBody'])) {
-                $trace .= '  - Request Body: ' . str_replace("\n", ' ', $node['data']['requestBody']) . "\n";
+                $trace .= '  - Request Body: '.str_replace("\n", ' ', $node['data']['requestBody'])."\n";
             }
             if (!empty($node['data']['criteria'])) {
-                $trace .= '  - Success Criteria: ' . str_replace("\n", ' ', $node['data']['criteria']) . "\n";
+                $trace .= '  - Success Criteria: '.str_replace("\n", ' ', $node['data']['criteria'])."\n";
             }
             if (!empty($node['data']['outputs'])) {
-                $trace .= '  - Outputs: ' . str_replace("\n", ' ', $node['data']['outputs']) . "\n";
+                $trace .= '  - Outputs: '.str_replace("\n", ' ', $node['data']['outputs'])."\n";
             }
         }
         foreach ($graph['edges'] ?? [] as $edge) {

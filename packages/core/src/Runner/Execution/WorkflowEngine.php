@@ -34,11 +34,11 @@ final class WorkflowEngine
     private RetryPolicy $retryPolicy;
 
     /**
-     * @param int|RetryPolicy|null $maxRetryAttempts Accepts the legacy int ceiling,
-     *                                               a full RetryPolicy, or null for defaults — keeping positional and
-     *                                               named-argument call sites (`maxRetryAttempts:`) source-compatible.
-     * @param float $retryBackoffMultiplier Legacy scalar tuning, honored when no
-     *                                      explicit RetryPolicy is supplied.
+     * @param  int|RetryPolicy|null  $maxRetryAttempts  Accepts the legacy int ceiling,
+     *                                                  a full RetryPolicy, or null for defaults — keeping positional and
+     *                                                  named-argument call sites (`maxRetryAttempts:`) source-compatible.
+     * @param  float  $retryBackoffMultiplier  Legacy scalar tuning, honored when no
+     *                                         explicit RetryPolicy is supplied.
      */
     public function __construct(
         private ExpressionResolverInterface $expressions,

@@ -6,17 +6,16 @@ namespace Ecosystem\Ingestors;
 
 use Ecosystem\GhCli;
 
-require_once dirname(__DIR__) . '/GhCli.php';
+require_once dirname(__DIR__).'/GhCli.php';
 
 final class GithubApiIngestor
 {
     /**
      * Poll via `gh api` (preferred) with curl fallback.
      *
-     * @param string $repo e.g. OAI/Arazzo-Specification
-     * @param string[] $endpoints e.g. [releases, pulls, issues]
-     * @param array<string,string> $etagCache key -> etag (kept for curl fallback; gh ignores)
-     *
+     * @param  string  $repo  e.g. OAI/Arazzo-Specification
+     * @param  string[]  $endpoints  e.g. [releases, pulls, issues]
+     * @param  array<string,string>  $etagCache  key -> etag (kept for curl fallback; gh ignores)
      * @return array<int,array<string,mixed>> raw normalized items (pre-Normalizer but with source/type/externalId/title/url/publishedAt)
      */
     public static function poll(string $repo, array $endpoints, array &$etagCache, ?string $token, int $limitPerEndpoint = 20, bool $verbose = false): array
@@ -64,7 +63,7 @@ final class GithubApiIngestor
 
             // curl fallback (with ETag)
             $url = "https://api.github.com/{$ghEndpoint}";
-            $cacheKey = $repo . ':' . $ep;
+            $cacheKey = $repo.':'.$ep;
             $etag = $etagCache[$cacheKey] ?? null;
             $res = self::getJson($url, $etag, $token, $verbose);
 
@@ -101,10 +100,10 @@ final class GithubApiIngestor
             'X-GitHub-Api-Version: 2022-11-28',
         ];
         if ($etag !== null) {
-            $headers[] = 'If-None-Match: ' . $etag;
+            $headers[] = 'If-None-Match: '.$etag;
         }
         if ($token !== null && $token !== '') {
-            $headers[] = 'Authorization: Bearer ' . $token;
+            $headers[] = 'Authorization: Bearer '.$token;
         }
 
         $ch = curl_init($url);
@@ -131,7 +130,7 @@ final class GithubApiIngestor
                 $newEtag = trim(substr($line, 5));
             }
             if (stripos($line, 'retry-after:') === 0 && $verbose) {
-                fwrite(STDERR, '  Retry-After: ' . trim(substr($line, 12)) . "\n");
+                fwrite(STDERR, '  Retry-After: '.trim(substr($line, 12))."\n");
             }
         }
         $json = null;
@@ -151,9 +150,9 @@ final class GithubApiIngestor
             'releases' => [
                 'source' => $repo,
                 'type' => 'release',
-                'externalId' => 'release:' . ($item['tag_name'] ?? $item['id'] ?? ''),
+                'externalId' => 'release:'.($item['tag_name'] ?? $item['id'] ?? ''),
                 'title' => $item['name'] ?? $item['tag_name'] ?? 'release',
-                'url' => $item['html_url'] ?? "https://github.com/{$repo}/releases/tag/" . ($item['tag_name'] ?? ''),
+                'url' => $item['html_url'] ?? "https://github.com/{$repo}/releases/tag/".($item['tag_name'] ?? ''),
                 'publishedAt' => $item['published_at'] ?? $item['created_at'] ?? gmdate('c'),
                 'body' => $item['body'] ?? '',
                 'labels' => [],
@@ -162,9 +161,9 @@ final class GithubApiIngestor
             'tags' => [
                 'source' => $repo,
                 'type' => 'tag',
-                'externalId' => 'tag:' . ($item['name'] ?? ''),
-                'title' => 'tag ' . ($item['name'] ?? ''),
-                'url' => "https://github.com/{$repo}/releases/tag/" . ($item['name'] ?? ''),
+                'externalId' => 'tag:'.($item['name'] ?? ''),
+                'title' => 'tag '.($item['name'] ?? ''),
+                'url' => "https://github.com/{$repo}/releases/tag/".($item['name'] ?? ''),
                 'publishedAt' => gmdate('c'), // tags lack timestamp; use now but dedup via id
                 'body' => $item['commit']['sha'] ?? '',
                 'labels' => [],
@@ -173,9 +172,9 @@ final class GithubApiIngestor
             'pulls' => [
                 'source' => $repo,
                 'type' => 'pr',
-                'externalId' => 'pr:' . ($item['number'] ?? ''),
+                'externalId' => 'pr:'.($item['number'] ?? ''),
                 'title' => $item['title'] ?? 'PR',
-                'url' => $item['html_url'] ?? "https://github.com/{$repo}/pull/" . ($item['number'] ?? ''),
+                'url' => $item['html_url'] ?? "https://github.com/{$repo}/pull/".($item['number'] ?? ''),
                 'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? gmdate('c'),
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
@@ -185,9 +184,9 @@ final class GithubApiIngestor
             'issues' => isset($item['pull_request']) ? null : [
                 'source' => $repo,
                 'type' => 'issue',
-                'externalId' => 'issue:' . ($item['number'] ?? ''),
+                'externalId' => 'issue:'.($item['number'] ?? ''),
                 'title' => $item['title'] ?? 'issue',
-                'url' => $item['html_url'] ?? "https://github.com/{$repo}/issues/" . ($item['number'] ?? ''),
+                'url' => $item['html_url'] ?? "https://github.com/{$repo}/issues/".($item['number'] ?? ''),
                 'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? gmdate('c'),
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
@@ -196,9 +195,9 @@ final class GithubApiIngestor
             'commits' => [
                 'source' => $repo,
                 'type' => 'commit',
-                'externalId' => 'commit:' . substr($item['sha'] ?? '', 0, 7),
+                'externalId' => 'commit:'.substr($item['sha'] ?? '', 0, 7),
                 'title' => trim(explode("\n", $item['commit']['message'] ?? 'commit')[0]),
-                'url' => $item['html_url'] ?? "https://github.com/{$repo}/commit/" . ($item['sha'] ?? ''),
+                'url' => $item['html_url'] ?? "https://github.com/{$repo}/commit/".($item['sha'] ?? ''),
                 'publishedAt' => $item['commit']['committer']['date'] ?? $item['commit']['author']['date'] ?? gmdate('c'),
                 'body' => $item['commit']['message'] ?? '',
                 'labels' => [],

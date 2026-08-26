@@ -18,8 +18,7 @@ class ArazzoSchemaValidator implements SchemaValidatorInterface
 {
     public function __construct(
         private OpenApiOperationResolver $operationResolver,
-    ) {
-    }
+    ) {}
 
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
     {

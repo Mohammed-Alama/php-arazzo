@@ -10,11 +10,11 @@ use Alama\Arazzo\Runner\Context\WorkflowContext;
 final class ExecutionContext
 {
     /**
-     * @param array<string, mixed> $inputs
-     * @param array<string, array<string, mixed>> $stepResults
-     * @param array<string, mixed> $components
-     * @param list<array<string, mixed>> $errors
-     * @param list<string> $workflowCallStack
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, array<string, mixed>>  $stepResults
+     * @param  array<string, mixed>  $components
+     * @param  list<array<string, mixed>>  $errors
+     * @param  list<string>  $workflowCallStack
      */
     public function __construct(
         public readonly string $executionId,
@@ -30,11 +30,10 @@ final class ExecutionContext
         public readonly array $workflowCallStack = [],
         public readonly int $maxWorkflowDepth = 32,
         public readonly string $status = 'running',
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed> $inputs
+     * @param  array<string, mixed>  $inputs
      */
     public static function start(
         string $executionId,
@@ -227,7 +226,7 @@ final class ExecutionContext
      * (preserving response headers, bodies, failure categories), StepResult
      * objects are serialized.
      *
-     * @param StepResult|array<string, mixed> $result
+     * @param  StepResult|array<string, mixed>  $result
      */
     public function withStepResult(string $stepId, StepResult|array $result): self
     {

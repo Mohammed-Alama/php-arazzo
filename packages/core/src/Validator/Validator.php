@@ -9,9 +9,7 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 
 final class Validator
 {
-    public function __construct(private readonly RuleSet $rules)
-    {
-    }
+    public function __construct(private readonly RuleSet $rules) {}
 
     public function validate(ArazzoDocument $doc): ValidationResult
     {

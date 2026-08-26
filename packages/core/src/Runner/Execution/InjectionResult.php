@@ -12,6 +12,5 @@ final readonly class InjectionResult
         public RequestInterface $request,
         public ?string $key = null,
         public ?string $header = null,
-    ) {
-    }
+    ) {}
 }

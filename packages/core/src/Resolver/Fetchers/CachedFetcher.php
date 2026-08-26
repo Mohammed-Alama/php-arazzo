@@ -13,13 +13,12 @@ final class CachedFetcher implements SourceFetcher
         private readonly SourceFetcher $inner,
         private readonly CacheInterface $cache,
         private readonly int $ttlSeconds = 3600,
-    ) {
-    }
+    ) {}
 
     public function fetch(string $urlOrPath, string $basePath): string
     {
         // Cache key only; sha256 keeps the security surface free of weak-hash flags.
-        $key = 'arazzo_source_' . hash('sha256', $urlOrPath . '|' . $basePath);
+        $key = 'arazzo_source_'.hash('sha256', $urlOrPath.'|'.$basePath);
 
         $cached = $this->cache->get($key);
         if ($cached !== null) {

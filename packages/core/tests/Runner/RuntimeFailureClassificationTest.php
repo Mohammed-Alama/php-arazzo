@@ -22,7 +22,7 @@ use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 
-require_once __DIR__ . '/HttpStepExecutorTest.php';
+require_once __DIR__.'/HttpStepExecutorTest.php';
 
 /**
  * Anonymous harness exposing the protected conformance plumbing so the
@@ -66,7 +66,7 @@ $classificationHarness = new class() extends ConformanceHarness
 function requestConstructionFixture(): array
 {
     return json_decode((string) file_get_contents(
-        __DIR__ . '/../Conformance/fixtures/openapi-request-construction.json',
+        __DIR__.'/../Conformance/fixtures/openapi-request-construction.json',
     ), true, 512, JSON_THROW_ON_ERROR);
 }
 
@@ -125,7 +125,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         ->and($outcome->responseBody['error'] ?? null)->toBe('connection refused');
 
     // 2. Successful response retains the raw payload and content type.
-    $ok = json_decode((string) file_get_contents(__DIR__ . '/../Conformance/fixtures/goto-on-failure.json'), true);
+    $ok = json_decode((string) file_get_contents(__DIR__.'/../Conformance/fixtures/goto-on-failure.json'), true);
     expect($ok)->not->toBeNull();
 
     $http2 = new FakePsr18Client();
@@ -144,7 +144,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
 });
 
 it('classifies unmet-criteria failures on step events while keeping execution faults distinct', function () use ($classificationHarness): void {
-    $fixture = json_decode((string) file_get_contents(__DIR__ . '/../Conformance/fixtures/goto-on-failure.json'), true);
+    $fixture = json_decode((string) file_get_contents(__DIR__.'/../Conformance/fixtures/goto-on-failure.json'), true);
     $document = $classificationHarness->boot($fixture);
     $operationResolver = $classificationHarness->ops();
     $resolver = $classificationHarness->res($operationResolver);

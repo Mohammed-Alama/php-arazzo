@@ -24,8 +24,7 @@ use GuzzleHttp\Psr7\HttpFactory;
 final class FixtureRunner extends ConformanceHarness
 {
     /**
-     * @param array<string, mixed> $fixture
-     *
+     * @param  array<string, mixed>  $fixture
      * @return array<string, mixed>
      */
     public function run(array $fixture): array

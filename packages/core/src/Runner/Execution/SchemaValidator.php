@@ -73,7 +73,7 @@ final class SchemaValidator
         $violations = [];
 
         if ($schema->type !== null && !self::matchesType($schema->type, $value)) {
-            $violations[] = ['path' => $at, 'message' => "expected type '{$schema->type}', got " . get_debug_type($value)];
+            $violations[] = ['path' => $at, 'message' => "expected type '{$schema->type}', got ".get_debug_type($value)];
         }
 
         if ($schema->enum !== null && $schema->enum !== [] && !in_array($value, $schema->enum, true)) {
@@ -125,8 +125,7 @@ final class SchemaValidator
     }
 
     /**
-     * @param array<string,mixed> $value
-     *
+     * @param  array<string,mixed>  $value
      * @return list<array{path: string, message: string}>
      */
     private static function validateObject(Schema $schema, array $value, string $path): array
@@ -135,16 +134,16 @@ final class SchemaValidator
         $violations = [];
 
         if ($schema->minProperties !== null && count($value) < $schema->minProperties) {
-            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minProperties} properties, got " . count($value)];
+            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minProperties} properties, got ".count($value)];
         }
         if ($schema->maxProperties !== null && count($value) > $schema->maxProperties) {
-            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxProperties} properties, got " . count($value)];
+            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxProperties} properties, got ".count($value)];
         }
 
         foreach (($schema->required ?? []) as $requiredName) {
             if (!array_key_exists($requiredName, $value)) {
                 $violations[] = [
-                    'path' => $path . '/' . $requiredName,
+                    'path' => $path.'/'.$requiredName,
                     'message' => "missing required property '{$requiredName}'",
                 ];
             }
@@ -158,15 +157,14 @@ final class SchemaValidator
             if ($resolved === null) {
                 continue;
             }
-            $violations = [...$violations, ...self::validate($resolved, $value[$name], $path . '/' . $name)];
+            $violations = [...$violations, ...self::validate($resolved, $value[$name], $path.'/'.$name)];
         }
 
         return $violations;
     }
 
     /**
-     * @param list<mixed> $value
-     *
+     * @param  list<mixed>  $value
      * @return list<array{path: string, message: string}>
      */
     private static function validateArray(Schema $schema, array $value, string $path): array
@@ -175,10 +173,10 @@ final class SchemaValidator
         $violations = [];
 
         if ($schema->minItems !== null && count($value) < $schema->minItems) {
-            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minItems} items, got " . count($value)];
+            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minItems} items, got ".count($value)];
         }
         if ($schema->maxItems !== null && count($value) > $schema->maxItems) {
-            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxItems} items, got " . count($value)];
+            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxItems} items, got ".count($value)];
         }
         if ($schema->uniqueItems === true && count($value) !== count(array_unique($value, SORT_REGULAR))) {
             $violations[] = ['path' => $at, 'message' => 'items must be unique'];
@@ -187,7 +185,7 @@ final class SchemaValidator
         $itemSchema = self::resolveSchema($schema->items);
         if ($itemSchema !== null) {
             foreach (array_values($value) as $index => $item) {
-                $violations = [...$violations, ...self::validate($itemSchema, $item, $path . '/' . $index)];
+                $violations = [...$violations, ...self::validate($itemSchema, $item, $path.'/'.$index)];
             }
         }
 
@@ -203,13 +201,13 @@ final class SchemaValidator
         $violations = [];
 
         if ($schema->minLength !== null && mb_strlen($value) < $schema->minLength) {
-            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minLength} characters, got " . mb_strlen($value)];
+            $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minLength} characters, got ".mb_strlen($value)];
         }
         if ($schema->maxLength !== null && mb_strlen($value) > $schema->maxLength) {
-            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxLength} characters, got " . mb_strlen($value)];
+            $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxLength} characters, got ".mb_strlen($value)];
         }
 
-        if ($schema->pattern !== null && @preg_match('/' . str_replace('/', '\/', $schema->pattern) . '/u', $value) !== 1) {
+        if ($schema->pattern !== null && @preg_match('/'.str_replace('/', '\/', $schema->pattern).'/u', $value) !== 1) {
             $violations[] = ['path' => $at, 'message' => "does not match pattern '{$schema->pattern}'"];
         }
 
@@ -239,7 +237,7 @@ final class SchemaValidator
 
     private static function isValidDateTime(string $value, string $format): bool
     {
-        $date = DateTime::createFromFormat('!' . $format, $value);
+        $date = DateTime::createFromFormat('!'.$format, $value);
 
         return $date !== false && $date->format($format) === $value;
     }

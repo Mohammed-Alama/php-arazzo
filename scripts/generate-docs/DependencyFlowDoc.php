@@ -25,8 +25,8 @@ the heavier direction is drawn and the folded side is listed below the chart.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -35,7 +35,7 @@ function render(array $core, array $laravel): string
     $classModule = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace . '\\' . $file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $module;
         }
     }
 
@@ -49,7 +49,7 @@ function render(array $core, array $laravel): string
     }
 
     if ($rows === []) {
-        return BANNER . "_No cross-module dependencies found._\n";
+        return BANNER."_No cross-module dependencies found._\n";
     }
 
     // Sankey must be free of DIRECTED cycles; GitHub rejects circular links.
@@ -110,8 +110,8 @@ function render(array $core, array $laravel): string
         $lines[] = '## Folded flows';
         $lines[] = '';
         $lines[] = 'These references exist in the code but are not drawn: drawing them would'
-            . ' close a dependency cycle and Sankey diagrams must stay acyclic. The heavier'
-            . ' direction of each cycle is shown above.';
+            .' close a dependency cycle and Sankey diagrams must stay acyclic. The heavier'
+            .' direction of each cycle is shown above.';
         $lines[] = '';
         $lines[] = '| From | To | References |';
         $lines[] = '|---|---|---:|';
@@ -122,7 +122,7 @@ function render(array $core, array $laravel): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function label(string $module): string

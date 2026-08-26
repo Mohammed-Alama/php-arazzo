@@ -61,7 +61,7 @@ final class ExpressionValueResolver
         // interpolator's `{$...}` template form before evaluation.
         if (preg_match('/^\$[{$]?[A-Za-z]/', $value) === 1 && !str_contains($value, ' ')) {
             return $this->interpolator->interpolate(
-                $value[1] === '{' ? $value : '{' . $value . '}',
+                $value[1] === '{' ? $value : '{'.$value.'}',
                 $context,
                 $stepId,
             );

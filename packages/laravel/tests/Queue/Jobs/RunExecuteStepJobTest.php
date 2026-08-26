@@ -19,9 +19,7 @@ class RecordingStepExecutionWorker extends StepExecutionWorker
     /** @var list<ExecuteStepJob> */
     public array $handled = [];
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(ExecuteStepJob $job): void
     {
@@ -76,7 +74,7 @@ use GuzzleHttp\Psr7\Response;
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context
     $step = new Step('step-1', null, 'op', null, null, [], null, [], [], [], []);
-    $executionId = 'exec-idempotency-test-' . bin2hex(random_bytes(8));
+    $executionId = 'exec-idempotency-test-'.bin2hex(random_bytes(8));
     $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId($executionId);
     $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);
     $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [new SourceDescription('src', 'http://api.example.com', SourceType::Openapi)], [$workflow], new Components([], [], [], []), []);

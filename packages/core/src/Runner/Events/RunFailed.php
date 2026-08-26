@@ -15,6 +15,5 @@ final readonly class RunFailed
         public Throwable $cause,
         public DateTimeImmutable $at,
         public string $category = 'execution',
-    ) {
-    }
+    ) {}
 }

@@ -19,7 +19,7 @@ use Alama\Arazzo\Tests\Support\TestExpressionResolver;
  */
 function propertySegments(int $count): array
 {
-    return array_map(fn (int $i): string => 'seg' . $i, range(0, $count - 1));
+    return array_map(fn (int $i): string => 'seg'.$i, range(0, $count - 1));
 }
 
 it('round-trips random JSON pointers through resolve', function (): void {
@@ -42,7 +42,7 @@ it('round-trips random JSON pointers through resolve', function (): void {
         }
         unset($node);
 
-        $pointer = '/' . implode('/', array_map(
+        $pointer = '/'.implode('/', array_map(
             fn (string $key): string => str_replace(['~', '/'], ['~0', '~1'], $key),
             $keys,
         ));
@@ -73,8 +73,8 @@ it('accepts equivalent runtime-expression spellings and rejects malformed ones',
             return $tokens;
         };
 
-        expect($tokensOf('${' . $path . '}'))->toBe($tokensOf('{$' . $path . '}'))
-            ->and($tokensOf('$' . $path))->toBe($tokensOf('{$' . $path . '}'));
+        expect($tokensOf('${'.$path.'}'))->toBe($tokensOf('{$'.$path.'}'))
+            ->and($tokensOf('$'.$path))->toBe($tokensOf('{$'.$path.'}'));
     }
 
     expect(fn () => (new Lexer())->tokenize('{unterminated'))
@@ -95,11 +95,11 @@ it('returns acyclic-consistent topological orders for random DAGs and finds cycl
             // Only allow edges to EARLIER steps: guarantees a DAG.
             for ($candidate = 0; $candidate < $i; $candidate++) {
                 if (mt_rand(0, 1) === 1) {
-                    $deps[] = 'step' . $candidate;
+                    $deps[] = 'step'.$candidate;
                 }
             }
 
-            $edges['step' . $i] = $deps;
+            $edges['step'.$i] = $deps;
         }
 
         $dtos = array_map(fn (string $id): Step => Fx::step($id), array_keys($edges));
@@ -175,7 +175,7 @@ it('round-trips execution state through serialization with arbitrary payloads', 
         $seed = mt_rand();
         $errors = array_fill(0, mt_rand(0, 2), ['type' => 'retry_exhausted']);
 
-        $state = ExecutionState::start('exec_' . $seed, 'def_' . $seed, 'wf_' . $seed)
+        $state = ExecutionState::start('exec_'.$seed, 'def_'.$seed, 'wf_'.$seed)
             ->withInputs(['seed' => $seed])
             ->withOutput('out', $outputs);
 

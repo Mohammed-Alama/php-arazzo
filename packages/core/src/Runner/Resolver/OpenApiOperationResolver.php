@@ -23,8 +23,7 @@ class OpenApiOperationResolver
         private OpenApiVersionDetector $versionDetector,
         private OpenApi30Normalizer $normalizer30,
         private OpenApi31Normalizer $normalizer31,
-    ) {
-    }
+    ) {}
 
     public function resolve(Step $step, ArazzoDocument $document): ResolvedOperation
     {
