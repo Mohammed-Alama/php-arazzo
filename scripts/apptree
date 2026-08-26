@@ -1,0 +1,200 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+WORKTREE_DIR="$PROJECT_ROOT/.worktrees/feat"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") <command> [args]
+
+Commands:
+  create <branch>   Create worktree + start Docker containers
+  shell <branch>    Open shell in running container
+  test <branch>     Run Pest tests in container
+  down <branch>     Stop and remove containers
+  list              List all active apptree instances
+
+Examples:
+  $(basename "$0") create my-feature
+  $(basename "$0") shell my-feature
+  $(basename "$0") test my-feature
+  $(basename "$0") down my-feature
+  $(basename "$0") list
+EOF
+}
+
+cmd_create() {
+    local branch="$1"
+    local worktree_path="$WORKTREE_DIR/$branch"
+
+    echo "==> Creating worktree: $branch"
+
+    # Create git worktree
+    if [ ! -d "$worktree_path" ]; then
+        mkdir -p "$WORKTREE_DIR"
+        git worktree add -b "$branch" "$worktree_path" HEAD
+        echo "    Worktree created at $worktree_path"
+    else
+        echo "    Worktree already exists at $worktree_path"
+    fi
+
+    # Copy docker files to worktree if not present
+    for f in Dockerfile .dockerignore; do
+        if [ ! -f "$worktree_path/$f" ]; then
+            cp "$PROJECT_ROOT/$f" "$worktree_path/$f"
+        fi
+    done
+
+    # Generate docker-compose.yml with correct git mount
+    # Mount main .git at host path so worktree .git file resolves in container
+    if [ ! -f "$worktree_path/docker-compose.yml" ]; then
+        cat > "$worktree_path/docker-compose.yml" <<COMPOSE
+services:
+  php:
+    build: .
+    volumes:
+      - .:/app
+      - ${PROJECT_ROOT}/.git:${PROJECT_ROOT}/.git:ro
+    working_dir: /app
+    depends_on:
+      - redis
+    environment:
+      APP_ENV: testing
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ":memory:"
+    stdin_open: true
+    tty: true
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "\${REDIS_PORT:-6379}"
+COMPOSE
+    fi
+
+    # Start Docker containers
+    echo "==> Starting Docker containers..."
+    cd "$worktree_path"
+    docker compose up -d --build
+
+    # Install dependencies if needed
+    if [ ! -d "$worktree_path/vendor" ]; then
+        echo "==> Installing composer dependencies..."
+        docker compose exec php composer install
+    fi
+
+    echo ""
+    echo "==> apptree ready!"
+    echo "    Worktree: $worktree_path"
+    echo "    Shell:    $(basename "$0") shell $branch"
+    echo "    Tests:    $(basename "$0") test $branch"
+}
+
+cmd_shell() {
+    local branch="$1"
+    local worktree_path="$WORKTREE_DIR/$branch"
+
+    if [ ! -d "$worktree_path" ]; then
+        echo "Error: No worktree found for branch '$branch'"
+        echo "Run: $(basename "$0") create $branch"
+        exit 1
+    fi
+
+    cd "$worktree_path"
+    docker compose exec php sh
+}
+
+cmd_test() {
+    local branch="$1"
+    local worktree_path="$WORKTREE_DIR/$branch"
+
+    if [ ! -d "$worktree_path" ]; then
+        echo "Error: No worktree found for branch '$branch'"
+        exit 1
+    fi
+
+    cd "$worktree_path"
+    docker compose exec php vendor/bin/pest
+}
+
+cmd_down() {
+    local branch="$1"
+    local worktree_path="$WORKTREE_DIR/$branch"
+
+    if [ ! -d "$worktree_path" ]; then
+        echo "Error: No worktree found for branch '$branch'"
+        exit 1
+    fi
+
+    echo "==> Stopping Docker containers..."
+    cd "$worktree_path"
+    docker compose down -v
+
+    echo "==> Removing worktree..."
+    cd "$PROJECT_ROOT"
+    git worktree remove --force "$worktree_path"
+
+    echo "==> apptree '$branch' removed"
+}
+
+cmd_list() {
+    echo "==> Active apptree instances:"
+    echo ""
+
+    if [ ! -d "$WORKTREE_DIR" ] || [ -z "$(ls -A "$WORKTREE_DIR" 2>/dev/null)" ]; then
+        echo "    (none)"
+        return
+    fi
+
+    for dir in "$WORKTREE_DIR"/*/; do
+        local branch
+        branch=$(basename "$dir")
+        local status="stopped"
+
+        cd "$dir"
+        if docker compose ps --status running 2>/dev/null | grep -q "php"; then
+            status="running"
+        fi
+        cd "$PROJECT_ROOT"
+
+        printf "    %-30s [%s]\n" "$branch" "$status"
+    done
+}
+
+# Main
+if [ $# -lt 1 ]; then
+    usage
+    exit 1
+fi
+
+command="$1"
+shift
+
+case "$command" in
+    create)
+        [ $# -lt 1 ] && { echo "Error: branch name required"; exit 1; }
+        cmd_create "$1"
+        ;;
+    shell)
+        [ $# -lt 1 ] && { echo "Error: branch name required"; exit 1; }
+        cmd_shell "$1"
+        ;;
+    test)
+        [ $# -lt 1 ] && { echo "Error: branch name required"; exit 1; }
+        cmd_test "$1"
+        ;;
+    down)
+        [ $# -lt 1 ] && { echo "Error: branch name required"; exit 1; }
+        cmd_down "$1"
+        ;;
+    list)
+        cmd_list
+        ;;
+    *)
+        echo "Error: Unknown command '$command'"
+        usage
+        exit 1
+        ;;
+esac

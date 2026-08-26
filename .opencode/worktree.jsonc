@@ -1,0 +1,31 @@
+{
+  "$schema": "https://registry.kdco.dev/schemas/worktree.json",
+
+  "sync": {
+    // Copy Docker files to new worktrees
+    "copyFiles": [
+      "Dockerfile",
+      "docker-compose.yml",
+      ".dockerignore"
+    ],
+
+    // Symlink vendor to save disk space
+    "symlinkDirs": [
+      "vendor",
+      "node_modules"
+    ]
+  },
+
+  "hooks": {
+    // Start Docker containers after worktree creation
+    "postCreate": [
+      "docker compose up -d --build",
+      "docker compose exec php composer install"
+    ],
+
+    // Stop Docker containers before worktree deletion
+    "preDelete": [
+      "docker compose down -v"
+    ]
+  }
+}

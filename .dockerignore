@@ -1,0 +1,39 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# Dependencies (mounted via volume)
+vendor
+node_modules
+
+# Test artifacts
+.phpunit.cache
+test-results
+playwright-report
+
+# Build artifacts
+build
+storage
+.cache
+.scratch
+
+# Documentation
+docs
+docs_ignored
+*.md
+!README.md
+
+# Docker (avoid recursive builds)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db
