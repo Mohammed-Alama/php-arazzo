@@ -351,6 +351,9 @@ file on a commit is a public API change — review it deliberately.
 - `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
 - `public static function start(string $executionId, string $definitionId, string $workflowId, array $inputs = [], int $maxSteps = 1000, int $maxWorkflowDepth = 32, array $components = [], int $stepsSpent = 0, ?array $workflowCallStack = null): self`
 
+### `ExecutionStateBuilder` class
+- `public function build(?array $persisted, WorkflowContext $resultContext, Workflow $workflow, ?Step $overlayStep = null): ExecutionState`
+
 ### `ExecutionStatus` enum
 - Cases: `Failed`, `Running`, `Succeeded`
 
@@ -517,6 +520,10 @@ file on a commit is a public API change — review it deliberately.
 - `public function release(string $key): void`
 - `public function tryAcquire(string $key, int $ttlSeconds): bool`
 
+### `PreflightGuard` class
+- `public function __construct(private readonly DefinitionRegistryInterface $definitions, private readonly ?PreflightValidator $preflight)`
+- `public function guard(WorkflowContext $context): void`
+
 ### `ProtocolExecutorRegistry` class
 - `public function getSupportedProtocols(): array`
 - `public function register(string $name, StepProtocolExecutorInterface $executor): void`
@@ -576,6 +583,10 @@ file on a commit is a public API change — review it deliberately.
 ### `SelectorEvaluator` class
 - `public function __construct(private XpathEvaluator $xpath, private ExpressionEvaluator $expressions)`
 - `public function evaluate(Selector $sel, WorkflowContext $wf, string $stepId): mixed`
+
+### `StateReconciler` class
+- `public function __construct(private readonly StateStoreInterface $stateStore)`
+- `public function reconcile(WorkflowContext $jobContext, string $executionId, ?array $persisted = null): WorkflowContext`
 
 ### `StateStoreInterface` interface
 - `public function load(string $executionId): ?array;`
@@ -637,6 +648,10 @@ file on a commit is a public API change — review it deliberately.
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 - `public function supports(Step $step, ArazzoDocument $document): bool`
 
+### `SuspensionHandler` class
+- `public function __construct(private readonly StateStoreInterface $stateStore, private readonly ExecutionRegistryInterface $executionRegistry, private readonly EventLedgerInterface $eventLedger, private readonly EventDispatcherInterface $events, private readonly ExpressionResolverInterface $expressions, private readonly int $stateTtlSeconds = 86400)`
+- `public function handle(Step $step, WorkflowContext $context, Workflow $workflow, string $executionId): void`
+
 ### `Swagger2Normalizer` class
 - `public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation`
 
@@ -663,6 +678,11 @@ file on a commit is a public API change — review it deliberately.
 - `public static function next(ExecutionState|ExecutionContext $state, ?string $stepId): self`
 - `public static function retry(ExecutionState|ExecutionContext $state, string $stepId, int $delaySeconds = 0, ?string $workflowId = null): self`
 - `public static function suspend(ExecutionState|ExecutionContext $state): self`
+
+### `TransitionApplier` class
+- Constants: `OUTCOME_ABORTED`, `OUTCOME_CONTINUE`, `OUTCOME_TERMINAL`
+- `public function __construct(private readonly StateStoreInterface $stateStore, private readonly ExecutionRegistryInterface $executionRegistry, private readonly EventLedgerInterface $eventLedger, private readonly QueueDriverInterface $queueDriver, private readonly WorkflowEngine $workflowEngine, private readonly WorkerEvents $events, private readonly int $stateTtlSeconds = 86400)`
+- `public function apply(ArazzoDocument $document, Workflow $workflow, Step $step, Transition $transition, string $executionId): string`
 
 ### `TransitionType` enum
 - Cases: `End`, `Goto`, `Invoke`, `Next`, `Retry`, `Suspend`
@@ -692,6 +712,15 @@ file on a commit is a public API change — review it deliberately.
 - `public function setStepOutput(string $stepId, string $key, mixed $value): void`
 - `public function setStepRequest(string $stepId, array $request): void`
 - `public function setStepResponse(string $stepId, array $response): void`
+
+### `WorkerEvents` class
+- `public function __construct(?EventDispatcherInterface $events = null)`
+- `public function correlationPending(string $executionId, string $workflowId, string $stepId, string $correlationId, string $channelPath): void`
+- `public function failurePair(string $executionId, string $workflowId, string $stepId, Throwable $cause): void`
+- `public function runCompleted(string $executionId, string $workflowId, array $outputs): void`
+- `public function runFailedBecause(string $executionId, string $workflowId, string $reason): void`
+- `public function stepExecuted(string $executionId, string $workflowId, string $stepId, int $statusCode, array $outputs, bool $criteriaMet): void`
+- `public function stepStarted(string $executionId, string $workflowId, string $stepId, int $attempt): void`
 
 ### `WorkflowContext` class
 - `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, private ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [])`

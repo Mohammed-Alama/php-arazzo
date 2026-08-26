@@ -9,23 +9,21 @@ each commit. A plan that never meets this doc is a wish, not a roadmap.
 
 Plan: `2026-08-25-runner-modularization-plan.md`
 
-- Files promised: **49** · created: **30** (**61%**)
-- Checkboxes ticked: **0 / 90**
+- Files promised: **49** · created: **34** (**69%**)
+- Checkboxes ticked: **9 / 89**
 
 ```mermaid
 xychart-beta
-    title "Planned files created (61%)"
+    title "Planned files created (69%)"
     x-axis ["created", "missing"]
     y-axis "Files" 0 --> 49
-    bar [30, 19]
+    bar [34, 15]
 ```
 
 ## Not yet in the tree
 
 - `packages/core/src/Runner/Policy/BackoffCalculator.php`
 - `packages/core/src/Runner/Contract/StateStoreInterface.php`
-- `packages/core/src/Runner/Async/StateReconciler.php`
-- `packages/core/src/Runner/Async/PreflightGuard.php`
 - `packages/core/src/Runner/Async/StepExecutor.php`
 - `packages/core/src/Runner/Async/CriteriaEvaluator.php`
 - `packages/core/src/Runner/Async/TransitionDispatcher.php`
@@ -33,8 +31,6 @@ xychart-beta
 - `packages/core/src/Runner/Cli/CliStateStore.php`
 - `packages/core/src/Runner/Execution/StepProtocolExecutorInterface.php`
 - `packages/core/tests/Runner/Policy/BackoffCalculatorTest.php`
-- `packages/core/tests/Runner/Async/StateReconcilerTest.php`
-- `packages/core/tests/Runner/Async/PreflightGuardTest.php`
 - `packages/core/tests/Runner/Async/StepExecutorTest.php`
 - `packages/core/tests/Runner/Async/CriteriaEvaluatorTest.php`
 - `packages/core/tests/Runner/Async/TransitionDispatcherTest.php`

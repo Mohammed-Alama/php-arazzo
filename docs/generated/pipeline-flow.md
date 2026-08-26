@@ -14,6 +14,10 @@ flowchart TD
         Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob["RunExecuteStepJob"]:::entry
         Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob["RunResumeCorrelationJob"]:::entry
     end
+    subgraph G_Runner_Async["Runner/Async"]
+        Alama_Arazzo_Runner_Async_TransitionApplier["TransitionApplier"]:::entry
+        Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents"]:::service
+    end
     subgraph G_Runner_Cli["Runner/Cli"]
         Alama_Arazzo_Runner_Cli_CliRunner["CliRunner"]:::entry
         Alama_Arazzo_Runner_Cli_InProcessExecutionRegistry["InProcessExecutionRegistry"]:::service
@@ -105,6 +109,9 @@ flowchart TD
     end
     Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
     Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob
+    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Async_WorkerEvents
+    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
     Alama_Arazzo_Runner_Cli_CliRunner --> Alama_Arazzo_Runner_Cli_InProcessExecutionRegistry
     Alama_Arazzo_Runner_Cli_CliRunner --> Alama_Arazzo_Runner_Cli_NullEventLedger
     Alama_Arazzo_Runner_Cli_CliRunner --> Alama_Arazzo_Runner_Context_WorkflowContext
@@ -211,6 +218,8 @@ flowchart TD
 |---|---|---|---|---|
 | **RunExecuteStepJob** | laravel | `ExecuteStepJob` | — | — |
 | **RunResumeCorrelationJob** | laravel | `ResumeCorrelationJob` | — | — |
+| **TransitionApplier** | core | `WorkerEvents`, `WorkflowEngine`, `ExecuteStepJob` | — | — |
+| **WorkerEvents** | core | — | `TransitionApplier` | `CorrelationPending`, `RunCompleted`, `RunFailed`, `StepExecuted`, `StepFailed`, `StepStarted` |
 | **CliRunner** | core | `InProcessExecutionRegistry`, `NullEventLedger`, `WorkflowContext`, `RunControlFlow`, `RunPersistence`, `StepExecutionWorker`, `SyncQueueDriver`, `WorkflowEngine`, `ExecuteStepJob` | — | — |
 | **InProcessExecutionRegistry** | core | — | `CliRunner` | — |
 | **NullEventLedger** | core | — | `CliRunner` | — |
@@ -259,9 +268,9 @@ flowchart TD
 | **SubWorkflowStepExecutor** | core | `EvaluationContext`, `ExpressionEvaluator`, `ReusableParameterResolver`, `WorkflowExecutor` | — | — |
 | **SyncQueueDriver** | core | — | `CliRunner` | — |
 | **Transition** | core | `ExecutionState`, `ExecutionContext` | — | — |
-| **WorkflowEngine** | core | `DependencyGraph`, `RetryPolicy` | `CliRunner`, `RunControlFlow`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor`, `SubWorkflowExecutor` | — |
+| **WorkflowEngine** | core | `DependencyGraph`, `RetryPolicy` | `TransitionApplier`, `CliRunner`, `RunControlFlow`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor`, `SubWorkflowExecutor` | — |
 | **WorkflowExecutor** | core | `WorkflowContext`, `ExecutionResult`, `StepExecutor`, `StepResult`, `WorkflowEngine` | `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | `RunCompleted`, `RunFailed`, `RunStarted`, `StepExecuted`, `StepFailed`, `StepRetried`, `StepStarted` |
-| **ExecuteStepJob** | core | `WorkflowContext` | `RunExecuteStepJob`, `CliRunner`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
+| **ExecuteStepJob** | core | `WorkflowContext` | `RunExecuteStepJob`, `TransitionApplier`, `CliRunner`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
 | **ResumeCorrelationJob** | core | — | `RunResumeCorrelationJob` | — |
 | **NormalizedOpenApiOperation** | core | — | `OpenApi30Normalizer`, `ResolvedOperation` | — |
 | **OpenApi30Normalizer** | core | `NormalizedOpenApiOperation` | `OpenApiOperationResolver` | — |

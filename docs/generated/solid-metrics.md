@@ -37,7 +37,7 @@ quadrantChart
     Parser: [0.333, 0.2]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.273]
-    Runner: [0.357, 0.162]
+    Runner: [0.357, 0.155]
     Spec: [0.1, 0]
     Support: [0.167, 0.167]
     Validator: [0.625, 0.016]

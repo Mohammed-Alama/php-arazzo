@@ -41,8 +41,8 @@ flowchart LR
     Resolver --> Spec
     Runner --> Spec
     Runner --> Support
-    Runner --> Resolver
     Runner --> Validator
+    Runner --> Resolver
     Runner --> Expression
     Spec --> Expression
     Support --> Runner

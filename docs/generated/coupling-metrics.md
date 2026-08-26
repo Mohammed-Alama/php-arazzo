@@ -26,26 +26,26 @@ targets. Regenerated before every commit.
 | `Parser` | 10 | 1077 | 4 | 2 | 0.33 |  |
 | `Renderer` | 1 | 253 | 1 | 1 | 0.50 |  |
 | `Resolver` | 11 | 347 | 5 | 2 | 0.29 |  |
-| `Runner` | 136 | 9571 | 9 | 5 | 0.36 |  |
+| `Runner` | 142 | 10062 | 9 | 5 | 0.36 |  |
 | `Spec` | 32 | 691 | 9 | 1 | 0.10 |  |
 | `Support` | 6 | 263 | 5 | 1 | 0.17 |  |
 | `Validator` | 63 | 3049 | 3 | 5 | 0.63 |  |
 
-Total cross-module edges: **547**
+Total cross-module edges: **558**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Runner` → `Spec` | 128 |
+| `Runner` → `Spec` | 135 |
 | `Validator` → `Spec` | 88 |
 | `Validator` → `Expression` | 78 |
 | `Laravel:Bindings` → `Runner` | 50 |
 | `Parser` → `Spec` | 30 |
 | `Console` → `Runner` | 15 |
 | `Runner` → `Expression` | 15 |
-| `Runner` → `Support` | 12 |
+| `Runner` → `Support` | 13 |
 | `Support` → `Runner` | 10 |
+| `Runner` → `Validator` | 9 |
 | `Console` → `Parser` | 8 |
 | `Renderer` → `Spec` | 8 |
-| `Laravel:Persistence` → `Runner` | 7 |

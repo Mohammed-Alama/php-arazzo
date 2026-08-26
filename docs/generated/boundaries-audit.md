@@ -18,7 +18,7 @@ edit `POLICY` when a boundary consciously moves.
 | `Illuminate` | 0 | 36 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 38 | 17 | allowed |
+| `Psr` | 40 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -36,7 +36,7 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Runner` | `Flow` | 1 |
 | core | `Runner` | `GuzzleHttp` | 1 |
 | core | `Runner` | `OpenTelemetry` | 26 |
-| core | `Runner` | `Psr` | 26 |
+| core | `Runner` | `Psr` | 28 |
 | core | `Runner` | `cebe` | 16 |
 | core | `Support` | `Psr` | 4 |
 | core | `Validator` | `JsonSchema` | 7 |
