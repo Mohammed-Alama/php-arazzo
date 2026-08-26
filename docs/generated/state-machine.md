@@ -15,7 +15,7 @@ stateDiagram-v2
     [*] --> Executing : RunStarted
     Executing --> Failed : action - terminal action
     Executing --> Succeeded : action - terminal action
-    Executing --> Failed : workflow exhausted (no runnable step)
+    Executing --> Failed : criteria NOT met (no matching action)
     Executing --> Succeeded : workflow exhausted (no runnable step)
     Executing --> Executing : action - FailureGotoAction
     Executing --> Invoking : action - SubWorkflowFailureAction
@@ -50,7 +50,7 @@ stateDiagram-v2
 |---|---|---|
 | action: terminal action | `end` | `failed` |
 | action: terminal action | `end` | `succeeded` |
-| workflow exhausted (no runnable step) | `end` | `failed` |
+| criteria NOT met (no matching action) | `end` | `failed` |
 | workflow exhausted (no runnable step) | `end` | `succeeded` |
 | action: FailureGotoAction | `goto` | — |
 | action: SubWorkflowFailureAction | `invoke` | — |

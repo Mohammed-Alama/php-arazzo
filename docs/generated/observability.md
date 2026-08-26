@@ -91,13 +91,14 @@ Runtime state survives process boundaries through these contracts:
 
 | Contract | Implementations |
 |---|---|
-| `DefinitionRegistryInterface` | `DatabaseDefinitionRegistry` <small>laravel</small>, `InMemoryDefinitionRegistry` <small>core</small> |
-| `EventLedgerInterface` | `DatabaseEventLedger` <small>laravel</small> |
-| `ExecutionRegistryInterface` | `DatabaseExecutionRegistry` <small>laravel</small> |
-| `LockManagerInterface` | `LaravelRedisLockManager` <small>laravel</small> |
+| `DefinitionRegistryInterface` | `DatabaseDefinitionRegistry` <small>laravel</small> |
+| `EventLedgerInterface` | `DatabaseEventLedger` <small>laravel</small>, `NullEventLedger` <small>core</small> |
+| `ExecutionRegistryInterface` | `DatabaseExecutionRegistry` <small>laravel</small>, `InProcessExecutionRegistry` <small>core</small> |
+| `LockManagerInterface` | `LaravelRedisLockManager` <small>laravel</small>, `CliRunner` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | `LaravelQueueDriver` <small>laravel</small>, `SyncQueueDriver` <small>core</small> |
-| `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small> |
+| `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small>, `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
+| `WritableDefinitionRegistryInterface` | `InMemoryDefinitionRegistry` <small>core</small> |
 
 ## Correlation touchpoints
 
@@ -111,6 +112,7 @@ Where async suspend/resume bookkeeping happens:
 | `DatabasePendingCorrelationRegistry` <small>laravel</small> | consumes correlation, creates pending correlation, reads pending state |
 | `RunResumeCorrelationJob` <small>laravel</small> | resumes from webhook |
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
+| `CliRunner` <small>core</small> | resumes from webhook |
 | `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumed` <small>core</small> | resumes from webhook |

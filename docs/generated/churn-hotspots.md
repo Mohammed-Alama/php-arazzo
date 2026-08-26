@@ -21,23 +21,23 @@ Analyzed 128 total file-touches across 18 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Runner` | 57 | 45% | 9,097 | 6.3 |
-| `Validator` | 11 | 9% | 3,094 | 3.6 |
-| `Expression` | 10 | 8% | 880 | 11.4 |
-| `Parser` | 7 | 5% | 1,078 | 6.5 |
-| `Resolver` | 7 | 5% | 347 | 20.2 |
+| `Runner` | 57 | 45% | 9,707 | 5.9 |
+| `Validator` | 11 | 9% | 3,112 | 3.5 |
+| `Expression` | 10 | 8% | 910 | 11 |
+| `Parser` | 7 | 5% | 1,087 | 6.4 |
+| `Resolver` | 7 | 5% | 357 | 19.6 |
 | `Laravel/Http` | 6 | 5% | 163 | 36.8 |
-| `Spec` | 6 | 5% | 706 | 8.5 |
+| `Spec` | 6 | 5% | 723 | 8.3 |
 | `Laravel/Persistence` | 4 | 3% | 257 | 15.6 |
 | `Console` | 3 | 2% | 481 | 6.2 |
-| `Laravel/Lock` | 3 | 2% | 27 | 111.1 |
+| `Laravel/Lock` | 3 | 2% | 49 | 61.2 |
 | `Laravel/Queue` | 3 | 2% | 102 | 29.4 |
 | `Laravel/State` | 3 | 2% | 39 | 76.9 |
-| `Laravel/Bindings` | 2 | 2% | 448 | 4.5 |
-| `Support` | 2 | 2% | 263 | 7.6 |
-| `Generator` | 1 | 1% | 119 | 8.4 |
+| `Laravel/Bindings` | 2 | 2% | 451 | 4.4 |
+| `Support` | 2 | 2% | 269 | 7.4 |
+| `Generator` | 1 | 1% | 122 | 8.2 |
 | `Laravel/Events` | 1 | 1% | 23 | 43.5 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Renderer` | 1 | 1% | 253 | 4 |
+| `Renderer` | 1 | 1% | 254 | 3.9 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (36.8), `Resolver` (20.2), `Expression` (11.4)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (36.8), `Resolver` (19.6), `Expression` (11)

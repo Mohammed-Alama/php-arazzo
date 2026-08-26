@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Transition;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Policy\RetryPolicy;
+use Alama\Arazzo\Runner\State\ExecutionContext;
+use Alama\Arazzo\Runner\State\StepResult;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Expression;
@@ -48,6 +50,11 @@ function workflowEngineResolver(): ExpressionResolverInterface
     };
 }
 
+function workflowEngineRetryPolicy(): RetryPolicy
+{
+    return new RetryPolicy();
+}
+
 /** @param list<Step> $steps */
 function workflowEngineWorkflow(array $steps): Workflow
 {
@@ -62,8 +69,18 @@ function workflowEngineStep(string $id, array $dependsOn = []): Step
     return new Step($id, null, null, null, null, [], null, [], [], [], [], $dependsOn);
 }
 
+function workflowEngineState(string $executionId = 'exec_1', string $definitionId = 'definition_1', string $workflowId = 'workflow_1', int $maxSteps = 1000): ExecutionContext
+{
+    return ExecutionContext::start($executionId, $definitionId, $workflowId, maxSteps: $maxSteps);
+}
+
+function workflowEngineStepResult(array $outputs = []): StepResult
+{
+    return StepResult::success(200, $outputs, [], attempts: 1);
+}
+
 it('creates every transition kind with its explicit state', function (): void {
-    $state = ExecutionState::start('exec_1', 'definition_1', 'workflow_1');
+    $state = ExecutionContext::start('exec_1', 'definition_1', 'workflow_1');
 
     expect(Transition::next($state, 'step_2')->type)->toBe(TransitionType::Next)
         ->and(Transition::retry($state, 'step_1', 3)->delaySeconds)->toBe(3)
@@ -76,9 +93,9 @@ it('moves to the next dependency-ready step after a successful attempt', functio
     $first = workflowEngineStep('first');
     $second = workflowEngineStep('second', ['first']);
     $workflow = workflowEngineWorkflow([$first, $second]);
-    $state = ExecutionState::start('exec_1', 'definition_1', $workflow->workflowId)->withStepResult('first', ['outputs' => []]);
+    $state = workflowEngineState()->withStepResult('first', workflowEngineStepResult());
 
-    $transition = (new WorkflowEngine(workflowEngineResolver()))->transition(workflowEngineDocument($workflow), $workflow, $first, $state, true);
+    $transition = (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(workflowEngineDocument($workflow), $workflow, $first, $state, true);
 
     expect($transition->type)->toBe(TransitionType::Next)->and($transition->stepId)->toBe('second');
 });
@@ -86,7 +103,7 @@ it('moves to the next dependency-ready step after a successful attempt', functio
 it('enforces the shared step budget before an attempt', function (): void {
     $step = workflowEngineStep('first');
     $workflow = workflowEngineWorkflow([$step]);
-    $state = ExecutionState::start('exec_1', 'definition_1', $workflow->workflowId, maxSteps: 1)->spendStep();
+    $state = workflowEngineState(maxSteps: 1)->spendStep();
 
-    (new WorkflowEngine(workflowEngineResolver()))->transition(workflowEngineDocument($workflow), $workflow, $step, $state, true);
+    (new WorkflowEngine(workflowEngineResolver(), workflowEngineRetryPolicy()))->transition(workflowEngineDocument($workflow), $workflow, $step, $state, true);
 })->throws(StepBudgetExceededException::class);

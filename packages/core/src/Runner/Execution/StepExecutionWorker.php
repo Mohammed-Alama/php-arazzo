@@ -23,6 +23,7 @@ use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\Telemetry\OtelSetup;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
@@ -31,6 +32,8 @@ use Alama\Arazzo\Validator\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;
+use OpenTelemetry\API\Trace\SpanInterface;
+use OpenTelemetry\API\Trace\StatusCode;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 use Throwable;
@@ -77,6 +80,27 @@ class StepExecutionWorker
         $step = $job->step;
         $executionId = $job->context->getExecutionId();
 
+        $span = OtelSetup::getTracer()->spanBuilder('arazzo.step.execute')
+            ->setAttribute('execution.id', $executionId ?? 'unknown')
+            ->setAttribute('workflow.id', (string) $job->context->getWorkflowId())
+            ->setAttribute('step.id', $step->stepId)
+            ->startSpan();
+
+        $scope = $span->activate();
+
+        try {
+            $this->handleUnderSpan($job, $span);
+        } finally {
+            $scope->detach();
+            $span->end();
+        }
+    }
+
+    private function handleUnderSpan(ExecuteStepJob $job, SpanInterface $span): void
+    {
+        $step = $job->step;
+        $executionId = $job->context->getExecutionId();
+
         if ($executionId === null) {
             throw new LogicException(
                 "ExecuteStepJob for step '{$step->stepId}' has no executionId -- the workflow run was not initialized before dispatch.",
@@ -85,7 +109,7 @@ class StepExecutionWorker
 
         $lockKey = "execution_lock_{$executionId}";
 
-        $this->lockManager->acquire($lockKey, 30, function () use ($step, $job, $executionId) {
+        $this->lockManager->acquire($lockKey, 30, function () use ($step, $job, $executionId, $span) {
             $context = $this->reconcileWithPersistedState($job->context, $executionId);
 
             try {
@@ -203,10 +227,17 @@ class StepExecutionWorker
                 $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
                 // Persist in WorkflowContext shape so reconcileWithPersistedState
                 // and CorrelationResumer keep reading the same keys.
-                $this->stateStore->save($executionId, $this->serialize($this->contextFromState($transition->state)), $this->stateTtlSeconds);
+                $nextState = $transition->state;
+                assert($nextState instanceof ExecutionState); // engine is canonical on ExecutionState
+                $this->stateStore->save($executionId, $this->serialize($this->contextFromState($nextState)), $this->stateTtlSeconds);
+
+                $span->setAttribute('criteria.met', $criteriaMet);
 
                 if ($transition->isTerminal()) {
                     $succeeded = $transition->status === 'succeeded';
+                    $span->setStatus($succeeded
+                        ? StatusCode::STATUS_OK
+                        : StatusCode::STATUS_ERROR, "Step '{$step->stepId}' failed criteria");
                     $this->executionRegistry->complete($executionId, $succeeded ? ExecutionStatus::Succeeded : ExecutionStatus::Failed);
                     $this->eventLedger->append($executionId, $succeeded ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
 
@@ -248,7 +279,9 @@ class StepExecutionWorker
                         : ($targetWorkflow->steps[0] ?? null);
 
                     if ($targetStep !== null) {
-                        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $this->contextFromState($transition->state)), $transition->delaySeconds);
+                        $dispatchState = $transition->state;
+                        assert($dispatchState instanceof ExecutionState); // engine is canonical on ExecutionState
+                        $this->queueDriver->dispatch(new ExecuteStepJob($targetStep, $this->contextFromState($dispatchState)), $transition->delaySeconds);
                     }
                 }
 
@@ -262,6 +295,8 @@ class StepExecutionWorker
                     new DateTimeImmutable(),
                 ));
             } catch (Throwable $t) {
+                $span->recordException($t);
+                $span->setStatus(StatusCode::STATUS_ERROR, $t->getMessage());
                 $category = match (true) {
                     $t instanceof PreflightFailureException => 'authoring',
                     $t instanceof SchemaValidationException => 'schema',

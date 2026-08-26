@@ -16,4 +16,15 @@ final class FakeLockManager implements LockManagerInterface
 
         return $callback();
     }
+
+    public function tryAcquire(string $key, int $ttlSeconds): bool
+    {
+        $this->acquisitions++;
+
+        return true;
+    }
+
+    public function release(string $key): void
+    {
+    }
 }

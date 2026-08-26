@@ -8,17 +8,18 @@ every `make quality-gates` run (one entry per day, last measurement wins).
 The line should only ever move down — an upward step is a regression that the
 scorecard alone would show you too late.
 
-1 measurement day(s): 2026-08-25 → "2026-08-25.
+2 measurement day(s): 2026-08-25 → "2026-08-26.
 
 ```mermaid
 xychart-beta
     title "Gate failures per day"
-    x-axis ["2026-08-25"]
+    x-axis ["2026-08-25", "2026-08-26"]
     y-axis "Failures" 0 --> 20
-    line "PHPStan errors" [0]
-    line "Test failures" [0]
+    line "PHPStan errors" [0, 0]
+    line "Test failures" [0, 0]
 ```
 
 | Day | PHPStan errors | Test failures | MSI (core) | Gates failing |
 |---|---:|---:|---:|---:|
 | 2026-08-25 | 0 | 0 | — | 0 |
+| 2026-08-26 | 0 | 0 | — | 0 |

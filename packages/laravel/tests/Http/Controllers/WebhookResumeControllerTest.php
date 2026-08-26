@@ -112,6 +112,15 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         {
             return $callback();
         }
+
+        public function tryAcquire(string $key, int $ttlSeconds): bool
+        {
+            return true;
+        }
+
+        public function release(string $key): void
+        {
+        }
     });
 
     $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface

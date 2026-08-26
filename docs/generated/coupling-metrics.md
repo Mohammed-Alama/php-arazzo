@@ -12,35 +12,35 @@ targets. Regenerated before every commit.
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
 | `Console` | 7 | 474 | 0 | 6 | 1.00 |  |
-| `Expression` | 23 | 857 | 3 | 2 | 0.40 |  |
-| `Generator` | 3 | 116 | 2 | 0 | 0.00 |  |
-| `Laravel:Bindings` | 6 | 442 | 1 | 12 | 0.92 |  |
+| `Expression` | 23 | 887 | 3 | 2 | 0.40 |  |
+| `Generator` | 3 | 119 | 2 | 0 | 0.00 |  |
+| `Laravel:Bindings` | 6 | 445 | 1 | 12 | 0.92 |  |
 | `Laravel:Events` | 1 | 22 | 0 | 0 | 0.00 |  |
 | `Laravel:Http` | 3 | 160 | 2 | 4 | 0.67 |  |
-| `Laravel:Lock` | 1 | 26 | 1 | 1 | 0.50 |  |
+| `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
 | `Laravel:Persistence` | 4 | 253 | 1 | 3 | 0.75 |  |
 | `Laravel:Queue` | 3 | 99 | 1 | 1 | 0.50 |  |
 | `Laravel:State` | 1 | 38 | 1 | 1 | 0.50 |  |
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
-| `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
-| `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
-| `Resolver` | 11 | 336 | 5 | 2 | 0.29 |  |
-| `Runner` | 129 | 8968 | 9 | 5 | 0.36 |  |
-| `Spec` | 32 | 674 | 9 | 1 | 0.10 |  |
-| `Support` | 6 | 257 | 5 | 1 | 0.17 |  |
-| `Validator` | 63 | 3031 | 3 | 5 | 0.63 |  |
+| `Parser` | 10 | 1077 | 4 | 2 | 0.33 |  |
+| `Renderer` | 1 | 253 | 1 | 1 | 0.50 |  |
+| `Resolver` | 11 | 346 | 5 | 2 | 0.29 |  |
+| `Runner` | 136 | 9571 | 9 | 5 | 0.36 |  |
+| `Spec` | 32 | 691 | 9 | 1 | 0.10 |  |
+| `Support` | 6 | 263 | 5 | 1 | 0.17 |  |
+| `Validator` | 63 | 3049 | 3 | 5 | 0.63 |  |
 
-Total cross-module edges: **543**
+Total cross-module edges: **547**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Runner` → `Spec` | 125 |
+| `Runner` → `Spec` | 128 |
 | `Validator` → `Spec` | 88 |
 | `Validator` → `Expression` | 78 |
-| `Laravel:Bindings` → `Runner` | 49 |
+| `Laravel:Bindings` → `Runner` | 50 |
 | `Parser` → `Spec` | 30 |
 | `Console` → `Runner` | 15 |
 | `Runner` → `Expression` | 15 |

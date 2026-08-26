@@ -27,6 +27,15 @@ class ResumerMockLockManager implements LockManagerInterface
     {
         return $callback();
     }
+
+    public function tryAcquire(string $key, int $ttlSeconds): bool
+    {
+        return true;
+    }
+
+    public function release(string $key): void
+    {
+    }
 }
 
 class ResumerMockPendingCorrelations implements PendingCorrelationRegistryInterface

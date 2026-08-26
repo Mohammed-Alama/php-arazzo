@@ -6,12 +6,13 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\State\ExecutionContext;
 
 final readonly class Transition
 {
     private function __construct(
         public TransitionType $type,
-        public ExecutionState $state,
+        public ExecutionState|ExecutionContext $state,
         public ?string $stepId = null,
         public ?string $workflowId = null,
         public int $delaySeconds = 0,
@@ -19,32 +20,32 @@ final readonly class Transition
     ) {
     }
 
-    public static function next(ExecutionState $state, ?string $stepId): self
+    public static function next(ExecutionState|ExecutionContext $state, ?string $stepId): self
     {
         return new self(TransitionType::Next, $state, $stepId);
     }
 
-    public static function retry(ExecutionState $state, string $stepId, int $delaySeconds = 0, ?string $workflowId = null): self
+    public static function retry(ExecutionState|ExecutionContext $state, string $stepId, int $delaySeconds = 0, ?string $workflowId = null): self
     {
         return new self(TransitionType::Retry, $state, $stepId, $workflowId, $delaySeconds);
     }
 
-    public static function goto(ExecutionState $state, ?string $stepId, string $workflowId): self
+    public static function goto(ExecutionState|ExecutionContext $state, ?string $stepId, string $workflowId): self
     {
         return new self(TransitionType::Goto, $state, $stepId, $workflowId);
     }
 
-    public static function end(ExecutionState $state, string $status): self
+    public static function end(ExecutionState|ExecutionContext $state, string $status): self
     {
         return new self(TransitionType::End, $state->withStatus($status), null, null, 0, $status);
     }
 
-    public static function invoke(ExecutionState $state, string $workflowId): self
+    public static function invoke(ExecutionState|ExecutionContext $state, string $workflowId): self
     {
         return new self(TransitionType::Invoke, $state->enterWorkflow($workflowId), null, $workflowId);
     }
 
-    public static function suspend(ExecutionState $state): self
+    public static function suspend(ExecutionState|ExecutionContext $state): self
     {
         return new self(TransitionType::Suspend, $state->withStatus('suspended'));
     }

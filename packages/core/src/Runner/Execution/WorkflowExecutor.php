@@ -126,7 +126,9 @@ class WorkflowExecutor
                 );
                 $results[$stepId] = $result;
                 $transition = $this->workflowEngine->transition($document, $currentWorkflow, $step, $state, $success);
-                $state = $transition->state;
+                $engineState = $transition->state;
+                assert($engineState instanceof ExecutionState); // engine is canonical on ExecutionState
+                $state = $engineState;
                 if ($transition->type === TransitionType::Retry) {
                     $this->events->dispatch(new StepRetried($executionId, $currentWorkflow->workflowId, $stepId, $state->attemptFor($stepId), null, new DateTimeImmutable()));
                 }

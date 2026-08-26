@@ -51,6 +51,18 @@ class WorkerMockLockManager implements LockManagerInterface
 
         return $callback();
     }
+
+    public function tryAcquire(string $key, int $ttlSeconds): bool
+    {
+        $this->acquireCount++;
+        $this->keysUsed[] = $key;
+
+        return true;
+    }
+
+    public function release(string $key): void
+    {
+    }
 }
 
 class WorkerMockStateStore implements StateStoreInterface

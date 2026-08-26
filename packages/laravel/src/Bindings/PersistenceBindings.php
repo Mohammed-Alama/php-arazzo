@@ -15,6 +15,7 @@ use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Runner\Contract\LockStrategyInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
@@ -63,6 +64,8 @@ final class PersistenceBindings
         });
 
         $app->singleton(LockManagerInterface::class, LaravelRedisLockManager::class);
+        // New code may inject the strategy name; same underlying singleton.
+        $app->singleton(LockStrategyInterface::class, LockManagerInterface::class);
         $app->singleton(QueueDriverInterface::class, LaravelQueueDriver::class);
 
         $app->singleton(PendingCorrelationRegistryInterface::class, function (Container $app) {

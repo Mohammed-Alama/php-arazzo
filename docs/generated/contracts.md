@@ -33,6 +33,7 @@ flowchart LR
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>Runner</small>"]:::contract
     I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Runner</small>"]:::contract
+    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>Runner</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>Runner</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
     C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
@@ -67,10 +68,26 @@ flowchart LR
     C_core_Runner_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_core_Runner_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Runner</small>"]:::implCore
     C_core_Runner_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
+    C_core_Runner_CliRunner["CliRunner<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_CliRunner -.->|implements| I_LockManagerInterface
+    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
+    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
+    C_core_Runner_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_core_Runner_NullEventLedger["NullEventLedger<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_NullEventLedger -.->|implements| I_EventLedgerInterface
+    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
+    C_core_Runner_FileStateStore["FileStateStore<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_FileStateStore -.->|implements| I_StateStoreInterface
+    C_core_Runner_InMemoryStateStore["InMemoryStateStore<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_InMemoryStateStore -.->|implements| I_StateStoreInterface
+    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
+    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
     C_core_Runner_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_InMemoryDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
-    C_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    C_core_Runner_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
     C_core_Runner_ArazzoSchemaValidator["ArazzoSchemaValidator<br/><small>Runner</small>"]:::implCore
     C_core_Runner_ArazzoSchemaValidator -.->|implements| I_SchemaValidatorInterface
     C_core_Runner_ArazzoOutputExtractor["ArazzoOutputExtractor<br/><small>Runner</small>"]:::implCore
@@ -207,16 +224,10 @@ flowchart LR
     C_core_Validator_SelectorTypeSupportedRule -.->|implements| I_Rule
     C_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>Http</small>"]:::implLaravel
     C_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
-    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
-    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
     C_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>Persistence</small>"]:::implLaravel
     C_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
-    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
-    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
+    C_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

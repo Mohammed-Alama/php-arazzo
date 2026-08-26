@@ -18,7 +18,8 @@ Evans' first question: does the code speak one language?
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecuted` (3 types)
 - **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
-- **Run**: `RunCommand`, `RunCompleted`, `RunControlFlow`, `RunExecuteStepJob` + 5 more (9 types)
+- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompleted` + 7 more (11 types)
+- **Runner**: `CliRunner` (1 types)
 
 ### parse vs load vs decode
 
@@ -28,7 +29,7 @@ Evans' first question: does the code speak one language?
 
 ### document vs definition vs spec
 
-- **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` (4 types)
+- **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
 - **Document**: `ArazzoDocument`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentLoader` + 4 more (8 types)
 - **Spec**: `SpecVersion` (1 types)
 
@@ -39,17 +40,18 @@ Evans' first question: does the code speak one language?
 
 ### state vs status
 
-- **State**: `ExecutionState`, `RedisHotStateStore`, `StateStoreInterface` (3 types)
+- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore` + 1 more (5 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
-- **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 6 more (10 types)
-- **Store**: `RedisHotStateStore`, `StateStoreInterface` (2 types)
+- **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 8 more (12 types)
+- **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
 ### workflow vs process vs flow
 
 - **Flow**: `RunControlFlow` (1 types)
+- **Process**: `InProcessExecutionRegistry` (1 types)
 - **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 21 more (25 types)
 
 ### render vs generate

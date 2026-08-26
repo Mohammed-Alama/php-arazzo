@@ -15,9 +15,9 @@ edit `POLICY` when a boundary consciously moves.
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 3 | 4 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 35 | **forbidden** |
+| `Illuminate` | 0 | 36 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
-| `OpenTelemetry` | 23 | 0 | _unclassified_ ⚠ |
+| `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
 | `Psr` | 38 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
@@ -35,7 +35,7 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Resolver` | `Psr` | 4 |
 | core | `Runner` | `Flow` | 1 |
 | core | `Runner` | `GuzzleHttp` | 1 |
-| core | `Runner` | `OpenTelemetry` | 23 |
+| core | `Runner` | `OpenTelemetry` | 26 |
 | core | `Runner` | `Psr` | 26 |
 | core | `Runner` | `cebe` | 16 |
 | core | `Support` | `Psr` | 4 |
@@ -48,7 +48,7 @@ edit `POLICY` when a boundary consciously moves.
 | laravel | `Http` | `GuzzleHttp` | 1 |
 | laravel | `Http` | `Illuminate` | 6 |
 | laravel | `Http` | `Psr` | 2 |
-| laravel | `Lock` | `Illuminate` | 1 |
+| laravel | `Lock` | `Illuminate` | 2 |
 | laravel | `Persistence` | `Illuminate` | 5 |
 | laravel | `Persistence` | `Psr` | 1 |
 | laravel | `Queue` | `Illuminate` | 11 |
@@ -62,6 +62,6 @@ edit `POLICY` when a boundary consciously moves.
 - `Parser` imports `Symfony\*` (2 refs)
 - `Runner` imports `Flow\*` (1 refs)
 - `Runner` imports `GuzzleHttp\*` (1 refs)
-- `Runner` imports `OpenTelemetry\*` (23 refs)
+- `Runner` imports `OpenTelemetry\*` (26 refs)
 - `Runner` imports `cebe\*` (16 refs)
 - `Validator` imports `JsonSchema\*` (7 refs)

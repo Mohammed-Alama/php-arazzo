@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\ExecutionState;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Exceptions\WorkflowCycleException;
 use Alama\Arazzo\Runner\Exceptions\WorkflowDepthExceededException;
+use Alama\Arazzo\Runner\Policy\RetryPolicy;
+use Alama\Arazzo\Runner\State\ExecutionContext;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\FailureGotoAction;
@@ -30,19 +31,35 @@ use Alama\Arazzo\Spec\Workflow;
 /** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events. */
 final class WorkflowEngine
 {
+    private RetryPolicy $retryPolicy;
+
+    /**
+     * @param int|RetryPolicy|null $maxRetryAttempts Accepts the legacy int ceiling,
+     *                                               a full RetryPolicy, or null for defaults — keeping positional and
+     *                                               named-argument call sites (`maxRetryAttempts:`) source-compatible.
+     * @param float $retryBackoffMultiplier Legacy scalar tuning, honored when no
+     *                                      explicit RetryPolicy is supplied.
+     */
     public function __construct(
         private ExpressionResolverInterface $expressions,
-        private int $maxRetryAttempts = 10,
+        int|null|RetryPolicy $maxRetryAttempts = null,
         private float $retryBackoffMultiplier = 1.0,
     ) {
+        $this->retryPolicy = $maxRetryAttempts instanceof RetryPolicy
+            ? $maxRetryAttempts
+            : new RetryPolicy(maxAttempts: $maxRetryAttempts ?? 10, backoffMultiplier: $retryBackoffMultiplier);
     }
 
     /**
      * Apply a completed attempt. The adapter is responsible for doing the actual
      * I/O and storing its result in $state before calling this method.
      */
-    public function transition(ArazzoDocument $document, Workflow $workflow, Step $step, ExecutionState $state, bool $criteriaMet, bool $suspended = false): Transition
+    public function transition(ArazzoDocument $document, Workflow $workflow, Step $step, ExecutionState|ExecutionContext $incoming, bool $criteriaMet, bool $suspended = false): Transition
     {
+        // The engine stays canonical on ExecutionState; the richer
+        // ExecutionContext facade normalizes into it at the boundary.
+        $state = $incoming instanceof ExecutionContext ? $incoming->toExecutionState() : $incoming;
+
         if ($suspended) {
             return Transition::suspend($state->withCurrentStep($step->stepId));
         }
@@ -60,9 +77,8 @@ final class WorkflowEngine
                 continue;
             }
             if ($action instanceof RetryAction) {
-                $limit = min($action->retryLimit ?? PHP_INT_MAX, $this->maxRetryAttempts);
                 $attemptsSoFar = $state->attemptFor($step->stepId);
-                if ($attemptsSoFar >= $limit) {
+                if ($this->retryPolicy->isExhausted($attemptsSoFar, $action->retryLimit)) {
                     // Observable exhaustion marker; adapters may surface it.
                     $state = $state->withErrorEntry([
                         'type' => 'retry_exhausted',
@@ -77,7 +93,7 @@ final class WorkflowEngine
                 $this->target($document, $targetWorkflowId, $targetStepId);
                 $next = $state->withStepAttempt($step->stepId)->withWorkflow($targetWorkflowId)->withCurrentStep($targetStepId);
 
-                return Transition::retry($next, $targetStepId, $this->retryDelaySeconds($action, $step, $state->toContext(), $attemptsSoFar + 1), $targetWorkflowId);
+                return Transition::retry($next, $targetStepId, $this->retryPolicy->calculateDelay($action, $step, $state->toContext(), $attemptsSoFar + 1), $targetWorkflowId);
             }
             if ($action instanceof SuccessGotoAction || $action instanceof FailureGotoAction) {
                 $targetWorkflowId = $action->workflowId ?? $workflow->workflowId;
@@ -170,55 +186,6 @@ final class WorkflowEngine
         throw new GotoTargetNotFoundException("Action references unknown stepId '{$stepId}' in workflow '{$workflowId}'.");
     }
 
-    /**
-     * Resolves the retry delay in whole seconds. The HTTP Retry-After header
-     * overrules the declared retryAfter when parseable; otherwise the declared
-     * delay is scaled by the configured backoff multiplier per upcoming attempt.
-     */
-    private function retryDelaySeconds(RetryAction $action, Step $step, WorkflowContext $context, int $upcomingAttempt): int
-    {
-        $headerValue = self::lookupHeader($context, $step->stepId, 'Retry-After');
-
-        if ($headerValue !== null) {
-            if (preg_match('/^\d+$/', trim($headerValue)) === 1) {
-                return max(0, (int) trim($headerValue));
-            }
-
-            $date = \DateTimeImmutable::createFromFormat(DATE_RFC7231, trim($headerValue));
-            if ($date !== false) {
-                return max(0, $date->getTimestamp() - time());
-            }
-        }
-
-        $base = $action->retryAfter ?? 0;
-        $scaled = $base * ($this->retryBackoffMultiplier ** max(0, $upcomingAttempt - 1));
-
-        return max(0, (int) ceil($scaled));
-    }
-
-    private static function lookupHeader(WorkflowContext $context, string $stepId, string $name): ?string
-    {
-        $steps = $context->getSteps();
-        $stepData = $steps[$stepId] ?? null;
-        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
-        if (!is_array($response)) {
-            return null;
-        }
-
-        $headers = $response['headers'] ?? [];
-        if (!is_array($headers)) {
-            return null;
-        }
-
-        foreach ($headers as $key => $value) {
-            if (is_string($key) && strcasecmp($key, $name) === 0 && is_scalar($value)) {
-                return (string) $value;
-            }
-        }
-
-        return null;
-    }
-
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
     {
         foreach ($document->workflows as $workflow) {
@@ -268,13 +235,13 @@ final class WorkflowEngine
      *
      * @return array<string, mixed>
      */
-    public function evaluateWorkflowOutputs(ArazzoDocument $document, Workflow $workflow, ExecutionState $state): array
+    public function evaluateWorkflowOutputs(ArazzoDocument $document, Workflow $workflow, ExecutionState|ExecutionContext $state): array
     {
         if ($workflow->outputs === []) {
             return [];
         }
 
-        $context = $state->toContext();
+        $context = $state instanceof ExecutionContext ? $state->toWorkflowContext() : $state->toContext();
 
         $outputs = [];
 
@@ -289,5 +256,15 @@ final class WorkflowEngine
         }
 
         return $outputs;
+    }
+
+    /**
+     * Picks the next runnable step id for adapter-side loops that drive one
+     * step per unit (queue jobs, CLI ticks). Public because adapters own the
+     * driving loop; the decision itself stays here.
+     */
+    public function nextRunnableStep(Workflow $workflow, ExecutionState $state, ?string $completed): ?string
+    {
+        return $this->nextRunnable($workflow, $state, $completed ?? '');
     }
 }

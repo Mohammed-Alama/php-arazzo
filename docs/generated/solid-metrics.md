@@ -37,7 +37,7 @@ quadrantChart
     Parser: [0.333, 0.2]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.273]
-    Runner: [0.357, 0.163]
+    Runner: [0.357, 0.162]
     Spec: [0.1, 0]
     Support: [0.167, 0.167]
     Validator: [0.625, 0.016]
@@ -49,13 +49,13 @@ Concrete types over 300 LOC:
 
 | Class | Module | LOC |
 |---|---|---:|
-| `Parser` | `Parser` | 820 |
-| `ExecutionContext` | `Runner` | 491 |
+| `Parser` | `Parser` | 825 |
+| `ExecutionContext` | `Runner` | 499 |
+| `StepExecutionWorker` | `Runner` | 391 |
 | `StepOutcomeHandler` | `Runner` | 377 |
 | `WorkflowContext` | `Runner` | 363 |
-| `StepExecutionWorker` | `Runner` | 360 |
-| `Parser` | `Expression` | 336 |
-| `ExecutionState` | `Runner` | 308 |
+| `Parser` | `Expression` | 338 |
+| `ExecutionState` | `Runner` | 309 |
 
 ## Fat interfaces (ISP)
 

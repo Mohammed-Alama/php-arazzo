@@ -1,6 +1,23 @@
 # Runner Modularization Implementation Plan
 
-> **Status (2026-08-25):** Planned. `- [ ]` = not started; `- [x]` = done.
+> **Status (2026-08-25, implementation session):**
+>
+> | Task | State | Notes |
+> |------|-------|-------|
+> | 1 · OTel bootstrap | ✅ Done | `OtelSetup` (otlp/console/**file**/memory/none), `TraceContextPropagator`; no exporter-file pkg exists — file export implemented via `StreamTransportFactory` |
+> | 2 · RetryPolicy | ✅ Done | `Policy/RetryPolicy`, `BackoffCalculatorInterface`, `ExponentialBackoffCalculator`; engine ctor keeps `maxRetryAttempts:` BC |
+> | 3 · LockStrategy | ✅ Done | `Contract/LockStrategyInterface`, File/Null/Pessimistic strategies; `LockManagerInterface extends LockStrategyInterface` |
+> | 4 · Registry + SubWorkflowExecutor | ✅ Done | Chain-of-responsibility registry (`register(name, executor)`); executor shares parent budget/call-stack |
+> | 5 · ExecutionContext | ✅ Done | `State/*` VO set; **engine stays canonical on ExecutionState**, facade converts at the boundary |
+> | 6 · StateStore/File | ✅ Done | Reused existing `Context/Contracts/StateStoreInterface`; added `FileStateStore` (+delete/sanitize), `InMemoryStateStore` |
+> | 7 · Async handler split | ⏸ Deferred | Worker stayed cohesive (~380 lines); decomposition postponed until churn justifies it |
+> | 8 · CLI runner | ✅ Done | `Cli/CliRunner` drains `SyncQueueDriver` through the real worker (parity by construction) + `CliRunResult`, Null ledger, InProcess registry |
+> | 9 · Parity tests | ✅ Done | `AdapterParityTest` (sync vs queue-path, shared step stack) |
+> | 10 · Laravel bindings | ✅ Done | Deps synced; `LockStrategyInterface` alias bound; fixed `LaravelRedisLockManager::tryAcquire/release` ownership |
+> | 11 · Gates & metrics | ✅ Done | pint/phpstan/pest green both packages; docs regenerated |
+>
+> Verification at close: core **742+ passed / 0 failed**, laravel **56 passed**, phpstan clean ×2, pint clean.
+
 
 **Goal:** Decompose Runner into cohesive components with clear boundaries, reduce churn, improve testability and observability via OpenTelemetry. Support both sync/async equally, high-frequency sub-workflows, CLI file-based persistence.
 

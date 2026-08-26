@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\Execution\Contracts\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 
-class InMemoryDefinitionRegistry implements DefinitionRegistryInterface
+class InMemoryDefinitionRegistry implements WritableDefinitionRegistryInterface
 {
     /** @var array<string, ArazzoDocument> */
     private array $registry = [];
