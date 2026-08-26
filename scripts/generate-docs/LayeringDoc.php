@@ -36,8 +36,22 @@ const LAYER_ORDER = [
     'Generator',
     'Parser',
     'Resolver',
+    'Normalizer',
     'Validator',
-    'Runner',
+    'Contracts',
+    'Context',
+    'State',
+    'Evaluation',
+    'Telemetry',
+    'Events',
+    'Exceptions',
+    'Jobs',
+    'Policy',
+    'Protocol',
+    'Execution',
+    'Async',
+    'Console',
+    'Renderer',
 ];
 
 /**
