@@ -34,7 +34,7 @@ quadrantChart
     Parser: [0.333, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
-    Runner: [0.357, 0.937]
+    Runner: [0.357, 0.943]
     Spec: [0.1, 1]
     Support: [0.167, 1]
     Validator: [0.625, 0.952]
@@ -56,7 +56,7 @@ quadrantChart
 | `Parser` | 0.33 | 29 | 10 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 11 | 100% |
-| `Runner` | 0.36 | 133 | 142 | 94% |
-| `Spec` | 0.10 | 138 | 32 | 100% |
+| `Runner` | 0.36 | 133 | 141 | 94% |
+| `Spec` | 0.10 | 139 | 33 | 100% |
 | `Support` | 0.17 | 18 | 6 | 100% |
 | `Validator` | 0.62 | 60 | 63 | 95% |

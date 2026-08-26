@@ -16,8 +16,8 @@ the declaration honest.
 flowchart LR
     subgraph S_core["Core domain"]
         S_Expression["Expression<br/><small>880 LOC</small>"]:::coreDomain
-        S_Runner["Runner<br/><small>10109 LOC</small>"]:::coreDomain
-        S_Spec["Spec<br/><small>706 LOC</small>"]:::coreDomain
+        S_Runner["Runner<br/><small>10097 LOC</small>"]:::coreDomain
+        S_Spec["Spec<br/><small>721 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_Console["Console<br/><small>481 LOC</small>"]:::supportingDomain
@@ -45,6 +45,6 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 3 | 11,695 | 0 | 63% |
+| Core domain | 3 | 11,698 | 0 | 63% |
 | Supporting | 6 | 5,373 | 0 | 29% |
 | Generic subdomain | 8 | 263 | 1,132 | 8% |

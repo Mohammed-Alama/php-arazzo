@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Context;
 
-use Alama\Arazzo\Runner\Execution\StepStatus;
+use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Workflow;
 
 final class WorkflowContext

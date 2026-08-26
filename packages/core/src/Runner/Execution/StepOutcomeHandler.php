@@ -24,6 +24,7 @@ use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;

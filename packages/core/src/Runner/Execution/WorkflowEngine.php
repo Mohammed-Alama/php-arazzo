@@ -23,6 +23,7 @@ use Alama\Arazzo\Spec\Action\SuccessAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;

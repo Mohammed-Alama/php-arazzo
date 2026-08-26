@@ -497,9 +497,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function toArray(): array`
 - `public static function failure(int $statusCode, string $failureCategory, array $outputs, array $inputs, string $contentType = 'application/json', string $responseBody = '', string $rawBody = '', array $responseHeaders = [], array $request = [], int $attempts = 0, ): self`
 
-### `StepStatus` enum
-- Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
-
 ### `StringInterpolator` class
 - `public function __construct(private ExpressionResolverInterface $resolver)`
 
@@ -671,6 +668,9 @@ file on a commit is a public API change — review it deliberately.
 ### `SpecVersion` enum
 - Cases: `V1_0`, `V1_1`
 - `public static function fromRaw(string $raw): self`
+
+### `StepStatus` enum
+- Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
 
 ### `SubWorkflowFailureAction` class
 - `public function __construct(string $name, public string $workflowId, public array $parameters, array $criteria, public ?string $version = null)`

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\DependencyAnalyzer;
 use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
-use Alama\Arazzo\Runner\Execution\StepStatus;
+use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 
 test('finds runnable steps based on dependsOn', function () {
