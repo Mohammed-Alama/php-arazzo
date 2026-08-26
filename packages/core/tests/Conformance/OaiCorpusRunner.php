@@ -24,7 +24,7 @@ use Alama\Arazzo\Validator\Validator;
  */
 final class OaiCorpusRunner
 {
-    public const DIR = __DIR__ . '/corpus/oai';
+    public const DIR = __DIR__.'/corpus/oai';
 
     /** @return array<string, string> document name => file path */
     public static function documents(): array
@@ -33,7 +33,7 @@ final class OaiCorpusRunner
 
         // Upstream naming is inconsistent: bnpl ships as
         // 'bnpl-arazzo.yaml' (no dot before arazzo), so match both spellings.
-        foreach (glob(self::DIR . '/1.0.0/*arazzo.yaml') ?: [] as $file) {
+        foreach (glob(self::DIR.'/1.0.0/*arazzo.yaml') ?: [] as $file) {
             if (str_ends_with($file, '.openapi.yaml')) {
                 continue;
             }
@@ -90,10 +90,10 @@ final class OaiCorpusRunner
         // swagger-petstore ships its document as openapi.yaml; we vendor it
         // under an explicit name to avoid ambiguity.
         $map = [
-            'openapi.yaml' => self::DIR . '/remotes/swagger-petstore-openapi.yaml',
+            'openapi.yaml' => self::DIR.'/remotes/swagger-petstore-openapi.yaml',
         ];
 
-        $candidate = self::DIR . '/1.0.0/' . $basename;
+        $candidate = self::DIR.'/1.0.0/'.$basename;
 
         if (is_file($candidate)) {
             return $candidate;

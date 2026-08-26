@@ -65,7 +65,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'arazzo');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'arazzo');
 
         Route::get('/arazzo-builder', function () {
             /** @var view-string $view */

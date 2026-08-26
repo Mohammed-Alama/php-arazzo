@@ -64,7 +64,7 @@ it('runs a workflow end-to-end through the CLI', function (): void {
     $command = new RunCommand($client, $registry);
     $tester = new CommandTester($command);
 
-    $doc = sys_get_temp_dir() . '/arazzo-cli-run-' . uniqid() . '.yaml';
+    $doc = sys_get_temp_dir().'/arazzo-cli-run-'.uniqid().'.yaml';
     arazzoDoc($doc);
 
     $tester->execute(['file' => $doc]);
@@ -83,7 +83,7 @@ it('fails with a clear message for an unknown workflow id', function (): void {
     $command = new RunCommand(null, $registry);
     $tester = new CommandTester($command);
 
-    $doc = sys_get_temp_dir() . '/arazzo-cli-unknown-' . uniqid() . '.yaml';
+    $doc = sys_get_temp_dir().'/arazzo-cli-unknown-'.uniqid().'.yaml';
     arazzoDoc($doc);
 
     $tester->execute(['file' => $doc, '--workflow' => 'nope']);

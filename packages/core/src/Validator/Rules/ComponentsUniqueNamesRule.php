@@ -16,7 +16,5 @@ final class ComponentsUniqueNamesRule implements Rule
         return 'components.unique_names';
     }
 
-    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
-    {
-    }
+    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void {}
 }

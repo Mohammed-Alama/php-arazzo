@@ -5,9 +5,9 @@ declare(strict_types=1);
 use Ecosystem\FeedEvent;
 use Ecosystem\Normalizer;
 
-require_once dirname(__DIR__, 4) . '/scripts/ecosystem/FeedEvent.php';
-require_once dirname(__DIR__, 4) . '/scripts/ecosystem/RelevanceMapper.php';
-require_once dirname(__DIR__, 4) . '/scripts/ecosystem/Normalizer.php';
+require_once dirname(__DIR__, 4).'/scripts/ecosystem/FeedEvent.php';
+require_once dirname(__DIR__, 4).'/scripts/ecosystem/RelevanceMapper.php';
+require_once dirname(__DIR__, 4).'/scripts/ecosystem/Normalizer.php';
 
 it('normalizes PR #533 SOAP to breaking with wsdl tags', function (): void {
     $raw = [

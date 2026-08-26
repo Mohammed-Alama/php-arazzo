@@ -26,7 +26,7 @@ final class StepOperationIdSourceScopedRule implements Rule
                 }
                 $isQualified = false;
                 foreach ($symbols->sourceDescriptions as $srcName => $source) {
-                    if (str_starts_with($s->operationId, $srcName . '.')) {
+                    if (str_starts_with($s->operationId, $srcName.'.')) {
                         $isQualified = true;
                         break;
                     }

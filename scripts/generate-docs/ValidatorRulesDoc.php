@@ -19,7 +19,7 @@ every commit.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
+ * @param  array<string, list<ScannedFile>>  $core
  */
 function render(array $core): string
 {
@@ -53,14 +53,14 @@ function render(array $core): string
     ksort($groups);
 
     $lines = [BANNER, '```mermaid', 'flowchart TD'];
-    $lines[] = '    ROOT["Validator rules (' . count($rules) . ')"]';
+    $lines[] = '    ROOT["Validator rules ('.count($rules).')"]';
 
     foreach ($groups as $group => $groupRules) {
-        $gid = 'G_' . preg_replace('/[^A-Za-z0-9_]/', '_', $group);
-        $lines[] = sprintf('    %s["%s"]', $gid, $group . ' — ' . count($groupRules));
+        $gid = 'G_'.preg_replace('/[^A-Za-z0-9_]/', '_', $group);
+        $lines[] = sprintf('    %s["%s"]', $gid, $group.' — '.count($groupRules));
         $lines[] = sprintf('    ROOT --> %s', $gid);
         foreach ($groupRules as $rule) {
-            $rid = 'R_' . preg_replace('/[^A-Za-z0-9_]/', '_', $rule);
+            $rid = 'R_'.preg_replace('/[^A-Za-z0-9_]/', '_', $rule);
             $label = preg_replace('/Rule$/', '', $rule);
             $lines[] = sprintf('    %s["%s"]', $rid, $label);
             $lines[] = sprintf('    %s --> %s', $gid, $rid);
@@ -72,9 +72,9 @@ function render(array $core): string
     $lines[] = '| Group | Rules |';
     $lines[] = '|---|---|';
     foreach ($groups as $group => $groupRules) {
-        $cells = implode(', ', array_map(static fn (string $r): string => '`' . $r . '`', $groupRules));
+        $cells = implode(', ', array_map(static fn (string $r): string => '`'.$r.'`', $groupRules));
         $lines[] = "| **{$group}** | {$cells} |";
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }

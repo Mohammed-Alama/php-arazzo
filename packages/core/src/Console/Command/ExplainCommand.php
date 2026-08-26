@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Console\Command;
 
 use Alama\Arazzo\Console\DocumentLoader;
-use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
+use Alama\Arazzo\Dependency\DependencyGraph;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -42,7 +42,7 @@ final class ExplainCommand extends Command
         }
 
         if ($workflow === null) {
-            $output->writeln('<error>' . sprintf("unknown workflow '%s'", (string) $workflowId) . '</error>');
+            $output->writeln('<error>'.sprintf("unknown workflow '%s'", (string) $workflowId).'</error>');
 
             return Command::FAILURE;
         }
@@ -62,12 +62,12 @@ final class ExplainCommand extends Command
                 '  %d. <info>%s</info>%s',
                 $position,
                 $stepId,
-                $deps === [] ? '' : '  after ' . implode(', ', $deps),
+                $deps === [] ? '' : '  after '.implode(', ', $deps),
             ));
         }
 
         if (($cycle = $graph->getCycle()) !== null) {
-            $output->writeln('<error>cycle detected:</error> ' . implode(' -> ', $cycle));
+            $output->writeln('<error>cycle detected:</error> '.implode(' -> ', $cycle));
 
             return Command::FAILURE;
         }

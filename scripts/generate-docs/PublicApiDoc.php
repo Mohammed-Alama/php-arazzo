@@ -20,8 +20,8 @@ file on a commit is a public API change — review it deliberately.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -34,7 +34,7 @@ function render(array $core, array $laravel): string
             if ($entries === []) {
                 continue;
             }
-            $lines[] = sprintf('## %s · `%s`', $pkg, $module === '_' ? trim($prefix, '\\') : $prefix . $module);
+            $lines[] = sprintf('## %s · `%s`', $pkg, $module === '_' ? trim($prefix, '\\') : $prefix.$module);
             $lines[] = '';
             foreach ($entries as $entry) {
                 $lines = [...$lines, ...renderEntry($entry)];
@@ -42,12 +42,11 @@ function render(array $core, array $laravel): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param list<ScannedFile> $files
- *
+ * @param  list<ScannedFile>  $files
  * @return list<array{kind: string, name: string, signature: list<string>, constants: list<string>, cases: list<string>}>
  */
 function collectEntries(array $files): array
@@ -125,7 +124,7 @@ function publicSignatures(string $content): array
                 $buffer = $line;
             }
         } else {
-            $buffer .= ' ' . trim($line);
+            $buffer .= ' '.trim($line);
         }
         if ($buffer !== null && preg_match('/[;{]\s*(?:\/\/.*)?$/', trim($buffer)) === 1) {
             $normalized = normalizeSignature($buffer);
@@ -154,7 +153,7 @@ function normalizeSignature(string $raw): string
         return '';
     }
 
-    return rtrim($oneLine, ';') . ($terminator === ';' ? ';' : '');
+    return rtrim($oneLine, ';').($terminator === ';' ? ';' : '');
 }
 
 /** @return list<string> */
@@ -224,8 +223,7 @@ function enumCases(string $content): array
 }
 
 /**
- * @param array{kind: string, name: string, signature: list<string>, constants: list<string>, cases: list<string>} $entry
- *
+ * @param  array{kind: string, name: string, signature: list<string>, constants: list<string>, cases: list<string>}  $entry
  * @return list<string>
  */
 function renderEntry(array $entry): array
@@ -233,13 +231,13 @@ function renderEntry(array $entry): array
     $lines = [sprintf('### `%s` %s', $entry['name'], $entry['kind'])];
 
     if ($entry['constants'] !== []) {
-        $lines[] = '- Constants: ' . implode(', ', array_map(fn (string $c): string => '`' . $c . '`', $entry['constants']));
+        $lines[] = '- Constants: '.implode(', ', array_map(fn (string $c): string => '`'.$c.'`', $entry['constants']));
     }
     if ($entry['cases'] !== []) {
-        $lines[] = '- Cases: ' . implode(', ', array_map(fn (string $c): string => '`' . $c . '`', $entry['cases']));
+        $lines[] = '- Cases: '.implode(', ', array_map(fn (string $c): string => '`'.$c.'`', $entry['cases']));
     }
     foreach ($entry['signature'] as $signature) {
-        $lines[] = '- `' . $signature . '`';
+        $lines[] = '- `'.$signature.'`';
     }
     $lines[] = '';
 

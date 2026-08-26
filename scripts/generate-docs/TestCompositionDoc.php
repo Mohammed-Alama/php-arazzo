@@ -26,8 +26,8 @@ const CATEGORY_DIRS = [
 ];
 
 /**
- * @param array<string, mixed> $_core unused (kept for signature symmetry)
- * @param array<string, mixed> $_laravel unused
+ * @param  array<string, mixed>  $_core  unused (kept for signature symmetry)
+ * @param  array<string, mixed>  $_laravel  unused
  */
 function render(array $_core = [], array $_laravel = [], ?string $root = null): string
 {
@@ -35,11 +35,11 @@ function render(array $_core = [], array $_laravel = [], ?string $root = null): 
 
     $lines = [BANNER];
 
-    foreach ([['Core', $root . '/packages/core/tests'], ['Laravel', $root . '/packages/laravel/tests']] as [$label, $testsDir]) {
+    foreach ([['Core', $root.'/packages/core/tests'], ['Laravel', $root.'/packages/laravel/tests']] as [$label, $testsDir]) {
         $counts = countSuite($testsDir);
 
         $lines[] = '';
-        $lines[] = '## ' . $label . ' package';
+        $lines[] = '## '.$label.' package';
         $lines[] = '';
         if ($counts === []) {
             $lines[] = '_No test files found._';
@@ -51,7 +51,7 @@ function render(array $_core = [], array $_laravel = [], ?string $root = null): 
         $total = array_sum($counts);
         $lines[] = '```mermaid';
         $lines[] = 'pie showData';
-        $lines[] = '    title ' . $label . ' — ' . $total . ' test files';
+        $lines[] = '    title '.$label.' — '.$total.' test files';
         foreach ($counts as $category => $count) {
             $lines[] = sprintf('    "%s": %d', $category, $count);
         }
@@ -65,7 +65,7 @@ function render(array $_core = [], array $_laravel = [], ?string $root = null): 
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /** @return array<string, int> category => file count */
@@ -86,10 +86,10 @@ function countSuite(string $testsDir): array
             || !str_ends_with($file->getFilename(), 'Test.php')) {
             continue;
         }
-        $relative = str_replace($testsDir . '/', '', (string) $file->getPathname());
+        $relative = str_replace($testsDir.'/', '', (string) $file->getPathname());
         $parts = explode('/', $relative);
         $top = $parts[0];
-        $category = CATEGORY_DIRS[$top] ?? (count($parts) > 1 ? 'Module-scoped (' . $top . ')' : 'Root');
+        $category = CATEGORY_DIRS[$top] ?? (count($parts) > 1 ? 'Module-scoped ('.$top.')' : 'Root');
 
         // collapse per-module buckets into one comparable slice
         if (str_starts_with($category, 'Module-scoped')) {

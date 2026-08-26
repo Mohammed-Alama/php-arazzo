@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\State\PendingCorrelation;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryInterface
@@ -13,8 +13,7 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
     public function __construct(
         private readonly ConnectionInterface $db,
         private readonly string $table = 'arazzo_pending_correlations',
-    ) {
-    }
+    ) {}
 
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
     {

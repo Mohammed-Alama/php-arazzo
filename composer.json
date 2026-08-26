@@ -15,8 +15,19 @@
     "require-dev": {
         "infection/infection": "^0.35.2",
         "laravel/pint": "^1.14",
-        "pestphp/pest": "^4.0",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-laravel": "^5.0",
         "symplify/monorepo-builder": "^12.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\": ["packages/core/tests"],
+            "Alama\\Arazzo\\Laravel\\Tests\\": ["packages/laravel/tests"],
+            "Alama\\LaravelArazzo\\Execution\\": ["packages/laravel/src/Execution"],
+            "Alama\\LaravelArazzo\\Events\\": ["packages/laravel/src/Events"],
+            "Workbench\\App\\": ["packages/laravel/workbench/app"]
+        }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
@@ -30,6 +41,7 @@
         "test-core": "cd packages/core && vendor/bin/pest",
         "test-laravel": "cd packages/laravel && vendor/bin/pest",
         "test": ["@test-core", "@test-laravel"],
+        "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",
         "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",
         "ecosystem:poll:dry": "@php scripts/ecosystem/poll.php --dry-run",

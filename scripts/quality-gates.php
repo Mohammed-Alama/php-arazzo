@@ -17,7 +17,7 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
-$outFile = $root . '/storage/quality-gates.json';
+$outFile = $root.'/storage/quality-gates.json';
 
 $withMutations = in_array('--with-mutations', $argv, true);
 
@@ -28,7 +28,7 @@ function runGate(string $name, string $command, string $cwd, callable $parse): a
     $start = microtime(true);
     $output = [];
     $code = 0;
-    exec('cd ' . escapeshellarg($cwd) . " && {$command} 2>&1", $output, $code);
+    exec('cd '.escapeshellarg($cwd)." && {$command} 2>&1", $output, $code);
     $durationMs = (int) ((microtime(true) - $start) * 1000);
     $text = implode("\n", $output);
 
@@ -120,8 +120,8 @@ function parseMutations(int $code, string $text): array
     ];
 }
 
-$coreDir = $root . '/packages/core';
-$laravelDir = $root . '/packages/laravel';
+$coreDir = $root.'/packages/core';
+$laravelDir = $root.'/packages/laravel';
 
 $gateDefs = [
     ['pint', 'Code Style (Pint)', 'vendor/bin/pint --test', $root, 'parsePint'],
@@ -159,7 +159,7 @@ if (!is_dir(dirname($outFile))) {
 }
 file_put_contents(
     $outFile,
-    json_encode($snapshot, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n",
+    json_encode($snapshot, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n",
 );
 
 // trend history: one JSON line per run; docs/generated/gate-trend.md plots it
@@ -177,11 +177,11 @@ foreach ($gates as $gate) {
     }
     $historyEntry['gates'][$gate['id']] = $record;
 }
-$historyFile = $root . '/storage/quality-history.jsonl';
-file_put_contents($historyFile, json_encode($historyEntry) . "\n", FILE_APPEND | LOCK_EX);
+$historyFile = $root.'/storage/quality-history.jsonl';
+file_put_contents($historyFile, json_encode($historyEntry)."\n", FILE_APPEND | LOCK_EX);
 
 $failing = array_filter($gates, fn (array $g): bool => $g['status'] === 'fail');
 echo "\nSnapshot: {$outFile}\n";
 echo "History:  {$historyFile}\n";
-echo count($gates) - count($failing) . '/' . count($gates) . " gates passing\n";
+echo count($gates) - count($failing).'/'.count($gates)." gates passing\n";
 exit($failing === [] ? 0 : 1);

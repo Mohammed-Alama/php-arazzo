@@ -21,9 +21,7 @@ use Alama\Arazzo\Expression\Ast\WorkflowRef;
 
 final class Parser
 {
-    public function __construct(private readonly Lexer $lexer = new Lexer())
-    {
-    }
+    public function __construct(private readonly Lexer $lexer = new Lexer()) {}
 
     public function parse(string $raw): ExpressionAst
     {
@@ -71,8 +69,8 @@ final class Parser
     }
 
     /**
-     * @param list<Token> $tokens
-     * @param class-string<InputRef|OutputRef> $refClass
+     * @param  list<Token>  $tokens
+     * @param  class-string<InputRef|OutputRef>  $refClass
      */
     private function parseSimpleRef(array $tokens, string $refClass, string $raw, int $i): InputRef|OutputRef
     {
@@ -136,7 +134,7 @@ final class Parser
     }
 
     /**
-     * @param list<Token> $tail
+     * @param  list<Token>  $tail
      */
     private function parseOutputShortcut(array $tail, string $name, string $raw): OutputPart
     {
@@ -152,8 +150,8 @@ final class Parser
     }
 
     /**
-     * @param list<Token> $rest
-     * @param class-string<OutputPart|InputPart> $cls
+     * @param  list<Token>  $rest
+     * @param  class-string<OutputPart|InputPart>  $cls
      */
     private function parseNamedPart(array $rest, string $cls, string $raw, bool $allowPointer = false): OutputPart|InputPart
     {
@@ -201,8 +199,8 @@ final class Parser
     }
 
     /**
-     * @param list<Token> $rest
-     * @param class-string<RequestPart|ResponsePart> $cls
+     * @param  list<Token>  $rest
+     * @param  class-string<RequestPart|ResponsePart>  $cls
      */
     private function parseHttpPart(array $rest, string $cls, string $raw): RequestPart|ResponsePart
     {

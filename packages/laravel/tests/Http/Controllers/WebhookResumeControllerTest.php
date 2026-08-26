@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\LockManagerInterface;
+use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Execution\OpenApiPayload;
+use Alama\Arazzo\Execution\StepExecutionWorker;
+use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
+use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\OpenApiPayload;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\State\WorkflowContext;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Response;
@@ -42,18 +42,14 @@ class WebhookControllerMockPendingCorrelations implements PendingCorrelationRegi
 {
     public ?PendingCorrelation $toReturn = null;
 
-    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
-    {
-    }
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
         return $this->toReturn;
     }
 
-    public function consume(string $correlationId): void
-    {
-    }
+    public function consume(string $correlationId): void {}
 
     public function existsForExecution(string $executionId): bool
     {
@@ -112,6 +108,13 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         {
             return $callback();
         }
+
+        public function tryAcquire(string $key, int $ttlSeconds): bool
+        {
+            return true;
+        }
+
+        public function release(string $key): void {}
     });
 
     $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface
@@ -134,7 +137,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
     );
     $this->app->instance(OpenApiOperationResolver::class, $opResolver);
 
-    $rawYaml = file_get_contents(__DIR__ . '/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
+    $rawYaml = file_get_contents(__DIR__.'/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
     $decoded = (new SymfonyYamlDecoder())->decode($rawYaml);
     $document = (new Parser())->parse(new RawDocument(
         (array) $decoded,

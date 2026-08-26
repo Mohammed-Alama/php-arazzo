@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Laravel\Jobs;
 
+use Alama\Arazzo\Execution\StepExecutionWorker;
+use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
@@ -19,9 +19,7 @@ class RecordingStepExecutionWorker extends StepExecutionWorker
     /** @var list<ExecuteStepJob> */
     public array $handled = [];
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(ExecuteStepJob $job): void
     {
@@ -55,13 +53,13 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     expect($recorder->handled[0])->not->toBe($innerJob);
 });
 
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\SourceType;
@@ -76,7 +74,7 @@ use GuzzleHttp\Psr7\Response;
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context
     $step = new Step('step-1', null, 'op', null, null, [], null, [], [], [], []);
-    $executionId = 'exec-idempotency-test-' . bin2hex(random_bytes(8));
+    $executionId = 'exec-idempotency-test-'.bin2hex(random_bytes(8));
     $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId($executionId);
     $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);
     $document = new ArazzoDocument('1.0', new Info('t', null, null, '1'), [new SourceDescription('src', 'http://api.example.com', SourceType::Openapi)], [$workflow], new Components([], [], [], []), []);

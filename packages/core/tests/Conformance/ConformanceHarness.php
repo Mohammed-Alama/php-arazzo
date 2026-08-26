@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Events\RunCompleted;
+use Alama\Arazzo\Events\RunFailed;
+use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Events\StepExecuted;
+use Alama\Arazzo\Events\StepFailed;
+use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Events\RunCompleted;
-use Alama\Arazzo\Runner\Events\RunFailed;
-use Alama\Arazzo\Runner\Events\RunStarted;
-use Alama\Arazzo\Runner\Events\StepExecuted;
-use Alama\Arazzo\Runner\Events\StepFailed;
-use Alama\Arazzo\Runner\Events\StepStarted;
-use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\Enum\SourceType;
@@ -49,14 +49,13 @@ abstract class ConformanceHarness
     protected SourceRegistry $sourceRegistry;
 
     /**
-     * @param array<string, mixed> $fixture
-     *
+     * @param  array<string, mixed>  $fixture
      * @return array<string, mixed>
      */
     abstract public function run(array $fixture): array;
 
     /**
-     * @param array<string, mixed> $fixture
+     * @param  array<string, mixed>  $fixture
      */
     protected function prepare(array $fixture): ArazzoDocument
     {
@@ -86,7 +85,7 @@ abstract class ConformanceHarness
 
         $document = (new Parser())->parse(new RawDocument(
             $fixture['arazzo'],
-            'memory://conformance/' . ($fixture['name'] ?? 'fixture') . '.json',
+            'memory://conformance/'.($fixture['name'] ?? 'fixture').'.json',
             Format::Json,
         ));
 
@@ -94,7 +93,7 @@ abstract class ConformanceHarness
             $this->sourceRegistry->register(new SourceDocument(
                 (string) $name,
                 SourceType::Openapi,
-                'https://conformance.invalid/' . $name . '.json',
+                'https://conformance.invalid/'.$name.'.json',
                 $content,
             ));
         }
@@ -195,7 +194,7 @@ abstract class ConformanceHarness
             'steps' => $steps,
             'outputs' => $outputs,
             'requests' => array_map(
-                fn ($request): string => $request->getMethod() . ' ' . $request->getUri(),
+                fn ($request): string => $request->getMethod().' '.$request->getUri(),
                 $this->http->requests,
             ),
             'requestHeaders' => $this->http->requests === [] ? [] : array_map(

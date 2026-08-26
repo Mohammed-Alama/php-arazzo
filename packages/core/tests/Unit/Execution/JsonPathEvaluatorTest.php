@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Runner\Evaluation\JsonPathEvaluator;
-use PHPUnit\Framework\TestCase;
+use Alama\Arazzo\Expression\JsonPathEvaluator;
 
-class JsonPathEvaluatorTest extends TestCase
-{
-    public function test_extracts_using_jsonpath(): void
-    {
-        $data = ['users' => [['id' => 1], ['id' => 2]]];
-        $result = JsonPathEvaluator::evaluate('$.users[*].id', $data);
-        $this->assertEquals([1, 2], $result);
-    }
-}
+it('extracts using jsonpath', function (): void {
+    $data = ['users' => [['id' => 1], ['id' => 2]]];
+
+    expect(JsonPathEvaluator::evaluate('$.users[*].id', $data))->toEqual([1, 2]);
+});

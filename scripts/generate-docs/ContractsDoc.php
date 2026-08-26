@@ -18,8 +18,8 @@ from both packages. Core defines contracts; Laravel implements them.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -31,7 +31,7 @@ function render(array $core, array $laravel): string
                     $interfaces[$file->className] = [
                         'package' => $pkg,
                         'module' => $module,
-                        'fqcn' => $file->namespace . '\\' . $file->className,
+                        'fqcn' => $file->namespace.'\\'.$file->className,
                     ];
                 }
             }
@@ -54,7 +54,7 @@ function render(array $core, array $laravel): string
                     if (!isset($interfaces[$short])) {
                         continue;
                     }
-                    $impls[$short][] = [$file->className, $pkg, $module, $file->namespace . '\\' . $file->className];
+                    $impls[$short][] = [$file->className, $pkg, $module, $file->namespace.'\\'.$file->className];
                 }
             }
         }
@@ -79,7 +79,7 @@ function render(array $core, array $laravel): string
     foreach ($impls as $interface => $implementations) {
         foreach ($implementations as [$class, $pkg, $module]) {
             $style = $pkg === 'core' ? 'implCore' : 'implLaravel';
-            $id = 'C_' . preg_replace('/[^A-Za-z0-9_]/', '_', "{$pkg}_{$module}_{$class}");
+            $id = 'C_'.preg_replace('/[^A-Za-z0-9_]/', '_', "{$pkg}_{$module}_{$class}");
             $lines[] = sprintf(
                 '    %s["%s<br/><small>%s</small>"]:::%s',
                 $id,
@@ -106,5 +106,5 @@ function render(array $core, array $laravel): string
     $lines[] = '```';
     $lines[] = '';
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }

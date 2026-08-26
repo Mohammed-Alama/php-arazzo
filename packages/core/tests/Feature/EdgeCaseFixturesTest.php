@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Feature;
 
 it('detects complex step dependsOn cycle in edge-case fixture', function () {
-    $path = __DIR__ . '/../fixtures/edge-cases/complex-cyclic-dependency.arazzo.yaml';
+    $path = __DIR__.'/../fixtures/edge-cases/complex-cyclic-dependency.arazzo.yaml';
 
     $result = FixtureHarness::validate($path);
 

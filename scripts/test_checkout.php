@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 error_reporting(E_ALL & ~E_DEPRECATED);
 
@@ -27,7 +27,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Symfony\Component\Yaml\Yaml;
 
-$path = __DIR__ . '/../../arazzo-dummy-app/checkout.arazzo.yaml';
+$path = __DIR__.'/../../arazzo-dummy-app/checkout.arazzo.yaml';
 
 echo "Testing Checkout Arazzo workflow...\n";
 
@@ -92,5 +92,5 @@ try {
     print_r($result->outputs);
 } catch (Throwable $e) {
     echo "Workflow Execution Failed!\n";
-    echo $e->getMessage() . "\n";
+    echo $e->getMessage()."\n";
 }

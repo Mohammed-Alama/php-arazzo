@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\State\PendingCorrelation;
 
 final class InMemoryPendingCorrelations implements PendingCorrelationRegistryInterface
 {
@@ -22,7 +22,7 @@ final class InMemoryPendingCorrelations implements PendingCorrelationRegistryInt
             executionId: $executionId,
             stepId: $stepId,
             channelPath: $channelPath,
-            expiresAt: $timeoutSeconds === null ? null : new \DateTimeImmutable('@' . (time() + $timeoutSeconds)),
+            expiresAt: $timeoutSeconds === null ? null : new \DateTimeImmutable('@'.(time() + $timeoutSeconds)),
         );
     }
 

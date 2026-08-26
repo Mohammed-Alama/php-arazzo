@@ -57,18 +57,17 @@ use Alama\Arazzo\Validator\Rules\WorkflowUniqueIdRule;
 final readonly class RuleSet
 {
     /**
-     * @param list<Rule> $rules
-     * @param list<string> $disabled
+     * @param  list<Rule>  $rules
+     * @param  list<string>  $disabled
      */
     public function __construct(
         public array $rules,
         public array $disabled = [],
         public bool $strict = true,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param list<string> $disabled
+     * @param  list<string>  $disabled
      */
     public static function default(array $disabled = [], bool $strict = true): self
     {

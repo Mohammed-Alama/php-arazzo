@@ -35,6 +35,7 @@ classDiagram
     class SourceType
     class SpecVersion
     class Step
+    class StepStatus
     class SubWorkflowFailureAction <<value>>
     class SubWorkflowSuccessAction <<value>>
     class SuccessAction <<value>>
@@ -103,6 +104,7 @@ classDiagram
 - **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring`
 - **SpecVersion** — `1.0.0` &middot; `1.1.0`
 - **ExpressionType** — `jsonpath` &middot; `xpath` &middot; `jsonpointer`
+- **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`
 - **CriterionType** — `simple` &middot; `regex` &middot; `jsonpath` &middot; `xpath`
 - **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
 - **ActionKind** — `goto` &middot; `end` &middot; `retry` &middot; `invoke`

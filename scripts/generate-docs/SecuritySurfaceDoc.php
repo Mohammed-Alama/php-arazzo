@@ -67,8 +67,8 @@ const WEAK_PATTERNS = [
 const TRUST_BOUNDARY_DIRS = ['Http/Controllers', 'Queue/Jobs', 'Http/Middleware'];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -94,7 +94,7 @@ function render(array $core, array $laravel): string
     }
     sort($boundaries);
     foreach ($boundaries as [$fqcn, $kind]) {
-        $lines[] = '| `' . short($fqcn) . '` | ' . $kind . ' |';
+        $lines[] = '| `'.short($fqcn).'` | '.$kind.' |';
     }
 
     $lines[] = '';
@@ -109,10 +109,10 @@ function render(array $core, array $laravel): string
         $sites = array_values(array_unique($entry['sites']));
         sort($sites);
         foreach ($sites as $site) {
-            $cells[] = '`' . short((string) $site) . '` <small>' . moduleOf((string) $site) . '</small>';
+            $cells[] = '`'.short((string) $site).'` <small>'.moduleOf((string) $site).'</small>';
         }
-        $suffix = $entry['note'] !== '' ? ' — _' . $entry['note'] . '_' : '';
-        $lines[] = '| ' . $entry['category'] . ' | `' . $entry['symbol'] . '`' . $suffix . ' | ' . implode(', ', $cells) . ' |';
+        $suffix = $entry['note'] !== '' ? ' — _'.$entry['note'].'_' : '';
+        $lines[] = '| '.$entry['category'].' | `'.$entry['symbol'].'`'.$suffix.' | '.implode(', ', $cells).' |';
     }
     if ($sinks === []) {
         $lines[] = '| — | — | — |';
@@ -130,18 +130,17 @@ function render(array $core, array $laravel): string
         foreach ($weak as $primitive => $sites) {
             $cells = [];
             foreach (array_unique($sites) as $site) {
-                $cells[] = '`' . short((string) $site) . '` <small>' . moduleOf((string) $site) . '</small>';
+                $cells[] = '`'.short((string) $site).'` <small>'.moduleOf((string) $site).'</small>';
             }
-            $lines[] = '| `' . $primitive . '` | ' . implode(', ', $cells) . ' |';
+            $lines[] = '| `'.$primitive.'` | '.implode(', ', $cells).' |';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param list<ScannedFile> $files
- *
+ * @param  list<ScannedFile>  $files
  * @return array{0: list<array{string, string}>, 1: list<array{category: string, symbol: string, note: string, sites: list<string>}>, 2: array<string, list<string>>}
  */
 function scan(array $files): array
@@ -151,14 +150,14 @@ function scan(array $files): array
     $sinks = [];
 
     foreach ($files as $file) {
-        $selfFqcn = $file->namespace . '\\' . $file->className;
+        $selfFqcn = $file->namespace.'\\'.$file->className;
         $dir = $file->relativeDir;
 
         // trust boundaries: controllers, jobs, middleware
         foreach (TRUST_BOUNDARY_DIRS as $boundaryDir) {
-            if ($dir === $boundaryDir || str_starts_with($dir, $boundaryDir . '/')) {
+            if ($dir === $boundaryDir || str_starts_with($dir, $boundaryDir.'/')) {
                 $kind = basename(str_replace('/', '\\', $boundaryDir));
-                $key = $selfFqcn . '|' . $kind;
+                $key = $selfFqcn.'|'.$kind;
                 if (!isset($seenBoundaries[$key])) {
                     $seenBoundaries[$key] = true;
                     $boundaries[] = [$selfFqcn, $kind];
@@ -170,8 +169,8 @@ function scan(array $files): array
 
         foreach (SINK_PATTERNS as $category => $patterns) {
             foreach ($patterns as [$symbol, $pattern, $note]) {
-                if (preg_match('#' . $pattern . '#', $file->content) === 1) {
-                    $key = $category . '|' . $symbol;
+                if (preg_match('#'.$pattern.'#', $file->content) === 1) {
+                    $key = $category.'|'.$symbol;
                     if (!isset($sinks[$key])) {
                         $sinks[$key] = ['category' => $category, 'symbol' => $symbol, 'note' => (string) ($note ?? ''), 'sites' => []];
                     }
@@ -185,8 +184,8 @@ function scan(array $files): array
     $weak = [];
     foreach ($files as $file) {
         foreach (WEAK_PATTERNS as $name => $pattern) {
-            if (preg_match('#' . $pattern . '#', $file->content) === 1) {
-                $weak[$name][] = $file->namespace . '\\' . $file->className;
+            if (preg_match('#'.$pattern.'#', $file->content) === 1) {
+                $weak[$name][] = $file->namespace.'\\'.$file->className;
             }
         }
     }

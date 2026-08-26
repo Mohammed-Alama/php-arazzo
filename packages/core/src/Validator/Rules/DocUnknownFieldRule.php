@@ -13,9 +13,7 @@ final class DocUnknownFieldRule implements Rule
 {
     private const array KNOWN = ['arazzo', 'info', 'sourceDescriptions', 'workflows', 'components', '$self'];
 
-    public function __construct(public readonly bool $strict = true)
-    {
-    }
+    public function __construct(public readonly bool $strict = true) {}
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
@@ -30,7 +28,7 @@ final class DocUnknownFieldRule implements Rule
                 continue;
             }
             $msg = "Unknown top-level field '{$k}'.";
-            $path = '/' . str_replace(['~', '/'], ['~0', '~1'], $k);
+            $path = '/'.str_replace(['~', '/'], ['~0', '~1'], $k);
             if ($this->strict) {
                 $errors->error($this->code(), $msg, $path);
             } else {

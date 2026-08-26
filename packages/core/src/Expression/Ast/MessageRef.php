@@ -14,6 +14,5 @@ final readonly class MessageRef extends ExpressionAst
         public string $part,
         public ?string $name = null,
         public ?string $jsonPointer = null,
-    ) {
-    }
+    ) {}
 }

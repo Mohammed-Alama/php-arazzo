@@ -55,7 +55,7 @@ final class RenderCommand extends Command
 
         if ($outputPath !== null) {
             file_put_contents($outputPath, $content);
-            $output->writeln('<info>written</info> ' . $outputPath);
+            $output->writeln('<info>written</info> '.$outputPath);
 
             return Command::SUCCESS;
         }

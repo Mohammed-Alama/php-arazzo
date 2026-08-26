@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Illuminate\Database\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -15,11 +15,10 @@ class DatabaseEventLedger implements EventLedgerInterface
         private ConnectionInterface $db,
         private string $tableName = 'arazzo_events',
         private ?LoggerInterface $logger = null,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function append(string $executionId, string $eventType, array $payload): void
     {

@@ -20,14 +20,14 @@ MD;
 
 function render(string $root): string
 {
-    $autoload = $root . '/packages/core/vendor/autoload.php';
+    $autoload = $root.'/packages/core/vendor/autoload.php';
     if (!is_file($autoload)) {
-        return BANNER . "_Core vendor autoload not found — run composer install in packages/core._\n";
+        return BANNER."_Core vendor autoload not found — run composer install in packages/core._\n";
     }
     require_once $autoload;
 
     if (!class_exists(Application::class)) {
-        return BANNER . "_Console application class missing._\n";
+        return BANNER."_Console application class missing._\n";
     }
 
     $app = new Application();
@@ -46,7 +46,7 @@ function render(string $root): string
     $lines[] = globalOptionsSection($app);
 
     foreach ($commands as $name => $command) {
-        $lines[] = '## `arazzo ' . $name . '`';
+        $lines[] = '## `arazzo '.$name.'`';
         $description = (string) $command->getDescription();
         if ($description !== '') {
             $lines[] = $description;
@@ -56,16 +56,16 @@ function render(string $root): string
         $definition = $command->getDefinition();
 
         // usage synopsis
-        $synopsis = 'arazzo ' . $name;
+        $synopsis = 'arazzo '.$name;
         foreach ($definition->getArguments() as $argument) {
             $synopsis .= $argument->isRequired()
-                ? ' <' . $argument->getName() . '>'
-                : ' [' . $argument->getName() . ']';
+                ? ' <'.$argument->getName().'>'
+                : ' ['.$argument->getName().']';
         }
         if ($definition->getOptions() !== []) {
             $synopsis .= ' [options]';
         }
-        $lines[] = '`$ ' . $synopsis . '`';
+        $lines[] = '`$ '.$synopsis.'`';
         $lines[] = '';
 
         $arguments = $definition->getArguments();
@@ -89,7 +89,7 @@ function render(string $root): string
             $lines[] = '| Option | Shortcut | Value | Default | Description |';
             $lines[] = '|---|---|---|---|---|';
             foreach ($options as $option) {
-                $shortcut = $option->getShortcut() ? '-' . $option->getShortcut() : '';
+                $shortcut = $option->getShortcut() ? '-'.$option->getShortcut() : '';
                 $lines[] = sprintf(
                     '| `--%s` | `%s` | %s | %s | %s |',
                     $option->getName(),
@@ -103,7 +103,7 @@ function render(string $root): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function globalOptionsSection(\Symfony\Component\Console\Application $app): string
@@ -115,7 +115,7 @@ function globalOptionsSection(\Symfony\Component\Console\Application $app): stri
 
     $out = ['## Global options', '', '| Option | Shortcut | Value | Description |', '|---|---|---|---|'];
     foreach ($options as $option) {
-        $shortcut = $option->getShortcut() ? '-' . $option->getShortcut() : '';
+        $shortcut = $option->getShortcut() ? '-'.$option->getShortcut() : '';
         $out[] = sprintf(
             '| `--%s` | `%s` | %s | %s |',
             $option->getName(),
@@ -141,10 +141,10 @@ function defaultCell($default): string
         return 'false';
     }
     if (is_array($default)) {
-        return $default === [] ? '[]' : '`' . implode(', ', array_map(strval(...), $default)) . '`';
+        return $default === [] ? '[]' : '`'.implode(', ', array_map(strval(...), $default)).'`';
     }
 
-    return '`' . ((string) $default) . '`';
+    return '`'.((string) $default).'`';
 }
 
 function escape(string $text): string

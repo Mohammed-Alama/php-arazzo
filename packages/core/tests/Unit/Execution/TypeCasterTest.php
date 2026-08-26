@@ -4,59 +4,44 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Runner\Evaluation\TypeCaster;
-use PHPUnit\Framework\TestCase;
+use Alama\Arazzo\Execution\TypeCaster;
 
-class TypeCasterTest extends TestCase
-{
-    public function test_casts_to_integer(): void
-    {
-        $this->assertSame(42, TypeCaster::asInteger('42'));
-        $this->assertSame(42, TypeCaster::asInteger(42));
-    }
+it('casts to integer', function (): void {
+    expect(TypeCaster::asInteger('42'))->toBe(42)
+        ->and(TypeCaster::asInteger(42))->toBe(42);
+});
 
-    public function test_throws_on_invalid_integer(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        TypeCaster::asInteger(['array']);
-    }
+it('throws on invalid integer', function (): void {
+    TypeCaster::asInteger(['array']);
+})->throws(\InvalidArgumentException::class);
 
-    public function test_casts_to_string(): void
-    {
-        $this->assertSame('42', TypeCaster::asString(42));
-        $this->assertSame('true', TypeCaster::asString(true));
-    }
+it('casts to string', function (): void {
+    expect(TypeCaster::asString(42))->toBe('42')
+        ->and(TypeCaster::asString(true))->toBe('true');
+});
 
-    public function test_casts_to_array(): void
-    {
-        $this->assertSame(['a'], TypeCaster::asArray(['a']));
-        $this->assertSame(['a'], TypeCaster::asArray('a'));
-    }
+it('casts to array', function (): void {
+    expect(TypeCaster::asArray(['a']))->toBe(['a'])
+        ->and(TypeCaster::asArray('a'))->toBe(['a']);
+});
 
-    public function test_casts_to_float(): void
-    {
-        $this->assertSame(4.2, TypeCaster::asFloat('4.2'));
-        $this->assertSame(42.0, TypeCaster::asFloat(42));
-    }
+it('casts to float', function (): void {
+    expect(TypeCaster::asFloat('4.2'))->toBe(4.2)
+        ->and(TypeCaster::asFloat(42))->toBe(42.0);
+});
 
-    public function test_throws_on_invalid_float(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        TypeCaster::asFloat('not-a-number');
-    }
+it('throws on invalid float', function (): void {
+    TypeCaster::asFloat('not-a-number');
+})->throws(\InvalidArgumentException::class);
 
-    public function test_casts_to_boolean(): void
-    {
-        $this->assertTrue(TypeCaster::asBoolean(true));
-        $this->assertTrue(TypeCaster::asBoolean('true'));
-        $this->assertFalse(TypeCaster::asBoolean('false'));
-        $this->assertTrue(TypeCaster::asBoolean(1));
-        $this->assertFalse(TypeCaster::asBoolean(0));
-    }
+it('casts to boolean', function (): void {
+    expect(TypeCaster::asBoolean(true))->toBeTrue()
+        ->and(TypeCaster::asBoolean('true'))->toBeTrue()
+        ->and(TypeCaster::asBoolean('false'))->toBeFalse()
+        ->and(TypeCaster::asBoolean(1))->toBeTrue()
+        ->and(TypeCaster::asBoolean(0))->toBeFalse();
+});
 
-    public function test_throws_on_invalid_boolean(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        TypeCaster::asBoolean('not-a-bool');
-    }
-}
+it('throws on invalid boolean', function (): void {
+    TypeCaster::asBoolean('not-a-bool');
+})->throws(\InvalidArgumentException::class);

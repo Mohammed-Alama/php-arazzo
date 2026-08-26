@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Events\RunStarted;
+use Alama\Arazzo\Events\RunStarted;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Psr\EventDispatcher\StoppableEventInterface;
 
@@ -10,10 +10,10 @@ it('delivers to subscribed listeners in subscription order', function () {
     $log = [];
     $d = new SimpleEventDispatcher();
     $d->subscribe(RunStarted::class, function ($e) use (&$log) {
-        $log[] = 'a:' . $e->executionId;
+        $log[] = 'a:'.$e->executionId;
     });
     $d->subscribe(RunStarted::class, function ($e) use (&$log) {
-        $log[] = 'b:' . $e->executionId;
+        $log[] = 'b:'.$e->executionId;
     });
 
     $event = new RunStarted('exec-1', 'w', 'd', [], new DateTimeImmutable());
@@ -41,9 +41,7 @@ it('matches listeners registered for parent class or interface', function () {
         $captured = $e;
     });
 
-    $event = new class() extends stdClass
-    {
-    };
+    $event = new class() extends stdClass {};
     $d->dispatch($event);
 
     expect($captured)->toBe($event);

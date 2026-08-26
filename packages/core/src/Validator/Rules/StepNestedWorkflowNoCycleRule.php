@@ -37,9 +37,9 @@ final class StepNestedWorkflowNoCycleRule implements Rule
     }
 
     /**
-     * @param array<string,list<string>> $graph
-     * @param array<string,true> $visited
-     * @param array<string,true> $stack
+     * @param  array<string,list<string>>  $graph
+     * @param  array<string,true>  $visited
+     * @param  array<string,true>  $stack
      */
     private function hasCycle(string $node, array $graph, array &$visited, array &$stack): bool
     {

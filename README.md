@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 [![Ecosystem Feed](https://img.shields.io/badge/docs-ecosystem%20feed-informational)](docs/ECOSYSTEM_FEED.md)
+[![Tia Benchmark](https://img.shields.io/badge/docs-tia%20benchmark-success)](docs/TIA-BENCHMARK.md)
 
 > [!WARNING]
 > **Work in Progress:** This project is currently under active development and is not yet ready for production use.

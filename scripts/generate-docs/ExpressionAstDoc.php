@@ -18,7 +18,7 @@ Node classes under `packages/core/src/Expression/Ast`, scanned live from source.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
+ * @param  array<string, list<ScannedFile>>  $core
  */
 function render(array $core): string
 {
@@ -83,7 +83,7 @@ function render(array $core): string
     $lines[] = '```';
     $lines[] = '';
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function nodeId(string $name): string

@@ -24,14 +24,14 @@ const TOP_CHART_MODULES = 12;
 const HOTSPOT_COUNT = 3;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel, string $root): string
 {
     $touches = scanChurn($root);
     if ($touches === []) {
-        return BANNER . "_No git history found — hotspot analysis unavailable._\n";
+        return BANNER."_No git history found — hotspot analysis unavailable._\n";
     }
 
     // LOC per module from the already-scanned sources.
@@ -43,7 +43,7 @@ function render(array $core, array $laravel, string $root): string
             if ($module === '_') {
                 continue;
             }
-            $key = ($package === 'laravel' ? 'Laravel/' : '') . $module;
+            $key = ($package === 'laravel' ? 'Laravel/' : '').$module;
             $loc[$key] = array_sum(array_map(
                 fn (ScannedFile $f): int => substr_count($f->content, "\n") + 1,
                 $files,
@@ -78,9 +78,9 @@ function render(array $core, array $laravel, string $root): string
 
     $lines = [BANNER, '```mermaid', 'xychart-beta'];
     $lines[] = '    title "Edit churn per module (git touches)"';
-    $lines[] = '    x-axis [' . implode(', ', array_map(fn (array $r): string => '"' . $r['module'] . '"', $chartRows)) . ']';
+    $lines[] = '    x-axis ['.implode(', ', array_map(fn (array $r): string => '"'.$r['module'].'"', $chartRows)).']';
     $lines[] = sprintf('    y-axis "Touches" 0 --> %d', $yMax);
-    $lines[] = '    bar ' . '[' . implode(', ', array_column($chartRows, 'touches')) . ']';
+    $lines[] = '    bar '.'['.implode(', ', array_column($chartRows, 'touches')).']';
     $lines[] = '```';
 
     $lines[] = '';
@@ -107,17 +107,17 @@ function render(array $core, array $laravel, string $root): string
     if ($hotspots !== []) {
         $lines[] = '';
         $lines[] = '**Hotspots** (highest touches-per-KLOC with meaningful size/churn): '
-            . implode(', ', array_map(fn (array $r): string => '`' . $r['module'] . '` (' . $r['score'] . ')', $hotspots));
+            .implode(', ', array_map(fn (array $r): string => '`'.$r['module'].'` ('.$r['score'].')', $hotspots));
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /** Path touch counts per module from full git history. */
 function scanChurn(string $root): array
 {
     exec(
-        'git -C ' . escapeshellarg($root) . ' log --name-only --format=%x00 -- packages/core/src packages/laravel/src 2>/dev/null',
+        'git -C '.escapeshellarg($root).' log --name-only --format=%x00 -- packages/core/src packages/laravel/src 2>/dev/null',
         $output,
     );
 
@@ -144,7 +144,7 @@ function scanChurn(string $root): array
         if (!preg_match('#^packages/(core|laravel)/src/([^/]+)/#', $line, $m)) {
             continue;
         }
-        $module = ($m[1] === 'laravel' ? 'Laravel/' : '') . $m[2];
+        $module = ($m[1] === 'laravel' ? 'Laravel/' : '').$m[2];
         if (!isset($seenInCommit[$module])) {
             $seenInCommit[$module] = true;
             $touches[$module] = ($touches[$module] ?? 0) + 1;

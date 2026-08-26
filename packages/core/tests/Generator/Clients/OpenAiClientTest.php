@@ -45,7 +45,7 @@ it('sends prompt to openai and returns content', function () {
         ->andReturn($request);
 
     $request->shouldReceive('withHeader')
-        ->with('Authorization', 'Bearer ' . $apiKey)
+        ->with('Authorization', 'Bearer '.$apiKey)
         ->andReturn($request);
 
     $request->shouldReceive('withHeader')

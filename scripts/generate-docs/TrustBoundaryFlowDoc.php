@@ -27,8 +27,8 @@ const VALIDATION_MARKERS = '/(?:Validat|Authorize|Sanitiz|Assert)/';
 const SINK_MARKERS = '/(?:Filesystem|File_|Storage|ProcOpen|ShellExec|Unserialize|RawQuery|Statement|HttpClient|Client\b)/';
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -37,7 +37,7 @@ function render(array $core, array $laravel): string
         foreach ($modules as $moduleFiles) {
             foreach ($moduleFiles as $file) {
                 if (!$file->isInterface) {
-                    $byFqcn[$file->namespace . '\\' . $file->className] = $file;
+                    $byFqcn[$file->namespace.'\\'.$file->className] = $file;
                 }
             }
         }
@@ -53,7 +53,7 @@ function render(array $core, array $laravel): string
     $boundaries = [];
     foreach ($byFqcn as $fqcn => $file) {
         foreach (BOUNDARY_DIRS as $dir) {
-            if ($file->relativeDir === $dir || str_starts_with($file->relativeDir, $dir . '/')) {
+            if ($file->relativeDir === $dir || str_starts_with($file->relativeDir, $dir.'/')) {
                 $boundaries[$fqcn] = $file;
 
                 break;
@@ -63,7 +63,7 @@ function render(array $core, array $laravel): string
     ksort($boundaries);
 
     if ($boundaries === []) {
-        return BANNER . "_No trust boundaries found._\n";
+        return BANNER."_No trust boundaries found._\n";
     }
 
     [$lines, $findings] = renderDiagram($boundaries, $byFqcn, $shortIndex);
@@ -83,14 +83,13 @@ function render(array $core, array $laravel): string
         );
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, ScannedFile> $boundaries
- * @param array<string, ScannedFile> $byFqcn
- * @param array<string, string> $shortIndex
- *
+ * @param  array<string, ScannedFile>  $boundaries
+ * @param  array<string, ScannedFile>  $byFqcn
+ * @param  array<string, string>  $shortIndex
  * @return array{0: list<string>, 1: array<string, array{bool, bool}>}
  */
 function renderDiagram(array $boundaries, array $byFqcn, array $shortIndex): array
@@ -129,9 +128,8 @@ function renderDiagram(array $boundaries, array $byFqcn, array $shortIndex): arr
 }
 
 /**
- * @param array<string, ScannedFile> $byFqcn
- * @param array<string, string> $shortIndex
- *
+ * @param  array<string, ScannedFile>  $byFqcn
+ * @param  array<string, string>  $shortIndex
  * @return array{0: list<string>, 1: bool, 2: bool}
  */
 function boundaryDeps(ScannedFile $file, array $byFqcn, array $shortIndex): array
@@ -149,8 +147,8 @@ function boundaryDeps(ScannedFile $file, array $byFqcn, array $shortIndex): arra
             $candidate = null;
             if (isset($aliases[$part])) {
                 $candidate = $aliases[$part];
-            } elseif (isset($byFqcn[$file->namespace . '\\' . $part])) {
-                $candidate = $file->namespace . '\\' . $part;
+            } elseif (isset($byFqcn[$file->namespace.'\\'.$part])) {
+                $candidate = $file->namespace.'\\'.$part;
             } elseif (($shortIndex[$part] ?? '') !== '') {
                 $candidate = $shortIndex[$part];
             }
@@ -225,5 +223,5 @@ function dirLabel(ScannedFile $file): string
 
 function nodeId(string $value): string
 {
-    return 'T_' . ((preg_replace('/[^A-Za-z0-9_]/', '_', $value)) ?? $value);
+    return 'T_'.((preg_replace('/[^A-Za-z0-9_]/', '_', $value)) ?? $value);
 }

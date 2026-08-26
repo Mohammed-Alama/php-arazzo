@@ -26,8 +26,8 @@ const UNSTABLE_THRESHOLD = 0.8;
 const HUB_FAN_IN_THRESHOLD = 3;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -36,7 +36,7 @@ function render(array $core, array $laravel): string
     $classModule = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace . '\\' . $file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $module;
         }
     }
 
@@ -88,18 +88,17 @@ function render(array $core, array $laravel): string
             $pairs[] = [$weight, $from, $to];
         }
     }
-    usort($pairs, fn (array $a, array $b): int => $b[0] <=> $a[0] ?: strcmp(label($a[1]) . $a[2], label($b[1]) . $b[2]));
+    usort($pairs, fn (array $a, array $b): int => $b[0] <=> $a[0] ?: strcmp(label($a[1]).$a[2], label($b[1]).$b[2]));
     foreach (array_slice($pairs, 0, TOP_EDGES_LIMIT) as [$weight, $from, $to]) {
         $lines[] = sprintf('| `%s` → `%s` | %d |', label($from), label($to), $weight);
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, list<ScannedFile>> $all
- * @param array<string, string> $classModule
- *
+ * @param  array<string, list<ScannedFile>>  $all
+ * @param  array<string, string>  $classModule
  * @return array{0: array<string, array<string, true>>, 1: array<string, array<string, true>>, 2: array<string, array<string, int>>, 3: int}
  */
 function computeGraph(array $all, array $classModule): array
@@ -140,7 +139,7 @@ function label(string $module): string
         '_' => '(core root)',
         'Laravel:_' => '(laravel root)',
         default => str_starts_with($module, 'Laravel:')
-            ? 'Laravel:' . substr($module, strlen('Laravel:'))
+            ? 'Laravel:'.substr($module, strlen('Laravel:'))
             : $module,
     };
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Execution\WorkflowExecutor;
 use GuzzleHttp\Psr7\HttpFactory;
 
 /**
@@ -24,8 +24,7 @@ use GuzzleHttp\Psr7\HttpFactory;
 final class FixtureRunner extends ConformanceHarness
 {
     /**
-     * @param array<string, mixed> $fixture
-     *
+     * @param  array<string, mixed>  $fixture
      * @return array<string, mixed>
      */
     public function run(array $fixture): array

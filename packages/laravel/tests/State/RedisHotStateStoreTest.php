@@ -15,9 +15,7 @@ function makeRecordingRedisConnection(): Connection
         /** @var list<array<string, mixed>> */
         public array $calls = [];
 
-        public function __construct()
-        {
-        }
+        public function __construct() {}
 
         public function set($key, $value)
         {
@@ -36,9 +34,7 @@ function makeRecordingRedisConnection(): Connection
             return json_encode(['foo' => 'bar']);
         }
 
-        public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
-        {
-        }
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe') {}
     };
 }
 
@@ -72,18 +68,14 @@ it('lets an explicit TTL override the default', function (): void {
 it('returns null when the key is missing', function (): void {
     $redisConnection = new class() extends Connection
     {
-        public function __construct()
-        {
-        }
+        public function __construct() {}
 
         public function get($key)
         {
             return null;
         }
 
-        public function createSubscription($channels, \Closure $callback, $method = 'subscribe')
-        {
-        }
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe') {}
     };
     $factory = $this->createMock(RedisFactory::class);
     $factory->method('connection')->willReturn($redisConnection);

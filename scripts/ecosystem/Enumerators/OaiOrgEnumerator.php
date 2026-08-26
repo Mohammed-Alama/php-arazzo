@@ -6,19 +6,19 @@ namespace Ecosystem\Enumerators;
 
 use Ecosystem\GhCli;
 
-require_once dirname(__DIR__) . '/GhCli.php';
+require_once dirname(__DIR__).'/GhCli.php';
 
 final class OaiOrgEnumerator
 {
     public const ORG = 'OAI';
+
     public const API = 'https://api.github.com/orgs/OAI/repos?per_page=100';
 
     /**
      * Fetch all OAI repos via `gh api` (preferred) with curl fallback.
      * Keeps ETag cache for compatibility but gh path ignores 304 and always refreshes.
      *
-     * @param string $etagCachePath .cache/ecosystem/etags.json
-     *
+     * @param  string  $etagCachePath  .cache/ecosystem/etags.json
      * @return array{repos: array<int,array<string,mixed>>, etag: ?string, cached: bool}
      */
     public static function fetch(string $etagCachePath, ?string $token = null, bool $verbose = false): array
@@ -33,7 +33,7 @@ final class OaiOrgEnumerator
             $existing = is_file($etagCachePath) ? (json_decode((string) file_get_contents($etagCachePath), true) ?? []) : [];
             $existing['OAI_repos_data'] = $ghRepos;
             // keep etag key but gh does not provide it; cache repo list for offline fallback
-            file_put_contents($etagCachePath, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+            file_put_contents($etagCachePath, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 
             return ['repos' => $ghRepos, 'etag' => $existing['OAI_repos_etag'] ?? null, 'cached' => false];
         }
@@ -53,10 +53,10 @@ final class OaiOrgEnumerator
             'X-GitHub-Api-Version: 2022-11-28',
         ];
         if ($etag !== null) {
-            $headers[] = 'If-None-Match: ' . $etag;
+            $headers[] = 'If-None-Match: '.$etag;
         }
         if ($token !== null && $token !== '') {
-            $headers[] = 'Authorization: Bearer ' . $token;
+            $headers[] = 'Authorization: Bearer '.$token;
         }
 
         $ch = curl_init(self::API);
@@ -99,7 +99,7 @@ final class OaiOrgEnumerator
                 $existing = is_file($etagCachePath) ? (json_decode((string) file_get_contents($etagCachePath), true) ?? []) : [];
                 $existing['OAI_repos_etag'] = $newEtag;
                 $existing['OAI_repos_data'] = $repos;
-                file_put_contents($etagCachePath, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+                file_put_contents($etagCachePath, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 
                 return ['repos' => $repos, 'etag' => $newEtag, 'cached' => false];
             }
@@ -111,9 +111,8 @@ final class OaiOrgEnumerator
     /**
      * Diff live repos vs committed sources.oai.json and return summary.
      *
-     * @param array<int,array<string,mixed>> $live
-     * @param array<int,array<string,mixed>> $committed
-     *
+     * @param  array<int,array<string,mixed>>  $live
+     * @param  array<int,array<string,mixed>>  $committed
      * @return array{added: string[], removed: string[], countLive: int, countCommitted: int}
      */
     public static function diff(array $live, array $committed): array

@@ -28,8 +28,8 @@ MD;
 const LOG_LEVELS = ['error', 'warning', 'notice', 'info', 'debug', 'critical', 'alert', 'emergency'];
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -37,7 +37,7 @@ function render(array $core, array $laravel): string
     foreach ([[...$core], [...$laravel]] as $modules) {
         foreach ($modules as $moduleFiles) {
             foreach ($moduleFiles as $file) {
-                $files[$file->namespace . '\\' . $file->className] = $file;
+                $files[$file->namespace.'\\'.$file->className] = $file;
             }
         }
     }
@@ -56,15 +56,15 @@ function render(array $core, array $laravel): string
     if ($catalog === []) {
         $lines[] = sprintf("_No catalog found (%s)._\n", $catalogSource);
     } else {
-        $lines[] = 'Written by `' . $catalogSource . '` — this is the durable audit trail schema:';
+        $lines[] = 'Written by `'.$catalogSource.'` — this is the durable audit trail schema:';
         $lines[] = '';
         $lines[] = '| Domain event | Ledger type | Payload keys |';
         $lines[] = '|---|---|---|';
         ksort($catalog);
         foreach ($catalog as $event => [$type, $payloadKeys]) {
             sort($payloadKeys);
-            $keys = $payloadKeys === [] ? '—' : implode(', ', array_map(fn (string $k): string => '`' . $k . '`', $payloadKeys));
-            $lines[] = '| `' . $event . '` | `' . $type . '` | ' . $keys . ' |';
+            $keys = $payloadKeys === [] ? '—' : implode(', ', array_map(fn (string $k): string => '`'.$k.'`', $payloadKeys));
+            $lines[] = '| `'.$event.'` | `'.$type.'` | '.$keys.' |';
         }
         $lines[] = '';
     }
@@ -83,10 +83,10 @@ function render(array $core, array $laravel): string
             $cells = [];
             $count = 0;
             foreach ($levels as $level => $hits) {
-                $cells[] = '`' . $level . '`';
+                $cells[] = '`'.$level.'`';
                 $count += $hits;
             }
-            $lines[] = '| `' . short($class) . '` <small>' . packageOf($class) . '</small> | ' . implode(' · ', $cells) . ' | ' . $count . ' |';
+            $lines[] = '| `'.short($class).'` <small>'.packageOf($class).'</small> | '.implode(' · ', $cells).' | '.$count.' |';
         }
         $lines[] = '';
         $lines[] = sprintf('%d logging calls total. PSR-14 events are dispatched independently (see events.md).', $logTotal);
@@ -104,9 +104,9 @@ function render(array $core, array $laravel): string
     foreach ($adapters as $contract => $implementations) {
         $cells = [];
         foreach ($implementations as $impl) {
-            $cells[] = '`' . short($impl) . '` <small>' . packageOf($impl) . '</small>';
+            $cells[] = '`'.short($impl).'` <small>'.packageOf($impl).'</small>';
         }
-        $lines[] = '| `' . $contract . '` | ' . implode(', ', $cells) . ' |';
+        $lines[] = '| `'.$contract.'` | '.implode(', ', $cells).' |';
     }
     $lines[] = '';
 
@@ -123,19 +123,18 @@ function render(array $core, array $laravel): string
         ksort($correlation);
         foreach ($correlation as $class => $roles) {
             sort($roles);
-            $lines[] = '| `' . short($class) . '` <small>' . packageOf((string) $class) . '</small> | ' . implode(', ', $roles) . ' |';
+            $lines[] = '| `'.short($class).'` <small>'.packageOf((string) $class).'</small> | '.implode(', ', $roles).' |';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
  * Extracts instanceof → [ledgerType, payloadKeys] arms from the listener's
  * match(true) block.
  *
- * @param array<string, ScannedFile> $files
- *
+ * @param  array<string, ScannedFile>  $files
  * @return array{0: array<string, array{string, list<string>}>, 1: string}
  */
 function extractLedgerCatalog(array $files): array
@@ -174,12 +173,11 @@ function extractLedgerCatalog(array $files): array
 
     ksort($catalog);
 
-    return [$catalog, $listener->namespace . '\\' . $listener->className];
+    return [$catalog, $listener->namespace.'\\'.$listener->className];
 }
 
 /**
- * @param array<string, ScannedFile> $files
- *
+ * @param  array<string, ScannedFile>  $files
  * @return array{0: array<string, array<string, int>>, 1: int}
  */
 function scanLogs(array $files): array
@@ -188,14 +186,14 @@ function scanLogs(array $files): array
     $total = 0;
     foreach ($files as $fqcn => $file) {
         foreach (LOG_LEVELS as $level) {
-            $hits = preg_match_all('/->' . $level . '\s*\(/', $file->content);
+            $hits = preg_match_all('/->'.$level.'\s*\(/', $file->content);
             if ($hits > 0) {
                 $sites[$fqcn][$level] = $hits;
                 $total += $hits;
             }
         }
         // Laravel facade + generic ->log(
-        $facadeHits = preg_match_all('/(?:Log::(?:' . implode('|', LOG_LEVELS) . ')\s*\(|->log\s*\()/', $file->content);
+        $facadeHits = preg_match_all('/(?:Log::(?:'.implode('|', LOG_LEVELS).')\s*\(|->log\s*\()/', $file->content);
         if ($facadeHits > 0) {
             $sites[$fqcn]['generic'] = ($sites[$fqcn]['generic'] ?? 0) + $facadeHits;
             $total += $facadeHits;
@@ -208,8 +206,7 @@ function scanLogs(array $files): array
 /**
  * Contracts carrying runtime state + who implements them.
  *
- * @param array<string, ScannedFile> $files
- *
+ * @param  array<string, ScannedFile>  $files
  * @return array<string, list<string>>
  */
 function scanAdapters(array $files): array
@@ -249,8 +246,7 @@ function scanAdapters(array $files): array
 }
 
 /**
- * @param array<string, ScannedFile> $files
- *
+ * @param  array<string, ScannedFile>  $files
  * @return array<string, list<string>>
  */
 function scanCorrelations(array $files): array

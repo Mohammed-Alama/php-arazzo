@@ -49,7 +49,7 @@ it('parses and validates official OAI example', function (string $name, string $
     $result = OaiCorpusRunner::tier1($path);
 
     expect($result->isValid())->toBeTrue(
-        "Official example '{$name}' should be valid, errors: " . json_encode($result->errors),
+        "Official example '{$name}' should be valid, errors: ".json_encode($result->errors),
     );
 })->with('oai_examples');
 
@@ -60,7 +60,7 @@ it('parses and validates official OAI example', function (string $name, string $
  */
 it('executes official OAI example against mock transport', function (string $name, string $path) {
     if (array_key_exists($name, OAI_UPSTREAM_DEFECTS)) {
-        $this->markTestSkipped('upstream defect: ' . OAI_UPSTREAM_DEFECTS[$name]);
+        $this->markTestSkipped('upstream defect: '.OAI_UPSTREAM_DEFECTS[$name]);
     }
 
     $sources = OaiCorpusRunner::localSources($path);
@@ -70,7 +70,7 @@ it('executes official OAI example against mock transport', function (string $nam
     }
 
     $fixture = [
-        'name' => 'oai-' . $name,
+        'name' => 'oai-'.$name,
         'arazzoFile' => $path,
         'responses' => [], // FakePsr18Client default: 200 {}
         'inputs' => [],

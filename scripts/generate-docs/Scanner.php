@@ -7,8 +7,8 @@ namespace ArazzoDocs;
 final class ScannedFile
 {
     /**
-     * @param list<string> $uses normalized FQCNs
-     * @param list<string> $useStatements raw statements incl. aliases ("X\Y as Z")
+     * @param  list<string>  $uses  normalized FQCNs
+     * @param  list<string>  $useStatements  raw statements incl. aliases ("X\Y as Z")
      */
     public function __construct(
         public readonly string $path,
@@ -19,8 +19,7 @@ final class ScannedFile
         public readonly array $uses,
         public readonly array $useStatements,
         public readonly string $content,
-    ) {
-    }
+    ) {}
 }
 
 final class Scanner
@@ -50,7 +49,7 @@ final class Scanner
     private static function scanFile(string $pathname, string $srcDir, string $namespacePrefix): ScannedFile
     {
         $content = (string) file_get_contents($pathname);
-        $relative = str_replace($srcDir . '/', '', $pathname);
+        $relative = str_replace($srcDir.'/', '', $pathname);
 
         preg_match('/^namespace\s+([^;]+);/m', $content, $nsMatches);
         $namespace = trim($nsMatches[1] ?? $namespacePrefix);

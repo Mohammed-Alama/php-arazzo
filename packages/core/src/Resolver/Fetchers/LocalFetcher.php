@@ -13,9 +13,9 @@ final class LocalFetcher implements SourceFetcher
     {
         $path = $this->isAbsolute($urlOrPath)
             ? $urlOrPath
-            : rtrim($basePath, '/\\') . '/' . ltrim($urlOrPath, '/\\');
+            : rtrim($basePath, '/\\').'/'.ltrim($urlOrPath, '/\\');
 
-        $content = @file_get_contents($path);
+        $content = is_file($path) ? @file_get_contents($path) : false;
 
         if ($content === false) {
             throw new SourceFetchException("Failed to read local file: {$path}");

@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Console\Command;
 
 use Alama\Arazzo\Console\DocumentLoader;
+use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -70,7 +70,7 @@ final class RunCommand extends Command
         }
 
         if ($workflow === null) {
-            $output->writeln('<error>' . sprintf("unknown workflow '%s'", (string) $workflowId) . '</error>');
+            $output->writeln('<error>'.sprintf("unknown workflow '%s'", (string) $workflowId).'</error>');
 
             return Command::FAILURE;
         }

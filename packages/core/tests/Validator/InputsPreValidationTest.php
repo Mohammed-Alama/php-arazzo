@@ -3,31 +3,31 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Console\DocumentLoader;
+use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Runner\Events\RunStarted;
-use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Validator\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 
-const INPUTS_SCHEMA_DOC = __DIR__ . '/../fixtures/inputs-schema/workflow.arazzo.yaml';
+const INPUTS_SCHEMA_DOC = __DIR__.'/../fixtures/inputs-schema/workflow.arazzo.yaml';
 
 it('accepts inputs matching the declared schema', function (): void {
     $document = DocumentLoader::load(INPUTS_SCHEMA_DOC);
@@ -51,7 +51,7 @@ it('rejects missing required and wrong-typed inputs before execution', function 
 });
 
 it('treats documents without an inputs schema as unconstrained', function (): void {
-    $document = DocumentLoader::load(__DIR__ . '/../fixtures/loader/minimal.yaml');
+    $document = DocumentLoader::load(__DIR__.'/../fixtures/loader/minimal.yaml');
     $validator = preflightForInputsDoc();
 
     $result = $validator->validateInputs($document, 'wf', ['anything' => ['goes' => true]]);

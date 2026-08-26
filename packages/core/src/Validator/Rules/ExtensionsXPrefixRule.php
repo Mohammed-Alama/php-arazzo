@@ -15,7 +15,7 @@ final class ExtensionsXPrefixRule implements Rule
     {
         foreach ($doc->specificationExtensions as $k => $_) {
             if (!str_starts_with((string) $k, 'x-')) {
-                $errors->warning($this->code(), "Specification extension '{$k}' must start with 'x-'.", '/' . $k);
+                $errors->warning($this->code(), "Specification extension '{$k}' must start with 'x-'.", '/'.$k);
             }
         }
     }

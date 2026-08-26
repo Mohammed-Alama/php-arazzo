@@ -16,7 +16,5 @@ final class StepOutputsUniqueRule implements Rule
         return 'step.outputs_unique';
     }
 
-    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
-    {
-    }
+    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void {}
 }

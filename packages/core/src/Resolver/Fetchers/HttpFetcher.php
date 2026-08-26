@@ -15,8 +15,7 @@ final class HttpFetcher implements SourceFetcher
     public function __construct(
         private readonly ClientInterface $client,
         private readonly RequestFactoryInterface $requestFactory,
-    ) {
-    }
+    ) {}
 
     public function fetch(string $urlOrPath, string $basePath): string
     {
@@ -31,7 +30,7 @@ final class HttpFetcher implements SourceFetcher
 
         if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
             throw new SourceFetchException(
-                "HTTP request failed for {$url}: " . $response->getStatusCode(),
+                "HTTP request failed for {$url}: ".$response->getStatusCode(),
             );
         }
 
@@ -45,7 +44,7 @@ final class HttpFetcher implements SourceFetcher
         }
 
         if (str_starts_with($basePath, 'http://') || str_starts_with($basePath, 'https://')) {
-            return rtrim($basePath, '/') . '/' . ltrim($urlOrPath, '/');
+            return rtrim($basePath, '/').'/'.ltrim($urlOrPath, '/');
         }
 
         throw new SourceFetchException(

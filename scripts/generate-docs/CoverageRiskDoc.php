@@ -24,8 +24,8 @@ density** (y: test files referencing the module ÷ src files in it).
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel, string $root): string
 {
@@ -34,7 +34,7 @@ function render(array $core, array $laravel, string $root): string
     $classModule = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace . '\\' . $file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $module;
         }
     }
 
@@ -109,10 +109,10 @@ function render(array $core, array $laravel, string $root): string
         usort($worst, fn (array $a, array $b): int => $b['x'] <=> $a['x']);
         $lines[] = '';
         $lines[] = '**Refactor-now list** (untested churn): '
-            . implode(', ', array_map(fn (array $p): string => '`' . $p['label'] . '`', $worst));
+            .implode(', ', array_map(fn (array $p): string => '`'.$p['label'].'`', $worst));
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
@@ -126,8 +126,8 @@ function scanTestMentions(string $root): array
     // module => class short names
     $namesByModule = [];
     foreach ([
-        [$root . '/packages/core/src', false],
-        [$root . '/packages/laravel/src', true],
+        [$root.'/packages/core/src', false],
+        [$root.'/packages/laravel/src', true],
     ] as [$srcDir, $isLaravel]) {
         if (!is_dir($srcDir)) {
             continue;
@@ -140,20 +140,20 @@ function scanTestMentions(string $root): array
             if ($file->getExtension() !== 'php') {
                 continue;
             }
-            $relative = str_replace($srcDir . '/', '', (string) $file->getPathname());
+            $relative = str_replace($srcDir.'/', '', (string) $file->getPathname());
             $parts = explode('/', $relative);
             if (count($parts) < 2) {
                 continue; // root files have no module dir
             }
-            $module = ($isLaravel ? 'Laravel:' : '') . $parts[0];
+            $module = ($isLaravel ? 'Laravel:' : '').$parts[0];
             $namesByModule[$module][basename((string) $file->getPathname(), '.php')] = true;
         }
     }
 
     $counts = [];
     foreach ([
-        $root . '/packages/core/tests',
-        $root . '/packages/laravel/tests',
+        $root.'/packages/core/tests',
+        $root.'/packages/laravel/tests',
     ] as $testsDir) {
         if (!is_dir($testsDir)) {
             continue;
@@ -169,7 +169,7 @@ function scanTestMentions(string $root): array
             $content = (string) file_get_contents((string) $file->getPathname());
             foreach ($namesByModule as $module => $names) {
                 foreach (array_keys($names) as $name) {
-                    if (preg_match('/\b' . preg_quote($name, '/') . '\b/', $content) === 1) {
+                    if (preg_match('/\b'.preg_quote($name, '/').'\b/', $content) === 1) {
                         $counts[$module] = ($counts[$module] ?? 0) + 1;
 
                         break; // one file counts once per module

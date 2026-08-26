@@ -18,8 +18,8 @@ every dispatch site found in the live tree. Regenerated before every commit.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -38,7 +38,7 @@ function render(array $core, array $laravel): string
                 if (str_contains($dir, 'Dispatcher') || str_contains($file->className, 'Dispatcher')) {
                     continue; // dispatch infrastructure, not a domain event
                 }
-                $events[$file->className] = [$file->namespace . '\\' . $file->className, $pkg];
+                $events[$file->className] = [$file->namespace.'\\'.$file->className, $pkg];
             }
         }
     }
@@ -75,7 +75,7 @@ function render(array $core, array $laravel): string
                         continue;
                     }
                     $eventName = basename(str_replace('\\', '/', $event[0]));
-                    $dispatches[$eventName][$file->namespace . '\\' . $file->className] = [$pkg, $module];
+                    $dispatches[$eventName][$file->namespace.'\\'.$file->className] = [$pkg, $module];
                 }
             }
         }
@@ -94,7 +94,7 @@ function render(array $core, array $laravel): string
         ksort($sites);
         foreach ($sites as $fqcn => [$pkg, $module]) {
             $short = basename(str_replace('\\', '/', $fqcn));
-            $id = 'S_' . preg_replace('/[^A-Za-z0-9_]/', '_', $fqcn);
+            $id = 'S_'.preg_replace('/[^A-Za-z0-9_]/', '_', $fqcn);
             $lines[] = sprintf(
                 '    %s["%s<br/><small>%s</small>"] -->|dispatches| E_%s',
                 $id,
@@ -121,10 +121,10 @@ function render(array $core, array $laravel): string
         }
         $cells = [];
         foreach ($sites as $siteFqcn => $_) {
-            $cells[] = '`' . basename(str_replace('\\', '/', $siteFqcn)) . '`';
+            $cells[] = '`'.basename(str_replace('\\', '/', $siteFqcn)).'`';
         }
-        $lines[] = "| **{$name}** | " . implode(', ', array_unique($cells)) . ' |';
+        $lines[] = "| **{$name}** | ".implode(', ', array_unique($cells)).' |';
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }

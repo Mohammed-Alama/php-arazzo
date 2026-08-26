@@ -8,9 +8,17 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 
 ```mermaid
 flowchart LR
+    Async["Alama\Arazzo\Async"]:::coreNode
     Console["Alama\Arazzo\Console"]:::coreNode
+    Contracts["Alama\Arazzo\Contracts"]:::coreNode
+    Dependency["Alama\Arazzo\Dependency"]:::coreNode
+    Evaluation["Alama\Arazzo\Evaluation"]:::coreNode
+    Events["Alama\Arazzo\Events"]:::coreNode
+    Exceptions["Alama\Arazzo\Exceptions"]:::coreNode
+    Execution["Alama\Arazzo\Execution"]:::coreNode
     Expression["Alama\Arazzo\Expression"]:::coreNode
     Generator["Alama\Arazzo\Generator"]:::coreNode
+    Jobs["Alama\Arazzo\Jobs"]:::coreNode
     Laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
     Laravel_Http["Alama\Arazzo\Laravel\Http"]:::laravelNode
     Laravel_Lock["Alama\Arazzo\Laravel\Lock"]:::laravelNode
@@ -19,40 +27,118 @@ flowchart LR
     Laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
     Laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     Laravel__["(Laravel package root)"]:::laravelNode
+    Normalizer["Alama\Arazzo\Normalizer"]:::coreNode
     Parser["Alama\Arazzo\Parser"]:::coreNode
+    Policy["Alama\Arazzo\Policy"]:::coreNode
+    Protocol["Alama\Arazzo\Protocol"]:::coreNode
     Renderer["Alama\Arazzo\Renderer"]:::coreNode
     Resolver["Alama\Arazzo\Resolver"]:::coreNode
-    Runner["Alama\Arazzo\Runner"]:::coreNode
     Spec["Alama\Arazzo\Spec"]:::coreNode
+    State["Alama\Arazzo\State"]:::coreNode
     Support["Alama\Arazzo\Support"]:::coreNode
+    Telemetry["Alama\Arazzo\Telemetry"]:::coreNode
     Validator["Alama\Arazzo\Validator"]:::coreNode
-    Console --> Parser
+    Async --> Contracts
+    Async --> Events
+    Async --> Spec
+    Async --> State
+    Async --> Exceptions
+    Async --> Support
+    Async --> Validator
+    Async --> Execution
+    Async --> Jobs
+    Console --> Contracts
+    Console --> Execution
+    Console --> Jobs
     Console --> Spec
+    Console --> State
+    Console --> Telemetry
+    Console --> Parser
     Console --> Validator
-    Console --> Runner
+    Console --> Dependency
     Console --> Renderer
+    Console --> Evaluation
+    Console --> Expression
+    Console --> Normalizer
     Console --> Resolver
+    Contracts --> Execution
+    Contracts --> Spec
+    Contracts --> State
+    Contracts --> Exceptions
+    Contracts --> Resolver
+    Contracts --> Normalizer
+    Contracts --> Evaluation
+    Dependency --> Spec
+    Dependency --> State
+    Evaluation --> Contracts
+    Evaluation --> Spec
+    Evaluation --> State
+    Evaluation --> Expression
+    Evaluation --> Support
+    Exceptions --> Support
+    Execution --> Contracts
+    Execution --> Spec
+    Execution --> Evaluation
+    Execution --> Exceptions
+    Execution --> Expression
+    Execution --> State
+    Execution --> Resolver
+    Execution --> Events
+    Execution --> Jobs
+    Execution --> Support
+    Execution --> Telemetry
+    Execution --> Validator
+    Execution --> Dependency
+    Execution --> Policy
+    Expression --> Contracts
+    Expression --> Evaluation
+    Expression --> Execution
     Expression --> Spec
     Expression --> Support
+    Expression --> State
+    Generator --> Contracts
+    Jobs --> Spec
+    Jobs --> State
+    Normalizer --> Contracts
+    Normalizer --> Support
     Parser --> Spec
     Parser --> Support
+    Policy --> Contracts
+    Policy --> Spec
+    Policy --> State
+    Protocol --> Contracts
+    Protocol --> Execution
+    Protocol --> Resolver
+    Protocol --> Spec
+    Protocol --> State
+    Protocol --> Dependency
+    Protocol --> Evaluation
+    Protocol --> Exceptions
+    Protocol --> Expression
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
-    Runner --> Spec
-    Runner --> Support
-    Runner --> Resolver
-    Runner --> Validator
-    Runner --> Expression
+    Resolver --> Normalizer
+    Resolver --> Exceptions
+    Resolver --> Execution
     Spec --> Expression
-    Support --> Runner
+    State --> Spec
+    State --> Contracts
+    Support --> Contracts
+    Support --> Events
     Validator --> Expression
     Validator --> Spec
+    Validator --> Normalizer
     Validator --> Resolver
-    Validator --> Runner
     Validator --> Support
+    Validator --> Dependency
+    Laravel_Bindings --> Contracts
+    Laravel_Bindings --> Evaluation
+    Laravel_Bindings --> Execution
+    Laravel_Bindings --> Expression
     Laravel_Bindings --> Laravel_Support
-    Laravel_Bindings --> Runner
+    Laravel_Bindings --> Protocol
+    Laravel_Bindings --> Resolver
     Laravel_Bindings --> Validator
     Laravel_Bindings --> Laravel_Http
     Laravel_Bindings --> Support
@@ -61,18 +147,24 @@ flowchart LR
     Laravel_Bindings --> Laravel_Queue
     Laravel_Bindings --> Laravel_State
     Laravel_Bindings --> Parser
-    Laravel_Bindings --> Resolver
+    Laravel_Bindings --> Normalizer
     Laravel_Bindings --> Generator
-    Laravel_Http --> Runner
+    Laravel_Http --> Contracts
     Laravel_Http --> Generator
     Laravel_Http --> Resolver
     Laravel_Http --> Spec
-    Laravel_Lock --> Runner
-    Laravel_Persistence --> Runner
+    Laravel_Http --> Jobs
+    Laravel_Lock --> Contracts
+    Laravel_Persistence --> Contracts
+    Laravel_Persistence --> State
+    Laravel_Persistence --> Execution
+    Laravel_Persistence --> Exceptions
     Laravel_Persistence --> Parser
     Laravel_Persistence --> Spec
-    Laravel_Queue --> Runner
-    Laravel_State --> Runner
+    Laravel_Queue --> Contracts
+    Laravel_Queue --> Jobs
+    Laravel_Queue --> Execution
+    Laravel_State --> Contracts
     Laravel__ --> Laravel_Bindings
     Laravel__ --> Laravel_Http
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

@@ -12,8 +12,7 @@ final readonly class Warning
         public string $path,
         public ?int $line = null,
         public Severity $severity = Severity::Warning,
-    ) {
-    }
+    ) {}
 
     /** @return array{code:string,message:string,path:string,line:?int,severity:string} */
     public function toArray(): array

@@ -7,7 +7,7 @@ use Alama\Arazzo\Console\Command\ListWorkflowsCommand;
 use Alama\Arazzo\Console\Command\ValidateCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
-const FIXTURE_MINIMAL = __DIR__ . '/../fixtures/loader/minimal.yaml';
+const FIXTURE_MINIMAL = __DIR__.'/../fixtures/loader/minimal.yaml';
 
 function commandTester(string $class): CommandTester
 {
@@ -23,7 +23,7 @@ it('validate exits 0 and prints success for a valid document', function (): void
 });
 
 it('validate exits 1 with coded errors for a broken document', function (): void {
-    $tmp = sys_get_temp_dir() . '/arazzo-cli-broken-' . uniqid() . '.yaml';
+    $tmp = sys_get_temp_dir().'/arazzo-cli-broken-'.uniqid().'.yaml';
     file_put_contents($tmp, "arazzo: \"1.0.0\"\ninfo:\n  title: x\n  version: \"1\"\nsourceDescriptions: []\nworkflows: []\n");
 
     $tester = commandTester(ValidateCommand::class);

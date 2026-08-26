@@ -18,17 +18,17 @@ scorecard alone would show you too late.
 MD;
 
 /**
- * @param array<string, mixed> $_core unused (signature symmetry)
- * @param array<string, mixed> $_laravel unused
+ * @param  array<string, mixed>  $_core  unused (signature symmetry)
+ * @param  array<string, mixed>  $_laravel  unused
  */
 function render(array $_core = [], array $_laravel = [], ?string $historyPath = null): string
 {
-    $historyPath ??= dirname(__DIR__, 2) . '/storage/quality-history.jsonl';
+    $historyPath ??= dirname(__DIR__, 2).'/storage/quality-history.jsonl';
 
     $points = readPoints($historyPath);
 
     if ($points === []) {
-        return BANNER . <<<'MD'
+        return BANNER.<<<'MD'
 _No history yet._
 
 Every `make quality-gates` run appends today's measurements to
@@ -44,7 +44,7 @@ MD;
     $stanErrors = [];
     $testFailures = [];
     foreach ($points as $date => $point) {
-        $dates[] = '"' . $date . '"';
+        $dates[] = '"'.$date.'"';
         $stanErrors[] = (string) ($point['stan_errors'] ?? 0);
         $testFailures[] = (string) ($point['test_failures'] ?? 0);
     }
@@ -59,10 +59,10 @@ MD;
         '```mermaid',
         'xychart-beta',
         '    title "Gate failures per day"',
-        '    x-axis [' . implode(', ', $dates) . ']',
+        '    x-axis ['.implode(', ', $dates).']',
         sprintf('    y-axis "Failures" 0 --> %d', $yMax),
-        '    line "PHPStan errors" [' . implode(', ', $stanErrors) . ']',
-        '    line "Test failures" [' . implode(', ', $testFailures) . ']',
+        '    line "PHPStan errors" ['.implode(', ', $stanErrors).']',
+        '    line "Test failures" ['.implode(', ', $testFailures).']',
         '```',
         '',
         '| Day | PHPStan errors | Test failures | MSI (core) | Gates failing |',
@@ -80,7 +80,7 @@ MD;
         );
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**

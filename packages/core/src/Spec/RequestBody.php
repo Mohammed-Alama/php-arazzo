@@ -11,6 +11,5 @@ final readonly class RequestBody
         public ?string $contentType,
         public mixed $payload,
         public array $replacements,
-    ) {
-    }
+    ) {}
 }

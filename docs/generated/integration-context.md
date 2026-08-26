@@ -22,6 +22,9 @@ flowchart LR
         LARAVEL --> BRIDGE
         BRIDGE --> CORE
     end
+        A_Alama_Arazzo_Execution_SyncQueueDriver["SyncQueueDriver"]:::adapter
+        A_Alama_Arazzo_Execution_SyncQueueDriver --- BRIDGE
+        A_Alama_Arazzo_Execution_SyncQueueDriver --- queue
         A_Alama_Arazzo_Laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager"]:::adapter
         A_Alama_Arazzo_Laravel_Lock_LaravelRedisLockManager --- BRIDGE
         A_Alama_Arazzo_Laravel_Lock_LaravelRedisLockManager --- redis
@@ -43,9 +46,6 @@ flowchart LR
         A_Alama_Arazzo_Laravel_State_RedisHotStateStore["RedisHotStateStore"]:::adapter
         A_Alama_Arazzo_Laravel_State_RedisHotStateStore --- BRIDGE
         A_Alama_Arazzo_Laravel_State_RedisHotStateStore --- redis
-        A_Alama_Arazzo_Runner_Execution_SyncQueueDriver["SyncQueueDriver"]:::adapter
-        A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- BRIDGE
-        A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- queue
         A_Alama_Arazzo_Console_Command_RunCommand["RunCommand"]:::adapter
         A_Alama_Arazzo_Console_Command_RunCommand --- CORE
         A_Alama_Arazzo_Console_Command_RunCommand --- net

@@ -7,7 +7,7 @@ namespace Ecosystem;
 final class Renderer
 {
     /**
-     * @param array<int,array<string,mixed>> $feed sorted publishedAt desc
+     * @param  array<int,array<string,mixed>>  $feed  sorted publishedAt desc
      */
     public static function renderMarkdown(array $feed, string $generatedAt): string
     {
@@ -36,10 +36,10 @@ final class Renderer
         $out .= "- **Severity:** breaking **{$bySeverity['breaking']}** · actionable **{$bySeverity['actionable']}** · watch **{$bySeverity['watch']}**\n";
         $out .= '- **Top relevance:** ';
         $topRel = array_slice(array_keys($byRelevance), 0, 5);
-        $out .= implode(' · ', array_map(fn ($k) => '`' . str_replace('|', '\\|', $k) . '` (' . $byRelevance[$k] . ')', $topRel)) . "\n";
+        $out .= implode(' · ', array_map(fn ($k) => '`'.str_replace('|', '\\|', $k).'` ('.$byRelevance[$k].')', $topRel))."\n";
         $out .= '- **Top sources:** ';
         $topSrc = array_slice(array_keys($bySource), 0, 5);
-        $out .= implode(' · ', array_map(fn ($k) => '`' . $k . '` (' . $bySource[$k] . ')', $topSrc)) . "\n";
+        $out .= implode(' · ', array_map(fn ($k) => '`'.$k.'` ('.$bySource[$k].')', $topSrc))."\n";
         $out .= "- **Links:** [Raw JSON](storage/ecosystem-feed/feed.json) · [Generated JSON](docs/generated/ecosystem-feed.json) · [Snapshots](storage/ecosystem-feed/snapshots/) · [Plan](docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md)\n\n";
         $out .= "## Legend\n\n";
         $out .= "- **Severity:** `breaking` = requires immediate planning (spec 2.0, wsdl, schema) · `actionable` = new release/tag worth reviewing · `watch` = commit/issue for context\n";
@@ -93,7 +93,7 @@ final class Renderer
     }
 
     /**
-     * @param array<int,array<string,mixed>> $feed
+     * @param  array<int,array<string,mixed>>  $feed
      */
     private static function renderGroup(array $feed, string $severity): string
     {
@@ -121,7 +121,7 @@ final class Renderer
         $out = '';
         foreach ($byRel as $rel => $rows) {
             $relSan = self::sanitizeCell($rel);
-            $out .= '### ' . $relSan . ' (' . count($rows) . ")\n\n";
+            $out .= '### '.$relSan.' ('.count($rows).")\n\n";
             foreach (array_slice($rows, 0, 8) as $row) {
                 $date = substr($row['publishedAt'] ?? '', 0, 10);
                 $title = self::sanitizeCell($row['title'] ?? '');
@@ -131,10 +131,10 @@ final class Renderer
                 $tags = self::sanitizeCell(implode(',', $row['tags'] ?? []));
                 $type = self::sanitizeCell($row['type'] ?? '');
                 $titleMd = $url !== '' ? "[{$titleEsc}]({$url})" : $titleEsc;
-                $out .= "- `{$date}` {$titleMd} — `{$src}` · `{$type}` · _" . ($tags !== '' ? $tags : 'no tags') . "_\n";
+                $out .= "- `{$date}` {$titleMd} — `{$src}` · `{$type}` · _".($tags !== '' ? $tags : 'no tags')."_\n";
             }
             if (count($rows) > 8) {
-                $out .= '- … and ' . (count($rows) - 8) . " more in this group (see All events table)\n";
+                $out .= '- … and '.(count($rows) - 8)." more in this group (see All events table)\n";
             }
             $out .= "\n";
         }

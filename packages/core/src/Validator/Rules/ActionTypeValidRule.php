@@ -16,7 +16,5 @@ final class ActionTypeValidRule implements Rule
         return 'action.type_valid';
     }
 
-    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
-    {
-    }
+    public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void {}
 }

@@ -10,12 +10,10 @@ final class Store
         private readonly string $feedPath,
         private readonly string $snapshotsDir,
         private readonly int $cap = 2000,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param FeedEvent[] $events
-     *
+     * @param  FeedEvent[]  $events
      * @return array{written:int,feedCount:int,feedPath:string}
      */
     public function commit(array $events, bool $dryRun = false): array
@@ -36,12 +34,12 @@ final class Store
 
             if (!$dryRun) {
                 $date = substr($ev->publishedAt, 0, 10) ?: gmdate('Y-m-d');
-                $dir = $this->snapshotsDir . '/' . $date;
+                $dir = $this->snapshotsDir.'/'.$date;
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
                 }
-                $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', $ev->source) . '--' . substr($ev->id, 0, 12) . '.json';
-                file_put_contents($dir . '/' . $safe, json_encode($ev->toArray() + ['raw' => $ev->raw], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', $ev->source).'--'.substr($ev->id, 0, 12).'.json';
+                file_put_contents($dir.'/'.$safe, json_encode($ev->toArray() + ['raw' => $ev->raw], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             }
         }
 
@@ -58,8 +56,8 @@ final class Store
                     @unlink($file->getPathname());
                 }
             }
-            foreach (glob($this->snapshotsDir . '/*') as $d) {
-                if (is_dir($d) && count(glob($d . '/*') ?: []) === 0) {
+            foreach (glob($this->snapshotsDir.'/*') as $d) {
+                if (is_dir($d) && count(glob($d.'/*') ?: []) === 0) {
                     @rmdir($d);
                 }
             }
@@ -70,13 +68,13 @@ final class Store
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);
             }
-            file_put_contents($this->feedPath, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n");
+            file_put_contents($this->feedPath, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
             // also docs/generated mirror
-            $mirror = dirname(__DIR__, 2) . '/docs/generated/ecosystem-feed.json';
+            $mirror = dirname(__DIR__, 2).'/docs/generated/ecosystem-feed.json';
             if (!is_dir(dirname($mirror))) {
                 mkdir(dirname($mirror), 0777, true);
             }
-            file_put_contents($mirror, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n");
+            file_put_contents($mirror, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
         }
 
         return ['written' => $new, 'feedCount' => count($all), 'feedPath' => $this->feedPath];

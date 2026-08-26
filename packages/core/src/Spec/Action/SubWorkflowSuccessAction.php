@@ -12,8 +12,8 @@ use Alama\Arazzo\Spec\SuccessCriterion;
 final readonly class SubWorkflowSuccessAction extends SuccessAction
 {
     /**
-     * @param array<string, Expression|Selector|scalar|array<mixed>|null> $parameters
-     * @param list<SuccessCriterion> $criteria
+     * @param  array<string, Expression|Selector|scalar|array<mixed>|null>  $parameters
+     * @param  list<SuccessCriterion>  $criteria
      */
     public function __construct(
         string $name,

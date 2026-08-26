@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Queue\Jobs;
 
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Jobs\ResumeCorrelationJob;
+use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Jobs\ResumeCorrelationJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,9 +19,7 @@ class RunResumeCorrelationJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(public ResumeCorrelationJob $inner)
-    {
-    }
+    public function __construct(public ResumeCorrelationJob $inner) {}
 
     public function handle(CorrelationResumer $resumer): void
     {

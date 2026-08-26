@@ -53,7 +53,7 @@ final class AtomRssIngestor
             $out[] = [
                 'source' => $sourceId,
                 'type' => str_contains($url, 'commits') ? 'commit' : 'article',
-                'externalId' => 'atom:' . md5($id),
+                'externalId' => 'atom:'.md5($id),
                 'title' => $title,
                 'url' => $link,
                 'publishedAt' => date('c', strtotime($published) ?: time()),

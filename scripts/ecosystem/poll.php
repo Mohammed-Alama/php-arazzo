@@ -6,17 +6,17 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 
 // No Composer autoload needed — pure PHP, PSR-0 via require chain.
-require __DIR__ . '/GhCli.php';
-require __DIR__ . '/FeedEvent.php';
-require __DIR__ . '/RelevanceMapper.php';
-require __DIR__ . '/Normalizer.php';
-require __DIR__ . '/Store.php';
-require __DIR__ . '/Renderer.php';
-require __DIR__ . '/Enumerators/OaiOrgEnumerator.php';
-require __DIR__ . '/Ingestors/GithubApiIngestor.php';
-require __DIR__ . '/Ingestors/AtomRssIngestor.php';
-require __DIR__ . '/Ingestors/NpmRegistryIngestor.php';
-require __DIR__ . '/Ingestors/WebScrapeIngestor.php';
+require __DIR__.'/GhCli.php';
+require __DIR__.'/FeedEvent.php';
+require __DIR__.'/RelevanceMapper.php';
+require __DIR__.'/Normalizer.php';
+require __DIR__.'/Store.php';
+require __DIR__.'/Renderer.php';
+require __DIR__.'/Enumerators/OaiOrgEnumerator.php';
+require __DIR__.'/Ingestors/GithubApiIngestor.php';
+require __DIR__.'/Ingestors/AtomRssIngestor.php';
+require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
+require __DIR__.'/Ingestors/WebScrapeIngestor.php';
 
 use Ecosystem\Enumerators\OaiOrgEnumerator;
 use Ecosystem\GhCli;
@@ -49,7 +49,7 @@ $since = $opts['since'] ?? null;
 $filterSource = $opts['source'] ?? null;
 $limit = (int) ($opts['limit'] ?? 20);
 
-$sourcesPath = $root . '/config/ecosystem/sources.json';
+$sourcesPath = $root.'/config/ecosystem/sources.json';
 $sources = json_decode((string) file_get_contents($sourcesPath), true);
 if (!is_array($sources) || !isset($sources['sources'])) {
     fwrite(STDERR, "Invalid config at {$sourcesPath}\n");
@@ -57,7 +57,7 @@ if (!is_array($sources) || !isset($sources['sources'])) {
 }
 
 $token = getenv('GITHUB_TOKEN') ?: getenv('GH_TOKEN') ?: null;
-$etagCachePath = $root . '/.cache/ecosystem/etags.json';
+$etagCachePath = $root.'/.cache/ecosystem/etags.json';
 $etagCache = [];
 if (is_file($etagCachePath)) {
     $etagCache = json_decode((string) file_get_contents($etagCachePath), true) ?? [];
@@ -72,7 +72,7 @@ if (!$useFixtures) {
     if ($verbose || $filterSource === null) {
         $enum = OaiOrgEnumerator::fetch($etagCachePath, $token, $verbose);
         $oaiLiveRepos = $enum['repos'];
-        $committedPath = $root . '/config/ecosystem/sources.oai.json';
+        $committedPath = $root.'/config/ecosystem/sources.oai.json';
         $committed = json_decode((string) file_get_contents($committedPath), true)['repos'] ?? [];
         $diff = OaiOrgEnumerator::diff($enum['repos'], $committed);
         if ($verbose) {
@@ -84,8 +84,8 @@ if (!$useFixtures) {
             $rawItems[] = [
                 'source' => 'OAI/org',
                 'type' => 'org_diff',
-                'externalId' => 'org_diff:' . gmdate('Y-m-d'),
-                'title' => 'OAI org diff: +' . count($diff['added']) . ' -' . count($diff['removed']),
+                'externalId' => 'org_diff:'.gmdate('Y-m-d'),
+                'title' => 'OAI org diff: +'.count($diff['added']).' -'.count($diff['removed']),
                 'url' => 'https://github.com/orgs/OAI/repositories',
                 'publishedAt' => gmdate('c'),
                 'body' => json_encode($diff),
@@ -106,7 +106,7 @@ if (!$useFixtures) {
         }
         if ($missing !== []) {
             if ($verbose) {
-                echo 'Auto-adding missing OAI repos as weekly sources: ' . implode(', ', $missing) . "\n";
+                echo 'Auto-adding missing OAI repos as weekly sources: '.implode(', ', $missing)."\n";
             }
             foreach ($missing as $full) {
                 $id = $full;
@@ -126,9 +126,9 @@ if (!$useFixtures) {
             }
             // Persist auto-added sources back to sources.json on commit so next run is stable without re-enum cost
             if (!$dryRun && $filterSource === null) {
-                file_put_contents($sourcesPath, json_encode($sources, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n");
+                file_put_contents($sourcesPath, json_encode($sources, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
                 if ($verbose) {
-                    echo "Updated {$sourcesPath} with " . count($missing) . " auto sources\n";
+                    echo "Updated {$sourcesPath} with ".count($missing)." auto sources\n";
                 }
             }
         }
@@ -166,9 +166,9 @@ if (!$useFixtures) {
 }
 
 if ($useFixtures) {
-    $fixDir = $root . '/scripts/ecosystem/fixtures';
+    $fixDir = $root.'/scripts/ecosystem/fixtures';
     if (is_dir($fixDir)) {
-        foreach (glob($fixDir . '/*.json') as $file) {
+        foreach (glob($fixDir.'/*.json') as $file) {
             $data = json_decode((string) file_get_contents($file), true);
             if (is_array($data)) {
                 foreach ($data as $row) {
@@ -209,7 +209,7 @@ if ($useFixtures) {
                 $rawItems[] = $it;
             }
         } catch (Throwable $e) {
-            fwrite(STDERR, "  [error] {$id}: " . $e->getMessage() . "\n");
+            fwrite(STDERR, "  [error] {$id}: ".$e->getMessage()."\n");
         }
         // pacing between sources
         usleep(200000);
@@ -222,7 +222,7 @@ if (!$useFixtures && !$dryRun) {
     if (!is_dir($dir)) {
         mkdir($dir, 0777, true);
     }
-    file_put_contents($etagCachePath, json_encode($etagCache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+    file_put_contents($etagCachePath, json_encode($etagCache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 }
 
 $events = Normalizer::normalizeMany($rawItems);
@@ -244,8 +244,8 @@ foreach (array_slice($events, 0, 10) as $e) {
     echo sprintf("  [%s] %s %s tags=%s sev=%s rel=%s\n", $e->publishedAt, $e->source, $e->title, implode(',', $e->tags), $e->severity, $e->relevance ?? '-');
 }
 
-$feedPath = $root . '/storage/ecosystem-feed/feed.json';
-$snapshotsDir = $root . '/storage/ecosystem-feed/snapshots';
+$feedPath = $root.'/storage/ecosystem-feed/feed.json';
+$snapshotsDir = $root.'/storage/ecosystem-feed/snapshots';
 $store = new Store($feedPath, $snapshotsDir);
 $res = $store->commit($events, $dryRun);
 echo sprintf("Store: written %d new, feedCount %d -> %s\n", $res['written'], $res['feedCount'], $res['feedPath']);
@@ -261,9 +261,9 @@ if (is_file($feedPath)) {
 $md = Renderer::renderMarkdown($feedForRender, gmdate('c'));
 if ($dryRun) {
     echo "\n--- Markdown preview (not written) ---\n";
-    echo substr($md, 0, 2000) . "\n";
+    echo substr($md, 0, 2000)."\n";
 } else {
-    $outPath = $root . '/docs/ECOSYSTEM_FEED.md';
+    $outPath = $root.'/docs/ECOSYSTEM_FEED.md';
     file_put_contents($outPath, $md);
     echo "Wrote {$outPath}\n";
 }

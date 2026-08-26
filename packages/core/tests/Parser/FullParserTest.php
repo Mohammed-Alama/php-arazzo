@@ -21,7 +21,7 @@ use Alama\Arazzo\Spec\Reusable;
 function parseFixture(string $rel): ArazzoDocument
 {
     $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
-    $raw = $loader->load(__DIR__ . '/../fixtures/parser/' . $rel);
+    $raw = $loader->load(__DIR__.'/../fixtures/parser/'.$rel);
 
     return (new Parser())->parse($raw);
 }

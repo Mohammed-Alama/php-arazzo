@@ -11,8 +11,7 @@ namespace Alama\Arazzo\Tests\Conformance;
 final class ConformanceFabricator
 {
     /**
-     * @param array<string, mixed> $schema
-     *
+     * @param  array<string, mixed>  $schema
      * @return array<string, mixed>
      */
     public static function objectFromSchema(array $schema): array
@@ -39,8 +38,7 @@ final class ConformanceFabricator
     }
 
     /**
-     * @param array<string, mixed> $property
-     *
+     * @param  array<string, mixed>  $property
      * @return mixed
      */
     public static function valueFromProperty(array $property)

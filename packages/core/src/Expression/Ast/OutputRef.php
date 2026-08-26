@@ -9,6 +9,5 @@ final readonly class OutputRef extends ExpressionAst
     public function __construct(
         public string $name,
         public ?string $jsonPointer = null,
-    ) {
-    }
+    ) {}
 }

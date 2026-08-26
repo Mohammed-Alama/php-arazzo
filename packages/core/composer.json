@@ -12,6 +12,9 @@
         "php": "^8.4",
         "cebe/php-openapi": "^1.7",
         "guzzlehttp/guzzle": "^7.9",
+        "open-telemetry/api": "^1.0",
+        "open-telemetry/sdk": "^1.0",
+        "open-telemetry/exporter-otlp": "^1.0",
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "psr/http-client": "^1.0",
@@ -27,8 +30,8 @@
         "larastan/larastan": "^3.0",
         "laravel/pint": "^1.14",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^4.0",
-        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0"
@@ -38,9 +41,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Alama\\Arazzo\\Tests\\": "tests/",
-            "Alama\\LaravelArazzo\\Execution\\": "../../src/Execution/",
-            "Alama\\LaravelArazzo\\Events\\": "../../src/Events/"            
+            "Alama\\Arazzo\\Tests\\": "tests/"
         }
     },
     "config": {

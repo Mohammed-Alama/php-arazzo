@@ -24,8 +24,8 @@ Regenerated before every commit.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -47,13 +47,13 @@ function render(array $core, array $laravel): string
         sort($throwers);
         $cells = [];
         foreach ($throwers as [$fqcn, $module]) {
-            $cells[] = '`' . short($fqcn) . '` <small>' . $module . '</small>';
+            $cells[] = '`'.short($fqcn).'` <small>'.$module.'</small>';
         }
-        $lines[] = '| **' . $exception . '** | ' . implode(', ', array_unique($cells)) . ' |';
+        $lines[] = '| **'.$exception.'** | '.implode(', ', array_unique($cells)).' |';
     }
     foreach ($exceptions as $name => $fqcn) {
         if (!isset($throws[$name])) {
-            $lines[] = '| **' . $name . '** | _(never raised in src)_ |';
+            $lines[] = '| **'.$name.'** | _(never raised in src)_ |';
         }
     }
 
@@ -71,7 +71,7 @@ function render(array $core, array $laravel): string
         sort($handlers);
         foreach (array_unique($handlers) as $handler) {
             $isSwallowed = isset($swallowed[$type][$handler]);
-            $lines[] = '| `' . $type . '` | `' . short($handler) . '` | ' . ($isSwallowed ? '⚠ empty body' : '') . ' |';
+            $lines[] = '| `'.$type.'` | `'.short($handler).'` | '.($isSwallowed ? '⚠ empty body' : '').' |';
         }
     }
 
@@ -91,25 +91,24 @@ function render(array $core, array $laravel): string
     foreach ($budgetExceptions as $exception) {
         $raisers = [];
         foreach ($throws[$exception] as [$fqcn]) {
-            $raisers[] = '`' . short($fqcn) . '`';
+            $raisers[] = '`'.short($fqcn).'`';
         }
-        $lines[] = '| throws **' . $exception . '** | ' . implode(', ', array_unique($raisers)) . ' | — |';
+        $lines[] = '| throws **'.$exception.'** | '.implode(', ', array_unique($raisers)).' | — |';
     }
     if ($interlocks === []) {
         $lines[] = '| — | — | — |';
     } else {
         foreach ($interlocks as [$name, $fqcn, $expr]) {
-            $lines[] = '| ' . $name . ' | `' . short($fqcn) . '` | `' . $expr . '` |';
+            $lines[] = '| '.$name.' | `'.short($fqcn).'` | `'.$expr.'` |';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
- *
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  * @return array{0: list<ScannedFile>, 1: array<string, string>}
  */
 function indexClasses(array $core, array $laravel): array
@@ -119,7 +118,7 @@ function indexClasses(array $core, array $laravel): array
     foreach ([...$core, ...$laravel] as $moduleFiles) {
         foreach ($moduleFiles as $file) {
             $files[] = $file;
-            $fqcn = $file->namespace . '\\' . $file->className;
+            $fqcn = $file->namespace.'\\'.$file->className;
             if (!isset($index[$file->className])) {
                 $index[$file->className] = $fqcn;
             } else {
@@ -142,7 +141,7 @@ function exceptionIndex(array $files): array
         if (!preg_match('/\bextends\s+\\\\?(?:[\w\\\\]*\\\\)*(\w*Exception|Throwable)\b/', $file->content)) {
             continue;
         }
-        $index[$file->className] = $file->namespace . '\\' . $file->className;
+        $index[$file->className] = $file->namespace.'\\'.$file->className;
     }
     ksort($index);
 
@@ -150,10 +149,9 @@ function exceptionIndex(array $files): array
 }
 
 /**
- * @param list<ScannedFile> $files
- * @param array<string, string> $exceptions
- * @param array<string, string> $classIndex
- *
+ * @param  list<ScannedFile>  $files
+ * @param  array<string, string>  $exceptions
+ * @param  array<string, string>  $classIndex
  * @return array{0: array<string, list<array{string, string}>>, 1: array<string, list<string>>, 2: array<string, array<string, true>>}
  */
 function scanSites(array $files, array $exceptions, array $classIndex): array
@@ -163,7 +161,7 @@ function scanSites(array $files, array $exceptions, array $classIndex): array
     $swallowed = [];
 
     foreach ($files as $file) {
-        $selfFqcn = $file->namespace . '\\' . $file->className;
+        $selfFqcn = $file->namespace.'\\'.$file->className;
         $aliases = aliasMap($file);
 
         $resolve = function (string $token) use ($classIndex, $aliases): ?string {
@@ -258,8 +256,7 @@ function catchBodyIsEmpty(string $content, int $bracePos): bool
  * Budget/limit/TTL guards: typed constants and promoted properties whose
  * names signal a bound on runaway behaviour.
  *
- * @param list<ScannedFile> $files
- *
+ * @param  list<ScannedFile>  $files
  * @return list<array{string, string, string}>
  */
 function scanInterlocks(array $files): array
@@ -268,14 +265,14 @@ function scanInterlocks(array $files): array
     $found = [];
 
     foreach ($files as $file) {
-        $selfFqcn = $file->namespace . '\\' . $file->className;
+        $selfFqcn = $file->namespace.'\\'.$file->className;
 
         if (preg_match_all('/const\s+(\w+)\s*=\s*([^;\n]+);/', $file->content, $consts, PREG_SET_ORDER)) {
             foreach ($consts as $c) {
                 if (preg_match($patternName, $c[1]) !== 1) {
                     continue;
                 }
-                $found[] = ['const ' . $c[1], $selfFqcn, trim($c[2])];
+                $found[] = ['const '.$c[1], $selfFqcn, trim($c[2])];
             }
         }
 
@@ -284,7 +281,7 @@ function scanInterlocks(array $files): array
                 if (preg_match($patternName, $p[1]) !== 1) {
                     continue;
                 }
-                $found[] = ['prop ' . $p[1], $selfFqcn, trim($p[2])];
+                $found[] = ['prop '.$p[1], $selfFqcn, trim($p[2])];
             }
         }
     }

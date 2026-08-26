@@ -19,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
 
 function loadFixture(string $filename): RawDocument
 {
-    $path = __DIR__ . '/../fixtures/parser/' . $filename;
+    $path = __DIR__.'/../fixtures/parser/'.$filename;
 
     return new RawDocument(Yaml::parseFile($path), $path, Format::Yaml);
 }

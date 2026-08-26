@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Mirrors CI gates: pint --test, phpstan, pest.
+# Mirrors CI gates: docs regeneration, pint --test, phpstan, pest.
 # Skip with `git push --no-verify` if you truly need to.
 set -euo pipefail
 
@@ -30,5 +30,12 @@ command -v php >/dev/null || fail "php not found on PATH"
 
 echo "--> make verify"
 make verify || fail "make verify failed"
+
+# make verify regenerates docs/generated — a push ships already-made commits,
+# so stale docs cannot be fixed in-flight: block instead.
+if [ -n "$(git status --porcelain -- docs/generated)" ]; then
+    git status --short -- docs/generated >&2
+    fail "docs/generated is stale — commit the regenerated docs, then push again"
+fi
 
 echo "==> pre-push: all checks passed"

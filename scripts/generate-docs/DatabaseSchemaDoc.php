@@ -22,7 +22,7 @@ MD;
 function render(string $migrationsDir): string
 {
     $tables = [];
-    foreach (glob($migrationsDir . '/*.php') ?: [] as $path) {
+    foreach (glob($migrationsDir.'/*.php') ?: [] as $path) {
         $base = basename($path);
         if (!preg_match('/create_(\w+)_table/', $base, $m)) {
             continue; // only create-table migrations define entities
@@ -55,7 +55,7 @@ function render(string $migrationsDir): string
             if (str_contains($tail, '->index(')) {
                 $comments[] = 'indexed';
             }
-            if (preg_match('/\$table->foreign\(\'' . $name . '\'\)/', $content)) {
+            if (preg_match('/\$table->foreign\(\''.$name.'\'\)/', $content)) {
                 $keys[] = 'FK';
             }
             $entries[$name] = sprintf(
@@ -63,7 +63,7 @@ function render(string $migrationsDir): string
                 columnType($type),
                 $name,
                 implode(',', $keys),
-                $comments === [] ? '' : ' "' . implode(' ', $comments) . '"',
+                $comments === [] ? '' : ' "'.implode(' ', $comments).'"',
             );
         }
 
@@ -114,7 +114,7 @@ function render(string $migrationsDir): string
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function columnType(string $migrationType): string

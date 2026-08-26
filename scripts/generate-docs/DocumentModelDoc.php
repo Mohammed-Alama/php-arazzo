@@ -19,7 +19,7 @@ promoted properties whose types resolve to other `Spec\` classes.
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
+ * @param  array<string, list<ScannedFile>>  $core
  */
 function render(array $core): string
 {
@@ -36,7 +36,7 @@ function render(array $core): string
     $specClasses = [];
     foreach ($files as $file) {
         if (!$file->isInterface) {
-            $specClasses[$file->className] = $file->namespace . '\\' . $file->className;
+            $specClasses[$file->className] = $file->namespace.'\\'.$file->className;
         }
     }
     ksort($specClasses);
@@ -116,7 +116,7 @@ function render(array $core): string
         $lines[] = "- **{$m[1]}** — {$values}";
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function cardinality(string $target): string

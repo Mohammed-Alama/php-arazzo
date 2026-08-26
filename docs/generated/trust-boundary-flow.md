@@ -15,14 +15,14 @@ flowchart LR
         T_Alama_Arazzo_Spec_SourceDescription["SourceDescription"]:::service
     T_Alama_Arazzo_Laravel_Http_Controllers_ArazzoApiController --> T_Alama_Arazzo_Spec_SourceDescription
     T_Alama_Arazzo_Laravel_Http_Controllers_WebhookResumeController["WebhookResumeController<br/><small>Http\Controllers</small>"]:::boundary
-        T_Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob["ResumeCorrelationJob"]:::service
-    T_Alama_Arazzo_Laravel_Http_Controllers_WebhookResumeController --> T_Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob
+        T_Alama_Arazzo_Jobs_ResumeCorrelationJob["ResumeCorrelationJob"]:::service
+    T_Alama_Arazzo_Laravel_Http_Controllers_WebhookResumeController --> T_Alama_Arazzo_Jobs_ResumeCorrelationJob
     T_Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob["RunExecuteStepJob<br/><small>Queue\Jobs</small>"]:::boundary
-        T_Alama_Arazzo_Runner_Jobs_ExecuteStepJob["ExecuteStepJob"]:::service
-    T_Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> T_Alama_Arazzo_Runner_Jobs_ExecuteStepJob
+        T_Alama_Arazzo_Jobs_ExecuteStepJob["ExecuteStepJob"]:::service
+    T_Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> T_Alama_Arazzo_Jobs_ExecuteStepJob
     T_Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob["RunResumeCorrelationJob<br/><small>Queue\Jobs</small>"]:::boundary
-        T_Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob["ResumeCorrelationJob"]:::service
-    T_Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> T_Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob
+        T_Alama_Arazzo_Jobs_ResumeCorrelationJob["ResumeCorrelationJob"]:::service
+    T_Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> T_Alama_Arazzo_Jobs_ResumeCorrelationJob
     classDef boundary fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
     classDef validation fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef service fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

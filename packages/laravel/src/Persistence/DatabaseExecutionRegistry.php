@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\ExecutionStatus;
+use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Execution\ExecutionStatus;
 use Illuminate\Database\ConnectionInterface;
 
 class DatabaseExecutionRegistry implements ExecutionRegistryInterface
@@ -13,8 +13,7 @@ class DatabaseExecutionRegistry implements ExecutionRegistryInterface
     public function __construct(
         private ConnectionInterface $db,
         private string $tableName = 'arazzo_executions',
-    ) {
-    }
+    ) {}
 
     public function start(string $executionId, string $definitionId, string $workflowId): void
     {

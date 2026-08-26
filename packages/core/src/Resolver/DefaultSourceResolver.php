@@ -17,8 +17,7 @@ final readonly class DefaultSourceResolver implements SourceResolver
     public function __construct(
         /** @var array<string, SourceFetcher> */
         private array $fetchers,
-    ) {
-    }
+    ) {}
 
     public function resolve(SourceDescription $source, string $basePath): SourceDocument
     {
@@ -40,7 +39,7 @@ final readonly class DefaultSourceResolver implements SourceResolver
                 ? (new SymfonyYamlDecoder())->decode($content)
                 : (new NativeJsonDecoder())->decode($content);
         } catch (Throwable $e) {
-            throw new SourceParseException("Failed to parse source '{$source->name}': " . $e->getMessage(), 0, $e);
+            throw new SourceParseException("Failed to parse source '{$source->name}': ".$e->getMessage(), 0, $e);
         }
 
         if (!is_array($decoded)) {
@@ -71,13 +70,13 @@ final readonly class DefaultSourceResolver implements SourceResolver
 
         // Relative file path
         if (str_starts_with($url, '/')) {
-            return 'file://' . $url;
+            return 'file://'.$url;
         }
 
         $base = rtrim($basePath, '/');
 
         // Let's do basic relative path resolution
-        $path = $base . '/' . $url;
+        $path = $base.'/'.$url;
 
         // Resolve . and ..
         $parts = explode('/', $path);
@@ -93,6 +92,6 @@ final readonly class DefaultSourceResolver implements SourceResolver
             }
         }
 
-        return 'file:///' . implode('/', $resolved);
+        return 'file:///'.implode('/', $resolved);
     }
 }

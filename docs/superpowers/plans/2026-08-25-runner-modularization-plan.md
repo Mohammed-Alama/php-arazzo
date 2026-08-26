@@ -1,6 +1,23 @@
 # Runner Modularization Implementation Plan
 
-> **Status (2026-08-25):** Planned. `- [ ]` = not started; `- [x]` = done.
+> **Status (2026-08-25, implementation session):**
+>
+> | Task | State | Notes |
+> |------|-------|-------|
+> | 1 · OTel bootstrap | ✅ Done | `OtelSetup` (otlp/console/**file**/memory/none), `TraceContextPropagator`; no exporter-file pkg exists — file export implemented via `StreamTransportFactory` |
+> | 2 · RetryPolicy | ✅ Done | `Policy/RetryPolicy`, `BackoffCalculatorInterface`, `ExponentialBackoffCalculator`; engine ctor keeps `maxRetryAttempts:` BC |
+> | 3 · LockStrategy | ✅ Done | `Contract/LockStrategyInterface`, File/Null/Pessimistic strategies; `LockManagerInterface extends LockStrategyInterface` |
+> | 4 · Registry + SubWorkflowExecutor | ✅ Done | Chain-of-responsibility registry (`register(name, executor)`); executor shares parent budget/call-stack |
+> | 5 · ExecutionContext | ✅ Done | `State/*` VO set; **engine stays canonical on ExecutionState**, facade converts at the boundary |
+> | 6 · StateStore/File | ✅ Done | Reused existing `Context/Contracts/StateStoreInterface`; added `FileStateStore` (+delete/sanitize), `InMemoryStateStore` |
+> | 7 · Async handler split | ✅ Done (2026-08-26) | Six collaborators under `Runner/Async/`: `StateReconciler`, `PreflightGuard`, `SuspensionHandler`, `ExecutionStateBuilder`, `TransitionApplier` (plan's "TransitionDispatcher"), `WorkerEvents` (plan's "EventEmitter"). Constructor unchanged — handlers composed internally. Standalone StepExecutor/CriteriaEvaluator wrappers dropped as one-line delegations; selection+execution stays in worker. 24 unit tests added |
+> | 8 · CLI runner | ✅ Done | `Cli/CliRunner` drains `SyncQueueDriver` through the real worker (parity by construction) + `CliRunResult`, Null ledger, InProcess registry |
+> | 9 · Parity tests | ✅ Done | `AdapterParityTest` (sync vs queue-path, shared step stack) |
+> | 10 · Laravel bindings | ✅ Done | Deps synced; `LockStrategyInterface` alias bound; fixed `LaravelRedisLockManager::tryAcquire/release` ownership |
+> | 11 · Gates & metrics | ✅ Done | pint/phpstan/pest green both packages; docs regenerated |
+>
+> Verification at close: core **742+ passed / 0 failed**, laravel **56 passed**, phpstan clean ×2, pint clean.
+
 
 **Goal:** Decompose Runner into cohesive components with clear boundaries, reduce churn, improve testability and observability via OpenTelemetry. Support both sync/async equally, high-frequency sub-workflows, CLI file-based persistence.
 
@@ -142,18 +159,20 @@
 
 ## Task 7: Decompose StepExecutionWorker into Handlers
 
-- [ ] Create `StateReconciler` — `reconcile(WorkflowContext $jobContext, string $executionId): ExecutionContext`
-- [ ] Create `PreflightGuard` — `ensurePreflight(ExecutionContext $context, DefinitionRegistryInterface $registry): void`
-- [ ] Create `StepExecutor` — `execute(Step $step, ExecutionContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
-- [ ] Create `CriteriaEvaluator` — `evaluate(Step $step, ExecutionContext $context, ArazzoDocument $document): bool`
-- [ ] Create `TransitionDispatcher` — `dispatch(Transition $transition, ExecutionContext $context, ...): void` (persist, emit, enqueue)
-- [ ] Create `EventEmitter` — wraps `EventDispatcherInterface`, emits domain events
-- [ ] Each handler creates OTel span for its operation
-- [ ] Refactor `StepExecutionWorker::handle()` to compose handlers
-- [ ] Inject OTel tracer into `RunControlFlow`, pass to handlers
-- [ ] Add tests for each handler (mock dependencies, test single responsibility)
-- [ ] Run `cd packages/core && vendor/bin/pest tests/Runner/StepExecutionWorkerTest.php`; expect PASS
-- [ ] Commit `refactor: decompose StepExecutionWorker into focused handlers`
+> Implemented 2026-08-26 under `Runner/Async/` with renames noted below.
+> Spans stay at the worker boundary (one span per job) instead of one per handler.
+
+- [x] Create `StateReconciler` — `reconcile(WorkflowContext $jobContext, string $executionId): WorkflowContext`
+- [x] Create `PreflightGuard` — `guard(WorkflowContext $context): void`
+- [ ] ~~Separate async `StepExecutor`~~ dropped: selection+execution is an 8-line loop; wrapper = indirection without behavior
+- [ ] ~~`CriteriaEvaluator`~~ dropped: single delegated call to ExpressionResolverInterface
+- [x] Create `TransitionApplier` (was TransitionDispatcher) — persist / complete / dispatch; returns continue|terminal|aborted to preserve historical event ordering
+- [x] Create `WorkerEvents` (was EventEmitter) — typed emitters incl. failurePair() keeping category agreement across StepFailed/RunFailed
+- [x] Create `ExecutionStateBuilder` (beyond plan) — persisted payload -> engine-ready state; owns the off-by-one attempt-replay invariant
+- [x] Refactor `StepExecutionWorker::handle()` to compose handlers; constructor signature unchanged so all call sites keep working
+- [x] Tests per handler: `tests/Runner/Async/{StateReconciler,PreflightGuard,SuspensionHandler,ExecutionStateBuilder,TransitionApplier,WorkerEvents}Test.php` (24)
+- [x] Full suites PASS (core 774, laravel 100); 5/5 gates
+- [x] Commit
 
 ## Task 8: CLI Runner Adapter
 

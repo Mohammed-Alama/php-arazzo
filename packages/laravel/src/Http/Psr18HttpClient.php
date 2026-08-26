@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Http;
 
-use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
+use Alama\Arazzo\Contracts\HttpClientInterface;
 use GuzzleHttp\Client;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 final class Psr18HttpClient implements HttpClientInterface
 {
-    public function __construct(private readonly Client $client)
-    {
-    }
+    public function __construct(private readonly Client $client) {}
 
     public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
     {

@@ -11,6 +11,5 @@ abstract readonly class Action
     public function __construct(
         public string $name,
         public ActionKind $kind,
-    ) {
-    }
+    ) {}
 }

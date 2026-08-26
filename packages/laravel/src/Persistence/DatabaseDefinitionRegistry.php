@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Exceptions\DefinitionHydrationException;
 use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Runner\Exceptions\DefinitionHydrationException;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\RawDocument;
@@ -21,8 +21,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
         private ConnectionInterface $db,
         private Parser $parser,
         private string $tableName = 'arazzo_definitions',
-    ) {
-    }
+    ) {}
 
     public function register(ArazzoDocument $document): string
     {
@@ -83,7 +82,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
     }
 
     /**
-     * @param array<string, mixed> $raw
+     * @param  array<string, mixed>  $raw
      */
     private function hash(array $raw): string
     {
@@ -93,8 +92,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
     }
 
     /**
-     * @param array<string, mixed> $data
-     *
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     private function sortRecursive(array $data): array

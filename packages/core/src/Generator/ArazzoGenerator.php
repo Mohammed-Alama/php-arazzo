@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Generator;
 
-use Alama\Arazzo\Generator\Contracts\AiClientInterface;
+use Alama\Arazzo\Contracts\AiClientInterface;
 
 class ArazzoGenerator
 {
-    public function __construct(private AiClientInterface $aiClient)
-    {
-    }
+    public function __construct(private AiClientInterface $aiClient) {}
 
     public function generate(string $openapiSpec, string $workflowTrace): string
     {

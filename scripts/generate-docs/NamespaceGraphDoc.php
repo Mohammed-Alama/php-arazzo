@@ -18,9 +18,8 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 MD;
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
- *
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  * @return array<string, list<ScannedFile>> laravel modules prefixed "Laravel:"
  */
 function merge(array $core, array $laravel): array
@@ -37,8 +36,8 @@ function merge(array $core, array $laravel): array
 }
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -48,7 +47,7 @@ function render(array $core, array $laravel): string
     $classModule = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace . '\\' . $file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $module;
         }
     }
 
@@ -82,8 +81,8 @@ function render(array $core, array $laravel): string
             '_' => '(core package root)',
             'Laravel:_' => '(Laravel package root)',
             default => str_starts_with($id, 'Laravel:')
-                ? 'Alama\\Arazzo\\Laravel\\' . substr($id, strlen('Laravel:'))
-                : 'Alama\\Arazzo\\' . $id,
+                ? 'Alama\\Arazzo\\Laravel\\'.substr($id, strlen('Laravel:'))
+                : 'Alama\\Arazzo\\'.$id,
         };
         $style = str_starts_with($id, 'Laravel:') ? 'laravelNode' : 'coreNode';
         $lines[] = sprintf('    %s["%s"]:::%s', nodeId($id), $label, $style);
@@ -105,7 +104,7 @@ function render(array $core, array $laravel): string
     $lines[] = '    classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;';
     $lines[] = '```';
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 function nodeId(string $module): string

@@ -23,8 +23,8 @@ MD;
 const CONTRACT_DIR_PATTERN = '/(^|\/)Contracts(\/|$)/';
 
 /**
- * @param array<string, list<ScannedFile>> $core
- * @param array<string, list<ScannedFile>> $laravel
+ * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, list<ScannedFile>>  $laravel
  */
 function render(array $core, array $laravel): string
 {
@@ -48,7 +48,7 @@ function render(array $core, array $laravel): string
                 foreach (explode(',', str_replace('|', ',', $m[1])) as $raw) {
                     $name = basename(str_replace('\\', '/', trim($raw)));
                     if (isset($files[$name])) {
-                        $files[$name]['implementations'][$file->namespace . '\\' . $file->className] = true;
+                        $files[$name]['implementations'][$file->namespace.'\\'.$file->className] = true;
                     }
                 }
             }
@@ -64,16 +64,16 @@ function render(array $core, array $laravel): string
     $lines = [BANNER];
 
     if ($implemented === []) {
-        return BANNER . "_No implemented contracts found._\n";
+        return BANNER."_No implemented contracts found._\n";
     }
 
     $lines[] = '```mermaid';
     $lines[] = 'mindmap';
     $lines[] = '  root((SPI contracts))';
     foreach ($implemented as $interfaceName => $entry) {
-        $lines[] = '    ' . $interfaceName;
+        $lines[] = '    '.$interfaceName;
         foreach (array_keys($entry['implementations']) as $fqcn) {
-            $lines[] = '      ' . short($fqcn);
+            $lines[] = '      '.short($fqcn);
         }
     }
     $lines[] = '```';
@@ -87,7 +87,7 @@ function render(array $core, array $laravel): string
         $file = $entry['file'];
         $cells = [];
         foreach (array_keys($entry['implementations']) as $fqcn) {
-            $cells[] = '`' . short((string) $fqcn) . '` <small>' . packageOf((string) $fqcn) . '</small>';
+            $cells[] = '`'.short((string) $fqcn).'` <small>'.packageOf((string) $fqcn).'</small>';
         }
         $lines[] = sprintf(
             '| `%s` | %s | %s |',
@@ -106,11 +106,11 @@ function render(array $core, array $laravel): string
         foreach ($unimplemented as $interfaceName => $entry) {
             /** @var ScannedFile $file */
             $file = $entry['file'];
-            $lines[] = '- `' . $interfaceName . '` <small>' . str_replace('\\', '/', $file->relativeDir) . '</small>';
+            $lines[] = '- `'.$interfaceName.'` <small>'.str_replace('\\', '/', $file->relativeDir).'</small>';
         }
     }
 
-    return implode("\n", $lines) . "\n";
+    return implode("\n", $lines)."\n";
 }
 
 /** @param list<mixed> $items */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
+use Alama\Arazzo\Contracts\LockManagerInterface;
 
 final class FakeLockManager implements LockManagerInterface
 {
@@ -16,4 +16,13 @@ final class FakeLockManager implements LockManagerInterface
 
         return $callback();
     }
+
+    public function tryAcquire(string $key, int $ttlSeconds): bool
+    {
+        $this->acquisitions++;
+
+        return true;
+    }
+
+    public function release(string $key): void {}
 }
