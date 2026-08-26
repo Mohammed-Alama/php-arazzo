@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Context\ExecutionState;
 use Alama\Arazzo\State\ExecutionContext;
+use Alama\Arazzo\State\ExecutionState;
 
 final readonly class Transition
 {

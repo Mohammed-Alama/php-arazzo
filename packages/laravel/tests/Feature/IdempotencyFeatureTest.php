@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutor;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;

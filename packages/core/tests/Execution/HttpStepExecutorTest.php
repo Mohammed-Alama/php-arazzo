@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Execution\HttpStepExecutor;
 use Alama\Arazzo\Execution\OpenApiPayload;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\ArazzoDocument;
@@ -20,6 +19,7 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;

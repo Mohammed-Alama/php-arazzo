@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
-use Alama\Arazzo\Context\PendingCorrelation;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Contracts\LockManagerInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
@@ -26,6 +24,8 @@ use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\State\WorkflowContext;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Response;

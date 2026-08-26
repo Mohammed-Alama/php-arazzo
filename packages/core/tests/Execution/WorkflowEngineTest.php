@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Execution\Transition;
@@ -19,6 +18,7 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\State\ExecutionContext;
 use Alama\Arazzo\State\StepResult;
+use Alama\Arazzo\State\WorkflowContext;
 
 function workflowEngineResolver(): ExpressionResolverInterface
 {

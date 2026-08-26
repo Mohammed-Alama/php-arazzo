@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
@@ -15,6 +14,7 @@ use Alama\Arazzo\Events\CorrelationResumed;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;

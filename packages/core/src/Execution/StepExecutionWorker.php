@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Context\ExecutionState;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
@@ -26,6 +24,8 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\ExecutionState;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Telemetry\OtelSetup;
 use Alama\Arazzo\Validator\PreflightFailureException;

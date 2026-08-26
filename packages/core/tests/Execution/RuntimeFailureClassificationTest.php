@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Events\RunFailed;
 use Alama\Arazzo\Events\StepFailed;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\HttpStepExecutor;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Lexer;
+use Alama\Arazzo\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;

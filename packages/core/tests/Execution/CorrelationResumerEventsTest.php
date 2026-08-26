@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\PendingCorrelation;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\LockManagerInterface;
@@ -21,6 +19,8 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 class CorrelationResumerEventsLockManager implements LockManagerInterface

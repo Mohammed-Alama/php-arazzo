@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Contracts;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\State\WorkflowContext;
 
 interface ExpressionResolverInterface
 {

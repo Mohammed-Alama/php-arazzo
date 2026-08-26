@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\OutputExtractorInterface;
 use Alama\Arazzo\Evaluation\EvaluationContext;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\JsonPathEvaluator;
-use Alama\Arazzo\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Evaluation\TypeCaster;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\JsonPathEvaluator;
+use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Responses;

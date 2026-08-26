@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Evaluation\StringInterpolator;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Expression\StringInterpolator;
 use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;

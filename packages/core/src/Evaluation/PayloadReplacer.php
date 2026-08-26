@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
-use Alama\Arazzo\Context\WorkflowContext;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\JsonPathEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 
 /**
  * Applies a step's payload replacements to an array-shaped body.

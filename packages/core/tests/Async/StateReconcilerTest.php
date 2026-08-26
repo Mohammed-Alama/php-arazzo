@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\StateReconciler;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Tests\Support\RecordingStateStore;
 
 it('passes the job context through when nothing is persisted', function (): void {

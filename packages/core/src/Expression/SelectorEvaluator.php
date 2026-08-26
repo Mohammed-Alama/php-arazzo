@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Context\WorkflowContext;
-use Alama\Arazzo\Evaluation\Exceptions\SelectorEvaluationException;
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Evaluation\EvaluationContext;
+use Alama\Arazzo\Execution\JsonPointer;
+use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
+use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\State\WorkflowContext;
 
 class SelectorEvaluator
 {

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutionOutcome;
 use Alama\Arazzo\Protocol\ProtocolExecutorRegistry;
@@ -10,6 +9,7 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 
 class RegistryFakeExecutor implements StepProtocolExecutorInterface
 {

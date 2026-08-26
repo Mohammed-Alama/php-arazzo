@@ -43,11 +43,11 @@ flowchart TB
         M_Contracts["Contracts"]:::node
     end
     subgraph L10["layer 10"]
-        M_Context["Context"]:::node
-    end
-    subgraph L11["layer 11"]
         M_Laravel_State["State"]:::laravelNode
         M_State["State"]:::node
+    end
+    subgraph L11["layer 11"]
+        M_Dependency["Dependency"]:::node
     end
     subgraph L12["layer 12"]
         M_Evaluation["Evaluation"]:::node
@@ -69,10 +69,10 @@ flowchart TB
         M_Policy["Policy"]:::node
     end
     subgraph L18["layer 18"]
-        M_Protocol["Protocol"]:::node
+        M_Execution["Execution"]:::node
     end
     subgraph L19["layer 19"]
-        M_Execution["Execution"]:::node
+        M_Protocol["Protocol"]:::node
     end
     subgraph L20["layer 20"]
         M_Async["Async"]:::node
@@ -91,43 +91,46 @@ flowchart TB
         M_Laravel_Queue["Queue"]:::laravelNode
         M_Laravel__["_"]:::laravelNode
     end
-    M_Async --> M_Context
     M_Async --> M_Contracts
     M_Async --> M_Events
     M_Async --> M_Exceptions
     M_Async --> M_Execution
     M_Async --> M_Jobs
     M_Async --> M_Spec
+    M_Async --> M_State
     M_Async --> M_Support
     M_Async --> M_Validator
-    M_Console --> M_Context
     M_Console --> M_Contracts
+    M_Console --> M_Dependency
     M_Console --> M_Evaluation
     M_Console --> M_Execution
+    M_Console --> M_Expression
     M_Console --> M_Jobs
     M_Console --> M_Normalizer
     M_Console --> M_Parser
     M_Console -.->|violation| M_Renderer
     M_Console --> M_Resolver
     M_Console --> M_Spec
+    M_Console --> M_State
     M_Console --> M_Telemetry
     M_Console --> M_Validator
-    M_Context --> M_Spec
-    M_Contracts -.->|violation| M_Context
     M_Contracts -.->|violation| M_Evaluation
     M_Contracts -.->|violation| M_Exceptions
     M_Contracts -.->|violation| M_Execution
     M_Contracts --> M_Normalizer
     M_Contracts --> M_Resolver
     M_Contracts --> M_Spec
-    M_Evaluation --> M_Context
+    M_Contracts -.->|violation| M_State
+    M_Dependency --> M_Spec
+    M_Dependency --> M_State
     M_Evaluation --> M_Contracts
     M_Evaluation --> M_Expression
     M_Evaluation --> M_Spec
+    M_Evaluation --> M_State
     M_Evaluation --> M_Support
     M_Exceptions --> M_Support
-    M_Execution --> M_Context
     M_Execution --> M_Contracts
+    M_Execution --> M_Dependency
     M_Execution --> M_Evaluation
     M_Execution --> M_Events
     M_Execution --> M_Exceptions
@@ -140,14 +143,19 @@ flowchart TB
     M_Execution --> M_Support
     M_Execution --> M_Telemetry
     M_Execution --> M_Validator
+    M_Expression -.->|violation| M_Contracts
+    M_Expression -.->|violation| M_Evaluation
+    M_Expression -.->|violation| M_Execution
     M_Expression -.->|violation| M_Spec
+    M_Expression -.->|violation| M_State
     M_Expression -.->|violation| M_Support
     M_Generator -.->|violation| M_Contracts
-    M_Jobs --> M_Context
     M_Jobs --> M_Spec
+    M_Jobs --> M_State
     M_Laravel_Bindings --> M_Contracts
     M_Laravel_Bindings --> M_Evaluation
     M_Laravel_Bindings --> M_Execution
+    M_Laravel_Bindings --> M_Expression
     M_Laravel_Bindings --> M_Generator
     M_Laravel_Bindings --> M_Laravel_Http
     M_Laravel_Bindings --> M_Laravel_Lock
@@ -157,6 +165,7 @@ flowchart TB
     M_Laravel_Bindings --> M_Laravel_Support
     M_Laravel_Bindings --> M_Normalizer
     M_Laravel_Bindings --> M_Parser
+    M_Laravel_Bindings --> M_Protocol
     M_Laravel_Bindings --> M_Resolver
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
@@ -166,12 +175,12 @@ flowchart TB
     M_Laravel_Http --> M_Resolver
     M_Laravel_Http --> M_Spec
     M_Laravel_Lock --> M_Contracts
-    M_Laravel_Persistence --> M_Context
     M_Laravel_Persistence --> M_Contracts
     M_Laravel_Persistence --> M_Exceptions
     M_Laravel_Persistence --> M_Execution
     M_Laravel_Persistence --> M_Parser
     M_Laravel_Persistence --> M_Spec
+    M_Laravel_Persistence --> M_State
     M_Laravel_Queue --> M_Contracts
     M_Laravel_Queue --> M_Execution
     M_Laravel_Queue --> M_Jobs
@@ -182,14 +191,18 @@ flowchart TB
     M_Normalizer --> M_Support
     M_Parser --> M_Spec
     M_Parser --> M_Support
-    M_Policy --> M_Context
     M_Policy --> M_Contracts
     M_Policy --> M_Spec
-    M_Protocol --> M_Context
+    M_Policy --> M_State
     M_Protocol --> M_Contracts
+    M_Protocol --> M_Dependency
     M_Protocol --> M_Evaluation
-    M_Protocol -.->|violation| M_Execution
+    M_Protocol --> M_Exceptions
+    M_Protocol --> M_Execution
+    M_Protocol --> M_Expression
+    M_Protocol --> M_Resolver
     M_Protocol --> M_Spec
+    M_Protocol --> M_State
     M_Renderer --> M_Spec
     M_Resolver -.->|violation| M_Exceptions
     M_Resolver -.->|violation| M_Execution
@@ -197,12 +210,11 @@ flowchart TB
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
     M_Spec --> M_Expression
-    M_State --> M_Context
     M_State --> M_Contracts
     M_State --> M_Spec
     M_Support -.->|violation| M_Contracts
     M_Support -.->|violation| M_Events
-    M_Validator -.->|violation| M_Evaluation
+    M_Validator -.->|violation| M_Dependency
     M_Validator --> M_Expression
     M_Validator --> M_Normalizer
     M_Validator --> M_Resolver
@@ -213,23 +225,26 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**16 violation(s) found:**
+**19 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
+| `Expression` | `Spec` | 11 |
 | `Support` | `Events` | 9 |
-| `Expression` | `Spec` | 6 |
-| `Contracts` | `Context` | 5 |
+| `Contracts` | `State` | 5 |
 | `Resolver` | `Normalizer` | 4 |
 | `Contracts` | `Execution` | 3 |
-| `Protocol` | `Execution` | 3 |
 | `Contracts` | `Exceptions` | 2 |
+| `Expression` | `Contracts` | 2 |
+| `Expression` | `Evaluation` | 2 |
+| `Expression` | `Execution` | 2 |
+| `Expression` | `State` | 2 |
+| `Expression` | `Support` | 2 |
 | `Generator` | `Contracts` | 2 |
 | `Normalizer` | `Contracts` | 2 |
-| `Validator` | `Evaluation` | 2 |
 | `Console` | `Renderer` | 1 |
 | `Contracts` | `Evaluation` | 1 |
-| `Expression` | `Support` | 1 |
 | `Resolver` | `Exceptions` | 1 |
 | `Resolver` | `Execution` | 1 |
 | `Support` | `Contracts` | 1 |
+| `Validator` | `Dependency` | 1 |

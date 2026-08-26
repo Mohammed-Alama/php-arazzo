@@ -10,8 +10,8 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 flowchart LR
     Async["Alama\Arazzo\Async"]:::coreNode
     Console["Alama\Arazzo\Console"]:::coreNode
-    Context["Alama\Arazzo\Context"]:::coreNode
     Contracts["Alama\Arazzo\Contracts"]:::coreNode
+    Dependency["Alama\Arazzo\Dependency"]:::coreNode
     Evaluation["Alama\Arazzo\Evaluation"]:::coreNode
     Events["Alama\Arazzo\Events"]:::coreNode
     Exceptions["Alama\Arazzo\Exceptions"]:::coreNode
@@ -38,72 +38,83 @@ flowchart LR
     Support["Alama\Arazzo\Support"]:::coreNode
     Telemetry["Alama\Arazzo\Telemetry"]:::coreNode
     Validator["Alama\Arazzo\Validator"]:::coreNode
-    Async --> Context
     Async --> Contracts
     Async --> Events
     Async --> Spec
+    Async --> State
     Async --> Exceptions
     Async --> Support
     Async --> Validator
     Async --> Execution
     Async --> Jobs
-    Console --> Context
     Console --> Contracts
     Console --> Execution
     Console --> Jobs
     Console --> Spec
+    Console --> State
     Console --> Telemetry
     Console --> Parser
     Console --> Validator
-    Console --> Evaluation
+    Console --> Dependency
     Console --> Renderer
+    Console --> Evaluation
+    Console --> Expression
     Console --> Normalizer
     Console --> Resolver
-    Context --> Spec
-    Contracts --> Context
     Contracts --> Execution
     Contracts --> Spec
+    Contracts --> State
     Contracts --> Exceptions
     Contracts --> Resolver
     Contracts --> Normalizer
     Contracts --> Evaluation
-    Evaluation --> Context
+    Dependency --> Spec
+    Dependency --> State
     Evaluation --> Contracts
     Evaluation --> Spec
+    Evaluation --> State
     Evaluation --> Expression
     Evaluation --> Support
     Exceptions --> Support
     Execution --> Contracts
     Execution --> Spec
-    Execution --> Context
     Execution --> Evaluation
     Execution --> Exceptions
+    Execution --> Expression
+    Execution --> State
     Execution --> Resolver
     Execution --> Events
     Execution --> Jobs
     Execution --> Support
     Execution --> Telemetry
     Execution --> Validator
+    Execution --> Dependency
     Execution --> Policy
-    Execution --> State
-    Execution --> Expression
+    Expression --> Contracts
+    Expression --> Evaluation
+    Expression --> Execution
     Expression --> Spec
     Expression --> Support
+    Expression --> State
     Generator --> Contracts
-    Jobs --> Context
     Jobs --> Spec
+    Jobs --> State
     Normalizer --> Contracts
     Normalizer --> Support
     Parser --> Spec
     Parser --> Support
-    Policy --> Context
     Policy --> Contracts
     Policy --> Spec
-    Protocol --> Context
+    Policy --> State
     Protocol --> Contracts
-    Protocol --> Evaluation
     Protocol --> Execution
+    Protocol --> Resolver
     Protocol --> Spec
+    Protocol --> State
+    Protocol --> Dependency
+    Protocol --> Evaluation
+    Protocol --> Exceptions
+    Protocol --> Expression
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
@@ -111,21 +122,22 @@ flowchart LR
     Resolver --> Exceptions
     Resolver --> Execution
     Spec --> Expression
-    State --> Contracts
     State --> Spec
-    State --> Context
+    State --> Contracts
     Support --> Contracts
     Support --> Events
     Validator --> Expression
     Validator --> Spec
-    Validator --> Evaluation
     Validator --> Normalizer
     Validator --> Resolver
     Validator --> Support
+    Validator --> Dependency
     Laravel_Bindings --> Contracts
     Laravel_Bindings --> Evaluation
     Laravel_Bindings --> Execution
+    Laravel_Bindings --> Expression
     Laravel_Bindings --> Laravel_Support
+    Laravel_Bindings --> Protocol
     Laravel_Bindings --> Resolver
     Laravel_Bindings --> Validator
     Laravel_Bindings --> Laravel_Http
@@ -143,8 +155,8 @@ flowchart LR
     Laravel_Http --> Spec
     Laravel_Http --> Jobs
     Laravel_Lock --> Contracts
-    Laravel_Persistence --> Context
     Laravel_Persistence --> Contracts
+    Laravel_Persistence --> State
     Laravel_Persistence --> Execution
     Laravel_Persistence --> Exceptions
     Laravel_Persistence --> Parser

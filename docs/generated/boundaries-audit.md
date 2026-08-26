@@ -33,13 +33,14 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Console` | `Psr` | 1 |
 | core | `Console` | `Symfony` | 30 |
 | core | `Contracts` | `Psr` | 3 |
-| core | `Evaluation` | `Flow` | 1 |
 | core | `Execution` | `GuzzleHttp` | 1 |
 | core | `Execution` | `OpenTelemetry` | 2 |
-| core | `Execution` | `Psr` | 23 |
+| core | `Execution` | `Psr` | 17 |
 | core | `Execution` | `cebe` | 13 |
+| core | `Expression` | `Flow` | 1 |
 | core | `Generator` | `Psr` | 3 |
 | core | `Parser` | `Symfony` | 2 |
+| core | `Protocol` | `Psr` | 6 |
 | core | `Resolver` | `Psr` | 4 |
 | core | `Resolver` | `cebe` | 3 |
 | core | `Support` | `Psr` | 4 |
@@ -65,10 +66,10 @@ edit `POLICY` when a boundary consciously moves.
 - `Console` imports `GuzzleHttp\*` (2 refs)
 - `Console` imports `OpenTelemetry\*` (1 refs)
 - `Console` imports `Symfony\*` (30 refs)
-- `Evaluation` imports `Flow\*` (1 refs)
 - `Execution` imports `GuzzleHttp\*` (1 refs)
 - `Execution` imports `OpenTelemetry\*` (2 refs)
 - `Execution` imports `cebe\*` (13 refs)
+- `Expression` imports `Flow\*` (1 refs)
 - `Parser` imports `Symfony\*` (2 refs)
 - `Resolver` imports `cebe\*` (3 refs)
 - `Telemetry` imports `OpenTelemetry\*` (23 refs)

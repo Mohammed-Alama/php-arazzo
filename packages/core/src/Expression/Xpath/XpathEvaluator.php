@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Xpath;
+namespace Alama\Arazzo\Expression\Xpath;
 
 interface XpathEvaluator
 {

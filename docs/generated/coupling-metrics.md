@@ -12,17 +12,17 @@ targets. Regenerated before every commit.
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
 | `Async` | 6 | 488 | 0 | 9 | 1.00 |  |
-| `Console` | 11 | 780 | 0 | 12 | 1.00 |  |
-| `Context` | 4 | 754 | 10 | 1 | 0.09 |  |
-| `Contracts` | 24 | 488 | 16 | 7 | 0.30 |  |
-| `Evaluation` | 30 | 1955 | 6 | 5 | 0.45 |  |
+| `Console` | 11 | 780 | 0 | 14 | 1.00 |  |
+| `Contracts` | 24 | 488 | 17 | 7 | 0.29 |  |
+| `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
+| `Evaluation` | 18 | 1085 | 6 | 5 | 0.45 |  |
 | `Events` | 9 | 178 | 3 | 0 | 0.00 |  |
-| `Exceptions` | 10 | 152 | 5 | 1 | 0.17 |  |
-| `Execution` | 34 | 3725 | 8 | 14 | 0.64 |  |
-| `Expression` | 23 | 857 | 4 | 2 | 0.33 |  |
+| `Exceptions` | 10 | 152 | 6 | 1 | 0.14 |  |
+| `Execution` | 33 | 3469 | 9 | 14 | 0.61 |  |
+| `Expression` | 30 | 1316 | 7 | 6 | 0.46 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
-| `Laravel:Bindings` | 6 | 445 | 1 | 15 | 0.94 |  |
+| `Laravel:Bindings` | 6 | 445 | 1 | 17 | 0.94 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
 | `Laravel:Http` | 3 | 158 | 2 | 5 | 0.71 |  |
 | `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
@@ -34,30 +34,30 @@ targets. Regenerated before every commit.
 | `Normalizer` | 5 | 308 | 5 | 2 | 0.29 |  |
 | `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
 | `Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
-| `Protocol` | 2 | 197 | 0 | 5 | 1.00 |  |
+| `Protocol` | 5 | 552 | 1 | 9 | 0.90 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
-| `Resolver` | 13 | 536 | 6 | 5 | 0.45 |  |
+| `Resolver` | 13 | 536 | 7 | 5 | 0.42 |  |
 | `Spec` | 33 | 688 | 17 | 1 | 0.06 |  |
-| `State` | 6 | 816 | 1 | 3 | 0.75 |  |
+| `State` | 9 | 1498 | 11 | 2 | 0.15 |  |
 | `Support` | 6 | 257 | 9 | 2 | 0.18 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `Validator` | 63 | 3031 | 4 | 6 | 0.60 |  |
 
-Total cross-module edges: **800**
+Total cross-module edges: **801**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
 | `Validator` → `Spec` | 88 |
-| `Validator` → `Expression` | 78 |
-| `Execution` → `Spec` | 72 |
-| `Execution` → `Contracts` | 40 |
+| `Validator` → `Expression` | 79 |
+| `Execution` → `Spec` | 61 |
+| `Execution` → `Contracts` | 33 |
 | `Parser` → `Spec` | 30 |
-| `Execution` → `Evaluation` | 27 |
-| `Evaluation` → `Spec` | 25 |
 | `Laravel:Bindings` → `Contracts` | 21 |
 | `Contracts` → `Spec` | 18 |
-| `Execution` → `Context` | 18 |
 | `Execution` → `Events` | 17 |
-| `Laravel:Bindings` → `Execution` | 17 |
+| `Execution` → `State` | 17 |
+| `Protocol` → `Spec` | 17 |
+| `Execution` → `Expression` | 15 |
+| `Console` → `Execution` | 14 |

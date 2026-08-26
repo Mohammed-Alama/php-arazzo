@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
@@ -23,6 +22,7 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 
 beforeEach(function () {
     $openApiJson = json_encode([

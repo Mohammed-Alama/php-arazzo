@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\JsonPathEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\State\WorkflowContext;
 
 class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
 {

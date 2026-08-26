@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\State\WorkflowContext;
 
 class StringInterpolator
 {

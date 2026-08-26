@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Psr\Http\Message\ResponseInterface;
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Laravel\Jobs;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 

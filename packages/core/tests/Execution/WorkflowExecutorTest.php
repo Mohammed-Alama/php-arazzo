@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
@@ -14,6 +13,7 @@ use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;

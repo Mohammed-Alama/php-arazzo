@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
@@ -23,6 +22,7 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\WorkflowContext;
 
 it('resolves a Selector output through SelectorEvaluator', function () {
     $selectors = Mockery::mock(SelectorEvaluator::class);

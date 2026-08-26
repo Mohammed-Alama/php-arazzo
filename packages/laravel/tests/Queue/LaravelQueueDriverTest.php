@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Laravel;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Jobs\ResumeCorrelationJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 use Illuminate\Support\Facades\Queue;
 
 it('wraps ExecuteStepJob in RunExecuteStepJob and pushes immediately when no delay is given', function (): void {

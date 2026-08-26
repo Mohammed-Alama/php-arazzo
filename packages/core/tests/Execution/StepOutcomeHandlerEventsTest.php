@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\PendingCorrelation;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Events\RunCompleted;
 use Alama\Arazzo\Events\RunFailed;
 use Alama\Arazzo\Events\StepRetried;
@@ -21,6 +17,8 @@ use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
@@ -30,6 +28,8 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 

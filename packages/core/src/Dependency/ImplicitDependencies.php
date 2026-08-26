@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Dependency;
 
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;

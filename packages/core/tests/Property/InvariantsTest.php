@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\ExecutionState;
-use Alama\Arazzo\Evaluation\DependencyGraph;
-use Alama\Arazzo\Evaluation\JsonPointer;
+use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Execution\JsonPointer;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 

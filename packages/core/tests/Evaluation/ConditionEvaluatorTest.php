@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Evaluation;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\State\WorkflowContext;
 
 function conditionContext(): WorkflowContext
 {

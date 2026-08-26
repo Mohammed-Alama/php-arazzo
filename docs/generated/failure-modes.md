@@ -21,13 +21,13 @@ Regenerated before every commit.
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>Persistence</small> |
 | **ExpressionSyntaxException** | `Lexer` <small>Expression</small>, `Parser` <small>Expression</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>Execution</small> |
-| **InvalidArgumentException** | `TypeCaster` <small>Evaluation</small>, `DatabaseDefinitionRegistry` <small>Persistence</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `SpecVersion` <small>Spec/Enum</small> |
-| **LogicException** | `AsyncApiStepExecutor` <small>Execution</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
+| **InvalidArgumentException** | `TypeCaster` <small>Execution</small>, `DatabaseDefinitionRegistry` <small>Persistence</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `SpecVersion` <small>Spec/Enum</small> |
+| **LogicException** | `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small>, `AsyncApiStepExecutor` <small>Protocol</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>Normalizer</small> |
 | **PreflightFailureException** | `PreflightGuard` <small>Async</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
 | **RuntimeException** | `CliRunner` <small>Console/Cli</small>, `FileLockStrategy` <small>Contracts</small>, `ReusableParameterResolver` <small>Execution</small>, `OpenAiClient` <small>Generator/Clients</small>, `OpenApiOperationResolver` <small>Resolver</small>, `OtelSetup` <small>Telemetry</small> |
 | **SchemaValidationException** | `ArazzoSchemaValidator` <small>Execution</small> |
-| **SelectorEvaluationException** | `SelectorEvaluator` <small>Evaluation</small> |
+| **SelectorEvaluationException** | `SelectorEvaluator` <small>Expression</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>Execution</small> |
@@ -51,19 +51,19 @@ Regenerated before every commit.
 | `DecodeException` | `Loader` |  |
 | `ExpressionSyntaxException` | `Expression` |  |
 | `InvalidArgumentException` | `ArazzoOutputExtractor` |  |
-| `JsonException` | `AsyncApiStepExecutor` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
+| `JsonException` | `AsyncApiStepExecutor` |  |
 | `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
-| `Throwable` | `HttpStepExecutor` |  |
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
 | `Throwable` | `DatabaseEventLedger` |  |
+| `Throwable` | `HttpStepExecutor` |  |
 | `Throwable` | `DefaultSourceResolver` |  |
 | `Throwable` | `PreflightValidator` |  |
 

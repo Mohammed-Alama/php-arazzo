@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Jobs;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 
 class ExecuteStepJob
 {

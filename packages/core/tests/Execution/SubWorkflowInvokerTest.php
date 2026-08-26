@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\WorkflowContext;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ExecutionResult;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SubWorkflowResult;
 use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\WorkflowContext;
 
 it('binds parameters, executes child workflow, returns SubWorkflowResult', function () {
     $document = new ArazzoDocument(

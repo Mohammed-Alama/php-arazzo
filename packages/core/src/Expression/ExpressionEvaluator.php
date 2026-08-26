@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Evaluation\EvaluationContext;
+use Alama\Arazzo\Execution\JsonPointer;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;

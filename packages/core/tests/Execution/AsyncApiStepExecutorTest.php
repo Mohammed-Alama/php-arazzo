@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\PendingCorrelation;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\HttpClientInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Execution\AsyncApiStepExecutor;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
@@ -20,6 +18,8 @@ use Alama\Arazzo\Spec\Parameter;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\State\WorkflowContext;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;

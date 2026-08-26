@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator;
 
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;

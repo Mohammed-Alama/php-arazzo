@@ -25,16 +25,16 @@ quadrantChart
     quadrant-4 Zone of pain
     Async: [1, 0]
     Console: [1, 0]
-    Context: [0.091, 0]
-    Contracts: [0.304, 0.875]
-    Evaluation: [0.455, 0.067]
+    Contracts: [0.292, 0.875]
+    Dependency: [0.333, 0]
+    Evaluation: [0.455, 0.056]
     Events: [0, 0]
-    Exceptions: [0.167, 0]
-    Execution: [0.636, 0]
-    Expression: [0.333, 0]
+    Exceptions: [0.143, 0]
+    Execution: [0.609, 0]
+    Expression: [0.462, 0.033]
     Generator: [0.333, 0]
     Jobs: [0.286, 0]
-    Laravel/Bindings: [0.938, 0]
+    Laravel/Bindings: [0.944, 0]
     Laravel/Http: [0.714, 0]
     Laravel/Lock: [0.5, 0]
     Laravel/Persistence: [0.857, 0]
@@ -45,11 +45,11 @@ quadrantChart
     Normalizer: [0.286, 0]
     Parser: [0.333, 0.2]
     Policy: [0.75, 0]
-    Protocol: [1, 0]
+    Protocol: [0.9, 0]
     Renderer: [0.5, 0]
-    Resolver: [0.455, 0.231]
+    Resolver: [0.417, 0.231]
     Spec: [0.056, 0]
-    State: [0.75, 0]
+    State: [0.154, 0]
     Support: [0.182, 0.167]
     Telemetry: [0, 0]
     Validator: [0.6, 0.016]
@@ -62,12 +62,12 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `Parser` | 820 |
-| `ExecutionContext` | `State` | 498 |
+| `ExecutionContext` | `State` | 495 |
 | `StepExecutionWorker` | `Execution` | 391 |
 | `StepOutcomeHandler` | `Execution` | 377 |
-| `WorkflowContext` | `Context` | 363 |
+| `WorkflowContext` | `State` | 363 |
 | `Parser` | `Expression` | 336 |
-| `ExecutionState` | `Context` | 308 |
+| `ExecutionState` | `State` | 308 |
 
 ## Fat interfaces (ISP)
 

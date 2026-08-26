@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\ExecutionState;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\State\ExecutionState;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 

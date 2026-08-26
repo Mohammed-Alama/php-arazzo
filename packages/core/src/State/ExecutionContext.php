@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\State;
 
-use Alama\Arazzo\Context\ExecutionState;
-use Alama\Arazzo\Context\WorkflowContext;
-
 final class ExecutionContext
 {
     /**

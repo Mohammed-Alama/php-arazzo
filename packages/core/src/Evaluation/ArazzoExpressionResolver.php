@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
@@ -13,6 +12,7 @@ use Alama\Arazzo\Contracts\SchemaValidatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\State\WorkflowContext;
 
 class ArazzoExpressionResolver implements ExpressionResolverInterface
 {

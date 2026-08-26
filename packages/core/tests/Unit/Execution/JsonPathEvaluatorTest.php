@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Expression\JsonPathEvaluator;
 
 it('extracts using jsonpath', function (): void {
     $data = ['users' => [['id' => 1], ['id' => 2]]];

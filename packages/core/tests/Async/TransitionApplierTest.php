@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Async\TransitionApplier;
 use Alama\Arazzo\Async\WorkerEvents;
-use Alama\Arazzo\Context\ExecutionState;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Events\RunCompleted;
 use Alama\Arazzo\Events\RunFailed;
@@ -19,6 +17,8 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\ExecutionState;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
 use Alama\Arazzo\Tests\Support\RecordingExecutionRegistry;

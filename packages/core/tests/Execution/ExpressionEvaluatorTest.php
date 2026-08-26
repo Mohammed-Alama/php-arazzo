@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationContext;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\State\WorkflowContext;
 
 it('evaluates input references', function () {
     $context = new WorkflowContext('def_1', ['userId' => 123]);

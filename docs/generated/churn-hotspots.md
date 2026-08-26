@@ -17,15 +17,15 @@ xychart-beta
     bar [15, 11, 11, 9, 8, 8, 8, 8, 7, 7, 7, 5]
 ```
 
-Analyzed 148 total file-touches across 30 modules.
+Analyzed 147 total file-touches across 30 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `Validator` | 15 | 10% | 3,094 | 4.8 |
-| `Expression` | 11 | 7% | 880 | 12.5 |
+| `Expression` | 11 | 7% | 1,346 | 8.2 |
 | `Resolver` | 11 | 7% | 549 | 20 |
 | `Laravel/Http` | 9 | 6% | 161 | 55.9 |
-| `Execution` | 8 | 5% | 3,759 | 2.1 |
+| `Execution` | 8 | 5% | 3,502 | 2.3 |
 | `Laravel/Persistence` | 8 | 5% | 252 | 31.7 |
 | `Parser` | 8 | 5% | 1,078 | 7.4 |
 | `Spec` | 8 | 5% | 721 | 11.1 |
@@ -41,15 +41,15 @@ Analyzed 148 total file-touches across 30 modules.
 | `Generator` | 3 | 2% | 105 | 28.6 |
 | `Laravel/Events` | 2 | 1% | 21 | 95.2 |
 | `Policy` | 2 | 1% | 96 | 20.8 |
-| `Protocol` | 2 | 1% | 199 | 10.1 |
+| `Protocol` | 2 | 1% | 557 | 3.6 |
 | `Renderer` | 2 | 1% | 253 | 7.9 |
-| `State` | 2 | 1% | 822 | 2.4 |
+| `State` | 2 | 1% | 1,507 | 1.3 |
 | `Async` | 1 | 1% | 494 | 2 |
-| `Context` | 1 | 1% | 758 | 1.3 |
-| `Evaluation` | 1 | 1% | 1,985 | 0.5 |
+| `Evaluation` | 1 | 1% | 1,103 | 0.9 |
 | `Jobs` | 1 | 1% | 34 | 29.4 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
 | `Normalizer` | 1 | 1% | 313 | 3.2 |
 | `Telemetry` | 1 | 1% | 278 | 3.6 |
+| `Dependency` | 0 | 0% | 328 | 0 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (70), `Laravel/Http` (55.9), `Laravel/Persistence` (31.7)

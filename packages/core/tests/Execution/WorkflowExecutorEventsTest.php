@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Events\RunCompleted;
 use Alama\Arazzo\Events\RunFailed;
 use Alama\Arazzo\Events\RunStarted;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 

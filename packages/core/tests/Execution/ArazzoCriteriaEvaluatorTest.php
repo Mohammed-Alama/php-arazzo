@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\State\WorkflowContext;
 
 beforeEach(function () {
     $this->evaluator = new ArazzoCriteriaEvaluator(new ExpressionEvaluator());

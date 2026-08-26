@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Context\ExecutionState;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Contracts\QueueDriverInterface;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\ExecutionState;
 
 /**
  * Performs the side effects a {@see Transition} describes: persists the next

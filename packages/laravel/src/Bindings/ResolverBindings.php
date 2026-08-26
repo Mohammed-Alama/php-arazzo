@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;

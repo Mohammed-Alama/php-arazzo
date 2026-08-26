@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Context\WorkflowContext;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\HttpStepExecutor;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\SubWorkflowStepExecutor;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Protocol\SubWorkflowStepExecutor;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Tests\Support\FakeLockManager;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
 use Alama\Arazzo\Tests\Support\RecordingExecutionRegistry;

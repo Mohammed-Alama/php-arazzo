@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Context\PendingCorrelation;
-use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
@@ -14,8 +12,6 @@ use Alama\Arazzo\Contracts\LockManagerInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Execution\ExecutionStatus;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\RunControlFlow;
@@ -26,6 +22,8 @@ use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
@@ -34,6 +32,8 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener;
 
