@@ -20,26 +20,41 @@ flowchart LR
     Laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
     Laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     Laravel__["(Laravel package root)"]:::laravelNode
+    Normalizer["Alama\Arazzo\Normalizer"]:::coreNode
     Parser["Alama\Arazzo\Parser"]:::coreNode
+    Policy["Alama\Arazzo\Policy"]:::coreNode
+    Protocol["Alama\Arazzo\Protocol"]:::coreNode
     Renderer["Alama\Arazzo\Renderer"]:::coreNode
     Resolver["Alama\Arazzo\Resolver"]:::coreNode
     Runner["Alama\Arazzo\Runner"]:::coreNode
     Spec["Alama\Arazzo\Spec"]:::coreNode
+    State["Alama\Arazzo\State"]:::coreNode
     Support["Alama\Arazzo\Support"]:::coreNode
+    Telemetry["Alama\Arazzo\Telemetry"]:::coreNode
     Validator["Alama\Arazzo\Validator"]:::coreNode
     Console --> Parser
     Console --> Spec
     Console --> Validator
     Console --> Runner
     Console --> Renderer
+    Console --> Normalizer
     Console --> Resolver
     Contracts --> Runner
     Contracts --> Spec
+    Contracts --> Normalizer
     Expression --> Spec
     Expression --> Support
     Generator --> Contracts
+    Normalizer --> Contracts
+    Normalizer --> Support
     Parser --> Spec
     Parser --> Support
+    Policy --> Contracts
+    Policy --> Runner
+    Policy --> Spec
+    Protocol --> Contracts
+    Protocol --> Runner
+    Protocol --> Spec
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
@@ -47,13 +62,21 @@ flowchart LR
     Runner --> Spec
     Runner --> Support
     Runner --> Validator
+    Runner --> Telemetry
     Runner --> Resolver
+    Runner --> Policy
+    Runner --> State
     Runner --> Expression
+    Runner --> Normalizer
     Spec --> Expression
+    State --> Contracts
+    State --> Spec
+    State --> Runner
     Support --> Contracts
     Support --> Runner
     Validator --> Expression
     Validator --> Spec
+    Validator --> Normalizer
     Validator --> Resolver
     Validator --> Runner
     Validator --> Support
@@ -68,6 +91,7 @@ flowchart LR
     Laravel_Bindings --> Laravel_Queue
     Laravel_Bindings --> Laravel_State
     Laravel_Bindings --> Parser
+    Laravel_Bindings --> Normalizer
     Laravel_Bindings --> Resolver
     Laravel_Bindings --> Generator
     Laravel_Http --> Contracts

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\ArazzoDocument;

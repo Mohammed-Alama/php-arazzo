@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Normalizer;
+namespace Alama\Arazzo\Normalizer;
 
 /**
  * OpenAPI 3.1 normalizer.

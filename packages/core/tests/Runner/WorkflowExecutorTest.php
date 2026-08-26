@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
+use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
@@ -15,9 +18,6 @@ use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;

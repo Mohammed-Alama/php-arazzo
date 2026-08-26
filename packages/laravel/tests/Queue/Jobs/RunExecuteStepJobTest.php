@@ -57,7 +57,7 @@ use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\ArazzoDocument;

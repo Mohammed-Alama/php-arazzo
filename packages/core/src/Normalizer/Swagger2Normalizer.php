@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Normalizer;
+namespace Alama\Arazzo\Normalizer;
 
 use Alama\Arazzo\Contracts\OpenApiNormalizerInterface;
 use Alama\Arazzo\Support\Exceptions\NotImplementedException;

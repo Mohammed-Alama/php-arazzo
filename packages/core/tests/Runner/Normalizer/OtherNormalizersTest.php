@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Normalizer;
 
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\Swagger2Normalizer;
+use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\Swagger2Normalizer;
 use Alama\Arazzo\Support\Exceptions\NotImplementedException;
 
 it('swagger 2 normalizer throws', function (): void {

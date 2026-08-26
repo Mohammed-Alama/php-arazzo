@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Normalizer;
 
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use InvalidArgumentException;
 
 beforeEach(function (): void {

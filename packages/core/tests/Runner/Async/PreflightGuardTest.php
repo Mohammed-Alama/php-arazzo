@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
@@ -11,9 +14,6 @@ use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Runner\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;

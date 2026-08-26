@@ -14,10 +14,11 @@ the heavier direction is drawn and the folded side is listed below the chart.
 ```mermaid
 sankey-beta
 
+Console,Normalizer,3
 Console,Parser,8
 Console,Renderer,1
 Console,Resolver,4
-Console,Runner,15
+Console,Runner,12
 Console,Spec,1
 Console,Validator,2
 Contracts,Spec,18
@@ -32,9 +33,10 @@ Laravel-Bindings,Laravel-Persistence,4
 Laravel-Bindings,Laravel-Queue,1
 Laravel-Bindings,Laravel-State,1
 Laravel-Bindings,Laravel-Support,3
+Laravel-Bindings,Normalizer,3
 Laravel-Bindings,Parser,1
 Laravel-Bindings,Resolver,6
-Laravel-Bindings,Runner,30
+Laravel-Bindings,Runner,27
 Laravel-Bindings,Support,2
 Laravel-Bindings,Validator,2
 Laravel-Http,Contracts,3
@@ -52,19 +54,33 @@ Laravel-Queue,Runner,6
 Laravel-State,Contracts,1
 laravel-root,Laravel-Bindings,6
 laravel-root,Laravel-Http,2
+Normalizer,Contracts,2
+Normalizer,Support,1
 Parser,Spec,30
 Parser,Support,2
+Policy,Contracts,2
+Policy,Runner,1
+Policy,Spec,2
+Protocol,Contracts,4
+Protocol,Runner,6
+Protocol,Spec,6
 Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
-Runner,Contracts,85
+Runner,Contracts,75
 Runner,Expression,15
+Runner,Normalizer,4
 Runner,Resolver,1
-Runner,Spec,125
-Runner,Support,13
+Runner,Spec,116
+Runner,State,2
+Runner,Support,12
+Runner,Telemetry,2
 Runner,Validator,9
+State,Contracts,2
+State,Spec,1
 Support,Contracts,1
 Validator,Expression,78
+Validator,Normalizer,1
 Validator,Resolver,1
 Validator,Spec,88
 Validator,Support,3
@@ -76,7 +92,10 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
-| `Contracts` | `Runner` | 13 |
+| `Contracts` | `Normalizer` | 1 |
+| `Contracts` | `Runner` | 12 |
+| `Runner` | `Policy` | 1 |
 | `Spec` | `Expression` | 3 |
+| `State` | `Runner` | 2 |
 | `Support` | `Runner` | 9 |
-| `Validator` | `Runner` | 4 |
+| `Validator` | `Runner` | 3 |

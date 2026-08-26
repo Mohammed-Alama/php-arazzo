@@ -25,10 +25,10 @@ Where mutable state lives, and which of it crosses process boundaries:
 |---|---|---|---|
 | `WorkflowContext` | core | `Runner/Context` | `toArray`, `hydrate` |
 | `CliRunResult` | core | `Runner/Cli` | `hydrate` |
-| `ErrorEntry` | core | `Runner/State` | `toArray` |
-| `StepResult` | core | `Runner/State` | `toArray` |
-| `ExecutionContext` | core | `Runner/State` | `toArray`, `hydrate` |
 | `ImplicitDependencies` | core | `Runner/Evaluation` | `hydrate` |
+| `ErrorEntry` | core | `State` | `toArray` |
+| `StepResult` | core | `State` | `toArray` |
+| `ExecutionContext` | core | `State` | `toArray`, `hydrate` |
 
 ## Cross-process aggregates
 

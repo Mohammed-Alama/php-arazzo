@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
-use Alama\Arazzo\Runner\State\ExecutionContext;
+use Alama\Arazzo\State\ExecutionContext;
 
 final readonly class Transition
 {

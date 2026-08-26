@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\State;
+namespace Alama\Arazzo\State;
 
 final class ErrorEntry
 {

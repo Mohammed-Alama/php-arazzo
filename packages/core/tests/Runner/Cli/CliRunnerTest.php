@@ -7,12 +7,12 @@ use Alama\Arazzo\Runner\Cli\CliRunner;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
-use Alama\Arazzo\Runner\State\FileStateStore;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\FileStateStore;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 class CliFakeExecutor implements StepProtocolExecutorInterface

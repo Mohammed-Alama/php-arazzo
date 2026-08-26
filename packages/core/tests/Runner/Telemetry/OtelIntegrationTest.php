@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Telemetry\OtelSetup;
-use Alama\Arazzo\Runner\Telemetry\TraceContextPropagator;
+use Alama\Arazzo\Telemetry\OtelSetup;
+use Alama\Arazzo\Telemetry\TraceContextPropagator;
 use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\SDK\Trace\SpanExporter\InMemoryExporter;
 

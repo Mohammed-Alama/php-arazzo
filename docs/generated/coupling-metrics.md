@@ -11,11 +11,11 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Console` | 7 | 474 | 0 | 6 | 1.00 |  |
-| `Contracts` | 21 | 351 | 9 | 2 | 0.18 |  |
+| `Console` | 7 | 474 | 0 | 7 | 1.00 |  |
+| `Contracts` | 21 | 351 | 13 | 3 | 0.19 |  |
 | `Expression` | 23 | 857 | 3 | 2 | 0.40 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
-| `Laravel:Bindings` | 6 | 445 | 1 | 13 | 0.93 |  |
+| `Laravel:Bindings` | 6 | 445 | 1 | 14 | 0.93 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
 | `Laravel:Http` | 3 | 158 | 2 | 5 | 0.71 |  |
 | `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
@@ -24,29 +24,34 @@ targets. Regenerated before every commit.
 | `Laravel:State` | 1 | 37 | 1 | 1 | 0.50 |  |
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
+| `Normalizer` | 5 | 308 | 5 | 2 | 0.29 |  |
 | `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
+| `Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
+| `Protocol` | 2 | 197 | 0 | 3 | 1.00 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 11 | 337 | 5 | 2 | 0.29 |  |
-| `Runner` | 121 | 9627 | 8 | 6 | 0.43 |  |
-| `Spec` | 33 | 688 | 10 | 1 | 0.09 |  |
-| `Support` | 6 | 257 | 5 | 2 | 0.29 |  |
-| `Validator` | 63 | 3031 | 3 | 5 | 0.63 |  |
+| `Runner` | 104 | 7936 | 11 | 10 | 0.48 |  |
+| `Spec` | 33 | 688 | 13 | 1 | 0.07 |  |
+| `State` | 6 | 816 | 1 | 3 | 0.75 |  |
+| `Support` | 6 | 257 | 6 | 2 | 0.25 |  |
+| `Telemetry` | 2 | 276 | 1 | 0 | 0.00 |  |
+| `Validator` | 63 | 3031 | 3 | 6 | 0.67 |  |
 
-Total cross-module edges: **666**
+Total cross-module edges: **684**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Runner` → `Spec` | 125 |
+| `Runner` → `Spec` | 116 |
 | `Validator` → `Spec` | 88 |
-| `Runner` → `Contracts` | 85 |
 | `Validator` → `Expression` | 78 |
-| `Laravel:Bindings` → `Runner` | 30 |
+| `Runner` → `Contracts` | 75 |
 | `Parser` → `Spec` | 30 |
+| `Laravel:Bindings` → `Runner` | 27 |
 | `Laravel:Bindings` → `Contracts` | 21 |
 | `Contracts` → `Spec` | 18 |
-| `Console` → `Runner` | 15 |
 | `Runner` → `Expression` | 15 |
-| `Contracts` → `Runner` | 13 |
-| `Runner` → `Support` | 13 |
+| `Console` → `Runner` | 12 |
+| `Contracts` → `Runner` | 12 |
+| `Runner` → `Support` | 12 |

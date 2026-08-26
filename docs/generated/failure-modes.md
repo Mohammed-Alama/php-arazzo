@@ -21,11 +21,11 @@ Regenerated before every commit.
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>Persistence</small> |
 | **ExpressionSyntaxException** | `Lexer` <small>Expression</small>, `Parser` <small>Expression</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>Runner/Execution</small> |
-| **InvalidArgumentException** | `DatabaseDefinitionRegistry` <small>Persistence</small>, `TypeCaster` <small>Runner/Evaluation</small>, `OpenApi30Normalizer` <small>Runner/Normalizer</small>, `OpenApiVersionDetector` <small>Runner/Normalizer</small>, `SpecVersion` <small>Spec/Enum</small> |
+| **InvalidArgumentException** | `DatabaseDefinitionRegistry` <small>Persistence</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `TypeCaster` <small>Runner/Evaluation</small>, `SpecVersion` <small>Spec/Enum</small> |
 | **LogicException** | `AsyncApiStepExecutor` <small>Runner/Execution</small>, `StepExecutionWorker` <small>Runner/Execution</small>, `WorkflowExecutor` <small>Runner/Execution</small> |
-| **NotImplementedException** | `Swagger2Normalizer` <small>Runner/Normalizer</small> |
+| **NotImplementedException** | `Swagger2Normalizer` <small>Normalizer</small> |
 | **PreflightFailureException** | `PreflightGuard` <small>Runner/Async</small>, `StepExecutionWorker` <small>Runner/Execution</small>, `WorkflowExecutor` <small>Runner/Execution</small> |
-| **RuntimeException** | `OpenAiClient` <small>Generator/Clients</small>, `CliRunner` <small>Runner/Cli</small>, `FileLockStrategy` <small>Runner/Contract</small>, `ReusableParameterResolver` <small>Runner/Execution</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small>, `FileStateStore` <small>Runner/State</small>, `OtelSetup` <small>Runner/Telemetry</small> |
+| **RuntimeException** | `OpenAiClient` <small>Generator/Clients</small>, `CliRunner` <small>Runner/Cli</small>, `FileLockStrategy` <small>Runner/Contract</small>, `ReusableParameterResolver` <small>Runner/Execution</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small>, `OtelSetup` <small>Telemetry</small> |
 | **SchemaValidationException** | `ArazzoSchemaValidator` <small>Runner/Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>Runner/Evaluation</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |

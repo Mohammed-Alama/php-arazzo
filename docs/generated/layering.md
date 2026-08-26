@@ -52,14 +52,21 @@ flowchart TB
     subgraph L11["layer 11"]
         M_Console["Console"]:::node
         M_Contracts["Contracts"]:::node
+        M_Normalizer["Normalizer"]:::node
+        M_Policy["Policy"]:::node
+        M_Protocol["Protocol"]:::node
         M_Renderer["Renderer"]:::node
+        M_State["State"]:::node
+        M_Telemetry["Telemetry"]:::node
     end
+    M_Console --> M_Normalizer
     M_Console --> M_Parser
     M_Console --> M_Renderer
     M_Console --> M_Resolver
     M_Console --> M_Runner
     M_Console --> M_Spec
     M_Console --> M_Validator
+    M_Contracts --> M_Normalizer
     M_Contracts --> M_Runner
     M_Contracts --> M_Spec
     M_Expression -.->|violation| M_Spec
@@ -73,6 +80,7 @@ flowchart TB
     M_Laravel_Bindings --> M_Laravel_Queue
     M_Laravel_Bindings --> M_Laravel_State
     M_Laravel_Bindings --> M_Laravel_Support
+    M_Laravel_Bindings -.->|violation| M_Normalizer
     M_Laravel_Bindings --> M_Parser
     M_Laravel_Bindings --> M_Resolver
     M_Laravel_Bindings --> M_Runner
@@ -93,21 +101,37 @@ flowchart TB
     M_Laravel_State -.->|violation| M_Contracts
     M_Laravel__ --> M_Laravel_Bindings
     M_Laravel__ --> M_Laravel_Http
+    M_Normalizer --> M_Contracts
+    M_Normalizer --> M_Support
     M_Parser --> M_Spec
     M_Parser --> M_Support
+    M_Policy --> M_Contracts
+    M_Policy --> M_Runner
+    M_Policy --> M_Spec
+    M_Protocol --> M_Contracts
+    M_Protocol --> M_Runner
+    M_Protocol --> M_Spec
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
     M_Runner -.->|violation| M_Contracts
     M_Runner --> M_Expression
+    M_Runner -.->|violation| M_Normalizer
+    M_Runner -.->|violation| M_Policy
     M_Runner --> M_Resolver
     M_Runner --> M_Spec
+    M_Runner -.->|violation| M_State
     M_Runner --> M_Support
+    M_Runner -.->|violation| M_Telemetry
     M_Runner --> M_Validator
     M_Spec --> M_Expression
+    M_State --> M_Contracts
+    M_State --> M_Runner
+    M_State --> M_Spec
     M_Support -.->|violation| M_Contracts
     M_Support -.->|violation| M_Runner
     M_Validator --> M_Expression
+    M_Validator -.->|violation| M_Normalizer
     M_Validator --> M_Resolver
     M_Validator -.->|violation| M_Runner
     M_Validator --> M_Spec
@@ -117,20 +141,26 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**13 violation(s) found:**
+**19 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Runner` | `Contracts` | 85 |
+| `Runner` | `Contracts` | 75 |
 | `Laravel:Bindings` | `Contracts` | 21 |
 | `Support` | `Runner` | 9 |
 | `Expression` | `Spec` | 6 |
 | `Laravel:Persistence` | `Contracts` | 4 |
-| `Validator` | `Runner` | 4 |
+| `Runner` | `Normalizer` | 4 |
+| `Laravel:Bindings` | `Normalizer` | 3 |
 | `Laravel:Http` | `Contracts` | 3 |
+| `Validator` | `Runner` | 3 |
 | `Generator` | `Contracts` | 2 |
+| `Runner` | `State` | 2 |
+| `Runner` | `Telemetry` | 2 |
 | `Expression` | `Support` | 1 |
 | `Laravel:Lock` | `Contracts` | 1 |
 | `Laravel:Queue` | `Contracts` | 1 |
 | `Laravel:State` | `Contracts` | 1 |
+| `Runner` | `Policy` | 1 |
 | `Support` | `Contracts` | 1 |
+| `Validator` | `Normalizer` | 1 |

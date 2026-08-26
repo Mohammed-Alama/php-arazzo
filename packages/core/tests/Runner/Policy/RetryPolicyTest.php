@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Policy\ExponentialBackoffCalculator;
+use Alama\Arazzo\Policy\RetryPolicy;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Policy\ExponentialBackoffCalculator;
-use Alama\Arazzo\Runner\Policy\RetryPolicy;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Step;
 

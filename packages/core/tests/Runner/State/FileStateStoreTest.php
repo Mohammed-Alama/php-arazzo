@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\State\FileStateStore;
-use Alama\Arazzo\Runner\State\InMemoryStateStore;
+use Alama\Arazzo\State\FileStateStore;
+use Alama\Arazzo\State\InMemoryStateStore;
 
 it('persists, loads, and deletes execution state as JSON files', function (): void {
     $store = new FileStateStore(tempStateDir());

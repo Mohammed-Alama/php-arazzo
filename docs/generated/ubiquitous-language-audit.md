@@ -65,6 +65,6 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Runner\Evaluation\Condition\Lexer` | core |
 | `Parser` | `Expression\Parser`<br/>`Parser\Parser`<br/>`Runner\Evaluation\Condition\Parser` | core |
-| `StepResult` | `Runner\State\StepResult`<br/>`Runner\Execution\StepResult` | core |
+| `StepResult` | `Runner\Execution\StepResult`<br/>`State\StepResult` | core |
 | `Token` | `Expression\Token`<br/>`Runner\Evaluation\Condition\Token` | core |
 | `TokenKind` | `Expression\TokenKind`<br/>`Runner\Evaluation\Condition\TokenKind` | core |

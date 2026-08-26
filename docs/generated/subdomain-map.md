@@ -16,7 +16,7 @@ the declaration honest.
 flowchart LR
     subgraph S_core["Core domain"]
         S_Expression["Expression<br/><small>880 LOC</small>"]:::coreDomain
-        S_Runner["Runner<br/><small>9748 LOC</small>"]:::coreDomain
+        S_Runner["Runner<br/><small>8040 LOC</small>"]:::coreDomain
         S_Spec["Spec<br/><small>721 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
@@ -34,11 +34,15 @@ flowchart LR
         S_Lock["Lock<br/><small>49 LOC</small>"]:::genericDomain
         S_Persistence["Persistence<br/><small>252 LOC</small>"]:::genericDomain
         S_Queue["Queue<br/><small>100 LOC</small>"]:::genericDomain
-        S_State["State<br/><small>38 LOC</small>"]:::genericDomain
+        S_State["State<br/><small>860 LOC</small>"]:::genericDomain
         S_Support["Support<br/><small>323 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified[""]
         S_Contracts["Contracts<br/><small>372 LOC</small>"]:::unknownDomain
+        S_Normalizer["Normalizer<br/><small>313 LOC</small>"]:::unknownDomain
+        S_Policy["Policy<br/><small>96 LOC</small>"]:::unknownDomain
+        S_Protocol["Protocol<br/><small>199 LOC</small>"]:::unknownDomain
+        S_Telemetry["Telemetry<br/><small>278 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -48,10 +52,14 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 3 | 11,349 | 0 | 61% |
+| Core domain | 3 | 9,641 | 0 | 52% |
 | Supporting | 6 | 5,359 | 0 | 29% |
-| Generic subdomain | 8 | 263 | 1,132 | 8% |
-|  | 1 | 372 | 0 | 2% |
+| Generic subdomain | 8 | 1,085 | 1,132 | 12% |
+|  | 5 | 1,258 | 0 | 7% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Contracts`
+- `Normalizer`
+- `Policy`
+- `Protocol`
+- `Telemetry`

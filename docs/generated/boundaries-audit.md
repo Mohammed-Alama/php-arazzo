@@ -36,10 +36,11 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Resolver` | `Psr` | 4 |
 | core | `Runner` | `Flow` | 1 |
 | core | `Runner` | `GuzzleHttp` | 1 |
-| core | `Runner` | `OpenTelemetry` | 26 |
+| core | `Runner` | `OpenTelemetry` | 3 |
 | core | `Runner` | `Psr` | 25 |
 | core | `Runner` | `cebe` | 16 |
 | core | `Support` | `Psr` | 4 |
+| core | `Telemetry` | `OpenTelemetry` | 23 |
 | core | `Validator` | `JsonSchema` | 7 |
 | laravel | `Bindings` | `GuzzleHttp` | 3 |
 | laravel | `Bindings` | `Illuminate` | 8 |
@@ -57,12 +58,13 @@ edit `POLICY` when a boundary consciously moves.
 | laravel | `_` | `Illuminate` | 2 |
 | laravel | `_` | `Spatie` | 2 |
 
-**8 core boundary violation(s):**
+**9 core boundary violation(s):**
 - `Console` imports `GuzzleHttp\*` (2 refs)
 - `Console` imports `Symfony\*` (30 refs)
 - `Parser` imports `Symfony\*` (2 refs)
 - `Runner` imports `Flow\*` (1 refs)
 - `Runner` imports `GuzzleHttp\*` (1 refs)
-- `Runner` imports `OpenTelemetry\*` (26 refs)
+- `Runner` imports `OpenTelemetry\*` (3 refs)
 - `Runner` imports `cebe\*` (16 refs)
+- `Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `Validator` imports `JsonSchema\*` (7 refs)

@@ -38,10 +38,26 @@ flowchart LR
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
     C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
     C_core_Generator_OpenAiClient -.->|implements| I_AiClientInterface
+    C_core_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>Normalizer</small>"]:::implCore
+    C_core_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_core_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Normalizer</small>"]:::implCore
+    C_core_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_core_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>Parser</small>"]:::implCore
     C_core_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
     C_core_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>Parser</small>"]:::implCore
     C_core_Parser_SymfonyYamlDecoder -.->|implements| I_YamlDecoder
+    C_core_Policy_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>Policy</small>"]:::implCore
+    C_core_Policy_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
+    C_core_Protocol_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Runner_HttpStepExecutor["HttpStepExecutor<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Runner_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Runner_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>Runner</small>"]:::implCore
+    C_core_Runner_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Protocol_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
     C_core_Resolver_LocalFetcher["LocalFetcher<br/><small>Resolver</small>"]:::implCore
     C_core_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
     C_core_Resolver_CachedFetcher["CachedFetcher<br/><small>Resolver</small>"]:::implCore
@@ -58,16 +74,6 @@ flowchart LR
     C_core_Runner_NullLockStrategy -.->|implements| I_LockStrategyInterface
     C_core_Runner_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Runner</small>"]:::implCore
     C_core_Runner_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Runner_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Runner_HttpStepExecutor["HttpStepExecutor<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Runner_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Runner_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Runner_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
     C_core_Runner_CliRunner["CliRunner<br/><small>Runner</small>"]:::implCore
     C_core_Runner_CliRunner -.->|implements| I_LockManagerInterface
     C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
@@ -80,12 +86,6 @@ flowchart LR
     C_core_Runner_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
     C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_core_Runner_FileStateStore["FileStateStore<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_FileStateStore -.->|implements| I_StateStoreInterface
-    C_core_Runner_InMemoryStateStore["InMemoryStateStore<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_InMemoryStateStore -.->|implements| I_StateStoreInterface
-    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
-    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
     C_core_Runner_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Runner</small>"]:::implCore
     C_core_Runner_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
     C_core_Runner_ArazzoSchemaValidator["ArazzoSchemaValidator<br/><small>Runner</small>"]:::implCore
@@ -116,12 +116,12 @@ flowchart LR
     C_core_Runner_RuntimeExpr -.->|implements| I_ConditionNode
     C_core_Runner_ArazzoCriteriaEvaluator["ArazzoCriteriaEvaluator<br/><small>Runner</small>"]:::implCore
     C_core_Runner_ArazzoCriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
-    C_core_Runner_Swagger2Normalizer["Swagger2Normalizer<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_core_Runner_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_core_Runner_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
+    C_core_State_FileStateStore["FileStateStore<br/><small>State</small>"]:::implCore
+    C_core_State_FileStateStore -.->|implements| I_StateStoreInterface
+    C_core_State_InMemoryStateStore["InMemoryStateStore<br/><small>State</small>"]:::implCore
+    C_core_State_InMemoryStateStore -.->|implements| I_StateStoreInterface
+    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
+    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
     C_core_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>Validator</small>"]:::implCore
     C_core_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_core_Validator_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolvesRule<br/><small>Validator</small>"]:::implCore

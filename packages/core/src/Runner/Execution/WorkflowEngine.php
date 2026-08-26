@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Policy\RetryPolicy;
 use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Exceptions\WorkflowCycleException;
 use Alama\Arazzo\Runner\Exceptions\WorkflowDepthExceededException;
-use Alama\Arazzo\Runner\Policy\RetryPolicy;
-use Alama\Arazzo\Runner\State\ExecutionContext;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\FailureGotoAction;
@@ -28,6 +27,7 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\ExecutionContext;
 
 /** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events. */
 final class WorkflowEngine

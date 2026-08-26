@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Policy;
+namespace Alama\Arazzo\Policy;
 
 use Alama\Arazzo\Contracts\BackoffCalculatorInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;

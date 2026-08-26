@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator;
 
+use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Runner\Evaluation\Xpath\XpathEvaluator;
-use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Reusable;
