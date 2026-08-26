@@ -17,11 +17,11 @@ script turns its row red.
 | Core stays framework-free | packages/core never imports Illuminate | `packages/core/tests/ArchTest.php` | every test run | `boundaries-audit.md` | **enforced** |
 | Spec DTOs strict | Spec value objects are readonly + typed | `packages/core/tests/ArchTest.php` | every test run | `aggregate-map.md` | **enforced** |
 | Gate scorecard fresh | Pint/PHPStan/Pest measured and recorded | `scripts/quality-gates.php` | manual / CI | `quality-gates.md` | **enforced** |
-| Failure budget trend | Errors and failures move down over time | `storage/quality-history.jsonl` | per measurement | `gate-trend.md` | ⚠ **artifact missing** |
+| Failure budget trend | Errors and failures move down over time | `storage/quality-history.jsonl` | per measurement | `gate-trend.md` | **enforced** |
 | Mutation score tracked | Behavioural coverage, not just line coverage | `scripts/quality-gates.php` | manual (--with-mutations) | `gate-trend.md` | **enforced** |
 | Spec conformance | Official OAI corpus passes through the real stack | `scripts/generate-conformance-matrix.php` | out-of-band | `../CONFORMANCE.md` | **enforced** |
 
-**9 / 10 enforced.**
+**10 / 10 enforced.**
 
 ## Known gaps
 

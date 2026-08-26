@@ -13,10 +13,12 @@ Live measurements of the gates enforced by `.githooks/pre-commit` and
 Only metrics are rendered (never durations or timestamps) so this file stays
 byte-deterministic per measurement.
 
-## No measurements recorded
+| Gate | Status | Metrics | Command |
+|---|---|---|---|
+| Code Style (Pint) | **PASS** | files-reported: **0** | `vendor/bin/pint --test` |
+| Static Analysis · core | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
+| Static Analysis · laravel | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
+| Tests · core | **PASS** | skipped: **3** · passed: **776** · assertions: **2169** | `vendor/bin/pest --no-coverage` |
+| Tests · laravel | **PASS** | passed: **100** · assertions: **194** | `vendor/bin/pest --no-coverage` |
 
-`storage/quality-gates.json` does not exist yet. Run:
-
-    make quality-gates
-
-and commit the resulting snapshot to populate this scorecard.
+**5/5 gates passing.**

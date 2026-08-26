@@ -137,3 +137,25 @@ insights: ## Query code-quality insights (ARGS="command ..."; no ARGS = show opt
 	else \
 		$(INSIGHTS) $(ARGS); \
 	fi
+
+# Apptree - Docker-based isolated environments
+APPTREE_SCRIPT = scripts/apptree
+
+apptree-create: ## Create apptree for branch (ARGS="branch-name")
+	@if [ -z "$(ARGS)" ]; then echo "Usage: make apptree-create ARGS=branch-name"; exit 1; fi
+	$(APPTREE_SCRIPT) create $(ARGS)
+
+apptree-shell: ## Open shell in apptree (ARGS="branch-name")
+	@if [ -z "$(ARGS)" ]; then echo "Usage: make apptree-shell ARGS=branch-name"; exit 1; fi
+	$(APPTREE_SCRIPT) shell $(ARGS)
+
+apptree-test: ## Run tests in apptree (ARGS="branch-name")
+	@if [ -z "$(ARGS)" ]; then echo "Usage: make apptree-test ARGS=branch-name"; exit 1; fi
+	$(APPTREE_SCRIPT) test $(ARGS)
+
+apptree-down: ## Stop apptree (ARGS="branch-name")
+	@if [ -z "$(ARGS)" ]; then echo "Usage: make apptree-down ARGS=branch-name"; exit 1; fi
+	$(APPTREE_SCRIPT) down $(ARGS)
+
+apptree-list: ## List all apptree instances
+	$(APPTREE_SCRIPT) list
