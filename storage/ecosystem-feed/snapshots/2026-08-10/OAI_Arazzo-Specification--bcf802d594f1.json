@@ -1,0 +1,25 @@
+{
+    "id": "bcf802d594f1b8fd9003e88ce114a4a3cbdd0310db86f48ee3e35e4618b2a382",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #540 from OAI/dependabot/npm_and_yarn/hyperjump/json-schema-1.17.8",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/6f391e33b892c82f7cbb7b98dd01dd5fcaa3481b",
+    "publishedAt": "2026-08-10T13:00:50Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:6f391e3",
+        "title": "Merge pull request #540 from OAI/dependabot/npm_and_yarn/hyperjump/json-schema-1.17.8",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/6f391e33b892c82f7cbb7b98dd01dd5fcaa3481b",
+        "publishedAt": "2026-08-10T13:00:50Z",
+        "body": "Merge pull request #540 from OAI/dependabot/npm_and_yarn/hyperjump/json-schema-1.17.8\n\nchore(deps-dev): bump @hyperjump/json-schema from 1.17.7 to 1.17.8",
+        "labels": [],
+        "state": ""
+    }
+}

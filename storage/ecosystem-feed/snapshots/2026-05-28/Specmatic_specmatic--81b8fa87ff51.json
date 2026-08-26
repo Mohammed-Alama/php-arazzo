@@ -1,0 +1,26 @@
+{
+    "id": "81b8fa87ff5140036e8106404f151c2be30aa0929a55e7b407d39f553468a5fe",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.46.2",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.2",
+    "publishedAt": "2026-05-28T15:14:25Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.46.2",
+        "title": "2.46.2",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.2",
+        "publishedAt": "2026-05-28T15:14:25Z",
+        "body": "## What's Changed\r\n* chore(deps): update dependency org.slf4j:slf4j-api to v2.0.18 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2498\r\n* chore(deps): update dependency com.ezylang:evalex to v3.6.1 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2426\r\n* chore(deps): update kotlin monorepo to v2.3.21 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2448\r\n* chore(deps): update dependency org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm to v1.11.0 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2489\r\n* chore(deps): update dependency org.springframework:spring-web to v6.2.18 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2425\r\n* Implement CTRF report generation for backward compatibility by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2495\r\n* Alternative 2: Use a separate fully resolved schema for change tracking of refs by @sahilm in https://github.com/specmatic/specmatic/pull/2507\r\n* Mark an operation as changed in the BCC report if it was edited in the new spec by @sahilm in https://github.com/specmatic/specmatic/pull/2505\r\n* Fix BCC change tracking for external refs by @sahilm in https://github.com/specmatic/specmatic/pull/2509\r\n* build: bump specmatic reporter to 0.3.23 by @jaydeepk in https://github.com/specmatic/specmatic/pull/2512\r\n* Add changed qualifier to BCC CTRF operations by @sahilm in https://github.com/specmatic/specmatic/pull/2510\r\n* Update dependency org.jetbrains.kotlinx:kotlinx-serialization-json-jvm to v1.11.0 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2408\r\n* Remove compatibility object from BCC CTRF report by @sahilm in https://github.com/specmatic/specmatic/pull/2514\r\n* fix(core): register report config provider by @jaydeepk in https://github.com/specmatic/specmatic/pull/2517\r\n* Support WIP in backward compatibility checks and reports by @sahilm in https://github.com/specmatic/specmatic/pull/2516\r\n* Fix BCC CTRF report dropping all but the last checked spec by @sahilm in https://github.com/specmatic/specmatic/pull/2518\r\n* BCC CTRF rawStatus carries compatible/incompatible by @sahilm in https://github.com/specmatic/specmatic/pull/2519\r\n* Fix stash detection when git stash list is empty by @nashjain in https://github.com/specmatic/specmatic/pull/2522\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.46.1...2.46.2",
+        "labels": [],
+        "state": "published"
+    }
+}

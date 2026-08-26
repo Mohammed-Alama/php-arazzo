@@ -1,0 +1,23 @@
+{
+    "id": "ea193c80e12540ade674edae7efdf35426f7fbbca004c081381d337761cc240f",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Fix spelling error for Welcome",
+    "url": "https://github.com/OAI/community/pull/10",
+    "publishedAt": "2024-03-19T08:59:59Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:10",
+        "title": "Fix spelling error for Welcome",
+        "url": "https://github.com/OAI/community/pull/10",
+        "publishedAt": "2024-03-19T08:59:59Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

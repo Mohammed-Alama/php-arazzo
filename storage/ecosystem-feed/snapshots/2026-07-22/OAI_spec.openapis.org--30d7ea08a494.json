@@ -1,0 +1,26 @@
+{
+    "id": "30d7ea08a4941e8a725300e6474bf859fdbf3e14f9c9cfb1649cddf0348eb592",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "docs: add x-sensitive-data extension",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/120",
+    "publishedAt": "2026-07-22T03:57:08Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:120",
+        "title": "docs: add x-sensitive-data extension",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/120",
+        "publishedAt": "2026-07-22T03:57:08Z",
+        "body": "**Summary**\r\n\r\nThis PR aims to add an `x-sensitive-data` extension to mark a schema property as sensitive so its value is masked in displayed examples and API responses.\r\n\r\nThis implements the proposal discussed here - https://github.com/OAI/OpenAPI-Specification/discussions/4330.\r\n\r\nThis is currently used here - https://github.com/Kong/spec-renderer/blob/main/docs/extensions.md#x-sensitive-data.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

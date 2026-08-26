@@ -1,0 +1,25 @@
+{
+    "id": "def960b3926c24992502306fe3f354ed8012b9e1950bdbfc80f99f701ff1666f",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.0-rc1 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc1",
+    "publishedAt": "2017-04-28T02:12:42Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.0-rc1",
+        "title": "OAS 3.0.0-rc1 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc1",
+        "publishedAt": "2017-04-28T02:12:42Z",
+        "body": "# OAS 3.0.0-rc1 Change Log\r\n\r\n## Schema Changes\r\n\r\n- `url` is now **required** under the Server Object.\r\n- Server Variable Object's `enum` and `default` values are now `string` only (were any `primitive`).\r\n- `servers` under the Path Item Object and Operation Object has been fixed to be an array of Server Objects and not a single one.\r\n- The `example` and `examples` fields have been reworked, alongside the Example Object. There is no longer `examples` field under the Schema Object. Where `examples` exist, they are now a map of named examples with additional metadata for each example. The Example Object now has defined fields and is not free-form.\r\n- `content` is now **required** under the Request Body Object.\r\n- `href` under the Link Object has been renamed to `operationRef`, its description is clarified as well.\r\n- The `deprecated` field under the Schema Object now defaults to `false`.\r\n- The `flow` field under the Security Scheme Object has been renamed to `flows`.\r\n- Request Body's `required` now defaults to `false`.\r\n- Added `allowReserved` to the Encoding Property Object.\r\n\r\n\r\n## Descriptive Changes\r\n\r\n- `termsOfService` now MUST be in the form of a URL.\r\n- all `description` fields now support CommonMark.\r\n- Clarified that specific response codes (`200` for example) take precedence over response ranges (`2XX` for example).\r\n- Clarified that for Parameter Object, either `schema` or `content` are required.\r\n- `pattern` under the Schema Object now specifies the regex flavor.\r\n- Added header restrictions. \"Accept\", \"Content-Type\", \"Authorization\" header paramters and \"Content-Type\" response headers will now be ignored.\r\n- Referenced a specific version of supported CommonMark.\r\n- Added clarifications to `null` not being a type (as opposed to a value).\r\n\r\n\r\n## Document Changes\r\n\r\n- ToC has been updated to reflect changes.\r\n- Fixed various anchors in the document.\r\n- Various examples have been fixed.\r\n\r\nCheck it out! https://github.com/OAI/OpenAPI-Specification/blob/3.0.0-rc1/versions/3.0.md",
+        "labels": [],
+        "state": "published"
+    }
+}

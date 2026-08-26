@@ -1,0 +1,24 @@
+{
+    "id": "d946d6041820abde43aa0f199e064167ba343a3db85fcb65dce9c9e1b3f997e0",
+    "source": "OAI/Overlay-Specification",
+    "type": "issue",
+    "title": "Prepare Overlay 1.2 Release Notes",
+    "url": "https://github.com/OAI/Overlay-Specification/issues/371",
+    "publishedAt": "2026-08-11T15:20:27Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "issue",
+        "externalId": "issue:371",
+        "title": "Prepare Overlay 1.2 Release Notes",
+        "url": "https://github.com/OAI/Overlay-Specification/issues/371",
+        "publishedAt": "2026-08-11T15:20:27Z",
+        "body": "We'll need release notes (and probably a blog post) for the Overlay 1.2 release.",
+        "labels": [],
+        "state": "open"
+    }
+}

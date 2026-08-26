@@ -1,0 +1,24 @@
+{
+    "id": "70849d81875005ee65c61ff72fb934c4d8f3db8f0213d0e379335a4e98f3ab4e",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.23",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.23",
+    "publishedAt": "2026-03-11T09:31:24Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.23",
+        "title": "v1.0.0-alpha.23",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.23",
+        "publishedAt": "2026-03-11T09:31:24Z",
+        "body": "# [1.0.0-alpha.23](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.22...v1.0.0-alpha.23) (2026-03-11)\n\n\n### Features\n\n* **parser:** share configuration between parsers ([#126](https://github.com/jentic/jentic-arazzo-tools/issues/126)) ([9e5c00f](https://github.com/jentic/jentic-arazzo-tools/commit/9e5c00fcb72afcf1d383ad2707969ebd63aa0774))\n* **resolver:** reuse configuration from parser ([#130](https://github.com/jentic/jentic-arazzo-tools/issues/130)) ([e135be7](https://github.com/jentic/jentic-arazzo-tools/commit/e135be78133ad3957a31716dabd540333d57c0a4))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

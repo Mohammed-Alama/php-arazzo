@@ -1,0 +1,23 @@
+{
+    "id": "9832823922514f659c48d60ac1e15e18ebe55abbb2d420b6da4365ff2e6fcdaa",
+    "source": "usearazzo/website.ecosystem.atom",
+    "type": "commit",
+    "title": "feat(ecosystem): extend the list of resources",
+    "url": "https://github.com/usearazzo/website/commit/9626bdb657fdeaf5417f1bd8663dd94273714cf2",
+    "publishedAt": "2026-08-23T16:02:14+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website.ecosystem.atom",
+        "type": "commit",
+        "externalId": "atom:a0aeeb0a36b4a79a9223f7abcb3a4956",
+        "title": "feat(ecosystem): extend the list of resources",
+        "url": "https://github.com/usearazzo/website/commit/9626bdb657fdeaf5417f1bd8663dd94273714cf2",
+        "publishedAt": "2026-08-23T16:02:14+00:00",
+        "body": "\n      <pre style='white-space:pre-wrap;width:81ex'>feat(ecosystem): extend the list of resources</pre>\n    ",
+        "labels": []
+    }
+}

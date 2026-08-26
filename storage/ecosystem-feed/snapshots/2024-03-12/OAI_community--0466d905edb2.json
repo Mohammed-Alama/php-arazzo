@@ -1,0 +1,22 @@
+{
+    "id": "0466d905edb271bb7d288cc51536465400da452552431ce26a240a55179fbf17",
+    "source": "OAI/community",
+    "type": "issue",
+    "title": "[Request to Create SIG]: ",
+    "url": "https://github.com/OAI/community/issues/3",
+    "publishedAt": "2024-03-12T09:26:57Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "issue",
+        "externalId": "issue:3",
+        "title": "[Request to Create SIG]: ",
+        "url": "https://github.com/OAI/community/issues/3",
+        "publishedAt": "2024-03-12T09:26:57Z",
+        "body": "### Contact Details\n\n@namdeirf\n\n### Give your SIG a unique name, a one or two word descriptor.\n\nThis is a test of the SIG creation process, this is only a test\n\n### Give an overview of your SIG.\n\nWe want to test the 'if you build it, they will come' mindset.\n\n### Statement of Work\n\nThe goal is to build a baseball field in Iowa.\n\n### SIG Class\n\nIndustry SIG\n\n### History\n\nA new group\n\n### How often do you intend to need to meet\n\nEvery other week\n\n### Teleconference link\n\nNo\n\n### Slack\n\nNo\n\n### discord\n\nNo\n\n### Code of Conduct\n\n- [X] I agree to follow this project's Code of Conduct",
+        "labels": [],
+        "state": "closed"
+    }
+}

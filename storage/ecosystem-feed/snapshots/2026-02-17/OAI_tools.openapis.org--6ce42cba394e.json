@@ -1,0 +1,25 @@
+{
+    "id": "6ce42cba394ee9a1e0134463967f4466b1c6203f189e22b019a3fcd141d73c4b",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "Compras",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/261",
+    "publishedAt": "2026-02-17T10:20:59Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:261",
+        "title": "Compras",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/261",
+        "publishedAt": "2026-02-17T10:20:59Z",
+        "body": "[Edis xapo.pdf](https://github.com/user-attachments/files/25359283/Edis.xapo.pdf)\n\n[CPA Template.xlsx](https://github.com/user-attachments/files/25359291/CPA.Template.xlsx)\n\n> **Please use this template for tools that cannot be tagged on GitHub. If your tool is on GitHub use the `openapi3` and `openapi31` tags to allow your data to be collected automatically.**\n\n## Tool Properties\n\n> **Please replace all placeholders marked in bold in the bullets below with the requested information. Use plain text for your information.**\n\n- Display name: **Enter the display name for the tool in the repository**\n- Description: **Provide a description of your tool. This will provide users with valuable information about your tool and be used to as a means to classify your tool correctly.**\n- Repository: **If you tool is open source but not on GitHub please provide a link to your repository.**\n- Homepage: **Provide a link to your homepage. If you have provided a repository you can leave this blank if you wish.**\n\n## OpenAPI Versions\n\n> **Please indicate the versions of OpenAPI supported by your tool by marking them true or false below.**\n\n- 3.1: false\n- 3.0: false\n- 2.0: false\n",
+        "labels": [],
+        "state": "closed"
+    }
+}

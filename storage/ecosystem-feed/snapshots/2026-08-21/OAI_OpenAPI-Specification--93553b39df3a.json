@@ -1,0 +1,26 @@
+{
+    "id": "93553b39df3a621bc50c7034435f11cc73b840c34c53c0ad25c8ccef7ccdaa40",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "issue",
+    "title": "v3.2.1 release",
+    "url": "https://github.com/OAI/OpenAPI-Specification/issues/5460",
+    "publishedAt": "2026-08-21T11:53:07Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "externalId": "issue:5460",
+        "title": "v3.2.1 release",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5460",
+        "publishedAt": "2026-08-21T11:53:07Z",
+        "body": "This issue requires TSC signoff in order to complete.\n\n- schema changes since last schema release (2025-11-23) consist of various fixes to be better aligned with the specification:\n  - contentType format fix (now allows comma-separated values)\n  - propertyName is required in the discriminator object\n  - ABNF applied for path parameter names, header names, request method names\n  - style, explode, allowReserved existence and defaults now better enforced\n  - adjacent query, querystring parameters are prohibited\n\n- spec changes since 3.2.0 release:\n  - more cross-references to RFCs and other sections of the specification\n  - clarification of how paths are matched when a template variable contains a \"/\"\n  - corrections to the table of Style Examples (used in parameter encoding)\n  - we now explicitly note more in/style/explode combinations that are prohibited, namely:\n    - in: cookie, style: form, explode: false with arrays or objects\n    - style: form, explode: true with arrays or objects in encoding objects (application/x-www-form-urlencoded or multipart/* message bodies)\n  - corrections to descriptions of how `encoding` objects are used, such as the use of `prefixEncoding` and `itemEncoding` with data modelled as an array, and usage of `contentType` together or separately from a `Content-Type` header in a message part\n  - addition of an ABNF for the `encoding/contentType` field\n",
+        "labels": [],
+        "state": "open"
+    }
+}

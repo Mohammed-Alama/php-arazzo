@@ -1,0 +1,24 @@
+{
+    "id": "7726f6def6b601fa6fe01e81b01ba8f2b05c908956679156df07fd3d5cb36d97",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.9.1",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.1",
+    "publishedAt": "2026-04-21T16:01:33Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.9.1",
+        "title": "v4.9.1",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.1",
+        "publishedAt": "2026-04-21T16:01:33Z",
+        "body": "## [4.9.1](https://github.com/speclynx/apidom/compare/v4.9.0...v4.9.1) (2026-04-21)\n\n\n### Bug Fixes\n\n* **ns-overlay-1:** add actions mappings to replaceEmptyElement plugin ([#257](https://github.com/speclynx/apidom/issues/257)) ([3719dc0](https://github.com/speclynx/apidom/commit/3719dc03613c49fc24696dcd7779e0f151a8989f))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

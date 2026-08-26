@@ -1,0 +1,22 @@
+{
+    "id": "28f89caf2b6fd346ea6e2096289f608d759d3f0f04ac9a0c37f37053ea4b5ae9",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "JWT-grant as a new Oauth2 flow",
+    "url": "https://github.com/OAI/sig-security/issues/19",
+    "publishedAt": "2026-08-21T18:05:33Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:19",
+        "title": "JWT-grant as a new Oauth2 flow",
+        "url": "https://github.com/OAI/sig-security/issues/19",
+        "publishedAt": "2026-08-21T18:05:33Z",
+        "body": "RFC7523 extends Oauth2 by using JWTs as grants. \r\n\r\nIt would be nice if this behaviour could be added as a new type of flow under the Oauth2 securityScheme, in addition to existing ones (authorizationCode, implicit, etc.)\r\n\r\nThe full name in the RFC is `urn:ietf:params:oauth:grant-type:jwt-bearer`, but I guess `JWT` will suffice.  Apart from that, the `tokenUrl` and `scopes` would be needed.\r\n",
+        "labels": [],
+        "state": "open"
+    }
+}

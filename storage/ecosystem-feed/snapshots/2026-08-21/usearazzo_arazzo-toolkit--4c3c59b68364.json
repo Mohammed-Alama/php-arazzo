@@ -1,0 +1,27 @@
+{
+    "id": "4c3c59b6836485baa4c527a8d0161fcc34fed32a2ca79959a7972c8eee483e74",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: support cross-document workflowId references",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/64",
+    "publishedAt": "2026-08-21T21:14:47Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:64",
+        "title": "runner: support cross-document workflowId references",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/64",
+        "publishedAt": "2026-08-21T21:14:47Z",
+        "body": "Local (same-document) `workflowId` references are fully supported — sub-workflow steps, `dependsOn`, and (as of the reference-retry work) a `retry` action's `workflowId` reference. A cross-document one, written as `$sourceDescriptions.<name>.<workflowId>`, is rejected in all three places via one shared check (`WorkflowExecutor.#rejectCrossDocumentWorkflow`), throwing `reason: 'cross-document-workflow-unsupported'`.\n\nThe parsing and loading halves already exist:\n- `ArazzoDocumentRegistryProvider` loads Arazzo source documents.\n- `OpenAPIOperationLocatorNormalizer` already parses `$sourceDescriptions.<name>.<reference>` and acquires the named source (this is how a step's own `operationId` already resolves cross-document).\n\n**The blocker is document scoping in the executors — a design change, not a lookup:**\n\n- `WorkflowExecutor` holds one `#document`, used for the workflow-index lookup, extraction/normalization, and as the `$components` / `$sourceDescriptions` base for every expression it evaluates. Running a foreign workflow means all of that has to follow *that* workflow's document instead — the document needs to become part of the per-invocation frame rather than instance state.\n- `StepExecutor` is injected pre-bound to one document (the collaborator seam from #34). A foreign workflow's steps would resolve their `operationId`s against the *entry* document's `sourceDescriptions` — wrong, and silently so. Fixing it means either a per-call document argument on `StepExecutor.execute`, or injecting a `(document) => StepExecutor` factory.\n- Cycle-detection keys must become genuinely fully-qualified (document URI + workflowId) — today `workflowId` alone is unambiguous precisely because a run can't leave its document.\n\nScoped as its own PR — not folded into goto-workflow support or anything else. Full analysis in `packages/runner/WORKFLOW_EXECUTOR_PLAN.md`, §0 \"Not yet implemented / missing\" → \"Cross-document workflow refs\", and item 2 of the \"Next\" queue.",
+        "labels": [
+            "enhancement"
+        ],
+        "state": "closed"
+    }
+}

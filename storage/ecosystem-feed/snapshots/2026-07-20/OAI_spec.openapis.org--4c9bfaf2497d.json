@@ -1,0 +1,24 @@
+{
+    "id": "4c9bfaf2497d59fffb975068a65c3630fb8e48499f4257de73133ab0c2ae795b",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #124 from baywet/feat/examples-extension",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/fc94196e5449b8f1ae2490bc0a5edec95a2bf907",
+    "publishedAt": "2026-07-20T15:02:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:fc94196",
+        "title": "Merge pull request #124 from baywet/feat/examples-extension",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/fc94196e5449b8f1ae2490bc0a5edec95a2bf907",
+        "publishedAt": "2026-07-20T15:02:31Z",
+        "body": "Merge pull request #124 from baywet/feat/examples-extension\n\nfeat: adds examples extension",
+        "labels": [],
+        "state": ""
+    }
+}

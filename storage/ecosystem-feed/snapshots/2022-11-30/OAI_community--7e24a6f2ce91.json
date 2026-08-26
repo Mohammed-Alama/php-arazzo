@@ -1,0 +1,23 @@
+{
+    "id": "7e24a6f2ce91bdfdb2892e492bd74006c777bc56da20bb2d2cd78c89822773ec",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Added How do I join? section",
+    "url": "https://github.com/OAI/community/pull/9",
+    "publishedAt": "2022-11-30T21:30:40Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:9",
+        "title": "Added How do I join? section",
+        "url": "https://github.com/OAI/community/pull/9",
+        "publishedAt": "2022-11-30T21:30:40Z",
+        "body": "",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "id": "09641fd496b7008c99a57379abdf4aa1d8779d9d0aff26f6ec244eaf8d10f7b8",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "Fix: #37. x-jsonld keywords.",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/38",
+    "publishedAt": "2026-08-11T09:50:54Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:38",
+        "title": "Fix: #37. x-jsonld keywords.",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/38",
+        "publishedAt": "2026-08-11T09:50:54Z",
+        "body": "## This PR\r\n\r\n- adds x-jsonld-type and x-jsonld-context Extensions to OAS 3.0\r\n- these extensions are used to attach semantic information to OpenAPI 3.0 Schema Objects.\r\n- fix https://github.com/OAI/spec.openapis.org/issues/37\r\n\r\n## Notes\r\n\r\n- [x] I successfully built the pages on docker.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

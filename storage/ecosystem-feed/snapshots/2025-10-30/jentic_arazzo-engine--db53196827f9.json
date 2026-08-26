@@ -1,0 +1,25 @@
+{
+    "id": "db53196827f94d3eb16f2bcbee0bb8a407231edee17f16e016f492fb2834cd91",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Fix hyphenation in README.md",
+    "url": "https://github.com/jentic/arazzo-engine/pull/132",
+    "publishedAt": "2025-10-30T11:20:20Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:132",
+        "title": "Fix hyphenation in README.md",
+        "url": "https://github.com/jentic/arazzo-engine/pull/132",
+        "publishedAt": "2025-10-30T11:20:20Z",
+        "body": "Corrected hyphenation in 'open source' to 'open-source' for consistency with the other instances of 'open-source' on this page.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

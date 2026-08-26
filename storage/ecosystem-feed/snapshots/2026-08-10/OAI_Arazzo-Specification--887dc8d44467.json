@@ -1,0 +1,30 @@
+{
+    "id": "887dc8d444675b2237b96bd092225dadcc9e39d79de6300e933db6f3078a4053",
+    "source": "OAI/Arazzo-Specification",
+    "type": "pr",
+    "title": "chore(deps-dev): bump @hyperjump/json-schema from 1.17.7 to 1.17.8",
+    "url": "https://github.com/OAI/Arazzo-Specification/pull/540",
+    "publishedAt": "2026-08-10T13:00:58Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "externalId": "pr:540",
+        "title": "chore(deps-dev): bump @hyperjump/json-schema from 1.17.7 to 1.17.8",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/540",
+        "publishedAt": "2026-08-10T13:00:58Z",
+        "body": "Bumps [@hyperjump/json-schema](https://github.com/hyperjump-io/json-schema) from 1.17.7 to 1.17.8.\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/7d7690e1d92cc69fef337542422a0f9b45765212\"><code>7d7690e</code></a> 1.17.8</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/38de371a42be7ad5c5ff3990a9c2115395623c2c\"><code>38de371</code></a> Allow instance objects to have null constructors</li>\n<li>See full diff in <a href=\"https://github.com/hyperjump-io/json-schema/compare/v1.17.7...v1.17.8\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=@hyperjump/json-schema&package-manager=npm_and_yarn&previous-version=1.17.7&new-version=1.17.8)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

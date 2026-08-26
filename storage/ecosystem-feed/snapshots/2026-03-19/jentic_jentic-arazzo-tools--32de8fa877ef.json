@@ -1,0 +1,24 @@
+{
+    "id": "32de8fa877ef6c53676c7f8f2ecd9d00d3f9b3e2ac40f541ea591f78b3fe46b0",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.28",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.28",
+    "publishedAt": "2026-03-19T10:13:16Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.28",
+        "title": "v1.0.0-alpha.28",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.28",
+        "publishedAt": "2026-03-19T10:13:16Z",
+        "body": "# [1.0.0-alpha.28](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.27...v1.0.0-alpha.28) (2026-03-19)\r\n\r\n\r\n### Features\r\n\r\n* **ui:** add Arazzo document file upload and drag & drop support ([#174](https://github.com/jentic/jentic-arazzo-tools/issues/174)) ([2166e3f](https://github.com/jentic/jentic-arazzo-tools/commit/2166e3f42beae19c630b5f1614420ddfd7ced1ee)), closes [#110](https://github.com/jentic/jentic-arazzo-tools/issues/110)\r\n\r\n\r\n\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

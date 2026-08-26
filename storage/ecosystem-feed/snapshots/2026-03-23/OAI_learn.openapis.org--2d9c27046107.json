@@ -1,0 +1,29 @@
+{
+    "id": "2d9c27046107c566cf77fc3b7b43b7a674966b5f1509484b86940b9f6bfdc80d",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "build(deps): bump yaml from 2.8.2 to 2.8.3",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/195",
+    "publishedAt": "2026-03-23T18:09:34Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:195",
+        "title": "build(deps): bump yaml from 2.8.2 to 2.8.3",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/195",
+        "publishedAt": "2026-03-23T18:09:34Z",
+        "body": "Bumps [yaml](https://github.com/eemeli/yaml) from 2.8.2 to 2.8.3.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/eemeli/yaml/releases\">yaml's releases</a>.</em></p>\n<blockquote>\n<h2>v2.8.3</h2>\n<ul>\n<li>Add <code>trailingComma</code> ToString option for multiline flow formatting (<a href=\"https://redirect.github.com/eemeli/yaml/issues/670\">#670</a>)</li>\n<li>Catch stack overflow during node composition (1e84ebb)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/eemeli/yaml/commit/ce14587484822bffb0f7d31aefedcaf2dc0d0387\"><code>ce14587</code></a> 2.8.3</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/1e84ebbea7ec35011a4c61bbb820a529ee4f359b\"><code>1e84ebb</code></a> fix: Catch stack overflow during node composition</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/6b24090280eaaab5040112bba41ccef57f39c2d5\"><code>6b24090</code></a> ci: Include Prettier check in lint action</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/9424dee38c85163fad53ac27533c7c4bdaf7495d\"><code>9424dee</code></a> chore: Refresh lockfile</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/d1aca82bc15a4c261bdc58561d32189a5d3a45ef\"><code>d1aca82</code></a> Add trailingComma ToString option for multiline flow formatting (<a href=\"https://redirect.github.com/eemeli/yaml/issues/670\">#670</a>)</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/43215099f7fcdac422d778c15e70d83c691b0e41\"><code>4321509</code></a> ci: Drop the branch filter from GitHub PR actions</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/47207d0fc7d4f863cd5fbdcff1378637bd93e847\"><code>47207d0</code></a> chore: Update docs-slate</li>\n<li><a href=\"https://github.com/eemeli/yaml/commit/5212faeed5936d1fa291d2f28672e4a96e2c2c5d\"><code>5212fae</code></a> chore: Update docs-slate</li>\n<li>See full diff in <a href=\"https://github.com/eemeli/yaml/compare/v2.8.2...v2.8.3\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=yaml&package-manager=npm_and_yarn&previous-version=2.8.2&new-version=2.8.3)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "open",
+        "merged": false
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "id": "2865bfe146cbe168facf8b677a464b708998f8fdb5840166f8d860740b0b8803",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix: address ac-46638 review findings on the XPath 1.0 boundary",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/596ef9e7b3e1dfc52b76a69afd0cc509eb48a7e4",
+    "publishedAt": "2026-08-24T17:57:56Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:596ef9e",
+        "title": "fix: address ac-46638 review findings on the XPath 1.0 boundary",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/596ef9e7b3e1dfc52b76a69afd0cc509eb48a7e4",
+        "publishedAt": "2026-08-24T17:57:56Z",
+        "body": "fix: address ac-46638 review findings on the XPath 1.0 boundary\n\nReview remediation for the version-routing candidate, all six findings:\n\nREADME no longer recommends the bare \"type: xpath\" form its own routing\nrejects - the three migration pointers name the versioned Selector\nObject form, the Selector Objects section states the explicit xpath-10\nrequirement with per-caller rejection behavior and the\nvalidate-accepts/run-rejects cliff, and the prefix paragraph notes the\ntextual fallback for prefixes not declared on the document element.\n\nThe backend borrows the caller's bytes again: uppsala::parse over the\nchecked UTF-8 text instead of parse_bytes, removing an unforced ~1.6x\ndeep-clone cost that every criterion, selector, output, and watch paid.\n\nThe prefix test gains the discriminating case for URI resolution: a\ndescendant re-binding of the same prefix text to a different URI\nmatches only the root-scoped element, count 1.\n\nThe conformance claim runtime.xpath-version-dispatch re-owns its\nresidual (no XPath 3.1 engine) to ac-d45cd behind the ac-4c05c backend\ndecision, since dispatch itself is delivered here. The bench's direct\nuppsala usage is recorded as a deliberate raw-library baseline seam.\nfinite_number_value has one decision point for non-finite input, and\nthe extract_xpath comment states the inf/NaN null degrade is new.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

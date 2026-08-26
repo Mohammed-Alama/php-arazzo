@@ -1,0 +1,23 @@
+{
+    "id": "1e3c2af74637a36492f36297a44c60a5789b926750d24535b0c230291bc90ae1",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "added work in progress wording",
+    "url": "https://github.com/OAI/Outreach/pull/29",
+    "publishedAt": "2023-01-25T18:29:11Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:29",
+        "title": "added work in progress wording",
+        "url": "https://github.com/OAI/Outreach/pull/29",
+        "publishedAt": "2023-01-25T18:29:11Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

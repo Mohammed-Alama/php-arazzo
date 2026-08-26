@@ -1,0 +1,24 @@
+{
+    "id": "2fbb5db74729af0f3163f24f17f718e459abc11d5732d3b508dc25faa2245660",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "Add `info.lifecycle` with maturity/lifecycle informations.",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/7",
+    "publishedAt": "2026-08-19T19:24:01Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:7",
+        "title": "Add `info.lifecycle` with maturity/lifecycle informations.",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/7",
+        "publishedAt": "2026-08-19T19:24:01Z",
+        "body": "## The proposal\r\n\r\nA `LifeCycle` object to describe the API lifecycle, eg:\r\n\r\n```\r\ninfo:\r\n  lifecycle:\r\n    maturity: published   # or deprecated,  retired, ...\r\n    published_at: 2019-01-01\r\n    deprecated_at: 2022-01-01\r\n    retired_at: 2022-06-01\r\n```\r\n\r\nData related to other version may be specified eg. via link relations\r\n\r\n```\r\n    links:\r\n    - rel: prev\r\n      url: https://prev-oas-spec\r\n    - rel: next\r\n      url: https://next-oas-spec\r\n\r\n```\r\n\r\n## Benefits\r\n\r\nAutomatic discovery of API status.\r\n\r\n## Considerations\r\n\r\n- http://apisjson.org/ seems not maintained anymore\r\n- we already have `deprecation` informations in operations\r\n- lifecycle could contain further informations related to eg. versioning (link to previous spec versions)\r\n\r\n\r\n## Related to\r\n\r\nOAI/sig-lifecycle#8 ",
+        "labels": [],
+        "state": "open"
+    }
+}

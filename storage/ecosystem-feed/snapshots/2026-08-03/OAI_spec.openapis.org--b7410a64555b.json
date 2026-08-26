@@ -1,0 +1,24 @@
+{
+    "id": "b7410a64555b2011317c87f3f0dc0d466ec1b86a2ad29debd1827e67bf9683cc",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "build(deps-dev): bump jekyll-remote-theme from 0.5.1 to 0.5.2",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/eb0f461efa462f77c4e0cf5844238977d449f6ee",
+    "publishedAt": "2026-08-03T08:34:05Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:eb0f461",
+        "title": "build(deps-dev): bump jekyll-remote-theme from 0.5.1 to 0.5.2",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/eb0f461efa462f77c4e0cf5844238977d449f6ee",
+        "publishedAt": "2026-08-03T08:34:05Z",
+        "body": "build(deps-dev): bump jekyll-remote-theme from 0.5.1 to 0.5.2\n\nBumps [jekyll-remote-theme](https://github.com/benbalter/jekyll-remote-theme) from 0.5.1 to 0.5.2.\n- [Release notes](https://github.com/benbalter/jekyll-remote-theme/releases)\n- [Changelog](https://github.com/benbalter/jekyll-remote-theme/blob/master/HISTORY.md)\n- [Commits](https://github.com/benbalter/jekyll-remote-theme/compare/v0.5.1...v0.5.2)\n\n---\nupdated-dependencies:\n- dependency-name: jekyll-remote-theme\n  dependency-version: 0.5.2\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

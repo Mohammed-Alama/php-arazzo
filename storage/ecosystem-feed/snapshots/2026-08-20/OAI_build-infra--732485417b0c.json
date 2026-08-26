@@ -1,0 +1,28 @@
+{
+    "id": "732485417b0cef277c9746961d82325a41a30fd99af0112e43c88677688448e6",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Bump the hyperjump group across 1 directory with 2 updates",
+    "url": "https://github.com/OAI/build-infra/pull/18",
+    "publishedAt": "2026-08-20T16:23:00Z",
+    "tags": [
+        "schema"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:18",
+        "title": "Bump the hyperjump group across 1 directory with 2 updates",
+        "url": "https://github.com/OAI/build-infra/pull/18",
+        "publishedAt": "2026-08-20T16:23:00Z",
+        "body": "Bumps the hyperjump group with 2 updates in the / directory: [@hyperjump/browser](https://github.com/hyperjump-io/browser) and [@hyperjump/json-schema](https://github.com/hyperjump-io/json-schema).\n\nUpdates `@hyperjump/browser` from 1.4.0 to 1.5.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/hyperjump-io/browser/commit/fed99c8c61d4b70f9bc9dada7207e47843fb432d\"><code>fed99c8</code></a> 1.5.0</li>\n<li><a href=\"https://github.com/hyperjump-io/browser/commit/1c350d5eb8ba8a58045660479729cab8b86ce094\"><code>1c350d5</code></a> Expose getFileMediaType</li>\n<li><a href=\"https://github.com/hyperjump-io/browser/commit/ad513788b563a9240918e63bcc50749d1d4f3caf\"><code>ad51378</code></a> Fix test in windows</li>\n<li>See full diff in <a href=\"https://github.com/hyperjump-io/browser/compare/v1.4.0...v1.5.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `@hyperjump/json-schema` from 1.17.7 to 1.17.8\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/7d7690e1d92cc69fef337542422a0f9b45765212\"><code>7d7690e</code></a> 1.17.8</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/38de371a42be7ad5c5ff3990a9c2115395623c2c\"><code>38de371</code></a> Allow instance objects to have null constructors</li>\n<li>See full diff in <a href=\"https://github.com/hyperjump-io/json-schema/compare/v1.17.7...v1.17.8\">compare view</a></li>\n</ul>\n</details>\n<br />",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": false
+    }
+}

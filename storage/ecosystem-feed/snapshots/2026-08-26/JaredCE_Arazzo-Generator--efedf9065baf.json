@@ -1,0 +1,24 @@
+{
+    "id": "efedf9065baf22e64ad00a3f433bbfce59d146c4fd543cec218b8f68ea54378d",
+    "source": "JaredCE/Arazzo-Generator",
+    "type": "tag",
+    "title": "tag 0.0.2",
+    "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2",
+    "publishedAt": "2026-08-26T07:08:25+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "JaredCE/Arazzo-Generator",
+        "type": "tag",
+        "externalId": "tag:0.0.2",
+        "title": "tag 0.0.2",
+        "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2",
+        "publishedAt": "2026-08-26T07:08:25+00:00",
+        "body": "29e3fe766564a88d0d15e4b622a33b0f6831bede",
+        "labels": [],
+        "state": "published"
+    }
+}

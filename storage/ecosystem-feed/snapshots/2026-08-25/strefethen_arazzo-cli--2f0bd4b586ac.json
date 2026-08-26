@@ -1,0 +1,25 @@
+{
+    "id": "2f0bd4b586ac1ff3120d8241e7a66c569fac7d5869d147777a0bfdbb615481e9",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "docs(plans): sync audit state after the Aug 22-24 audit work",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/3eee30f1573ac93f8a9a63991c02927da5717292",
+    "publishedAt": "2026-08-25T21:20:10Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:3eee30f",
+        "title": "docs(plans): sync audit state after the Aug 22-24 audit work",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/3eee30f1573ac93f8a9a63991c02927da5717292",
+        "publishedAt": "2026-08-25T21:20:10Z",
+        "body": "docs(plans): sync audit state after the Aug 22-24 audit work\n\nPlanning-state sync: the rust code-smell audit gains remediation notes, the validate decomposition plan is expanded, the runtime engine-execution decomposition draft and its inventory land, the 1.1 conformance evidence plan lands, and the remediation plan header now matches its own tracker (items 1-6 done, 7 outstanding, 8 gated on ac-950a8).\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "83ad67cc01d90a55d00cb97632f161fbc862f4e394fbfc16d10f34f6dac34538",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix(expr): cache matches patterns and fail non-compiling ones loudly",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/291f2ac24f2061808072a6822c6460dd36a0f155",
+    "publishedAt": "2026-08-25T21:20:10Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:291f2ac",
+        "title": "fix(expr): cache matches patterns and fail non-compiling ones loudly",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/291f2ac24f2061808072a6822c6460dd36a0f155",
+        "publishedAt": "2026-08-25T21:20:10Z",
+        "body": "fix(expr): cache matches patterns and fail non-compiling ones loudly\n\nThe matches operator (a tracked non-conformance pending the ac-ec3a1 grammar decision) moves into matches_operator.rs end to end. Compiled patterns are memoized in a bounded process-static cache (256 entries, 4096-byte pattern cap) because an ExpressionEvaluator is rebuilt per step, so the same pattern was recompiled on every criterion of every attempt. A pattern that does not compile still evaluates false but now emits a warning naming the pattern error, and the failure is memoized so retries do not re-parse it. Compilation happens outside the lock; poisoned locks recover. A bench group pins the cached-versus-uncached gap.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

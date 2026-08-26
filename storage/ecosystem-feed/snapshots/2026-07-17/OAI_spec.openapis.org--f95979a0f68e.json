@@ -1,0 +1,25 @@
+{
+    "id": "f95979a0f68ecdeaf8020dac011f114772ea4c70e5b24feff1f70dc3a68d26a4",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "docs: aligns versioning information with the namespace for json schema extensions",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/402b7e017753bf4122b4691ceeabc9db3703d83a",
+    "publishedAt": "2026-07-17T18:55:41Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:402b7e0",
+        "title": "docs: aligns versioning information with the namespace for json schema extensions",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/402b7e017753bf4122b4691ceeabc9db3703d83a",
+        "publishedAt": "2026-07-17T18:55:41Z",
+        "body": "docs: aligns versioning information with the namespace for json schema extensions\n\nSigned-off-by: Vincent Biret <vincentbiret@hotmail.com>",
+        "labels": [],
+        "state": ""
+    }
+}

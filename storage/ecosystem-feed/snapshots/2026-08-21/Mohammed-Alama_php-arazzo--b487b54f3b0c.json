@@ -1,0 +1,25 @@
+{
+    "id": "b487b54f3b0c06bbe0dc8c50037bf07781ae349c62fab83e39ab5871165786f5",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "Fix test suite and update canonical execution core bindings",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/13",
+    "publishedAt": "2026-08-21T05:38:53Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:13",
+        "title": "Fix test suite and update canonical execution core bindings",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/13",
+        "publishedAt": "2026-08-21T05:38:53Z",
+        "body": "## Summary\n- Fix ArazzoDocument instantiations in tests to include SourceDescription.\n- Fix WebhookResumeControllerTest to correctly mock OpenApiExecutorInterface.\n- Update LaravelArazzoServiceProvider to inject OpenApiExecutorInterface instead of HttpClientInterface for HttpStepExecutor.\n- Introduce WorkflowEngineTest and ExecutionStateTest.\n\n## Test Plan\n- [x] Run composer test",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

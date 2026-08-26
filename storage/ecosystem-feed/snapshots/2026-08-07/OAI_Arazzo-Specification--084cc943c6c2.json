@@ -1,0 +1,26 @@
+{
+    "id": "084cc943c6c2aa330e03614106b23a0cd3b7ce5688308d873370353bf89cedf9",
+    "source": "OAI/Arazzo-Specification",
+    "type": "issue",
+    "title": "Describe how Arazzo handles API responses that contain files.",
+    "url": "https://github.com/OAI/Arazzo-Specification/issues/492",
+    "publishedAt": "2026-08-07T13:25:44Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "issue",
+        "externalId": "issue:492",
+        "title": "Describe how Arazzo handles API responses that contain files.",
+        "url": "https://github.com/OAI/Arazzo-Specification/issues/492",
+        "publishedAt": "2026-08-07T13:25:44Z",
+        "body": "Hey everyone!\nI’m wondering whether the Arazzo community has already discussed how the specification should handle file responses from APIs.\nI couldn’t find any open discussions on this topic so far.\n\nThere could be a variety of formats and approaches involved here.\nSome file types could potentially already be consumed and processed using existing descriptions, such as .csv or .json files.\nSome of the criterion object already can be applied to verify success or failure.\n\nBut overall, it seems that the specification currently lacks guidance around handling file responses.\n\nFor example:\n\n* How should files be treated within workflows?\n* Which file formats are expected or officially supported?\n* Should tooling decide on its own whether file contents can or should be processed?\n* Should success/failure criteria be applicable to file contents as well?\n\nLooking forward to hearing your thoughts on this topic.",
+        "labels": [
+            "question"
+        ],
+        "state": "open"
+    }
+}

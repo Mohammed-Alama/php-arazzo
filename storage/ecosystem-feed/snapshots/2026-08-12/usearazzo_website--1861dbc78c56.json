@@ -1,0 +1,24 @@
+{
+    "id": "1861dbc78c5666d09b54640c0926c5588b4169f33c4c217688d27917cc7d2cbc",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "Delete CNAME",
+    "url": "https://github.com/usearazzo/website/commit/3fb6beafd98143d79f79687e0070766db09b3925",
+    "publishedAt": "2026-08-12T21:17:16Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:3fb6bea",
+        "title": "Delete CNAME",
+        "url": "https://github.com/usearazzo/website/commit/3fb6beafd98143d79f79687e0070766db09b3925",
+        "publishedAt": "2026-08-12T21:17:16Z",
+        "body": "Delete CNAME",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "94754b80d09ad7323f4b097042461dfc5ab8efb393d718a46804537c71b6d310",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix: evaluate XPath against the document the server sent",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/9296f304484956f23483b4f217b6e0fefff98d29",
+    "publishedAt": "2026-08-24T03:36:29Z",
+    "tags": [
+        "soap",
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P0-6 source routing (wsdl type)",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:9296f30",
+        "title": "fix: evaluate XPath against the document the server sent",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/9296f304484956f23483b4f217b6e0fefff98d29",
+        "publishedAt": "2026-08-24T03:36:29Z",
+        "body": "fix: evaluate XPath against the document the server sent\n\nThe XPath surface stripped namespaces with two regexes applied to the\nwhole serialized body before parsing, which also rewrote element text,\nCDATA sections, and comments that merely contained namespace-shaped\ncharacters, only recognized double-quoted xmlns declarations, and cost\ntwo full-document allocations per evaluation.\n\nThe prepass is deleted. uppsala resolves namespaces natively and its\nunprefixed XPath name tests match on local names, so //Body finds\nsoap:Body with no preprocessing, exactly as payload replacements\nalready relied on. Two deliberate behavior changes, both pinned by\ntests: a document using an undeclared prefix is reported as invalid\nXML instead of being silently rewritten into something parseable, and\na prefixed expression such as //f:x now matches when the document\ndeclares the prefix.\n\nIndependently reviewed (fresh-context); review follow-ups included:\nREADME and compliance-plan prose describing the old stripping\ncorrected, the bench case that reimplemented the deleted regexes now\nmeasures the real parse-as-sent path, and the single-quoted test row\ncarries the prefixed assertion that actually discriminates old from\nnew. Closes finding F2 in the 2026-08-22 rust-code-smell audit.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

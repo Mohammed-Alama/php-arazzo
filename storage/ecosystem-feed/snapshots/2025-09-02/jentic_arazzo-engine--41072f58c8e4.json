@@ -1,0 +1,24 @@
+{
+    "id": "41072f58c8e418f0bf945adbfc1c31891c4dc5a6b61a9f8c00fa13fe7493a8a7",
+    "source": "jentic/arazzo-engine",
+    "type": "release",
+    "title": "Arazzo Generator v0.1.2",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2",
+    "publishedAt": "2025-09-02T08:54:38Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "release",
+        "externalId": "release:arazzo_generator/v0.1.2",
+        "title": "Arazzo Generator v0.1.2",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2",
+        "publishedAt": "2025-09-02T08:54:38Z",
+        "body": "## Bug fixes\r\n\r\n* fix: exclude tests/ directory from sdist package by @char0n in https://github.com/jentic/arazzo-engine/pull/88\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

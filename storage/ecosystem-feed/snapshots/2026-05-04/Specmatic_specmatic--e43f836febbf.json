@@ -1,0 +1,24 @@
+{
+    "id": "e43f836febbf7c66a98e6189de0fbee7fcc5f3703c99746368fbfa1728c35629",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.45.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.45.0",
+    "publishedAt": "2026-05-04T14:48:59Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.45.0",
+        "title": "2.45.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.45.0",
+        "publishedAt": "2026-05-04T14:48:59Z",
+        "body": "## What's Changed\r\n* chore(deps): update junit-framework monorepo by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2451\r\n* Fix conformance test summary reporting by emitting the expected failure information as structured JSON by @sahilm in https://github.com/specmatic/specmatic/pull/2437\r\n* Fix uncaught exception during stub shutdown with in-flight delay by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2453\r\n* chore(deps): update jackson monorepo to v2.21.3 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2456\r\n* Add conformance tests for query params and validate that query params as objects are not supported by @sahilm in https://github.com/specmatic/specmatic/pull/2462\r\n* Add a conformance test to validate optional request bodies in posts by @sahilm in https://github.com/specmatic/specmatic/pull/2463\r\n* Add a conformance test demonstrating that Specmatic doesn't respect the defaults of additionalProperties = true by @sahilm in https://github.com/specmatic/specmatic/pull/2464\r\n* chore(deps): update dependency io.specmatic.build-reporter:specmatic-reporter-min to v0.3.15 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2460\r\n* Validate request & response headers in conformance tests by @sahilm in https://github.com/specmatic/specmatic/pull/2470\r\n* Extern command options for validate and backward compatibility by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2466\r\n* Add count and progress indicator to Backward Compatibility Check by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2472\r\n* Add operation verdict to Backward Compatibility Check by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2473\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.44.2...2.45.0",
+        "labels": [],
+        "state": "published"
+    }
+}

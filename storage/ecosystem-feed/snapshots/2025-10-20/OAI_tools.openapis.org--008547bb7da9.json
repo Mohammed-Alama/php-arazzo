@@ -1,0 +1,25 @@
+{
+    "id": "008547bb7da9b9e1106af0b8810417f6ccfc9558be8cb8fa6469c03f3e61aa76",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: Remove copy of Frogment added from issue",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/128",
+    "publishedAt": "2025-10-20T05:29:54Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:128",
+        "title": "fix: Remove copy of Frogment added from issue",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/128",
+        "publishedAt": "2025-10-20T05:29:54Z",
+        "body": "As per issue removing Frogment data in favour of data from https://openapi.tools",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

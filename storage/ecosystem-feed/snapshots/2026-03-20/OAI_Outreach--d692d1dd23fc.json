@@ -1,0 +1,22 @@
+{
+    "id": "d692d1dd23fc9b2c4215b616580923f10fca7306efb5b867f559735ddb8af81b",
+    "source": "OAI/Outreach",
+    "type": "issue",
+    "title": "Test",
+    "url": "https://github.com/OAI/Outreach/issues/64",
+    "publishedAt": "2026-03-20T16:01:36Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "issue",
+        "externalId": "issue:64",
+        "title": "Test",
+        "url": "https://github.com/OAI/Outreach/issues/64",
+        "publishedAt": "2026-03-20T16:01:36Z",
+        "body": "### Topic / Subject\n\nTesting Social Workflow\n\n### Overview\n\nBoilerplate text\n\n### Platform\n\nLinkedIn\n\n### Desired Publication Date\n\n_No response_",
+        "labels": [],
+        "state": "closed"
+    }
+}

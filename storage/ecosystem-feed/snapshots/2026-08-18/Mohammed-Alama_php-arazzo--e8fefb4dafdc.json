@@ -1,0 +1,25 @@
+{
+    "id": "e8fefb4dafdc29d02d75c3f64459b325db852ce486b4a62d95decb9b8bf7c3a3",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "Align Architecture Namespaces to Official JS Toolkit",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/10",
+    "publishedAt": "2026-08-18T16:13:28Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:10",
+        "title": "Align Architecture Namespaces to Official JS Toolkit",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/10",
+        "publishedAt": "2026-08-18T16:13:28Z",
+        "body": "This PR aligns the core and laravel namespaces with the official JS toolkit:\n- `Validation` renamed to `Validator`\n- `Resolution` renamed to `Resolver`\n- `Execution` renamed to `Runner`",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

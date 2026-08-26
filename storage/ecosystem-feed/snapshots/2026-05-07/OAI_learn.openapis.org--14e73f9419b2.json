@@ -1,0 +1,25 @@
+{
+    "id": "14e73f9419b2f67163e2ebce03cee6df9a9f2eeae11bced89f2d6ec2990b21c7",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "3.2 add query method example",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/205",
+    "publishedAt": "2026-05-07T15:53:40Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:205",
+        "title": "3.2 add query method example",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/205",
+        "publishedAt": "2026-05-07T15:53:40Z",
+        "body": "Adding QUERY HTTP example\r\n\r\nThe QUERY method is intended for safe, idempotent requests that still need a\r\nrequest body, which makes it a good fit for flight search filters like dates,\r\ncabin class, passenger count, and nonstop preferences. In practice, this is\r\nclearer than forcing a long GET URL or misusing POST for a read-only search operation.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

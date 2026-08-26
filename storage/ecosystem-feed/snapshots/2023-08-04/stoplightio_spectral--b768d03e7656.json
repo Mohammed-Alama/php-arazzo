@@ -1,0 +1,24 @@
+{
+    "id": "b768d03e765607577a80274969ec370042b02f18588d1ff98701a418b3d8c35e",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.10.1",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.10.1",
+    "publishedAt": "2023-08-04T11:50:08Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.10.1",
+        "title": "v6.10.1",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.10.1",
+        "publishedAt": "2023-08-04T11:50:08Z",
+        "body": "## What's Changed\r\n* fix(cli): choose proxy agent based on requester protocol by @P0lip in https://github.com/stoplightio/spectral/pull/2521\r\n\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.10.0...v6.10.1",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "dff2a3288c6300bdfbbcc2e7a6fc26d57c07bb5d3246095f4c55d68ce334e1fe",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "feat: review & amend product pages",
+    "url": "https://github.com/usearazzo/website/commit/697956b4dfbbc4d015069d61eb75ba9020fd26a4",
+    "publishedAt": "2026-08-13T09:08:37Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:697956b",
+        "title": "feat: review & amend product pages",
+        "url": "https://github.com/usearazzo/website/commit/697956b4dfbbc4d015069d61eb75ba9020fd26a4",
+        "publishedAt": "2026-08-13T09:08:37Z",
+        "body": "feat: review & amend product pages",
+        "labels": [],
+        "state": ""
+    }
+}

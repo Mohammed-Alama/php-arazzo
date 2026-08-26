@@ -1,0 +1,25 @@
+{
+    "id": "a5a6671bcf94b4978465469c5a0c9f311d9363a4671c9f239c3f1f6f8c032ea6",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "chore: ignore target directories at any depth",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/f691d30595923714c830945402dfcb3241cf04a6",
+    "publishedAt": "2026-08-25T21:08:54Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:f691d30",
+        "title": "chore: ignore target directories at any depth",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/f691d30595923714c830945402dfcb3241cf04a6",
+        "publishedAt": "2026-08-25T21:08:54Z",
+        "body": "chore: ignore target directories at any depth\n\nA cargo invocation from inside a crate directory leaves a nested target/ that the root-anchored rule missed.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

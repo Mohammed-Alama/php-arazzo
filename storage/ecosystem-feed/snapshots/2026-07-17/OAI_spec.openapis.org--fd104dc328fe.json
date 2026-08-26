@@ -1,0 +1,24 @@
+{
+    "id": "fd104dc328fe76bb5ca7bc550fc8a21f00a68e11ffacb46d5bed47cbb1acb1fa",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge branch 'main' into fix/extension-versions",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/78cabc2a37132c0cbb44ba7226e50d7d44e09e72",
+    "publishedAt": "2026-07-17T18:28:34Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:78cabc2",
+        "title": "Merge branch 'main' into fix/extension-versions",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/78cabc2a37132c0cbb44ba7226e50d7d44e09e72",
+        "publishedAt": "2026-07-17T18:28:34Z",
+        "body": "Merge branch 'main' into fix/extension-versions",
+        "labels": [],
+        "state": ""
+    }
+}

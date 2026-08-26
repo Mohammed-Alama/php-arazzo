@@ -1,0 +1,24 @@
+{
+    "id": "5d1edf256e74a252417dba821ae9f80b31dccfd2cc2c4b19c5b9eed51000dc9f",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.15.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.15.0",
+    "publishedAt": "2026-06-24T10:44:30Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.15.0",
+        "title": "v4.15.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.15.0",
+        "publishedAt": "2026-06-24T10:44:30Z",
+        "body": "# [4.15.0](https://github.com/speclynx/apidom/compare/v4.14.0...v4.15.0) (2026-06-24)\n\n\n### Features\n\n* **reference:** add Arazzo 1 bundle strategy ([#367](https://github.com/speclynx/apidom/issues/367)) ([c2bbf7f](https://github.com/speclynx/apidom/commit/c2bbf7f27214839d7288c6439ec482e4094756a3))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

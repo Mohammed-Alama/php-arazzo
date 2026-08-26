@@ -1,0 +1,24 @@
+{
+    "id": "78026a977f485978d90446d56b78b27e1eea7db40438bf4aec4e6301f18819db",
+    "source": "OAI/Overlay-Specification",
+    "type": "issue",
+    "title": "The `extends` field should support referencing OADs by their `$self`",
+    "url": "https://github.com/OAI/Overlay-Specification/issues/310",
+    "publishedAt": "2026-07-28T13:28:00Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "issue",
+        "externalId": "issue:310",
+        "title": "The `extends` field should support referencing OADs by their `$self`",
+        "url": "https://github.com/OAI/Overlay-Specification/issues/310",
+        "publishedAt": "2026-07-28T13:28:00Z",
+        "body": "See OAI/Arazzo-Specification#451 for an analogous requirement to support their Source Description Object's `url` field behaving the same way.  It involves language about parsing potential target OAD documents supplied to the implementation for their `$self` field before deciding that no OAD document matches the URI.\n\nIIRC, Overlay documents are never a  _target_ of any sort of references, so they don't really need their own `$self` at this time (although it might be nice for all three specs to support it, which would future-proof Overlays if they ever do need to be referenced — the above PR adds it for Arazzo).",
+        "labels": [],
+        "state": "closed"
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "id": "05703dd561bce622885a23cef725f3bcbf0103e51e39dc99fef44f1158662798",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "Add Routebase (OpenAPI-native API lifecycle platform)",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/270",
+    "publishedAt": "2026-07-23T06:23:45Z",
+    "tags": [
+        "mcp",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:270",
+        "title": "Add Routebase (OpenAPI-native API lifecycle platform)",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/270",
+        "publishedAt": "2026-07-23T06:23:45Z",
+        "body": "## Tool Properties\n\n- Display name: Routebase\n- Description: Routebase is an OpenAPI-native platform that keeps an API as a single source of truth. Teams design their OpenAPI description in a visual editor, then generate documentation portals, mock servers, contract tests, and drift monitoring from that one description. It also ships a built-in Model Context Protocol (MCP) server so AI agents work from the same OpenAPI description.\n- Repository: N/A (commercial SaaS, not open source)\n- Homepage: https://routebase.dev/\n\n## OpenAPI Versions\n\n- 3.1: true\n- 3.0: true\n- 2.0: false",
+        "labels": [],
+        "state": "open"
+    }
+}

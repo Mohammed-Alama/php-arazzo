@@ -1,0 +1,28 @@
+{
+    "id": "0b5012ab00e97166193d1999f6d2e889572d1363a10187c072799c9552d68677",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "3.2: Fix formatting of 'Encoding Object' in oas.md",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5515",
+    "publishedAt": "2026-08-21T17:44:09Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5515",
+        "title": "3.2: Fix formatting of 'Encoding Object' in oas.md",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5515",
+        "publishedAt": "2026-08-21T17:44:09Z",
+        "body": "Can't unsee this 🤷🏻‍♂️\r\n\r\n- [x] no schema changes are needed for this pull request\r\n",
+        "labels": [
+            "editorial"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

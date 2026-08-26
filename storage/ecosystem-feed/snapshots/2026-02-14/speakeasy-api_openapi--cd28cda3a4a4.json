@@ -1,0 +1,25 @@
+{
+    "id": "cd28cda3a4a4951f80d0e7f8b299999cea99f4696451b5f6a497df9fc07b9e7c",
+    "source": "speakeasy-api/openapi",
+    "type": "release",
+    "title": "v1.18.1",
+    "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.18.1",
+    "publishedAt": "2026-02-14T20:33:51Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "speakeasy-api/openapi",
+        "type": "release",
+        "externalId": "release:v1.18.1",
+        "title": "v1.18.1",
+        "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.18.1",
+        "publishedAt": "2026-02-14T20:33:51Z",
+        "body": "## OpenAPI CLI v1.18.1\n\nThis release includes binaries for Linux, macOS, and Windows on both x86_64 and ARM64 architectures.\n\n### Installation\n\nDownload the appropriate binary for your platform from the assets below, extract it, and add it to your PATH.\n\n### Changes\n\n## Changelog\n### Features\n* 66d39888033c4b6677ce920e579cb856d6f45f6b feat: support short-circuiting append operations when there are multiple appends, not just 1 item (#153)\n\n\n---\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.18.0...v1.18.1\n\nReleased by [GoReleaser](https://github.com/goreleaser/goreleaser).\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

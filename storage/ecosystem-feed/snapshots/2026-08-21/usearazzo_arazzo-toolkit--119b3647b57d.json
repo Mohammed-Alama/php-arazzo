@@ -1,0 +1,24 @@
+{
+    "id": "119b3647b57d1a6eeba58caec31a7a3d6c13c3d8751c9f9d20d1bbd36da3c342",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: consolidate the duplicated #evaluate expression bridge",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/76",
+    "publishedAt": "2026-08-21T21:09:07Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:76",
+        "title": "runner: consolidate the duplicated #evaluate expression bridge",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/76",
+        "publishedAt": "2026-08-21T21:09:07Z",
+        "body": "\\`StepExecutor\\` and \\`WorkflowExecutor\\` carry near-identical private \\`#evaluate\\` runtime-expression bridges (lenient \\`RuntimeExpressionEvaluator\\` construction forwarding \\`document\\` + \\`registry\\`); the workflow-side one now takes the document per call (PR #73), the step-side one reads its bound document. Nothing keeps the two in step.\n\nPer the repo convention (shared class logic via a base class or owning abstraction, not util modules), consolidate them — a shared base class or an expression-bridge collaborator both executors take. \\`SourceDescriptionsLocatorNormalizer\\` (introduced in PR #73 for the two locator normalizers) is the precedent shape.\n\nPart of the pre-1.0 cleanup train feeding the API surface review.\n\nhttps://claude.ai/code/session_018xHDHotJJDWYtTn7ZLrn5V",
+        "labels": [],
+        "state": "open"
+    }
+}

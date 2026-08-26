@@ -1,0 +1,25 @@
+{
+    "id": "795e89cdc2ddcee987f0fb9a990ab1ac676497ba914f13d055bb53fbf2f09806",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "Update JSON example files",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/197",
+    "publishedAt": "2026-07-23T16:42:06Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:197",
+        "title": "Update JSON example files",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/197",
+        "publishedAt": "2026-07-23T16:42:06Z",
+        "body": "This pull request is automatically triggered by GitHub action `convert-examples-to-json`.\n\nThe examples/v3.* YAML files have changed, so the JSON files are automatically being recreated.",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

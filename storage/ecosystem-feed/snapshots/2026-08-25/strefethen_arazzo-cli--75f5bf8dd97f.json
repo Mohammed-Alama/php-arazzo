@@ -1,0 +1,26 @@
+{
+    "id": "75f5bf8dd97f7628d787c796552348c3ad0ea477bf3110231fb28e75679ff7df",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "chore: release v0.4.0",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/6217148dba9f279529405ab27277dcf2de9a0cba",
+    "publishedAt": "2026-08-25T21:29:43Z",
+    "tags": [
+        "cli",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:6217148",
+        "title": "chore: release v0.4.0",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/6217148dba9f279529405ab27277dcf2de9a0cba",
+        "publishedAt": "2026-08-25T21:29:43Z",
+        "body": "chore: release v0.4.0\n\nVersion 0.4.0 across the workspace for the breaking removal of the non-standard $env expression namespace, plus the 0.4.0 CHANGELOG entry and a crate description that no longer pins the spec to 1.0. Cargo.lock is refreshed for the --locked release build. god-files.md joins .gitignore: the register is repo-local agent bookkeeping and stays out of published history per maintainer decision.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "id": "a6f46b9ea34d8e3dbf8a1e2ab1f5925ecf24d3f68926acae241956d569fb77ed",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "fix: added type annotations with CI enforcement",
+    "url": "https://github.com/jentic/arazzo-engine/pull/123",
+    "publishedAt": "2025-10-16T11:59:36Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:123",
+        "title": "fix: added type annotations with CI enforcement",
+        "url": "https://github.com/jentic/arazzo-engine/pull/123",
+        "publishedAt": "2025-10-16T11:59:36Z",
+        "body": "Closes #101 ",
+        "labels": [
+            "enhancement",
+            "generator"
+        ],
+        "state": "closed",
+        "merged": false
+    }
+}

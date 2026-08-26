@@ -1,0 +1,24 @@
+{
+    "id": "b74d958dcde38c8b8caad399a71fdd2d701d43a8a9db9f6e8b68e792fd9e1e8f",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.44.2",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.44.2",
+    "publishedAt": "2026-04-27T11:09:41Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.44.2",
+        "title": "2.44.2",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.44.2",
+        "publishedAt": "2026-04-27T11:09:41Z",
+        "body": "## What's Changed\r\n* chore: add withoutRuleViolation method in Result.Failure which returns a Result.Failure without any rule violations by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2446\r\n* Fix distinctReport to truly de-duplicate the failures by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2449\r\n* Fix generative stub handling under Accept negotiation by @joelrosario in https://github.com/specmatic/specmatic/pull/2450\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.44.1...2.44.2",
+        "labels": [],
+        "state": "published"
+    }
+}

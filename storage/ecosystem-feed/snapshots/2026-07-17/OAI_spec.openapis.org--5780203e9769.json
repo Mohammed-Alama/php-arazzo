@@ -1,0 +1,25 @@
+{
+    "id": "5780203e976996711a96da52105dc4b64cd86ea1abcf1e92700d72fc39bd316a",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "docs: rewords the versioning for the schema namespace",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/3c2b5a169b4a7b5e5f7badefe188422c13e6fbf8",
+    "publishedAt": "2026-07-17T15:44:33Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:3c2b5a1",
+        "title": "docs: rewords the versioning for the schema namespace",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/3c2b5a169b4a7b5e5f7badefe188422c13e6fbf8",
+        "publishedAt": "2026-07-17T15:44:33Z",
+        "body": "docs: rewords the versioning for the schema namespace",
+        "labels": [],
+        "state": ""
+    }
+}

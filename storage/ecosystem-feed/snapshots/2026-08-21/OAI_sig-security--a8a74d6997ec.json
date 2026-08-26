@@ -1,0 +1,24 @@
+{
+    "id": "a8a74d6997ecac5acbb2583142d07036131581d39123ab1eaa13c14429836089",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Clarification on JWT Bearer access token from OAuth2 Client Credentials Grant...",
+    "url": "https://github.com/OAI/sig-security/issues/29",
+    "publishedAt": "2026-08-21T18:08:15Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:29",
+        "title": "Clarification on JWT Bearer access token from OAuth2 Client Credentials Grant...",
+        "url": "https://github.com/OAI/sig-security/issues/29",
+        "publishedAt": "2026-08-21T18:08:15Z",
+        "body": "Hello,\r\nFirst time building a spec with OpenAPI and appreciate the thoughtfulness of this spec.  The changes in OpenAPI3 are really nice. \r\n\r\nI'm lost on one point:  The endpoints will be secured via Bearer JWT token, that was retrieved via OAuth2 Client Credentials grant.  The JWT token will contain a correct audience and optional scopes for more granular authorization. The audience is properly validated when requested and rejected if not authorized already. \r\n\r\nReading this very closely and have some question/clarification, apologies if these are basic :D Be nice, I'm new :D \r\nhttps://swagger.io/docs/specification/authentication/\r\n\r\n**Clarification 1.** This page above shows a security scheme for both Bearer token AND OAuth2, but to me, those don't feel like different things.  They feel like the same thing.  The client uses OAuth2 Client Credentials grant to get the jwt access token (aka bearer token) , and passes it on the Authorization header to the API which validates it.   So do I put *both* security schemes? At this point, just leaning toward bearer token. But it is OAuth2.  \r\n\r\nhttps://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#jwt-bearer-sample\r\n\r\n**Clarification 2.** The audience claim in the JWT is a key. We require the API, but also envoy (among many other in transit systems) to check the audience.  But I am not sure where to specify this except in the comments in the top  as to what the value of the audience is required to be.  Can I use an extension? I have not quite wrapped my head around those yet... but working on it.  `x-audience`? \r\n\r\nhttps://tools.ietf.org/html/rfc7519#section-4.1.3\r\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/jwt_authn_filter#config-http-filters-jwt-authn\r\n\r\n**Clarification 3.** If I need to specify the OAuth2 section the `authorizationUrl` but that changes per lifecycle.  I knew so maybe this is obvious, but not sure how to specify different values per lifecycles.  Just two really, QA and PR. \r\n\r\n**Clarification 4.** Is there a spot to list the JWKS? is that what the `x-jwks-token-keys` maybe? \r\n\r\n\r\nAnyway, huge thanks!  Love the work you all have done.  I just hate guessing on stuff like this and figured quicker to ask and get clarification than, guess and get it wrong. ",
+        "labels": [],
+        "state": "open"
+    }
+}

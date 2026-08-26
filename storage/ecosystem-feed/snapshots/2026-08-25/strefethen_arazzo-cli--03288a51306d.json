@@ -1,0 +1,25 @@
+{
+    "id": "03288a51306dd9cbec692c4e5286ae8c37c8a9dad974a084c660eed9c6960a08",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "docs(site): update version claims and test count for v0.4.0",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/9cfdbe25fd3d961ea6f48c9c4bf6c0ce91ad50c4",
+    "publishedAt": "2026-08-25T22:58:47Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:9cfdbe2",
+        "title": "docs(site): update version claims and test count for v0.4.0",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/9cfdbe25fd3d961ea6f48c9c4bf6c0ce91ad50c4",
+        "publishedAt": "2026-08-25T22:58:47Z",
+        "body": "docs(site): update version claims and test count for v0.4.0\n\nThe landing page still described the runtime as Arazzo 1.0.1 in the meta descriptions, JSON-LD, hero badge, and how-it-works copy, claimed a full 1.0.1 expression surface, counted 531 tests, and pointed the download command at v0.3.0. All claims now match the released tree: version-free executor description, Arazzo 1.1.0 badge, 931 hermetic tests with extensions and gaps labeled, v0.4.0 download.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

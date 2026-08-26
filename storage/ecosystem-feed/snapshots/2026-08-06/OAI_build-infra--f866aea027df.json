@@ -1,0 +1,24 @@
+{
+    "id": "f866aea027df1aa3a56f02ec6c30f6b554c6bf83d6c8478896d4c3e0bb0c84dd",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Package lockfile snapshot for consumer sync",
+    "url": "https://github.com/OAI/build-infra/commit/e467f7a2ade183176cc1d1f46b75857323c87245",
+    "publishedAt": "2026-08-06T17:11:02Z",
+    "tags": [
+        "a2a"
+    ],
+    "severity": "watch",
+    "relevance": "Roadmap A2A step type",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:e467f7a",
+        "title": "Package lockfile snapshot for consumer sync",
+        "url": "https://github.com/OAI/build-infra/commit/e467f7a2ade183176cc1d1f46b75857323c87245",
+        "publishedAt": "2026-08-06T17:11:02Z",
+        "body": "Package lockfile snapshot for consumer sync\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

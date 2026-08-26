@@ -1,0 +1,25 @@
+{
+    "id": "99e0f4c0527dfc41d7f26032fae4b671774e62ae32d0adc2cb1057fddb1ae337",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "108 project has correct tags but is unlisted",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/126",
+    "publishedAt": "2024-01-26T13:46:17Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:126",
+        "title": "108 project has correct tags but is unlisted",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/126",
+        "publishedAt": "2024-01-26T13:46:17Z",
+        "body": "Summary of changes:\r\n\r\n* Data fix to set `openapi-devtools` manually to `Auto Generators`\r\n* Added `categoryByRequestIndicator` flag to facilitate overriding the Bayesian analysis (this option will also be added to the Issue template)\r\n* Unit tests for `Classifier` class\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

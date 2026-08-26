@@ -1,0 +1,25 @@
+{
+    "id": "9dffe8db3e36acf3bc9eb7a5392f4392023721d84af6299f32d087e3c118c7a1",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.6.0",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.6.0",
+    "publishedAt": "2022-10-25T14:25:49Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.6.0",
+        "title": "v6.6.0",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.6.0",
+        "publishedAt": "2022-10-25T14:25:49Z",
+        "body": "## What's Changed\r\n* fix(ruleset-migrator): http/https uris not followed correctly by @P0lip in https://github.com/stoplightio/spectral/pull/2247\r\n* perf(core): bump jsonpath-plus to 7.1.0 by @FredericKayser in https://github.com/stoplightio/spectral/pull/2259\r\n* feat(rulesets): add rule to check if the AsyncAPI document is using the latest version by @magicmatatjahu in https://github.com/stoplightio/spectral/pull/2282\r\n* chore(core): drop runner runtime by @P0lip in https://github.com/stoplightio/spectral/pull/2302\r\n* fix(core): async functions have undefined paths by @P0lip in https://github.com/stoplightio/spectral/pull/2304\r\n* fix(rulesets): handle empty payload and headers in AsyncAPI message's examples validation by @magicmatatjahu in https://github.com/stoplightio/spectral/pull/2284\r\n* refactor(rulesets): remove unused rules style param by @philsturgeon in https://github.com/stoplightio/spectral/pull/2306\r\n* feat(ruleset-migrator): relax validation by @P0lip in https://github.com/stoplightio/spectral/pull/2307\r\n* chore(core): tweak StringifiedRuleset and StringifiedRule by @P0lip in https://github.com/stoplightio/spectral/pull/2309\r\n* feat(core): include error codes in RulesetValidationError by @P0lip in https://github.com/stoplightio/spectral/pull/2308\r\n* fix(ruleset-bundler): virtualFs plugin not recognizing files by @P0lip in https://github.com/stoplightio/spectral/pull/2271\r\n* fix(core): support utf8 surrogates by @P0lip in https://github.com/stoplightio/spectral/pull/2267\r\n* feat(cli): use Content-Type header to detect ruleset format by @P0lip in https://github.com/stoplightio/spectral/pull/2272\r\n* fix(cli): peer dependency incorrectly met by @P0lip in https://github.com/stoplightio/spectral/pull/2268\r\n\r\n## New Contributors\r\n* @ObjectIsAdvantag made their first contribution in https://github.com/stoplightio/spectral/pull/2258\r\n* @FredericKayser made their first contribution in https://github.com/stoplightio/spectral/pull/2259\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.5.1...v6.6.0",
+        "labels": [],
+        "state": "published"
+    }
+}

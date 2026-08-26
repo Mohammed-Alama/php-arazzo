@@ -1,0 +1,29 @@
+{
+    "id": "07c31774c2997727e0eb9d273eff49d7aff8e6b0179035afdb39662561b696a7",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Bump @hyperjump/browser from 1.4.0 to 1.5.0 in the hyperjump group",
+    "url": "https://github.com/OAI/build-infra/pull/17",
+    "publishedAt": "2026-08-10T22:25:34Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:17",
+        "title": "Bump @hyperjump/browser from 1.4.0 to 1.5.0 in the hyperjump group",
+        "url": "https://github.com/OAI/build-infra/pull/17",
+        "publishedAt": "2026-08-10T22:25:34Z",
+        "body": "Bumps the hyperjump group with 1 update: [@hyperjump/browser](https://github.com/hyperjump-io/browser).\n\nUpdates `@hyperjump/browser` from 1.4.0 to 1.5.0\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/hyperjump-io/browser/commit/fed99c8c61d4b70f9bc9dada7207e47843fb432d\"><code>fed99c8</code></a> 1.5.0</li>\n<li><a href=\"https://github.com/hyperjump-io/browser/commit/1c350d5eb8ba8a58045660479729cab8b86ce094\"><code>1c350d5</code></a> Expose getFileMediaType</li>\n<li><a href=\"https://github.com/hyperjump-io/browser/commit/ad513788b563a9240918e63bcc50749d1d4f3caf\"><code>ad51378</code></a> Fix test in windows</li>\n<li>See full diff in <a href=\"https://github.com/hyperjump-io/browser/compare/v1.4.0...v1.5.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=@hyperjump/browser&package-manager=npm_and_yarn&previous-version=1.4.0&new-version=1.5.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore <dependency name> major version` will close this group update PR and stop Dependabot creating any more for the specific dependency's major version (unless you unignore this specific dependency's major version or upgrade to it yourself)\n- `@dependabot ignore <dependency name> minor version` will close this group update PR and stop Dependabot creating any more for the specific dependency's minor version (unless you unignore this specific dependency's minor version or upgrade to it yourself)\n- `@dependabot ignore <dependency name>` will close this group update PR and stop Dependabot creating any more for the specific dependency (unless you unignore this specific dependency or upgrade to it yourself)\n- `@dependabot unignore <dependency name>` will remove all of the ignore conditions of the specified dependency\n- `@dependabot unignore <dependency name> <ignore condition>` will remove the ignore condition of the specified dependency and ignore conditions\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": false
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "359feb215aaa3e4ad07b8f08e23e4227ca3bc86cb96edf73c8815a2ed1b5004e",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.49.1",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.49.1",
+    "publishedAt": "2026-06-30T13:45:57Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.49.1",
+        "title": "2.49.1",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.49.1",
+        "publishedAt": "2026-06-30T13:45:57Z",
+        "body": "## What's Changed\r\n* Validate snapshot dependencies before release by @sahilm in https://github.com/specmatic/specmatic/pull/2612\r\n* fix: matchers should not be run in case of negative scenarios by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2614\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.49.0...2.49.1",
+        "labels": [],
+        "state": "published"
+    }
+}

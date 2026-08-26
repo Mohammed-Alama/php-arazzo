@@ -1,0 +1,27 @@
+{
+    "id": "3b64d768a0fc08a1fcadab9211e21f589149737e049847620cdbc0e40b128265",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.51.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.51.0",
+    "publishedAt": "2026-07-25T07:02:44Z",
+    "tags": [
+        "xml",
+        "actor",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.51.0",
+        "title": "2.51.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.51.0",
+        "publishedAt": "2026-07-25T07:02:44Z",
+        "body": "## What's Changed\r\n* refactor: Remove legacy suggestions feature by @joelrosario in https://github.com/specmatic/specmatic/pull/2640\r\n* refactor: Remove legacy server state from Specmatic core by @joelrosario in https://github.com/specmatic/specmatic/pull/2641\r\n* refactor: Streamline traffic-to-spec conversion by @joelrosario in https://github.com/specmatic/specmatic/pull/2643\r\n* refactor: Remove legacy bindings references from configuration and test execution by @joelrosario in https://github.com/specmatic/specmatic/pull/2642\r\n* External examples schema by @SaachiKaup in https://github.com/specmatic/specmatic/pull/2590\r\n* Remove XML pattern handling from Gherkin clauses by @joelrosario in https://github.com/specmatic/specmatic/pull/2648\r\n* refactor: refactor BackwardCompatibilityCheckBaseCommand by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2647\r\n* Update dependency com.ezylang:EvalEx to v3.7.0 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2631\r\n* chore: upgrade Netty to 4.2.16.Final to address vulnerabilities by @vedubhat in https://github.com/specmatic/specmatic/pull/2653\r\n* Fix: Binary multipart payloads being treated as filenames by @joelrosario in https://github.com/specmatic/specmatic/pull/2654\r\n* feat: enable matcher extensions to use external example data by @joelrosario in https://github.com/specmatic/specmatic/pull/2655\r\n* Fix/bcc operation request wiring by @Sushant092003 in https://github.com/specmatic/specmatic/pull/2651\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.50.1...2.51.0",
+        "labels": [],
+        "state": "published"
+    }
+}

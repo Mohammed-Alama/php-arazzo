@@ -1,0 +1,27 @@
+{
+    "id": "5f3c4c5ee0e0802aa81f9b780edadf6cebea767d66a6097be76c54ceff99eb0e",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.50.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.50.0",
+    "publishedAt": "2026-07-06T11:13:02Z",
+    "tags": [
+        "soap",
+        "wsdl",
+        "xml",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P0-6 source routing (wsdl type)",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.50.0",
+        "title": "2.50.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.50.0",
+        "publishedAt": "2026-07-06T11:13:02Z",
+        "body": "## What's Changed\r\n* Update logback monorepo to v1.5.37 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2598\r\n* Add WSDL xsi:type support for XML patterns and SOAP parsing by @joelrosario in https://github.com/specmatic/specmatic/pull/2615\r\n* Support abstract xsi:type handling in WSDL XML parsing by @joelrosario in https://github.com/specmatic/specmatic/pull/2616\r\n* Add WSDL substitution group support by @joelrosario in https://github.com/specmatic/specmatic/pull/2618\r\n* Normalize SOAPAction handling and expand WSDL example coverage by @joelrosario in https://github.com/specmatic/specmatic/pull/2619\r\n* Fix WSDL XML parsing and generation edge cases by @joelrosario in https://github.com/specmatic/specmatic/pull/2620\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.49.1...2.50.0",
+        "labels": [],
+        "state": "published"
+    }
+}

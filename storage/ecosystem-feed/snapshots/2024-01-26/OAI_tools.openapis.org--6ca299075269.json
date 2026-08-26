@@ -1,0 +1,25 @@
+{
+    "id": "6ca299075269eabbae4a1a6ed289131677ca5411981dff82db128db725956fc6",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: Added tests for invalid URLs and more test cases",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/129",
+    "publishedAt": "2024-01-26T17:27:26Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:129",
+        "title": "fix: Added tests for invalid URLs and more test cases",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/129",
+        "publishedAt": "2024-01-26T17:27:26Z",
+        "body": "Summary of changes:\r\n\r\n* Added clean-up of Markdown included in ticket properties\r\n* Added Apidog as test case\r\n* Cleaned up environment setting in test",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

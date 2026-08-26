@@ -1,0 +1,25 @@
+{
+    "id": "40a3a77b42cc08543c7030247e94d393a82ed004dc555234e21740e6b2dbf083",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.46.3",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.3",
+    "publishedAt": "2026-06-01T10:30:38Z",
+    "tags": [
+        "xml",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.46.3",
+        "title": "2.46.3",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.3",
+        "publishedAt": "2026-06-01T10:30:38Z",
+        "body": "## What's Changed\r\n* Annotate BCC breadcrumbs with source spec:line:col by @sahilm in https://github.com/specmatic/specmatic/pull/2496\r\n* Fix flaky createStub timeout test by stubbing timeout helper by @joelrosario in https://github.com/specmatic/specmatic/pull/2529\r\n* Support XML oneOf examples in OpenAPI conversion by @joelrosario in https://github.com/specmatic/specmatic/pull/2526\r\n* [codex] Fix external example scenario matching with media type parameters by @joelrosario in https://github.com/specmatic/specmatic/pull/2530\r\n* Serialize form-exploded query object examples by wire keys by @joelrosario in https://github.com/specmatic/specmatic/pull/2524\r\n* Fix form field presence classification for missing required keys by @joelrosario in https://github.com/specmatic/specmatic/pull/2525\r\n* chore(deps): update jackson monorepo to v2.21.4 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2528\r\n* chore(deps): update plugin io.specmatic.gradle to v0.15.12 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2531\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.46.2...2.46.3",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "a2eed9a47b9b646e3fe3e4de5a23206e47382d7b5ac79d7645094842abaca750",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Test hardened consumer lock stability",
+    "url": "https://github.com/OAI/build-infra/commit/073521d3b536b298f9ea336359372d72d24f5cd8",
+    "publishedAt": "2026-08-18T18:49:07Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:073521d",
+        "title": "Test hardened consumer lock stability",
+        "url": "https://github.com/OAI/build-infra/commit/073521d3b536b298f9ea336359372d72d24f5cd8",
+        "publishedAt": "2026-08-18T18:49:07Z",
+        "body": "Test hardened consumer lock stability\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

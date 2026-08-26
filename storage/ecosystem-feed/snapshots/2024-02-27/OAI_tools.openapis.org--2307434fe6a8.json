@@ -1,0 +1,25 @@
+{
+    "id": "2307434fe6a819b3501c471bfa148880fed83da9a35176acff59dabe97c44abc",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: Corrected pooly ingested data for UI Bakery",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/144",
+    "publishedAt": "2024-02-27T15:01:10Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:144",
+        "title": "fix: Corrected pooly ingested data for UI Bakery",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/144",
+        "publishedAt": "2024-02-27T15:01:10Z",
+        "body": "Summary of changes:\r\n\r\n* Manual data fix for UI Bakery data due to poor parsing of issue\r\n\r\n👍 ",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

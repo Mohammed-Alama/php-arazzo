@@ -1,0 +1,31 @@
+{
+    "id": "4f72774e2bd5f868ee7ddfe28f1fbec5a0e501be3654ff59555ac178a832eab0",
+    "source": "OAI/Arazzo-Specification",
+    "type": "pr",
+    "title": "feat(spec): add SOAP support",
+    "url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+    "publishedAt": "2026-08-07T23:21:09Z",
+    "tags": [
+        "soap",
+        "wsdl",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P0-6 source routing (wsdl type)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "externalId": "pr:533",
+        "title": "feat(spec): add SOAP support",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+        "publishedAt": "2026-08-07T23:21:09Z",
+        "body": "Adds first-class WSDL support to Arazzo 1.2 via a minimal, additive set of changes. Because SOAP operates over HTTP, the vast majority of Arazzo already works for SOAP workflows without modification. Only two things were broken: no valid source description type for WSDL, and no valid way to reference a WSDL operation from a step.\n\n**Changes**\n\n- Source Description Object: adds \"wsdl\" to the type enum (WSDL 1.1 and WSDL 2.0 supported); updates introductory prose and adds a WSDL example\n- Step Object: extends operationId to match WSDL operation names (wsdl:operation/@name, required in both WSDL versions); adds a MUST NOT use operationPath for WSDL steps\n- New subsection - Authoring Steps for WSDL Source Descriptions: covers HTTP method/endpoint resolution from the WSDL binding, SOAPAction/Content-Type guidance for SOAP 1.1 and 1.2, SOAP Fault detection patterns, and request body envelope requirements\n- Runtime Expressions: extends source description resolution to cover WSDL operation name matching (WSDL 1.1 portType, WSDL 2.0 interface); adds WSDL example; updates ABNF comments\n- Schema: adds \"wsdl\" to source type enum; renames openapi-step-object → openapi-or-wsdl-step-object\n- Examples: adds soap-customer-crud.arazzo.yaml (WSDL-only) and hybrid-order-fulfillment.arazzo.yaml (OpenAPI + WSDL chained workflow)\n- Tests: adds pass/fail/characterization schema tests for WSDL-specific cases\n\n**Design note:** operationId reuse vs operationName\n\nWSDL steps use operationId to reference operations by name rather than introducing a new operationName field. The trade-off: because operationId is structurally identical between  OpenAPI and WSDL steps, the schema cannot enforce the operationPath prohibition for WSDL steps at validation time. This is instead enforced via spec prose (MUST NOT) and is a candidate for a linting rule. Keeping operationId avoids inflating the step object with a field that serves the same semantic purpose, consistent with how AsyncAPI steps also reuse operationId alongside their own unique fields.",
+        "labels": [
+            "enhancement"
+        ],
+        "state": "open",
+        "merged": false
+    }
+}

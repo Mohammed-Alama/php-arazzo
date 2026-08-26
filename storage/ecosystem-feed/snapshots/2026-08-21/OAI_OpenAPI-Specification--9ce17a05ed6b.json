@@ -1,0 +1,26 @@
+{
+    "id": "9ce17a05ed6bed46b7bbcd87a6c773fcbde00f7af4d3dd44b2a2a2e78e73dcca",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "dev: sync with main",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5510",
+    "publishedAt": "2026-08-21T20:44:37Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5510",
+        "title": "dev: sync with main",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5510",
+        "publishedAt": "2026-08-21T20:44:37Z",
+        "body": "\r\n- [X] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

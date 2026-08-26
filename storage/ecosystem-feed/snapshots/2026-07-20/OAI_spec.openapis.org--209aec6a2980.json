@@ -1,0 +1,24 @@
+{
+    "id": "209aec6a298037ea2ce94619d031a199a6abf3370a8c539b4b9e0e1b7a1a3d66",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "feat: adds license identifier extension",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/3e348658c144ae1c1ea64e6344d8964f2d2569c1",
+    "publishedAt": "2026-07-20T12:57:30Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:3e34865",
+        "title": "feat: adds license identifier extension",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/3e348658c144ae1c1ea64e6344d8964f2d2569c1",
+        "publishedAt": "2026-07-20T12:57:30Z",
+        "body": "feat: adds license identifier extension",
+        "labels": [],
+        "state": ""
+    }
+}

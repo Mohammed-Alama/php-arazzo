@@ -1,0 +1,24 @@
+{
+    "id": "57fd71a5d51983707452e04182f917f938923aa45acc23b0ffa64a6eafa72ce5",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "feat: add ecosystem article",
+    "url": "https://github.com/usearazzo/website/commit/d888bda7e05f251979d1ba7b6a7af8b10aee32d4",
+    "publishedAt": "2026-08-22T13:52:25Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:d888bda",
+        "title": "feat: add ecosystem article",
+        "url": "https://github.com/usearazzo/website/commit/d888bda7e05f251979d1ba7b6a7af8b10aee32d4",
+        "publishedAt": "2026-08-22T13:52:25Z",
+        "body": "feat: add ecosystem article",
+        "labels": [],
+        "state": ""
+    }
+}

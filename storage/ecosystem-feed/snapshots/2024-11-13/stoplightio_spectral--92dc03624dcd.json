@@ -1,0 +1,24 @@
+{
+    "id": "92dc03624dcd12f7f13a5dabe02d4d6d3f9e8f900de6291e577900dcea23b777",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.14.1",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.1",
+    "publishedAt": "2024-11-13T20:58:32Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.14.1",
+        "title": "v6.14.1",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.1",
+        "publishedAt": "2024-11-13T20:58:32Z",
+        "body": "## What's Changed\r\n* fix(deps): update spectral core to latest in all packages by @mnaumanali94 in https://github.com/stoplightio/spectral/pull/2728\r\n* chore(deps): fix dependabot alerts by @mnaumanali94 in https://github.com/stoplightio/spectral/pull/2730\r\n* fix(cli): update dependencies and trigger docker release by @mnaumanali94 in https://github.com/stoplightio/spectral/pull/2733\r\n\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.14.0...v6.14.1",
+        "labels": [],
+        "state": "published"
+    }
+}

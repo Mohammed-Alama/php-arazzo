@@ -1,0 +1,23 @@
+{
+    "id": "0301d4949d7e3ad2c3843605552795f983489c72bd992259c6a4b808e8d9802a",
+    "source": "usearazzo/website.ecosystem.atom",
+    "type": "commit",
+    "title": "feat(ecosystem): add more aricles / libraries",
+    "url": "https://github.com/usearazzo/website/commit/d832721ff7ac8aa0306e37a3733a6f6ac45352b8",
+    "publishedAt": "2026-08-22T13:20:11+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website.ecosystem.atom",
+        "type": "commit",
+        "externalId": "atom:cbf7a50bff8995cd80802c72dc52814e",
+        "title": "feat(ecosystem): add more aricles / libraries",
+        "url": "https://github.com/usearazzo/website/commit/d832721ff7ac8aa0306e37a3733a6f6ac45352b8",
+        "publishedAt": "2026-08-22T13:20:11+00:00",
+        "body": "\n      <pre style='white-space:pre-wrap;width:81ex'>feat(ecosystem): add more aricles / libraries</pre>\n    ",
+        "labels": []
+    }
+}

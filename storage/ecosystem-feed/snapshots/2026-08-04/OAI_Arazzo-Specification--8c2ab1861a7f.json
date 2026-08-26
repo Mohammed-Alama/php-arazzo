@@ -1,0 +1,24 @@
+{
+    "id": "8c2ab1861a7fb4b126eff6408071fe82e5b120cbde6a507dc5716ef492bc8398",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #534 from OAI/dependabot/npm_and_yarn/markdown-it-15.0.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/06cf84b8dd338743dc0c7432b79eb4554ea0c1f8",
+    "publishedAt": "2026-08-04T08:41:23Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:06cf84b",
+        "title": "Merge pull request #534 from OAI/dependabot/npm_and_yarn/markdown-it-15.0.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/06cf84b8dd338743dc0c7432b79eb4554ea0c1f8",
+        "publishedAt": "2026-08-04T08:41:23Z",
+        "body": "Merge pull request #534 from OAI/dependabot/npm_and_yarn/markdown-it-15.0.0\n\nchore(deps): bump markdown-it from 14.3.0 to 15.0.0",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "b38d22763b8f21fdbee79b9bc748cf9684be96921bbae82172ce615b428439d3",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v5.0.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.0",
+    "publishedAt": "2026-07-07T10:37:45Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v5.0.0",
+        "title": "v5.0.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.0",
+        "publishedAt": "2026-07-07T10:37:45Z",
+        "body": "# [5.0.0](https://github.com/speclynx/apidom/compare/v4.16.0...v5.0.0) (2026-07-07)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* **reference:** upgrade arazzo-runtime-expression to v3.0.0 ([#388](https://github.com/speclynx/apidom/issues/388)) ([1ac337a](https://github.com/speclynx/apidom/commit/1ac337afa7fcbfdce7074bd70a95183defaa69f3))\r\n\r\n\r\n### BREAKING CHANGES\r\n\r\nThere are no breaking changes in this release. The releases was issued by mistake.\r\n\r\n\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

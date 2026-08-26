@@ -1,0 +1,25 @@
+{
+    "id": "d7563090d366b49e20c1bf8859ac01d432c89edaa8a8e7cf387263689d203284",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "docs: add PHP-first Arazzo spec suite",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/12",
+    "publishedAt": "2026-08-21T00:35:57Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:12",
+        "title": "docs: add PHP-first Arazzo spec suite",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/12",
+        "publishedAt": "2026-08-21T00:35:57Z",
+        "body": "Adds the approved six-spec design suite and dependency-ordered implementation plans.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "id": "8aa6943a5fb71a7ef0ec5c1cbca31800fa037ad62dc90632b0b50479c22cfc2e",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Adding Security SIG data",
+    "url": "https://github.com/OAI/community/pull/7",
+    "publishedAt": "2024-03-12T09:29:00Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:7",
+        "title": "Adding Security SIG data",
+        "url": "https://github.com/OAI/community/pull/7",
+        "publishedAt": "2024-03-12T09:29:00Z",
+        "body": "adding security SIG file to provide more info on what it is and how to get involved",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

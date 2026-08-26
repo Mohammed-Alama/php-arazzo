@@ -1,0 +1,25 @@
+{
+    "id": "96d32614d4f4eee896c2fb1c2b326bee972e1c156ea39bb53333a6447f2f5858",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: give StepAttemptOutcome a deliberate home",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/75",
+    "publishedAt": "2026-08-21T21:09:06Z",
+    "tags": [
+        "loop",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 loops vs goto",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:75",
+        "title": "runner: give StepAttemptOutcome a deliberate home",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/75",
+        "publishedAt": "2026-08-21T21:09:06Z",
+        "body": "\\`StepAttemptOutcome\\` lives in \\`packages/runner/src/executor/StepRetryRunner.ts\\` while being produced by \\`StepExecutor\\` and consumed by \\`WorkflowExecutor\\`'s loop — its current home is arbitrary (a leftover of where it was first needed) and is the one type placement worth revisiting before the API surface freezes.\n\nDecide the owning module (likely \\`StepExecutor\\`, as the producer defining the contract) and move it, updating the \\`@internal\\`/public categorization as part of the move.\n\nPart of the pre-1.0 cleanup train feeding the API surface review.\n\nhttps://claude.ai/code/session_018xHDHotJJDWYtTn7ZLrn5V",
+        "labels": [],
+        "state": "open"
+    }
+}

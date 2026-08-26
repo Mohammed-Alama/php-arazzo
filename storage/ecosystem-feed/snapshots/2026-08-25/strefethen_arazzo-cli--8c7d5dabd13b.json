@@ -1,0 +1,25 @@
+{
+    "id": "8c7d5dabd13bbb5b392dd740ea9c7303ae09b6e448ddb5293c5d0e71b841ed8b",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "docs: drop the removed $env namespace from the README and site",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/8363228b722eeba394b226249da6d1e5c630a22d",
+    "publishedAt": "2026-08-25T21:20:10Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:8363228",
+        "title": "docs: drop the removed $env namespace from the README and site",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/8363228b722eeba394b226249da6d1e5c630a22d",
+        "publishedAt": "2026-08-25T21:20:10Z",
+        "body": "docs: drop the removed $env namespace from the README and site\n\nCommit 1f15ff3 deleted the $env expression namespace, but the README still sold it in the feature table, the expression table, the extensions table, and a dedicated .env section, and the docs site listed it in the expression surface. The .env section now states what actually happens: the file still loads into the process environment (overwriting existing values), $env.* resolves as an unknown namespace without leaking values, and workflow inputs are the supported route for secrets.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

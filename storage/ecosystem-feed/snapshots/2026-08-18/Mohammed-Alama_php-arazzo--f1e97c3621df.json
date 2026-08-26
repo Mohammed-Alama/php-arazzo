@@ -1,0 +1,27 @@
+{
+    "id": "f1e97c3621dfa61d7f103e1dd4395e6107ccb642384ed286caae5bc65a4f3801",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "build(deps-dev): update pestphp/pest requirement from ^4.0 to ^5.1",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/8",
+    "publishedAt": "2026-08-18T12:25:15Z",
+    "tags": [
+        "a2a",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Roadmap A2A step type",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:8",
+        "title": "build(deps-dev): update pestphp/pest requirement from ^4.0 to ^5.1",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/8",
+        "publishedAt": "2026-08-18T12:25:15Z",
+        "body": "Updates the requirements on [pestphp/pest](https://github.com/pestphp/pest) to permit the latest version.\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/pestphp/pest/commit/208f447a10fc416397edf00a5fc6380aa284d393\"><code>208f447</code></a> chore: style</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/6b7ca13660fa2a7c8997a55cb6cc4bc0175f637f\"><code>6b7ca13</code></a> feat: allow configuring the TIA directory (<a href=\"https://redirect.github.com/pestphp/pest/issues/1787\">#1787</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/bf7c6b31340164d9eb5f20ccbf43cf78c060bcd3\"><code>bf7c6b3</code></a> fix(tia): casing issues</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/617226ca0176a3ca922b32f638f50f03b8dd81ef\"><code>617226c</code></a> fix: fail missing snapshots in CI (<a href=\"https://redirect.github.com/pestphp/pest/issues/1842\">#1842</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/375b92e93bcddc9847e1bf2d9b87001aab26f932\"><code>375b92e</code></a> chore: updates sponsors</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/e0e00ca74843c23eb19c9da7180fa80c9844fdd3\"><code>e0e00ca</code></a> chore: style</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/d70ecb873ea09397aed743968d6a9e2b264801bc\"><code>d70ecb8</code></a> chore: skip <code>--tia</code> on <code>--mutate</code></li>\n<li><a href=\"https://github.com/pestphp/pest/commit/638932ddb5e220e22b8dbea6a39de07771867182\"><code>638932d</code></a> chore: updates snapshots</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/ac48185736d6b9985f9aacdf23fccf2cee14c3e6\"><code>ac48185</code></a> chore: upgrades to <code>phpunit:13.3</code></li>\n<li><a href=\"https://github.com/pestphp/pest/commit/2e4f8ad56fa1c373c82238a81dacc416b1f7181f\"><code>2e4f8ad</code></a> chore: fixes snapshots</li>\n<li>Additional commits viewable in <a href=\"https://github.com/pestphp/pest/compare/v4.0.0...v5.1.1\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

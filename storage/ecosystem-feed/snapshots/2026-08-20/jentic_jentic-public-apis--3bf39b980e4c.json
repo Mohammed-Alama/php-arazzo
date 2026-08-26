@@ -1,0 +1,24 @@
+{
+    "id": "3bf39b980e4c4e336095cfb140fd6c9c1de452bf4b1ab296ab7aef5945ba2437",
+    "source": "jentic/jentic-public-apis",
+    "type": "commit",
+    "title": "feat: Import OpenAPI spec from Issue #22062 (#22063)",
+    "url": "https://github.com/jentic/jentic-public-apis/commit/d84da67610de7913e1bd00e0391713466d28791d",
+    "publishedAt": "2026-08-20T11:39:02Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-public-apis",
+        "type": "commit",
+        "externalId": "commit:d84da67",
+        "title": "feat: Import OpenAPI spec from Issue #22062 (#22063)",
+        "url": "https://github.com/jentic/jentic-public-apis/commit/d84da67610de7913e1bd00e0391713466d28791d",
+        "publishedAt": "2026-08-20T11:39:02Z",
+        "body": "feat: Import OpenAPI spec from Issue #22062 (#22063)\n\nCo-authored-by: sophie-jentic <212357613+sophie-jentic@users.noreply.github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "id": "791d18c666660b0192170730b30c56b05c1b9c46601c78b589f61390beff815a",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": "Ability to import datatype declarations from XSD files",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/123",
+    "publishedAt": "2024-05-24T20:22:57Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:123",
+        "title": "Ability to import datatype declarations from XSD files",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/123",
+        "publishedAt": "2024-05-24T20:22:57Z",
+        "body": "Dear OAS community,\r\n\r\nforemost - thank you so much for this lovely invention that is Open API - I think every company I worked with not only embraced this, but also made significant improvements on their system landscape. \r\n\r\nNow I reach out to you from a distant land that is called \"Banking sector\", where XML is still the hot shit. For instance, we are implementing new APIs that span between different national banks. We do the design part by sending XML Schema files around containing the desired message structure. It's also not an arbitrary approach, as the so-called [ISO 20022](https://www.iso20022.org) standard is the most widely exacted one and relies on XSD / XML messages.\r\n\r\nWhich brings me to my request: I would love to see a more extended roadmap to support XML and XML Schema in OpenAPI. Now I'm well aware that OpenAPI already has a concept called [XML Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#xmlObject). However, in its current state, it does not support the most common use-cases. One issue that still persists is the inability to represent an XML element with textual content and attributes assigned to it (see OAI/OpenAPI-Specification#630). On top of that, current (national) banks would need to migrate away from using XML Schema Definitions to a JSON-based format to describe the data structures. This would make transitioning from XML world to JSON world more abrupt.\r\n\r\n**SUGGESTIONS:**\r\n1) Fix OAI/OpenAPI-Specification#630\r\n2) Add the ability to reference data definitions from XSD files directly. We could use the $ref semantics for that:\r\n\r\n```json\r\n{\r\n  \"get\": {\r\n    \"description\": \"Returns pets based on ID\",\r\n    \"summary\": \"Find pets by ID\",\r\n    \"operationId\": \"getPetsById\",\r\n    \"responses\": {\r\n      \"200\": {\r\n        \"description\": \"pet response\",\r\n        \"content\": {\r\n          \"*/*\": {\r\n            \"schema\": {\r\n               \"$ref\": \"pet.ontology.xsd#//xs:complexType[@name='Pet']\"\r\n            }\r\n          }\r\n        }\r\n      },\r\n    }\r\n  },\r\n}\r\n```\r\nEverything before the '#' represents the target file to source from. This is just the same logic for JSON Schema declarations in JSON or YAML format. The part after the '#' is a XPath expression pointing to the type declaration to reference. \r\nThe advantages of this approach would be:\r\n* Reusability of existing XSD files - no rewrite needed.\r\n* We don't have to write dedicated generators to support XML Object constructs - instead generators could just fallback to existing code generating tools (i.e. JAXB in the Java World)\r\n\r\nThe disadvantages of this approach would be:\r\n\r\n* More complex handling with the $ref construct: It could be complicated to allow XSD references everywhere where $ref itself is allowed. This example, for instance, would be problematic:\r\n  ```yaml\r\n  paths:\r\n    /users:\r\n      $ref: '../resources/users.xsd#//xs:complexType[@name='UserOperation']'\r\n  ```\r\n  However, we could avoid this by simply restricting the use of XSD references in $ref only to places where we want to declare content types.\r\n* Internal conversion from XSD to JSON/YAML-Compatible intermediate might be necessary, depending on how the swagger-ui, generators actually resolve these $ref references.\r\n\r\nWhat do you think?",
+        "labels": [],
+        "state": "closed"
+    }
+}

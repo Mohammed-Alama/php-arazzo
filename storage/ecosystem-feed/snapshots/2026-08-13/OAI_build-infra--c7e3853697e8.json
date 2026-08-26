@@ -1,0 +1,22 @@
+{
+    "id": "c7e3853697e8e80a5597620c25f9a81864b2051a7184ef9e83b9e7c20fa90efb",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Check lockfile snapshot before tests",
+    "url": "https://github.com/OAI/build-infra/commit/435db891ba5575c5d5f581d54bd9b5c35c58bcda",
+    "publishedAt": "2026-08-13T04:22:17Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:435db89",
+        "title": "Check lockfile snapshot before tests",
+        "url": "https://github.com/OAI/build-infra/commit/435db891ba5575c5d5f581d54bd9b5c35c58bcda",
+        "publishedAt": "2026-08-13T04:22:17Z",
+        "body": "Check lockfile snapshot before tests\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

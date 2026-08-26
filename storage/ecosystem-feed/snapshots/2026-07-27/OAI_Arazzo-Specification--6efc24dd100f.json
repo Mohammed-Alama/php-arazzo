@@ -1,0 +1,24 @@
+{
+    "id": "6efc24dd100f6f9f5f828b1d1246e614f84e0582a8905705da44889a592403a3",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps): bump yargs from 18.0.0 to 18.1.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/c8b9468d16589293cbfe03f6bc44bd2f44ef791d",
+    "publishedAt": "2026-07-27T10:39:18Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:c8b9468",
+        "title": "chore(deps): bump yargs from 18.0.0 to 18.1.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/c8b9468d16589293cbfe03f6bc44bd2f44ef791d",
+        "publishedAt": "2026-07-27T10:39:18Z",
+        "body": "chore(deps): bump yargs from 18.0.0 to 18.1.0\n\nBumps [yargs](https://github.com/yargs/yargs) from 18.0.0 to 18.1.0.\n- [Release notes](https://github.com/yargs/yargs/releases)\n- [Changelog](https://github.com/yargs/yargs/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/yargs/yargs/compare/v18.0.0...v18.1.0)\n\n---\nupdated-dependencies:\n- dependency-name: yargs\n  dependency-version: 18.1.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

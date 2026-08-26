@@ -1,0 +1,22 @@
+{
+    "id": "f8c28dcbb7c2ab8ab1eaf83496dff63da2f94a8649075e858776a260bd052c5b",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Resolve consumer binaries under Yarn",
+    "url": "https://github.com/OAI/build-infra/commit/c058c76eef9cfa731a73cc42eb8feba437f17790",
+    "publishedAt": "2026-08-18T18:30:43Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:c058c76",
+        "title": "Resolve consumer binaries under Yarn",
+        "url": "https://github.com/OAI/build-infra/commit/c058c76eef9cfa731a73cc42eb8feba437f17790",
+        "publishedAt": "2026-08-18T18:30:43Z",
+        "body": "Resolve consumer binaries under Yarn\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

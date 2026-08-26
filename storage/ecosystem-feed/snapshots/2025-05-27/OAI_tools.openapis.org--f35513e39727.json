@@ -1,0 +1,25 @@
+{
+    "id": "f35513e3972746c029c5c95b3521280009fd2dbde1cbb97831d8f7129c513bd9",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Fixing broken logo image",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/199",
+    "publishedAt": "2025-05-27T17:29:41Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:199",
+        "title": "Fixing broken logo image",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/199",
+        "publishedAt": "2025-05-27T17:29:41Z",
+        "body": "Hello,\r\n\r\nThanks for creating this site. Noticed that the logo image is not appearing.\r\n\r\n<img width=\"260\" alt=\"image\" src=\"https://github.com/user-attachments/assets/b5cae414-7ed9-4b22-a912-4daddde7f045\" />\r\n\r\nLooks like the logo image (https://www.openapis.org/wp-content/uploads/sites/3/2018/02/OpenAPI_Logo_Pantone-1.png) is not available anymore.\r\n\r\n<img width=\"718\" alt=\"image\" src=\"https://github.com/user-attachments/assets/3cca513d-da98-40bb-9bbf-6a22995c1e56\" />\r\n\r\nI have replaced this logo image with https://www.openapis.org/wp-content/uploads/sites/31/2018/02/OpenAPI_Logo_Pantone-1.png which seems to fix the problem.\r\n\r\n<img width=\"744\" alt=\"image\" src=\"https://github.com/user-attachments/assets/480d49b4-784c-4524-9ef9-379edba76350\" />\r\n\r\nHope this helps. Regards.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

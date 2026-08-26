@@ -1,0 +1,24 @@
+{
+    "id": "f42680bf78b8712c822ab47610128ed29ce256df9978b1846de3b3f52c469142",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.16",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.16",
+    "publishedAt": "2026-02-20T11:46:14Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.16",
+        "title": "v1.0.0-alpha.16",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.16",
+        "publishedAt": "2026-02-20T11:46:14Z",
+        "body": "# [1.0.0-alpha.16](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2026-02-20)\n\n\n### Bug Fixes\n\n* **security:** fix security vulnerability in minimatch ([#89](https://github.com/jentic/jentic-arazzo-tools/issues/89)) ([7e16a0f](https://github.com/jentic/jentic-arazzo-tools/commit/7e16a0ff16aa4e87d09e149dd1bd6cfcf7f23e23))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

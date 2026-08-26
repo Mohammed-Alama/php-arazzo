@@ -1,0 +1,27 @@
+{
+    "id": "f9e1b590367d42993171065dba662ad067ae8892c3746bc8351b001e511c851a",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix: address review findings on the xpath version advisory",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/abf325f900512f3d2885d4946abc88a11f0f266e",
+    "publishedAt": "2026-08-24T21:14:42Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:abf325f",
+        "title": "fix: address review findings on the xpath version advisory",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/abf325f900512f3d2885d4946abc88a11f0f266e",
+        "publishedAt": "2026-08-24T21:14:42Z",
+        "body": "fix: address review findings on the xpath version advisory\n\nFresh review of 2517b49 found two issues. First, the pre-1.1\nomitted-version wording told every site to declare a Criterion\nExpression Type Object, but that object applies only to criteria -\nArazzo 1.0.x has no Selector Object or targetSelectorType vocabulary at\nall, so a 1.0.x selector-site advisory was recommending an object that\nneither applies nor exists there. The advisory now carries the site\n(criterion vs selector, declared on the existing ExpressionTypeRules\nconsts): pre-1.1 criterion advisories keep the Criterion Expression\nType Object name and the XML Path Language 3.1 default, while pre-1.1\nselector/replacement advisories name no versioning object and claim no\nspec default, stating only the rejection and the xpath-10 remedy. New\ntest pins a 1.0.1 document with output-selector and targetSelectorType\nsites.\n\nSecond, the new unsupportedXpathVersion kind was missing from the\nfrozen kind-names contract test, the canonical enumeration guarding the\n--json name strings; the pair is added in enum order.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

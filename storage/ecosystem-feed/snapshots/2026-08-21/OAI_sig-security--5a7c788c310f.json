@@ -1,0 +1,24 @@
+{
+    "id": "5a7c788c310ff126e0242470ede3e26c6ff3c07a84bc979d93ecc55ea26abcee",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Use wildcard or regex in cookie name in Cookie Authentication",
+    "url": "https://github.com/OAI/sig-security/issues/32",
+    "publishedAt": "2026-08-21T18:09:32Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:32",
+        "title": "Use wildcard or regex in cookie name in Cookie Authentication",
+        "url": "https://github.com/OAI/sig-security/issues/32",
+        "publishedAt": "2026-08-21T18:09:32Z",
+        "body": "Hi,\r\nI need to use Cookie Authentication for my APIs, but the authentication cookie name's in my app changes every time you log in (only the cookie name prefix is known: _shibsession_).\r\n\r\nI was looking for a way to specify cookies name pattern instead of the exact name. Is there such a feature? ",
+        "labels": [],
+        "state": "open"
+    }
+}

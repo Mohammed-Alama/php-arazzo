@@ -1,0 +1,28 @@
+{
+    "id": "064bc7e0edfe324dfab70028823aa20f66f302719e6879cfe6814460e185c812",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.52.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.52.0",
+    "publishedAt": "2026-08-10T16:40:07Z",
+    "tags": [
+        "xml",
+        "mcp",
+        "actor",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.52.0",
+        "title": "2.52.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.52.0",
+        "publishedAt": "2026-08-10T16:40:07Z",
+        "body": "## What's Changed\r\n* refactor: improve handling of multipart content by @joelrosario in https://github.com/specmatic/specmatic/pull/2666\r\n* refactor: eliminated unused code by @joelrosario in https://github.com/specmatic/specmatic/pull/2667\r\n* refactor: Use canonical optionality for XML attributes by @joelrosario in https://github.com/specmatic/specmatic/pull/2668\r\n* Honor nullable JSON responses by @joelrosario in https://github.com/specmatic/specmatic/pull/2671\r\n* fix: Preserve null literals outside JSON bodies by @joelrosario in https://github.com/specmatic/specmatic/pull/2672\r\n* Mark multipart image upload conformance as passing by @joelrosario in https://github.com/specmatic/specmatic/pull/2673\r\n* Fix example module discovery and stable IDs for inline examples by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2664\r\n* fix: fix bcc mcp tool in case of docker by @vedubhat in https://github.com/specmatic/specmatic/pull/2675\r\n* Preserve default response reporting in test coverage by @joelrosario in https://github.com/specmatic/specmatic/pull/2676\r\n* Handle response examples without matching request examples by @joelrosario in https://github.com/specmatic/specmatic/pull/2677\r\n* Add OpenID Connect security scheme support by @joelrosario in https://github.com/specmatic/specmatic/pull/2683\r\n* Handle 429 responses in non-4xx contract tests by @joelrosario in https://github.com/specmatic/specmatic/pull/2682\r\n* Support retries for undocumented 429 responses by @joelrosario in https://github.com/specmatic/specmatic/pull/2684\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.51.1...2.52.0",
+        "labels": [],
+        "state": "published"
+    }
+}

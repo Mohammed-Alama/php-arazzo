@@ -1,0 +1,24 @@
+{
+    "id": "cc2b3aa4a64efacb193c95ccf15553005030786559eb761c647d5b0064b0cdb1",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.46.1",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.1",
+    "publishedAt": "2026-05-13T13:20:18Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.46.1",
+        "title": "2.46.1",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.1",
+        "publishedAt": "2026-05-13T13:20:18Z",
+        "body": "## What's Changed\r\n* chore: update reporter version to 0.3.19, it basically fixes the status of wip tests by marking them as other and displays them using an hourglass icon in the html report by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2494\r\n* feat: show wip remark in coverage console report when there are wip tests by @vedubhat in https://github.com/specmatic/specmatic/pull/2497\r\n* Improve backward compatibility check performance by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2486\r\n* chore: remove match field from CtrfTestMetadata by @vedubhat in https://github.com/specmatic/specmatic/pull/2499\r\n* fix: show WIP count under WIP in the logs logged by Junit execution listener by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2500\r\n* Implement config updater from legacy V1 and V2 to latest V3 by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2501\r\n* chore: update reporter version to 0.3.21, it brings in latest version of html reporter with wip + success tests filtering bug fix by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2502\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.46.0...2.46.1",
+        "labels": [],
+        "state": "published"
+    }
+}

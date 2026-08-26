@@ -1,0 +1,24 @@
+{
+    "id": "9ac486b147fddd4eebb8b9656ac9b4c913bfd742046dc95016f38b7b81b51227",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.11.0",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.11.0",
+    "publishedAt": "2023-09-18T10:15:43Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.11.0",
+        "title": "v6.11.0",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.11.0",
+        "publishedAt": "2023-09-18T10:15:43Z",
+        "body": "## What's Changed\r\n* feat(rulesets): add oas3-server-variables rule by @P0lip in https://github.com/stoplightio/spectral/pull/2526\r\n* chore(rulesets): use createRulesetFunction for all oas functions by @P0lip in https://github.com/stoplightio/spectral/pull/2491\r\n* feat(formatters): add sarif formatter by @PhilippHeuer in https://github.com/stoplightio/spectral/pull/2532\r\n\r\n## New Contributors\r\n* @PhilippHeuer made their first contribution in https://github.com/stoplightio/spectral/pull/2532\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.10.1...v6.11.0",
+        "labels": [],
+        "state": "published"
+    }
+}

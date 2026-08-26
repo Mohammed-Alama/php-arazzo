@@ -1,0 +1,24 @@
+{
+    "id": "0506de0bfe988d478ef060753a21f981a2830d11e3239486f785530f86d54e15",
+    "source": "OAI/Overlay-Specification",
+    "type": "issue",
+    "title": "Add `$self` if external references are supported.",
+    "url": "https://github.com/OAI/Overlay-Specification/issues/316",
+    "publishedAt": "2026-07-28T16:27:35Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "issue",
+        "externalId": "issue:316",
+        "title": "Add `$self` if external references are supported.",
+        "url": "https://github.com/OAI/Overlay-Specification/issues/316",
+        "publishedAt": "2026-07-28T16:27:35Z",
+        "body": "PR #296 adds same-document references while raising the possibility of future support for external references.  If such support is added, a `$self` field analogous to the one in OAS 3.2 and the one being added to Arazzo 1.1 should be added to the Overlay specification so that all referencing is consistent across our specification ecosystem.",
+        "labels": [],
+        "state": "closed"
+    }
+}

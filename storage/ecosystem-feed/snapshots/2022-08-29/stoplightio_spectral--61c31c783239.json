@@ -1,0 +1,24 @@
+{
+    "id": "61c31c783239a2125b07da17effeb8c4d3a4bb178b0330983145acb3072a5779",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.5.1",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.5.1",
+    "publishedAt": "2022-08-29T09:18:30Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.5.1",
+        "title": "v6.5.1",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.5.1",
+        "publishedAt": "2022-08-29T09:18:30Z",
+        "body": "## What's Changed\r\n* fix(rulesets): __importDefault undefined by @P0lip in https://github.com/stoplightio/spectral/pull/2243\r\n* fix(functions): bump stoplight/better-ajv-errors by @P0lip in https://github.com/stoplightio/spectral/pull/2250\r\n* feat(rulesets): check uniqueness of AsyncAPI messages by @magicmatatjahu in https://github.com/stoplightio/spectral/pull/2224\r\n* fix(cli): missing line break by @nmoreaud in https://github.com/stoplightio/spectral/pull/2251\r\n\r\n## New Contributors\r\n* @snim2 made their first contribution in https://github.com/stoplightio/spectral/pull/2221\r\n* @nmoreaud made their first contribution in https://github.com/stoplightio/spectral/pull/2251\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.5.0...v6.5.1",
+        "labels": [],
+        "state": "published"
+    }
+}

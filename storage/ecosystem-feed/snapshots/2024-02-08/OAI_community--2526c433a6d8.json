@@ -1,0 +1,24 @@
+{
+    "id": "2526c433a6d8a2bd0da675eed9bdf86a6f4a61f36e65653da30db3c7e8e3e442",
+    "source": "OAI/community",
+    "type": "issue",
+    "title": "triage & maintainers need permissions to transfer issues across repos",
+    "url": "https://github.com/OAI/community/issues/13",
+    "publishedAt": "2024-02-08T23:29:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/community",
+        "type": "issue",
+        "externalId": "issue:13",
+        "title": "triage & maintainers need permissions to transfer issues across repos",
+        "url": "https://github.com/OAI/community/issues/13",
+        "publishedAt": "2024-02-08T23:29:31Z",
+        "body": "@webron I'm guessing we need your admin powers on this as well as I'm not sure anyone else has access to all the repos needed.\r\n\r\nIn today's call we agreed to remove some issue labels from the spec repo, but this requires @OAI/triage and @OAI/openapi-maintainers being able to transfer some of the labeled issues to other repos, specifically:\r\n\r\n* community (this repo)\r\n* learn.openapis.org\r\n* Outreach\r\n* Tooling\r\n* oascomply\r\n* Overlay-Specification\r\n* sig-*\r\n\r\nCould this ability be added for both of those groups (at the moment, I don't think adding to triage automatically empowers maintainers).",
+        "labels": [],
+        "state": "closed"
+    }
+}

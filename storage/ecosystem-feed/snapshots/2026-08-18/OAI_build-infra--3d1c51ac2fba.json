@@ -1,0 +1,24 @@
+{
+    "id": "3d1c51ac2fba48859668b575b06c9fd119ace7102a2850a8a2426489e85cf892",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Share Hyperjump runtime with schema coverage",
+    "url": "https://github.com/OAI/build-infra/commit/1a12730f59e1327592ea33a949e61d1f77dea474",
+    "publishedAt": "2026-08-18T18:42:04Z",
+    "tags": [
+        "schema"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:1a12730",
+        "title": "Share Hyperjump runtime with schema coverage",
+        "url": "https://github.com/OAI/build-infra/commit/1a12730f59e1327592ea33a949e61d1f77dea474",
+        "publishedAt": "2026-08-18T18:42:04Z",
+        "body": "Share Hyperjump runtime with schema coverage\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

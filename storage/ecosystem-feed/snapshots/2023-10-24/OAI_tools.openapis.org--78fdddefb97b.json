@@ -1,0 +1,26 @@
+{
+    "id": "78fdddefb97bb44d1ea5a8121f4c3de39a9fd17a98262c7edc324cc82de93d30",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Updates openapi json schema generator",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/92",
+    "publishedAt": "2023-10-24T21:56:06Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:92",
+        "title": "Updates openapi json schema generator",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/92",
+        "publishedAt": "2023-10-24T21:56:06Z",
+        "body": "Updates openapi json schema generator\r\nwhich now support openapi 3.1.0 per https://github.com/openapi-json-schema-tools/openapi-json-schema-generator/releases/tag/3.1.0\r\n\r\n1. tools.yaml updated to show `v3_1: true` for openapi json schema generator\r\n2. ran `yarn run build:all`\r\n\r\nIf merged, this will close out https://github.com/OAI/Tooling/issues/96",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

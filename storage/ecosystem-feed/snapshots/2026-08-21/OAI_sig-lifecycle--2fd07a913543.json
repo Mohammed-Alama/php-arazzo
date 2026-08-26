@@ -1,0 +1,22 @@
+{
+    "id": "2fd07a9135439cc6553923d50228054c5511e0c120e6d67f2af5bfc9cdc5f712",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "security scheme apiKey in body form data parameter",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/9",
+    "publishedAt": "2026-08-21T18:10:00Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:9",
+        "title": "security scheme apiKey in body form data parameter",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/9",
+        "publishedAt": "2026-08-21T18:10:00Z",
+        "body": "It is possible to define a security scheme as\r\n```\r\nQueryKey:\r\n  type: apiKey\r\n  in: query\r\n  name: myparam\r\n```\r\ncorresponding to\r\n```\r\nparameters:\r\n  - name: myparam\r\n    in: query\r\n    required: true\r\n```\r\nwhile the first approach adds the notion that the required parameter is related to security.\r\n\r\n\r\nHowever there seems to be no way to define a security scheme about a required parameter in an `application/x-www-form-urlencoded` body adding the same security notion.",
+        "labels": [],
+        "state": "open"
+    }
+}

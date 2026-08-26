@@ -1,0 +1,25 @@
+{
+    "id": "f0f97ef13df6d16cc7133aee66f40e43acb4ddde8950429cac623bfe75ac0b7f",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Removed content from spec as per meeting decision",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/136",
+    "publishedAt": "2024-06-16T15:31:49Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:136",
+        "title": "Removed content from spec as per meeting decision",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/136",
+        "publishedAt": "2024-06-16T15:31:49Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

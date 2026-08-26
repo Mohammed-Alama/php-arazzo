@@ -1,0 +1,24 @@
+{
+    "id": "88e723105636daeb3efd3453160dcafc886af2f33563c98836fcbdeb611a83c3",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.22",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.22",
+    "publishedAt": "2026-03-10T09:44:21Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.22",
+        "title": "v1.0.0-alpha.22",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.22",
+        "publishedAt": "2026-03-10T09:44:21Z",
+        "body": "# [1.0.0-alpha.22](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.21...v1.0.0-alpha.22) (2026-03-10)\n\n\n### Performance Improvements\n\n* address memory issues with SpecLynx data model ([#124](https://github.com/jentic/jentic-arazzo-tools/issues/124)) ([90ee10d](https://github.com/jentic/jentic-arazzo-tools/commit/90ee10d52dbe7314d7dc2e48e0e656fd74a97cff))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

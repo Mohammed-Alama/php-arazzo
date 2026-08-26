@@ -1,0 +1,26 @@
+{
+    "id": "5c36321b46c5090e98954567f0e493457cc875b32233241abfb15c31c3028ce6",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "release",
+    "title": "v2.0.0",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0",
+    "publishedAt": "2026-01-23T13:59:16Z",
+    "tags": [
+        "xml",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "release",
+        "externalId": "release:v2.0.0",
+        "title": "v2.0.0",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0",
+        "publishedAt": "2026-01-23T13:59:16Z",
+        "body": "# [2.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/compare/v1.0.1...v2.0.0) (2026-01-23)\n\n\n### Bug Fixes\n\n* **parser:** normalize token to lower case ([#85](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/85)) ([aa11a07](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/aa11a07f6feb60f4fe0084962bf5efdcc5c8bb6a)), closes [#1](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/1)\n\n\n### Features\n\n* **extract:** allow to extract multiple expressions from string ([#87](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/87)) ([7d0d29c](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/7d0d29cf5a9be4bca547c650cec7dbd7976a5c72)), closes [#3](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/3) [#81](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/81)\n* implement proper parsing (CST/AST/XML) ([#84](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/84)) ([661687f](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/661687f397b898ce7d907251931673827ef90f34))\n* minimal Node.js version is now 16.14.0 ([24df0f0](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/24df0f04e7e7eb20ebea1419411cdc34f3590540))\n\n\n### BREAKING CHANGES\n\n* **extract:** signature of extract function changed.\n* this is a breaking change as the results that parser is producing has\nradically diffrent shape and semantics.\n* minimal Node.js version was bumped from 12.20.0 to 16.14.0\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

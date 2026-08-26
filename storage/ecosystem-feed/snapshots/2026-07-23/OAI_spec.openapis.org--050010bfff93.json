@@ -1,0 +1,24 @@
+{
+    "id": "050010bfff93f9ef9879f1ee3d64f5012a1ba8dac4cbc4abb071a921c0449eb6",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #126 from OAI/dependabot/github_actions/ruby/setup-ruby-1.321.0",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/a281a9180c9a61fbbbb2f3b65db80bf0948b05eb",
+    "publishedAt": "2026-07-23T09:58:14Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:a281a91",
+        "title": "Merge pull request #126 from OAI/dependabot/github_actions/ruby/setup-ruby-1.321.0",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/a281a9180c9a61fbbbb2f3b65db80bf0948b05eb",
+        "publishedAt": "2026-07-23T09:58:14Z",
+        "body": "Merge pull request #126 from OAI/dependabot/github_actions/ruby/setup-ruby-1.321.0\n\nbuild(deps): bump ruby/setup-ruby from 1.320.0 to 1.321.0",
+        "labels": [],
+        "state": ""
+    }
+}

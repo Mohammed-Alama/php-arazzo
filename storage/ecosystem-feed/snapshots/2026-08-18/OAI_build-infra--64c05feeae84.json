@@ -1,0 +1,22 @@
+{
+    "id": "64c05feeae84a7b50a7d108255ba65567d72a6771fe01fd3daa2b0c53e71183d",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Test Yarn Git dependency consumers",
+    "url": "https://github.com/OAI/build-infra/commit/11d8c61e51291cfb19113c455de14ee2de492aeb",
+    "publishedAt": "2026-08-18T18:18:29Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:11d8c61",
+        "title": "Test Yarn Git dependency consumers",
+        "url": "https://github.com/OAI/build-infra/commit/11d8c61e51291cfb19113c455de14ee2de492aeb",
+        "publishedAt": "2026-08-18T18:18:29Z",
+        "body": "Test Yarn Git dependency consumers\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

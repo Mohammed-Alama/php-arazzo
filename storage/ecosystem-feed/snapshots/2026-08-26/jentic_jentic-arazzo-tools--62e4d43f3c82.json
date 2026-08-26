@@ -1,0 +1,24 @@
+{
+    "id": "62e4d43f3c82cb6845e1ddb2c66e7b7dbbba5d21a4ffb7cb2fba6cd3ca7daa02",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "tag",
+    "title": "tag v1.0.0-alpha.19",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.19",
+    "publishedAt": "2026-08-26T07:08:19+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "tag",
+        "externalId": "tag:v1.0.0-alpha.19",
+        "title": "tag v1.0.0-alpha.19",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.19",
+        "publishedAt": "2026-08-26T07:08:19+00:00",
+        "body": "06f968a2268a2914eb9e2762f5554dcdceb32906",
+        "labels": [],
+        "state": "published"
+    }
+}

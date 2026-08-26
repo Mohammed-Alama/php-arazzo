@@ -1,0 +1,25 @@
+{
+    "id": "da6053b4a118540a51cbf83a0e1416fc25f80d6502136ffad47712adb2f8b3f4",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": "Support SHACL schema as alternative to json-schema",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/118",
+    "publishedAt": "2024-05-24T19:32:56Z",
+    "tags": [
+        "human",
+        "schema"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:118",
+        "title": "Support SHACL schema as alternative to json-schema",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/118",
+        "publishedAt": "2024-05-24T19:32:56Z",
+        "body": "It would be nice to allow a resource to be linked with SHACL schema. So that API consumers would know a schema to validate data being sent\\received. So that tools like swagger-ui would be able to render appropriate human-friendly data descriptions and playground forms validation.",
+        "labels": [],
+        "state": "closed"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "8c81f8abdae6e2e894675c077c06197b2a00c80d9da3319b44ee220682a80e81",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #509 from frankkilcommins/update-sync-actions",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/5c97e370d203ff74627d15b6711f65861139c319",
+    "publishedAt": "2026-07-08T09:59:59Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:5c97e37",
+        "title": "Merge pull request #509 from frankkilcommins/update-sync-actions",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/5c97e370d203ff74627d15b6711f65861139c319",
+        "publishedAt": "2026-07-08T09:59:59Z",
+        "body": "Merge pull request #509 from frankkilcommins/update-sync-actions\n\nfix(workflows): use -X theirs to resolve sync merge conflicts",
+        "labels": [],
+        "state": ""
+    }
+}

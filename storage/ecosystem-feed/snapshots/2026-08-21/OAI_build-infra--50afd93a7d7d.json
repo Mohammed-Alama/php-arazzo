@@ -1,0 +1,24 @@
+{
+    "id": "50afd93a7d7df4874ffacd8ca22a4b8649370e1cff5b91b17121dfcd23b770e7",
+    "source": "OAI/build-infra",
+    "type": "issue",
+    "title": "Infrastructure: automatically check adherence to style guide",
+    "url": "https://github.com/OAI/build-infra/issues/25",
+    "publishedAt": "2026-08-21T18:12:03Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "issue",
+        "externalId": "issue:25",
+        "title": "Infrastructure: automatically check adherence to style guide",
+        "url": "https://github.com/OAI/build-infra/issues/25",
+        "publishedAt": "2026-08-21T18:12:03Z",
+        "body": "Support editors by automatically checking the rules in the [style guide](https://github.com/OAI/OpenAPI-Specification/blob/main/style-guide.md).\n\n",
+        "labels": [],
+        "state": "open"
+    }
+}

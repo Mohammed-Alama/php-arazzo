@@ -1,0 +1,25 @@
+{
+    "id": "bf50e0d57506148951bdcb13d08e1095c36d3350a9de7b3da8532b68bfb122f1",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Replace oai.github.io/Documentation with learn.openapis.org",
+    "url": "https://github.com/OAI/community/pull/11",
+    "publishedAt": "2024-03-12T15:46:14Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:11",
+        "title": "Replace oai.github.io/Documentation with learn.openapis.org",
+        "url": "https://github.com/OAI/community/pull/11",
+        "publishedAt": "2024-03-12T15:46:14Z",
+        "body": "The GitHub pages site has moved to a new domain.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "2bafc61eb53a99359c76bdf8f6ba6155f30ca838a746f01023ad87337eeab89e",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "Add Bielu.AspNetCore.ApiDescriptions to the list of Overlay tools",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/377",
+    "publishedAt": "2026-08-08T18:38:55Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:377",
+        "title": "Add Bielu.AspNetCore.ApiDescriptions to the list of Overlay tools",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/377",
+        "publishedAt": "2026-08-08T18:38:55Z",
+        "body": "## Summary\n- Adds [Bielu.AspNetCore.ApiDescriptions](https://github.com/bielu/Bielu.AspNetCore.ApiDescriptions) to the \"Tools that Support Overlays\" list in the README.\n\n## Test plan\n- N/A (documentation-only change)",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

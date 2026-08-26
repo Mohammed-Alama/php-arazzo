@@ -1,0 +1,25 @@
+{
+    "id": "547fb33f9abcd2902efe2b419a464dc80bb21df0d02b951155951c60178faf9f",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "release",
+    "title": "v2.0.2",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2",
+    "publishedAt": "2026-01-29T14:16:02Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "release",
+        "externalId": "release:v2.0.2",
+        "title": "v2.0.2",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2",
+        "publishedAt": "2026-01-29T14:16:02Z",
+        "body": "## [2.0.2](https://github.com/swaggerexpert/arazzo-runtime-expression/compare/v2.0.1...v2.0.2) (2026-01-29)\n\n\n### Bug Fixes\n\n* **grammar:** fix secondary compoments grammar ([#91](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/91)) ([b53544a](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/b53544a51b6b68f871ef9eb99f0ec0652b05a3d0))\n* **types:** fix downstream type usage ([#90](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/90)) ([cc65b1d](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/cc65b1d7b81b71cc026fe36e89fc5cff297759ea))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

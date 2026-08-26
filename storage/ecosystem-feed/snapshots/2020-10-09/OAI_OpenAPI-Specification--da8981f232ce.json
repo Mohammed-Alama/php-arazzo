@@ -1,0 +1,26 @@
+{
+    "id": "da8981f232ce904885e35a7d7c00102cd3439fd87fbb18ebd156154218d7d589",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": " OAS 3.1.0-rc1 Released! ",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.0-rc1",
+    "publishedAt": "2020-10-09T01:31:59Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.1.0-rc1",
+        "title": " OAS 3.1.0-rc1 Released! ",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.0-rc1",
+        "publishedAt": "2020-10-09T01:31:59Z",
+        "body": "Changelog\r\n---------\r\n\r\nSee [3.1.0-rc0](https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.0-rc0) for previous changes in 3.1.0, including the explanation of why there are breaking changes.\r\n\r\n### Breaking changes\r\n- *Server Variable*'s `enum` now MUST not be empty (changed from SHOULD).\r\n- *Server Variable*'s `default` now MUST exist in the `enum` values, if such values are defined (changed from SHOULD).\r\n- `responses` are no longer required to be defined under the *Operation Object*.\r\n\r\n### Clarifications\r\n\r\n- It is now clarified when path template expression may not have a corresponding path parameter.\r\n- Data types (and just primitive data types) now correspond to JSON Schema.\r\n- Various cosmetic fixes.\r\n- A new section was added to address how to handle the `$schema` keyword (implicitly and explicitly).\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

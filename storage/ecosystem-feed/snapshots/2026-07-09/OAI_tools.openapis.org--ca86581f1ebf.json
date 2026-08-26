@@ -1,0 +1,26 @@
+{
+    "id": "ca86581f1ebf794bfec15ea7ec33cf948bb196a2b0d1525e8145e683e52ff83b",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Add Membrane API Gateway",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/268",
+    "publishedAt": "2026-07-09T13:59:36Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:268",
+        "title": "Add Membrane API Gateway",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/268",
+        "publishedAt": "2026-07-09T13:59:36Z",
+        "body": "Adds **Membrane API Gateway** as a manual entry in `src/_data/tools.yaml`.\n\n- Homepage: https://www.membrane-api.io\n- Repository: https://github.com/membrane/api-gateway\n- Language: Java\n- Categories: Gateway, Data Validators, Server Implementations\n- OpenAPI support: 2.0, 3.0, 3.1, and 3.2 (3.2 noted in the description text, since there is no dedicated column)\n\nOpen source API gateway with built-in OpenAPI support — turns OpenAPI descriptions into APIs and enforces request/response validation.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

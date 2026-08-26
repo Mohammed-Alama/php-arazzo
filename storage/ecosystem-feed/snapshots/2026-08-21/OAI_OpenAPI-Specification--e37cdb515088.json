@@ -1,0 +1,27 @@
+{
+    "id": "e37cdb5150887578823de32a57c8fcd73330bdb2c079acf9ae967ebff3771262",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "issue",
+    "title": "Security Requirement Consistency with Server Objects",
+    "url": "https://github.com/OAI/OpenAPI-Specification/issues/1416",
+    "publishedAt": "2026-08-21T18:07:21Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "externalId": "issue:1416",
+        "title": "Security Requirement Consistency with Server Objects",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/1416",
+        "publishedAt": "2026-08-21T18:07:21Z",
+        "body": "In OpenAPI 3.0 server objects can be defined at three basic levels: 1) entire JSON document (global - all resources and operations), 2) a path (all operations on a resource), and 3) an operation [on a resource], with the more specific overriding more global definitions. Security Requirement objects can be defined/specified at two levels: 1) globally and 2) on an operation, but not for an entire path.\r\n\r\nIf a path can have one or more servers distinguished for it, then the security on a resource server MAY be different than others more globally defined and in-effect [through Swagger Editor, Swagger UI].  Thus, adding security object to  a path object will provide this flexibility in definition and use. It will provide a productive shorthand to specifying the same on each operation for the same reason that servers does.\r\n\r\n\r\n",
+        "labels": [
+            "security",
+            "security: config"
+        ],
+        "state": "closed"
+    }
+}

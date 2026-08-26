@@ -1,0 +1,25 @@
+{
+    "id": "052e74f6f5fcf34efe7a648ce6c374e8e15d29567c0b54f5912a2a25405ecb21",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps-dev): bump c8 from 11.0.0 to 12.0.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/6eaf4dac10c949affccdfe0beab32ab1e7efc69e",
+    "publishedAt": "2026-07-17T00:53:23Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:6eaf4da",
+        "title": "chore(deps-dev): bump c8 from 11.0.0 to 12.0.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/6eaf4dac10c949affccdfe0beab32ab1e7efc69e",
+        "publishedAt": "2026-07-17T00:53:23Z",
+        "body": "chore(deps-dev): bump c8 from 11.0.0 to 12.0.0\n\nBumps [c8](https://github.com/bcoe/c8) from 11.0.0 to 12.0.0.\n- [Release notes](https://github.com/bcoe/c8/releases)\n- [Changelog](https://github.com/bcoe/c8/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/bcoe/c8/compare/v11.0.0...v12.0.0)\n\n---\nupdated-dependencies:\n- dependency-name: c8\n  dependency-version: 12.0.0\n  dependency-type: direct:development\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "4e68541a90f9b41cd4ef725e9b5201e9d2b03c4f6d8483633ab737ade1833d53",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "release",
+    "title": "v2.0.1",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.1",
+    "publishedAt": "2026-01-23T14:04:49Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "release",
+        "externalId": "release:v2.0.1",
+        "title": "v2.0.1",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.1",
+        "publishedAt": "2026-01-23T14:04:49Z",
+        "body": "## [2.0.1](https://github.com/swaggerexpert/arazzo-runtime-expression/compare/v2.0.0...v2.0.1) (2026-01-23)\n\n\n### Bug Fixes\n\n* **release:** fix npm registry publishing ([75cc7f3](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/75cc7f3f7b333962a4ca8691224403d1425c09e8))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "2a84cfd9dfb6cc870269d9401d654965cb0e42e187ef59bb9deb7cffb7312273",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: Updated Prism data and added repository data override to decouple sources",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/142",
+    "publishedAt": "2024-02-26T18:29:23Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:142",
+        "title": "fix: Updated Prism data and added repository data override to decouple sources",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/142",
+        "publishedAt": "2024-02-26T18:29:23Z",
+        "body": "Summary of changes:\r\n\r\n* Updated errant data.\r\n* Added `useMasterProperties` flag to master data in this repository.\r\n* Unit tests to ensure data is copied as-is.\r\n* Fixed Yarn version at `classic`.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

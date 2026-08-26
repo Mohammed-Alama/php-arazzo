@@ -1,0 +1,23 @@
+{
+    "id": "7326b61e9af9281dc6015708142c9d78b41899c6f105e8880f1be96340959b94",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "chore: Added Vincents community hero post",
+    "url": "https://github.com/OAI/Outreach/pull/61",
+    "publishedAt": "2026-03-12T08:28:57Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:61",
+        "title": "chore: Added Vincents community hero post",
+        "url": "https://github.com/OAI/Outreach/pull/61",
+        "publishedAt": "2026-03-12T08:28:57Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

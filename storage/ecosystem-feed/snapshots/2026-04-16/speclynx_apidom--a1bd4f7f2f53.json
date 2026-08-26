@@ -1,0 +1,24 @@
+{
+    "id": "a1bd4f7f2f53c7c5b63d4e3651629784aceeb89c859e7d40640a779d6972acb8",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.7.1",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.1",
+    "publishedAt": "2026-04-16T21:06:14Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.7.1",
+        "title": "v4.7.1",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.1",
+        "publishedAt": "2026-04-16T21:06:14Z",
+        "body": "## [4.7.1](https://github.com/speclynx/apidom/compare/v4.7.0...v4.7.1) (2026-04-16)\n\n\n### Bug Fixes\n\n* **reference:** prevent exponential tree growth on deref ([#244](https://github.com/speclynx/apidom/issues/244)) ([2873e2a](https://github.com/speclynx/apidom/commit/2873e2ac8a2489396091b6bdf321138a34398d44)), closes [#12](https://github.com/speclynx/apidom/issues/12)\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

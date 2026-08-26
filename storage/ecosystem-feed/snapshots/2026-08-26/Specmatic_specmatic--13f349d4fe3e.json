@@ -1,0 +1,25 @@
+{
+    "id": "13f349d4fe3e6c252619720ce3738733c0c8bcc3247ef7f49869791f63569790",
+    "source": "Specmatic/specmatic",
+    "type": "tag",
+    "title": "tag 2.52.0",
+    "url": "https://github.com/Specmatic/specmatic/releases/tag/2.52.0",
+    "publishedAt": "2026-08-26T07:08:17+00:00",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "tag",
+        "externalId": "tag:2.52.0",
+        "title": "tag 2.52.0",
+        "url": "https://github.com/Specmatic/specmatic/releases/tag/2.52.0",
+        "publishedAt": "2026-08-26T07:08:17+00:00",
+        "body": "55ad98254d5ea6baffb95722025f76935429f661",
+        "labels": [],
+        "state": "published"
+    }
+}

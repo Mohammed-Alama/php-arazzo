@@ -1,0 +1,24 @@
+{
+    "id": "e9ad6bb2465b3950ceb1bacc0de260279f408a9341252fcdf9775d171dcc4372",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #508 from OAI/dependabot/npm_and_yarn/vitest-bc9680511c",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/43442aa7b36f70db40f95c4781d8950dd61ef908",
+    "publishedAt": "2026-07-08T08:32:07Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:43442aa",
+        "title": "Merge pull request #508 from OAI/dependabot/npm_and_yarn/vitest-bc9680511c",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/43442aa7b36f70db40f95c4781d8950dd61ef908",
+        "publishedAt": "2026-07-08T08:32:07Z",
+        "body": "Merge pull request #508 from OAI/dependabot/npm_and_yarn/vitest-bc9680511c\n\nchore(deps-dev): bump vitest from 4.1.7 to 4.1.10 in the vitest group",
+        "labels": [],
+        "state": ""
+    }
+}

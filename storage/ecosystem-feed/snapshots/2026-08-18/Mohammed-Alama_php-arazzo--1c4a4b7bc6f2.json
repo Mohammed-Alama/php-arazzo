@@ -1,0 +1,26 @@
+{
+    "id": "1c4a4b7bc6f25604fcb25b93e08605368514aed6bfc15c1e5c4f41fb65e0c5df",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "build(deps-dev): update pestphp/pest requirement from ^4.0 to ^5.0",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/7",
+    "publishedAt": "2026-08-18T00:59:51Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:7",
+        "title": "build(deps-dev): update pestphp/pest requirement from ^4.0 to ^5.0",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/7",
+        "publishedAt": "2026-08-18T00:59:51Z",
+        "body": "Updates the requirements on [pestphp/pest](https://github.com/pestphp/pest) to permit the latest version.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/pestphp/pest/releases\">pestphp/pest's releases</a>.</em></p>\n<blockquote>\n<h2>v5.0.2</h2>\n<ul>\n<li>fix: missing the tia options on <code>--help</code> by <a href=\"https://github.com/talaridisTh\"><code>@​talaridisTh</code></a> in <a href=\"https://redirect.github.com/pestphp/pest/pull/1780\">pestphp/pest#1780</a></li>\n<li>fix: check for pcov being enabled for tia by <a href=\"https://github.com/ohnotnow\"><code>@​ohnotnow</code></a> in <a href=\"https://redirect.github.com/pestphp/pest/pull/1779\">pestphp/pest#1779</a></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/pestphp/pest/commit/ae080becd6f036a2c83d9ebdd90079a06de118b3\"><code>ae080be</code></a> chore: style</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/aa8630479439caa0370bcbbd7e41028ae00212a8\"><code>aa86304</code></a> release: v5.0.2</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/75963ea9734bfb5e27ceffe15d8f96779797ff34\"><code>75963ea</code></a> chore: bumps deps</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/5d0ceb1a5df4b6f6ba835cdbaf4c20b17a4952c4\"><code>5d0ceb1</code></a> Check for pcov being enabled for tia (<a href=\"https://redirect.github.com/pestphp/pest/issues/1779\">#1779</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/6f0c0536a48021b63c7f2c6302d6f4ee2331bd9b\"><code>6f0c053</code></a> feat: document the tia options in pest --help (<a href=\"https://redirect.github.com/pestphp/pest/issues/1780\">#1780</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/6b2cd358e8a9d6d1abb93804b70e1c659bbc411b\"><code>6b2cd35</code></a> Add Laravel Boost skill for Pest 5 testing (<a href=\"https://redirect.github.com/pestphp/pest/issues/1775\">#1775</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/e09e1be76d18dee289d491bad6c318a4dde296c3\"><code>e09e1be</code></a> Update Pest v5 announcement link in README (<a href=\"https://redirect.github.com/pestphp/pest/issues/1773\">#1773</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/759ac63139e7e44d34366aec59f0d5fc165c36e8\"><code>759ac63</code></a> build(deps): bump actions/checkout in the github-actions group (<a href=\"https://redirect.github.com/pestphp/pest/issues/1768\">#1768</a>)</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/333f469efb36399ead4cb46ff6aac3902aacdbf6\"><code>333f469</code></a> adjustments</li>\n<li><a href=\"https://github.com/pestphp/pest/commit/c4ec925aa58b8fa959bf3d0e2bf74645fb96ff3d\"><code>c4ec925</code></a> Revise Pest description in README.md</li>\n<li>Additional commits viewable in <a href=\"https://github.com/pestphp/pest/compare/v4.0.0...v5.0.2\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "id": "bf66ea9fdcd8f56e4f555a5d7c061c64cce2c1ebde6eee0c35dece3f0b913ff0",
+    "source": "speakeasy-api/openapi",
+    "type": "release",
+    "title": "v1.19.0",
+    "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.19.0",
+    "publishedAt": "2026-02-17T21:47:03Z",
+    "tags": [
+        "cli",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "speakeasy-api/openapi",
+        "type": "release",
+        "externalId": "release:v1.19.0",
+        "title": "v1.19.0",
+        "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.19.0",
+        "publishedAt": "2026-02-17T21:47:03Z",
+        "body": "## What's Changed\r\n* chore(deps): bump jsonschema/oas3/tests/testsuite from `75995a1` to `bce6a47` by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/156\r\n* feat: support multiple overlays in overlay apply command by @disintegrator in https://github.com/speakeasy-api/openapi/pull/159\r\n* feat: add --version flag to upgrade command by @disintegrator in https://github.com/speakeasy-api/openapi/pull/160\r\n* chore: update submodule dependencies to latest main by @github-actions[bot] in https://github.com/speakeasy-api/openapi/pull/158\r\n\r\n## New Contributors\r\n* @disintegrator made their first contribution in https://github.com/speakeasy-api/openapi/pull/159\r\n\r\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.18.2...v1.19.0\n\n## OpenAPI CLI v1.19.0\n\nThis release includes binaries for Linux, macOS, and Windows on both x86_64 and ARM64 architectures.\n\n### Installation\n\nDownload the appropriate binary for your platform from the assets below, extract it, and add it to your PATH.\n\n### Changes\n\n## Changelog\n### Features\n* a27a0ad874af2773671bb658213bebba5f785cb1 feat: add --version flag to upgrade command (#160)\n* 0ae87b9dda68cbbecb416235b97346b0f2d869b6 feat: support multiple overlays in overlay apply command (#159)\n### Others\n* 8c596a79fee6324a659624ebd67ce5cb4d1a6b7c chore(deps): bump jsonschema/oas3/tests/testsuite (#156)\n\n\n---\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.18.2...v1.19.0\n\nReleased by [GoReleaser](https://github.com/goreleaser/goreleaser).\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

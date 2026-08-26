@@ -1,0 +1,24 @@
+{
+    "id": "8213a5f476ad65edecc0a4e6e2d167e5164a0e52feb0000585f244d5363fb379",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.10.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.10.0",
+    "publishedAt": "2026-05-12T21:04:38Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.10.0",
+        "title": "v4.10.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.10.0",
+        "publishedAt": "2026-05-12T21:04:38Z",
+        "body": "# [4.10.0](https://github.com/speclynx/apidom/compare/v4.9.1...v4.10.0) (2026-05-12)\n\n\n### Features\n\n* **overlay:** add support for overlay generation by diffing API docs ([#278](https://github.com/speclynx/apidom/issues/278)) ([41fca34](https://github.com/speclynx/apidom/commit/41fca3455bce2e637b1e53f78f3f60afd93ef16c))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

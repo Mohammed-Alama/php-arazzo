@@ -1,0 +1,25 @@
+{
+    "id": "e5935a1ae2bef5f96ec2242f1d0e7fc13f0f6e0f330ef1e4661a13a1ca2bf6ac",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "Add tool: Gesso — OpenAPI 3.0/3.1/3.2 contract testing for PHP",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/272",
+    "publishedAt": "2026-08-02T16:02:03Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:272",
+        "title": "Add tool: Gesso — OpenAPI 3.0/3.1/3.2 contract testing for PHP",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/272",
+        "publishedAt": "2026-08-02T16:02:03Z",
+        "body": "### Tool details\n\n- **Name:** Gesso\n- **Homepage:** https://studio-design.github.io/gesso/\n- **Source repository:** https://github.com/studio-design/gesso\n- **License:** MIT\n- **Language:** PHP\n- **OpenAPI versions supported:** 3.0, 3.1, 3.2\n- **Suggested categories:** Testing, Data Validators\n- **Commercial:** No (fully open source)\n\n### Description\n\nGesso — OpenAPI 3.0/3.1/3.2 contract testing for PHP. Framework-independent core with Laravel, Symfony, Pest, and PSR-7 adapters. Provides PHPUnit endpoint-coverage tracking at `(method, path, status, content-type)` granularity, request and response validation, schema-driven fuzzing with deterministic replay, and enum + schema drift detection.\n\n### Why it belongs on tools.openapis.org\n\nFills a gap in the PHP row of the Testing and Data Validators categories: the closest current entries (Spectator, league/openapi-psr7-validator, kirschbaum-development/laravel-openapi-validator, osteel/openapi-httpfoundation-testing) each cover a slice — Gesso is the only PHP entry that covers OpenAPI 3.1/3.2, framework-agnostic core + Laravel/Symfony/Pest/PSR-7 adapters, endpoint coverage, and schema-driven fuzzing in one library.\n\n### Notes for maintainers\n\nThe repo already carries the relevant GitHub topics (`openapi3`, `openapi31`, `openapi`, `openapi-validator`, `contract-testing`, `api-testing`, plus the PHP/framework tags). We noticed the weekly `Full build` workflow has been failing since at least 2026-07-12, so topic-based auto-ingest hasn't fired — happy to also open a direct PR to `src/_data/tools.yaml` if that's preferred.\n",
+        "labels": [],
+        "state": "open"
+    }
+}

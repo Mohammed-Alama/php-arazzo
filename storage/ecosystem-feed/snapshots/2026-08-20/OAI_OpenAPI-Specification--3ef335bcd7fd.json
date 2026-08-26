@@ -1,0 +1,26 @@
+{
+    "id": "3ef335bcd7fd50dea42dc1082c06517b76282787ff78a3ba48da012d36c5f2c5",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "Use build-infra schema test helpers on dev branches",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5499",
+    "publishedAt": "2026-08-20T16:41:41Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5499",
+        "title": "Use build-infra schema test helpers on dev branches",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5499",
+        "publishedAt": "2026-08-20T16:41:41Z",
+        "body": "This was missed in the main shared infrastructure PR because the file does not exist on `main`.  It has changes on the `v3.x-dev` branches so we might see some conflicts.\r\n\r\nAll this does is parallel the changes to `oas-schema.mjs` (currently only on `main` because of auto-merge issues separate from this issue) to configure through our build package rather than directly.  There are complex JavaScript import issues that make this necessary; it is explained in the build-infra repo.\r\n\r\n- [X] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

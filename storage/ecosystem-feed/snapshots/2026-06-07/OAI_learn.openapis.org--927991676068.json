@@ -1,0 +1,24 @@
+{
+    "id": "9279916760685eff7ee95eb85647b6bb2ec9d73f167e4a1fafdfb9c250b61c9c",
+    "source": "OAI/learn.openapis.org",
+    "type": "issue",
+    "title": "Missing \"Next Page\" references for \"Enahanced Tags\", \" HTTP Methods\" and \" Sequential Media Types  OpenAPI 3.2+\"",
+    "url": "https://github.com/OAI/learn.openapis.org/issues/188",
+    "publishedAt": "2026-06-07T15:37:56Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "issue",
+        "externalId": "issue:188",
+        "title": "Missing \"Next Page\" references for \"Enahanced Tags\", \" HTTP Methods\" and \" Sequential Media Types  OpenAPI 3.2+\"",
+        "url": "https://github.com/OAI/learn.openapis.org/issues/188",
+        "publishedAt": "2026-06-07T15:37:56Z",
+        "body": "Hello,\n\nI was reading the documentation when I noticed some missing \"next page\" references\n\n- `Describing API Security` > `Enhanced Tags`\n- `Enhanced Tags` > `HTTP Methods`\n- `HTTP Methods` > `Sequential Media Types`\n\n#### Current [API Servers Page](https://learn.openapis.org/specification/servers.html)  points to [Describe API Security](https://learn.openapis.org/specification/security)\n\n<img width=\"1206\" height=\"289\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9d0cc991-ce93-4efa-a401-e0cec1fba615\" />\n\n\n\nI have fixed this locally but wanted to check with the maintainers before raising a PR. If this is a helpful change, I can raise the PR.\n\nHere's what my PR would add\n#### [Describing API Security](https://learn.openapis.org/specification/security.html)\n\n<img width=\"1206\" height=\"289\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9229331f-3744-4dfe-a19a-7e2843fafaf2\" />\n\n#### [Enhanced Tags](https://learn.openapis.org/specification/tags.html)\n\n<img width=\"1206\" height=\"289\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/95477feb-0f97-4361-8cbb-72be17507c7c\" />\n\n#### [HTTP Methods](https://learn.openapis.org/specification/http-methods.html)\n\n<img width=\"1206\" height=\"289\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/fbdc1558-166b-4b42-8d9f-c1ef5aeb1583\" />",
+        "labels": [],
+        "state": "closed"
+    }
+}

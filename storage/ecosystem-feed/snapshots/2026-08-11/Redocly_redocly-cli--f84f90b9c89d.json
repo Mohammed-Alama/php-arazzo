@@ -1,0 +1,24 @@
+{
+    "id": "f84f90b9c89d21d28228fa55db0f755c79f4ce2cf1f6548448135fc5000bae70",
+    "source": "Redocly/redocly-cli",
+    "type": "release",
+    "title": "@redocly/openapi-core@2.46.1",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.46.1",
+    "publishedAt": "2026-08-11T08:22:15Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "externalId": "release:@redocly/openapi-core@2.46.1",
+        "title": "@redocly/openapi-core@2.46.1",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.46.1",
+        "publishedAt": "2026-08-11T08:22:15Z",
+        "body": "### Patch Changes\n\n-   Updated `@redocly/ajv` to `^8.18.3`.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

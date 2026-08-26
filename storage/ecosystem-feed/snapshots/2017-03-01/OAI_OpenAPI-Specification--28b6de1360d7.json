@@ -1,0 +1,24 @@
+{
+    "id": "28b6de1360d7f9b7e7ef70cf78aea408cd3851709d0aa4aeb172eb583fccaca2",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.0-rc0 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc0",
+    "publishedAt": "2017-03-01T01:04:19Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.0-rc0",
+        "title": "OAS 3.0.0-rc0 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc0",
+        "publishedAt": "2017-03-01T01:04:19Z",
+        "body": "We're happy to announce the release of the first Implementer's Draft of OAS 3.0.0, known as 3.0.0-rc0.\n\nA lot of changes in this release, as a first one goes, so expect the change log to be updated. An initial list of changes, in no particular order:\n- Changed the versioning scheme of the spec.\n- Reusable definitions in the spec has been expanded and reorganized under the Components Object.\n- Added support for operation callbacks.\n- Added support for a new static linking between responses and operations.\n- Reworked parameters - removed formData parameters, added cookie parameters, changed body parameters to Request Body Objects as a separate entity.\n- Parameters now support complex types.\n- Responses support multiple media type specifications.\n- Reworked file support. Dropped `file` as a type, but provided better handling for file uploads and downloads.\n- Reworked security definitions to allow for support for more schemes.\n- Improved support for examples throughout the spec.\n- Added support for defining multiple servers hosting the API, including URL variables.\n\nCheck it out! https://github.com/OAI/OpenAPI-Specification/blob/3.0.0-rc0/versions/3.0.md\n\nOur [blog post](https://www.openapis.org/blog/2017/03/01/openapi-spec-3-implementers-draft-released) contains more details of the process and next steps.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

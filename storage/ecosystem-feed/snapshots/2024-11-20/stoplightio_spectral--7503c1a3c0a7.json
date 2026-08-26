@@ -1,0 +1,24 @@
+{
+    "id": "7503c1a3c0a7bedaea5e782db83c279cbbdc07287c99708a795daac1ee5ba885",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.14.2",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.2",
+    "publishedAt": "2024-11-20T12:12:43Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.14.2",
+        "title": "v6.14.2",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.2",
+        "publishedAt": "2024-11-20T12:12:43Z",
+        "body": "## What's Changed\r\n* fix(deps): fix CVE related to jsonpath-plus by @frankkilcommins in https://github.com/stoplightio/spectral/pull/2740\r\n* fix(deps): bump spectral-core dependents by @frankkilcommins in https://github.com/stoplightio/spectral/pull/2742\r\n\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.14.1...v6.14.2",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "cd89f5d2f93aec704edbca79336b691196f0e3c50b78af2733215587922aa56e",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.50.1",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.50.1",
+    "publishedAt": "2026-07-17T07:28:34Z",
+    "tags": [
+        "mcp",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.50.1",
+        "title": "2.50.1",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.50.1",
+        "publishedAt": "2026-07-17T07:28:34Z",
+        "body": "## What's Changed\r\n* Support spec-level Swagger URLs in Specmatic config by @joelrosario in https://github.com/specmatic/specmatic/pull/2624\r\n* chore(deps): update jackson monorepo to v2.22.1 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2623\r\n* Resolve default Swagger URL fallback from spec base URLs by @joelrosario in https://github.com/specmatic/specmatic/pull/2626\r\n* fix: fix spec files path resolution and serialization issues encountered while running the mock via mcp tool by @vedubhat in https://github.com/specmatic/specmatic/pull/2621\r\n* Respect per-spec OpenAPI source fields when resolving application APIs by @joelrosario in https://github.com/specmatic/specmatic/pull/2632\r\n* chore(deps): update specmaticreporterversion to v0.3.36 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2630\r\n* chore: bump specmatic reporter version by @Sushant092003 in https://github.com/specmatic/specmatic/pull/2629\r\n* Distinguish explicit and inferred application API sources by @joelrosario in https://github.com/specmatic/specmatic/pull/2634\r\n* chore(deps): update specmaticgradlepluginversion to v0.15.21 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2628\r\n* Deduplicate application API source discovery and refine coverage logging by @joelrosario in https://github.com/specmatic/specmatic/pull/2635\r\n* Bug: Match security credentials in requests to the mock against values in examples by @joelrosario in https://github.com/specmatic/specmatic/pull/2636\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.50.0...2.50.1",
+        "labels": [],
+        "state": "published"
+    }
+}

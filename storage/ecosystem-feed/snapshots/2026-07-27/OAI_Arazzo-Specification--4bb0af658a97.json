@@ -1,0 +1,24 @@
+{
+    "id": "4bb0af658a97f40c4703d91ea79fa3728af74a738afda4382ed6c8e2e30434a0",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #524 from OAI/dependabot/npm_and_yarn/yargs-18.1.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/a77e402c73a57012b148cbf6453d0a176871ef23",
+    "publishedAt": "2026-07-27T10:41:16Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:a77e402",
+        "title": "Merge pull request #524 from OAI/dependabot/npm_and_yarn/yargs-18.1.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/a77e402c73a57012b148cbf6453d0a176871ef23",
+        "publishedAt": "2026-07-27T10:41:16Z",
+        "body": "Merge pull request #524 from OAI/dependabot/npm_and_yarn/yargs-18.1.0\n\nchore(deps): bump yargs from 18.0.0 to 18.1.0",
+        "labels": [],
+        "state": ""
+    }
+}

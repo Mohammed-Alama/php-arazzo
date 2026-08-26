@@ -1,0 +1,25 @@
+{
+    "id": "28c69cba122705f6eee754d1545f74b91a4acb47056c400efd117387af5af062",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "docs: add llm.txt with repository context",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/198",
+    "publishedAt": "2026-06-07T19:22:37Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:198",
+        "title": "docs: add llm.txt with repository context",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/198",
+        "publishedAt": "2026-06-07T19:22:37Z",
+        "body": "Add an llm.txt file at the repository root with a short description of the project to support LLM-oriented tooling and discovery.",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

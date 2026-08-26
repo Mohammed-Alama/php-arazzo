@@ -1,0 +1,24 @@
+{
+    "id": "89e6a02a981e662ea9ba4bcdabffbd1ffc8d13acb9dccf0ddb6b310b2f7ff09f",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #111 from baywet/fix/extension-versions",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/e9fbdd513564ecb033f36610c4a5f3d5fcbadbfa",
+    "publishedAt": "2026-07-21T15:52:09Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:e9fbdd5",
+        "title": "Merge pull request #111 from baywet/fix/extension-versions",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/e9fbdd513564ecb033f36610c4a5f3d5fcbadbfa",
+        "publishedAt": "2026-07-21T15:52:09Z",
+        "body": "Merge pull request #111 from baywet/fix/extension-versions\n\nfix/extension versions",
+        "labels": [],
+        "state": ""
+    }
+}

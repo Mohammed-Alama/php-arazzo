@@ -1,0 +1,24 @@
+{
+    "id": "b675a0f3717487572bec889b4eb5aa27145f95f6701d542efab0345e3fe0567d",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "issue",
+    "title": "vX.Y: ...",
+    "url": "https://github.com/OAI/OpenAPI-Specification/issues/5517",
+    "publishedAt": "2026-08-23T08:53:10Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "externalId": "issue:5517",
+        "title": "vX.Y: ...",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5517",
+        "publishedAt": "2026-08-23T08:53:10Z",
+        "body": "**Describe the error in the specification**\nA clear and concise description of\n- what the error is, \n- which specification versions are affected, \n- what you would expect the specification to say instead,  and \n- a link to the corresponding specification section in the \"oldest\" affected version.\n\n**Additional context**\nAdd any other context about the problem here.\n",
+        "labels": [],
+        "state": "closed"
+    }
+}

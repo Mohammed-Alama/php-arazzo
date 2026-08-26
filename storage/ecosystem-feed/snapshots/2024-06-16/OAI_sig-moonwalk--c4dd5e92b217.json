@@ -1,0 +1,23 @@
+{
+    "id": "c4dd5e92b217b8a2e83346b8055d6c754cc6c63ab205193b7986c92ab49506c4",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Use local npm install in build",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/137",
+    "publishedAt": "2024-06-16T18:45:58Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:137",
+        "title": "Use local npm install in build",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/137",
+        "publishedAt": "2024-06-16T18:45:58Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "id": "2e491fab6ec629dacd7c0dd3195ec9a9beb3ab3756644fa54585f7aab5fb86ae",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "Prepare for new Build Infra",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/379",
+    "publishedAt": "2026-08-25T17:04:29Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:379",
+        "title": "Prepare for new Build Infra",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/379",
+        "publishedAt": "2026-08-25T17:04:29Z",
+        "body": "Fixes #369. Move to use only the new build-infra dependency and scripts, remove all other dependences and previous scripts folder. Update GitHub actions and documentation to try to capture the \"new normal\". I ended up doing this in a lot of small snatches of time so reviews very much appreciated!\r\n\r\nThe schemas setup isn't changed yet and I'm not sure if we need to include it in this change or if those two things can be split - opinions welcome on that.\r\n\r\nNote (possibly to self!): the dev and v1.2-dev branches are already in place on the new repo, but there's no auto-merging set up so once we merge this, we need to propogate it accordingly.\r\n\r\nAssisted by Claude which collaborated on the process and the docs/workflow updates.\r\n\r\ncloses #384 ",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

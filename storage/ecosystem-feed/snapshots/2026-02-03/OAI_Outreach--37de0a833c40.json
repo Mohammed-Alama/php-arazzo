@@ -1,0 +1,23 @@
+{
+    "id": "37de0a833c40d695e4ede811c0ec57d39d79a0ae592c036bfb89208c2fed3f81",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "adding links to OAI conference pages",
+    "url": "https://github.com/OAI/Outreach/pull/59",
+    "publishedAt": "2026-02-03T17:32:31Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:59",
+        "title": "adding links to OAI conference pages",
+        "url": "https://github.com/OAI/Outreach/pull/59",
+        "publishedAt": "2026-02-03T17:32:31Z",
+        "body": "",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

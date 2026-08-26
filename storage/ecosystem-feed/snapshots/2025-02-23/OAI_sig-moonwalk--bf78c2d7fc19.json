@@ -1,0 +1,23 @@
+{
+    "id": "bf78c2d7fc19d37853dd8457b9e98c265a467e7a6c0f6b5f8526f749d46278ab",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Added example of query parameter versioning",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/174",
+    "publishedAt": "2025-02-23T19:20:55Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:174",
+        "title": "Added example of query parameter versioning",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/174",
+        "publishedAt": "2025-02-23T19:20:55Z",
+        "body": "",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "5a0c7b6a0f19abed8b98448fdcb0700a54d6b4bb642b134ce35995b648419f1d",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "fix(workflows): use -X theirs to resolve sync merge conflicts",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/3f5c829b3a5b0a134c3fba9d32591d44af7b68e4",
+    "publishedAt": "2026-07-08T08:37:45Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:3f5c829",
+        "title": "fix(workflows): use -X theirs to resolve sync merge conflicts",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/3f5c829b3a5b0a134c3fba9d32591d44af7b68e4",
+        "publishedAt": "2026-07-08T08:37:45Z",
+        "body": "fix(workflows): use -X theirs to resolve sync merge conflicts",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "dbae0a21d2edd313541031c86b0f80e5e0396235f00feefa858496b9130bf4d2",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "docs: rewrite AGENTS.md around the compliance gate",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/4c20d510be7f36a18018110303aef657b3c79ff8",
+    "publishedAt": "2026-08-25T21:08:54Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:4c20d51",
+        "title": "docs: rewrite AGENTS.md around the compliance gate",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/4c20d510be7f36a18018110303aef657b3c79ff8",
+        "publishedAt": "2026-08-25T21:08:54Z",
+        "body": "docs: rewrite AGENTS.md around the compliance gate\n\nThe contract now leads with the specification as sole authority: spec/ is the one citable directory, extensions are maintainer-owned with an empty allowlist, and the expression surface is listed as the spec defines it rather than as implemented. Build, layout, and convention guidance is compressed around what agents actually need.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

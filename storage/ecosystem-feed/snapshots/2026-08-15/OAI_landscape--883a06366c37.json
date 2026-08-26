@@ -1,0 +1,22 @@
+{
+    "id": "883a06366c37a6b226c5652d2094b3cba47809a15383070bb7dd6d922397fedf",
+    "source": "OAI/landscape",
+    "type": "commit",
+    "title": "Update Landscape from LFX 2026-08-15 (#178)",
+    "url": "https://github.com/OAI/landscape/commit/2d0e94fcf8bcb8c912d9c86a3b3f70a2d6a55273",
+    "publishedAt": "2026-08-15T22:08:20Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/landscape",
+        "type": "commit",
+        "externalId": "commit:2d0e94f",
+        "title": "Update Landscape from LFX 2026-08-15 (#178)",
+        "url": "https://github.com/OAI/landscape/commit/2d0e94fcf8bcb8c912d9c86a3b3f70a2d6a55273",
+        "publishedAt": "2026-08-15T22:08:20Z",
+        "body": "Update Landscape from LFX 2026-08-15 (#178)\n\nAutomated changes by\n[create-pull-request](https://github.com/peter-evans/create-pull-request)\nGitHub action\n\nSigned-off-by: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>\nCo-authored-by: jmertic <296737+jmertic@users.noreply.github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

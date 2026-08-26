@@ -1,0 +1,25 @@
+{
+    "id": "1bf3555d7e55c9c776e42e2be1218c53049e7046cedc18df8e019bbb2daae23b",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": " Structural improvements: inheritance on paths and its sublevels",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/115",
+    "publishedAt": "2024-05-24T18:29:55Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:115",
+        "title": " Structural improvements: inheritance on paths and its sublevels",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/115",
+        "publishedAt": "2024-05-24T18:29:55Z",
+        "body": "Based on @fehguy structure modification proposition on OAI/OpenAPI-Specification#563 and my ideas gathered while writing OpenAPI spec and writing my OpenAPI spec tutorial, I propose a new structure for the document.\n\nTony's proposal (focus on paths and what it needs):\n\n``` YAML\npaths:\n  # paths object\nparameters:\n  # parameters which apply to all operations\nresponses:\n  # responses which apply to all operations\nresponseHeaders:\n  # headers to be returned in all responses\nsecurity:\n  # security requirements which apply to all operations\n# definitions\nschemas:\n  definitions:\n    # payload definition objects\n  parameters:\n    # parameters objects\n  responses:\n    # responses objects\n  responseHeaders:\n    # headers returned in responses\n  security:\n    # security definitions\n```\n\nOn root we only keep:\n- `paths`: The API's description (improved paths, see below)\n- `schemas`: All reusable objects used to describe to API\n\n``` YAML\nversion:\n  # OpenAPI version used by this document, replace swagger\n\ninfo:\n  # existing info object + externalDocs which was on root level\n  # ... same properties as existing info object\n  externalDocs:\n  # (existing) Moving externalDocs from root to info\n\npaths:\n  # improved paths object (see below) contains what was on root\n  parameters:\n    # parameters which apply to all operations\n  responses:\n    # responses which apply to all operations\n  responseHeaders:\n    # headers to be returned in all responses\n  security:\n    # security requirements which apply to all operations\n\nschemas:\n  definitions:\n    # payload definition objects\n  parameters:\n    # parameters objects\n  responses:\n    # responses objects\n  responseHeaders:\n    # headers returned in responses\n  security:\n    # security definitions\n\n```\n\nOn `paths`, the idea is to extend what we already have with `parameters` declaration on path and operation level to everything that can be declared for an operation (parameters, responses, headers, ...) on all levels:\n\nWhat we have now:\n\n``` YAML\npaths:\n  /resources/{parameters}:\n    parameters:\n      # parameters apply to all operations\n    get:\n      parameters:\n        # parameters apply to this operation\n```\n\nExtending this principle to all levels and properties in `paths` and its sub-level: \n\n``` YAML\npaths:\n  # Everything on this level which is not a path, apply to all paths\n  # We put here the things which were on root on Tony's proposal. \n  # Everything can be overridden by sub levels.\n  (... various declarations like tags, parameters, responses, responses headers, security\n  and new others applying to all paths......)\n  {/paths}:\n  # (existing) path object\n    # Everything on this level which is not an operation, apply to all operations.\n    # Everything can be overridden by sub levels.\n    (... various declarations like tags, parameters, responses, responses headers,\n     security and new others applying to all operations......)\n    {operation like get/post/...}:\n      (...operation properties, can override what was described on the upper levels ...)\n      responses:\n        # Everything on this level which is not a response, apply to all responses. \n        # Everything can be overridden by sub levels.\n        (... various declarations like responses headers and \n         new others applying to all responses......)\n        {http status | default):\n            (...operation properties, can override what was \n             described on the upper levels ...)\n```\n",
+        "labels": [],
+        "state": "closed"
+    }
+}

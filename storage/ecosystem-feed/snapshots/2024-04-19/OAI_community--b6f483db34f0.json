@@ -1,0 +1,23 @@
+{
+    "id": "b6f483db34f01b6bc6bffb3164af0d766eb7ba689252dfd7424b676154c763e5",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Adding information on SIGs to community repo",
+    "url": "https://github.com/OAI/community/pull/6",
+    "publishedAt": "2024-04-19T22:56:24Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:6",
+        "title": "Adding information on SIGs to community repo",
+        "url": "https://github.com/OAI/community/pull/6",
+        "publishedAt": "2024-04-19T22:56:24Z",
+        "body": "We'll also point folks at the ASC conference to this information to learn more and hopefully engage new members",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

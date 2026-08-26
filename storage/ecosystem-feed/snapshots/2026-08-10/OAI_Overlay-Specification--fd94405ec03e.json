@@ -1,0 +1,26 @@
+{
+    "id": "fd94405ec03ecec22e1e6cd73a38c9ddfa546093d955628b264e7b9b6968e07f",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "feat: adds reusable actions",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/296",
+    "publishedAt": "2026-08-10T12:02:54Z",
+    "tags": [
+        "loop",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 loops vs goto",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:296",
+        "title": "feat: adds reusable actions",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/296",
+        "publishedAt": "2026-08-10T12:02:54Z",
+        "body": "This pull request adds reusable actions. \r\n\r\ncloses #238\r\n\r\nReusable actions are a much simpler iteration of anything previously proposed/iterated on:\r\n- component actions that can define any field that are available in actions today EXCEPT FOR the target\r\n- reference objects that have at least $ref and target in the actions array\r\n- reference object MAY also override anything from the referenced reusable action (copy/update/remove/description)\r\n\r\nThis iteration is better than earlier proposals because it's as simple as we can possibly make it. (no matrix, no variables, no string interpolation, etc...)",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

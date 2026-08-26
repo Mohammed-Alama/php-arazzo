@@ -1,0 +1,22 @@
+{
+    "id": "f67e0400e08a59f0259d97928d88fa6132570aa8df8406edef762b421641cf4f",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Auth URL Variables",
+    "url": "https://github.com/OAI/sig-security/issues/33",
+    "publishedAt": "2026-08-21T18:09:42Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:33",
+        "title": "Auth URL Variables",
+        "url": "https://github.com/OAI/sig-security/issues/33",
+        "publishedAt": "2026-08-21T18:09:42Z",
+        "body": "Currently we can set the server variables for different environments like so:\r\n\r\n```(yaml)\r\nservers:\r\n  - url: 'https://{environment}.example.com/v1'\r\n    variables:\r\n      environment:\r\n        default: api\r\n        enum:\r\n          - api\r\n          - sandbox.api\r\n          - development.api\r\n          - staging.api\r\n```\r\n\r\nIs it possible to also set variables for the authorization code urls? Normally you'd want to match these environments when authenticating. I'd imagine it would look something like this:\r\n\r\n```(yaml)\r\nsecuritySchemes:\r\n  OAuth2:\r\n    type: oauth2\r\n    flows:\r\n      authorizationCode:\r\n        authorizationUrl: \r\n          - url: 'https://{environment}.example.com/authorize'\r\n            variables:\r\n              environment:\r\n                default: accounts\r\n                enum:\r\n                  - accounts\r\n                  - sandbox.accounts\r\n                  - development.accounts\r\n                  - staging.accounts\r\n        tokenUrl: \r\n          - url: 'https://{environment}.example.com/token'\r\n            variables:\r\n              environment:\r\n                default: accounts\r\n                enum:\r\n                  - accounts\r\n                  - sandbox.accounts\r\n                  - development.accounts\r\n                  - staging.accounts\r\n```",
+        "labels": [],
+        "state": "open"
+    }
+}

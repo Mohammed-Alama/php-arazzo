@@ -1,0 +1,24 @@
+{
+    "id": "ec3ece47992e7693a476e0f337a84968ceb5925f9cd7da4ab1c1e2c5de0d95e0",
+    "source": "jentic/arazzo-engine",
+    "type": "tag",
+    "title": "tag arazzo_generator/v0.1.1",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1",
+    "publishedAt": "2026-08-26T07:08:11+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "tag",
+        "externalId": "tag:arazzo_generator/v0.1.1",
+        "title": "tag arazzo_generator/v0.1.1",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1",
+        "publishedAt": "2026-08-26T07:08:11+00:00",
+        "body": "14b79eba6e1dd2f0d01918b46a90cdbe4b3dbfcd",
+        "labels": [],
+        "state": "published"
+    }
+}

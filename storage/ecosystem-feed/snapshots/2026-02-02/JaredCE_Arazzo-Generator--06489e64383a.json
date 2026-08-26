@@ -1,0 +1,25 @@
+{
+    "id": "06489e64383affde40ddfe811f3e1a14b084dab1c77ece49ab8a7560bca72bf6",
+    "source": "JaredCE/Arazzo-Generator",
+    "type": "release",
+    "title": "0.0.2",
+    "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2",
+    "publishedAt": "2026-02-02T17:54:41Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "JaredCE/Arazzo-Generator",
+        "type": "release",
+        "externalId": "release:0.0.2",
+        "title": "0.0.2",
+        "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2",
+        "publishedAt": "2026-02-02T17:54:41Z",
+        "body": "## What's Changed\r\n* setup npm by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/1\r\n* sets up github actions by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/2\r\n* Download and bundle openapi documents by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/3\r\n* Stream to different parts of an open api document by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/4\r\n* Create arazzo info from openapi info by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/5\r\n* Create arazzo source description by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/6\r\n* Generate workflows by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/7\r\n* Create cli by @JaredCE in https://github.com/JaredCE/Arazzo-Generator/pull/8\r\n\r\n## New Contributors\r\n* @JaredCE made their first contribution in https://github.com/JaredCE/Arazzo-Generator/pull/1\r\n\r\n**Full Changelog**: https://github.com/JaredCE/Arazzo-Generator/commits/0.0.2",
+        "labels": [],
+        "state": "published"
+    }
+}

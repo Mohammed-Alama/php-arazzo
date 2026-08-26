@@ -1,0 +1,25 @@
+{
+    "id": "41970b6861b3f00c891e8e233109530d634d5d06301c82048e0fa0967f655efc",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Support for Sensitive/PII/Personal Data",
+    "url": "https://github.com/OAI/sig-security/issues/27",
+    "publishedAt": "2026-08-21T18:07:58Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:27",
+        "title": "Support for Sensitive/PII/Personal Data",
+        "url": "https://github.com/OAI/sig-security/issues/27",
+        "publishedAt": "2026-08-21T18:07:58Z",
+        "body": "It would be useful if you could tag schema properties and parameters as being sensitive or PII specific so that these could be tagged appropriately in API docs.",
+        "labels": [],
+        "state": "open"
+    }
+}

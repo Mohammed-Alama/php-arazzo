@@ -1,0 +1,25 @@
+{
+    "id": "922e7d310a294015f8799f8d32a34333e8d7393332b9d1f06a326eb362c9a239",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "fix/extension versions",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/111",
+    "publishedAt": "2026-07-21T15:52:13Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:111",
+        "title": "fix/extension versions",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/111",
+        "publishedAt": "2026-07-21T15:52:13Z",
+        "body": "follow up to #102, #98, #88, #86, #84",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

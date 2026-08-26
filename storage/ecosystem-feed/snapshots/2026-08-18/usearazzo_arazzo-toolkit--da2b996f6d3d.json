@@ -1,0 +1,25 @@
+{
+    "id": "da2b996f6d3dc8be64af154f1fbdeee193133efe5fa0afaf40b3d966df0e6e0d",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "pr",
+    "title": "fix(deps): resolve eslint peer conflict and bump apidom to 5.1.0",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/pull/68",
+    "publishedAt": "2026-08-18T12:19:04Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "externalId": "pr:68",
+        "title": "fix(deps): resolve eslint peer conflict and bump apidom to 5.1.0",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/68",
+        "publishedAt": "2026-08-18T12:19:04Z",
+        "body": "## Summary\n\n- Fixes a broken \\`npm install\\` (\\`ERESOLVE\\`) caused by #19, which bumped \\`@eslint/js\\` to \\`10.0.1\\` without bumping \\`eslint\\` — \\`@eslint/js@10.x\\` peer-requires \\`eslint@^10.0.0\\`, but \\`eslint\\` was still pinned at \\`^9.39.1\\`.\n- Bumps \\`eslint\\` to \\`^10.0.0\\` (\\`typescript-eslint@^8.34.0\\` already supports it) and regenerates \\`package-lock.json\\`.\n- Bumps all \\`@speclynx/apidom-*\\` dependencies (parser, runner, resolver, validator) from \\`^5.0.1\\` to \\`^5.1.0\\`. \\`@speclynx/apidom-ls\\` is left untouched (separate \\`2.x\\` line).\n\n## Verification\n\n- \\`npm i\\` completes cleanly under Node \\`26.3.1\\`\n- \\`npm run build\\` — all 4 packages build successfully\n- \\`npm run test\\` — 528 passing, no regressions\n- \\`npx eslint --version\\` → \\`10.8.1\\`\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

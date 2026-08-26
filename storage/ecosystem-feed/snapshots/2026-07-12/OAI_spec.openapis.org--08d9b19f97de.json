@@ -1,0 +1,25 @@
+{
+    "id": "08d9b19f97de802b7d0f29bea377e344d9855e9e4127f45cd53e3fb07dd1e67c",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "ci: multiple ruby configuration fixes",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/115",
+    "publishedAt": "2026-07-12T10:11:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:115",
+        "title": "ci: multiple ruby configuration fixes",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/115",
+        "publishedAt": "2026-07-12T10:11:31Z",
+        "body": "this PR drops a bunch of outdated gems that made it difficult / impossible to run the site locally. It also switches from automatic publishing to workflow based (we'll need to flip the switch in the settings) and adds a vscode task to run the container",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

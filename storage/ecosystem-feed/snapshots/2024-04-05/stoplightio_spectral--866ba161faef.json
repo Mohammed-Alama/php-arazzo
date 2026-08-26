@@ -1,0 +1,27 @@
+{
+    "id": "866ba161faef2de16f384f8ab87bbcb1586ee4df35cf4a7c5685ebc96e488e66",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.11.1",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.11.1",
+    "publishedAt": "2024-04-05T10:49:09Z",
+    "tags": [
+        "actor",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.11.1",
+        "title": "v6.11.1",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.11.1",
+        "publishedAt": "2024-04-05T10:49:09Z",
+        "body": "## What's Changed\r\n* fix(rulesets): tweak server variables function by @P0lip in https://github.com/stoplightio/spectral/pull/2533\r\n* refactor(rulesets): simplify oasOpSecurityDefined by @P0lip in https://github.com/stoplightio/spectral/pull/2537\r\n* feat(rulesets): add scope validation to oas{2,3}-operation-security-defined rules by @P0lip in https://github.com/stoplightio/spectral/pull/2538\r\n* chore(deps): bump @babel/traverse from 7.18.9 to 7.23.2 by @dependabot in https://github.com/stoplightio/spectral/pull/2547\r\n* feat(formats): jsonSchemaLoose format should search for enum keyword by @P0lip in https://github.com/stoplightio/spectral/pull/2551\r\n* chore(deps): bump browserify-sign from 4.0.4 to 4.2.2 by @dependabot in https://github.com/stoplightio/spectral/pull/2549\r\n* fix(rulesets): oasExample should clean id fields from non-schema objects by @P0lip in https://github.com/stoplightio/spectral/pull/2561\r\n* build(repo): fix arm64 builds by @P0lip in https://github.com/stoplightio/spectral/pull/2569\r\n* chore(deps): bump follow-redirects from 1.15.1 to 1.15.4 by @dependabot in https://github.com/stoplightio/spectral/pull/2570\r\n* fix(cli): clarify usage of --format by @P0lip in https://github.com/stoplightio/spectral/pull/2575\r\n* docs(rulesets): pattern function can have delimeters by @philsturgeon in https://github.com/stoplightio/spectral/pull/2579\r\n* chore(repo): add jira issue label GH action by @ryotrellim in https://github.com/stoplightio/spectral/pull/2583\r\n* chore(deps): bump ip from 2.0.0 to 2.0.1 by @dependabot in https://github.com/stoplightio/spectral/pull/2588\r\n* chore(deps): bump follow-redirects from 1.15.5 to 1.15.6 by @dependabot in https://github.com/stoplightio/spectral/pull/2600\r\n* chore(repo): stop-348 update jira issue workflow by @kaylachun in https://github.com/stoplightio/spectral/pull/2607\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.11.0...v6.11.1",
+        "labels": [],
+        "state": "published"
+    }
+}

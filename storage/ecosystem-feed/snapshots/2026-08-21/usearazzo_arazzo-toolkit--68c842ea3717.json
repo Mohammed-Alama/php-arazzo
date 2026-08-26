@@ -1,0 +1,24 @@
+{
+    "id": "68c842ea3717a9e6acd67412aa43f0fff089381ca51bd9169d7c1118478c0852",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: executeAll() for batch (libopenapi-style) semantics",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/81",
+    "publishedAt": "2026-08-21T21:09:05Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:81",
+        "title": "runner: executeAll() for batch (libopenapi-style) semantics",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/81",
+        "publishedAt": "2026-08-21T21:09:05Z",
+        "body": "A future \\`executeAll()\\` is the natural home for libopenapi-style batch semantics — running several workflows of a document in one call, with \\`dependsOn\\` interpreted across the batch (the interpretation note from the retired plan doc's §5: memoized prerequisites spanning the batch rather than one \\`execute\\` call each).\n\n**Blocked by:**\n- #62 (input channel for reference/transfer-run workflows) — the batch input story should build on, not preempt, the per-target input channels\n- #78 (API surface review) — new public API should land on the reviewed surface\n\nhttps://claude.ai/code/session_018xHDHotJJDWYtTn7ZLrn5V\n",
+        "labels": [],
+        "state": "open"
+    }
+}

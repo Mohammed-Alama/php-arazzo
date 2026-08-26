@@ -1,0 +1,25 @@
+{
+    "id": "0f0207e882068cc66d9d0785d967f438b1fd9bfd95826d860d3085b59c10cc35",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "build(deps): bump ruby/setup-ruby from 1.319.0 to 1.320.0",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/3ccc930eaa2a78c31ea19f09e0dbea2639b571ed",
+    "publishedAt": "2026-07-22T08:33:15Z",
+    "tags": [
+        "a2a",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Roadmap A2A step type",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:3ccc930",
+        "title": "build(deps): bump ruby/setup-ruby from 1.319.0 to 1.320.0",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/3ccc930eaa2a78c31ea19f09e0dbea2639b571ed",
+        "publishedAt": "2026-07-22T08:33:15Z",
+        "body": "build(deps): bump ruby/setup-ruby from 1.319.0 to 1.320.0\n\nBumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.319.0 to 1.320.0.\n- [Release notes](https://github.com/ruby/setup-ruby/releases)\n- [Changelog](https://github.com/ruby/setup-ruby/blob/master/release.rb)\n- [Commits](https://github.com/ruby/setup-ruby/compare/v1.319.0...v1.320.0)\n\n---\nupdated-dependencies:\n- dependency-name: ruby/setup-ruby\n  dependency-version: 1.320.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

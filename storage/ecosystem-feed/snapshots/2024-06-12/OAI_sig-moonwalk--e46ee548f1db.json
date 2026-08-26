@@ -1,0 +1,23 @@
+{
+    "id": "e46ee548f1db1f694857f96bbe9be0959deef212bf842d6f53f9e85d148db289",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Add ADR for using IRIs",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/86",
+    "publishedAt": "2024-06-12T19:30:06Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:86",
+        "title": "Add ADR for using IRIs",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/86",
+        "publishedAt": "2024-06-12T19:30:06Z",
+        "body": "Addresses discussion #59, which has not been controversial whenever it has come up in recent meetings.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

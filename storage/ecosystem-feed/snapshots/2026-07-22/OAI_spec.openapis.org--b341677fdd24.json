@@ -1,0 +1,24 @@
+{
+    "id": "b341677fdd2483b2967529e65aeb9cd3e9faf48b06acc5bed48601e61b76714d",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #120 from sharmaadityaHQ/main",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/470b7d16b791c82f58c1d248ef75a1aa42bf0667",
+    "publishedAt": "2026-07-22T03:57:07Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:470b7d1",
+        "title": "Merge pull request #120 from sharmaadityaHQ/main",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/470b7d16b791c82f58c1d248ef75a1aa42bf0667",
+        "publishedAt": "2026-07-22T03:57:07Z",
+        "body": "Merge pull request #120 from sharmaadityaHQ/main\n\ndocs: add x-sensitive-data extension",
+        "labels": [],
+        "state": ""
+    }
+}

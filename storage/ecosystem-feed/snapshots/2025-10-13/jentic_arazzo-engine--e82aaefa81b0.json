@@ -1,0 +1,28 @@
+{
+    "id": "e82aaefa81b05559d430ba51c13a4c7e28c5b80bb374d97c162bd351ec12fbd6",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Fix types  in `runner.py` file and creating `py.typed` file",
+    "url": "https://github.com/jentic/arazzo-engine/pull/124",
+    "publishedAt": "2025-10-13T08:07:23Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:124",
+        "title": "Fix types  in `runner.py` file and creating `py.typed` file",
+        "url": "https://github.com/jentic/arazzo-engine/pull/124",
+        "publishedAt": "2025-10-13T08:07:23Z",
+        "body": "Issue #100 \r\n\r\nIn this PR, I’ve fixed the type annotations in the `runner.py` file, updated the code accordingly, and added a new `py.typed` file to indicate that this package includes type hints.\r\n\r\nI’ve verified the changes by running `mypy` locally to ensure all type checks pass.\r\n\r\n<img width=\"1103\" height=\"90\" alt=\"image\" src=\"https://github.com/user-attachments/assets/c159949a-47bf-4410-ab01-62882c9cce2a\" />\r\n",
+        "labels": [
+            "enhancement",
+            "runner"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

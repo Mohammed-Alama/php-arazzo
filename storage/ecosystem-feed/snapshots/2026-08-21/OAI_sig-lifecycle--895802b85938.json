@@ -1,0 +1,25 @@
+{
+    "id": "895802b85938ac4dac381d3b68b29f7e51248f7c03615a0562b2cd638ff3b431",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "Enhanced Operation Deprecation and versioning",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/10",
+    "publishedAt": "2026-08-21T18:24:28Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:10",
+        "title": "Enhanced Operation Deprecation and versioning",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/10",
+        "publishedAt": "2026-08-21T18:24:28Z",
+        "body": "Currently, OpenAPI allows us to identify the version of the API being described and deprecate operations using a Boolean value.\n\nI would like to propose some additional metadata that makes it easier to track changes to APIs.\nIn addition to the existing `deprecated` flag, there is now a `deprecatedVersion` and `replacementOperationId` property.   \n\nConsider the following API and two of its operations:\n\n```\n{\n \"openapi\" : \"3.0.0\",\n \"info\" :  {\n      \"title\" : \"My API\",\n      \"version\" : \"1.0.313\"\n  }\n{\n    \"/foo\" : {\n        \"get\" : {\n             \"operationId\" : \"getFoo\",\n             \"description\" : \"Return a foo\",\n             \"deprecated\" : true,\n             \"deprecatedVersion\" : \"1.0.312\",\n             \"replacementOperationId\" : \"getFoo2\"\n             \"responses\" : {\n                 \"200\" : {\n                        \"description\" : \"A foo representation\"\n                 }\n             } \n\n        },\n   \"/foo2\" : {\n        \"get\" : {\n             \"operationId\" : \"getFoo2\",\n             \"description\" : \"Return a foo\",\n             \"responses\" : {\n                 \"200\" : {\n                     \"description\" : \"A completely different breaking foo representation\"   \n                 }\n             } \n        }\n    }\n}\n}\n```\n\nThe `deprecatedVersion` property indicates the API version in which this operation was deprecated. The `replacementOperationId` provides a pointer to a new operation that replaces the functionality of the deprecated operation.\n\nThese new properties enable a variety of useful capabilities:\n- Display documentation that is relevant to a particular API version.  Operations that were deprecated prior to that version can be hidden by default to prevent accidently usage of operations that have been replaced.\n- Help developers migrate to new operations by allowing documentation of deprecated operations to point to replacement operations.  \n- Generate client code that only supports operations available in a particular API version.\n- Makes it possible to manage APIs to that are changing incrementally instead of doing big bang updates that completely replace a prior API.\n- Help developers identify what has changed in a new API release.\n",
+        "labels": [],
+        "state": "open"
+    }
+}

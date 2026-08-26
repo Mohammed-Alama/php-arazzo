@@ -1,0 +1,27 @@
+{
+    "id": "21dc3c916b24e4cb2f85ab839e1ee4f3a5348c5396aadbbe63c449c1590457fa",
+    "source": "speakeasy-api/openapi",
+    "type": "release",
+    "title": "v1.25.1",
+    "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.25.1",
+    "publishedAt": "2026-08-26T00:56:05Z",
+    "tags": [
+        "cli",
+        "a2a",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "speakeasy-api/openapi",
+        "type": "release",
+        "externalId": "release:v1.25.1",
+        "title": "v1.25.1",
+        "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.25.1",
+        "publishedAt": "2026-08-26T00:56:05Z",
+        "body": "## What's Changed\r\n* test(sortfmt): remove external parity test by @ThomasRooney in https://github.com/speakeasy-api/openapi/pull/242\r\n* ci(deps): bump jdx/mise-action from 4.2.3 to 4.2.5 in the github-actions group across 1 directory by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/237\r\n* fix(yml): keep folded block scalars stable across encode round trips by @AshGodfrey in https://github.com/speakeasy-api/openapi/pull/244\r\n* fix(deps): bump the go-minor-patch group across 2 directories with 6 updates by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/239\r\n* fix(deps): bump jsonschema/oas3/tests/testsuite from `be54236` to `6648e81` by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/238\r\n* chore: update submodule dependencies to latest main by @github-actions[bot] in https://github.com/speakeasy-api/openapi/pull/241\r\n\r\n## New Contributors\r\n* @AshGodfrey made their first contribution in https://github.com/speakeasy-api/openapi/pull/244\r\n\r\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.25.0...v1.25.1\n\n## OpenAPI CLI v1.25.1\n\nThis release includes binaries for Linux, macOS, and Windows on both x86_64 and ARM64 architectures.\n\n### Installation\n\nDownload the appropriate binary for your platform from the assets below, extract it, and add it to your PATH.\n\n### Changes\n\n## Changelog\n### Bug fixes\n* 9925d69ccf10721c1e84079012c35b509409a30e fix(deps): bump jsonschema/oas3/tests/testsuite from `be54236` to `6648e81` (#238)\n* ea2d24d30d873cd596fb224db46c23e9fff0e66c fix(deps): bump the go-minor-patch group across 2 directories with 6 updates (#239)\n* a1a2ace46e3d665b9d49eee6e0428b661eb67054 fix(yml): keep folded block scalars stable across encode round trips (#244)\n### Others\n* a9b7ba1801fcc732d4668934e8deb90045588953 ci(deps): bump jdx/mise-action from 4.2.3 to 4.2.4 in the github-actions group (#237)\n* 356660f0271d6fca66dbf70edc70fb4c72dd5ae1 test(sortfmt): remove external parity test (#242)\n\n\n---\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.25.0...v1.25.1\n\nReleased by [GoReleaser](https://github.com/goreleaser/goreleaser).\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "35828f11fa9408dbf5c8cc06f01af4c9ef8fa0f93ed13f521d2d08f6b5e758f8",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "2026 07 25 core 38 event dispatcher wiring",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/5",
+    "publishedAt": "2026-08-03T08:35:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:5",
+        "title": "2026 07 25 core 38 event dispatcher wiring",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/5",
+        "publishedAt": "2026-08-03T08:35:31Z",
+        "body": "- **feat(core): implement dependency graph and cycle validation**\n- **Update changelog for core-37-dependency-graph-design**\n- **feat(events): add 9 PSR-14 lifecycle event DTOs (core-38)**\n- **feat(events): SimpleEventDispatcher + NullEventDispatcher (PSR-14)**\n- **feat(events): LedgerAppendingListener bridges bus -> EventLedger**\n- **feat(executor): WorkflowExecutor dispatches PSR-14 lifecycle events**\n- **feat(engine): Engine + StepExecutionWorker dispatch async lifecycle events**\n- **feat(executor): StepOutcomeHandler dispatches StepRetried + terminal Run events**\n- **feat(executor): CorrelationResumer dispatches CorrelationResumed; StepExecutor accepts dispatcher**\n- **feat(laravel): bind EventDispatcherInterface -> SimpleEventDispatcher; auto-wire LedgerAppendingListener**\n- **feat(laravel): IlluminatePsrEventDispatcher opt-in adapter**\n- **docs(changelog): PSR-14 event dispatcher wiring landed**\n- **style: pint format**\n- **build(ship): core-38-event-dispatcher-wiring**\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

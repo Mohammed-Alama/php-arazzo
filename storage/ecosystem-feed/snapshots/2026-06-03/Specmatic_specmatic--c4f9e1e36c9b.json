@@ -1,0 +1,24 @@
+{
+    "id": "c4f9e1e36c9bc3cf5ba5d93a69ae1d6e1b2d2432489ea9b5ff57fee1d1788d41",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.46.4",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.4",
+    "publishedAt": "2026-06-03T14:10:35Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.46.4",
+        "title": "2.46.4",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.4",
+        "publishedAt": "2026-06-03T14:10:35Z",
+        "body": "## What's Changed\r\n* chore(deps): update dependency io.specmatic.build-reporter:specmatic-reporter-min to v0.3.29 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2535\r\n* In BCC CTRF JSON spec paths must be relative to the repo root by @sahilm in https://github.com/specmatic/specmatic/pull/2537\r\n* Remove obsolete legacy report generators by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2536\r\n* Fix issue related to loading and aggregating external examples by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2539\r\n* Add examples load count in test for an overview by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2540\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.46.3...2.46.4",
+        "labels": [],
+        "state": "published"
+    }
+}

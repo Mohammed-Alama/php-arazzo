@@ -1,0 +1,26 @@
+{
+    "id": "7d2f597093338223eedbcbb363eaf15b6454eeee61ff040aca3fb5d3f42527f4",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "feat: adds examples extension",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/124",
+    "publishedAt": "2026-07-20T15:02:33Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:124",
+        "title": "feat: adds examples extension",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/124",
+        "publishedAt": "2026-07-20T15:02:33Z",
+        "body": "adds examples json schema extension",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

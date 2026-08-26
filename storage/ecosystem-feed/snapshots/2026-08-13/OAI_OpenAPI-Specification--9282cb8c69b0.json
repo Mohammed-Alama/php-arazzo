@@ -1,0 +1,26 @@
+{
+    "id": "9282cb8c69b01d98105cf6cc8e00dbfe2e5369835e36c0960cc67ba16f85c11c",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "Add comment, re-trigger auto-merge",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5500",
+    "publishedAt": "2026-08-13T22:49:43Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5500",
+        "title": "Add comment, re-trigger auto-merge",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5500",
+        "publishedAt": "2026-08-13T22:49:43Z",
+        "body": "Because of how we merge and then delete files we didn't want in the merge, this won't get auto-merged out without another commit.  So I just added a comment.\r\n\r\n- [X] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

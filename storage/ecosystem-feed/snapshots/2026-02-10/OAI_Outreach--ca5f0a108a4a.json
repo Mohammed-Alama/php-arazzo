@@ -1,0 +1,23 @@
+{
+    "id": "ca5f0a108a4ad3b6ae03530892aff1356d840efa6883b3341061724365710d2b",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Create marketing-invitation.yml",
+    "url": "https://github.com/OAI/Outreach/pull/15",
+    "publishedAt": "2026-02-10T13:31:41Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:15",
+        "title": "Create marketing-invitation.yml",
+        "url": "https://github.com/OAI/Outreach/pull/15",
+        "publishedAt": "2026-02-10T13:31:41Z",
+        "body": "I am working on a similar issue tempate form for the SIG group. This will auto-assign the issues to you @kevinswiber as well as add the tags you mentioned in the readme. \r\n\r\nPlease disregard if you have more magic behind the scenes than I am leveraging here.",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

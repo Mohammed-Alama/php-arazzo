@@ -1,0 +1,24 @@
+{
+    "id": "f68581f554336e87c98eaa0862135ed7f5d71ac55f0312bb61291218339ffeb7",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.3",
+    "publishedAt": "2025-03-04T14:50:12Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.14.3",
+        "title": "",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.3",
+        "publishedAt": "2025-03-04T14:50:12Z",
+        "body": "",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "id": "8bbf466f449e4b49003203effaf031a1bdff7f3f03d84586ed9a79739b8b53e4",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Update README.md",
+    "url": "https://github.com/OAI/community/pull/1",
+    "publishedAt": "2022-03-29T20:01:27Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:1",
+        "title": "Update README.md",
+        "url": "https://github.com/OAI/community/pull/1",
+        "publishedAt": "2022-03-29T20:01:27Z",
+        "body": "Updated a file just to get something there. Make sure we are on the same page about scope, format, etc.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

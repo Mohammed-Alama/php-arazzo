@@ -1,0 +1,29 @@
+{
+    "id": "2cf9a7e42e4ed8ff41274040e23fdad128c78149d4d38aadb108a081ed82d2f8",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "build(deps-dev): bump @umbrelladocs/linkspector from 0.5.5 to 0.5.6",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/372",
+    "publishedAt": "2026-07-30T09:16:07Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:372",
+        "title": "build(deps-dev): bump @umbrelladocs/linkspector from 0.5.5 to 0.5.6",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/372",
+        "publishedAt": "2026-07-30T09:16:07Z",
+        "body": "Bumps [@umbrelladocs/linkspector](https://github.com/UmbrellaDocs/linkspector) from 0.5.5 to 0.5.6.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/UmbrellaDocs/linkspector/releases\">@​umbrelladocs/linkspector's releases</a>.</em></p>\n<blockquote>\n<h2>v0.5.6</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Ignore lines via comments by <a href=\"https://github.com/gaurav-nelson\"><code>@​gaurav-nelson</code></a> in <a href=\"https://redirect.github.com/UmbrellaDocs/linkspector/pull/183\">UmbrellaDocs/linkspector#183</a></li>\n<li>chore(deps): bump js-yaml from 5.2.0 to 5.2.2 by <a href=\"https://github.com/dependabot\"><code>@​dependabot</code></a>[bot] in <a href=\"https://redirect.github.com/UmbrellaDocs/linkspector/pull/185\">UmbrellaDocs/linkspector#185</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a href=\"https://github.com/UmbrellaDocs/linkspector/compare/v0.5.5...v0.5.6\">https://github.com/UmbrellaDocs/linkspector/compare/v0.5.5...v0.5.6</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/0c68856a92a09d0d28da217f7fd5a39b530a7a84\"><code>0c68856</code></a> Merge pull request <a href=\"https://redirect.github.com/UmbrellaDocs/linkspector/issues/185\">#185</a> from UmbrellaDocs/dependabot/npm_and_yarn/js-yaml-5.2.2</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/42eb6fa3467fdd9e423aec98644038cf5941a679\"><code>42eb6fa</code></a> chore(deps): bump js-yaml from 5.2.0 to 5.2.2</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/b29682ac65fee37fe34af19cca262a8de0584e8a\"><code>b29682a</code></a> Merge pull request <a href=\"https://redirect.github.com/UmbrellaDocs/linkspector/issues/183\">#183</a> from UmbrellaDocs/ignore-lines-via-comments</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/8ae8f7e9986594e0f8fbd41ba796de5679b401c7\"><code>8ae8f7e</code></a> fix: getDisabledLines to support markdown text</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/2b5deff38a227ecb862577a91338a77aedc3ac3f\"><code>2b5deff</code></a> chore: fix prettier issues</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/c65e5ac3e0a654ccaf931b22b9552915e0aaf651\"><code>c65e5ac</code></a> chore: update dependencies and configuration for vitest</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/c63aad35fa9e600d45ae86cc048356c65c20f13c\"><code>c63aad3</code></a> feat: implement inline ignore comments for link checking</li>\n<li><a href=\"https://github.com/UmbrellaDocs/linkspector/commit/714f4d46c16f44f1429301f2568b899ec7c0d8e4\"><code>714f4d4</code></a> feat: add sponsorship section to README and update FUNDING.yml</li>\n<li>See full diff in <a href=\"https://github.com/UmbrellaDocs/linkspector/compare/v0.5.5...v0.5.6\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=@umbrelladocs/linkspector&package-manager=npm_and_yarn&previous-version=0.5.5&new-version=0.5.6)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

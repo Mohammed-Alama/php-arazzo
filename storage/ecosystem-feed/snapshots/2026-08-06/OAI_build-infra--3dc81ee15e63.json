@@ -1,0 +1,25 @@
+{
+    "id": "3dc81ee15e63a7e0b6303622766a9be8525fff1631caa3ca3063a057839b53d8",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Test oai-spec-test package checkout layout",
+    "url": "https://github.com/OAI/build-infra/pull/14",
+    "publishedAt": "2026-08-06T16:23:03Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:14",
+        "title": "Test oai-spec-test package checkout layout",
+        "url": "https://github.com/OAI/build-infra/pull/14",
+        "publishedAt": "2026-08-06T16:23:03Z",
+        "body": "Ensure `oai-spec-test` works in developer mode.  Existing tests for it use the installed package layout.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

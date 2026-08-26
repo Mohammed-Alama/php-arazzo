@@ -1,0 +1,26 @@
+{
+    "id": "1438ae29fc2e3b976896e006804e09d07c764830fa442fbe4281fecc39ce611d",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "v3.3: First pass at explaining SAFs",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5447",
+    "publishedAt": "2026-08-21T11:33:23Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5447",
+        "title": "v3.3: First pass at explaining SAFs",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5447",
+        "publishedAt": "2026-08-21T11:33:23Z",
+        "body": "This PR is to get conversation started on how we want to explain SAFs in the OAS.  I'm not particularly attached to it, but as we get the SIG/SAF repositories up and running, we should figure out how to explain this to readers.\r\n\r\n\r\n\r\n- [X] schema changes are included in this pull request\r\n",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

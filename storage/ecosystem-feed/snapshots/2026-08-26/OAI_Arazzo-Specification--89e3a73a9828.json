@@ -1,0 +1,24 @@
+{
+    "id": "89e3a73a982852a2af72268b651280488626ce8cfdec0c6b02367a83c88b3870",
+    "source": "OAI/Arazzo-Specification",
+    "type": "tag",
+    "title": "tag 1.0.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0",
+    "publishedAt": "2026-08-26T07:07:43+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "tag",
+        "externalId": "tag:1.0.0",
+        "title": "tag 1.0.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0",
+        "publishedAt": "2026-08-26T07:07:43+00:00",
+        "body": "06148589c63333b9a1548acc70da276937736753",
+        "labels": [],
+        "state": "published"
+    }
+}

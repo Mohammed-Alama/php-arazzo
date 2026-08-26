@@ -1,0 +1,24 @@
+{
+    "id": "cad1d5874c78c229fa34305fb17a7d9266c833e6f14ea7d696cf1187f7000b09",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "build(deps-dev): bump jekyll-include-cache from 0.2.1 to 0.2.2",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/9b36e2e69af032019cffaa5358159a50bf06e84e",
+    "publishedAt": "2026-08-03T08:34:15Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:9b36e2e",
+        "title": "build(deps-dev): bump jekyll-include-cache from 0.2.1 to 0.2.2",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/9b36e2e69af032019cffaa5358159a50bf06e84e",
+        "publishedAt": "2026-08-03T08:34:15Z",
+        "body": "build(deps-dev): bump jekyll-include-cache from 0.2.1 to 0.2.2\n\nBumps [jekyll-include-cache](https://github.com/benbalter/jekyll-include-cache) from 0.2.1 to 0.2.2.\n- [Release notes](https://github.com/benbalter/jekyll-include-cache/releases)\n- [Changelog](https://github.com/benbalter/jekyll-include-cache/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/benbalter/jekyll-include-cache/compare/v0.2.1...v0.2.2)\n\n---\nupdated-dependencies:\n- dependency-name: jekyll-include-cache\n  dependency-version: 0.2.2\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

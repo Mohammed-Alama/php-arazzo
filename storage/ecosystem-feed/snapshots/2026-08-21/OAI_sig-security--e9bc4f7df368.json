@@ -1,0 +1,24 @@
+{
+    "id": "e9bc4f7df3687dde29bd0d8f3f099726d6b20e5d69372801216456fc4ccb145b",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Add support for an OAuth 1.0 authorization scheme",
+    "url": "https://github.com/OAI/sig-security/issues/25",
+    "publishedAt": "2026-08-21T18:06:44Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:25",
+        "title": "Add support for an OAuth 1.0 authorization scheme",
+        "url": "https://github.com/OAI/sig-security/issues/25",
+        "publishedAt": "2026-08-21T18:06:44Z",
+        "body": "Currently, the Swagger 1.2 specification supports three authorization schemes: basic authentication, API key and OAuth2.  One popular scheme that is missing is [OAuth 1.0](http://tools.ietf.org/html/rfc5849); can it be added to the next specification version?\n",
+        "labels": [],
+        "state": "open"
+    }
+}

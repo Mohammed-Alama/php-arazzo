@@ -1,0 +1,25 @@
+{
+    "id": "3b0258a3986c047754dbbd88062b718ae87ca74962dc5864251e7cbd4a153b32",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "Request for API Version Chaining Feature",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/8",
+    "publishedAt": "2026-08-19T19:24:10Z",
+    "tags": [
+        "human",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:8",
+        "title": "Request for API Version Chaining Feature",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/8",
+        "publishedAt": "2026-08-19T19:24:10Z",
+        "body": "Hey all, after discussions with Marsh at API Strat, I'm putting forth a feature request that allows for better API version discovery.  It's basically triplets (aka hypermedia) for versions. \r\n\r\nToday, the spec allows for notation of the current version. However, humans and machines have no way of knowing if, when \"interrogating\" an particular OAS file, if you're looking at the most current version, if there's a previous version,  or if there's a next version. It'd be great if machines/humans could see where in the chain of versions, they are when looking at a specific spec.\r\n\r\nSo,\r\n```yaml\r\ninfo: \r\n   version:                  2.4.1  (this version)\r\n   previousVersion:  <uri to openapi spec for previous version>\r\n   nextVersion:          <uri to openapi spec for next version>\r\n```\r\npretty simple.  from there, machines/humans can take care of the rest.\r\n\r\nBackground here is that tooling should be able to monitor a spec file to spot changes to the API. However, unless it's a super minor change, then those changes trigger a new version and subsequently, those changes are reflected in a new spec file (as opposed to the existing spec file). But currently, there's no way for machines/humans to determine from a current spec file if another spec file exists.\r\n\r\nExtra credit might be another field to give some additional status as to the production-level of the current spec file. For example:\r\n```yaml\r\ninfo: \r\n   version:                  2.4.1  (this version)\r\n   previousVersion:  <uri to openapi spec for previous version>\r\n   nextVersion:          <uri to openapi spec for next version> \r\n   productionStatus: Pre-Release\r\n```\r\n\r\nThis might be more difficult as its effectiveness would require standard vocabulary which might trigger a difficult debate. But, if there's interest in this feature, I do have suggested vocabulary that spans everything from pre-release to deactivated.\r\n\r\nThank you.\r\n\r\nDavid Berlind\r\nProgrammableWeb",
+        "labels": [],
+        "state": "open"
+    }
+}

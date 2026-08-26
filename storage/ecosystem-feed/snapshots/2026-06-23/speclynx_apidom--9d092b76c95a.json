@@ -1,0 +1,25 @@
+{
+    "id": "9d092b76c95a03d633960e24162a5c13c6ad3fb64dbec0bd973fa32fda0201b3",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.13.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.13.0",
+    "publishedAt": "2026-06-23T15:16:26Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.13.0",
+        "title": "v4.13.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.13.0",
+        "publishedAt": "2026-06-23T15:16:26Z",
+        "body": "# [4.13.0](https://github.com/speclynx/apidom/compare/v4.12.1...v4.13.0) (2026-06-23)\n\n\n### Features\n\n* **reference:** add OpenAPI 2.0 bundle strategy ([#360](https://github.com/speclynx/apidom/issues/360)) ([29a1b3f](https://github.com/speclynx/apidom/commit/29a1b3f05ecdf12bf9003af96e19c6dedb4e310f)), closes [#351](https://github.com/speclynx/apidom/issues/351)\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "47f3323fbf53a2b9fe9d9e1a014da984e78ab0c534fc0cbb5c2be38998a43fed",
+    "source": "speclynx/apidom",
+    "type": "tag",
+    "title": "tag v4.12.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.0",
+    "publishedAt": "2026-08-26T07:08:24+00:00",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "tag",
+        "externalId": "tag:v4.12.0",
+        "title": "tag v4.12.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.0",
+        "publishedAt": "2026-08-26T07:08:24+00:00",
+        "body": "7d5549ba93000f249ebbe1480ae01d1aaeb2ce15",
+        "labels": [],
+        "state": "published"
+    }
+}

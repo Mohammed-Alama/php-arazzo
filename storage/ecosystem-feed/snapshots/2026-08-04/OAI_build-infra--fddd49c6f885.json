@@ -1,0 +1,26 @@
+{
+    "id": "fddd49c6f885925ca7d5521f45d00f55ce07d97ad445bedfa77bdadf11ad934c",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Bump the vitest group across 1 directory with 2 updates",
+    "url": "https://github.com/OAI/build-infra/pull/3",
+    "publishedAt": "2026-08-04T17:20:16Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:3",
+        "title": "Bump the vitest group across 1 directory with 2 updates",
+        "url": "https://github.com/OAI/build-infra/pull/3",
+        "publishedAt": "2026-08-04T17:20:16Z",
+        "body": "Bumps the vitest group with 1 update in the / directory: [@vitest/coverage-v8](https://github.com/vitest-dev/vitest/tree/HEAD/packages/coverage-v8).\n\nUpdates `@vitest/coverage-v8` from 4.1.9 to 4.1.10\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/vitest-dev/vitest/releases\">@​vitest/coverage-v8's releases</a>.</em></p>\n<blockquote>\n<h2>v4.1.10</h2>\n<h3>   🐞 Bug Fixes</h3>\n<ul>\n<li><strong>browser</strong>: Check fs access in builtin commands [backport to v4]  -  by <a href=\"https://github.com/hi-ogawa\"><code>@​hi-ogawa</code></a>, <strong>Hiroshi Ogawa</strong> and <strong>OpenCode (claude-opus-4-8)</strong> in <a href=\"https://redirect.github.com/vitest-dev/vitest/issues/10680\">vitest-dev/vitest#10680</a> <a href=\"https://github.com/vitest-dev/vitest/commit/5c18dd267\"><!-- raw HTML omitted -->(5c18d)<!-- raw HTML omitted --></a></li>\n<li><strong>vm</strong>: Fix external module resolve error with deps optimizer query for encoded URI [backport to v4]  -  by <a href=\"https://github.com/SveLil\"><code>@​SveLil</code></a> and <a href=\"https://github.com/hi-ogawa\"><code>@​hi-ogawa</code></a> in <a href=\"https://redirect.github.com/vitest-dev/vitest/issues/10661\">vitest-dev/vitest#10661</a> <a href=\"https://github.com/vitest-dev/vitest/commit/bae52b511\"><!-- raw HTML omitted -->(bae52)<!-- raw HTML omitted --></a></li>\n</ul>\n<h5>    <a href=\"https://github.com/vitest-dev/vitest/compare/v4.1.9...v4.1.10\">View changes on GitHub</a></h5>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/vitest-dev/vitest/commit/db616d227b6e0cb07a94f5d1bba262ee95db7e46\"><code>db616d2</code></a> chore: release v4.1.10 (<a href=\"https://github.com/vitest-dev/vitest/tree/HEAD/packages/coverage-v8/issues/10718\">#10718</a>)</li>\n<li>See full diff in <a href=\"https://github.com/vitest-dev/vitest/commits/v4.1.10/packages/coverage-v8\">compare view</a></li>\n</ul>\n</details>\n<br />\n\nUpdates `vitest` from 4.1.9 to 4.1.10\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/vitest-dev/vitest/releases\">vitest's releases</a>.</em></p>\n<blockquote>\n<h2>v4.1.10</h2>\n<h3>   🐞 Bug Fixes</h3>\n<ul>\n<li><strong>browser</strong>: Check fs access in builtin commands [backport to v4]  -  by <a href=\"https://github.com/hi-ogawa\"><code>@​hi-ogawa</code></a>, <strong>Hiroshi Ogawa</strong> and <strong>OpenCode (claude-opus-4-8)</strong> in <a href=\"https://redirect.github.com/vitest-dev/vitest/issues/10680\">vitest-dev/vitest#10680</a> <a href=\"https://github.com/vitest-dev/vitest/commit/5c18dd267\"><!-- raw HTML omitted -->(5c18d)<!-- raw HTML omitted --></a></li>\n<li><strong>vm</strong>: Fix external module resolve error with deps optimizer query for encoded URI [backport to v4]  -  by <a href=\"https://github.com/SveLil\"><code>@​SveLil</code></a> and <a href=\"https://github.com/hi-ogawa\"><code>@​hi-ogawa</code></a> in <a href=\"https://redirect.github.com/vitest-dev/vitest/issues/10661\">vitest-dev/vitest#10661</a> <a href=\"https://github.com/vitest-dev/vitest/commit/bae52b511\"><!-- raw HTML omitted -->(bae52)<!-- raw HTML omitted --></a></li>\n</ul>\n<h5>    <a href=\"https://github.com/vitest-dev/vitest/compare/v4.1.9...v4.1.10\">View changes on GitHub</a></h5>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/vitest-dev/vitest/commit/db616d227b6e0cb07a94f5d1bba262ee95db7e46\"><code>db616d2</code></a> chore: release v4.1.10 (<a href=\"https://github.com/vitest-dev/vitest/tree/HEAD/packages/vitest/issues/10718\">#10718</a>)</li>\n<li><a href=\"https://github.com/vitest-dev/vitest/commit/bae52b5112a6fd8200101b88bf8af9685d077295\"><code>bae52b5</code></a> fix(vm): fix external module resolve error with deps optimizer query for enco...</li>\n<li>See full diff in <a href=\"https://github.com/vitest-dev/vitest/commits/v4.1.10/packages/vitest\">compare view</a></li>\n</ul>\n</details>\n<br />\n",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

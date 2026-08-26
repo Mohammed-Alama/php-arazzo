@@ -1,0 +1,24 @@
+{
+    "id": "ddc1464c9c4ceb9f992d764779fe95603bf50f96fad4a939c66d4dbe4f26ba69",
+    "source": "OAI/learn.openapis.org",
+    "type": "issue",
+    "title": "Patterns and practices - Overlay for globals",
+    "url": "https://github.com/OAI/learn.openapis.org/issues/200",
+    "publishedAt": "2026-04-09T17:16:13Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "issue",
+        "externalId": "issue:200",
+        "title": "Patterns and practices - Overlay for globals",
+        "url": "https://github.com/OAI/learn.openapis.org/issues/200",
+        "publishedAt": "2026-04-09T17:16:13Z",
+        "body": "From today's call, we have \"low level\" resources on the learn website (how to do Foo with standard Y). And that's a great way to get started.\n\nNow, if people want to elevate their learning with patterns and practices, and guidance to apply on how to well structure their documents, it seems we have a gap today.\n\nA good candidate for that would be something like adding a specific metadata to all operations (like a sunset header) or a status code to all operations (like a specific throttling response). (using overlays)\n\nA better example can be found here. https://github.com/OAI/OpenAPI-Specification/discussions/5193#discussioncomment-16496510",
+        "labels": [],
+        "state": "open"
+    }
+}

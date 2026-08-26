@@ -1,0 +1,23 @@
+{
+    "id": "029499bd4f5fd3245d7e87e06e3f34a803e75d99ec3a1e52af1f71d491b4a382",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Avoid pinning transitive lockfile entries",
+    "url": "https://github.com/OAI/build-infra/pull/15",
+    "publishedAt": "2026-08-04T17:17:24Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:15",
+        "title": "Avoid pinning transitive lockfile entries",
+        "url": "https://github.com/OAI/build-infra/pull/15",
+        "publishedAt": "2026-08-04T17:17:24Z",
+        "body": "This fixes the dependabot PR CI test errors.  As explained by Codex:\r\n\r\n-----\r\n\r\nWhat changed:\r\n* Replaced exact transitive lockfile assertions like @emnapi/core@1.11.2 and proxy-agent@8.0.2.\r\n* Kept stable package-lock checks:lockfile version is 3\r\n* root lockfile dependencies match package.json direct runtime dependencies\r\n\r\nReason:\r\n* Dependabot can legitimately change, dedupe, or remove transitive lockfile entries.\r\n* npm ci is already the authoritative check that the lockfile is complete and installable.\r\n* The old test encoded one historical lockfile workaround too literally, so every valid dependency update could fail CI.\r\n\r\nVerification:\r\n* npm test -- tests/package/package-lock.test.mjs passed.\r\n* npm test passed: 10 files, 25 tests.\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

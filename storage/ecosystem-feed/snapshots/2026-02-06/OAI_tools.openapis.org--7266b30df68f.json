@@ -1,0 +1,25 @@
+{
+    "id": "7266b30df68f993d1d3a1b9639a852845e159225c2d4ae8dd1bda857cc7915bb",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Add 3.2 support",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/254",
+    "publishedAt": "2026-02-06T12:12:36Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:254",
+        "title": "Add 3.2 support",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/254",
+        "publishedAt": "2026-02-06T12:12:36Z",
+        "body": "I have no idea how much automation there is here so this is probably not actually complete, but I wanted to provoke action :-)",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

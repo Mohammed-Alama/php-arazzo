@@ -1,0 +1,25 @@
+{
+    "id": "26e9825285bc44c94bb59925f4f97524bafde31f0a40b967a44cc850135a1caa",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "Add Callbacks, Links and Webhooks pages",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/90",
+    "publishedAt": "2026-04-03T12:43:25Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:90",
+        "title": "Add Callbacks, Links and Webhooks pages",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/90",
+        "publishedAt": "2026-04-03T12:43:25Z",
+        "body": "> This work is connected to #76 \r\n\r\nSummary of changes:\r\n\r\n* Added page, diagram and example for Callback object.\r\n* Added page, diagram and example for Link object (not in scope of referenced ticket, but hey-ho).\r\n* Added page, diagram and example for `webhooks` property.\r\n* Corrected the security examples I got wrong when I wrote the security page (slap on the wrist!)\r\n* Some typos/syntax things I saw whilst doing this.\r\n\r\n👍 ",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

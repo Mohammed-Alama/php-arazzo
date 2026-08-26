@@ -1,0 +1,24 @@
+{
+    "id": "fd5bf31950f2ab9ace9bfede6cf7f48427e35008ce3201dfb79b04b27a2d0dd9",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "fix(ecosystem): process final review notes",
+    "url": "https://github.com/usearazzo/website/commit/a5439bd6d0197204b485bcd1690ea756b126c906",
+    "publishedAt": "2026-08-22T12:53:39Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:a5439bd",
+        "title": "fix(ecosystem): process final review notes",
+        "url": "https://github.com/usearazzo/website/commit/a5439bd6d0197204b485bcd1690ea756b126c906",
+        "publishedAt": "2026-08-22T12:53:39Z",
+        "body": "fix(ecosystem): process final review notes",
+        "labels": [],
+        "state": ""
+    }
+}

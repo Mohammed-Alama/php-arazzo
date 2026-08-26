@@ -1,0 +1,23 @@
+{
+    "id": "cdfb5cb4336cade9651a11034b1979dc412376b2afa647e36a4e95f66412c922",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Adding 2023 Planning page to OAI Marketing repo",
+    "url": "https://github.com/OAI/Outreach/pull/28",
+    "publishedAt": "2023-01-20T16:24:43Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:28",
+        "title": "Adding 2023 Planning page to OAI Marketing repo",
+        "url": "https://github.com/OAI/Outreach/pull/28",
+        "publishedAt": "2023-01-20T16:24:43Z",
+        "body": "I'd like to add a page to the OAI Marketing repo to include notes from the 2023 planning meeting",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

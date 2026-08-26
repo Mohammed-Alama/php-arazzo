@@ -1,0 +1,23 @@
+{
+    "id": "b0c8a9fc5728e96753f3e9bf82201b79eaaa23b39711b11989c4f1fc9f9828fb",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "feat: Draft December newsletter",
+    "url": "https://github.com/OAI/Outreach/pull/56",
+    "publishedAt": "2025-12-05T14:44:10Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:56",
+        "title": "feat: Draft December newsletter",
+        "url": "https://github.com/OAI/Outreach/pull/56",
+        "publishedAt": "2025-12-05T14:44:10Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "ea2e9dcc55736193abd2cc9a561d26c48c34c57ebf72b28949bbd6df983b1e64",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Align OpenAPI 3 example with Moonwalk example",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/27",
+    "publishedAt": "2022-10-13T15:49:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:27",
+        "title": "Align OpenAPI 3 example with Moonwalk example",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/27",
+        "publishedAt": "2022-10-13T15:49:31Z",
+        "body": "- Removed 201 response from GET\r\n- Fixed typo in description",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

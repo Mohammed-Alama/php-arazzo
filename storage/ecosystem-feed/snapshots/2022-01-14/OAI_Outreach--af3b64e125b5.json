@@ -1,0 +1,23 @@
+{
+    "id": "af3b64e125b5962e0420ba7ea4a758fa56e92a5f19feb30f0d28161863f056c3",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Adding a CODE_OF_CONDUCT and README.",
+    "url": "https://github.com/OAI/Outreach/pull/3",
+    "publishedAt": "2022-01-14T20:42:03Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:3",
+        "title": "Adding a CODE_OF_CONDUCT and README.",
+        "url": "https://github.com/OAI/Outreach/pull/3",
+        "publishedAt": "2022-01-14T20:42:03Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

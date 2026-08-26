@@ -1,0 +1,24 @@
+{
+    "id": "c569cd48440b1b1f420a595516b1caa3a1a043fb0f5e736c2338a19005aaf0d3",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "OAuth refreshUrl property",
+    "url": "https://github.com/OAI/sig-security/issues/21",
+    "publishedAt": "2026-08-21T18:05:51Z",
+    "tags": [
+        "breaking"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:21",
+        "title": "OAuth refreshUrl property",
+        "url": "https://github.com/OAI/sig-security/issues/21",
+        "publishedAt": "2026-08-21T18:05:51Z",
+        "body": "Hi,\r\n\r\nIs there any reason why the non-standard refreshUrl property was added to OAI?\r\n\r\nObtaining a new Access Token using the Refresh Token should be done using the TokenEndpoint, as stated in RFC 6749 (OAuth 2.0 Authorization framework):\r\n\r\n\"3.2. Token Endpoint\r\nThe token endpoint is used by the client to obtain an access token by presenting its authorization grant **or refresh token**. The token endpoint is used with every authorization grant except for the implicit grant type (since an access token is issued directly).\"\r\n\r\nThanks,\r\n\r\nPhilippe",
+        "labels": [],
+        "state": "open"
+    }
+}

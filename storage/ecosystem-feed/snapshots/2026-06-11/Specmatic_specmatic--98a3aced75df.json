@@ -1,0 +1,26 @@
+{
+    "id": "98a3aced75dfeef3bd1bb3ed72ef6dd0df702bc03979468dcccc7b5b9f196b9c",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.46.5",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.5",
+    "publishedAt": "2026-06-11T12:50:01Z",
+    "tags": [
+        "mcp",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.46.5",
+        "title": "2.46.5",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.5",
+        "publishedAt": "2026-06-11T12:50:01Z",
+        "body": "## What's Changed\r\n* Implement mcp tools by @vedubhat in https://github.com/specmatic/specmatic/pull/2513\r\n* chore(deps): update jackson monorepo to v2.22.0 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2532\r\n* Fix change-status flipping siblings on a path-parameter change by @sahilm in https://github.com/specmatic/specmatic/pull/2523\r\n* Ensure additional query parameters are preserved for mock by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2545\r\n* Multi trigger orchestrator by @Sushant092003 in https://github.com/specmatic/specmatic/pull/2538\r\n* Annotate BCC source locations as a chain through external $refs by @sahilm in https://github.com/specmatic/specmatic/pull/2543\r\n* chore(deps): update dependency io.netty:netty-codec-http to v4.2.15.final by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2511\r\n* Annotate BCC breadcrumbs with source locations across external $refs by @sahilm in https://github.com/specmatic/specmatic/pull/2533\r\n* BCC: emit structured breakages metadata for the grouped HTML report by @sahilm in https://github.com/specmatic/specmatic/pull/2544\r\n* Remove SPECMATIC_BCC_REPORT feature flag by @sahilm in https://github.com/specmatic/specmatic/pull/2551\r\n* Fix flaky test in SpecmaticMcpServerTest by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2558\r\n* Normalize filesystem spec paths for federated CTRF reports by @jaydeepk in https://github.com/specmatic/specmatic/pull/2550\r\n* Fix: More graceful handling of query parameter collisions between top-level query params and query param object properties by @joelrosario in https://github.com/specmatic/specmatic/pull/2562\r\n* Support for nested query param objects and arrays by @joelrosario in https://github.com/specmatic/specmatic/pull/2563\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.46.4...2.46.5",
+        "labels": [],
+        "state": "published"
+    }
+}

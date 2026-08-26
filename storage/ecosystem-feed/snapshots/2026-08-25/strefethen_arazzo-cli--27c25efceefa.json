@@ -1,0 +1,28 @@
+{
+    "id": "27c25efceefad9727df1cc25c043a0761f2065556a80998cd8ebce79cf37cdc7",
+    "source": "strefethen/arazzo-cli",
+    "type": "release",
+    "title": "v0.4.0",
+    "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0",
+    "publishedAt": "2026-08-25T22:51:15Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "release",
+        "externalId": "release:v0.4.0",
+        "title": "v0.4.0",
+        "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0",
+        "publishedAt": "2026-08-25T22:51:15Z",
+        "body": "## Arazzo 1.1 conformance hardening\n\n0.4.0 is three weeks of spec-correctness work — 70 commits closing out the conformance audit's top findings and the August code audit.\n\n### Highlights\n\n- **One XPath 1.0 boundary.** XPath criteria are decided by XPath 1.0 effective boolean value, evaluated against the bytes the server actually sent, and fail on a null context per spec §5.8.11.4.4. Only an explicit `version: xpath-10` executes; every other declared version — and the bare `type: xpath` form, whose omitted version the spec defaults to XPath 3.1 — is rejected before evaluation, and `validate` now warns about those declarations ahead of the run.\n- **`in: querystring`.** The Arazzo 1.1 parameter location is fully supported: spec serialization, rejected in `1.0.x` documents, one per operation, and a non-string value fails the step instead of silently dropping the query.\n- **`--strict` validation.** Diagnostics carry severity; `--strict` promotes warnings to errors for CI gates. MUST-level identifier and `successCriteria` rules are enforced, SHOULD-level recommendations and unknown non-`x-` fields warn.\n- **Retry and action semantics** match the spec: limits honored exactly at numeric boundaries, decimal delays, failure fallthrough, call-and-return `stepId`/`workflowId` retries, and action `parameters` passed to workflow targets.\n- **No more silent wrong URLs.** The specification's `operationPath` form (source reference + JSON Pointer) is still not resolved, but using it now gets a `validate` warning and a clear `run` error naming the supported forms — not a silently concatenated URL.\n\n### Breaking\n\n**`$env.*` is removed.** It was an arazzo-cli extension the spec doesn't define, and it gave workflow text read access to the entire process environment. `$env` expressions now resolve as an unknown namespace (`null`, with a warning) and never leak values into diagnostics. Migrate to workflow inputs — `-i apiKey=\"$API_KEY\"` in the invocation, `{$inputs.apiKey}` in the spec. `.env` files still load into the process environment at startup.\n\n### Scope, stated plainly\n\narazzo-cli implements a well-defined subset of Arazzo 1.1.0, not the whole spec. Extensions are labeled, gaps are listed, and both live in the README's [Specification Conformance](https://github.com/strefethen/arazzo-cli#specification-conformance-extensions-and-gaps) section.\n\nFull details in the [CHANGELOG](https://github.com/strefethen/arazzo-cli/blob/main/CHANGELOG.md).\n",
+        "labels": [],
+        "state": "published"
+    }
+}

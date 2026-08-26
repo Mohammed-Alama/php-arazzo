@@ -1,0 +1,25 @@
+{
+    "id": "e1d7086b949b6245920964ff381892ee0481e6e8d1fddb6921655e2ebc3c4353",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Mimic current OpenAPI spec layout",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/140",
+    "publishedAt": "2024-07-08T15:40:01Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:140",
+        "title": "Mimic current OpenAPI spec layout",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/140",
+        "publishedAt": "2024-07-08T15:40:01Z",
+        "body": "Extend Darrel's work for using unmodified latest ReSpec\r\n- Add build script for local testing\r\n- Move styles to host document\r\n- Adjust `respecConfig` to mimic current OpenAPI spec layout",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

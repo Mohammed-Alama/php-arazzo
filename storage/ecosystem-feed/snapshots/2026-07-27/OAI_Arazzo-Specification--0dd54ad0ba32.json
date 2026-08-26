@@ -1,0 +1,24 @@
+{
+    "id": "0dd54ad0ba32ca4f84e9b03c36a743a2bce4ea7e7fa3516be61a70f75a39d696",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #522 from OAI/dependabot/npm_and_yarn/markdownlint-cli2-0.23.1",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/de39c80918f1a107ac97ed51b34f10436614a6a7",
+    "publishedAt": "2026-07-27T10:37:31Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:de39c80",
+        "title": "Merge pull request #522 from OAI/dependabot/npm_and_yarn/markdownlint-cli2-0.23.1",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/de39c80918f1a107ac97ed51b34f10436614a6a7",
+        "publishedAt": "2026-07-27T10:37:31Z",
+        "body": "Merge pull request #522 from OAI/dependabot/npm_and_yarn/markdownlint-cli2-0.23.1\n\nchore(deps-dev): bump markdownlint-cli2 from 0.23.0 to 0.23.2",
+        "labels": [],
+        "state": ""
+    }
+}

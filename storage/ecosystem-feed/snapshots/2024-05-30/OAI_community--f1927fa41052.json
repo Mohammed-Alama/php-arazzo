@@ -1,0 +1,25 @@
+{
+    "id": "f1927fa41052c18599df3e6fb2646b19351a35cda9509113840d368aadb2c316",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Update sig-create-template.yml",
+    "url": "https://github.com/OAI/community/pull/18",
+    "publishedAt": "2024-05-30T14:27:15Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:18",
+        "title": "Update sig-create-template.yml",
+        "url": "https://github.com/OAI/community/pull/18",
+        "publishedAt": "2024-05-30T14:27:15Z",
+        "body": "Change the default assignee for SIG issues from namdeerf to ncaidin. namdeerf is Jeff Ernst-Friedman who used to handle repos, but hasn't been active in a while. ncaidin is the current LF Program Manager for the OpenAPI.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

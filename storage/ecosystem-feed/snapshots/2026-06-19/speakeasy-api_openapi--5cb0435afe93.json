@@ -1,0 +1,27 @@
+{
+    "id": "5cb0435afe9344cd89c784a4485db9901fa1875d1e838f49ebf3036ad12adfb7",
+    "source": "speakeasy-api/openapi",
+    "type": "release",
+    "title": "v1.23.2",
+    "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.23.2",
+    "publishedAt": "2026-06-19T06:19:15Z",
+    "tags": [
+        "cli",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "speakeasy-api/openapi",
+        "type": "release",
+        "externalId": "release:v1.23.2",
+        "title": "v1.23.2",
+        "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.23.2",
+        "publishedAt": "2026-06-19T06:19:15Z",
+        "body": "## What's Changed\n* ci(deps): bump jsonschema/oas3/tests/testsuite from `584e550` to `60755c1` by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/209\n* ci(deps): bump jsonschema/oas3/tests/testsuite from `60755c1` to `fe8c2f0` by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/214\n* fix(deps): bump the go-minor-patch group across 1 directory with 3 updates by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/215\n* ci(deps): bump codecov/codecov-action from 6 to 7 in the github-actions group by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/212\n* fix: quote TOON array elements containing semicolons by @TristanSpeakEasy in https://github.com/speakeasy-api/openapi/pull/217\n* fix: handle nil jsonpointer sources by @kv1sidisi in https://github.com/speakeasy-api/openapi/pull/213\n* fix(deps): bump github.com/charmbracelet/bubbles from 0.21.0 to 1.0.0 in the go-major group across 1 directory by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/211\n* chore: update submodule dependencies to latest main by @github-actions[bot] in https://github.com/speakeasy-api/openapi/pull/210\n\n## New Contributors\n* @kv1sidisi made their first contribution in https://github.com/speakeasy-api/openapi/pull/213\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.23.1...v1.23.2\n\n## OpenAPI CLI v1.23.2\n\nThis release includes binaries for Linux, macOS, and Windows on both x86_64 and ARM64 architectures.\n\n### Installation\n\nDownload the appropriate binary for your platform from the assets below, extract it, and add it to your PATH.\n\n### Changes\n\n## Changelog\n### Bug fixes\n* 6c5797a0689269ec3298f52c48db4849e5f189bd fix(deps): bump github.com/charmbracelet/bubbles from 0.21.0 to 1.0.0 in the go-major group across 1 directory (#211)\n* adf2637c804da287575841ce5f540cc515884d2d fix(deps): bump the go-minor-patch group across 1 directory with 3 updates (#215)\n* 83e736969a078193410d8f0fd21bd623feb5c219 fix: handle nil jsonpointer sources (#213)\n* ec6179089fb9ba80ebdd7515475d1949b45f1013 fix: quote TOON array elements containing semicolons (#217)\n### Others\n* f78466a722f8ad2d1d1d4b571e782727255898a1 ci(deps): bump codecov/codecov-action from 6 to 7 in the github-actions group (#212)\n* 5b7841fb3caf41a9ac442f1f93645ee3b0b82c6c ci(deps): bump jsonschema/oas3/tests/testsuite from `584e550` to `60755c1` (#209)\n* f3fb5039f3980ce0b3bebdd8d3fab4b8961dbbd0 ci(deps): bump jsonschema/oas3/tests/testsuite from `60755c1` to `fe8c2f0` (#214)\n\n\n---\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.23.1...v1.23.2\n\nReleased by [GoReleaser](https://github.com/goreleaser/goreleaser).\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

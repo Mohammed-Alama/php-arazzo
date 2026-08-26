@@ -1,0 +1,25 @@
+{
+    "id": "9610c289bba245916718121ab7e1a16ea6cf9a85dfb4b7374a7cd0a8702c7b5d",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "release",
+    "title": "v1.0.0",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0",
+    "publishedAt": "2025-02-17T21:11:01Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "release",
+        "externalId": "release:v1.0.0",
+        "title": "v1.0.0",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0",
+        "publishedAt": "2025-02-17T21:11:01Z",
+        "body": "# 1.0.0 (2025-02-17)\r\n\r\n\r\n### Features\r\n\r\n* create Arazzo Runtime expressions parser, validator and extractor ([3e55e52](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/3e55e52a25bdc0210366f02e1f6d5ae4e1c7c887))\r\n\r\n\r\n\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

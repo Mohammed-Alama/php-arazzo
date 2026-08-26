@@ -1,0 +1,24 @@
+{
+    "id": "2799c47420578bc00c4b21c57de26f8bfc3ba6b4d503a1d8d46a16683433c888",
+    "source": "workflows-guru/awesome-arazzo",
+    "type": "commit",
+    "title": "Initial commit",
+    "url": "https://github.com/workflows-guru/awesome-arazzo/commit/b250b01ea684b8d1836b696cc685e91cded971a1",
+    "publishedAt": "2025-03-03T21:34:58Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "workflows-guru/awesome-arazzo",
+        "type": "commit",
+        "externalId": "commit:b250b01",
+        "title": "Initial commit",
+        "url": "https://github.com/workflows-guru/awesome-arazzo/commit/b250b01ea684b8d1836b696cc685e91cded971a1",
+        "publishedAt": "2025-03-03T21:34:58Z",
+        "body": "Initial commit",
+        "labels": [],
+        "state": ""
+    }
+}

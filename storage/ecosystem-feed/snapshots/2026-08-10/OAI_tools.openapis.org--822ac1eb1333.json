@@ -1,0 +1,27 @@
+{
+    "id": "822ac1eb1333414320d33f5463705768ad91a29784c613f66578a69af01e1c0d",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "Add Diff Anything",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/281",
+    "publishedAt": "2026-08-10T08:49:59Z",
+    "tags": [
+        "cli",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:281",
+        "title": "Add Diff Anything",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/281",
+        "publishedAt": "2026-08-10T08:49:59Z",
+        "body": "## Tool Properties\n\n- Display name: Diff Anything\n- Description: A macOS and Windows desktop GUI and CLI for comparing files locally, including OpenAPI and JSON Schema documents. It classifies API compatibility changes, and Pro batch manifests can emit JSON, JUnit, or SARIF results.\n- Repository: Not open source; distributed through the Mac App Store and Microsoft Store.\n- Homepage: https://martingruner.com/projects/diffanything\n\n## OpenAPI Versions\n\n- 3.1: true\n- 3.0: true\n- 2.0: false",
+        "labels": [],
+        "state": "open"
+    }
+}

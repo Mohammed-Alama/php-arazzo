@@ -1,0 +1,25 @@
+{
+    "id": "16260b91cd611ebbf88fc0f50fac6fb8e2b8823420fb1db61bd6d828fd9b1521",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps): bump respec from 37.2.0 to 37.3.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/84f94b97a4028177e8b418f3b914ab62a4c5199e",
+    "publishedAt": "2026-08-17T00:54:15Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:84f94b9",
+        "title": "chore(deps): bump respec from 37.2.0 to 37.3.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/84f94b97a4028177e8b418f3b914ab62a4c5199e",
+        "publishedAt": "2026-08-17T00:54:15Z",
+        "body": "chore(deps): bump respec from 37.2.0 to 37.3.0\n\nBumps [respec](https://github.com/speced/respec) from 37.2.0 to 37.3.0.\n- [Release notes](https://github.com/speced/respec/releases)\n- [Changelog](https://github.com/speced/respec/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/speced/respec/compare/v37.2.0...v37.3.0)\n\n---\nupdated-dependencies:\n- dependency-name: respec\n  dependency-version: 37.3.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

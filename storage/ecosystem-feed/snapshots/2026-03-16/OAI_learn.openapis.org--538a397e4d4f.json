@@ -1,0 +1,30 @@
+{
+    "id": "538a397e4d4fe347473a74da8d37d27636801e9fcc2286c51d15c296c6b81ba9",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "build(deps): bump @hyperjump/json-schema from 1.17.3 to 1.17.5",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/193",
+    "publishedAt": "2026-03-16T18:26:31Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:193",
+        "title": "build(deps): bump @hyperjump/json-schema from 1.17.3 to 1.17.5",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/193",
+        "publishedAt": "2026-03-16T18:26:31Z",
+        "body": "Bumps [@hyperjump/json-schema](https://github.com/hyperjump-io/json-schema) from 1.17.3 to 1.17.5.\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/ed5ce8f6ee4d1a89dbda1e6c827c0cfdb9fff2eb\"><code>ed5ce8f</code></a> 1.17.5</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/fe778676a044cdda47ab5098063354b06f7e7e60\"><code>fe77867</code></a> Cleanup annotation tests</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/69116621db9a3ad03ea56cd1c93d81651e4f154e\"><code>6911662</code></a> fix(format): use RFC1123 hostname validator for legacy drafts (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/109\">#109</a>)</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/e7a49da36e2736a60891e367b5b169758494f720\"><code>e7a49da</code></a> When bundling remove empty $defs if nothing was bundled</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/47f8b10b49b5a929c15ac5494503a3408bb7505e\"><code>47f8b10</code></a> fix: use correct subscription key in publishAsync (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/106\">#106</a>)</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/e08ef29f285a8717d3e034df366b2a3c3f40adf8\"><code>e08ef29</code></a> Fix incorrect import in README for enabling format validation</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/8c8cb57ab3ab9725ca621fde330b1f07629a821d\"><code>8c8cb57</code></a> Fix requireAllExcept runtime error (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/100\">#100</a>)</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/e3cfe07b533a5f263e9e2a2ddeedd4ef664ab23c\"><code>e3cfe07</code></a> 1.17.4</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/bfa47560ad48674eaff3e6ecfd7fe8b962638a94\"><code>bfa4756</code></a> Don't short circuit in dependencies keyword</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/aabc35f922e82dd2a74da81891d51605434947bd\"><code>aabc35f</code></a> Cleanup</li>\n<li>Additional commits viewable in <a href=\"https://github.com/hyperjump-io/json-schema/compare/v1.17.3...v1.17.5\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=@hyperjump/json-schema&package-manager=npm_and_yarn&previous-version=1.17.3&new-version=1.17.5)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "open",
+        "merged": false
+    }
+}

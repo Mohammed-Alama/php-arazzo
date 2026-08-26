@@ -1,0 +1,24 @@
+{
+    "id": "38c91274c44e89f123d002a46309a44130924cc7558dc7b47d8389c976493a45",
+    "source": "jentic/arazzo-engine",
+    "type": "release",
+    "title": "Arazzo Runner v0.9.0",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.0",
+    "publishedAt": "2025-09-02T09:23:26Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "release",
+        "externalId": "release:arazzo_runner/v0.9.0",
+        "title": "Arazzo Runner v0.9.0",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.0",
+        "publishedAt": "2025-09-02T09:23:26Z",
+        "body": "## Bug fixes\r\n\r\n- fix: exclude tests/ directory from sdist package by @char0n https://github.com/jentic/arazzo-engine/pull/87\r\n\r\n## Enhancements\r\n\r\n- align code with minimum **Python >= 3.11** version requirement",
+        "labels": [],
+        "state": "published"
+    }
+}

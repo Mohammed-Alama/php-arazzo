@@ -1,0 +1,23 @@
+{
+    "id": "0bb85160cfa43e018e95aaca56e8ebc9547b8b51832f3dd8c63abb6c59591e76",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Update README.md",
+    "url": "https://github.com/OAI/community/pull/8",
+    "publishedAt": "2024-03-19T09:00:55Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:8",
+        "title": "Update README.md",
+        "url": "https://github.com/OAI/community/pull/8",
+        "publishedAt": "2024-03-19T09:00:55Z",
+        "body": "Welcome is misspelled. Thanks to Isabelle for pointing that out. ",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

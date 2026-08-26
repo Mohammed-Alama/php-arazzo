@@ -1,0 +1,25 @@
+{
+    "id": "8e730dc9529857d3e650bc41298382dffbf6ab4962bea530c8908cfd8c490d80",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Update FabriKt entry (Kotlin code generator)",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/264",
+    "publishedAt": "2026-04-22T19:33:05Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:264",
+        "title": "Update FabriKt entry (Kotlin code generator)",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/264",
+        "publishedAt": "2026-04-22T19:33:05Z",
+        "body": "## Description\r\nThis PR updates the entry for **FabriKt** to reflect its current feature set and architectural philosophy. \r\n\r\n### Key changes:\r\n- **Expanded Frameworks:** Added support for Micronaut and Ktor (both client and server).\r\n- **Serialization:** Included `kotlinx.serialization` alongside Jackson.\r\n- **Positioning:** Refined the description to highlight that the tool is designed for \"permanent integration\" (Contract-as-Code) rather than just initial bootstrapping.\r\n- **Links:** Updated the main link to the project's vanity domain https://fabrikt.io.\r\n- **Version Support:** Enabled the `v3_1` flag as the tool now fully supports OpenAPI 3.1 features.\r\n\r\nThe `id` has been kept identical to ensure the existing entry is updated rather than duplicated.",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "1495a044000947c0f6851f652275afa4ce8850e5166deed0cffc58ea8bedc879",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.24",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.24",
+    "publishedAt": "2026-03-11T15:58:23Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.24",
+        "title": "v1.0.0-alpha.24",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.24",
+        "publishedAt": "2026-03-11T15:58:23Z",
+        "body": "# [1.0.0-alpha.24](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.23...v1.0.0-alpha.24) (2026-03-11)\n\n\n### Bug Fixes\n\n* **release:** fix issue in lerna not publishing *.cjs|*.mjs files ([50ac50c](https://github.com/jentic/jentic-arazzo-tools/commit/50ac50ce946997d09701543f4f80a6d0de1269c4))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

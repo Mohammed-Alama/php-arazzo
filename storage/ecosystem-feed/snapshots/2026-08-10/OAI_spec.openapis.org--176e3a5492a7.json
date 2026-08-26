@@ -1,0 +1,26 @@
+{
+    "id": "176e3a5492a7dcf2794bf6d78f0f68546cc46e0dcdcab0b59ff5f670753d1230",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "Add x-data-classification extension page",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/113",
+    "publishedAt": "2026-08-10T20:08:29Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:113",
+        "title": "Add x-data-classification extension page",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/113",
+        "publishedAt": "2026-08-10T20:08:29Z",
+        "body": "Adds the `x-data-classification` extension, which annotates a Schema Object property with a data category, sensitivity level, and masking strategy so tooling can redact the value at runtime — for example before writing it to logs.\n\nThis follows on from discussion #4330 (https://github.com/OAI/OpenAPI-Specification/discussions/4330), which proposed a sensitive-data extension but stalled for lack of a working implementation.\n\nReference implementations: https://github.com/darkmatterforge/openapi-data-classification (Node.js, Java/Logback, and Python, each with a passing test suite).",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

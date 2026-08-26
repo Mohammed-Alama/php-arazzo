@@ -1,0 +1,23 @@
+{
+    "id": "d55bf9c0ff387ad5f1db775ea62217d2b13784f40e72c0cc98873f981ad101c7",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Clean up principles",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/182",
+    "publishedAt": "2025-03-31T17:54:18Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:182",
+        "title": "Clean up principles",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/182",
+        "publishedAt": "2025-03-31T17:54:18Z",
+        "body": "adapting to the changes mentioned in the 2025 blog post",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

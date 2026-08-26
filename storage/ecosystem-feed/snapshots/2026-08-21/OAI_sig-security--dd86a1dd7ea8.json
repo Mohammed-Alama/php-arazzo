@@ -1,0 +1,25 @@
+{
+    "id": "dd86a1dd7ea8443c5844650d0943d9fd65099be253588c9f90fea755ff415014",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Add info to security considerations about outdated security practices, and link in new versions",
+    "url": "https://github.com/OAI/sig-security/issues/36",
+    "publishedAt": "2026-08-21T18:10:25Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:36",
+        "title": "Add info to security considerations about outdated security practices, and link in new versions",
+        "url": "https://github.com/OAI/sig-security/issues/36",
+        "publishedAt": "2026-08-21T18:10:25Z",
+        "body": "See PR OAI/OpenAPI-Specification#3584 from @AxelNennker for the background.  We agreed in the TDC meeting 2024-02-22 to add info in security considerations and probably also on the learn site, and link to that and to any new RFCs in 3.0.4/3.1.1/3.2.0.  \r\n\r\n@lornajane also noted that we should replace any examples using deprecated practices with ones that are current.",
+        "labels": [],
+        "state": "open"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "id": "9e0d3688abba6374286904d9305aaeb67a8104adb55b5212791b811d9a7d5fbf",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Issue template & config to point people filing issues to discussions",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/71",
+    "publishedAt": "2024-02-28T20:48:34Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:71",
+        "title": "Issue template & config to point people filing issues to discussions",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/71",
+        "publishedAt": "2024-02-28T20:48:34Z",
+        "body": "We are not yet at the point where Moonwalk will be managed through issues.  This changes the new issue workflow to offer buttons pointing to GitHub discussions and/or Slack, along with a template that repeats the advice from #11 to open a discussion instead of an issue.\r\n\r\nI somewhat strengthened #11's language with the criteria that issues need to be things we can resolve by PRs in the short term.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

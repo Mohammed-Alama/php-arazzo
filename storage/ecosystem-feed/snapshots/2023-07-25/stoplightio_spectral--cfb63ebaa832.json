@@ -1,0 +1,24 @@
+{
+    "id": "cfb63ebaa83288885809d0c94bace3dfaeb4ef4dfa1ca5d385643cfc6dc96619",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.9.0",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.9.0",
+    "publishedAt": "2023-07-25T16:22:48Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.9.0",
+        "title": "v6.9.0",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.9.0",
+        "publishedAt": "2023-07-25T16:22:48Z",
+        "body": "## What's Changed\r\n* feat(formatters): add export entrypoint for utils by @P0lip in https://github.com/stoplightio/spectral/pull/2482\r\n* fix(ruleset-migrator): correct package.json's browser field by @P0lip in https://github.com/stoplightio/spectral/pull/2497\r\n* docs(repo): adds json formatter docs by @mnaumanali94 in https://github.com/stoplightio/spectral/pull/2481\r\n* fix(core): invalid then produced by Rule#toJSON by @P0lip in https://github.com/stoplightio/spectral/pull/2496\r\n* fix(core): dedupe paths containing special characters correctly by @P0lip in https://github.com/stoplightio/spectral/pull/2501\r\n* chore(deps): bump semver from 5.7.1 to 5.7.2 by @dependabot in https://github.com/stoplightio/spectral/pull/2502\r\n* fix(core): pointer in overrides are applied too broadly by @P0lip in https://github.com/stoplightio/spectral/pull/2511\r\n* chore(repo): add Node 20.5 to the test matrix by @P0lip in https://github.com/stoplightio/spectral/pull/2478\r\n* chore(deps): bump word-wrap from 1.2.3 to 1.2.5 by @dependabot in https://github.com/stoplightio/spectral/pull/2514\r\n* build(cli): build nix binaries for both x64 and arm64 by @klaude in https://github.com/stoplightio/spectral/pull/2492\r\n* feat(cli): use hpagent in favor of proxy-agent by @P0lip in https://github.com/stoplightio/spectral/pull/2513\r\n\r\n## New Contributors\r\n* @klaude made their first contribution in https://github.com/stoplightio/spectral/pull/2492\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.8.0...v6.9.0",
+        "labels": [],
+        "state": "published"
+    }
+}

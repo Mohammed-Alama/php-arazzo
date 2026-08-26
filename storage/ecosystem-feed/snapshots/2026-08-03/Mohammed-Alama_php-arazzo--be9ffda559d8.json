@@ -1,0 +1,26 @@
+{
+    "id": "be9ffda559d8746232334c07e9b37feb15cf3efe33b4ceb29b060aaf2cf276d9",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "refactor: extract framework-agnostic engine into arazzo-core (Plan A)",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/6",
+    "publishedAt": "2026-08-03T20:48:36Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:6",
+        "title": "refactor: extract framework-agnostic engine into arazzo-core (Plan A)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/6",
+        "publishedAt": "2026-08-03T20:48:36Z",
+        "body": "## Summary\n- Extracted framework-agnostic engine into new package `alama/arazzo-core`\n- Rewired `alama/laravel-arazzo` as a thin bridge depending on the core\n- Setup Symplify Monorepo Builder for split\n\n## Test Plan\n- [x] Run `composer test` locally (all pass)\n- [x] Verify static analysis\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

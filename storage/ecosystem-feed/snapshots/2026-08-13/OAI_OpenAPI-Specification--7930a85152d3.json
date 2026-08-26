@@ -1,0 +1,25 @@
+{
+    "id": "7930a85152d3c154a74c4ae135c0371c22716aa423193afd25b50437df8c8066",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "syncs dev changes to v3.3-dev",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5490",
+    "publishedAt": "2026-08-13T22:48:36Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5490",
+        "title": "syncs dev changes to v3.3-dev",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5490",
+        "publishedAt": "2026-08-13T22:48:36Z",
+        "body": "follow up to #5424, #5488, and #5487\r\n\r\ncloses #5461\r\ncloses #5452\r\ncloses #5423",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

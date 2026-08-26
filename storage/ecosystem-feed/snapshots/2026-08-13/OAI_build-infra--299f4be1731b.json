@@ -1,0 +1,22 @@
+{
+    "id": "299f4be1731b1c1ee863089dada8f1a311882e5303bd26a81058202966f7b04c",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Merge pull request #19 from handrews/fix/sync-lockfile-packaged-lock",
+    "url": "https://github.com/OAI/build-infra/commit/0411722c31febb0d7ab4ea7345e7b17f7a78246d",
+    "publishedAt": "2026-08-13T16:21:19Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:0411722",
+        "title": "Merge pull request #19 from handrews/fix/sync-lockfile-packaged-lock",
+        "url": "https://github.com/OAI/build-infra/commit/0411722c31febb0d7ab4ea7345e7b17f7a78246d",
+        "publishedAt": "2026-08-13T16:21:19Z",
+        "body": "Merge pull request #19 from handrews/fix/sync-lockfile-packaged-lock\n\nFix/sync lockfile packaged lock",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "3dd864f6b339f432dc00a667d4fb35bc7eeb280103a7c0596280acc7d7c42eaf",
+    "source": "OAI/Outreach",
+    "type": "issue",
+    "title": "Feat: Repositioning OAI for membership growth",
+    "url": "https://github.com/OAI/Outreach/issues/67",
+    "publishedAt": "2026-04-06T17:50:24Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "issue",
+        "externalId": "issue:67",
+        "title": "Feat: Repositioning OAI for membership growth",
+        "url": "https://github.com/OAI/Outreach/issues/67",
+        "publishedAt": "2026-04-06T17:50:24Z",
+        "body": "## Summary\n\nWe’ve done a lot of thinking and groundwork over the past few weeks to help OAI move from being seen as 'the OpenAPI spec' to being recognised as the organisation safeguarding the future of API standardisation.\n\nThis issue is the top‑level home for that work. It links out to smaller, focused issues so that different people can pick up specific pieces - website, member programmes, content, events, etc. - making it easier to navigate and track discussions/conversations than in one epically huge document.\n\nThe core idea is:\n\n-  OAI stewards a family of specs (OpenAPI, Arazzo, Overlay and registries)  \n-  Organisations already rely on these every day, and there's clear ROI to using them  \n-  Membership should feel like a natural, strategic way to fund and influence that work, not an optional extra\n\nTo get there, given the limited resources available, we need a small, realistic MVP for the next 12–18 months which will help to reposition the organisation, clearly communicate its critical role in the API ecosystem, and ensure that the benefits of membership deliver a clear return on investment to the organisations who join.\n\n## Big picture outcomes\n\nThe project is aiming for three outcomes:\n\n1. **Awareness**  \nMore people understand what OAI is, what it does beyond the OpenAPI spec, and why it exists.\n\n2. **Authority**  \nOAI is seen as a leading voice on the future of APIs - especially around the topical areas of AI‑readiness, more complex workflows, and governance.\n\n3. **Membership growth**  \nOrganisations see membership as a strategic way to influence and support the standards they depend on, and to ensure that their team have a clear way to get unblocked and provide input on areas of the spec that they are finding tricky to work with.\n\n## What’s already been done\n\nFrom the initial six-week engagement here's what I've worked on:\n\n-  Clarifying the proposed membership value proposition and benefits structure (mostly covered in the earlier MVP project work - great job there folks!),\n-  Developing a new membership benefits page and one‑page PDF ready to become the default resource for all things membership (#66),\n-  Designed member programmes (monthly clinics (#69) and bi‑monthly member‑led panels (#70)) with run‑books and email templates which are ready to implement,\n-  Developed an event engagement pack (#73), a prospecting tool prototype to identify existing LF members who are using the specs and who might be good targets for outreach, and creating swipe copy for speaking about membership before, during and after conferences, on social media and elsewhere,\n-  Suggestions for content topics focused on five content areas (#71), plus a lightweight LinkedIn and email plan to get the message flowing out to your audience (#72),\n-  Proposed website structure and 'What is the OpenAPI Initiative' copy drafted to kick off repositioning the website (#68).\n\n## Focus for the next 12 months\n\nAt a high level, the MVP for 2026 might look like:\n\n-  Make the new membership benefits page and PDF the default for all 'join' conversations  \n-  Pilot and then regularise member clinics and member‑led panels  \n-  Keep a light but steady presence on LinkedIn and via member emails  \n-  Feed the new positioning into the website redesign so the site matches how we now talk about OAI  \n-  Capture a handful of simple metrics so the BGB can see what’s working\n\nThe sub‑issues below break this into pieces that can be picked up and moved forward independently.\n\n## Related / sub‑issues\n\nEach of these will get its own sub-issue with this one as a parent where I'll pop more detail so people can comment, volunteer and iterate. \n\n## Notes\n\nI’ll be offline from early April to the middle of July. The idea here is that there is enough clarity and material for OAI to start small - especially on the membership story, clinics/panels planning and LinkedIn/email - without needing more consulting time. When I’m back, we can look at what’s been tried and decide together what to focus on.\n",
+        "labels": [],
+        "state": "open"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "999c459d86d43efa56aade4ca7873b8ee4ecc5d041a7bb2b9b9bb9e8c9fe1cba",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.30",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.30",
+    "publishedAt": "2026-04-04T12:24:18Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.30",
+        "title": "v1.0.0-alpha.30",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.30",
+        "publishedAt": "2026-04-04T12:24:18Z",
+        "body": "# [1.0.0-alpha.30](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.29...v1.0.0-alpha.30) (2026-04-04)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* **security:** update lodash to non-vulnerable version ([#191](https://github.com/jentic/jentic-arazzo-tools/issues/191)) ([bfe8e16](https://github.com/jentic/jentic-arazzo-tools/commit/bfe8e16ebe7eab7b563809cdd18f8e1a90310dc7))\r\n* **validator:** detect non-Arazzo documents ([#194](https://github.com/jentic/jentic-arazzo-tools/issues/194)) ([0152fec](https://github.com/jentic/jentic-arazzo-tools/commit/0152fec747c9f3bd5cf0fc300bbf24eb95430a62))\r\n\r\n### Features\r\n\r\n* **validator:** add comprehensive Arazzo specification lint rules ([4697c5c](https://github.com/jentic/jentic-arazzo-tools/commit/4697c5c3ccc94ab10032d22c69c4c457ec4cde50))\r\n* **validator:** show full range in CLI formatters ([#193](https://github.com/jentic/jentic-arazzo-tools/issues/193)) ([d7a3145](https://github.com/jentic/jentic-arazzo-tools/commit/d7a314530d94fd6f56b4c83b7c738d44c30703f2))\r\n\r\n\r\n\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

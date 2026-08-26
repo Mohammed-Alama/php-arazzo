@@ -1,0 +1,24 @@
+{
+    "id": "4df2ca3219cf778e69304ddc6e7d9df70ce0ad7e76bee2565e5d1ca8b4c72209",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.21",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.21",
+    "publishedAt": "2026-02-24T13:37:44Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.21",
+        "title": "v1.0.0-alpha.21",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.21",
+        "publishedAt": "2026-02-24T13:37:44Z",
+        "body": "# [1.0.0-alpha.21](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.20...v1.0.0-alpha.21) (2026-02-24)\n\n\n### Bug Fixes\n\n* **parser:** parse YAML document larger than 32768 lines ([#111](https://github.com/jentic/jentic-arazzo-tools/issues/111)) ([b155660](https://github.com/jentic/jentic-arazzo-tools/commit/b155660a608f4f5a0614cb5b3496bcd28a27a447))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

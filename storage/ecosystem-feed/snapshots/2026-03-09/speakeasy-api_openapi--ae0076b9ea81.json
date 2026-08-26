@@ -1,0 +1,26 @@
+{
+    "id": "ae0076b9ea81f550db5b9a68fdf44fed4f3f0ff385380f9499fce1b10e34a836",
+    "source": "speakeasy-api/openapi",
+    "type": "release",
+    "title": "v1.19.5",
+    "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.19.5",
+    "publishedAt": "2026-03-09T01:08:09Z",
+    "tags": [
+        "cli",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "speakeasy-api/openapi",
+        "type": "release",
+        "externalId": "release:v1.19.5",
+        "title": "v1.19.5",
+        "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.19.5",
+        "publishedAt": "2026-03-09T01:08:09Z",
+        "body": "## What's Changed\r\n* fix: enforce document-order insertion of extension keys during unmarshal by @TristanSpeakEasy in https://github.com/speakeasy-api/openapi/pull/173\r\n* ci(deps): bump actions/upload-artifact from 6 to 7 in the github-actions group by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/172\r\n* chore(deps): bump jsonschema/oas3/tests/testsuite from `4253477` to `583d7c6` by @dependabot[bot] in https://github.com/speakeasy-api/openapi/pull/171\r\n* chore: update submodule dependencies to latest main by @github-actions[bot] in https://github.com/speakeasy-api/openapi/pull/174\r\n\r\n\r\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.19.4...v1.19.5\n\n## OpenAPI CLI v1.19.5\n\nThis release includes binaries for Linux, macOS, and Windows on both x86_64 and ARM64 architectures.\n\n### Installation\n\nDownload the appropriate binary for your platform from the assets below, extract it, and add it to your PATH.\n\n### Changes\n\n## Changelog\n### Bug fixes\n* 7ff6a9590a7fe59440a6a6a36361e80edeb31488 fix: enforce document-order insertion of extension keys during unmarshal (#173)\n### Others\n* c26f30e20517bf495571df16d06803f464ef348c chore(deps): bump jsonschema/oas3/tests/testsuite (#171)\n* a5e12685d5a49002f71af5e2f26a2b897f4d8039 ci(deps): bump actions/upload-artifact in the github-actions group (#172)\n\n\n---\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.19.4...v1.19.5\n\nReleased by [GoReleaser](https://github.com/goreleaser/goreleaser).\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

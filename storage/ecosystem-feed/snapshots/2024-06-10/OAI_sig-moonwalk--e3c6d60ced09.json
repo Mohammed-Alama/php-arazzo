@@ -1,0 +1,25 @@
+{
+    "id": "e3c6d60ced09b31ccbabf1a3341c3e71b8232b20b2f4223025050656bdbef172",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "PR to set up infra for publishing a respec version of moonwalk",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/132",
+    "publishedAt": "2024-06-10T02:32:54Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:132",
+        "title": "PR to set up infra for publishing a respec version of moonwalk",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/132",
+        "publishedAt": "2024-06-10T02:32:54Z",
+        "body": "This PR includes some updates to the docs folder to enable publishing an \"editors draft\" to the GH pages site.\r\n\r\nThere is a script called Generate.ps1 that will take the files in the `specification` folder and generate a moonwalk.html file in the docs folder.  It does rely on respec and powershell being installed to run it locally.  However, it _should_ all run via a GitHub Action whenever we commit to main.  It would be nice to figure out how to create a rendered doc on a PR branch, but that is for another day.\r\n\r\nThe reason for doing things a bit differently than how they are done in the OpenAPI-Specification repo is that this uses pretty much stock respec.  This gives us the ability to use all the fancy features of respec like building a TOC, linking to other specs, generating a bibliography and linking to GitHub issues.\r\n\r\nI'm going to merge this to main.  Don't take the content of the editors draft too seriously.  The content is there more for making sure all the bits are working. ",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

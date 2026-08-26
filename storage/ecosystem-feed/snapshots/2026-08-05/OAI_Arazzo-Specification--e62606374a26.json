@@ -1,0 +1,26 @@
+{
+    "id": "e62606374a262e8f3adc4b3c65a20cc4be0327e36549bdec48a09f865cf3fef2",
+    "source": "OAI/Arazzo-Specification",
+    "type": "issue",
+    "title": "Meeting: July 8th, 2026",
+    "url": "https://github.com/OAI/Arazzo-Specification/issues/514",
+    "publishedAt": "2026-08-05T15:35:38Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "issue",
+        "externalId": "issue:514",
+        "title": "Meeting: July 8th, 2026",
+        "url": "https://github.com/OAI/Arazzo-Specification/issues/514",
+        "publishedAt": "2026-08-05T15:35:38Z",
+        "body": "## Bi-Weekly meetings happen on Wednesdays at 5PM GMT\nThis agenda gives visibility into discussion topics for the bi-weekly Arazzo Specification Technical Developer Community (TDC) meetings. Sharing agenda items in advance allows people to plan to attend meetings where they have an interest in specific topics.\n\nWhether attending or not, **anyone can comment on this issue prior to the meeting to suggest topics or to add comments on planned topics or proposals**.\n\nMeetings take place over Zoom: https://zoom-lfx.platform.linuxfoundation.org/meeting/96886360767?password=54f7f01a-87a8-4d1d-b3c0-7c2b1f1e9378, dial-in passcode: 244070\n\n### Accessibility & Etiquette\n* Participants must abide by our [Code-of-Conduct](https://github.com/OAI/Arazzo-Specification?tab=coc-ov-file#code-of-conduct).\n* We invite you to feel comfortable to challenge any language or behaviour that is harmful or not inclusive during this meeting.\n* We look forward to your participation, but please consider these acts of etiquette:\n  * Remain on mute when not speaking to prevent interruptions.\n  * Blur your background to reduce visual distractions.\n  * Use the Zoom meeting \"Raise Hand\" feature to notify the group when you wish to speak.\n\n|Blur My Background|Raise Hand|\n|---|---|\n|<img src=\"https://github.com/user-attachments/assets/79f77188-65e7-45c0-930e-7dca1fd97753\" width=\"350\">|<img src=\"https://github.com/user-attachments/assets/59c3793b-31e8-4862-a445-c80405ed0c1f\" width=\"350\">|\n\n### Agenda Structure\n|Topic|\tOwner\t|Decision/NextStep|\n|---|---|---|\n|Intros and governance meta-topics (5 mins)|\tTDC / Arazzo maintainers|\n|Any other business (add comments below to suggest topics)|\tTDC / Arazzo maintainers|\n|[Approved spec PRs](https://github.com/OAI/Arazzo-Specification/pulls?q=is%3Apr+is%3Aopen+review%3Aapproved)|\tArazzo maintainers|\n|[Active Projects](https://github.com/OAI/Arazzo-Specification/projects?query=is%3Aopen)|\tArazzo maintainers|\n|[New issues needing attention](https://github.com/search?q=repo%3Aoai%2Farazzo-specification+is%3Aissue+comments%3A0+no%3Alabel+is%3Aopen)|\tArazzo maintainers|\n\n/cc [@OAI/arazzo-maintainers](https://github.com/orgs/OAI/teams/arazzo-maintainers) please suggest items for inclusion.",
+        "labels": [
+            "meetings"
+        ],
+        "state": "closed"
+    }
+}

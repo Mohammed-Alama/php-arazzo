@@ -1,0 +1,29 @@
+{
+    "id": "632b86ae33593b0c2c891ce1a48a1b54156b204584004c0033452dc66ef1cdfd",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "build(deps): bump ruby/setup-ruby from 1.320.0 to 1.321.0",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/126",
+    "publishedAt": "2026-07-23T09:58:15Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:126",
+        "title": "build(deps): bump ruby/setup-ruby from 1.320.0 to 1.321.0",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/126",
+        "publishedAt": "2026-07-23T09:58:15Z",
+        "body": "Bumps [ruby/setup-ruby](https://github.com/ruby/setup-ruby) from 1.320.0 to 1.321.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/ruby/setup-ruby/releases\">ruby/setup-ruby's releases</a>.</em></p>\n<blockquote>\n<h2>v1.321.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add jruby-10.1.1.0 by <a href=\"https://github.com/ruby-builder-bot\"><code>@​ruby-builder-bot</code></a> in <a href=\"https://redirect.github.com/ruby/setup-ruby/pull/932\">ruby/setup-ruby#932</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a href=\"https://github.com/ruby/setup-ruby/compare/v1.320.0...v1.321.0\">https://github.com/ruby/setup-ruby/compare/v1.320.0...v1.321.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/ruby/setup-ruby/commit/95ef2b042f9d7a56d8268cba8559e2842e2ad01b\"><code>95ef2b0</code></a> Add jruby-10.1.1.0</li>\n<li>See full diff in <a href=\"https://github.com/ruby/setup-ruby/compare/v1.320.0...v1.321.0\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=ruby/setup-ruby&package-manager=github_actions&previous-version=1.320.0&new-version=1.321.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "github_actions"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

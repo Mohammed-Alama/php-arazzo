@@ -1,0 +1,25 @@
+{
+    "id": "11f4b68af985bd078586df868f13dd2d01460aee96627ced05af85a7a774d237",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix: remove the non-standard $env expression namespace (ac-9c811)",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/1f15ff3716820b3107b01259f9b6c0fe17327798",
+    "publishedAt": "2026-08-24T03:49:10Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:1f15ff3",
+        "title": "fix: remove the non-standard $env expression namespace (ac-9c811)",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/1f15ff3716820b3107b01259f9b6c0fe17327798",
+        "publishedAt": "2026-08-24T03:49:10Z",
+        "body": "fix: remove the non-standard $env expression namespace (ac-9c811)",
+        "labels": [],
+        "state": ""
+    }
+}

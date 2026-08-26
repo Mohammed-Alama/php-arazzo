@@ -1,0 +1,26 @@
+{
+    "id": "dae29e2b5deea3f48de2b0c345df6328d6fc2f5327ae5e282cfbde42b64dca2a",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Fix/errors with expression evaluation binary content and branching",
+    "url": "https://github.com/jentic/arazzo-engine/pull/142",
+    "publishedAt": "2026-04-22T12:35:12Z",
+    "tags": [
+        "xml",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:142",
+        "title": "Fix/errors with expression evaluation binary content and branching",
+        "url": "https://github.com/jentic/arazzo-engine/pull/142",
+        "publishedAt": "2026-04-22T12:35:12Z",
+        "body": "This PR contains patches to several bugs related to template expression evaluation, conditional branching as well as dealing with binary content/files. The changes are summarised below:\r\n\r\n#### 1. Expanded binary `content-type` detection\r\n\r\nSome vendor-specific binary file formats (e.g. `application/vnd.*`) were being interpreted as strings, rather than raw binary.\r\n\r\nTo fix this, all `application/*` types default to being interpreted as raw bytes by `_is_binary_content()` **excluding** known text formats (`json`, `xml`, etc.)\r\n\r\n#### 2. Direct Expression Payload Evaluation\r\n\r\nExpressions like `payload: $steps.foo.outputs.bar` were being interpreted as strings and not being evaluated.\r\n\r\nAdded a direct expression check before processing.\r\n\r\n#### 3. Multipart File Upload Structure Passthrough\r\n\r\nUsing `file: {content: ..., filename: ...}` for multipart payloads referencing outputs from previous steps was not functioning correctly, as the content was being stringified.\r\n\r\nAdded a check for content/filename in the `_process_multipart_payload()` function.\r\n\r\n#### 4. Goto Skipping Target Step\r\n\r\nConditional branching with goto would always skip the stated target step, as the `execute_next_step` function always executed `current_idx + 1`.\r\n\r\nTo fix this, `goto_step_id` was introduced. `execute_next_step` first checks if this flag is set, executes that step if so, and then clears the flag. If it is not set then the flow continues sequentially.\r\n\r\n#### 5. Template Expressions in Dict/Array Values\r\n\r\nTemplate Expressions like `prefix-{$inputs.foo}-suffix` only worked for top-level string payloads, and not for strings nested within dicts/arrays.\r\n\r\nTo fix this, template expression handling was added to `process_object_expressions()` and `process_array_expressions()`.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

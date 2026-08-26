@@ -1,0 +1,24 @@
+{
+    "id": "1da132c22008d7b5f7a658e0d5aca13fc4b599e596f66ece06cb94a2d38bdf0d",
+    "source": "OAI/learn.openapis.org",
+    "type": "issue",
+    "title": "feedback on best practices section",
+    "url": "https://github.com/OAI/learn.openapis.org/issues/203",
+    "publishedAt": "2026-04-13T11:42:10Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "issue",
+        "externalId": "issue:203",
+        "title": "feedback on best practices section",
+        "url": "https://github.com/OAI/learn.openapis.org/issues/203",
+        "publishedAt": "2026-04-13T11:42:10Z",
+        "body": "In #201 @lornajane made a few comments on the pull request that were on the original content, not the reorganization + addition of overlay article itself.\n\nCapturing this here for a later pull request, there are generally two kinds.\n\n## edits\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069649939\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069648184\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069644333\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069642712\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069641040\n\n\n## conceptual changes\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069656464\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069653536\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069652929\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069645433\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069642006\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069640730\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069637829\nhttps://github.com/OAI/learn.openapis.org/pull/201#discussion_r3069635890",
+        "labels": [],
+        "state": "open"
+    }
+}

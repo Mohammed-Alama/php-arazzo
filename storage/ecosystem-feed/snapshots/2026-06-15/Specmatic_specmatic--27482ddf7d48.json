@@ -1,0 +1,24 @@
+{
+    "id": "27482ddf7d48107005161489aafd190bb2bb3a1774f93a5d94cad6ece2929d3b",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.47.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.47.0",
+    "publishedAt": "2026-06-15T14:39:41Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.47.0",
+        "title": "2.47.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.47.0",
+        "publishedAt": "2026-06-15T14:39:41Z",
+        "body": "## What's Changed\r\n* Fix minor issues in specmatic config upgrade V3 by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2568\r\n* Add Pointer tracking within the SourceLocations by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2564\r\n* Fix breadcrumbs for form-exploded nested query parameters by @joelrosario in https://github.com/specmatic/specmatic/pull/2570\r\n* Update logback monorepo to v1.5.34 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2520\r\n* chore(deps): update specmaticreporterversion to v0.3.34 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2573\r\n* Fix status precedence for nested query parameters by @joelrosario in https://github.com/specmatic/specmatic/pull/2576\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.46.5...2.47.0",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "0193e2ea641f962e5640dca50a57790664cc48a24f7d98191c29ea8d1ddd4cc9",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps-dev): bump @hyperjump/json-schema from 1.17.7 to 1.17.8",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/f2bd6542e4814df4050053f36380493f0853281b",
+    "publishedAt": "2026-08-10T00:54:57Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:f2bd654",
+        "title": "chore(deps-dev): bump @hyperjump/json-schema from 1.17.7 to 1.17.8",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/f2bd6542e4814df4050053f36380493f0853281b",
+        "publishedAt": "2026-08-10T00:54:57Z",
+        "body": "chore(deps-dev): bump @hyperjump/json-schema from 1.17.7 to 1.17.8\n\nBumps [@hyperjump/json-schema](https://github.com/hyperjump-io/json-schema) from 1.17.7 to 1.17.8.\n- [Commits](https://github.com/hyperjump-io/json-schema/compare/v1.17.7...v1.17.8)\n\n---\nupdated-dependencies:\n- dependency-name: \"@hyperjump/json-schema\"\n  dependency-version: 1.17.8\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

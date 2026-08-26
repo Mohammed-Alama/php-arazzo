@@ -1,0 +1,24 @@
+{
+    "id": "cd1445a2750d23de0d218d6c04236ab4e1080511a2e29e389a7c621464e8a800",
+    "source": "OAI/build-infra",
+    "type": "issue",
+    "title": "Add link checking for markdown documents",
+    "url": "https://github.com/OAI/build-infra/issues/26",
+    "publishedAt": "2026-08-21T18:19:50Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "issue",
+        "externalId": "issue:26",
+        "title": "Add link checking for markdown documents",
+        "url": "https://github.com/OAI/build-infra/issues/26",
+        "publishedAt": "2026-08-21T18:19:50Z",
+        "body": "In OAI/OpenAPI-Specification#5413  we disabled our existing link checking features in markdown because the current (version of) tooling has a bug that was blocking pull requests that did not contain errors. Consider reverting and fixing, or replacing the link checker tool, so that we can identify any markdown content with broken links.",
+        "labels": [],
+        "state": "open"
+    }
+}

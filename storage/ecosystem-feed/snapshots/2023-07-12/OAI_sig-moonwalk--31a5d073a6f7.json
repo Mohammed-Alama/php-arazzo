@@ -1,0 +1,25 @@
+{
+    "id": "31a5d073a6f7165837a56f7f1f54326e405a74630341c8468aeb1fb2097b34f6",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Update Reuse.md",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/62",
+    "publishedAt": "2023-07-12T12:42:39Z",
+    "tags": [
+        "actor"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:62",
+        "title": "Update Reuse.md",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/62",
+        "publishedAt": "2023-07-12T12:42:39Z",
+        "body": "a PR seemed the best way to leave comments and suggestions, but LMK if it should be refactored!",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

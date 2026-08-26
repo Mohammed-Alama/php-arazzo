@@ -1,0 +1,23 @@
+{
+    "id": "19f4f4a7733bad1d8190478c67eef8a495a0c8092e81365cd74b489f4ba4cfcb",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Update 2023-Planning.md",
+    "url": "https://github.com/OAI/Outreach/pull/31",
+    "publishedAt": "2023-01-24T13:38:56Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:31",
+        "title": "Update 2023-Planning.md",
+        "url": "https://github.com/OAI/Outreach/pull/31",
+        "publishedAt": "2023-01-24T13:38:56Z",
+        "body": "Add in Stu's OAI-in-a-box idea.\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

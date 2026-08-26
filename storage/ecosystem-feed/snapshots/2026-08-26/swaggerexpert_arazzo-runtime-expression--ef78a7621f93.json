@@ -1,0 +1,25 @@
+{
+    "id": "ef78a7621f932815838fda79ec9dca701da9d430d6af1d268f056b1c7daf558c",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "tag",
+    "title": "tag v2.0.2",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2",
+    "publishedAt": "2026-08-26T07:08:22+00:00",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "tag",
+        "externalId": "tag:v2.0.2",
+        "title": "tag v2.0.2",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2",
+        "publishedAt": "2026-08-26T07:08:22+00:00",
+        "body": "a219273f13bc767ac7e8286378aa501356397aea",
+        "labels": [],
+        "state": "published"
+    }
+}

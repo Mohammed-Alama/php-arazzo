@@ -1,0 +1,22 @@
+{
+    "id": "5e1e47ceee663c6c6d7d48e41287d34a09796a02ca7310e18889021dbefb2292",
+    "source": "jentic/jentic-public-apis",
+    "type": "commit",
+    "title": "Rebuild apis.json, scores.json, and API browsing indexes (#22065)",
+    "url": "https://github.com/jentic/jentic-public-apis/commit/63b8259a168cfe777b3f351979a336f01840eca8",
+    "publishedAt": "2026-08-20T11:45:52Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "jentic/jentic-public-apis",
+        "type": "commit",
+        "externalId": "commit:63b8259",
+        "title": "Rebuild apis.json, scores.json, and API browsing indexes (#22065)",
+        "url": "https://github.com/jentic/jentic-public-apis/commit/63b8259a168cfe777b3f351979a336f01840eca8",
+        "publishedAt": "2026-08-20T11:45:52Z",
+        "body": "Rebuild apis.json, scores.json, and API browsing indexes (#22065)\n\nCo-authored-by: jentic-public-apis-automation[bot] <284926135+jentic-public-apis-automation[bot]@users.noreply.github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

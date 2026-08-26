@@ -1,0 +1,24 @@
+{
+    "id": "1eeacfe8f3424a002fd4f7a1d1d86012e05946933b95fef4fb217227b98b2102",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "fix(blog): fix first post slug",
+    "url": "https://github.com/usearazzo/website/commit/8427113d5ae3684c4bb4f262b3f92ce0284b3cfc",
+    "publishedAt": "2026-08-18T11:42:46Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:8427113",
+        "title": "fix(blog): fix first post slug",
+        "url": "https://github.com/usearazzo/website/commit/8427113d5ae3684c4bb4f262b3f92ce0284b3cfc",
+        "publishedAt": "2026-08-18T11:42:46Z",
+        "body": "fix(blog): fix first post slug",
+        "labels": [],
+        "state": ""
+    }
+}

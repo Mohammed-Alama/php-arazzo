@@ -1,0 +1,24 @@
+{
+    "id": "89382ab483b484d51691e4ee729612447929435b4919c6386892fc36c8e0e7cd",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "feat(ecosystem): extend the list of resources",
+    "url": "https://github.com/usearazzo/website/commit/9626bdb657fdeaf5417f1bd8663dd94273714cf2",
+    "publishedAt": "2026-08-23T16:02:14Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:9626bdb",
+        "title": "feat(ecosystem): extend the list of resources",
+        "url": "https://github.com/usearazzo/website/commit/9626bdb657fdeaf5417f1bd8663dd94273714cf2",
+        "publishedAt": "2026-08-23T16:02:14Z",
+        "body": "feat(ecosystem): extend the list of resources",
+        "labels": [],
+        "state": ""
+    }
+}

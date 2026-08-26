@@ -1,0 +1,23 @@
+{
+    "id": "758c54bfdf5e2f42e5231610d3fbc314b45d951b2e585fab043e54c22c2f0966",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Feat/57/february 2026 newsletter",
+    "url": "https://github.com/OAI/Outreach/pull/58",
+    "publishedAt": "2026-02-12T18:45:05Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:58",
+        "title": "Feat/57/february 2026 newsletter",
+        "url": "https://github.com/OAI/Outreach/pull/58",
+        "publishedAt": "2026-02-12T18:45:05Z",
+        "body": "February 2026 newsletter for community review",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

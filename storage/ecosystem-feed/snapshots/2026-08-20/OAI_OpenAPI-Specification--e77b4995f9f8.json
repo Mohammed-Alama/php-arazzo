@@ -1,0 +1,26 @@
+{
+    "id": "e77b4995f9f8d5d040be7c955833c06e3d822906b4390a1fa7d7ea024fa7ce54",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "Migrate to yarn to avoid npm workarounds",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5503",
+    "publishedAt": "2026-08-20T16:36:37Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5503",
+        "title": "Migrate to yarn to avoid npm workarounds",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5503",
+        "publishedAt": "2026-08-20T16:36:37Z",
+        "body": "See OAI/build-infra#24 for the explanation.  NPM has too many weirdnesses with platform-specific issues and interactions with GitHub.  Yarn is well-established, well-supported by GitHub, and does not have these problems.\r\n\r\nWith the latest commit (pushed after opening), this also adds CI tests for the build as we discussed in last week's TDC call: published locations only on `main`, dev builds on other branches.\r\n\r\nNote:  We should merge the build-infra PR first!\r\n\r\n- [X] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

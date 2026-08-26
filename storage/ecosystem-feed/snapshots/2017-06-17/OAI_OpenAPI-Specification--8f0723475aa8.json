@@ -1,0 +1,26 @@
+{
+    "id": "8f0723475aa824cc9190269b6dfb76aa1d491050458c7009a2437a5ebe8b835f",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.0-rc2 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc2",
+    "publishedAt": "2017-06-17T00:19:50Z",
+    "tags": [
+        "xml",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.0-rc2",
+        "title": "OAS 3.0.0-rc2 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc2",
+        "publishedAt": "2017-06-17T00:19:50Z",
+        "body": "# OAS 3.0.0-rc2 Change Log\r\n\r\n## Schema Changes\r\n\r\n- The following objects have been removed from the specification: Server Variables, Content, Encoding, Callbacks, Headers, Links, Link Parameters, Scopes. They have all been replaced by the `Map` construct being effectively what they are. Clarifies that specification extensions are not allowed, as they did not make sense.\r\n- The Encoding Property Object has been renamed to the Encoding Object. This is a result of the above change.\r\n- The Encoding Object now specifies to which media type each property is applicable.\r\n- The Encoding Object now defines `headers` as a map of Header Objects.\r\n- The different components under the `Components Object` can now either be defined inline or referenced.\r\n- For parameters using `content`, now only one media type can be used at most.\r\n- The `headers` property under the Link Object has been removed.\r\n- Link Object has a new `requestBody` property to allow passing a request body.\r\n- The Schema Object's `discriminator` property has been completely reworked to utilize the newly supported `oneOf` and `anyOf`. A new `Discriminator Object` has been added to support these changes.\r\n- The XML Object's `namespace` now MUST be an absolute URI.\r\n- The `apiKey` security scheme can now also be in `cookie`.\r\n\r\n## Descriptive Changes\r\n\r\n- The `Rich Text Formatting` section has been reworded to ease the requirements.\r\n- Added OpenAPI Definition File definition.\r\n- Clarified that an empty or nonexisting `servers` would default to a single Server with the `url` value of `/`.\r\n- Reworded the section explaining the specification's versioning scheme.\r\n- Server Variable `enum`'s description has been fixed to state it can only be a string (the type was correct).\r\n- Added clarification + examples how path matching works for paths defined under the `Paths Object`. \r\n- Removed recommendation for a 120 character limit for the `summary` field under the Operation Object.\r\n- Further details added to the `form` and `simple` types of `style`.\r\n- Clarified that the Encoding Object applies to both `multipart` and `application/x-www-form-urlencoded` and only those.\r\n- Clarified the possible response code wildcards are only `1XX`, `2XX`, `3XX`, `4XX` or `5XX`.\r\n- Variable Expressions have been renamed to Runtime Expressions. They have been unified between Links and Callbacks, and have a dedicated section. Various examples have been moved and removed as a result.\r\n- Runtime expressions now use curly braces when found inside strings.\r\n- Link Object's `parameters` now defines how to deal with cases of parameter name ambiguity. \r\n\r\n## Document Changes\r\n\r\n- ToC has been updated to reflect changes.\r\n- Fixed various anchors in the document.\r\n- Various examples have been fixed.\r\n- Various editorial changes were made to make the document more readable.\r\n\r\nCheck it out! https://github.com/OAI/OpenAPI-Specification/blob/3.0.0-rc2/versions/3.0.md",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "234ffdc6a7e7cc1d1571baa432c6deb392810457c3be56e0945ea88a37dcc53b",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Run linkspector without Chromium sandbox in Actions",
+    "url": "https://github.com/OAI/build-infra/commit/8ba5c5611eff62549680bb0c10c700bde3886a07",
+    "publishedAt": "2026-08-05T19:34:49Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:8ba5c56",
+        "title": "Run linkspector without Chromium sandbox in Actions",
+        "url": "https://github.com/OAI/build-infra/commit/8ba5c5611eff62549680bb0c10c700bde3886a07",
+        "publishedAt": "2026-08-05T19:34:49Z",
+        "body": "Run linkspector without Chromium sandbox in Actions\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

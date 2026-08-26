@@ -1,0 +1,24 @@
+{
+    "id": "0baeac350b0b07f6d40f91a8066a2d6217756afa129247494222bb8f0f18174a",
+    "source": "Redocly/redocly-cli",
+    "type": "release",
+    "title": "@redocly/respect-core@2.46.2",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/respect-core%402.46.2",
+    "publishedAt": "2026-08-19T09:31:12Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "externalId": "release:@redocly/respect-core@2.46.2",
+        "title": "@redocly/respect-core@2.46.2",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/respect-core%402.46.2",
+        "publishedAt": "2026-08-19T09:31:12Z",
+        "body": "### Patch Changes\n\n-   Updated @redocly/openapi-core to v2.46.2.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

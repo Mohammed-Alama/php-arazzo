@@ -1,0 +1,23 @@
+{
+    "id": "14286491a172697a618dc8e4458791dcb5fccc5fcf70e60b415b930ecb01e429",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Stu, Update 2023-Planning.md",
+    "url": "https://github.com/OAI/Outreach/pull/32",
+    "publishedAt": "2023-01-25T18:29:29Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:32",
+        "title": "Stu, Update 2023-Planning.md",
+        "url": "https://github.com/OAI/Outreach/pull/32",
+        "publishedAt": "2023-01-25T18:29:29Z",
+        "body": "Updated a few paragraphs with my name on it to clarify meaning.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

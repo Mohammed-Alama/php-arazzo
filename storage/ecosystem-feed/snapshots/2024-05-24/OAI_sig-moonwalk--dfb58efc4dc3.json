@@ -1,0 +1,26 @@
+{
+    "id": "dfb58efc4dc380260cd7ba4b8aa0a80debfca5490dc0a22435bb843d23e09f16",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": "Allow recursive paths",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/117",
+    "publishedAt": "2024-05-24T19:32:35Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:117",
+        "title": "Allow recursive paths",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/117",
+        "publishedAt": "2024-05-24T19:32:35Z",
+        "body": "I'd like to create a recursive path specification. \r\n\r\nI'll give an example: Imaging a system to serve documents with lots of decomposition (e.g. laws, codes).  Documents are organized in a tree-like structure of sections.  Each document has an arbitrary number of authors and/or sections.  Each section has an arbitrary number of it's own authors and/or sections. \r\n\r\nThe API endpoints would be something like this:\r\n\r\n- http://a.b.com/docs/{id}\r\n- http://a.b.com/docs/{id}/authors/{id}\r\n- http://a.b.com/docs/{id}/sections/{id}\r\n- http://a.b.com/docs/{id}/sections/{id}/authors/{id}\r\n- http://a.b.com/docs/{id}/sections/{id}/sections/{id}\r\n- http://a.b.com/docs/{id}/sections/{id}/sections/{id}/authors/{id}\r\n- http://a.b.com/docs/{id}/sections/{id}/sections/{id}/sections/{id}\r\n\r\nIf I were using regex style, I would use something like this in the API spec:\r\n\r\n**(** /path **)+**\r\n\r\nSo the spec would look like this:\r\n\r\n```\r\n...    \r\npaths:\r\n    /docs/{document-id}:\r\n          ...\r\n    /docs/{document-id}(/section/{section-id})+:\r\n          ...\r\n    /docs/{document-id}(/section/{section-id})+/authors/{author-id}:\r\n          ...\r\n```\r\n\r\nThis is similar to https://github.com/OAI/OpenAPI-Specification/issues/892 ; but these paths are not arbitrary, they are structured and deterministically matchable.",
+        "labels": [
+            "Moved to Moonwalk"
+        ],
+        "state": "closed"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "86d89dcecd6f6b005ef46d47d394e2090df8cb8f66630c67c62d0fb0995da8c7",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "feat: add initial website",
+    "url": "https://github.com/usearazzo/website/commit/85bfced03ef91452b31645415d976e4058df03a3",
+    "publishedAt": "2026-08-12T21:15:13Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:85bfced",
+        "title": "feat: add initial website",
+        "url": "https://github.com/usearazzo/website/commit/85bfced03ef91452b31645415d976e4058df03a3",
+        "publishedAt": "2026-08-12T21:15:13Z",
+        "body": "feat: add initial website",
+        "labels": [],
+        "state": ""
+    }
+}

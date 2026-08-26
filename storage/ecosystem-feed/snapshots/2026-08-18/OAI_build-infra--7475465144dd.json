@@ -1,0 +1,22 @@
+{
+    "id": "7475465144dd22e4b2201baf499d16970279a534c1a8d29790bf7353a9b7cdf2",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Test locks for unmerged provider commits",
+    "url": "https://github.com/OAI/build-infra/commit/efada0c867950970e88a8c6c8dd6d03f69bd1f38",
+    "publishedAt": "2026-08-18T19:11:22Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:efada0c",
+        "title": "Test locks for unmerged provider commits",
+        "url": "https://github.com/OAI/build-infra/commit/efada0c867950970e88a8c6c8dd6d03f69bd1f38",
+        "publishedAt": "2026-08-18T19:11:22Z",
+        "body": "Test locks for unmerged provider commits\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

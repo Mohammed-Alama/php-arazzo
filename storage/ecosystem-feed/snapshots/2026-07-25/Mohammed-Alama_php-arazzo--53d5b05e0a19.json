@@ -1,0 +1,26 @@
+{
+    "id": "53d5b05e0a1903026a9a65cc63a0ce320181f5c14ef362226a8e097a3f43026a",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "feat: idempotency & replay safeguards",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/2",
+    "publishedAt": "2026-07-25T03:03:01Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:2",
+        "title": "feat: idempotency & replay safeguards",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/2",
+        "publishedAt": "2026-07-25T03:03:01Z",
+        "body": "## Summary\n- Added `x-idempotency-key` and `x-idempotency-header` configuration to the Step DTO and OpenAPI/Arazzo parsers.\n- Implemented `IdempotencyKeyInjector` to generate deterministic SHA-256 hashes based on context and JSON payloads.\n- Wired the injector natively into `StepExecutor` and `HttpStepExecutor` (via Laravel's IoC bindings) to seamlessly mutate outgoing request headers.\n\n## Test Plan\n- [x] Run full `vendor/bin/pest` test suite (asserts all schema and API parsing continues working, and explicit idempotency injection behaves correctly).\n- [x] Confirmed async processing (via queue) handles payload manipulation and injection natively.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

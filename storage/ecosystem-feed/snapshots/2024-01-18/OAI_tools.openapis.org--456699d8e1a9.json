@@ -1,0 +1,25 @@
+{
+    "id": "456699d8e1a96b0604e641bfe203d1207f43e58d937e6a08b1d10d6ab78a9cea",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Fix typo in README",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/110",
+    "publishedAt": "2024-01-18T11:58:53Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:110",
+        "title": "Fix typo in README",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/110",
+        "publishedAt": "2024-01-18T11:58:53Z",
+        "body": "APIs *Your* Wont Hate -> APIs *You* Wont Hate",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

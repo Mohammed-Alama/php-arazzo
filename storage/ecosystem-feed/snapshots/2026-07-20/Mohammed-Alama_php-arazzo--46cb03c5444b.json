@@ -1,0 +1,25 @@
+{
+    "id": "46cb03c5444b47fdcc724ea5d342154c72c905ebe0dfd8f62cffb1a863c1fc85",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "feat: Implement CQRS Event-Sourced Persistence for Workflows",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/1",
+    "publishedAt": "2026-07-20T16:49:24Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:1",
+        "title": "feat: Implement CQRS Event-Sourced Persistence for Workflows",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/1",
+        "publishedAt": "2026-07-20T16:49:24Z",
+        "body": "## Summary\n- Implemented robust database migrations for `arazzo_definitions`, `arazzo_executions`, and `arazzo_events`.\n- Created `DatabaseDefinitionRegistry` with content-based hashing and `DatabaseExecutionRegistry` for idempotent workflow starts.\n- Implemented `DatabaseEventLedger` to capture CQRS step events.\n- Rewrote `StepExecutionWorker` to securely lock executions by ID and hydrate state directly from the data store.\n- Re-wired `LaravelArazzoServiceProvider` to bootstrap the persistence layer automatically.\n\n## Test Plan\n- [x] All 305 Pest tests pass cleanly.\n- [x] PHPStan strict static analysis passes.\n- [x] Code style formatted via Pint.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "id": "b7dc3a2c0c63200b9d34beff11fad8c362cb6dc787027ea81b5643292776a04b",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Try quoting to fix mysterious yaml error",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/138",
+    "publishedAt": "2024-06-16T18:45:58Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:138",
+        "title": "Try quoting to fix mysterious yaml error",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/138",
+        "publishedAt": "2024-06-16T18:45:58Z",
+        "body": "It loads fine in python without the quoting, but the workflow is reporting a YAML syntax error.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

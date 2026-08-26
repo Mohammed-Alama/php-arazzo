@@ -1,0 +1,25 @@
+{
+    "id": "5c6929804bd6e46de66a8ac53a2361267c5795c1bc437b757aa16d96e103fac1",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "108 project has correct tags but is unlisted",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/127",
+    "publishedAt": "2024-01-26T13:57:43Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:127",
+        "title": "108 project has correct tags but is unlisted",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/127",
+        "publishedAt": "2024-01-26T13:57:43Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

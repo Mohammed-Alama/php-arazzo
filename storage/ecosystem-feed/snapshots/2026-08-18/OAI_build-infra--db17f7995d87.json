@@ -1,0 +1,24 @@
+{
+    "id": "db17f7995d875dca6cf530baaf5dd4377c4982799085c8110d28574305ab45d8",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Document Yarn workflows",
+    "url": "https://github.com/OAI/build-infra/commit/f1cb0e050a823e1a2a188fdbb0b4356cb694e7da",
+    "publishedAt": "2026-08-18T18:22:13Z",
+    "tags": [
+        "a2a"
+    ],
+    "severity": "watch",
+    "relevance": "Roadmap A2A step type",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:f1cb0e0",
+        "title": "Document Yarn workflows",
+        "url": "https://github.com/OAI/build-infra/commit/f1cb0e050a823e1a2a188fdbb0b4356cb694e7da",
+        "publishedAt": "2026-08-18T18:22:13Z",
+        "body": "Document Yarn workflows\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

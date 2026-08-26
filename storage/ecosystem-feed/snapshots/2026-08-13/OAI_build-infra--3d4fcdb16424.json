@@ -1,0 +1,26 @@
+{
+    "id": "3d4fcdb16424251b622c69b715ad3c6ad0aade27ea05527d114d81741d0bde1e",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Fix/sync lockfile packaged lock",
+    "url": "https://github.com/OAI/build-infra/pull/19",
+    "publishedAt": "2026-08-13T16:21:19Z",
+    "tags": [
+        "human",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:19",
+        "title": "Fix/sync lockfile packaged lock",
+        "url": "https://github.com/OAI/build-infra/pull/19",
+        "publishedAt": "2026-08-13T16:21:19Z",
+        "body": "This is an AI-authored commit, but a human-written PR comment.\r\n\r\nNPM does not include `package-lock.json` when installing from GitHub, but we want to be able to check it.  This creates a copy and infrastructure to update it and ensure that all PRs include an up-to-date copy.  The last commit in this PR ensures there is a specific task with a clear error message to flag that failure rather than having to interpret a unit test (although there is also a  unit test for this).  Documentation updates are included.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

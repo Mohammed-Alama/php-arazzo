@@ -1,0 +1,25 @@
+{
+    "id": "24efc4cf3effe47dd376e887812c1acb89a796f6a59b550282fabfb435277c14",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "Correct link to list of current members and to joining instructions",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/192",
+    "publishedAt": "2026-03-08T10:55:20Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:192",
+        "title": "Correct link to list of current members and to joining instructions",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/192",
+        "publishedAt": "2026-03-08T10:55:20Z",
+        "body": "For the list it looks like the intended URL was https://www.openapis.org/membership/members as listed here, but better to link to the actual one than to a 404 :)\r\nFor joining it seems that this should now point to the Linux Foundation platform.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

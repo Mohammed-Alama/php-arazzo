@@ -1,0 +1,28 @@
+{
+    "id": "0c7edcf526da652fb5be16b82fc75c238928678310865064523a9a0862119b31",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "chore: provide typing stubs for requests lib",
+    "url": "https://github.com/jentic/arazzo-engine/pull/128",
+    "publishedAt": "2025-10-13T07:42:50Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:128",
+        "title": "chore: provide typing stubs for requests lib",
+        "url": "https://github.com/jentic/arazzo-engine/pull/128",
+        "publishedAt": "2025-10-13T07:42:50Z",
+        "body": "",
+        "labels": [
+            "enhancement",
+            "dependencies"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

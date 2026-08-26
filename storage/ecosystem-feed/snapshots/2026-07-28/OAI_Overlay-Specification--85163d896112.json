@@ -1,0 +1,31 @@
+{
+    "id": "85163d8961125fd831a4277efa4dfef071783f5862bf4a9c77a588653d3551f7",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "build(deps-dev): bump markdownlint-cli2 from 0.23.1 to 0.23.2",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/368",
+    "publishedAt": "2026-07-28T09:38:08Z",
+    "tags": [
+        "actor",
+        "a2a",
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:368",
+        "title": "build(deps-dev): bump markdownlint-cli2 from 0.23.1 to 0.23.2",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/368",
+        "publishedAt": "2026-07-28T09:38:08Z",
+        "body": "Bumps [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) from 0.23.1 to 0.23.2.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a href=\"https://github.com/DavidAnson/markdownlint-cli2/blob/main/CHANGELOG.md\">markdownlint-cli2's changelog</a>.</em></p>\n<blockquote>\n<h2>0.23.2</h2>\n<ul>\n<li>Update dependencies</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/b82a6c8896e491b9cb377a99ff3412131920681b\"><code>b82a6c8</code></a> Update to version 0.23.2.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/e4e659ddc65ccef0d59fc70290477d9d04481403\"><code>e4e659d</code></a> Add a stub for process.nextTick (using queueMicrotask) now that globby (indir...</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/99760afd885666f229cabbed903c65e847aec32e\"><code>99760af</code></a> Bump globby from 16.2.1 to 16.2.2</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/30702364304667328c694c05ec00ec84abf9b928\"><code>3070236</code></a> Address new ESLint warnings from previous commit.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/6e3cc93af9c535fb895159223bc8894fcfe3b926\"><code>6e3cc93</code></a> Bump eslint-plugin-unicorn from 71.1.0 to 72.0.0</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/4ba8177fa71cf21aaeaf937c88bc7f73b0c812fc\"><code>4ba8177</code></a> Add eslint-package-json/all to lint script, address new issues.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/9cb99b2c99be6cf17c66eba95967841a0899e961\"><code>9cb99b2</code></a> Refactor eslint.config.mjs to use defineConfig, change eslint-plugin-n from &quot;...</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/37fb0ecbbca44bf01e5dfef6f783bf402796ca3e\"><code>37fb0ec</code></a> Address new ESLint warnings from previous commit.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/f7fea61958ed20abe581ad8fa1a53fcb39e36f1c\"><code>f7fea61</code></a> Bump eslint-node-test from 0.2.0 to 0.3.0</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/85bb5e7f0038fa31520fdea2a0ee3516da81fb2e\"><code>85bb5e7</code></a> Bump js-yaml from 5.2.1 to 5.2.2</li>\n<li>Additional commits viewable in <a href=\"https://github.com/DavidAnson/markdownlint-cli2/compare/v0.23.1...v0.23.2\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=markdownlint-cli2&package-manager=npm_and_yarn&previous-version=0.23.1&new-version=0.23.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

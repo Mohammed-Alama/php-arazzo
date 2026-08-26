@@ -1,0 +1,24 @@
+{
+    "id": "0ebc97a75dba76428a587b1889d869c12133afd8df5b674dee869b82f071f0f2",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #127 from OAI/dependabot/bundler/jekyll-remote-theme-0.5.2",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/26865be2f591390369f9ed52553c291c6b6093b8",
+    "publishedAt": "2026-08-03T10:20:19Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:26865be",
+        "title": "Merge pull request #127 from OAI/dependabot/bundler/jekyll-remote-theme-0.5.2",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/26865be2f591390369f9ed52553c291c6b6093b8",
+        "publishedAt": "2026-08-03T10:20:19Z",
+        "body": "Merge pull request #127 from OAI/dependabot/bundler/jekyll-remote-theme-0.5.2\n\nbuild(deps-dev): bump jekyll-remote-theme from 0.5.1 to 0.5.2",
+        "labels": [],
+        "state": ""
+    }
+}

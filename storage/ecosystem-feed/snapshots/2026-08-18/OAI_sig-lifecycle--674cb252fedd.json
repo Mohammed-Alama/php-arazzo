@@ -1,0 +1,26 @@
+{
+    "id": "674cb252fedd8930329fdd977eb581ee606f7feb0447524d9799d0ef3c59032b",
+    "source": "OAI/sig-lifecycle",
+    "type": "pr",
+    "title": "Add a build system including an empty spec and trivial schema",
+    "url": "https://github.com/OAI/sig-lifecycle/pull/1",
+    "publishedAt": "2026-08-18T18:08:49Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "pr",
+        "externalId": "pr:1",
+        "title": "Add a build system including an empty spec and trivial schema",
+        "url": "https://github.com/OAI/sig-lifecycle/pull/1",
+        "publishedAt": "2026-08-18T18:08:49Z",
+        "body": "Replaced by PR #2 \r\n\r\n~~This Codex-written PR sets up this repository for specification development.  It is a draft because it depends on OAI/build-infra#1, although in theory the CI should pass here as the target commit exists in that repo even though it is not yet on main.  See documentation in that PR for details on how this works.~~\r\n\r\n~~I have prepped the same PR for sig-security, and a migration PR for OpenAPI-Specification, but let's see how this goes here before tackling more repositories.~~",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

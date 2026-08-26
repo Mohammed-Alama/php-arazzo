@@ -1,0 +1,28 @@
+{
+    "id": "487fdf6476b01df3017498effbd3c51c07e7a4509d776777a05de488a5d11943",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "feat: warn at validate time on XPath versions the runtime rejects",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/2517b49bfe91a78cf90745249ab67720d7c36768",
+    "publishedAt": "2026-08-24T20:56:27Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:2517b49",
+        "title": "feat: warn at validate time on XPath versions the runtime rejects",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/2517b49bfe91a78cf90745249ab67720d7c36768",
+        "publishedAt": "2026-08-24T20:56:27Z",
+        "body": "feat: warn at validate time on XPath versions the runtime rejects\n\nSince ac-46638 only an explicit version xpath-10 executes; every other\nschema-valid XPath declaration validated clean and then failed at run\ntime. validate now flags each xpath-typed criterion, Selector Object,\nand replacement targetSelectorType whose declared version is not\nxpath-10 with an unsupportedXpathVersion warning naming the runtime\nrejection and the xpath-10 remedy; --strict promotes it to an error.\nThe declarations stay specification-valid metadata per the v1.1.0\n5.8.12.1 table, so severity is warning, mirroring\nunsupportedOperationPath.\n\nWording follows the document's declared version. Arazzo 1.0.x has no\nxpath-31 token (4.6.12.1 allows only xpath-30/20/10) while its omitted\nform still defaults to XPath 3.1 (4.6.11.3, 4.6.12), so a pre-1.1\nadvisory names \"XML Path Language 3.1\" and the 1.0.x Criterion\nExpression Type Object instead of citing xpath-31 - resolving the\npre-1.1 wording observation from the ac-46638 re-review at the\nvalidate surface.\n\nThe advisory logic lives in a new xpath_advisory module rather than in\nthe god-listed arazzo-validate lib.rs; lib.rs changes are limited to\nthe new kind, the module hook in validate_expression_type, and\nthreading the document version to the three declaration sites. Tests\nseed the decomposition plan's single integration harness\n(tests/validation.rs with cases/ submodules) instead of growing the\ninline test module; a CLI test pins the --json kind and the --strict\npromotion. No golden, snapshot, or conformance status changes.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "fedf8aa23f6e94977c50ab22e74ea8c97d9d6820b2caa493f781e8d31719ea97",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Fix- Multipart parameter processing file dicts.",
+    "url": "https://github.com/jentic/arazzo-engine/pull/140",
+    "publishedAt": "2026-03-12T13:54:34Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:140",
+        "title": "Fix- Multipart parameter processing file dicts.",
+        "url": "https://github.com/jentic/arazzo-engine/pull/140",
+        "publishedAt": "2026-03-12T13:54:34Z",
+        "body": "This PR introduces a fix to incorrect serialisation of file dicts within multipart payload processing. Previously the file dict was being treated as a generic dict in case handling and serialised incorrectly. This caused failure in file upload API calls with file dicts e.g.  file: { content, file_name } and incorrect parameter structure for the final request. File dicts for file upload API calls are now recognised correctly and pass through processing without unnecessary serialisation. ",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

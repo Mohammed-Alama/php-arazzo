@@ -1,0 +1,25 @@
+{
+    "id": "7f18c843869ce047c38a1cbaad5252c3597e0baa228ef984632ab1f93e22ea59",
+    "source": "strefethen/arazzo-cli",
+    "type": "tag",
+    "title": "tag v0.4.0",
+    "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0",
+    "publishedAt": "2026-08-26T07:08:13+00:00",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "tag",
+        "externalId": "tag:v0.4.0",
+        "title": "tag v0.4.0",
+        "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0",
+        "publishedAt": "2026-08-26T07:08:13+00:00",
+        "body": "6217148dba9f279529405ab27277dcf2de9a0cba",
+        "labels": [],
+        "state": "published"
+    }
+}

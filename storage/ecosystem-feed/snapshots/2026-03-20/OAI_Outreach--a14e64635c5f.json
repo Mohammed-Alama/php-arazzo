@@ -1,0 +1,23 @@
+{
+    "id": "a14e64635c5f4777e90ef86d04bf85f90ad5b5f2ef1811bceaa5e75c594551b8",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "feat: Initial revision of social post workflow",
+    "url": "https://github.com/OAI/Outreach/pull/63",
+    "publishedAt": "2026-03-20T15:22:31Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:63",
+        "title": "feat: Initial revision of social post workflow",
+        "url": "https://github.com/OAI/Outreach/pull/63",
+        "publishedAt": "2026-03-20T15:22:31Z",
+        "body": "Summary of changes:\r\n\r\n* Added social post issue.\r\n* Added template and README.\r\n\r\nMerging to `main` so I can test...",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

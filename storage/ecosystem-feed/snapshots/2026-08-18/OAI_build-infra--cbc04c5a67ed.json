@@ -1,0 +1,22 @@
+{
+    "id": "cbc04c5a67ed888c47591d58316c870cbf60d7434bdedd4aff9bbeffb2e6515f",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Launch Bash commands through Node",
+    "url": "https://github.com/OAI/build-infra/commit/88db61f24c9f62237a4dcb1b197973cf51e76f56",
+    "publishedAt": "2026-08-18T18:28:58Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:88db61f",
+        "title": "Launch Bash commands through Node",
+        "url": "https://github.com/OAI/build-infra/commit/88db61f24c9f62237a4dcb1b197973cf51e76f56",
+        "publishedAt": "2026-08-18T18:28:58Z",
+        "body": "Launch Bash commands through Node\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

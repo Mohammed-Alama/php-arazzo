@@ -1,0 +1,25 @@
+{
+    "id": "8ac84bb6edaa288937e73737ce3cfc3b4e1dfdcc961f966de90c7c1fe2e01191",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "feat: Remove IMPLEMENTATIONS.md reference from metadata",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/133",
+    "publishedAt": "2024-01-30T10:58:54Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:133",
+        "title": "feat: Remove IMPLEMENTATIONS.md reference from metadata",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/133",
+        "publishedAt": "2024-01-30T10:58:54Z",
+        "body": "As described, `IMPLEMENTATIONS.md` is no longer a valid source and has therefore been removed from `metadata.json`.\r\n\r\nThe processor library is retained in case this data source is reinstated.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

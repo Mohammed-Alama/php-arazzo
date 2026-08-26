@@ -1,0 +1,25 @@
+{
+    "id": "9de1360080cc1789a3e8e92e50c14709216c0fe2df9cc164d4793fcf447efa5a",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Fix/resolve bug with source description scoped operation path",
+    "url": "https://github.com/jentic/arazzo-engine/pull/138",
+    "publishedAt": "2026-02-25T10:59:27Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:138",
+        "title": "Fix/resolve bug with source description scoped operation path",
+        "url": "https://github.com/jentic/arazzo-engine/pull/138",
+        "publishedAt": "2026-02-25T10:59:27Z",
+        "body": "This PR includes a minor patch relating to `sourceDescription`-scoped operationPath resolution in the `arazzo-runner`.\r\n\r\nPreviously, an `operationPath` field in an Arazzo Description of the form: `{$sourceDescriptions.petstoreDescription.url}#/paths/~1pet~1findByStatus/get`, which is valid in the Arazzo Standard (see [here](https://spec.openapis.org/arazzo/v1.0.1.html#arazzo-specification-object-example)), would get resolved to the path `//pet/findByStatus`.\r\n\r\nThis would throw an error, and cause the workflow execution to fail.\r\n\r\nWith this patch, the paths of this form are now correctly resolved.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

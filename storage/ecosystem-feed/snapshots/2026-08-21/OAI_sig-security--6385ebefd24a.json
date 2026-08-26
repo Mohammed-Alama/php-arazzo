@@ -1,0 +1,24 @@
+{
+    "id": "6385ebefd24a81c169f2521fb6f049eb7113f289f9b0377cf7893565071f2917",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "How to use Google ReCaptcha as \"security\"",
+    "url": "https://github.com/OAI/sig-security/issues/24",
+    "publishedAt": "2026-08-21T18:06:21Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:24",
+        "title": "How to use Google ReCaptcha as \"security\"",
+        "url": "https://github.com/OAI/sig-security/issues/24",
+        "publishedAt": "2026-08-21T18:06:21Z",
+        "body": "Hi,\r\n\r\nI have a path and have to secure it with either an API key or for browser clients with Google ReCaptcha, where the client recaptcha token is used within the request payload.\r\n\r\nPayload\r\n```json5\r\n{\r\n  \"g-recaptcha-response\": \"recaptcha client token which has to be verified\",\r\n  // other payload data\r\n}\r\n```\r\n\r\nOpenAPI YAML\r\n```yaml\r\nopenapi: 3.0.0\r\n\r\ninfo:\r\n  title: Test\r\n  description: API\r\n  version: 1.0.0\r\n\r\ncomponents:\r\n  securitySchemes:\r\n    ApiKey:\r\n      type: apiKey\r\n      name: X-Api-Key\r\n      in: header\r\n\r\npaths:\r\n  /a/b/c:\r\n    post:\r\n      description: ABC\r\n      security:\r\n        - ApiKey: []\r\n        - GoogleRecaptcha: [] # <--- how?!\r\n      responses:\r\n        \"200\":\r\n          description: success\r\n          content:\r\n            application/json:\r\n              example:\r\n                status: ok\r\n```\r\n\r\nHow do I define the security scheme for `GoogleRecaptcha`?",
+        "labels": [],
+        "state": "open"
+    }
+}

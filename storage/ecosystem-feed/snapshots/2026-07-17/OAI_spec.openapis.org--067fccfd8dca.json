@@ -1,0 +1,25 @@
+{
+    "id": "067fccfd8dca5beeb5f33fbf8c8d49d89de3829d7655f13a8155e44dee6670eb",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #110 from baywet/feat/json-schema-namespace",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/121b0101ea4728d96149143ca784920d3a36ab54",
+    "publishedAt": "2026-07-17T18:02:14Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:121b010",
+        "title": "Merge pull request #110 from baywet/feat/json-schema-namespace",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/121b0101ea4728d96149143ca784920d3a36ab54",
+        "publishedAt": "2026-07-17T18:02:14Z",
+        "body": "Merge pull request #110 from baywet/feat/json-schema-namespace\n\ndocs: adds a json schema namespace",
+        "labels": [],
+        "state": ""
+    }
+}

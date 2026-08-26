@@ -1,0 +1,24 @@
+{
+    "id": "737091391316be3b5b591ad28d52731a17f24f26ee20fe536f8e25968f5662a7",
+    "source": "Specmatic/specmatic",
+    "type": "tag",
+    "title": "tag 2.51.0",
+    "url": "https://github.com/Specmatic/specmatic/releases/tag/2.51.0",
+    "publishedAt": "2026-08-26T07:08:17+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "tag",
+        "externalId": "tag:2.51.0",
+        "title": "tag 2.51.0",
+        "url": "https://github.com/Specmatic/specmatic/releases/tag/2.51.0",
+        "publishedAt": "2026-08-26T07:08:17+00:00",
+        "body": "7af0918941a1f01eeeebaa4e326554f48e52437b",
+        "labels": [],
+        "state": "published"
+    }
+}

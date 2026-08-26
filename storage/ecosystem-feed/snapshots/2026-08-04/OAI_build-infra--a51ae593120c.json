@@ -1,0 +1,22 @@
+{
+    "id": "a51ae593120cf8fe9524733cfd882a8eee0325a0dcc2cbff3ac0ce6a42cedd20",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Merge pull request #13 from OAI/dependabot/npm_and_yarn/publishing-38e5500e7c",
+    "url": "https://github.com/OAI/build-infra/commit/9f916454d7000a4765a22b1c96f0e6388c144d94",
+    "publishedAt": "2026-08-04T17:50:46Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:9f91645",
+        "title": "Merge pull request #13 from OAI/dependabot/npm_and_yarn/publishing-38e5500e7c",
+        "url": "https://github.com/OAI/build-infra/commit/9f916454d7000a4765a22b1c96f0e6388c144d94",
+        "publishedAt": "2026-08-04T17:50:46Z",
+        "body": "Merge pull request #13 from OAI/dependabot/npm_and_yarn/publishing-38e5500e7c\n\nBump the publishing group across 1 directory with 2 updates",
+        "labels": [],
+        "state": ""
+    }
+}

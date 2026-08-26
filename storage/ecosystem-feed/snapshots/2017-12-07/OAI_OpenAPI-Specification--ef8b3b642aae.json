@@ -1,0 +1,24 @@
+{
+    "id": "ef8b3b642aae88ef457934c54370c66853f71a538fed67f03939a98e754fa10e",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.1 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.1",
+    "publishedAt": "2017-12-07T06:06:51Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.1",
+        "title": "OAS 3.0.1 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.1",
+        "publishedAt": "2017-12-07T06:06:51Z",
+        "body": "# OAS 3.0.1 Change Log\r\n\r\nThe OAI is pleased to announce the official release of the OpenAPI Specification 3.0.1!\r\n\r\nThis our first patch release since 3.0.0, containing the following updates:\r\n\r\n## Specification Changes\r\n- Updated document links to HTTPS where applicable.\r\n- `example` and `examples` fields descriptions were updated to reference them as 'fields' and not 'objects'.\r\n- Fixed various examples (indentation, field names, comments).\r\n- Removed the Examples Object as it was left over during editing of v3.0.0. It was not used or referenced to by any other object in the specification.\r\n- Various typo fixes.\r\n\r\n## Additional Changes\r\n\r\n- Clarified the roles and processes in the Technical Steering Committee (TSC, formerly the TDC).\r\n- Improvements to the development guidelines.\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

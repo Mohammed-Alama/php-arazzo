@@ -1,0 +1,26 @@
+{
+    "id": "e9748636e24a3ab028c1e96c49c3b23aa7fe18073cbc1c33409962967a110664",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "pr",
+    "title": "feat(runner): execute a retry action's stepId/workflowId reference before each retry attempt",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/pull/63",
+    "publishedAt": "2026-08-17T12:57:09Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "externalId": "pr:63",
+        "title": "feat(runner): execute a retry action's stepId/workflowId reference before each retry attempt",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/63",
+        "publishedAt": "2026-08-17T12:57:09Z",
+        "body": "## Summary\n\nA `retry` failure action carrying a `stepId` / `workflowId` reference — *\"the reference is executed and the context is returned, after which the current step is retried\"* — used to throw `retry-reference-unsupported` unconditionally. This wires it up.\n\nDesign proposed and reviewed in `packages/runner/WORKFLOW_EXECUTOR_PLAN.md` (§0 \"Next\" → now §0 \"Shipped (reference-retry)\") before implementation; all five decisions marked PROPOSED there shipped as proposed.\n\n## What changed\n\n- `StepRetryRunner` gains an optional `runReference` callback on its run context. It still doesn't know what a reference *is* — only *when* one fires: once per retry attempt the action grants (not once for the whole chain), after the `retryAfter` wait, before the step is re-run. No callback supplied still gets the original fail-fast `retry-reference-unsupported` rejection, unchanged.\n- `WorkflowExecutor` supplies that callback:\n  - a **`workflowId` reference** recurses through the same `#run` used by sub-workflow steps and `dependsOn` prerequisites, entered via a new `'retry'` `WorkflowCallVia` (grouped with `'step'` for cycle classification — a reference is a call, not a stated precondition). It runs with `{}` inputs, since the spec gives a retry reference no input-mapping mechanism of its own — tracked, not blocked, by #62.\n  - a **`stepId` reference** is looked up via a parameterized `StepTransitionInterpreter.indexOfStep` (shared with `goto`'s lookup rather than duplicated — unknown target throws the new `retry-target-not-found`) and run through a new shared `#chargedAttempt` wrapper, so it's charged against the same step budget and cancellable exactly like any other attempt.\n- Neither reference's own control flow is followed (no `goto`/`end`/nested `retry` escapes it), and a failed reference does not break the retry chain — only its *completion* matters, per the spec's wording.\n- Reference runs are now visible in the trace via a new public `RetryReferenceRecord` on `StepRunRecord.retryReferences` — kept separate from `subWorkflows` since a reference belongs to the retry, not the step's own target.\n- The pre-existing self-referential fixture (`retryWithReference`, a step retrying by naming its own `stepId`) needed no special-casing — it's just one more attempt at that step.\n\n## Follow-up\n\nFiled #62 (non-blocking, tracking only) for a real input-mapping channel into a `workflowId` reference, since the spec gives none and `{}` is the only spec-honest default until a concrete need shows up.\n\n## Testing\n\n- `tsc --noEmit` — clean\n- Full test suite — 504 passing (12 new: 5 unit tests on `StepRetryRunner`, 6 on `WorkflowExecutor`, 1 cycle-classification test on `WorkflowExecutorComposition`)\n- `eslint` — clean\n- `npm run build` (incl. `api-extractor`) — clean; no API report file is configured for this package\n\n## Docs\n\n`packages/runner/WORKFLOW_EXECUTOR_PLAN.md` updated: reference-retry moved from the queue into a new §0 \"Shipped\" subsection recording what was built and how each proposed decision resolved; `retry-target-not-found` added to the error-reasons list; remaining queue renumbered (step-level `goto`-to-workflow is now item 1, cross-document refs item 2).",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

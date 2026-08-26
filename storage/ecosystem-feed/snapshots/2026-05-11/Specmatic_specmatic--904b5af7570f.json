@@ -1,0 +1,27 @@
+{
+    "id": "904b5af7570fd3a1add9574df2c2a6e66940f0102cda19b1d6c8d5bdf159e22c",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.46.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.0",
+    "publishedAt": "2026-05-11T14:49:54Z",
+    "tags": [
+        "soap",
+        "wsdl",
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P0-6 source routing (wsdl type)",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.46.0",
+        "title": "2.46.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.46.0",
+        "publishedAt": "2026-05-11T14:49:54Z",
+        "body": "## What's Changed\r\n* Generate full conformance test summaries by @sahilm in https://github.com/specmatic/specmatic/pull/2476\r\n* refactor(specmatic): use coverage ops with stable ctrf test identity by @jaydeepk in https://github.com/specmatic/specmatic/pull/2467\r\n* Treat missing WSDL SOAP addresses like host-only addresses by @joelrosario in https://github.com/specmatic/specmatic/pull/2480\r\n* Add WSDL attributeGroup support by @joelrosario in https://github.com/specmatic/specmatic/pull/2481\r\n* Add SOAP response header support for WSDL by @joelrosario in https://github.com/specmatic/specmatic/pull/2482\r\n* [SECURITY] Update dependency io.netty:netty-codec-http to v4.2.13.Final by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2478\r\n* Update dependency io.netty:netty-codec-http2 to v4.2.13.Final by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2483\r\n* Refactor backward compatibility for performance and correctness by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2485\r\n* Update Gradle to v8.14.5 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2487\r\n* refactor: delete the old unused ctrf report generation method by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2490\r\n* Update plugin io.specmatic.gradle to v0.15.8 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2468\r\n* [SECURITY] Update dependency org.thymeleaf:thymeleaf to v3.1.5.RELEASE by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2479\r\n* Update dependency joda-time:joda-time to v2.14.2 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2455\r\n* chore: pass before and after fixture execution details to CtrfTestMetadata in ctrf report by @vedubhat in https://github.com/specmatic/specmatic/pull/2484\r\n* Add WSDL support for wildcards, inherited attributes, and simpleContent extensions by @joelrosario in https://github.com/specmatic/specmatic/pull/2491\r\n* Support form-exploded object query params with additionalProperties by @joelrosario in https://github.com/specmatic/specmatic/pull/2492\r\n* Improve reporting for dropped or modified request content-type by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2488\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.45.1...2.46.0",
+        "labels": [],
+        "state": "published"
+    }
+}

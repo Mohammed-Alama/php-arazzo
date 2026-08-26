@@ -1,0 +1,27 @@
+{
+    "id": "8ae900ae463c0abcdfc2a82fb9add49131b28a25c4c79e8be955f280f924fd2c",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "refactor: decompose ExpressionResolver into deep modules",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/9",
+    "publishedAt": "2026-08-18T15:55:59Z",
+    "tags": [
+        "actor",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:9",
+        "title": "refactor: decompose ExpressionResolver into deep modules",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/9",
+        "publishedAt": "2026-08-18T15:55:59Z",
+        "body": "## What\nDecomposes the `ExpressionResolverInterface` God-Object into 5 highly-localized deep modules to restore testability and locality, as per the architecture review.\n\n## Details\n- Created `RequestCompilerInterface`, `OutputExtractorInterface`, `CriteriaEvaluatorInterface`, `SchemaValidatorInterface`, and `ExpressionEvaluatorInterface`\n- Built 5 distinct implementations.\n- Transitioned the original monolithic `ArazzoExpressionResolver` into a `@deprecated` facade to maintain backward compatibility.\n- Fragmented monolithic tests into 5 targeted test suites.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

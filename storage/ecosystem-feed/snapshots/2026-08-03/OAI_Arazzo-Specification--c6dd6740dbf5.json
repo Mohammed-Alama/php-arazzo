@@ -1,0 +1,25 @@
+{
+    "id": "c6dd6740dbf50db02974dd5f7fbcfb7eaaee02f38708a2428e5223b0cc5e6836",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps): bump markdown-it from 14.3.0 to 15.0.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/f7eb5510783d3689a44ccc7623a561edd050837a",
+    "publishedAt": "2026-08-03T00:54:07Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:f7eb551",
+        "title": "chore(deps): bump markdown-it from 14.3.0 to 15.0.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/f7eb5510783d3689a44ccc7623a561edd050837a",
+        "publishedAt": "2026-08-03T00:54:07Z",
+        "body": "chore(deps): bump markdown-it from 14.3.0 to 15.0.0\n\nBumps [markdown-it](https://github.com/markdown-it/markdown-it) from 14.3.0 to 15.0.0.\n- [Changelog](https://github.com/markdown-it/markdown-it/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/markdown-it/markdown-it/compare/14.3.0...15.0.0)\n\n---\nupdated-dependencies:\n- dependency-name: markdown-it\n  dependency-version: 15.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

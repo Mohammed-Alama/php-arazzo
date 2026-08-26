@@ -1,0 +1,26 @@
+{
+    "id": "e3aa215b7a081a1f7a83e792e96a82f762f113df2879c22d11f2409e652a52b3",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.3 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.3",
+    "publishedAt": "2020-02-21T01:37:40Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.3",
+        "title": "OAS 3.0.3 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.3",
+        "publishedAt": "2020-02-21T01:37:40Z",
+        "body": "# OAS 3.0.3 Change Log\r\n\r\nThe OAI is pleased to announce the official release of the OpenAPI Specification 3.0.3!\r\n\r\nAs a patch release, the following changes were made to improve the specification in terms of readability and accuracy. None of these modifications change the behavior of the spec.\r\n\r\n- Clarified how Path Templating works.\r\n- Clarified the meaning of Semantic Versioning as it applies to the OpenAPI Specification (note, this is the `openapi` field, not the `version` field).\r\n- Changed some hyperlinks from `http` to `https`.\r\n- Clarified add the notion of optional security on operations.\r\n- Added an explanation that the `Server Variable Object`'s `enum` should not be empty. This is not a breaking change but should be considered as guidance for a more explicit restriction in the next major version.\r\n- Clarified paths under the `Paths Object` should start with a forward slash.\r\n- Clarified `Path Item Object`'s `$ref` behavior with sibling fields.\r\n- Fixed a few examples.\r\n- Clarified the map structure of `callbacks` under the `Operation Object`.\r\n- Clarified how path parameters are being matched.\r\n- Clarified `example`/`examples` value(s) in the `Parameter Object`.\r\n- Fixed example for `pipeDelimited` `object` value.\r\n- Fixed `Callback Object` description.\r\n- Clarified `Link Object`'s `operationDef`'s description.\r\n- Improved ABNF for `Runtime Expressions`.\r\n- Clarified valid regex for `pattern` under `Schema Object`.\r\n- Clarified the behavior of `nullable` under `Schema Object`.\r\n- Fixed names of OAuth2 flows in the description of `Security Scheme Object`.\r\n- Improved description of `Security Filtering` section.",
+        "labels": [],
+        "state": "published"
+    }
+}

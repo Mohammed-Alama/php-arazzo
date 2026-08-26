@@ -1,0 +1,24 @@
+{
+    "id": "b6d5d130569af25bfc5e3263801a05009643b3818fdf7130c337ba9248972f64",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Support for Proxy-Authorization in http security scheme",
+    "url": "https://github.com/OAI/sig-security/issues/28",
+    "publishedAt": "2026-08-21T18:08:06Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:28",
+        "title": "Support for Proxy-Authorization in http security scheme",
+        "url": "https://github.com/OAI/sig-security/issues/28",
+        "publishedAt": "2026-08-21T18:08:06Z",
+        "body": "Hi - the OpenAPI 3.0.3 specification implies [here](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#securitySchemeObject) that for the `http` security scheme only Authorization header from RFC7235 may be used to supply credentials, such as a bearer token.  Would it be at all possible to include support for Proxy-Authorization (without the need to use a specification extension)?  The use case is to supply separate proxy and target credentials in one API request.",
+        "labels": [],
+        "state": "open"
+    }
+}

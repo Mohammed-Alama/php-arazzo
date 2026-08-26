@@ -1,0 +1,26 @@
+{
+    "id": "8025eace0c36e7a3e1a495eb6478be8c6e23343f665cc73b186a9940648d3d5b",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "fix: enforce retryLimit and correct step pointer on retry",
+    "url": "https://github.com/jentic/arazzo-engine/pull/145",
+    "publishedAt": "2026-04-29T12:30:15Z",
+    "tags": [
+        "loop",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 loops vs goto",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:145",
+        "title": "fix: enforce retryLimit and correct step pointer on retry",
+        "url": "https://github.com/jentic/arazzo-engine/pull/145",
+        "publishedAt": "2026-04-29T12:30:15Z",
+        "body": "## Summary\r\nThis PR addresses **#141** by fixing the logic that caused the runner to skip retries and advance to the next step prematurely.\r\n\r\n## Changes\r\n- **Runner Loop Fix:** In `runner.py`, we now set `state.goto_step_id` to the current step ID when a retry is requested. This forces the execution loop to re-run the same step rather than advancing.\r\n- **Retry Limit Enforcement:** In `action_handler.py`, I added a `_retry_counts` map to the `ExecutionState` to track attempts. The handler now honors `retryLimit` and falls through to the next failure action (e.g., `end` or `goto`) once the limit is hit.\r\n\r\n## Verification\r\n- Verified against a local Arazzo test workflow where a step intentionally fails, retries up to its limit, and correctly falls back to an `end` action.\r\n- Ran the existing `pytest` test suite.\r\n  - **Results:** `1 failed, 310 passed, 8 skipped, 2 warnings in 4.06s`\r\n  - **Note:** The 1 failure (`test_fixture_discovery.py::Test_spotify::test_workflows - AssertionError:`). This failure is unrelated to the retry fix and was present in the baseline runner as well.\r\n\r\nCloses #141",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

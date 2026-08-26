@@ -1,0 +1,26 @@
+{
+    "id": "1dccb72e4e3586018624f4650bfff5c16a7625c5d2cd895dabf44379d8e8c4aa",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "docs: adds a json schema namespace",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/110",
+    "publishedAt": "2026-07-17T18:11:13Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:110",
+        "title": "docs: adds a json schema namespace",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/110",
+        "publishedAt": "2026-07-17T18:11:13Z",
+        "body": "follow up to #85, #86, #88, #87, #84, #89, #97, #96, #95, #94, #93, #92, #91, #90",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

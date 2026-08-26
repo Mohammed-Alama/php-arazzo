@@ -1,0 +1,26 @@
+{
+    "id": "d9ef53a049177ea5e14373555de6cee9656708864bac69d791509083b15c5c19",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "feat: Decouple HTTP dispatching using OpenAPI Executor",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/11",
+    "publishedAt": "2026-08-20T23:00:28Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:11",
+        "title": "feat: Decouple HTTP dispatching using OpenAPI Executor",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/11",
+        "publishedAt": "2026-08-20T23:00:28Z",
+        "body": "## Summary\n- Extracted PSR-7 request building out of `StepExecutor` and into `DefaultOpenApiExecutor`\n- Introduced `OpenApiPayload` DTO to securely pass location-aware parameters \n- Replaced `ArazzoRequestCompiler` with `DefaultOpenApiExecutor` that resolves types via OpenAPI schemas\n- Updated `LaravelArazzoServiceProvider` bindings and tests to reflect architecture changes\n\n## Test Plan\n- [x] Tested full monorepo via `vendor/bin/pest` in `packages/core`\n- [x] Recreated `HttpStepExecutorTest` to accurately mock the `OpenApiExecutorInterface` callback.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

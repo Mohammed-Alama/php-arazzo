@@ -1,0 +1,26 @@
+{
+    "id": "41d71dc034022cafc2920c1c867410a06ecc08ee8370aed27c4e421937438617",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "add 3.2 tags example",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/194",
+    "publishedAt": "2026-04-06T13:39:20Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:194",
+        "title": "add 3.2 tags example",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/194",
+        "publishedAt": "2026-04-06T13:39:20Z",
+        "body": "This pull request introduces a new example for OpenAPI 3.2.0 demonstrating advanced tag usage in API documentation, specifically for a \"Flight API\". The changes include both JSON and YAML versions of the example, as well as a corresponding markdown documentation file.\r\n\r\n**New Flight API example demonstrating advanced tag usage:**\r\n\r\n*Example files:*\r\n- Added `3.2-tags-example.json` and `3.2-tags-example.yaml` files illustrating the use of hierarchical tags (including parent-child relationships), tag kinds (such as `nav` and `badge`), and external documentation links for tags in an OpenAPI 3.2.0 specification. [[1]](diffhunk://#diff-9e7c5b5bc891dcd76b36a5b19302d2b03c136658b55fa4dd5df81685c0a2d56fR1-R73) [[2]](diffhunk://#diff-9c749dc180704697166a443ce8dd01205724f6b520741a80a1fd52c736af4efbR1-R46)\r\n\r\n*Documentation:*\r\n- Added `3.2-tags-example.md` to provide documentation and context for the new example, integrating it into the site's example API descriptions.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

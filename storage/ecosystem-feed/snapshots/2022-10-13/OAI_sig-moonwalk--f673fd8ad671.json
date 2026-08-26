@@ -1,0 +1,23 @@
+{
+    "id": "f673fd8ad671516a85e2a7ff4c341fefe3092f37d4f6112fece504637a0a55a3",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Fix typos and normalize YAML formatting in `petstore.yaml`",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/39",
+    "publishedAt": "2022-10-13T15:43:51Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:39",
+        "title": "Fix typos and normalize YAML formatting in `petstore.yaml`",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/39",
+        "publishedAt": "2022-10-13T15:43:51Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

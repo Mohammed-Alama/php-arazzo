@@ -1,0 +1,24 @@
+{
+    "id": "3a6999b7fb928be6f70e9f0a72d47ac4d526c928df26129a8e16b75e7b7d5e81",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.8.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.8.0",
+    "publishedAt": "2026-04-17T15:25:51Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.8.0",
+        "title": "v4.8.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.8.0",
+        "publishedAt": "2026-04-17T15:25:51Z",
+        "body": "# [4.8.0](https://github.com/speclynx/apidom/compare/v4.7.1...v4.8.0) (2026-04-17)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* **reference:** fix circular: 'replace' hanging on large specs ([7b94468](https://github.com/speclynx/apidom/commit/7b9446889e89dab869648a5e9ad9042f5faa00cc))\r\n\r\n### Features\r\n\r\n* **traverse:** add skipVisited option to prevent DAG explosion ([a149b2e](https://github.com/speclynx/apidom/commit/a149b2e92024afaf945f52a06ea00a9202519e2b))\r\n\r\n\r\n\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

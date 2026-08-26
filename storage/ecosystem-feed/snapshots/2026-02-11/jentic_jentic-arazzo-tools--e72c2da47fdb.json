@@ -1,0 +1,25 @@
+{
+    "id": "e72c2da47fdb133ee70ee2a3b52f88249435e75150615b8ba9b8d656da233958",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.13",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.13",
+    "publishedAt": "2026-02-11T15:13:13Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.13",
+        "title": "v1.0.0-alpha.13",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.13",
+        "publishedAt": "2026-02-11T15:13:13Z",
+        "body": "# [1.0.0-alpha.13](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2026-02-11)\n\n\n### Features\n\n* **validator:** add CLI support ([#65](https://github.com/jentic/jentic-arazzo-tools/issues/65)) ([3a86804](https://github.com/jentic/jentic-arazzo-tools/commit/3a86804b5d2839580c8a147caf5a7db3b3065547))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

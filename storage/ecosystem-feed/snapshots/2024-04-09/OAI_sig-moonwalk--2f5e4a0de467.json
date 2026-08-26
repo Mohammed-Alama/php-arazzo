@@ -1,0 +1,23 @@
+{
+    "id": "2f5e4a0de4672f82a41dfbf10232540e0d5f2d636ea952efa7a83d283f959d65",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Broken link - Typo",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/101",
+    "publishedAt": "2024-04-09T16:07:46Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:101",
+        "title": "Broken link - Typo",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/101",
+        "publishedAt": "2024-04-09T16:07:46Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

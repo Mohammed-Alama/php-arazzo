@@ -1,0 +1,27 @@
+{
+    "id": "71c7ce7a0356a0fece7f96d76f44dcfc98ed1b7f7e3f89c9b95d1a221610ae85",
+    "source": "OAI/Arazzo-Specification",
+    "type": "issue",
+    "title": "Agenda for May 11, 2022",
+    "url": "https://github.com/OAI/Arazzo-Specification/issues/22",
+    "publishedAt": "2026-08-05T09:52:55Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "issue",
+        "externalId": "issue:22",
+        "title": "Agenda for May 11, 2022",
+        "url": "https://github.com/OAI/Arazzo-Specification/issues/22",
+        "publishedAt": "2026-08-05T09:52:55Z",
+        "body": "- Review use cases ([Discussion](https://github.com/OAI/sig-workflows/discussions/23))\r\n- Review Tools and Helpful Specs [(Discussion)](https://github.com/OAI/sig-workflows/discussions/10)\r\n- Review initial draft proposal ([Discussion](https://github.com/OAI/sig-workflows/blob/draft-version/versions/1.0.0.md))\r\n- Set timeline for initial draft ",
+        "labels": [
+            "Housekeeping",
+            "meetings"
+        ],
+        "state": "closed"
+    }
+}

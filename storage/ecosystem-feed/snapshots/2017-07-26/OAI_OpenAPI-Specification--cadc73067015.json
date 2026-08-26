@@ -1,0 +1,25 @@
+{
+    "id": "cadc73067015cdc53556f7829902eb85aeb9bfdc98f9f53ae0d3afcc88281b42",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.0 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0",
+    "publishedAt": "2017-07-26T07:31:51Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.0",
+        "title": "OAS 3.0.0 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0",
+        "publishedAt": "2017-07-26T07:31:51Z",
+        "body": "# OAS 3.0.0 Change Log\r\n\r\nThe OAI is pleased to announce the official release of the OpenAPI Specification 3.0.0!\r\n\r\nThe list below reflect the changes since the last release candidate.\r\n\r\n## Schema Changes\r\n- The `headers` map under the Encoding Object can now also reference headers.\r\n\r\n## Descriptive Changes\r\n- Reworded descriptions for clearer intent (no change of meaning).\r\n- The OpenAPI Definition File has been renamed as the OpenAPI Document.\r\n- Changes to better conform to RFC 2119.\r\n- Elaborated Request Body's and Response's content field support media type ranges.\r\n- Fixed descriptions of `operationRef` and `operationId` under the Link Object. Also clarified that a Link MUST contain one of them.\r\n- Added links to OAuth2's and OpenID Connect's specifications.\r\n\r\n## Document Changes\r\n- Some example fixes.\r\n\r\nCheck it out! https://github.com/OAI/OpenAPI-Specification/blob/3.0.0/versions/3.0.0.md\r\n",
+        "labels": [],
+        "state": "published"
+    }
+}

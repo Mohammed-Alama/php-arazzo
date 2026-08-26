@@ -1,0 +1,28 @@
+{
+    "id": "9e5e41a18b36ed399a416ac4faa46c5b61d0f0f16e9ee8edff91f4b5bc0845f2",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.7.0",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.7.0",
+    "publishedAt": "2023-05-23T22:12:27Z",
+    "tags": [
+        "xml",
+        "cli",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.7.0",
+        "title": "v6.7.0",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.7.0",
+        "publishedAt": "2023-05-23T22:12:27Z",
+        "body": "## What's Changed\r\n* docs(repo): add documentation as codeowners for toc.json by @heitortsergent in https://github.com/stoplightio/spectral/pull/2321\r\n* docs(repo): update rulesets docs by @heitortsergent in https://github.com/stoplightio/spectral/pull/2310\r\n* docs(repo): fix custom function examples with targetVal by @heitortsergent in https://github.com/stoplightio/spectral/pull/2322\r\n* chore(deps): bump engine.io from 6.2.0 to 6.2.1 by @dependabot in https://github.com/stoplightio/spectral/pull/2347\r\n* fix(core): improve deep ruleset inheritance by @P0lip in https://github.com/stoplightio/spectral/pull/2326\r\n* docs(repo): add API Stylebook to README by @heitortsergent in https://github.com/stoplightio/spectral/pull/2346\r\n* fix(ruleset-migrator): avoid positive lookbehinds by @P0lip in https://github.com/stoplightio/spectral/pull/2349\r\n* feat(core): support end-user extensions in the rule definitions by @pavelkornev in https://github.com/stoplightio/spectral/pull/2345\r\n* fix(rulesets): length.min said \"must not be longer than\" by @philsturgeon in https://github.com/stoplightio/spectral/pull/2355\r\n* fix(ref-resolver): bump @stoplight/json-ref-resolver from ~3.1.4 to ~3.1.5 by @P0lip in https://github.com/stoplightio/spectral/pull/2365\r\n* docs(repo): vale review by @heitortsergent in https://github.com/stoplightio/spectral/pull/2366\r\n* docs(repo): add list of common aliases by @heitortsergent in https://github.com/stoplightio/spectral/pull/2320\r\n* docs(repo): clarified installation steps for cli and core by @pamgoodrich in https://github.com/stoplightio/spectral/pull/2370\r\n* docs(repo): added info about inherited overrides by @pamgoodrich in https://github.com/stoplightio/spectral/pull/2369\r\n* fix(core): reset path in fn context by @P0lip in https://github.com/stoplightio/spectral/pull/2389\r\n* chore(deps-dev): bump json5 from 1.0.1 to 1.0.2 by @dependabot in https://github.com/stoplightio/spectral/pull/2379\r\n* chore(deps): bump http-cache-semantics from 4.1.0 to 4.1.1 by @dependabot in https://github.com/stoplightio/spectral/pull/2393\r\n* chore(deps): bump ua-parser-js from 0.7.31 to 0.7.33 by @dependabot in https://github.com/stoplightio/spectral/pull/2388\r\n* fix(ruleset-migrator): use module for require.resolve by @dweber019 in https://github.com/stoplightio/spectral/pull/2405\r\n* fix(ruleset-bundler): defaults should be last one by @dweber019 in https://github.com/stoplightio/spectral/pull/2403\r\n* docs(repo): removed inconsistent quotation marks from toc.json by @thiagoschreck in https://github.com/stoplightio/spectral/pull/2409\r\n* feat(core): support x- extensions in the ruleset by @P0lip in https://github.com/stoplightio/spectral/pull/2440\r\n* docs(repo): add additional style guide examples to readme by @mnaumanali94 in https://github.com/stoplightio/spectral/pull/2449\r\n* docs(repo): linting with ssgs by @pamgoodrich in https://github.com/stoplightio/spectral/pull/2450\r\n* chore(deps): bump vm2 from 3.9.11 to 3.9.17 by @dependabot in https://github.com/stoplightio/spectral/pull/2458\r\n* fix(ruleset-migrator): transform functions under overrides by @P0lip in https://github.com/stoplightio/spectral/pull/2459\r\n* chore(deps-dev): bump xml2js from 0.4.23 to 0.5.0 by @dependabot in https://github.com/stoplightio/spectral/pull/2453\r\n* feat(core): relax formats validation by @P0lip in https://github.com/stoplightio/spectral/pull/2151\r\n* fix(core): more accurate ruleset error paths  by @P0lip in https://github.com/stoplightio/spectral/pull/2343\r\n* feat(rulesets): add message traits array path to asyncapi headers schema type object rule by @CalemRoelofsSB in https://github.com/stoplightio/spectral/pull/2460\r\n* chore(deps): bump vm2 from 3.9.17 to 3.9.19 by @dependabot in https://github.com/stoplightio/spectral/pull/2473\r\n* fix(ruleset-bundler): remove extraneous 'external dependency' warnings by @billiegoose in https://github.com/stoplightio/spectral/pull/2475\r\n* chore(cli): inline html templates in html formatter by @P0lip in https://github.com/stoplightio/spectral/pull/2474\r\n* build(repo): use semantic-release-yarn for proper workspaces support by @P0lip in https://github.com/stoplightio/spectral/pull/2477\r\n* feat(formatters): move formatters to a separate package by @sennyeya in https://github.com/stoplightio/spectral/pull/2468\r\n\r\n## New Contributors\r\n* @dweber019 made their first contribution in https://github.com/stoplightio/spectral/pull/2405\r\n* @thiagoschreck made their first contribution in https://github.com/stoplightio/spectral/pull/2409\r\n* @CalemRoelofsSB made their first contribution in https://github.com/stoplightio/spectral/pull/2460\r\n* @sennyeya made their first contribution in https://github.com/stoplightio/spectral/pull/2468\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.6.0...v6.7.0",
+        "labels": [],
+        "state": "published"
+    }
+}

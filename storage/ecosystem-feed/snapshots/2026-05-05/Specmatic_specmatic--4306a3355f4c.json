@@ -1,0 +1,24 @@
+{
+    "id": "4306a3355f4c3ba451da4b768a0eb12737d21126095076bd91fca8b380fa50b0",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.45.1",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.45.1",
+    "publishedAt": "2026-05-05T08:57:03Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.45.1",
+        "title": "2.45.1",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.45.1",
+        "publishedAt": "2026-05-05T08:57:03Z",
+        "body": "## What's Changed\r\n* Tag expected conformance failures with x-specmatic-spec-ref by @sahilm in https://github.com/specmatic/specmatic/pull/2475\r\n* Performance improvements to backward compatibility check by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2477\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.45.0...2.45.1",
+        "labels": [],
+        "state": "published"
+    }
+}

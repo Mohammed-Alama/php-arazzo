@@ -1,0 +1,28 @@
+{
+    "id": "278e3eec78bbc3cad7fef42b68efa130af51e9f65d0d1ddc47e8d1d58163e5b3",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Bump @hyperjump/json-schema from 1.17.6 to 1.17.7 in the hyperjump group across 1 directory",
+    "url": "https://github.com/OAI/build-infra/pull/4",
+    "publishedAt": "2026-08-04T17:34:14Z",
+    "tags": [
+        "schema"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:4",
+        "title": "Bump @hyperjump/json-schema from 1.17.6 to 1.17.7 in the hyperjump group across 1 directory",
+        "url": "https://github.com/OAI/build-infra/pull/4",
+        "publishedAt": "2026-08-04T17:34:14Z",
+        "body": "Bumps the hyperjump group with 1 update in the / directory: [@hyperjump/json-schema](https://github.com/hyperjump-io/json-schema).\n\nUpdates `@hyperjump/json-schema` from 1.17.6 to 1.17.7\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/57a0b500fc62f3fcdb7901756fa078d59258f24f\"><code>57a0b50</code></a> 1.17.7</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/14fccaf234cddcc6743a414b08573e1b29f42318\"><code>14fccaf</code></a> Fix type for Keyword.annotation</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/2c80518594aac0fee7defd310c6365121d9bcbea\"><code>2c80518</code></a> Pin undici to v7</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/80cc22c7616667b2376b3ca046a02988401e31ed\"><code>80cc22c</code></a> fix: correct non-transitive keywordComparator in validation.js (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/123\">#123</a>)</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/15833d960b6a20367956c1cbf7fea52adaa3ab5f\"><code>15833d9</code></a> fix: avoid trailing comma in jsonStringify when replacer skips last property ...</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/e09d6dabb13e661b25182d33f3108ee0471ec1ab\"><code>e09d6da</code></a> Make validator serialization a first-class feature (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/118\">#118</a>)</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/5e7ca2c99b8fd3cfc1b7f67316f9b0b92f0d0ed5\"><code>5e7ca2c</code></a> Serialize and restore compiled schema (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/115\">#115</a>)</li>\n<li><a href=\"https://github.com/hyperjump-io/json-schema/commit/50dd7df599011bcd1df3283b2073507e9fc02bf9\"><code>50dd7df</code></a> add optional id to plugins (<a href=\"https://redirect.github.com/hyperjump-io/json-schema/issues/113\">#113</a>)</li>\n<li>See full diff in <a href=\"https://github.com/hyperjump-io/json-schema/compare/v1.17.6...v1.17.7\">compare view</a></li>\n</ul>\n</details>\n<br />\n",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "1e60b0912152ecf3f63db1052bfcad742400a7c137118645fc8559d544af9f13",
+    "source": "swaggerexpert/arazzo-criterion",
+    "type": "tag",
+    "title": "tag v1.0.1",
+    "url": "https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.1",
+    "publishedAt": "2026-08-26T07:08:23+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "swaggerexpert/arazzo-criterion",
+        "type": "tag",
+        "externalId": "tag:v1.0.1",
+        "title": "tag v1.0.1",
+        "url": "https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.1",
+        "publishedAt": "2026-08-26T07:08:23+00:00",
+        "body": "7961dea3e54ab064dc2bf055540b955889627c71",
+        "labels": [],
+        "state": "published"
+    }
+}

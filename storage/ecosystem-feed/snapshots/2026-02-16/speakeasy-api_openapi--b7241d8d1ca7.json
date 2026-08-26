@@ -1,0 +1,25 @@
+{
+    "id": "b7241d8d1ca74829f19795a0692903a8dfa07815e1b0e9e3c3ed2232c3226cf9",
+    "source": "speakeasy-api/openapi",
+    "type": "release",
+    "title": "v1.18.2",
+    "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.18.2",
+    "publishedAt": "2026-02-16T00:52:35Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "speakeasy-api/openapi",
+        "type": "release",
+        "externalId": "release:v1.18.2",
+        "title": "v1.18.2",
+        "url": "https://github.com/speakeasy-api/openapi/releases/tag/v1.18.2",
+        "publishedAt": "2026-02-16T00:52:35Z",
+        "body": "## What's Changed\r\n* fix: remove version restrictions from rules and fix rate-limit ref resolution by @TristanSpeakEasy in https://github.com/speakeasy-api/openapi/pull/154\r\n* chore: update submodule dependencies to latest main by @github-actions[bot] in https://github.com/speakeasy-api/openapi/pull/155\r\n\r\n\r\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.18.1...v1.18.2\n\n## OpenAPI CLI v1.18.2\n\nThis release includes binaries for Linux, macOS, and Windows on both x86_64 and ARM64 architectures.\n\n### Installation\n\nDownload the appropriate binary for your platform from the assets below, extract it, and add it to your PATH.\n\n### Changes\n\n## Changelog\n### Bug fixes\n* 943031b68ec0d84b22a6bb8d833362662c78df8a fix: remove version restrictions from rules and fix rate-limit ref resolution (#154)\n\n\n---\n\n**Full Changelog**: https://github.com/speakeasy-api/openapi/compare/v1.18.1...v1.18.2\n\nReleased by [GoReleaser](https://github.com/goreleaser/goreleaser).\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

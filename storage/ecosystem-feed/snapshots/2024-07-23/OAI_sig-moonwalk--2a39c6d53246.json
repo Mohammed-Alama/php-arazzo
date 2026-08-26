@@ -1,0 +1,24 @@
+{
+    "id": "2a39c6d53246efcd9ac4c82d781181fe3dfaa3e8a5e7807b3e3ae794cf669db2",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": "Can the Data Types section be replaced by a reference to the format registry?",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/131",
+    "publishedAt": "2024-07-23T14:07:29Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:131",
+        "title": "Can the Data Types section be replaced by a reference to the format registry?",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/131",
+        "publishedAt": "2024-07-23T14:07:29Z",
+        "body": "Instead of [this paragraph](https://spec.openapis.org/oas/latest.html#data-types), can we reference this https://spec.openapis.org/registry/format/index.html",
+        "labels": [],
+        "state": "open"
+    }
+}

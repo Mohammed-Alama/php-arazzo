@@ -1,0 +1,24 @@
+{
+    "id": "0cf08dbf699c15589233dff1de0329766f2b433dc431fdfd5046c630811dffde",
+    "source": "b-lab-io/pyarazzo",
+    "type": "tag",
+    "title": "tag v0.0.2",
+    "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.2",
+    "publishedAt": "2026-08-26T07:08:26+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "b-lab-io/pyarazzo",
+        "type": "tag",
+        "externalId": "tag:v0.0.2",
+        "title": "tag v0.0.2",
+        "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.2",
+        "publishedAt": "2026-08-26T07:08:26+00:00",
+        "body": "d9ec84b1769a8fe231a86e4a711d17917cee3af3",
+        "labels": [],
+        "state": "published"
+    }
+}

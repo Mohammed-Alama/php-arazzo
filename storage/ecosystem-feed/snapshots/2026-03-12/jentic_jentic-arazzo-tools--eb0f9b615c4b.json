@@ -1,0 +1,24 @@
+{
+    "id": "eb0f9b615c4b6a3b4f3db6acf96a49d0b0f3cc5b4c3df6ae2aad5c81dca5d6c7",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.27",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.27",
+    "publishedAt": "2026-03-12T14:16:51Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.27",
+        "title": "v1.0.0-alpha.27",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.27",
+        "publishedAt": "2026-03-12T14:16:51Z",
+        "body": "# [1.0.0-alpha.27](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.26...v1.0.0-alpha.27) (2026-03-12)\n\n\n### Bug Fixes\n\n* **release:** override minimatch 10.2.3 to fix glob pattern regression in lerna publish ([#143](https://github.com/jentic/jentic-arazzo-tools/issues/143)) ([829f1cf](https://github.com/jentic/jentic-arazzo-tools/commit/829f1cf3d4376b407e4ef2391e155f8e60e1a7d4)), closes [lerna/lerna#4305](https://github.com/lerna/lerna/issues/4305) [isaacs/minimatch#284](https://github.com/isaacs/minimatch/issues/284)\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

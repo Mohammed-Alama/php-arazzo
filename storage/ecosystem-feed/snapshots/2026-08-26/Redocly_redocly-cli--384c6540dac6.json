@@ -1,0 +1,22 @@
+{
+    "id": "384c6540dac6986c3ff629213a565289c7a266442df255513e559996746fa0b1",
+    "source": "Redocly/redocly-cli",
+    "type": "tag",
+    "title": "tag v1.0.0-beta.125",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.125",
+    "publishedAt": "2026-08-26T07:08:16+00:00",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "tag",
+        "externalId": "tag:v1.0.0-beta.125",
+        "title": "tag v1.0.0-beta.125",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.125",
+        "publishedAt": "2026-08-26T07:08:16+00:00",
+        "body": "a7659e0f9b76facadf813e83d9ec2b466450d070",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "5bf1506d05f080ee630f0aae89d4f60fc55a7cc34a28825ef046e4819b7f6721",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Merge pull request #16 from handrews/fix/validate-markdown-linkspector-sandbox",
+    "url": "https://github.com/OAI/build-infra/commit/652bc71346bf3c6ccfb0317cc6fbe8516365c5f1",
+    "publishedAt": "2026-08-06T16:22:45Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:652bc71",
+        "title": "Merge pull request #16 from handrews/fix/validate-markdown-linkspector-sandbox",
+        "url": "https://github.com/OAI/build-infra/commit/652bc71346bf3c6ccfb0317cc6fbe8516365c5f1",
+        "publishedAt": "2026-08-06T16:22:45Z",
+        "body": "Merge pull request #16 from handrews/fix/validate-markdown-linkspector-sandbox\n\nRun linkspector without Chromium sandbox in Actions",
+        "labels": [],
+        "state": ""
+    }
+}

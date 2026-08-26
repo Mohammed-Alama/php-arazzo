@@ -1,0 +1,26 @@
+{
+    "id": "d62a33d61449553468f08d57f5f2ea4b2dd9fe19945a6d5abdf3047c718fb5cb",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: Redesign of category table container to constrain width and avoid overflow",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/143",
+    "publishedAt": "2024-02-27T14:27:22Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:143",
+        "title": "fix: Redesign of category table container to constrain width and avoid overflow",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/143",
+        "publishedAt": "2024-02-27T14:27:22Z",
+        "body": "Summary of changes:\r\n\r\n* Added grid layout with wide centre column to ensure table stays fixed in the middle\r\n* Added fixed layout to table with constrained name and description columns\r\n* Added correct text overflow behaviours\r\n* Refactored navigation bar to sit nicely on this layout\r\n\r\n👍 ",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

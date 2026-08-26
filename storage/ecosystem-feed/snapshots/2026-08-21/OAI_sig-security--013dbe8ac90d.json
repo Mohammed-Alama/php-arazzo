@@ -1,0 +1,25 @@
+{
+    "id": "013dbe8ac90d21b83474395cce5caee3e64c3e723a44810917d8550e5a1ebb3d",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Endpoint-level and field-level role/permission support",
+    "url": "https://github.com/OAI/sig-security/issues/35",
+    "publishedAt": "2026-08-21T18:10:11Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:35",
+        "title": "Endpoint-level and field-level role/permission support",
+        "url": "https://github.com/OAI/sig-security/issues/35",
+        "publishedAt": "2026-08-21T18:10:11Z",
+        "body": "At the company we work at, we have a need to expose APIs to different actors who have different roles and thus accesses. Essentially, some users have more or less access to the same API endpoints and on each endpoint, they may have access to some response fields or not.\r\n\r\nHowever, at this point, there is no way to include this concept of role/permission support which we would at least want to use when generating documentation (and use one single OpenAPI definition file)  - of course, it would mean that documentation support that new role/permission construct, but it starts with implementing it in the spec.\r\n\r\nIs this something other folks are interested in?\r\n\r\nIdeally, this issue should be assigned the Next.Proposal label.",
+        "labels": [],
+        "state": "open"
+    }
+}

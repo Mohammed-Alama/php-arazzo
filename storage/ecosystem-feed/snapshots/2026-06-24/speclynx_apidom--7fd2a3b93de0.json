@@ -1,0 +1,24 @@
+{
+    "id": "7fd2a3b93de0249297c469633e3ff0779363349ec345208b1ff4b3539b9258c1",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.16.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.16.0",
+    "publishedAt": "2026-06-24T11:59:05Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.16.0",
+        "title": "v4.16.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.16.0",
+        "publishedAt": "2026-06-24T11:59:05Z",
+        "body": "# [4.16.0](https://github.com/speclynx/apidom/compare/v4.15.0...v4.16.0) (2026-06-24)\n\n\n### Features\n\n* **reference:** add AsyncAPI 2 bundle strategy ([#368](https://github.com/speclynx/apidom/issues/368)) ([32acbe8](https://github.com/speclynx/apidom/commit/32acbe80604b26dcdf03292c2010e58ea74b81f8))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

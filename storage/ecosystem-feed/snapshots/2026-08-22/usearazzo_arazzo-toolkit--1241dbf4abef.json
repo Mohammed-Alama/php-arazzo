@@ -1,0 +1,28 @@
+{
+    "id": "1241dbf4abefc4511264436812dec9cbdd8f92ef10c6d1f9176f9e38de70b5c8",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "cli: live execution progress rendering built on the runner event stream",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/86",
+    "publishedAt": "2026-08-22T05:37:59Z",
+    "tags": [
+        "cli",
+        "human",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:86",
+        "title": "cli: live execution progress rendering built on the runner event stream",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/86",
+        "publishedAt": "2026-08-22T05:37:59Z",
+        "body": "## Problem\n\n#84 defines the CLI command surface with human-readable output as the default, but only as a static end-of-run summary. For long-running workflows, `arazzo execute-workflow` would sit silent for the whole run — no indication of which step is executing, whether a retry is in progress, or why a step failed. The runner's execution observability (#85) exists precisely to make live progress possible; the CLI should be its flagship consumer.\n\n## Proposal\n\nA live progress renderer for the execute commands (`execute-workflow`, `execute-operation`), implemented strictly as a consumer of the runner's public event stream (#85) — no privileged access to executor internals. This doubles as the dogfooding proof for #85's adapter model: if the CLI renderer needs information the events don't carry, the fix belongs in the event vocabulary, not in a CLI back-channel.\n\n### Rendering\n\n- **TTY mode** (interactive): per-step live lines updated in place — step id, spinner while in flight, attempt counter on retries, wait countdown during `retry-wait`, ✓/✗ with duration on settle; colored statuses; sub-workflow steps indented under their parent; final summary (status, per-step results, workflow outputs) at the end.\n- **Non-TTY mode** (CI, pipes): plain sequential lines, one per event of interest, no ANSI, no in-place updates. Auto-detected via `isTTY`, forceable with `--progress=plain|fancy|none`.\n- **Per-criterion checks**: each settled step renders its `successCriteria` as an indented ✓/✗ check list (condition + outcome), so a failing step shows *which* criterion failed at a glance. `--verbose` additionally surfaces `action-selected` detail (which action fired and why) and criterion context values — turning the CLI into a first-line debugging tool for workflow authors.\n- **Channel discipline** (per #84 conventions): all progress rendering goes to **stderr**; stdout stays reserved for machine output, so `--json` and shell pipelines are unaffected by progress mode.\n- **Redaction**: the renderer inherits #85's redaction policy wherever event data could surface credentials; it never prints raw request/response secrets.\n\n### Non-goals for the renderer\n\n- No execution control (pause, skip, breakpoints) — display only; control is a separate concern per #85's events-are-not-control boundary.\n- No new event types defined CLI-side; vocabulary gaps are #85 work.\n\n## Dependencies\n\n- #84 — the CLI package and command surface this renders for.\n- #85 — the event stream this consumes.\n\n## Acceptance criteria\n\n- [ ] `execute-workflow` shows live per-step progress in TTY mode, including retries (attempt count + wait), sub-workflow nesting, and a final summary consistent with the `WorkflowExecutionResult`.\n- [ ] Non-TTY output is plain, line-oriented, ANSI-free, and stable enough for CI logs; `--progress` overrides detection.\n- [ ] `--verbose` surfaces criterion and action decisions per step.\n- [ ] All progress goes to stderr; `--json` stdout output is byte-identical with progress enabled and disabled.\n- [ ] Renderer consumes only the public event/observer API from #85 — verified by it living entirely in the CLI package with no runner-internal imports.\n- [ ] No credentials appear in any rendering mode (covered by a test with an `apiKey`-authenticated fixture).\n",
+        "labels": [
+            "enhancement"
+        ],
+        "state": "open"
+    }
+}

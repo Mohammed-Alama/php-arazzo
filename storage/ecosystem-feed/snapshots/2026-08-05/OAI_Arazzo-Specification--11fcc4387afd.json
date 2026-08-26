@@ -1,0 +1,28 @@
+{
+    "id": "11fcc4387afdd4f8899a3b48360ecd5ca44ce30f202e9a3d041b9f87c3bee7a6",
+    "source": "OAI/Arazzo-Specification",
+    "type": "pr",
+    "title": "fix(spec): specify ECMA-262 dialect for regex Criterion condition type",
+    "url": "https://github.com/OAI/Arazzo-Specification/pull/516",
+    "publishedAt": "2026-08-05T15:11:48Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "externalId": "pr:516",
+        "title": "fix(spec): specify ECMA-262 dialect for regex Criterion condition type",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/516",
+        "publishedAt": "2026-08-05T15:11:48Z",
+        "body": "Closes #515\n\n## Summary\n\nThe Criterion Object's `regex` condition type did not name a regular-expression dialect, while the sibling `jsonpath` (RFC 9535) and `xpath` (XML Path Language 3.1) types both pin a standard. This left regex matching non-portable across Arazzo runners: dialects differ in lookbehind `(?<=…)`, named groups, backreferences, and Unicode property escapes `\\p{…}`, so a condition such as `(?<=x)y` or `\\p{L}+` could pass on one runtime and fail (or error) on another.\n\nThis PR pins **ECMA-262** for the `regex` type, matching OpenAPI / JSON Schema Validation (the sibling specification under the OAI, which pins ECMA-262 for `pattern`/`patternProperties`) and what the most common runners implement via native regex engines.\n\n## Changes\n\nTwo clarifying edits to `src/arazzo.md`, both linking to the [ECMA-262 patterns grammar](https://tc39.es/ecma262/#sec-patterns):\n\n- Criterion Object condition flavors list — the `regex` entry now states the pattern MUST be a valid regular expression according to the ECMA-262 dialect.\n- Regex Conditions evaluation section — the `condition` MUST be a valid ECMA-262 regular expression.\n\nThis is a clarification that does not change the intended meaning of the specification, so it targets `v1.1-dev` per the [branching strategy](https://github.com/OAI/Arazzo-Specification/blob/main/CONTRIBUTING.md#branching-strategy) (apply to the earliest relevant active branch). `markdownlint` passes.",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

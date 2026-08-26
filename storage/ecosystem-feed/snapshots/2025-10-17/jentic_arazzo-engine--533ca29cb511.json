@@ -1,0 +1,29 @@
+{
+    "id": "533ca29cb511397372758b54ff0f6a7be27ce445837d74b537100dc8c3bc5f50",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Enhance ArazzoRunner to support URL-based Arazzo docs, nested workflows, and direct operation execution",
+    "url": "https://github.com/jentic/arazzo-engine/pull/129",
+    "publishedAt": "2025-10-17T07:03:56Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:129",
+        "title": "Enhance ArazzoRunner to support URL-based Arazzo docs, nested workflows, and direct operation execution",
+        "url": "https://github.com/jentic/arazzo-engine/pull/129",
+        "publishedAt": "2025-10-17T07:03:56Z",
+        "body": "Summary\r\n\r\nThis PR enhances the ArazzoRunner to provide:\r\n\r\nSupport for loading Arazzo documents from URLs (http:// or https://).\r\n\r\nExecution of nested workflows with proper parameter evaluation and outputs propagation.\r\n\r\nDirect operation execution outside of workflows via execute_operation.\r\n\r\nImproved environment variable mappings via the new static method generate_env_mappings.\r\n\r\nPreservation of deprecated get_env_mappings with warnings for backward compatibility.\r\n\r\nAll changes are implemented with minimal refactoring and no deletion of existing documentation/comments.\r\n\r\nChanges Made\r\n\r\nAdded URL support for loading .json, .yaml, and .yml Arazzo documents.\r\n\r\nNested workflow execution _execute_nested_workflow with expression evaluation for parameters.\r\n\r\nexecute_operation method to execute individual API operations directly.\r\n\r\nAdded generate_env_mappings static method for auth and server environment variables.\r\n\r\nDeprecated get_env_mappings now points users to generate_env_mappings.\r\n\r\nMaintained existing event callbacks and logging for steps and workflows.\r\n\r\nCopilot Review:\r\n\r\nKey Changes\r\n1. Remote URL Support for Workflow and Source Files\r\nrunner/arazzo_runner/runner.py\r\n\r\nThe runner can now load an Arazzo workflow document from a remote URL (http://, https://).\r\nWhen a URL is detected, it fetches the content via HTTP, detects the format (YAML/JSON), and parses accordingly.\r\nOn error, a clear ValueError is raised.\r\nrunner/arazzo_runner/utils.py\r\n\r\nRefactored file loading into a generic load_file() that handles both YAML and JSON, with improved error handling.\r\nload_source_descriptions() now supports loading OpenAPI/source files from both local paths and remote URLs.\r\nFor local files, multiple candidate paths are checked; for remote files, HTTP GET is used and format is detected via Content-Type.\r\n2. Utility and Typing Improvements\r\nImproved type hints and function signatures for better maintainability.\r\nConsolidated environment variable sanitization and naming logic.\r\nLogging is now more consistent and uses a dedicated logger (\"runner-utils\").\r\n3. Test Suite Enhancements\r\nrunner/tests/test_arazzo_runner.py\r\nThe test runner now includes cases for loading workflow and source files from remote URLs.\r\nThe mock HTTP client (MockHTTPExecutor) is improved: supports headers, params, and simulates responses more closely to actual HTTP clients.\r\nTest cases validate that requests are correctly formed, including payloads and headers.\r\nNew tests check that remote workflow and source loading works as intended.\r\n4. Code Cleanup and Refactoring\r\nOld or redundant utility functions (e.g., repeated file loaders, unnecessary openapi loader) have been removed or consolidated.\r\nDocstrings and comments are updated for clarity.\r\nStrengths\r\nExtensibility: Adds remote loading capability, making Arazzo workflows and API specs easier to share and reuse.\r\nRobustness: Improved error messages and file searching logic for sources.\r\nMaintainability: Refactored utilities and better typing make future changes easier.\r\nTesting: The new tests ensure both local and remote loading paths are covered.\r\nSuggestions & Questions\r\nError Handling:\r\n\r\nIn load_source_descriptions, if all candidate paths fail, a FileNotFoundError is raised. Consider logging all candidate paths for easier debugging.\r\nFor remote sources, YAML is detected via Content-Type containing \"yaml\" or \"yml\". If the server returns application/octet-stream or no type, fallback detection might be useful.\r\nMockHTTPExecutor:\r\n\r\nThe mock HTTP client is well-implemented. For advanced scenarios, consider simulating timeouts or network errors.\r\nBackward Compatibility:\r\n\r\nThe utility refactor removes some legacy functions. If other parts of the codebase rely on them, a migration plan might be needed.\r\nDocumentation:\r\n\r\nThe API for remote file loading is intuitive, but updating the main README with examples would benefit users.\r\nSummary\r\nThis PR is a solid improvement: it adds much-needed remote file loading, cleans up utilities, and improves test coverage.\r\nThere are no critical blockers. Minor improvements to error handling and documentation would further strengthen this update.",
+        "labels": [
+            "enhancement",
+            "runner"
+        ],
+        "state": "closed",
+        "merged": false
+    }
+}

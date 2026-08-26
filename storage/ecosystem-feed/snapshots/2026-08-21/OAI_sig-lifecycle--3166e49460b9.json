@@ -1,0 +1,22 @@
+{
+    "id": "3166e49460b9586ad8b3901e5ec754cd8b51a57969ff9bbfb459459a6891ef89",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "Add optional field to the Operation object to indicate initial version containing the implementation",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/11",
+    "publishedAt": "2026-08-21T18:24:48Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:11",
+        "title": "Add optional field to the Operation object to indicate initial version containing the implementation",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/11",
+        "publishedAt": "2026-08-21T18:24:48Z",
+        "body": "I would love to add a version-related field to the Operation object (so per HTTP method of an Endpoint) that indicates the first version of the API that shipped with this functionality implemented.\r\n\r\nFor instance, the current API version is `18.0.0` but operation \"GET /api/v1/jobs\" was first shipped in version `17.1.0`.\r\n\r\nNice to know for backward compatibility.\r\n\r\nAlso nice for developers to keep track of what versions offer what features. 😜 ",
+        "labels": [],
+        "state": "open"
+    }
+}

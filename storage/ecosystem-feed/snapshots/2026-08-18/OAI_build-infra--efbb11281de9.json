@@ -1,0 +1,22 @@
+{
+    "id": "efbb11281de9b4dbb6cc418d68a1447d44672197339cfdf288c77efeef19a3e4",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Adopt Yarn for package management",
+    "url": "https://github.com/OAI/build-infra/commit/fe47e149c9bf6c326424f7f9079ce86fdadf690f",
+    "publishedAt": "2026-08-18T18:15:09Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:fe47e14",
+        "title": "Adopt Yarn for package management",
+        "url": "https://github.com/OAI/build-infra/commit/fe47e149c9bf6c326424f7f9079ce86fdadf690f",
+        "publishedAt": "2026-08-18T18:15:09Z",
+        "body": "Adopt Yarn for package management\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

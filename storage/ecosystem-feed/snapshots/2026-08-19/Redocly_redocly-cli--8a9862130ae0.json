@@ -1,0 +1,24 @@
+{
+    "id": "8a9862130ae0c47e7691fadee5c068f8da4e9570dda2d24be1f52c629799d6f3",
+    "source": "Redocly/redocly-cli",
+    "type": "release",
+    "title": "@redocly/client-generator@0.3.7",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/client-generator%400.3.7",
+    "publishedAt": "2026-08-19T09:31:12Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "externalId": "release:@redocly/client-generator@0.3.7",
+        "title": "@redocly/client-generator@0.3.7",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/client-generator%400.3.7",
+        "publishedAt": "2026-08-19T09:31:12Z",
+        "body": "### Patch Changes\n\n-   Updated @redocly/openapi-core to v2.46.2.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

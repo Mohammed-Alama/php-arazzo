@@ -1,0 +1,25 @@
+{
+    "id": "6861d96c2ce99ce70eca063fc8d26e050cfacbffc1ed6286846c6d4181399c5c",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "fix: resolve source_name to dict key in find_by_path to fix credential application for operationPath steps",
+    "url": "https://github.com/jentic/arazzo-engine/pull/139",
+    "publishedAt": "2026-02-26T11:18:21Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:139",
+        "title": "fix: resolve source_name to dict key in find_by_path to fix credential application for operationPath steps",
+        "url": "https://github.com/jentic/arazzo-engine/pull/139",
+        "publishedAt": "2026-02-26T11:18:21Z",
+        "body": "### Summary\r\n\r\nWhen `operationPath` uses a `$sourceDescriptions` expression (e.g. `{$sourceDescriptions.discord.url}#/paths/~1channels/post`), `find_by_path` receives the evaluated URL as `source_url`. The `_find_source_description` fallback correctly locates the matching spec, but `find_by_path` was setting `source_name = source_url` (the raw URL) instead of the actual `source_descriptions` dictionary key.\r\n\r\nThis caused `extract_security_requirements` to fail its `source_name in self.source_descriptions` lookups (lines 700 & 711), silently skipping path-level and global security requirements. The result: **requests were sent without credentials** whenever a step used an `operationPath` reference.\r\n\r\n### Changes\r\n\r\n- **`operation_finder.py`** -- `_find_source_description` now returns `tuple[str, dict]` (canonical key + spec) instead of just the spec dict. `find_by_path` unpacks both values so `source_name` is always the dictionary key, not the URL.\r\n- **`test_operation_finder.py`** -- Added `TestFindByPathSourceNameForSecurityResolution` regression test class (4 tests) covering URL-based and Arazzo-expression-based lookups, asserting that `source` is the dict key and that `extract_security_requirements` returns the expected schemes.\r\n- **`pyproject.toml`** -- Version bump `0.9.3` -> `0.9.4`.\r\n\r\n### Test plan\r\n\r\n- [x] All 267 tests pass (0 failures, 8 skipped)\r\n- [x] New regression tests verify `source` field is the dict key after URL lookup\r\n- [x] New regression tests verify `source` field is the dict key after expression lookup\r\n- [x] New regression tests verify `extract_security_requirements` returns correct schemes end-to-end\r\n- [x] Existing `TestFindByPathJsonPointerDecoding` tests still pass (no regression on `~1` decode fix)\r\n- [x] Existing `TestOperationFinderWithTwoSources` multi-source routing tests still pass\r\n- [x] Workflow integration tests (`test_workflow_with_multiple_api_sources`) pass\r\n- [x] Fixture discovery tests (xkcd, newyork_times, discord, etc.) pass",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

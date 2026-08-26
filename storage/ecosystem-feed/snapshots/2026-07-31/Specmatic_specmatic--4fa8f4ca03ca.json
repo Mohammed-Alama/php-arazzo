@@ -1,0 +1,26 @@
+{
+    "id": "4fa8f4ca03cac756fad323f68d95b57a5f2af5b31e350f2d5019f9131194b6d5",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.51.1",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.51.1",
+    "publishedAt": "2026-07-31T08:50:17Z",
+    "tags": [
+        "actor",
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.51.1",
+        "title": "2.51.1",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.51.1",
+        "publishedAt": "2026-07-31T08:50:17Z",
+        "body": "## What's Changed\r\n* Remove legacy fixture support from scenarios by @joelrosario in https://github.com/specmatic/specmatic/pull/2657\r\n* Remove the validate response value flag by @joelrosario in https://github.com/specmatic/specmatic/pull/2656\r\n* refactor: Remove the deprecated REST pattern operator by @joelrosario in https://github.com/specmatic/specmatic/pull/2659\r\n* Add path remapping support for Specmatic config by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2660\r\n* fix: render before fixture  results info in studio when before fixtures fails by @vedubhat in https://github.com/specmatic/specmatic/pull/2661\r\n* fix: main schema should override any member schema having the same property name from main schema during allOf parsing by @yogeshnikam671 in https://github.com/specmatic/specmatic/pull/2662\r\n* Select the most specific matching stub base URL by @joelrosario in https://github.com/specmatic/specmatic/pull/2663\r\n* refactor: tidy up internal list handling by @joelrosario in https://github.com/specmatic/specmatic/pull/2665\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.51.0...2.51.1",
+        "labels": [],
+        "state": "published"
+    }
+}

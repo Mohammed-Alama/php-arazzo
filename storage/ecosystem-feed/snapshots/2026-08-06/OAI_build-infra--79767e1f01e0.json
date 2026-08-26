@@ -1,0 +1,25 @@
+{
+    "id": "79767e1f01e0f94687837fd5eced75f93ec05789a12f2ebe709e2bb919a560f9",
+    "source": "OAI/build-infra",
+    "type": "pr",
+    "title": "Run linkspector without Chromium sandbox in Actions",
+    "url": "https://github.com/OAI/build-infra/pull/16",
+    "publishedAt": "2026-08-06T16:22:45Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "externalId": "pr:16",
+        "title": "Run linkspector without Chromium sandbox in Actions",
+        "url": "https://github.com/OAI/build-infra/pull/16",
+        "publishedAt": "2026-08-06T16:22:45Z",
+        "body": "This is a fix for the CI failure happening in PR https://github.com/OAI/OpenAPI-Specification/pull/5424 which is the PR to start using this package.  Note that there is also a non-fatal error in that failure log, which is being addressed by https://github.com/OAI/OpenAPI-Specification/pull/5466 — this PR addresses the fatal error.\r\n\r\n-----\r\n\r\nFrom Codex, explaining the problem and fix:\r\n\r\nLinkspector checks links. For links that normal HTTP fetch cannot verify, it falls back to launching headless Chromium through Puppeteer. On the GitHub Actions runner, that Chromium process could not start because Chrome’s Linux sandbox was unavailable in that environment.\r\n\r\nChrome can be launched with:\r\n\r\n```text\r\n--no-sandbox\r\n```\r\n\r\nThat disables Chromium’s own process sandbox and is common in CI/container environments. Linkspector already has code that adds `--no-sandbox`, but only when it detects it is running as root:\r\n\r\n```js\r\nif (process.getuid && process.getuid() === 0) {\r\n  launchArgs.push(\"--no-sandbox\")\r\n}\r\n```\r\n\r\nGitHub Actions was not root, so Linkspector did not add `--no-sandbox`, but the runner still needed it. Result: Chromium crashed before Linkspector could finish.\r\n\r\nThe “shim” is a small Node preload file used only when running Linkspector from our wrapper in GitHub Actions. It temporarily makes Linkspector think the process UID is `0`, so Linkspector uses its own existing code path that adds `--no-sandbox`.\r\n\r\nSo, concretely:\r\n\r\n- Before: `linkspector` launches Chromium without `--no-sandbox`; Chromium crashes in Actions.\r\n- After: our wrapper preloads the shim under `GITHUB_ACTIONS=true`; Linkspector adds `--no-sandbox`; Chromium starts.\r\n\r\nThis is deliberately narrow:\r\n- It only affects the Linkspector subprocess.\r\n- It defaults on only in GitHub Actions.\r\n- It can be disabled with `OAI_BUILD_INFRA_LINKSPECTOR_NO_SANDBOX=0`.\r\n\r\nA cleaner long-term fix would be for Linkspector itself to expose a real config or env option for Puppeteer launch args. The shim is a local workaround around the current Linkspector behavior.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

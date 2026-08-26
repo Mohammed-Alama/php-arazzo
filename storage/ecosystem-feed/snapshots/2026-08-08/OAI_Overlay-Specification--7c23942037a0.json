@@ -1,0 +1,24 @@
+{
+    "id": "7c23942037a084343ce7090a4ea254f85d7837ce47c88f731765dd5c73fefa54",
+    "source": "OAI/Overlay-Specification",
+    "type": "issue",
+    "title": "Prepare Overlay repository for new Build process",
+    "url": "https://github.com/OAI/Overlay-Specification/issues/369",
+    "publishedAt": "2026-08-08T20:22:07Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "issue",
+        "externalId": "issue:369",
+        "title": "Prepare Overlay repository for new Build process",
+        "url": "https://github.com/OAI/Overlay-Specification/issues/369",
+        "publishedAt": "2026-08-08T20:22:07Z",
+        "body": "For the upcoming Overlays 1.2 release, we should prepare to be an early adopter of the new https://github.com/oai/build-infra approach - the README on that project has instructions for the changes that are made and how the release process works. We may need to expand this issue description or put together a checklist of actions needed.",
+        "labels": [],
+        "state": "open"
+    }
+}

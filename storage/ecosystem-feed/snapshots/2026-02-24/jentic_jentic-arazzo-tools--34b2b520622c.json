@@ -1,0 +1,24 @@
+{
+    "id": "34b2b520622cee558a925932f7965a60671888e9468980c6877eb48c4ad62cdb",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.20",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.20",
+    "publishedAt": "2026-02-24T08:36:36Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.20",
+        "title": "v1.0.0-alpha.20",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.20",
+        "publishedAt": "2026-02-24T08:36:36Z",
+        "body": "# [1.0.0-alpha.20](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.19...v1.0.0-alpha.20) (2026-02-24)\n\n\n### Bug Fixes\n\n* loosen parsing constraints to parse URIs without extensions ([#108](https://github.com/jentic/jentic-arazzo-tools/issues/108)) ([3720140](https://github.com/jentic/jentic-arazzo-tools/commit/372014060b7feae9a98e220277c2a5888132bad2))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

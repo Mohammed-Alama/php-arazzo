@@ -1,0 +1,24 @@
+{
+    "id": "430db1f219fd544ee6b646407e5c61682708d9e9ff0f3c457080577b3214711c",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "[Feature Request] - Allow payload definition for JWT schema",
+    "url": "https://github.com/OAI/sig-security/issues/23",
+    "publishedAt": "2026-08-21T18:06:12Z",
+    "tags": [
+        "schema"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:23",
+        "title": "[Feature Request] - Allow payload definition for JWT schema",
+        "url": "https://github.com/OAI/sig-security/issues/23",
+        "publishedAt": "2026-08-21T18:06:12Z",
+        "body": "### Is your feature request related to a problem?\r\nYes. The clients will be able to know what they expect within the payload of the JWT. It will save time to parse the payload on the client-side.\r\n\r\n### Describe the solution you'd like\r\nIn the security schemas sections, the developer should be able to provide the JWT payload as another sub-schema.\r\nSomething like:\r\n```yaml\r\n securitySchemes:\r\n    AppJwt:\r\n      type: http\r\n      scheme: bearer\r\n      bearerFormat: JWT\r\n            payload: '#/components/schemas/AppJwtPayload'\r\n  schemas:\r\n    AppJwtPayload:  \r\n      type: object\r\n      properties:\r\n        userId:\r\n          type: string\r\n ```\r\nThanks.",
+        "labels": [],
+        "state": "open"
+    }
+}

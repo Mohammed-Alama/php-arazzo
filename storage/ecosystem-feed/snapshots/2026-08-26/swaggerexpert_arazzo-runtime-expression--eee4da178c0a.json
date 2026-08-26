@@ -1,0 +1,24 @@
+{
+    "id": "eee4da178c0aa0b5b32e593582314f8a74b478fa5ec8739adca0746625d5400d",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "tag",
+    "title": "tag v1.0.0",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0",
+    "publishedAt": "2026-08-26T07:08:22+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "tag",
+        "externalId": "tag:v1.0.0",
+        "title": "tag v1.0.0",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0",
+        "publishedAt": "2026-08-26T07:08:22+00:00",
+        "body": "3e55e52a25bdc0210366f02e1f6d5ae4e1c7c887",
+        "labels": [],
+        "state": "published"
+    }
+}

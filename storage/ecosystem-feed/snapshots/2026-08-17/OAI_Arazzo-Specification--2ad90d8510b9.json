@@ -1,0 +1,25 @@
+{
+    "id": "2ad90d8510b90fd2d78830332d47fb86c243f723ac87037f5b74c24133002369",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps): bump highlight.js from 11.11.1 to 11.12.0",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/c70d623ac1d63afa0688a6022ae53e956225fde0",
+    "publishedAt": "2026-08-17T00:54:06Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:c70d623",
+        "title": "chore(deps): bump highlight.js from 11.11.1 to 11.12.0",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/c70d623ac1d63afa0688a6022ae53e956225fde0",
+        "publishedAt": "2026-08-17T00:54:06Z",
+        "body": "chore(deps): bump highlight.js from 11.11.1 to 11.12.0\n\nBumps [highlight.js](https://github.com/highlightjs/highlight.js) from 11.11.1 to 11.12.0.\n- [Release notes](https://github.com/highlightjs/highlight.js/releases)\n- [Changelog](https://github.com/highlightjs/highlight.js/blob/main/CHANGES.md)\n- [Commits](https://github.com/highlightjs/highlight.js/compare/11.11.1...11.12.0)\n\n---\nupdated-dependencies:\n- dependency-name: highlight.js\n  dependency-version: 11.12.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

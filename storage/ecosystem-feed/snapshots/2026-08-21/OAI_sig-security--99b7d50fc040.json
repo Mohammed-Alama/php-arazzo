@@ -1,0 +1,24 @@
+{
+    "id": "99b7d50fc040c46dfec0a3fb0904c4f20a6a1689bcfd6aef14a51cdb135fb76b",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Support for JOSE (JSON Signature and Encryption) Standards",
+    "url": "https://github.com/OAI/sig-security/issues/37",
+    "publishedAt": "2026-08-21T18:10:46Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:37",
+        "title": "Support for JOSE (JSON Signature and Encryption) Standards",
+        "url": "https://github.com/OAI/sig-security/issues/37",
+        "publishedAt": "2026-08-21T18:10:46Z",
+        "body": "I'm not currently a user of OpenAPI but a follower of standards initiatives like OpenBanking/FAPI where members claim that OpenAPI currently does not support JOSE (JSON Signature and Encryption) standards forcing them to use various workarounds.\r\n\r\nI wonder if there is anybody out there with knowledge of the OpenAPI platform who could be interested in working with me to integrate the missing support?\r\n\r\nThere are also enhanced versions of JOSE JWS and JWE in the workings (through the IETF), providing **C**lear **T**ext support which should be a nice fit for information centric systems, here illustrated by a minute JWS-CT sample:\r\n\r\n```json\r\n{\r\n     \"@context\": \"https://example.com/paymentStandard/pay\",\r\n     \"amount\": \"255.00\",\r\n     \"currency\": \"USD\",\r\n     \"signature\": {\r\n         \"alg\": \"ES256\",\r\n         \"jwk\": {\r\n             \"kty\": \"EC\",\r\n             \"crv\": \"P-256\",\r\n             \"x\": \"PxlJQu9Q6dOvM4LKoZUh2XIe9-pdcLkvKfBfQk11Sb0\",\r\n             \"y\": \"6IDquxrbdq5ABe4-HQ78_dhM6eEBUbvDtdqK31YfRP8\"\r\n         },\r\n         \"val\": \"RSLmFihg8QmXxM .... N0lGIdSEYvMMLTL8hEaYV9kW6A\"\r\n     }\r\n}\r\n```\r\n",
+        "labels": [],
+        "state": "open"
+    }
+}

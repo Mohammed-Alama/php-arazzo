@@ -1,0 +1,25 @@
+{
+    "id": "da4079599dd9eff6a570196c16f98a59eb5e87d10cb8f96c536292dbdf339191",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "feat: adds support for self in overlay",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/322",
+    "publishedAt": "2026-07-28T13:27:59Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:322",
+        "title": "feat: adds support for self in overlay",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/322",
+        "publishedAt": "2026-07-28T13:27:59Z",
+        "body": "fixes #310\r\n\r\nheavy use of GCC to put this one together. (based on the discussion in the issue, and the arazzo PR as a template)",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

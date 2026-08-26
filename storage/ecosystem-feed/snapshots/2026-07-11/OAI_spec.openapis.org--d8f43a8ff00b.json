@@ -1,0 +1,25 @@
+{
+    "id": "d8f43a8ff00bf9da524c7e297ec7cf43573647aa9e6521ea68499ca24534f759",
+    "source": "OAI/spec.openapis.org",
+    "type": "pr",
+    "title": "docs: add x-oai-deviceAuthorization extension page",
+    "url": "https://github.com/OAI/spec.openapis.org/pull/101",
+    "publishedAt": "2026-07-11T15:41:19Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "pr",
+        "externalId": "pr:101",
+        "title": "docs: add x-oai-deviceAuthorization extension page",
+        "url": "https://github.com/OAI/spec.openapis.org/pull/101",
+        "publishedAt": "2026-07-11T15:41:19Z",
+        "body": "Documents the `x-oai-deviceAuthorization` extension used by OpenAPI.NET for OpenAPI versions prior to 3.2.\n\nSource evidence:\n- https://github.com/microsoft/OpenAPI.NET/blob/main/src/Microsoft.OpenApi/Reader/V3/OpenApiOAuthFlowsDeserializer.cs\n- https://github.com/microsoft/OpenAPI.NET/blob/main/src/Microsoft.OpenApi/Reader/V31/OpenApiOAuthFlowsDeserializer.cs",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

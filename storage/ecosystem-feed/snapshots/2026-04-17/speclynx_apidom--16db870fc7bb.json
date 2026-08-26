@@ -1,0 +1,25 @@
+{
+    "id": "16db870fc7bb43de3464c862181e8d2067afd33a3e9cc6c25198546980db5493",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.9.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.0",
+    "publishedAt": "2026-04-17T19:14:51Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.9.0",
+        "title": "v4.9.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.0",
+        "publishedAt": "2026-04-17T19:14:51Z",
+        "body": "# [4.9.0](https://github.com/speclynx/apidom/compare/v4.8.0...v4.9.0) (2026-04-17)\n\n\n### Features\n\n* **core:** add traverseOptions to dispatchRefractorPlugins ([#248](https://github.com/speclynx/apidom/issues/248)) ([98b5831](https://github.com/speclynx/apidom/commit/98b58319a394eb26975ecefbab0b58eb9d22092b))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

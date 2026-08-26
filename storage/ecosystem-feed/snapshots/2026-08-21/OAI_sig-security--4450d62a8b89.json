@@ -1,0 +1,24 @@
+{
+    "id": "4450d62a8b894067a80f3cbf160c58a7381aa5c5bc2e6425bfaea7f9e37d3509",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Add support OpenID Connect Hybrid Flow",
+    "url": "https://github.com/OAI/sig-security/issues/34",
+    "publishedAt": "2026-08-21T18:09:50Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:34",
+        "title": "Add support OpenID Connect Hybrid Flow",
+        "url": "https://github.com/OAI/sig-security/issues/34",
+        "publishedAt": "2026-08-21T18:09:50Z",
+        "body": "Can you use OAuth Flows Object to support OpenID connect hybrid flow?\r\nhttps://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#oauthFlowObject\r\n\r\nPreventing Mix-Up Attacks with OpenID Connect\r\nhttps://openid.net/2016/07/16/preventing-mix-up-attacks-with-openid-connect/",
+        "labels": [],
+        "state": "open"
+    }
+}

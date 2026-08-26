@@ -1,0 +1,24 @@
+{
+    "id": "4b62ce3c91e72c2c79eba5cbeba62222ba17ae247716c287279d3bcacda9d239",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v5.0.1",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.1",
+    "publishedAt": "2026-07-07T11:01:46Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v5.0.1",
+        "title": "v5.0.1",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.1",
+        "publishedAt": "2026-07-07T11:01:46Z",
+        "body": "## [5.0.1](https://github.com/speclynx/apidom/compare/v5.0.0...v5.0.1) (2026-07-07)\n\n\n### Bug Fixes\n\n* **release:** fix the failed v5.0.0 release ([b47cb01](https://github.com/speclynx/apidom/commit/b47cb019002c4e6e244e88f2a1596dabf256963c))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

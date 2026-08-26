@@ -1,0 +1,25 @@
+{
+    "id": "4838f17b76bb00f36f53adedf3e72e3e7264a814e854b3d4e8d35ae189b01751",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Set up node for respec and invoke it accordingly",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/135",
+    "publishedAt": "2024-06-16T16:41:16Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:135",
+        "title": "Set up node for respec and invoke it accordingly",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/135",
+        "publishedAt": "2024-06-16T16:41:16Z",
+        "body": "This more-or-less copies over the package.json from the OpenAPI-Specification repo and sets respec as the only dependency.\r\n\r\nIt also updates the PowerShell script to find respec where it is installed by npm.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

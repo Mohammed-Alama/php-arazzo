@@ -1,0 +1,27 @@
+{
+    "id": "443c933bd08f04bc27dc40cafdcabd253fa38fba070bcd80d4f4190446470a78",
+    "source": "Mohammed-Alama/php-arazzo",
+    "type": "pr",
+    "title": "2026 07 25 core 34 arazzo 1.1.0 spec",
+    "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/3",
+    "publishedAt": "2026-07-25T23:45:59Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "externalId": "pr:3",
+        "title": "2026 07 25 core 34 arazzo 1.1.0 spec",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/3",
+        "publishedAt": "2026-07-25T23:45:59Z",
+        "body": "- **docs(specs): core-34 Arazzo 1.1.0 spec support design**\n- **docs(plans): core-34 Arazzo 1.1.0 spec implementation plan**\n- **feat(dto): add SpecVersion, ExpressionType, Querystring, Invoke enums**\n- **feat(dto): add Selector value object for Arazzo 1.1.0 outputs/parameters**\n- **feat(dto): ArazzoDocument gains $specVersion and $self for 1.1.0**\n- **feat(dto): SubWorkflow{Success,Failure}Action for 1.1.0 composition**\n- **feat(parser): strict version guard (1.0.x/1.1.x) + root $self + Querystring accept**\n- **feat(parser): parse Arazzo 1.1.0 Selector objects in outputs map**\n- **fix(parser): update step and workflow DTO phpdoc for outputs array types**\n- **feat(parser): allow Selector objects in Parameter and PayloadReplacement values**\n- **fix(execution): throw RuntimeException for unsupported Selector evaluation**\n- **feat(parser): parse invoke actions (onSuccess/onFailure)**\n- **fix(parser): phpstan types for parameters**\n- **fix(parser): add version parsing to invoke actions**\n- **feat(validator): extend version and parameter rules for 1.1.0**\n- **fix(validator): add component parameters check for querystring in 1.1.0**\n- **feat(validator): 5 new rules for 1.1.0 (selector, invoke, querystring, $self, asyncapi-11-gate)**\n- **fix(validator): check selectors and actions in components**\n- **feat(validator): expression-ref rules now analyse Selector context+selector**\n- **fix(validator): don't evaluate Selector::selector as Arazzo expression, tighten test assertion**\n- **feat(resolution): XpathEvaluator interface + DomXpathEvaluator (xpath-10)**\n- **fix(resolution): xpathRequiresXml accept pointer parameter**\n- **feat(resolution): SelectorEvaluator routes by ExpressionType**\n- **fix(resolution): remove invalid XPath coercion**\n- **feat(executor): SubWorkflowInvoker + child WorkflowContext + result DTO**\n- **fix(executor): map ExecutionResult status instead of terminal, add tests**\n- **feat(executor): Selector outputs, SubWorkflow routing, AsyncAPI SpecVersion branch**\n- **feat(laravel): bind XpathEvaluator to DomXpathEvaluator; require ext-dom**\n- **test(arazzo-1.1): comprehensive + per-feature fixtures + E2E parse/validate**\n- **docs(changelog): Arazzo 1.1.0 substrate landed**\n- **docs(ship): ship core-34-arazzo-1.1.0-spec**\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

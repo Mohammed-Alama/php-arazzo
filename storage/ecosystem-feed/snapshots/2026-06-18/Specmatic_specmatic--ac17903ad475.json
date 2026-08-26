@@ -1,0 +1,27 @@
+{
+    "id": "ac17903ad47503c4aad7453c6addf599ff7f5c2d5f6f98f429aee101ea28f8b8",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.48.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.48.0",
+    "publishedAt": "2026-06-18T14:34:45Z",
+    "tags": [
+        "mcp",
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.48.0",
+        "title": "2.48.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.48.0",
+        "publishedAt": "2026-06-18T14:34:45Z",
+        "body": "## What's Changed\r\n* chore(deps): update dependency com.ezylang:evalex to v3.6.2 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2542\r\n* chore(deps): update dependency com.ginsberg:junit5-system-exit to v2.0.3 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2572\r\n* chore(deps): update dependency io.mockk:mockk-jvm to v1.14.11 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2527\r\n* chore(deps): update dependency io.kotest:kotest-assertions-core-jvm to v6.2.0 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2577\r\n* chore(deps): update specmaticgradlepluginversion to v0.15.13 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2546\r\n* feat: add tools exposed by enterprise so that specmatic mcp supports enterprise features. by @vedubhat in https://github.com/specmatic/specmatic/pull/2569\r\n* fix: expose getResiliencyTestTool function to Enterprise by @vedubhat in https://github.com/specmatic/specmatic/pull/2587\r\n* Add 405 and 415 support for undeclared request handling by @joelrosario in https://github.com/specmatic/specmatic/pull/2583\r\n* Fix handling of single schema allOf wrappers by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2586\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.47.0...2.48.0",
+        "labels": [],
+        "state": "published"
+    }
+}

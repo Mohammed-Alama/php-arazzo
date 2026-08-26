@@ -1,0 +1,22 @@
+{
+    "id": "cc4dfb25366ee2f3e2af832a177dbad89aff8e2f90239ee1139a97137d138bf2",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Document hardened lock coverage",
+    "url": "https://github.com/OAI/build-infra/commit/fafe18406fc84a6b41db894057ac2614f544ff61",
+    "publishedAt": "2026-08-18T19:06:47Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:fafe184",
+        "title": "Document hardened lock coverage",
+        "url": "https://github.com/OAI/build-infra/commit/fafe18406fc84a6b41db894057ac2614f544ff61",
+        "publishedAt": "2026-08-18T19:06:47Z",
+        "body": "Document hardened lock coverage\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

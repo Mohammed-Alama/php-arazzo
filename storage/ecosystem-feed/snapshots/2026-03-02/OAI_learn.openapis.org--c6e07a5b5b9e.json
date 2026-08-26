@@ -1,0 +1,25 @@
+{
+    "id": "c6e07a5b5b9e9c7a1132bf9d725ba03027535fac598843f478ba4275574f8a23",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "minor amendments to the parameters guide",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/182",
+    "publishedAt": "2026-03-02T18:18:11Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:182",
+        "title": "minor amendments to the parameters guide",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/182",
+        "publishedAt": "2026-03-02T18:18:11Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

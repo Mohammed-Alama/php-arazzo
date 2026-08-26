@@ -1,0 +1,29 @@
+{
+    "id": "6cb101ca561182c8bb0b02fd863b9ec78f717a720b3a73fb163ff5e09d1ed349",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: first-class workflow enumeration (listWorkflows) with a future CLI list-workflows command",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/83",
+    "publishedAt": "2026-08-22T05:22:47Z",
+    "tags": [
+        "cli",
+        "human",
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:83",
+        "title": "runner: first-class workflow enumeration (listWorkflows) with a future CLI list-workflows command",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/83",
+        "publishedAt": "2026-08-22T05:22:47Z",
+        "body": "## Problem\n\nThere is no designed way to enumerate the workflows of an Arazzo document. What exists today is low-level plumbing: `ArazzoDocument.workflowIndex` is a `Map<WorkflowId, JSONPointer>` built by `ArazzoDocumentRegistryProvider`, so a caller can do `[...document.workflowIndex.keys()]` — but only after going through a registry provider to obtain the document, and the index yields ids and pointers, not the workflow's `summary`/`description`. \"What workflows does this document offer?\" is the very first question a consumer (or a future CLI/UI) asks, and answering it currently requires internal knowledge of the registry/index machinery.\n\n## Proposal\n\n### Programmatic API\n\nA first-class enumeration read on `ArazzoDocument`, consistent with the existing split of responsibilities (index building stays in the registry provider; the document class holds the parse result plus prebuilt indexes and exposes thin reads):\n\n```ts\ninterface WorkflowDescriptor {\n  workflowId: WorkflowId;\n  summary?: string;\n  description?: string;\n  jsonPointer: JSONPointer;\n}\n\nclass ArazzoDocument {\n  // existing: readonly workflowIndex: ArazzoWorkflowIndex;\n  listWorkflows(): WorkflowDescriptor[];\n}\n```\n\n- `workflowId` and `jsonPointer` come straight from the existing `ArazzoWorkflowIndex`; `summary`/`description` are read lazily from the parse result at the indexed pointer (thin read — no new index building, no normalization/dereferencing).\n- Deterministic order: document order (the order the index was built in).\n\n### Scope decision: cross-document workflows\n\nAn entry document's `sourceDescriptions` may include Arazzo-typed sources whose workflows are addressable at runtime via `$sourceDescriptions.<name>.<workflowId>`. Options:\n\n1. `listWorkflows()` stays strictly local to the document (proposed default — pure, synchronous, no source loading), and\n2. a separate, registry-level enumeration (e.g. on the executor or registry) that includes reachable Arazzo sources, returning qualified references — can be follow-up work once there is a concrete consumer.\n\n### CLI sketch (future `packages/cli`)\n\nFor the CLI package (currently a `-- Placeholder --` in the root README), the command wraps the API above:\n\n```\narazzo list-workflows <document-uri> [--json]\n```\n\n- `<document-uri>` — local path or http(s) URL, resolved through the same registry/resolver machinery the runner uses.\n- Default output — human-readable table:\n\n  ```\n  WORKFLOW ID        SUMMARY\n  place-order        Place an order for a pet\n  cancel-order       Cancel a previously placed order\n  ```\n\n- `--json` — machine-readable array of `WorkflowDescriptor` objects (without `jsonPointer` unless `--verbose`), suitable for piping into other tooling.\n- Exit non-zero with a structured error message when the document fails to parse or is not an Arazzo document.\n\n## Out of scope\n\n- Describing a single workflow's requirements (inputs schema, security, servers) — covered by the workflow execution profile (#82); a future `describe-workflow` CLI command is a rendering of that profile, not of this API.\n- Enumerating workflows across source descriptions (option 2 above) — follow-up.\n\n## Acceptance criteria\n\n- [ ] `ArazzoDocument.listWorkflows()` returns `workflowId`, `summary`, `description`, `jsonPointer` for every workflow, in document order, without triggering source-description loading or dereferencing.\n- [ ] Absent `summary`/`description` are omitted/`undefined`, not empty strings.\n- [ ] Exported from the package public API and documented in the runner README.\n- [ ] Covered by tests against the existing fixtures, including a document whose workflows lack `summary`/`description`.\n",
+        "labels": [
+            "enhancement"
+        ],
+        "state": "open"
+    }
+}

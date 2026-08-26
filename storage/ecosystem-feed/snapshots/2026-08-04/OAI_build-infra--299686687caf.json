@@ -1,0 +1,24 @@
+{
+    "id": "299686687cafa61b1f89848af6718a6c16f9466a31e6faf9cad2ee6e0a39d23e",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Test oai-spec-test package checkout layout",
+    "url": "https://github.com/OAI/build-infra/commit/62918b20ca6719af978c9250ddea951678cc1dc6",
+    "publishedAt": "2026-08-04T17:53:11Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:62918b2",
+        "title": "Test oai-spec-test package checkout layout",
+        "url": "https://github.com/OAI/build-infra/commit/62918b20ca6719af978c9250ddea951678cc1dc6",
+        "publishedAt": "2026-08-04T17:53:11Z",
+        "body": "Test oai-spec-test package checkout layout\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

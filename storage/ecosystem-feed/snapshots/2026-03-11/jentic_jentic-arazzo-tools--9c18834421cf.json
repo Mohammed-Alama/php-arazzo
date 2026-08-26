@@ -1,0 +1,25 @@
+{
+    "id": "9c18834421cf658f79f25d8ad6ca79747d9c2830efe7079115948cacad428557",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.26",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.26",
+    "publishedAt": "2026-03-11T23:14:20Z",
+    "tags": [
+        "a2a",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Roadmap A2A step type",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.26",
+        "title": "v1.0.0-alpha.26",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.26",
+        "publishedAt": "2026-03-11T23:14:20Z",
+        "body": "# [1.0.0-alpha.26](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.25...v1.0.0-alpha.26) (2026-03-11)\n\n\n### Bug Fixes\n\n* **parser:** add consistent naming for exported options ([#134](https://github.com/jentic/jentic-arazzo-tools/issues/134)) ([cfa2a54](https://github.com/jentic/jentic-arazzo-tools/commit/cfa2a54fad0189da7d26ca4c76b63bfcc3c60eec))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

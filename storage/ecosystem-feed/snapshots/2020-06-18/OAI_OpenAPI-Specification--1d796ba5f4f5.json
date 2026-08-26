@@ -1,0 +1,26 @@
+{
+    "id": "1d796ba5f4f50543a7fba81dee2bc57508b6625f0761b768d81fa527f549bc40",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.1.0-rc0 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.0-rc0",
+    "publishedAt": "2020-06-18T23:58:02Z",
+    "tags": [
+        "breaking",
+        "schema",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.1.0-rc0",
+        "title": "OAS 3.1.0-rc0 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.0-rc0",
+        "publishedAt": "2020-06-18T23:58:02Z",
+        "body": "Changelog\r\n---------\r\n\r\nAs part of this release, we have decided to not follow SemVer anymore, and as such introduce breaking changes. These changes are documented as part of the release notes.\r\n\r\n### Additions\r\n- Introduced a new top-level field - `webhooks`. This allows describing out-of-band webhooks that are available as part of the API.\r\n- The *Info Object* has a new `summary` field.\r\n- The *License Object* now has a new `identifier` field for SPDX licenses.\r\n- *Components Object* now has a new entry `pathItems`, to allow for reusable `Path Item Object`s to be defined within a valid OpenAPI document.\r\n\r\n\r\n### Extended Functionality\r\n- Updated primitive types to be based on [JSON Schema Specification Draft 2019-09](http://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.4.2). This now includes type `null`.\r\n- Lifted the restriction of allowing *Request Body* only in HTTP methods where the HTTP 1.1 specification [RFC7231](https://tools.ietf.org/html/rfc7231#section-4.3.1) has explicitly defined semantics for. While allowed in other methods, it is not recommended.\r\n- Added support to `object` `type` for `spaceDelimited` and `pipeDelimited` `style` values.\r\n- The *Encoding Object* now supports `style`, `explode` and `allowReserved` for `multipart/form-data` media type as well.\r\n- To enable better `webhooks` support, expressions in the `Callback Object` can now also reference `Path Item Object`s.\r\n- When using the *Reference Object*, `summary` and `description` fields can now be overridden.\r\n- The *Schema Object* is now fully compliant with JSON Schema draft 2019-09 (see [JSON Schema Core](https://json-schema.org/draft/2019-09/json-schema-core.html) and [JSON Schema Validation](https://json-schema.org/draft/2019-09/json-schema-validation.html)). See also, `Breaking Changes`\r\n- The *Discriminator Object* can now be extended with Specification Extensions.\r\n- Added support for mutual TLS (`mutualTLS`) as a security scheme.\r\n- Used security requirements can now define an array of roles that are required for execution (and not only scopes for OAuth 2.0 security schemes).\r\n\r\n\r\n### Changes\r\n- An OpenAPI Document now requires at least one of `paths`, `components` or `webhooks` to exist at the top level. While previous versions required `paths`, now a valid OpenAPI Document can describe only webhooks, or even only reusable components. Thus, an OpenAPI Document no longer necessarily describes an API.\r\n- Anywhere in the 3.0.0 Specification that had a type of [Schema Object](#schemaObject) \\| [Reference Object](#referenceObject) has been replaced to be [Schema Object](#schemaObject) only. With the move to full JSON Schema support, `$ref` is inherently part of the `Schema Object` and has its own defined behavior.\r\n- Extensions prefixed with `x-oas-` are now reserved for the OpenAPI Initiative.\r\n- `format` is now not validated by default.\r\n\r\n### Breaking changes\r\n- The specification versioning no longer follows SemVer.\r\n- The `nullable` keyword has been removed from the `Schema Object` (`null` can be used as a type value).\r\n- `exclusiveMaximum` and `exclusiveMinimum` cannot accept `boolean` values (following JSON Schema).\r\n- Due to the compliance with JSON Schema, there is no longer interaction between `required` and `readOnly`/`writeOnly` in relation to requests and responses.\r\n- `format` (whether `byte`, `binary`, or `base64`) is no longer used to describe file payloads. As part of JSON Schema compliance, now `contentEncoding` and `contentMediaType` can be used for such specification.\r\n\r\n### Clarifications\r\n\r\n- Reworded the definition of *OpenAPI Document* to reflect that a document no longer must describe paths, but can describe either paths, webhooks, components or any combination of them.\r\n- Dropped the term RESTful APIs in favor of HTTP APIs\r\n- Resolution of relative references has been redefined and clarified. Note there's a difference in resolution between Schema Object References and all others.\r\n- Modification of examples to improve them and provide context for new fields/objects.",
+        "labels": [],
+        "state": "published"
+    }
+}

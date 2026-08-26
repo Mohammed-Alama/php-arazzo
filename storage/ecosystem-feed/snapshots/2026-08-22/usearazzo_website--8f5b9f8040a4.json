@@ -1,0 +1,24 @@
+{
+    "id": "8f5b9f8040a497293f13df67c48c63d2bc0ef9d7c5ca473e116ed6a862c0891a",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "feat: add ecosystem page",
+    "url": "https://github.com/usearazzo/website/commit/4d61cd3ecf5dcb3d9c0a1439d6f165bba3ef4bcc",
+    "publishedAt": "2026-08-22T12:38:33Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:4d61cd3",
+        "title": "feat: add ecosystem page",
+        "url": "https://github.com/usearazzo/website/commit/4d61cd3ecf5dcb3d9c0a1439d6f165bba3ef4bcc",
+        "publishedAt": "2026-08-22T12:38:33Z",
+        "body": "feat: add ecosystem page",
+        "labels": [],
+        "state": ""
+    }
+}

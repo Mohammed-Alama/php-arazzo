@@ -1,0 +1,25 @@
+{
+    "id": "2985e060bab74e8c6ef0bac0f48dffc20cf1c2861a18af767ece55cd22867ffa",
+    "source": "jentic/arazzo-engine",
+    "type": "release",
+    "title": "Arazzo Generator v0.1.1",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1",
+    "publishedAt": "2025-08-29T12:46:40Z",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "release",
+        "externalId": "release:arazzo_generator/v0.1.1",
+        "title": "Arazzo Generator v0.1.1",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1",
+        "publishedAt": "2025-08-29T12:46:40Z",
+        "body": "## Bug fixes\r\n\r\n* fix: fix scheme matching in OpenAPI parser by @char0n in https://github.com/jentic/arazzo-engine/pull/74\r\n* fix: allow generator CLI to run by @char0n in https://github.com/jentic/arazzo-engine/pull/79\r\n* fix: allow docker to run as API server by @char0n in https://github.com/jentic/arazzo-engine/pull/81\r\n\r\n## Enhancements\r\n\r\n* number of documentation enhancements demonstrating usage",
+        "labels": [],
+        "state": "published"
+    }
+}

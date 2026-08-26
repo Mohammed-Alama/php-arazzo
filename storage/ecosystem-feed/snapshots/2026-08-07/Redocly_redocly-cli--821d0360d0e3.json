@@ -1,0 +1,24 @@
+{
+    "id": "821d0360d0e35dd4ca9b9a417ba2b180741d22f02439f9a956cba6c29c422c14",
+    "source": "Redocly/redocly-cli",
+    "type": "release",
+    "title": "@redocly/cli@2.46.0",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.46.0",
+    "publishedAt": "2026-08-07T09:53:17Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "externalId": "release:@redocly/cli@2.46.0",
+        "title": "@redocly/cli@2.46.0",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.46.0",
+        "publishedAt": "2026-08-07T09:53:17Z",
+        "body": "### Minor Changes\n\n-   Added the `spec-ref-siblings` rule that reports properties placed next to a `$ref` which the specification does not allow.\n\n### Patch Changes\n\n-   Updated @redocly/openapi-core to v2.46.0.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

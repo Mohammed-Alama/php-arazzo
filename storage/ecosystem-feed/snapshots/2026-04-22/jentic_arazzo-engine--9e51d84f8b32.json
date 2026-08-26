@@ -1,0 +1,28 @@
+{
+    "id": "9e51d84f8b32cef78b86e0ce89996cc6a4fcbb8365710b5bdc825800613af921",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Feature/hacktoberfest",
+    "url": "https://github.com/jentic/arazzo-engine/pull/111",
+    "publishedAt": "2026-04-22T11:16:53Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:111",
+        "title": "Feature/hacktoberfest",
+        "url": "https://github.com/jentic/arazzo-engine/pull/111",
+        "publishedAt": "2026-04-22T11:16:53Z",
+        "body": "Adding changes to the readme and to .github to enhance contributor participation during hacktoberfest",
+        "labels": [
+            "documentation",
+            "enhancement"
+        ],
+        "state": "closed",
+        "merged": false
+    }
+}

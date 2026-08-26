@@ -1,0 +1,29 @@
+{
+    "id": "1dc84351b47d3b085e33acba01486a8352ce9f43aa91e71dbaa631458529689b",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "pr",
+    "title": "chore(deps-dev): bump @microsoft/api-extractor from 7.58.12 to 7.59.0",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/pull/89",
+    "publishedAt": "2026-08-24T23:14:12Z",
+    "tags": [
+        "actor",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "externalId": "pr:89",
+        "title": "chore(deps-dev): bump @microsoft/api-extractor from 7.58.12 to 7.59.0",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/89",
+        "publishedAt": "2026-08-24T23:14:12Z",
+        "body": "Bumps [@microsoft/api-extractor](https://github.com/microsoft/rushstack/tree/HEAD/apps/api-extractor) from 7.58.12 to 7.59.0.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a href=\"https://github.com/microsoft/rushstack/blob/main/apps/api-extractor/CHANGELOG.md\">@​microsoft/api-extractor's changelog</a>.</em></p>\n<blockquote>\n<h2>7.59.0</h2>\n<p>Fri, 21 Aug 2026 15:16:34 GMT</p>\n<h3>Minor changes</h3>\n<ul>\n<li>Report a new <code>ae-unresolved-import-path</code> message when an inline <code>import()</code> type with a relative path cannot be resolved, instead of silently emitting the unusable path into the .d.ts rollup.</li>\n</ul>\n<h2>7.58.13</h2>\n<p>Thu, 20 Aug 2026 00:16:38 GMT</p>\n<p><em>Version update only</em></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/d563d6a09ebef0be1ff274faf8c1008767166875\"><code>d563d6a</code></a> Bump versions [skip ci]</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/c0344cb00a49925a9016f7cadec1c28abd8852f3\"><code>c0344cb</code></a> Update changelogs [skip ci]</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/8f573952d272d6435c08d988ca81222ffc6c0143\"><code>8f57395</code></a> [api-extractor] Report unresolvable inline import paths in .d.ts rollups (<a href=\"https://github.com/microsoft/rushstack/tree/HEAD/apps/api-extractor/issues/5925\">#5925</a>)</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/b51d7f40994c9021503ef5753b6241dc43018544\"><code>b51d7f4</code></a> Bump versions [skip ci]</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/585985a1c3256c26b39169cf55b283dcc5033449\"><code>585985a</code></a> Update changelogs [skip ci]</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/a2507e8e90e3d601aa828beeb3558ca149951c4a\"><code>a2507e8</code></a> Use native Node.js standard APIs (<a href=\"https://github.com/microsoft/rushstack/tree/HEAD/apps/api-extractor/issues/5933\">#5933</a>)</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/c65388adf1faa892f9dc658df3b9721eb2d9b3ad\"><code>c65388a</code></a> build!: require Node.js 20 for consumers (<a href=\"https://github.com/microsoft/rushstack/tree/HEAD/apps/api-extractor/issues/5930\">#5930</a>)</li>\n<li><a href=\"https://github.com/microsoft/rushstack/commit/8d872dba4d0370a5575f717f2a8f193a060e72e0\"><code>8d872db</code></a> chore: bump decoupled local dependencies (<a href=\"https://github.com/microsoft/rushstack/tree/HEAD/apps/api-extractor/issues/5890\">#5890</a>)</li>\n<li>See full diff in <a href=\"https://github.com/microsoft/rushstack/commits/@microsoft/api-extractor_v7.59.0/apps/api-extractor\">compare view</a></li>\n</ul>\n</details>\n<br />\n",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

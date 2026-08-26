@@ -1,0 +1,24 @@
+{
+    "id": "ce40ac0b804734cc23618ca24892ac2a7f6206ce813db7443de37b9dcce4299d",
+    "source": "Redocly/redocly-cli",
+    "type": "release",
+    "title": "@redocly/cli@2.47.0",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.47.0",
+    "publishedAt": "2026-08-21T10:12:29Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "externalId": "release:@redocly/cli@2.47.0",
+        "title": "@redocly/cli@2.47.0",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.47.0",
+        "publishedAt": "2026-08-21T10:12:29Z",
+        "body": "### Minor Changes\n\n-   Added a Vendor Extensions metric to the `stats` command that reports how many distinct `x-` extensions a description file uses and how often each one occurs.\n\n### Patch Changes\n\n-   Fixed the `stats` command reporting wrong parameter count for AsyncAPI descriptions.\n-   Updated @redocly/openapi-core to v2.47.0.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

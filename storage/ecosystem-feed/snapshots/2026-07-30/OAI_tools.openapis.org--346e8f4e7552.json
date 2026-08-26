@@ -1,0 +1,25 @@
+{
+    "id": "346e8f4e7552e989f2d9043d3fd4dd50699431d808a305643ea5cace1be45b33",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "fix: upgrade axios to 1.8.2, 0.30.0 (CVE-2025-27152)",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/271",
+    "publishedAt": "2026-07-30T06:18:45Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:271",
+        "title": "fix: upgrade axios to 1.8.2, 0.30.0 (CVE-2025-27152)",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/271",
+        "publishedAt": "2026-07-30T06:18:45Z",
+        "body": "## Summary\nUpgrade axios from 0.24.0 to 1.8.2, 0.30.0 to fix CVE-2025-27152.\n\n## Vulnerability\n| Field | Value |\n|-------|-------|\n| **ID** | CVE-2025-27152 |\n| **Severity** | HIGH |\n| **Scanner** | trivy |\n| **Rule** | `CVE-2025-27152` |\n| **File** | `yarn.lock` |\n| **Assessment** | Likely exploitable |\n\n**Description**: axios: Possible SSRF and Credential Leakage via Absolute URL in axios Requests\n\n## Evidence\n\n**Scanner confirmation**: trivy rule `CVE-2025-27152` flagged this pattern.\n\n**Production code**: This file is in the production codebase, not test-only code.\n\n## Changes\n- `package.json`\n- `yarn.lock`\n\n## Behavior Preservation\nThe change is scoped to 2 files on the vulnerable path, and the project's existing tests still pass, so intended behavior is unchanged.\n\n## Verification\n- [x] Build passes\n- [x] Scanner re-scan confirms fix\n- [x] LLM code review passed\n\n---\n*This change addresses a pattern flagged by static analysis. The code path handles user-influenced input and the fix reduces the attack surface against both manual and automated exploitation.*\n\n---\n*Automated security fix by [OrbisAI Security](https://orbisappsec.com)*\n",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

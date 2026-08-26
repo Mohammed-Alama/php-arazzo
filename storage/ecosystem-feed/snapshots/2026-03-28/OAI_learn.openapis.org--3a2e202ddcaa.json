@@ -1,0 +1,25 @@
+{
+    "id": "3a2e202ddcaafe652a35f1f1a94fd632b1824093b5a8c5a6c6b72bb68cd343b8",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "Add next page buttons that are missing on 3 pages",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/189",
+    "publishedAt": "2026-03-28T19:31:15Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:189",
+        "title": "Add next page buttons that are missing on 3 pages",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/189",
+        "publishedAt": "2026-03-28T19:31:15Z",
+        "body": "Resolves #188 \r\n\r\nI noticed some missing \"next page\" references. \r\n\r\n- `Describing API Security` > `Enhanced Tags`\r\n- `Enhanced Tags` > `HTTP Methods`\r\n- `HTTP Methods` > `Sequential Media Types`\r\n\r\nHappy to rephrase these based on what the maintainers think is best!",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

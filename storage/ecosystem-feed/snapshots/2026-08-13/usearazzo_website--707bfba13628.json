@@ -1,0 +1,24 @@
+{
+    "id": "707bfba13628a01d53809876e5d6ff6c3f2955105ff2c25e960b466701a69646",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "fix: fix social preview",
+    "url": "https://github.com/usearazzo/website/commit/3142930d7f182b121b3ae80272c9b9f18033a0b2",
+    "publishedAt": "2026-08-13T10:43:10Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:3142930",
+        "title": "fix: fix social preview",
+        "url": "https://github.com/usearazzo/website/commit/3142930d7f182b121b3ae80272c9b9f18033a0b2",
+        "publishedAt": "2026-08-13T10:43:10Z",
+        "body": "fix: fix social preview",
+        "labels": [],
+        "state": ""
+    }
+}

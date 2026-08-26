@@ -1,0 +1,22 @@
+{
+    "id": "a01c4f9067b49d110b4749f495e0f9dbed476d0d4d06f06b72fc21ad37515a9e",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Security Schemes for different roles and environments",
+    "url": "https://github.com/OAI/sig-security/issues/31",
+    "publishedAt": "2026-08-21T18:09:11Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:31",
+        "title": "Security Schemes for different roles and environments",
+        "url": "https://github.com/OAI/sig-security/issues/31",
+        "publishedAt": "2026-08-21T18:09:11Z",
+        "body": "Hi,\r\n\r\nat the moment, if we use a relative URL in openIdConnectUrl, it uses the URLs defined in servers. But these URLs are usually the URLs of the API or API Gateway. The OpenId Server URLs are usually different.\r\n\r\nThanks",
+        "labels": [],
+        "state": "open"
+    }
+}

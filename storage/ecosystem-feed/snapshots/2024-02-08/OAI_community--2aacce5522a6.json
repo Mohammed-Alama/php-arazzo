@@ -1,0 +1,22 @@
+{
+    "id": "2aacce5522a68a85fe607f26c7183c202cccd8d764ffefa72dd534795f088d97",
+    "source": "OAI/community",
+    "type": "issue",
+    "title": "Please make this a pinned repo in the OAI github org",
+    "url": "https://github.com/OAI/community/issues/12",
+    "publishedAt": "2024-02-08T18:05:14Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "issue",
+        "externalId": "issue:12",
+        "title": "Please make this a pinned repo in the OAI github org",
+        "url": "https://github.com/OAI/community/issues/12",
+        "publishedAt": "2024-02-08T18:05:14Z",
+        "body": "Help us, @webron , you're our only hope!  (or so @darrelmiller tells us... we need someone with admin rights :-)",
+        "labels": [],
+        "state": "closed"
+    }
+}

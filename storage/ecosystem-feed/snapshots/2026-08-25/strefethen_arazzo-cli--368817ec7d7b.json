@@ -1,0 +1,28 @@
+{
+    "id": "368817ec7d7b7270cb440844272dd1b433ead006797015d9e6758a41d7212101",
+    "source": "strefethen/arazzo-cli",
+    "type": "issue",
+    "title": "`arazzo generate` fails on OpenAPI 3.2 spec",
+    "url": "https://github.com/strefethen/arazzo-cli/issues/3",
+    "publishedAt": "2026-08-25T22:42:05Z",
+    "tags": [
+        "cli",
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "issue",
+        "externalId": "issue:3",
+        "title": "`arazzo generate` fails on OpenAPI 3.2 spec",
+        "url": "https://github.com/strefethen/arazzo-cli/issues/3",
+        "publishedAt": "2026-08-25T22:42:05Z",
+        "body": "### Description\n\nNot sure if it's about OpenAPI 3.2 but the generate command fails on the following spec: https://github.com/erwinkramer/bank-api/blob/main/Specs.Generated/openapi_v1_spec.json\n\nWith error: \n\n>parsing OpenAPI spec: components.schemas: invalid type: sequence, expected a string at line 634 column 16\n\n### Command\n\n```bash\narazzo generate --spec ./Specs.Generated/openapi_v1_spec.json\n```\n\nSubsequently, \n\n`arazzo run ./Specs.Generated/workflows_v1_arazzo.yaml getAndUpdateBank` also fails, I assume because of the same issue:\n\n> step getAllBanks: operationId \"GetAllBanks\" not found in loaded OpenAPI specs\n\nIf you think that's another separate problem, I'll post a new issue. \n\n### Output\n\n```json\n\n```\n\n### Minimal Arazzo spec\n\n```yaml\n\n```\n\n### Environment\n\nerror: unexpected argument '--version' found\n\n(`arazzo --version` doesn't seem to work, but is requested in the bug report template. )",
+        "labels": [
+            "bug"
+        ],
+        "state": "open"
+    }
+}

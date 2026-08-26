@@ -1,0 +1,25 @@
+{
+    "id": "0be60fca33c68e1871c4993abee8f47970ef9b1ae1e9b37bec7c449116cfe49b",
+    "source": "strefethen/arazzo-cli",
+    "type": "tag",
+    "title": "tag vscode-v0.0.5",
+    "url": "https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5",
+    "publishedAt": "2026-08-26T07:08:13+00:00",
+    "tags": [
+        "cli",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P2-1 CLI binary",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "tag",
+        "externalId": "tag:vscode-v0.0.5",
+        "title": "tag vscode-v0.0.5",
+        "url": "https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5",
+        "publishedAt": "2026-08-26T07:08:13+00:00",
+        "body": "91c9ae6874898a7cea12034ae410ccf3702a19cb",
+        "labels": [],
+        "state": "published"
+    }
+}

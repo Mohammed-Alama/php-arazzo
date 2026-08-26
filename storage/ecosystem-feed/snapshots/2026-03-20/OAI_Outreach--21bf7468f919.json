@@ -1,0 +1,22 @@
+{
+    "id": "21bf7468f919cedf4c5a66a67e85641a834e4b804344b00677451ecc10d075bd",
+    "source": "OAI/Outreach",
+    "type": "issue",
+    "title": "feat: Social posts folder",
+    "url": "https://github.com/OAI/Outreach/issues/62",
+    "publishedAt": "2026-03-20T15:22:32Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "issue",
+        "externalId": "issue:62",
+        "title": "feat: Social posts folder",
+        "url": "https://github.com/OAI/Outreach/issues/62",
+        "publishedAt": "2026-03-20T15:22:32Z",
+        "body": "Summary:\n\n* Add a means for folks to submit content for social posts.\n* Add instructions on how to do so.\n\nEnd goal is to ensure this is easy to do, can be automated, and can be orchestrated by the nearest friendly AI 😉 \n\n👍 ",
+        "labels": [],
+        "state": "closed"
+    }
+}

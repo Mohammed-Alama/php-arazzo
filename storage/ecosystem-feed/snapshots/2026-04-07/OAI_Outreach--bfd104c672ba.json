@@ -1,0 +1,24 @@
+{
+    "id": "bfd104c672ba0eade23431dd42f194f0f9eba57a75910ca63daf198fbab2a897",
+    "source": "OAI/Outreach",
+    "type": "issue",
+    "title": "Feat: Proposed update to Members Benefits page",
+    "url": "https://github.com/OAI/Outreach/issues/66",
+    "publishedAt": "2026-04-07T03:14:20Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "issue",
+        "externalId": "issue:66",
+        "title": "Feat: Proposed update to Members Benefits page",
+        "url": "https://github.com/OAI/Outreach/issues/66",
+        "publishedAt": "2026-04-07T03:14:20Z",
+        "body": "The current website page for the members benefits isn't very user-friendly and doesn't really provide much insight into what you get as a member. Current page:\n\nhttps://www.openapis.org/membershipjoin\n\n<img width=\"1323\" height=\"2846\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5133ea58-29d6-4b48-ad14-fb1736066ca2\" />\n\nAfter discussions in the Outreach Committee and reviewing the Membership Value Proposition, I've developed an updated version of this page:\n\nhttps://www.openapis.org/membership-benefits is the public link, not currently published on the website menu at this time.\n\nThings that have changed:\n\n1. Clear benefits outline\n2. Strong social proof - members shown above the fold\n3. Consistent call to action (sticky to bottom of page)\n4. Clear benefit communication and ROI explanations\n\nDiscussions we've had and reasoning for layout choices:\n\n1. Sponsor logos above the fold - social proof very important (we want to be like them)\n2. Table with quickfire benefits outlined high up on the page, in addition to details provided later - feedback was that decision makers are time-poor and want the information upfront - added jump link to more details\n3. Icons used for benefits - to be replaced with appropriate professional images if available.\n4. Member testimonials - lifted from blog posts featuring new members and existing testimonials where members are still current, these can be updated with more relevant people. We decided to use corp logo not person avatar as people change, and corp logos add social proof more strongly.\n5. Hubspot form - it was super complex and added a lot of friction, decided to remove some fields and make it streamlined.\n6. Jump menu on right - allows people to quickly go to a relevant section, does not show on mobile. Saves time if you want specific info e.g. pricing.\n\nOutstanding discussion/blocker:\n\n1. Book a call - **needs a booking link** - we wanted this to be a cal.com link, but nobody was sure who would take those calls. We can connect it up easily enough, just sign up for a cal.com, make a calendar link for times when you're willing to have OAI membership calls, and give us the link\n2. HubSpot form - **who receives the messages?**\n\nAdditional point\n\n- https://www.openapis.org/membershipmembers probably becomes defunct as we have it under the members benefits page - not sure if you want a secondary page for this or not. If you keep this page, we should add a CTA back to the membership benefits page to encourage people to sign up.",
+        "labels": [],
+        "state": "open"
+    }
+}

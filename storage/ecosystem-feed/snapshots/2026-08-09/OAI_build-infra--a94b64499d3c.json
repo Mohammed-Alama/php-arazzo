@@ -1,0 +1,22 @@
+{
+    "id": "a94b64499d3cb57fc49ee25d59525ca1d2c4b6020618cca7e695d346eb7d9851",
+    "source": "OAI/build-infra",
+    "type": "commit",
+    "title": "Add lockfile snapshot refresh script",
+    "url": "https://github.com/OAI/build-infra/commit/f1940b8a618055ac6d521ec4d0bbb238bda9c0c7",
+    "publishedAt": "2026-08-09T19:42:21Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "externalId": "commit:f1940b8",
+        "title": "Add lockfile snapshot refresh script",
+        "url": "https://github.com/OAI/build-infra/commit/f1940b8a618055ac6d521ec4d0bbb238bda9c0c7",
+        "publishedAt": "2026-08-09T19:42:21Z",
+        "body": "Add lockfile snapshot refresh script\n\nCo-authored-by: Codex <codex@openai.com>",
+        "labels": [],
+        "state": ""
+    }
+}

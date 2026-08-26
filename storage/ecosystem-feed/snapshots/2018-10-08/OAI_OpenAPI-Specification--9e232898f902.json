@@ -1,0 +1,25 @@
+{
+    "id": "9e232898f9021cd4d074960b083f971f780ab448f38114a43d21ae35a86ed7e7",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "release",
+    "title": "OAS 3.0.2 Released!",
+    "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.2",
+    "publishedAt": "2018-10-08T16:31:35Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "release",
+        "externalId": "release:3.0.2",
+        "title": "OAS 3.0.2 Released!",
+        "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.2",
+        "publishedAt": "2018-10-08T16:31:35Z",
+        "body": "# OAS 3.0.2 Change Log\r\n\r\nThe OAI is pleased to announce the official release of the OpenAPI Specification 3.0.2!\r\n\r\nAs a patch release, the following changes were made to improve the specification in terms of readability and accuracy. None of these modifications change the behavior of the spec.\r\n\r\n- Added clarification to case sensitivity of keys in maps.\r\n- Reworked the Data Type table, removing the `Common Name` to reduce potential confusion.\r\n- Clarified the description of the `Server Variable Object`'s `default` field.\r\n- Fixed various examples.\r\n- Clarified `operationId` is case sensitive.\r\n- Clarified the default value of the `Parameter Object`'s `deprecated` field is `false`.\r\n- Added recommendation to not use the `Parameter Object`'s `allowEmptyValue` field as it will be removed in a future version.\r\n- Fixed the description of the `Media Type Object`'s `schema` field.\r\n- Clarified the description of the `Responses Object`'s response codes field description.\r\n- Clarified that the `Schema Object`'s `additionalProperties` field has a default value of `true`.\r\n- Fixed a small wording issue in the `Discriminator Object` description.\r\n- Fixed the `Security Scheme Object` description to include reference to the use of API Keys in cookies.\r\n- Fixed the description of the `Security Requirement Object`.",
+        "labels": [],
+        "state": "published"
+    }
+}

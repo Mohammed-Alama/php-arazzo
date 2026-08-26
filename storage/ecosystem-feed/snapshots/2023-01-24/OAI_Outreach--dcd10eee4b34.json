@@ -1,0 +1,23 @@
+{
+    "id": "dcd10eee4b346046461245168a797fa2095923ad7553a641ee4982836acbc7a8",
+    "source": "OAI/Outreach",
+    "type": "pr",
+    "title": "Update 2023-Planning.md",
+    "url": "https://github.com/OAI/Outreach/pull/30",
+    "publishedAt": "2023-01-24T13:35:42Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/Outreach",
+        "type": "pr",
+        "externalId": "pr:30",
+        "title": "Update 2023-Planning.md",
+        "url": "https://github.com/OAI/Outreach/pull/30",
+        "publishedAt": "2023-01-24T13:35:42Z",
+        "body": "New discussion from 20 January 2023 on OAI goals and challenges.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

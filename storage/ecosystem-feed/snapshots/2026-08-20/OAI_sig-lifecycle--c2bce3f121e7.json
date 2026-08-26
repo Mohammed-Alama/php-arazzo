@@ -1,0 +1,22 @@
+{
+    "id": "c2bce3f121e74fc32bc7e7056a57ecc798578d0a23815a58e76dbcb6e2b48de3",
+    "source": "OAI/sig-lifecycle",
+    "type": "issue",
+    "title": "Support API-wide version information",
+    "url": "https://github.com/OAI/sig-lifecycle/issues/6",
+    "publishedAt": "2026-08-20T02:15:16Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "issue",
+        "externalId": "issue:6",
+        "title": "Support API-wide version information",
+        "url": "https://github.com/OAI/sig-lifecycle/issues/6",
+        "publishedAt": "2026-08-20T02:15:16Z",
+        "body": "This could be used to represent the version information of the described API. The current `version` field is oftentimes misunderstood and misused to represent the API version information. Having a registry-based extension could help as a quick fix, and new versions (3.2 and/or 4) will hopefully fix the current gap at the standards level.\n\nThe risk is that this could then be used in newer versions as well. I don't know how much this should be see as an argument against the proposal.",
+        "labels": [],
+        "state": "open"
+    }
+}

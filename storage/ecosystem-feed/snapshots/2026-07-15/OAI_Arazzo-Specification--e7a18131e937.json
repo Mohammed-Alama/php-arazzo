@@ -1,0 +1,25 @@
+{
+    "id": "e7a18131e937e8fd265a9aad55cd8523dfdfe20cf78175a99a507bd467e12022",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps): bump actions/setup-node from 6 to 7",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/a968a6521b4cca10a8b6a6982282f2b0b76888c9",
+    "publishedAt": "2026-07-15T00:53:02Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:a968a65",
+        "title": "chore(deps): bump actions/setup-node from 6 to 7",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/a968a6521b4cca10a8b6a6982282f2b0b76888c9",
+        "publishedAt": "2026-07-15T00:53:02Z",
+        "body": "chore(deps): bump actions/setup-node from 6 to 7\n\nBumps [actions/setup-node](https://github.com/actions/setup-node) from 6 to 7.\n- [Release notes](https://github.com/actions/setup-node/releases)\n- [Commits](https://github.com/actions/setup-node/compare/v6...v7)\n\n---\nupdated-dependencies:\n- dependency-name: actions/setup-node\n  dependency-version: '7'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "6d4de15fffa90dd12a355c2fc6beef8cdf7231c5688d7a911952718ae22c38ab",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "[Announcement] OAuth2.1 and OAuth3 drafts",
+    "url": "https://github.com/OAI/sig-security/issues/30",
+    "publishedAt": "2026-08-21T18:08:30Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:30",
+        "title": "[Announcement] OAuth2.1 and OAuth3 drafts",
+        "url": "https://github.com/OAI/sig-security/issues/30",
+        "publishedAt": "2026-08-21T18:08:30Z",
+        "body": "OAuth2.1 and OAuth3 drafts has been announced.\r\n\r\n## [OAuth 2.1](https://oauth.net/2.1/):\r\n- [RFC6749 - OAuth 2.0 Core](https://tools.ietf.org/html/rfc6749)\r\n- [RFC6750 - Bearer token usage](https://tools.ietf.org/html/rfc6750)\r\n- [RFC7636 - PKCE](https://tools.ietf.org/html/rfc7636)\r\n- Native App & Browser-Based App BCPs(best current practices)\r\n- Security BCP(best current practice):\r\n  - MUST support PKCE for all client types\r\n  - No password grant\r\n  - No implicit flow\r\n  - Exact string matching for redirect URIs\r\n  - No access tokens in query string\r\n  - Refresh tokens must be sender-constrained or one-time use\r\n\r\n## [OAuth 3](https://oauth.net/3/):\r\n- In development under a new IETF working group\r\n- Re-thinking OAuth from the ground up\r\n- Not backwards compatible\r\n- Consolidate all various use cases in OAuth into a new framework\r\n\r\n-------------------------\r\n\r\nIt seems to me that changes to specification should be applied:\r\n- Deprecate `implicit` in [OAuth Flows Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#oauth-flows-object)\r\n- Deprecate `password` in [OAuth Flows Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#oauth-flows-object)\r\n- Deprecate `in: query` for `apiKey` type of security scheme(this one not sure, maybe `apiKey` isn't related to access tokens)\r\n\r\nDon't know whether I should subscribe @aaronpk to this thread, but at least he can confirm that I retyped text from his [What's New With OAuth and OIDC?](https://youtu.be/g_aVPdwBTfw) video presentation correctly.",
+        "labels": [],
+        "state": "open"
+    }
+}

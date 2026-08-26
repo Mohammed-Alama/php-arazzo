@@ -1,0 +1,26 @@
+{
+    "id": "6114a4dbe94643ffe80c29a355705f63fd7c0d863734fdd8c18f85c5ba4e87ea",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: input channel for workflows run by a retry reference",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/62",
+    "publishedAt": "2026-08-21T21:09:03Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:62",
+        "title": "runner: input channel for workflows run by a retry reference",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/62",
+        "publishedAt": "2026-08-21T21:09:03Z",
+        "body": "A `retry` failure action's `workflowId` reference runs the referenced workflow with empty inputs (`{}`) — the spec gives the retry action no input-mapping mechanism, the same gap `dependsOn` has.\n\n**Decided 2026-08-17 (reference-retry design, `packages/runner/WORKFLOW_EXECUTOR_PLAN.md`): `{}` is the spec-honest fallback; a repair flow needing inputs is better modeled by the author as a sub-workflow step rather than a retry reference.**\n\nIf real-world flows need parameterized repair, options to weigh here:\n- (a) extend the caller-supplied `dependencyInputs` map (currently feeds implicitly-run `dependsOn` workflows) to cover retry references too, keyed the same way;\n- (b) a dedicated `referenceInputs` execute option, scoped to retry references only.\n\nBlocked on demand, not on design — no implementation needed until a concrete need shows up. Tracking only.",
+        "labels": [
+            "enhancement"
+        ],
+        "state": "open"
+    }
+}

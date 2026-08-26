@@ -1,0 +1,29 @@
+{
+    "id": "f8fa46241872904e982149492627992c625bfa31cb6ea2afa0f0bbef2e0a8281",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "build(deps): bump umbrelladocs/action-linkspector from 1.5.4 to 1.5.5",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/374",
+    "publishedAt": "2026-08-03T10:21:38Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:374",
+        "title": "build(deps): bump umbrelladocs/action-linkspector from 1.5.4 to 1.5.5",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/374",
+        "publishedAt": "2026-08-03T10:21:38Z",
+        "body": "Bumps [umbrelladocs/action-linkspector](https://github.com/umbrelladocs/action-linkspector) from 1.5.4 to 1.5.5.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a href=\"https://github.com/umbrelladocs/action-linkspector/releases\">umbrelladocs/action-linkspector's releases</a>.</em></p>\n<blockquote>\n<h2>Release v1.5.5</h2>\n<p>v1.5.5: PR <a href=\"https://redirect.github.com/umbrelladocs/action-linkspector/issues/70\">#70</a> - Update linkspector version to 0.5.6</p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/UmbrellaDocs/action-linkspector/commit/568ec8d29fa92b31fd9ea5381e155c51e922af83\"><code>568ec8d</code></a> Merge pull request <a href=\"https://redirect.github.com/umbrelladocs/action-linkspector/issues/70\">#70</a> from UmbrellaDocs/update-linkspector-version</li>\n<li><a href=\"https://github.com/UmbrellaDocs/action-linkspector/commit/6132d9352f02722911dc20ede6cff55f5e1b6889\"><code>6132d93</code></a> Update linkspector version to 0.5.6</li>\n<li><a href=\"https://github.com/UmbrellaDocs/action-linkspector/commit/2f82e255e59a3eff9fd481ff06ef80dacd7218f2\"><code>2f82e25</code></a> Merge pull request <a href=\"https://redirect.github.com/umbrelladocs/action-linkspector/issues/68\">#68</a> from sschuberth/patch-1</li>\n<li><a href=\"https://github.com/UmbrellaDocs/action-linkspector/commit/72f6bee7082d4a2ddfd80f0b126df4c03a503797\"><code>72f6bee</code></a> fix brackets around dpkg</li>\n<li><a href=\"https://github.com/UmbrellaDocs/action-linkspector/commit/e0946b31e20e925e6b9d15d34093c606d9d3535e\"><code>e0946b3</code></a> ci(github): Run all tests on Ubuntu 24.04 and 26.04</li>\n<li><a href=\"https://github.com/UmbrellaDocs/action-linkspector/commit/8b13e46659fda3489c2554d86bb3ad5323d698d2\"><code>8b13e46</code></a> fix: Extend the AppArmor check to Ubuntu &gt; 24.04</li>\n<li>See full diff in <a href=\"https://github.com/umbrelladocs/action-linkspector/compare/v1.5.4...v1.5.5\">compare view</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=umbrelladocs/action-linkspector&package-manager=github_actions&previous-version=1.5.4&new-version=1.5.5)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)\n\n\n</details>",
+        "labels": [
+            "dependencies",
+            "github_actions"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

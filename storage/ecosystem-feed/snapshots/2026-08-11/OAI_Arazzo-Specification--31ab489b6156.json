@@ -1,0 +1,27 @@
+{
+    "id": "31ab489b615671c50d32eaa5a183ff37153a9fb5ae6a3f45176590aab9d105fb",
+    "source": "OAI/Arazzo-Specification",
+    "type": "pr",
+    "title": "dev: sync with main",
+    "url": "https://github.com/OAI/Arazzo-Specification/pull/541",
+    "publishedAt": "2026-08-11T16:31:51Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "externalId": "pr:541",
+        "title": "dev: sync with main",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/541",
+        "publishedAt": "2026-08-11T16:31:51Z",
+        "body": "Merge relevant changes from `main` into `dev`.",
+        "labels": [
+            "Housekeeping"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

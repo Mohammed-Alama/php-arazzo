@@ -1,0 +1,24 @@
+{
+    "id": "642b9c42b8702d733d857a6dd7566200119ca612802a8afe7b0f42e80c36f1ab",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps-dev): bump markdownlint-cli2 from 0.23.0 to 0.23.2",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/a975cc2c5157a1cb2ffe2280a7d146991ecde19f",
+    "publishedAt": "2026-07-27T10:35:21Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:a975cc2",
+        "title": "chore(deps-dev): bump markdownlint-cli2 from 0.23.0 to 0.23.2",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/a975cc2c5157a1cb2ffe2280a7d146991ecde19f",
+        "publishedAt": "2026-07-27T10:35:21Z",
+        "body": "chore(deps-dev): bump markdownlint-cli2 from 0.23.0 to 0.23.2\n\nBumps [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) from 0.23.0 to 0.23.2.\n- [Changelog](https://github.com/DavidAnson/markdownlint-cli2/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/DavidAnson/markdownlint-cli2/compare/v0.23.0...v0.23.2)\n\n---\nupdated-dependencies:\n- dependency-name: markdownlint-cli2\n  dependency-version: 0.23.1\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

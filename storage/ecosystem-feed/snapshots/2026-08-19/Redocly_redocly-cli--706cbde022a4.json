@@ -1,0 +1,24 @@
+{
+    "id": "706cbde022a4c65f4c7e00bfe4e19ee09d000d1a3a9a6bf3d40cd639288657c9",
+    "source": "Redocly/redocly-cli",
+    "type": "release",
+    "title": "@redocly/openapi-core@2.46.2",
+    "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.46.2",
+    "publishedAt": "2026-08-19T09:31:12Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "Redocly/redocly-cli",
+        "type": "release",
+        "externalId": "release:@redocly/openapi-core@2.46.2",
+        "title": "@redocly/openapi-core@2.46.2",
+        "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.46.2",
+        "publishedAt": "2026-08-19T09:31:12Z",
+        "body": "### Patch Changes\n\n-   Improved the error message raised when a configurable rule is missing the `assertions` block.\n-   Fixed an issue where the `no-duplicated-enum-values` rule didn't report duplicated enum values that are objects or arrays.\n\n    Fixed an issue where the `no-duplicated-enum-values` rule printed `[object Object]` when reporting duplicate values.\n",
+        "labels": [],
+        "state": "published"
+    }
+}

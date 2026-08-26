@@ -1,0 +1,28 @@
+{
+    "id": "4c71cf499c074fd62abed0af04d8bb3afe368874dac18adfc27eed213016a28d",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "feat: make xpath.rs the one XPath 1.0 boundary (ac-46638)",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/f90dda2ef5b888409f1f86ec90d08fb6cb905845",
+    "publishedAt": "2026-08-24T04:38:00Z",
+    "tags": [
+        "soap",
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P0-6 source routing (wsdl type)",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:f90dda2",
+        "title": "feat: make xpath.rs the one XPath 1.0 boundary (ac-46638)",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/f90dda2ef5b888409f1f86ec90d08fb6cb905845",
+        "publishedAt": "2026-08-24T04:38:00Z",
+        "body": "feat: make xpath.rs the one XPath 1.0 boundary (ac-46638)\n\nruntime_core/xpath.rs is now the only Uppsala owner. One shared\nparse/version/namespace setup backs two crate-private entry points:\nread-only evaluation (EBV, normalized value, cardinality) and\nreplacement (node mutation plus serialization, moved from payload.rs,\nwhich keeps dispatch, warning cardinality, and unchanged-body policy).\n\nVersion routing, superseding Decision 3 (ac-bd441): explicit xpath-10\nalone evaluates. The omitted form - which the specification defaults\nto xpath-31 - and every other 5.8.12.1 token are rejected before\nevaluation: a criterion fails with an error, a selector yields null\nwith exactly one warning, a replacement leaves the body unchanged with\nexactly one warning. Unknown tokens keep their invalid-metadata\nmessage. Validation still accepts every table token as metadata.\n\nSelector normalization preserves native scalar types: booleans and\ninteger-collapsed finite numbers stay typed, empty scalar strings and\nempty-text nodes are count-one strings, attribute nodes yield their\nvalues (previously Null), only an empty node-set is null/count 0, and\nnon-finite numbers fail visibly while EBV remains usable. The interim\nstringly pin test is replaced by the typed contract.\n\nThe document element's non-empty prefix bindings are registered on the\nevaluator, so prefixed name tests resolve by namespace URI at root\nscope: equal local names under different URIs are distinguishable and\ntwo prefixes bound to one URI unify.\n\nBare //... outputs and debugger watches route explicitly to XPath 1.0\nand keep their degrade-to-null contract. engine_soap fixtures and the\nshipped SOAP example declare xpath-10; README documents the routing.\nNew focused integration target tests/xpath_semantics.rs proves all\nthree caller surfaces at the engine level. Conformance audit F19\nupdated. No manifest or lockfile changes.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

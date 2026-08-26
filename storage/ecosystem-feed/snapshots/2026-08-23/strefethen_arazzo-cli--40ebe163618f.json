@@ -1,0 +1,27 @@
+{
+    "id": "40ebe163618f2261718ade9726c0af981ce48000f9a15de22660ce1d2916ca69",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "fix: fail xpath criteria on null context per spec 5.8.11.4.4",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/3afe6731b6f93d4095bf419347d6af6ff826b375",
+    "publishedAt": "2026-08-23T19:16:33Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:3afe673",
+        "title": "fix: fail xpath criteria on null context per spec 5.8.11.4.4",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/3afe6731b6f93d4095bf419347d6af6ff826b375",
+        "publishedAt": "2026-08-23T19:16:33Z",
+        "body": "fix: fail xpath criteria on null context per spec 5.8.11.4.4\n\nThe Arazzo spec requires a criterion whose context evaluates to null or\nundefined to fail. The xpath arm instead treated a null context as a\nsignal to evaluate against the raw response body, which could pass. It\nnow mirrors the jsonpath arm's null guard, with no body fallback, and\nthe trace context value stays null instead of being rewritten.\n\nNon-UTF-8 bodies fail closed (strict UTF-8 decoding in eval_context\nmeans $response.body never resolves for them) — pinned by test and\nrecorded in audit finding F22 with the charset question left open. The\nregex arm shares the null-context violation via empty-string coercion;\nrecorded as F23, not fixed here. One pre-existing helper test had\naccidentally pinned the fallback by omitting response_body from its\nEvalContext; corrected to mirror engine wiring.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "d6b498c68ed266e86f8f90da4958feeb4c8f8b9d45963719ef2244b46788ba97",
+    "source": "jentic/arazzo-engine",
+    "type": "tag",
+    "title": "tag arazzo_generator/v0.2.0",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0",
+    "publishedAt": "2026-08-26T07:08:11+00:00",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "tag",
+        "externalId": "tag:arazzo_generator/v0.2.0",
+        "title": "tag arazzo_generator/v0.2.0",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0",
+        "publishedAt": "2026-08-26T07:08:11+00:00",
+        "body": "4d3627804af27f6b91aafd8e8240939ec1abaa1e",
+        "labels": [],
+        "state": "published"
+    }
+}

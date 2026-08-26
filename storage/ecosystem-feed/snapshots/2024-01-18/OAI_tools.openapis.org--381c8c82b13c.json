@@ -1,0 +1,25 @@
+{
+    "id": "381c8c82b13cf742bcce49e90de80f147f39bb74fdb9b30b3c8eb52b23d76a13",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Replace oai.github.io/Tooling with tools.openapis.org",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/111",
+    "publishedAt": "2024-01-18T11:58:45Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:111",
+        "title": "Replace oai.github.io/Tooling with tools.openapis.org",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/111",
+        "publishedAt": "2024-01-18T11:58:45Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "id": "dce279cf1a8d49acf1637172e1329260544de190db57e817377cba8f5a44851c",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "chore: Update SIG data with Moonwalk",
+    "url": "https://github.com/OAI/community/pull/14",
+    "publishedAt": "2024-04-09T10:18:00Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:14",
+        "title": "chore: Update SIG data with Moonwalk",
+        "url": "https://github.com/OAI/community/pull/14",
+        "publishedAt": "2024-04-09T10:18:00Z",
+        "body": "Added Moonwalk as SIG",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

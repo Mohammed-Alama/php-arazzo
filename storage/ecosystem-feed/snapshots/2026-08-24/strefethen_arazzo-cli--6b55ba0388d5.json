@@ -1,0 +1,27 @@
+{
+    "id": "6b55ba0388d5b20454a36204de9cd3ef378b27a4aa700b67e529289db685bdef",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "Merge branch 'claude/quirky-bell-8a21c5': fail xpath criteria on null context",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/b806e659ecfe40af58ea2bb2142087b0a1b65674",
+    "publishedAt": "2026-08-24T20:00:18Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:b806e65",
+        "title": "Merge branch 'claude/quirky-bell-8a21c5': fail xpath criteria on null context",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/b806e659ecfe40af58ea2bb2142087b0a1b65674",
+        "publishedAt": "2026-08-24T20:00:18Z",
+        "body": "Merge branch 'claude/quirky-bell-8a21c5': fail xpath criteria on null context\n\nComposes the worktree session's null-context guard (3afe673, spec\n5.8.11.4.4: a null/undefined context fails the criterion, no raw-body\nfallback) with the ac-46638 version routing that rewrote the same\ncriteria.rs arm on main. The guard fires first, so a null context fails\nbefore any version check; a present context then routes through\nexplicit xpath-10 as before. Both change sets' tests pass unmodified.\nAudit additions F22/F23 auto-merged.\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

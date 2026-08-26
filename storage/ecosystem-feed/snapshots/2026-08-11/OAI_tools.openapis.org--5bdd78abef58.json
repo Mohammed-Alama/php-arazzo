@@ -1,0 +1,25 @@
+{
+    "id": "5bdd78abef586b427902fa44f0980f935795ede678c1688a2352fd67b95f53f2",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "Add OpenAPI Breaking Change Checker",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/282",
+    "publishedAt": "2026-08-11T16:43:35Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:282",
+        "title": "Add OpenAPI Breaking Change Checker",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/282",
+        "publishedAt": "2026-08-11T16:43:35Z",
+        "body": "> **This tool is not hosted in a public GitHub repository.**\n\n## Tool Properties\n\n- Display name: OpenAPI Breaking Change Checker\n- Description: Free browser tool that compares Swagger 2.0 and OpenAPI 3.0/3.1 JSON or YAML descriptions locally and reports likely client-breaking, review-needed, and compatible changes. Internal JSON Pointer references are resolved; external references are reported but not fetched.\n- Repository: Not open source; no public repository.\n- Homepage: https://martingruner.com/tools/openapi-breaking-change-checker\n\n## OpenAPI Versions\n\n- 3.1: true\n- 3.0: true\n- 2.0: true",
+        "labels": [],
+        "state": "open"
+    }
+}

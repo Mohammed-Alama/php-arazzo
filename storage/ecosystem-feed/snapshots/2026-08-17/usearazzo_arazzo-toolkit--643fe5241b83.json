@@ -1,0 +1,25 @@
+{
+    "id": "643fe5241b830266d6133f5e6aff7eeafc912f33ae66d93374197459e45820c2",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "pr",
+    "title": "fix(runner): validate workflow outputs shape before running prerequisites or steps",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/pull/61",
+    "publishedAt": "2026-08-17T10:29:28Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "externalId": "pr:61",
+        "title": "fix(runner): validate workflow outputs shape before running prerequisites or steps",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/61",
+        "publishedAt": "2026-08-17T10:29:28Z",
+        "body": "## Problem\n\nA malformed workflow-level `outputs` was only discovered at the very end of a run — once `OutputResolver.resolve` was finally reached from `WorkflowExecutor#result` — after every prerequisite and step had already fired its live requests.\n\n## Fix\n\n`WorkflowExecutor` already validates a malformed `steps` up front, before any prerequisite runs, on the stated reasoning that an authoring error deserves to be caught before side effects rather than after. A malformed `outputs` is the same kind of authoring error: the workflow can never produce it, so it's unrunnable from the start.\n\nThis adds a private `#validateWorkflowOutputsShape`, checked alongside `#orderedSteps` before dependencies or steps run. It throws the same `ResolverError` (`reason: 'malformed-outputs'`) `OutputResolver.resolve` already throws, so behavior is unchanged except for *when* it's caught.\n\nThe check is intentionally duplicated in `WorkflowExecutor` rather than exposed as new public API on `OutputResolver` — `OutputResolver.resolve` is the meaningful public operation; a standalone `validateShape` would just be a guard clause reachable from outside, unlike e.g. `StepExecutor.evaluateCriteria`/`selectActions`, which are genuinely meaningful on their own.\n\nStep-level `outputs` is left as-is (not pre-flighted): its blast radius is one step, not a whole run — the issue itself frames that as the weaker case.\n\n## Testing\n\n- New fixture workflow `malformedOutputsWithDependency` (bad `outputs`, plus a `dependsOn` and its own step).\n- New spec asserting `reason: 'malformed-outputs'` and zero HTTP calls before the throw — the crux of the issue.\n- `npm run build`, `npm run lint`, `npm run test` all green (492 passing).\n\nCloses #53",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

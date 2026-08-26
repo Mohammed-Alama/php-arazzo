@@ -1,0 +1,24 @@
+{
+    "id": "4061694a7d169853feee0afc6094805d0864c24db2a6724292d17393a4717b42",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.17",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.17",
+    "publishedAt": "2026-02-20T12:14:53Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.17",
+        "title": "v1.0.0-alpha.17",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.17",
+        "publishedAt": "2026-02-20T12:14:53Z",
+        "body": "# [1.0.0-alpha.17](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.16...v1.0.0-alpha.17) (2026-02-20)\n\n\n### Bug Fixes\n\n* **deps:** pin inter-package @jentic/* dependency versions ([d3d16f4](https://github.com/jentic/jentic-arazzo-tools/commit/d3d16f4186127601fd2406075f08ed8fcf8253bb))\n* **deps:** use caret ranges for @speclynx/* dependencies ([#90](https://github.com/jentic/jentic-arazzo-tools/issues/90)) ([2be9f0b](https://github.com/jentic/jentic-arazzo-tools/commit/2be9f0b06a38ee28d3b2ee344ff9a764d2ed3de4))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "4b8b253c998a2d7bf65790279f0d66b99d6a1246cdb1cf381c343a514986062d",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "Create CNAME",
+    "url": "https://github.com/usearazzo/website/commit/0e1d355a5c2ca9a4777c8492a8a91962778b55c5",
+    "publishedAt": "2026-08-13T09:09:11Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:0e1d355",
+        "title": "Create CNAME",
+        "url": "https://github.com/usearazzo/website/commit/0e1d355a5c2ca9a4777c8492a8a91962778b55c5",
+        "publishedAt": "2026-08-13T09:09:11Z",
+        "body": "Create CNAME",
+        "labels": [],
+        "state": ""
+    }
+}

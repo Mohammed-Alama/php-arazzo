@@ -1,0 +1,24 @@
+{
+    "id": "f576e6dad9df2c16f4d9019d4e27237b6318096081b265d8ccff1cad587edc89",
+    "source": "OAI/tools.openapis.org",
+    "type": "issue",
+    "title": "feat: Purge sources",
+    "url": "https://github.com/OAI/tools.openapis.org/issues/138",
+    "publishedAt": "2026-05-06T16:16:34Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "issue",
+        "externalId": "issue:138",
+        "title": "feat: Purge sources",
+        "url": "https://github.com/OAI/tools.openapis.org/issues/138",
+        "publishedAt": "2026-05-06T16:16:34Z",
+        "body": "## User Story\r\n\r\nAs the a maintainer of the tooling repository\r\nI want to ensure the dataset is of suitable quality\r\nAnd only contains the tools that are relevant\r\nSo I can provide reasonable data to the community\r\n\r\n## Detailed Requirement\r\n\r\nCurrently we catalog many repositories that contain boilerplate code and do not change again.\r\n\r\nWe need to have a shelf life for such projects and purge them from the dataset after a given period of time. Needs to be qualified by other metrics e.g. code complexity?",
+        "labels": [],
+        "state": "open"
+    }
+}

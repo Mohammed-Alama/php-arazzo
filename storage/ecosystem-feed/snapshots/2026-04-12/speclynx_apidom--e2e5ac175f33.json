@@ -1,0 +1,24 @@
+{
+    "id": "e2e5ac175f33e35d3b7c78f12053eb871ed17c0a08e7ead24ebedce0293aee61",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.7.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.0",
+    "publishedAt": "2026-04-12T23:49:52Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.7.0",
+        "title": "v4.7.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.0",
+        "publishedAt": "2026-04-12T23:49:52Z",
+        "body": "# [4.7.0](https://github.com/speclynx/apidom/compare/v4.6.0...v4.7.0) (2026-04-12)\n\n\n### Features\n\n* **overlay:** generic targets, export defaults, scoped opts ([#236](https://github.com/speclynx/apidom/issues/236)) ([7df6dc7](https://github.com/speclynx/apidom/commit/7df6dc79d18e4c71ceb17037a45f9ba069fdcaf1))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

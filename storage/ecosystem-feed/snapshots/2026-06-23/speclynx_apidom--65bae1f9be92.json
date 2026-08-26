@@ -1,0 +1,24 @@
+{
+    "id": "65bae1f9be92b5bde3432710c8cac8554377835e3d7bafdd8d8a91fd48e3d3a3",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v4.14.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.14.0",
+    "publishedAt": "2026-06-23T21:08:51Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v4.14.0",
+        "title": "v4.14.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.14.0",
+        "publishedAt": "2026-06-23T21:08:51Z",
+        "body": "# [4.14.0](https://github.com/speclynx/apidom/compare/v4.13.0...v4.14.0) (2026-06-23)\n\n\n### Features\n\n* **reference:** add OpenAPI 3.1 bundle strategy ([#361](https://github.com/speclynx/apidom/issues/361)) ([ab3effb](https://github.com/speclynx/apidom/commit/ab3effb7d1f19ae4d757ba222b194e477e64d6e8)), closes [#351](https://github.com/speclynx/apidom/issues/351)\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

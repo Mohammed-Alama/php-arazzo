@@ -1,0 +1,24 @@
+{
+    "id": "11399295c94f26bfc9acc254a8b601c48b590afec969350663c7e70bc3dfee8a",
+    "source": "OAI/sig-moonwalk",
+    "type": "issue",
+    "title": "Open API Path Templating vs WHATWG URL Pattern",
+    "url": "https://github.com/OAI/sig-moonwalk/issues/125",
+    "publishedAt": "2024-05-24T20:42:29Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "issue",
+        "externalId": "issue:125",
+        "title": "Open API Path Templating vs WHATWG URL Pattern",
+        "url": "https://github.com/OAI/sig-moonwalk/issues/125",
+        "publishedAt": "2024-05-24T20:42:29Z",
+        "body": "The [Open API Path templating](https://spec.openapis.org/oas/latest.html#path-templating) seems to be inspired and partially compatible with the IETF  [[RFC6570] URI Template Specification](https://datatracker.ietf.org/doc/html/rfc6570) which is great\r\n\r\n**Open API Path Templating**\r\n\r\n> Path templating refers to the usage of template expressions, delimited by curly braces ({}), to mark a section of a URL path as replaceable using path parameters.\r\n> \r\n> Each template expression in the path MUST correspond to a path parameter that is included in the [Path Item](https://spec.openapis.org/oas/latest.html#path-item-object) itself and/or in each of the Path Item’s [Operations](https://spec.openapis.org/oas/latest.html#operation-object). An exception is if the path item is empty, for example due to ACL constraints, matching path parameters are not required.\r\n> \r\n> The value for these path parameters MUST NOT contain any unescaped “generic syntax” characters described by [[RFC3986](https://spec.openapis.org/oas/latest.html#bib-RFC3986)]: forward slashes (/), question marks (?), or hashes (#).\r\n\r\nExamples\r\n```\r\n  /pets/{petId}\r\n  /{entity}/me\r\n```\r\n\r\nBut WHATWG recently announced its new URL Pattern specification\r\n- https://blog.whatwg.org/url-pattern-standard\r\n- https://urlpattern.spec.whatwg.org/\r\n\r\n**WHATWG URL Pattern Path Templating**\r\n\r\n> A pattern string is a string that is written to match a set of target strings. A well formed pattern string conforms to a particular pattern syntax. This pattern syntax is directly based on the syntax used by the popular [path-to-regexp](https://github.com/pillarjs/path-to-regexp) JavaScript library.\r\n> \r\n> It can be [parsed](https://urlpattern.spec.whatwg.org/#parse-a-pattern-string) to produce a [part list](https://urlpattern.spec.whatwg.org/#part-list) which describes, in order, what must appear in a component string for the pattern string to match.\r\n\r\nExample:\r\n\r\n> Pattern strings can contain capture groups, which by default match the shortest possible string, up to a component-specific separator (/ in the pathname, . in the hostname). For example, the pathname pattern `/blog/:title` will match `/blog/hello-world` but not `/blog/2012/02`.\r\n> A regular expression can also be used instead, so the pathname pattern `/blog/:year(\\\\d+)/:month(\\\\d+)` will match `/blog/2012/02`.\r\n> \r\n> A group can also be made optional, or repeated, by using a modifier. For example, the pathname pattern `/products/:id?` will match both `/products` and `/products/2` (but not `/products/`). In the pathname specifically, groups automatically require a leading /; to avoid this, the group can be explicitly deliminated, as in the pathname pattern `/products/{:id}?`.\r\n> \r\n> A full wildcard `*` can also be used to match as much as possible, as in the pathname pattern `/products/*`.\r\n\r\nhttps://urlpattern.spec.whatwg.org/#patterns\r\n\r\n**Impact**\r\n\r\nAs you can see both pattern syntax is very different and not compatible\r\n\r\n- Open API / URI Template: `/foo/{bar}/baz`\r\n- WHATWG URL Pattern Path Templating: `/foo/:bar/baz`\r\n\r\nThere has been an issue pushed a while ago to this standard working repository \r\n- [Relationship with URI Templates (RFC 6570)](https://github.com/whatwg/urlpattern/issues/58)\r\n- [Support for RFC 6570 (curly braces) path params](https://github.com/mswjs/msw/issues/1558)\r\n\r\nActually it looks like this specification has been more driven by existing framework templating implentation (like [express.js route parameters](https://expressjs.com/en/guide/routing.html#route-parameters), [Angular routing](https://angular.io/api/router/Route#simple-configuration), ...) than by existing standards, while there also exists tools that had to be written to convert such product path template to the standard one (and vice-versa).\r\n\r\nThis feel pretty sad to me and I'm not sure what should be the best thing that could be done on Open API side:\r\n- support both syntax ?\r\n- provide a notice on how to translate one to the other ?\r\n- do nothing and only rely on tools implementations ?",
+        "labels": [],
+        "state": "closed"
+    }
+}

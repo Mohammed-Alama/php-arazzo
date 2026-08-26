@@ -1,0 +1,24 @@
+{
+    "id": "05827df28655b5c0d32832ae85fad0a27515bcf2cf19c8b3a6420a2d6478f116",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "Merge pull request #128 from OAI/dependabot/bundler/jekyll-include-cache-0.2.2",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/55cc2e2235baf427b923057d7e705485355a4735",
+    "publishedAt": "2026-08-03T10:19:57Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:55cc2e2",
+        "title": "Merge pull request #128 from OAI/dependabot/bundler/jekyll-include-cache-0.2.2",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/55cc2e2235baf427b923057d7e705485355a4735",
+        "publishedAt": "2026-08-03T10:19:57Z",
+        "body": "Merge pull request #128 from OAI/dependabot/bundler/jekyll-include-cache-0.2.2\n\nbuild(deps-dev): bump jekyll-include-cache from 0.2.1 to 0.2.2",
+        "labels": [],
+        "state": ""
+    }
+}

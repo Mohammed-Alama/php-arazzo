@@ -1,0 +1,24 @@
+{
+    "id": "6eccfff67dd136b7214ef7059a6ec30f788bbb771197ff583ec75a952c84446f",
+    "source": "usearazzo/arazzo-toolkit",
+    "type": "issue",
+    "title": "runner: unify the triplicated workflow-existence check",
+    "url": "https://github.com/usearazzo/arazzo-toolkit/issues/77",
+    "publishedAt": "2026-08-21T21:09:09Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "externalId": "issue:77",
+        "title": "runner: unify the triplicated workflow-existence check",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/77",
+        "publishedAt": "2026-08-21T21:09:09Z",
+        "body": "The predicate \\`!locator.document.workflowIndex.has(locator.workflowId)\\` + a \\`workflow-not-found\\` throw appears at three altitudes in \\`WorkflowExecutor\\` — \\`#dependencyRefs\\`, \\`#runReferencedWorkflow\\`, and \\`#resolveWorkflow\\` — with three differently-shaped errors. The duplication has already produced an observable inconsistency: a \\`goto\\`/\\`retry\\` reference to a missing workflow errors with the calling \\`stepId\\` attached, but a **sub-workflow step's** missing target lands on \\`#resolveWorkflow\\`'s generic error with no \\`stepId\\` — the position where caller context is most useful gets the poorest error.\n\nCandidate fix: move existence into \\`ArazzoWorkflowLocatorNormalizer.normalize\\` (its context already carries \\`workflowId\\`/\\`stepId\\`, and the reference-as-written is available for the message), shrinking \\`#resolveWorkflow\\`'s check to the root-\\`execute()\\` path. Error attribution changes, so tests asserting \\`workflowId\\`/message shapes will need deliberate updates — which is why this was split out of PR #73 rather than folded in.\n\nPart of the pre-1.0 cleanup train feeding the API surface review.\n\nhttps://claude.ai/code/session_018xHDHotJJDWYtTn7ZLrn5V",
+        "labels": [],
+        "state": "open"
+    }
+}

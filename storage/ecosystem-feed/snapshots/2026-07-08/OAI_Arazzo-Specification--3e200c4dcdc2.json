@@ -1,0 +1,24 @@
+{
+    "id": "3e200c4dcdc283fe9872d79277d244bf549df3fa3eb7b08b4d7a576438fcab0b",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "chore(deps-dev): bump vitest from 4.1.7 to 4.1.10 in the vitest group",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/b974e1b1ae4ce9d91dc94fda02ff43a911797bb3",
+    "publishedAt": "2026-07-08T00:53:25Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:b974e1b",
+        "title": "chore(deps-dev): bump vitest from 4.1.7 to 4.1.10 in the vitest group",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/b974e1b1ae4ce9d91dc94fda02ff43a911797bb3",
+        "publishedAt": "2026-07-08T00:53:25Z",
+        "body": "chore(deps-dev): bump vitest from 4.1.7 to 4.1.10 in the vitest group\n\nBumps the vitest group with 1 update: [vitest](https://github.com/vitest-dev/vitest/tree/HEAD/packages/vitest).\n\n\nUpdates `vitest` from 4.1.7 to 4.1.10\n- [Release notes](https://github.com/vitest-dev/vitest/releases)\n- [Changelog](https://github.com/vitest-dev/vitest/blob/main/docs/releases.md)\n- [Commits](https://github.com/vitest-dev/vitest/commits/v4.1.10/packages/vitest)\n\n---\nupdated-dependencies:\n- dependency-name: vitest\n  dependency-version: 4.1.10\n  dependency-type: direct:development\n  update-type: version-update:semver-patch\n  dependency-group: vitest\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>",
+        "labels": [],
+        "state": ""
+    }
+}

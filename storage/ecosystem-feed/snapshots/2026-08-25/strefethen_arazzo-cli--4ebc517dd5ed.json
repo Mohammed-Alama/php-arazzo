@@ -1,0 +1,27 @@
+{
+    "id": "4ebc517dd5ede6fa35304763c05a8a5d18992b5203edd0cc8f1e57a37ed9bdcc",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "Merge branch 'claude/magical-blackburn-037091': warn at validate time on rejected XPath versions",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/cc29d4247057c0cad06390a6e44567d606915f57",
+    "publishedAt": "2026-08-25T21:08:54Z",
+    "tags": [
+        "xml",
+        "xpath",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:cc29d42",
+        "title": "Merge branch 'claude/magical-blackburn-037091': warn at validate time on rejected XPath versions",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/cc29d4247057c0cad06390a6e44567d606915f57",
+        "publishedAt": "2026-08-25T21:08:54Z",
+        "body": "Merge branch 'claude/magical-blackburn-037091': warn at validate time on rejected XPath versions\n\nCo-Authored-By: Claude Fable 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

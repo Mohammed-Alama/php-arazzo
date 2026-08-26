@@ -1,0 +1,29 @@
+{
+    "id": "9156c6c93f3fd19cf4efa987fce8e57cce1eb7bccf12994ed2af132e3100668a",
+    "source": "OAI/Overlay-Specification",
+    "type": "pr",
+    "title": "build(deps-dev): bump markdownlint-cli2 from 0.23.0 to 0.23.1",
+    "url": "https://github.com/OAI/Overlay-Specification/pull/363",
+    "publishedAt": "2026-07-17T11:54:21Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "externalId": "pr:363",
+        "title": "build(deps-dev): bump markdownlint-cli2 from 0.23.0 to 0.23.1",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/363",
+        "publishedAt": "2026-07-17T11:54:21Z",
+        "body": "Bumps [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) from 0.23.0 to 0.23.1.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a href=\"https://github.com/DavidAnson/markdownlint-cli2/blob/main/CHANGELOG.md\">markdownlint-cli2's changelog</a>.</em></p>\n<blockquote>\n<h2>0.23.1</h2>\n<ul>\n<li>Show attempted fix counts after fixing</li>\n<li>Update dependencies (including <code>markdownlint</code>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/06f92c99e930c11230426b5edd775021d25e08a8\"><code>06f92c9</code></a> Update to version 0.23.1.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/a77352640f8667a658349c68d14db1368c6b22ba\"><code>a773526</code></a> Freshen list of external custom rules included with the markdownlint-cli2-rul...</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/437b0caae2b2f39d061309567f99f9c23eb1f1e5\"><code>437b0ca</code></a> Bump eslint-plugin-jsdoc from 63.0.11 to 63.0.12</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/5463e0fa275b9105ed02dbae9ea6848d062d1c1e\"><code>5463e0f</code></a> Bump eslint-plugin-unicorn from 70.0.0 to 71.0.0</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/b04ac138a26acc3f65a5e5482825cc938885b7b9\"><code>b04ac13</code></a> Bump globby from 16.2.0 to 16.2.1</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/1e63f97b080fc2aac9a426379e96e82542cf78a8\"><code>1e63f97</code></a> Revert commit afb7d9898724f0d96279116bbb6f0d1026fff8df &quot;Pin CI workflow's pnp...</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/040594ba722e8d319c2e172bf9771d1ba8474d51\"><code>040594b</code></a> Update dependency: markdownlint to 0.41.1.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/4d97fa85a1eff2af23011c7f4838738332847f64\"><code>4d97fa8</code></a> Address new ESLint warnings from previous commit.</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/50cb033a960853cde873c8895849cae94e9f0db7\"><code>50cb033</code></a> Bump eslint-node-test from 0.1.0 to 0.2.0</li>\n<li><a href=\"https://github.com/DavidAnson/markdownlint-cli2/commit/a53bf04386f8980a027bbb2ed198a5361dbe2b55\"><code>a53bf04</code></a> Bump eslint-plugin-jsdoc from 63.0.10 to 63.0.11</li>\n<li>Additional commits viewable in <a href=\"https://github.com/DavidAnson/markdownlint-cli2/compare/v0.23.0...v0.23.1\">compare view</a></li>\n</ul>\n</details>\n<br />\n",
+        "labels": [
+            "dependencies",
+            "javascript"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

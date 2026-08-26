@@ -1,0 +1,24 @@
+{
+    "id": "aad0601e0928e2c7e240e41a5eb1620965b1008920c081913652cc30d29e1ec4",
+    "source": "workflows-guru/awesome-arazzo",
+    "type": "commit",
+    "title": "Update README.md",
+    "url": "https://github.com/workflows-guru/awesome-arazzo/commit/c5f1366cfb68f5a34d398800e2c6fb3bd646c3f4",
+    "publishedAt": "2025-03-05T10:59:01Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "workflows-guru/awesome-arazzo",
+        "type": "commit",
+        "externalId": "commit:c5f1366",
+        "title": "Update README.md",
+        "url": "https://github.com/workflows-guru/awesome-arazzo/commit/c5f1366cfb68f5a34d398800e2c6fb3bd646c3f4",
+        "publishedAt": "2025-03-05T10:59:01Z",
+        "body": "Update README.md\n\nDraft",
+        "labels": [],
+        "state": ""
+    }
+}

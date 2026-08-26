@@ -1,0 +1,23 @@
+{
+    "id": "8ec7b23f48a27d0da35ed6f03380bdf583e5db8ee5f17176fcd89ee0a8c66f3b",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Create sig-create-template.yml",
+    "url": "https://github.com/OAI/community/pull/2",
+    "publishedAt": "2022-03-29T20:01:07Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:2",
+        "title": "Create sig-create-template.yml",
+        "url": "https://github.com/OAI/community/pull/2",
+        "publishedAt": "2022-03-29T20:01:07Z",
+        "body": "Introducing the create SIG template to the Community Repo instead of the main repo. Leveraging GitHub's issue templates to create sigs.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

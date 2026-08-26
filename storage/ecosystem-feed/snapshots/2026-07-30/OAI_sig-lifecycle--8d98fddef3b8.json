@@ -1,0 +1,26 @@
+{
+    "id": "8d98fddef3b8d0ea5df63296447c7fa4338d29cd79a0bc63e94a81f8608c5795",
+    "source": "OAI/sig-lifecycle",
+    "type": "pr",
+    "title": "Add a build system including an empty spec and trivial schema",
+    "url": "https://github.com/OAI/sig-lifecycle/pull/2",
+    "publishedAt": "2026-07-30T16:26:18Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-lifecycle",
+        "type": "pr",
+        "externalId": "pr:2",
+        "title": "Add a build system including an empty spec and trivial schema",
+        "url": "https://github.com/OAI/sig-lifecycle/pull/2",
+        "publishedAt": "2026-07-30T16:26:18Z",
+        "body": "This Codex-written PR sets up this repository for specification development, using the infrstructure added in OAI/build-infra#1 (which has now been merged).  See documentation in that PR for details on how this works.\r\n\r\nIt replaces PR #1 here as it needs to be on a local branch (instead of a fork) to get the new CI to run on this PR.  Subsequent PRs on forks will work as expected.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

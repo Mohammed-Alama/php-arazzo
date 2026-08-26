@@ -1,0 +1,24 @@
+{
+    "id": "517a1b70b65399c8f5a9c2a6830da4b10f48ecaf43e30915fafd4659fe8c114e",
+    "source": "OAI/sig-security",
+    "type": "issue",
+    "title": "Define Oauth2 authentication Object",
+    "url": "https://github.com/OAI/sig-security/issues/26",
+    "publishedAt": "2026-08-21T18:07:51Z",
+    "tags": [],
+    "severity": "watch",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/sig-security",
+        "type": "issue",
+        "externalId": "issue:26",
+        "title": "Define Oauth2 authentication Object",
+        "url": "https://github.com/OAI/sig-security/issues/26",
+        "publishedAt": "2026-08-21T18:07:51Z",
+        "body": "I might be doing something wrong, but I could not find a way to define the Params object.\r\nFor example, the default uses username, password, client_id, client_secret, but instead, I just wanted an object with email (instead of username) and password beign passed. Is there a way to define it?\r\n\r\nThank you very much <3 ",
+        "labels": [
+            "question"
+        ],
+        "state": "open"
+    }
+}

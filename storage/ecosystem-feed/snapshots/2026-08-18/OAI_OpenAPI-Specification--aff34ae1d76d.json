@@ -1,0 +1,26 @@
+{
+    "id": "aff34ae1d76de8124e278572df5095c504e63bf7da89366a05f1faf1fb153d72",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "Remove stray duplicate schema test on the 3.1 branch.",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5496",
+    "publishedAt": "2026-08-18T16:39:25Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5496",
+        "title": "Remove stray duplicate schema test on the 3.1 branch.",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5496",
+        "publishedAt": "2026-08-18T16:39:25Z",
+        "body": "fail/parameter-object-path-allowReserved.yaml already exists with the same commit message at the same time.  I suspect this was a copy-paste error that got swept up in the commit.\r\n\r\nIt is only on v3.1-dev AFAICT.\r\n\r\n\r\n- [X] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

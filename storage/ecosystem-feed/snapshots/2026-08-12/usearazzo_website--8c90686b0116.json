@@ -1,0 +1,24 @@
+{
+    "id": "8c90686b01163ef478946c20b154135f5c57fcc1f2f46a8ddc705a86536b1f43",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "fix: add support for GH deployment",
+    "url": "https://github.com/usearazzo/website/commit/0cd17b517c2242228390981e031212918754aaed",
+    "publishedAt": "2026-08-12T21:25:12Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:0cd17b5",
+        "title": "fix: add support for GH deployment",
+        "url": "https://github.com/usearazzo/website/commit/0cd17b517c2242228390981e031212918754aaed",
+        "publishedAt": "2026-08-12T21:25:12Z",
+        "body": "fix: add support for GH deployment",
+        "labels": [],
+        "state": ""
+    }
+}

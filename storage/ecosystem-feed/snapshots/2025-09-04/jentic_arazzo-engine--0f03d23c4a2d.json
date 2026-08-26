@@ -1,0 +1,25 @@
+{
+    "id": "0f03d23c4a2d5d3744db871d06f7425b32a44f285ac58b2bfe508943d39ce2ae",
+    "source": "jentic/arazzo-engine",
+    "type": "release",
+    "title": "Arazzo Generator v0.2.1",
+    "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.1",
+    "publishedAt": "2025-09-04T12:02:14Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "release",
+        "externalId": "release:arazzo_generator/v0.2.1",
+        "title": "Arazzo Generator v0.2.1",
+        "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.1",
+        "publishedAt": "2025-09-04T12:02:14Z",
+        "body": "## Enhancements\r\n\r\n- automatic release pipeline for Arazzo Generator\r\n\r\n\r\n**Full Changelog**: https://github.com/jentic/arazzo-engine/compare/arazzo_generator/v0.2.0...arazzo_generator/v0.2.1",
+        "labels": [],
+        "state": "published"
+    }
+}

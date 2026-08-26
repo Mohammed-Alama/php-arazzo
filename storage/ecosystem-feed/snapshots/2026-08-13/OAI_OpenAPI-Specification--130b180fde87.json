@@ -1,0 +1,27 @@
+{
+    "id": "130b180fde8769f140b8c5aad0b7912213b649cedb55e411167e3c21faa51432",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "v3.2-dev: sync with dev",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5498",
+    "publishedAt": "2026-08-13T22:03:09Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5498",
+        "title": "v3.2-dev: sync with dev",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5498",
+        "publishedAt": "2026-08-13T22:03:09Z",
+        "body": "Merge relevant changes from `dev` into `v3.2-dev`.",
+        "labels": [
+            "Housekeeping"
+        ],
+        "state": "closed",
+        "merged": true
+    }
+}

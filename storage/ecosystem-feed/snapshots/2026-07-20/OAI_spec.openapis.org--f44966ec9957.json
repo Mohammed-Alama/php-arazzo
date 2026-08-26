@@ -1,0 +1,24 @@
+{
+    "id": "f44966ec99573ff153778b046a9533f8188d1d304d375cb9b692e16cbbb2291b",
+    "source": "OAI/spec.openapis.org",
+    "type": "commit",
+    "title": "feat: adds examples extension",
+    "url": "https://github.com/OAI/spec.openapis.org/commit/cd31a6fbe6c8a9007f2a7025d6e9d77ea6b7fb55",
+    "publishedAt": "2026-07-20T13:38:37Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/spec.openapis.org",
+        "type": "commit",
+        "externalId": "commit:cd31a6f",
+        "title": "feat: adds examples extension",
+        "url": "https://github.com/OAI/spec.openapis.org/commit/cd31a6fbe6c8a9007f2a7025d6e9d77ea6b7fb55",
+        "publishedAt": "2026-07-20T13:38:37Z",
+        "body": "feat: adds examples extension",
+        "labels": [],
+        "state": ""
+    }
+}

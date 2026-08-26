@@ -1,0 +1,24 @@
+{
+    "id": "95a9f2350b18d2ac5fd39872562d454d8bc46500b0d9ed88b16c4c3edfa26c65",
+    "source": "OAI/community",
+    "type": "issue",
+    "title": "Looking for a community driven GH home for unofficial OpenAPI projects",
+    "url": "https://github.com/OAI/community/issues/15",
+    "publishedAt": "2024-04-19T19:51:11Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/community",
+        "type": "issue",
+        "externalId": "issue:15",
+        "title": "Looking for a community driven GH home for unofficial OpenAPI projects",
+        "url": "https://github.com/OAI/community/issues/15",
+        "publishedAt": "2024-04-19T19:51:11Z",
+        "body": "### Discussed in https://github.com/OAI/OpenAPI-Specification/discussions/2504\r\n\r\n<div type='discussions-op-text'>\r\n\r\n<sup>Originally posted by @displague March 18, 2021; migrating to community repo as it is not a spec topic.</sup>\r\n\r\nI'm looking for a home for an OpenAPI project that has many users, stars, and GH forks but has not seen active maintainership recently and has no system of governance.\r\n\r\nWhile the OAS spec advances, many tools that users have come to depend on are left in less than ideal states. There may be competing interests for each of these projects to adapt to the latest standards or continue to support their implementation discrepancies. The user and developer community behind these projects should have some say in this and largely do. Each of these projects takes on or shirks responsibility whenever OAS changes are introduced. A common body of similarly concerned projects could benefit from each other based on similar languages, users, developers, or ideas.\r\n\r\nIt is understandable that the OAI organization does not want to show favoritism to any single implementation and should want to avoid the situation where an implementation discrepancy with the spec becomes authoritative.\r\n\r\nMany of the OAS tools available today are associated with commercial organizations:\r\n\r\n* https://github.com/swagger-api (SmartBear)\r\n* https://github.com/mermade\r\n\r\nAre these or similar organizations open to adopting existing projects? Would they be able to provide a fair community view that fosters project independence, growth, and health?\r\n\r\nSome community-run GH orgs actively maintain community projects or registries:\r\n  * https://github.com/openapitools\r\n * https://github.com/openapi-contrib\r\n  * https://github.com/apisyouwonthate\r\n  * https://github.com/APIs-guru\r\n\r\nThese orgs may not be open to adopting competing projects or engineering heavy projects.\r\n\r\n1\\. Does @OAI have recommendations for projects looking for community governance and maintainership?\r\n\r\n2\\. Does @OAI have recommendations for community-led initiatives to provide this function?\r\n\r\n---\r\n\r\nAuthors that have expressed interest in having their tools moved to a central org:\r\n\r\n* @fotinakis (https://github.com/fotinakis/swagger-blocks)\r\n* @dorthu (https://github.com/Dorthu/openapi3)\r\n\r\nOrgs that have expressed interest in hosting disparate projects and hosting community and governance:\r\n\r\n* https://github.com/openapi (@sergeysova)\r\n</div>",
+        "labels": [],
+        "state": "open"
+    }
+}

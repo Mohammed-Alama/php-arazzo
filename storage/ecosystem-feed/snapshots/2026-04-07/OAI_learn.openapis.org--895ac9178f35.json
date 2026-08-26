@@ -1,0 +1,24 @@
+{
+    "id": "895ac9178f353b44db921c33df487e72fc1771e91d04cc0ff1aa39d53b415f9c",
+    "source": "OAI/learn.openapis.org",
+    "type": "issue",
+    "title": "Add LLM.txt to the learn site",
+    "url": "https://github.com/OAI/learn.openapis.org/issues/199",
+    "publishedAt": "2026-04-07T15:05:50Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "issue",
+        "externalId": "issue:199",
+        "title": "Add LLM.txt to the learn site",
+        "url": "https://github.com/OAI/learn.openapis.org/issues/199",
+        "publishedAt": "2026-04-07T15:05:50Z",
+        "body": "Add LLM.txt to the learn site. \n\nWhy?\nWhat llm.txt / llms.txt Is\nAn llms.txt (often also called llm.txt) file is a simple text file at the root of your site (e.g. https://example.com/llms.txt) that acts like an “AI sitemap + policy file” for large language models such as ChatGPT, Claude, Gemini, and Perplexity.\n\nIt can list key URLs, short descriptions, and rules or preferences about how AI systems should access, prioritize, or avoid parts of your content.\n\nWhy It’s Important\nIt helps LLMs find and prioritize your most important pages—guides, docs, FAQs, pricing, etc.—so answers about your brand are more accurate and complete.\n\nIt improves your chances of being cited or referenced in AI-generated answers, which is emerging as a new kind of visibility akin to answer boxes/featured snippets in traditional search.",
+        "labels": [],
+        "state": "open"
+    }
+}

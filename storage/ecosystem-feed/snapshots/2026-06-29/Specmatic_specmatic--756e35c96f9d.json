@@ -1,0 +1,27 @@
+{
+    "id": "756e35c96f9df9eefac59462f1c6991bd9a0e19608fe7c43ad7a74736f132281",
+    "source": "Specmatic/specmatic",
+    "type": "release",
+    "title": "2.49.0",
+    "url": "https://github.com/specmatic/specmatic/releases/tag/2.49.0",
+    "publishedAt": "2026-06-29T17:39:03Z",
+    "tags": [
+        "soap",
+        "wsdl",
+        "xml",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P0-6 source routing (wsdl type)",
+    "raw": {
+        "source": "Specmatic/specmatic",
+        "type": "release",
+        "externalId": "release:2.49.0",
+        "title": "2.49.0",
+        "url": "https://github.com/specmatic/specmatic/releases/tag/2.49.0",
+        "publishedAt": "2026-06-29T17:39:03Z",
+        "body": "## What's Changed\r\n* Fix stubBaseUrls in Config V3 generating unparseable URLs by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2547\r\n* validate snapshots before we do any heavy lifting by @ketan in https://github.com/specmatic/specmatic/pull/2589\r\n* Fix regression in handling of 4xx status codes beyond 400 by @joelrosario in https://github.com/specmatic/specmatic/pull/2592\r\n* Remove problematic usages of java.net.URL by @sahilm in https://github.com/specmatic/specmatic/pull/2567\r\n* Implement example preprocessor support by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2597\r\n* Bump to latest reporter to get bug fixes by @sahilm in https://github.com/specmatic/specmatic/pull/2600\r\n* Improve SOAP xsi:type matching for WSDL mocks by @joelrosario in https://github.com/specmatic/specmatic/pull/2602\r\n* Update specmaticGradlePluginVersion to v0.15.14 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2599\r\n* Update dependency io.kotest:kotest-assertions-core-jvm to v6.2.1 by @specmatic-builder in https://github.com/specmatic/specmatic/pull/2588\r\n* Reuse license HTTP URL validator for validateTestOrStubUri by @sahilm in https://github.com/specmatic/specmatic/pull/2601\r\n* feat: add spec-level coverage metrics to CTRF reports by @Sushant092003 in https://github.com/specmatic/specmatic/pull/2585\r\n* Remove Deprecated Assertion and ExampleProcessor capabilites by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2603\r\n* Substitution support in tests and interpolated substitutions by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2604\r\n* Stop linting inline 405 and 415 examples as undeclared request variants by @joelrosario in https://github.com/specmatic/specmatic/pull/2605\r\n* Optimize WSDL choice-group parsing for XML patterns by @joelrosario in https://github.com/specmatic/specmatic/pull/2607\r\n* Lenient substitutions and internal changes by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2606\r\n* Composite substitutions and dictionary fallback generation by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2608\r\n* Ensure basedOn methods can work with substitution tokens by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2609\r\n* Ensure data is passed to substitution in ScenarioAsTest by @StarKhan6368 in https://github.com/specmatic/specmatic/pull/2610\r\n\r\n\r\n**Full Changelog**: https://github.com/specmatic/specmatic/compare/2.48.0...2.49.0",
+        "labels": [],
+        "state": "published"
+    }
+}

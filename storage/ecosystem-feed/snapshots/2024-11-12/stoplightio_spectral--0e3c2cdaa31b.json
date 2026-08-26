@@ -1,0 +1,25 @@
+{
+    "id": "0e3c2cdaa31b1caf4db660f75deaee5b735e881b447b7f2e60f4954bba9f5ade",
+    "source": "stoplightio/spectral",
+    "type": "release",
+    "title": "v6.14.0",
+    "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.0",
+    "publishedAt": "2024-11-12T12:05:25Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "stoplightio/spectral",
+        "type": "release",
+        "externalId": "release:v6.14.0",
+        "title": "v6.14.0",
+        "url": "https://github.com/stoplightio/spectral/releases/tag/v6.14.0",
+        "publishedAt": "2024-11-12T12:05:25Z",
+        "body": "## What's Changed\r\n* feat: dropped support for node 12/14\r\n* fix(rulesets): always allow string examples in asyncapi schema by @timonback in https://github.com/stoplightio/spectral/pull/2625\r\n* chore(deps): bump rollup from 2.79.0 to 2.79.2 by @dependabot in https://github.com/stoplightio/spectral/pull/2702\r\n* chore(rulesets): add Arazzo to rulesets docs by @frankkilcommins in https://github.com/stoplightio/spectral/pull/2703\r\n* feat(rulesets): add AsyncAPI v3 support by @jonaslagoni in https://github.com/stoplightio/spectral/pull/2697\r\n* chore(deps): bump jsonpath-plus from 7.1.0 to 10.0.0 by @dependabot in https://github.com/stoplightio/spectral/pull/2709\r\n* chore(deps): bump nimma 0.2.2 to 0.2.3 by @jacquesg in https://github.com/stoplightio/spectral/pull/2712\r\n* chore(deps): update jsonpath-plus to fix CVE-2024-21534 by @johannesmarx in https://github.com/stoplightio/spectral/pull/2718\r\n* chore(deps): bump elliptic from 6.5.7 to 6.6.0 by @dependabot in https://github.com/stoplightio/spectral/pull/2719\r\n\r\n**Full Changelog**: https://github.com/stoplightio/spectral/compare/v6.13.1...v6.14.0",
+        "labels": [],
+        "state": "published"
+    }
+}

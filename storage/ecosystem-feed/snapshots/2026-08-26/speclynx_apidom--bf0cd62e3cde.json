@@ -1,0 +1,24 @@
+{
+    "id": "bf0cd62e3cde872fe75b5fff1092c22340fafe4d350b1003c3870f8361c55e65",
+    "source": "speclynx/apidom",
+    "type": "tag",
+    "title": "tag v4.14.0",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v4.14.0",
+    "publishedAt": "2026-08-26T07:08:24+00:00",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "tag",
+        "externalId": "tag:v4.14.0",
+        "title": "tag v4.14.0",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v4.14.0",
+        "publishedAt": "2026-08-26T07:08:24+00:00",
+        "body": "ae231056cc8865f2467fa97ca456975301bbe265",
+        "labels": [],
+        "state": "published"
+    }
+}

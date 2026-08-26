@@ -1,0 +1,25 @@
+{
+    "id": "396ee20239c3b3afd11541f7c6011ce3475167a1a10e77a1ae7bcc19aad16b0b",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "docs: update CLAUDE.md to reflect current reality",
+    "url": "https://github.com/usearazzo/website/commit/ac65d199b313b25b1eea2a19af2881573634246e",
+    "publishedAt": "2026-08-20T11:57:56Z",
+    "tags": [
+        "a2a",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Roadmap A2A step type",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:ac65d19",
+        "title": "docs: update CLAUDE.md to reflect current reality",
+        "url": "https://github.com/usearazzo/website/commit/ac65d199b313b25b1eea2a19af2881573634246e",
+        "publishedAt": "2026-08-20T11:57:56Z",
+        "body": "docs: update CLAUDE.md to reflect current reality",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "54863145eefb6b6d01bafb6a56d16059c245169996734cdd3b36c21822ee4c55",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Typos in parameterSchema.yaml",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/28",
+    "publishedAt": "2022-10-13T15:48:12Z",
+    "tags": [
+        "schema"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:28",
+        "title": "Typos in parameterSchema.yaml",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/28",
+        "publishedAt": "2022-10-13T15:48:12Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

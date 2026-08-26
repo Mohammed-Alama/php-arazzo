@@ -1,0 +1,25 @@
+{
+    "id": "ed2f3f5cecdc08b4e1b9bf53cdd88be04f22b48dc80816ee756fad79e5d1c27b",
+    "source": "jentic/arazzo-engine",
+    "type": "pr",
+    "title": "Fix: Correctly resolve relative server URLs in OpenAPI specs",
+    "url": "https://github.com/jentic/arazzo-engine/pull/134",
+    "publishedAt": "2025-12-12T10:06:33Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/arazzo-engine",
+        "type": "pr",
+        "externalId": "pr:134",
+        "title": "Fix: Correctly resolve relative server URLs in OpenAPI specs",
+        "url": "https://github.com/jentic/arazzo-engine/pull/134",
+        "publishedAt": "2025-12-12T10:06:33Z",
+        "body": "This PR fixes an issue where the ServerProcessor failed to correctly resolve relative server URLs (e.g. /api/v3) from OpenAPI specifications.\r\n\r\nPreviously, **resolve_server_params** would short-circuit and return the relative URL template as-is if no variables were present, leading to invalid request URLs (missing scheme/host) when the OpenAPI server definition was relative.\r\n\r\n- Fixes short-circuit logic in ServerProcessor that prevented relative URLs from being resolved against the base server config.\r\n- Ensures absolute URLs are generated even when no server variables are present in the relative path.\r\n- Adds regression tests for relative server URL resolution.",
+        "labels": [],
+        "state": "open",
+        "merged": false
+    }
+}

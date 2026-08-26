@@ -1,0 +1,25 @@
+{
+    "id": "7f3153da620b369134aac4c499f2d741e650160f65c7c7e7c9e88bddfe4623aa",
+    "source": "speclynx/apidom",
+    "type": "release",
+    "title": "v5.0.2",
+    "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.2",
+    "publishedAt": "2026-08-04T11:31:21Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "speclynx/apidom",
+        "type": "release",
+        "externalId": "release:v5.0.2",
+        "title": "v5.0.2",
+        "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.2",
+        "publishedAt": "2026-08-04T11:31:21Z",
+        "body": "## [5.0.2](https://github.com/speclynx/apidom/compare/v5.0.1...v5.0.2) (2026-08-04)\n\n\n### Bug Fixes\n\n* **ns-arazzo-1:** tag JSON Schema refs with own element name ([#428](https://github.com/speclynx/apidom/issues/428)) ([91b759c](https://github.com/speclynx/apidom/commit/91b759c476d791251a0bcee9052aefc19ad8bb85))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

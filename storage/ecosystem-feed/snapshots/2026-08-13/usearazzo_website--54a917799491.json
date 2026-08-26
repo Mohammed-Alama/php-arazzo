@@ -1,0 +1,24 @@
+{
+    "id": "54a917799491adbb7c7acc5592263fbbc775ef0defb318474862ec51b3b5e854",
+    "source": "usearazzo/website",
+    "type": "commit",
+    "title": "fix: link to github org",
+    "url": "https://github.com/usearazzo/website/commit/7608225cb67ec13913fd1a3b67b0d66d3338fe3e",
+    "publishedAt": "2026-08-13T10:44:27Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "usearazzo/website",
+        "type": "commit",
+        "externalId": "commit:7608225",
+        "title": "fix: link to github org",
+        "url": "https://github.com/usearazzo/website/commit/7608225cb67ec13913fd1a3b67b0d66d3338fe3e",
+        "publishedAt": "2026-08-13T10:44:27Z",
+        "body": "fix: link to github org",
+        "labels": [],
+        "state": ""
+    }
+}

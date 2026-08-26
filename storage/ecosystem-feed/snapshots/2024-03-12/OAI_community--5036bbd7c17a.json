@@ -1,0 +1,25 @@
+{
+    "id": "5036bbd7c17a30d756e122fc91f3068869af1d8ae45bab6e85d7ac130b27c7ab",
+    "source": "OAI/community",
+    "type": "issue",
+    "title": " is any tools with implements the validation the openApi by the Java annotation, such as io.swagger.v3.oas.annotations.media.Schema",
+    "url": "https://github.com/OAI/community/issues/5",
+    "publishedAt": "2024-03-12T09:27:57Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/community",
+        "type": "issue",
+        "externalId": "issue:5",
+        "title": " is any tools with implements the validation the openApi by the Java annotation, such as io.swagger.v3.oas.annotations.media.Schema",
+        "url": "https://github.com/OAI/community/issues/5",
+        "publishedAt": "2024-03-12T09:27:57Z",
+        "body": " is any tools with implements the validation the openApi by the Java annotation, such as io.swagger.v3.oas.annotations.media.Schema",
+        "labels": [],
+        "state": "closed"
+    }
+}

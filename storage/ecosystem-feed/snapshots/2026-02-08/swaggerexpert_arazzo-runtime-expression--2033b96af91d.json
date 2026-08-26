@@ -1,0 +1,25 @@
+{
+    "id": "2033b96af91d80bf09ee361954550bc592c97f4e364d9ea7d4903d762727e9a7",
+    "source": "swaggerexpert/arazzo-runtime-expression",
+    "type": "release",
+    "title": "v2.0.3",
+    "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3",
+    "publishedAt": "2026-02-08T22:43:08Z",
+    "tags": [
+        "breaking",
+        "spec"
+    ],
+    "severity": "breaking",
+    "relevance": "Potential breaking change (2.0)",
+    "raw": {
+        "source": "swaggerexpert/arazzo-runtime-expression",
+        "type": "release",
+        "externalId": "release:v2.0.3",
+        "title": "v2.0.3",
+        "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3",
+        "publishedAt": "2026-02-08T22:43:08Z",
+        "body": "## [2.0.3](https://github.com/swaggerexpert/arazzo-runtime-expression/compare/v2.0.2...v2.0.3) (2026-02-08)\n\n\n### Bug Fixes\n\n* fix cjs distribution artifacts ([#100](https://github.com/swaggerexpert/arazzo-runtime-expression/issues/100)) ([3bb232d](https://github.com/swaggerexpert/arazzo-runtime-expression/commit/3bb232d8e3794fd1f11194909a1614f281f43343))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

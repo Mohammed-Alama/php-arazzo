@@ -1,0 +1,26 @@
+{
+    "id": "17b2c8ff936bfc37e1c67b8e7eb17d3a15bf1e9d867eb619e67a6704e39e2b94",
+    "source": "OAI/OpenAPI-Specification",
+    "type": "pr",
+    "title": "Dev sync with main",
+    "url": "https://github.com/OAI/OpenAPI-Specification/pull/5509",
+    "publishedAt": "2026-08-20T16:57:26Z",
+    "tags": [
+        "schema",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/OpenAPI-Specification",
+        "type": "pr",
+        "externalId": "pr:5509",
+        "title": "Dev sync with main",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5509",
+        "publishedAt": "2026-08-20T16:57:26Z",
+        "body": "Sync PR with manually resolved a straightforward conflict in `tests/schema/oas-schema.mjs`\r\n<!--\r\nThank you for contributing to the OpenAPI Specification!\r\n\r\nPlease make certain you are submitting your PR on the correct\r\nbranch, to the files under the \"src/\" directory (which is not\r\npresent on the main branch, only on the development branches).\r\n\r\n* 3.1.x spec and schemas: v3.1-dev branch\r\n* 3.2.x spec and schemas: v3.2-dev branch\r\n* 3.3.x spec and schemas: v3.3-dev branch\r\n* process documentation and shared infrastructure: main\r\n\r\nNote that we do not accept changes to published specifications.\r\n-->\r\n\r\n<!-- Tick one of the following options and remove the other two: -->\r\n\r\n- [ ] schema changes are included in this pull request\r\n- [ ] schema changes are needed for this pull request but not done yet\r\n- [X] no schema changes are needed for this pull request\r\n",
+        "labels": [],
+        "state": "closed",
+        "merged": false
+    }
+}

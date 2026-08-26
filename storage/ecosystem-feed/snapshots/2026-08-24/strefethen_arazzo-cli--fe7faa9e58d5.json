@@ -1,0 +1,26 @@
+{
+    "id": "fe7faa9e58d50c0d8a36712a8f8e97ab9eb5cd1a084fc6eb0f50b3a571942ff6",
+    "source": "strefethen/arazzo-cli",
+    "type": "commit",
+    "title": "test: pin steps --json for the unsupported operationPath form",
+    "url": "https://github.com/strefethen/arazzo-cli/commit/99affb00c4a6d6353bf33b43021a5af3681f744e",
+    "publishedAt": "2026-08-24T03:36:39Z",
+    "tags": [
+        "mcp",
+        "cli",
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "P2-2 MCP server exposure",
+    "raw": {
+        "source": "strefethen/arazzo-cli",
+        "type": "commit",
+        "externalId": "commit:99affb0",
+        "title": "test: pin steps --json for the unsupported operationPath form",
+        "url": "https://github.com/strefethen/arazzo-cli/commit/99affb00c4a6d6353bf33b43021a5af3681f744e",
+        "publishedAt": "2026-08-24T03:36:39Z",
+        "body": "test: pin steps --json for the unsupported operationPath form\n\nReview follow-ups for the describe-surface classifier change. A new\ncontract snapshot runs steps --json against the unsupported\nspecification-form fixture at the process boundary, pinning that the\nstep row carries the target verbatim and omits the method key entirely\n(the runtime refuses the value before deriving a method). The MCP\nParsedStepTarget gains the same routing doc comment its CLI twin got.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+        "labels": [],
+        "state": ""
+    }
+}

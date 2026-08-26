@@ -1,0 +1,27 @@
+{
+    "id": "64d3b45ca203ff94e3453f812cfc449592660da37c406d674e20bac700b7d989",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Create devcontainer.json",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/192",
+    "publishedAt": "2025-03-03T08:45:48Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:192",
+        "title": "Create devcontainer.json",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/192",
+        "publishedAt": "2025-03-03T08:45:48Z",
+        "body": "",
+        "labels": [
+            "wontfix"
+        ],
+        "state": "closed",
+        "merged": false
+    }
+}

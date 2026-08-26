@@ -1,0 +1,24 @@
+{
+    "id": "3f6cc1673b453ae3a262dfb95d85a24e25946acffb6f4616b624b9ad75b00c65",
+    "source": "OAI/Arazzo-Specification",
+    "type": "commit",
+    "title": "Merge pull request #520 from OAI/dependabot/github_actions/actions/setup-node-7",
+    "url": "https://github.com/OAI/Arazzo-Specification/commit/7fc0ec2836d4d647152609f0afb63aa916ff19b5",
+    "publishedAt": "2026-07-27T10:32:23Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "externalId": "commit:7fc0ec2",
+        "title": "Merge pull request #520 from OAI/dependabot/github_actions/actions/setup-node-7",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/7fc0ec2836d4d647152609f0afb63aa916ff19b5",
+        "publishedAt": "2026-07-27T10:32:23Z",
+        "body": "Merge pull request #520 from OAI/dependabot/github_actions/actions/setup-node-7\n\nchore(deps): bump actions/setup-node from 6 to 7",
+        "labels": [],
+        "state": ""
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "id": "74c30925cb6cc3292b61de98280b27492cbe6273b5bd36e3041d32acf2f89050",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.18",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.18",
+    "publishedAt": "2026-02-20T12:56:25Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.18",
+        "title": "v1.0.0-alpha.18",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.18",
+        "publishedAt": "2026-02-20T12:56:25Z",
+        "body": "# [1.0.0-alpha.18](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.17...v1.0.0-alpha.18) (2026-02-20)\n\n\n### Features\n\n* **parser:** add support for lossless roundtrips ([#91](https://github.com/jentic/jentic-arazzo-tools/issues/91)) ([2cffe4f](https://github.com/jentic/jentic-arazzo-tools/commit/2cffe4f142c4a541126a3f5f2e3634195c906f75))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

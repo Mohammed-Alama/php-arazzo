@@ -1,0 +1,25 @@
+{
+    "id": "43817e25381c283f33d86a50b33ba443a7185a86c19637c1bdfaa63590df54c2",
+    "source": "OAI/sig-moonwalk",
+    "type": "pr",
+    "title": "Consistent type of contentSchema",
+    "url": "https://github.com/OAI/sig-moonwalk/pull/35",
+    "publishedAt": "2022-10-13T15:48:28Z",
+    "tags": [
+        "schema"
+    ],
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
+    "raw": {
+        "source": "OAI/sig-moonwalk",
+        "type": "pr",
+        "externalId": "pr:35",
+        "title": "Consistent type of contentSchema",
+        "url": "https://github.com/OAI/sig-moonwalk/pull/35",
+        "publishedAt": "2022-10-13T15:48:28Z",
+        "body": "Use `contentSchema: JSONSchema` consistently in diagram\r\n\r\n@darrelmiller ",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

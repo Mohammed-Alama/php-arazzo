@@ -1,0 +1,25 @@
+{
+    "id": "2d9ae5c6af6060fc190c9ccf1e9a7147f51cae4ad7f7e827a88db1782df5539b",
+    "source": "OAI/tools.openapis.org",
+    "type": "pr",
+    "title": "Remove link to no-longer-used GitHub project",
+    "url": "https://github.com/OAI/tools.openapis.org/pull/210",
+    "publishedAt": "2025-12-02T16:19:00Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "externalId": "pr:210",
+        "title": "Remove link to no-longer-used GitHub project",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/210",
+        "publishedAt": "2025-12-02T16:19:00Z",
+        "body": "Fixes #200.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "id": "08023f761c314ef397fd47faa22a0178a390de1308253b39a19a9886d7afab4d",
+    "source": "OAI/learn.openapis.org",
+    "type": "pr",
+    "title": "update references to 3.1.0",
+    "url": "https://github.com/OAI/learn.openapis.org/pull/183",
+    "publishedAt": "2026-03-05T17:17:05Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "OAI/learn.openapis.org",
+        "type": "pr",
+        "externalId": "pr:183",
+        "title": "update references to 3.1.0",
+        "url": "https://github.com/OAI/learn.openapis.org/pull/183",
+        "publishedAt": "2026-03-05T17:17:05Z",
+        "body": "",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}

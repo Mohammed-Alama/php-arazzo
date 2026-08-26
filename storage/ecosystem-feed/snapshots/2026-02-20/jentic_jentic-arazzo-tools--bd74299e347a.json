@@ -1,0 +1,24 @@
+{
+    "id": "bd74299e347a1d4dfa4665f045d00e2af14a1ebb439ae0b2cc1f712f57637e68",
+    "source": "jentic/jentic-arazzo-tools",
+    "type": "release",
+    "title": "v1.0.0-alpha.14",
+    "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.14",
+    "publishedAt": "2026-02-20T10:05:44Z",
+    "tags": [
+        "spec"
+    ],
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
+    "raw": {
+        "source": "jentic/jentic-arazzo-tools",
+        "type": "release",
+        "externalId": "release:v1.0.0-alpha.14",
+        "title": "v1.0.0-alpha.14",
+        "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.14",
+        "publishedAt": "2026-02-20T10:05:44Z",
+        "body": "# [1.0.0-alpha.14](https://github.com/jentic/jentic-arazzo-tools/compare/v1.0.0-alpha.13...v1.0.0-alpha.14) (2026-02-20)\n\n\n### Features\n\n* add jentic-arazzo-ui package ([#83](https://github.com/jentic/jentic-arazzo-tools/issues/83)) ([08812b0](https://github.com/jentic/jentic-arazzo-tools/commit/08812b05670c534a28773dbf5e1939f5e55f2b20))\n\n\n\n",
+        "labels": [],
+        "state": "published"
+    }
+}

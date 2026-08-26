@@ -1,0 +1,23 @@
+{
+    "id": "f7691d34382215b0057eb08a0c69e897bdd720e1f43ce25b125c21a792629e1d",
+    "source": "OAI/community",
+    "type": "pr",
+    "title": "Update README.md",
+    "url": "https://github.com/OAI/community/pull/4",
+    "publishedAt": "2022-09-19T20:33:14Z",
+    "tags": [],
+    "severity": "actionable",
+    "relevance": null,
+    "raw": {
+        "source": "OAI/community",
+        "type": "pr",
+        "externalId": "pr:4",
+        "title": "Update README.md",
+        "url": "https://github.com/OAI/community/pull/4",
+        "publishedAt": "2022-09-19T20:33:14Z",
+        "body": "Added some more welcoming verbiage up top.",
+        "labels": [],
+        "state": "closed",
+        "merged": true
+    }
+}
