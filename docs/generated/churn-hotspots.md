@@ -12,32 +12,32 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["Runner", "Validator", "Expression", "Resolver", "Parser", "Laravel/Http", "Spec", "Laravel/Lock", "Laravel/Persistence", "Console", "Laravel/Bindings", "Laravel/Queue"]
+    x-axis ["Runner", "Validator", "Expression", "Resolver", "Parser", "Laravel/Http", "Spec", "Laravel/Persistence", "Console", "Laravel/Lock", "Laravel/Queue", "Laravel/State"]
     y-axis "Touches" 0 --> 70
-    bar [59, 11, 10, 8, 7, 6, 6, 4, 4, 3, 3, 3]
+    bar [60, 12, 11, 10, 8, 7, 7, 5, 4, 4, 4, 4]
 ```
 
-Analyzed 133 total file-touches across 18 modules.
+Analyzed 149 total file-touches across 18 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Runner` | 59 | 44% | 10,109 | 5.8 |
-| `Validator` | 11 | 8% | 3,094 | 3.6 |
-| `Expression` | 10 | 8% | 880 | 11.4 |
-| `Resolver` | 8 | 6% | 348 | 23 |
-| `Parser` | 7 | 5% | 1,078 | 6.5 |
-| `Laravel/Http` | 6 | 5% | 161 | 37.3 |
-| `Spec` | 6 | 5% | 706 | 8.5 |
+| `Runner` | 60 | 40% | 10,109 | 5.9 |
+| `Validator` | 12 | 8% | 3,094 | 3.9 |
+| `Expression` | 11 | 7% | 880 | 12.5 |
+| `Resolver` | 10 | 7% | 348 | 28.7 |
+| `Parser` | 8 | 5% | 1,078 | 7.4 |
+| `Laravel/Http` | 7 | 5% | 161 | 43.5 |
+| `Spec` | 7 | 5% | 706 | 9.9 |
+| `Laravel/Persistence` | 5 | 3% | 252 | 19.8 |
+| `Console` | 4 | 3% | 481 | 8.3 |
 | `Laravel/Lock` | 4 | 3% | 49 | 81.6 |
-| `Laravel/Persistence` | 4 | 3% | 252 | 15.9 |
-| `Console` | 3 | 2% | 481 | 6.2 |
+| `Laravel/Queue` | 4 | 3% | 100 | 40 |
+| `Laravel/State` | 4 | 3% | 38 | 105.3 |
 | `Laravel/Bindings` | 3 | 2% | 451 | 6.7 |
-| `Laravel/Queue` | 3 | 2% | 100 | 30 |
-| `Laravel/State` | 3 | 2% | 38 | 78.9 |
-| `Support` | 2 | 2% | 263 | 7.6 |
-| `Generator` | 1 | 1% | 119 | 8.4 |
-| `Laravel/Events` | 1 | 1% | 21 | 47.6 |
+| `Support` | 3 | 2% | 263 | 11.4 |
+| `Generator` | 2 | 1% | 119 | 16.8 |
+| `Laravel/Events` | 2 | 1% | 21 | 95.2 |
+| `Renderer` | 2 | 1% | 253 | 7.9 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Renderer` | 1 | 1% | 253 | 4 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (37.3), `Resolver` (23), `Expression` (11.4)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (43.5), `Resolver` (28.7), `Laravel/Persistence` (19.8)

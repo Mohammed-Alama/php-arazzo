@@ -5,15 +5,6 @@ declare(strict_types=1);
 use Alama\Arazzo\Runner\State\FileStateStore;
 use Alama\Arazzo\Runner\State\InMemoryStateStore;
 
-if (!function_exists('tempStateDir')) {
-    function tempStateDir(): string
-    {
-        $dir = sys_get_temp_dir() . '/arazzo-state-' . bin2hex(random_bytes(4));
-
-        return $dir;
-    }
-}
-
 it('persists, loads, and deletes execution state as JSON files', function (): void {
     $store = new FileStateStore(tempStateDir());
 
@@ -45,7 +36,7 @@ it('sanitizes hostile execution ids into safe filenames', function (): void {
     $store->save('../../etc/passwd', ['x' => 1]);
 
     $path = $store->path('../../etc/passwd');
-    expect(file_exists(dirname($dir, 2) . '/passwd.json'))->toBeFalse()
+    expect(file_exists(dirname($dir, 2).'/passwd.json'))->toBeFalse()
         ->and(dirname($path))->toBe($dir)
         ->and(str_contains($path, '/../'))->toBeFalse()
         ->and($store->load('../../etc/passwd'))->not->toBeNull();

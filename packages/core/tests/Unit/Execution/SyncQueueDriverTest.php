@@ -5,40 +5,33 @@ declare(strict_types=1);
 namespace Tests\Unit\Execution;
 
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
-use PHPUnit\Framework\TestCase;
 
-class SyncQueueDriverTest extends TestCase
-{
-    public function test_dispatch_records_single_job_with_delay(): void
-    {
-        $driver = new SyncQueueDriver();
-        $job = new \stdClass();
-        $delaySeconds = 5;
+it('dispatch records single job with delay', function (): void {
+    $driver = new SyncQueueDriver();
+    $job = new \stdClass();
 
-        $driver->dispatch($job, $delaySeconds);
+    $driver->dispatch($job, 5);
 
-        $this->assertCount(1, $driver->dispatched);
-        $this->assertSame($job, $driver->dispatched[0]['job']);
-        $this->assertSame(5, $driver->dispatched[0]['delaySeconds']);
-    }
+    expect($driver->dispatched)->toHaveCount(1)
+        ->and($driver->dispatched[0]['job'])->toBe($job)
+        ->and($driver->dispatched[0]['delaySeconds'])->toBe(5);
+});
 
-    public function test_dispatch_records_multiple_jobs_in_order(): void
-    {
-        $driver = new SyncQueueDriver();
-        $job1 = new \stdClass();
-        $job2 = new \stdClass();
-        $job3 = new \stdClass();
+it('dispatch records multiple jobs in order', function (): void {
+    $driver = new SyncQueueDriver();
+    $job1 = new \stdClass();
+    $job2 = new \stdClass();
+    $job3 = new \stdClass();
 
-        $driver->dispatch($job1, 0);
-        $driver->dispatch($job2, 10);
-        $driver->dispatch($job3, 20);
+    $driver->dispatch($job1, 0);
+    $driver->dispatch($job2, 10);
+    $driver->dispatch($job3, 20);
 
-        $this->assertCount(3, $driver->dispatched);
-        $this->assertSame($job1, $driver->dispatched[0]['job']);
-        $this->assertSame(0, $driver->dispatched[0]['delaySeconds']);
-        $this->assertSame($job2, $driver->dispatched[1]['job']);
-        $this->assertSame(10, $driver->dispatched[1]['delaySeconds']);
-        $this->assertSame($job3, $driver->dispatched[2]['job']);
-        $this->assertSame(20, $driver->dispatched[2]['delaySeconds']);
-    }
-}
+    expect($driver->dispatched)->toHaveCount(3)
+        ->and($driver->dispatched[0]['job'])->toBe($job1)
+        ->and($driver->dispatched[0]['delaySeconds'])->toBe(0)
+        ->and($driver->dispatched[1]['job'])->toBe($job2)
+        ->and($driver->dispatched[1]['delaySeconds'])->toBe(10)
+        ->and($driver->dispatched[2]['job'])->toBe($job3)
+        ->and($driver->dispatched[2]['delaySeconds'])->toBe(20);
+});

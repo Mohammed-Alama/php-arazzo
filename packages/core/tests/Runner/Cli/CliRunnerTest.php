@@ -17,9 +17,7 @@ use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 class CliFakeExecutor implements StepProtocolExecutorInterface
 {
-    public function __construct(private readonly int $statusCode = 200)
-    {
-    }
+    public function __construct(private readonly int $statusCode = 200) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
@@ -29,13 +27,6 @@ class CliFakeExecutor implements StepProtocolExecutorInterface
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
         return StepExecutionOutcome::resolved($this->statusCode, ['from' => $step->stepId], [], inputs: []);
-    }
-}
-
-if (!function_exists('tempStateDir')) {
-    function tempStateDir(): string
-    {
-        return sys_get_temp_dir() . '/arazzo-cli-' . bin2hex(random_bytes(4));
     }
 }
 

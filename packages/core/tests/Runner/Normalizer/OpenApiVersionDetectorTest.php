@@ -6,51 +6,27 @@ namespace Alama\Arazzo\Tests\Runner\Normalizer;
 
 use Alama\Arazzo\Runner\Normalizer\OpenApiVersionDetector;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 
-class OpenApiVersionDetectorTest extends TestCase
-{
-    private OpenApiVersionDetector $detector;
+beforeEach(function (): void {
+    $this->detector = new OpenApiVersionDetector();
+});
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->detector = new OpenApiVersionDetector();
-    }
+it('detects swagger 2.0', function (): void {
+    expect($this->detector->detect(['swagger' => '2.0']))->toBe('2.0');
+});
 
-    public function test_detects_swagger2(): void
-    {
-        $document = ['swagger' => '2.0'];
-        $this->assertEquals('2.0', $this->detector->detect($document));
-    }
+it('detects open api 3.0', function (): void {
+    expect($this->detector->detect(['openapi' => '3.0.3']))->toBe('3.0');
+});
 
-    public function test_detects_open_api30(): void
-    {
-        $document = ['openapi' => '3.0.3'];
-        $this->assertEquals('3.0', $this->detector->detect($document));
-    }
+it('detects open api 3.1', function (): void {
+    expect($this->detector->detect(['openapi' => '3.1.0']))->toBe('3.1');
+});
 
-    public function test_detects_open_api31(): void
-    {
-        $document = ['openapi' => '3.1.0'];
-        $this->assertEquals('3.1', $this->detector->detect($document));
-    }
+it('throws on unknown version', function (): void {
+    $this->detector->detect(['openapi' => '4.0.0']);
+})->throws(InvalidArgumentException::class, 'Unsupported or missing OpenAPI/Swagger version in document.');
 
-    public function test_throws_on_unknown_version(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unsupported or missing OpenAPI/Swagger version in document.');
-
-        $document = ['openapi' => '4.0.0'];
-        $this->detector->detect($document);
-    }
-
-    public function test_throws_on_missing_version(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unsupported or missing OpenAPI/Swagger version in document.');
-
-        $document = ['info' => ['title' => 'Test API']];
-        $this->detector->detect($document);
-    }
-}
+it('throws on missing version', function (): void {
+    $this->detector->detect(['info' => ['title' => 'Test API']]);
+})->throws(InvalidArgumentException::class, 'Unsupported or missing OpenAPI/Swagger version in document.');
