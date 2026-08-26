@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Contracts;
 
-use Alama\Arazzo\Runner\Execution\OpenApiPayload;
+use Alama\Arazzo\Execution\OpenApiPayload;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Psr\Http\Message\ResponseInterface;
 

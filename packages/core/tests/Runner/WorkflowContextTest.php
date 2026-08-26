@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 
 it('is immutable on withStepResult', function (): void {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Context\PendingCorrelation;
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\HttpClientInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Execution\AsyncApiStepExecutor;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Execution\AsyncApiStepExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ParameterIn;

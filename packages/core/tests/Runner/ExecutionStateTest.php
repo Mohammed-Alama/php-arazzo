@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Runner\Context\ExecutionState;
+use Alama\Arazzo\Context\ExecutionState;
 
 it('preserves every execution field through serialization', function (): void {
     $state = new ExecutionState(

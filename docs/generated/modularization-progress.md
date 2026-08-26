@@ -9,15 +9,15 @@ each commit. A plan that never meets this doc is a wish, not a roadmap.
 
 Plan: `2026-08-25-runner-modularization-plan.md`
 
-- Files promised: **49** · created: **19** (**39%**)
+- Files promised: **49** · created: **13** (**27%**)
 - Checkboxes ticked: **9 / 89**
 
 ```mermaid
 xychart-beta
-    title "Planned files created (39%)"
+    title "Planned files created (27%)"
     x-axis ["created", "missing"]
     y-axis "Files" 0 --> 49
-    bar [19, 30]
+    bar [13, 36]
 ```
 
 ## Not yet in the tree
@@ -43,7 +43,13 @@ xychart-beta
 - `packages/core/src/Runner/Cli/CliStateStore.php`
 - `packages/core/src/Runner/Telemetry/OtelSetup.php`
 - `packages/core/src/Runner/Telemetry/TraceContextPropagator.php`
+- `packages/core/src/Runner/Execution/WorkflowEngine.php`
+- `packages/core/src/Runner/Execution/StepExecutionWorker.php`
 - `packages/core/src/Runner/Execution/Contracts/LockManagerInterface.php`
+- `packages/core/src/Runner/Execution/RunControlFlow.php`
+- `packages/core/src/Runner/Execution/WorkflowExecutor.php`
+- `packages/core/src/Runner/Context/ExecutionState.php`
+- `packages/core/src/Runner/Context/WorkflowContext.php`
 - `packages/core/src/Runner/Execution/StepProtocolExecutorInterface.php`
 - `packages/core/tests/Runner/Policy/BackoffCalculatorTest.php`
 - `packages/core/tests/Runner/Async/StepExecutorTest.php`

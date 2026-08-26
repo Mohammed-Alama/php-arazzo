@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;

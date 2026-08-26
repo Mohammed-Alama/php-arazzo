@@ -60,10 +60,10 @@ mindmap
       InMemoryStateStore
       RedisHotStateStore
     StepProtocolExecutorInterface
-      SubWorkflowExecutor
       HttpStepExecutor
       AsyncApiStepExecutor
       SubWorkflowStepExecutor
+      SubWorkflowExecutor
     WritableDefinitionRegistryInterface
       InMemoryDefinitionRegistry
 ```
@@ -89,5 +89,5 @@ mindmap
 | `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `SchemaValidatorInterface` | **yes** | `ArazzoSchemaValidator` <small>core</small> |
 | `StateStoreInterface` | **yes** | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
-| `StepProtocolExecutorInterface` | **yes** | `SubWorkflowExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `StepProtocolExecutorInterface` | **yes** | `HttpStepExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | **yes** | `InMemoryDefinitionRegistry` <small>core</small> |

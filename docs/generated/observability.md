@@ -34,8 +34,8 @@ Written by `Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener` — th
 
 | Class | Level(s) | Calls |
 |---|---|---:|
-| `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 | `ArazzoOutputExtractor` <small>core</small> | `warning` | 1 |
+| `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 | `OfficialSchemaRule` <small>core</small> | `error` | 2 |
 | `ActionGotoTargetResolvesRule` <small>core</small> | `error` | 2 |
 | `ActionRetryLimitsRule` <small>core</small> | `error` | 2 |
@@ -96,7 +96,7 @@ Runtime state survives process boundaries through these contracts:
 | `ExecutionRegistryInterface` | `DatabaseExecutionRegistry` <small>laravel</small>, `InProcessExecutionRegistry` <small>core</small> |
 | `LockManagerInterface` | `LaravelRedisLockManager` <small>laravel</small>, `CliRunner` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
-| `QueueDriverInterface` | `LaravelQueueDriver` <small>laravel</small>, `SyncQueueDriver` <small>core</small> |
+| `QueueDriverInterface` | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small>, `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | `InMemoryDefinitionRegistry` <small>core</small> |
 
@@ -106,7 +106,11 @@ Where async suspend/resume bookkeeping happens:
 
 | Class | Role signals |
 |---|---|
+| `WorkflowContext` <small>core</small> | resumes from webhook |
 | `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
+| `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
+| `StepExecutionWorker` <small>core</small> | resumes from webhook |
+| `StepOutcomeHandler` <small>core</small> | reads pending state |
 | `ExecutionBindings` <small>laravel</small> | resumes from webhook |
 | `WebhookResumeController` <small>laravel</small> | resumes from webhook |
 | `LaravelArazzoServiceProvider` <small>laravel</small> | resumes from webhook |
@@ -115,10 +119,6 @@ Where async suspend/resume bookkeeping happens:
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
 | `TransitionApplier` <small>core</small> | resumes from webhook |
 | `CliRunner` <small>core</small> | resumes from webhook |
-| `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumed` <small>core</small> | resumes from webhook |
-| `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
-| `StepExecutionWorker` <small>core</small> | resumes from webhook |
-| `StepOutcomeHandler` <small>core</small> | reads pending state |
 | `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
 | `LedgerAppendingListener` <small>core</small> | resumes from webhook |

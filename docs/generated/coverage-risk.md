@@ -21,15 +21,18 @@ quadrantChart
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
     Console: [1, 0.571]
-    Contracts: [0.188, 1]
-    Expression: [0.4, 1]
+    Context: [0.111, 1]
+    Contracts: [0.286, 1]
+    Evaluation: [0.455, 1]
+    Execution: [0.632, 1]
+    Expression: [0.333, 1]
     Generator: [0.333, 1]
-    Laravel/Bindings: [0.933, 0.333]
+    Laravel/Bindings: [0.941, 0.333]
     Laravel/Events: [0, 1]
     Laravel/Http: [0.714, 1]
     Laravel/Lock: [0.5, 1]
-    Laravel/Persistence: [0.8, 1]
-    Laravel/Queue: [0.667, 1]
+    Laravel/Persistence: [0.857, 1]
+    Laravel/Queue: [0.75, 1]
     Laravel/State: [0.5, 1]
     Laravel/Support: [0, 1]
     Normalizer: [0.286, 1]
@@ -38,26 +41,29 @@ quadrantChart
     Protocol: [1, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
-    Runner: [0.476, 1]
-    Spec: [0.071, 1]
+    Runner: [0.471, 1]
+    Spec: [0.059, 1]
     State: [0.75, 0.833]
-    Support: [0.25, 1]
+    Support: [0.2, 1]
     Telemetry: [0, 0.5]
-    Validator: [0.667, 0.952]
+    Validator: [0.636, 0.952]
 ```
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
 | `Console` | 1.00 | 4 | 7 | 57% |
-| `Contracts` | 0.19 | 46 | 21 | 100% |
-| `Expression` | 0.40 | 82 | 23 | 100% |
+| `Context` | 0.11 | 55 | 4 | 100% |
+| `Contracts` | 0.29 | 46 | 21 | 100% |
+| `Evaluation` | 0.46 | 64 | 30 | 100% |
+| `Execution` | 0.63 | 58 | 34 | 100% |
+| `Expression` | 0.33 | 82 | 23 | 100% |
 | `Generator` | 0.33 | 4 | 2 | 100% |
-| `Laravel/Bindings` | 0.93 | 2 | 6 | 33% |
+| `Laravel/Bindings` | 0.94 | 2 | 6 | 33% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `Laravel/Http` | 0.71 | 4 | 3 | 100% |
 | `Laravel/Lock` | 0.50 | 3 | 1 | 100% |
-| `Laravel/Persistence` | 0.80 | 6 | 4 | 100% |
-| `Laravel/Queue` | 0.67 | 6 | 3 | 100% |
+| `Laravel/Persistence` | 0.86 | 6 | 4 | 100% |
+| `Laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `Laravel/State` | 0.50 | 3 | 1 | 100% |
 | `Laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `Normalizer` | 0.29 | 18 | 5 | 100% |
@@ -66,9 +72,9 @@ quadrantChart
 | `Protocol` | 1.00 | 2 | 2 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 11 | 100% |
-| `Runner` | 0.48 | 122 | 104 | 100% |
-| `Spec` | 0.07 | 139 | 33 | 100% |
+| `Runner` | 0.47 | 50 | 36 | 100% |
+| `Spec` | 0.06 | 139 | 33 | 100% |
 | `State` | 0.75 | 5 | 6 | 83% |
-| `Support` | 0.25 | 18 | 6 | 100% |
+| `Support` | 0.20 | 18 | 6 | 100% |
 | `Telemetry` | 0.00 | 1 | 2 | 50% |
-| `Validator` | 0.67 | 60 | 63 | 95% |
+| `Validator` | 0.64 | 60 | 63 | 95% |

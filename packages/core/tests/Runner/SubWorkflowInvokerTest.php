@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Execution\ExecutionResult;
+use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Execution\SubWorkflowInvoker;
+use Alama\Arazzo\Execution\SubWorkflowResult;
+use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Exceptions\ExecutionException;
-use Alama\Arazzo\Runner\Execution\ExecutionResult;
-use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
-use Alama\Arazzo\Runner\Execution\SubWorkflowResult;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;

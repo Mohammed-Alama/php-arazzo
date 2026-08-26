@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Context\PendingCorrelation;
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\LockManagerInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Events\CorrelationResumed;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Expression;

@@ -57,7 +57,7 @@ use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Loader;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Execution\WorkflowExecutor;
 
 class RunsCheckoutWorkflow
 {

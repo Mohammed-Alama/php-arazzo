@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Evaluation\Exceptions\SelectorEvaluationException;
-use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Evaluation\Exceptions\SelectorEvaluationException;
+use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 
 it('advertises xpath-10 only', function () {
     expect((new DomXpathEvaluator())->supportedVersions())->toBe(['xpath-10']);

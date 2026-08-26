@@ -9,7 +9,10 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 ```mermaid
 flowchart LR
     Console["Alama\Arazzo\Console"]:::coreNode
+    Context["Alama\Arazzo\Context"]:::coreNode
     Contracts["Alama\Arazzo\Contracts"]:::coreNode
+    Evaluation["Alama\Arazzo\Evaluation"]:::coreNode
+    Execution["Alama\Arazzo\Execution"]:::coreNode
     Expression["Alama\Arazzo\Expression"]:::coreNode
     Generator["Alama\Arazzo\Generator"]:::coreNode
     Laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
@@ -35,13 +38,36 @@ flowchart LR
     Console --> Parser
     Console --> Spec
     Console --> Validator
-    Console --> Runner
+    Console --> Evaluation
     Console --> Renderer
+    Console --> Execution
     Console --> Normalizer
     Console --> Resolver
-    Contracts --> Runner
+    Console --> Runner
+    Context --> Spec
+    Contracts --> Context
+    Contracts --> Execution
     Contracts --> Spec
+    Contracts --> Runner
     Contracts --> Normalizer
+    Contracts --> Evaluation
+    Evaluation --> Context
+    Evaluation --> Contracts
+    Evaluation --> Spec
+    Evaluation --> Expression
+    Evaluation --> Support
+    Execution --> Contracts
+    Execution --> Spec
+    Execution --> Context
+    Execution --> Evaluation
+    Execution --> Runner
+    Execution --> Resolver
+    Execution --> Support
+    Execution --> Telemetry
+    Execution --> Validator
+    Execution --> Policy
+    Execution --> State
+    Execution --> Expression
     Expression --> Spec
     Expression --> Support
     Generator --> Contracts
@@ -49,38 +75,41 @@ flowchart LR
     Normalizer --> Support
     Parser --> Spec
     Parser --> Support
+    Policy --> Context
     Policy --> Contracts
-    Policy --> Runner
     Policy --> Spec
+    Protocol --> Context
     Protocol --> Contracts
-    Protocol --> Runner
+    Protocol --> Evaluation
+    Protocol --> Execution
     Protocol --> Spec
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
     Runner --> Contracts
+    Runner --> Context
     Runner --> Spec
     Runner --> Support
     Runner --> Validator
+    Runner --> Execution
     Runner --> Telemetry
-    Runner --> Resolver
-    Runner --> Policy
-    Runner --> State
-    Runner --> Expression
     Runner --> Normalizer
     Spec --> Expression
     State --> Contracts
     State --> Spec
-    State --> Runner
+    State --> Context
     Support --> Contracts
     Support --> Runner
     Validator --> Expression
     Validator --> Spec
+    Validator --> Evaluation
     Validator --> Normalizer
     Validator --> Resolver
     Validator --> Runner
     Validator --> Support
     Laravel_Bindings --> Contracts
+    Laravel_Bindings --> Evaluation
+    Laravel_Bindings --> Execution
     Laravel_Bindings --> Laravel_Support
     Laravel_Bindings --> Runner
     Laravel_Bindings --> Validator
@@ -100,12 +129,15 @@ flowchart LR
     Laravel_Http --> Spec
     Laravel_Http --> Runner
     Laravel_Lock --> Contracts
+    Laravel_Persistence --> Context
     Laravel_Persistence --> Contracts
-    Laravel_Persistence --> Runner
+    Laravel_Persistence --> Execution
     Laravel_Persistence --> Parser
+    Laravel_Persistence --> Runner
     Laravel_Persistence --> Spec
     Laravel_Queue --> Contracts
     Laravel_Queue --> Runner
+    Laravel_Queue --> Execution
     Laravel_State --> Contracts
     Laravel__ --> Laravel_Bindings
     Laravel__ --> Laravel_Http

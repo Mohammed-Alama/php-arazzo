@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Context\ExecutionState;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Context\ExecutionState;
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\State\Budget;
 use Alama\Arazzo\State\ErrorEntry;
 use Alama\Arazzo\State\ExecutionContext;

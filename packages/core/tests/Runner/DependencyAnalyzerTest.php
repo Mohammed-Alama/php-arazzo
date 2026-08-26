@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\DependencyAnalyzer;
-use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\DependencyAnalyzer;
+use Alama\Arazzo\Evaluation\DependencyGraph;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 

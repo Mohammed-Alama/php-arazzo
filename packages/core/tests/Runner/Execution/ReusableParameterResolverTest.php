@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Execution;
 
-use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
+use Alama\Arazzo\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ParameterIn;

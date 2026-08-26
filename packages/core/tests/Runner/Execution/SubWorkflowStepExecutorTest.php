@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Execution;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Execution\ExecutionResult;
+use Alama\Arazzo\Execution\SubWorkflowStepExecutor;
+use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Exceptions\ExecutionException;
-use Alama\Arazzo\Runner\Execution\ExecutionResult;
-use Alama\Arazzo\Runner\Execution\SubWorkflowStepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ParameterIn;

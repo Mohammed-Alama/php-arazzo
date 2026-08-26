@@ -16,25 +16,25 @@ Regenerated before every commit.
 
 | Exception | Raised by |
 |---|---|
-| **ConditionSyntaxException** | `ConditionEvaluator` <small>Runner/Evaluation/Condition</small>, `Lexer` <small>Runner/Evaluation/Condition</small>, `Parser` <small>Runner/Evaluation/Condition</small> |
+| **ConditionSyntaxException** | `ConditionEvaluator` <small>Evaluation/Condition</small>, `Lexer` <small>Evaluation/Condition</small>, `Parser` <small>Evaluation/Condition</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>Parser/Decoders</small>, `SymfonyYamlDecoder` <small>Parser/Decoders</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>Persistence</small> |
 | **ExpressionSyntaxException** | `Lexer` <small>Expression</small>, `Parser` <small>Expression</small> |
-| **GotoTargetNotFoundException** | `WorkflowEngine` <small>Runner/Execution</small> |
-| **InvalidArgumentException** | `DatabaseDefinitionRegistry` <small>Persistence</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `TypeCaster` <small>Runner/Evaluation</small>, `SpecVersion` <small>Spec/Enum</small> |
-| **LogicException** | `AsyncApiStepExecutor` <small>Runner/Execution</small>, `StepExecutionWorker` <small>Runner/Execution</small>, `WorkflowExecutor` <small>Runner/Execution</small> |
+| **GotoTargetNotFoundException** | `WorkflowEngine` <small>Execution</small> |
+| **InvalidArgumentException** | `TypeCaster` <small>Evaluation</small>, `DatabaseDefinitionRegistry` <small>Persistence</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `SpecVersion` <small>Spec/Enum</small> |
+| **LogicException** | `AsyncApiStepExecutor` <small>Execution</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>Normalizer</small> |
-| **PreflightFailureException** | `PreflightGuard` <small>Runner/Async</small>, `StepExecutionWorker` <small>Runner/Execution</small>, `WorkflowExecutor` <small>Runner/Execution</small> |
-| **RuntimeException** | `OpenAiClient` <small>Generator/Clients</small>, `CliRunner` <small>Runner/Cli</small>, `FileLockStrategy` <small>Runner/Contract</small>, `ReusableParameterResolver` <small>Runner/Execution</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small>, `OtelSetup` <small>Telemetry</small> |
-| **SchemaValidationException** | `ArazzoSchemaValidator` <small>Runner/Execution</small> |
-| **SelectorEvaluationException** | `SelectorEvaluator` <small>Runner/Evaluation</small> |
+| **PreflightFailureException** | `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small>, `PreflightGuard` <small>Runner/Async</small> |
+| **RuntimeException** | `ReusableParameterResolver` <small>Execution</small>, `OpenAiClient` <small>Generator/Clients</small>, `CliRunner` <small>Runner/Cli</small>, `FileLockStrategy` <small>Runner/Contract</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small>, `OtelSetup` <small>Telemetry</small> |
+| **SchemaValidationException** | `ArazzoSchemaValidator` <small>Execution</small> |
+| **SelectorEvaluationException** | `SelectorEvaluator` <small>Evaluation</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>Resolver</small> |
-| **StepBudgetExceededException** | `WorkflowEngine` <small>Runner/Execution</small> |
+| **StepBudgetExceededException** | `WorkflowEngine` <small>Execution</small> |
 | **UnresolvableReferenceException** | `SourceRegistry` <small>Resolver</small> |
-| **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>Runner/Execution</small> |
-| **WorkflowCycleException** | `WorkflowEngine` <small>Runner/Execution</small> |
-| **WorkflowDepthExceededException** | `WorkflowEngine` <small>Runner/Execution</small> |
+| **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>Execution</small> |
+| **WorkflowCycleException** | `WorkflowEngine` <small>Execution</small> |
+| **WorkflowDepthExceededException** | `WorkflowEngine` <small>Execution</small> |
 | **ExecutionException** | _(never raised in src)_ |
 | **LoaderException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
@@ -51,20 +51,20 @@ Regenerated before every commit.
 | `DecodeException` | `Loader` |  |
 | `ExpressionSyntaxException` | `Expression` |  |
 | `InvalidArgumentException` | `ArazzoOutputExtractor` |  |
-| `JsonException` | `NativeJsonDecoder` |  |
 | `JsonException` | `AsyncApiStepExecutor` |  |
+| `JsonException` | `NativeJsonDecoder` |  |
 | `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
-| `Throwable` | `DatabaseEventLedger` |  |
-| `Throwable` | `DefaultSourceResolver` |  |
 | `Throwable` | `HttpStepExecutor` |  |
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
+| `Throwable` | `DatabaseEventLedger` |  |
+| `Throwable` | `DefaultSourceResolver` |  |
 | `Throwable` | `PreflightValidator` |  |
 
 ## Safety interlocks
@@ -74,11 +74,11 @@ Regenerated before every commit.
 | throws **StepBudgetExceededException** | `WorkflowEngine` | — |
 | throws **WorkflowCycleException** | `WorkflowEngine` | — |
 | throws **WorkflowDepthExceededException** | `WorkflowEngine` | — |
+| prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
+| prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
 | prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
 | prop ttlSeconds | `CachedFetcher` | `3600` |
 | prop stateTtlSeconds | `SuspensionHandler` | `86400` |
 | const OUTCOME_TERMINAL | `TransitionApplier` | `'terminal'` |
 | prop stateTtlSeconds | `TransitionApplier` | `86400` |
 | prop maxQueuedSteps | `CliRunner` | `10_000` |
-| prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
-| prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |

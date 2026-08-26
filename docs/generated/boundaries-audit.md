@@ -31,14 +31,17 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Console` | `Psr` | 1 |
 | core | `Console` | `Symfony` | 30 |
 | core | `Contracts` | `Psr` | 3 |
+| core | `Evaluation` | `Flow` | 1 |
+| core | `Execution` | `GuzzleHttp` | 1 |
+| core | `Execution` | `OpenTelemetry` | 2 |
+| core | `Execution` | `Psr` | 23 |
+| core | `Execution` | `cebe` | 13 |
 | core | `Generator` | `Psr` | 3 |
 | core | `Parser` | `Symfony` | 2 |
 | core | `Resolver` | `Psr` | 4 |
-| core | `Runner` | `Flow` | 1 |
-| core | `Runner` | `GuzzleHttp` | 1 |
-| core | `Runner` | `OpenTelemetry` | 3 |
-| core | `Runner` | `Psr` | 25 |
-| core | `Runner` | `cebe` | 16 |
+| core | `Runner` | `OpenTelemetry` | 1 |
+| core | `Runner` | `Psr` | 2 |
+| core | `Runner` | `cebe` | 3 |
 | core | `Support` | `Psr` | 4 |
 | core | `Telemetry` | `OpenTelemetry` | 23 |
 | core | `Validator` | `JsonSchema` | 7 |
@@ -58,13 +61,15 @@ edit `POLICY` when a boundary consciously moves.
 | laravel | `_` | `Illuminate` | 2 |
 | laravel | `_` | `Spatie` | 2 |
 
-**9 core boundary violation(s):**
+**11 core boundary violation(s):**
 - `Console` imports `GuzzleHttp\*` (2 refs)
 - `Console` imports `Symfony\*` (30 refs)
+- `Evaluation` imports `Flow\*` (1 refs)
+- `Execution` imports `GuzzleHttp\*` (1 refs)
+- `Execution` imports `OpenTelemetry\*` (2 refs)
+- `Execution` imports `cebe\*` (13 refs)
 - `Parser` imports `Symfony\*` (2 refs)
-- `Runner` imports `Flow\*` (1 refs)
-- `Runner` imports `GuzzleHttp\*` (1 refs)
-- `Runner` imports `OpenTelemetry\*` (3 refs)
-- `Runner` imports `cebe\*` (16 refs)
+- `Runner` imports `OpenTelemetry\*` (1 refs)
+- `Runner` imports `cebe\*` (3 refs)
 - `Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `Validator` imports `JsonSchema\*` (7 refs)

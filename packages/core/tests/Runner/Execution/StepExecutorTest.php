@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Execution;
 
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\ArazzoDocument;

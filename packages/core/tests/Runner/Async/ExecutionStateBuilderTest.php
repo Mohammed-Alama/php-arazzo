@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Async\ExecutionStateBuilder;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 

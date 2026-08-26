@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Events\RunCompleted;
 use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\RunStarted;
 use Alama\Arazzo\Runner\Events\StepExecuted as EventStepExecuted;
 use Alama\Arazzo\Runner\Events\StepFailed;
 use Alama\Arazzo\Runner\Events\StepStarted;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;

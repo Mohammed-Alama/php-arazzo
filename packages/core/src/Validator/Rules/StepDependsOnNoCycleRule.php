@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Rules;
 
+use Alama\Arazzo\Evaluation\DependencyGraph;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
 use Alama\Arazzo\Validator\Rule;

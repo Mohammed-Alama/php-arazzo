@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Validator\PreflightValidator;
 

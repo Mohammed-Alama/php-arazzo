@@ -11,47 +11,50 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Console` | 7 | 474 | 0 | 7 | 1.00 |  |
-| `Contracts` | 21 | 351 | 13 | 3 | 0.19 |  |
-| `Expression` | 23 | 857 | 3 | 2 | 0.40 |  |
+| `Console` | 7 | 474 | 0 | 9 | 1.00 |  |
+| `Context` | 4 | 754 | 8 | 1 | 0.11 |  |
+| `Contracts` | 21 | 351 | 15 | 6 | 0.29 |  |
+| `Evaluation` | 30 | 1955 | 6 | 5 | 0.45 |  |
+| `Execution` | 34 | 3725 | 7 | 12 | 0.63 |  |
+| `Expression` | 23 | 857 | 4 | 2 | 0.33 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
-| `Laravel:Bindings` | 6 | 445 | 1 | 14 | 0.93 |  |
+| `Laravel:Bindings` | 6 | 445 | 1 | 16 | 0.94 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
 | `Laravel:Http` | 3 | 158 | 2 | 5 | 0.71 |  |
 | `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
-| `Laravel:Persistence` | 4 | 248 | 1 | 4 | 0.80 |  |
-| `Laravel:Queue` | 3 | 97 | 1 | 2 | 0.67 |  |
+| `Laravel:Persistence` | 4 | 248 | 1 | 6 | 0.86 |  |
+| `Laravel:Queue` | 3 | 97 | 1 | 3 | 0.75 |  |
 | `Laravel:State` | 1 | 37 | 1 | 1 | 0.50 |  |
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
 | `Normalizer` | 5 | 308 | 5 | 2 | 0.29 |  |
 | `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
 | `Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
-| `Protocol` | 2 | 197 | 0 | 3 | 1.00 |  |
+| `Protocol` | 2 | 197 | 0 | 5 | 1.00 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 11 | 337 | 5 | 2 | 0.29 |  |
-| `Runner` | 104 | 7936 | 11 | 10 | 0.48 |  |
-| `Spec` | 33 | 688 | 13 | 1 | 0.07 |  |
+| `Runner` | 36 | 1498 | 9 | 8 | 0.47 |  |
+| `Spec` | 33 | 688 | 16 | 1 | 0.06 |  |
 | `State` | 6 | 816 | 1 | 3 | 0.75 |  |
-| `Support` | 6 | 257 | 6 | 2 | 0.25 |  |
-| `Telemetry` | 2 | 276 | 1 | 0 | 0.00 |  |
-| `Validator` | 63 | 3031 | 3 | 6 | 0.67 |  |
+| `Support` | 6 | 257 | 8 | 2 | 0.20 |  |
+| `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
+| `Validator` | 63 | 3031 | 4 | 7 | 0.64 |  |
 
-Total cross-module edges: **684**
+Total cross-module edges: **793**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Runner` → `Spec` | 116 |
 | `Validator` → `Spec` | 88 |
 | `Validator` → `Expression` | 78 |
-| `Runner` → `Contracts` | 75 |
+| `Execution` → `Spec` | 72 |
+| `Execution` → `Contracts` | 40 |
+| `Execution` → `Runner` | 36 |
 | `Parser` → `Spec` | 30 |
-| `Laravel:Bindings` → `Runner` | 27 |
+| `Execution` → `Evaluation` | 27 |
+| `Evaluation` → `Spec` | 25 |
+| `Runner` → `Contracts` | 25 |
 | `Laravel:Bindings` → `Contracts` | 21 |
 | `Contracts` → `Spec` | 18 |
-| `Runner` → `Expression` | 15 |
-| `Console` → `Runner` | 12 |
-| `Contracts` → `Runner` | 12 |
-| `Runner` → `Support` | 12 |
+| `Execution` → `Context` | 18 |

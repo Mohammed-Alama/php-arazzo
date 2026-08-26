@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Resolver;
 
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Runner\Exceptions\UnsupportedSourceVersionException;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDescription;

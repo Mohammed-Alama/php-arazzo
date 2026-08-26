@@ -23,9 +23,9 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 | Class | Package | Dir | Serialization signals |
 |---|---|---|---|
-| `WorkflowContext` | core | `Runner/Context` | `toArray`, `hydrate` |
+| `WorkflowContext` | core | `Context` | `toArray`, `hydrate` |
+| `ImplicitDependencies` | core | `Evaluation` | `hydrate` |
 | `CliRunResult` | core | `Runner/Cli` | `hydrate` |
-| `ImplicitDependencies` | core | `Runner/Evaluation` | `hydrate` |
 | `ErrorEntry` | core | `State` | `toArray` |
 | `StepResult` | core | `State` | `toArray` |
 | `ExecutionContext` | core | `State` | `toArray`, `hydrate` |
@@ -34,9 +34,9 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 Mutable types that serialize themselves or are carried by queue jobs — each needs an explicit consistency story (versioning, TTLs, idempotency):
 
-- `CliRunResult` <small>core · `hydrate`</small>
 - `WorkflowContext` <small>core · `toArray`, `hydrate`</small>
 - `ImplicitDependencies` <small>core · `hydrate`</small>
+- `CliRunResult` <small>core · `hydrate`</small>
 - `ErrorEntry` <small>core · `toArray`</small>
 - `ExecutionContext` <small>core · `toArray`, `hydrate`</small>
 - `StepResult` <small>core · `toArray`</small>

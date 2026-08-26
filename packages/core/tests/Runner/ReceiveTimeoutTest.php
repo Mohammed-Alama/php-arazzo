@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Runner;
 
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Context\PendingCorrelation;
+use Alama\Arazzo\Execution\CorrelationResumer;
 use DateTimeImmutable;
 use Tests\Execution\RecordingStepOutcomeHandler;
 use Tests\Execution\ResumerMockEventLedger;

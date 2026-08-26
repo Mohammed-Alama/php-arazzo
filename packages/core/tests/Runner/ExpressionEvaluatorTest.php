@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\EvaluationContext;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Expression;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;

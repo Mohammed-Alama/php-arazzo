@@ -11,7 +11,7 @@ classDiagram
     direction TB
     class E_RuntimeException["RuntimeException"]:::builtin
     class E_ArazzoException["ArazzoException<br/><small>Support</small>"]:::domain
-    class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>Runner</small>"]:::domain
+    class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>Evaluation</small>"]:::domain
     class E_DecodeException["DecodeException<br/><small>Parser</small>"]:::domain
     class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>Runner</small>"]:::domain
     class E_ExecutionException["ExecutionException<br/><small>Runner</small>"]:::domain
@@ -22,7 +22,7 @@ classDiagram
     class E_ParserException["ParserException<br/><small>Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>Runner</small>"]:::domain
-    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>Runner</small>"]:::domain
+    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>Evaluation</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>Resolver</small>"]:::domain
@@ -65,7 +65,7 @@ classDiagram
 | Exception | Extends | Module |
 |---|---|---|
 | `ArazzoException` | `RuntimeException` | Support |
-| `ConditionSyntaxException` | `ArazzoException` | Runner |
+| `ConditionSyntaxException` | `ArazzoException` | Evaluation |
 | `DecodeException` | `RuntimeException` | Parser |
 | `DefinitionHydrationException` | `RuntimeException` | Runner |
 | `ExecutionException` | `ArazzoException` | Runner |
@@ -76,7 +76,7 @@ classDiagram
 | `ParserException` | `ArazzoException` | Parser |
 | `PreflightFailureException` | `ArazzoException` | Validator |
 | `SchemaValidationException` | `RuntimeException` | Runner |
-| `SelectorEvaluationException` | `ArazzoException` | Runner |
+| `SelectorEvaluationException` | `ArazzoException` | Evaluation |
 | `SourceFetchException` | `SourceResolutionException` | Resolver |
 | `SourceParseException` | `SourceResolutionException` | Resolver |
 | `SourceResolutionException` | `RuntimeException` | Resolver |

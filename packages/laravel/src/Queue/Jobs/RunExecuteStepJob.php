@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Queue\Jobs;
 
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
+use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

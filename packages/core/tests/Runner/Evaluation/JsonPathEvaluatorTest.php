@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Evaluation;
 
-use Alama\Arazzo\Runner\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Evaluation\JsonPathEvaluator;
 
 it('evaluates simple jsonpath expression', function () {
     $data = [

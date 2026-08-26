@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\HttpStepExecutor;
+use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Events\StepFailed;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\HttpStepExecutor;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;

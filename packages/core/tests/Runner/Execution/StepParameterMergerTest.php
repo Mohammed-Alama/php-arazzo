@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Execution;
 
-use Alama\Arazzo\Runner\Execution\StepParameterMerger;
+use Alama\Arazzo\Execution\StepParameterMerger;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Parameter;

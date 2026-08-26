@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Cli;
 
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\ExecutionStatus;
+use Alama\Arazzo\Execution\ExecutionStatus;
 
 /**
  * Terminal snapshot of a CLI run: the registry status at drain end, plus

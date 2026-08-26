@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
+use Alama\Arazzo\Execution\StepExecutionOutcome;
 use Alama\Arazzo\Protocol\ProtocolExecutorRegistry;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;

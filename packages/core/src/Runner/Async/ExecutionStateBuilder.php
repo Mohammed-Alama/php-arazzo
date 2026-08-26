@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Async;
 
-use Alama\Arazzo\Runner\Context\ExecutionState;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
+use Alama\Arazzo\Context\ExecutionState;
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 

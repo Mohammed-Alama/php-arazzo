@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Runner\Evaluation\TypeCaster;
+use Alama\Arazzo\Evaluation\TypeCaster;
 
 it('casts to integer', function (): void {
     expect(TypeCaster::asInteger('42'))->toBe(42)

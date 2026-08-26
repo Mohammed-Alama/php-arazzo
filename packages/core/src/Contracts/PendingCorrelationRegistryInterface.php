@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Contracts;
 
 // Framework port (kept as a seam): pending correlations persist per deployment (DB table today).
 
-use Alama\Arazzo\Runner\Context\PendingCorrelation;
+use Alama\Arazzo\Context\PendingCorrelation;
 
 interface PendingCorrelationRegistryInterface
 {

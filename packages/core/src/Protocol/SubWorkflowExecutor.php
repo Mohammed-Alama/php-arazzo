@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol;
 
+use Alama\Arazzo\Context\ExecutionState;
+use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Runner\Context\ExecutionState;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
-use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
-use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Evaluation\DependencyGraph;
+use Alama\Arazzo\Execution\StepExecutionOutcome;
+use Alama\Arazzo\Execution\TransitionType;
+use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;

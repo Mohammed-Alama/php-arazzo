@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Spec\Selector;
 

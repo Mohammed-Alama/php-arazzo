@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Runner\Evaluation;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\DependencyAnalyzer;
-use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
-use Alama\Arazzo\Runner\Evaluation\ImplicitDependencies;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Evaluation\DependencyAnalyzer;
+use Alama\Arazzo\Evaluation\DependencyGraph;
+use Alama\Arazzo\Evaluation\ImplicitDependencies;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Expression;

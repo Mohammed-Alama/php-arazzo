@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Laravel\Jobs;
 
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\Step;
 use Illuminate\Foundation\Testing\RefreshDatabase;

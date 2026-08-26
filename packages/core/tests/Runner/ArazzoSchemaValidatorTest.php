@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;

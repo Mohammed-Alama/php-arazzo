@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\SelectorEvaluator;
+use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
@@ -13,11 +18,6 @@ use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Runner\Evaluation\Xpath\XpathEvaluator;
-use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Validator\PreflightValidator;
 use Illuminate\Contracts\Cache\Repository as CacheInterface;

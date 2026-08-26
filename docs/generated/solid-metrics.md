@@ -24,14 +24,17 @@ quadrantChart
     quadrant-3 Modular building blocks
     quadrant-4 Zone of pain
     Console: [1, 0]
-    Contracts: [0.188, 1]
-    Expression: [0.4, 0]
+    Context: [0.111, 0]
+    Contracts: [0.286, 1]
+    Evaluation: [0.455, 0.067]
+    Execution: [0.632, 0]
+    Expression: [0.333, 0]
     Generator: [0.333, 0]
-    Laravel/Bindings: [0.933, 0]
+    Laravel/Bindings: [0.941, 0]
     Laravel/Http: [0.714, 0]
     Laravel/Lock: [0.5, 0]
-    Laravel/Persistence: [0.8, 0]
-    Laravel/Queue: [0.667, 0]
+    Laravel/Persistence: [0.857, 0]
+    Laravel/Queue: [0.75, 0]
     Laravel/State: [0.5, 0]
     Laravel/Support: [0, 0]
     Laravel/_: [1, 0]
@@ -41,12 +44,12 @@ quadrantChart
     Protocol: [1, 0]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.273]
-    Runner: [0.476, 0.019]
-    Spec: [0.071, 0]
+    Runner: [0.471, 0]
+    Spec: [0.059, 0]
     State: [0.75, 0]
-    Support: [0.25, 0.167]
+    Support: [0.2, 0.167]
     Telemetry: [0, 0]
-    Validator: [0.667, 0.016]
+    Validator: [0.636, 0.016]
 ```
 
 ## God classes (SRP)
@@ -57,11 +60,11 @@ Concrete types over 300 LOC:
 |---|---|---:|
 | `Parser` | `Parser` | 820 |
 | `ExecutionContext` | `State` | 498 |
-| `StepExecutionWorker` | `Runner` | 392 |
-| `StepOutcomeHandler` | `Runner` | 378 |
-| `WorkflowContext` | `Runner` | 363 |
+| `StepExecutionWorker` | `Execution` | 391 |
+| `StepOutcomeHandler` | `Execution` | 377 |
+| `WorkflowContext` | `Context` | 363 |
 | `Parser` | `Expression` | 336 |
-| `ExecutionState` | `Runner` | 308 |
+| `ExecutionState` | `Context` | 308 |
 
 ## Fat interfaces (ISP)
 

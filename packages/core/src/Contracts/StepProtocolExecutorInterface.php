@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Contracts;
 
-use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
+use Alama\Arazzo\Context\WorkflowContext;
+use Alama\Arazzo\Execution\StepExecutionOutcome;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 

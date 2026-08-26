@@ -63,8 +63,8 @@ Evans' first question: does the code speak one language?
 
 | Name | Locations | Packages |
 |---|---|---|
-| `Lexer` | `Expression\Lexer`<br/>`Runner\Evaluation\Condition\Lexer` | core |
-| `Parser` | `Expression\Parser`<br/>`Parser\Parser`<br/>`Runner\Evaluation\Condition\Parser` | core |
-| `StepResult` | `Runner\Execution\StepResult`<br/>`State\StepResult` | core |
-| `Token` | `Expression\Token`<br/>`Runner\Evaluation\Condition\Token` | core |
-| `TokenKind` | `Expression\TokenKind`<br/>`Runner\Evaluation\Condition\TokenKind` | core |
+| `Lexer` | `Evaluation\Condition\Lexer`<br/>`Expression\Lexer` | core |
+| `Parser` | `Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Parser\Parser` | core |
+| `StepResult` | `Execution\StepResult`<br/>`State\StepResult` | core |
+| `Token` | `Evaluation\Condition\Token`<br/>`Expression\Token` | core |
+| `TokenKind` | `Evaluation\Condition\TokenKind`<br/>`Expression\TokenKind` | core |

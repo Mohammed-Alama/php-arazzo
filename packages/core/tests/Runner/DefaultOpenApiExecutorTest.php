@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\OpenApiPayload;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\OpenApiPayload;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDescription;

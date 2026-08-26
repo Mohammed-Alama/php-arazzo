@@ -14,18 +14,40 @@ the heavier direction is drawn and the folded side is listed below the chart.
 ```mermaid
 sankey-beta
 
+Console,Evaluation,4
+Console,Execution,7
 Console,Normalizer,3
 Console,Parser,8
 Console,Renderer,1
 Console,Resolver,4
-Console,Runner,12
+Console,Runner,1
 Console,Spec,1
 Console,Validator,2
+Context,Spec,2
+Contracts,Context,5
 Contracts,Spec,18
+Evaluation,Context,8
+Evaluation,Contracts,10
+Evaluation,Expression,13
+Evaluation,Spec,25
+Evaluation,Support,2
+Execution,Context,18
+Execution,Contracts,40
+Execution,Evaluation,27
+Execution,Expression,2
+Execution,Policy,1
+Execution,Resolver,1
+Execution,Runner,36
+Execution,Spec,72
+Execution,State,2
+Execution,Support,5
+Execution,Telemetry,1
+Execution,Validator,6
 Expression,Spec,6
-Expression,Support,1
 Generator,Contracts,2
 Laravel-Bindings,Contracts,21
+Laravel-Bindings,Evaluation,8
+Laravel-Bindings,Execution,17
 Laravel-Bindings,Generator,2
 Laravel-Bindings,Laravel-Http,1
 Laravel-Bindings,Laravel-Lock,1
@@ -36,7 +58,7 @@ Laravel-Bindings,Laravel-Support,3
 Laravel-Bindings,Normalizer,3
 Laravel-Bindings,Parser,1
 Laravel-Bindings,Resolver,6
-Laravel-Bindings,Runner,27
+Laravel-Bindings,Runner,2
 Laravel-Bindings,Support,2
 Laravel-Bindings,Validator,2
 Laravel-Http,Contracts,3
@@ -45,45 +67,46 @@ Laravel-Http,Resolver,1
 Laravel-Http,Runner,1
 Laravel-Http,Spec,2
 Laravel-Lock,Contracts,1
+Laravel-Persistence,Context,1
 Laravel-Persistence,Contracts,4
+Laravel-Persistence,Execution,1
 Laravel-Persistence,Parser,2
-Laravel-Persistence,Runner,3
+Laravel-Persistence,Runner,1
 Laravel-Persistence,Spec,3
 Laravel-Queue,Contracts,1
-Laravel-Queue,Runner,6
+Laravel-Queue,Execution,2
+Laravel-Queue,Runner,4
 Laravel-State,Contracts,1
 laravel-root,Laravel-Bindings,6
 laravel-root,Laravel-Http,2
 Normalizer,Contracts,2
-Normalizer,Support,1
 Parser,Spec,30
 Parser,Support,2
+Policy,Context,1
 Policy,Contracts,2
-Policy,Runner,1
 Policy,Spec,2
+Protocol,Context,2
 Protocol,Contracts,4
-Protocol,Runner,6
+Protocol,Evaluation,1
+Protocol,Execution,3
 Protocol,Spec,6
 Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
-Runner,Contracts,75
-Runner,Expression,15
+Runner,Context,8
+Runner,Contracts,25
 Runner,Normalizer,4
-Runner,Resolver,1
-Runner,Spec,116
-Runner,State,2
-Runner,Support,12
-Runner,Telemetry,2
-Runner,Validator,9
+Runner,Spec,17
+Runner,Telemetry,1
+Runner,Validator,3
+State,Context,2
 State,Contracts,2
 State,Spec,1
 Support,Contracts,1
+Support,Runner,9
 Validator,Expression,78
 Validator,Normalizer,1
-Validator,Resolver,1
 Validator,Spec,88
-Validator,Support,3
 ```
 
 ## Folded flows
@@ -92,10 +115,16 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
+| `Contracts` | `Evaluation` | 1 |
+| `Contracts` | `Execution` | 3 |
 | `Contracts` | `Normalizer` | 1 |
-| `Contracts` | `Runner` | 12 |
-| `Runner` | `Policy` | 1 |
+| `Contracts` | `Runner` | 3 |
+| `Expression` | `Support` | 1 |
+| `Normalizer` | `Support` | 1 |
+| `Runner` | `Execution` | 12 |
+| `Runner` | `Support` | 5 |
 | `Spec` | `Expression` | 3 |
-| `State` | `Runner` | 2 |
-| `Support` | `Runner` | 9 |
-| `Validator` | `Runner` | 3 |
+| `Validator` | `Evaluation` | 2 |
+| `Validator` | `Resolver` | 1 |
+| `Validator` | `Runner` | 1 |
+| `Validator` | `Support` | 3 |
