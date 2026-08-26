@@ -64,6 +64,8 @@ flowchart TB
     M_Contracts --> M_Spec
     M_Expression -.->|violation| M_Spec
     M_Expression -.->|violation| M_Support
+    M_Generator -.->|violation| M_Contracts
+    M_Laravel_Bindings -.->|violation| M_Contracts
     M_Laravel_Bindings --> M_Generator
     M_Laravel_Bindings --> M_Laravel_Http
     M_Laravel_Bindings --> M_Laravel_Lock
@@ -76,16 +78,19 @@ flowchart TB
     M_Laravel_Bindings --> M_Runner
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
+    M_Laravel_Http -.->|violation| M_Contracts
     M_Laravel_Http --> M_Generator
     M_Laravel_Http --> M_Resolver
     M_Laravel_Http --> M_Runner
     M_Laravel_Http --> M_Spec
-    M_Laravel_Lock --> M_Runner
+    M_Laravel_Lock -.->|violation| M_Contracts
+    M_Laravel_Persistence -.->|violation| M_Contracts
     M_Laravel_Persistence --> M_Parser
     M_Laravel_Persistence --> M_Runner
     M_Laravel_Persistence --> M_Spec
+    M_Laravel_Queue -.->|violation| M_Contracts
     M_Laravel_Queue --> M_Runner
-    M_Laravel_State --> M_Runner
+    M_Laravel_State -.->|violation| M_Contracts
     M_Laravel__ --> M_Laravel_Bindings
     M_Laravel__ --> M_Laravel_Http
     M_Parser --> M_Spec
@@ -100,6 +105,7 @@ flowchart TB
     M_Runner --> M_Support
     M_Runner --> M_Validator
     M_Spec --> M_Expression
+    M_Support -.->|violation| M_Contracts
     M_Support -.->|violation| M_Runner
     M_Validator --> M_Expression
     M_Validator --> M_Resolver
@@ -111,12 +117,20 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**5 violation(s) found:**
+**13 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Support` | `Runner` | 10 |
+| `Runner` | `Contracts` | 85 |
+| `Laravel:Bindings` | `Contracts` | 21 |
+| `Support` | `Runner` | 9 |
 | `Expression` | `Spec` | 6 |
-| `Runner` | `Contracts` | 4 |
+| `Laravel:Persistence` | `Contracts` | 4 |
 | `Validator` | `Runner` | 4 |
+| `Laravel:Http` | `Contracts` | 3 |
+| `Generator` | `Contracts` | 2 |
 | `Expression` | `Support` | 1 |
+| `Laravel:Lock` | `Contracts` | 1 |
+| `Laravel:Queue` | `Contracts` | 1 |
+| `Laravel:State` | `Contracts` | 1 |
+| `Support` | `Contracts` | 1 |

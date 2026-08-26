@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Async\SuspensionHandler;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\CorrelationPending;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Async;
 
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\CorrelationPending;
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;

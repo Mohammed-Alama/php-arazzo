@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Generator;
 
-use Alama\Arazzo\Generator\Contracts\AiClientInterface;
+use Alama\Arazzo\Contracts\AiClientInterface;
 
 class ArazzoGenerator
 {

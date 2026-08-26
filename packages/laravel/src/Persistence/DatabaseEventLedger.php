@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Illuminate\Database\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;

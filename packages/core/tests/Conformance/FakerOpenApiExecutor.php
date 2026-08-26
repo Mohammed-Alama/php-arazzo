@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\OpenApiPayload;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use GuzzleHttp\Psr7\Response;

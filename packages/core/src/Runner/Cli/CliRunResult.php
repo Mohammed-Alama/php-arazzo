@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Cli;
 
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 
 /**

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Contract;
 
+use Alama\Arazzo\Contracts\LockStrategyInterface;
+
 final class NullLockStrategy implements LockStrategyInterface
 {
     public function acquire(string $key, int $ttlSeconds, callable $callback): mixed

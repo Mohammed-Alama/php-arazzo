@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Runner;
 
+use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Runner\Cli\CliRunner;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
@@ -12,7 +13,6 @@ use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Runner\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\OpenApiDocumentLoader;

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Cli;
 
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\LockManagerInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Runner\Execution\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\HttpClientInterface;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Runner\Exceptions\ExecutionException;
-use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Expression;

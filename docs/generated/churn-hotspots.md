@@ -14,14 +14,14 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["Runner", "Validator", "Expression", "Resolver", "Parser", "Spec", "Laravel/Http", "Laravel/Persistence", "Console", "Laravel/Lock", "Laravel/Queue", "Laravel/State"]
     y-axis "Touches" 0 --> 80
-    bar [61, 12, 11, 10, 8, 8, 7, 5, 4, 4, 4, 4]
+    bar [62, 12, 11, 10, 8, 8, 7, 5, 4, 4, 4, 4]
 ```
 
-Analyzed 151 total file-touches across 19 modules.
+Analyzed 153 total file-touches across 19 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Runner` | 61 | 40% | 10,057 | 6.1 |
+| `Runner` | 62 | 41% | 9,748 | 6.4 |
 | `Validator` | 12 | 8% | 3,094 | 3.9 |
 | `Expression` | 11 | 7% | 880 | 12.5 |
 | `Resolver` | 10 | 7% | 348 | 28.7 |
@@ -35,10 +35,10 @@ Analyzed 151 total file-touches across 19 modules.
 | `Laravel/State` | 4 | 3% | 38 | 105.3 |
 | `Laravel/Bindings` | 3 | 2% | 451 | 6.7 |
 | `Support` | 3 | 2% | 263 | 11.4 |
-| `Generator` | 2 | 1% | 119 | 16.8 |
+| `Generator` | 2 | 1% | 105 | 19 |
 | `Laravel/Events` | 2 | 1% | 21 | 95.2 |
 | `Renderer` | 2 | 1% | 253 | 7.9 |
+| `Contracts` | 1 | 1% | 372 | 2.7 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Contracts` | 0 | 0% | 40 | 0 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Http` (43.5), `Resolver` (28.7), `Laravel/Persistence` (19.8)

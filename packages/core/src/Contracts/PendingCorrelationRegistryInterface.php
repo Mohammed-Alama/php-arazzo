@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Context\Contracts;
+namespace Alama\Arazzo\Contracts;
 
 // Framework port (kept as a seam): pending correlations persist per deployment (DB table today).
 

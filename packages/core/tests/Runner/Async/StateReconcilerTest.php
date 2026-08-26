@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Async\StateReconciler;
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Tests\Support\RecordingStateStore;
 

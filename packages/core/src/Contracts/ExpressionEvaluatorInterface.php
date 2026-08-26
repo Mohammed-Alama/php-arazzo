@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Evaluation\Contracts;
+namespace Alama\Arazzo\Contracts;
 
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;

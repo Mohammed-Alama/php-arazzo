@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Cli\CliRunner;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\StepExecutionOutcome;
 use Alama\Arazzo\Runner\State\FileStateStore;

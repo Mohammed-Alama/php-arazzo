@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Normalizer;
 
+use Alama\Arazzo\Contracts\OpenApiNormalizerInterface;
 use InvalidArgumentException;
 
 class OpenApi30Normalizer implements OpenApiNormalizerInterface

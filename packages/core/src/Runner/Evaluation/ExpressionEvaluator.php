@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Evaluation;
 
+use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
@@ -17,7 +18,6 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\Expression;
 
 class ExpressionEvaluator implements ExpressionEvaluatorInterface

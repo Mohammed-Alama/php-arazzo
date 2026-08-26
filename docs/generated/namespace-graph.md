@@ -37,24 +37,27 @@ flowchart LR
     Contracts --> Spec
     Expression --> Spec
     Expression --> Support
+    Generator --> Contracts
     Parser --> Spec
     Parser --> Support
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
+    Runner --> Contracts
     Runner --> Spec
     Runner --> Support
     Runner --> Validator
     Runner --> Resolver
-    Runner --> Contracts
     Runner --> Expression
     Spec --> Expression
+    Support --> Contracts
     Support --> Runner
     Validator --> Expression
     Validator --> Spec
     Validator --> Resolver
     Validator --> Runner
     Validator --> Support
+    Laravel_Bindings --> Contracts
     Laravel_Bindings --> Laravel_Support
     Laravel_Bindings --> Runner
     Laravel_Bindings --> Validator
@@ -67,16 +70,19 @@ flowchart LR
     Laravel_Bindings --> Parser
     Laravel_Bindings --> Resolver
     Laravel_Bindings --> Generator
-    Laravel_Http --> Runner
+    Laravel_Http --> Contracts
     Laravel_Http --> Generator
     Laravel_Http --> Resolver
     Laravel_Http --> Spec
-    Laravel_Lock --> Runner
+    Laravel_Http --> Runner
+    Laravel_Lock --> Contracts
+    Laravel_Persistence --> Contracts
     Laravel_Persistence --> Runner
     Laravel_Persistence --> Parser
     Laravel_Persistence --> Spec
+    Laravel_Queue --> Contracts
     Laravel_Queue --> Runner
-    Laravel_State --> Runner
+    Laravel_State --> Contracts
     Laravel__ --> Laravel_Bindings
     Laravel__ --> Laravel_Http
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

@@ -12,41 +12,41 @@ targets. Regenerated before every commit.
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
 | `Console` | 7 | 474 | 0 | 6 | 1.00 |  |
-| `Contracts` | 2 | 38 | 1 | 2 | 0.67 |  |
+| `Contracts` | 21 | 351 | 9 | 2 | 0.18 |  |
 | `Expression` | 23 | 857 | 3 | 2 | 0.40 |  |
-| `Generator` | 3 | 116 | 2 | 0 | 0.00 |  |
-| `Laravel:Bindings` | 6 | 445 | 1 | 12 | 0.92 |  |
+| `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
+| `Laravel:Bindings` | 6 | 445 | 1 | 13 | 0.93 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
-| `Laravel:Http` | 3 | 158 | 2 | 4 | 0.67 |  |
+| `Laravel:Http` | 3 | 158 | 2 | 5 | 0.71 |  |
 | `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
-| `Laravel:Persistence` | 4 | 248 | 1 | 3 | 0.75 |  |
-| `Laravel:Queue` | 3 | 97 | 1 | 1 | 0.50 |  |
+| `Laravel:Persistence` | 4 | 248 | 1 | 4 | 0.80 |  |
+| `Laravel:Queue` | 3 | 97 | 1 | 2 | 0.67 |  |
 | `Laravel:State` | 1 | 37 | 1 | 1 | 0.50 |  |
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
 | `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 11 | 337 | 5 | 2 | 0.29 |  |
-| `Runner` | 139 | 9918 | 10 | 6 | 0.38 |  |
+| `Runner` | 121 | 9627 | 8 | 6 | 0.43 |  |
 | `Spec` | 33 | 688 | 10 | 1 | 0.09 |  |
-| `Support` | 6 | 257 | 5 | 1 | 0.17 |  |
+| `Support` | 6 | 257 | 5 | 2 | 0.29 |  |
 | `Validator` | 63 | 3031 | 3 | 5 | 0.63 |  |
 
-Total cross-module edges: **572**
+Total cross-module edges: **666**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Runner` → `Spec` | 139 |
+| `Runner` → `Spec` | 125 |
 | `Validator` → `Spec` | 88 |
+| `Runner` → `Contracts` | 85 |
 | `Validator` → `Expression` | 78 |
-| `Laravel:Bindings` → `Runner` | 50 |
+| `Laravel:Bindings` → `Runner` | 30 |
 | `Parser` → `Spec` | 30 |
+| `Laravel:Bindings` → `Contracts` | 21 |
+| `Contracts` → `Spec` | 18 |
 | `Console` → `Runner` | 15 |
 | `Runner` → `Expression` | 15 |
+| `Contracts` → `Runner` | 13 |
 | `Runner` → `Support` | 13 |
-| `Support` → `Runner` | 10 |
-| `Runner` → `Validator` | 9 |
-| `Console` → `Parser` | 8 |
-| `Renderer` → `Spec` | 8 |

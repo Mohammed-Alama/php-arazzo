@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Context\ExecutionState;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\DependencyGraph;
 use Alama\Arazzo\Runner\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Exceptions\StepBudgetExceededException;

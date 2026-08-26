@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Contract;
 
+use Alama\Arazzo\Contracts\LockStrategyInterface;
 use RuntimeException;
 
 final class FileLockStrategy implements LockStrategyInterface

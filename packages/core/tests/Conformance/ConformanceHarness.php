@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Runner\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Runner\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Events\RunCompleted;
 use Alama\Arazzo\Runner\Events\RunFailed;

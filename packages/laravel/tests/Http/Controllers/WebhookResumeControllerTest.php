@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\LockManagerInterface;
+use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Context\PendingCorrelation;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\OpenApiPayload;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;

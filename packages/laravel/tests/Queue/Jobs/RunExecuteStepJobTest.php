@@ -53,10 +53,10 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     expect($recorder->handled[0])->not->toBe($innerJob);
 });
 
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;

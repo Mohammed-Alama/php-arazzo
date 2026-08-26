@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Generator\Contracts;
+namespace Alama\Arazzo\Contracts;
 
 interface AiClientInterface
 {

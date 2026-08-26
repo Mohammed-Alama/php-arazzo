@@ -71,7 +71,7 @@ mindmap
 | Contract | SPI dir | Implementations |
 |---|---|---|
 | `AiClientInterface` | **yes** | `OpenAiClient` <small>core</small> |
-| `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
+| `BackoffCalculatorInterface` | **yes** | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | **yes** | `ArazzoCriteriaEvaluator` <small>core</small> |
 | `DefinitionRegistryInterface` | **yes** | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `EventLedgerInterface` | **yes** | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
@@ -80,12 +80,12 @@ mindmap
 | `ExpressionResolverInterface` | **yes** | `ArazzoExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | **yes** | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | **yes** | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
-| `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
+| `LockStrategyInterface` | **yes** | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | **yes** | `DefaultOpenApiExecutor` <small>core</small> |
-| `OpenApiNormalizerInterface` | no | `Swagger2Normalizer` <small>core</small>, `OpenApi30Normalizer` <small>core</small> |
+| `OpenApiNormalizerInterface` | **yes** | `Swagger2Normalizer` <small>core</small>, `OpenApi30Normalizer` <small>core</small> |
 | `OutputExtractorInterface` | **yes** | `ArazzoOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | **yes** | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
-| `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
+| `ProtocolExecutorRegistryInterface` | **yes** | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `SchemaValidatorInterface` | **yes** | `ArazzoSchemaValidator` <small>core</small> |
 | `StateStoreInterface` | **yes** | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |

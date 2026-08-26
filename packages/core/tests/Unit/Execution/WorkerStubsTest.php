@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\StepExecuted;
 
 it('has interfaces and events', function (): void {

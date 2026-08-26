@@ -106,6 +106,7 @@ Where async suspend/resume bookkeeping happens:
 
 | Class | Role signals |
 |---|---|
+| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `ExecutionBindings` <small>laravel</small> | resumes from webhook |
 | `WebhookResumeController` <small>laravel</small> | resumes from webhook |
 | `LaravelArazzoServiceProvider` <small>laravel</small> | resumes from webhook |
@@ -114,7 +115,6 @@ Where async suspend/resume bookkeeping happens:
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
 | `TransitionApplier` <small>core</small> | resumes from webhook |
 | `CliRunner` <small>core</small> | resumes from webhook |
-| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumed` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |

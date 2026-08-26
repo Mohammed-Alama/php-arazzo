@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution\Contracts;
+namespace Alama\Arazzo\Contracts;
 
 // Framework port (kept as a seam): run registry persistence is adapter-specific.
 

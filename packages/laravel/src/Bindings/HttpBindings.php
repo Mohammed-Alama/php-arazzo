@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
+use Alama\Arazzo\Contracts\HttpClientInterface;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
-use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Container\Container;

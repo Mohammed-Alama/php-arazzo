@@ -20,10 +20,12 @@ Console,Resolver,4
 Console,Runner,15
 Console,Spec,1
 Console,Validator,2
-Contracts,Spec,4
+Contracts,Spec,18
 Expression,Spec,6
 Expression,Support,1
-Laravel-Bindings,Generator,3
+Generator,Contracts,2
+Laravel-Bindings,Contracts,21
+Laravel-Bindings,Generator,2
 Laravel-Bindings,Laravel-Http,1
 Laravel-Bindings,Laravel-Lock,1
 Laravel-Bindings,Laravel-Persistence,4
@@ -32,19 +34,22 @@ Laravel-Bindings,Laravel-State,1
 Laravel-Bindings,Laravel-Support,3
 Laravel-Bindings,Parser,1
 Laravel-Bindings,Resolver,6
-Laravel-Bindings,Runner,50
+Laravel-Bindings,Runner,30
 Laravel-Bindings,Support,2
 Laravel-Bindings,Validator,2
+Laravel-Http,Contracts,3
 Laravel-Http,Generator,1
 Laravel-Http,Resolver,1
-Laravel-Http,Runner,4
+Laravel-Http,Runner,1
 Laravel-Http,Spec,2
-Laravel-Lock,Runner,1
+Laravel-Lock,Contracts,1
+Laravel-Persistence,Contracts,4
 Laravel-Persistence,Parser,2
-Laravel-Persistence,Runner,7
+Laravel-Persistence,Runner,3
 Laravel-Persistence,Spec,3
-Laravel-Queue,Runner,7
-Laravel-State,Runner,1
+Laravel-Queue,Contracts,1
+Laravel-Queue,Runner,6
+Laravel-State,Contracts,1
 laravel-root,Laravel-Bindings,6
 laravel-root,Laravel-Http,2
 Parser,Spec,30
@@ -52,12 +57,13 @@ Parser,Support,2
 Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
-Runner,Contracts,4
+Runner,Contracts,85
 Runner,Expression,15
 Runner,Resolver,1
-Runner,Spec,139
+Runner,Spec,125
 Runner,Support,13
 Runner,Validator,9
+Support,Contracts,1
 Validator,Expression,78
 Validator,Resolver,1
 Validator,Spec,88
@@ -70,7 +76,7 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
-| `Contracts` | `Runner` | 2 |
+| `Contracts` | `Runner` | 13 |
 | `Spec` | `Expression` | 3 |
-| `Support` | `Runner` | 10 |
+| `Support` | `Runner` | 9 |
 | `Validator` | `Runner` | 4 |

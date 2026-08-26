@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\HttpClientInterface;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\AsyncApiStepExecutor;
-use Alama\Arazzo\Runner\Execution\Contracts\HttpClientInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\SpecVersion;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Async\TransitionApplier;
 use Alama\Arazzo\Runner\Async\WorkerEvents;
 use Alama\Arazzo\Runner\Context\ExecutionState;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\RunCompleted;
 use Alama\Arazzo\Runner\Events\RunFailed;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;

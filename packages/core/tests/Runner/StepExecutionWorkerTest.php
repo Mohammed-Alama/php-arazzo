@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Runner\Context\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\LockManagerInterface;
+use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Context\PendingCorrelation;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Runner\Execution\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\LockManagerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\RunControlFlow;

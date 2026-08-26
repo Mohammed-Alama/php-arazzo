@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Laravel\Bindings\EventBindings;
 use Alama\Arazzo\Runner\Events\RunStarted;
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 

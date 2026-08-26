@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Async;
 
-use Alama\Arazzo\Runner\Context\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\EventLedgerInterface;
+use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\QueueDriverInterface;
+use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Runner\Context\ExecutionState;
-use Alama\Arazzo\Runner\Execution\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\Execution\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\ExecutionStatus;
 use Alama\Arazzo\Runner\Execution\Transition;

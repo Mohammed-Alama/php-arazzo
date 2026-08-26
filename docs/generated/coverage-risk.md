@@ -21,46 +21,44 @@ quadrantChart
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
     Console: [1, 0.571]
-    Contracts: [0.667, 0]
+    Contracts: [0.182, 1]
     Expression: [0.4, 1]
-    Generator: [0, 1]
-    Laravel/Bindings: [0.923, 0.333]
+    Generator: [0.333, 1]
+    Laravel/Bindings: [0.929, 0.333]
     Laravel/Events: [0, 1]
-    Laravel/Http: [0.667, 1]
+    Laravel/Http: [0.714, 1]
     Laravel/Lock: [0.5, 1]
-    Laravel/Persistence: [0.75, 1]
-    Laravel/Queue: [0.5, 1]
+    Laravel/Persistence: [0.8, 1]
+    Laravel/Queue: [0.667, 1]
     Laravel/State: [0.5, 1]
     Laravel/Support: [0, 1]
     Parser: [0.333, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
-    Runner: [0.375, 0.957]
+    Runner: [0.429, 1]
     Spec: [0.091, 1]
-    Support: [0.167, 1]
+    Support: [0.286, 1]
     Validator: [0.625, 0.952]
 ```
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
 | `Console` | 1.00 | 4 | 7 | 57% |
-| `Contracts` | 0.67 | 0 | 2 | 0% |
+| `Contracts` | 0.18 | 46 | 21 | 100% |
 | `Expression` | 0.40 | 82 | 23 | 100% |
-| `Generator` | 0.00 | 4 | 3 | 100% |
-| `Laravel/Bindings` | 0.92 | 2 | 6 | 33% |
+| `Generator` | 0.33 | 4 | 2 | 100% |
+| `Laravel/Bindings` | 0.93 | 2 | 6 | 33% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
-| `Laravel/Http` | 0.67 | 4 | 3 | 100% |
+| `Laravel/Http` | 0.71 | 4 | 3 | 100% |
 | `Laravel/Lock` | 0.50 | 3 | 1 | 100% |
-| `Laravel/Persistence` | 0.75 | 6 | 4 | 100% |
-| `Laravel/Queue` | 0.50 | 6 | 3 | 100% |
+| `Laravel/Persistence` | 0.80 | 6 | 4 | 100% |
+| `Laravel/Queue` | 0.67 | 6 | 3 | 100% |
 | `Laravel/State` | 0.50 | 3 | 1 | 100% |
 | `Laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `Parser` | 0.33 | 29 | 10 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 11 | 100% |
-| `Runner` | 0.38 | 133 | 139 | 96% |
+| `Runner` | 0.43 | 126 | 121 | 100% |
 | `Spec` | 0.09 | 139 | 33 | 100% |
-| `Support` | 0.17 | 18 | 6 | 100% |
+| `Support` | 0.29 | 18 | 6 | 100% |
 | `Validator` | 0.62 | 60 | 63 | 95% |
-
-**Refactor-now list** (untested churn): `Contracts`

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Evaluation\Condition;
 
+use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\EvaluationContext;
 use Alama\Arazzo\Spec\ArazzoDocument;
 

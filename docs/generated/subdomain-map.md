@@ -16,12 +16,12 @@ the declaration honest.
 flowchart LR
     subgraph S_core["Core domain"]
         S_Expression["Expression<br/><small>880 LOC</small>"]:::coreDomain
-        S_Runner["Runner<br/><small>10057 LOC</small>"]:::coreDomain
+        S_Runner["Runner<br/><small>9748 LOC</small>"]:::coreDomain
         S_Spec["Spec<br/><small>721 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_Console["Console<br/><small>481 LOC</small>"]:::supportingDomain
-        S_Generator["Generator<br/><small>119 LOC</small>"]:::supportingDomain
+        S_Generator["Generator<br/><small>105 LOC</small>"]:::supportingDomain
         S_Parser["Parser<br/><small>1078 LOC</small>"]:::supportingDomain
         S_Renderer["Renderer<br/><small>253 LOC</small>"]:::supportingDomain
         S_Resolver["Resolver<br/><small>348 LOC</small>"]:::supportingDomain
@@ -38,7 +38,7 @@ flowchart LR
         S_Support["Support<br/><small>323 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified[""]
-        S_Contracts["Contracts<br/><small>40 LOC</small>"]:::unknownDomain
+        S_Contracts["Contracts<br/><small>372 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -48,10 +48,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 3 | 11,658 | 0 | 63% |
-| Supporting | 6 | 5,373 | 0 | 29% |
+| Core domain | 3 | 11,349 | 0 | 61% |
+| Supporting | 6 | 5,359 | 0 | 29% |
 | Generic subdomain | 8 | 263 | 1,132 | 8% |
-|  | 1 | 40 | 0 | 0% |
+|  | 1 | 372 | 0 | 2% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Contracts`

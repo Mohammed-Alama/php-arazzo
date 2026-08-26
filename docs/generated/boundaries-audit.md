@@ -30,13 +30,14 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Console` | `GuzzleHttp` | 2 |
 | core | `Console` | `Psr` | 1 |
 | core | `Console` | `Symfony` | 30 |
+| core | `Contracts` | `Psr` | 3 |
 | core | `Generator` | `Psr` | 3 |
 | core | `Parser` | `Symfony` | 2 |
 | core | `Resolver` | `Psr` | 4 |
 | core | `Runner` | `Flow` | 1 |
 | core | `Runner` | `GuzzleHttp` | 1 |
 | core | `Runner` | `OpenTelemetry` | 26 |
-| core | `Runner` | `Psr` | 28 |
+| core | `Runner` | `Psr` | 25 |
 | core | `Runner` | `cebe` | 16 |
 | core | `Support` | `Psr` | 4 |
 | core | `Validator` | `JsonSchema` | 7 |

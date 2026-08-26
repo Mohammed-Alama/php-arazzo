@@ -8,32 +8,32 @@ from both packages. Core defines contracts; Laravel implements them.
 
 ```mermaid
 flowchart LR
-    I_AiClientInterface["AiClientInterface<br/><small>Generator</small>"]:::contract
-    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Runner</small>"]:::contract
+    I_AiClientInterface["AiClientInterface<br/><small>Contracts</small>"]:::contract
+    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Contracts</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>Runner</small>"]:::contract
-    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Runner</small>"]:::contract
-    I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>Runner</small>"]:::contract
-    I_EventLedgerInterface["EventLedgerInterface<br/><small>Runner</small>"]:::contract
-    I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>Runner</small>"]:::contract
-    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Runner</small>"]:::contract
-    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Runner</small>"]:::contract
-    I_HttpClientInterface["HttpClientInterface<br/><small>Runner</small>"]:::contract
+    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Contracts</small>"]:::contract
+    I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>Contracts</small>"]:::contract
+    I_EventLedgerInterface["EventLedgerInterface<br/><small>Contracts</small>"]:::contract
+    I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>Contracts</small>"]:::contract
+    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Contracts</small>"]:::contract
+    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Contracts</small>"]:::contract
+    I_HttpClientInterface["HttpClientInterface<br/><small>Contracts</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
-    I_LockManagerInterface["LockManagerInterface<br/><small>Runner</small>"]:::contract
-    I_LockStrategyInterface["LockStrategyInterface<br/><small>Runner</small>"]:::contract
-    I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Runner</small>"]:::contract
-    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Runner</small>"]:::contract
+    I_LockManagerInterface["LockManagerInterface<br/><small>Contracts</small>"]:::contract
+    I_LockStrategyInterface["LockStrategyInterface<br/><small>Contracts</small>"]:::contract
+    I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Contracts</small>"]:::contract
+    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Contracts</small>"]:::contract
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Contracts</small>"]:::contract
-    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>Runner</small>"]:::contract
-    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Runner</small>"]:::contract
-    I_QueueDriverInterface["QueueDriverInterface<br/><small>Runner</small>"]:::contract
+    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>Contracts</small>"]:::contract
+    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Contracts</small>"]:::contract
+    I_QueueDriverInterface["QueueDriverInterface<br/><small>Contracts</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
     I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Contracts</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
-    I_StateStoreInterface["StateStoreInterface<br/><small>Runner</small>"]:::contract
-    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Runner</small>"]:::contract
-    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>Runner</small>"]:::contract
+    I_StateStoreInterface["StateStoreInterface<br/><small>Contracts</small>"]:::contract
+    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Contracts</small>"]:::contract
+    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>Contracts</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>Runner</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
     C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore

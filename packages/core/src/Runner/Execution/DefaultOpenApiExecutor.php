@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
+use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Evaluation\TypeCaster;
-use Alama\Arazzo\Runner\Execution\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
 use Exception;
 use GuzzleHttp\Psr7\Utils;

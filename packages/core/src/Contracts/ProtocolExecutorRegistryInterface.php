@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Protocol;
+namespace Alama\Arazzo\Contracts;
 
-use Alama\Arazzo\Runner\Execution\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 

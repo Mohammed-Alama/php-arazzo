@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Evaluation;
 
+use Alama\Arazzo\Contracts\CriteriaEvaluatorInterface;
+use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Context\WorkflowContext;
 use Alama\Arazzo\Runner\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Runner\Evaluation\Condition\ConditionSyntaxException;
-use Alama\Arazzo\Runner\Evaluation\Contracts\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Runner\Evaluation\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Runner\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Evaluation\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\ArazzoDocument;
