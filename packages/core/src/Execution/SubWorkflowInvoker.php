@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\SelectorEvaluator;
-use Alama\Arazzo\Runner\Exceptions\ExecutionException;
+use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\Expression;

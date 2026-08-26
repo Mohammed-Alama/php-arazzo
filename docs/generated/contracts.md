@@ -36,6 +36,24 @@ flowchart LR
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>Contracts</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>Evaluation</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
+    C_core_Console_CliRunner["CliRunner<br/><small>Console</small>"]:::implCore
+    C_core_Console_CliRunner -.->|implements| I_LockManagerInterface
+    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
+    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
+    C_core_Console_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>Console</small>"]:::implCore
+    C_core_Console_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_core_Console_NullEventLedger["NullEventLedger<br/><small>Console</small>"]:::implCore
+    C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
+    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
+    C_core_Contracts_FileLockStrategy["FileLockStrategy<br/><small>Contracts</small>"]:::implCore
+    C_core_Contracts_FileLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Contracts_NullLockStrategy["NullLockStrategy<br/><small>Contracts</small>"]:::implCore
+    C_core_Contracts_NullLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Contracts_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Contracts</small>"]:::implCore
+    C_core_Contracts_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
     C_core_Evaluation_ArazzoExpressionResolver["ArazzoExpressionResolver<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_ArazzoExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_core_Evaluation_DomXpathEvaluator["DomXpathEvaluator<br/><small>Evaluation</small>"]:::implCore
@@ -98,24 +116,6 @@ flowchart LR
     C_core_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_core_Resolver_SourceRegistry["SourceRegistry<br/><small>Resolver</small>"]:::implCore
     C_core_Resolver_SourceRegistry -.->|implements| I_SourceResolver
-    C_core_Runner_FileLockStrategy["FileLockStrategy<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_FileLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Runner_NullLockStrategy["NullLockStrategy<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_NullLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Runner_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Runner_CliRunner["CliRunner<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_CliRunner -.->|implements| I_LockManagerInterface
-    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
-    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
-    C_core_Runner_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_core_Runner_NullEventLedger["NullEventLedger<br/><small>Runner</small>"]:::implCore
-    C_core_Runner_NullEventLedger -.->|implements| I_EventLedgerInterface
-    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
     C_core_State_FileStateStore["FileStateStore<br/><small>State</small>"]:::implCore
     C_core_State_FileStateStore -.->|implements| I_StateStoreInterface
     C_core_State_InMemoryStateStore["InMemoryStateStore<br/><small>State</small>"]:::implCore

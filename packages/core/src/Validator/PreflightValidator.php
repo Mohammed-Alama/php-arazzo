@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Validator;
 
 use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;

@@ -35,7 +35,7 @@ use Alama\Arazzo\Execution\SubWorkflowStepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Container\Container;

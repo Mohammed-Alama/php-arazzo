@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Laravel\Http\Controllers;
 
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Runner\Jobs\ResumeCorrelationJob;
+use Alama\Arazzo\Jobs\ResumeCorrelationJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

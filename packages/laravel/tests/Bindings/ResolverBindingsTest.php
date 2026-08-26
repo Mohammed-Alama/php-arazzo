@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Evaluation\SelectorEvaluator;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Runner\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Validator\PreflightValidator;
 
 it('aliases SourceRegistry onto the same instance as SourceResolver', function (): void {

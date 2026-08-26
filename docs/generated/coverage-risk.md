@@ -20,14 +20,18 @@ quadrantChart
     quadrant-2 Solid & stable
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
-    Console: [1, 0.571]
-    Context: [0.111, 1]
-    Contracts: [0.286, 1]
+    Async: [1, 1]
+    Console: [1, 0.545]
+    Context: [0.091, 1]
+    Contracts: [0.304, 1]
     Evaluation: [0.455, 1]
-    Execution: [0.632, 1]
+    Events: [0, 1]
+    Exceptions: [0.167, 1]
+    Execution: [0.636, 1]
     Expression: [0.333, 1]
     Generator: [0.333, 1]
-    Laravel/Bindings: [0.941, 0.333]
+    Jobs: [0.286, 1]
+    Laravel/Bindings: [0.938, 0.333]
     Laravel/Events: [0, 1]
     Laravel/Http: [0.714, 1]
     Laravel/Lock: [0.5, 1]
@@ -40,24 +44,27 @@ quadrantChart
     Policy: [0.75, 1]
     Protocol: [1, 1]
     Renderer: [0.5, 1]
-    Resolver: [0.286, 1]
-    Runner: [0.471, 1]
-    Spec: [0.059, 1]
+    Resolver: [0.455, 1]
+    Spec: [0.056, 1]
     State: [0.75, 0.833]
-    Support: [0.2, 1]
+    Support: [0.182, 1]
     Telemetry: [0, 0.5]
-    Validator: [0.636, 0.952]
+    Validator: [0.6, 0.952]
 ```
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
-| `Console` | 1.00 | 4 | 7 | 57% |
-| `Context` | 0.11 | 55 | 4 | 100% |
-| `Contracts` | 0.29 | 46 | 21 | 100% |
+| `Async` | 1.00 | 6 | 6 | 100% |
+| `Console` | 1.00 | 6 | 11 | 55% |
+| `Context` | 0.09 | 54 | 4 | 100% |
+| `Contracts` | 0.30 | 46 | 24 | 100% |
 | `Evaluation` | 0.46 | 64 | 30 | 100% |
-| `Execution` | 0.63 | 58 | 34 | 100% |
+| `Events` | 0.00 | 20 | 9 | 100% |
+| `Exceptions` | 0.17 | 11 | 10 | 100% |
+| `Execution` | 0.64 | 57 | 34 | 100% |
 | `Expression` | 0.33 | 82 | 23 | 100% |
 | `Generator` | 0.33 | 4 | 2 | 100% |
+| `Jobs` | 0.29 | 7 | 2 | 100% |
 | `Laravel/Bindings` | 0.94 | 2 | 6 | 33% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `Laravel/Http` | 0.71 | 4 | 3 | 100% |
@@ -71,10 +78,9 @@ quadrantChart
 | `Policy` | 0.75 | 2 | 2 | 100% |
 | `Protocol` | 1.00 | 2 | 2 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
-| `Resolver` | 0.29 | 22 | 11 | 100% |
-| `Runner` | 0.47 | 50 | 36 | 100% |
-| `Spec` | 0.06 | 139 | 33 | 100% |
+| `Resolver` | 0.46 | 28 | 13 | 100% |
+| `Spec` | 0.06 | 138 | 33 | 100% |
 | `State` | 0.75 | 5 | 6 | 83% |
-| `Support` | 0.20 | 18 | 6 | 100% |
+| `Support` | 0.18 | 18 | 6 | 100% |
 | `Telemetry` | 0.00 | 1 | 2 | 50% |
-| `Validator` | 0.64 | 60 | 63 | 95% |
+| `Validator` | 0.60 | 60 | 63 | 95% |

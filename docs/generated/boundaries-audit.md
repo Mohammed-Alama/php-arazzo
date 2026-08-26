@@ -27,7 +27,9 @@ edit `POLICY` when a boundary consciously moves.
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
+| core | `Async` | `Psr` | 2 |
 | core | `Console` | `GuzzleHttp` | 2 |
+| core | `Console` | `OpenTelemetry` | 1 |
 | core | `Console` | `Psr` | 1 |
 | core | `Console` | `Symfony` | 30 |
 | core | `Contracts` | `Psr` | 3 |
@@ -39,9 +41,7 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Generator` | `Psr` | 3 |
 | core | `Parser` | `Symfony` | 2 |
 | core | `Resolver` | `Psr` | 4 |
-| core | `Runner` | `OpenTelemetry` | 1 |
-| core | `Runner` | `Psr` | 2 |
-| core | `Runner` | `cebe` | 3 |
+| core | `Resolver` | `cebe` | 3 |
 | core | `Support` | `Psr` | 4 |
 | core | `Telemetry` | `OpenTelemetry` | 23 |
 | core | `Validator` | `JsonSchema` | 7 |
@@ -63,13 +63,13 @@ edit `POLICY` when a boundary consciously moves.
 
 **11 core boundary violation(s):**
 - `Console` imports `GuzzleHttp\*` (2 refs)
+- `Console` imports `OpenTelemetry\*` (1 refs)
 - `Console` imports `Symfony\*` (30 refs)
 - `Evaluation` imports `Flow\*` (1 refs)
 - `Execution` imports `GuzzleHttp\*` (1 refs)
 - `Execution` imports `OpenTelemetry\*` (2 refs)
 - `Execution` imports `cebe\*` (13 refs)
 - `Parser` imports `Symfony\*` (2 refs)
-- `Runner` imports `OpenTelemetry\*` (1 refs)
-- `Runner` imports `cebe\*` (3 refs)
+- `Resolver` imports `cebe\*` (3 refs)
 - `Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `Validator` imports `JsonSchema\*` (7 refs)

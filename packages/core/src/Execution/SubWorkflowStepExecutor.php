@@ -8,7 +8,7 @@ use Alama\Arazzo\Context\WorkflowContext;
 use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Runner\Exceptions\ExecutionException;
+use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;

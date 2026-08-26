@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Contracts;
 
 use Alama\Arazzo\Execution\OpenApiPayload;
-use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
+use Alama\Arazzo\Resolver\ResolvedOperation;
 use Psr\Http\Message\ResponseInterface;
 
 interface OpenApiExecutorInterface

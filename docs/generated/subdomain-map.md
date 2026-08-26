@@ -16,20 +16,19 @@ the declaration honest.
 flowchart LR
     subgraph S_core["Core domain"]
         S_Expression["Expression<br/><small>880 LOC</small>"]:::coreDomain
-        S_Runner["Runner<br/><small>1534 LOC</small>"]:::coreDomain
         S_Spec["Spec<br/><small>721 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_Console["Console<br/><small>481 LOC</small>"]:::supportingDomain
+        S_Console["Console<br/><small>791 LOC</small>"]:::supportingDomain
         S_Generator["Generator<br/><small>105 LOC</small>"]:::supportingDomain
         S_Parser["Parser<br/><small>1078 LOC</small>"]:::supportingDomain
         S_Renderer["Renderer<br/><small>253 LOC</small>"]:::supportingDomain
-        S_Resolver["Resolver<br/><small>348 LOC</small>"]:::supportingDomain
+        S_Resolver["Resolver<br/><small>549 LOC</small>"]:::supportingDomain
         S_Validator["Validator<br/><small>3094 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_Bindings["Bindings<br/><small>451 LOC</small>"]:::genericDomain
-        S_Events["Events<br/><small>21 LOC</small>"]:::genericDomain
+        S_Events["Events<br/><small>208 LOC</small>"]:::genericDomain
         S_Http["Http<br/><small>161 LOC</small>"]:::genericDomain
         S_Lock["Lock<br/><small>49 LOC</small>"]:::genericDomain
         S_Persistence["Persistence<br/><small>252 LOC</small>"]:::genericDomain
@@ -38,10 +37,13 @@ flowchart LR
         S_Support["Support<br/><small>323 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified[""]
+        S_Async["Async<br/><small>494 LOC</small>"]:::unknownDomain
         S_Context["Context<br/><small>758 LOC</small>"]:::unknownDomain
-        S_Contracts["Contracts<br/><small>372 LOC</small>"]:::unknownDomain
+        S_Contracts["Contracts<br/><small>512 LOC</small>"]:::unknownDomain
         S_Evaluation["Evaluation<br/><small>1985 LOC</small>"]:::unknownDomain
+        S_Exceptions["Exceptions<br/><small>162 LOC</small>"]:::unknownDomain
         S_Execution["Execution<br/><small>3759 LOC</small>"]:::unknownDomain
+        S_Jobs["Jobs<br/><small>34 LOC</small>"]:::unknownDomain
         S_Normalizer["Normalizer<br/><small>313 LOC</small>"]:::unknownDomain
         S_Policy["Policy<br/><small>96 LOC</small>"]:::unknownDomain
         S_Protocol["Protocol<br/><small>199 LOC</small>"]:::unknownDomain
@@ -55,16 +57,19 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 3 | 3,135 | 0 | 17% |
-| Supporting | 6 | 5,359 | 0 | 29% |
-| Generic subdomain | 8 | 1,085 | 1,132 | 12% |
-|  | 8 | 7,760 | 0 | 42% |
+| Core domain | 2 | 1,601 | 0 | 9% |
+| Supporting | 6 | 5,870 | 0 | 32% |
+| Generic subdomain | 8 | 1,272 | 1,132 | 13% |
+|  | 11 | 8,590 | 0 | 47% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
+- `Async`
 - `Context`
 - `Contracts`
 - `Evaluation`
+- `Exceptions`
 - `Execution`
+- `Jobs`
 - `Normalizer`
 - `Policy`
 - `Protocol`

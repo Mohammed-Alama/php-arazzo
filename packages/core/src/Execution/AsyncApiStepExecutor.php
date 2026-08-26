@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
 use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\PayloadReplacer;
-use Alama\Arazzo\Runner\Exceptions\ExecutionException;
+use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Expression;

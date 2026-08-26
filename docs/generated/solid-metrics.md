@@ -23,14 +23,18 @@ quadrantChart
     quadrant-2 Ideal abstractions
     quadrant-3 Modular building blocks
     quadrant-4 Zone of pain
+    Async: [1, 0]
     Console: [1, 0]
-    Context: [0.111, 0]
-    Contracts: [0.286, 1]
+    Context: [0.091, 0]
+    Contracts: [0.304, 0.875]
     Evaluation: [0.455, 0.067]
-    Execution: [0.632, 0]
+    Events: [0, 0]
+    Exceptions: [0.167, 0]
+    Execution: [0.636, 0]
     Expression: [0.333, 0]
     Generator: [0.333, 0]
-    Laravel/Bindings: [0.941, 0]
+    Jobs: [0.286, 0]
+    Laravel/Bindings: [0.938, 0]
     Laravel/Http: [0.714, 0]
     Laravel/Lock: [0.5, 0]
     Laravel/Persistence: [0.857, 0]
@@ -43,13 +47,12 @@ quadrantChart
     Policy: [0.75, 0]
     Protocol: [1, 0]
     Renderer: [0.5, 0]
-    Resolver: [0.286, 0.273]
-    Runner: [0.471, 0]
-    Spec: [0.059, 0]
+    Resolver: [0.455, 0.231]
+    Spec: [0.056, 0]
     State: [0.75, 0]
-    Support: [0.2, 0.167]
+    Support: [0.182, 0.167]
     Telemetry: [0, 0]
-    Validator: [0.636, 0.016]
+    Validator: [0.6, 0.016]
 ```
 
 ## God classes (SRP)

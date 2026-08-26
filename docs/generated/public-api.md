@@ -8,13 +8,59 @@ classes/interfaces/enums in `packages/*/src`, excluding `Support`, `Internal`
 and `Exceptions` namespaces (exceptions have their own doc). Any diff in this
 file on a commit is a public API change — review it deliberately.
 
+## core · `Alama\Arazzo\Async`
+
+### `ExecutionStateBuilder` class
+- `public function build(?array $persisted, WorkflowContext $resultContext, Workflow $workflow, ?Step $overlayStep = null): ExecutionState`
+
+### `PreflightGuard` class
+- `public function __construct(private readonly DefinitionRegistryInterface $definitions, private readonly ?PreflightValidator $preflight)`
+
+### `StateReconciler` class
+- `public function __construct(private readonly StateStoreInterface $stateStore)`
+
+### `SuspensionHandler` class
+- `public function __construct(private readonly StateStoreInterface $stateStore, private readonly ExecutionRegistryInterface $executionRegistry, private readonly EventLedgerInterface $eventLedger, private readonly EventDispatcherInterface $events, private readonly ExpressionResolverInterface $expressions, private readonly int $stateTtlSeconds = 86400)`
+
+### `TransitionApplier` class
+- Constants: `OUTCOME_ABORTED`, `OUTCOME_CONTINUE`, `OUTCOME_TERMINAL`
+- `public function __construct(private readonly StateStoreInterface $stateStore, private readonly ExecutionRegistryInterface $executionRegistry, private readonly EventLedgerInterface $eventLedger, private readonly QueueDriverInterface $queueDriver, private readonly WorkflowEngine $workflowEngine, private readonly WorkerEvents $events, private readonly int $stateTtlSeconds = 86400)`
+- `public function apply(ArazzoDocument $document, Workflow $workflow, Step $step, Transition $transition, string $executionId): string`
+
+### `WorkerEvents` class
+- `public function __construct(?EventDispatcherInterface $events = null)`
+- `public function correlationPending(string $executionId, string $workflowId, string $stepId, string $correlationId, string $channelPath): void`
+- `public function failurePair(string $executionId, string $workflowId, string $stepId, Throwable $cause): void`
+- `public function runCompleted(string $executionId, string $workflowId, array $outputs): void`
+- `public function runFailedBecause(string $executionId, string $workflowId, string $reason): void`
+- `public function stepExecuted(string $executionId, string $workflowId, string $stepId, int $statusCode, array $outputs, bool $criteriaMet): void`
+- `public function stepStarted(string $executionId, string $workflowId, string $stepId, int $attempt): void`
+
 ## core · `Alama\Arazzo\Console`
 
 ### `Application` class
 - `public function __construct()`
 
+### `CliRunResult` class
+- `public function __construct(public readonly string $executionId, public readonly string $status, public readonly bool $suspended)`
+- `public function failed(): bool`
+- `public function succeeded(): bool`
+
+### `CliRunner` class
+- `public function __construct(private readonly ExpressionResolverInterface $expressions, private readonly StateStoreInterface $stateStore, private readonly DefinitionRegistryInterface $definitions, private readonly ExecutionRegistryInterface $registry = new InProcessExecutionRegistry(), private readonly EventLedgerInterface $eventLedger = new NullEventLedger(), ?LockManagerInterface $locks = null, private readonly array $protocolExecutors = [], private readonly int $maxQueuedSteps = 10_000)`
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
+- `public function release(string $key): void`
+- `public function resume(ArazzoDocument $document, string $executionId): CliRunResult`
+- `public function run(ArazzoDocument $document, string $workflowId, array $inputs = [], ?string $executionId = null, ?string $definitionId = null): CliRunResult`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
+
 ### `DocumentLoader` class
 - `public static function load(string $file): ArazzoDocument`
+
+### `InProcessExecutionRegistry` class
+- `public function complete(string $executionId, ExecutionStatus $status): void`
+- `public function start(string $executionId, string $definitionId, string $workflowId): void`
+- `public function statusOf(string $executionId): ?ExecutionStatus`
 
 ### `RunCommand` class
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
@@ -116,6 +162,13 @@ file on a commit is a public API change — review it deliberately.
 - `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 
+### `FileLockStrategy` class
+- `public function __construct(?string $lockDir = null)`
+- `public function __destruct()`
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
+- `public function release(string $key): void`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
+
 ### `HttpClientInterface` interface
 - `public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface;`
 
@@ -123,6 +176,10 @@ file on a commit is a public API change — review it deliberately.
 - `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
 - `public function release(string $key): void;`
 - `public function tryAcquire(string $key, int $ttlSeconds): bool;`
+
+### `NullLockStrategy` class
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
 
 ### `OpenApiExecutorInterface` interface
 - `public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null, ): ResponseInterface;`
@@ -138,6 +195,11 @@ file on a commit is a public API change — review it deliberately.
 - `public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void;`
 - `public function existsForExecution(string $executionId): bool;`
 - `public function findByCorrelationId(string $correlationId): ?PendingCorrelation;`
+
+### `PessimisticLockStrategy` class
+- `public function __construct(private LockManagerInterface $lockManager)`
+- `public function release(string $key): void`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
 
 ### `ProtocolExecutorRegistryInterface` interface
 - `public function getSupportedProtocols(): array;`
@@ -247,6 +309,22 @@ file on a commit is a public API change — review it deliberately.
 ### `XpathEvaluator` interface
 - `public function query(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function supportedVersions(): array;`
+
+## core · `Alama\Arazzo\Exceptions`
+
+### `ExecutionException` class
+- `public static function messageFactoryMissing(string $stepId): self`
+- `public static function subWorkflowNotFound(string $workflowId): self`
+- `public static function unresolvableChannelTarget(string $stepId, string $channelPath): self`
+
+### `SchemaValidationException` class
+- `public function __construct(public readonly string $stepId, public readonly array $violations)`
+
+### `UnsupportedSerializationStyleException` class
+- `public function __construct(string $style, string $location)`
+
+### `UnsupportedSourceVersionException` class
+- `public static function forVersion(string $version, string $sourceName): self`
 
 ## core · `Alama\Arazzo\Execution`
 
@@ -472,6 +550,9 @@ file on a commit is a public API change — review it deliberately.
 ### `LocalFetcher` class
 - `public function fetch(string $urlOrPath, string $basePath): string`
 
+### `OpenApiOperationResolver` class
+- `public function __construct(private OpenApiDocumentLoader $loader, private OpenApiVersionDetector $versionDetector, private OpenApi30Normalizer $normalizer30, private OpenApi31Normalizer $normalizer31)`
+
 ### `SourceFetcher` interface
 - `public function fetch(string $urlOrPath, string $basePath): string;`
 
@@ -485,85 +566,6 @@ file on a commit is a public API change — review it deliberately.
 
 ### `UnresolvableReferenceException` class
 - `public function __construct(string $message, public readonly string $sourceName = '', public readonly string $reference = '', ?Throwable $previous = null)`
-
-## core · `Alama\Arazzo\Runner`
-
-### `CliRunResult` class
-- `public function __construct(public readonly string $executionId, public readonly string $status, public readonly bool $suspended)`
-- `public function failed(): bool`
-- `public function succeeded(): bool`
-
-### `CliRunner` class
-- `public function __construct(private readonly ExpressionResolverInterface $expressions, private readonly StateStoreInterface $stateStore, private readonly DefinitionRegistryInterface $definitions, private readonly ExecutionRegistryInterface $registry = new InProcessExecutionRegistry(), private readonly EventLedgerInterface $eventLedger = new NullEventLedger(), ?LockManagerInterface $locks = null, private readonly array $protocolExecutors = [], private readonly int $maxQueuedSteps = 10_000)`
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
-- `public function release(string $key): void`
-- `public function resume(ArazzoDocument $document, string $executionId): CliRunResult`
-- `public function run(ArazzoDocument $document, string $workflowId, array $inputs = [], ?string $executionId = null, ?string $definitionId = null): CliRunResult`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `ExecutionException` class
-- `public static function messageFactoryMissing(string $stepId): self`
-- `public static function subWorkflowNotFound(string $workflowId): self`
-- `public static function unresolvableChannelTarget(string $stepId, string $channelPath): self`
-
-### `ExecutionStateBuilder` class
-- `public function build(?array $persisted, WorkflowContext $resultContext, Workflow $workflow, ?Step $overlayStep = null): ExecutionState`
-
-### `FileLockStrategy` class
-- `public function __construct(?string $lockDir = null)`
-- `public function __destruct()`
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
-- `public function release(string $key): void`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `InProcessExecutionRegistry` class
-- `public function complete(string $executionId, ExecutionStatus $status): void`
-- `public function start(string $executionId, string $definitionId, string $workflowId): void`
-- `public function statusOf(string $executionId): ?ExecutionStatus`
-
-### `NullLockStrategy` class
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `OpenApiOperationResolver` class
-- `public function __construct(private OpenApiDocumentLoader $loader, private OpenApiVersionDetector $versionDetector, private OpenApi30Normalizer $normalizer30, private OpenApi31Normalizer $normalizer31)`
-
-### `PessimisticLockStrategy` class
-- `public function __construct(private LockManagerInterface $lockManager)`
-- `public function release(string $key): void`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `PreflightGuard` class
-- `public function __construct(private readonly DefinitionRegistryInterface $definitions, private readonly ?PreflightValidator $preflight)`
-
-### `SchemaValidationException` class
-- `public function __construct(public readonly string $stepId, public readonly array $violations)`
-
-### `StateReconciler` class
-- `public function __construct(private readonly StateStoreInterface $stateStore)`
-
-### `SuspensionHandler` class
-- `public function __construct(private readonly StateStoreInterface $stateStore, private readonly ExecutionRegistryInterface $executionRegistry, private readonly EventLedgerInterface $eventLedger, private readonly EventDispatcherInterface $events, private readonly ExpressionResolverInterface $expressions, private readonly int $stateTtlSeconds = 86400)`
-
-### `TransitionApplier` class
-- Constants: `OUTCOME_ABORTED`, `OUTCOME_CONTINUE`, `OUTCOME_TERMINAL`
-- `public function __construct(private readonly StateStoreInterface $stateStore, private readonly ExecutionRegistryInterface $executionRegistry, private readonly EventLedgerInterface $eventLedger, private readonly QueueDriverInterface $queueDriver, private readonly WorkflowEngine $workflowEngine, private readonly WorkerEvents $events, private readonly int $stateTtlSeconds = 86400)`
-- `public function apply(ArazzoDocument $document, Workflow $workflow, Step $step, Transition $transition, string $executionId): string`
-
-### `UnsupportedSerializationStyleException` class
-- `public function __construct(string $style, string $location)`
-
-### `UnsupportedSourceVersionException` class
-- `public static function forVersion(string $version, string $sourceName): self`
-
-### `WorkerEvents` class
-- `public function __construct(?EventDispatcherInterface $events = null)`
-- `public function correlationPending(string $executionId, string $workflowId, string $stepId, string $correlationId, string $channelPath): void`
-- `public function failurePair(string $executionId, string $workflowId, string $stepId, Throwable $cause): void`
-- `public function runCompleted(string $executionId, string $workflowId, array $outputs): void`
-- `public function runFailedBecause(string $executionId, string $workflowId, string $reason): void`
-- `public function stepExecuted(string $executionId, string $workflowId, string $stepId, int $statusCode, array $outputs, bool $criteriaMet): void`
-- `public function stepStarted(string $executionId, string $workflowId, string $stepId, int $attempt): void`
 
 ## core · `Alama\Arazzo\Spec`
 

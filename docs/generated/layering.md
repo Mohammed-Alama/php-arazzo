@@ -36,9 +36,6 @@ flowchart TB
     subgraph L7["layer 7"]
         M_Validator["Validator"]:::node
     end
-    subgraph L8["layer 8"]
-        M_Runner["Runner"]:::node
-    end
     subgraph L10["layer 10"]
         M_Laravel_Bindings["Bindings"]:::laravelNode
         M_Laravel_Events["Events"]:::laravelNode
@@ -50,11 +47,15 @@ flowchart TB
         M_Laravel__["_"]:::laravelNode
     end
     subgraph L11["layer 11"]
+        M_Async["Async"]:::node
         M_Console["Console"]:::node
         M_Context["Context"]:::node
         M_Contracts["Contracts"]:::node
         M_Evaluation["Evaluation"]:::node
+        M_Events["Events"]:::node
+        M_Exceptions["Exceptions"]:::node
         M_Execution["Execution"]:::node
+        M_Jobs["Jobs"]:::node
         M_Normalizer["Normalizer"]:::node
         M_Policy["Policy"]:::node
         M_Protocol["Protocol"]:::node
@@ -62,34 +63,50 @@ flowchart TB
         M_State["State"]:::node
         M_Telemetry["Telemetry"]:::node
     end
+    M_Async --> M_Context
+    M_Async --> M_Contracts
+    M_Async --> M_Events
+    M_Async --> M_Exceptions
+    M_Async --> M_Execution
+    M_Async --> M_Jobs
+    M_Async --> M_Spec
+    M_Async --> M_Support
+    M_Async --> M_Validator
+    M_Console --> M_Context
+    M_Console --> M_Contracts
     M_Console --> M_Evaluation
     M_Console --> M_Execution
+    M_Console --> M_Jobs
     M_Console --> M_Normalizer
     M_Console --> M_Parser
     M_Console --> M_Renderer
     M_Console --> M_Resolver
-    M_Console --> M_Runner
     M_Console --> M_Spec
+    M_Console --> M_Telemetry
     M_Console --> M_Validator
     M_Context --> M_Spec
     M_Contracts --> M_Context
     M_Contracts --> M_Evaluation
+    M_Contracts --> M_Exceptions
     M_Contracts --> M_Execution
     M_Contracts --> M_Normalizer
-    M_Contracts --> M_Runner
+    M_Contracts --> M_Resolver
     M_Contracts --> M_Spec
     M_Evaluation --> M_Context
     M_Evaluation --> M_Contracts
     M_Evaluation --> M_Expression
     M_Evaluation --> M_Spec
     M_Evaluation --> M_Support
+    M_Exceptions --> M_Support
     M_Execution --> M_Context
     M_Execution --> M_Contracts
     M_Execution --> M_Evaluation
+    M_Execution --> M_Events
+    M_Execution --> M_Exceptions
     M_Execution --> M_Expression
+    M_Execution --> M_Jobs
     M_Execution --> M_Policy
     M_Execution --> M_Resolver
-    M_Execution --> M_Runner
     M_Execution --> M_Spec
     M_Execution --> M_State
     M_Execution --> M_Support
@@ -98,6 +115,8 @@ flowchart TB
     M_Expression -.->|violation| M_Spec
     M_Expression -.->|violation| M_Support
     M_Generator -.->|violation| M_Contracts
+    M_Jobs --> M_Context
+    M_Jobs --> M_Spec
     M_Laravel_Bindings -.->|violation| M_Contracts
     M_Laravel_Bindings -.->|violation| M_Evaluation
     M_Laravel_Bindings -.->|violation| M_Execution
@@ -111,24 +130,23 @@ flowchart TB
     M_Laravel_Bindings -.->|violation| M_Normalizer
     M_Laravel_Bindings --> M_Parser
     M_Laravel_Bindings --> M_Resolver
-    M_Laravel_Bindings --> M_Runner
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
     M_Laravel_Http -.->|violation| M_Contracts
     M_Laravel_Http --> M_Generator
+    M_Laravel_Http -.->|violation| M_Jobs
     M_Laravel_Http --> M_Resolver
-    M_Laravel_Http --> M_Runner
     M_Laravel_Http --> M_Spec
     M_Laravel_Lock -.->|violation| M_Contracts
     M_Laravel_Persistence -.->|violation| M_Context
     M_Laravel_Persistence -.->|violation| M_Contracts
+    M_Laravel_Persistence -.->|violation| M_Exceptions
     M_Laravel_Persistence -.->|violation| M_Execution
     M_Laravel_Persistence --> M_Parser
-    M_Laravel_Persistence --> M_Runner
     M_Laravel_Persistence --> M_Spec
     M_Laravel_Queue -.->|violation| M_Contracts
     M_Laravel_Queue -.->|violation| M_Execution
-    M_Laravel_Queue --> M_Runner
+    M_Laravel_Queue -.->|violation| M_Jobs
     M_Laravel_State -.->|violation| M_Contracts
     M_Laravel__ --> M_Laravel_Bindings
     M_Laravel__ --> M_Laravel_Http
@@ -145,27 +163,21 @@ flowchart TB
     M_Protocol --> M_Execution
     M_Protocol --> M_Spec
     M_Renderer --> M_Spec
+    M_Resolver -.->|violation| M_Exceptions
+    M_Resolver -.->|violation| M_Execution
+    M_Resolver -.->|violation| M_Normalizer
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
-    M_Runner -.->|violation| M_Context
-    M_Runner -.->|violation| M_Contracts
-    M_Runner -.->|violation| M_Execution
-    M_Runner -.->|violation| M_Normalizer
-    M_Runner --> M_Spec
-    M_Runner --> M_Support
-    M_Runner -.->|violation| M_Telemetry
-    M_Runner --> M_Validator
     M_Spec --> M_Expression
     M_State --> M_Context
     M_State --> M_Contracts
     M_State --> M_Spec
     M_Support -.->|violation| M_Contracts
-    M_Support -.->|violation| M_Runner
+    M_Support -.->|violation| M_Events
     M_Validator -.->|violation| M_Evaluation
     M_Validator --> M_Expression
     M_Validator -.->|violation| M_Normalizer
     M_Validator --> M_Resolver
-    M_Validator -.->|violation| M_Runner
     M_Validator --> M_Spec
     M_Validator --> M_Support
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -177,28 +189,28 @@ flowchart TB
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Runner` | `Contracts` | 25 |
 | `Laravel:Bindings` | `Contracts` | 21 |
 | `Laravel:Bindings` | `Execution` | 17 |
-| `Runner` | `Execution` | 12 |
-| `Support` | `Runner` | 9 |
+| `Support` | `Events` | 9 |
 | `Laravel:Bindings` | `Evaluation` | 8 |
-| `Runner` | `Context` | 8 |
 | `Expression` | `Spec` | 6 |
 | `Laravel:Persistence` | `Contracts` | 4 |
-| `Runner` | `Normalizer` | 4 |
+| `Laravel:Queue` | `Jobs` | 4 |
+| `Resolver` | `Normalizer` | 4 |
 | `Laravel:Bindings` | `Normalizer` | 3 |
 | `Laravel:Http` | `Contracts` | 3 |
 | `Generator` | `Contracts` | 2 |
 | `Laravel:Queue` | `Execution` | 2 |
 | `Validator` | `Evaluation` | 2 |
 | `Expression` | `Support` | 1 |
+| `Laravel:Http` | `Jobs` | 1 |
 | `Laravel:Lock` | `Contracts` | 1 |
 | `Laravel:Persistence` | `Context` | 1 |
+| `Laravel:Persistence` | `Exceptions` | 1 |
 | `Laravel:Persistence` | `Execution` | 1 |
 | `Laravel:Queue` | `Contracts` | 1 |
 | `Laravel:State` | `Contracts` | 1 |
-| `Runner` | `Telemetry` | 1 |
+| `Resolver` | `Exceptions` | 1 |
+| `Resolver` | `Execution` | 1 |
 | `Support` | `Contracts` | 1 |
 | `Validator` | `Normalizer` | 1 |
-| `Validator` | `Runner` | 1 |

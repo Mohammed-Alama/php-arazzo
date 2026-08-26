@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Contracts;
 
 use Alama\Arazzo\Context\WorkflowContext;
-use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;

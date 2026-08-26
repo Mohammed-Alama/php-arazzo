@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Contracts;
 
-use Alama\Arazzo\Runner\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 

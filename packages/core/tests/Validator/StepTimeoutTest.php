@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Runner;
+namespace Tests\Validator;
 
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;

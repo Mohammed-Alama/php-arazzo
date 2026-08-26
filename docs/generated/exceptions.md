@@ -13,27 +13,27 @@ classDiagram
     class E_ArazzoException["ArazzoException<br/><small>Support</small>"]:::domain
     class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>Evaluation</small>"]:::domain
     class E_DecodeException["DecodeException<br/><small>Parser</small>"]:::domain
-    class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>Runner</small>"]:::domain
-    class E_ExecutionException["ExecutionException<br/><small>Runner</small>"]:::domain
+    class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>Exceptions</small>"]:::domain
+    class E_ExecutionException["ExecutionException<br/><small>Exceptions</small>"]:::domain
     class E_ExpressionSyntaxException["ExpressionSyntaxException<br/><small>Expression</small>"]:::domain
-    class E_GotoTargetNotFoundException["GotoTargetNotFoundException<br/><small>Runner</small>"]:::domain
+    class E_GotoTargetNotFoundException["GotoTargetNotFoundException<br/><small>Exceptions</small>"]:::domain
     class E_LoaderException["LoaderException<br/><small>Parser</small>"]:::domain
     class E_NotImplementedException["NotImplementedException<br/><small>Support</small>"]:::domain
     class E_ParserException["ParserException<br/><small>Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>Validator</small>"]:::domain
-    class E_SchemaValidationException["SchemaValidationException<br/><small>Runner</small>"]:::domain
+    class E_SchemaValidationException["SchemaValidationException<br/><small>Exceptions</small>"]:::domain
     class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>Evaluation</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>Resolver</small>"]:::domain
-    class E_StepBudgetExceededException["StepBudgetExceededException<br/><small>Runner</small>"]:::domain
+    class E_StepBudgetExceededException["StepBudgetExceededException<br/><small>Exceptions</small>"]:::domain
     class E_UnresolvableReferenceException["UnresolvableReferenceException<br/><small>Resolver</small>"]:::domain
-    class E_UnsupportedCriterionTypeException["UnsupportedCriterionTypeException<br/><small>Runner</small>"]:::domain
-    class E_UnsupportedSerializationStyleException["UnsupportedSerializationStyleException<br/><small>Runner</small>"]:::domain
-    class E_UnsupportedSourceVersionException["UnsupportedSourceVersionException<br/><small>Runner</small>"]:::domain
+    class E_UnsupportedCriterionTypeException["UnsupportedCriterionTypeException<br/><small>Exceptions</small>"]:::domain
+    class E_UnsupportedSerializationStyleException["UnsupportedSerializationStyleException<br/><small>Exceptions</small>"]:::domain
+    class E_UnsupportedSourceVersionException["UnsupportedSourceVersionException<br/><small>Exceptions</small>"]:::domain
     class E_ValidationException["ValidationException<br/><small>Validator</small>"]:::domain
-    class E_WorkflowCycleException["WorkflowCycleException<br/><small>Runner</small>"]:::domain
-    class E_WorkflowDepthExceededException["WorkflowDepthExceededException<br/><small>Runner</small>"]:::domain
+    class E_WorkflowCycleException["WorkflowCycleException<br/><small>Exceptions</small>"]:::domain
+    class E_WorkflowDepthExceededException["WorkflowDepthExceededException<br/><small>Exceptions</small>"]:::domain
     E_RuntimeException <|-- E_ArazzoException
     E_ArazzoException <|-- E_ConditionSyntaxException
     E_RuntimeException <|-- E_DecodeException
@@ -67,24 +67,24 @@ classDiagram
 | `ArazzoException` | `RuntimeException` | Support |
 | `ConditionSyntaxException` | `ArazzoException` | Evaluation |
 | `DecodeException` | `RuntimeException` | Parser |
-| `DefinitionHydrationException` | `RuntimeException` | Runner |
-| `ExecutionException` | `ArazzoException` | Runner |
+| `DefinitionHydrationException` | `RuntimeException` | Exceptions |
+| `ExecutionException` | `ArazzoException` | Exceptions |
 | `ExpressionSyntaxException` | `ArazzoException` | Expression |
-| `GotoTargetNotFoundException` | `RuntimeException` | Runner |
+| `GotoTargetNotFoundException` | `RuntimeException` | Exceptions |
 | `LoaderException` | `ArazzoException` | Parser |
 | `NotImplementedException` | `ArazzoException` | Support |
 | `ParserException` | `ArazzoException` | Parser |
 | `PreflightFailureException` | `ArazzoException` | Validator |
-| `SchemaValidationException` | `RuntimeException` | Runner |
+| `SchemaValidationException` | `RuntimeException` | Exceptions |
 | `SelectorEvaluationException` | `ArazzoException` | Evaluation |
 | `SourceFetchException` | `SourceResolutionException` | Resolver |
 | `SourceParseException` | `SourceResolutionException` | Resolver |
 | `SourceResolutionException` | `RuntimeException` | Resolver |
-| `StepBudgetExceededException` | `ArazzoException` | Runner |
+| `StepBudgetExceededException` | `ArazzoException` | Exceptions |
 | `UnresolvableReferenceException` | `SourceResolutionException` | Resolver |
-| `UnsupportedCriterionTypeException` | `RuntimeException` | Runner |
-| `UnsupportedSerializationStyleException` | `RuntimeException` | Runner |
-| `UnsupportedSourceVersionException` | `RuntimeException` | Runner |
+| `UnsupportedCriterionTypeException` | `RuntimeException` | Exceptions |
+| `UnsupportedSerializationStyleException` | `RuntimeException` | Exceptions |
+| `UnsupportedSourceVersionException` | `RuntimeException` | Exceptions |
 | `ValidationException` | `ArazzoException` | Validator |
-| `WorkflowCycleException` | `ArazzoException` | Runner |
-| `WorkflowDepthExceededException` | `ArazzoException` | Runner |
+| `WorkflowCycleException` | `ArazzoException` | Exceptions |
+| `WorkflowDepthExceededException` | `ArazzoException` | Exceptions |

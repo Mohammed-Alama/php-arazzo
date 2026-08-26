@@ -24,8 +24,8 @@ Regenerated before every commit.
 | **InvalidArgumentException** | `TypeCaster` <small>Evaluation</small>, `DatabaseDefinitionRegistry` <small>Persistence</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `SpecVersion` <small>Spec/Enum</small> |
 | **LogicException** | `AsyncApiStepExecutor` <small>Execution</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>Normalizer</small> |
-| **PreflightFailureException** | `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small>, `PreflightGuard` <small>Runner/Async</small> |
-| **RuntimeException** | `ReusableParameterResolver` <small>Execution</small>, `OpenAiClient` <small>Generator/Clients</small>, `CliRunner` <small>Runner/Cli</small>, `FileLockStrategy` <small>Runner/Contract</small>, `OpenApiOperationResolver` <small>Runner/Resolver</small>, `OtelSetup` <small>Telemetry</small> |
+| **PreflightFailureException** | `PreflightGuard` <small>Async</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
+| **RuntimeException** | `CliRunner` <small>Console/Cli</small>, `FileLockStrategy` <small>Contracts</small>, `ReusableParameterResolver` <small>Execution</small>, `OpenAiClient` <small>Generator/Clients</small>, `OpenApiOperationResolver` <small>Resolver</small>, `OtelSetup` <small>Telemetry</small> |
 | **SchemaValidationException** | `ArazzoSchemaValidator` <small>Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>Evaluation</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |
@@ -74,11 +74,11 @@ Regenerated before every commit.
 | throws **StepBudgetExceededException** | `WorkflowEngine` | — |
 | throws **WorkflowCycleException** | `WorkflowEngine` | — |
 | throws **WorkflowDepthExceededException** | `WorkflowEngine` | — |
-| prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
-| prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
-| prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
-| prop ttlSeconds | `CachedFetcher` | `3600` |
 | prop stateTtlSeconds | `SuspensionHandler` | `86400` |
 | const OUTCOME_TERMINAL | `TransitionApplier` | `'terminal'` |
 | prop stateTtlSeconds | `TransitionApplier` | `86400` |
 | prop maxQueuedSteps | `CliRunner` | `10_000` |
+| prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
+| prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
+| prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
+| prop ttlSeconds | `CachedFetcher` | `3600` |

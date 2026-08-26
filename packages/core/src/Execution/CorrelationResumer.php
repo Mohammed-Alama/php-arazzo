@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\LockManagerInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Runner\Events\CorrelationResumed;
+use Alama\Arazzo\Events\CorrelationResumed;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;

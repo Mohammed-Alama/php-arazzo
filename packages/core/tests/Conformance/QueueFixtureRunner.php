@@ -13,7 +13,7 @@ use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Tests\Support\FakeLockManager;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
 use Alama\Arazzo\Tests\Support\RecordingExecutionRegistry;

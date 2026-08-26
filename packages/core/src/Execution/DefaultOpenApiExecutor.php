@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
 use Alama\Arazzo\Evaluation\TypeCaster;
-use Alama\Arazzo\Runner\Resolver\ResolvedOperation;
+use Alama\Arazzo\Resolver\ResolvedOperation;
 use Exception;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;

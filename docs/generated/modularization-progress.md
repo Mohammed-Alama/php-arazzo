@@ -9,15 +9,15 @@ each commit. A plan that never meets this doc is a wish, not a roadmap.
 
 Plan: `2026-08-25-runner-modularization-plan.md`
 
-- Files promised: **49** · created: **13** (**27%**)
+- Files promised: **49** · created: **0** (**0%**)
 - Checkboxes ticked: **9 / 89**
 
 ```mermaid
 xychart-beta
-    title "Planned files created (27%)"
+    title "Planned files created (0%)"
     x-axis ["created", "missing"]
     y-axis "Files" 0 --> 49
-    bar [13, 36]
+    bar [0, 49]
 ```
 
 ## Not yet in the tree
@@ -36,10 +36,13 @@ xychart-beta
 - `packages/core/src/Runner/State/ErrorEntry.php`
 - `packages/core/src/Runner/State/FileStateStore.php`
 - `packages/core/src/Runner/State/InMemoryStateStore.php`
+- `packages/core/src/Runner/Async/StateReconciler.php`
+- `packages/core/src/Runner/Async/PreflightGuard.php`
 - `packages/core/src/Runner/Async/StepExecutor.php`
 - `packages/core/src/Runner/Async/CriteriaEvaluator.php`
 - `packages/core/src/Runner/Async/TransitionDispatcher.php`
 - `packages/core/src/Runner/Async/EventEmitter.php`
+- `packages/core/src/Runner/Cli/CliRunner.php`
 - `packages/core/src/Runner/Cli/CliStateStore.php`
 - `packages/core/src/Runner/Telemetry/OtelSetup.php`
 - `packages/core/src/Runner/Telemetry/TraceContextPropagator.php`
@@ -51,10 +54,20 @@ xychart-beta
 - `packages/core/src/Runner/Context/ExecutionState.php`
 - `packages/core/src/Runner/Context/WorkflowContext.php`
 - `packages/core/src/Runner/Execution/StepProtocolExecutorInterface.php`
+- `packages/core/tests/Runner/Policy/RetryPolicyTest.php`
 - `packages/core/tests/Runner/Policy/BackoffCalculatorTest.php`
+- `packages/core/tests/Runner/Protocol/ProtocolExecutorRegistryTest.php`
+- `packages/core/tests/Runner/Protocol/SubWorkflowExecutorTest.php`
+- `packages/core/tests/Runner/State/ExecutionContextTest.php`
+- `packages/core/tests/Runner/State/FileStateStoreTest.php`
+- `packages/core/tests/Runner/Async/StateReconcilerTest.php`
+- `packages/core/tests/Runner/Async/PreflightGuardTest.php`
 - `packages/core/tests/Runner/Async/StepExecutorTest.php`
 - `packages/core/tests/Runner/Async/CriteriaEvaluatorTest.php`
 - `packages/core/tests/Runner/Async/TransitionDispatcherTest.php`
 - `packages/core/tests/Runner/Async/EventEmitterTest.php`
+- `packages/core/tests/Runner/Cli/CliRunnerTest.php`
+- `packages/core/tests/Runner/Telemetry/OtelIntegrationTest.php`
+- `packages/core/tests/Runner/AdapterParityTest.php`
 - `packages/core/tests/Runner/SubWorkflowParityTest.php`
 - `packages/laravel/src/ServiceProvider.php`

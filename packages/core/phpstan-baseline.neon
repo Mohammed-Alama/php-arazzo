@@ -647,7 +647,7 @@ parameters:
 			path: src/Execution/StepOutcomeHandler.php
 
 		-
-			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Runner\\Events\\RunCompleted constructor expects array\<string, mixed\>, mixed given\.$#'
+			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Events\\RunCompleted constructor expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Execution/StepOutcomeHandler.php
