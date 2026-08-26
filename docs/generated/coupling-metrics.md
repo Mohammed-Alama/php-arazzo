@@ -25,7 +25,7 @@ targets. Regenerated before every commit.
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
 | `Parser` | 10 | 1077 | 4 | 2 | 0.33 |  |
 | `Renderer` | 1 | 253 | 1 | 1 | 0.50 |  |
-| `Resolver` | 11 | 346 | 5 | 2 | 0.29 |  |
+| `Resolver` | 11 | 347 | 5 | 2 | 0.29 |  |
 | `Runner` | 136 | 9571 | 9 | 5 | 0.36 |  |
 | `Spec` | 32 | 691 | 9 | 1 | 0.10 |  |
 | `Support` | 6 | 263 | 5 | 1 | 0.17 |  |

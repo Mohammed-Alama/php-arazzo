@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Tests\Resolution\Fetchers;
 use Alama\Arazzo\Resolver\Fetchers\CachedFetcher;
 use Alama\Arazzo\Resolver\SourceFetcher;
 use Psr\SimpleCache\CacheInterface;
+use ReflectionProperty;
 
 class ArrayCache implements CacheInterface
 {
@@ -119,4 +120,39 @@ it('calls the inner fetcher separately for different urls', function (): void {
     expect($a)->toBe('fetched-http://a.com')
         ->and($b)->toBe('fetched-http://b.com')
         ->and($inner->calls)->toBe(2);
+});
+
+it('derives deterministic sha256 cache keys that vary with base path', function (): void {
+    $inner = new class() implements SourceFetcher
+    {
+        public int $calls = 0;
+
+        public function fetch(string $urlOrPath, string $basePath): string
+        {
+            $this->calls++;
+
+            return 'content';
+        }
+    };
+
+    $cache = new ArrayCache();
+    $fetcher = new CachedFetcher($inner, $cache, 3600);
+
+    $fetcher->fetch('openapi.yaml', '/base');
+    $fetcher->fetch('openapi.yaml', '/base'); // same pair -> same key, one inner call
+    $fetcher->fetch('openapi.yaml', '/other'); // different basePath -> different key
+
+    expect($inner->calls)->toBe(2)
+        ->and($fetcher->fetch('openapi.yaml', '/base'))->toBe('content'); // warm key still serves
+
+    // Key shape: prefix + 64 lowercase hex chars (sha256) — not md5's 41-char form.
+    $reflection = new ReflectionProperty($cache, 'data');
+    $reflection->setAccessible(true);
+    $storedKeys = array_keys($reflection->getValue($cache));
+
+    expect(count($storedKeys))->toBe(2);
+    foreach ($storedKeys as $key) {
+        expect($key)->toMatch('/^arazzo_source_[0-9a-f]{64}$/')
+            ->and(strlen($key))->toBe(78); // 'arazzo_source_' is 14 chars + 64 hex (md5 would be 46)
+    }
 });

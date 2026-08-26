@@ -24,7 +24,7 @@ flowchart LR
         S_Generator["Generator<br/><small>122 LOC</small>"]:::supportingDomain
         S_Parser["Parser<br/><small>1087 LOC</small>"]:::supportingDomain
         S_Renderer["Renderer<br/><small>254 LOC</small>"]:::supportingDomain
-        S_Resolver["Resolver<br/><small>357 LOC</small>"]:::supportingDomain
+        S_Resolver["Resolver<br/><small>358 LOC</small>"]:::supportingDomain
         S_Validator["Validator<br/><small>3112 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
@@ -46,5 +46,5 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 3 | 11,340 | 0 | 62% |
-| Supporting | 6 | 5,413 | 0 | 30% |
+| Supporting | 6 | 5,414 | 0 | 30% |
 | Generic subdomain | 8 | 269 | 1,144 | 8% |

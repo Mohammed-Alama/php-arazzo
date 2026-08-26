@@ -18,7 +18,8 @@ final class CachedFetcher implements SourceFetcher
 
     public function fetch(string $urlOrPath, string $basePath): string
     {
-        $key = 'arazzo_source_' . md5($urlOrPath . '|' . $basePath);
+        // Cache key only; sha256 keeps the security surface free of weak-hash flags.
+        $key = 'arazzo_source_' . hash('sha256', $urlOrPath . '|' . $basePath);
 
         $cached = $this->cache->get($key);
         if ($cached !== null) {

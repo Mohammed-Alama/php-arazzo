@@ -33,6 +33,4 @@ Entry points where untrusted data (HTTP requests, queue payloads) first touches 
 
 ## Weak or risky primitives
 
-| Primitive | Sites |
-|---|---|
-| `md5/sha1 hash` | `CachedFetcher` <small>core</small> |
+_None found. Keep it that way._
