@@ -17,7 +17,7 @@ targets. Regenerated before every commit.
 | `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
 | `Evaluation` | 18 | 1085 | 6 | 5 | 0.45 |  |
 | `Events` | 9 | 178 | 3 | 0 | 0.00 |  |
-| `Exceptions` | 10 | 152 | 6 | 1 | 0.14 |  |
+| `Exceptions` | 9 | 143 | 6 | 1 | 0.14 |  |
 | `Execution` | 33 | 3469 | 9 | 14 | 0.61 |  |
 | `Expression` | 30 | 1316 | 7 | 6 | 0.46 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
@@ -41,9 +41,9 @@ targets. Regenerated before every commit.
 | `State` | 9 | 1498 | 11 | 2 | 0.15 |  |
 | `Support` | 6 | 257 | 9 | 2 | 0.18 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `Validator` | 63 | 3031 | 4 | 6 | 0.60 |  |
+| `Validator` | 62 | 3014 | 4 | 6 | 0.60 |  |
 
-Total cross-module edges: **801**
+Total cross-module edges: **800**
 
 ## Most entangled module pairs
 

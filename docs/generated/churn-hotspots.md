@@ -21,7 +21,7 @@ Analyzed 161 total file-touches across 30 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Validator` | 16 | 10% | 3,094 | 5.2 |
+| `Validator` | 16 | 10% | 3,076 | 5.2 |
 | `Expression` | 12 | 7% | 1,346 | 8.9 |
 | `Resolver` | 11 | 7% | 549 | 20 |
 | `Execution` | 9 | 6% | 3,502 | 2.6 |
@@ -33,7 +33,7 @@ Analyzed 161 total file-touches across 30 modules.
 | `Spec` | 8 | 5% | 721 | 11.1 |
 | `Laravel/Queue` | 7 | 4% | 100 | 70 |
 | `Contracts` | 6 | 4% | 512 | 11.7 |
-| `Exceptions` | 5 | 3% | 162 | 30.9 |
+| `Exceptions` | 5 | 3% | 152 | 32.9 |
 | `Laravel/Lock` | 5 | 3% | 49 | 102 |
 | `Laravel/State` | 5 | 3% | 38 | 131.6 |
 | `Support` | 5 | 3% | 263 | 19 |

@@ -39,9 +39,7 @@ Regenerated before every commit.
 | **LoaderException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
 | **SourceResolutionException** | _(never raised in src)_ |
-| **UnsupportedCriterionTypeException** | _(never raised in src)_ |
 | **UnsupportedSourceVersionException** | _(never raised in src)_ |
-| **ValidationException** | _(never raised in src)_ |
 
 ## Catch sites
 

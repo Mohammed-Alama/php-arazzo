@@ -213,8 +213,8 @@ Each item: *what → why → how → verify*. Items are ordered within phases.
 
 - **What:** Route `xpath` criteria to the existing XPath evaluators instead of throwing.
 - **How:** `DomXpathEvaluator` supports xpath-10 today; wire type `version` (parsed already) to select
-  evaluator; for 3.1 documents either implement via `DOMXPath` subset + document limitations, or reject
-  with a typed `UnsupportedCriterionTypeException` naming the version (explicit > silent wrong).
+  evaluator;   for 3.1 documents either implement via `DOMXPath` subset + document limitations, or reject
+  with a typed exception naming the version (explicit > silent wrong) and add the exception class.
 
 #### P0-6 · Fix source-document routing (Swagger 2.0 / OpenAPI 3.1)
 

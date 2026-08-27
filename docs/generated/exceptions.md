@@ -28,10 +28,8 @@ classDiagram
     class E_SourceResolutionException["SourceResolutionException<br/><small>Resolver</small>"]:::domain
     class E_StepBudgetExceededException["StepBudgetExceededException<br/><small>Exceptions</small>"]:::domain
     class E_UnresolvableReferenceException["UnresolvableReferenceException<br/><small>Resolver</small>"]:::domain
-    class E_UnsupportedCriterionTypeException["UnsupportedCriterionTypeException<br/><small>Exceptions</small>"]:::domain
     class E_UnsupportedSerializationStyleException["UnsupportedSerializationStyleException<br/><small>Exceptions</small>"]:::domain
     class E_UnsupportedSourceVersionException["UnsupportedSourceVersionException<br/><small>Exceptions</small>"]:::domain
-    class E_ValidationException["ValidationException<br/><small>Validator</small>"]:::domain
     class E_WorkflowCycleException["WorkflowCycleException<br/><small>Exceptions</small>"]:::domain
     class E_WorkflowDepthExceededException["WorkflowDepthExceededException<br/><small>Exceptions</small>"]:::domain
     E_RuntimeException <|-- E_ArazzoException
@@ -52,10 +50,8 @@ classDiagram
     E_RuntimeException <|-- E_SourceResolutionException
     E_ArazzoException <|-- E_StepBudgetExceededException
     E_SourceResolutionException <|-- E_UnresolvableReferenceException
-    E_RuntimeException <|-- E_UnsupportedCriterionTypeException
     E_RuntimeException <|-- E_UnsupportedSerializationStyleException
     E_RuntimeException <|-- E_UnsupportedSourceVersionException
-    E_ArazzoException <|-- E_ValidationException
     E_ArazzoException <|-- E_WorkflowCycleException
     E_ArazzoException <|-- E_WorkflowDepthExceededException
     classDef builtin fill:#f1f5f9,stroke:#64748b,color:#1a1a1a;
@@ -82,9 +78,7 @@ classDiagram
 | `SourceResolutionException` | `RuntimeException` | Resolver |
 | `StepBudgetExceededException` | `ArazzoException` | Exceptions |
 | `UnresolvableReferenceException` | `SourceResolutionException` | Resolver |
-| `UnsupportedCriterionTypeException` | `RuntimeException` | Exceptions |
 | `UnsupportedSerializationStyleException` | `RuntimeException` | Exceptions |
 | `UnsupportedSourceVersionException` | `RuntimeException` | Exceptions |
-| `ValidationException` | `ArazzoException` | Validator |
 | `WorkflowCycleException` | `ArazzoException` | Exceptions |
 | `WorkflowDepthExceededException` | `ArazzoException` | Exceptions |
