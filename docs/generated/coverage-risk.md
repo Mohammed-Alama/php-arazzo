@@ -49,7 +49,7 @@ quadrantChart
     State: [0.154, 1]
     Support: [0.182, 1]
     Telemetry: [0, 1]
-    Validator: [0.6, 0.968]
+    Validator: [0.6, 1]
 ```
 
 | Module | Instability | Test files | Src files | Density |
@@ -62,7 +62,7 @@ quadrantChart
 | `Events` | 0.00 | 20 | 9 | 100% |
 | `Exceptions` | 0.14 | 11 | 9 | 100% |
 | `Execution` | 0.61 | 60 | 33 | 100% |
-| `Expression` | 0.46 | 105 | 30 | 100% |
+| `Expression` | 0.46 | 107 | 30 | 100% |
 | `Generator` | 0.33 | 4 | 2 | 100% |
 | `Jobs` | 0.29 | 7 | 2 | 100% |
 | `Laravel/Bindings` | 0.94 | 2 | 6 | 33% |
@@ -79,8 +79,8 @@ quadrantChart
 | `Protocol` | 0.90 | 10 | 5 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.42 | 28 | 13 | 100% |
-| `Spec` | 0.06 | 147 | 33 | 100% |
+| `Spec` | 0.06 | 149 | 33 | 100% |
 | `State` | 0.15 | 55 | 9 | 100% |
 | `Support` | 0.18 | 18 | 6 | 100% |
 | `Telemetry` | 0.00 | 2 | 2 | 100% |
-| `Validator` | 0.60 | 60 | 62 | 97% |
+| `Validator` | 0.60 | 62 | 62 | 100% |
