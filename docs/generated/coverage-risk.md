@@ -48,7 +48,7 @@ quadrantChart
     Spec: [0.056, 1]
     State: [0.154, 1]
     Support: [0.182, 1]
-    Telemetry: [0, 0.5]
+    Telemetry: [0, 1]
     Validator: [0.6, 0.968]
 ```
 
@@ -82,5 +82,5 @@ quadrantChart
 | `Spec` | 0.06 | 147 | 33 | 100% |
 | `State` | 0.15 | 55 | 9 | 100% |
 | `Support` | 0.18 | 18 | 6 | 100% |
-| `Telemetry` | 0.00 | 1 | 2 | 50% |
+| `Telemetry` | 0.00 | 2 | 2 | 100% |
 | `Validator` | 0.60 | 60 | 62 | 97% |
