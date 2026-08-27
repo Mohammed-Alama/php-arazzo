@@ -21,7 +21,7 @@ quadrantChart
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
     Async: [1, 1]
-    Console: [1, 0.545]
+    Console: [1, 1]
     Contracts: [0.292, 1]
     Dependency: [0.333, 1]
     Evaluation: [0.455, 1]
@@ -55,13 +55,13 @@ quadrantChart
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
 | `Async` | 1.00 | 6 | 6 | 100% |
-| `Console` | 1.00 | 6 | 11 | 55% |
-| `Contracts` | 0.29 | 46 | 24 | 100% |
+| `Console` | 1.00 | 11 | 11 | 100% |
+| `Contracts` | 0.29 | 48 | 24 | 100% |
 | `Dependency` | 0.33 | 5 | 3 | 100% |
 | `Evaluation` | 0.46 | 39 | 18 | 100% |
 | `Events` | 0.00 | 20 | 9 | 100% |
 | `Exceptions` | 0.14 | 11 | 9 | 100% |
-| `Execution` | 0.61 | 60 | 33 | 100% |
+| `Execution` | 0.61 | 62 | 33 | 100% |
 | `Expression` | 0.46 | 107 | 30 | 100% |
 | `Generator` | 0.33 | 4 | 2 | 100% |
 | `Jobs` | 0.29 | 7 | 2 | 100% |
