@@ -132,8 +132,9 @@ $gateDefs = [
 ];
 
 if ($withMutations) {
-    $gateDefs[] = ['mutations-core', 'Mutation Testing · core', 'vendor/bin/pest --mutate --covered-only --no-coverage', $coreDir, 'parseMutations'];
-    $gateDefs[] = ['mutations-laravel', 'Mutation Testing · laravel', 'vendor/bin/pest --mutate --covered-only --no-coverage', $laravelDir, 'parseMutations'];
+    $mutateCmd = 'php -d memory_limit=-1 vendor/bin/pest --mutate --everything --covered-only --no-coverage';
+    $gateDefs[] = ['mutations-core', 'Mutation Testing · core', $mutateCmd, $coreDir, 'parseMutations'];
+    $gateDefs[] = ['mutations-laravel', 'Mutation Testing · laravel', $mutateCmd, $laravelDir, 'parseMutations'];
 }
 
 $gates = [];

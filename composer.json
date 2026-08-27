@@ -45,7 +45,10 @@
         "docs": "@php scripts/generate-docs.php",
         "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",
         "ecosystem:poll:dry": "@php scripts/ecosystem/poll.php --dry-run",
-        "format": "vendor/bin/pint"
+        "format": "vendor/bin/pint",
+        "quality-gates": "@php scripts/quality-gates.php",
+        "quality-gates:mutations": "@php scripts/quality-gates.php --with-mutations",
+        "conformance": "@php scripts/generate-conformance-matrix.php"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

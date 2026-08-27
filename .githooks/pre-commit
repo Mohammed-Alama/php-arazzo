@@ -58,4 +58,12 @@ fi
 echo "✅ Tests passed."
 echo ""
 
+echo "4. Checking Spec Conformance (warn-only)..."
+if ! php scripts/generate-conformance-matrix.php >/dev/null 2>&1; then
+    echo "⚠️  Conformance matrix check failed (network or corpus issue) — continuing."
+else
+    echo "✅ Spec Conformance matrix generated."
+fi
+echo ""
+
 echo "🎉 All checks passed! Committing..."
