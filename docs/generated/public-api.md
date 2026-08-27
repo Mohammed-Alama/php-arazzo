@@ -905,9 +905,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
 - `public function code(): string`
 
-### `ValidationException` class
-- `public function __construct(public readonly ValidationResult $result)`
-
 ### `ValidationResult` class
 - `public function __construct(public ArazzoDocument $document, public array $errors, public array $warnings)`
 - `public function isValid(): bool`

@@ -49,7 +49,7 @@ quadrantChart
     State: [0.154, 1]
     Support: [0.182, 1]
     Telemetry: [0, 0.5]
-    Validator: [0.6, 0.952]
+    Validator: [0.6, 0.968]
 ```
 
 | Module | Instability | Test files | Src files | Density |
@@ -60,7 +60,7 @@ quadrantChart
 | `Dependency` | 0.33 | 5 | 3 | 100% |
 | `Evaluation` | 0.46 | 39 | 18 | 100% |
 | `Events` | 0.00 | 20 | 9 | 100% |
-| `Exceptions` | 0.14 | 11 | 10 | 100% |
+| `Exceptions` | 0.14 | 11 | 9 | 100% |
 | `Execution` | 0.61 | 60 | 33 | 100% |
 | `Expression` | 0.46 | 105 | 30 | 100% |
 | `Generator` | 0.33 | 4 | 2 | 100% |
@@ -83,4 +83,4 @@ quadrantChart
 | `State` | 0.15 | 55 | 9 | 100% |
 | `Support` | 0.18 | 18 | 6 | 100% |
 | `Telemetry` | 0.00 | 1 | 2 | 50% |
-| `Validator` | 0.60 | 60 | 63 | 95% |
+| `Validator` | 0.60 | 60 | 62 | 97% |

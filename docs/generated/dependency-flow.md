@@ -132,7 +132,7 @@ Validator,Expression,79
 Validator,Normalizer,1
 Validator,Resolver,2
 Validator,Spec,88
-Validator,Support,3
+Validator,Support,2
 ```
 
 ## Folded flows
