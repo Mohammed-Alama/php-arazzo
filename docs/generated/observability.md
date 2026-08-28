@@ -16,19 +16,7 @@ See also: `events.md` (dispatch graph), `failure-modes.md` (interlocks).
 
 ## Event → ledger catalog
 
-Written by `Alama\Arazzo\Support\Events\Listener\LedgerAppendingListener` — this is the durable audit trail schema:
-
-| Domain event | Ledger type | Payload keys |
-|---|---|---|
-| `CorrelationPending` | `correlation.pending` | `channelPath`, `correlationId`, `stepId` |
-| `CorrelationResumed` | `correlation.resumed` | `correlationId`, `stepId` |
-| `RunCompleted` | `run.completed` | `outputs`, `workflowId` |
-| `RunFailed` | `run.failed` | `error`, `workflowId` |
-| `RunStarted` | `run.started` | `definitionId`, `inputs`, `workflowId` |
-| `StepExecuted` | `step.executed` | `criteriaMet`, `outputs`, `statusCode`, `stepId` |
-| `StepFailed` | `step.failed` | `error`, `stepId` |
-| `StepRetried` | `step.retried` | `attempt`, `lastError`, `stepId` |
-| `StepStarted` | `step.started` | `attempt`, `stepId` |
+_No catalog found (LedgerAppendingListener not found)._
 
 ## Log call sites
 
@@ -108,11 +96,12 @@ Where async suspend/resume bookkeeping happens:
 |---|---|
 | `TransitionApplier` <small>core</small> | resumes from webhook |
 | `CliRunner` <small>core</small> | resumes from webhook |
-| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
-| `CorrelationResumed` <small>core</small> | resumes from webhook |
+| `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
+| `LedgerEventListener` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |
+| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
 | `ExecutionBindings` <small>laravel</small> | resumes from webhook |
 | `WebhookResumeController` <small>laravel</small> | resumes from webhook |
@@ -121,4 +110,3 @@ Where async suspend/resume bookkeeping happens:
 | `RunResumeCorrelationJob` <small>laravel</small> | resumes from webhook |
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
-| `LedgerAppendingListener` <small>core</small> | resumes from webhook |

@@ -15,10 +15,10 @@ Evans' first question: does the code speak one language?
 
 ### run vs execute vs invoke
 
-- **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecuted` (3 types)
+- **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
 - **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
-- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompleted` + 7 more (11 types)
+- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 7 more (11 types)
 - **Runner**: `CliRunner` (1 types)
 
 ### parse vs load vs decode
@@ -67,4 +67,4 @@ Evans' first question: does the code speak one language?
 | `Parser` | `Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Parser\Parser` | core |
 | `StepResult` | `Execution\StepResult`<br/>`State\StepResult` | core |
 | `Token` | `Evaluation\Condition\Token`<br/>`Expression\Token` | core |
-| `TokenKind` | `Evaluation\Condition\TokenKind`<br/>`Expression\TokenKind` | core |
+| `TokenKind` | `Evaluation\Condition\TokenKind`<br/>`Expression\Enum\TokenKind` | core |

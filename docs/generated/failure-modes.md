@@ -25,7 +25,7 @@ Regenerated before every commit.
 | **LogicException** | `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small>, `AsyncApiStepExecutor` <small>Protocol</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>Normalizer</small> |
 | **PreflightFailureException** | `PreflightGuard` <small>Async</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
-| **RuntimeException** | `CliRunner` <small>Console/Cli</small>, `FileLockStrategy` <small>Contracts</small>, `ReusableParameterResolver` <small>Execution</small>, `OpenAiClient` <small>Generator/Clients</small>, `OpenApiOperationResolver` <small>Resolver</small>, `OtelSetup` <small>Telemetry</small> |
+| **RuntimeException** | `CliRunner` <small>Console/Cli</small>, `ReusableParameterResolver` <small>Execution</small>, `OpenAiClient` <small>Generator/Clients</small>, `FileLockStrategy` <small>Infrastructure</small>, `OpenApiOperationResolver` <small>Normalizer</small>, `OtelSetup` <small>Telemetry</small> |
 | **SchemaValidationException** | `ArazzoSchemaValidator` <small>Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>Expression</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |
@@ -47,7 +47,7 @@ Regenerated before every commit.
 |---|---|---|
 | `ClientExceptionInterface` | `HttpFetcher` |  |
 | `DecodeException` | `Loader` |  |
-| `ExpressionSyntaxException` | `Expression` |  |
+| `ExpressionSyntaxException` | `Parser` |  |
 | `InvalidArgumentException` | `ArazzoOutputExtractor` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
 | `JsonException` | `AsyncApiStepExecutor` |  |

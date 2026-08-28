@@ -16,7 +16,7 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
-use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser;
 use Alama\Arazzo\Expression\Parser as ExprParser;
 

@@ -145,6 +145,7 @@ flowchart TB
     M_Expression --> M_Spec
     M_Expression -.->|violation| M_Support
     M_Generator -.->|violation| M_Interfaces
+    M_Infrastructure --> M_Interfaces
     M_Interfaces -.->|violation| M_Evaluation
     M_Interfaces -.->|violation| M_Exceptions
     M_Interfaces --> M_Normalizer

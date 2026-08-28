@@ -8,32 +8,32 @@ from both packages. Core defines contracts; Laravel implements them.
 
 ```mermaid
 flowchart LR
-    I_AiClientInterface["AiClientInterface<br/><small>Contracts</small>"]:::contract
-    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Contracts</small>"]:::contract
+    I_AiClientInterface["AiClientInterface<br/><small>Interfaces</small>"]:::contract
+    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Interfaces</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>Evaluation</small>"]:::contract
-    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Contracts</small>"]:::contract
-    I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>Contracts</small>"]:::contract
-    I_EventLedgerInterface["EventLedgerInterface<br/><small>Contracts</small>"]:::contract
-    I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>Contracts</small>"]:::contract
-    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Contracts</small>"]:::contract
-    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Contracts</small>"]:::contract
-    I_HttpClientInterface["HttpClientInterface<br/><small>Contracts</small>"]:::contract
+    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Interfaces</small>"]:::contract
+    I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>Interfaces</small>"]:::contract
+    I_EventLedgerInterface["EventLedgerInterface<br/><small>Interfaces</small>"]:::contract
+    I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>Interfaces</small>"]:::contract
+    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Interfaces</small>"]:::contract
+    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Interfaces</small>"]:::contract
+    I_HttpClientInterface["HttpClientInterface<br/><small>Interfaces</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
-    I_LockManagerInterface["LockManagerInterface<br/><small>Contracts</small>"]:::contract
-    I_LockStrategyInterface["LockStrategyInterface<br/><small>Contracts</small>"]:::contract
-    I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Contracts</small>"]:::contract
-    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Contracts</small>"]:::contract
-    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Contracts</small>"]:::contract
-    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>Contracts</small>"]:::contract
-    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Contracts</small>"]:::contract
-    I_QueueDriverInterface["QueueDriverInterface<br/><small>Contracts</small>"]:::contract
+    I_LockManagerInterface["LockManagerInterface<br/><small>Interfaces</small>"]:::contract
+    I_LockStrategyInterface["LockStrategyInterface<br/><small>Interfaces</small>"]:::contract
+    I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Interfaces</small>"]:::contract
+    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Interfaces</small>"]:::contract
+    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Interfaces</small>"]:::contract
+    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>Interfaces</small>"]:::contract
+    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Interfaces</small>"]:::contract
+    I_QueueDriverInterface["QueueDriverInterface<br/><small>Interfaces</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
-    I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Contracts</small>"]:::contract
+    I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Interfaces</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
-    I_StateStoreInterface["StateStoreInterface<br/><small>Contracts</small>"]:::contract
-    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Contracts</small>"]:::contract
-    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>Contracts</small>"]:::contract
+    I_StateStoreInterface["StateStoreInterface<br/><small>Interfaces</small>"]:::contract
+    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Interfaces</small>"]:::contract
+    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>Interfaces</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>Expression</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
     C_core_Console_CliRunner["CliRunner<br/><small>Console</small>"]:::implCore
@@ -48,12 +48,6 @@ flowchart LR
     C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
     C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_core_Contracts_FileLockStrategy["FileLockStrategy<br/><small>Contracts</small>"]:::implCore
-    C_core_Contracts_FileLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Contracts_NullLockStrategy["NullLockStrategy<br/><small>Contracts</small>"]:::implCore
-    C_core_Contracts_NullLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Contracts_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Contracts</small>"]:::implCore
-    C_core_Contracts_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
     C_core_Evaluation_ArazzoExpressionResolver["ArazzoExpressionResolver<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_ArazzoExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_core_Evaluation_Literal["Literal<br/><small>Evaluation</small>"]:::implCore
@@ -86,6 +80,12 @@ flowchart LR
     C_core_Expression_ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
     C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
     C_core_Generator_OpenAiClient -.->|implements| I_AiClientInterface
+    C_core_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>Infrastructure</small>"]:::implCore
+    C_core_Infrastructure_FileLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Infrastructure_NullLockStrategy["NullLockStrategy<br/><small>Infrastructure</small>"]:::implCore
+    C_core_Infrastructure_NullLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Infrastructure_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Infrastructure</small>"]:::implCore
+    C_core_Infrastructure_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
     C_core_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>Normalizer</small>"]:::implCore
     C_core_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_core_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Normalizer</small>"]:::implCore

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Enum\TokenKind;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Lexer;
-use Alama\Arazzo\Expression\TokenKind;
 
 it('tokenises inputs.userId', function (): void {
     $tokens = (new Lexer())->tokenize('{$inputs.userId}');

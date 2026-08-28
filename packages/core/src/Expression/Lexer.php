@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
+use Alama\Arazzo\Expression\Enum\TokenKind;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
+
 final class Lexer
 {
     private const KEYWORDS = [

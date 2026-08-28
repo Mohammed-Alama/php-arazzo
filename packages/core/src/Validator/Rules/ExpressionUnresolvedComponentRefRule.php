@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Validator\Rules;
 
 use Alama\Arazzo\Expression\Ast\ComponentRef;
-use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;

@@ -8,7 +8,7 @@ use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
-use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;

@@ -14,124 +14,120 @@ the heavier direction is drawn and the folded side is listed below the chart.
 ```mermaid
 sankey-beta
 
-Async,Contracts,10
 Async,Events,7
 Async,Exceptions,1
-Async,Execution,4
+Async,Execution,3
+Async,Interfaces,10
 Async,Jobs,1
-Async,Spec,8
-Async,State,6
+Async,Spec,14
+Async,State,2
 Async,Support,1
 Async,Validator,3
-Console,Contracts,11
 Console,Dependency,1
 Console,Evaluation,2
-Console,Execution,14
+Console,Execution,12
 Console,Expression,1
+Console,Interfaces,11
 Console,Jobs,1
-Console,Normalizer,3
+Console,Normalizer,4
 Console,Parser,8
 Console,Renderer,1
-Console,Resolver,5
-Console,Spec,4
-Console,State,1
+Console,Resolver,4
+Console,Spec,7
 Console,Telemetry,1
 Console,Validator,2
-Contracts,Exceptions,2
-Contracts,Spec,18
-Contracts,State,5
-Dependency,Spec,6
-Dependency,State,1
-Evaluation,Contracts,8
+Dependency,Spec,7
 Evaluation,Expression,5
-Evaluation,Spec,14
-Evaluation,State,5
+Evaluation,Interfaces,8
+Evaluation,Spec,21
 Evaluation,Support,1
+Events,Interfaces,1
+Events,Support,1
 Exceptions,Support,4
-Execution,Contracts,33
 Execution,Dependency,3
 Execution,Evaluation,4
 Execution,Events,17
 Execution,Exceptions,10
-Execution,Expression,15
+Execution,Expression,16
+Execution,Interfaces,33
 Execution,Jobs,2
+Execution,Normalizer,4
 Execution,Policy,1
-Execution,Resolver,5
-Execution,Spec,61
-Execution,State,17
+Execution,Resolver,1
+Execution,Spec,75
+Execution,State,7
 Execution,Support,5
 Execution,Telemetry,1
 Execution,Validator,6
-Expression,Contracts,2
-Expression,Spec,11
-Expression,State,2
+Expression,Interfaces,2
+Expression,Spec,15
 Expression,Support,2
-Generator,Contracts,2
-Jobs,Spec,1
-Jobs,State,1
-Laravel-Bindings,Contracts,21
+Generator,Interfaces,2
+Infrastructure,Interfaces,4
+Interfaces,Exceptions,2
+Interfaces,Normalizer,2
+Interfaces,Spec,26
+Jobs,Spec,2
 Laravel-Bindings,Evaluation,2
+Laravel-Bindings,Events,1
 Laravel-Bindings,Execution,14
 Laravel-Bindings,Expression,6
 Laravel-Bindings,Generator,2
+Laravel-Bindings,Interfaces,21
 Laravel-Bindings,Laravel-Http,1
 Laravel-Bindings,Laravel-Lock,1
 Laravel-Bindings,Laravel-Persistence,4
 Laravel-Bindings,Laravel-Queue,1
 Laravel-Bindings,Laravel-State,1
 Laravel-Bindings,Laravel-Support,3
-Laravel-Bindings,Normalizer,3
+Laravel-Bindings,Normalizer,5
 Laravel-Bindings,Parser,1
 Laravel-Bindings,Protocol,3
-Laravel-Bindings,Resolver,8
-Laravel-Bindings,Support,2
+Laravel-Bindings,Resolver,6
+Laravel-Bindings,Support,1
 Laravel-Bindings,Validator,2
-Laravel-Http,Contracts,3
 Laravel-Http,Generator,1
+Laravel-Http,Interfaces,3
 Laravel-Http,Jobs,1
 Laravel-Http,Resolver,1
 Laravel-Http,Spec,2
-Laravel-Lock,Contracts,1
-Laravel-Persistence,Contracts,4
+Laravel-Lock,Interfaces,1
 Laravel-Persistence,Exceptions,1
-Laravel-Persistence,Execution,1
+Laravel-Persistence,Interfaces,4
 Laravel-Persistence,Parser,2
-Laravel-Persistence,Spec,3
-Laravel-Persistence,State,1
-Laravel-Queue,Contracts,1
+Laravel-Persistence,Spec,5
 Laravel-Queue,Execution,2
+Laravel-Queue,Interfaces,1
 Laravel-Queue,Jobs,4
-Laravel-State,Contracts,1
+Laravel-State,Interfaces,1
 laravel-root,Laravel-Bindings,6
 laravel-root,Laravel-Http,2
-Normalizer,Contracts,2
+Normalizer,Exceptions,1
+Normalizer,Spec,5
 Normalizer,Support,1
 Parser,Spec,30
 Parser,Support,2
-Policy,Contracts,2
-Policy,Spec,2
-Policy,State,1
-Protocol,Contracts,11
+Policy,Interfaces,2
+Policy,Spec,3
 Protocol,Dependency,1
 Protocol,Evaluation,3
 Protocol,Exceptions,2
-Protocol,Execution,12
+Protocol,Execution,8
 Protocol,Expression,2
-Protocol,Resolver,1
-Protocol,Spec,17
-Protocol,State,5
+Protocol,Interfaces,11
+Protocol,Normalizer,1
+Protocol,Spec,25
+Protocol,State,1
 Renderer,Spec,8
-Resolver,Exceptions,1
-Resolver,Normalizer,4
 Resolver,Parser,2
-Resolver,Spec,11
+Resolver,Spec,6
+State,Interfaces,2
 State,Spec,3
-Support,Events,9
 Validator,Dependency,1
-Validator,Expression,79
-Validator,Normalizer,1
-Validator,Resolver,2
-Validator,Spec,88
+Validator,Expression,87
+Validator,Normalizer,2
+Validator,Resolver,1
+Validator,Spec,89
 Validator,Support,2
 ```
 
@@ -141,13 +137,8 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
-| `Contracts` | `Evaluation` | 1 |
-| `Contracts` | `Execution` | 3 |
-| `Contracts` | `Normalizer` | 1 |
-| `Contracts` | `Resolver` | 1 |
 | `Expression` | `Evaluation` | 2 |
 | `Expression` | `Execution` | 2 |
-| `Resolver` | `Execution` | 1 |
-| `Spec` | `Expression` | 3 |
-| `State` | `Contracts` | 2 |
-| `Support` | `Contracts` | 1 |
+| `Interfaces` | `Evaluation` | 1 |
+| `Normalizer` | `Execution` | 1 |
+| `Normalizer` | `Interfaces` | 2 |
