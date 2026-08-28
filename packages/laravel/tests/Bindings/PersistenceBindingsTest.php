@@ -10,6 +10,7 @@ use Alama\Arazzo\Contracts\LockStrategyInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Laravel\Bindings\PersistenceBindings;
 use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
@@ -76,4 +77,10 @@ it('feeds the pending-correlations table name from config', function (): void {
         ->toBe('corr_v2')
         ->and(app(PendingCorrelationRegistryInterface::class))->toBeInstanceOf(DatabasePendingCorrelationRegistry::class)
         ->and(app(QueueDriverInterface::class))->toBeInstanceOf(LaravelQueueDriver::class);
+});
+
+it('registers the persistence bindings on the container', function (): void {
+    PersistenceBindings::register($this->app);
+
+    expect(app(StateStoreInterface::class))->toBeInstanceOf(RedisHotStateStore::class);
 });

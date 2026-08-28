@@ -31,7 +31,7 @@ quadrantChart
     Expression: [0.462, 1]
     Generator: [0.333, 1]
     Jobs: [0.286, 1]
-    Laravel/Bindings: [0.944, 0.333]
+    Laravel/Bindings: [0.944, 1]
     Laravel/Events: [0, 1]
     Laravel/Http: [0.714, 1]
     Laravel/Lock: [0.5, 1]
@@ -56,16 +56,16 @@ quadrantChart
 |---|---:|---:|---:|---:|
 | `Async` | 1.00 | 6 | 6 | 100% |
 | `Console` | 1.00 | 11 | 11 | 100% |
-| `Contracts` | 0.29 | 48 | 24 | 100% |
+| `Contracts` | 0.29 | 49 | 24 | 100% |
 | `Dependency` | 0.33 | 5 | 3 | 100% |
 | `Evaluation` | 0.46 | 39 | 18 | 100% |
 | `Events` | 0.00 | 20 | 9 | 100% |
 | `Exceptions` | 0.14 | 11 | 9 | 100% |
 | `Execution` | 0.61 | 62 | 33 | 100% |
 | `Expression` | 0.46 | 107 | 30 | 100% |
-| `Generator` | 0.33 | 4 | 2 | 100% |
+| `Generator` | 0.33 | 5 | 2 | 100% |
 | `Jobs` | 0.29 | 7 | 2 | 100% |
-| `Laravel/Bindings` | 0.94 | 2 | 6 | 33% |
+| `Laravel/Bindings` | 0.94 | 6 | 6 | 100% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `Laravel/Http` | 0.71 | 4 | 3 | 100% |
 | `Laravel/Lock` | 0.50 | 3 | 1 | 100% |
