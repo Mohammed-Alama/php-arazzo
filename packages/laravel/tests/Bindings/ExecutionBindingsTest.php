@@ -7,6 +7,7 @@ use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Laravel\Bindings\ExecutionBindings;
 
 function engineProp(WorkflowEngine $engine, string $name): mixed
 {
@@ -51,4 +52,10 @@ it('resolves the full execution pipeline without database access at bind time', 
     ] as $abstract) {
         expect(app($abstract))->toBeInstanceOf($abstract);
     }
+});
+
+it('registers the execution bindings on the container', function (): void {
+    ExecutionBindings::register($this->app);
+
+    expect(app(WorkflowEngine::class))->toBeInstanceOf(WorkflowEngine::class);
 });

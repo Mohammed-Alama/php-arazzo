@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
@@ -25,4 +26,10 @@ it('resolves capability evaluators and the preflight gate', function (): void {
     expect(app(SelectorEvaluator::class))->toBeInstanceOf(SelectorEvaluator::class)
         ->and(app(SelectorEvaluator::class))->toBe(app(SelectorEvaluator::class))
         ->and(app(PreflightValidator::class))->toBeInstanceOf(PreflightValidator::class);
+});
+
+it('registers the resolver bindings on the container', function (): void {
+    ResolverBindings::register($this->app);
+
+    expect(app(SourceRegistry::class))->toBeInstanceOf(SourceRegistry::class);
 });
