@@ -1,11 +1,11 @@
 [
     {
-        "id": "14a5306c4384076d829bfd143067e8c8e3b256799684295aef7baab1c32f736f",
+        "id": "78089b2e0f3d8943d50313832febdf163900251914a159d6602887b334b3ba85",
         "source": "openapi.tools",
         "type": "tool_collection",
-        "title": "openapi.tools checksum 8815db2e440e",
+        "title": "openapi.tools checksum c4e8b5c7d435",
         "url": "https://openapi.tools/collections/arazzo",
-        "publishedAt": "2026-08-27T17:37:53+00:00",
+        "publishedAt": "2026-08-28T18:40:03+00:00",
         "tags": [
             "spec"
         ],
@@ -18,7 +18,7 @@
         "type": "tag",
         "title": "tag v1.0.2",
         "url": "https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2",
-        "publishedAt": "2026-08-27T17:37:49+00:00",
+        "publishedAt": "2026-08-28T18:39:57+00:00",
         "tags": [
             "spec"
         ],
@@ -31,7 +31,7 @@
         "type": "tag",
         "title": "tag v1.0.1",
         "url": "https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.1",
-        "publishedAt": "2026-08-27T17:37:49+00:00",
+        "publishedAt": "2026-08-28T18:39:57+00:00",
         "tags": [
             "spec"
         ],
@@ -44,7 +44,7 @@
         "type": "tag",
         "title": "tag v1.0.0",
         "url": "https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0",
-        "publishedAt": "2026-08-27T17:37:49+00:00",
+        "publishedAt": "2026-08-28T18:39:57+00:00",
         "tags": [
             "spec"
         ],
@@ -57,7 +57,7 @@
         "type": "tag",
         "title": "tag v0.0.7",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.7",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -70,7 +70,7 @@
         "type": "tag",
         "title": "tag v0.0.6",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.6",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -83,7 +83,7 @@
         "type": "tag",
         "title": "tag v0.0.5",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -96,7 +96,7 @@
         "type": "tag",
         "title": "tag v0.0.4",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.4",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -109,7 +109,7 @@
         "type": "tag",
         "title": "tag v0.0.3",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.3",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -122,7 +122,7 @@
         "type": "tag",
         "title": "tag v0.0.2",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.2",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -135,7 +135,7 @@
         "type": "tag",
         "title": "tag v0.0.1",
         "url": "https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.1",
-        "publishedAt": "2026-08-27T17:37:48+00:00",
+        "publishedAt": "2026-08-28T18:39:56+00:00",
         "tags": [
             "spec"
         ],
@@ -148,7 +148,7 @@
         "type": "tag",
         "title": "tag 0.0.4",
         "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.4",
-        "publishedAt": "2026-08-27T17:37:47+00:00",
+        "publishedAt": "2026-08-28T18:39:55+00:00",
         "tags": [
             "spec"
         ],
@@ -161,7 +161,7 @@
         "type": "tag",
         "title": "tag 0.0.3",
         "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.3",
-        "publishedAt": "2026-08-27T17:37:47+00:00",
+        "publishedAt": "2026-08-28T18:39:55+00:00",
         "tags": [
             "spec"
         ],
@@ -174,7 +174,7 @@
         "type": "tag",
         "title": "tag 0.0.2",
         "url": "https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2",
-        "publishedAt": "2026-08-27T17:37:47+00:00",
+        "publishedAt": "2026-08-28T18:39:55+00:00",
         "tags": [
             "spec"
         ],
@@ -187,7 +187,7 @@
         "type": "tag",
         "title": "tag v5.1.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.1.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -200,7 +200,7 @@
         "type": "tag",
         "title": "tag v5.1.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.1.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -213,7 +213,7 @@
         "type": "tag",
         "title": "tag v5.0.2",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.2",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -226,7 +226,7 @@
         "type": "tag",
         "title": "tag v5.0.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -239,7 +239,7 @@
         "type": "tag",
         "title": "tag v5.0.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v5.0.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -252,7 +252,7 @@
         "type": "tag",
         "title": "tag v4.16.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.16.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -265,7 +265,7 @@
         "type": "tag",
         "title": "tag v4.15.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.15.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -278,7 +278,7 @@
         "type": "tag",
         "title": "tag v4.14.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.14.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -291,7 +291,7 @@
         "type": "tag",
         "title": "tag v4.13.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.13.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -304,7 +304,7 @@
         "type": "tag",
         "title": "tag v4.12.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -317,7 +317,7 @@
         "type": "tag",
         "title": "tag v4.12.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -331,7 +331,7 @@
         "type": "tag",
         "title": "tag v4.11.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.11.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -344,7 +344,7 @@
         "type": "tag",
         "title": "tag v4.11.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.11.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -357,7 +357,7 @@
         "type": "tag",
         "title": "tag v4.10.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.10.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -370,7 +370,7 @@
         "type": "tag",
         "title": "tag v4.10.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.10.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -383,7 +383,7 @@
         "type": "tag",
         "title": "tag v4.9.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -396,7 +396,7 @@
         "type": "tag",
         "title": "tag v4.9.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.9.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -409,7 +409,7 @@
         "type": "tag",
         "title": "tag v4.8.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.8.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -422,7 +422,7 @@
         "type": "tag",
         "title": "tag v4.7.1",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.1",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -435,7 +435,7 @@
         "type": "tag",
         "title": "tag v4.7.0",
         "url": "https://github.com/speclynx/apidom/releases/tag/v4.7.0",
-        "publishedAt": "2026-08-27T17:37:45+00:00",
+        "publishedAt": "2026-08-28T18:39:54+00:00",
         "tags": [
             "spec"
         ],
@@ -448,7 +448,7 @@
         "type": "tag",
         "title": "tag v1.0.1",
         "url": "https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.1",
-        "publishedAt": "2026-08-27T17:37:44+00:00",
+        "publishedAt": "2026-08-28T18:39:52+00:00",
         "tags": [
             "spec"
         ],
@@ -461,7 +461,7 @@
         "type": "tag",
         "title": "tag v1.0.0",
         "url": "https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.0",
-        "publishedAt": "2026-08-27T17:37:44+00:00",
+        "publishedAt": "2026-08-28T18:39:52+00:00",
         "tags": [
             "spec"
         ],
@@ -474,7 +474,7 @@
         "type": "tag",
         "title": "tag v3.1.0",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.1.0",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "spec"
         ],
@@ -487,7 +487,7 @@
         "type": "tag",
         "title": "tag v3.0.0",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.0.0",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "spec"
         ],
@@ -500,7 +500,7 @@
         "type": "tag",
         "title": "tag v2.0.3",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -514,7 +514,7 @@
         "type": "tag",
         "title": "tag v2.0.2",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -528,7 +528,7 @@
         "type": "tag",
         "title": "tag v2.0.1",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.1",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -542,7 +542,7 @@
         "type": "tag",
         "title": "tag v2.0.0",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -556,7 +556,7 @@
         "type": "tag",
         "title": "tag v1.0.1",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.1",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "spec"
         ],
@@ -569,7 +569,7 @@
         "type": "tag",
         "title": "tag v1.0.0",
         "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0",
-        "publishedAt": "2026-08-27T17:37:43+00:00",
+        "publishedAt": "2026-08-28T18:39:51+00:00",
         "tags": [
             "spec"
         ],
@@ -582,7 +582,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.32",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.32",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -595,7 +595,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.31",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.31",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -608,7 +608,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.30",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.30",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -621,7 +621,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.29",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.29",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -634,7 +634,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.28",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.28",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -647,7 +647,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.27",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.27",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -660,7 +660,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.26",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.26",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -673,7 +673,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.25",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.25",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -686,7 +686,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.24",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.24",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -699,7 +699,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.23",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.23",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -712,7 +712,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.22",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.22",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -725,7 +725,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.21",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.21",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -738,7 +738,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.20",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.20",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -751,7 +751,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.19",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.19",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -764,7 +764,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.18",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.18",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -777,7 +777,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.17",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.17",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -790,7 +790,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.16",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.16",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -803,7 +803,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.15",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.15",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -816,7 +816,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.14",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.14",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -829,7 +829,7 @@
         "type": "tag",
         "title": "tag v1.0.0-alpha.13",
         "url": "https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.13",
-        "publishedAt": "2026-08-27T17:37:40+00:00",
+        "publishedAt": "2026-08-28T18:39:48+00:00",
         "tags": [
             "spec"
         ],
@@ -842,7 +842,7 @@
         "type": "tag",
         "title": "tag v0.0.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/v0.0.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -855,7 +855,7 @@
         "type": "tag",
         "title": "tag 2.53.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.53.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -868,7 +868,7 @@
         "type": "tag",
         "title": "tag 2.53.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.53.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -881,7 +881,7 @@
         "type": "tag",
         "title": "tag 2.52.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.52.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -895,7 +895,7 @@
         "type": "tag",
         "title": "tag 2.51.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.51.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -908,7 +908,7 @@
         "type": "tag",
         "title": "tag 2.51.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.51.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -921,7 +921,7 @@
         "type": "tag",
         "title": "tag 2.50.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.50.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -934,7 +934,7 @@
         "type": "tag",
         "title": "tag 2.50.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.50.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -947,7 +947,7 @@
         "type": "tag",
         "title": "tag 2.49.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.49.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -960,7 +960,7 @@
         "type": "tag",
         "title": "tag 2.49.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.49.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -973,7 +973,7 @@
         "type": "tag",
         "title": "tag 2.48.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.48.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -986,7 +986,7 @@
         "type": "tag",
         "title": "tag 2.47.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.47.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -999,7 +999,7 @@
         "type": "tag",
         "title": "tag 2.46.5",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.5",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1012,7 +1012,7 @@
         "type": "tag",
         "title": "tag 2.46.4",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.4",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1025,7 +1025,7 @@
         "type": "tag",
         "title": "tag 2.46.3",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.3",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1038,7 +1038,7 @@
         "type": "tag",
         "title": "tag 2.46.2",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.2",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1051,7 +1051,7 @@
         "type": "tag",
         "title": "tag 2.46.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1064,7 +1064,7 @@
         "type": "tag",
         "title": "tag 2.46.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.46.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1077,7 +1077,7 @@
         "type": "tag",
         "title": "tag 2.45.1",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.45.1",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1090,7 +1090,7 @@
         "type": "tag",
         "title": "tag 2.45.0",
         "url": "https://github.com/Specmatic/specmatic/releases/tag/2.45.0",
-        "publishedAt": "2026-08-27T17:37:39+00:00",
+        "publishedAt": "2026-08-28T18:39:47+00:00",
         "tags": [
             "spec"
         ],
@@ -1103,7 +1103,7 @@
         "type": "tag",
         "title": "tag v1.0.0",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1114,7 +1114,7 @@
         "type": "tag",
         "title": "tag v1.0.0-rc.3",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.3",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1125,7 +1125,7 @@
         "type": "tag",
         "title": "tag v1.0.0-rc.2",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.2",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1136,7 +1136,7 @@
         "type": "tag",
         "title": "tag v1.0.0-rc.1",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.1",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1147,7 +1147,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.131",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.131",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1158,7 +1158,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.130",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.130",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1169,7 +1169,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.129",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.129",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1180,7 +1180,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.128",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.128",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1191,7 +1191,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.127",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.127",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1202,7 +1202,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.126",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.126",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1213,7 +1213,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.125",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.125",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1224,7 +1224,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.124",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.124",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1235,7 +1235,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.123",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.123",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1246,7 +1246,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.122",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.122",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1257,7 +1257,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.121",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.121",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1268,7 +1268,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.120",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.120",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1279,7 +1279,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.119",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.119",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1290,7 +1290,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.118",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.118",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1301,7 +1301,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.117",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.117",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1312,7 +1312,7 @@
         "type": "tag",
         "title": "tag v1.0.0-beta.116",
         "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.116",
-        "publishedAt": "2026-08-27T17:37:37+00:00",
+        "publishedAt": "2026-08-28T18:39:45+00:00",
         "tags": [],
         "severity": "actionable",
         "relevance": null
@@ -1323,7 +1323,7 @@
         "type": "tag",
         "title": "tag vscode-v0.0.6",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.6",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1337,7 +1337,7 @@
         "type": "tag",
         "title": "tag vscode-v0.0.5",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1351,7 +1351,7 @@
         "type": "tag",
         "title": "tag v0.5.0",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.5.0",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1365,7 +1365,7 @@
         "type": "tag",
         "title": "tag v0.4.0",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1379,7 +1379,7 @@
         "type": "tag",
         "title": "tag v0.3.0",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1393,7 +1393,7 @@
         "type": "tag",
         "title": "tag v0.2.2",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.2",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1407,7 +1407,7 @@
         "type": "tag",
         "title": "tag v0.2.1",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1421,7 +1421,7 @@
         "type": "tag",
         "title": "tag v0.2.0",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.0",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "breaking",
@@ -1436,7 +1436,7 @@
         "type": "tag",
         "title": "tag v0.1.3",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.3",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1450,7 +1450,7 @@
         "type": "tag",
         "title": "tag v0.1.2",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.2",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1464,7 +1464,7 @@
         "type": "tag",
         "title": "tag v0.1.1",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1478,7 +1478,7 @@
         "type": "tag",
         "title": "tag v0.1.0",
         "url": "https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.0",
-        "publishedAt": "2026-08-27T17:37:34+00:00",
+        "publishedAt": "2026-08-28T18:39:41+00:00",
         "tags": [
             "cli",
             "spec"
@@ -1492,7 +1492,7 @@
         "type": "tag",
         "title": "tag arazzo_runner/v0.9.5",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.5",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1505,7 +1505,7 @@
         "type": "tag",
         "title": "tag arazzo_runner/v0.9.2",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1518,7 +1518,7 @@
         "type": "tag",
         "title": "tag arazzo_runner/v0.9.1",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.1",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1531,7 +1531,7 @@
         "type": "tag",
         "title": "tag arazzo_runner/v0.9.0",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.0",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1544,7 +1544,7 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.2.1",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.1",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1557,7 +1557,7 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.2.0",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "breaking",
             "spec"
@@ -1571,7 +1571,7 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.1.2",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1584,7 +1584,7 @@
         "type": "tag",
         "title": "tag arazzo_generator/v0.1.1",
         "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1",
-        "publishedAt": "2026-08-27T17:37:31+00:00",
+        "publishedAt": "2026-08-28T18:39:39+00:00",
         "tags": [
             "spec"
         ],
@@ -1597,7 +1597,7 @@
         "type": "tag",
         "title": "tag 1.1.0",
         "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.1.0",
-        "publishedAt": "2026-08-27T17:36:58+00:00",
+        "publishedAt": "2026-08-28T18:39:08+00:00",
         "tags": [
             "spec"
         ],
@@ -1610,7 +1610,7 @@
         "type": "tag",
         "title": "tag 1.0.1",
         "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.1",
-        "publishedAt": "2026-08-27T17:36:58+00:00",
+        "publishedAt": "2026-08-28T18:39:08+00:00",
         "tags": [
             "spec"
         ],
@@ -1623,7 +1623,7 @@
         "type": "tag",
         "title": "tag 1.0.0",
         "url": "https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0",
-        "publishedAt": "2026-08-27T17:36:58+00:00",
+        "publishedAt": "2026-08-28T18:39:08+00:00",
         "tags": [
             "spec"
         ],
@@ -1631,12 +1631,77 @@
         "relevance": "Conformance / schema validation"
     },
     {
-        "id": "93553b39df3a621bc50c7034435f11cc73b840c34c53c0ad25c8ccef7ccdaa40",
+        "id": "15bd13e8f87f46a15203c959aac1377132e135905869bead39491231ce75d359",
         "source": "OAI/OpenAPI-Specification",
-        "type": "issue",
-        "title": "v3.2.1 release",
-        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5460",
-        "publishedAt": "2026-08-27T17:14:36Z",
+        "type": "pr",
+        "title": "OAS v3.2.1 release",
+        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5528",
+        "publishedAt": "2026-08-28T18:02:48Z",
+        "tags": [
+            "schema",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P1-7 JSON Schema layer"
+    },
+    {
+        "id": "cefb4d4007ade2006efb63124da5cf162fcaed07109b9115e6f0ef0dfe183e35",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Bump the vitest group across 1 directory with 2 updates",
+        "url": "https://github.com/OAI/build-infra/pull/27",
+        "publishedAt": "2026-08-28T17:59:31Z",
+        "tags": [],
+        "severity": "watch",
+        "relevance": null
+    },
+    {
+        "id": "8a34c528edf22fdeebd318035233d50ccf62657ead5a6bad570c0b448ab75bdd",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Bump content-type from 2.0.0 to 3.0.0",
+        "url": "https://github.com/OAI/build-infra/pull/28",
+        "publishedAt": "2026-08-28T17:58:59Z",
+        "tags": [
+            "breaking"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "2e296c31bf11125beef0995c72ec7c675fd0aa134740586595828ddc3510f3d5",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Bump highlight.js from 11.11.1 to 11.12.0",
+        "url": "https://github.com/OAI/build-infra/pull/23",
+        "publishedAt": "2026-08-28T17:57:19Z",
+        "tags": [
+            "soap",
+            "breaking"
+        ],
+        "severity": "breaking",
+        "relevance": "P0-6 source routing (wsdl type)"
+    },
+    {
+        "id": "fe1e1a4fa1a54bb8a984a2dfa399582f3e1e18a429fdd35d0302b70ea68e4cc3",
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "title": "Merge pull request #23 from OAI/dependabot/npm_and_yarn/highlight.js-11.12.0",
+        "url": "https://github.com/OAI/build-infra/commit/63d74de0b47670923f3ab34c6523e7fbbc5f488b",
+        "publishedAt": "2026-08-28T17:57:10Z",
+        "tags": [
+            "breaking"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "3c02cf9fb9c750a4bb0734366df297d7ce274df4b9f9c8082d8123aeb0e1951f",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Bump respec from 37.2.0 to 37.3.0 in the publishing group across 1 directory",
+        "url": "https://github.com/OAI/build-infra/pull/20",
+        "publishedAt": "2026-08-28T17:56:51Z",
         "tags": [
             "breaking",
             "schema",
@@ -1646,12 +1711,828 @@
         "relevance": "Potential breaking change (2.0)"
     },
     {
+        "id": "5ac8a1adeefa831ad3eb3bc5217a8d4e730f82f71eadafd66a01834c2676f99a",
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "title": "Merge pull request #20 from OAI/dependabot/npm_and_yarn/publishing-915b191cf8",
+        "url": "https://github.com/OAI/build-infra/commit/4656e194e30bf1d4008051f8735f2be9677f5b15",
+        "publishedAt": "2026-08-28T17:56:42Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "d7309d980979e992699fe74d48904654664abe149cbdc85eff0e11064e1183de",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Stage release changes during release branch adjustment",
+        "url": "https://github.com/OAI/build-infra/pull/29",
+        "publishedAt": "2026-08-28T17:53:38Z",
+        "tags": [],
+        "severity": "watch",
+        "relevance": null
+    },
+    {
+        "id": "d2233b3649e3292b4649c1b162bc9d765a7d5f6ece0922eaa35d9fc3a8d530fb",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "title": "chore(deps): bump @speclynx/apidom-* dependencies to 5.1.1",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/103",
+        "publishedAt": "2026-08-28T16:16:56Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "c70cceef0cb10606bba113f42f012a258ee4a78da948cf1774ec5a6277d00de9",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "title": "chore(deps): bump github/codeql-action from 4.37.7 to 4.37.8",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/88",
+        "publishedAt": "2026-08-28T16:06:09Z",
+        "tags": [
+            "cli",
+            "actor",
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "P2-1 CLI binary"
+    },
+    {
+        "id": "a95c1726d16bbf67ae0d91a73bbdd3e44c97e1ffc1faa803611300cfaddf4ba9",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "title": "chore(deps): bump @speclynx/apidom-ns-openapi-3-0 from 5.1.0 to 5.1.1",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/93",
+        "publishedAt": "2026-08-28T16:05:01Z",
+        "tags": [
+            "actor",
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "fb5cd8c9ef2256d0a6c8879aa1e471e23ad555ced1eefaa5b6cfcbf010ca84f8",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "title": "chore(deps): bump @speclynx/apidom-traverse from 5.1.0 to 5.1.1",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/92",
+        "publishedAt": "2026-08-28T16:04:53Z",
+        "tags": [
+            "actor",
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "c3adb06843b51324828ca22ba3a1d3b430c2295c522914345af2bf1fe246db89",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "title": "chore(deps): bump @speclynx/apidom-json-pointer from 5.1.0 to 5.1.1",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/90",
+        "publishedAt": "2026-08-28T16:04:45Z",
+        "tags": [
+            "actor",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "ca30cbb177a89eb02adaa39f2cc42f7570dfdadaa01e9a533e5359ff55ee87b5",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "parser: make sure parser doesn't crash on recrursion",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/94",
+        "publishedAt": "2026-08-28T16:03:46Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "473762cebf2c6e4b8d5355a9db5f771f94255344479b2a8ed0c6375c688de0fa",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "pr",
+        "title": "test(parser): add regression tests for source description cycle safety",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/102",
+        "publishedAt": "2026-08-28T16:03:31Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "6d83236b4393b00e6958525b9483470a0997766d258f0338bcd29cd9cc9b616b",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: record/replay — deterministic offline re-execution of workflow runs",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/101",
+        "publishedAt": "2026-08-28T15:49:49Z",
+        "tags": [
+            "cli",
+            "actor",
+            "schema",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P2-1 CLI binary"
+    },
+    {
+        "id": "04268f91f1a586618cc231b5bb3721b7958b7100af16ce019633b17b54460510",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: opt-in request/response validation against OpenAPI operation schemas",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/100",
+        "publishedAt": "2026-08-28T15:49:47Z",
+        "tags": [
+            "breaking",
+            "schema",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "c8efec01363863ba63af4a8badaa1754c4541e962662ebabbcc4ce4b55d76cba",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "parser: expose parsing interfaces for runtime expressions and criterion conditions",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/99",
+        "publishedAt": "2026-08-28T15:44:55Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "fc35b51f84dd2543a04171504c95591c9240c37f3c577d90321785b0d868c6b5",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: workflow execution profile — analyze what a run needs, pre-configure the runner with the filled artifact",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/82",
+        "publishedAt": "2026-08-28T15:26:34Z",
+        "tags": [
+            "cli",
+            "human",
+            "breaking",
+            "schema",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "P2-1 CLI binary"
+    },
+    {
+        "id": "47c1bd7daa4eec9a0916bc951033a33ffb21b923a6c0d257b03fa1deaa503ac6",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: opt-in retry delay policy (exponential backoff, jitter); rate limiting stays at the transport seam",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/98",
+        "publishedAt": "2026-08-28T15:26:29Z",
+        "tags": [
+            "actor",
+            "loop",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "b2409e88db17f469a6668331f4435cf5ab622777261f24663316c28dcd2c253a",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: validate workflow inputs against the inputs schema and apply defaults before a run",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/97",
+        "publishedAt": "2026-08-28T15:26:27Z",
+        "tags": [
+            "schema",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P1-7 JSON Schema layer"
+    },
+    {
+        "id": "4d1cf1a6291ae1dd4392aebc3345f616571e8c7bb649e8591dd7ac18a1a9ba0e",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: resumable workflow execution — WorkflowExecution state machine with advance()/snapshot()/restore()",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/96",
+        "publishedAt": "2026-08-28T15:24:08Z",
+        "tags": [
+            "actor",
+            "loop",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "00d601bceb0a329bd8f7eace8638e97777cbe26c29533630feca458e22a6040a",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "cli: new @usearazzo/cli package — proposed command surface",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/84",
+        "publishedAt": "2026-08-28T15:05:40Z",
+        "tags": [
+            "cli",
+            "human",
+            "schema",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P2-1 CLI binary"
+    },
+    {
+        "id": "10effce29c4bdaef9aa12479b6400ed6fff501b24e6f2af67c3ed87336b350d6",
+        "source": "usearazzo/arazzo-toolkit",
+        "type": "issue",
+        "title": "runner: document and enforce the criterion dialect support matrix (JSONPath dialects, XPath versions)",
+        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/95",
+        "publishedAt": "2026-08-28T14:42:42Z",
+        "tags": [
+            "xml",
+            "xpath",
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "P1-6 payload XPath / P0-5 XPath criteria"
+    },
+    {
+        "id": "4f72774e2bd5f868ee7ddfe28f1fbec5a0e501be3654ff59555ac178a832eab0",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "feat(spec): add SOAP support",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+        "publishedAt": "2026-08-28T12:00:56Z",
+        "tags": [
+            "soap",
+            "wsdl",
+            "breaking",
+            "schema",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "P0-6 source routing (wsdl type)"
+    },
+    {
+        "id": "41cb7e8021346e06fca85d8857c356fead11d2e84b661e90dd963889d329bfb7",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "feat(spec): add gRPC support",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/556",
+        "publishedAt": "2026-08-28T10:54:54Z",
+        "tags": [
+            "grpc",
+            "schema",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Roadmap gRPC step type"
+    },
+    {
+        "id": "72cd15b4b30fbd3c9a8beb7141994034850710e6f97faf2b6662aece4b35889a",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "v1.2-dev: sync with dev",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/555",
+        "publishedAt": "2026-08-28T10:54:00Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "4ee47bf7d708850261526f5c88799da8dcaa874b84dcfa3a25731025ea97e3f7",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "v1.1-dev: sync with dev",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/554",
+        "publishedAt": "2026-08-28T10:53:27Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "a9562b5c83fda50852723f4c53fc5d08bef3722ad8c066720b0cb205e8b8ee46",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "v1.0-dev: sync with dev",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/553",
+        "publishedAt": "2026-08-28T10:52:50Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "12a0f3b81ce53ec135b1d7e852178d43e7e0b83ec6a09615fcf2a17df485ca5f",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "dev: sync with main",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/548",
+        "publishedAt": "2026-08-28T10:48:59Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "a8506966dca324f946ec832ad21bc31c0916a715284851a7c2702f9c4fc47059",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "chore(deps): bump respec from 37.3.0 to 37.3.5",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/552",
+        "publishedAt": "2026-08-28T10:46:54Z",
+        "tags": [
+            "actor",
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "a7879068486e10bd34f5c925880903b5a45744101f3045b9e0b972d35a1aaa43",
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "title": "Merge pull request #552 from OAI/dependabot/npm_and_yarn/respec-37.3.5",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/7d8b90f1741e7174ba058c8f77df6eb6d0d758ab",
+        "publishedAt": "2026-08-28T10:46:46Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "c99851cdc1ff010147523b067120ccda49676b3a1513d317366e067ca79ccafb",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "chore(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/550",
+        "publishedAt": "2026-08-28T10:45:35Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "a8fc0120baf67e5e622217c13714bd42c20357449f66d8d5c0f2ff583219aeea",
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "title": "Merge pull request #550 from OAI/dependabot/npm_and_yarn/vitest-0d65bea298",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/bb071aa61e2d5058e09ec6ae492153c9527f5ac3",
+        "publishedAt": "2026-08-28T10:45:27Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "bfecaf7b0ab8d2336eac29f2dc903d650d19b84e9c615067fc059ad7a01ec154",
+        "source": "usearazzo/website",
+        "type": "commit",
+        "title": "feat(ecosystem): add Actor-in-the-Loop article",
+        "url": "https://github.com/usearazzo/website/commit/930f2cfce8c1e3d5cd83c8f98341e44853db48c7",
+        "publishedAt": "2026-08-28T08:28:25Z",
+        "tags": [
+            "actor",
+            "loop",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "a5bf695903ae2a99c951a0a005921aa5310895d8c3b54836911f1c013383d91b",
+        "source": "usearazzo/website.ecosystem.atom",
+        "type": "commit",
+        "title": "feat(ecosystem): add Actor-in-the-Loop article",
+        "url": "https://github.com/usearazzo/website/commit/930f2cfce8c1e3d5cd83c8f98341e44853db48c7",
+        "publishedAt": "2026-08-28T08:28:25+00:00",
+        "tags": [
+            "actor",
+            "loop",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "cf8883a436a8ba92e33c45dd4bcca901a7794aaa77b290e1b7abc62ed4a44cfe",
+        "source": "usearazzo/website",
+        "type": "commit",
+        "title": "feat(ecosystem): add HAPI MCP",
+        "url": "https://github.com/usearazzo/website/commit/5e0ff2239f14afcf186d805c7ade84037772e4d8",
+        "publishedAt": "2026-08-28T08:25:11Z",
+        "tags": [
+            "mcp",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P2-2 MCP server exposure"
+    },
+    {
+        "id": "767d7005e7027ecbdf841f3ad7b40cc671cb25b53c5cb580718da71020f9f22a",
+        "source": "usearazzo/website.ecosystem.atom",
+        "type": "commit",
+        "title": "feat(ecosystem): add HAPI MCP",
+        "url": "https://github.com/usearazzo/website/commit/5e0ff2239f14afcf186d805c7ade84037772e4d8",
+        "publishedAt": "2026-08-28T08:25:11+00:00",
+        "tags": [
+            "mcp",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P2-2 MCP server exposure"
+    },
+    {
+        "id": "6fba372bca2675ac32e662e8fa61f911cbc6510dbc4a9476eb3e660acff6e9eb",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "title": "refactor(core): resolve layering violations (#36)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/50",
+        "publishedAt": "2026-08-28T07:28:49Z",
+        "tags": [
+            "actor",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "6cdc4b63068e9a7eae6bb0a84175728b8fb3ed4f35bdf9fbaf5a07cf9cf22259",
+        "source": "OAI/landscape",
+        "type": "commit",
+        "title": "Update Landscape from LFX 2026-08-28 (#190)",
+        "url": "https://github.com/OAI/landscape/commit/2625639709e7bd87c106fe367254049ba7f6c947",
+        "publishedAt": "2026-08-28T05:52:05Z",
+        "tags": [],
+        "severity": "watch",
+        "relevance": null
+    },
+    {
+        "id": "a1a826cc06a99ee85cbd97b713863f1400b7a00b922fc61326c8d63f837bd0db",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "title": "test: add Laravel/Bindings tests (33% → 100%) (G10)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/49",
+        "publishedAt": "2026-08-28T04:36:03Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "12fe189712331bcc3c93120203cbe80e1c91c6b7830bca32993fff7cb4deacc1",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "issue",
+        "title": "test: add tests for Laravel/Bindings (33% → 100%) (G10)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/37",
+        "publishedAt": "2026-08-28T04:35:36Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "09a31a5dea4189ee698424dbbca6676d61b323da4fd6d81bd09fcab7d300c05e",
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "title": "build(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/384",
+        "publishedAt": "2026-08-28T04:33:18Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "2df097eb5c4d4975f65c69dc87c2e30aeaadb40c7a46e0d8c45050d6d35209e6",
+        "source": "OAI/Overlay-Specification",
+        "type": "pr",
+        "title": "build(deps): bump respec from 37.3.2 to 37.3.5",
+        "url": "https://github.com/OAI/Overlay-Specification/pull/385",
+        "publishedAt": "2026-08-28T04:33:14Z",
+        "tags": [
+            "actor",
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "93553b39df3a621bc50c7034435f11cc73b840c34c53c0ad25c8ccef7ccdaa40",
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "title": "v3.2.1 release",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5460",
+        "publishedAt": "2026-08-28T04:06:09Z",
+        "tags": [
+            "breaking",
+            "schema",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "6f914e3b17fb30799d97ac18093d29e10af6359ff82b32d18ac0881b67401dcd",
+        "source": "jentic/jentic-public-apis",
+        "type": "commit",
+        "title": "Rebuild apis.json, scores.json, and API browsing indexes (#22092)",
+        "url": "https://github.com/jentic/jentic-public-apis/commit/1bd49bdc0072e7ffb19f79f28e53380c7c593505",
+        "publishedAt": "2026-08-28T03:25:44Z",
+        "tags": [],
+        "severity": "watch",
+        "relevance": null
+    },
+    {
+        "id": "cd0eaa2cb6405d9dbc188b58194a83c0d2561a8d473656fa7d2e054a221d6980",
+        "source": "OAI/tools.openapis.org",
+        "type": "pr",
+        "title": "fix: restore full tool discovery",
+        "url": "https://github.com/OAI/tools.openapis.org/pull/286",
+        "publishedAt": "2026-08-28T02:36:15Z",
+        "tags": [
+            "graphql",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Roadmap GraphQL step type"
+    },
+    {
+        "id": "ac6957a2c4cf4102b1e459c9673676bc1ad1321a23f60fa38d9b85bc3c53807e",
+        "source": "OAI/Arazzo-Specification",
+        "type": "pr",
+        "title": "chore(deps): bump respec from 37.3.0 to 37.3.2",
+        "url": "https://github.com/OAI/Arazzo-Specification/pull/551",
+        "publishedAt": "2026-08-28T00:53:29Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "639d423a24fc4108e3943c5badd04a233421437112414b8ba074c23054cd8641",
+        "source": "OAI/Arazzo-Specification",
+        "type": "commit",
+        "title": "chore(deps): bump respec from 37.3.0 to 37.3.5",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/560dbfe98b2cb63608b29657d080e52c27794b36",
+        "publishedAt": "2026-08-28T00:53:24Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "029499bd4f5fd3245d7e87e06e3f34a803e75d99ec3a1e52af1f71d491b4a382",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Avoid pinning transitive lockfile entries",
+        "url": "https://github.com/OAI/build-infra/pull/15",
+        "publishedAt": "2026-08-27T22:18:55Z",
+        "tags": [],
+        "severity": "actionable",
+        "relevance": null
+    },
+    {
+        "id": "3d4fcdb16424251b622c69b715ad3c6ad0aade27ea05527d114d81741d0bde1e",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Fix/sync lockfile packaged lock",
+        "url": "https://github.com/OAI/build-infra/pull/19",
+        "publishedAt": "2026-08-27T22:17:44Z",
+        "tags": [
+            "human",
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "79767e1f01e0f94687837fd5eced75f93ec05789a12f2ebe709e2bb919a560f9",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Run linkspector without Chromium sandbox in Actions",
+        "url": "https://github.com/OAI/build-infra/pull/16",
+        "publishedAt": "2026-08-27T22:17:44Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "3dc81ee15e63a7e0b6303622766a9be8525fff1631caa3ca3063a057839b53d8",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Test oai-spec-test package checkout layout",
+        "url": "https://github.com/OAI/build-infra/pull/14",
+        "publishedAt": "2026-08-27T22:17:44Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "0d267bca1fdbfb3b7eef3ae04e0630ae061fc1e88e94e160c0715b7b55e9641e",
+        "source": "OAI/build-infra",
+        "type": "pr",
+        "title": "Remove various npm hacks, switch to yarn for package management",
+        "url": "https://github.com/OAI/build-infra/pull/24",
+        "publishedAt": "2026-08-27T22:15:55Z",
+        "tags": [
+            "schema",
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "P1-7 JSON Schema layer"
+    },
+    {
+        "id": "3d565d47548a6f8b8775dcb7d692a7378d97f97f667036735600f5e4f5e5ce26",
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "title": "Open Community (TDC) Meeting, Thursday 03 September 2026",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5527",
+        "publishedAt": "2026-08-27T19:29:57Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "674302d8e8c24b2817fe11e8b315f95bd04493f7f2c24d9a5c1c7277454edb32",
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "title": "Open Community (TDC) Meeting, Thursday 14 May 2026",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5318",
+        "publishedAt": "2026-08-27T19:29:53Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "19431daa78575c766f908ebbf1f27731cfd39bed2ff8b65d4cb82a9a9fd53939",
+        "source": "OAI/OpenAPI-Specification",
+        "type": "issue",
+        "title": "Open Community (TDC) Meeting, Thursday 13 August 2026",
+        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5478",
+        "publishedAt": "2026-08-27T19:29:51Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "34174d5313cc81901d02c75f9910e96069172b20b98a3bf020e02b1873c8e93a",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "issue",
+        "title": "test: add tests for Console (55% → 100%) (G11)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/38",
+        "publishedAt": "2026-08-27T18:46:28Z",
+        "tags": [
+            "cli",
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "P2-1 CLI binary"
+    },
+    {
+        "id": "0ef0a62f9333dd02c4eabff9fc849cb03bfb4266566676020f24883a51d2604e",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "title": "test: add Console tests (55% → 100%) (G11)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/48",
+        "publishedAt": "2026-08-27T18:46:27Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "1b97d4088d48e64e0f60f94ec6a590fea4ca8f9c2a3f4f366575785013cf80b7",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "title": "test: add tests for Validator module (97% → 100%) (G13)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/47",
+        "publishedAt": "2026-08-27T18:18:25Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "e48f9d662e52bb9e9090c7b7d2ff6546eb49d9e638f0c7b984336bbd6ed3fa53",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "issue",
+        "title": "test: add tests for Validator (95% → 100%) (G13)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/40",
+        "publishedAt": "2026-08-27T18:16:17Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "8c007e6541f58dab78cbec7ac29de229d7229eac18ab98ff548e417f1162b479",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "title": "chore: delete 2 dead exception classes (G14)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/45",
+        "publishedAt": "2026-08-27T18:06:42Z",
+        "tags": [
+            "actor",
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Issue #410 kind discriminator / human-in-loop"
+    },
+    {
+        "id": "8ea510d78152f3c0eb88b79fb49cbd1c08225093953463bbd36597735fb58131",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "pr",
+        "title": "test: add tests for Telemetry module (50% → 100%) (G12)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/46",
+        "publishedAt": "2026-08-27T18:06:39Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "actionable",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "2d8c7e54b8fc6021c757fb9ac82ae5eafbe8762e5b494319666687030ba55638",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "issue",
+        "title": "test: add tests for Telemetry (50% → 100%) (G12)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/39",
+        "publishedAt": "2026-08-27T18:05:27Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
+        "id": "7d9274e3eb0d22489abe761c7f615f497d6f6fa36c817476fa73207349dab4a7",
+        "source": "Mohammed-Alama/php-arazzo",
+        "type": "issue",
+        "title": "chore: delete 2 dead exception classes (G14)",
+        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/41",
+        "publishedAt": "2026-08-27T17:49:03Z",
+        "tags": [
+            "spec"
+        ],
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
+    },
+    {
         "id": "4d3c6dca1958b0fe0a958f9beb9158c22c26d711f53fdb218747d06418c2c895",
         "source": "OAI/OpenAPI-Specification",
         "type": "pr",
         "title": "V3.2.1 rel",
         "url": "https://github.com/OAI/OpenAPI-Specification/pull/5526",
-        "publishedAt": "2026-08-27T16:57:40Z",
+        "publishedAt": "2026-08-27T17:38:57Z",
         "tags": [
             "schema",
             "spec"
@@ -1665,7 +2546,7 @@
         "type": "pr",
         "title": "V3.2.1 rel",
         "url": "https://github.com/OAI/OpenAPI-Specification/pull/5525",
-        "publishedAt": "2026-08-27T16:56:04Z",
+        "publishedAt": "2026-08-27T17:38:36Z",
         "tags": [
             "schema",
             "spec"
@@ -1811,23 +2692,6 @@
         "relevance": "Potential breaking change (2.0)"
     },
     {
-        "id": "4f72774e2bd5f868ee7ddfe28f1fbec5a0e501be3654ff59555ac178a832eab0",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "feat(spec): add SOAP support",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/533",
-        "publishedAt": "2026-08-27T14:32:30Z",
-        "tags": [
-            "soap",
-            "wsdl",
-            "breaking",
-            "schema",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P0-6 source routing (wsdl type)"
-    },
-    {
         "id": "a652eed8593629a35a2d0451c19c78d18d965148cda3c0ef8e6545e88b2792c6",
         "source": "Mohammed-Alama/php-arazzo",
         "type": "pr",
@@ -1893,20 +2757,6 @@
         "relevance": "Conformance / schema validation"
     },
     {
-        "id": "09a31a5dea4189ee698424dbbca6676d61b323da4fd6d81bd09fcab7d300c05e",
-        "source": "OAI/Overlay-Specification",
-        "type": "pr",
-        "title": "build(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group",
-        "url": "https://github.com/OAI/Overlay-Specification/pull/384",
-        "publishedAt": "2026-08-27T04:33:23Z",
-        "tags": [
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
-    },
-    {
         "id": "c515de9e5ae5e68e8c8a3b3731dde9006c23924d7f8cd25edcb68b80dd5ee336",
         "source": "OAI/landscape",
         "type": "commit",
@@ -1927,20 +2777,6 @@
         "tags": [],
         "severity": "watch",
         "relevance": null
-    },
-    {
-        "id": "c99851cdc1ff010147523b067120ccda49676b3a1513d317366e067ca79ccafb",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "chore(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/550",
-        "publishedAt": "2026-08-27T00:54:14Z",
-        "tags": [
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
     },
     {
         "id": "6349ad6da59d592be6c2b484a05714bd10db37c5ac04dfe009e88579b191a253",
@@ -1985,35 +2821,6 @@
         ],
         "severity": "watch",
         "relevance": "P2-1 CLI binary"
-    },
-    {
-        "id": "cefb4d4007ade2006efb63124da5cf162fcaed07109b9115e6f0ef0dfe183e35",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Bump the vitest group with 2 updates",
-        "url": "https://github.com/OAI/build-infra/pull/27",
-        "publishedAt": "2026-08-26T22:25:45Z",
-        "tags": [
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
-    },
-    {
-        "id": "3c02cf9fb9c750a4bb0734366df297d7ce274df4b9f9c8082d8123aeb0e1951f",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Bump respec from 37.2.0 to 37.3.0 in the publishing group across 1 directory",
-        "url": "https://github.com/OAI/build-infra/pull/20",
-        "publishedAt": "2026-08-26T22:25:22Z",
-        "tags": [
-            "breaking",
-            "schema",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
     },
     {
         "id": "4454ac2744f33ba900b78a568b5aae792373c01a3f2a2fc8928dfdc0cfcf486e",
@@ -2286,162 +3093,6 @@
         "relevance": "P1-7 JSON Schema layer"
     },
     {
-        "id": "3efddb5650b199edf681857426b2afb04eb212c6863442144b6ac15c9f471391",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "feat: Named Source Resolution + OpenAPI (Spec 2)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/23",
-        "publishedAt": "2026-08-26T13:10:11Z",
-        "tags": [
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
-    },
-    {
-        "id": "bafb82aa318334e7635190665df569d6db9cbf9fc71126b46b4cd4feb637161c",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "feat: Canonical Execution Core — unify sync/queue engines (Spec 1)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/22",
-        "publishedAt": "2026-08-26T13:10:09Z",
-        "tags": [
-            "loop",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Issue #410 loops vs goto"
-    },
-    {
-        "id": "d3f39aefaaf2a66098890578b361fef7d4762dc4a910a3127f27c8cc28412d8f",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "feat: WSDL source routing (P0-6) — parser/validator only",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/17",
-        "publishedAt": "2026-08-26T13:10:06Z",
-        "tags": [
-            "soap",
-            "wsdl",
-            "xml",
-            "xpath",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P0-6 source routing (wsdl type)"
-    },
-    {
-        "id": "1b749e99f0d0655bb98b51dd4089bb5edfa35031f872e9638d020bfd8ab77271",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "feat: XML payload support + XPath targetSelectorType (P1-6)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/16",
-        "publishedAt": "2026-08-26T13:10:04Z",
-        "tags": [
-            "soap",
-            "xml",
-            "xpath",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "P0-6 source routing (wsdl type)"
-    },
-    {
-        "id": "0ad7be9f85b4d6f034e85b725f15a644ea5c3c258991ce4237102f7d50cff837",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "refactor: reduce coupling between Validator→Spec and Validator→Expression (G16)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/43",
-        "publishedAt": "2026-08-26T13:08:12Z",
-        "tags": [
-            "actor",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
-        "id": "5f69c8aeabfad99ba8f5e4769d69fd61b79d8c73c5cbd662906e724a6c6941fb",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "refactor: investigate and reduce churn hotspots (G15)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/42",
-        "publishedAt": "2026-08-26T13:08:01Z",
-        "tags": [
-            "actor",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
-        "id": "7d9274e3eb0d22489abe761c7f615f497d6f6fa36c817476fa73207349dab4a7",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "chore: delete 7 dead exception classes (G14)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/41",
-        "publishedAt": "2026-08-26T13:07:51Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "e48f9d662e52bb9e9090c7b7d2ff6546eb49d9e638f0c7b984336bbd6ed3fa53",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "test: add tests for Validator (95% → 100%) (G13)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/40",
-        "publishedAt": "2026-08-26T13:07:27Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "2d8c7e54b8fc6021c757fb9ac82ae5eafbe8762e5b494319666687030ba55638",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "test: add tests for Telemetry (50% → 100%) (G12)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/39",
-        "publishedAt": "2026-08-26T13:07:19Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "34174d5313cc81901d02c75f9910e96069172b20b98a3bf020e02b1873c8e93a",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "test: add tests for Console (55% → 100%) (G11)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/38",
-        "publishedAt": "2026-08-26T13:07:05Z",
-        "tags": [
-            "cli",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "P2-1 CLI binary"
-    },
-    {
-        "id": "12fe189712331bcc3c93120203cbe80e1c91c6b7830bca32993fff7cb4deacc1",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "issue",
-        "title": "test: add tests for Laravel/Bindings (33% → 100%) (G10)",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/issues/37",
-        "publishedAt": "2026-08-26T13:06:52Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "b665dd7d212d614ef1e298cb9c9a4870ca8433313aa431a7a7f5cba6c59b55d9",
         "source": "Mohammed-Alama/php-arazzo",
         "type": "pr",
@@ -2651,36 +3302,6 @@
         "relevance": "P2-1 CLI binary"
     },
     {
-        "id": "a95c1726d16bbf67ae0d91a73bbdd3e44c97e1ffc1faa803611300cfaddf4ba9",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "pr",
-        "title": "chore(deps): bump @speclynx/apidom-ns-openapi-3-0 from 5.1.0 to 5.1.1",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/93",
-        "publishedAt": "2026-08-25T23:05:53Z",
-        "tags": [
-            "actor",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
-        "id": "fb5cd8c9ef2256d0a6c8879aa1e471e23ad555ced1eefaa5b6cfcbf010ca84f8",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "pr",
-        "title": "chore(deps): bump @speclynx/apidom-traverse from 5.1.0 to 5.1.1",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/92",
-        "publishedAt": "2026-08-25T23:05:42Z",
-        "tags": [
-            "actor",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
         "id": "03288a51306dd9cbec692c4e5286ae8c37c8a9dad974a084c660eed9c6960a08",
         "source": "strefethen/arazzo-cli",
         "type": "commit",
@@ -2858,20 +3479,6 @@
         "relevance": null
     },
     {
-        "id": "c3adb06843b51324828ca22ba3a1d3b430c2295c522914345af2bf1fe246db89",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "pr",
-        "title": "chore(deps): bump @speclynx/apidom-json-pointer from 5.1.0 to 5.1.1",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/90",
-        "publishedAt": "2026-08-24T23:22:17Z",
-        "tags": [
-            "actor",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
         "id": "5ff77f20282f268d2ce725a25afec163a0b3b2a507dae6daf4f235ac7ddade1e",
         "source": "usearazzo/arazzo-toolkit",
         "type": "pr",
@@ -2914,22 +3521,6 @@
         "relevance": "Potential breaking change (2.0)"
     },
     {
-        "id": "c70cceef0cb10606bba113f42f012a258ee4a78da948cf1774ec5a6277d00de9",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "pr",
-        "title": "chore(deps): bump github/codeql-action from 4.37.7 to 4.37.8",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/88",
-        "publishedAt": "2026-08-24T23:07:31Z",
-        "tags": [
-            "cli",
-            "actor",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P2-1 CLI binary"
-    },
-    {
         "id": "4c14c14b69986419f5a39cfb922adea3055f5d10307b8f9ca20d8e66ac8e3ede",
         "source": "OAI/build-infra",
         "type": "pr",
@@ -2938,20 +3529,6 @@
         "publishedAt": "2026-08-24T22:26:55Z",
         "tags": [
             "breaking"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
-    },
-    {
-        "id": "8a34c528edf22fdeebd318035233d50ccf62657ead5a6bad570c0b448ab75bdd",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Bump content-type from 2.0.0 to 3.0.0",
-        "url": "https://github.com/OAI/build-infra/pull/28",
-        "publishedAt": "2026-08-24T22:26:52Z",
-        "tags": [
-            "breaking",
-            "spec"
         ],
         "severity": "breaking",
         "relevance": "Potential breaking change (2.0)"
@@ -3083,18 +3660,17 @@
         "relevance": "Potential breaking change (2.0)"
     },
     {
-        "id": "ac6957a2c4cf4102b1e459c9673676bc1ad1321a23f60fa38d9b85bc3c53807e",
+        "id": "c1db057941da27e51ee98b069113ff94f07369b56467ed4fba9749394a111571",
         "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "chore(deps): bump respec from 37.3.0 to 37.3.2",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/551",
-        "publishedAt": "2026-08-24T00:56:00Z",
+        "type": "commit",
+        "title": "chore(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group",
+        "url": "https://github.com/OAI/Arazzo-Specification/commit/8158faa52e0d7a68253895fb9f5bf29fc4538696",
+        "publishedAt": "2026-08-24T00:55:51Z",
         "tags": [
-            "breaking",
             "spec"
         ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
+        "severity": "watch",
+        "relevance": "Conformance / schema validation"
     },
     {
         "id": "6e0e57114a294701c2383e34938734110d6c07c978c85ef1e0539aa95ef2922d",
@@ -3164,19 +3740,6 @@
         "title": "feat(ecosystem): extend the list of resources",
         "url": "https://github.com/usearazzo/website/commit/9626bdb657fdeaf5417f1bd8663dd94273714cf2",
         "publishedAt": "2026-08-23T16:02:14+00:00",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "b675a0f3717487572bec889b4eb5aa27145f95f6701d542efab0345e3fe0567d",
-        "source": "OAI/OpenAPI-Specification",
-        "type": "issue",
-        "title": "vX.Y: ...",
-        "url": "https://github.com/OAI/OpenAPI-Specification/issues/5517",
-        "publishedAt": "2026-08-23T08:53:10Z",
         "tags": [
             "spec"
         ],
@@ -3325,70 +3888,6 @@
         "relevance": "P2-1 CLI binary"
     },
     {
-        "id": "895fdfe3f26fbc5c97530df91df08e2768650fc75fe264c4d74588f3f1cc89db",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: execution observability — structured event stream with logging, OpenTelemetry, and stream adapters",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/85",
-        "publishedAt": "2026-08-22T05:35:11Z",
-        "tags": [
-            "cli",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P2-1 CLI binary"
-    },
-    {
-        "id": "00d601bceb0a329bd8f7eace8638e97777cbe26c29533630feca458e22a6040a",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "cli: new @usearazzo/cli package — proposed command surface",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/84",
-        "publishedAt": "2026-08-22T05:27:49Z",
-        "tags": [
-            "cli",
-            "human",
-            "schema",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "P2-1 CLI binary"
-    },
-    {
-        "id": "fc35b51f84dd2543a04171504c95591c9240c37f3c577d90321785b0d868c6b5",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: workflow execution profile — analyze what a run needs, pre-configure the runner with the filled artifact",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/82",
-        "publishedAt": "2026-08-22T05:24:53Z",
-        "tags": [
-            "cli",
-            "human",
-            "breaking",
-            "schema",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P2-1 CLI binary"
-    },
-    {
-        "id": "6cb101ca561182c8bb0b02fd863b9ec78f717a720b3a73fb163ff5e09d1ed349",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: first-class workflow enumeration (listWorkflows) with a future CLI list-workflows command",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/83",
-        "publishedAt": "2026-08-22T05:22:47Z",
-        "tags": [
-            "cli",
-            "human",
-            "schema",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "P2-1 CLI binary"
-    },
-    {
         "id": "684a0f60bdb7f7a2ded9d32d60fded836de4f50d9a042140be440062ad604545",
         "source": "OAI/sig-security",
         "type": "issue",
@@ -3465,86 +3964,6 @@
         ],
         "severity": "actionable",
         "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
-        "id": "4c3c59b6836485baa4c527a8d0161fcc34fed32a2ca79959a7972c8eee483e74",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: support cross-document workflowId references",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/64",
-        "publishedAt": "2026-08-21T21:14:47Z",
-        "tags": [
-            "actor",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
-        "id": "6eccfff67dd136b7214ef7059a6ec30f788bbb771197ff583ec75a952c84446f",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: unify the triplicated workflow-existence check",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/77",
-        "publishedAt": "2026-08-21T21:09:09Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "119b3647b57d1a6eeba58caec31a7a3d6c13c3d8751c9f9d20d1bbd36da3c342",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: consolidate the duplicated #evaluate expression bridge",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/76",
-        "publishedAt": "2026-08-21T21:09:07Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "96d32614d4f4eee896c2fb1c2b326bee972e1c156ea39bb53333a6447f2f5858",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: give StepAttemptOutcome a deliberate home",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/75",
-        "publishedAt": "2026-08-21T21:09:06Z",
-        "tags": [
-            "loop",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Issue #410 loops vs goto"
-    },
-    {
-        "id": "68c842ea3717a9e6acd67412aa43f0fff089381ca51bd9169d7c1118478c0852",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: executeAll() for batch (libopenapi-style) semantics",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/81",
-        "publishedAt": "2026-08-21T21:09:05Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "6114a4dbe94643ffe80c29a355705f63fd7c0d863734fdd8c18f85c5ba4e87ea",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "issue",
-        "title": "runner: input channel for workflows run by a retry reference",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/issues/62",
-        "publishedAt": "2026-08-21T21:09:03Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
     },
     {
         "id": "9ce17a05ed6bed46b7bbcd87a6c773fcbde00f7af4d3dd44b2a2a2e78e73dcca",
@@ -3799,19 +4218,6 @@
         "tags": [],
         "severity": "watch",
         "relevance": null
-    },
-    {
-        "id": "e37cdb5150887578823de32a57c8fcd73330bdb2c079acf9ae967ebff3771262",
-        "source": "OAI/OpenAPI-Specification",
-        "type": "issue",
-        "title": "Security Requirement Consistency with Server Objects",
-        "url": "https://github.com/OAI/OpenAPI-Specification/issues/1416",
-        "publishedAt": "2026-08-21T18:07:21Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
     },
     {
         "id": "e9bc4f7df3687dde29bd0d8f3f099726d6b20e5d69372801216456fc4ccb145b",
@@ -4138,19 +4544,6 @@
         "relevance": "Conformance / schema validation"
     },
     {
-        "id": "f848a7737fe9c37b029bca8fe1cda00a3b456c27d0c092ec57886a3bcd5c38f6",
-        "source": "OAI/OpenAPI-Specification",
-        "type": "pr",
-        "title": "v3.1-dev: sync with dev",
-        "url": "https://github.com/OAI/OpenAPI-Specification/pull/5511",
-        "publishedAt": "2026-08-20T20:14:31Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "6a0bf04696be952ea0261c2aec419150432ebe1712a58a47a8e7e82bafdb6d8f",
         "source": "OAI/sig-lifecycle",
         "type": "pr",
@@ -4164,18 +4557,31 @@
         "relevance": "Conformance / schema validation"
     },
     {
-        "id": "2e296c31bf11125beef0995c72ec7c675fd0aa134740586595828ddc3510f3d5",
+        "id": "4d22005df30a29eb2ed3a0deffd2433d5a54bfae265952a191a5e18cc06289e0",
         "source": "OAI/build-infra",
-        "type": "pr",
+        "type": "commit",
         "title": "Bump highlight.js from 11.11.1 to 11.12.0",
-        "url": "https://github.com/OAI/build-infra/pull/23",
-        "publishedAt": "2026-08-20T16:23:27Z",
+        "url": "https://github.com/OAI/build-infra/commit/efec7eacbd8bfd99b5e32c5f018faf1b9b3bd2ae",
+        "publishedAt": "2026-08-20T16:23:25Z",
         "tags": [
-            "soap",
             "breaking"
         ],
         "severity": "breaking",
-        "relevance": "P0-6 source routing (wsdl type)"
+        "relevance": "Potential breaking change (2.0)"
+    },
+    {
+        "id": "0fe41f5962a4a3026eb846ab3d707b3f70863be7d67d323e53db5e99ab537559",
+        "source": "OAI/build-infra",
+        "type": "commit",
+        "title": "Bump respec in the publishing group across 1 directory",
+        "url": "https://github.com/OAI/build-infra/commit/217bf7eeb5fa7fc0d9f32e23440f87d79a3acbe3",
+        "publishedAt": "2026-08-20T16:23:24Z",
+        "tags": [
+            "breaking",
+            "spec"
+        ],
+        "severity": "breaking",
+        "relevance": "Potential breaking change (2.0)"
     },
     {
         "id": "732485417b0cef277c9746961d82325a41a30fd99af0112e43c88677688448e6",
@@ -4188,20 +4594,6 @@
             "schema"
         ],
         "severity": "watch",
-        "relevance": "P1-7 JSON Schema layer"
-    },
-    {
-        "id": "0d267bca1fdbfb3b7eef3ae04e0630ae061fc1e88e94e160c0715b7b55e9641e",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Remove various npm hacks, switch to yarn for package management",
-        "url": "https://github.com/OAI/build-infra/pull/24",
-        "publishedAt": "2026-08-20T16:20:43Z",
-        "tags": [
-            "schema",
-            "spec"
-        ],
-        "severity": "actionable",
         "relevance": "P1-7 JSON Schema layer"
     },
     {
@@ -4252,17 +4644,6 @@
         ],
         "severity": "watch",
         "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "5e1e47ceee663c6c6d7d48e41287d34a09796a02ca7310e18889021dbefb2292",
-        "source": "jentic/jentic-public-apis",
-        "type": "commit",
-        "title": "Rebuild apis.json, scores.json, and API browsing indexes (#22065)",
-        "url": "https://github.com/jentic/jentic-public-apis/commit/63b8259a168cfe777b3f351979a336f01840eca8",
-        "publishedAt": "2026-08-20T11:45:52Z",
-        "tags": [],
-        "severity": "watch",
-        "relevance": null
     },
     {
         "id": "207d2f25f7c60fedcb157e607a88a9620f673e24162f67e5f30cb1d79b2e906a",
@@ -4404,19 +4785,6 @@
             "spec"
         ],
         "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "12a0f3b81ce53ec135b1d7e852178d43e7e0b83ec6a09615fcf2a17df485ca5f",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "dev: sync with main",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/548",
-        "publishedAt": "2026-08-19T07:13:10Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
         "relevance": "Conformance / schema validation"
     },
     {
@@ -4933,33 +5301,6 @@
         "relevance": null
     },
     {
-        "id": "e9748636e24a3ab028c1e96c49c3b23aa7fe18073cbc1c33409962967a110664",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "pr",
-        "title": "feat(runner): execute a retry action's stepId/workflowId reference before each retry attempt",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/63",
-        "publishedAt": "2026-08-17T12:57:09Z",
-        "tags": [
-            "actor",
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
-    },
-    {
-        "id": "643fe5241b830266d6133f5e6aff7eeafc912f33ae66d93374197459e45820c2",
-        "source": "usearazzo/arazzo-toolkit",
-        "type": "pr",
-        "title": "fix(runner): validate workflow outputs shape before running prerequisites or steps",
-        "url": "https://github.com/usearazzo/arazzo-toolkit/pull/61",
-        "publishedAt": "2026-08-17T10:29:28Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "8263b3123d910cce0c877544310bba311e0de3fedf2d02411356d60b095adac1",
         "source": "OAI/Overlay-Specification",
         "type": "pr",
@@ -5063,20 +5404,6 @@
         ],
         "severity": "breaking",
         "relevance": "Potential breaking change (2.0)"
-    },
-    {
-        "id": "3d4fcdb16424251b622c69b715ad3c6ad0aade27ea05527d114d81741d0bde1e",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Fix/sync lockfile packaged lock",
-        "url": "https://github.com/OAI/build-infra/pull/19",
-        "publishedAt": "2026-08-13T16:21:19Z",
-        "tags": [
-            "human",
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Issue #410 kind discriminator / human-in-loop"
     },
     {
         "id": "299f4be1731b1c1ee863089dada8f1a311882e5303bd26a81058202966f7b04c",
@@ -5198,19 +5525,6 @@
         "title": "Delete CNAME",
         "url": "https://github.com/usearazzo/website/commit/3fb6beafd98143d79f79687e0070766db09b3925",
         "publishedAt": "2026-08-12T21:17:16Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "86d89dcecd6f6b005ef46d47d394e2090df8cb8f66630c67c62d0fb0995da8c7",
-        "source": "usearazzo/website",
-        "type": "commit",
-        "title": "feat: add initial website",
-        "url": "https://github.com/usearazzo/website/commit/85bfced03ef91452b31645415d976e4058df03a3",
-        "publishedAt": "2026-08-12T21:15:13Z",
         "tags": [
             "spec"
         ],
@@ -5726,51 +6040,12 @@
         "relevance": "Roadmap A2A step type"
     },
     {
-        "id": "3dc81ee15e63a7e0b6303622766a9be8525fff1631caa3ca3063a057839b53d8",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Test oai-spec-test package checkout layout",
-        "url": "https://github.com/OAI/build-infra/pull/14",
-        "publishedAt": "2026-08-06T16:23:03Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "e34019a4983f35e5d7a6b20acdbae0b3642866d0b9252155439143cef4dd01eb",
         "source": "OAI/build-infra",
         "type": "commit",
         "title": "Merge pull request #14 from handrews/oai-spec-test",
         "url": "https://github.com/OAI/build-infra/commit/fc6c089945a08da8eeec5e0cabfd9e33301511e4",
         "publishedAt": "2026-08-06T16:23:03Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "79767e1f01e0f94687837fd5eced75f93ec05789a12f2ebe709e2bb919a560f9",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Run linkspector without Chromium sandbox in Actions",
-        "url": "https://github.com/OAI/build-infra/pull/16",
-        "publishedAt": "2026-08-06T16:22:45Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "5bf1506d05f080ee630f0aae89d4f60fc55a7cc34a28825ef046e4819b7f6721",
-        "source": "OAI/build-infra",
-        "type": "commit",
-        "title": "Merge pull request #16 from handrews/fix/validate-markdown-linkspector-sandbox",
-        "url": "https://github.com/OAI/build-infra/commit/652bc71346bf3c6ccfb0317cc6fbe8516365c5f1",
-        "publishedAt": "2026-08-06T16:22:45Z",
         "tags": [
             "spec"
         ],
@@ -5804,38 +6079,12 @@
         "relevance": null
     },
     {
-        "id": "234ffdc6a7e7cc1d1571baa432c6deb392810457c3be56e0945ea88a37dcc53b",
-        "source": "OAI/build-infra",
-        "type": "commit",
-        "title": "Run linkspector without Chromium sandbox in Actions",
-        "url": "https://github.com/OAI/build-infra/commit/8ba5c5611eff62549680bb0c10c700bde3886a07",
-        "publishedAt": "2026-08-05T19:34:49Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "cad040d19fc6ea497ab6714a5c3680f82692141ae71d5eaad182b2c29fc454a9",
         "source": "OAI/Arazzo-Specification",
         "type": "issue",
         "title": "Meeting: Aug 5th, 2026",
         "url": "https://github.com/OAI/Arazzo-Specification/issues/539",
         "publishedAt": "2026-08-05T16:07:39Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "e62606374a262e8f3adc4b3c65a20cc4be0327e36549bdec48a09f865cf3fef2",
-        "source": "OAI/Arazzo-Specification",
-        "type": "issue",
-        "title": "Meeting: July 8th, 2026",
-        "url": "https://github.com/OAI/Arazzo-Specification/issues/514",
-        "publishedAt": "2026-08-05T15:35:38Z",
         "tags": [
             "spec"
         ],
@@ -5857,19 +6106,6 @@
         ],
         "severity": "watch",
         "relevance": "P1-6 payload XPath / P0-5 XPath criteria"
-    },
-    {
-        "id": "71c7ce7a0356a0fece7f96d76f44dcfc98ed1b7f7e3f89c9b95d1a221610ae85",
-        "source": "OAI/Arazzo-Specification",
-        "type": "issue",
-        "title": "Agenda for May 11, 2022",
-        "url": "https://github.com/OAI/Arazzo-Specification/issues/22",
-        "publishedAt": "2026-08-05T09:52:55Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
     },
     {
         "id": "601c7c9a245b71ad3104c77ac0c10a840609829f493d434806447fe751e07284",
@@ -5899,30 +6135,6 @@
         "relevance": "P2-1 CLI binary"
     },
     {
-        "id": "73796b5aa8323cba7e3c3c321645f292ead31dd48f552bea98368bf9a9eda1d9",
-        "source": "OAI/landscape",
-        "type": "commit",
-        "title": "Update Landscape from LFX 2026-08-04 (#170)",
-        "url": "https://github.com/OAI/landscape/commit/48b6677421c69b8f2318166010f9072f12ba491b",
-        "publishedAt": "2026-08-04T22:51:11Z",
-        "tags": [],
-        "severity": "watch",
-        "relevance": null
-    },
-    {
-        "id": "299686687cafa61b1f89848af6718a6c16f9466a31e6faf9cad2ee6e0a39d23e",
-        "source": "OAI/build-infra",
-        "type": "commit",
-        "title": "Test oai-spec-test package checkout layout",
-        "url": "https://github.com/OAI/build-infra/commit/62918b20ca6719af978c9250ddea951678cc1dc6",
-        "publishedAt": "2026-08-04T17:53:11Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "c1d28e39b5d51f135a0f42c81f41800a6d6dc9347e21ea1161d3d53b00cefb7c",
         "source": "OAI/build-infra",
         "type": "pr",
@@ -5935,17 +6147,6 @@
         ],
         "severity": "breaking",
         "relevance": "Potential breaking change (2.0)"
-    },
-    {
-        "id": "a51ae593120cf8fe9524733cfd882a8eee0325a0dcc2cbff3ac0ce6a42cedd20",
-        "source": "OAI/build-infra",
-        "type": "commit",
-        "title": "Merge pull request #13 from OAI/dependabot/npm_and_yarn/publishing-38e5500e7c",
-        "url": "https://github.com/OAI/build-infra/commit/9f916454d7000a4765a22b1c96f0e6388c144d94",
-        "publishedAt": "2026-08-04T17:50:46Z",
-        "tags": [],
-        "severity": "watch",
-        "relevance": null
     },
     {
         "id": "3d4f5e47478dfd32455b799b9b40fb47e8f7d382d89094f232b6e2b15a824f21",
@@ -6017,28 +6218,6 @@
         "relevance": "P1-7 JSON Schema layer"
     },
     {
-        "id": "fddd49c6f885925ca7d5521f45d00f55ce07d97ad445bedfa77bdadf11ad934c",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Bump the vitest group across 1 directory with 2 updates",
-        "url": "https://github.com/OAI/build-infra/pull/3",
-        "publishedAt": "2026-08-04T17:20:16Z",
-        "tags": [],
-        "severity": "actionable",
-        "relevance": null
-    },
-    {
-        "id": "029499bd4f5fd3245d7e87e06e3f34a803e75d99ec3a1e52af1f71d491b4a382",
-        "source": "OAI/build-infra",
-        "type": "pr",
-        "title": "Avoid pinning transitive lockfile entries",
-        "url": "https://github.com/OAI/build-infra/pull/15",
-        "publishedAt": "2026-08-04T17:17:24Z",
-        "tags": [],
-        "severity": "actionable",
-        "relevance": null
-    },
-    {
         "id": "3be262278aaa7dd9f8ee27cca9c817dd367b2ed1c909c2874c92cbe40937690b",
         "source": "OAI/Arazzo-Specification",
         "type": "pr",
@@ -6077,47 +6256,6 @@
         ],
         "severity": "actionable",
         "relevance": "P1-7 JSON Schema layer"
-    },
-    {
-        "id": "dafdb30c2818b5109a70a525763c031ab0f27318f4f5a0c9b829534e2f85b1fd",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "v1.0-dev: sync with dev",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/536",
-        "publishedAt": "2026-08-04T09:26:35Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "0406ecdd10cac876a810a694ed7cc1b1b589c96826fd0487fe8c160be362bbaf",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "dev: sync with main",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/535",
-        "publishedAt": "2026-08-04T09:24:21Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "7d858fd134b10236589ab6595415f0a2a2d66e17ba27d9b0b8cea24ca3dc5206",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "chore(deps): bump markdown-it from 14.3.0 to 15.0.0",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/534",
-        "publishedAt": "2026-08-04T08:41:32Z",
-        "tags": [
-            "cli",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P2-1 CLI binary"
     },
     {
         "id": "8c2ab1861a7fb4b126eff6408071fe82e5b120cbde6a507dc5716ef492bc8398",
@@ -6283,19 +6421,6 @@
         "title": "v6.16.3",
         "url": "https://github.com/stoplightio/spectral/releases/tag/v6.16.3",
         "publishedAt": "2026-08-03T09:51:48Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "35828f11fa9408dbf5c8cc06f01af4c9ef8fa0f93ed13f521d2d08f6b5e758f8",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "pr",
-        "title": "2026 07 25 core 38 event dispatcher wiring",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/5",
-        "publishedAt": "2026-08-03T08:35:31Z",
         "tags": [
             "spec"
         ],
@@ -6585,32 +6710,6 @@
         "relevance": null
     },
     {
-        "id": "d33b95b04da5134fbaddef12b613374a19af2f279019d710ad355cc2c189d1c6",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "v1.2-dev: sync with dev",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/532",
-        "publishedAt": "2026-07-27T10:48:29Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "08e0e7d4265f1d3bf557c774a5041e9aca886e0c227e2938c4a3d0fe1f420cb7",
-        "source": "OAI/Arazzo-Specification",
-        "type": "pr",
-        "title": "v1.1-dev: sync with dev",
-        "url": "https://github.com/OAI/Arazzo-Specification/pull/531",
-        "publishedAt": "2026-07-27T10:47:35Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "01618f65302fbc8b3cd0c01b7c4ea57f9558f25ca648ac47523339abaf2d5f3b",
         "source": "OAI/Overlay-Specification",
         "type": "pr",
@@ -6719,21 +6818,6 @@
         "relevance": "Conformance / schema validation"
     },
     {
-        "id": "443c933bd08f04bc27dc40cafdcabd253fa38fba070bcd80d4f4190446470a78",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "pr",
-        "title": "2026 07 25 core 34 arazzo 1.1.0 spec",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/3",
-        "publishedAt": "2026-07-25T23:45:59Z",
-        "tags": [
-            "xml",
-            "xpath",
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "P1-6 payload XPath / P0-5 XPath criteria"
-    },
-    {
         "id": "3b64d768a0fc08a1fcadab9211e21f589149737e049847620cdbc0e40b128265",
         "source": "Specmatic/specmatic",
         "type": "release",
@@ -6748,20 +6832,6 @@
         ],
         "severity": "actionable",
         "relevance": "P1-6 payload XPath / P0-5 XPath criteria"
-    },
-    {
-        "id": "53d5b05e0a1903026a9a65cc63a0ce320181f5c14ef362226a8e097a3f43026a",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "pr",
-        "title": "feat: idempotency & replay safeguards",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/2",
-        "publishedAt": "2026-07-25T03:03:01Z",
-        "tags": [
-            "schema",
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "P1-7 JSON Schema layer"
     },
     {
         "id": "8c28b3a2f29e451b23fc286e30de1c95e49eb1143ce444abf43951d8667ebaef",
@@ -7005,19 +7075,6 @@
         "relevance": "Conformance / schema validation"
     },
     {
-        "id": "46cb03c5444b47fdcc724ea5d342154c72c905ebe0dfd8f62cffb1a863c1fc85",
-        "source": "Mohammed-Alama/php-arazzo",
-        "type": "pr",
-        "title": "feat: Implement CQRS Event-Sourced Persistence for Workflows",
-        "url": "https://github.com/Mohammed-Alama/php-arazzo/pull/1",
-        "publishedAt": "2026-07-20T16:49:24Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "7d2f597093338223eedbcbb363eaf15b6454eeee61ff040aca3fb5d3f42527f4",
         "source": "OAI/spec.openapis.org",
         "type": "pr",
@@ -7252,21 +7309,6 @@
         "relevance": "Potential breaking change (2.0)"
     },
     {
-        "id": "7dd0d0c15641fa7e7933811fdcd662655a0c35940b26d8a8cb0361855c5715f3",
-        "source": "OAI/Overlay-Specification",
-        "type": "pr",
-        "title": "build(deps): bump actions/setup-node from 6 to 7",
-        "url": "https://github.com/OAI/Overlay-Specification/pull/361",
-        "publishedAt": "2026-07-14T10:17:35Z",
-        "tags": [
-            "xml",
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "P1-6 payload XPath / P0-5 XPath criteria"
-    },
-    {
         "id": "00ed4944438d85cfa22218a14eb473921db1688c4fb11e902b94908310e41506",
         "source": "OAI/spec.openapis.org",
         "type": "pr",
@@ -7348,45 +7390,6 @@
         "relevance": "P1-6 payload XPath / P0-5 XPath criteria"
     },
     {
-        "id": "8c81f8abdae6e2e894675c077c06197b2a00c80d9da3319b44ee220682a80e81",
-        "source": "OAI/Arazzo-Specification",
-        "type": "commit",
-        "title": "Merge pull request #509 from frankkilcommins/update-sync-actions",
-        "url": "https://github.com/OAI/Arazzo-Specification/commit/5c97e370d203ff74627d15b6711f65861139c319",
-        "publishedAt": "2026-07-08T09:59:59Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "5a0c7b6a0f19abed8b98448fdcb0700a54d6b4bb642b134ce35995b648419f1d",
-        "source": "OAI/Arazzo-Specification",
-        "type": "commit",
-        "title": "fix(workflows): use -X theirs to resolve sync merge conflicts",
-        "url": "https://github.com/OAI/Arazzo-Specification/commit/3f5c829b3a5b0a134c3fba9d32591d44af7b68e4",
-        "publishedAt": "2026-07-08T08:37:45Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "e9ad6bb2465b3950ceb1bacc0de260279f408a9341252fcdf9775d171dcc4372",
-        "source": "OAI/Arazzo-Specification",
-        "type": "commit",
-        "title": "Merge pull request #508 from OAI/dependabot/npm_and_yarn/vitest-bc9680511c",
-        "url": "https://github.com/OAI/Arazzo-Specification/commit/43442aa7b36f70db40f95c4781d8950dd61ef908",
-        "publishedAt": "2026-07-08T08:32:07Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "Conformance / schema validation"
-    },
-    {
         "id": "a6b312664dabfcf44480db37c612eedab710f68a79f13312544864bf6ddf0bc1",
         "source": "swaggerexpert/arazzo-runtime-expression",
         "type": "release",
@@ -7397,19 +7400,6 @@
             "spec"
         ],
         "severity": "actionable",
-        "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "3e200c4dcdc283fe9872d79277d244bf549df3fa3eb7b08b4d7a576438fcab0b",
-        "source": "OAI/Arazzo-Specification",
-        "type": "commit",
-        "title": "chore(deps-dev): bump vitest from 4.1.7 to 4.1.10 in the vitest group",
-        "url": "https://github.com/OAI/Arazzo-Specification/commit/b974e1b1ae4ce9d91dc94fda02ff43a911797bb3",
-        "publishedAt": "2026-07-08T00:53:25Z",
-        "tags": [
-            "spec"
-        ],
-        "severity": "watch",
         "relevance": "Conformance / schema validation"
     },
     {
@@ -9136,20 +9126,6 @@
         "relevance": "P2-1 CLI binary"
     },
     {
-        "id": "6ce42cba394ee9a1e0134463967f4466b1c6203f189e22b019a3fcd141d73c4b",
-        "source": "OAI/tools.openapis.org",
-        "type": "issue",
-        "title": "Compras",
-        "url": "https://github.com/OAI/tools.openapis.org/issues/261",
-        "publishedAt": "2026-02-17T10:20:59Z",
-        "tags": [
-            "breaking",
-            "spec"
-        ],
-        "severity": "breaking",
-        "relevance": "Potential breaking change (2.0)"
-    },
-    {
         "id": "b7241d8d1ca74829f19795a0692903a8dfa07815e1b0e9e3c3ed2232c3226cf9",
         "source": "speakeasy-api/openapi",
         "type": "release",
@@ -10640,20 +10616,6 @@
         ],
         "severity": "actionable",
         "relevance": "Conformance / schema validation"
-    },
-    {
-        "id": "78fdddefb97bb44d1ea5a8121f4c3de39a9fd17a98262c7edc324cc82de93d30",
-        "source": "OAI/tools.openapis.org",
-        "type": "pr",
-        "title": "Updates openapi json schema generator",
-        "url": "https://github.com/OAI/tools.openapis.org/pull/92",
-        "publishedAt": "2023-10-24T21:56:06Z",
-        "tags": [
-            "schema",
-            "spec"
-        ],
-        "severity": "watch",
-        "relevance": "P1-7 JSON Schema layer"
     },
     {
         "id": "9ac486b147fddd4eebb8b9656ac9b4c913bfd742046dc95016f38b7b81b51227",
