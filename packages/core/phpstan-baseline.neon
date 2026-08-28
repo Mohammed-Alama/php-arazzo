@@ -19,7 +19,7 @@ parameters:
 			path: src/Expression/SymbolTable.php
 
 		-
-			message: '#^Instanceof between Alama\\Arazzo\\Spec\\SourceDescription and Alama\\Arazzo\\Spec\\SourceDescription will always evaluate to true\.$#'
+			message: '#^Instanceof between Alama\\Arazzo\\Expression\\SourceDescription and Alama\\Arazzo\\Expression\\SourceDescription will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: src/Expression/SymbolTable.php
@@ -97,7 +97,7 @@ parameters:
 			path: src/Parser/Parser.php
 
 		-
-			message: '#^Method Alama\\Arazzo\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Spec\\Expression\|Alama\\Arazzo\\Spec\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
+			message: '#^Method Alama\\Arazzo\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Expression\\Expression\|Alama\\Arazzo\\Expression\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Parser/Parser.php
