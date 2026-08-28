@@ -6,12 +6,12 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Expression\StringInterpolator;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\State\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Spec\Enum\StepStatus;
-use Alama\Arazzo\State\WorkflowContext;
 
 it('is immutable on withStepResult', function (): void {
     $context = new WorkflowContext('def_1', ['id' => 1]);

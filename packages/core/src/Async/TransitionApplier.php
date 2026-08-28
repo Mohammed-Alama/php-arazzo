@@ -6,9 +6,9 @@ namespace Alama\Arazzo\Async;
 
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\ExecutionStatus;
 use Alama\Arazzo\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Execution\ExecutionStatus;
 use Alama\Arazzo\Execution\Transition;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;

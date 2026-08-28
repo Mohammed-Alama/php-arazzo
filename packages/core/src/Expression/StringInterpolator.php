@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\State\WorkflowContext;
+use Alama\Arazzo\Contracts\WorkflowContext;
 
 class StringInterpolator
 {

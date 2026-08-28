@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Resolver;
 
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
-use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\SourceDocument;
 
 final class SourceRegistry implements SourceResolver

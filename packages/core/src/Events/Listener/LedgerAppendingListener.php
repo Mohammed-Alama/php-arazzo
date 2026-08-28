@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Support\Events\Listener;
+namespace Alama\Arazzo\Events\Listener;
 
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Events\CorrelationPending;

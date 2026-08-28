@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Console\Cli;
 
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Execution\ExecutionStatus;
+use Alama\Arazzo\Contracts\ExecutionStatus;
 
 /**
  * In-process registry for CLI runs: the final status lives only as long as

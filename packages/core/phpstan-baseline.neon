@@ -316,49 +316,49 @@ parameters:
 			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''request'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''response'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''status'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset string on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
-			message: '#^Method Alama\\Arazzo\\State\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
+			message: '#^Method Alama\\Arazzo\\Contracts\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
 			identifier: return.type
 			count: 1
-			path: src/State/WorkflowContext.php
+			path: src/Contracts/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''method'' on mixed\.$#'

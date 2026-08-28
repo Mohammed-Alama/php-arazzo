@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
-use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 final readonly class Expression

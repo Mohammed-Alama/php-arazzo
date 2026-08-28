@@ -6,15 +6,15 @@ namespace Alama\Arazzo\Protocol;
 
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
+use Alama\Arazzo\Contracts\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Execution\RequestCompiler;
-use Alama\Arazzo\Execution\StepExecutionOutcome;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\State\WorkflowContext;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
 final class HttpStepExecutor implements StepProtocolExecutorInterface

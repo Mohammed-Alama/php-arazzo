@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
+use Alama\Arazzo\Expression\Enum\SourceType;
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Resolver\Exceptions\SourceParseException;
 use Alama\Arazzo\Resolver\SourceFetcher;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\SourceDescription;
 
 it('resolves http url using http fetcher and decodes json', function (): void {
     $httpFetcher = new class() implements SourceFetcher

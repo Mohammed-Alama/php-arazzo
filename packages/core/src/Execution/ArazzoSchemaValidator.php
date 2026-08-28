@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Contracts\SchemaValidatorInterface;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use cebe\openapi\spec\Operation;

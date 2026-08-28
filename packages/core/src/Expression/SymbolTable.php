@@ -7,7 +7,6 @@ namespace Alama\Arazzo\Expression;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 

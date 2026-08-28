@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Validator;
 
+use Alama\Arazzo\Expression\Enum\SourceType;
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Tests\Support\Fx;
 use Alama\Arazzo\Validator\RuleSet;

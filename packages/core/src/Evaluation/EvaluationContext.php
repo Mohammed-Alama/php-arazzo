@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\State\WorkflowContext;
 
 final class EvaluationContext
 {

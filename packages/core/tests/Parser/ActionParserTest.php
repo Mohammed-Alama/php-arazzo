@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
+use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\ParseContext;
 use Alama\Arazzo\Parser\Parser;
@@ -11,7 +12,6 @@ use Alama\Arazzo\Spec\Action\FailureGotoAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\Action\SuccessGotoAction;
-use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 
 class ActionProbe extends Parser

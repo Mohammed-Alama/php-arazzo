@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\State\WorkflowContext;
 use Psr\Http\Message\RequestInterface;
 
 final class IdempotencyKeyInjector

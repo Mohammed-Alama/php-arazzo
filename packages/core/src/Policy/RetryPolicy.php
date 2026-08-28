@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Policy;
 
 use Alama\Arazzo\Contracts\BackoffCalculatorInterface;
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\State\WorkflowContext;
 
 final class RetryPolicy
 {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Expression;
 
+use Alama\Arazzo\Expression\Enum\SourceType;
+use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 

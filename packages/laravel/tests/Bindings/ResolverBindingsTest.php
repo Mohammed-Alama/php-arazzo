@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
+use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Validator\PreflightValidator;

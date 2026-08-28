@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Resolver;
 
-use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Spec\SourceDocument;
 
 interface SourceResolver

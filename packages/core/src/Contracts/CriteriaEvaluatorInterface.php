@@ -7,7 +7,6 @@ namespace Alama\Arazzo\Contracts;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
-use Alama\Arazzo\State\WorkflowContext;
 
 interface CriteriaEvaluatorInterface
 {

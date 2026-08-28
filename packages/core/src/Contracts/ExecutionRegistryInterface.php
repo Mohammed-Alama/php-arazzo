@@ -6,8 +6,6 @@ namespace Alama\Arazzo\Contracts;
 
 // Framework port (kept as a seam): run registry persistence is adapter-specific.
 
-use Alama\Arazzo\Execution\ExecutionStatus;
-
 interface ExecutionRegistryInterface
 {
     public function start(string $executionId, string $definitionId, string $workflowId): void;

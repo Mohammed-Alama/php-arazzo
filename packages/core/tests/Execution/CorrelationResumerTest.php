@@ -7,19 +7,19 @@ namespace Tests\Execution;
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\LockManagerInterface;
+use Alama\Arazzo\Contracts\PendingCorrelation;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Execution\CorrelationResumer;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\PendingCorrelation;
-use Alama\Arazzo\State\WorkflowContext;
 
 class ResumerMockLockManager implements LockManagerInterface
 {

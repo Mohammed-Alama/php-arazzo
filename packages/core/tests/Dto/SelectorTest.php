@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Spec\Enum\ExpressionType;
-use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\Expression\Enum\ExpressionType;
+use Alama\Arazzo\Expression\Selector;
 
 it('constructs with all fields', function () {
     $s = new Selector('$response.body', '$.data.id', ExpressionType::JsonPath, 'rfc9535');

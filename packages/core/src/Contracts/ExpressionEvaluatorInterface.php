@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Contracts;
 
 use Alama\Arazzo\Evaluation\EvaluationContext;
-use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Expression\Expression;
 
 interface ExpressionEvaluatorInterface
 {

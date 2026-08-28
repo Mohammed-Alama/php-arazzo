@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\EventLedgerInterface;
 use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\ExecutionStatus;
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\QueueDriverInterface;
 use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Execution\ExecutionStatus;
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
@@ -23,7 +24,6 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\WorkflowContext;
 
 it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
     $invoker = Mockery::mock(SubWorkflowInvoker::class);

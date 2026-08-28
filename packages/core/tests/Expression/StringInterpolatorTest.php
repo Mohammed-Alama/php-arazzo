@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Evaluation;
 
 use Alama\Arazzo\Contracts\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Expression\StringInterpolator;
-use Alama\Arazzo\State\WorkflowContext;
 use Mockery;
 
 it('interpolates multiple expressions in a string', function () {

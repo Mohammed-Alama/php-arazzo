@@ -6,17 +6,17 @@ namespace Alama\Arazzo\Tests\Resolver;
 
 use Alama\Arazzo\Exceptions\UnsupportedSourceVersionException;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Expression\Enum\SourceType;
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
 
 it('rejects Swagger 2.0 sources with a typed error instead of mis-routing them to the 3.0 normalizer', function () {

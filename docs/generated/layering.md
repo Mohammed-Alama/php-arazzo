@@ -111,23 +111,22 @@ flowchart TB
     M_Console -.->|violation| M_Renderer
     M_Console --> M_Resolver
     M_Console --> M_Spec
-    M_Console --> M_State
     M_Console --> M_Telemetry
     M_Console --> M_Validator
     M_Contracts -.->|violation| M_Evaluation
     M_Contracts -.->|violation| M_Exceptions
-    M_Contracts -.->|violation| M_Execution
+    M_Contracts --> M_Expression
     M_Contracts --> M_Normalizer
-    M_Contracts --> M_Resolver
     M_Contracts --> M_Spec
-    M_Contracts -.->|violation| M_State
+    M_Dependency --> M_Contracts
+    M_Dependency --> M_Expression
     M_Dependency --> M_Spec
-    M_Dependency --> M_State
     M_Evaluation --> M_Contracts
     M_Evaluation --> M_Expression
     M_Evaluation --> M_Spec
-    M_Evaluation --> M_State
     M_Evaluation --> M_Support
+    M_Events --> M_Contracts
+    M_Events --> M_Support
     M_Exceptions --> M_Support
     M_Execution --> M_Contracts
     M_Execution --> M_Dependency
@@ -136,6 +135,7 @@ flowchart TB
     M_Execution --> M_Exceptions
     M_Execution --> M_Expression
     M_Execution --> M_Jobs
+    M_Execution --> M_Normalizer
     M_Execution --> M_Policy
     M_Execution --> M_Resolver
     M_Execution --> M_Spec
@@ -147,13 +147,13 @@ flowchart TB
     M_Expression -.->|violation| M_Evaluation
     M_Expression -.->|violation| M_Execution
     M_Expression -.->|violation| M_Spec
-    M_Expression -.->|violation| M_State
     M_Expression -.->|violation| M_Support
     M_Generator -.->|violation| M_Contracts
+    M_Jobs --> M_Contracts
     M_Jobs --> M_Spec
-    M_Jobs --> M_State
     M_Laravel_Bindings --> M_Contracts
     M_Laravel_Bindings --> M_Evaluation
+    M_Laravel_Bindings --> M_Events
     M_Laravel_Bindings --> M_Execution
     M_Laravel_Bindings --> M_Expression
     M_Laravel_Bindings --> M_Generator
@@ -170,17 +170,15 @@ flowchart TB
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
     M_Laravel_Http --> M_Contracts
+    M_Laravel_Http --> M_Expression
     M_Laravel_Http --> M_Generator
     M_Laravel_Http --> M_Jobs
     M_Laravel_Http --> M_Resolver
-    M_Laravel_Http --> M_Spec
     M_Laravel_Lock --> M_Contracts
     M_Laravel_Persistence --> M_Contracts
     M_Laravel_Persistence --> M_Exceptions
-    M_Laravel_Persistence --> M_Execution
     M_Laravel_Persistence --> M_Parser
     M_Laravel_Persistence --> M_Spec
-    M_Laravel_Persistence --> M_State
     M_Laravel_Queue --> M_Contracts
     M_Laravel_Queue --> M_Execution
     M_Laravel_Queue --> M_Jobs
@@ -188,32 +186,32 @@ flowchart TB
     M_Laravel__ --> M_Laravel_Bindings
     M_Laravel__ --> M_Laravel_Http
     M_Normalizer -.->|violation| M_Contracts
+    M_Normalizer -.->|violation| M_Exceptions
+    M_Normalizer -.->|violation| M_Execution
+    M_Normalizer --> M_Expression
+    M_Normalizer --> M_Spec
     M_Normalizer --> M_Support
+    M_Parser --> M_Expression
     M_Parser --> M_Spec
     M_Parser --> M_Support
     M_Policy --> M_Contracts
     M_Policy --> M_Spec
-    M_Policy --> M_State
     M_Protocol --> M_Contracts
     M_Protocol --> M_Dependency
     M_Protocol --> M_Evaluation
     M_Protocol --> M_Exceptions
     M_Protocol --> M_Execution
     M_Protocol --> M_Expression
-    M_Protocol --> M_Resolver
+    M_Protocol --> M_Normalizer
     M_Protocol --> M_Spec
     M_Protocol --> M_State
     M_Renderer --> M_Spec
-    M_Resolver -.->|violation| M_Exceptions
-    M_Resolver -.->|violation| M_Execution
-    M_Resolver -.->|violation| M_Normalizer
+    M_Resolver --> M_Expression
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
     M_Spec --> M_Expression
     M_State --> M_Contracts
     M_State --> M_Spec
-    M_Support -.->|violation| M_Contracts
-    M_Support -.->|violation| M_Events
     M_Validator -.->|violation| M_Dependency
     M_Validator --> M_Expression
     M_Validator --> M_Normalizer
@@ -225,26 +223,20 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**19 violation(s) found:**
+**13 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Expression` | `Spec` | 11 |
-| `Support` | `Events` | 9 |
-| `Contracts` | `State` | 5 |
-| `Resolver` | `Normalizer` | 4 |
-| `Contracts` | `Execution` | 3 |
+| `Expression` | `Spec` | 5 |
+| `Expression` | `Contracts` | 4 |
 | `Contracts` | `Exceptions` | 2 |
-| `Expression` | `Contracts` | 2 |
 | `Expression` | `Evaluation` | 2 |
 | `Expression` | `Execution` | 2 |
-| `Expression` | `State` | 2 |
 | `Expression` | `Support` | 2 |
 | `Generator` | `Contracts` | 2 |
 | `Normalizer` | `Contracts` | 2 |
 | `Console` | `Renderer` | 1 |
 | `Contracts` | `Evaluation` | 1 |
-| `Resolver` | `Exceptions` | 1 |
-| `Resolver` | `Execution` | 1 |
-| `Support` | `Contracts` | 1 |
+| `Normalizer` | `Exceptions` | 1 |
+| `Normalizer` | `Execution` | 1 |
 | `Validator` | `Dependency` | 1 |

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
+use Alama\Arazzo\Expression\Enum\SourceType;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDocument;
 use Alama\Arazzo\Validator\RuleSet;

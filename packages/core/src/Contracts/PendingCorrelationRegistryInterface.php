@@ -6,8 +6,6 @@ namespace Alama\Arazzo\Contracts;
 
 // Framework port (kept as a seam): pending correlations persist per deployment (DB table today).
 
-use Alama\Arazzo\State\PendingCorrelation;
-
 interface PendingCorrelationRegistryInterface
 {
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void;

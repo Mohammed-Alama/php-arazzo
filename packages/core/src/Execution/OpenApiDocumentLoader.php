@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Spec\SourceDescription;
 use cebe\openapi\Reader;
 use cebe\openapi\ReferenceContext;
 use cebe\openapi\spec\OpenApi;

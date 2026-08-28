@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Spec;
 
+use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Expression\Selector;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\SuccessAction;
 

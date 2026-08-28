@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
+use Alama\Arazzo\Expression\Enum\SourceType;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDocument;
 use Mockery;
 
