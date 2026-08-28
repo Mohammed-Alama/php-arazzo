@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Laravel\Jobs;
 
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
@@ -53,18 +53,18 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     expect($recorder->handled[0])->not->toBe($innerJob);
 });
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Expression\Enum\SourceType;
-use Alama\Arazzo\Expression\SourceDescription;
+use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Workflow;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;

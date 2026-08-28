@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Spec;
 
-use Alama\Arazzo\Expression\Enum\SourceType;
-use Alama\Arazzo\Expression\SourceDescription;
+use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 
 final readonly class ArazzoDocument

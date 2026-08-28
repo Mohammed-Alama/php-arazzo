@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\SchemaValidatorInterface;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Interfaces\SchemaValidatorInterface;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;

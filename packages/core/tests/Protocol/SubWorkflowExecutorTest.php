@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\StepExecutionOutcome;
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Protocol\SubWorkflowExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 function subDoc(): ArazzoDocument

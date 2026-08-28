@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\WorkerEvents;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\StepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
@@ -39,7 +39,7 @@ function eventsFixture(): array
 it('emits typed lifecycle events with timestamps', function (): void {
     $dispatcher = new SimpleEventDispatcher();
     $seen = [];
-    foreach ([StepStarted::class, StepExecuted::class, RunCompleted::class] as $class) {
+    foreach ([StepStartedEvent::class, StepExecutedEvent::class, RunCompletedEvent::class] as $class) {
         $dispatcher->subscribe($class, function (object $e) use (&$seen) {
             $seen[] = $e;
         });
@@ -51,7 +51,7 @@ it('emits typed lifecycle events with timestamps', function (): void {
     $events->runCompleted('e1', 'wf', ['out' => 1]);
 
     expect(count($seen))->toBe(3)
-        ->and($seen[0])->toBeInstanceOf(StepStarted::class)
+        ->and($seen[0])->toBeInstanceOf(StepStartedEvent::class)
         ->and($seen[0]->attempt)->toBe(2)
         ->and($seen[1]->criteriaMet)->toBeTrue()
         ->and($seen[2]->outputs['out'])->toBe(1);
@@ -73,10 +73,10 @@ it('keeps step and run failure categories in agreement', function (): void {
         $dispatcher = new SimpleEventDispatcher();
         $stepFailures = [];
         $runFailures = [];
-        $dispatcher->subscribe(StepFailed::class, function (StepFailed $e) use (&$stepFailures) {
+        $dispatcher->subscribe(StepFailedEvent::class, function (StepFailedEvent $e) use (&$stepFailures) {
             $stepFailures[] = $e;
         });
-        $dispatcher->subscribe(RunFailed::class, function (RunFailed $e) use (&$runFailures) {
+        $dispatcher->subscribe(RunFailedEvent::class, function (RunFailedEvent $e) use (&$runFailures) {
             $runFailures[] = $e;
         });
 

@@ -2,21 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\PendingCorrelation;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\StepExecutionOutcome;
-use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\CorrelationPending;
-use Alama\Arazzo\Events\StepExecuted as EventStepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Events\StepExecutedEvent as EventStepExecuted;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
@@ -25,15 +14,26 @@ use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 class WorkerEventsMockLockManager implements LockManagerInterface
@@ -159,16 +159,16 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
     $dispatcher = new SimpleEventDispatcher();
     $collector = new WorkerEventCollector();
 
-    $dispatcher->subscribe(StepStarted::class, function ($e) use ($collector) {
+    $dispatcher->subscribe(StepStartedEvent::class, function ($e) use ($collector) {
         $collector->add($e);
     });
     $dispatcher->subscribe(EventStepExecuted::class, function ($e) use ($collector) {
         $collector->add($e);
     });
-    $dispatcher->subscribe(CorrelationPending::class, function ($e) use ($collector) {
+    $dispatcher->subscribe(CorrelationPendingEvent::class, function ($e) use ($collector) {
         $collector->add($e);
     });
-    $dispatcher->subscribe(StepFailed::class, function ($e) use ($collector) {
+    $dispatcher->subscribe(StepFailedEvent::class, function ($e) use ($collector) {
         $collector->add($e);
     });
 
@@ -203,7 +203,7 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
     return [$worker, $defRegistry, $collector];
 }
 
-it('dispatches StepStarted then StepExecuted on happy path', function () {
+it('dispatches StepStartedEvent then StepExecutedEvent on happy path', function () {
     $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [], []);
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
@@ -227,7 +227,7 @@ it('dispatches StepStarted then StepExecuted on happy path', function () {
 
     $dispatched = $collector->events;
     expect($dispatched)->toHaveCount(2);
-    expect($dispatched[0])->toBeInstanceOf(StepStarted::class);
+    expect($dispatched[0])->toBeInstanceOf(StepStartedEvent::class);
     expect($dispatched[0]->executionId)->toBe('exec1');
     expect($dispatched[0]->workflowId)->toBe('wf1');
     expect($dispatched[0]->stepId)->toBe('step1');
@@ -242,7 +242,7 @@ it('dispatches StepStarted then StepExecuted on happy path', function () {
     expect($dispatched[1]->criteriaMet)->toBeTrue();
 });
 
-it('dispatches StepStarted then CorrelationPending on action receive suspend', function () {
+it('dispatches StepStartedEvent then CorrelationPendingEvent on action receive suspend', function () {
     $step = new Step(
         stepId: 'recvStep',
         description: null,
@@ -282,8 +282,8 @@ it('dispatches StepStarted then CorrelationPending on action receive suspend', f
 
     $dispatched = $collector->events;
     expect($dispatched)->toHaveCount(2);
-    expect($dispatched[0])->toBeInstanceOf(StepStarted::class);
-    expect($dispatched[1])->toBeInstanceOf(CorrelationPending::class);
+    expect($dispatched[0])->toBeInstanceOf(StepStartedEvent::class);
+    expect($dispatched[1])->toBeInstanceOf(CorrelationPendingEvent::class);
     expect($dispatched[1]->executionId)->toBe('exec1');
     expect($dispatched[1]->workflowId)->toBe('wf1');
     expect($dispatched[1]->stepId)->toBe('recvStep');
@@ -291,7 +291,7 @@ it('dispatches StepStarted then CorrelationPending on action receive suspend', f
     expect($dispatched[1]->channelPath)->toBe('notifications/channel');
 });
 
-it('dispatches StepStarted then StepFailed when executor throws', function () {
+it('dispatches StepStartedEvent then StepFailedEvent when executor throws', function () {
     $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [], []);
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
@@ -316,8 +316,8 @@ it('dispatches StepStarted then StepFailed when executor throws', function () {
 
     $dispatched = $collector->events;
     expect($dispatched)->toHaveCount(2);
-    expect($dispatched[0])->toBeInstanceOf(StepStarted::class);
-    expect($dispatched[1])->toBeInstanceOf(StepFailed::class);
+    expect($dispatched[0])->toBeInstanceOf(StepStartedEvent::class);
+    expect($dispatched[1])->toBeInstanceOf(StepFailedEvent::class);
     expect($dispatched[1]->executionId)->toBe('exec1');
     expect($dispatched[1]->workflowId)->toBe('wf1');
     expect($dispatched[1]->stepId)->toBe('step1');

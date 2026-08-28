@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\OpenApiPayload;
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\OpenApiPayload;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Psr\Http\Message\ResponseInterface;
 
@@ -32,10 +32,13 @@ final class RequestCompiler
      */
     public function compile(Step $step, ArazzoDocument $document, WorkflowContext $context): array
     {
-        $payload = new OpenApiPayload();
-
         $resolvedInputs = [];
         $parameters = new ReusableParameterResolver()->resolve($step->parameters, $document);
+
+        $path = [];
+        $query = [];
+        $header = [];
+        $auto = [];
 
         foreach ($parameters as $param) {
             $val = $this->values->resolve($param->value, $context, $step->stepId);
@@ -43,10 +46,10 @@ final class RequestCompiler
             $resolvedInputs[$param->name] = $val;
 
             match ($param->in->value ?? 'auto') {
-                'query' => $payload->query[$param->name] = $val,
-                'header' => $payload->header[$param->name] = $val,
-                'path' => $payload->path[$param->name] = $val,
-                default => $payload->auto[$param->name] = $val,
+                'query' => $query[$param->name] = $val,
+                'header' => $header[$param->name] = $val,
+                'path' => $path[$param->name] = $val,
+                default => $auto[$param->name] = $val,
             };
         }
 
@@ -60,7 +63,9 @@ final class RequestCompiler
             );
         }
 
-        $payload->body = $bodyData === [] ? null : $bodyData;
+        $body = $bodyData === [] ? null : $bodyData;
+
+        $payload = new OpenApiPayload(path: $path, query: $query, header: $header, auto: $auto, body: $body);
 
         return ['payload' => $payload, 'resolvedInputs' => $resolvedInputs];
     }

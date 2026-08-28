@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Policy;
 
-use Alama\Arazzo\Contracts\BackoffCalculatorInterface;
+use Alama\Arazzo\Interfaces\BackoffCalculatorInterface;
 
 final class ExponentialBackoffCalculator implements BackoffCalculatorInterface
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Tests\Support\Fx;
 
 require_once __DIR__.'/StepOutcomeHandlerTest.php';

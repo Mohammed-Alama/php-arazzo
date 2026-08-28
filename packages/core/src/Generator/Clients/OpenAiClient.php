@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Generator\Clients;
 
-use Alama\Arazzo\Contracts\AiClientInterface;
+use Alama\Arazzo\Interfaces\AiClientInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;

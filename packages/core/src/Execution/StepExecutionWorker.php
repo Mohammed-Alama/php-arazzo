@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\CorrelationPending;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\StepExecuted as StepExecutedEvent;
-use Alama\Arazzo\Events\StepFailed as StepFailedEvent;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\ExecutionStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Telemetry\OtelSetup;
@@ -82,7 +82,7 @@ class StepExecutionWorker
         $executionId = $job->context->getExecutionId();
 
         $span = OtelSetup::getTracer()->spanBuilder('arazzo.step.execute')
-            ->setAttribute('execution.id', $executionId ?? 'unknown')
+            ->setAttribute('execution.id', $executionId)
             ->setAttribute('workflow.id', (string) $job->context->getWorkflowId())
             ->setAttribute('step.id', $step->stepId)
             ->startSpan();
@@ -101,12 +101,6 @@ class StepExecutionWorker
     {
         $step = $job->step;
         $executionId = $job->context->getExecutionId();
-
-        if ($executionId === null) {
-            throw new LogicException(
-                "ExecuteStepJob for step '{$step->stepId}' has no executionId -- the workflow run was not initialized before dispatch.",
-            );
-        }
 
         $lockKey = "execution_lock_{$executionId}";
 
@@ -154,7 +148,7 @@ class StepExecutionWorker
                 // ceilings survive job boundaries (parity with the sync loop).
                 $context = $context->withStepAttemptIncremented($step->stepId);
                 $attempt = $context->getStepAttempts($step->stepId);
-                $this->events->dispatch(new StepStarted(
+                $this->events->dispatch(new StepStartedEvent(
                     $executionId,
                     $context->getWorkflowId() ?? '',
                     $step->stepId,
@@ -179,7 +173,7 @@ class StepExecutionWorker
 
                     if ($step->action === 'receive' && $step->correlationId !== null && $step->channelPath !== null) {
                         $correlationIdValue = (string) $this->expressionResolver->evaluate($step->correlationId, $context, $step->stepId);
-                        $this->events->dispatch(new CorrelationPending(
+                        $this->events->dispatch(new CorrelationPendingEvent(
                             $executionId,
                             $context->getWorkflowId() ?? '',
                             $step->stepId,
@@ -243,14 +237,14 @@ class StepExecutionWorker
                     $this->eventLedger->append($executionId, $succeeded ? 'execution.succeeded' : 'execution.failed', ['workflowId' => $transition->state->workflowId]);
 
                     if ($succeeded) {
-                        $this->events->dispatch(new RunCompleted(
+                        $this->events->dispatch(new RunCompletedEvent(
                             $executionId,
                             $transition->state->workflowId,
                             $this->workflowEngine->evaluateWorkflowOutputs($document, $workflow, $transition->state),
                             new DateTimeImmutable(),
                         ));
                     } else {
-                        $this->events->dispatch(new RunFailed(
+                        $this->events->dispatch(new RunFailedEvent(
                             $executionId,
                             $transition->state->workflowId,
                             new RuntimeException("Workflow '{$transition->state->workflowId}' failed at step '{$step->stepId}'."),
@@ -265,7 +259,7 @@ class StepExecutionWorker
                         // An invoke/goto pointed at a workflow that does not
                         // exist in the document: fail the run cleanly.
                         $this->eventLedger->append($executionId, 'execution.workflow_missing', ['workflowId' => $targetWorkflowId]);
-                        $this->events->dispatch(new RunFailed(
+                        $this->events->dispatch(new RunFailedEvent(
                             $executionId,
                             $targetWorkflowId,
                             new LogicException("Unknown workflow '{$targetWorkflowId}'."),
@@ -311,7 +305,7 @@ class StepExecutionWorker
                     new DateTimeImmutable(),
                     $category,
                 ));
-                $this->events->dispatch(new RunFailed(
+                $this->events->dispatch(new RunFailedEvent(
                     $executionId,
                     $context->getWorkflowId() ?? '',
                     $t,

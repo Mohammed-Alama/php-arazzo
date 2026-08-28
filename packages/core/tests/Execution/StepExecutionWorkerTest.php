@@ -4,19 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\PendingCorrelation;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\StepExecutionOutcome;
-use Alama\Arazzo\Contracts\StepProtocolExecutorInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
+use Alama\Arazzo\Events\Listener\LedgerEventListener;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
@@ -25,16 +13,28 @@ use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 class WorkerMockLockManager implements LockManagerInterface
@@ -197,7 +197,7 @@ function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $
     $resolver = new WorkerMockExpressionResolver();
     $queue = new SyncQueueDriver();
     $dispatcher = new SimpleEventDispatcher();
-    LedgerAppendingListener::registerAll($dispatcher, $eventLedger);
+    LedgerEventListener::registerAll($dispatcher, $eventLedger);
 
     $outcomeHandler = new StepOutcomeHandler(
         new RunPersistence($store, $eventLedger, $executionRegistry),

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\StepFailed;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Lexer;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
@@ -167,7 +167,7 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
 
     $categories = [];
     foreach ($classificationHarness->ev()->events as $event) {
-        if ($event instanceof StepFailed || $event instanceof RunFailed) {
+        if ($event instanceof StepFailedEvent || $event instanceof RunFailedEvent) {
             $categories[] = [$event::class, $event->category];
         }
     }
@@ -175,9 +175,9 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
     // The goto-on-failure fixture recovers, so only a criteria step
     // failure is expected - never a run-level one.
     expect($result->status)->toBe('succeeded')
-        ->and($categories)->toContain([StepFailed::class, 'criteria'])
-        ->and($categories)->not->toContain([RunFailed::class, 'criteria'])
+        ->and($categories)->toContain([StepFailedEvent::class, 'criteria'])
+        ->and($categories)->not->toContain([RunFailedEvent::class, 'criteria'])
         // Defaults stay stable for consumers.
-        ->and((new StepFailed('e', 'w', 's', new RuntimeException('x'), new DateTimeImmutable()))->category)->toBe('execution')
-        ->and((new RunFailed('e', 'w', new RuntimeException('x'), new DateTimeImmutable()))->category)->toBe('execution');
+        ->and((new StepFailedEvent('e', 'w', 's', new RuntimeException('x'), new DateTimeImmutable()))->category)->toBe('execution')
+        ->and((new RunFailedEvent('e', 'w', new RuntimeException('x'), new DateTimeImmutable()))->category)->toBe('execution');
 });

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted as StepExecutedEvent;
-use Alama\Arazzo\Events\StepFailed as StepFailedEvent;
-use Alama\Arazzo\Events\StepRetried;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\RunStartedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepRetriedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Validator\PreflightFailureException;
@@ -77,7 +77,7 @@ class WorkflowExecutor
         $context ??= new WorkflowContext($workflow->workflowId, $inputs);
         $context = $context->withWorkflowData($workflow->workflowId, ['inputs' => $inputs]);
 
-        $this->events->dispatch(new RunStarted(
+        $this->events->dispatch(new RunStartedEvent(
             $executionId,
             $workflow->workflowId,
             $workflow->workflowId,
@@ -112,7 +112,7 @@ class WorkflowExecutor
                     throw new LogicException("Unknown step '{$stepId}' in workflow '{$currentWorkflow->workflowId}'.");
                 }
                 $attempt = $state->attemptFor($stepId) + 1;
-                $this->events->dispatch(new StepStarted($executionId, $currentWorkflow->workflowId, $stepId, $attempt, new DateTimeImmutable()));
+                $this->events->dispatch(new StepStartedEvent($executionId, $currentWorkflow->workflowId, $stepId, $attempt, new DateTimeImmutable()));
                 [$stepContext, $success] = $this->stepExecutor->execute(StepParameterMerger::merge($step, $currentWorkflow), $state->toContext(), $document);
                 $raw = $stepContext->getSteps()[$stepId] ?? [];
                 /** @var array<string, mixed> $raw */
@@ -129,7 +129,7 @@ class WorkflowExecutor
                 assert($engineState instanceof ExecutionState); // engine is canonical on ExecutionState
                 $state = $engineState;
                 if ($transition->type === TransitionType::Retry) {
-                    $this->events->dispatch(new StepRetried($executionId, $currentWorkflow->workflowId, $stepId, $state->attemptFor($stepId), null, new DateTimeImmutable()));
+                    $this->events->dispatch(new StepRetriedEvent($executionId, $currentWorkflow->workflowId, $stepId, $state->attemptFor($stepId), null, new DateTimeImmutable()));
                 }
                 if (!$success) {
                     $this->events->dispatch(new StepFailedEvent(
@@ -145,12 +145,12 @@ class WorkflowExecutor
                 }
                 if ($transition->isTerminal()) {
                     if ($transition->status === 'failed') {
-                        $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable(), 'criteria'));
+                        $this->events->dispatch(new RunFailedEvent($executionId, $currentWorkflow->workflowId, new RuntimeException("Workflow '{$currentWorkflow->workflowId}' failed at step '{$stepId}'."), new DateTimeImmutable(), 'criteria'));
 
                         return new ExecutionResult($currentWorkflow->workflowId, 'failed', [], $results, $state->stepsSpent, $state->workflowCallStack);
                     }
                     $outputs = $this->workflowEngine->evaluateWorkflowOutputs($document, $currentWorkflow, $state);
-                    $this->events->dispatch(new RunCompleted($executionId, $currentWorkflow->workflowId, $outputs, new DateTimeImmutable()));
+                    $this->events->dispatch(new RunCompletedEvent($executionId, $currentWorkflow->workflowId, $outputs, new DateTimeImmutable()));
 
                     return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $outputs, $results, $state->stepsSpent, $state->workflowCallStack);
                 }
@@ -165,7 +165,7 @@ class WorkflowExecutor
                 $t instanceof SchemaValidationException => 'schema',
                 default => 'execution',
             };
-            $this->events->dispatch(new RunFailed($executionId, $currentWorkflow->workflowId, $t, new DateTimeImmutable(), $category));
+            $this->events->dispatch(new RunFailedEvent($executionId, $currentWorkflow->workflowId, $t, new DateTimeImmutable(), $category));
             throw $t;
         }
 

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\HttpClientInterface;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\WorkflowContext;
 
 it('rejects async fields on 1.0 doc at execution', function () {
     $executor = new AsyncApiStepExecutor(

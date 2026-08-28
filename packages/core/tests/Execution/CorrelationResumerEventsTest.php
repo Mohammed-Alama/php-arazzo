@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\PendingCorrelation;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\CorrelationResumed;
+use Alama\Arazzo\Events\CorrelationResumedEvent;
 use Alama\Arazzo\Execution\CorrelationResumer;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 class CorrelationResumerEventsLockManager implements LockManagerInterface
@@ -142,11 +142,11 @@ function correlationResumerEventsDocument(): array
     return [$definitionRegistry, $definitionId, $workflow, $step];
 }
 
-it('dispatches CorrelationResumed after successful consume', function () {
+it('dispatches CorrelationResumedEvent after successful consume', function () {
     $dispatcher = new SimpleEventDispatcher();
-    /** @var list<CorrelationResumed> $dispatched */
+    /** @var list<CorrelationResumedEvent> $dispatched */
     $dispatched = [];
-    $dispatcher->subscribe(CorrelationResumed::class, function (CorrelationResumed $event) use (&$dispatched) {
+    $dispatcher->subscribe(CorrelationResumedEvent::class, function (CorrelationResumedEvent $event) use (&$dispatched) {
         $dispatched[] = $event;
     });
 

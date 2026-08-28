@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
+use Alama\Arazzo\Events\Listener\LedgerEventListener;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Illuminate\Contracts\Container\Container;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -19,7 +19,7 @@ final class EventBindings
             $dispatcher = new SimpleEventDispatcher();
 
             if ($app->bound(EventLedgerInterface::class)) {
-                LedgerAppendingListener::registerAll(
+                LedgerEventListener::registerAll(
                     $dispatcher,
                     $app->make(EventLedgerInterface::class),
                 );

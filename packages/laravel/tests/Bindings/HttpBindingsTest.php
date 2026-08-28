@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\HttpClientInterface;
+use Alama\Arazzo\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Laravel\Bindings\HttpBindings;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
 use GuzzleHttp\Client;

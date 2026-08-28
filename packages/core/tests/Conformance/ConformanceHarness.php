@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\RunStartedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Expression\Enum\SourceType;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
@@ -27,6 +26,7 @@ use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDocument;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
@@ -141,18 +141,18 @@ abstract class ConformanceHarness
         $eventClasses = [];
 
         foreach ($this->events->events as $event) {
-            if ($event instanceof RunStarted) {
+            if ($event instanceof RunStartedEvent) {
                 continue;
             }
             $eventClasses[] = $event::class;
 
-            if ($event instanceof RunCompleted) {
+            if ($event instanceof RunCompletedEvent) {
                 $status = 'succeeded';
                 $outputs = $event->outputs;
-            } elseif ($event instanceof RunFailed) {
+            } elseif ($event instanceof RunFailedEvent) {
                 $status = 'failed';
                 $errors[] = $event->cause->getMessage();
-            } elseif ($event instanceof StepStarted) {
+            } elseif ($event instanceof StepStartedEvent) {
                 $attempts[$event->stepId] = ($attempts[$event->stepId] ?? 0) + 1;
 
                 if (!in_array($event->stepId, $order, true)) {
@@ -161,10 +161,10 @@ abstract class ConformanceHarness
 
                 // Each new attempt resets the step's provisional outcome.
                 unset($lastAttemptFailed[$event->stepId]);
-            } elseif ($event instanceof StepFailed) {
+            } elseif ($event instanceof StepFailedEvent) {
                 $lastAttemptFailed[$event->stepId] = true;
                 $failureMessages[$event->stepId][] = $event->cause->getMessage();
-            } elseif ($event instanceof StepExecuted && !($event->criteriaMet)) {
+            } elseif ($event instanceof StepExecutedEvent && !($event->criteriaMet)) {
                 $lastAttemptFailed[$event->stepId] = true;
             }
         }

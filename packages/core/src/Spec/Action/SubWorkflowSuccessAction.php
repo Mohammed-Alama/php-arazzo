@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Spec\Action;
 
-use Alama\Arazzo\Expression\Expression;
-use Alama\Arazzo\Expression\Selector;
 use Alama\Arazzo\Spec\Enum\ActionKind;
+use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\SuccessCriterion;
 
 final readonly class SubWorkflowSuccessAction extends SuccessAction

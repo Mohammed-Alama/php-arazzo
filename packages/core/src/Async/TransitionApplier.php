@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
 use Alama\Arazzo\Execution\Transition;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\ExecutionStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionState;
 
 /**
@@ -44,8 +45,8 @@ final class TransitionApplier
     /**
      * Applies the side effects the transition describes.
      *
-     * - OUTCOME_CONTINUE: run proceeds (caller should emit StepExecuted)
-     * - OUTCOME_TERMINAL: run completed/failed cleanly (StepExecuted still
+     * - OUTCOME_CONTINUE: run proceeds (caller should emit StepExecutedEvent)
+     * - OUTCOME_TERMINAL: run completed/failed cleanly (StepExecutedEvent still
      *   emitted by the caller, matching the historical ordering)
      * - OUTCOME_ABORTED: follow-up pointed at a workflow missing from the
      *   document; the run was failed and NO further events fire

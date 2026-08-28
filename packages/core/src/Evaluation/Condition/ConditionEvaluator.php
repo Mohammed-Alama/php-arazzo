@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation\Condition;
 
-use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationContext;
+use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\WorkflowContext;
 
 final class ConditionEvaluator
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Execution\StepParameterMerger;
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Parameter;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;

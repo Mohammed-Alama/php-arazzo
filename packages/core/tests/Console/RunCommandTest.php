@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Console\Command\RunCommand;
-use Alama\Arazzo\Expression\Enum\SourceType;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
+use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDocument;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;

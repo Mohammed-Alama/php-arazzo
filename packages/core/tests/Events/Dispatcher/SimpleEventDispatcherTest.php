@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 it('delivers to subscribed listeners in subscription order', function () {
     $log = [];
     $d = new SimpleEventDispatcher();
-    $d->subscribe(RunStarted::class, function ($e) use (&$log) {
+    $d->subscribe(RunStartedEvent::class, function ($e) use (&$log) {
         $log[] = 'a:'.$e->executionId;
     });
-    $d->subscribe(RunStarted::class, function ($e) use (&$log) {
+    $d->subscribe(RunStartedEvent::class, function ($e) use (&$log) {
         $log[] = 'b:'.$e->executionId;
     });
 
-    $event = new RunStarted('exec-1', 'w', 'd', [], new DateTimeImmutable());
+    $event = new RunStartedEvent('exec-1', 'w', 'd', [], new DateTimeImmutable());
     $d->dispatch($event);
 
     expect($log)->toBe(['a:exec-1', 'b:exec-1']);
@@ -24,13 +24,13 @@ it('delivers to subscribed listeners in subscription order', function () {
 
 it('returns the event object from dispatch', function () {
     $d = new SimpleEventDispatcher();
-    $event = new RunStarted('exec-1', 'w', 'd', [], new DateTimeImmutable());
+    $event = new RunStartedEvent('exec-1', 'w', 'd', [], new DateTimeImmutable());
     expect($d->dispatch($event))->toBe($event);
 });
 
 it('is a no-op for events with no subscribers', function () {
     $d = new SimpleEventDispatcher();
-    $event = new RunStarted('exec-1', 'w', 'd', [], new DateTimeImmutable());
+    $event = new RunStartedEvent('exec-1', 'w', 'd', [], new DateTimeImmutable());
     expect($d->dispatch($event))->toBe($event); // does not throw
 });
 

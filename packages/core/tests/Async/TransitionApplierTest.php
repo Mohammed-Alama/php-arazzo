@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Async\TransitionApplier;
 use Alama\Arazzo\Async\WorkerEvents;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\Transition;
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
@@ -111,7 +111,7 @@ it('persists the next context and dispatches the follow-up job on continue', fun
 it('completes the run as succeeded with workflow outputs on terminal success', function (): void {
     [$applier, , $registry, $ledger, , $dispatcher] = applierFixtures();
     $completed = [];
-    $dispatcher->subscribe(RunCompleted::class, function (RunCompleted $e) use (&$completed) {
+    $dispatcher->subscribe(RunCompletedEvent::class, function (RunCompletedEvent $e) use (&$completed) {
         $completed[] = $e;
     });
 
@@ -129,7 +129,7 @@ it('completes the run as succeeded with workflow outputs on terminal success', f
 it('fails the run with a reason on terminal failure', function (): void {
     [$applier, , $registry, $ledger, , $dispatcher] = applierFixtures();
     $failed = [];
-    $dispatcher->subscribe(RunFailed::class, function (RunFailed $e) use (&$failed) {
+    $dispatcher->subscribe(RunFailedEvent::class, function (RunFailedEvent $e) use (&$failed) {
         $failed[] = $e;
     });
 
@@ -147,7 +147,7 @@ it('fails the run with a reason on terminal failure', function (): void {
 it('aborts cleanly when the follow-up workflow is missing from the document', function (): void {
     [$applier, , , $ledger, $queue, $dispatcher] = applierFixtures();
     $failed = [];
-    $dispatcher->subscribe(RunFailed::class, function (RunFailed $e) use (&$failed) {
+    $dispatcher->subscribe(RunFailedEvent::class, function (RunFailedEvent $e) use (&$failed) {
         $failed[] = $e;
     });
 

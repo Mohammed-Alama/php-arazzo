@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Expression\Enum\ExpressionType;
+use Alama\Arazzo\Spec\Enum\ExpressionType;
 
 it('has three canonical cases', function () {
     expect(ExpressionType::JsonPath->value)->toBe('jsonpath')

@@ -6,9 +6,9 @@ namespace Alama\Arazzo\Normalizer;
 
 use Alama\Arazzo\Exceptions\UnsupportedSourceVersionException;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Expression\Enum\SourceType;
-use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
 use cebe\openapi\spec\Operation;
 use RuntimeException;

@@ -10,7 +10,7 @@ use Alama\Arazzo\Evaluation\Condition\Ast\Literal;
 use Alama\Arazzo\Evaluation\Condition\Ast\LogicalOp;
 use Alama\Arazzo\Evaluation\Condition\Ast\RuntimeExpr;
 use Alama\Arazzo\Evaluation\Condition\Ast\UnaryNot;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Spec\Expression;
 
 final class Parser
 {

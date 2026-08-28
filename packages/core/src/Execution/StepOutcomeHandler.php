@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Dependency\DependencyGraph;
 use Alama\Arazzo\Evaluation\EvaluationContext;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\StepRetried;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepRetriedEvent;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\Selector;
 use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
+use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use DateTimeImmutable;
@@ -158,7 +158,7 @@ class StepOutcomeHandler
         $this->stateStore->save($executionId, $this->serialize($newContext), $this->stateTtlSeconds);
 
         $attempt = $context->getStepAttempts($step->stepId);
-        $this->events->dispatch(new StepRetried(
+        $this->events->dispatch(new StepRetriedEvent(
             $executionId,
             $workflow->workflowId,
             $step->stepId,
@@ -273,14 +273,14 @@ class StepOutcomeHandler
         $this->terminate($context, $executionId, $status, $succeeded ? 'execution.succeeded' : 'execution.failed');
 
         if ($succeeded) {
-            $this->events->dispatch(new RunCompleted(
+            $this->events->dispatch(new RunCompletedEvent(
                 $executionId,
                 $workflow->workflowId,
                 $context->getSteps()[$step->stepId]['outputs'] ?? [],
                 new DateTimeImmutable(),
             ));
         } else {
-            $this->events->dispatch(new RunFailed(
+            $this->events->dispatch(new RunFailedEvent(
                 $executionId,
                 $workflow->workflowId,
                 new RuntimeException("Workflow '{$workflow->workflowId}' ended in failure at step '{$step->stepId}'"),

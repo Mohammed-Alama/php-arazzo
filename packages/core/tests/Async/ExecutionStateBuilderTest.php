@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\ExecutionStateBuilder;
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 
 function builderStep(string $id): Step
 {

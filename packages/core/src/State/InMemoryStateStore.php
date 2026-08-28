@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\State;
 
-use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 
 /**
  * Process-local state store for tests and synchronous in-memory runs.

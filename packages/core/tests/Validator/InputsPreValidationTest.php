@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Alama\Arazzo\Console\DocumentLoader;
 use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
 use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
@@ -62,7 +62,7 @@ it('treats documents without an inputs schema as unconstrained', function (): vo
 it('blocks executor runs on invalid inputs before any event fires', function (): void {
     $events = new SimpleEventDispatcher();
     $fired = [];
-    $events->subscribe(RunStarted::class, function (object $e) use (&$fired): void {
+    $events->subscribe(RunStartedEvent::class, function (object $e) use (&$fired): void {
         $fired[] = $e::class;
     });
 
@@ -104,7 +104,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
         $this->fail('expected PreflightFailureException');
     } catch (PreflightFailureException $e) {
         expect($e->result->errors[0]->code)->toBe('preflight.inputs_schema')
-            ->and($fired)->toBe([]); // nothing executed, not even RunStarted
+            ->and($fired)->toBe([]); // nothing executed, not even RunStartedEvent
     }
 });
 

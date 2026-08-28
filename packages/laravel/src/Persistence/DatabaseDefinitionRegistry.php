@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
 use Alama\Arazzo\Exceptions\DefinitionHydrationException;
+use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Spec\ArazzoDocument;

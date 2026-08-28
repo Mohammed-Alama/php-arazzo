@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\SuspensionHandler;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\CorrelationPending;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
 use Alama\Arazzo\Tests\Support\RecordingExecutionRegistry;
@@ -86,10 +86,10 @@ it('appends a step.suspended ledger entry', function (): void {
     expect($ledger->eventTypes())->toContain('step.suspended');
 });
 
-it('announces CorrelationPending for receive steps carrying correlation coordinates', function (): void {
+it('announces CorrelationPendingEvent for receive steps carrying correlation coordinates', function (): void {
     [$handler, , , , $dispatcher] = suspensionFixtures();
     $captured = [];
-    $dispatcher->subscribe(CorrelationPending::class, function (CorrelationPending $event) use (&$captured) {
+    $dispatcher->subscribe(CorrelationPendingEvent::class, function (CorrelationPendingEvent $event) use (&$captured) {
         $captured[] = $event;
     });
 
@@ -117,10 +117,10 @@ it('announces CorrelationPending for receive steps carrying correlation coordina
         ->and($captured[0]->channelPath)->toBe('channels/rides');
 });
 
-it('does not announce CorrelationPending without full receive coordinates', function (): void {
+it('does not announce CorrelationPendingEvent without full receive coordinates', function (): void {
     [$handler, , , , $dispatcher] = suspensionFixtures();
     $captured = [];
-    $dispatcher->subscribe(CorrelationPending::class, fn (CorrelationPending $e) => $captured[] = $e);
+    $dispatcher->subscribe(CorrelationPendingEvent::class, fn (CorrelationPendingEvent $e) => $captured[] = $e);
 
     $sendStep = new Step('send-thing', null, null, null, null, [], null, [], [], [], [], [], 'send');
     $handler->handle($sendStep, (new WorkflowContext('def'))->withExecutionId('e3'), suspensionWorkflow(), 'e3');

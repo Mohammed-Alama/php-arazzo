@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
-use Alama\Arazzo\Contracts\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\OutputExtractorInterface;
-use Alama\Arazzo\Contracts\SchemaValidatorInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Interfaces\CriteriaEvaluatorInterface;
+use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Interfaces\SchemaValidatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\WorkflowContext;
 
 class ArazzoExpressionResolver implements ExpressionResolverInterface
 {

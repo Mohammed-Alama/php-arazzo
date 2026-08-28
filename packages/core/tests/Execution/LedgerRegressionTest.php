@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Events\Listener\LedgerAppendingListener;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted as EventStepExecuted;
+use Alama\Arazzo\Events\Listener\LedgerEventListener;
+use Alama\Arazzo\Events\RunStartedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent as EventStepExecuted;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 it('routes catalog events through the bus into the same ledger strings that pre-refactor code emitted', function () {
@@ -19,9 +19,9 @@ it('routes catalog events through the bus into the same ledger strings that pre-
         }
     };
     $d = new SimpleEventDispatcher();
-    LedgerAppendingListener::registerAll($d, $spy);
+    LedgerEventListener::registerAll($d, $spy);
 
-    $d->dispatch(new RunStarted('e', 'w', 'def', ['x' => 1], new DateTimeImmutable()));
+    $d->dispatch(new RunStartedEvent('e', 'w', 'def', ['x' => 1], new DateTimeImmutable()));
     $d->dispatch(new EventStepExecuted('e', 'w', 's', 200, ['id' => 1], true, new DateTimeImmutable()));
 
     // These strings + payload shape must remain identical to what pre-refactor code emitted.

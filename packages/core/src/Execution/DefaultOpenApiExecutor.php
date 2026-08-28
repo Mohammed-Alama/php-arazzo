@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Contracts\OpenApiPayload;
+use Alama\Arazzo\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Spec\OpenApiPayload;
 use Exception;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;
@@ -39,24 +39,29 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         $method = strtoupper($resolvedOperation->normalized->method);
         $urlPath = $resolvedOperation->normalized->path;
 
+        $path = $payload->path;
+        $query = $payload->query;
+        $header = $payload->header;
+        $cookie = $payload->cookie;
+
         foreach ($payload->auto as $name => $value) {
             if (isset($resolvedOperation->normalized->pathParameters[$name])) {
-                $payload->path[$name] = $value;
+                $path[$name] = $value;
             } elseif (isset($resolvedOperation->normalized->headerParameters[$name])) {
-                $payload->header[$name] = $value;
+                $header[$name] = $value;
             } elseif (isset($resolvedOperation->normalized->cookieParameters[$name])) {
-                $payload->cookie[$name] = $value;
+                $cookie[$name] = $value;
             } else {
-                $payload->query[$name] = $value;
+                $query[$name] = $value;
             }
         }
 
-        $payload->path = $this->castParameters($resolvedOperation->normalized->pathParameters, $payload->path);
-        $payload->query = $this->castParameters($resolvedOperation->normalized->queryParameters, $payload->query);
-        $payload->header = $this->castParameters($resolvedOperation->normalized->headerParameters, $payload->header);
-        $payload->cookie = $this->castParameters($resolvedOperation->normalized->cookieParameters, $payload->cookie);
+        $path = $this->castParameters($resolvedOperation->normalized->pathParameters, $path);
+        $query = $this->castParameters($resolvedOperation->normalized->queryParameters, $query);
+        $header = $this->castParameters($resolvedOperation->normalized->headerParameters, $header);
+        $cookie = $this->castParameters($resolvedOperation->normalized->cookieParameters, $cookie);
 
-        $serializedPath = ParameterSerializer::serialize('path', $resolvedOperation->normalized->pathParameters, $payload->path);
+        $serializedPath = ParameterSerializer::serialize('path', $resolvedOperation->normalized->pathParameters, $path);
         foreach ($serializedPath as $name => $value) {
             $style = $resolvedOperation->normalized->pathParameters[$name]['style'] ?? 'simple';
             $replacement = $style === 'simple' ? urlencode($value) : $value;
@@ -67,7 +72,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $url = $baseUrl.$urlPath;
 
-        $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $payload->query);
+        $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $query);
         $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
         if (!empty($filteredQuery)) {
             $url .= '?'.implode('&', array_values($filteredQuery));
@@ -75,12 +80,12 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $request = $this->requestFactory->createRequest($method, $url);
 
-        $serializedHeader = ParameterSerializer::serialize('header', $resolvedOperation->normalized->headerParameters, $payload->header);
+        $serializedHeader = ParameterSerializer::serialize('header', $resolvedOperation->normalized->headerParameters, $header);
         foreach ($serializedHeader as $k => $v) {
             $request = $request->withHeader($k, (string) $v);
         }
 
-        $serializedCookie = ParameterSerializer::serialize('cookie', $resolvedOperation->normalized->cookieParameters, $payload->cookie);
+        $serializedCookie = ParameterSerializer::serialize('cookie', $resolvedOperation->normalized->cookieParameters, $cookie);
         if (!empty($serializedCookie)) {
             $cookieString = implode('; ', array_values($serializedCookie));
             $request = $request->withHeader('Cookie', $cookieString);

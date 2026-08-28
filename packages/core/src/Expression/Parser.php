@@ -332,4 +332,13 @@ final class Parser
 
         return new ComponentRef($rest[2]->value, $rest[4]->value);
     }
+
+    public function parseOrError(string $raw): ExpressionAst|ExpressionSyntaxException
+    {
+        try {
+            return $this->parse($raw);
+        } catch (ExpressionSyntaxException $e) {
+            return $e;
+        }
+    }
 }

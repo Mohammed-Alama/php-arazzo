@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Normalizer;
 
-use Alama\Arazzo\Expression\SourceDescription;
+use Alama\Arazzo\Spec\SourceDescription;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 

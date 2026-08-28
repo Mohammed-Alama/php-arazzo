@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExecutionStatus;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\PendingCorrelation;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\StepRetried;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepRetriedEvent;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
@@ -127,9 +127,9 @@ function createStepOutcomeEventsHarness(): array
     $dispatcher = new SimpleEventDispatcher();
     $collector = new OutcomeEventsCollector();
 
-    $dispatcher->subscribe(StepRetried::class, fn ($e) => $collector->add($e));
-    $dispatcher->subscribe(RunCompleted::class, fn ($e) => $collector->add($e));
-    $dispatcher->subscribe(RunFailed::class, fn ($e) => $collector->add($e));
+    $dispatcher->subscribe(StepRetriedEvent::class, fn ($e) => $collector->add($e));
+    $dispatcher->subscribe(RunCompletedEvent::class, fn ($e) => $collector->add($e));
+    $dispatcher->subscribe(RunFailedEvent::class, fn ($e) => $collector->add($e));
 
     $queue = new SyncQueueDriver();
     $store = new OutcomeEventsMockStateStore();
@@ -151,7 +151,7 @@ function createStepOutcomeEventsHarness(): array
     return [$handler, $collector];
 }
 
-it('dispatches StepRetried when RetryAction fires', function () {
+it('dispatches StepRetriedEvent when RetryAction fires', function () {
     $retryAction = new RetryAction('retryOp', 0, 3, null, null, []);
     $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [$retryAction], []);
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
@@ -170,7 +170,7 @@ it('dispatches StepRetried when RetryAction fires', function () {
     $handler->handle($doc, $wf, $step, $context, 'exec1', false);
 
     expect($collector->events)->toHaveCount(1);
-    expect($collector->events[0])->toBeInstanceOf(StepRetried::class);
+    expect($collector->events[0])->toBeInstanceOf(StepRetriedEvent::class);
     expect($collector->events[0]->executionId)->toBe('exec1');
     expect($collector->events[0]->workflowId)->toBe('wf1');
     expect($collector->events[0]->stepId)->toBe('step1');
@@ -179,7 +179,7 @@ it('dispatches StepRetried when RetryAction fires', function () {
     expect($collector->events[0]->at)->toBeInstanceOf(DateTimeImmutable::class);
 });
 
-it('dispatches RunCompleted on SuccessEndAction terminal', function () {
+it('dispatches RunCompletedEvent on SuccessEndAction terminal', function () {
     $endAction = new SuccessEndAction('endSuccess', []);
     $step = new Step('step1', null, 'op1', null, null, [], null, [], [$endAction], [], ['token' => 'abc12345']);
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
@@ -198,14 +198,14 @@ it('dispatches RunCompleted on SuccessEndAction terminal', function () {
     $handler->handle($doc, $wf, $step, $context, 'exec1', true);
 
     expect($collector->events)->toHaveCount(1);
-    expect($collector->events[0])->toBeInstanceOf(RunCompleted::class);
+    expect($collector->events[0])->toBeInstanceOf(RunCompletedEvent::class);
     expect($collector->events[0]->executionId)->toBe('exec1');
     expect($collector->events[0]->workflowId)->toBe('wf1');
     expect($collector->events[0]->outputs)->toBe(['token' => 'abc12345']);
     expect($collector->events[0]->at)->toBeInstanceOf(DateTimeImmutable::class);
 });
 
-it('dispatches RunFailed on FailureEndAction terminal', function () {
+it('dispatches RunFailedEvent on FailureEndAction terminal', function () {
     $endAction = new FailureEndAction('endFailure', []);
     $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [$endAction], []);
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
@@ -224,7 +224,7 @@ it('dispatches RunFailed on FailureEndAction terminal', function () {
     $handler->handle($doc, $wf, $step, $context, 'exec1', false);
 
     expect($collector->events)->toHaveCount(1);
-    expect($collector->events[0])->toBeInstanceOf(RunFailed::class);
+    expect($collector->events[0])->toBeInstanceOf(RunFailedEvent::class);
     expect($collector->events[0]->executionId)->toBe('exec1');
     expect($collector->events[0]->workflowId)->toBe('wf1');
     expect($collector->events[0]->cause)->toBeInstanceOf(RuntimeException::class);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Expression\Enum\SourceType;
 use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Exceptions\ParserException;
@@ -15,6 +14,7 @@ use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\Reusable;
 

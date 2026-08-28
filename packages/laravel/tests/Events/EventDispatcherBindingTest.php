@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Events\RunStartedEvent;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -15,7 +15,7 @@ it('resolves same SimpleEventDispatcher instance across calls (singleton)', func
     expect(app(SimpleEventDispatcher::class))->toBe(app(SimpleEventDispatcher::class));
 });
 
-it('auto-wires LedgerAppendingListener when EventLedgerInterface is bound', function () {
+it('auto-wires LedgerEventListener when EventLedgerInterface is bound', function () {
     $ledger = new class() implements EventLedgerInterface
     {
         public array $entries = [];
@@ -30,7 +30,7 @@ it('auto-wires LedgerAppendingListener when EventLedgerInterface is bound', func
     app()->forgetInstance(SimpleEventDispatcher::class);
 
     $d = app(SimpleEventDispatcher::class);
-    $d->dispatch(new RunStarted('e', 'w', 'd', [], new DateTimeImmutable()));
+    $d->dispatch(new RunStartedEvent('e', 'w', 'd', [], new DateTimeImmutable()));
 
     expect($ledger->entries)->toHaveCount(1)
         ->and($ledger->entries[0][1])->toBe('run.started');

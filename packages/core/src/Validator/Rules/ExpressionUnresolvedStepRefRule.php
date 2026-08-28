@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Validator\Rules;
 use Alama\Arazzo\Expression\Ast\OutputPart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Expression\WorkflowSymbols;
 use Alama\Arazzo\Spec\ArazzoDocument;
@@ -19,7 +20,7 @@ final class ExpressionUnresolvedStepRefRule implements Rule
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = $site->expression->astOrError();
+            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
             if ($ast instanceof ExpressionSyntaxException) {
                 continue;
             }

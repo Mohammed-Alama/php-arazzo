@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\CorrelationResumed;
+use Alama\Arazzo\Events\CorrelationResumedEvent;
+use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -120,7 +120,7 @@ class CorrelationResumer
 
             $this->pendingCorrelations->consume($correlationId);
 
-            $this->events->dispatch(new CorrelationResumed(
+            $this->events->dispatch(new CorrelationResumedEvent(
                 $executionId, $workflow->workflowId, $step->stepId, $correlationId, new DateTimeImmutable(),
             ));
 

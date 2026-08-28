@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Contracts\WorkflowContext;
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Expression\Enum\ExpressionType;
-use Alama\Arazzo\Expression\Enum\SourceType;
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\Selector;
-use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
@@ -21,8 +15,14 @@ use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Spec\WorkflowContext;
 
 beforeEach(function () {
     $openApiJson = json_encode([

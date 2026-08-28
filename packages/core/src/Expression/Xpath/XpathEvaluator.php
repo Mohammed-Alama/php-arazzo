@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Xpath;
 
+use Alama\Arazzo\Spec\Expression;
+
 interface XpathEvaluator
 {
     /** @return list<string> Supported version tokens e.g. ['xpath-10']. */

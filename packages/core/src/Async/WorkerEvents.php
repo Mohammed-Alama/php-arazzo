@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Events\CorrelationPending;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\StepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Validator\PreflightFailureException;
@@ -36,7 +36,7 @@ final class WorkerEvents
 
     public function stepStarted(string $executionId, string $workflowId, string $stepId, int $attempt): void
     {
-        $this->events->dispatch(new StepStarted($executionId, $workflowId, $stepId, $attempt, new DateTimeImmutable()));
+        $this->events->dispatch(new StepStartedEvent($executionId, $workflowId, $stepId, $attempt, new DateTimeImmutable()));
     }
 
     /**
@@ -44,27 +44,27 @@ final class WorkerEvents
      */
     public function stepExecuted(string $executionId, string $workflowId, string $stepId, int $statusCode, array $outputs, bool $criteriaMet): void
     {
-        $this->events->dispatch(new StepExecuted($executionId, $workflowId, $stepId, $statusCode, $outputs, $criteriaMet, new DateTimeImmutable()));
+        $this->events->dispatch(new StepExecutedEvent($executionId, $workflowId, $stepId, $statusCode, $outputs, $criteriaMet, new DateTimeImmutable()));
     }
 
     public function correlationPending(string $executionId, string $workflowId, string $stepId, string $correlationId, string $channelPath): void
     {
-        $this->events->dispatch(new CorrelationPending($executionId, $workflowId, $stepId, $correlationId, $channelPath, new DateTimeImmutable()));
+        $this->events->dispatch(new CorrelationPendingEvent($executionId, $workflowId, $stepId, $correlationId, $channelPath, new DateTimeImmutable()));
     }
 
     /** @param array<string, mixed> $outputs */
     public function runCompleted(string $executionId, string $workflowId, array $outputs): void
     {
-        $this->events->dispatch(new RunCompleted($executionId, $workflowId, $outputs, new DateTimeImmutable()));
+        $this->events->dispatch(new RunCompletedEvent($executionId, $workflowId, $outputs, new DateTimeImmutable()));
     }
 
     public function runFailedBecause(string $executionId, string $workflowId, string $reason): void
     {
-        $this->events->dispatch(new RunFailed($executionId, $workflowId, new RuntimeException($reason), new DateTimeImmutable()));
+        $this->events->dispatch(new RunFailedEvent($executionId, $workflowId, new RuntimeException($reason), new DateTimeImmutable()));
     }
 
     /**
-     * Emits the failure PAIR (StepFailed + RunFailed) with one classification
+     * Emits the failure PAIR (StepFailedEvent + RunFailedEvent) with one classification
      * so both events always agree on category.
      */
     public function failurePair(string $executionId, string $workflowId, string $stepId, Throwable $cause): void
@@ -75,7 +75,7 @@ final class WorkerEvents
             default => 'execution',
         };
 
-        $this->events->dispatch(new StepFailed($executionId, $workflowId, $stepId, $cause, new DateTimeImmutable(), $category));
-        $this->events->dispatch(new RunFailed($executionId, $workflowId, $cause, new DateTimeImmutable(), $category));
+        $this->events->dispatch(new StepFailedEvent($executionId, $workflowId, $stepId, $cause, new DateTimeImmutable(), $category));
+        $this->events->dispatch(new RunFailedEvent($executionId, $workflowId, $cause, new DateTimeImmutable(), $category));
     }
 }

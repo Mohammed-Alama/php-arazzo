@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\CorrelationPending;
+use Alama\Arazzo\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -43,7 +43,7 @@ final class SuspensionHandler
         if ($step->action === 'receive' && $step->correlationId !== null && $step->channelPath !== null) {
             $evaluated = $this->expressions->evaluate($step->correlationId, $context, $step->stepId);
             $correlationIdValue = is_scalar($evaluated) ? (string) $evaluated : '';
-            $this->events->dispatch(new CorrelationPending(
+            $this->events->dispatch(new CorrelationPendingEvent(
                 $executionId,
                 $context->getWorkflowId() ?? '',
                 $step->stepId,

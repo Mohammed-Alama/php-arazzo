@@ -8,6 +8,7 @@ use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
@@ -19,7 +20,7 @@ final class ExpressionJsonPointerSyntaxRule implements Rule
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = $site->expression->astOrError();
+            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
             if ($ast instanceof ExpressionSyntaxException) {
                 continue;
             }

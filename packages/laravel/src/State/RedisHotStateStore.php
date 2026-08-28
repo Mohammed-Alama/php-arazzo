@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\State;
 
-use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 
 class RedisHotStateStore implements StateStoreInterface

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\State;
 
-use Alama\Arazzo\Contracts\WorkflowContext;
+use Alama\Arazzo\Spec\WorkflowContext;
 
 final class ExecutionContext
 {
@@ -76,7 +76,7 @@ final class ExecutionContext
         }
 
         return new self(
-            executionId: $context->getExecutionId() ?? uniqid('run_', true),
+            executionId: $context->getExecutionId(),
             definitionId: $context->getDefinitionId(),
             workflowId: $context->getWorkflowId() ?? '',
             currentStepId: null,

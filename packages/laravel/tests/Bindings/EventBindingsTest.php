@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Events\RunStarted;
+use Alama\Arazzo\Events\RunStartedEvent;
+use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Laravel\Bindings\EventBindings;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -38,7 +38,7 @@ it('bridges domain events into the durable ledger through the registered listene
 
     /** @var SimpleEventDispatcher $dispatcher */
     $dispatcher = app(EventDispatcherInterface::class);
-    $dispatcher->dispatch(new RunStarted('exec_bindings_1', 'wf', 'wf', [], new DateTimeImmutable()));
+    $dispatcher->dispatch(new RunStartedEvent('exec_bindings_1', 'wf', 'wf', [], new DateTimeImmutable()));
 
     expect($ledger->appended)->not->toBeEmpty()
         ->and($ledger->appended[0]['executionId'])->toBe('exec_bindings_1');
@@ -54,7 +54,7 @@ it('does not duplicate listeners when the binding is re-registered', function ()
 
     /** @var SimpleEventDispatcher $dispatcher */
     $dispatcher = app(SimpleEventDispatcher::class);
-    $dispatcher->dispatch(new RunStarted('exec_dupe_1', 'wf', 'wf', [], new DateTimeImmutable()));
+    $dispatcher->dispatch(new RunStartedEvent('exec_dupe_1', 'wf', 'wf', [], new DateTimeImmutable()));
 
     $hits = count(array_filter(
         $ledger->appended,

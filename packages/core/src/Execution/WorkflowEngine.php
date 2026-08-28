@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
 use Alama\Arazzo\Dependency\DependencyGraph;
 use Alama\Arazzo\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Exceptions\WorkflowCycleException;
 use Alama\Arazzo\Exceptions\WorkflowDepthExceededException;
-use Alama\Arazzo\Expression\Expression;
+use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Policy\RetryPolicy;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
@@ -23,6 +22,7 @@ use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;

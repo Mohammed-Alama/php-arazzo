@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Contracts\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Execution\JsonPointer;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
@@ -20,12 +19,15 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Spec\Expression;
 
 class ExpressionEvaluator implements ExpressionEvaluatorInterface
 {
     public function evaluate(Expression $expression, EvaluationContext $context): mixed
     {
-        $ast = $expression->ast();
+        $ast = (new ExpressionParser())->parse($expression->raw);
 
         return $this->evaluateAst($ast, $context);
     }

@@ -19,7 +19,7 @@ parameters:
 			path: src/Expression/SymbolTable.php
 
 		-
-			message: '#^Instanceof between Alama\\Arazzo\\Expression\\SourceDescription and Alama\\Arazzo\\Expression\\SourceDescription will always evaluate to true\.$#'
+			message: '#^Instanceof between Alama\\Arazzo\\Spec\\SourceDescription and Alama\\Arazzo\\Spec\\SourceDescription will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: src/Expression/SymbolTable.php
@@ -97,7 +97,7 @@ parameters:
 			path: src/Parser/Parser.php
 
 		-
-			message: '#^Method Alama\\Arazzo\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Expression\\Expression\|Alama\\Arazzo\\Expression\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
+			message: '#^Method Alama\\Arazzo\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Spec\\Expression\|Alama\\Arazzo\\Spec\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Parser/Parser.php
@@ -316,49 +316,49 @@ parameters:
 			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 3
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''request'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''response'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''status'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset string on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
+			message: '#^Method Alama\\Arazzo\\Spec\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
 			identifier: return.type
 			count: 1
-			path: src/Contracts/WorkflowContext.php
+			path: src/Spec/WorkflowContext.php
 
 		-
 			message: '#^Cannot access offset ''method'' on mixed\.$#'
@@ -623,7 +623,7 @@ parameters:
 			path: src/Execution/StepOutcomeHandler.php
 
 		-
-			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Events\\RunCompleted constructor expects array\<string, mixed\>, mixed given\.$#'
+			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Events\\RunCompletedEvent constructor expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Execution/StepOutcomeHandler.php

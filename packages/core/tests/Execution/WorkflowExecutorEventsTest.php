@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\WorkflowContext;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted as EventStepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepStarted;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\RunStartedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent as EventStepExecuted;
+use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
@@ -49,15 +49,15 @@ function docWithWorkflow(Workflow $wf): ArazzoDocument
 
 function captureEvents(SimpleEventDispatcher $d, array &$log): void
 {
-    foreach ([RunStarted::class, RunCompleted::class, RunFailed::class,
-        StepStarted::class, EventStepExecuted::class, StepFailed::class] as $cls) {
+    foreach ([RunStartedEvent::class, RunCompletedEvent::class, RunFailedEvent::class,
+        StepStartedEvent::class, EventStepExecuted::class, StepFailedEvent::class] as $cls) {
         $d->subscribe($cls, function ($e) use (&$log, $cls) {
             $log[] = basename(str_replace('\\', '/', $cls));
         });
     }
 }
 
-it('dispatches happy-path sequence RunStarted -> StepStarted -> StepExecuted -> RunCompleted', function () {
+it('dispatches happy-path sequence RunStartedEvent -> StepStartedEvent -> StepExecutedEvent -> RunCompletedEvent', function () {
     $step = new Step('A', null, 'op', null, null, [], null, [], [], [], []);
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
@@ -67,10 +67,10 @@ it('dispatches happy-path sequence RunStarted -> StepStarted -> StepExecuted -> 
 
     (new WorkflowExecutor(createRecordingStepExec(), new WorkflowEngine(new TestExpressionResolver()), events: $d))->execute($wf, docWithWorkflow($wf), []);
 
-    expect($log)->toBe(['RunStarted', 'StepStarted', 'StepExecuted', 'RunCompleted']);
+    expect($log)->toBe(['RunStartedEvent', 'StepStartedEvent', 'StepExecutedEvent', 'RunCompletedEvent']);
 });
 
-it('dispatches StepFailed + RunFailed on step failure', function () {
+it('dispatches StepFailedEvent + RunFailedEvent on step failure', function () {
     $step = new Step('A', null, 'op', null, null, [], null, [], [], [], []);
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
@@ -80,10 +80,10 @@ it('dispatches StepFailed + RunFailed on step failure', function () {
 
     (new WorkflowExecutor(createRecordingStepExec(succeed: false), new WorkflowEngine(new TestExpressionResolver()), events: $d))->execute($wf, docWithWorkflow($wf), []);
 
-    expect($log)->toBe(['RunStarted', 'StepStarted', 'StepFailed', 'RunFailed']);
+    expect($log)->toBe(['RunStartedEvent', 'StepStartedEvent', 'StepFailedEvent', 'RunFailedEvent']);
 });
 
-it('dispatches RunFailed and rethrows on caught exception', function () {
+it('dispatches RunFailedEvent and rethrows on caught exception', function () {
     $step = new Step('A', null, 'op', null, null, [], null, [], [], [], []);
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
@@ -96,5 +96,5 @@ it('dispatches RunFailed and rethrows on caught exception', function () {
     expect(fn () => $executor->execute($wf, docWithWorkflow($wf), []))
         ->toThrow(RuntimeException::class, 'crash');
 
-    expect($log)->toBe(['RunStarted', 'StepStarted', 'RunFailed']);
+    expect($log)->toBe(['RunStartedEvent', 'StepStartedEvent', 'RunFailedEvent']);
 });

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Spec;
 
-use Alama\Arazzo\Expression\Expression;
-use Alama\Arazzo\Expression\Selector;
-
 final readonly class Reusable
 {
     /**

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
-use Alama\Arazzo\Expression\Enum\SourceType;
-use Alama\Arazzo\Expression\Expression;
-use Alama\Arazzo\Expression\SourceDescription;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Parameter;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Spec\Reusable;
+use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\SuccessCriterion;
 
 it('maps enum spec strings', function (): void {

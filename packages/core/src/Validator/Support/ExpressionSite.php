@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Support;
 
-use Alama\Arazzo\Expression\Expression;
 use Alama\Arazzo\Expression\WorkflowSymbols;
+use Alama\Arazzo\Spec\Expression;
 
 final readonly class ExpressionSite
 {
