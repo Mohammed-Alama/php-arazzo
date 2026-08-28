@@ -13,7 +13,6 @@ final readonly class StepSymbols
     public function __construct(
         public array $outputs,
         public int $index,
-        public array $dependsOn = []
-    )
-    {}
+        public array $dependsOn = [],
+    ) {}
 }
