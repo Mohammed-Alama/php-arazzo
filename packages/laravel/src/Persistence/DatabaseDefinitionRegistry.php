@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Persistence;
 
-use Alama\Arazzo\Exceptions\DefinitionHydrationException;
-use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\State\Exceptions\DefinitionHydrationException;
+use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Str;
 use InvalidArgumentException;

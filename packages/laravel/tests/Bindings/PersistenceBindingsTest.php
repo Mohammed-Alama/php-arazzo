@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Interfaces\LockStrategyInterface;
-use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Laravel\Bindings\PersistenceBindings;
 use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
+use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\State\Interfaces\LockStrategyInterface;
+use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 
 function bindingsProp(object $instance, string $name): mixed
 {

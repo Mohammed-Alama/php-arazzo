@@ -15,20 +15,20 @@ live.
 ```mermaid
 flowchart TB
     subgraph L0["layer 0"]
-        M_Interfaces["Interfaces"]:::node
-    end
-    subgraph L1["layer 1"]
         M_Spec["Spec"]:::node
     end
-    subgraph L2["layer 2"]
+    subgraph L1["layer 1"]
         M_Laravel_Support["Support"]:::laravelNode
         M_Support["Support"]:::node
     end
-    subgraph L3["layer 3"]
+    subgraph L2["layer 2"]
         M_Expression["Expression"]:::node
     end
-    subgraph L5["layer 5"]
+    subgraph L4["layer 4"]
         M_Generator["Generator"]:::node
+    end
+    subgraph L5["layer 5"]
+        M_Dependency["Dependency"]:::node
     end
     subgraph L6["layer 6"]
         M_Parser["Parser"]:::node
@@ -50,43 +50,37 @@ flowchart TB
         M_State["State"]:::node
     end
     subgraph L12["layer 12"]
-        M_Dependency["Dependency"]:::node
-    end
-    subgraph L13["layer 13"]
         M_Evaluation["Evaluation"]:::node
     end
-    subgraph L14["layer 14"]
+    subgraph L13["layer 13"]
         M_Telemetry["Telemetry"]:::node
     end
-    subgraph L15["layer 15"]
+    subgraph L14["layer 14"]
         M_Events["Events"]:::node
         M_Laravel_Events["Events"]:::laravelNode
     end
-    subgraph L16["layer 16"]
-        M_Exceptions["Exceptions"]:::node
-    end
-    subgraph L17["layer 17"]
+    subgraph L15["layer 15"]
         M_Jobs["Jobs"]:::node
     end
-    subgraph L18["layer 18"]
+    subgraph L16["layer 16"]
         M_Policy["Policy"]:::node
     end
-    subgraph L19["layer 19"]
+    subgraph L17["layer 17"]
         M_Execution["Execution"]:::node
     end
-    subgraph L20["layer 20"]
+    subgraph L18["layer 18"]
         M_Protocol["Protocol"]:::node
     end
-    subgraph L21["layer 21"]
+    subgraph L19["layer 19"]
         M_Async["Async"]:::node
     end
-    subgraph L22["layer 22"]
+    subgraph L20["layer 20"]
         M_Renderer["Renderer"]:::node
     end
-    subgraph L23["layer 23"]
+    subgraph L21["layer 21"]
         M_Console["Console"]:::node
     end
-    subgraph L25["layer 25"]
+    subgraph L23["layer 23"]
         M_Laravel_Bindings["Bindings"]:::laravelNode
         M_Laravel_Http["Http"]:::laravelNode
         M_Laravel_Lock["Lock"]:::laravelNode
@@ -95,9 +89,8 @@ flowchart TB
         M_Laravel__["_"]:::laravelNode
     end
     M_Async --> M_Events
-    M_Async --> M_Exceptions
     M_Async --> M_Execution
-    M_Async --> M_Interfaces
+    M_Async --> M_Expression
     M_Async --> M_Jobs
     M_Async --> M_Spec
     M_Async --> M_State
@@ -105,54 +98,54 @@ flowchart TB
     M_Async --> M_Validator
     M_Console --> M_Dependency
     M_Console --> M_Evaluation
+    M_Console --> M_Events
     M_Console --> M_Execution
     M_Console --> M_Expression
-    M_Console --> M_Interfaces
     M_Console --> M_Jobs
     M_Console --> M_Normalizer
     M_Console --> M_Parser
+    M_Console --> M_Protocol
     M_Console --> M_Renderer
     M_Console --> M_Resolver
     M_Console --> M_Spec
+    M_Console --> M_State
     M_Console --> M_Telemetry
     M_Console --> M_Validator
     M_Dependency --> M_Spec
+    M_Evaluation -.->|violation| M_Execution
     M_Evaluation --> M_Expression
-    M_Evaluation --> M_Interfaces
     M_Evaluation --> M_Spec
     M_Evaluation --> M_Support
-    M_Events --> M_Interfaces
+    M_Evaluation --> M_Validator
     M_Events --> M_Support
-    M_Exceptions --> M_Support
+    M_Execution -.->|violation| M_Async
     M_Execution --> M_Dependency
     M_Execution --> M_Evaluation
     M_Execution --> M_Events
-    M_Execution --> M_Exceptions
     M_Execution --> M_Expression
-    M_Execution --> M_Interfaces
     M_Execution --> M_Jobs
     M_Execution --> M_Normalizer
+    M_Execution --> M_Parser
     M_Execution --> M_Policy
+    M_Execution -.->|violation| M_Protocol
     M_Execution --> M_Spec
     M_Execution --> M_State
     M_Execution --> M_Support
     M_Execution --> M_Telemetry
     M_Execution --> M_Validator
-    M_Expression --> M_Interfaces
     M_Expression --> M_Spec
     M_Expression --> M_Support
-    M_Generator --> M_Interfaces
-    M_Infrastructure --> M_Interfaces
-    M_Interfaces -.->|violation| M_Exceptions
-    M_Interfaces -.->|violation| M_Normalizer
-    M_Interfaces -.->|violation| M_Spec
+    M_Expression -.->|violation| M_Validator
+    M_Generator -.->|violation| M_Execution
+    M_Infrastructure -.->|violation| M_State
     M_Jobs --> M_Spec
+    M_Laravel_Bindings --> M_Async
     M_Laravel_Bindings --> M_Evaluation
     M_Laravel_Bindings --> M_Events
     M_Laravel_Bindings --> M_Execution
     M_Laravel_Bindings --> M_Expression
     M_Laravel_Bindings --> M_Generator
-    M_Laravel_Bindings --> M_Interfaces
+    M_Laravel_Bindings --> M_Infrastructure
     M_Laravel_Bindings --> M_Laravel_Http
     M_Laravel_Bindings --> M_Laravel_Lock
     M_Laravel_Bindings --> M_Laravel_Persistence
@@ -163,48 +156,47 @@ flowchart TB
     M_Laravel_Bindings --> M_Parser
     M_Laravel_Bindings --> M_Protocol
     M_Laravel_Bindings --> M_Resolver
+    M_Laravel_Bindings --> M_State
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
+    M_Laravel_Http --> M_Async
     M_Laravel_Http --> M_Generator
-    M_Laravel_Http --> M_Interfaces
+    M_Laravel_Http --> M_Infrastructure
     M_Laravel_Http --> M_Jobs
     M_Laravel_Http --> M_Resolver
     M_Laravel_Http --> M_Spec
-    M_Laravel_Lock --> M_Interfaces
-    M_Laravel_Persistence --> M_Exceptions
-    M_Laravel_Persistence --> M_Interfaces
+    M_Laravel_Http --> M_State
+    M_Laravel_Lock --> M_State
+    M_Laravel_Persistence --> M_Events
     M_Laravel_Persistence --> M_Parser
     M_Laravel_Persistence --> M_Spec
+    M_Laravel_Persistence --> M_State
+    M_Laravel_Queue --> M_Async
     M_Laravel_Queue --> M_Execution
-    M_Laravel_Queue --> M_Interfaces
     M_Laravel_Queue --> M_Jobs
-    M_Laravel_State --> M_Interfaces
+    M_Laravel_State --> M_State
     M_Laravel__ --> M_Laravel_Bindings
     M_Laravel__ --> M_Laravel_Http
-    M_Normalizer -.->|violation| M_Exceptions
-    M_Normalizer --> M_Interfaces
     M_Normalizer --> M_Resolver
     M_Normalizer --> M_Spec
     M_Normalizer --> M_Support
     M_Parser --> M_Spec
     M_Parser --> M_Support
-    M_Policy --> M_Interfaces
+    M_Policy -.->|violation| M_Execution
     M_Policy --> M_Spec
     M_Protocol --> M_Dependency
     M_Protocol --> M_Evaluation
-    M_Protocol --> M_Exceptions
     M_Protocol --> M_Execution
     M_Protocol --> M_Expression
-    M_Protocol --> M_Interfaces
+    M_Protocol --> M_Infrastructure
     M_Protocol --> M_Normalizer
     M_Protocol --> M_Spec
     M_Protocol --> M_State
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
-    M_State --> M_Interfaces
     M_State --> M_Spec
-    M_Validator -.->|violation| M_Dependency
+    M_Validator --> M_Dependency
     M_Validator --> M_Expression
     M_Validator --> M_Normalizer
     M_Validator --> M_Resolver
@@ -215,12 +207,14 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**5 violation(s) found:**
+**7 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Interfaces` | `Spec` | 27 |
-| `Interfaces` | `Exceptions` | 2 |
-| `Interfaces` | `Normalizer` | 2 |
-| `Normalizer` | `Exceptions` | 1 |
-| `Validator` | `Dependency` | 1 |
+| `Execution` | `Async` | 4 |
+| `Infrastructure` | `State` | 4 |
+| `Execution` | `Protocol` | 2 |
+| `Generator` | `Execution` | 2 |
+| `Policy` | `Execution` | 2 |
+| `Evaluation` | `Execution` | 1 |
+| `Expression` | `Validator` | 1 |

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Console\Cli;
 
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 
 /**
  * Terminal snapshot of a CLI run: the registry status at drain end, plus

@@ -11,54 +11,52 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Async` | 6 | 489 | 0 | 9 | 1.00 |  |
-| `Console` | 11 | 780 | 0 | 13 | 1.00 |  |
+| `Async` | 7 | 501 | 4 | 8 | 0.67 |  |
+| `Console` | 11 | 780 | 0 | 15 | 1.00 |  |
 | `Dependency` | 3 | 325 | 4 | 1 | 0.20 |  |
-| `Evaluation` | 17 | 1072 | 4 | 4 | 0.50 |  |
-| `Events` | 10 | 269 | 3 | 2 | 0.40 |  |
-| `Exceptions` | 9 | 143 | 6 | 1 | 0.14 |  |
-| `Execution` | 28 | 3304 | 5 | 14 | 0.74 |  |
-| `Expression` | 31 | 1371 | 6 | 3 | 0.33 |  |
+| `Evaluation` | 18 | 1092 | 4 | 5 | 0.56 |  |
+| `Events` | 11 | 284 | 5 | 1 | 0.17 |  |
+| `Execution` | 38 | 3456 | 8 | 15 | 0.65 |  |
+| `Expression` | 33 | 1422 | 7 | 3 | 0.30 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
-| `Infrastructure` | 3 | 143 | 0 | 1 | 1.00 |  |
-| `Interfaces` | 21 | 351 | 18 | 3 | 0.14 |  |
+| `Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
 | `Jobs` | 2 | 32 | 5 | 1 | 0.17 |  |
-| `Laravel:Bindings` | 6 | 445 | 1 | 18 | 0.95 |  |
+| `Laravel:Bindings` | 6 | 445 | 1 | 20 | 0.95 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
-| `Laravel:Http` | 3 | 158 | 2 | 5 | 0.71 |  |
+| `Laravel:Http` | 3 | 158 | 2 | 7 | 0.78 |  |
 | `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
 | `Laravel:Persistence` | 4 | 248 | 1 | 4 | 0.80 |  |
 | `Laravel:Queue` | 3 | 97 | 1 | 3 | 0.75 |  |
 | `Laravel:State` | 1 | 37 | 1 | 1 | 0.50 |  |
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
-| `Normalizer` | 8 | 562 | 6 | 5 | 0.45 |  |
-| `Parser` | 10 | 1070 | 4 | 2 | 0.33 |  |
+| `Normalizer` | 9 | 579 | 5 | 3 | 0.38 |  |
+| `Parser` | 11 | 1085 | 5 | 2 | 0.29 |  |
 | `Policy` | 2 | 94 | 1 | 2 | 0.67 |  |
-| `Protocol` | 5 | 551 | 1 | 9 | 0.90 |  |
+| `Protocol` | 6 | 568 | 3 | 8 | 0.73 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
-| `Resolver` | 11 | 340 | 5 | 2 | 0.29 |  |
-| `Spec` | 39 | 1133 | 18 | 0 | 0.00 |  |
-| `State` | 7 | 1118 | 3 | 2 | 0.40 |  |
-| `Support` | 5 | 166 | 10 | 0 | 0.00 |  |
+| `Resolver` | 12 | 358 | 5 | 2 | 0.29 |  |
+| `Spec` | 39 | 1133 | 17 | 0 | 0.00 |  |
+| `State` | 15 | 1235 | 10 | 1 | 0.09 |  |
+| `Support` | 5 | 166 | 9 | 0 | 0.00 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `Validator` | 62 | 3023 | 4 | 6 | 0.60 |  |
+| `Validator` | 64 | 3071 | 6 | 6 | 0.50 |  |
 
-Total cross-module edges: **805**
+Total cross-module edges: **781**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Validator` → `Spec` | 89 |
+| `Validator` → `Spec` | 91 |
 | `Validator` → `Expression` | 87 |
-| `Execution` → `Spec` | 77 |
-| `Execution` → `Interfaces` | 33 |
+| `Execution` → `Spec` | 83 |
 | `Parser` → `Spec` | 30 |
-| `Interfaces` → `Spec` | 27 |
-| `Protocol` → `Spec` | 26 |
-| `Evaluation` → `Spec` | 22 |
-| `Laravel:Bindings` → `Interfaces` | 21 |
-| `Execution` → `Events` | 17 |
-| `Expression` → `Spec` | 17 |
-| `Execution` → `Expression` | 16 |
+| `Protocol` → `Spec` | 30 |
+| `Evaluation` → `Spec` | 26 |
+| `Expression` → `Spec` | 24 |
+| `Execution` → `State` | 22 |
+| `Execution` → `Events` | 21 |
+| `Execution` → `Expression` | 21 |
+| `Laravel:Bindings` → `Execution` | 15 |
+| `Async` → `Spec` | 14 |

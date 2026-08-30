@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Infrastructure;
 
-use Alama\Arazzo\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Interfaces\LockStrategyInterface;
+use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\State\Interfaces\LockStrategyInterface;
 
 final class PessimisticLockStrategy implements LockStrategyInterface
 {

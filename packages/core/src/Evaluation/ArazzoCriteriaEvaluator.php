@@ -6,11 +6,11 @@ namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
+use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\JsonPathEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
-use Alama\Arazzo\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\EvaluationContext;

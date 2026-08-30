@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Normalizer;
 
-use Alama\Arazzo\Interfaces\OpenApiNormalizerInterface;
+use Alama\Arazzo\Normalizer\Interfaces\OpenApiNormalizerInterface;
 use Alama\Arazzo\Support\Exceptions\NotImplementedException;
 
 class Swagger2Normalizer implements OpenApiNormalizerInterface

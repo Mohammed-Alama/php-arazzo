@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunStartedEvent;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Psr\EventDispatcher\EventDispatcherInterface;
 

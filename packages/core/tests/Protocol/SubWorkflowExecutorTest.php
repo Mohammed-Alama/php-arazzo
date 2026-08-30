@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Protocol\SubWorkflowExecutor;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;

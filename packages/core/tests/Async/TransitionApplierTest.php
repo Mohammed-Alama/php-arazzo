@@ -9,7 +9,7 @@ use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\Transition;
 use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\ExecutionStatus;

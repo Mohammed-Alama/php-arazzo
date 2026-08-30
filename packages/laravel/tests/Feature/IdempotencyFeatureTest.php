@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\ResolvedOperation;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
 
 class SyncQueueDriver implements QueueDriverInterface
 {

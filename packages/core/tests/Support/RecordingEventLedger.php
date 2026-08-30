@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 
 final class RecordingEventLedger implements EventLedgerInterface
 {

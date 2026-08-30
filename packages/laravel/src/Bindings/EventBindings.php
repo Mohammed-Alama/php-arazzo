@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\Listener\LedgerEventListener;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Illuminate\Contracts\Container\Container;
 use Psr\EventDispatcher\EventDispatcherInterface;

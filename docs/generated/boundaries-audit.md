@@ -34,11 +34,11 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Console` | `Symfony` | 30 |
 | core | `Execution` | `GuzzleHttp` | 1 |
 | core | `Execution` | `OpenTelemetry` | 2 |
-| core | `Execution` | `Psr` | 17 |
+| core | `Execution` | `Psr` | 18 |
 | core | `Execution` | `cebe` | 10 |
 | core | `Expression` | `Flow` | 1 |
 | core | `Generator` | `Psr` | 3 |
-| core | `Interfaces` | `Psr` | 3 |
+| core | `Infrastructure` | `Psr` | 2 |
 | core | `Normalizer` | `cebe` | 6 |
 | core | `Parser` | `Symfony` | 2 |
 | core | `Protocol` | `Psr` | 6 |

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
-use Alama\Arazzo\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Interfaces\OutputExtractorInterface;
-use Alama\Arazzo\Interfaces\SchemaValidatorInterface;
+use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
+use Alama\Arazzo\Execution\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\Validator\Interfaces\SchemaValidatorInterface;
 
 class ArazzoExpressionResolver implements ExpressionResolverInterface
 {

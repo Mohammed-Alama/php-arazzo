@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation\Condition;
 
-use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\WorkflowContext;

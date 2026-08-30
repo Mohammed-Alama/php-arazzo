@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Events\Listener;
 
 use Alama\Arazzo\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Events\CorrelationResumedEvent;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\RunStartedEvent;
@@ -13,7 +14,6 @@ use Alama\Arazzo\Events\StepExecutedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Throwable;
 

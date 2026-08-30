@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Console\Cli\CliRunner;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;

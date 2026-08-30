@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
+use Alama\Arazzo\Execution\Interfaces\AiClientInterface;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Generator\Clients\OpenAiClient;
-use Alama\Arazzo\Interfaces\AiClientInterface;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;

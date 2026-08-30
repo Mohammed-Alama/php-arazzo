@@ -15,7 +15,7 @@ use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Interfaces\HttpClientInterface;
-use Alama\Arazzo\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
+use Alama\Arazzo\State\Interfaces\LockManagerInterface;
 
 it('has interfaces', function (): void {
     expect(interface_exists(QueueDriverInterface::class))->toBeTrue()

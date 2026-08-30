@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\Listener\LedgerEventListener;
 use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Events\StepExecutedEvent as EventStepExecuted;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 it('routes catalog events through the bus into the same ledger strings that pre-refactor code emitted', function () {

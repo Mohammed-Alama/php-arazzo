@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Exceptions\StepBudgetExceededException;
+use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;

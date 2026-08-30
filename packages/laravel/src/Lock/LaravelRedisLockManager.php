@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Lock;
 
-use Alama\Arazzo\Interfaces\LockManagerInterface;
+use Alama\Arazzo\State\Interfaces\LockManagerInterface;
 use Illuminate\Contracts\Cache\Lock;
 use Illuminate\Support\Facades\Cache;
 

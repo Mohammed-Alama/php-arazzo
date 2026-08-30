@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
+use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutionWorker;
-use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
@@ -26,6 +22,10 @@ use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Response;

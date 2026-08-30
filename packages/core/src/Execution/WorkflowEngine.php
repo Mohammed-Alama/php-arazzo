@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Exceptions\GotoTargetNotFoundException;
-use Alama\Arazzo\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Exceptions\WorkflowCycleException;
-use Alama\Arazzo\Exceptions\WorkflowDepthExceededException;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
+use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
+use Alama\Arazzo\Execution\Exceptions\WorkflowCycleException;
+use Alama\Arazzo\Execution\Exceptions\WorkflowDepthExceededException;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Policy\RetryPolicy;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\FailureEndAction;

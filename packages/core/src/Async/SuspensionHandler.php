@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Async;
 
 use Alama\Arazzo\Events\CorrelationPendingEvent;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
 

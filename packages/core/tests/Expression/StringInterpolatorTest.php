@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Evaluation;
 
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\StringInterpolator;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\WorkflowContext;
 use Mockery;
 

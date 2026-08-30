@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 
 final class RecordingExecutionRegistry implements ExecutionRegistryInterface
 {

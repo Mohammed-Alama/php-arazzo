@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Exceptions\GotoTargetNotFoundException;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
@@ -12,12 +13,8 @@ use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\SelectorEvaluator;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Spec\Action\FailureAction;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\FailureGotoAction;
@@ -36,6 +33,9 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 
 class StepOutcomeMockExecutionRegistry implements ExecutionRegistryInterface
 {

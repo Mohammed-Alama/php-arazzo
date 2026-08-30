@@ -53,10 +53,8 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     expect($recorder->handled[0])->not->toBe($innerJob);
 });
 
-use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\ResolvedOperation;
@@ -66,6 +64,8 @@ use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;

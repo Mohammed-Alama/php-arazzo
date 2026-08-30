@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\State;
 
-use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use RuntimeException;
 
 /**

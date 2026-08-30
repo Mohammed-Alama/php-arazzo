@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Interfaces\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\State\Interfaces\WritableDefinitionRegistryInterface;
 
 class InMemoryDefinitionRegistry implements WritableDefinitionRegistryInterface
 {

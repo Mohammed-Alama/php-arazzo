@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 
 /**
  * Durable-execution persistence capability: the collaborators an

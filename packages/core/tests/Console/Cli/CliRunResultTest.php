@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Tests\Console\Cli;
 
 use Alama\Arazzo\Console\Cli\CliRunResult;
 use Alama\Arazzo\Console\Cli\InProcessExecutionRegistry;
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 
 it('exposes the raw constructor values', function (): void {
     $result = new CliRunResult('exec_1', 'succeeded', false);

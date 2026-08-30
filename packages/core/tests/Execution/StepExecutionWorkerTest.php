@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\Listener\LedgerEventListener;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\RunControlFlow;
@@ -14,16 +15,10 @@ use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\SelectorEvaluator;
-use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Interfaces\StateStoreInterface;
-use Alama\Arazzo\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\StepStatus;
@@ -35,6 +30,11 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 
 class WorkerMockLockManager implements LockManagerInterface

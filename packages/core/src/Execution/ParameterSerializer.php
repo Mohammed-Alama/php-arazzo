@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Exceptions\UnsupportedSerializationStyleException;
+use Alama\Arazzo\Parser\Exceptions\UnsupportedSerializationStyleException;
 use Stringable;
 
 class ParameterSerializer

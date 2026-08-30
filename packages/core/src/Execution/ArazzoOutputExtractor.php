@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Execution\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
@@ -11,7 +12,6 @@ use Alama\Arazzo\Expression\JsonPathEvaluator;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\EvaluationContext;
