@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\WorkflowContext;

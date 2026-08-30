@@ -29,16 +29,16 @@ MD;
  * Laravel:* and the package roots sit on top implicitly.
  */
 const LAYER_ORDER = [
+    'Interfaces',
     'Spec',
-    'Expression',
     'Support',
+    'Expression',
     'License',
     'Generator',
     'Parser',
     'Resolver',
     'Normalizer',
     'Validator',
-    'Interfaces',
     'Infrastructure',
     'State',
     'Dependency',
@@ -51,8 +51,8 @@ const LAYER_ORDER = [
     'Execution',
     'Protocol',
     'Async',
-    'Console',
     'Renderer',
+    'Console',
 ];
 
 /**

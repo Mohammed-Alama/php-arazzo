@@ -16,7 +16,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 | Package | Readonly | Mutable | Readonly share |
 |---|---:|---:|---:|
-| core | 74 | 178 | 29% |
+| core | 75 | 177 | 30% |
 | laravel | 0 | 21 | 0% |
 
 ## Mutable clusters

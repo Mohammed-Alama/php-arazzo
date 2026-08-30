@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Parser\Decoders;
 
 use Alama\Arazzo\Parser\Exceptions\DecodeException;
+use Alama\Arazzo\Parser\Interfaces\JsonDecoder;
 use JsonException;
 
 final class NativeJsonDecoder implements JsonDecoder

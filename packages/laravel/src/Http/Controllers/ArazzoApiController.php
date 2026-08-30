@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Laravel\Http\Controllers;
 
 use Alama\Arazzo\Generator\ArazzoGenerator;
-use Alama\Arazzo\Resolver\SourceResolver;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDescription;
 use Illuminate\Http\JsonResponse;

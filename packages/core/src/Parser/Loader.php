@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Parser;
 
-use Alama\Arazzo\Parser\Decoders\JsonDecoder;
-use Alama\Arazzo\Parser\Decoders\YamlDecoder;
 use Alama\Arazzo\Parser\Exceptions\DecodeException;
 use Alama\Arazzo\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Parser\Interfaces\JsonDecoder;
+use Alama\Arazzo\Parser\Interfaces\YamlDecoder;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\RawDocument;
 

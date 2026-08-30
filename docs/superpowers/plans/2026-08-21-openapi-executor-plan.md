@@ -85,17 +85,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
-use Alama\Arazzo\Dto\SourceDescription;
-use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Dto\OpenApiPayload;
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Operation;
-use GuzzleHttp\Psr7\Utils;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
+use Alama\Arazzo\Dto\SourceDescription;use Alama\Arazzo\Resolver\Interfaces\SourceResolver;use Alama\Arazzo\Runner\Contracts\OpenApiExecutorInterface;use Alama\Arazzo\Runner\Dto\OpenApiPayload;use Psr\Http\Client\ClientInterface;use Psr\Http\Message\RequestFactoryInterface;use Psr\Http\Message\ResponseInterface;use Psr\Log\LoggerInterface;
 
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {

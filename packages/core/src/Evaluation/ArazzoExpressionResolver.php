@@ -10,6 +10,7 @@ use Alama\Arazzo\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Interfaces\SchemaValidatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\WorkflowContext;

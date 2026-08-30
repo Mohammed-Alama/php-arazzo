@@ -6,9 +6,9 @@ namespace Tests\Execution;
 
 use Alama\Arazzo\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;

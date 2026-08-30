@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Tests\Resolution;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Resolver\Exceptions\SourceParseException;
-use Alama\Arazzo\Resolver\SourceFetcher;
+use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDescription;
 

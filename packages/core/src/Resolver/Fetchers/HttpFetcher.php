@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Resolver\Fetchers;
 
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
-use Alama\Arazzo\Resolver\SourceFetcher;
+use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;

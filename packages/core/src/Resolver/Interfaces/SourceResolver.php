@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Resolver;
+namespace Alama\Arazzo\Resolver\Interfaces;
 
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\SourceDocument;

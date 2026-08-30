@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Execution\JsonPointer;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Expression\JsonPointer;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\State\ExecutionState;

@@ -8,6 +8,8 @@ use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Resolver\Exceptions\SourceParseException;
+use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\SourceDocument;
 use Throwable;

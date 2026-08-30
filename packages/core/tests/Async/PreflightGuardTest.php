@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Async\PreflightGuard;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Parser\Parser;

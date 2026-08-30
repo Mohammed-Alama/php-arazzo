@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;

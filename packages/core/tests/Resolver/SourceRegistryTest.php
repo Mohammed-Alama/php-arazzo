@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Resolution;
 
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\SourceDocument;

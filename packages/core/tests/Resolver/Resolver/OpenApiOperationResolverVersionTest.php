@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Resolver;
 
 use Alama\Arazzo\Exceptions\UnsupportedSourceVersionException;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;

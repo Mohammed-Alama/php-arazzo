@@ -71,10 +71,8 @@ flowchart LR
     Exceptions --> Support
     Execution --> Interfaces
     Execution --> Spec
-    Execution --> Evaluation
     Execution --> Exceptions
     Execution --> Expression
-    Execution --> Resolver
     Execution --> Events
     Execution --> Jobs
     Execution --> State
@@ -84,9 +82,8 @@ flowchart LR
     Execution --> Dependency
     Execution --> Policy
     Execution --> Normalizer
+    Execution --> Evaluation
     Expression --> Spec
-    Expression --> Evaluation
-    Expression --> Execution
     Expression --> Interfaces
     Expression --> Support
     Generator --> Interfaces
@@ -94,13 +91,12 @@ flowchart LR
     Interfaces --> Spec
     Interfaces --> Exceptions
     Interfaces --> Normalizer
-    Interfaces --> Evaluation
     Jobs --> Spec
     Normalizer --> Interfaces
     Normalizer --> Support
+    Normalizer --> Resolver
     Normalizer --> Spec
     Normalizer --> Exceptions
-    Normalizer --> Execution
     Parser --> Spec
     Parser --> Support
     Policy --> Interfaces

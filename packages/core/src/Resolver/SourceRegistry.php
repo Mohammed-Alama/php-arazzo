@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Resolver;
 
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\SourceDocument;
 

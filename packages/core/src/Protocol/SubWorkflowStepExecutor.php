@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol;
 
-use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
-use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Spec\WorkflowContext;
 
 /**

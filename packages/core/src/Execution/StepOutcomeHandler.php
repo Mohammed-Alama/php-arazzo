@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Evaluation\EvaluationContext;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
@@ -22,6 +21,7 @@ use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\ExecutionStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;

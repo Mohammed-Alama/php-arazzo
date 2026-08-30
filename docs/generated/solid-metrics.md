@@ -26,14 +26,14 @@ quadrantChart
     Async: [1, 0]
     Console: [1, 0]
     Dependency: [0.2, 0]
-    Evaluation: [0.4, 0.056]
+    Evaluation: [0.5, 0.059]
     Events: [0.4, 0]
     Exceptions: [0.143, 0]
-    Execution: [0.682, 0]
-    Expression: [0.455, 0.033]
+    Execution: [0.737, 0]
+    Expression: [0.333, 0.032]
     Generator: [0.333, 0]
     Infrastructure: [1, 0]
-    Interfaces: [0.182, 1]
+    Interfaces: [0.143, 1]
     Jobs: [0.167, 0]
     Laravel/Bindings: [0.947, 0]
     Laravel/Http: [0.714, 0]
@@ -63,7 +63,7 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `Parser` | 820 |
-| `ExecutionContext` | `State` | 497 |
+| `ExecutionContext` | `State` | 492 |
 | `StepExecutionWorker` | `Execution` | 386 |
 | `StepOutcomeHandler` | `Execution` | 378 |
 | `WorkflowContext` | `Spec` | 357 |

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Resolver\Fetchers;
 
-use Alama\Arazzo\Resolver\SourceFetcher;
+use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
 use Psr\SimpleCache\CacheInterface;
 
 final class CachedFetcher implements SourceFetcher

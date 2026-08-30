@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Resolver\Fetchers;
 
 use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
-use Alama\Arazzo\Resolver\SourceFetcher;
+use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
 
 final class LocalFetcher implements SourceFetcher
 {
@@ -26,6 +26,6 @@ final class LocalFetcher implements SourceFetcher
 
     private function isAbsolute(string $path): bool
     {
-        return str_starts_with($path, '/') || (bool) preg_match('/^[A-Za-z]:[\\\\\/]/', $path);
+        return str_starts_with($path, '/') || preg_match('/^[A-Za-z]:[\\\\\/]/', $path);
     }
 }

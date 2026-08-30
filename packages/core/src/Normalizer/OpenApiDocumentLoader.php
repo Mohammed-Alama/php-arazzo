@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Normalizer;
 
-use Alama\Arazzo\Resolver\SourceResolver;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Spec\SourceDescription;
 use cebe\openapi\Reader;
 use cebe\openapi\ReferenceContext;

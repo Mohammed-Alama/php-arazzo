@@ -66,12 +66,9 @@ final class ExecutionContext
             if (!is_array($record)) {
                 continue;
             }
-            $normalized = [];
-            foreach ($record as $key => $value) {
-                if (is_string($key)) {
-                    $normalized[$key] = $value;
-                }
-            }
+            $normalized = array_filter($record, function ($key) {
+                return is_string($key);
+            }, ARRAY_FILTER_USE_KEY);
             $stepResults[$stepId] = $normalized;
         }
 
@@ -94,7 +91,7 @@ final class ExecutionContext
 
     public function toWorkflowContext(): WorkflowContext
     {
-        $context = new WorkflowContext(
+        return new WorkflowContext(
             definitionId: $this->definitionId,
             inputs: $this->inputs,
             steps: $this->stepResults,
@@ -104,8 +101,6 @@ final class ExecutionContext
             stepsSpent: $this->stepsSpent,
             workflowCallStack: $this->workflowCallStack,
         );
-
-        return $context;
     }
 
     /**

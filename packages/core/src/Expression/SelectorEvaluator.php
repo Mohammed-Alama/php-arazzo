@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Evaluation\EvaluationContext;
-use Alama\Arazzo\Execution\JsonPointer;
 use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\WorkflowContext;

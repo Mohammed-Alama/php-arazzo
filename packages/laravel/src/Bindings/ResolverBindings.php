@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Resolver\Fetchers\CachedFetcher;
 use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Validator\PreflightValidator;
 use Illuminate\Contracts\Cache\Repository as CacheInterface;
 use Illuminate\Contracts\Container\Container;

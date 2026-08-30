@@ -1,6 +1,6 @@
 # Conformance Matrix
 
-> Generated on 2026-08-26 by `php scripts/generate-conformance-matrix.php`.
+> Generated on 2026-08-28 by `php scripts/generate-conformance-matrix.php`.
 > Corpus: official [OAI Arazzo examples](https://github.com/OAI/Arazzo-Specification/tree/main/examples)
 > (vendored snapshot under `packages/core/tests/Conformance/corpus/oai/`).
 >
@@ -10,10 +10,10 @@
 
 | Document | Arazzo | Parse + validate | Adapter | Execute | Notes |
 |---|---|---|---|---|---|
+| `bnpl-arazzo` | 1.0.0 | pass | sync | succeeded |  |
 | `ExtendedParametersExample` | 1.0.0 | pass | — | skipped | companion `animals.yaml` is not shipped upstream |
 | `FAPI-PAR` | 1.0.0 | pass | — | n/a (upstream defect) | arazzo references operationId &quot;PAR&quot; but companion OpenAPI declares &quot;Par&quot; (case mismatch) |
 | `LoginAndRetrievePets` | 1.0.0 | pass | — | n/a (upstream defect) | operationPath `#/paths/~1pet~1findByStatus` omits the HTTP-method segment required to reach an Operation Object |
-| `bnpl-arazzo` | 1.0.0 | pass | sync | succeeded |  |
 | `oauth` | 1.0.0 | pass | queued (sub-workflow) | succeeded |  |
 | `pet-coupons` | 1.0.0 | pass | queued (sub-workflow) | succeeded |  |
 

@@ -13,6 +13,7 @@ use Alama\Arazzo\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
+use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;

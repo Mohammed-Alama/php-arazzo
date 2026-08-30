@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser\Decoders;
+namespace Alama\Arazzo\Parser\Interfaces;
 
-interface YamlDecoder
+interface JsonDecoder
 {
     /** @return mixed */
     public function decode(string $source);

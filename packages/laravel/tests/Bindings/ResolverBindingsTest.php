@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
+use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Resolver\SourceResolver;
 use Alama\Arazzo\Validator\PreflightValidator;
 
 it('aliases SourceRegistry onto the same instance as SourceResolver', function (): void {

@@ -167,12 +167,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function get(string $definitionId): ?ArazzoDocument`
 - `public function register(ArazzoDocument $document): string`
 
-### `JsonPointer` class
-- `public static function resolve(array $data, ?string $pointer): mixed`
-
-### `OpenApiDocumentLoader` class
-- `public function __construct(private readonly SourceResolver $sourceResolver)`
-
 ### `ParameterSerializer` class
 - `public static function serialize(string $location, array $normalizedParams, array $payload): array`
 - `public static function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string`
@@ -254,6 +248,9 @@ file on a commit is a public API change — review it deliberately.
 ### `JsonPathEvaluator` class
 - `public static function evaluate(string $expression, array|object $data): mixed`
 - `public static function normalizeFilters(string $expression): string`
+
+### `JsonPointer` class
+- `public static function resolve(array $data, ?string $pointer): mixed`
 
 ### `Lexer` class
 - `public function tokenize(string $raw): array`
@@ -389,6 +386,9 @@ file on a commit is a public API change — review it deliberately.
 
 ### `OpenApi30Normalizer` class
 - `public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation`
+
+### `OpenApiDocumentLoader` class
+- `public function __construct(private readonly SourceResolver $sourceResolver)`
 
 ### `OpenApiOperationResolver` class
 - `public function __construct(private OpenApiDocumentLoader $loader, private OpenApiVersionDetector $versionDetector, private OpenApi30Normalizer $normalizer30, private OpenApi31Normalizer $normalizer31)`
