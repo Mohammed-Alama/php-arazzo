@@ -14,24 +14,24 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["Expression", "Validator", "Execution", "Console", "Resolver", "Spec", "Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Parser", "Evaluation", "Protocol"]
     y-axis "Touches" 0 --> 30
-    bar [22, 22, 17, 15, 15, 14, 13, 13, 13, 12, 10, 10]
+    bar [23, 22, 18, 15, 15, 15, 13, 13, 13, 12, 11, 10]
 ```
 
-Analyzed 264 total file-touches across 29 modules.
+Analyzed 268 total file-touches across 29 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Expression` | 22 | 8% | 1,510 | 14.6 |
+| `Expression` | 23 | 9% | 1,507 | 15.3 |
 | `Validator` | 22 | 8% | 3,154 | 7 |
-| `Execution` | 17 | 6% | 4,151 | 4.1 |
+| `Execution` | 18 | 7% | 4,151 | 4.3 |
 | `Console` | 15 | 6% | 791 | 19 |
 | `Resolver` | 15 | 6% | 370 | 40.5 |
-| `Spec` | 14 | 5% | 823 | 17 |
+| `Spec` | 15 | 6% | 823 | 18.2 |
 | `Laravel/Bindings` | 13 | 5% | 451 | 28.8 |
 | `Laravel/Http` | 13 | 5% | 161 | 80.7 |
 | `Laravel/Persistence` | 13 | 5% | 252 | 51.6 |
-| `Parser` | 12 | 5% | 1,096 | 10.9 |
-| `Evaluation` | 10 | 4% | 1,159 | 8.6 |
+| `Parser` | 12 | 4% | 1,096 | 10.9 |
+| `Evaluation` | 11 | 4% | 1,159 | 9.5 |
 | `Protocol` | 10 | 4% | 562 | 17.8 |
 | `State` | 10 | 4% | 944 | 10.6 |
 | `Laravel/Queue` | 9 | 3% | 100 | 90 |

@@ -28,8 +28,8 @@ quadrantChart
     Dependency: [0.333, 0]
     Evaluation: [0.556, 0.105]
     Events: [0.167, 0.091]
-    Execution: [0.556, 0.125]
-    Expression: [0.364, 0.114]
+    Execution: [0.577, 0.125]
+    Expression: [0.222, 0.114]
     Generator: [0.333, 0]
     Infrastructure: [0.25, 0.25]
     Jobs: [0.286, 0]
@@ -51,7 +51,7 @@ quadrantChart
     State: [0.167, 0.5]
     Support: [0, 0.2]
     Telemetry: [0, 0]
-    Validator: [0.5, 0.031]
+    Validator: [0.545, 0.031]
 ```
 
 ## God classes (SRP)

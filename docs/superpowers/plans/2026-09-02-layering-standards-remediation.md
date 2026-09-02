@@ -218,13 +218,15 @@ git commit -m "refactor(expression): extract WorkflowContextInterface shared ker
 
 ---
 
-### Task 1.5 (follow-on, not started): Re-point ExpressionResolverInterface & StringInterpolator to WorkflowContextInterface
+### Task 1.5 (DONE): Re-point ExpressionResolverInterface & StringInterpolator to WorkflowContextInterface
 
-Files:
-- `packages/core/src/Expression/Interfaces/ExpressionResolverInterface.php` (lines 7, 16, 21, 23, 28)
-- `packages/core/src/Expression/StringInterpolator.php` (lines 7, 15)
-- `packages/core/src/Evaluation/ExpressionResolver.php` (lines 9, 27, 32, 37, 42) — implementer
-- Downstream collaborators that already type-hint concrete `WorkflowContext` and would need the same treatment: `OutputExtractorInterface`, `CriteriaEvaluatorInterface`, `ResponseValidatorInterface`
+- [x] Re-point `Expression\Interfaces\ExpressionResolverInterface` from `Execution\Data\WorkflowContext` to `Spec\Interfaces\WorkflowContextInterface`; drop the `Validator\Exceptions\SchemaValidationException` import + `@throws`
+- [x] Re-point `Expression\StringInterpolator` to `WorkflowContextInterface`
+- [x] Widen implementer `Evaluation\ExpressionResolver` to `WorkflowContextInterface`
+- [x] Widen forwarded collaborators to `WorkflowContextInterface`: `Execution\Interfaces\OutputExtractorInterface` + `Execution\StepOutputExtractor`; `Evaluation\Interfaces\CriteriaEvaluatorInterface` + `Evaluation\CriteriaEvaluator`; `Evaluation\Condition\ConditionEvaluator`
+- [x] Widen test mocks of `ExpressionResolverInterface` (11 test files) to match the interface
+- [x] PHPStan clean; Pint clean; all 817 core tests pass
+- [x] Regenerate docs; confirm `Expression --> Execution` + `Expression --> Validator` edges removed from `layering.md`/`namespace-graph.md`
 
 Result: eliminates the remaining `Expression → Execution` (2) and `Expression → Validator` (1) edges.
 

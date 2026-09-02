@@ -91,17 +91,17 @@ file on a commit is a public API change — review it deliberately.
 
 ### `ConditionEvaluator` class
 - `public function __construct(private ExpressionEvaluatorInterface $evaluator)`
-- `public function evaluate(string $condition, WorkflowContext $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool`
+- `public function evaluate(string $condition, WorkflowContextInterface $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool`
 - `public static function truthy(mixed $value): bool`
 
 ### `CriteriaEvaluator` class
 - `public function __construct(private ExpressionEvaluatorInterface $evaluator, ?ConditionEvaluator $conditionEvaluator = null, ?XpathEvaluator $xpathEvaluator = null)`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 
 ### `CriteriaEvaluatorInterface` interface
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
 
 ### `EvaluationContext` class
 - `public function __construct(public WorkflowContextInterface $workflowContext, public ?string $currentStepId = null, public ?ArazzoDocument $document = null)`
@@ -110,9 +110,9 @@ file on a commit is a public API change — review it deliberately.
 
 ### `ExpressionResolver` class
 - `public function __construct(private ExpressionEvaluatorInterface $evaluator, private OutputExtractorInterface $outputExtractor, private CriteriaEvaluatorInterface $criteriaEvaluator, private ResponseValidatorInterface $schemaValidator)`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
 
 ### `Lexer` class
@@ -197,7 +197,7 @@ file on a commit is a public API change — review it deliberately.
 - `public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null, ): ResponseInterface;`
 
 ### `OutputExtractorInterface` interface
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
 
 ### `ParameterSerializer` class
 - `public static function serialize(string $location, array $normalizedParams, array $payload): array`
@@ -331,10 +331,10 @@ file on a commit is a public API change — review it deliberately.
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
 
 ### `ExpressionResolverInterface` interface
-- `public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
+- `public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed;`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 
 ### `ExpressionSyntaxException` class

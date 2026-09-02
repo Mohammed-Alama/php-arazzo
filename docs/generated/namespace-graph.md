@@ -85,8 +85,6 @@ flowchart LR
     Execution --> Parser
     Expression --> Spec
     Expression --> Support
-    Expression --> Execution
-    Expression --> Validator
     Generator --> Execution
     Infrastructure --> State
     Jobs --> Execution

@@ -9,6 +9,7 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -20,24 +21,24 @@ function suspensionResolver(): ExpressionResolverInterface
 {
     return new class() implements ExpressionResolverInterface
     {
-        public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+        public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
         {
             return 'corr_from_expr';
         }
 
         public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
-        public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+        public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
         {
             return [];
         }
 
-        public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+        public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
         {
             return true;
         }
 
-        public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+        public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
         {
             return true;
         }

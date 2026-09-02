@@ -38,24 +38,24 @@ Console,State,7
 Console,Telemetry,1
 Console,Validator,2
 Dependency,Spec,6
-Evaluation,Execution,6
 Evaluation,Expression,10
-Evaluation,Spec,18
+Evaluation,Spec,22
 Evaluation,Support,1
 Evaluation,Validator,1
 Events,Support,1
 Execution,Dependency,3
+Execution,Evaluation,4
 Execution,Events,21
 Execution,Expression,21
 Execution,Jobs,2
 Execution,Normalizer,5
 Execution,Parser,1
-Execution,Spec,72
+Execution,Spec,74
 Execution,State,17
 Execution,Support,9
 Execution,Telemetry,1
 Execution,Validator,11
-Expression,Spec,23
+Expression,Spec,25
 Expression,Support,2
 Generator,Execution,2
 Infrastructure,State,4
@@ -132,11 +132,9 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `Dependency` | `Execution` | 1 |
+| `Evaluation` | `Execution` | 2 |
 | `Execution` | `Async` | 4 |
-| `Execution` | `Evaluation` | 4 |
 | `Execution` | `Policy` | 1 |
 | `Execution` | `Protocol` | 2 |
-| `Expression` | `Execution` | 2 |
-| `Expression` | `Validator` | 1 |
 | `Jobs` | `Execution` | 1 |
 | `State` | `Execution` | 2 |

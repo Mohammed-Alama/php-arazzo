@@ -8,9 +8,9 @@ use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
 use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
 use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 
 final class ConditionEvaluator
 {
@@ -25,7 +25,7 @@ final class ConditionEvaluator
         $this->parser = new Parser($this->lexer);
     }
 
-    public function evaluate(string $condition, WorkflowContext $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool
+    public function evaluate(string $condition, WorkflowContextInterface $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool
     {
         $ast = $this->parser->parse($condition);
         $evaluationContext = new EvaluationContext($context, $stepId, $document);

@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Step;
 
 final class TestExpressionResolver implements ExpressionResolverInterface
 {
-    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
     {
         return true;
     }
 
-    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
         return [];
     }
 
-    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return true;
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return $criteria === [];
     }

@@ -14,6 +14,7 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
@@ -93,24 +94,24 @@ class ResumerMockEventLedger implements EventLedgerInterface
 
 class ResumerMockExpressionResolver implements ExpressionResolverInterface
 {
-    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
     {
         return $expression->raw;
     }
 
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
-    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
         return ['echo' => $context->getSteps()[$step->stepId]['response']['body'] ?? null];
     }
 
-    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return true;
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return $criteria === [];
     }

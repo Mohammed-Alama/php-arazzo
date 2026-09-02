@@ -16,8 +16,8 @@ targets. Regenerated before every commit.
 | `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
 | `Evaluation` | 19 | 1140 | 4 | 5 | 0.56 |  |
 | `Events` | 11 | 284 | 5 | 1 | 0.17 |  |
-| `Execution` | 40 | 4111 | 12 | 15 | 0.56 |  |
-| `Expression` | 35 | 1475 | 7 | 4 | 0.36 |  |
+| `Execution` | 40 | 4111 | 11 | 15 | 0.58 |  |
+| `Expression` | 35 | 1472 | 7 | 2 | 0.22 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
 | `Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
@@ -40,9 +40,9 @@ targets. Regenerated before every commit.
 | `State` | 14 | 930 | 10 | 2 | 0.17 |  |
 | `Support` | 5 | 166 | 9 | 0 | 0.00 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `Validator` | 64 | 3090 | 6 | 6 | 0.50 |  |
+| `Validator` | 64 | 3090 | 5 | 6 | 0.55 |  |
 
-Total cross-module edges: **765**
+Total cross-module edges: **766**
 
 ## Most entangled module pairs
 
@@ -50,13 +50,13 @@ Total cross-module edges: **765**
 |---|---:|
 | `Validator` → `Spec` | 90 |
 | `Validator` → `Expression` | 87 |
-| `Execution` → `Spec` | 72 |
+| `Execution` → `Spec` | 74 |
 | `Parser` → `Spec` | 30 |
-| `Expression` → `Spec` | 23 |
+| `Expression` → `Spec` | 25 |
 | `Protocol` → `Spec` | 23 |
+| `Evaluation` → `Spec` | 22 |
 | `Execution` → `Events` | 21 |
 | `Execution` → `Expression` | 21 |
-| `Evaluation` → `Spec` | 18 |
 | `Protocol` → `Execution` | 18 |
 | `Execution` → `State` | 17 |
 | `Laravel:Bindings` → `Execution` | 15 |

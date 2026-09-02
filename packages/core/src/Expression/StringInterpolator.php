@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 
 class StringInterpolator
 {
     public function __construct(private ExpressionResolverInterface $resolver) {}
 
-    public function interpolate(string $value, WorkflowContext $context, string $stepId): string
+    public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
     {
         return preg_replace_callback('/\{\$([^\}]+)\}/', function ($matches) use ($context, $stepId) {
             $expr = new Expression('{$'.$matches[1].'}');

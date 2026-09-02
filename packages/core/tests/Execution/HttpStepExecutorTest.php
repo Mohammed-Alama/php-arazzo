@@ -16,6 +16,7 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\OpenApiPayload;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
@@ -30,7 +31,7 @@ class HttpStepExecutorMockResolver implements ExpressionResolverInterface
 {
     public ?WorkflowContext $lastContextSeenByExtractOutputs = null;
 
-    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
     {
         return $expression->raw;
     }
@@ -38,19 +39,19 @@ class HttpStepExecutorMockResolver implements ExpressionResolverInterface
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
     /** @return array<string, mixed> */
-    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
         $this->lastContextSeenByExtractOutputs = $context;
 
         return ['echoedBody' => $context->getSteps()[$step->stepId]['response']['body'] ?? null];
     }
 
-    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return true;
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return true;
     }

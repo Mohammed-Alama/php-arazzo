@@ -8,7 +8,6 @@ use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\JsonPathEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
@@ -16,6 +15,7 @@ use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\CriterionType;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 
@@ -34,7 +34,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         $this->xpathEvaluator = $xpathEvaluator;
     }
 
-    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         // Default success behavior: an operation step without explicit criteria
         // passes on any 2xx response (community/spec-tooling convention).
@@ -52,7 +52,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
     /**
      * @param  list<SuccessCriterion>  $criteria
      */
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         if (empty($criteria)) {
             return true;
@@ -82,7 +82,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         return true;
     }
 
-    private function evaluateSimple(SuccessCriterion $criterion, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    private function evaluateSimple(SuccessCriterion $criterion, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
     {
         try {
             return $this->conditionEvaluator->evaluate($criterion->condition, $context, $stepId, $document);
@@ -92,7 +92,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         }
     }
 
-    private function evaluateRegex(SuccessCriterion $criterion, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    private function evaluateRegex(SuccessCriterion $criterion, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
     {
         if ($criterion->context === null) {
             // A regex criterion without a context cannot be evaluated; fail deterministically.
@@ -112,7 +112,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         return preg_match('/'.str_replace('/', '\/', $criterion->condition).'/', self::stringify($target)) === 1;
     }
 
-    private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseBody, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseBody, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
     {
         if ($criterion->context !== null) {
             try {
@@ -147,7 +147,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         return $code >= 200 && $code < 300;
     }
 
-    private function evaluateXPath(SuccessCriterion $criterion, WorkflowContext $context, string $stepId, ?ArazzoDocument $document): bool
+    private function evaluateXPath(SuccessCriterion $criterion, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
     {
         if ($criterion->context !== null) {
             try {

@@ -8,7 +8,6 @@ use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Execution\Data\ExecutionState;
 use Alama\Arazzo\Execution\Data\Transition;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -47,24 +47,24 @@ function applierFixtures(): array
     $events = new WorkerEvents($dispatcher);
     $engine = new WorkflowEngine(new class() implements ExpressionResolverInterface
     {
-        public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+        public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
         {
             return 'output-x';
         }
 
         public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
 
-        public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+        public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
         {
             return [];
         }
 
-        public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+        public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
         {
             return true;
         }
 
-        public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+        public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
         {
             return true;
         }

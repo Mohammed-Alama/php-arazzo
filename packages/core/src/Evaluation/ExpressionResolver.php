@@ -6,12 +6,12 @@ namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Validator\Interfaces\ResponseValidatorInterface;
 
@@ -24,22 +24,22 @@ class ExpressionResolver implements ExpressionResolverInterface
         private ResponseValidatorInterface $schemaValidator,
     ) {}
 
-    public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
     {
         return $this->evaluator->evaluate($expression, new EvaluationContext($context, $currentStepId));
     }
 
-    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
         return $this->outputExtractor->extractOutputs($step, $context, $document);
     }
 
-    public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return $this->criteriaEvaluator->evaluateSuccessCriteria($step, $context, $document);
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
         return $this->criteriaEvaluator->evaluateCriteria($criteria, $step, $context, $document);
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
 use cebe\openapi\spec\Reference;
@@ -39,7 +39,7 @@ class StepOutputExtractor implements OutputExtractorInterface
     /**
      * @return array<string, mixed>
      */
-    public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array
+    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
         $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
 
@@ -77,7 +77,7 @@ class StepOutputExtractor implements OutputExtractorInterface
 
     private function castOutputAgainstResponseSchema(
         Step $step,
-        WorkflowContext $context,
+        WorkflowContextInterface $context,
         ?ArazzoDocument $document,
         Expression $expression,
         mixed $value,
