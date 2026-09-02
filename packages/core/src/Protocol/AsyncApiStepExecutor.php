@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol;
 
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\PayloadReplacer;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
@@ -13,7 +14,6 @@ use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\Step;

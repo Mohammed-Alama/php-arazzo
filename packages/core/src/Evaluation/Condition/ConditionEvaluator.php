@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation\Condition;
 
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
 use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
 use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\EvaluationContext;
 
 final class ConditionEvaluator
 {

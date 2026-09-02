@@ -15,7 +15,6 @@ classDiagram
     class ArazzoDocument
     class Components
     class CriterionType
-    class EvaluationContext
     class ExecutionStatus
     class Expression
     class ExpressionType
@@ -64,7 +63,6 @@ classDiagram
     Step "1" --> "0..1" SuccessAction : holds
     Step "1" --> "0..1" FailureAction : holds
     Step "1" --> "0..1" Selector : holds
-    EvaluationContext "1" --> "0..1" ArazzoDocument : holds
     PayloadReplacement "1" --> "0..1" Expression : holds
     PayloadReplacement "1" --> "0..1" Selector : holds
     SubWorkflowSuccessAction "1" --> "0..1" Expression : holds

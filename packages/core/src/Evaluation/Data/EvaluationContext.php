@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Evaluation\Data;
 
 use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Spec\ArazzoDocument;
 
 final readonly class EvaluationContext
 {

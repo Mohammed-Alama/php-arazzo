@@ -70,6 +70,7 @@ flowchart LR
     Events --> Support
     Execution --> Spec
     Execution --> State
+    Execution --> Evaluation
     Execution --> Expression
     Execution --> Async
     Execution --> Events
@@ -82,8 +83,8 @@ flowchart LR
     Execution --> Policy
     Execution --> Normalizer
     Execution --> Parser
-    Execution --> Evaluation
     Expression --> Spec
+    Expression --> Evaluation
     Expression --> Support
     Expression --> Execution
     Expression --> Validator
@@ -109,7 +110,6 @@ flowchart LR
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
-    Spec --> Execution
     State --> Spec
     State --> Execution
     Validator --> Expression

@@ -134,6 +134,7 @@ flowchart TB
     M_Execution --> M_Support
     M_Execution --> M_Telemetry
     M_Execution --> M_Validator
+    M_Expression -.->|violation| M_Evaluation
     M_Expression -.->|violation| M_Execution
     M_Expression --> M_Spec
     M_Expression --> M_Support
@@ -198,7 +199,6 @@ flowchart TB
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
-    M_Spec -.->|violation| M_Execution
     M_State -.->|violation| M_Execution
     M_State --> M_Spec
     M_Validator --> M_Dependency
@@ -216,9 +216,10 @@ flowchart TB
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Evaluation` | `Execution` | 6 |
+| `Evaluation` | `Execution` | 7 |
 | `Execution` | `Async` | 4 |
 | `Infrastructure` | `State` | 4 |
+| `Expression` | `Evaluation` | 3 |
 | `Expression` | `Execution` | 3 |
 | `Policy` | `Execution` | 3 |
 | `Execution` | `Protocol` | 2 |
@@ -227,4 +228,3 @@ flowchart TB
 | `Dependency` | `Execution` | 1 |
 | `Expression` | `Validator` | 1 |
 | `Jobs` | `Execution` | 1 |
-| `Spec` | `Execution` | 1 |

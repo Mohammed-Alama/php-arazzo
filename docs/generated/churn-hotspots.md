@@ -12,39 +12,39 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["Validator", "Expression", "Execution", "Resolver", "Console", "Laravel/Http", "Laravel/Persistence", "Spec", "Laravel/Bindings", "Parser", "Laravel/Queue", "State"]
+    x-axis ["Validator", "Expression", "Execution", "Console", "Resolver", "Spec", "Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Parser", "State", "Evaluation"]
     y-axis "Touches" 0 --> 30
-    bar [21, 20, 15, 15, 14, 13, 13, 13, 12, 12, 9, 9]
+    bar [22, 21, 16, 15, 15, 14, 13, 13, 13, 12, 10, 9]
 ```
 
-Analyzed 249 total file-touches across 29 modules.
+Analyzed 260 total file-touches across 29 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Validator` | 21 | 8% | 3,154 | 6.7 |
-| `Expression` | 20 | 8% | 1,459 | 13.7 |
-| `Execution` | 15 | 6% | 4,150 | 3.6 |
+| `Validator` | 22 | 8% | 3,154 | 7 |
+| `Expression` | 21 | 8% | 1,459 | 14.4 |
+| `Execution` | 16 | 6% | 4,150 | 3.9 |
+| `Console` | 15 | 6% | 791 | 19 |
 | `Resolver` | 15 | 6% | 370 | 40.5 |
-| `Console` | 14 | 6% | 791 | 17.7 |
+| `Spec` | 14 | 5% | 796 | 17.6 |
+| `Laravel/Bindings` | 13 | 5% | 451 | 28.8 |
 | `Laravel/Http` | 13 | 5% | 161 | 80.7 |
 | `Laravel/Persistence` | 13 | 5% | 252 | 51.6 |
-| `Spec` | 13 | 5% | 813 | 16 |
-| `Laravel/Bindings` | 12 | 5% | 451 | 26.6 |
 | `Parser` | 12 | 5% | 1,096 | 10.9 |
-| `Laravel/Queue` | 9 | 4% | 100 | 90 |
-| `State` | 9 | 4% | 944 | 9.5 |
-| `Evaluation` | 8 | 3% | 1,125 | 7.1 |
-| `Protocol` | 8 | 3% | 562 | 14.2 |
-| `Async` | 7 | 3% | 507 | 13.8 |
+| `State` | 10 | 4% | 944 | 10.6 |
+| `Evaluation` | 9 | 3% | 1,143 | 7.9 |
+| `Laravel/Queue` | 9 | 3% | 100 | 90 |
+| `Protocol` | 9 | 3% | 562 | 16 |
+| `Async` | 8 | 3% | 507 | 15.8 |
 | `Events` | 7 | 3% | 295 | 23.7 |
 | `Laravel/Lock` | 7 | 3% | 49 | 142.9 |
 | `Laravel/State` | 7 | 3% | 38 | 184.2 |
 | `Policy` | 7 | 3% | 96 | 72.9 |
+| `Dependency` | 5 | 2% | 328 | 15.2 |
 | `Generator` | 5 | 2% | 105 | 47.6 |
 | `Jobs` | 5 | 2% | 34 | 147.1 |
 | `Normalizer` | 5 | 2% | 588 | 8.5 |
 | `Support` | 5 | 2% | 171 | 29.2 |
-| `Dependency` | 4 | 2% | 328 | 12.2 |
 | `Infrastructure` | 2 | 1% | 160 | 12.5 |
 | `Laravel/Events` | 2 | 1% | 21 | 95.2 |
 | `Renderer` | 2 | 1% | 253 | 7.9 |
