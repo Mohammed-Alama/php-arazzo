@@ -11,13 +11,15 @@
     "repositories": [
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
-        {"type": "path", "url": "../expression"}
+        {"type": "path", "url": "../expression"},
+        {"type": "path", "url": "../runner"}
     ],
     "require": {
         "php": "^8.4",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-runner": "@dev",
         "cebe/php-openapi": "^1.7",
         "guzzlehttp/guzzle": "^7.9",
         "open-telemetry/api": "^1.0",

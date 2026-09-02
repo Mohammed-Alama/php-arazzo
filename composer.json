@@ -8,7 +8,8 @@
         {"type": "path", "url": "packages/core"},
         {"type": "path", "url": "packages/document"},
         {"type": "path", "url": "packages/expression"},
-        {"type": "path", "url": "packages/laravel"}
+        {"type": "path", "url": "packages/laravel"},
+        {"type": "path", "url": "packages/runner"}
     ],
     "require": {
         "php": "^8.4",
@@ -16,6 +17,7 @@
         "alama/arazzo-core": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-runner": "@dev",
         "alama/laravel-arazzo": "@dev"
     },
     "require-dev": {
@@ -28,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Alama\\Arazzo\\Tests\\": ["packages/core/tests", "packages/contracts/tests", "packages/document/tests", "packages/expression/tests"],
+            "Alama\\Arazzo\\Tests\\": ["packages/core/tests", "packages/contracts/tests", "packages/document/tests", "packages/expression/tests", "packages/runner/tests"],
             "Alama\\Arazzo\\Laravel\\Tests\\": ["packages/laravel/tests"],
             "Alama\\LaravelArazzo\\Execution\\": ["packages/laravel/src/Execution"],
             "Alama\\LaravelArazzo\\Events\\": ["packages/laravel/src/Events"],
@@ -48,8 +50,9 @@
         "test-contracts": "vendor/bin/pest packages/contracts/tests",
         "test-document": "vendor/bin/pest packages/document/tests",
         "test-expression": "vendor/bin/pest packages/expression/tests",
+        "test-runner": "vendor/bin/pest packages/runner/tests",
         "test-laravel": "cd packages/laravel && vendor/bin/pest",
-        "test": ["@test-contracts", "@test-expression", "@test-document", "@test-core", "@test-laravel"],
+        "test": ["@test-contracts", "@test-expression", "@test-document", "@test-runner", "@test-core", "@test-laravel"],
         "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",
         "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",

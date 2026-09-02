@@ -1,0 +1,130 @@
+{
+    "name": "goto-on-failure",
+    "description": "A step failure routes control flow to a recovery step via a failure goto action.",
+    "arazzo": {
+        "arazzo": "1.0.1",
+        "info": {
+            "title": "Conformance",
+            "version": "1.0.0"
+        },
+        "sourceDescriptions": [
+            {
+                "name": "api",
+                "url": "https://conformance.invalid/api.json",
+                "type": "openapi"
+            }
+        ],
+        "workflows": [
+            {
+                "workflowId": "resilientFetch",
+                "steps": [
+                    {
+                        "stepId": "primary",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1primary/get",
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 200"
+                            }
+                        ],
+                        "onFailure": [
+                            {
+                                "type": "goto",
+                                "stepId": "fallback",
+                                "name": "goto-primary"
+                            }
+                        ]
+                    },
+                    {
+                        "stepId": "fallback",
+                        "operationPath": "{$sourceDescriptions.api.url}#/paths/~1fallback/get",
+                        "successCriteria": [
+                            {
+                                "condition": "${response.statusCode} == 200"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "sources": {
+        "api": {
+            "openapi": "3.0.3",
+            "info": {
+                "title": "API",
+                "version": "1.0.0"
+            },
+            "servers": [
+                {
+                    "url": "https://api.test"
+                }
+            ],
+            "paths": {
+                "/primary": {
+                    "get": {
+                        "operationId": "getPrimary",
+                        "responses": {
+                            "404": {
+                                "description": "missing"
+                            }
+                        }
+                    }
+                },
+                "/fallback": {
+                    "get": {
+                        "operationId": "getFallback",
+                        "responses": {
+                            "200": {
+                                "description": "ok",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "responses": [
+        {
+            "status": 404,
+            "body": {
+                "error": "gone"
+            }
+        },
+        {
+            "status": 200,
+            "body": {
+                "source": "fallback"
+            }
+        }
+    ],
+    "expect": {
+        "status": "succeeded",
+        "steps": [
+            {
+                "stepId": "primary",
+                "status": "failure",
+                "attempts": 1
+            },
+            {
+                "stepId": "fallback",
+                "status": "success",
+                "attempts": 1
+            }
+        ],
+        "requests": [
+            "GET https://api.test/primary",
+            "GET https://api.test/fallback"
+        ],
+        "outputs": {},
+        "errors": [
+            "Step 'primary' failed"
+        ]
+    }
+}

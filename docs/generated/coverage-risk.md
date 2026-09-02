@@ -20,17 +20,17 @@ quadrantChart
     quadrant-2 Solid & stable
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
-    Async: [1, 1]
-    Console: [1, 1]
+    Async: [1, 0]
+    Console: [1, 0.909]
     Contracts: [0.063, 0]
     Dependency: [0.333, 0]
     Evaluation: [0.5, 0]
-    Events: [0.167, 1]
-    Execution: [0.737, 1]
+    Events: [0.167, 0]
+    Execution: [0.737, 0]
     Expression: [0.222, 0]
     Generator: [0.333, 1]
-    Infrastructure: [0.25, 1]
-    Jobs: [0.286, 1]
+    Infrastructure: [0.25, 0]
+    Jobs: [0.286, 0]
     Laravel/Bindings: [0.952, 1]
     Laravel/Events: [0, 1]
     Laravel/Http: [0.778, 1]
@@ -41,30 +41,30 @@ quadrantChart
     Laravel/Support: [0, 1]
     Normalizer: [0.375, 0]
     Parser: [0.286, 0]
-    Policy: [0.667, 1]
-    Protocol: [0.9, 1]
+    Policy: [0.667, 0]
+    Protocol: [0.9, 0]
     Renderer: [0.5, 1]
     Resolver: [0.286, 0]
     Spec: [0, 0]
-    State: [0.2, 1]
+    State: [0.2, 0]
     Support: [0, 0]
-    Telemetry: [0, 1]
+    Telemetry: [0, 0]
     Validator: [0.6, 0]
 ```
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
-| `Async` | 1.00 | 6 | 6 | 100% |
-| `Console` | 1.00 | 11 | 11 | 100% |
+| `Async` | 1.00 | 0 | 6 | 0% |
+| `Console` | 1.00 | 10 | 11 | 91% |
 | `Contracts` | 0.06 | 0 | 11 | 0% |
 | `Dependency` | 0.33 | 0 | 3 | 0% |
 | `Evaluation` | 0.50 | 0 | 19 | 0% |
-| `Events` | 0.17 | 29 | 11 | 100% |
-| `Execution` | 0.74 | 51 | 35 | 100% |
+| `Events` | 0.17 | 0 | 11 | 0% |
+| `Execution` | 0.74 | 0 | 35 | 0% |
 | `Expression` | 0.22 | 0 | 35 | 0% |
 | `Generator` | 0.33 | 5 | 2 | 100% |
-| `Infrastructure` | 0.25 | 7 | 4 | 100% |
-| `Jobs` | 0.29 | 7 | 2 | 100% |
+| `Infrastructure` | 0.25 | 0 | 4 | 0% |
+| `Jobs` | 0.29 | 0 | 2 | 0% |
 | `Laravel/Bindings` | 0.95 | 6 | 6 | 100% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `Laravel/Http` | 0.78 | 4 | 3 | 100% |
@@ -75,14 +75,14 @@ quadrantChart
 | `Laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `Normalizer` | 0.38 | 0 | 9 | 0% |
 | `Parser` | 0.29 | 0 | 11 | 0% |
-| `Policy` | 0.67 | 2 | 2 | 100% |
-| `Protocol` | 0.90 | 10 | 5 | 100% |
+| `Policy` | 0.67 | 0 | 2 | 0% |
+| `Protocol` | 0.90 | 0 | 5 | 0% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 0 | 12 | 0% |
 | `Spec` | 0.00 | 0 | 38 | 0% |
-| `State` | 0.20 | 25 | 12 | 100% |
+| `State` | 0.20 | 0 | 12 | 0% |
 | `Support` | 0.00 | 0 | 5 | 0% |
-| `Telemetry` | 0.00 | 2 | 2 | 100% |
+| `Telemetry` | 0.00 | 0 | 2 | 0% |
 | `Validator` | 0.60 | 0 | 62 | 0% |
 
-**Refactor-now list** (untested churn): `Validator`, `Evaluation`
+**Refactor-now list** (untested churn): `Async`, `Protocol`, `Execution`, `Policy`, `Validator`, `Evaluation`

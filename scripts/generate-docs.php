@@ -95,6 +95,7 @@ $coreScans = [
     'contracts' => Scanner::scan($root.'/packages/contracts/src', 'Alama\\Arazzo\\'),
     'expression' => Scanner::scan($root.'/packages/expression/src', 'Alama\\Arazzo\\'),
     'document' => Scanner::scan($root.'/packages/document/src', 'Alama\\Arazzo\\'),
+    'runner' => Scanner::scan($root.'/packages/runner/src', 'Alama\\Arazzo\\'),
     'core' => Scanner::scan($root.'/packages/core/src', 'Alama\\Arazzo\\'),
 ];
 

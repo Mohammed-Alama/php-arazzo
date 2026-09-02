@@ -1,0 +1,44 @@
+{
+    "name": "alama/arazzo-runner",
+    "description": "Arazzo workflow execution engine: state, events, policy, protocol, async, telemetry.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-expression": "@dev",
+        "alama/arazzo-document": "@dev",
+        "guzzlehttp/guzzle": "^7.9",
+        "open-telemetry/api": "^1.0",
+        "open-telemetry/sdk": "^1.0",
+        "open-telemetry/exporter-otlp": "^1.0",
+        "psr/event-dispatcher": "^1.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0||^2.0",
+        "psr/log": "^3.0",
+        "psr/simple-cache": "^3.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {"Alama\\Arazzo\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

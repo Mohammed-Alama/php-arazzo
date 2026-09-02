@@ -13,8 +13,8 @@ compliance — not an inverted pyramid of end-to-end tests.
 
 ```mermaid
 pie showData
-    title Core — 89 test files
-    "Module-scoped": 75
+    title Core — 33 test files
+    "Module-scoped": 19
     "Unit": 5
     "Feature": 4
     "Conformance": 2
@@ -25,13 +25,13 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 75 | 84% |
-| Unit | 5 | 6% |
-| Feature | 4 | 4% |
-| Conformance | 2 | 2% |
-| Architecture | 1 | 1% |
-| Property | 1 | 1% |
-| Root | 1 | 1% |
+| Module-scoped | 19 | 58% |
+| Unit | 5 | 15% |
+| Feature | 4 | 12% |
+| Conformance | 2 | 6% |
+| Architecture | 1 | 3% |
+| Property | 1 | 3% |
+| Root | 1 | 3% |
 
 ## Laravel package
 
