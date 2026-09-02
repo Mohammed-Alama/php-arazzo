@@ -17,7 +17,7 @@ xychart-beta
     bar [21, 20, 15, 15, 14, 13, 13, 13, 12, 12, 9, 9]
 ```
 
-Analyzed 248 total file-touches across 29 modules.
+Analyzed 249 total file-touches across 29 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -33,9 +33,9 @@ Analyzed 248 total file-touches across 29 modules.
 | `Parser` | 12 | 5% | 1,096 | 10.9 |
 | `Laravel/Queue` | 9 | 4% | 100 | 90 |
 | `State` | 9 | 4% | 1,250 | 7.2 |
+| `Evaluation` | 8 | 3% | 1,125 | 7.1 |
 | `Protocol` | 8 | 3% | 574 | 13.9 |
 | `Async` | 7 | 3% | 507 | 13.8 |
-| `Evaluation` | 7 | 3% | 1,125 | 6.2 |
 | `Events` | 7 | 3% | 295 | 23.7 |
 | `Laravel/Lock` | 7 | 3% | 49 | 142.9 |
 | `Laravel/State` | 7 | 3% | 38 | 184.2 |
