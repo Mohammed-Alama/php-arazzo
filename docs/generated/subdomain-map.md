@@ -39,7 +39,7 @@ flowchart LR
     subgraph S_unclassified[""]
         S_Async["Async<br/><small>507 LOC</small>"]:::unknownDomain
         S_Dependency["Dependency<br/><small>328 LOC</small>"]:::unknownDomain
-        S_Evaluation["Evaluation<br/><small>1108 LOC</small>"]:::unknownDomain
+        S_Evaluation["Evaluation<br/><small>1125 LOC</small>"]:::unknownDomain
         S_Execution["Execution<br/><small>3852 LOC</small>"]:::unknownDomain
         S_Infrastructure["Infrastructure<br/><small>160 LOC</small>"]:::unknownDomain
         S_Jobs["Jobs<br/><small>34 LOC</small>"]:::unknownDomain
@@ -59,7 +59,7 @@ flowchart LR
 | Core domain | 2 | 2,272 | 0 | 12% |
 | Supporting | 6 | 5,750 | 0 | 31% |
 | Generic subdomain | 8 | 1,716 | 1,132 | 15% |
-|  | 10 | 7,525 | 0 | 41% |
+|  | 10 | 7,542 | 0 | 41% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Async`

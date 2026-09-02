@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Evaluation\Condition;
 
 use Alama\Arazzo\Evaluation\Condition\Ast\Comparison;
-use Alama\Arazzo\Evaluation\Condition\Ast\ConditionNode;
 use Alama\Arazzo\Evaluation\Condition\Ast\Literal;
 use Alama\Arazzo\Evaluation\Condition\Ast\LogicalOp;
 use Alama\Arazzo\Evaluation\Condition\Ast\RuntimeExpr;
 use Alama\Arazzo\Evaluation\Condition\Ast\UnaryNot;
+use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
+use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
+use Alama\Arazzo\Evaluation\Enum\TokenKind;
+use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
 use Alama\Arazzo\Spec\Expression;
 
 final class Parser

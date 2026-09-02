@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Condition\Ast;
+namespace Alama\Arazzo\Evaluation\Interfaces;
 
 interface ConditionNode {}

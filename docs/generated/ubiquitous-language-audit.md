@@ -67,4 +67,4 @@ Evans' first question: does the code speak one language?
 | `Parser` | `Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Parser\Parser` | core |
 | `StepResult` | `Execution\StepResult`<br/>`State\StepResult` | core |
 | `Token` | `Evaluation\Condition\Token`<br/>`Expression\Token` | core |
-| `TokenKind` | `Evaluation\Condition\TokenKind`<br/>`Expression\Enum\TokenKind` | core |
+| `TokenKind` | `Evaluation\Enum\TokenKind`<br/>`Expression\Enum\TokenKind` | core |

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Condition;
+namespace Alama\Arazzo\Evaluation\Enum;
 
 enum ComparisonOperator: string
 {

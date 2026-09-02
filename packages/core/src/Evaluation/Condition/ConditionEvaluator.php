@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation\Condition;
 
+use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
+use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
+use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
@@ -30,7 +33,7 @@ final class ConditionEvaluator
         return (bool) $this->resolve($ast, $evaluationContext);
     }
 
-    private function resolve(Ast\ConditionNode $node, EvaluationContext $context): bool
+    private function resolve(ConditionNode $node, EvaluationContext $context): bool
     {
         if ($node instanceof Ast\LogicalOp) {
             $left = $this->resolve($node->left, $context);
@@ -68,7 +71,7 @@ final class ConditionEvaluator
      * A comparison side is normally a literal or runtime expression; a nested
      * logical node contributes its boolean result.
      */
-    private function operandValue(Ast\ConditionNode $operand, EvaluationContext $context): mixed
+    private function operandValue(ConditionNode $operand, EvaluationContext $context): mixed
     {
         if ($operand instanceof Ast\Literal) {
             return $operand->value;

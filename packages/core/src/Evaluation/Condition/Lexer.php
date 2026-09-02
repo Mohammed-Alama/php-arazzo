@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation\Condition;
 
+use Alama\Arazzo\Evaluation\Enum\TokenKind;
+
 final class Lexer
 {
     /** @return list<Token> */
