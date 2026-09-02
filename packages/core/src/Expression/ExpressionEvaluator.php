@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
@@ -18,23 +17,24 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Spec\Expression;
 
 class ExpressionEvaluator implements ExpressionEvaluatorInterface
 {
-    public function evaluate(Expression $expression, EvaluationContext $context): mixed
+    public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
         $ast = new ExpressionParser()->parse($expression->raw);
 
         return $this->evaluateAst($ast, $context);
     }
 
-    private function evaluateAst(ExpressionAst $ast, EvaluationContext $context): mixed
+    private function evaluateAst(ExpressionAst $ast, EvaluationInputInterface $context): mixed
     {
         if ($ast instanceof InputRef) {
-            $value = $context->workflowContext->getInputs()[$ast->name] ?? null;
+            $value = $context->getWorkflowContext()->getInputs()[$ast->name] ?? null;
 
             return $ast->jsonPointer !== null && (is_array($value) || $value === null)
                 ? JsonPointer::resolve(is_array($value) ? $value : [], $ast->jsonPointer)
@@ -42,11 +42,11 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof HttpMetaRef) {
-            if ($context->currentStepId === null) {
+            if ($context->getCurrentStepId() === null) {
                 return null;
             }
 
-            $stepData = $context->workflowContext->getSteps()[$context->currentStepId] ?? null;
+            $stepData = $context->getWorkflowContext()->getSteps()[$context->getCurrentStepId()] ?? null;
             if (!$stepData) {
                 return null;
             }
@@ -59,8 +59,8 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof StepRef) {
-            $steps = $context->workflowContext->getSteps();
-            $targetStepId = $ast->stepId ?? $context->currentStepId;
+            $steps = $context->getWorkflowContext()->getSteps();
+            $targetStepId = $ast->stepId ?? $context->getCurrentStepId();
             $rawStepData = $steps[$targetStepId] ?? null;
             if (!is_array($rawStepData)) {
                 return null;
@@ -110,7 +110,7 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof WorkflowRef) {
-            $workflowData = $context->workflowContext->getWorkflows()[$ast->workflowId] ?? null;
+            $workflowData = $context->getWorkflowContext()->getWorkflows()[$ast->workflowId] ?? null;
             if ($workflowData === null) {
                 return null;
             }
@@ -119,8 +119,8 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof MessageRef) {
-            $steps = $context->workflowContext->getSteps();
-            $stepData = $context->currentStepId !== null ? ($steps[$context->currentStepId] ?? null) : null;
+            $steps = $context->getWorkflowContext()->getSteps();
+            $stepData = $context->getCurrentStepId() !== null ? ($steps[$context->getCurrentStepId()] ?? null) : null;
             $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
 
             if ($ast->part === 'header') {
@@ -147,18 +147,18 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
         }
 
         if ($ast instanceof SelfRef) {
-            return $context->document?->self;
+            return $context->getDocument()?->self;
         }
 
         if ($ast instanceof ComponentRef) {
-            $comps = $context->workflowContext->getComponents();
+            $comps = $context->getWorkflowContext()->getComponents();
             if ($ast->type === 'parameters') {
                 return $comps['parameters'][$ast->name] ?? null;
             }
         }
 
-        if ($ast instanceof SourceRef && $context->document) {
-            foreach ($context->document->sourceDescriptions as $sourceDesc) {
+        if ($ast instanceof SourceRef && $context->getDocument()) {
+            foreach ($context->getDocument()->sourceDescriptions as $sourceDesc) {
                 if ($sourceDesc->name === $ast->name) {
                     if ($ast->subPath === 'url') {
                         return $sourceDesc->url;

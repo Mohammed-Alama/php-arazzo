@@ -84,7 +84,6 @@ flowchart LR
     Execution --> Normalizer
     Execution --> Parser
     Expression --> Spec
-    Expression --> Evaluation
     Expression --> Support
     Expression --> Execution
     Expression --> Validator

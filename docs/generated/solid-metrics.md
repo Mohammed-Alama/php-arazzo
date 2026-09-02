@@ -26,10 +26,10 @@ quadrantChart
     Async: [0.667, 0.143]
     Console: [1, 0]
     Dependency: [0.333, 0]
-    Evaluation: [0.5, 0.105]
+    Evaluation: [0.556, 0.105]
     Events: [0.167, 0.091]
     Execution: [0.556, 0.125]
-    Expression: [0.417, 0.091]
+    Expression: [0.364, 0.114]
     Generator: [0.333, 0]
     Infrastructure: [0.25, 0.25]
     Jobs: [0.286, 0]
@@ -47,7 +47,7 @@ quadrantChart
     Protocol: [0.727, 0.167]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.25]
-    Spec: [0, 0]
+    Spec: [0, 0.026]
     State: [0.167, 0.5]
     Support: [0, 0.2]
     Telemetry: [0, 0]
@@ -64,7 +64,7 @@ Concrete types over 300 LOC:
 | `ExecutionContext` | `State` | 493 |
 | `StepExecutionWorker` | `Execution` | 376 |
 | `StepOutcomeHandler` | `Execution` | 376 |
-| `WorkflowContext` | `Execution` | 358 |
+| `WorkflowContext` | `Execution` | 359 |
 | `Parser` | `Expression` | 348 |
 | `ExecutionState` | `Execution` | 308 |
 | `PreflightValidator` | `Validator` | 300 |

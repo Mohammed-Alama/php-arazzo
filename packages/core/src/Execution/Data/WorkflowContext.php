@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution\Data;
 
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Workflow;
 
-final readonly class WorkflowContext
+final readonly class WorkflowContext implements WorkflowContextInterface
 {
     private string $executionId;
 

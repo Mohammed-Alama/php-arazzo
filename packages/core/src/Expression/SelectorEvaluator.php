@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Expression\Data\EvaluationInput;
 use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Selector;
 
 class SelectorEvaluator
@@ -19,11 +19,11 @@ class SelectorEvaluator
         private ExpressionEvaluator $expressions,
     ) {}
 
-    public function evaluate(Selector $sel, WorkflowContext $wf, string $stepId): mixed
+    public function evaluate(Selector $sel, WorkflowContextInterface $wf, string $stepId): mixed
     {
         // Spec default when context is omitted: the current step's response body.
         if ($sel->context !== null) {
-            $root = $this->expressions->evaluate(new Expression($sel->context), new EvaluationContext($wf, $stepId));
+            $root = $this->expressions->evaluate(new Expression($sel->context), new EvaluationInput($wf, $stepId));
         } else {
             $steps = $wf->getSteps();
             $stepData = $steps[$stepId] ?? null;

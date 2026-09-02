@@ -13,6 +13,7 @@ flowchart LR
     I_ConditionNode["ConditionNode<br/><small>Evaluation</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Evaluation</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>State</small>"]:::contract
+    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>Expression</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>Events</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>State</small>"]:::contract
     I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Expression</small>"]:::contract
@@ -33,6 +34,7 @@ flowchart LR
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>State</small>"]:::contract
     I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Protocol</small>"]:::contract
+    I_WorkflowContextInterface["WorkflowContextInterface<br/><small>Spec</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>State</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>Expression</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
@@ -62,6 +64,10 @@ flowchart LR
     C_core_Evaluation_UnaryNot -.->|implements| I_ConditionNode
     C_core_Evaluation_RuntimeExpr["RuntimeExpr<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_RuntimeExpr -.->|implements| I_ConditionNode
+    C_core_Evaluation_EvaluationContext["EvaluationContext<br/><small>Evaluation</small>"]:::implCore
+    C_core_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
+    C_core_Expression_EvaluationInput["EvaluationInput<br/><small>Expression</small>"]:::implCore
+    C_core_Expression_EvaluationInput -.->|implements| I_EvaluationInputInterface
     C_core_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Execution</small>"]:::implCore
     C_core_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
     C_core_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>Execution</small>"]:::implCore
@@ -74,6 +80,8 @@ flowchart LR
     C_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
     C_core_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>Execution</small>"]:::implCore
     C_core_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
+    C_core_Execution_WorkflowContext["WorkflowContext<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_WorkflowContext -.->|implements| I_WorkflowContextInterface
     C_core_Expression_DomXpathEvaluator["DomXpathEvaluator<br/><small>Expression</small>"]:::implCore
     C_core_Expression_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_core_Expression_ExpressionEvaluator["ExpressionEvaluator<br/><small>Expression</small>"]:::implCore

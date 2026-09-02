@@ -20,6 +20,9 @@ mindmap
       CriteriaEvaluator
     DefinitionRegistryInterface
       DatabaseDefinitionRegistry
+    EvaluationInputInterface
+      EvaluationContext
+      EvaluationInput
     EventLedgerInterface
       NullEventLedger
       DatabaseEventLedger
@@ -64,6 +67,8 @@ mindmap
       SubWorkflowExecutor
       AsyncApiStepExecutor
       SubWorkflowStepExecutor
+    WorkflowContextInterface
+      WorkflowContext
     WritableDefinitionRegistryInterface
       InMemoryDefinitionRegistry
 ```
@@ -74,6 +79,7 @@ mindmap
 | `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
+| `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `EvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
@@ -90,4 +96,5 @@ mindmap
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | no | `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |

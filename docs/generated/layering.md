@@ -134,7 +134,6 @@ flowchart TB
     M_Execution --> M_Support
     M_Execution --> M_Telemetry
     M_Execution --> M_Validator
-    M_Expression -.->|violation| M_Evaluation
     M_Expression -.->|violation| M_Execution
     M_Expression --> M_Spec
     M_Expression --> M_Support
@@ -212,17 +211,16 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**12 violation(s) found:**
+**11 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Evaluation` | `Execution` | 7 |
+| `Evaluation` | `Execution` | 6 |
 | `Execution` | `Async` | 4 |
 | `Infrastructure` | `State` | 4 |
-| `Expression` | `Evaluation` | 3 |
-| `Expression` | `Execution` | 3 |
 | `Policy` | `Execution` | 3 |
 | `Execution` | `Protocol` | 2 |
+| `Expression` | `Execution` | 2 |
 | `Generator` | `Execution` | 2 |
 | `State` | `Execution` | 2 |
 | `Dependency` | `Execution` | 1 |

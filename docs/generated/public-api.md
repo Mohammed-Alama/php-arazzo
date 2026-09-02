@@ -103,6 +103,11 @@ file on a commit is a public API change — review it deliberately.
 - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
 
+### `EvaluationContext` class
+- `public function __construct(public WorkflowContextInterface $workflowContext, public ?string $currentStepId = null, public ?ArazzoDocument $document = null)`
+- `public function getCurrentStepId(): ?string`
+- `public function getDocument(): ?ArazzoDocument`
+
 ### `ExpressionResolver` class
 - `public function __construct(private ExpressionEvaluatorInterface $evaluator, private OutputExtractorInterface $outputExtractor, private CriteriaEvaluatorInterface $criteriaEvaluator, private ResponseValidatorInterface $schemaValidator)`
 - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
@@ -309,11 +314,21 @@ file on a commit is a public API change — review it deliberately.
 - `public function query(mixed $rootValue, string $selector, string $version): mixed`
 - `public function supportedVersions(): array`
 
+### `EvaluationInput` class
+- `public function __construct(private WorkflowContextInterface $workflowContext, private ?string $currentStepId = null, private ?ArazzoDocument $document = null)`
+- `public function getCurrentStepId(): ?string`
+- `public function getDocument(): ?ArazzoDocument`
+
+### `EvaluationInputInterface` interface
+- `public function getCurrentStepId(): ?string;`
+- `public function getDocument(): ?ArazzoDocument;`
+- `public function getWorkflowContext(): WorkflowContextInterface;`
+
 ### `ExpressionEvaluator` class
-- `public function evaluate(Expression $expression, EvaluationContext $context): mixed`
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 
 ### `ExpressionEvaluatorInterface` interface
-- `public function evaluate(Expression $expression, EvaluationContext $context): mixed;`
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
 
 ### `ExpressionResolverInterface` interface
 - `public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;`
@@ -589,6 +604,14 @@ file on a commit is a public API change — review it deliberately.
 
 ### `SuccessGotoAction` class
 - `public function __construct(string $name, public ?string $stepId, public ?string $workflowId, array $criteria, public array $parameters = [])`
+
+### `WorkflowContextInterface` interface
+- `public function getComponents(): array;`
+- `public function getInputs(): array;`
+- `public function getStepStatus(string $stepId): ?StepStatus;`
+- `public function getSteps(): array;`
+- `public function getWorkflowId(): ?string;`
+- `public function getWorkflows(): array;`
 
 ## core · `Alama\Arazzo\State`
 
