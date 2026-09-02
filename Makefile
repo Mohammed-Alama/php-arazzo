@@ -27,8 +27,13 @@ analyse: ## Run PHPStan static analysis
 	composer run analyse
 
 analyse-baseline: ## Regenerate PHPStan baselines
-	cd packages/core && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G
-	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G
+	@# Comment out the baseline includes so PHPStan generates a fresh baseline
+	sed -i '' 's/^    - phpstan-baseline\.neon/    # - phpstan-baseline.neon/' packages/core/phpstan.neon.dist
+	sed -i '' 's/^    - phpstan-baseline\.neon/    # - phpstan-baseline.neon/' packages/laravel/phpstan.neon.dist
+	cd packages/core && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; \
+	  sed -i '' 's/^    # - phpstan-baseline\.neon/    - phpstan-baseline.neon/' ../core/phpstan.neon.dist
+	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; \
+	  sed -i '' 's/^    # - phpstan-baseline\.neon/    - phpstan-baseline.neon/' ../laravel/phpstan.neon.dist
 
 ci-all: ## Run all GitHub Actions locally using act
 	act --container-architecture linux/amd64
