@@ -12,7 +12,11 @@ use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepExecutedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
+use Alama\Arazzo\Execution\Data\ExecutionState;
+use Alama\Arazzo\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Execution\Data\RunPersistence;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
@@ -21,15 +25,14 @@ use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Telemetry\OtelSetup;
+use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Validator\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;
@@ -43,7 +46,7 @@ class StepExecutionWorker
 {
     private EventDispatcherInterface $events;
 
-    private ?PreflightValidator $preflight = null;
+    private ?PreflightValidator $preflight;
 
     private StateStoreInterface $stateStore;
 
@@ -108,19 +111,7 @@ class StepExecutionWorker
             $context = $this->reconcileWithPersistedState($job->context, $executionId);
 
             try {
-                // Preflight only guards a FRESH run; resumed jobs already passed it.
-                if ($this->preflight !== null && $context->getSteps() === []) {
-                    $documentForPreflight = $this->definitionRegistry->get($context->getDefinitionId());
-                    if ($documentForPreflight !== null) {
-                        $preflightResult = $this->preflight->validate($documentForPreflight);
-                        if (!$preflightResult->isValid()) {
-                            throw new PreflightFailureException(
-                                'Preflight validation failed with '.count($preflightResult->errors).' error(s).',
-                                $preflightResult,
-                            );
-                        }
-                    }
-                }
+                $this->documentPreflightValidation($context);
 
                 if ($context->getStepStatus($step->stepId) === StepStatus::Succeeded) {
                     return;
@@ -328,24 +319,12 @@ class StepExecutionWorker
 
     private function findWorkflow(ArazzoDocument $document, ?string $workflowId): ?Workflow
     {
-        foreach ($document->workflows as $workflow) {
-            if ($workflow->workflowId === $workflowId) {
-                return $workflow;
-            }
-        }
-
-        return null;
+        return array_find($document->workflows, fn ($workflow) => $workflow->workflowId === $workflowId);
     }
 
     private function findExecutor(Step $step, ArazzoDocument $document): ?StepProtocolExecutorInterface
     {
-        foreach ($this->protocolExecutors as $executor) {
-            if ($executor->supports($step, $document)) {
-                return $executor;
-            }
-        }
-
-        return null;
+        return array_find($this->protocolExecutors, fn ($executor) => $executor->supports($step, $document));
     }
 
     /**
@@ -369,17 +348,28 @@ class StepExecutionWorker
 
     private function findStep(Workflow $workflow, string $stepId): ?Step
     {
-        foreach ($workflow->steps as $step) {
-            if ($step->stepId === $stepId) {
-                return $step;
-            }
-        }
-
-        return null;
+        return array_find($workflow->steps, fn ($step) => $step->stepId === $stepId);
     }
 
     private function contextFromState(ExecutionState $state): WorkflowContext
     {
         return $state->toContext();
+    }
+
+    private function documentPreflightValidation(WorkflowContext $context): void
+    {
+        // Preflight only guards a FRESH run; resumed jobs already passed it.
+        if ($this->preflight !== null && $context->getSteps() === []) {
+            $documentForPreflight = $this->definitionRegistry->get($context->getDefinitionId());
+            if ($documentForPreflight !== null) {
+                $preflightResult = $this->preflight->validate($documentForPreflight);
+                if (!$preflightResult->isValid()) {
+                    throw new PreflightFailureException(
+                        'Preflight validation failed with '.count($preflightResult->errors).' error(s).',
+                        $preflightResult,
+                    );
+                }
+            }
+        }
     }
 }

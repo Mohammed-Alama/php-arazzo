@@ -11,7 +11,12 @@ use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
+use Alama\Arazzo\Execution\Data\ExecutionState;
+use Alama\Arazzo\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Execution\Data\RunPersistence;
+use Alama\Arazzo\Execution\Data\Transition;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
@@ -26,7 +31,6 @@ use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
@@ -324,7 +328,7 @@ class StepOutcomeHandler
                     $resolved = str_contains($action->reference, 'failureActions')
                         ? ($document->components->failureActions[$this->referenceName($action->reference)] ?? null)
                         : ($document->components->successActions[$this->referenceName($action->reference)] ?? null);
-                    if ($resolved !== null && $resolved instanceof $class) {
+                    if ($resolved instanceof $class) {
                         return $resolved;
                     }
                 }
@@ -361,13 +365,7 @@ class StepOutcomeHandler
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
     {
-        foreach ($document->workflows as $workflow) {
-            if ($workflow->workflowId === $workflowId) {
-                return $workflow;
-            }
-        }
-
-        return null;
+        return array_find($document->workflows, fn ($workflow) => $workflow->workflowId === $workflowId);
     }
 
     private function findStep(Workflow $workflow, string $stepId): ?Step

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
+use Alama\Arazzo\Execution\Data\ExecutionState;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionState;
 
 /**
  * Assembles the engine-ready {@see ExecutionState} for a transition decision:

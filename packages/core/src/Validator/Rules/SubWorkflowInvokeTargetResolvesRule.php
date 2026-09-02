@@ -10,7 +10,7 @@ use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rule;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class SubWorkflowInvokeTargetResolvesRule implements Rule
 {

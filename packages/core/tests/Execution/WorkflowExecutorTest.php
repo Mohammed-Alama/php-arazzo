@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\StepOutputExtractor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
@@ -504,10 +504,10 @@ it('executes a workflow end-to-end', function () {
     $evaluator = new ExpressionEvaluator();
     $openApiLoader = new OpenApiDocumentLoader($sourceResolver);
     $operationResolver = new OpenApiOperationResolver($openApiLoader, new OpenApiVersionDetector(), new OpenApi30Normalizer(), new OpenApi31Normalizer());
-    $outputExtractor = new ArazzoOutputExtractor($operationResolver, $evaluator);
-    $criteriaEvaluator = new ArazzoCriteriaEvaluator($evaluator);
-    $schemaValidator = new ArazzoSchemaValidator($operationResolver);
-    $resolver = new ArazzoExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
+    $outputExtractor = new StepOutputExtractor($operationResolver, $evaluator);
+    $criteriaEvaluator = new CriteriaEvaluator($evaluator);
+    $schemaValidator = new ResponseSchemaValidator($operationResolver);
+    $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
     $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver);

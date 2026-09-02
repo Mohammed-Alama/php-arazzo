@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Validator\Rules;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rule;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class StepNestedWorkflowExistsRule implements Rule
 {

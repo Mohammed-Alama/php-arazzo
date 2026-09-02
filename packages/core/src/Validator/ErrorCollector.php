@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator;
 
+use Alama\Arazzo\Validator\Data\Error;
+use Alama\Arazzo\Validator\Data\Warning;
+
 final class ErrorCollector
 {
     /** @var list<Error> */

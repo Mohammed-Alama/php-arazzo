@@ -18,7 +18,7 @@ use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Validator\PreflightFailureException;
+use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;

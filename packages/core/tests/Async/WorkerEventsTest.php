@@ -12,9 +12,9 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Validator\Error;
-use Alama\Arazzo\Validator\PreflightFailureException;
-use Alama\Arazzo\Validator\ValidationResult;
+use Alama\Arazzo\Validator\Data\Error;
+use Alama\Arazzo\Validator\Data\ValidationResult;
+use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
 
 function guardDocumentForEvents(): ArazzoDocument
 {

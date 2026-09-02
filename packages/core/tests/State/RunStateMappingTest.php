@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Execution\Data\ExecutionState;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
-use Alama\Arazzo\State\ExecutionState;
 
 /**
  * Card A (architecture review): ONE owner of the state<->context mapping.

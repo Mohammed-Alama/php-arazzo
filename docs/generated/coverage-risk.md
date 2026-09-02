@@ -58,7 +58,7 @@ quadrantChart
 | `Dependency` | 0.33 | 5 | 3 | 100% |
 | `Evaluation` | 0.56 | 40 | 18 | 100% |
 | `Events` | 0.17 | 29 | 11 | 100% |
-| `Execution` | 0.54 | 73 | 39 | 100% |
+| `Execution` | 0.54 | 74 | 40 | 100% |
 | `Expression` | 0.36 | 124 | 33 | 100% |
 | `Generator` | 0.33 | 5 | 2 | 100% |
 | `Infrastructure` | 0.25 | 7 | 4 | 100% |
@@ -78,7 +78,7 @@ quadrantChart
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 12 | 100% |
 | `Spec` | 0.06 | 159 | 38 | 100% |
-| `State` | 0.17 | 32 | 15 | 100% |
+| `State` | 0.17 | 27 | 14 | 100% |
 | `Support` | 0.00 | 18 | 5 | 100% |
 | `Telemetry` | 0.00 | 2 | 2 | 100% |
 | `Validator` | 0.50 | 65 | 64 | 100% |

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Execution\Data\Transition;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Execution\Transition;
-use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Policy\RetryPolicy;
@@ -17,8 +17,8 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionContext;
-use Alama\Arazzo\State\StepResult;
+use Alama\Arazzo\State\Data\ExecutionContext;
+use Alama\Arazzo\State\Data\StepResult;
 
 function workflowEngineResolver(): ExpressionResolverInterface
 {

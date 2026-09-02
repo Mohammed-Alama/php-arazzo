@@ -14,11 +14,11 @@ edit `POLICY` when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 3 | 4 | **forbidden** ⚠ |
+| `GuzzleHttp` | 4 | 4 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 36 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 40 | 17 | allowed |
+| `Psr` | 41 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -32,9 +32,9 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Console` | `OpenTelemetry` | 1 |
 | core | `Console` | `Psr` | 1 |
 | core | `Console` | `Symfony` | 30 |
-| core | `Execution` | `GuzzleHttp` | 1 |
+| core | `Execution` | `GuzzleHttp` | 2 |
 | core | `Execution` | `OpenTelemetry` | 2 |
-| core | `Execution` | `Psr` | 18 |
+| core | `Execution` | `Psr` | 19 |
 | core | `Execution` | `cebe` | 10 |
 | core | `Expression` | `Flow` | 1 |
 | core | `Generator` | `Psr` | 3 |
@@ -66,7 +66,7 @@ edit `POLICY` when a boundary consciously moves.
 - `Console` imports `GuzzleHttp\*` (2 refs)
 - `Console` imports `OpenTelemetry\*` (1 refs)
 - `Console` imports `Symfony\*` (30 refs)
-- `Execution` imports `GuzzleHttp\*` (1 refs)
+- `Execution` imports `GuzzleHttp\*` (2 refs)
 - `Execution` imports `OpenTelemetry\*` (2 refs)
 - `Execution` imports `cebe\*` (10 refs)
 - `Expression` imports `Flow\*` (1 refs)

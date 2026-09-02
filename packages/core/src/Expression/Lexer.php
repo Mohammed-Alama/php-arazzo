@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
+use Alama\Arazzo\Expression\Data\Token;
 use Alama\Arazzo\Expression\Enum\TokenKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 

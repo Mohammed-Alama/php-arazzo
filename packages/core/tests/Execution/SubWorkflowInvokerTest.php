@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Execution\Data\ExecutionResult;
+use Alama\Arazzo\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
-use Alama\Arazzo\Execution\ExecutionResult;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
-use Alama\Arazzo\Execution\SubWorkflowResult;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;

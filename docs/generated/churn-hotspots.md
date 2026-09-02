@@ -21,20 +21,20 @@ Analyzed 249 total file-touches across 29 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Validator` | 21 | 8% | 3,135 | 6.7 |
-| `Expression` | 20 | 8% | 1,455 | 13.7 |
-| `Execution` | 15 | 6% | 3,852 | 3.9 |
+| `Validator` | 21 | 8% | 3,154 | 6.7 |
+| `Expression` | 20 | 8% | 1,459 | 13.7 |
+| `Execution` | 15 | 6% | 4,150 | 3.6 |
 | `Resolver` | 15 | 6% | 370 | 40.5 |
 | `Console` | 14 | 6% | 791 | 17.7 |
 | `Laravel/Http` | 13 | 5% | 161 | 80.7 |
 | `Laravel/Persistence` | 13 | 5% | 252 | 51.6 |
-| `Spec` | 13 | 5% | 817 | 15.9 |
+| `Spec` | 13 | 5% | 813 | 16 |
 | `Laravel/Bindings` | 12 | 5% | 451 | 26.6 |
 | `Parser` | 12 | 5% | 1,096 | 10.9 |
 | `Laravel/Queue` | 9 | 4% | 100 | 90 |
-| `State` | 9 | 4% | 1,250 | 7.2 |
+| `State` | 9 | 4% | 944 | 9.5 |
 | `Evaluation` | 8 | 3% | 1,125 | 7.1 |
-| `Protocol` | 8 | 3% | 574 | 13.9 |
+| `Protocol` | 8 | 3% | 562 | 14.2 |
 | `Async` | 7 | 3% | 507 | 13.8 |
 | `Events` | 7 | 3% | 295 | 23.7 |
 | `Laravel/Lock` | 7 | 3% | 49 | 142.9 |

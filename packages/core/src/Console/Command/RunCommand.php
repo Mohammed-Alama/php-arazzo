@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Console\Command;
 
 use Alama\Arazzo\Console\DocumentLoader;
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\StepOutputExtractor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
@@ -109,11 +109,11 @@ final class RunCommand extends Command
             new OpenApi30Normalizer(),
             new OpenApi31Normalizer(),
         );
-        $resolver = new ArazzoExpressionResolver(
+        $resolver = new ExpressionResolver(
             $evaluator,
-            new ArazzoOutputExtractor($operationResolver, $evaluator),
-            new ArazzoCriteriaEvaluator($evaluator),
-            new ArazzoSchemaValidator($operationResolver),
+            new StepOutputExtractor($operationResolver, $evaluator),
+            new CriteriaEvaluator($evaluator),
+            new ResponseSchemaValidator($operationResolver),
         );
 
         $executor = new WorkflowExecutor(

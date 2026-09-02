@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Execution\Data\ExecutionState;
+use Alama\Arazzo\Execution\Data\Transition;
 use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Execution\Exceptions\WorkflowCycleException;
@@ -26,8 +28,7 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionContext;
-use Alama\Arazzo\State\ExecutionState;
+use Alama\Arazzo\State\Data\ExecutionContext;
 
 /** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events. */
 final class WorkflowEngine

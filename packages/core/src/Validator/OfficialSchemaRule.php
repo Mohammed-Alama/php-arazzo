@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Validator;
 
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\Exception\ValidationException;
 use JsonSchema\SchemaStorage;

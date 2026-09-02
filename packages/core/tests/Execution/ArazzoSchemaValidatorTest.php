@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
@@ -46,7 +46,7 @@ it('validates a response against the OpenAPI schema', function (): void {
         new OpenApi31Normalizer(),
     );
 
-    $validator = new class($opResolver) extends ArazzoSchemaValidator
+    $validator = new class($opResolver) extends ResponseSchemaValidator
     {
         public ?Operation $mockOperation = null;
 

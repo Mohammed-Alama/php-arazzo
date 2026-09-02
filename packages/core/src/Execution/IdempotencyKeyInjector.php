@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Execution\Data\InjectionResult;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
 use Psr\Http\Message\RequestInterface;

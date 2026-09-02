@@ -19,11 +19,11 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 
-class ArazzoCriteriaEvaluator implements CriteriaEvaluatorInterface
+class CriteriaEvaluator implements CriteriaEvaluatorInterface
 {
     private ConditionEvaluator $conditionEvaluator;
 
-    private ?XpathEvaluator $xpathEvaluator = null;
+    private ?XpathEvaluator $xpathEvaluator;
 
     public function __construct(
         private ExpressionEvaluatorInterface $evaluator,

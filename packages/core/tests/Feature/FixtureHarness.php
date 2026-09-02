@@ -9,8 +9,8 @@ use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Parser\Loader;
 use Alama\Arazzo\Parser\Parser;
 use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Validator\Data\ValidationResult;
 use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\ValidationResult;
 use Alama\Arazzo\Validator\Validator;
 
 final class FixtureHarness

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Execution\Data\RunPersistence;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
-use Alama\Arazzo\Execution\RunControlFlow;
-use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;

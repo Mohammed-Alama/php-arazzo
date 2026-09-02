@@ -10,7 +10,7 @@ use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rule;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class SelectorTypeSupportedRule implements Rule
 {

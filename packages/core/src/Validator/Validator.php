@@ -6,10 +6,11 @@ namespace Alama\Arazzo\Validator;
 
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Validator\Data\ValidationResult;
 
-final class Validator
+final readonly class Validator
 {
-    public function __construct(private readonly RuleSet $rules) {}
+    public function __construct(private RuleSet $rules) {}
 
     public function validate(ArazzoDocument $doc): ValidationResult
     {

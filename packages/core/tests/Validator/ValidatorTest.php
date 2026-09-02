@@ -9,7 +9,7 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rule;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 use Alama\Arazzo\Validator\RuleSet;
 use Alama\Arazzo\Validator\Validator;
 

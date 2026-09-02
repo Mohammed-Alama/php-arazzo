@@ -28,7 +28,7 @@ quadrantChart
     Dependency: [0.333, 0]
     Evaluation: [0.556, 0.111]
     Events: [0.167, 0.091]
-    Execution: [0.536, 0.128]
+    Execution: [0.536, 0.125]
     Expression: [0.364, 0.091]
     Generator: [0.333, 0]
     Infrastructure: [0.25, 0.25]
@@ -48,7 +48,7 @@ quadrantChart
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.25]
     Spec: [0.056, 0]
-    State: [0.167, 0.467]
+    State: [0.167, 0.5]
     Support: [0, 0.2]
     Telemetry: [0, 0]
     Validator: [0.5, 0.031]
@@ -61,12 +61,13 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `Parser` | 820 |
-| `ExecutionContext` | `State` | 492 |
-| `StepExecutionWorker` | `Execution` | 386 |
-| `StepOutcomeHandler` | `Execution` | 378 |
+| `ExecutionContext` | `State` | 493 |
+| `StepExecutionWorker` | `Execution` | 376 |
+| `StepOutcomeHandler` | `Execution` | 376 |
 | `WorkflowContext` | `Execution` | 358 |
-| `Parser` | `Expression` | 347 |
-| `ExecutionState` | `State` | 309 |
+| `Parser` | `Expression` | 348 |
+| `ExecutionState` | `Execution` | 308 |
+| `PreflightValidator` | `Validator` | 300 |
 
 ## Fat interfaces (ISP)
 

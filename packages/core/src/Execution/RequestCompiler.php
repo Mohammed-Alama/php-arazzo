@@ -20,9 +20,9 @@ use Psr\Http\Message\ResponseInterface;
  * (sync StepExecutor and queued HttpStepExecutor) so request shapes
  * cannot drift between adapters.
  */
-final class RequestCompiler
+final readonly class RequestCompiler
 {
-    public function __construct(private readonly ExpressionValueResolver $values) {}
+    public function __construct(private ExpressionValueResolver $values) {}
 
     /**
      * Resolves reusable parameters, evaluates every runtime value, applies
@@ -82,7 +82,7 @@ final class RequestCompiler
 
         return [
             'method' => $captured?->getMethod(),
-            'url' => $captured !== null ? (string) $captured->getUri() : '',
+            'url' => (string) $captured?->getUri(),
             'query' => $queryParams,
             'path' => $payload->path,
             'headers' => self::flattenHeaders($captured?->getHeaders() ?? []),

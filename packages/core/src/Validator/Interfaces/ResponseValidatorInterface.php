@@ -8,7 +8,7 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
 
-interface SchemaValidatorInterface
+interface ResponseValidatorInterface
 {
     /**
      * Validates a decoded response body against the step's OpenAPI schema.

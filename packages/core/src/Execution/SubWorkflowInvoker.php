@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
@@ -46,14 +47,13 @@ class SubWorkflowInvoker
             throw ExecutionException::subWorkflowNotFound($action->workflowId);
         }
 
-        $bound = [];
-        foreach ($action->parameters as $name => $spec) {
-            $bound[$name] = match (true) {
+        $bound = array_map(function ($spec) use ($parent) {
+            return match (true) {
                 $spec instanceof Expression => $this->expressions->evaluate($spec, new EvaluationContext($parent, '__invoke__')),
                 $spec instanceof Selector => $this->selectors->evaluate($spec, $parent, '__invoke__'),
                 default => $spec,
             };
-        }
+        }, $action->parameters);
 
         $child = WorkflowContext::forChildInvocation($parent, $target, $bound);
         $outcome = $this->executor->execute($target, $document, $bound, $child);

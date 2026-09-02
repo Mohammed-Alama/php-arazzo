@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Tests\Validation;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rule;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 use Alama\Arazzo\Validator\RuleSet;
 
 class DummyRule implements Rule

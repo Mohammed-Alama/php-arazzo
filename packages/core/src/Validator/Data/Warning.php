@@ -2,16 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator;
+namespace Alama\Arazzo\Validator\Data;
 
-final readonly class Error
+use Alama\Arazzo\Validator\Enum\Severity;
+
+final readonly class Warning
 {
     public function __construct(
         public string $code,
         public string $message,
         public string $path,
         public ?int $line = null,
-        public Severity $severity = Severity::Error,
+        public Severity $severity = Severity::Warning,
     ) {}
 
     /** @return array{code:string,message:string,path:string,line:?int,severity:string} */

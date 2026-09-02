@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State;
+namespace Alama\Arazzo\State\Data;
 
-final class ErrorEntry
+final readonly class ErrorEntry
 {
     public function __construct(
-        public readonly string $type,
-        public readonly string $stepId,
-        public readonly int $attempts,
-        public readonly string $message = '',
-        public readonly ?\DateTimeImmutable $timestamp = null,
+        public string $type,
+        public string $stepId,
+        public int $attempts,
+        public string $message = '',
+        public ?\DateTimeImmutable $timestamp = null,
     ) {
         // Default timestamp is handled by getTimestamp()
     }

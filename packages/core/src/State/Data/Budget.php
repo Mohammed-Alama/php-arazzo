@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State;
+namespace Alama\Arazzo\State\Data;
 
-final class Budget
+final readonly class Budget
 {
     /**
      * @param  list<string>  $workflowCallStack
      */
     public function __construct(
-        public readonly int $maxSteps,
-        public readonly int $stepsSpent,
-        public readonly int $maxWorkflowDepth,
-        public readonly array $workflowCallStack,
+        public int $maxSteps,
+        public int $stepsSpent,
+        public int $maxWorkflowDepth,
+        public array $workflowCallStack,
     ) {}
 
     public function remainingSteps(): int

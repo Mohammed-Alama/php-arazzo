@@ -6,13 +6,13 @@ namespace Alama\Arazzo\Validator\Rules;
 
 use Alama\Arazzo\Expression\Ast\OutputPart;
 use Alama\Arazzo\Expression\Ast\StepRef;
+use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Expression\WorkflowSymbols;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rule;
+use Alama\Arazzo\Validator\Interfaces\Rule;
 use Alama\Arazzo\Validator\Support\ExpressionWalker;
 
 final class ExpressionUnresolvedStepRefRule implements Rule

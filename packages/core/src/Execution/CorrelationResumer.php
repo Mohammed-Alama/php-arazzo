@@ -150,23 +150,13 @@ class CorrelationResumer
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
     {
-        foreach ($document->workflows as $workflow) {
-            if ($workflow->workflowId === $workflowId) {
-                return $workflow;
-            }
-        }
+        return array_find($document->workflows, fn ($workflow) => $workflow->workflowId === $workflowId);
 
-        return null;
     }
 
     private function findStep(Workflow $workflow, string $stepId): ?Step
     {
-        foreach ($workflow->steps as $step) {
-            if ($step->stepId === $stepId) {
-                return $step;
-            }
-        }
+        return array_find($workflow->steps, fn ($step) => $step->stepId === $stepId);
 
-        return null;
     }
 }

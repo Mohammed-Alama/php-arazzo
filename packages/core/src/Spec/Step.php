@@ -33,9 +33,9 @@ final readonly class Step
         public ?string $action = null,
         public ?string $channelPath = null,
         public ?Expression $correlationId = null,
-        public readonly ?bool $strictValidation = null,
-        public readonly ?bool $idempotencyKey = null,
-        public readonly ?string $idempotencyHeader = null,
-        public readonly ?int $timeout = null, // duration in milliseconds
+        public ?bool $strictValidation = null,
+        public ?bool $idempotencyKey = null,
+        public ?string $idempotencyHeader = null,
+        public ?int $timeout = null, // duration in milliseconds
     ) {}
 }

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Events\StepExecutedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
+use Alama\Arazzo\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Execution\StepOutputExtractor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
@@ -105,11 +105,11 @@ abstract class ConformanceHarness
     {
         $evaluator = new ExpressionEvaluator();
 
-        return new ArazzoExpressionResolver(
+        return new ExpressionResolver(
             $evaluator,
-            new ArazzoOutputExtractor($operationResolver, $evaluator),
-            new ArazzoCriteriaEvaluator($evaluator),
-            new ArazzoSchemaValidator($operationResolver),
+            new StepOutputExtractor($operationResolver, $evaluator),
+            new CriteriaEvaluator($evaluator),
+            new ResponseSchemaValidator($operationResolver),
         );
     }
 

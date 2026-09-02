@@ -8,7 +8,9 @@ use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Spec\OpenApiPayload;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
@@ -23,21 +25,26 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         private ?LoggerInterface $logger = null,
     ) {}
 
+    /**
+     * @throws GuzzleException
+     * @throws ClientExceptionInterface
+     * @throws \JsonException
+     */
     public function execute(
-        ResolvedOperation $resolvedOperation,
+        ResolvedOperation $operation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
         ?float $timeoutSeconds = null,
     ): ResponseInterface {
-        $openApi = $resolvedOperation->openApi;
+        $openApi = $operation->openApi;
 
         $baseUrl = '';
         if ($openApi->servers && count($openApi->servers) > 0) {
             $baseUrl = rtrim($openApi->servers[0]->url, '/');
         }
 
-        $method = strtoupper($resolvedOperation->normalized->method);
-        $urlPath = $resolvedOperation->normalized->path;
+        $method = strtoupper($operation->normalized->method);
+        $urlPath = $operation->normalized->path;
 
         $path = $payload->path;
         $query = $payload->query;
@@ -45,25 +52,25 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         $cookie = $payload->cookie;
 
         foreach ($payload->auto as $name => $value) {
-            if (isset($resolvedOperation->normalized->pathParameters[$name])) {
+            if (isset($operation->normalized->pathParameters[$name])) {
                 $path[$name] = $value;
-            } elseif (isset($resolvedOperation->normalized->headerParameters[$name])) {
+            } elseif (isset($operation->normalized->headerParameters[$name])) {
                 $header[$name] = $value;
-            } elseif (isset($resolvedOperation->normalized->cookieParameters[$name])) {
+            } elseif (isset($operation->normalized->cookieParameters[$name])) {
                 $cookie[$name] = $value;
             } else {
                 $query[$name] = $value;
             }
         }
 
-        $path = $this->castParameters($resolvedOperation->normalized->pathParameters, $path);
-        $query = $this->castParameters($resolvedOperation->normalized->queryParameters, $query);
-        $header = $this->castParameters($resolvedOperation->normalized->headerParameters, $header);
-        $cookie = $this->castParameters($resolvedOperation->normalized->cookieParameters, $cookie);
+        $path = $this->castParameters($operation->normalized->pathParameters, $path);
+        $query = $this->castParameters($operation->normalized->queryParameters, $query);
+        $header = $this->castParameters($operation->normalized->headerParameters, $header);
+        $cookie = $this->castParameters($operation->normalized->cookieParameters, $cookie);
 
-        $serializedPath = ParameterSerializer::serialize('path', $resolvedOperation->normalized->pathParameters, $path);
+        $serializedPath = ParameterSerializer::serialize('path', $operation->normalized->pathParameters, $path);
         foreach ($serializedPath as $name => $value) {
-            $style = $resolvedOperation->normalized->pathParameters[$name]['style'] ?? 'simple';
+            $style = $operation->normalized->pathParameters[$name]['style'] ?? 'simple';
             $replacement = $style === 'simple' ? urlencode($value) : $value;
             // matrix and label include the prefix in the serialized value,
             // so we replace the template
@@ -72,7 +79,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $url = $baseUrl.$urlPath;
 
-        $serializedQuery = ParameterSerializer::serialize('query', $resolvedOperation->normalized->queryParameters, $query);
+        $serializedQuery = ParameterSerializer::serialize('query', $operation->normalized->queryParameters, $query);
         $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
         if (!empty($filteredQuery)) {
             $url .= '?'.implode('&', array_values($filteredQuery));
@@ -80,12 +87,12 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $request = $this->requestFactory->createRequest($method, $url);
 
-        $serializedHeader = ParameterSerializer::serialize('header', $resolvedOperation->normalized->headerParameters, $header);
+        $serializedHeader = ParameterSerializer::serialize('header', $operation->normalized->headerParameters, $header);
         foreach ($serializedHeader as $k => $v) {
             $request = $request->withHeader($k, (string) $v);
         }
 
-        $serializedCookie = ParameterSerializer::serialize('cookie', $resolvedOperation->normalized->cookieParameters, $cookie);
+        $serializedCookie = ParameterSerializer::serialize('cookie', $operation->normalized->cookieParameters, $cookie);
         if (!empty($serializedCookie)) {
             $cookieString = implode('; ', array_values($serializedCookie));
             $request = $request->withHeader('Cookie', $cookieString);
@@ -110,11 +117,10 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         // available so declared step timeouts are actually enforced.
         if ($timeoutSeconds !== null && $this->httpClient instanceof \GuzzleHttp\ClientInterface) {
             // Guzzle's options stub requires non-empty header value lists.
-            $headers = [];
 
-            foreach ($request->getHeaders() as $name => $values) {
-                $headers[$name] = $values === [] ? [''] : array_values(array_map(strval(...), $values));
-            }
+            $headers = array_map(function ($values) {
+                return $values === [] ? [''] : array_values(array_map(strval(...), $values));
+            }, $request->getHeaders());
 
             return $this->httpClient->request(
                 $request->getMethod(),

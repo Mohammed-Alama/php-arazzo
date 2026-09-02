@@ -26,7 +26,7 @@ use cebe\openapi\spec\Schema;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
-class ArazzoOutputExtractor implements OutputExtractorInterface
+class StepOutputExtractor implements OutputExtractorInterface
 {
     private ?SelectorEvaluator $selectorEvaluator = null;
 
@@ -86,7 +86,7 @@ class ArazzoOutputExtractor implements OutputExtractorInterface
             return $value;
         }
 
-        $ast = (new ExpressionParser())->parse($expression->raw);
+        $ast = new ExpressionParser()->parse($expression->raw);
         if (!$ast instanceof StepRef || !$ast->part instanceof ResponsePart || $ast->part->httpPart !== 'body' || $ast->part->jsonPointer === null) {
             return $value;
         }

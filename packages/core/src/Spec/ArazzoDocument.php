@@ -29,12 +29,8 @@ final readonly class ArazzoDocument
 
     public function hasExternalSourceFor(string $workflowId): bool
     {
-        foreach ($this->sourceDescriptions as $sourceDesc) {
-            if ($sourceDesc->type === SourceType::Arazzo && str_starts_with($workflowId, $sourceDesc->name.'.')) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->sourceDescriptions, function ($sourceDesc) use ($workflowId) {
+            return $sourceDesc->type === SourceType::Arazzo && str_starts_with($workflowId, $sourceDesc->name.'.');
+        });
     }
 }

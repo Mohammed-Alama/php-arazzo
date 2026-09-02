@@ -13,6 +13,10 @@ use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Validator\Data\Error;
+use Alama\Arazzo\Validator\Data\ValidationResult;
+use Alama\Arazzo\Validator\Data\Warning;
+use Alama\Arazzo\Validator\Enum\Severity;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
@@ -263,7 +267,9 @@ final class PreflightValidator
     private function sourceNameOf(Step $step): ?string
     {
         foreach ([$step->operationPath, $step->operationId] as $reference) {
-            if (is_string($reference) && preg_match('/^\{\$sourceDescriptions\.([^}]+)\.url\}/', $reference, $m) === 1) {
+            if (
+                is_string($reference)
+                && preg_match('/^\{\$sourceDescriptions\.([^}]+)\.url\}/', $reference, $m) === 1) {
                 return $m[1];
             }
         }

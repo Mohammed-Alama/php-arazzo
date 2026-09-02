@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
+use Alama\Arazzo\Expression\Data\StepSymbols;
+use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Parameter;

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Support;
 
-use Alama\Arazzo\Expression\WorkflowSymbols;
+use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Spec\Expression;
 
 final readonly class ExpressionSite
 {
-    /** @param 'parameters'|'requestBody'|'criteria'|'outputs'|'onSuccess'|'onFailure'|'wf.parameters'|'wf.outputs'|'components' $context */
+    /**
+     * @param  'parameters'|'requestBody'|'criteria'|'outputs'|'onSuccess'|'onFailure'|'wf.parameters'|'wf.outputs'|'components'  $context
+     */
     public function __construct(
         public string $pointer,
         public Expression $expression,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression;
+namespace Alama\Arazzo\Expression\Data;
 
 use Alama\Arazzo\Expression\Enum\TokenKind;
 

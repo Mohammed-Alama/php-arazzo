@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Protocol;
 
 use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Execution\Data\ExecutionState;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
-use Alama\Arazzo\Execution\TransitionType;
+use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
@@ -15,7 +16,6 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionState;
 use Throwable;
 
 /**
@@ -132,23 +132,11 @@ final class SubWorkflowExecutor implements StepProtocolExecutorInterface
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow
     {
-        foreach ($document->workflows as $workflow) {
-            if ($workflow->workflowId === $workflowId) {
-                return $workflow;
-            }
-        }
-
-        return null;
+        return array_find($document->workflows, fn ($workflow) => $workflow->workflowId === $workflowId);
     }
 
     private function findStep(Workflow $workflow, string $stepId): ?Step
     {
-        foreach ($workflow->steps as $step) {
-            if ($step->stepId === $stepId) {
-                return $step;
-            }
-        }
-
-        return null;
+        return array_find($workflow->steps, fn ($step) => $step->stepId === $stepId);
     }
 }

@@ -15,11 +15,11 @@ the heavier direction is drawn and the folded side is listed below the chart.
 sankey-beta
 
 Async,Events,9
-Async,Execution,7
+Async,Execution,9
 Async,Expression,1
 Async,Jobs,1
 Async,Spec,9
-Async,State,8
+Async,State,6
 Async,Support,1
 Async,Validator,4
 Console,Dependency,1
@@ -51,7 +51,7 @@ Execution,Jobs,2
 Execution,Normalizer,5
 Execution,Parser,1
 Execution,Spec,74
-Execution,State,22
+Execution,State,17
 Execution,Support,9
 Execution,Telemetry,1
 Execution,Validator,11
@@ -107,12 +107,12 @@ Policy,Execution,3
 Policy,Spec,2
 Protocol,Dependency,1
 Protocol,Evaluation,1
-Protocol,Execution,17
+Protocol,Execution,18
 Protocol,Expression,4
 Protocol,Infrastructure,1
 Protocol,Normalizer,1
 Protocol,Spec,25
-Protocol,State,2
+Protocol,State,1
 Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
@@ -121,7 +121,7 @@ Validator,Dependency,1
 Validator,Expression,87
 Validator,Normalizer,2
 Validator,Resolver,1
-Validator,Spec,91
+Validator,Spec,90
 Validator,Support,2
 ```
 

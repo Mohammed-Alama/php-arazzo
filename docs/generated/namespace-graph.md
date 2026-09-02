@@ -103,9 +103,9 @@ flowchart LR
     Protocol --> Normalizer
     Protocol --> Spec
     Protocol --> Dependency
-    Protocol --> State
     Protocol --> Evaluation
     Protocol --> Infrastructure
+    Protocol --> State
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec

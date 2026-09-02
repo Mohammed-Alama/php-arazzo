@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator\Support;
 
+use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Expression\WorkflowSymbols;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Reusable;

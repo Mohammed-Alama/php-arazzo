@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Execution\StepOutputExtractor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
@@ -56,7 +56,7 @@ beforeEach(function () {
     $this->openApiFile = tempnam(sys_get_temp_dir(), 'openapi_').'.json';
     file_put_contents($this->openApiFile, $openApiJson);
 
-    $this->makeExtractor = function (): ArazzoOutputExtractor {
+    $this->makeExtractor = function (): StepOutputExtractor {
         $sourceResolver = new DefaultSourceResolver(
             fetchers: ['file' => new LocalFetcher()],
         );
@@ -68,7 +68,7 @@ beforeEach(function () {
             new OpenApi31Normalizer(),
         );
 
-        return new ArazzoOutputExtractor($resolver, new ExpressionEvaluator());
+        return new StepOutputExtractor($resolver, new ExpressionEvaluator());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State;
+namespace Alama\Arazzo\State\Data;
 
 use Alama\Arazzo\Spec\Enum\StepStatus;
 
-final class StepResult
+final readonly class StepResult
 {
     /**
      * @param  array<string, mixed>  $request
@@ -16,18 +16,18 @@ final class StepResult
      * @param  array<string, mixed>  $responseHeaders
      */
     public function __construct(
-        public readonly int $statusCode,
-        public readonly array $request = [],
-        public readonly array $response = [],
-        public readonly array $outputs = [],
-        public readonly array $inputs = [],
-        public readonly int $attempts = 0,
-        public readonly ?StepStatus $status = null,
-        public readonly ?string $failureCategory = null,
-        public readonly string $contentType = 'application/json',
-        public readonly string $responseBody = '',
-        public readonly string $rawBody = '',
-        public readonly array $responseHeaders = [],
+        public int $statusCode,
+        public array $request = [],
+        public array $response = [],
+        public array $outputs = [],
+        public array $inputs = [],
+        public int $attempts = 0,
+        public ?StepStatus $status = null,
+        public ?string $failureCategory = null,
+        public string $contentType = 'application/json',
+        public string $responseBody = '',
+        public string $rawBody = '',
+        public array $responseHeaders = [],
     ) {}
 
     /**

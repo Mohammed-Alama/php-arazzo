@@ -15,7 +15,7 @@ use Alama\Arazzo\Spec\Step;
  */
 final class ImplicitDependencies
 {
-    private const OUTPUT_REF_PATTERN = '/\$steps\.([^.\s}\$]+)\.outputs\b/';
+    private const string OUTPUT_REF_PATTERN = '/\$steps\.([^.\s}\$]+)\.outputs\b/';
 
     /**
      * @return list<string> referenced stepIds (deduplicated, self excluded)

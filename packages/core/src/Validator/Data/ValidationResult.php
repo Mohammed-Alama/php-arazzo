@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator;
+namespace Alama\Arazzo\Validator\Data;
 
 use Alama\Arazzo\Spec\ArazzoDocument;
 

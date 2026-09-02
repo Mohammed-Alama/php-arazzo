@@ -26,7 +26,7 @@ class ExpressionEvaluator implements ExpressionEvaluatorInterface
 {
     public function evaluate(Expression $expression, EvaluationContext $context): mixed
     {
-        $ast = (new ExpressionParser())->parse($expression->raw);
+        $ast = new ExpressionParser()->parse($expression->raw);
 
         return $this->evaluateAst($ast, $context);
     }

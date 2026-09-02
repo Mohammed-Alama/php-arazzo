@@ -17,4 +17,6 @@ interface StateStoreInterface
      * @return array<string, mixed>|null
      */
     public function load(string $executionId): ?array;
+
+    //    public function delete(string $executionId): void;
 }

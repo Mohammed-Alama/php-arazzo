@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Events\RunStartedEvent;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Execution\StepExecutor;
+use Alama\Arazzo\Execution\StepOutputExtractor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
@@ -28,9 +28,9 @@ use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDocument;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
-use Alama\Arazzo\Validator\PreflightFailureException;
+use Alama\Arazzo\Validator\Enum\Severity;
+use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
-use Alama\Arazzo\Validator\Severity;
 use GuzzleHttp\Psr7\HttpFactory;
 
 const PETSHOP_OPENAPI = [
@@ -152,14 +152,14 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
         ],
     ]);
-    $resolver = new ArazzoExpressionResolver(
+    $resolver = new ExpressionResolver(
         new ExpressionEvaluator(),
-        new ArazzoOutputExtractor(
+        new StepOutputExtractor(
             (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
             new ExpressionEvaluator(),
         ),
-        new ArazzoCriteriaEvaluator(new ExpressionEvaluator()),
-        new ArazzoSchemaValidator(
+        new CriteriaEvaluator(new ExpressionEvaluator()),
+        new ResponseSchemaValidator(
             (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
         ),
     );

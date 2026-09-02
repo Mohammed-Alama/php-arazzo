@@ -18,6 +18,7 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Data\Token;
 use Alama\Arazzo\Expression\Enum\TokenKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
+use Alama\Arazzo\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Execution\Data\RunPersistence;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Execution\RunControlFlow;
-use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\SyncQueueDriver;

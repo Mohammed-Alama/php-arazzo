@@ -13,15 +13,15 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Validator\Interfaces\SchemaValidatorInterface;
+use Alama\Arazzo\Validator\Interfaces\ResponseValidatorInterface;
 
-class ArazzoExpressionResolver implements ExpressionResolverInterface
+class ExpressionResolver implements ExpressionResolverInterface
 {
     public function __construct(
         private ExpressionEvaluatorInterface $evaluator,
         private OutputExtractorInterface $outputExtractor,
         private CriteriaEvaluatorInterface $criteriaEvaluator,
-        private SchemaValidatorInterface $schemaValidator,
+        private ResponseValidatorInterface $schemaValidator,
     ) {}
 
     public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed

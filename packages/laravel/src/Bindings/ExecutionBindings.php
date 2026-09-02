@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Laravel\Bindings;
 
 use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
 use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Execution\Data\RunPersistence;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Execution\RunControlFlow;
-use Alama\Arazzo\Execution\RunPersistence;
+use Alama\Arazzo\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Execution\StepOutputExtractor;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
@@ -52,11 +52,11 @@ final class ExecutionBindings
             $evaluator = new ExpressionEvaluator();
             $operationResolver = $app->make(OpenApiOperationResolver::class);
 
-            return new ArazzoExpressionResolver(
+            return new ExpressionResolver(
                 $evaluator,
-                new ArazzoOutputExtractor($operationResolver, $evaluator),
-                new ArazzoCriteriaEvaluator($evaluator),
-                new ArazzoSchemaValidator($operationResolver),
+                new StepOutputExtractor($operationResolver, $evaluator),
+                new CriteriaEvaluator($evaluator),
+                new ResponseSchemaValidator($operationResolver),
             );
         });
 

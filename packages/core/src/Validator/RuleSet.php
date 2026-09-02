@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Validator;
 
+use Alama\Arazzo\Validator\Interfaces\Rule;
 use Alama\Arazzo\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Validator\Rules\ActionRetryLimitsRule;
 use Alama\Arazzo\Validator\Rules\ActionReusableRefResolvesRule;

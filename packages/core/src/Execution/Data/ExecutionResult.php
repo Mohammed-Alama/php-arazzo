@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Execution\Data;
 
 class ExecutionResult
 {

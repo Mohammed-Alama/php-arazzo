@@ -36,7 +36,7 @@ Evans' first question: does the code speak one language?
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `ArazzoExpressionResolver`, `DefaultSourceResolver`, `ExpressionResolverInterface`, `ExpressionValueResolver` + 5 more (9 types)
+- **Resolver**: `DefaultSourceResolver`, `ExpressionResolver`, `ExpressionResolverInterface`, `ExpressionValueResolver` + 5 more (9 types)
 
 ### state vs status
 
@@ -65,6 +65,6 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Evaluation\Condition\Lexer`<br/>`Expression\Lexer` | core |
 | `Parser` | `Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Parser\Parser` | core |
-| `StepResult` | `Execution\StepResult`<br/>`State\StepResult` | core |
-| `Token` | `Evaluation\Condition\Token`<br/>`Expression\Token` | core |
+| `StepResult` | `Execution\Data\StepResult`<br/>`State\Data\StepResult` | core |
+| `Token` | `Evaluation\Condition\Token`<br/>`Expression\Data\Token` | core |
 | `TokenKind` | `Evaluation\Enum\TokenKind`<br/>`Expression\Enum\TokenKind` | core |

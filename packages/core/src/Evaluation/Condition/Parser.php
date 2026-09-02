@@ -17,7 +17,7 @@ use Alama\Arazzo\Spec\Expression;
 
 final class Parser
 {
-    private const TERMINAL_KINDS = [
+    private const array TERMINAL_KINDS = [
         TokenKind::Number,
         TokenKind::String,
         TokenKind::Ident,

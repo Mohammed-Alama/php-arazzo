@@ -8,13 +8,13 @@ use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
-use Alama\Arazzo\Validator\Interfaces\SchemaValidatorInterface;
+use Alama\Arazzo\Validator\Interfaces\ResponseValidatorInterface;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
 
-class ArazzoSchemaValidator implements SchemaValidatorInterface
+class ResponseSchemaValidator implements ResponseValidatorInterface
 {
     public function __construct(
         private OpenApiOperationResolver $operationResolver,

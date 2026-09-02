@@ -6,15 +6,15 @@ namespace Alama\Arazzo\Async;
 
 use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Execution\Transition;
-use Alama\Arazzo\Execution\TransitionType;
+use Alama\Arazzo\Execution\Data\ExecutionState;
+use Alama\Arazzo\Execution\Data\Transition;
+use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\ExecutionState;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 

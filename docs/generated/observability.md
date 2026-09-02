@@ -22,7 +22,7 @@ _No catalog found (LedgerAppendingListener not found)._
 
 | Class | Level(s) | Calls |
 |---|---|---:|
-| `ArazzoOutputExtractor` <small>core</small> | `warning` | 1 |
+| `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 | `OfficialSchemaRule` <small>core</small> | `error` | 2 |
 | `ActionGotoTargetResolvesRule` <small>core</small> | `error` | 2 |

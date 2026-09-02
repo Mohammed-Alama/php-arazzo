@@ -27,8 +27,8 @@ flowchart LR
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>State</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Execution</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>Async</small>"]:::contract
+    I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>Validator</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
-    I_SchemaValidatorInterface["SchemaValidatorInterface<br/><small>Validator</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>State</small>"]:::contract
@@ -48,8 +48,10 @@ flowchart LR
     C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
     C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_core_Evaluation_ArazzoExpressionResolver["ArazzoExpressionResolver<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_ArazzoExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_core_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>Evaluation</small>"]:::implCore
+    C_core_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_core_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>Evaluation</small>"]:::implCore
+    C_core_Evaluation_CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_core_Evaluation_Literal["Literal<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_Literal -.->|implements| I_ConditionNode
     C_core_Evaluation_LogicalOp["LogicalOp<br/><small>Evaluation</small>"]:::implCore
@@ -60,14 +62,12 @@ flowchart LR
     C_core_Evaluation_UnaryNot -.->|implements| I_ConditionNode
     C_core_Evaluation_RuntimeExpr["RuntimeExpr<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_RuntimeExpr -.->|implements| I_ConditionNode
-    C_core_Evaluation_ArazzoCriteriaEvaluator["ArazzoCriteriaEvaluator<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_ArazzoCriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_core_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Execution</small>"]:::implCore
     C_core_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
-    C_core_Execution_ArazzoSchemaValidator["ArazzoSchemaValidator<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_ArazzoSchemaValidator -.->|implements| I_SchemaValidatorInterface
-    C_core_Execution_ArazzoOutputExtractor["ArazzoOutputExtractor<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_ArazzoOutputExtractor -.->|implements| I_OutputExtractorInterface
+    C_core_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
+    C_core_Execution_StepOutputExtractor["StepOutputExtractor<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_StepOutputExtractor -.->|implements| I_OutputExtractorInterface
     C_core_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>Execution</small>"]:::implCore
     C_core_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
     C_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>Queue</small>"]:::implLaravel

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Execution\Data;
 
-use Alama\Arazzo\State\ExecutionContext;
-use Alama\Arazzo\State\ExecutionState;
+use Alama\Arazzo\Execution\Enum\TransitionType;
+use Alama\Arazzo\State\Data\ExecutionContext;
 
 final readonly class Transition
 {

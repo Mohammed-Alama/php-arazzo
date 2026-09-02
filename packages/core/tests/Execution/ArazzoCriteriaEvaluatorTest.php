@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Spec\Enum\CriterionType;
@@ -12,7 +12,7 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 
 beforeEach(function () {
-    $this->evaluator = new ArazzoCriteriaEvaluator(new ExpressionEvaluator());
+    $this->evaluator = new CriteriaEvaluator(new ExpressionEvaluator());
 });
 
 it('evaluates success criteria simple regex jsonpath', function () {
