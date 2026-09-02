@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Async` | 7 | 501 | 4 | 8 | 0.67 |  |
+| `Async` | 7 | 500 | 4 | 8 | 0.67 |  |
 | `Console` | 11 | 780 | 0 | 15 | 1.00 |  |
 | `Dependency` | 3 | 325 | 4 | 1 | 0.20 |  |
 | `Evaluation` | 18 | 1092 | 4 | 5 | 0.56 |  |
@@ -42,7 +42,7 @@ targets. Regenerated before every commit.
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `Validator` | 64 | 3071 | 6 | 6 | 0.50 |  |
 
-Total cross-module edges: **781**
+Total cross-module edges: **780**
 
 ## Most entangled module pairs
 
@@ -59,4 +59,4 @@ Total cross-module edges: **781**
 | `Execution` → `Events` | 21 |
 | `Execution` → `Expression` | 21 |
 | `Laravel:Bindings` → `Execution` | 15 |
-| `Async` → `Spec` | 14 |
+| `Async` → `Spec` | 13 |

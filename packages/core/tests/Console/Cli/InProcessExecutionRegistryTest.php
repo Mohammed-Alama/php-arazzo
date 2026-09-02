@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Console\Cli;
 
 use Alama\Arazzo\Console\Cli\InProcessExecutionRegistry;
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 
 it('marks a started run as running', function (): void {
     $registry = new InProcessExecutionRegistry();

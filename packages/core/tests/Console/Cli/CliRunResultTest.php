@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Tests\Console\Cli;
 
 use Alama\Arazzo\Console\Cli\CliRunResult;
 use Alama\Arazzo\Console\Cli\InProcessExecutionRegistry;
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 
 it('exposes the raw constructor values', function (): void {

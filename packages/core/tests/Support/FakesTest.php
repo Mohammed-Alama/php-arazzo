@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Tests\Support\FakeHttpClient;
 use Alama\Arazzo\Tests\Support\FakeLockManager;

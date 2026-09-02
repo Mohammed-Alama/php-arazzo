@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Console\Cli;
 
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 
 /**

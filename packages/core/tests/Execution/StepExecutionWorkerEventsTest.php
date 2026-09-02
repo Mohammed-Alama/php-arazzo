@@ -22,7 +22,7 @@ use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\PendingCorrelation;

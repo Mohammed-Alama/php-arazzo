@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Spec\Enum;
 
 enum ExecutionStatus: string
 {

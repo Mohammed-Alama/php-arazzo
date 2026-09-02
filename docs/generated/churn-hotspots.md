@@ -14,41 +14,41 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["Validator", "Expression", "Resolver", "Execution", "Laravel/Http", "Console", "Laravel/Bindings", "Laravel/Persistence", "Parser", "Spec", "Laravel/Queue", "Events"]
     y-axis "Touches" 0 --> 30
-    bar [20, 18, 14, 12, 12, 11, 11, 11, 11, 11, 8, 6]
+    bar [21, 19, 15, 13, 13, 12, 12, 12, 12, 11, 9, 7]
 ```
 
-Analyzed 210 total file-touches across 29 modules.
+Analyzed 231 total file-touches across 29 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Validator` | 20 | 10% | 3,135 | 6.4 |
-| `Expression` | 18 | 9% | 1,455 | 12.4 |
-| `Resolver` | 14 | 7% | 370 | 37.8 |
-| `Execution` | 12 | 6% | 3,494 | 3.4 |
-| `Laravel/Http` | 12 | 6% | 161 | 74.5 |
-| `Console` | 11 | 5% | 791 | 13.9 |
-| `Laravel/Bindings` | 11 | 5% | 451 | 24.4 |
-| `Laravel/Persistence` | 11 | 5% | 252 | 43.7 |
-| `Parser` | 11 | 5% | 1,096 | 10 |
+| `Validator` | 21 | 9% | 3,135 | 6.7 |
+| `Expression` | 19 | 8% | 1,455 | 13.1 |
+| `Resolver` | 15 | 6% | 370 | 40.5 |
+| `Execution` | 13 | 6% | 3,494 | 3.7 |
+| `Laravel/Http` | 13 | 6% | 161 | 80.7 |
+| `Console` | 12 | 5% | 791 | 15.2 |
+| `Laravel/Bindings` | 12 | 5% | 451 | 26.6 |
+| `Laravel/Persistence` | 12 | 5% | 252 | 47.6 |
+| `Parser` | 12 | 5% | 1,096 | 10.9 |
 | `Spec` | 11 | 5% | 1,172 | 9.4 |
-| `Laravel/Queue` | 8 | 4% | 100 | 80 |
-| `Events` | 6 | 3% | 295 | 20.3 |
-| `Laravel/Lock` | 6 | 3% | 49 | 122.4 |
-| `Laravel/State` | 6 | 3% | 38 | 157.9 |
-| `Protocol` | 6 | 3% | 574 | 10.5 |
-| `State` | 6 | 3% | 1,250 | 4.8 |
-| `Evaluation` | 5 | 2% | 1,110 | 4.5 |
-| `Policy` | 5 | 2% | 96 | 52.1 |
+| `Laravel/Queue` | 9 | 4% | 100 | 90 |
+| `Events` | 7 | 3% | 295 | 23.7 |
+| `Laravel/Lock` | 7 | 3% | 49 | 142.9 |
+| `Laravel/State` | 7 | 3% | 38 | 184.2 |
+| `Protocol` | 7 | 3% | 574 | 12.2 |
+| `State` | 7 | 3% | 1,250 | 5.6 |
+| `Evaluation` | 6 | 3% | 1,110 | 5.4 |
+| `Policy` | 6 | 3% | 96 | 62.5 |
+| `Async` | 5 | 2% | 507 | 9.9 |
+| `Generator` | 5 | 2% | 105 | 47.6 |
+| `Normalizer` | 5 | 2% | 588 | 8.5 |
 | `Support` | 5 | 2% | 171 | 29.2 |
-| `Async` | 4 | 2% | 508 | 7.9 |
-| `Generator` | 4 | 2% | 105 | 38.1 |
 | `Jobs` | 4 | 2% | 34 | 117.6 |
-| `Normalizer` | 4 | 2% | 588 | 6.8 |
 | `Dependency` | 3 | 1% | 328 | 9.1 |
+| `Infrastructure` | 2 | 1% | 160 | 12.5 |
 | `Laravel/Events` | 2 | 1% | 21 | 95.2 |
 | `Renderer` | 2 | 1% | 253 | 7.9 |
-| `Infrastructure` | 1 | 0% | 160 | 6.3 |
 | `Laravel/Support` | 1 | 0% | 60 | 16.7 |
 | `Telemetry` | 1 | 0% | 278 | 3.6 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (80), `Laravel/Http` (74.5), `Laravel/Persistence` (43.7)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (90), `Laravel/Http` (80.7), `Laravel/Persistence` (47.6)

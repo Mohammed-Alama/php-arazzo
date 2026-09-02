@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Laravel;
 
 use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 

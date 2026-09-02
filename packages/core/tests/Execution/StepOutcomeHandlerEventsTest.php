@@ -20,7 +20,7 @@ use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\ExecutionStatus;
+use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\PendingCorrelation;
