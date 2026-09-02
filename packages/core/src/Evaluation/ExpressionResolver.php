@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Execution\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;

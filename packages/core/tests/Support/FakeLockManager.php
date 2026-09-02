@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 
 final class FakeLockManager implements LockManagerInterface
 {

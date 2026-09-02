@@ -68,7 +68,6 @@ flowchart LR
     Evaluation --> Contracts
     Evaluation --> Expression
     Evaluation --> Spec
-    Evaluation --> Execution
     Evaluation --> Validator
     Evaluation --> Support
     Events --> Support
@@ -89,7 +88,7 @@ flowchart LR
     Expression --> Spec
     Expression --> Support
     Generator --> Contracts
-    Infrastructure --> State
+    Infrastructure --> Contracts
     Jobs --> Contracts
     Jobs --> Spec
     Normalizer --> Support
@@ -146,7 +145,7 @@ flowchart LR
     Laravel_Http --> Contracts
     Laravel_Http --> Jobs
     Laravel_Http --> State
-    Laravel_Lock --> State
+    Laravel_Lock --> Contracts
     Laravel_Persistence --> Spec
     Laravel_Persistence --> State
     Laravel_Persistence --> Events

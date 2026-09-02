@@ -95,6 +95,14 @@ file on a commit is a public API change — review it deliberately.
 - `public static function fromArray(array $values): self`
 - `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
 
+### `LockStrategyInterface` interface
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
+- `public function release(string $key): void;`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool;`
+
+### `OutputExtractorInterface` interface
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
+
 ### `QueueDriverInterface` interface
 - `public function dispatch(object $job, int $delaySeconds = 0): void;`
 
@@ -233,9 +241,6 @@ file on a commit is a public API change — review it deliberately.
 
 ### `OpenApiExecutorInterface` interface
 - `public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null, ): ResponseInterface;`
-
-### `OutputExtractorInterface` interface
-- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
 
 ### `ParameterSerializer` class
 - `public static function serialize(string $location, array $normalizedParams, array $payload): array`
@@ -677,11 +682,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function delete(string $executionId): void`
 - `public function load(string $executionId): ?array`
 - `public function save(string $executionId, array $state, ?int $ttlSeconds = null): void`
-
-### `LockStrategyInterface` interface
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
-- `public function release(string $key): void;`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool;`
 
 ### `PendingCorrelationRegistryInterface` interface
 - `public function consume(string $correlationId): void;`

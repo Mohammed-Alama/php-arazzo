@@ -20,11 +20,11 @@ flowchart LR
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Expression</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>Infrastructure</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
-    I_LockManagerInterface["LockManagerInterface<br/><small>State</small>"]:::contract
-    I_LockStrategyInterface["LockStrategyInterface<br/><small>State</small>"]:::contract
+    I_LockManagerInterface["LockManagerInterface<br/><small>Contracts</small>"]:::contract
+    I_LockStrategyInterface["LockStrategyInterface<br/><small>Contracts</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Execution</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Normalizer</small>"]:::contract
-    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Execution</small>"]:::contract
+    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Contracts</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>State</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Execution</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>Contracts</small>"]:::contract

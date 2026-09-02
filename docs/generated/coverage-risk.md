@@ -22,11 +22,11 @@ quadrantChart
     quadrant-4 Untested churn
     Async: [1, 1]
     Console: [1, 1]
-    Contracts: [0.071, 0]
+    Contracts: [0.063, 0]
     Dependency: [0.333, 1]
-    Evaluation: [0.6, 1]
+    Evaluation: [0.556, 1]
     Events: [0.167, 1]
-    Execution: [0.7, 1]
+    Execution: [0.737, 1]
     Expression: [0.222, 1]
     Generator: [0.333, 1]
     Infrastructure: [0.25, 1]
@@ -46,7 +46,7 @@ quadrantChart
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
     Spec: [0, 0]
-    State: [0.167, 1]
+    State: [0.2, 1]
     Support: [0, 0]
     Telemetry: [0, 1]
     Validator: [0.545, 1]
@@ -56,11 +56,11 @@ quadrantChart
 |---|---:|---:|---:|---:|
 | `Async` | 1.00 | 6 | 6 | 100% |
 | `Console` | 1.00 | 11 | 11 | 100% |
-| `Contracts` | 0.07 | 0 | 6 | 0% |
+| `Contracts` | 0.06 | 0 | 9 | 0% |
 | `Dependency` | 0.33 | 5 | 3 | 100% |
-| `Evaluation` | 0.60 | 41 | 19 | 100% |
+| `Evaluation` | 0.56 | 41 | 19 | 100% |
 | `Events` | 0.17 | 29 | 11 | 100% |
-| `Execution` | 0.70 | 51 | 36 | 100% |
+| `Execution` | 0.74 | 51 | 35 | 100% |
 | `Expression` | 0.22 | 122 | 35 | 100% |
 | `Generator` | 0.33 | 5 | 2 | 100% |
 | `Infrastructure` | 0.25 | 7 | 4 | 100% |
@@ -80,7 +80,7 @@ quadrantChart
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 12 | 100% |
 | `Spec` | 0.00 | 0 | 38 | 0% |
-| `State` | 0.17 | 27 | 14 | 100% |
+| `State` | 0.20 | 25 | 12 | 100% |
 | `Support` | 0.00 | 0 | 5 | 0% |
 | `Telemetry` | 0.00 | 2 | 2 | 100% |
 | `Validator` | 0.55 | 65 | 64 | 100% |

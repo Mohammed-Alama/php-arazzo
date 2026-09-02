@@ -85,11 +85,11 @@ mindmap
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
 | `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
-| `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
-| `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
+| `LockManagerInterface` | **yes** | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
+| `LockStrategyInterface` | **yes** | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | no | `DefaultOpenApiExecutor` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `Swagger2Normalizer` <small>core</small>, `OpenApi30Normalizer` <small>core</small> |
-| `OutputExtractorInterface` | no | `StepOutputExtractor` <small>core</small> |
+| `OutputExtractorInterface` | **yes** | `StepOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |

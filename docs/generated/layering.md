@@ -22,65 +22,68 @@ flowchart TB
         M_Support["Support"]:::node
     end
     subgraph L2["layer 2"]
+        M_Contracts["Contracts"]:::node
+    end
+    subgraph L3["layer 3"]
         M_Expression["Expression"]:::node
     end
-    subgraph L4["layer 4"]
+    subgraph L5["layer 5"]
         M_Generator["Generator"]:::node
     end
-    subgraph L5["layer 5"]
+    subgraph L6["layer 6"]
         M_Dependency["Dependency"]:::node
     end
-    subgraph L6["layer 6"]
+    subgraph L7["layer 7"]
         M_Parser["Parser"]:::node
     end
-    subgraph L7["layer 7"]
+    subgraph L8["layer 8"]
         M_Resolver["Resolver"]:::node
     end
-    subgraph L8["layer 8"]
+    subgraph L9["layer 9"]
         M_Normalizer["Normalizer"]:::node
     end
-    subgraph L9["layer 9"]
+    subgraph L10["layer 10"]
         M_Validator["Validator"]:::node
     end
-    subgraph L10["layer 10"]
+    subgraph L11["layer 11"]
         M_Infrastructure["Infrastructure"]:::node
     end
-    subgraph L11["layer 11"]
+    subgraph L12["layer 12"]
         M_Laravel_State["State"]:::laravelNode
         M_State["State"]:::node
     end
-    subgraph L12["layer 12"]
+    subgraph L13["layer 13"]
         M_Evaluation["Evaluation"]:::node
     end
-    subgraph L13["layer 13"]
+    subgraph L14["layer 14"]
         M_Telemetry["Telemetry"]:::node
     end
-    subgraph L14["layer 14"]
+    subgraph L15["layer 15"]
         M_Events["Events"]:::node
         M_Laravel_Events["Events"]:::laravelNode
     end
-    subgraph L15["layer 15"]
+    subgraph L16["layer 16"]
         M_Jobs["Jobs"]:::node
     end
-    subgraph L16["layer 16"]
+    subgraph L17["layer 17"]
         M_Policy["Policy"]:::node
     end
-    subgraph L17["layer 17"]
+    subgraph L18["layer 18"]
         M_Execution["Execution"]:::node
     end
-    subgraph L18["layer 18"]
+    subgraph L19["layer 19"]
         M_Protocol["Protocol"]:::node
     end
-    subgraph L19["layer 19"]
+    subgraph L20["layer 20"]
         M_Async["Async"]:::node
     end
-    subgraph L20["layer 20"]
+    subgraph L21["layer 21"]
         M_Renderer["Renderer"]:::node
     end
-    subgraph L21["layer 21"]
+    subgraph L22["layer 22"]
         M_Console["Console"]:::node
     end
-    subgraph L23["layer 23"]
+    subgraph L24["layer 24"]
         M_Laravel_Bindings["Bindings"]:::laravelNode
         M_Laravel_Http["Http"]:::laravelNode
         M_Laravel_Lock["Lock"]:::laravelNode
@@ -88,10 +91,7 @@ flowchart TB
         M_Laravel_Queue["Queue"]:::laravelNode
         M_Laravel__["_"]:::laravelNode
     end
-    subgraph L24["layer 24"]
-        M_Contracts["Contracts"]:::node
-    end
-    M_Async -.->|violation| M_Contracts
+    M_Async --> M_Contracts
     M_Async --> M_Events
     M_Async --> M_Execution
     M_Async --> M_Expression
@@ -100,7 +100,7 @@ flowchart TB
     M_Async --> M_State
     M_Async --> M_Support
     M_Async --> M_Validator
-    M_Console -.->|violation| M_Contracts
+    M_Console --> M_Contracts
     M_Console --> M_Dependency
     M_Console --> M_Evaluation
     M_Console --> M_Events
@@ -116,16 +116,15 @@ flowchart TB
     M_Console --> M_Telemetry
     M_Console --> M_Validator
     M_Contracts --> M_Spec
-    M_Dependency -.->|violation| M_Contracts
+    M_Dependency --> M_Contracts
     M_Dependency --> M_Spec
-    M_Evaluation -.->|violation| M_Contracts
-    M_Evaluation -.->|violation| M_Execution
+    M_Evaluation --> M_Contracts
     M_Evaluation --> M_Expression
     M_Evaluation --> M_Spec
     M_Evaluation --> M_Support
     M_Evaluation --> M_Validator
     M_Events --> M_Support
-    M_Execution -.->|violation| M_Contracts
+    M_Execution --> M_Contracts
     M_Execution --> M_Dependency
     M_Execution --> M_Evaluation
     M_Execution --> M_Events
@@ -141,11 +140,11 @@ flowchart TB
     M_Execution --> M_Validator
     M_Expression --> M_Spec
     M_Expression --> M_Support
-    M_Generator -.->|violation| M_Contracts
-    M_Infrastructure -.->|violation| M_State
-    M_Jobs -.->|violation| M_Contracts
+    M_Generator --> M_Contracts
+    M_Infrastructure --> M_Contracts
+    M_Jobs --> M_Contracts
     M_Jobs --> M_Spec
-    M_Laravel_Bindings -.->|violation| M_Contracts
+    M_Laravel_Bindings --> M_Contracts
     M_Laravel_Bindings --> M_Evaluation
     M_Laravel_Bindings --> M_Events
     M_Laravel_Bindings --> M_Execution
@@ -165,19 +164,19 @@ flowchart TB
     M_Laravel_Bindings --> M_State
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
-    M_Laravel_Http -.->|violation| M_Contracts
+    M_Laravel_Http --> M_Contracts
     M_Laravel_Http --> M_Generator
     M_Laravel_Http --> M_Infrastructure
     M_Laravel_Http --> M_Jobs
     M_Laravel_Http --> M_Resolver
     M_Laravel_Http --> M_Spec
     M_Laravel_Http --> M_State
-    M_Laravel_Lock --> M_State
+    M_Laravel_Lock --> M_Contracts
     M_Laravel_Persistence --> M_Events
     M_Laravel_Persistence --> M_Parser
     M_Laravel_Persistence --> M_Spec
     M_Laravel_Persistence --> M_State
-    M_Laravel_Queue -.->|violation| M_Contracts
+    M_Laravel_Queue --> M_Contracts
     M_Laravel_Queue --> M_Execution
     M_Laravel_Queue --> M_Jobs
     M_Laravel_State --> M_State
@@ -188,9 +187,9 @@ flowchart TB
     M_Normalizer --> M_Support
     M_Parser --> M_Spec
     M_Parser --> M_Support
-    M_Policy -.->|violation| M_Contracts
+    M_Policy --> M_Contracts
     M_Policy --> M_Spec
-    M_Protocol -.->|violation| M_Contracts
+    M_Protocol --> M_Contracts
     M_Protocol --> M_Dependency
     M_Protocol --> M_Evaluation
     M_Protocol --> M_Execution
@@ -202,7 +201,7 @@ flowchart TB
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
-    M_State -.->|violation| M_Contracts
+    M_State --> M_Contracts
     M_State --> M_Spec
     M_Validator --> M_Dependency
     M_Validator --> M_Expression
@@ -215,22 +214,4 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**15 violation(s) found:**
-
-| From | ↑ depends on | Weight |
-|---|---|---:|
-| `Execution` | `Contracts` | 20 |
-| `Protocol` | `Contracts` | 10 |
-| `Async` | `Contracts` | 7 |
-| `Infrastructure` | `State` | 4 |
-| `Laravel:Bindings` | `Contracts` | 3 |
-| `Policy` | `Contracts` | 3 |
-| `Console` | `Contracts` | 2 |
-| `Generator` | `Contracts` | 2 |
-| `State` | `Contracts` | 2 |
-| `Dependency` | `Contracts` | 1 |
-| `Evaluation` | `Contracts` | 1 |
-| `Evaluation` | `Execution` | 1 |
-| `Jobs` | `Contracts` | 1 |
-| `Laravel:Http` | `Contracts` | 1 |
-| `Laravel:Queue` | `Contracts` | 1 |
+**No layering violations.** All cross-module dependencies point downward.

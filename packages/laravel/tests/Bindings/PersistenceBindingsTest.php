@@ -11,8 +11,8 @@ use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
-use Alama\Arazzo\State\Interfaces\LockStrategyInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 

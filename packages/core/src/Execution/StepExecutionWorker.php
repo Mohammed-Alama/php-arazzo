@@ -27,7 +27,7 @@ use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Telemetry\OtelSetup;

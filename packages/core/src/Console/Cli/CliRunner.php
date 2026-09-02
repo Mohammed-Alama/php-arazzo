@@ -19,7 +19,7 @@ use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\State\Interfaces\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Telemetry\OtelSetup;

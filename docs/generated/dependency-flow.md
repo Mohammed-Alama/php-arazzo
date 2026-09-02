@@ -23,7 +23,7 @@ Async,Spec,9
 Async,State,6
 Async,Support,1
 Async,Validator,4
-Console,Contracts,2
+Console,Contracts,3
 Console,Dependency,1
 Console,Evaluation,2
 Console,Events,2
@@ -35,19 +35,19 @@ Console,Parser,8
 Console,Renderer,1
 Console,Resolver,4
 Console,Spec,6
-Console,State,7
+Console,State,6
 Console,Telemetry,1
 Console,Validator,2
-Contracts,Spec,6
+Contracts,Spec,9
 Dependency,Contracts,1
 Dependency,Spec,6
-Evaluation,Contracts,1
+Evaluation,Contracts,2
 Evaluation,Expression,10
 Evaluation,Spec,22
 Evaluation,Support,1
 Evaluation,Validator,1
 Events,Support,1
-Execution,Contracts,20
+Execution,Contracts,23
 Execution,Dependency,3
 Execution,Evaluation,4
 Execution,Events,21
@@ -56,18 +56,18 @@ Execution,Jobs,2
 Execution,Normalizer,5
 Execution,Parser,1
 Execution,Policy,1
-Execution,Spec,71
-Execution,State,17
+Execution,Spec,68
+Execution,State,15
 Execution,Support,9
 Execution,Telemetry,1
 Execution,Validator,11
 Expression,Spec,25
 Expression,Support,2
 Generator,Contracts,2
-Infrastructure,State,4
+Infrastructure,Contracts,4
 Jobs,Contracts,1
 Jobs,Spec,1
-Laravel-Bindings,Contracts,3
+Laravel-Bindings,Contracts,6
 Laravel-Bindings,Evaluation,2
 Laravel-Bindings,Events,4
 Laravel-Bindings,Execution,14
@@ -84,7 +84,7 @@ Laravel-Bindings,Normalizer,6
 Laravel-Bindings,Parser,1
 Laravel-Bindings,Protocol,3
 Laravel-Bindings,Resolver,6
-Laravel-Bindings,State,11
+Laravel-Bindings,State,8
 Laravel-Bindings,Support,1
 Laravel-Bindings,Validator,2
 Laravel-Http,Contracts,1
@@ -94,7 +94,7 @@ Laravel-Http,Jobs,1
 Laravel-Http,Resolver,1
 Laravel-Http,Spec,2
 Laravel-Http,State,1
-Laravel-Lock,State,1
+Laravel-Lock,Contracts,1
 Laravel-Persistence,Events,1
 Laravel-Persistence,Parser,2
 Laravel-Persistence,Spec,5
@@ -133,11 +133,3 @@ Validator,Resolver,1
 Validator,Spec,90
 Validator,Support,2
 ```
-
-## Folded flows
-
-These references exist in the code but are not drawn: drawing them would close a dependency cycle and Sankey diagrams must stay acyclic. The heavier direction of each cycle is shown above.
-
-| From | To | References |
-|---|---|---:|
-| `Evaluation` | `Execution` | 1 |

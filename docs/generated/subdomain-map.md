@@ -33,15 +33,15 @@ flowchart LR
         S_Lock["Lock<br/><small>49 LOC</small>"]:::genericDomain
         S_Persistence["Persistence<br/><small>252 LOC</small>"]:::genericDomain
         S_Queue["Queue<br/><small>100 LOC</small>"]:::genericDomain
-        S_State["State<br/><small>982 LOC</small>"]:::genericDomain
+        S_State["State<br/><small>957 LOC</small>"]:::genericDomain
         S_Support["Support<br/><small>231 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified[""]
         S_Async["Async<br/><small>494 LOC</small>"]:::unknownDomain
-        S_Contracts["Contracts<br/><small>718 LOC</small>"]:::unknownDomain
+        S_Contracts["Contracts<br/><small>761 LOC</small>"]:::unknownDomain
         S_Dependency["Dependency<br/><small>328 LOC</small>"]:::unknownDomain
         S_Evaluation["Evaluation<br/><small>1159 LOC</small>"]:::unknownDomain
-        S_Execution["Execution<br/><small>3460 LOC</small>"]:::unknownDomain
+        S_Execution["Execution<br/><small>3442 LOC</small>"]:::unknownDomain
         S_Infrastructure["Infrastructure<br/><small>160 LOC</small>"]:::unknownDomain
         S_Jobs["Jobs<br/><small>34 LOC</small>"]:::unknownDomain
         S_Normalizer["Normalizer<br/><small>588 LOC</small>"]:::unknownDomain
@@ -59,8 +59,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 2 | 2,330 | 0 | 13% |
 | Supporting | 6 | 5,769 | 0 | 31% |
-| Generic subdomain | 8 | 1,410 | 1,132 | 14% |
-|  | 11 | 7,859 | 0 | 42% |
+| Generic subdomain | 8 | 1,385 | 1,132 | 14% |
+|  | 11 | 7,884 | 0 | 43% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Async`

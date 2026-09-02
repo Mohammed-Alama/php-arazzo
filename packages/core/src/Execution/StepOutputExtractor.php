@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Execution\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\ExpressionEvaluator;

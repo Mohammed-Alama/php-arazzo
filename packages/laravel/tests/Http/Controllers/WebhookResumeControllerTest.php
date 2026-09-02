@@ -23,7 +23,7 @@ use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use cebe\openapi\spec\OpenApi;

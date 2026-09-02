@@ -31,6 +31,7 @@ MD;
 const LAYER_ORDER = [
     'Spec',
     'Support',
+    'Contracts',
     'Expression',
     'License',
     'Generator',

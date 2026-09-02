@@ -33,7 +33,7 @@ use Alama\Arazzo\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Protocol\SubWorkflowStepExecutor;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Validator\PreflightValidator;

@@ -19,7 +19,7 @@ use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
