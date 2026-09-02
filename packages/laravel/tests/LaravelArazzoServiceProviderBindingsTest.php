@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests;
 
+use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Document\Document;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Generator\Clients\OpenAiClient;
@@ -27,9 +32,10 @@ use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
 use Alama\Arazzo\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Runner\Runner;
+use Alama\Arazzo\Runner\RunnerInterface;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use GuzzleHttp\Client;
@@ -86,4 +92,10 @@ it('binds the async control flow classes', function () {
     expect(app(AsyncApiStepExecutor::class))->toBeInstanceOf(AsyncApiStepExecutor::class);
     expect(app(CorrelationResumer::class))->toBeInstanceOf(CorrelationResumer::class);
     expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
+});
+
+it('binds the entry-point facade interfaces to their self-contained facades', function () {
+    expect(app(ExpressionEngineInterface::class))->toBeInstanceOf(ExpressionEngine::class);
+    expect(app(DocumentInterface::class))->toBeInstanceOf(Document::class);
+    expect(app(RunnerInterface::class))->toBeInstanceOf(Runner::class);
 });
