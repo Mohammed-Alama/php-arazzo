@@ -6,6 +6,7 @@
     "homepage": "https://github.com/alama/arazzo",
     "license": "MIT",
     "repositories": [
+        {"type": "path", "url": "../cli"},
         {"type": "path", "url": "../core"},
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
@@ -17,6 +18,7 @@
     ],
     "require": {
         "php": "^8.4",
+        "alama/arazzo-cli": "@dev",
         "alama/arazzo-core": "^1.0@alpha",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",

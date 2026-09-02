@@ -30,6 +30,9 @@
         <testsuite name="Arazzo Runner Test Suite">
             <directory>packages/runner/tests</directory>
         </testsuite>
+        <testsuite name="Arazzo CLI Test Suite">
+            <directory>packages/cli/tests</directory>
+        </testsuite>
         <testsuite name="Arazzo Core Test Suite">
             <directory>packages/core/tests</directory>
         </testsuite>
@@ -43,6 +46,7 @@
             <directory suffix=".php">packages/expression/src</directory>
             <directory suffix=".php">packages/document/src</directory>
             <directory suffix=".php">packages/runner/src</directory>
+            <directory suffix=".php">packages/cli/src</directory>
             <directory suffix=".php">packages/core/src</directory>
             <directory suffix=".php">packages/laravel/src</directory>
         </include>

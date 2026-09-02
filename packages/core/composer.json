@@ -9,6 +9,7 @@
         {"name": "Mohammed Alama", "email": "mohammedalama96@icloud.com", "role": "Developer"}
     ],
     "repositories": [
+        {"type": "path", "url": "../cli"},
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
         {"type": "path", "url": "../expression"},
@@ -16,6 +17,7 @@
     ],
     "require": {
         "php": "^8.4",
+        "alama/arazzo-cli": "@dev",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-expression": "@dev",
