@@ -20,12 +20,13 @@ quadrantChart
     quadrant-2 Solid & stable
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
-    Async: [0.667, 1]
+    Async: [1, 1]
     Console: [1, 1]
+    Contracts: [0.182, 0]
     Dependency: [0.333, 1]
     Evaluation: [0.556, 1]
     Events: [0.167, 1]
-    Execution: [0.577, 1]
+    Execution: [0.56, 1]
     Expression: [0.222, 1]
     Generator: [0.333, 1]
     Infrastructure: [0.25, 1]
@@ -40,8 +41,8 @@ quadrantChart
     Laravel/Support: [0, 1]
     Normalizer: [0.375, 1]
     Parser: [0.286, 1]
-    Policy: [0.667, 1]
-    Protocol: [0.727, 1]
+    Policy: [0.75, 1]
+    Protocol: [0.9, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
     Spec: [0, 0]
@@ -53,12 +54,13 @@ quadrantChart
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
-| `Async` | 0.67 | 12 | 7 | 100% |
+| `Async` | 1.00 | 6 | 6 | 100% |
 | `Console` | 1.00 | 11 | 11 | 100% |
+| `Contracts` | 0.18 | 0 | 4 | 0% |
 | `Dependency` | 0.33 | 5 | 3 | 100% |
 | `Evaluation` | 0.56 | 41 | 19 | 100% |
 | `Events` | 0.17 | 29 | 11 | 100% |
-| `Execution` | 0.58 | 73 | 40 | 100% |
+| `Execution` | 0.56 | 71 | 38 | 100% |
 | `Expression` | 0.22 | 122 | 35 | 100% |
 | `Generator` | 0.33 | 5 | 2 | 100% |
 | `Infrastructure` | 0.25 | 7 | 4 | 100% |
@@ -73,8 +75,8 @@ quadrantChart
 | `Laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `Normalizer` | 0.38 | 21 | 9 | 100% |
 | `Parser` | 0.29 | 31 | 11 | 100% |
-| `Policy` | 0.67 | 2 | 2 | 100% |
-| `Protocol` | 0.73 | 14 | 6 | 100% |
+| `Policy` | 0.75 | 2 | 2 | 100% |
+| `Protocol` | 0.90 | 10 | 5 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 12 | 100% |
 | `Spec` | 0.00 | 0 | 38 | 0% |

@@ -10,6 +10,7 @@ Cross-module `use` relationships between top-level namespaces, scanned live from
 flowchart LR
     Async["Alama\Arazzo\Async"]:::coreNode
     Console["Alama\Arazzo\Console"]:::coreNode
+    Contracts["Alama\Arazzo\Contracts"]:::coreNode
     Dependency["Alama\Arazzo\Dependency"]:::coreNode
     Evaluation["Alama\Arazzo\Evaluation"]:::coreNode
     Events["Alama\Arazzo\Events"]:::coreNode
@@ -44,12 +45,13 @@ flowchart LR
     Async --> State
     Async --> Support
     Async --> Validator
+    Async --> Contracts
     Async --> Jobs
     Console --> Events
     Console --> Execution
     Console --> Expression
     Console --> Jobs
-    Console --> Protocol
+    Console --> Contracts
     Console --> Spec
     Console --> State
     Console --> Telemetry
@@ -60,6 +62,8 @@ flowchart LR
     Console --> Evaluation
     Console --> Normalizer
     Console --> Resolver
+    Contracts --> Execution
+    Contracts --> Spec
     Dependency --> Execution
     Dependency --> Spec
     Evaluation --> Execution
@@ -72,10 +76,9 @@ flowchart LR
     Execution --> State
     Execution --> Evaluation
     Execution --> Expression
-    Execution --> Async
+    Execution --> Contracts
     Execution --> Events
     Execution --> Jobs
-    Execution --> Protocol
     Execution --> Support
     Execution --> Telemetry
     Execution --> Validator
@@ -85,7 +88,7 @@ flowchart LR
     Execution --> Parser
     Expression --> Spec
     Expression --> Support
-    Generator --> Execution
+    Generator --> Contracts
     Infrastructure --> State
     Jobs --> Execution
     Jobs --> Spec
@@ -95,10 +98,12 @@ flowchart LR
     Parser --> Spec
     Parser --> Support
     Policy --> Execution
+    Policy --> Contracts
     Policy --> Spec
     Protocol --> Execution
     Protocol --> Expression
     Protocol --> Normalizer
+    Protocol --> Contracts
     Protocol --> Spec
     Protocol --> Dependency
     Protocol --> Evaluation
@@ -115,7 +120,7 @@ flowchart LR
     Validator --> Resolver
     Validator --> Support
     Validator --> Dependency
-    Laravel_Bindings --> Async
+    Laravel_Bindings --> Contracts
     Laravel_Bindings --> Evaluation
     Laravel_Bindings --> Events
     Laravel_Bindings --> Execution
@@ -139,7 +144,7 @@ flowchart LR
     Laravel_Http --> Generator
     Laravel_Http --> Resolver
     Laravel_Http --> Spec
-    Laravel_Http --> Async
+    Laravel_Http --> Contracts
     Laravel_Http --> Jobs
     Laravel_Http --> State
     Laravel_Lock --> State
@@ -147,7 +152,7 @@ flowchart LR
     Laravel_Persistence --> State
     Laravel_Persistence --> Events
     Laravel_Persistence --> Parser
-    Laravel_Queue --> Async
+    Laravel_Queue --> Contracts
     Laravel_Queue --> Jobs
     Laravel_Queue --> Execution
     Laravel_State --> State

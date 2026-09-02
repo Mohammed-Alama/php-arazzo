@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Queue;
 
-use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Jobs\ResumeCorrelationJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;

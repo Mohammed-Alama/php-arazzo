@@ -14,6 +14,7 @@ the heavier direction is drawn and the folded side is listed below the chart.
 ```mermaid
 sankey-beta
 
+Async,Contracts,1
 Async,Events,9
 Async,Execution,9
 Async,Expression,1
@@ -22,6 +23,7 @@ Async,Spec,9
 Async,State,6
 Async,Support,1
 Async,Validator,4
+Console,Contracts,1
 Console,Dependency,1
 Console,Evaluation,2
 Console,Events,2
@@ -30,19 +32,20 @@ Console,Expression,2
 Console,Jobs,1
 Console,Normalizer,5
 Console,Parser,8
-Console,Protocol,1
 Console,Renderer,1
 Console,Resolver,4
 Console,Spec,6
 Console,State,7
 Console,Telemetry,1
 Console,Validator,2
+Contracts,Spec,3
 Dependency,Spec,6
 Evaluation,Expression,10
 Evaluation,Spec,22
 Evaluation,Support,1
 Evaluation,Validator,1
 Events,Support,1
+Execution,Contracts,6
 Execution,Dependency,3
 Execution,Evaluation,4
 Execution,Events,21
@@ -50,6 +53,7 @@ Execution,Expression,21
 Execution,Jobs,2
 Execution,Normalizer,5
 Execution,Parser,1
+Execution,Policy,1
 Execution,Spec,74
 Execution,State,17
 Execution,Support,9
@@ -57,13 +61,13 @@ Execution,Telemetry,1
 Execution,Validator,11
 Expression,Spec,25
 Expression,Support,2
-Generator,Execution,2
+Generator,Contracts,2
 Infrastructure,State,4
 Jobs,Spec,1
-Laravel-Bindings,Async,2
+Laravel-Bindings,Contracts,3
 Laravel-Bindings,Evaluation,2
 Laravel-Bindings,Events,4
-Laravel-Bindings,Execution,15
+Laravel-Bindings,Execution,14
 Laravel-Bindings,Expression,7
 Laravel-Bindings,Generator,2
 Laravel-Bindings,Infrastructure,2
@@ -80,7 +84,7 @@ Laravel-Bindings,Resolver,6
 Laravel-Bindings,State,11
 Laravel-Bindings,Support,1
 Laravel-Bindings,Validator,2
-Laravel-Http,Async,1
+Laravel-Http,Contracts,1
 Laravel-Http,Generator,1
 Laravel-Http,Infrastructure,1
 Laravel-Http,Jobs,1
@@ -92,7 +96,7 @@ Laravel-Persistence,Events,1
 Laravel-Persistence,Parser,2
 Laravel-Persistence,Spec,5
 Laravel-Persistence,State,4
-Laravel-Queue,Async,1
+Laravel-Queue,Contracts,1
 Laravel-Queue,Execution,2
 Laravel-Queue,Jobs,4
 Laravel-State,State,1
@@ -103,15 +107,16 @@ Normalizer,Spec,6
 Normalizer,Support,1
 Parser,Spec,30
 Parser,Support,2
-Policy,Execution,3
+Policy,Contracts,2
 Policy,Spec,2
+Protocol,Contracts,5
 Protocol,Dependency,1
 Protocol,Evaluation,3
-Protocol,Execution,18
+Protocol,Execution,17
 Protocol,Expression,4
 Protocol,Infrastructure,1
 Protocol,Normalizer,1
-Protocol,Spec,23
+Protocol,Spec,20
 Protocol,State,1
 Renderer,Spec,8
 Resolver,Parser,2
@@ -131,10 +136,9 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
+| `Contracts` | `Execution` | 1 |
 | `Dependency` | `Execution` | 1 |
 | `Evaluation` | `Execution` | 2 |
-| `Execution` | `Async` | 4 |
-| `Execution` | `Policy` | 1 |
-| `Execution` | `Protocol` | 2 |
 | `Jobs` | `Execution` | 1 |
+| `Policy` | `Execution` | 1 |
 | `State` | `Execution` | 2 |

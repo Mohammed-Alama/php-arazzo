@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Execution\Data\RunPersistence;

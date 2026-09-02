@@ -19,7 +19,7 @@ use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Enum\ExecutionStatus;

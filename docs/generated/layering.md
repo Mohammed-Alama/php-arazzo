@@ -88,6 +88,10 @@ flowchart TB
         M_Laravel_Queue["Queue"]:::laravelNode
         M_Laravel__["_"]:::laravelNode
     end
+    subgraph L24["layer 24"]
+        M_Contracts["Contracts"]:::node
+    end
+    M_Async -.->|violation| M_Contracts
     M_Async --> M_Events
     M_Async --> M_Execution
     M_Async --> M_Expression
@@ -96,6 +100,7 @@ flowchart TB
     M_Async --> M_State
     M_Async --> M_Support
     M_Async --> M_Validator
+    M_Console -.->|violation| M_Contracts
     M_Console --> M_Dependency
     M_Console --> M_Evaluation
     M_Console --> M_Events
@@ -104,13 +109,14 @@ flowchart TB
     M_Console --> M_Jobs
     M_Console --> M_Normalizer
     M_Console --> M_Parser
-    M_Console --> M_Protocol
     M_Console --> M_Renderer
     M_Console --> M_Resolver
     M_Console --> M_Spec
     M_Console --> M_State
     M_Console --> M_Telemetry
     M_Console --> M_Validator
+    M_Contracts --> M_Execution
+    M_Contracts --> M_Spec
     M_Dependency -.->|violation| M_Execution
     M_Dependency --> M_Spec
     M_Evaluation -.->|violation| M_Execution
@@ -119,7 +125,7 @@ flowchart TB
     M_Evaluation --> M_Support
     M_Evaluation --> M_Validator
     M_Events --> M_Support
-    M_Execution -.->|violation| M_Async
+    M_Execution -.->|violation| M_Contracts
     M_Execution --> M_Dependency
     M_Execution --> M_Evaluation
     M_Execution --> M_Events
@@ -128,7 +134,6 @@ flowchart TB
     M_Execution --> M_Normalizer
     M_Execution --> M_Parser
     M_Execution --> M_Policy
-    M_Execution -.->|violation| M_Protocol
     M_Execution --> M_Spec
     M_Execution --> M_State
     M_Execution --> M_Support
@@ -136,11 +141,11 @@ flowchart TB
     M_Execution --> M_Validator
     M_Expression --> M_Spec
     M_Expression --> M_Support
-    M_Generator -.->|violation| M_Execution
+    M_Generator -.->|violation| M_Contracts
     M_Infrastructure -.->|violation| M_State
     M_Jobs -.->|violation| M_Execution
     M_Jobs --> M_Spec
-    M_Laravel_Bindings --> M_Async
+    M_Laravel_Bindings -.->|violation| M_Contracts
     M_Laravel_Bindings --> M_Evaluation
     M_Laravel_Bindings --> M_Events
     M_Laravel_Bindings --> M_Execution
@@ -160,7 +165,7 @@ flowchart TB
     M_Laravel_Bindings --> M_State
     M_Laravel_Bindings --> M_Support
     M_Laravel_Bindings --> M_Validator
-    M_Laravel_Http --> M_Async
+    M_Laravel_Http -.->|violation| M_Contracts
     M_Laravel_Http --> M_Generator
     M_Laravel_Http --> M_Infrastructure
     M_Laravel_Http --> M_Jobs
@@ -172,7 +177,7 @@ flowchart TB
     M_Laravel_Persistence --> M_Parser
     M_Laravel_Persistence --> M_Spec
     M_Laravel_Persistence --> M_State
-    M_Laravel_Queue --> M_Async
+    M_Laravel_Queue -.->|violation| M_Contracts
     M_Laravel_Queue --> M_Execution
     M_Laravel_Queue --> M_Jobs
     M_Laravel_State --> M_State
@@ -183,8 +188,10 @@ flowchart TB
     M_Normalizer --> M_Support
     M_Parser --> M_Spec
     M_Parser --> M_Support
+    M_Policy -.->|violation| M_Contracts
     M_Policy -.->|violation| M_Execution
     M_Policy --> M_Spec
+    M_Protocol -.->|violation| M_Contracts
     M_Protocol --> M_Dependency
     M_Protocol --> M_Evaluation
     M_Protocol --> M_Execution
@@ -209,16 +216,22 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**9 violation(s) found:**
+**15 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Execution` | `Async` | 4 |
+| `Execution` | `Contracts` | 6 |
+| `Protocol` | `Contracts` | 5 |
 | `Infrastructure` | `State` | 4 |
-| `Policy` | `Execution` | 3 |
+| `Laravel:Bindings` | `Contracts` | 3 |
 | `Evaluation` | `Execution` | 2 |
-| `Execution` | `Protocol` | 2 |
-| `Generator` | `Execution` | 2 |
+| `Generator` | `Contracts` | 2 |
+| `Policy` | `Contracts` | 2 |
 | `State` | `Execution` | 2 |
+| `Async` | `Contracts` | 1 |
+| `Console` | `Contracts` | 1 |
 | `Dependency` | `Execution` | 1 |
 | `Jobs` | `Execution` | 1 |
+| `Laravel:Http` | `Contracts` | 1 |
+| `Laravel:Queue` | `Contracts` | 1 |
+| `Policy` | `Execution` | 1 |

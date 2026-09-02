@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution\Data;
 
-use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Validator\PreflightValidator;
 use Psr\EventDispatcher\EventDispatcherInterface;

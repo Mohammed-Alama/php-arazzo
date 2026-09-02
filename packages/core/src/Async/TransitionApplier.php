@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\Data\ExecutionState;
 use Alama\Arazzo\Execution\Data\Transition;

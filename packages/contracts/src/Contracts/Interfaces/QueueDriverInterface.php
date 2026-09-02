@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Async\Interfaces;
-
-// Framework port (kept as a seam): queue transports vary (Laravel queue, sync test driver).
+namespace Alama\Arazzo\Contracts\Interfaces;
 
 interface QueueDriverInterface
 {

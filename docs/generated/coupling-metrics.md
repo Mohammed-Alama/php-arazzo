@@ -11,12 +11,13 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Async` | 7 | 500 | 4 | 8 | 0.67 |  |
+| `Async` | 6 | 488 | 0 | 9 | 1.00 |  |
 | `Console` | 11 | 780 | 0 | 15 | 1.00 |  |
+| `Contracts` | 4 | 47 | 9 | 2 | 0.18 |  |
 | `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
 | `Evaluation` | 19 | 1140 | 4 | 5 | 0.56 |  |
 | `Events` | 11 | 284 | 5 | 1 | 0.17 |  |
-| `Execution` | 40 | 4111 | 11 | 15 | 0.58 |  |
+| `Execution` | 38 | 4088 | 11 | 14 | 0.56 |  |
 | `Expression` | 35 | 1472 | 7 | 2 | 0.22 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
@@ -32,17 +33,17 @@ targets. Regenerated before every commit.
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
 | `Normalizer` | 9 | 579 | 5 | 3 | 0.38 |  |
 | `Parser` | 11 | 1085 | 5 | 2 | 0.29 |  |
-| `Policy` | 2 | 94 | 1 | 2 | 0.67 |  |
-| `Protocol` | 6 | 556 | 3 | 8 | 0.73 |  |
+| `Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
+| `Protocol` | 5 | 539 | 1 | 9 | 0.90 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 12 | 358 | 5 | 2 | 0.29 |  |
-| `Spec` | 38 | 785 | 17 | 0 | 0.00 |  |
+| `Spec` | 38 | 785 | 18 | 0 | 0.00 |  |
 | `State` | 14 | 930 | 10 | 2 | 0.17 |  |
 | `Support` | 5 | 166 | 9 | 0 | 0.00 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `Validator` | 64 | 3090 | 5 | 6 | 0.55 |  |
 
-Total cross-module edges: **766**
+Total cross-module edges: **772**
 
 ## Most entangled module pairs
 
@@ -53,10 +54,10 @@ Total cross-module edges: **766**
 | `Execution` → `Spec` | 74 |
 | `Parser` → `Spec` | 30 |
 | `Expression` → `Spec` | 25 |
-| `Protocol` → `Spec` | 23 |
 | `Evaluation` → `Spec` | 22 |
 | `Execution` → `Events` | 21 |
 | `Execution` → `Expression` | 21 |
-| `Protocol` → `Execution` | 18 |
+| `Protocol` → `Spec` | 20 |
 | `Execution` → `State` | 17 |
-| `Laravel:Bindings` → `Execution` | 15 |
+| `Protocol` → `Execution` | 17 |
+| `Laravel:Bindings` → `Execution` | 14 |

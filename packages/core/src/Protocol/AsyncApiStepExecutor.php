@@ -11,7 +11,7 @@ use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
-use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Expression;

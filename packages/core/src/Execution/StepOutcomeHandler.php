@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
-use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Dependency\DependencyGraph;
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;

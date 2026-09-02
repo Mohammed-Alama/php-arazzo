@@ -16,9 +16,6 @@ file on a commit is a public API change — review it deliberately.
 ### `PreflightGuard` class
 - `public function __construct(private readonly DefinitionRegistryInterface $definitions, private readonly ?PreflightValidator $preflight)`
 
-### `QueueDriverInterface` interface
-- `public function dispatch(object $job, int $delaySeconds = 0): void;`
-
 ### `StateReconciler` class
 - `public function __construct(private readonly StateStoreInterface $stateStore)`
 
@@ -67,6 +64,21 @@ file on a commit is a public API change — review it deliberately.
 
 ### `RunCommand` class
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
+
+## core · `Alama\Arazzo\Contracts`
+
+### `AiClientInterface` interface
+- `public function generate(string $systemPrompt, string $userPrompt): string;`
+
+### `BackoffCalculatorInterface` interface
+- `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
+
+### `QueueDriverInterface` interface
+- `public function dispatch(object $job, int $delaySeconds = 0): void;`
+
+### `StepProtocolExecutorInterface` interface
+- `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
+- `public function supports(Step $step, ArazzoDocument $document): bool;`
 
 ## core · `Alama\Arazzo\Dependency`
 
@@ -141,12 +153,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function __invoke(object $event): void`
 
 ## core · `Alama\Arazzo\Execution`
-
-### `AiClientInterface` interface
-- `public function generate(string $systemPrompt, string $userPrompt): string;`
-
-### `BackoffCalculatorInterface` interface
-- `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
 
 ### `CorrelationResumer` class
 - `public function __construct(private PendingCorrelationRegistryInterface $pendingCorrelations, private StateStoreInterface $stateStore, private DefinitionRegistryInterface $definitionRegistry, private ExpressionResolverInterface $expressionResolver, private StepOutcomeHandler $outcomeHandler, private EventLedgerInterface $eventLedger, private LockManagerInterface $lockManager, ?EventDispatcherInterface $events = null)`
@@ -490,10 +496,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function getSupportedProtocols(): array`
 - `public function register(string $name, StepProtocolExecutorInterface $executor): void`
 - `public function resolve(Step $step, ArazzoDocument $document): ?StepProtocolExecutorInterface`
-
-### `StepProtocolExecutorInterface` interface
-- `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
-- `public function supports(Step $step, ArazzoDocument $document): bool;`
 
 ### `SubWorkflowExecutor` class
 - `public function __construct(private WorkflowEngine $workflowEngine, private ExpressionResolverInterface $expressionResolver)`

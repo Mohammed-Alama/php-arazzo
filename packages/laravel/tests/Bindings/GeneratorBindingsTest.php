@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\Interfaces\AiClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 use Alama\Arazzo\Generator\ArazzoGenerator;
 use Alama\Arazzo\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Laravel\Bindings\GeneratorBindings;

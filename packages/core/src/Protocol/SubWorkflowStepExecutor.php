@@ -10,7 +10,7 @@ use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;

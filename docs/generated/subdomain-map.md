@@ -37,15 +37,16 @@ flowchart LR
         S_Support["Support<br/><small>231 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified[""]
-        S_Async["Async<br/><small>507 LOC</small>"]:::unknownDomain
+        S_Async["Async<br/><small>494 LOC</small>"]:::unknownDomain
+        S_Contracts["Contracts<br/><small>51 LOC</small>"]:::unknownDomain
         S_Dependency["Dependency<br/><small>328 LOC</small>"]:::unknownDomain
         S_Evaluation["Evaluation<br/><small>1159 LOC</small>"]:::unknownDomain
-        S_Execution["Execution<br/><small>4151 LOC</small>"]:::unknownDomain
+        S_Execution["Execution<br/><small>4126 LOC</small>"]:::unknownDomain
         S_Infrastructure["Infrastructure<br/><small>160 LOC</small>"]:::unknownDomain
         S_Jobs["Jobs<br/><small>34 LOC</small>"]:::unknownDomain
         S_Normalizer["Normalizer<br/><small>588 LOC</small>"]:::unknownDomain
         S_Policy["Policy<br/><small>96 LOC</small>"]:::unknownDomain
-        S_Protocol["Protocol<br/><small>562 LOC</small>"]:::unknownDomain
+        S_Protocol["Protocol<br/><small>544 LOC</small>"]:::unknownDomain
         S_Telemetry["Telemetry<br/><small>278 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
@@ -59,10 +60,11 @@ flowchart LR
 | Core domain | 2 | 2,330 | 0 | 13% |
 | Supporting | 6 | 5,769 | 0 | 31% |
 | Generic subdomain | 8 | 1,410 | 1,132 | 14% |
-|  | 10 | 7,863 | 0 | 42% |
+|  | 11 | 7,858 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Async`
+- `Contracts`
 - `Dependency`
 - `Evaluation`
 - `Execution`

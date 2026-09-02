@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests;
 
-use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Execution\Interfaces\AiClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\StepOutcomeHandler;

@@ -75,8 +75,8 @@ mindmap
 
 | Contract | SPI dir | Implementations |
 |---|---|---|
-| `AiClientInterface` | no | `OpenAiClient` <small>core</small> |
-| `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
+| `AiClientInterface` | **yes** | `OpenAiClient` <small>core</small> |
+| `BackoffCalculatorInterface` | **yes** | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `EvaluationInput` <small>core</small> |
@@ -92,9 +92,9 @@ mindmap
 | `OutputExtractorInterface` | no | `StepOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
-| `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
+| `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
-| `StepProtocolExecutorInterface` | no | `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `StepProtocolExecutorInterface` | **yes** | `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |

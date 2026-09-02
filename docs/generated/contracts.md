@@ -8,8 +8,8 @@ from both packages. Core defines contracts; Laravel implements them.
 
 ```mermaid
 flowchart LR
-    I_AiClientInterface["AiClientInterface<br/><small>Execution</small>"]:::contract
-    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Execution</small>"]:::contract
+    I_AiClientInterface["AiClientInterface<br/><small>Contracts</small>"]:::contract
+    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Contracts</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>Evaluation</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Evaluation</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>State</small>"]:::contract
@@ -27,13 +27,13 @@ flowchart LR
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Execution</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>State</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Execution</small>"]:::contract
-    I_QueueDriverInterface["QueueDriverInterface<br/><small>Async</small>"]:::contract
+    I_QueueDriverInterface["QueueDriverInterface<br/><small>Contracts</small>"]:::contract
     I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>Validator</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>State</small>"]:::contract
-    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Protocol</small>"]:::contract
+    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Contracts</small>"]:::contract
     I_WorkflowContextInterface["WorkflowContextInterface<br/><small>Spec</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>State</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>Expression</small>"]:::contract

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol\Interfaces;
+namespace Alama\Arazzo\Contracts\Interfaces;
 
 use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Spec\ArazzoDocument;

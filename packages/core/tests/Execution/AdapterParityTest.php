@@ -21,7 +21,7 @@ use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Components;
