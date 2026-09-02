@@ -24,7 +24,7 @@ flowchart LR
         S_Parser["Parser<br/><small>1096 LOC</small>"]:::supportingDomain
         S_Renderer["Renderer<br/><small>253 LOC</small>"]:::supportingDomain
         S_Resolver["Resolver<br/><small>370 LOC</small>"]:::supportingDomain
-        S_Validator["Validator<br/><small>3154 LOC</small>"]:::supportingDomain
+        S_Validator["Validator<br/><small>3104 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_Bindings["Bindings<br/><small>451 LOC</small>"]:::genericDomain
@@ -38,7 +38,7 @@ flowchart LR
     end
     subgraph S_unclassified[""]
         S_Async["Async<br/><small>494 LOC</small>"]:::unknownDomain
-        S_Contracts["Contracts<br/><small>761 LOC</small>"]:::unknownDomain
+        S_Contracts["Contracts<br/><small>811 LOC</small>"]:::unknownDomain
         S_Dependency["Dependency<br/><small>328 LOC</small>"]:::unknownDomain
         S_Evaluation["Evaluation<br/><small>1159 LOC</small>"]:::unknownDomain
         S_Execution["Execution<br/><small>3442 LOC</small>"]:::unknownDomain
@@ -58,9 +58,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 2 | 2,330 | 0 | 13% |
-| Supporting | 6 | 5,769 | 0 | 31% |
+| Supporting | 6 | 5,719 | 0 | 31% |
 | Generic subdomain | 8 | 1,385 | 1,132 | 14% |
-|  | 11 | 7,884 | 0 | 43% |
+|  | 11 | 7,934 | 0 | 43% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Async`

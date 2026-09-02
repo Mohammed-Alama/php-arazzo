@@ -12,7 +12,7 @@ use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
-use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Throwable;

@@ -16,7 +16,7 @@ use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;

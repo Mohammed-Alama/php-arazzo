@@ -13,7 +13,7 @@ use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Validator\Interfaces\ResponseValidatorInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 
 class ExpressionResolver implements ExpressionResolverInterface
 {

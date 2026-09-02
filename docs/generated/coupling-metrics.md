@@ -13,9 +13,9 @@ targets. Regenerated before every commit.
 |---|---:|---:|---:|---:|---:|---|
 | `Async` | 6 | 488 | 0 | 9 | 1.00 |  |
 | `Console` | 11 | 780 | 0 | 15 | 1.00 |  |
-| `Contracts` | 9 | 752 | 15 | 1 | 0.06 |  |
+| `Contracts` | 11 | 800 | 15 | 1 | 0.06 |  |
 | `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
-| `Evaluation` | 19 | 1140 | 4 | 5 | 0.56 |  |
+| `Evaluation` | 19 | 1140 | 4 | 4 | 0.50 |  |
 | `Events` | 11 | 284 | 5 | 1 | 0.17 |  |
 | `Execution` | 35 | 3407 | 5 | 14 | 0.74 |  |
 | `Expression` | 35 | 1472 | 7 | 2 | 0.22 |  |
@@ -41,7 +41,7 @@ targets. Regenerated before every commit.
 | `State` | 12 | 907 | 8 | 2 | 0.20 |  |
 | `Support` | 5 | 166 | 9 | 0 | 0.00 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `Validator` | 64 | 3090 | 5 | 6 | 0.55 |  |
+| `Validator` | 62 | 3042 | 4 | 6 | 0.60 |  |
 
 Total cross-module edges: **786**
 
@@ -49,12 +49,12 @@ Total cross-module edges: **786**
 
 | From → To | References |
 |---|---:|
-| `Validator` → `Spec` | 90 |
+| `Validator` → `Spec` | 88 |
 | `Validator` → `Expression` | 87 |
 | `Execution` → `Spec` | 68 |
 | `Parser` → `Spec` | 30 |
+| `Execution` → `Contracts` | 28 |
 | `Expression` → `Spec` | 25 |
-| `Execution` → `Contracts` | 23 |
 | `Evaluation` → `Spec` | 22 |
 | `Execution` → `Events` | 21 |
 | `Execution` → `Expression` | 21 |

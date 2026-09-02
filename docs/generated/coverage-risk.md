@@ -24,10 +24,10 @@ quadrantChart
     Console: [1, 1]
     Contracts: [0.063, 0]
     Dependency: [0.333, 1]
-    Evaluation: [0.556, 1]
+    Evaluation: [0.5, 0]
     Events: [0.167, 1]
     Execution: [0.737, 1]
-    Expression: [0.222, 1]
+    Expression: [0.222, 0]
     Generator: [0.333, 1]
     Infrastructure: [0.25, 1]
     Jobs: [0.286, 1]
@@ -49,19 +49,19 @@ quadrantChart
     State: [0.2, 1]
     Support: [0, 0]
     Telemetry: [0, 1]
-    Validator: [0.545, 1]
+    Validator: [0.6, 1]
 ```
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
 | `Async` | 1.00 | 6 | 6 | 100% |
 | `Console` | 1.00 | 11 | 11 | 100% |
-| `Contracts` | 0.06 | 0 | 9 | 0% |
+| `Contracts` | 0.06 | 0 | 11 | 0% |
 | `Dependency` | 0.33 | 5 | 3 | 100% |
-| `Evaluation` | 0.56 | 41 | 19 | 100% |
+| `Evaluation` | 0.50 | 0 | 19 | 0% |
 | `Events` | 0.17 | 29 | 11 | 100% |
 | `Execution` | 0.74 | 51 | 35 | 100% |
-| `Expression` | 0.22 | 122 | 35 | 100% |
+| `Expression` | 0.22 | 0 | 35 | 0% |
 | `Generator` | 0.33 | 5 | 2 | 100% |
 | `Infrastructure` | 0.25 | 7 | 4 | 100% |
 | `Jobs` | 0.29 | 7 | 2 | 100% |
@@ -74,7 +74,7 @@ quadrantChart
 | `Laravel/State` | 0.50 | 3 | 1 | 100% |
 | `Laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `Normalizer` | 0.38 | 21 | 9 | 100% |
-| `Parser` | 0.29 | 31 | 11 | 100% |
+| `Parser` | 0.29 | 29 | 11 | 100% |
 | `Policy` | 0.67 | 2 | 2 | 100% |
 | `Protocol` | 0.90 | 10 | 5 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
@@ -83,4 +83,6 @@ quadrantChart
 | `State` | 0.20 | 25 | 12 | 100% |
 | `Support` | 0.00 | 0 | 5 | 0% |
 | `Telemetry` | 0.00 | 2 | 2 | 100% |
-| `Validator` | 0.55 | 65 | 64 | 100% |
+| `Validator` | 0.60 | 62 | 62 | 100% |
+
+**Refactor-now list** (untested churn): `Evaluation`

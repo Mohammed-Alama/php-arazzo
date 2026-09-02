@@ -22,7 +22,7 @@ use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Validator\Data\ValidationResult;
 use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;

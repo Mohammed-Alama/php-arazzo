@@ -32,7 +32,7 @@ use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Telemetry\OtelSetup;
 use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use DateTimeImmutable;
 use LogicException;

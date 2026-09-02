@@ -106,6 +106,12 @@ file on a commit is a public API change — review it deliberately.
 ### `QueueDriverInterface` interface
 - `public function dispatch(object $job, int $delaySeconds = 0): void;`
 
+### `ResponseValidatorInterface` interface
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
+
+### `SchemaValidationException` class
+- `public function __construct(public readonly string $stepId, public readonly array $violations)`
+
 ### `StepProtocolExecutorInterface` interface
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`
@@ -820,9 +826,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function validate(ArazzoDocument $document): ValidationResult`
 - `public function validateInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
 
-### `ResponseValidatorInterface` interface
-- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
-
 ### `Rule` interface
 - `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors, ): void;`
 - `public function code(): string;`
@@ -833,9 +836,6 @@ file on a commit is a public API change — review it deliberately.
 - `public function isStrict(): bool`
 - `public function rules(): array`
 - `public function withRule(Rule $rule): self`
-
-### `SchemaValidationException` class
-- `public function __construct(public readonly string $stepId, public readonly array $violations)`
 
 ### `SelectorTypeSupportedRule` class
 - `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`

@@ -12,7 +12,7 @@ use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;

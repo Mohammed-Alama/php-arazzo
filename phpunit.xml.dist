@@ -21,6 +21,9 @@
         <testsuite name="Arazzo Contracts Test Suite">
             <directory>packages/contracts/tests</directory>
         </testsuite>
+        <testsuite name="Arazzo Expression Test Suite">
+            <directory>packages/expression/tests</directory>
+        </testsuite>
         <testsuite name="Arazzo Core Test Suite">
             <directory>packages/core/tests</directory>
         </testsuite>
@@ -31,6 +34,7 @@
     <source>
         <include>
             <directory suffix=".php">packages/contracts/src</directory>
+            <directory suffix=".php">packages/expression/src</directory>
             <directory suffix=".php">packages/core/src</directory>
             <directory suffix=".php">packages/laravel/src</directory>
         </include>

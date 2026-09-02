@@ -68,7 +68,6 @@ flowchart LR
     Evaluation --> Contracts
     Evaluation --> Expression
     Evaluation --> Spec
-    Evaluation --> Validator
     Evaluation --> Support
     Events --> Support
     Execution --> Spec

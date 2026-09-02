@@ -25,9 +25,9 @@ quadrantChart
     quadrant-4 Zone of pain
     Async: [1, 0]
     Console: [1, 0]
-    Contracts: [0.063, 0.778]
+    Contracts: [0.063, 0.727]
     Dependency: [0.333, 0]
-    Evaluation: [0.556, 0.105]
+    Evaluation: [0.5, 0.105]
     Events: [0.167, 0.091]
     Execution: [0.737, 0.057]
     Expression: [0.222, 0.114]
@@ -52,7 +52,7 @@ quadrantChart
     State: [0.2, 0.417]
     Support: [0, 0.2]
     Telemetry: [0, 0]
-    Validator: [0.545, 0.031]
+    Validator: [0.6, 0.016]
 ```
 
 ## God classes (SRP)

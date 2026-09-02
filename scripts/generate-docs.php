@@ -93,6 +93,7 @@ if (!is_dir($outDir)) {
 
 $coreScans = [
     'contracts' => Scanner::scan($root.'/packages/contracts/src', 'Alama\\Arazzo\\'),
+    'expression' => Scanner::scan($root.'/packages/expression/src', 'Alama\\Arazzo\\'),
     'core' => Scanner::scan($root.'/packages/core/src', 'Alama\\Arazzo\\'),
 ];
 

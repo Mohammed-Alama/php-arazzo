@@ -93,7 +93,7 @@ mindmap
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
-| `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
+| `ResponseValidatorInterface` | **yes** | `ResponseSchemaValidator` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | **yes** | `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |

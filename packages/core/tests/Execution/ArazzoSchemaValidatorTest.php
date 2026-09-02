@@ -13,7 +13,7 @@ use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;

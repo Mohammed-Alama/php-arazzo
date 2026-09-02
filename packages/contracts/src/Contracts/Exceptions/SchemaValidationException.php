@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Exceptions;
+namespace Alama\Arazzo\Contracts\Exceptions;
 
 use RuntimeException;
 
