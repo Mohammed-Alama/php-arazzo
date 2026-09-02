@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;

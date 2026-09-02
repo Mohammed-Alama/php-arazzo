@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Enum\StepStatus;

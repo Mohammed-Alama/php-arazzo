@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutor;

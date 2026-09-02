@@ -39,19 +39,19 @@ flowchart LR
     Telemetry["Alama\Arazzo\Telemetry"]:::coreNode
     Validator["Alama\Arazzo\Validator"]:::coreNode
     Async --> Events
-    Async --> Execution
+    Async --> Contracts
     Async --> Expression
     Async --> Spec
     Async --> State
     Async --> Support
     Async --> Validator
-    Async --> Contracts
+    Async --> Execution
     Async --> Jobs
     Console --> Events
     Console --> Execution
+    Console --> Contracts
     Console --> Expression
     Console --> Jobs
-    Console --> Contracts
     Console --> Spec
     Console --> State
     Console --> Telemetry
@@ -62,21 +62,21 @@ flowchart LR
     Console --> Evaluation
     Console --> Normalizer
     Console --> Resolver
-    Contracts --> Execution
     Contracts --> Spec
-    Dependency --> Execution
+    Dependency --> Contracts
     Dependency --> Spec
-    Evaluation --> Execution
+    Evaluation --> Contracts
     Evaluation --> Expression
     Evaluation --> Spec
+    Evaluation --> Execution
     Evaluation --> Validator
     Evaluation --> Support
     Events --> Support
     Execution --> Spec
     Execution --> State
     Execution --> Evaluation
-    Execution --> Expression
     Execution --> Contracts
+    Execution --> Expression
     Execution --> Events
     Execution --> Jobs
     Execution --> Support
@@ -90,20 +90,19 @@ flowchart LR
     Expression --> Support
     Generator --> Contracts
     Infrastructure --> State
-    Jobs --> Execution
+    Jobs --> Contracts
     Jobs --> Spec
     Normalizer --> Support
     Normalizer --> Resolver
     Normalizer --> Spec
     Parser --> Spec
     Parser --> Support
-    Policy --> Execution
     Policy --> Contracts
     Policy --> Spec
+    Protocol --> Contracts
     Protocol --> Execution
     Protocol --> Expression
     Protocol --> Normalizer
-    Protocol --> Contracts
     Protocol --> Spec
     Protocol --> Dependency
     Protocol --> Evaluation
@@ -113,7 +112,7 @@ flowchart LR
     Resolver --> Parser
     Resolver --> Spec
     State --> Spec
-    State --> Execution
+    State --> Contracts
     Validator --> Expression
     Validator --> Spec
     Validator --> Normalizer

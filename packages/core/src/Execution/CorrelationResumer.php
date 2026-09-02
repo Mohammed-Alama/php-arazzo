@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Events\CorrelationResumedEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;

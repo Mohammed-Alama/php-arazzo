@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Evaluation\PayloadReplacer;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\OpenApiPayload;
 use Alama\Arazzo\Spec\PayloadReplacement;

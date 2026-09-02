@@ -8,7 +8,7 @@ use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
 use Alama\Arazzo\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Execution\Data\RunPersistence;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Execution\SyncQueueDriver;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\ExecutionStateBuilder;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
 

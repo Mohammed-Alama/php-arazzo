@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Execution\Data\ExecutionState;
+use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Execution\Data\Transition;
 use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;

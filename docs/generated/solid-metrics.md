@@ -25,11 +25,11 @@ quadrantChart
     quadrant-4 Zone of pain
     Async: [1, 0]
     Console: [1, 0]
-    Contracts: [0.182, 1]
+    Contracts: [0.071, 0.667]
     Dependency: [0.333, 0]
-    Evaluation: [0.556, 0.105]
+    Evaluation: [0.6, 0.105]
     Events: [0.167, 0.091]
-    Execution: [0.56, 0.079]
+    Execution: [0.7, 0.083]
     Expression: [0.222, 0.114]
     Generator: [0.333, 0]
     Infrastructure: [0.25, 0.25]
@@ -44,7 +44,7 @@ quadrantChart
     Laravel/_: [1, 0]
     Normalizer: [0.375, 0.111]
     Parser: [0.286, 0.182]
-    Policy: [0.75, 0]
+    Policy: [0.667, 0]
     Protocol: [0.9, 0]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.25]
@@ -65,9 +65,9 @@ Concrete types over 300 LOC:
 | `ExecutionContext` | `State` | 493 |
 | `StepExecutionWorker` | `Execution` | 376 |
 | `StepOutcomeHandler` | `Execution` | 376 |
-| `WorkflowContext` | `Execution` | 359 |
+| `WorkflowContext` | `Contracts` | 359 |
 | `Parser` | `Expression` | 348 |
-| `ExecutionState` | `Execution` | 308 |
+| `ExecutionState` | `Contracts` | 308 |
 | `PreflightValidator` | `Validator` | 300 |
 
 ## Fat interfaces (ISP)

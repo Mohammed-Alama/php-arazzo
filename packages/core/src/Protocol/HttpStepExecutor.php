@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;

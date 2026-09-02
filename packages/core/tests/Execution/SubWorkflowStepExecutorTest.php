@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Execution\Data\ExecutionResult;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Expression\ExpressionEvaluator;

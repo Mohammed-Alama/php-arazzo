@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Data;
+namespace Alama\Arazzo\Contracts\State;
 
 use JsonSerializable;
 

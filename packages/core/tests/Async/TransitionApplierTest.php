@@ -6,7 +6,7 @@ use Alama\Arazzo\Async\TransitionApplier;
 use Alama\Arazzo\Async\WorkerEvents;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
-use Alama\Arazzo\Execution\Data\ExecutionState;
+use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Execution\Data\Transition;
 use Alama\Arazzo\Execution\SyncQueueDriver;
 use Alama\Arazzo\Execution\WorkflowEngine;

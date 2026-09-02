@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution\Data;
 
+use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\State\Data\ExecutionContext;
 

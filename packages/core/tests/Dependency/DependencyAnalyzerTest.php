@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Step;
 

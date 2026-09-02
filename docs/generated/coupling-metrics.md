@@ -13,11 +13,11 @@ targets. Regenerated before every commit.
 |---|---:|---:|---:|---:|---:|---|
 | `Async` | 6 | 488 | 0 | 9 | 1.00 |  |
 | `Console` | 11 | 780 | 0 | 15 | 1.00 |  |
-| `Contracts` | 4 | 47 | 9 | 2 | 0.18 |  |
+| `Contracts` | 6 | 712 | 13 | 1 | 0.07 |  |
 | `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
-| `Evaluation` | 19 | 1140 | 4 | 5 | 0.56 |  |
+| `Evaluation` | 19 | 1140 | 4 | 6 | 0.60 |  |
 | `Events` | 11 | 284 | 5 | 1 | 0.17 |  |
-| `Execution` | 38 | 4088 | 11 | 14 | 0.56 |  |
+| `Execution` | 36 | 3424 | 6 | 14 | 0.70 |  |
 | `Expression` | 35 | 1472 | 7 | 2 | 0.22 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
@@ -33,7 +33,7 @@ targets. Regenerated before every commit.
 | `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
 | `Normalizer` | 9 | 579 | 5 | 3 | 0.38 |  |
 | `Parser` | 11 | 1085 | 5 | 2 | 0.29 |  |
-| `Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
+| `Policy` | 2 | 94 | 1 | 2 | 0.67 |  |
 | `Protocol` | 5 | 539 | 1 | 9 | 0.90 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 12 | 358 | 5 | 2 | 0.29 |  |
@@ -43,7 +43,7 @@ targets. Regenerated before every commit.
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `Validator` | 64 | 3090 | 5 | 6 | 0.55 |  |
 
-Total cross-module edges: **772**
+Total cross-module edges: **785**
 
 ## Most entangled module pairs
 
@@ -51,13 +51,13 @@ Total cross-module edges: **772**
 |---|---:|
 | `Validator` → `Spec` | 90 |
 | `Validator` → `Expression` | 87 |
-| `Execution` → `Spec` | 74 |
+| `Execution` → `Spec` | 71 |
 | `Parser` → `Spec` | 30 |
 | `Expression` → `Spec` | 25 |
 | `Evaluation` → `Spec` | 22 |
 | `Execution` → `Events` | 21 |
 | `Execution` → `Expression` | 21 |
+| `Execution` → `Contracts` | 20 |
 | `Protocol` → `Spec` | 20 |
 | `Execution` → `State` | 17 |
-| `Protocol` → `Execution` | 17 |
 | `Laravel:Bindings` → `Execution` | 14 |

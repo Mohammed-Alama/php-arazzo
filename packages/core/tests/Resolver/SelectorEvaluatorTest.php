@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;

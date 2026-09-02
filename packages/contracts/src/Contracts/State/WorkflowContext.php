@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Data;
+namespace Alama\Arazzo\Contracts\State;
 
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;

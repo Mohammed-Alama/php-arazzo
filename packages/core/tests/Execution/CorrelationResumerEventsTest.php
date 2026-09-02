@@ -7,7 +7,7 @@ namespace Tests\Execution;
 use Alama\Arazzo\Events\CorrelationResumedEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;

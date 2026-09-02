@@ -14,20 +14,20 @@ the heavier direction is drawn and the folded side is listed below the chart.
 ```mermaid
 sankey-beta
 
-Async,Contracts,1
+Async,Contracts,7
 Async,Events,9
-Async,Execution,9
+Async,Execution,3
 Async,Expression,1
 Async,Jobs,1
 Async,Spec,9
 Async,State,6
 Async,Support,1
 Async,Validator,4
-Console,Contracts,1
+Console,Contracts,2
 Console,Dependency,1
 Console,Evaluation,2
 Console,Events,2
-Console,Execution,12
+Console,Execution,11
 Console,Expression,2
 Console,Jobs,1
 Console,Normalizer,5
@@ -38,14 +38,16 @@ Console,Spec,6
 Console,State,7
 Console,Telemetry,1
 Console,Validator,2
-Contracts,Spec,3
+Contracts,Spec,6
+Dependency,Contracts,1
 Dependency,Spec,6
+Evaluation,Contracts,1
 Evaluation,Expression,10
 Evaluation,Spec,22
 Evaluation,Support,1
 Evaluation,Validator,1
 Events,Support,1
-Execution,Contracts,6
+Execution,Contracts,20
 Execution,Dependency,3
 Execution,Evaluation,4
 Execution,Events,21
@@ -54,7 +56,7 @@ Execution,Jobs,2
 Execution,Normalizer,5
 Execution,Parser,1
 Execution,Policy,1
-Execution,Spec,74
+Execution,Spec,71
 Execution,State,17
 Execution,Support,9
 Execution,Telemetry,1
@@ -63,6 +65,7 @@ Expression,Spec,25
 Expression,Support,2
 Generator,Contracts,2
 Infrastructure,State,4
+Jobs,Contracts,1
 Jobs,Spec,1
 Laravel-Bindings,Contracts,3
 Laravel-Bindings,Evaluation,2
@@ -107,12 +110,12 @@ Normalizer,Spec,6
 Normalizer,Support,1
 Parser,Spec,30
 Parser,Support,2
-Policy,Contracts,2
+Policy,Contracts,3
 Policy,Spec,2
-Protocol,Contracts,5
+Protocol,Contracts,10
 Protocol,Dependency,1
 Protocol,Evaluation,3
-Protocol,Execution,17
+Protocol,Execution,12
 Protocol,Expression,4
 Protocol,Infrastructure,1
 Protocol,Normalizer,1
@@ -121,6 +124,7 @@ Protocol,State,1
 Renderer,Spec,8
 Resolver,Parser,2
 Resolver,Spec,6
+State,Contracts,2
 State,Spec,5
 Validator,Dependency,1
 Validator,Expression,87
@@ -136,9 +140,4 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
-| `Contracts` | `Execution` | 1 |
-| `Dependency` | `Execution` | 1 |
-| `Evaluation` | `Execution` | 2 |
-| `Jobs` | `Execution` | 1 |
-| `Policy` | `Execution` | 1 |
-| `State` | `Execution` | 2 |
+| `Evaluation` | `Execution` | 1 |

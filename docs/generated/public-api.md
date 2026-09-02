@@ -73,12 +73,66 @@ file on a commit is a public API change — review it deliberately.
 ### `BackoffCalculatorInterface` interface
 - `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
 
+### `ExecutionState` class
+- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running')`
+- `public function attemptFor(string $stepId): int`
+- `public function enterWorkflow(string $workflowId): self`
+- `public function jsonSerialize(): array`
+- `public function leaveWorkflow(): self`
+- `public function restoreBudget(int $stepsSpent, array $workflowCallStack): self`
+- `public function spendStep(): self`
+- `public function toArray(): array`
+- `public function toContext(): WorkflowContext`
+- `public function withCurrentStep(?string $stepId): self`
+- `public function withError(mixed $error): self`
+- `public function withErrorEntry(array $entry): self`
+- `public function withInputs(array $inputs): self`
+- `public function withOutput(string $name, mixed $value): self`
+- `public function withStatus(string $status): self`
+- `public function withStepAttempt(string $stepId): self`
+- `public function withStepResult(string $stepId, array $result): self`
+- `public function withWorkflow(string $workflowId): self`
+- `public static function fromArray(array $values): self`
+- `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
+
 ### `QueueDriverInterface` interface
 - `public function dispatch(object $job, int $delaySeconds = 0): void;`
 
 ### `StepProtocolExecutorInterface` interface
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`
+
+### `WorkflowContext` class
+- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], public ?string $parentRunId = null)`
+- `public function getComponents(): array`
+- `public function getDefinitionId(): string`
+- `public function getExecutionId(): string`
+- `public function getInputs(): array`
+- `public function getStepAttempts(string $stepId): int`
+- `public function getStepStatus(string $stepId): ?StepStatus`
+- `public function getSteps(): array`
+- `public function getStepsSpent(): int`
+- `public function getWorkflowCallStack(): array`
+- `public function getWorkflowId(): ?string`
+- `public function getWorkflows(): array`
+- `public function rootScope(): array`
+- `public function toArray(): array`
+- `public function withBudget(int $stepsSpent, array $workflowCallStack): self`
+- `public function withExecutionId(string $executionId): self`
+- `public function withInput(string $name, mixed $value): self`
+- `public function withInputs(array $inputs): self`
+- `public function withStepAttemptIncremented(string $stepId): self`
+- `public function withStepInputs(string $stepId, array $inputs): self`
+- `public function withStepOutput(string $stepId, string $key, mixed $value): self`
+- `public function withStepRequest(string $stepId, array $request): self`
+- `public function withStepResponse(string $stepId, array $response): self`
+- `public function withStepResult(string $stepId, array $result): self`
+- `public function withStepStatus(string $stepId, StepStatus $status): self`
+- `public function withWorkflowData(string $workflowId, array $data): self`
+- `public function withWorkflowId(string $workflowId): self`
+- `public static function forChildInvocation(WorkflowContext $parent, Workflow $target, array $inputs, ): self`
+- `public static function fromPersisted(array $persisted, string $executionId): self`
+- `public static function reconciled(self $incoming, array $persisted, string $executionId): self`
 
 ## core · `Alama\Arazzo\Dependency`
 
@@ -166,28 +220,6 @@ file on a commit is a public API change — review it deliberately.
 - `public static function subWorkflowNotFound(string $workflowId): self`
 - `public static function unresolvableChannelTarget(string $stepId, string $channelPath): self`
 
-### `ExecutionState` class
-- `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running')`
-- `public function attemptFor(string $stepId): int`
-- `public function enterWorkflow(string $workflowId): self`
-- `public function jsonSerialize(): array`
-- `public function leaveWorkflow(): self`
-- `public function restoreBudget(int $stepsSpent, array $workflowCallStack): self`
-- `public function spendStep(): self`
-- `public function toArray(): array`
-- `public function toContext(): WorkflowContext`
-- `public function withCurrentStep(?string $stepId): self`
-- `public function withError(mixed $error): self`
-- `public function withErrorEntry(array $entry): self`
-- `public function withInputs(array $inputs): self`
-- `public function withOutput(string $name, mixed $value): self`
-- `public function withStatus(string $status): self`
-- `public function withStepAttempt(string $stepId): self`
-- `public function withStepResult(string $stepId, array $result): self`
-- `public function withWorkflow(string $workflowId): self`
-- `public static function fromArray(array $values): self`
-- `public static function fromContext(WorkflowContext $context, ?int $maxSteps = null, ?int $maxWorkflowDepth = null): self`
-
 ### `ExpressionValueResolver` class
 - `public function __construct(private readonly ExpressionResolverInterface $expressions, ?SelectorEvaluator $selectors = null)`
 - `public function resolve(mixed $value, WorkflowContext $context, ?string $stepId = null): mixed`
@@ -271,38 +303,6 @@ file on a commit is a public API change — review it deliberately.
 - `public static function asFloat(mixed $value): float`
 - `public static function asInteger(mixed $value): int`
 - `public static function asString(mixed $value): string`
-
-### `WorkflowContext` class
-- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], public ?string $parentRunId = null)`
-- `public function getComponents(): array`
-- `public function getDefinitionId(): string`
-- `public function getExecutionId(): string`
-- `public function getInputs(): array`
-- `public function getStepAttempts(string $stepId): int`
-- `public function getStepStatus(string $stepId): ?StepStatus`
-- `public function getSteps(): array`
-- `public function getStepsSpent(): int`
-- `public function getWorkflowCallStack(): array`
-- `public function getWorkflowId(): ?string`
-- `public function getWorkflows(): array`
-- `public function rootScope(): array`
-- `public function toArray(): array`
-- `public function withBudget(int $stepsSpent, array $workflowCallStack): self`
-- `public function withExecutionId(string $executionId): self`
-- `public function withInput(string $name, mixed $value): self`
-- `public function withInputs(array $inputs): self`
-- `public function withStepAttemptIncremented(string $stepId): self`
-- `public function withStepInputs(string $stepId, array $inputs): self`
-- `public function withStepOutput(string $stepId, string $key, mixed $value): self`
-- `public function withStepRequest(string $stepId, array $request): self`
-- `public function withStepResponse(string $stepId, array $response): self`
-- `public function withStepResult(string $stepId, array $result): self`
-- `public function withStepStatus(string $stepId, StepStatus $status): self`
-- `public function withWorkflowData(string $workflowId, array $data): self`
-- `public function withWorkflowId(string $workflowId): self`
-- `public static function forChildInvocation(WorkflowContext $parent, Workflow $target, array $inputs, ): self`
-- `public static function fromPersisted(array $persisted, string $executionId): self`
-- `public static function reconciled(self $incoming, array $persisted, string $executionId): self`
 
 ### `WorkflowEngine` class
 - `public function __construct(private ExpressionResolverInterface $expressions, int|null|RetryPolicy $maxRetryAttempts = null, private float $retryBackoffMultiplier = 1.0)`

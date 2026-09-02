@@ -7,7 +7,7 @@ namespace Tests\Execution;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Execution\Data\RunPersistence;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;

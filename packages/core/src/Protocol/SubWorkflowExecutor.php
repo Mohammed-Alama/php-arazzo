@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Protocol;
 
 use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Execution\Data\ExecutionState;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\ExecutionState;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Enum\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;

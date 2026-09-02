@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Async\SuspensionHandler;
 use Alama\Arazzo\Events\CorrelationPendingEvent;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;

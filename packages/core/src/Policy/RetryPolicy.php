@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Policy;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Interfaces\BackoffCalculatorInterface;
 use Alama\Arazzo\Spec\Action\RetryAction;
 use Alama\Arazzo\Spec\Step;

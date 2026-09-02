@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Execution\Data\SubWorkflowResult;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\SubWorkflowInvoker;

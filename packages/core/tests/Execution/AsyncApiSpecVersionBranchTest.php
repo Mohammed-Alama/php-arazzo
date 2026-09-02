@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Protocol\AsyncApiStepExecutor;

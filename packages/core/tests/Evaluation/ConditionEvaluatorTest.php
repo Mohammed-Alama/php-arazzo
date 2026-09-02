@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Tests\Evaluation;
 
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 
 function conditionContext(): WorkflowContext

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Protocol\ProtocolExecutorRegistry;
 use Alama\Arazzo\Spec\ArazzoDocument;

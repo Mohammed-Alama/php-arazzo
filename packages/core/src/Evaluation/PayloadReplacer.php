@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\JsonPathEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\PayloadReplacement;

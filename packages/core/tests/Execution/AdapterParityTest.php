@@ -7,7 +7,7 @@ namespace Tests\Execution;
 use Alama\Arazzo\Console\Cli\CliRunner;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\ExpressionResolver;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\ResponseSchemaValidator;

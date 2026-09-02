@@ -50,6 +50,8 @@ flowchart LR
     C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
     C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
+    C_core_Contracts_WorkflowContext["WorkflowContext<br/><small>Contracts</small>"]:::implCore
+    C_core_Contracts_WorkflowContext -.->|implements| I_WorkflowContextInterface
     C_core_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_core_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>Evaluation</small>"]:::implCore
@@ -80,8 +82,6 @@ flowchart LR
     C_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
     C_core_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>Execution</small>"]:::implCore
     C_core_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
-    C_core_Execution_WorkflowContext["WorkflowContext<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_WorkflowContext -.->|implements| I_WorkflowContextInterface
     C_core_Expression_DomXpathEvaluator["DomXpathEvaluator<br/><small>Expression</small>"]:::implCore
     C_core_Expression_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_core_Expression_ExpressionEvaluator["ExpressionEvaluator<br/><small>Expression</small>"]:::implCore

@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Protocol;
 
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\PayloadReplacer;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;

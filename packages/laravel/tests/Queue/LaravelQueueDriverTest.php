@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Laravel;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Jobs\ResumeCorrelationJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;

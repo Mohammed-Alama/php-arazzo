@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Execution;
 
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Execution\Data\SubWorkflowResult;
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;

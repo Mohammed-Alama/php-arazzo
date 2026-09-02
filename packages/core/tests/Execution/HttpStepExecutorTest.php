@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;

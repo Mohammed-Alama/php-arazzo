@@ -115,10 +115,10 @@ flowchart TB
     M_Console --> M_State
     M_Console --> M_Telemetry
     M_Console --> M_Validator
-    M_Contracts --> M_Execution
     M_Contracts --> M_Spec
-    M_Dependency -.->|violation| M_Execution
+    M_Dependency -.->|violation| M_Contracts
     M_Dependency --> M_Spec
+    M_Evaluation -.->|violation| M_Contracts
     M_Evaluation -.->|violation| M_Execution
     M_Evaluation --> M_Expression
     M_Evaluation --> M_Spec
@@ -143,7 +143,7 @@ flowchart TB
     M_Expression --> M_Support
     M_Generator -.->|violation| M_Contracts
     M_Infrastructure -.->|violation| M_State
-    M_Jobs -.->|violation| M_Execution
+    M_Jobs -.->|violation| M_Contracts
     M_Jobs --> M_Spec
     M_Laravel_Bindings -.->|violation| M_Contracts
     M_Laravel_Bindings --> M_Evaluation
@@ -189,7 +189,6 @@ flowchart TB
     M_Parser --> M_Spec
     M_Parser --> M_Support
     M_Policy -.->|violation| M_Contracts
-    M_Policy -.->|violation| M_Execution
     M_Policy --> M_Spec
     M_Protocol -.->|violation| M_Contracts
     M_Protocol --> M_Dependency
@@ -203,7 +202,7 @@ flowchart TB
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
-    M_State -.->|violation| M_Execution
+    M_State -.->|violation| M_Contracts
     M_State --> M_Spec
     M_Validator --> M_Dependency
     M_Validator --> M_Expression
@@ -220,18 +219,18 @@ flowchart TB
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
-| `Execution` | `Contracts` | 6 |
-| `Protocol` | `Contracts` | 5 |
+| `Execution` | `Contracts` | 20 |
+| `Protocol` | `Contracts` | 10 |
+| `Async` | `Contracts` | 7 |
 | `Infrastructure` | `State` | 4 |
 | `Laravel:Bindings` | `Contracts` | 3 |
-| `Evaluation` | `Execution` | 2 |
+| `Policy` | `Contracts` | 3 |
+| `Console` | `Contracts` | 2 |
 | `Generator` | `Contracts` | 2 |
-| `Policy` | `Contracts` | 2 |
-| `State` | `Execution` | 2 |
-| `Async` | `Contracts` | 1 |
-| `Console` | `Contracts` | 1 |
-| `Dependency` | `Execution` | 1 |
-| `Jobs` | `Execution` | 1 |
+| `State` | `Contracts` | 2 |
+| `Dependency` | `Contracts` | 1 |
+| `Evaluation` | `Contracts` | 1 |
+| `Evaluation` | `Execution` | 1 |
+| `Jobs` | `Contracts` | 1 |
 | `Laravel:Http` | `Contracts` | 1 |
 | `Laravel:Queue` | `Contracts` | 1 |
-| `Policy` | `Execution` | 1 |
