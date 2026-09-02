@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutor;
@@ -15,7 +16,6 @@ use Alama\Arazzo\Spec\Enum\SourceType;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;

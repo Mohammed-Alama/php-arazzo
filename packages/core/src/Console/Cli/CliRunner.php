@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Console\Cli;
 
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepExecutionWorker;
@@ -16,7 +17,6 @@ use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\LockManagerInterface;

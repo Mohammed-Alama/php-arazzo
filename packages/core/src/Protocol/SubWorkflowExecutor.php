@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Protocol;
 
 use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\TransitionType;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
@@ -14,7 +15,6 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionState;
 use Throwable;
 

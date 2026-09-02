@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Execution\Data;
 
 use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Spec\Workflow;
 
 final readonly class WorkflowContext
 {

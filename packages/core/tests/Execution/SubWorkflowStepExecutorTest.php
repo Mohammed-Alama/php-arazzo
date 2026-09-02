@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ExecutionResult;
 use Alama\Arazzo\Execution\WorkflowExecutor;
@@ -17,7 +18,6 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Parameter;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Tests\Support\Fx;
 use Mockery;
 

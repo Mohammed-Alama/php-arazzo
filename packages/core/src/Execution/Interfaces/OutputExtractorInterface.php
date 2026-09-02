@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution\Interfaces;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 interface OutputExtractorInterface
 {

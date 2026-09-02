@@ -111,6 +111,7 @@ flowchart TB
     M_Console --> M_State
     M_Console --> M_Telemetry
     M_Console --> M_Validator
+    M_Dependency -.->|violation| M_Execution
     M_Dependency --> M_Spec
     M_Evaluation -.->|violation| M_Execution
     M_Evaluation --> M_Expression
@@ -133,11 +134,13 @@ flowchart TB
     M_Execution --> M_Support
     M_Execution --> M_Telemetry
     M_Execution --> M_Validator
+    M_Expression -.->|violation| M_Execution
     M_Expression --> M_Spec
     M_Expression --> M_Support
     M_Expression -.->|violation| M_Validator
     M_Generator -.->|violation| M_Execution
     M_Infrastructure -.->|violation| M_State
+    M_Jobs -.->|violation| M_Execution
     M_Jobs --> M_Spec
     M_Laravel_Bindings --> M_Async
     M_Laravel_Bindings --> M_Evaluation
@@ -195,6 +198,8 @@ flowchart TB
     M_Renderer --> M_Spec
     M_Resolver --> M_Parser
     M_Resolver --> M_Spec
+    M_Spec -.->|violation| M_Execution
+    M_State -.->|violation| M_Execution
     M_State --> M_Spec
     M_Validator --> M_Dependency
     M_Validator --> M_Expression
@@ -207,14 +212,19 @@ flowchart TB
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
 ```
 
-**7 violation(s) found:**
+**12 violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
+| `Evaluation` | `Execution` | 6 |
 | `Execution` | `Async` | 4 |
 | `Infrastructure` | `State` | 4 |
+| `Expression` | `Execution` | 3 |
+| `Policy` | `Execution` | 3 |
 | `Execution` | `Protocol` | 2 |
 | `Generator` | `Execution` | 2 |
-| `Policy` | `Execution` | 2 |
-| `Evaluation` | `Execution` | 1 |
+| `State` | `Execution` | 2 |
+| `Dependency` | `Execution` | 1 |
 | `Expression` | `Validator` | 1 |
+| `Jobs` | `Execution` | 1 |
+| `Spec` | `Execution` | 1 |

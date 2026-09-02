@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\State;
 
-use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use JsonSerializable;
 
 /**

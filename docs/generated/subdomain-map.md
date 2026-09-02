@@ -16,7 +16,7 @@ the declaration honest.
 flowchart LR
     subgraph S_core["Core domain"]
         S_Expression["Expression<br/><small>1455 LOC</small>"]:::coreDomain
-        S_Spec["Spec<br/><small>1172 LOC</small>"]:::coreDomain
+        S_Spec["Spec<br/><small>817 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_Console["Console<br/><small>791 LOC</small>"]:::supportingDomain
@@ -39,8 +39,8 @@ flowchart LR
     subgraph S_unclassified[""]
         S_Async["Async<br/><small>507 LOC</small>"]:::unknownDomain
         S_Dependency["Dependency<br/><small>328 LOC</small>"]:::unknownDomain
-        S_Evaluation["Evaluation<br/><small>1110 LOC</small>"]:::unknownDomain
-        S_Execution["Execution<br/><small>3494 LOC</small>"]:::unknownDomain
+        S_Evaluation["Evaluation<br/><small>1108 LOC</small>"]:::unknownDomain
+        S_Execution["Execution<br/><small>3852 LOC</small>"]:::unknownDomain
         S_Infrastructure["Infrastructure<br/><small>160 LOC</small>"]:::unknownDomain
         S_Jobs["Jobs<br/><small>34 LOC</small>"]:::unknownDomain
         S_Normalizer["Normalizer<br/><small>588 LOC</small>"]:::unknownDomain
@@ -56,10 +56,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 2 | 2,627 | 0 | 14% |
+| Core domain | 2 | 2,272 | 0 | 12% |
 | Supporting | 6 | 5,750 | 0 | 31% |
 | Generic subdomain | 8 | 1,716 | 1,132 | 15% |
-|  | 10 | 7,169 | 0 | 39% |
+|  | 10 | 7,525 | 0 | 41% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `Async`

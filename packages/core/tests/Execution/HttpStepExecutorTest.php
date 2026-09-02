@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
@@ -18,7 +19,6 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\OpenApiPayload;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;

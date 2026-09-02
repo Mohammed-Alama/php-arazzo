@@ -38,12 +38,12 @@ flowchart LR
     Telemetry["Alama\Arazzo\Telemetry"]:::coreNode
     Validator["Alama\Arazzo\Validator"]:::coreNode
     Async --> Events
+    Async --> Execution
     Async --> Expression
     Async --> Spec
     Async --> State
     Async --> Support
     Async --> Validator
-    Async --> Execution
     Async --> Jobs
     Console --> Events
     Console --> Execution
@@ -60,6 +60,7 @@ flowchart LR
     Console --> Evaluation
     Console --> Normalizer
     Console --> Resolver
+    Dependency --> Execution
     Dependency --> Spec
     Evaluation --> Execution
     Evaluation --> Expression
@@ -84,9 +85,11 @@ flowchart LR
     Execution --> Evaluation
     Expression --> Spec
     Expression --> Support
+    Expression --> Execution
     Expression --> Validator
     Generator --> Execution
     Infrastructure --> State
+    Jobs --> Execution
     Jobs --> Spec
     Normalizer --> Support
     Normalizer --> Resolver
@@ -106,7 +109,9 @@ flowchart LR
     Renderer --> Spec
     Resolver --> Parser
     Resolver --> Spec
+    Spec --> Execution
     State --> Spec
+    State --> Execution
     Validator --> Expression
     Validator --> Spec
     Validator --> Normalizer

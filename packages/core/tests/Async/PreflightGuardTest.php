@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\PreflightGuard;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
@@ -17,7 +18,6 @@ use Alama\Arazzo\Resolver\SourceRegistry;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\Format;
 use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Validator\PreflightFailureException;
 use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Client;

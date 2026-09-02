@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
@@ -32,7 +33,6 @@ use Alama\Arazzo\Spec\Reusable;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;

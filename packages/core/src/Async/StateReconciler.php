@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Async;
 
-use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 
 /**

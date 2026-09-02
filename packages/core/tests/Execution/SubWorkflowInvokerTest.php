@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ExecutionResult;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
@@ -17,7 +18,6 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 it('binds parameters, executes child workflow, returns SubWorkflowResult', function () {
     $document = new ArazzoDocument(

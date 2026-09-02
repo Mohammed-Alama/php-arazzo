@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 
 it('merges step response and outputs into context correctly', function () {
     $context = new WorkflowContext('wf1', []);

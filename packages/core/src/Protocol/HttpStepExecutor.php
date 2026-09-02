@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
@@ -14,7 +15,6 @@ use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
 final class HttpStepExecutor implements StepProtocolExecutorInterface

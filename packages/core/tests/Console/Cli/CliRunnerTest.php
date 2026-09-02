@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Console\Cli\CliRunner;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Protocol\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
@@ -11,7 +12,6 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\FileStateStore;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 

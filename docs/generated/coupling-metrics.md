@@ -13,14 +13,14 @@ targets. Regenerated before every commit.
 |---|---:|---:|---:|---:|---:|---|
 | `Async` | 7 | 500 | 4 | 8 | 0.67 |  |
 | `Console` | 11 | 780 | 0 | 15 | 1.00 |  |
-| `Dependency` | 3 | 325 | 4 | 1 | 0.20 |  |
-| `Evaluation` | 18 | 1092 | 4 | 5 | 0.56 |  |
+| `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
+| `Evaluation` | 18 | 1090 | 4 | 5 | 0.56 |  |
 | `Events` | 11 | 284 | 5 | 1 | 0.17 |  |
-| `Execution` | 38 | 3456 | 8 | 15 | 0.65 |  |
-| `Expression` | 33 | 1422 | 7 | 3 | 0.30 |  |
+| `Execution` | 39 | 3813 | 13 | 15 | 0.54 |  |
+| `Expression` | 33 | 1422 | 7 | 4 | 0.36 |  |
 | `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
-| `Jobs` | 2 | 32 | 5 | 1 | 0.17 |  |
+| `Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
 | `Laravel:Bindings` | 6 | 445 | 1 | 20 | 0.95 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
 | `Laravel:Http` | 3 | 158 | 2 | 7 | 0.78 |  |
@@ -36,13 +36,13 @@ targets. Regenerated before every commit.
 | `Protocol` | 6 | 568 | 3 | 8 | 0.73 |  |
 | `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `Resolver` | 12 | 358 | 5 | 2 | 0.29 |  |
-| `Spec` | 39 | 1133 | 17 | 0 | 0.00 |  |
-| `State` | 15 | 1235 | 10 | 1 | 0.09 |  |
+| `Spec` | 38 | 779 | 17 | 1 | 0.06 |  |
+| `State` | 15 | 1235 | 10 | 2 | 0.17 |  |
 | `Support` | 5 | 166 | 9 | 0 | 0.00 |  |
 | `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `Validator` | 64 | 3071 | 6 | 6 | 0.50 |  |
 
-Total cross-module edges: **780**
+Total cross-module edges: **770**
 
 ## Most entangled module pairs
 
@@ -50,13 +50,13 @@ Total cross-module edges: **780**
 |---|---:|
 | `Validator` → `Spec` | 91 |
 | `Validator` → `Expression` | 87 |
-| `Execution` → `Spec` | 83 |
+| `Execution` → `Spec` | 74 |
 | `Parser` → `Spec` | 30 |
-| `Protocol` → `Spec` | 30 |
-| `Evaluation` → `Spec` | 26 |
-| `Expression` → `Spec` | 24 |
+| `Protocol` → `Spec` | 25 |
 | `Execution` → `State` | 22 |
 | `Execution` → `Events` | 21 |
 | `Execution` → `Expression` | 21 |
+| `Expression` → `Spec` | 21 |
+| `Evaluation` → `Spec` | 19 |
+| `Protocol` → `Execution` | 17 |
 | `Laravel:Bindings` → `Execution` | 15 |
-| `Async` → `Spec` | 13 |

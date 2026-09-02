@@ -8,6 +8,7 @@ use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Events\StepExecutedEvent as EventStepExecuted;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Execution\WorkflowExecutor;
@@ -16,7 +17,6 @@ use Alama\Arazzo\Spec\Components;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 

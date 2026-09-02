@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
 use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutionWorker;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
@@ -21,7 +22,6 @@ use Alama\Arazzo\Spec\OpenApiPayload;
 use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\RawDocument;
 use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;

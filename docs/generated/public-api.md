@@ -239,6 +239,38 @@ file on a commit is a public API change — review it deliberately.
 - `public static function asInteger(mixed $value): int`
 - `public static function asString(mixed $value): string`
 
+### `WorkflowContext` class
+- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], public ?string $parentRunId = null)`
+- `public function getComponents(): array`
+- `public function getDefinitionId(): string`
+- `public function getExecutionId(): string`
+- `public function getInputs(): array`
+- `public function getStepAttempts(string $stepId): int`
+- `public function getStepStatus(string $stepId): ?StepStatus`
+- `public function getSteps(): array`
+- `public function getStepsSpent(): int`
+- `public function getWorkflowCallStack(): array`
+- `public function getWorkflowId(): ?string`
+- `public function getWorkflows(): array`
+- `public function rootScope(): array`
+- `public function toArray(): array`
+- `public function withBudget(int $stepsSpent, array $workflowCallStack): self`
+- `public function withExecutionId(string $executionId): self`
+- `public function withInput(string $name, mixed $value): self`
+- `public function withInputs(array $inputs): self`
+- `public function withStepAttemptIncremented(string $stepId): self`
+- `public function withStepInputs(string $stepId, array $inputs): self`
+- `public function withStepOutput(string $stepId, string $key, mixed $value): self`
+- `public function withStepRequest(string $stepId, array $request): self`
+- `public function withStepResponse(string $stepId, array $response): self`
+- `public function withStepResult(string $stepId, array $result): self`
+- `public function withStepStatus(string $stepId, StepStatus $status): self`
+- `public function withWorkflowData(string $workflowId, array $data): self`
+- `public function withWorkflowId(string $workflowId): self`
+- `public static function forChildInvocation(WorkflowContext $parent, Workflow $target, array $inputs, ): self`
+- `public static function fromPersisted(array $persisted, string $executionId): self`
+- `public static function reconciled(self $incoming, array $persisted, string $executionId): self`
+
 ### `WorkflowEngine` class
 - `public function __construct(private ExpressionResolverInterface $expressions, int|null|RetryPolicy $maxRetryAttempts = null, private float $retryBackoffMultiplier = 1.0)`
 - `public function evaluateWorkflowOutputs(ArazzoDocument $document, Workflow $workflow, ExecutionState|ExecutionContext $state): array`
@@ -535,38 +567,6 @@ file on a commit is a public API change — review it deliberately.
 
 ### `SuccessGotoAction` class
 - `public function __construct(string $name, public ?string $stepId, public ?string $workflowId, array $criteria, public array $parameters = [])`
-
-### `WorkflowContext` class
-- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], public ?string $parentRunId = null)`
-- `public function getComponents(): array`
-- `public function getDefinitionId(): string`
-- `public function getExecutionId(): string`
-- `public function getInputs(): array`
-- `public function getStepAttempts(string $stepId): int`
-- `public function getStepStatus(string $stepId): ?StepStatus`
-- `public function getSteps(): array`
-- `public function getStepsSpent(): int`
-- `public function getWorkflowCallStack(): array`
-- `public function getWorkflowId(): ?string`
-- `public function getWorkflows(): array`
-- `public function rootScope(): array`
-- `public function toArray(): array`
-- `public function withBudget(int $stepsSpent, array $workflowCallStack): self`
-- `public function withExecutionId(string $executionId): self`
-- `public function withInput(string $name, mixed $value): self`
-- `public function withInputs(array $inputs): self`
-- `public function withStepAttemptIncremented(string $stepId): self`
-- `public function withStepInputs(string $stepId, array $inputs): self`
-- `public function withStepOutput(string $stepId, string $key, mixed $value): self`
-- `public function withStepRequest(string $stepId, array $request): self`
-- `public function withStepResponse(string $stepId, array $response): self`
-- `public function withStepResult(string $stepId, array $result): self`
-- `public function withStepStatus(string $stepId, StepStatus $status): self`
-- `public function withWorkflowData(string $workflowId, array $data): self`
-- `public function withWorkflowId(string $workflowId): self`
-- `public static function forChildInvocation(WorkflowContext $parent, Workflow $target, array $inputs, ): self`
-- `public static function fromPersisted(array $persisted, string $executionId): self`
-- `public static function reconciled(self $incoming, array $persisted, string $executionId): self`
 
 ## core · `Alama\Arazzo\State`
 

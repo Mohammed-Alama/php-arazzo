@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Execution\ArazzoOutputExtractor;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
@@ -22,7 +23,6 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Selector;
 use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 beforeEach(function () {
     $openApiJson = json_encode([

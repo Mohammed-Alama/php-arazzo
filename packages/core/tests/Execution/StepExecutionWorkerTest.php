@@ -6,6 +6,7 @@ namespace Tests\Execution;
 
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\Listener\LedgerEventListener;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
@@ -29,7 +30,6 @@ use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\LockManagerInterface;

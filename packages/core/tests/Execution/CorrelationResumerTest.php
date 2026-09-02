@@ -6,6 +6,7 @@ namespace Tests\Execution;
 
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Execution\CorrelationResumer;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
@@ -16,7 +17,6 @@ use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\PendingCorrelation;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\LockManagerInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;

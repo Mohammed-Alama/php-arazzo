@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Interfaces;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
 
 interface ExpressionResolverInterface

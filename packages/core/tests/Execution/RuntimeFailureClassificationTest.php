@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Execution\StepExecutor;
 use Alama\Arazzo\Execution\WorkflowEngine;
@@ -15,7 +16,6 @@ use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;

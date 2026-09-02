@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Execution\WorkflowExecutor;
@@ -14,7 +15,6 @@ use Alama\Arazzo\Spec\EvaluationContext;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\StepExecutionOutcome;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 /**
  * Executes steps that target a nested workflow via workflowId. The child

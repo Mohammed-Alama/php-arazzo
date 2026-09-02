@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Protocol\AsyncApiStepExecutor;
@@ -11,7 +12,6 @@ use Alama\Arazzo\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 
 it('rejects async fields on 1.0 doc at execution', function () {

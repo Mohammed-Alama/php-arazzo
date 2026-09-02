@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\StringInterpolator;
 use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Validator\Exceptions\SchemaValidationException;
 use Psr\EventDispatcher\EventDispatcherInterface;

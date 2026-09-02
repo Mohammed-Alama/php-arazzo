@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Tests\Evaluation;
 
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 function conditionContext(): WorkflowContext
 {

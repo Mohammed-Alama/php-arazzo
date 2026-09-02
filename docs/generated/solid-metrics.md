@@ -25,14 +25,14 @@ quadrantChart
     quadrant-4 Zone of pain
     Async: [0.667, 0.143]
     Console: [1, 0]
-    Dependency: [0.2, 0]
+    Dependency: [0.333, 0]
     Evaluation: [0.556, 0.111]
     Events: [0.167, 0.091]
-    Execution: [0.652, 0.132]
-    Expression: [0.3, 0.091]
+    Execution: [0.536, 0.128]
+    Expression: [0.364, 0.091]
     Generator: [0.333, 0]
     Infrastructure: [0.25, 0.25]
-    Jobs: [0.167, 0]
+    Jobs: [0.286, 0]
     Laravel/Bindings: [0.952, 0]
     Laravel/Http: [0.778, 0]
     Laravel/Lock: [0.5, 0]
@@ -47,8 +47,8 @@ quadrantChart
     Protocol: [0.727, 0.167]
     Renderer: [0.5, 0]
     Resolver: [0.286, 0.25]
-    Spec: [0, 0]
-    State: [0.091, 0.467]
+    Spec: [0.056, 0]
+    State: [0.167, 0.467]
     Support: [0, 0.2]
     Telemetry: [0, 0]
     Validator: [0.5, 0.031]
@@ -64,7 +64,7 @@ Concrete types over 300 LOC:
 | `ExecutionContext` | `State` | 492 |
 | `StepExecutionWorker` | `Execution` | 386 |
 | `StepOutcomeHandler` | `Execution` | 378 |
-| `WorkflowContext` | `Spec` | 357 |
+| `WorkflowContext` | `Execution` | 358 |
 | `Parser` | `Expression` | 347 |
 | `ExecutionState` | `State` | 309 |
 

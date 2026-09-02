@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\Enum\ExpressionType;
-use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 it('evaluates JSONPath selector against the default response body context', function () {
     $xpath = new DomXpathEvaluator();

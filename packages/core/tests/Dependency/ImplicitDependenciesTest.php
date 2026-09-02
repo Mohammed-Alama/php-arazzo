@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Tests\Evaluation;
 use Alama\Arazzo\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Dependency\DependencyGraph;
 use Alama\Arazzo\Dependency\ImplicitDependencies;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Expression;
@@ -15,7 +16,6 @@ use Alama\Arazzo\Spec\PayloadReplacement;
 use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\SuccessCriterion;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('extracts output references from parameters, body, criteria and correlation ids', function (): void {

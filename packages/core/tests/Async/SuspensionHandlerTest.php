@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Async\SuspensionHandler;
 use Alama\Arazzo\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Spec\ArazzoDocument;
 use Alama\Arazzo\Spec\Enum\StepStatus;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
 use Alama\Arazzo\Tests\Support\RecordingExecutionRegistry;

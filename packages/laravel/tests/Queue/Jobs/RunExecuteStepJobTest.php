@@ -4,11 +4,28 @@ declare(strict_types=1);
 
 namespace Tests\Laravel\Jobs;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
+use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Execution\StepExecutionWorker;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
+use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Spec\Components;
+use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Spec\Info;
+use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\State\Interfaces\StateStoreInterface;
+use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Operation;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 
@@ -52,24 +69,6 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     // not just an in-memory closure call.
     expect($recorder->handled[0])->not->toBe($innerJob);
 });
-
-use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Normalizer\ResolvedOperation;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\StateStoreInterface;
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Operation;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context

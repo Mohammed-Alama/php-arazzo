@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Async\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\RunControlFlow;
 use Alama\Arazzo\Execution\RunPersistence;
 use Alama\Arazzo\Execution\StepOutcomeHandler;
@@ -20,7 +21,6 @@ use Alama\Arazzo\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;

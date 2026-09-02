@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Execution;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\SelectorEvaluator;
@@ -11,7 +12,6 @@ use Alama\Arazzo\Expression\StringInterpolator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\Spec\WorkflowContext;
 
 /**
  * Single resolution path for step-level runtime values (parameters,

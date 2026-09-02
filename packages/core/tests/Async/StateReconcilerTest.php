@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Async\StateReconciler;
-use Alama\Arazzo\Spec\WorkflowContext;
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Tests\Support\RecordingStateStore;
 

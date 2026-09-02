@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Execution\Data\WorkflowContext;
 use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Execution\Transition;
 use Alama\Arazzo\Execution\TransitionType;
@@ -16,7 +17,6 @@ use Alama\Arazzo\Spec\Expression;
 use Alama\Arazzo\Spec\Info;
 use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Spec\WorkflowContext;
 use Alama\Arazzo\State\ExecutionContext;
 use Alama\Arazzo\State\StepResult;
 

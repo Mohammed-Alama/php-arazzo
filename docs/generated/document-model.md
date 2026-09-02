@@ -48,7 +48,6 @@ classDiagram
     class SuccessEndAction <<value>>
     class SuccessGotoAction <<value>>
     class Workflow
-    class WorkflowContext
     RawDocument "1" --> "0..1" Format : holds
     ArazzoDocument "1" --> "0..1" Info : holds
     ArazzoDocument "1" --> "0..1" Components : holds
@@ -65,7 +64,6 @@ classDiagram
     Step "1" --> "0..1" SuccessAction : holds
     Step "1" --> "0..1" FailureAction : holds
     Step "1" --> "0..1" Selector : holds
-    EvaluationContext "1" --> "0..1" WorkflowContext : holds
     EvaluationContext "1" --> "0..1" ArazzoDocument : holds
     PayloadReplacement "1" --> "0..1" Expression : holds
     PayloadReplacement "1" --> "0..1" Selector : holds

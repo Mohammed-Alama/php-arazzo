@@ -99,6 +99,7 @@ Where async suspend/resume bookkeeping happens:
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
+| `WorkflowContext` <small>core</small> | resumes from webhook |
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |
 | `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
@@ -108,5 +109,4 @@ Where async suspend/resume bookkeeping happens:
 | `DatabasePendingCorrelationRegistry` <small>laravel</small> | consumes correlation, creates pending correlation, reads pending state |
 | `RunResumeCorrelationJob` <small>laravel</small> | resumes from webhook |
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
-| `WorkflowContext` <small>core</small> | resumes from webhook |
 | `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
