@@ -6,7 +6,8 @@
     "homepage": "https://github.com/alama/arazzo",
     "license": "MIT",
     "repositories": [
-        {"type": "path", "url": "../core"}
+        {"type": "path", "url": "../core"},
+        {"type": "path", "url": "../contracts"}
     ],
     "authors": [
         {"name": "Mohammed Alama", "email": "mohammedalama96@icloud.com", "role": "Developer"}
@@ -14,6 +15,7 @@
     "require": {
         "php": "^8.4",
         "alama/arazzo-core": "^1.0@alpha",
+        "alama/arazzo-contracts": "@dev",
         "guzzlehttp/guzzle": "^7.8||^8.0",
         "illuminate/contracts": "^11.0||^12.0||^13.0",
         "spatie/laravel-package-tools": "^1.16"

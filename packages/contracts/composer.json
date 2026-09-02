@@ -1,0 +1,39 @@
+{
+    "name": "alama/arazzo-contracts",
+    "description": "Arazzo domain model, shared contracts and state DTOs.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Alama\\Arazzo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.4",
+        "psr/event-dispatcher": "^1.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.14",
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

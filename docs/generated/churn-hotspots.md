@@ -8,47 +8,4 @@ appear in `git log` commits (full history, deterministic per HEAD). The
 hotspot score normalizes churn by size: high touches-per-KLOC means a module
 is edited far more often than its mass justifies — the classic "working in the
 same corner every week" signal that static structure graphs cannot show.
-
-```mermaid
-xychart-beta
-    title "Edit churn per module (git touches)"
-    x-axis ["Expression", "Validator", "Execution", "Console", "Resolver", "Spec", "Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Evaluation", "Parser", "Protocol"]
-    y-axis "Touches" 0 --> 30
-    bar [24, 22, 19, 15, 15, 15, 13, 13, 13, 12, 12, 10]
-```
-
-Analyzed 271 total file-touches across 29 modules.
-
-| Module | Touches | Share | LOC | Touches/KLOC |
-|---|---:|---:|---:|---:|
-| `Expression` | 24 | 9% | 1,507 | 15.9 |
-| `Validator` | 22 | 8% | 3,154 | 7 |
-| `Execution` | 19 | 7% | 4,151 | 4.6 |
-| `Console` | 15 | 6% | 791 | 19 |
-| `Resolver` | 15 | 6% | 370 | 40.5 |
-| `Spec` | 15 | 6% | 823 | 18.2 |
-| `Laravel/Bindings` | 13 | 5% | 451 | 28.8 |
-| `Laravel/Http` | 13 | 5% | 161 | 80.7 |
-| `Laravel/Persistence` | 13 | 5% | 252 | 51.6 |
-| `Evaluation` | 12 | 4% | 1,159 | 10.4 |
-| `Parser` | 12 | 4% | 1,096 | 10.9 |
-| `Protocol` | 10 | 4% | 562 | 17.8 |
-| `State` | 10 | 4% | 944 | 10.6 |
-| `Laravel/Queue` | 9 | 3% | 100 | 90 |
-| `Async` | 8 | 3% | 507 | 15.8 |
-| `Events` | 7 | 3% | 295 | 23.7 |
-| `Laravel/Lock` | 7 | 3% | 49 | 142.9 |
-| `Laravel/State` | 7 | 3% | 38 | 184.2 |
-| `Policy` | 7 | 3% | 96 | 72.9 |
-| `Dependency` | 5 | 2% | 328 | 15.2 |
-| `Generator` | 5 | 2% | 105 | 47.6 |
-| `Jobs` | 5 | 2% | 34 | 147.1 |
-| `Normalizer` | 5 | 2% | 588 | 8.5 |
-| `Support` | 5 | 2% | 171 | 29.2 |
-| `Infrastructure` | 2 | 1% | 160 | 12.5 |
-| `Laravel/Events` | 2 | 1% | 21 | 95.2 |
-| `Renderer` | 2 | 1% | 253 | 7.9 |
-| `Laravel/Support` | 1 | 0% | 60 | 16.7 |
-| `Telemetry` | 1 | 0% | 278 | 3.6 |
-
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (90), `Laravel/Http` (80.7), `Laravel/Persistence` (51.6)
+_No git history found — hotspot analysis unavailable._

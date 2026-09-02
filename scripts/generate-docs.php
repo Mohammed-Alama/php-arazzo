@@ -91,7 +91,19 @@ if (!is_dir($outDir)) {
     mkdir($outDir, 0777, true);
 }
 
-$core = Scanner::scan($root.'/packages/core/src', 'Alama\\Arazzo\\');
+$coreScans = [
+    'contracts' => Scanner::scan($root.'/packages/contracts/src', 'Alama\\Arazzo\\'),
+    'core' => Scanner::scan($root.'/packages/core/src', 'Alama\\Arazzo\\'),
+];
+
+$core = [];
+foreach ($coreScans as $scan) {
+    foreach ($scan as $module => $files) {
+        $core[$module] = array_merge($core[$module] ?? [], $files);
+    }
+}
+ksort($core);
+
 $laravel = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\');
 
 $generated = [

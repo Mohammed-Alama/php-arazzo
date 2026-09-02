@@ -4,11 +4,13 @@
     "license": "MIT",
     "type": "project",
     "repositories": [
+        {"type": "path", "url": "packages/contracts"},
         {"type": "path", "url": "packages/core"},
         {"type": "path", "url": "packages/laravel"}
     ],
     "require": {
         "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
         "alama/arazzo-core": "@dev",
         "alama/laravel-arazzo": "@dev"
     },
@@ -22,7 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Alama\\Arazzo\\Tests\\": ["packages/core/tests"],
+            "Alama\\Arazzo\\Tests\\": ["packages/core/tests", "packages/contracts/tests"],
             "Alama\\Arazzo\\Laravel\\Tests\\": ["packages/laravel/tests"],
             "Alama\\LaravelArazzo\\Execution\\": ["packages/laravel/src/Execution"],
             "Alama\\LaravelArazzo\\Events\\": ["packages/laravel/src/Events"],
@@ -39,8 +41,9 @@
         "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
         "analyse": ["@analyse-core", "@analyse-laravel"],
         "test-core": "cd packages/core && vendor/bin/pest",
+        "test-contracts": "vendor/bin/pest packages/contracts/tests",
         "test-laravel": "cd packages/laravel && vendor/bin/pest",
-        "test": ["@test-core", "@test-laravel"],
+        "test": ["@test-contracts", "@test-core", "@test-laravel"],
         "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",
         "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",

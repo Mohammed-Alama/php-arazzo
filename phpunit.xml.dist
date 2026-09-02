@@ -18,6 +18,9 @@
     backupStaticProperties="false"
 >
     <testsuites>
+        <testsuite name="Arazzo Contracts Test Suite">
+            <directory>packages/contracts/tests</directory>
+        </testsuite>
         <testsuite name="Arazzo Core Test Suite">
             <directory>packages/core/tests</directory>
         </testsuite>
@@ -27,6 +30,7 @@
     </testsuites>
     <source>
         <include>
+            <directory suffix=".php">packages/contracts/src</directory>
             <directory suffix=".php">packages/core/src</directory>
             <directory suffix=".php">packages/laravel/src</directory>
         </include>

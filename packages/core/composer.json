@@ -8,8 +8,12 @@
     "authors": [
         {"name": "Mohammed Alama", "email": "mohammedalama96@icloud.com", "role": "Developer"}
     ],
+    "repositories": [
+        {"type": "path", "url": "../contracts"}
+    ],
     "require": {
         "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
         "cebe/php-openapi": "^1.7",
         "guzzlehttp/guzzle": "^7.9",
         "open-telemetry/api": "^1.0",

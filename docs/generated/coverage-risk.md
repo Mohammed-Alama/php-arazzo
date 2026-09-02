@@ -44,9 +44,9 @@ quadrantChart
     Protocol: [0.727, 1]
     Renderer: [0.5, 1]
     Resolver: [0.286, 1]
-    Spec: [0, 1]
+    Spec: [0, 0]
     State: [0.167, 1]
-    Support: [0, 1]
+    Support: [0, 0]
     Telemetry: [0, 1]
     Validator: [0.545, 1]
 ```
@@ -59,7 +59,7 @@ quadrantChart
 | `Evaluation` | 0.56 | 41 | 19 | 100% |
 | `Events` | 0.17 | 29 | 11 | 100% |
 | `Execution` | 0.58 | 73 | 40 | 100% |
-| `Expression` | 0.22 | 124 | 35 | 100% |
+| `Expression` | 0.22 | 122 | 35 | 100% |
 | `Generator` | 0.33 | 5 | 2 | 100% |
 | `Infrastructure` | 0.25 | 7 | 4 | 100% |
 | `Jobs` | 0.29 | 7 | 2 | 100% |
@@ -77,8 +77,8 @@ quadrantChart
 | `Protocol` | 0.73 | 14 | 6 | 100% |
 | `Renderer` | 0.50 | 1 | 1 | 100% |
 | `Resolver` | 0.29 | 22 | 12 | 100% |
-| `Spec` | 0.00 | 159 | 38 | 100% |
+| `Spec` | 0.00 | 0 | 38 | 0% |
 | `State` | 0.17 | 27 | 14 | 100% |
-| `Support` | 0.00 | 18 | 5 | 100% |
+| `Support` | 0.00 | 0 | 5 | 0% |
 | `Telemetry` | 0.00 | 2 | 2 | 100% |
 | `Validator` | 0.55 | 65 | 64 | 100% |
