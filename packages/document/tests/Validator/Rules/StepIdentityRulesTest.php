@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\StepAtLeastOneRule;
+use Alama\Arazzo\Document\Validator\Rules\StepIdPatternRule;
+use Alama\Arazzo\Document\Validator\Rules\StepNestedWorkflowExistsRule;
+use Alama\Arazzo\Document\Validator\Rules\StepOperationIdSourceScopedRule;
+use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
+use Alama\Arazzo\Document\Validator\Rules\StepOperationTargetPresentRule;
+use Alama\Arazzo\Document\Validator\Rules\StepUniqueIdRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\StepAtLeastOneRule;
-use Alama\Arazzo\Validator\Rules\StepIdPatternRule;
-use Alama\Arazzo\Validator\Rules\StepNestedWorkflowExistsRule;
-use Alama\Arazzo\Validator\Rules\StepOperationIdSourceScopedRule;
-use Alama\Arazzo\Validator\Rules\StepOperationPathSyntaxRule;
-use Alama\Arazzo\Validator\Rules\StepOperationTargetPresentRule;
-use Alama\Arazzo\Validator\Rules\StepUniqueIdRule;
 
 function stepIdMk(string $id, ?string $opId = 'op', ?string $opPath = null, ?string $wfId = null): Step
 {

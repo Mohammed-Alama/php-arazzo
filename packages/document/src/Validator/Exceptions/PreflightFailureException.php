@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Exceptions;
+namespace Alama\Arazzo\Document\Validator\Exceptions;
 
-use Alama\Arazzo\Support\Exceptions\ArazzoException;
-use Alama\Arazzo\Validator\Data\ValidationResult;
+use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 
 /**
  * Thrown by adapters when execution preflight fails: nothing has been

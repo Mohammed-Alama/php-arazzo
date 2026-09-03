@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Parser\ParseContext;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Document\Parser\ParseContext;
+use Alama\Arazzo\Document\Parser\Parser;
 
 function parseSuccessCriterion(array $node)
 {

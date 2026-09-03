@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Action\FailureGotoAction;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SuccessEndAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\ActionGotoTargetResolvesRule;
 
 it('flags unknown workflowId and skips non-goto/retry actions', function (): void {
     $end = new SuccessEndAction('e', []);

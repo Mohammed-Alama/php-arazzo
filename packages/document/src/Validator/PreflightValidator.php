@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator;
+namespace Alama\Arazzo\Document\Validator;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\Validator\Data\Error;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
+use Alama\Arazzo\Document\Validator\Data\Warning;
+use Alama\Arazzo\Document\Validator\Enum\Severity;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
-use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\Data\Error;
-use Alama\Arazzo\Validator\Data\ValidationResult;
-use Alama\Arazzo\Validator\Data\Warning;
-use Alama\Arazzo\Validator\Enum\Severity;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;

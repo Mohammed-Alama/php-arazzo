@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser;
+namespace Alama\Arazzo\Document\Parser;
 
 final readonly class ParseContext
 {

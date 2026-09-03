@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser\Exceptions;
+namespace Alama\Arazzo\Document\Parser\Exceptions;
 
 use RuntimeException;
 

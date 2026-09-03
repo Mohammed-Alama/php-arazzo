@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Resolver\Interfaces;
+namespace Alama\Arazzo\Document\Resolver\Interfaces;
 
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\SourceDocument;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
 
 interface SourceResolver
 {

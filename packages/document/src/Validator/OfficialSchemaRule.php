@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator;
+namespace Alama\Arazzo\Document\Validator;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Validator\Interfaces\Rule;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\Exception\ValidationException;
 use JsonSchema\SchemaStorage;

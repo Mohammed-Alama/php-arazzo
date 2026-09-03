@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionContextMisuseRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionJsonPointerSyntaxRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionSyntaxRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedComponentRefRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedInputRefRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedSourceRefRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\ExpressionContextMisuseRule;
-use Alama\Arazzo\Validator\Rules\ExpressionJsonPointerSyntaxRule;
-use Alama\Arazzo\Validator\Rules\ExpressionSyntaxRule;
-use Alama\Arazzo\Validator\Rules\ExpressionUnresolvedComponentRefRule;
-use Alama\Arazzo\Validator\Rules\ExpressionUnresolvedInputRefRule;
-use Alama\Arazzo\Validator\Rules\ExpressionUnresolvedSourceRefRule;
-use Alama\Arazzo\Validator\Rules\ExpressionUnresolvedStepRefRule;
-use Alama\Arazzo\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 
 function stepE(string $id, array $params = [], array $outs = []): Step
 {

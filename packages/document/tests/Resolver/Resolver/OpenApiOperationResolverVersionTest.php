@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolver;
 
-use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\Exceptions\UnsupportedSourceVersionException;
-use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException;
+use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
 
 it('rejects Swagger 2.0 sources with a typed error instead of mis-routing them to the 3.0 normalizer', function () {
     $swaggerJson = json_encode([

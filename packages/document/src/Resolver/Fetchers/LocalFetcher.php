@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Resolver\Fetchers;
+namespace Alama\Arazzo\Document\Resolver\Fetchers;
 
-use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
-use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
+use Alama\Arazzo\Document\Resolver\Exceptions\SourceFetchException;
+use Alama\Arazzo\Document\Resolver\Interfaces\SourceFetcher;
 
 final class LocalFetcher implements SourceFetcher
 {

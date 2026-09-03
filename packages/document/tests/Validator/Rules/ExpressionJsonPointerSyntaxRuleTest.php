@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionJsonPointerSyntaxRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\RequestBody;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\ExpressionJsonPointerSyntaxRule;
 
 it('flags bad pointer segment in request part; accepts valid response pointer', function (): void {
     $bodyOk = new RequestBody(null, new Expression('{$steps.a.request.body#/x}'), []);

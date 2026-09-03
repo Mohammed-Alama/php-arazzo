@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser\Interfaces;
+namespace Alama\Arazzo\Document\Parser\Interfaces;
 
 interface JsonDecoder
 {

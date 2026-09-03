@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Document\Parser\Parser;
 
 it('parses root $self URI', function () {
     $raw = new RawDocument([

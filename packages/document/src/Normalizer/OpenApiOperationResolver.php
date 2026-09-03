@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Normalizer;
+namespace Alama\Arazzo\Document\Normalizer;
 
-use Alama\Arazzo\Resolver\Exceptions\UnsupportedSourceVersionException;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException;
 use cebe\openapi\spec\Operation;
 use RuntimeException;
 

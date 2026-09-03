@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\DocumentArazzoVersionRule;
+use Alama\Arazzo\Document\Validator\Rules\DocumentInfoRequiredRule;
+use Alama\Arazzo\Document\Validator\Rules\SourceTypeMatchesRule;
+use Alama\Arazzo\Document\Validator\Rules\SourceUniqueNameRule;
+use Alama\Arazzo\Document\Validator\Rules\SourceUrlSyntaxRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\DocumentArazzoVersionRule;
-use Alama\Arazzo\Validator\Rules\DocumentInfoRequiredRule;
-use Alama\Arazzo\Validator\Rules\SourceTypeMatchesRule;
-use Alama\Arazzo\Validator\Rules\SourceUniqueNameRule;
-use Alama\Arazzo\Validator\Rules\SourceUrlSyntaxRule;
 
 function baseDoc(string $version = '1.0.0', string $title = 'T', string $ver = '1', array $sources = []): ArazzoDocument
 {

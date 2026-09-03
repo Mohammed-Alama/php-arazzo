@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
 
 function docWithInvoke(string $targetId, array $workflowIds = ['w', 'ride-reconcile']): ArazzoDocument
 {

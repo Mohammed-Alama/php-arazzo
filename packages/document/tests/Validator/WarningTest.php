@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation;
 
-use Alama\Arazzo\Validator\Data\Warning;
+use Alama\Arazzo\Document\Validator\Data\Warning;
 
 it('Warning toArray returns full shape', function (): void {
     $w = new Warning('code.w', 'wmsg', '/x', 5);

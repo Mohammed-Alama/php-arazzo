@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Support;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Support\ExpressionSite;
+use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\RequestBody;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\SuccessCriterion;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\Support\ExpressionSite;
-use Alama\Arazzo\Validator\Support\ExpressionWalker;
 
 it('walks every expression context', function (): void {
     $body = new RequestBody(

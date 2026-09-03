@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation;
 
-use Alama\Arazzo\Validator\Data\Error;
+use Alama\Arazzo\Document\Validator\Data\Error;
 
 it('Error toArray returns full shape', function (): void {
     $e = new Error('code.a', 'msg', '/p', 12);

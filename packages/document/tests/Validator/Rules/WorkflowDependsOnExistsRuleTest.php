@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\WorkflowDependsOnExistsRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\WorkflowDependsOnExistsRule;
 
 it('flags non-scalar and missing workflow references', function (): void {
     /** @var list<mixed> $dep */

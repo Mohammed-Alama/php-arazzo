@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Rules;
+namespace Alama\Arazzo\Document\Validator\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class SubWorkflowInvokeTargetResolvesRule implements Rule
 {

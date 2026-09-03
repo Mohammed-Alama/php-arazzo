@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Parser\ParseContext;
-use Alama\Arazzo\Parser\Parser;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
+use Alama\Arazzo\Document\Parser\ParseContext;
+use Alama\Arazzo\Document\Parser\Parser;
 
 /** Test double exposing protected helpers. */
 class ParserProbe extends Parser

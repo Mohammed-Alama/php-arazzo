@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SuccessEndAction;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\ActionRetryLimitsRule;
 
 it('skips non-retry actions, accepts positive, flags negative retryAfter/retryLimit', function (): void {
     $notRetry = new SuccessEndAction('e', []);

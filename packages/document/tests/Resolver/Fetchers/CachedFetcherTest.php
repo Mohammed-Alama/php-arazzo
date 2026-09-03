@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution\Fetchers;
 
-use Alama\Arazzo\Resolver\Fetchers\CachedFetcher;
-use Alama\Arazzo\Resolver\Interfaces\SourceFetcher;
+use Alama\Arazzo\Document\Resolver\Fetchers\CachedFetcher;
+use Alama\Arazzo\Document\Resolver\Interfaces\SourceFetcher;
 use Psr\SimpleCache\CacheInterface;
 use ReflectionProperty;
 

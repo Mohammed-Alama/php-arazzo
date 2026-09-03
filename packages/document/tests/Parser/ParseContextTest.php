@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
-use Alama\Arazzo\Parser\ParseContext;
+use Alama\Arazzo\Document\Parser\ParseContext;
 
 it('builds JSON Pointer from segments', function (): void {
     $ctx = new ParseContext('/tmp/x.yaml');

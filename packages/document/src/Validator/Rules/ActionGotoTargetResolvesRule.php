@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Rules;
+namespace Alama\Arazzo\Document\Validator\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Action\FailureGotoAction;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class ActionGotoTargetResolvesRule implements Rule
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Rules;
+namespace Alama\Arazzo\Document\Validator\Rules;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class ParameterQuerystringOperationShapeRule implements Rule
 {

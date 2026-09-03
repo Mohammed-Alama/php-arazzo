@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\Enum\ExpressionType;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Document\Parser\Parser;
 
 it('parses 1.1.0 Selector objects in step outputs', function () {
     $raw = new RawDocument([

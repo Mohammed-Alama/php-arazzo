@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Data;
+namespace Alama\Arazzo\Document\Validator\Data;
 
-use Alama\Arazzo\Validator\Enum\Severity;
+use Alama\Arazzo\Document\Validator\Enum\Severity;
 
 final readonly class Error
 {

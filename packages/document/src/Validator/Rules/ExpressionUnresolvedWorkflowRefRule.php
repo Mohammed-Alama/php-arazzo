@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Rules;
+namespace Alama\Arazzo\Document\Validator\Rules;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
+use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Interfaces\Rule;
-use Alama\Arazzo\Validator\Support\ExpressionWalker;
 
 final class ExpressionUnresolvedWorkflowRefRule implements Rule
 {

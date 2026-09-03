@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Interfaces\Rule;
-use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\Validator;
 
 class RecordingRule implements Rule
 {

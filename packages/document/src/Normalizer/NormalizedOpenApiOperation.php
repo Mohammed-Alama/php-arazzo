@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Normalizer;
+namespace Alama\Arazzo\Document\Normalizer;
 
 class NormalizedOpenApiOperation
 {

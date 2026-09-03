@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Document\Parser\Parser;
 
 it('parses Selectors in parameters and payload replacements', function () {
     $raw = new RawDocument([

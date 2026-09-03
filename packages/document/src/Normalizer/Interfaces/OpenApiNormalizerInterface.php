@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Normalizer\Interfaces;
+namespace Alama\Arazzo\Document\Normalizer\Interfaces;
 
-use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
 
 interface OpenApiNormalizerInterface
 {

@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionReusableRefResolvesRule;
+use Alama\Arazzo\Document\Validator\Rules\ActionTypeValidRule;
+use Alama\Arazzo\Document\Validator\Rules\DocUnknownFieldRule;
+use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\ActionGotoTargetResolvesRule;
-use Alama\Arazzo\Validator\Rules\ActionRetryLimitsRule;
-use Alama\Arazzo\Validator\Rules\ActionReusableRefResolvesRule;
-use Alama\Arazzo\Validator\Rules\ActionTypeValidRule;
-use Alama\Arazzo\Validator\Rules\DocUnknownFieldRule;
-use Alama\Arazzo\Validator\Rules\ExtensionsXPrefixRule;
 
 function actionDocSteps(array $steps, ?array $rawRoot = null): ArazzoDocument
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser\Exceptions;
+namespace Alama\Arazzo\Document\Parser\Exceptions;
 
-use Alama\Arazzo\Parser\ParseContext;
-use Alama\Arazzo\Support\Exceptions\ArazzoException;
+use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
+use Alama\Arazzo\Document\Parser\ParseContext;
 
 final class ParserException extends ArazzoException
 {

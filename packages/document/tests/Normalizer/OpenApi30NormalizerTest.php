@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Normalizer;
 
-use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
 use InvalidArgumentException;
 
 beforeEach(function (): void {

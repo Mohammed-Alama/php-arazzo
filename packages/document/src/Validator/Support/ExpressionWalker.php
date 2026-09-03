@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Support;
+namespace Alama\Arazzo\Document\Validator\Support;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Selector;
 
 final class ExpressionWalker
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution\Fetchers;
 
-use Alama\Arazzo\Resolver\Exceptions\SourceFetchException;
-use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Document\Resolver\Exceptions\SourceFetchException;
+use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;

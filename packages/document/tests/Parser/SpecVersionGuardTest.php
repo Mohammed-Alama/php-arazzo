@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
+use Alama\Arazzo\Document\Parser\Parser;
 
 function minimalDoc(string $version): RawDocument
 {

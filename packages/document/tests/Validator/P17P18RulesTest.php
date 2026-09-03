@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Validator;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\OfficialSchemaRule;
+use Alama\Arazzo\Document\Validator\Rules\DocumentSourceDescriptionsPresentRule;
+use Alama\Arazzo\Document\Validator\Rules\DocUnknownFieldRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\OfficialSchemaRule;
-use Alama\Arazzo\Validator\Rules\DocumentSourceDescriptionsPresentRule;
-use Alama\Arazzo\Validator\Rules\DocUnknownFieldRule;
 
 function docWithRaw(array $raw, string $version = '1.1.0'): ArazzoDocument
 {

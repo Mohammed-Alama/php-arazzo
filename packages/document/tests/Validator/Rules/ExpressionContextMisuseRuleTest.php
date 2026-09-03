@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\ExpressionContextMisuseRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Parameter;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\ExpressionContextMisuseRule;
 
 it('flags HttpMetaRef in parameters context', function (): void {
     $s = Fx::step('s', 'op', params: [

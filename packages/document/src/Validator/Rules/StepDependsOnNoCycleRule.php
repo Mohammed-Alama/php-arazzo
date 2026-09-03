@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Rules;
+namespace Alama\Arazzo\Document\Validator\Rules;
 
-use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Interfaces\Rule;
 
 final class StepDependsOnNoCycleRule implements Rule
 {

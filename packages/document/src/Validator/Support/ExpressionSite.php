@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Support;
+namespace Alama\Arazzo\Document\Validator\Support;
 
+use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
-use Alama\Arazzo\Spec\Expression;
 
 final readonly class ExpressionSite
 {

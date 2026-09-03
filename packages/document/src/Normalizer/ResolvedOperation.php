@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Normalizer;
+namespace Alama\Arazzo\Document\Normalizer;
 
-use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 

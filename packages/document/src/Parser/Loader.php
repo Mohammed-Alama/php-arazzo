@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser;
+namespace Alama\Arazzo\Document\Parser;
 
-use Alama\Arazzo\Parser\Exceptions\DecodeException;
-use Alama\Arazzo\Parser\Exceptions\LoaderException;
-use Alama\Arazzo\Parser\Interfaces\JsonDecoder;
-use Alama\Arazzo\Parser\Interfaces\YamlDecoder;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Document\Parser\Exceptions\DecodeException;
+use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Document\Parser\Interfaces\JsonDecoder;
+use Alama\Arazzo\Document\Parser\Interfaces\YamlDecoder;
 
 final class Loader
 {

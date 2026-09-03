@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Validator;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\Validator;
 
 function timeoutDoc(string $arazzoVersion): ArazzoDocument
 {

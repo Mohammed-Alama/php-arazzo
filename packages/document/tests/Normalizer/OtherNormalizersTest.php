@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Normalizer;
 
-use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Normalizer\Swagger2Normalizer;
-use Alama\Arazzo\Support\Exceptions\NotImplementedException;
+use Alama\Arazzo\Contracts\Support\Exceptions\NotImplementedException;
+use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Document\Normalizer\Swagger2Normalizer;
 
 it('swagger 2 normalizer throws', function (): void {
     $normalizer = new Swagger2Normalizer();

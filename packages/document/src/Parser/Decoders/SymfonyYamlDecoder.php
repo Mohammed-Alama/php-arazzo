@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser\Decoders;
+namespace Alama\Arazzo\Document\Parser\Decoders;
 
-use Alama\Arazzo\Parser\Exceptions\DecodeException;
-use Alama\Arazzo\Parser\Interfaces\YamlDecoder;
+use Alama\Arazzo\Document\Parser\Exceptions\DecodeException;
+use Alama\Arazzo\Document\Parser\Interfaces\YamlDecoder;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 

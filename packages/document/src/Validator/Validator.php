@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator;
+namespace Alama\Arazzo\Document\Validator;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Validator\Data\ValidationResult;
 
 final readonly class Validator
 {

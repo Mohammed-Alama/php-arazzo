@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Data;
+namespace Alama\Arazzo\Document\Validator\Data;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 
 final readonly class ValidationResult
 {

@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\StepCriteriaTypeContextRule;
+use Alama\Arazzo\Document\Validator\Rules\StepParametersHaveNameRule;
+use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyReplacementsTargetRule;
+use Alama\Arazzo\Document\Validator\Rules\StepSuccessCriteriaConditionRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\CriterionType;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\RequestBody;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\SuccessCriterion;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\StepCriteriaTypeContextRule;
-use Alama\Arazzo\Validator\Rules\StepParametersHaveNameRule;
-use Alama\Arazzo\Validator\Rules\StepRequestBodyReplacementsTargetRule;
-use Alama\Arazzo\Validator\Rules\StepSuccessCriteriaConditionRule;
 
 function stepContentDoc(Step $s): ArazzoDocument
 {

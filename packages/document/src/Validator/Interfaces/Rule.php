@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Interfaces;
+namespace Alama\Arazzo\Document\Validator\Interfaces;
 
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Validator\ErrorCollector;
 
 interface Rule
 {

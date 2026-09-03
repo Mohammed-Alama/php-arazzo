@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Resolver\Interfaces;
+namespace Alama\Arazzo\Document\Resolver\Interfaces;
 
 interface SourceFetcher
 {

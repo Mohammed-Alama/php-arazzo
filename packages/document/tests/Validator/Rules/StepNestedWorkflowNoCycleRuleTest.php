@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\StepNestedWorkflowNoCycleRule;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\StepNestedWorkflowNoCycleRule;
 
 it('accepts linear nested workflow chains with no cycle', function (): void {
     $a = Fx::wf('a', [Fx::step('s-a', null, null, 'b')]);

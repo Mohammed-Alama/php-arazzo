@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator\Enum;
+namespace Alama\Arazzo\Document\Validator\Enum;
 
 enum Severity: string
 {

@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Parser;
+namespace Alama\Arazzo\Document\Parser;
 
-use Alama\Arazzo\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Spec\Action\FailureAction;
-use Alama\Arazzo\Spec\Action\FailureEndAction;
-use Alama\Arazzo\Spec\Action\FailureGotoAction;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Spec\Action\SuccessAction;
-use Alama\Arazzo\Spec\Action\SuccessEndAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Enum\CriterionType;
-use Alama\Arazzo\Spec\Enum\ExpressionType;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\RequestBody;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\SuccessCriterion;
-use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Contracts\Spec\Action\FailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use InvalidArgumentException;
 
 class Parser

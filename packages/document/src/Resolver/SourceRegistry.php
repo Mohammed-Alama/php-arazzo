@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Resolver;
+namespace Alama\Arazzo\Document\Resolver;
 
-use Alama\Arazzo\Resolver\Exceptions\UnresolvableReferenceException;
-use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\SourceDocument;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\Resolver\Exceptions\UnresolvableReferenceException;
+use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 
 final class SourceRegistry implements SourceResolver
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\ErrorCollector;
+use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Expression\SymbolTable;
-use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Validator\ErrorCollector;
-use Alama\Arazzo\Validator\Rules\WorkflowInputsValidSchemaRule;
 
 it('flags list inputs, wrong root type, non-object properties; accepts valid and null inputs', function (): void {
     $wLst = new Workflow('a', null, null, [1, 2, 3], [], [Fx::step()], [], [], [], []);

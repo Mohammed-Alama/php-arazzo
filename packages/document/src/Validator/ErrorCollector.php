@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Validator;
+namespace Alama\Arazzo\Document\Validator;
 
-use Alama\Arazzo\Validator\Data\Error;
-use Alama\Arazzo\Validator\Data\Warning;
+use Alama\Arazzo\Document\Validator\Data\Error;
+use Alama\Arazzo\Document\Validator\Data\Warning;
 
 final class ErrorCollector
 {

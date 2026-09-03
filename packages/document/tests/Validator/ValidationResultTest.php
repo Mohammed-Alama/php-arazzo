@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Validation;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Validator\Data\Error;
-use Alama\Arazzo\Validator\Data\ValidationResult;
-use Alama\Arazzo\Validator\Data\Warning;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Document\Validator\Data\Error;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
+use Alama\Arazzo\Document\Validator\Data\Warning;
 
 it('isValid true when no errors', function (): void {
     $doc = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), []);

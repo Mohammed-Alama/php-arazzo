@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Alama\\Arazzo\\": "src/"
+            "Alama\\Arazzo\\Document\\": "src/"
         }
     },
     "autoload-dev": {
