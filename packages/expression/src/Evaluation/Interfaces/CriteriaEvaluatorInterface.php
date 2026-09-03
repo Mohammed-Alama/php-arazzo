@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Interfaces;
+namespace Alama\Arazzo\Expression\Evaluation\Interfaces;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 
 interface CriteriaEvaluatorInterface
 {

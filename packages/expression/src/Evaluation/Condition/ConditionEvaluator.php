@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Condition;
+namespace Alama\Arazzo\Expression\Evaluation\Condition;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
-use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
-use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Evaluation\Enum\ComparisonOperator;
+use Alama\Arazzo\Expression\Evaluation\Enum\LogicalOperator;
+use Alama\Arazzo\Expression\Evaluation\Interfaces\ConditionNode;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
 
 final class ConditionEvaluator
 {

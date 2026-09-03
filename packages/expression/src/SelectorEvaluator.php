@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\EvaluationInput;
 use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
-use Alama\Arazzo\Spec\Enum\ExpressionType;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Spec\Selector;
 
 class SelectorEvaluator
 {

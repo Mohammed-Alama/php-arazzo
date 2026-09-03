@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Enum;
+namespace Alama\Arazzo\Expression\Evaluation\Enum;
 
 enum TokenKind: string
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Xpath;
 
-use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Expression;
 
 interface XpathEvaluator
 {

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression\Evaluation;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 
 class ExpressionResolver implements ExpressionResolverInterface
 {

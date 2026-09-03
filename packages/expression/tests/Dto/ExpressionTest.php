@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
+use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
-use Alama\Arazzo\Spec\Expression;
 
 it('ast() throws when raw expression is malformed', function (): void {
     $e = new Expression('{$broken');

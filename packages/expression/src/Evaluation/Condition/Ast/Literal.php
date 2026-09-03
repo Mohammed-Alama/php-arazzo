@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Condition\Ast;
+namespace Alama\Arazzo\Expression\Evaluation\Condition\Ast;
 
-use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
+use Alama\Arazzo\Expression\Evaluation\Interfaces\ConditionNode;
 
 final readonly class Literal implements ConditionNode
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Evaluation;
 
-use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
-use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Expression\Evaluation\Condition\ConditionEvaluator;
+use Alama\Arazzo\Expression\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 
 function conditionContext(): WorkflowContext

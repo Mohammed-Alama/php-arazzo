@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Condition;
+namespace Alama\Arazzo\Expression\Evaluation\Condition;
 
-use Alama\Arazzo\Evaluation\Enum\TokenKind;
+use Alama\Arazzo\Expression\Evaluation\Enum\TokenKind;
 
 final class Lexer
 {

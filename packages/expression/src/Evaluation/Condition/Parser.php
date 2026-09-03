@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Condition;
+namespace Alama\Arazzo\Expression\Evaluation\Condition;
 
-use Alama\Arazzo\Evaluation\Condition\Ast\Comparison;
-use Alama\Arazzo\Evaluation\Condition\Ast\Literal;
-use Alama\Arazzo\Evaluation\Condition\Ast\LogicalOp;
-use Alama\Arazzo\Evaluation\Condition\Ast\RuntimeExpr;
-use Alama\Arazzo\Evaluation\Condition\Ast\UnaryNot;
-use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
-use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
-use Alama\Arazzo\Evaluation\Enum\TokenKind;
-use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
-use Alama\Arazzo\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Expression\Evaluation\Condition\Ast\Comparison;
+use Alama\Arazzo\Expression\Evaluation\Condition\Ast\Literal;
+use Alama\Arazzo\Expression\Evaluation\Condition\Ast\LogicalOp;
+use Alama\Arazzo\Expression\Evaluation\Condition\Ast\RuntimeExpr;
+use Alama\Arazzo\Expression\Evaluation\Condition\Ast\UnaryNot;
+use Alama\Arazzo\Expression\Evaluation\Enum\ComparisonOperator;
+use Alama\Arazzo\Expression\Evaluation\Enum\LogicalOperator;
+use Alama\Arazzo\Expression\Evaluation\Enum\TokenKind;
+use Alama\Arazzo\Expression\Evaluation\Interfaces\ConditionNode;
 
 final class Parser
 {

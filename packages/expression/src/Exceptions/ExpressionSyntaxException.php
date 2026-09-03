@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Exceptions;
 
-use Alama\Arazzo\Support\Exceptions\ArazzoException;
+use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
 use Throwable;
 
 final class ExpressionSyntaxException extends ArazzoException

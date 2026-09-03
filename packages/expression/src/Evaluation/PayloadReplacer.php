@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression\Evaluation;
 
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\JsonPathEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\Step;
 
 /**
  * Applies a step's payload replacements to an array-shaped body.

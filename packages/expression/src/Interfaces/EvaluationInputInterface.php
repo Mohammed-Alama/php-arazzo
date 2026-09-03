@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Interfaces;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 
 interface EvaluationInputInterface
 {
