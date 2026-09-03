@@ -125,3 +125,9 @@ it('labels security sites with owning packages, not core', function (): void {
 
     expect($out)->not->toContain('<small>core</small>');
 });
+
+it('audits core emptiness and facade seams', function (): void {
+    $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/boundaries-audit.md');
+
+    expect($out)->toContain('core/src')->and($out)->toContain('Interface');
+});

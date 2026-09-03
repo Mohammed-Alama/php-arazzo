@@ -3,11 +3,14 @@
 
 # Generated: Framework Boundary Audit
 
-Every third-party namespace the source imports, per package. Clean
-architecture lives or dies at these edges: `packages/core` must stay free of
-framework concerns (PSR interfaces are fine — they are contracts, not
-frameworks). Rows marked ⚠ are violations under the declared policy below;
-edit `POLICY` when a boundary consciously moves.
+Every third-party namespace the source imports, per package, plus the two
+structural guards of the monorepo split. Clean architecture lives or dies
+at these edges: the five library packages must stay free of framework
+concerns (PSR interfaces are fine — they are contracts, not frameworks),
+`packages/core/src` must stay empty (aggregator only), and cross-package
+references must target `*Interface` facades or allow-listed value types.
+Rows marked ⚠ are violations under the declared policy below; edit `POLICY`
+when a boundary consciously moves.
 
 ## Package-level imports
 
@@ -80,3 +83,61 @@ edit `POLICY` when a boundary consciously moves.
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `runner:_` imports `GuzzleHttp\*` (2 refs)
+
+## Core aggregator emptiness
+
+**Clean** — `packages/core/src` holds no PHP files (aggregator only).
+
+## Facade seams
+
+Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
+
+**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`).
+
+### Concrete references outside facades (review list)
+
+Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolvers): each row is a candidate to consolidate behind a `*Interface` facade. Throwables, enums, and `Contracts\Spec|State|Support` value types are data flow, not coupling, and are excluded.
+
+| From package | Target | In package | Refs | Example site |
+|---|---|---|---:|---|
+| `document` | `ComponentRef` | `expression` | 1 | `ExpressionUnresolvedComponentRefRule` |
+| `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
+| `document` | `DomXpathEvaluator` | `expression` | 1 | `Document` |
+| `document` | `HttpMetaRef` | `expression` | 1 | `ExpressionContextMisuseRule` |
+| `document` | `InputRef` | `expression` | 1 | `ExpressionUnresolvedInputRefRule` |
+| `document` | `OutputPart` | `expression` | 1 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `Parser` | `expression` | 8 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `RequestPart` | `expression` | 2 | `ExpressionJsonPointerSyntaxRule` |
+| `document` | `ResponsePart` | `expression` | 2 | `ExpressionJsonPointerSyntaxRule` |
+| `document` | `SourceRef` | `expression` | 1 | `ExpressionUnresolvedSourceRefRule` |
+| `document` | `StepRef` | `expression` | 3 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `SymbolTable` | `expression` | 53 | `Validator` |
+| `document` | `WorkflowRef` | `expression` | 1 | `ExpressionUnresolvedWorkflowRefRule` |
+| `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
+| `document` | `XpathEvaluator` | `expression` | 1 | `PreflightValidator` |
+| `runner` | `CriteriaEvaluator` | `expression` | 1 | `RunnerFacade` |
+| `runner` | `DefaultSourceResolver` | `document` | 1 | `RunnerFacade` |
+| `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
+| `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
+| `runner` | `DomXpathEvaluator` | `expression` | 3 | `StepOutputExtractor` |
+| `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
+| `runner` | `ExpressionEvaluator` | `expression` | 7 | `SubWorkflowInvoker` |
+| `runner` | `ExpressionResolver` | `expression` | 1 | `RunnerFacade` |
+| `runner` | `HttpFetcher` | `document` | 1 | `RunnerFacade` |
+| `runner` | `JsonPathEvaluator` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `LocalFetcher` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApi30Normalizer` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApi31Normalizer` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApiDocumentLoader` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApiOperationResolver` | `document` | 5 | `ResponseSchemaValidator` |
+| `runner` | `OpenApiVersionDetector` | `document` | 1 | `RunnerFacade` |
+| `runner` | `Parser` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `PayloadReplacer` | `expression` | 2 | `RequestCompiler` |
+| `runner` | `PreflightValidator` | `document` | 5 | `PreflightGuard` |
+| `runner` | `ResolvedOperation` | `document` | 2 | `DefaultOpenApiExecutor` |
+| `runner` | `ResponsePart` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `SelectorEvaluator` | `expression` | 4 | `SubWorkflowInvoker` |
+| `runner` | `SourceRegistry` | `document` | 1 | `RunnerFacade` |
+| `runner` | `StepRef` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `StringInterpolator` | `expression` | 2 | `StepExecutor` |
+| `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
