@@ -118,6 +118,30 @@ function moduleNamespace(string $module): string
     return 'Alama\\Arazzo\\'.modulePackageSegment($module).'\\'.$module;
 }
 
+/**
+ * Package-qualified scan key, e.g. `expression:Ast` or `runner:_`. Bare
+ * module names collide across packages (`State` lives in both contracts and
+ * runner; every package has a `_` root), so renderers must key on this.
+ */
+function packageKey(string $package, string $module): string
+{
+    return $package.':'.$module;
+}
+
+/**
+ * Display label for a scanned module, derived from the file's real namespace
+ * (ground truth from the scanner) instead of the hardcoded
+ * MODULE_PACKAGE_MAP fallback in moduleNamespace().
+ */
+function moduleLabel(string $package, string $module, string $namespace): string
+{
+    if ($module === '_') {
+        return $namespace !== '' ? $namespace : 'Alama\\Arazzo';
+    }
+
+    return $namespace;
+}
+
 final class Scanner
 {
     /**
