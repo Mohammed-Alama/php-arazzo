@@ -118,6 +118,106 @@ function moduleNamespace(string $module): string
     return 'Alama\\Arazzo\\'.modulePackageSegment($module).'\\'.$module;
 }
 
+/**
+ * Package-qualified scan key, e.g. `expression:Ast` or `runner:_`. Bare
+ * module names collide across packages (`State` lives in both contracts and
+ * runner; every package has a `_` root), so renderers must key on this.
+ */
+function packageKey(string $package, string $module): string
+{
+    return $package.':'.$module;
+}
+
+/**
+ * Display label for a scanned module, derived from the file's real namespace
+ * (ground truth from the scanner) instead of the hardcoded
+ * MODULE_PACKAGE_MAP fallback in moduleNamespace().
+ */
+function moduleLabel(string $package, string $module, string $namespace): string
+{
+    if ($module === '_') {
+        return $namespace !== '' ? $namespace : 'Alama\\Arazzo';
+    }
+
+    return $namespace;
+}
+
+/**
+ * Owning module of a scanned file: first directory under its package's src/
+ * (or `_` for package roots). Inverse of Scanner::scan()'s grouping, so
+ * renderers working on flat file lists can recover the module without
+ * guessing from namespaces.
+ */
+function fileModule(ScannedFile $file): string
+{
+    if ($file->relativeDir === '') {
+        return '_';
+    }
+    $pos = strpos($file->relativeDir, '/');
+
+    return $pos === false ? $file->relativeDir : substr($file->relativeDir, 0, $pos);
+}
+
+/**
+ * Flatten per-package scans into one deterministic file list: packages in
+ * layer order (bottom first), modules alphabetical, files by FQCN.
+ *
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans
+ * @return list<ScannedFile>
+ */
+function flattenScans(array $scans): array
+{
+    $order = array_flip(PACKAGE_LAYER_ORDER);
+    $packages = array_keys($scans);
+    usort($packages, fn (string $a, string $b): int => ($order[$a] ?? 999) <=> ($order[$b] ?? 999) ?: strcmp($a, $b));
+
+    $flat = [];
+    foreach ($packages as $package) {
+        $modules = $scans[$package];
+        ksort($modules);
+        foreach ($modules as $files) {
+            foreach ($files as $file) {
+                $flat[] = $file;
+            }
+        }
+    }
+    usort($flat, function (ScannedFile $a, ScannedFile $b) use ($order): int {
+        $rank = ($order[$a->package] ?? 999) <=> ($order[$b->package] ?? 999);
+        if ($rank !== 0) {
+            return $rank;
+        }
+
+        return strcmp($a->namespace.'\\'.$a->className, $b->namespace.'\\'.$b->className);
+    });
+
+    return $flat;
+}
+
+/**
+ * Real layering order (bottom to top) derived from each package's
+ * composer.json `require`: fewer `alama/*` dependencies means a lower layer.
+ * Falls back to PACKAGE_LAYER_ORDER when composer files are unreadable, so
+ * output stays deterministic in any checkout.
+ *
+ * @return list<string>
+ */
+function packageLayerOrder(string $root): array
+{
+    $slugs = PACKAGE_LAYER_ORDER;
+    $counts = [];
+    foreach ($slugs as $slug) {
+        $json = json_decode((string) @file_get_contents($root.'/packages/'.$slug.'/composer.json'), true);
+        $require = array_keys(is_array($json['require'] ?? null) ? $json['require'] : []);
+        $counts[$slug] = count(array_filter(
+            $require,
+            fn (string $k): bool => str_starts_with($k, 'alama/') && $k !== 'alama/'.($slug === 'laravel' ? 'laravel-arazzo' : 'arazzo-'.$slug),
+        ));
+    }
+    usort($slugs, fn (string $a, string $b): int => $counts[$a] <=> $counts[$b]);
+
+    return $slugs;
+}
+
 final class Scanner
 {
     /**

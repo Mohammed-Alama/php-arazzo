@@ -39,22 +39,17 @@ const SYNONYM_GROUPS = [
 ];
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     $names = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$package, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                $names[$file->className][] = [
-                    'fqcn' => $file->namespace.'\\'.$file->className,
-                    'package' => $package,
-                    'dir' => $file->relativeDir === '' ? '(root)' : $file->relativeDir,
-                ];
-            }
-        }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        $names[$file->className][] = [
+            'fqcn' => $file->namespace.'\\'.$file->className,
+            'package' => $file->package,
+            'dir' => $file->relativeDir === '' ? '(root)' : $file->relativeDir,
+        ];
     }
     ksort($names);
 

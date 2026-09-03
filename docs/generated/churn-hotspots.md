@@ -12,48 +12,51 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Laravel/Queue", "Laravel/Lock", "Laravel/State", "State", "Async", "Console", "Dependency", "Evaluation", "Events"]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "cli:Console", "cli:Generator", "cli:Renderer", "contracts:Dependency", "contracts:Spec", "contracts:Support"]
     y-axis "Touches" 0 --> 20
-    bar [17, 15, 14, 11, 8, 8, 3, 2, 2, 2, 2, 2]
+    bar [17, 15, 14, 11, 8, 8, 2, 2, 2, 2, 2, 2]
 ```
 
-Analyzed 125 total file-touches across 34 modules.
+Analyzed 125 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Laravel/Bindings` | 17 | 14% | 476 | 35.7 |
-| `Laravel/Http` | 15 | 12% | 161 | 93.2 |
-| `Laravel/Persistence` | 14 | 11% | 252 | 55.6 |
-| `Laravel/Queue` | 11 | 9% | 100 | 110 |
-| `Laravel/Lock` | 8 | 6% | 49 | 163.3 |
-| `Laravel/State` | 8 | 6% | 38 | 210.5 |
-| `State` | 3 | 2% | 1,586 | 1.9 |
-| `Async` | 2 | 2% | 494 | 4 |
-| `Console` | 2 | 2% | 791 | 2.5 |
-| `Dependency` | 2 | 2% | 328 | 6.1 |
-| `Evaluation` | 2 | 2% | 1,159 | 1.7 |
-| `Events` | 2 | 2% | 295 | 6.8 |
-| `Exceptions` | 2 | 2% | 83 | 24.1 |
-| `Execution` | 2 | 2% | 3,442 | 0.6 |
-| `Generator` | 2 | 2% | 105 | 19 |
-| `Infrastructure` | 2 | 2% | 160 | 12.5 |
-| `Interfaces` | 2 | 2% | 183 | 10.9 |
-| `Jobs` | 2 | 2% | 34 | 58.8 |
-| `Laravel/Events` | 2 | 2% | 21 | 95.2 |
-| `Normalizer` | 2 | 2% | 588 | 3.4 |
-| `Parser` | 2 | 2% | 1,096 | 1.8 |
-| `Policy` | 2 | 2% | 96 | 20.8 |
-| `Protocol` | 2 | 2% | 544 | 3.7 |
-| `Renderer` | 2 | 2% | 253 | 7.9 |
-| `Resolver` | 2 | 2% | 370 | 5.4 |
-| `Spec` | 2 | 2% | 823 | 2.4 |
-| `Support` | 2 | 2% | 171 | 11.7 |
-| `Telemetry` | 2 | 2% | 278 | 7.2 |
-| `Validator` | 2 | 2% | 3,104 | 0.6 |
-| `Ast` | 1 | 1% | 194 | 5.2 |
-| `Data` | 1 | 1% | 94 | 10.6 |
-| `Enum` | 1 | 1% | 17 | 58.8 |
-| `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Xpath` | 1 | 1% | 103 | 9.7 |
+| `laravel:Bindings` | 17 | 14% | 476 | 35.7 |
+| `laravel:Http` | 15 | 12% | 161 | 93.2 |
+| `laravel:Persistence` | 14 | 11% | 252 | 55.6 |
+| `laravel:Queue` | 11 | 9% | 100 | 110 |
+| `laravel:Lock` | 8 | 6% | 49 | 163.3 |
+| `laravel:State` | 8 | 6% | 38 | 210.5 |
+| `cli:Console` | 2 | 2% | 791 | 2.5 |
+| `cli:Generator` | 2 | 2% | 105 | 19 |
+| `cli:Renderer` | 2 | 2% | 253 | 7.9 |
+| `contracts:Dependency` | 2 | 2% | 328 | 6.1 |
+| `contracts:Spec` | 2 | 2% | 823 | 2.4 |
+| `contracts:Support` | 2 | 2% | 171 | 11.7 |
+| `document:Normalizer` | 2 | 2% | 588 | 3.4 |
+| `document:Parser` | 2 | 2% | 1,096 | 1.8 |
+| `document:Resolver` | 2 | 2% | 370 | 5.4 |
+| `document:Validator` | 2 | 2% | 3,104 | 0.6 |
+| `expression:Evaluation` | 2 | 2% | 1,159 | 1.7 |
+| `laravel:Events` | 2 | 2% | 21 | 95.2 |
+| `runner:Async` | 2 | 2% | 494 | 4 |
+| `runner:Events` | 2 | 2% | 295 | 6.8 |
+| `runner:Execution` | 2 | 2% | 3,442 | 0.6 |
+| `runner:Infrastructure` | 2 | 2% | 160 | 12.5 |
+| `runner:Jobs` | 2 | 2% | 34 | 58.8 |
+| `runner:Policy` | 2 | 2% | 96 | 20.8 |
+| `runner:Protocol` | 2 | 2% | 544 | 3.7 |
+| `runner:State` | 2 | 2% | 919 | 2.2 |
+| `runner:Telemetry` | 2 | 2% | 278 | 7.2 |
+| `contracts:Exceptions` | 1 | 1% | 28 | 35.7 |
+| `contracts:Interfaces` | 1 | 1% | 116 | 8.6 |
+| `contracts:State` | 1 | 1% | 667 | 1.5 |
+| `expression:Ast` | 1 | 1% | 194 | 5.2 |
+| `expression:Data` | 1 | 1% | 94 | 10.6 |
+| `expression:Enum` | 1 | 1% | 17 | 58.8 |
+| `expression:Exceptions` | 1 | 1% | 55 | 18.2 |
+| `expression:Interfaces` | 1 | 1% | 67 | 14.9 |
+| `expression:Xpath` | 1 | 1% | 103 | 9.7 |
+| `laravel:Support` | 1 | 1% | 60 | 16.7 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (110), `Laravel/Http` (93.2), `Laravel/Persistence` (55.6)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110), `laravel:Http` (93.2), `laravel:Persistence` (55.6)

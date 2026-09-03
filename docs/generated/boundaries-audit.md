@@ -3,11 +3,14 @@
 
 # Generated: Framework Boundary Audit
 
-Every third-party namespace the source imports, per package. Clean
-architecture lives or dies at these edges: `packages/core` must stay free of
-framework concerns (PSR interfaces are fine — they are contracts, not
-frameworks). Rows marked ⚠ are violations under the declared policy below;
-edit `POLICY` when a boundary consciously moves.
+Every third-party namespace the source imports, per package, plus the two
+structural guards of the monorepo split. Clean architecture lives or dies
+at these edges: the five library packages must stay free of framework
+concerns (PSR interfaces are fine — they are contracts, not frameworks),
+`packages/core/src` must stay empty (aggregator only), and cross-package
+references must target `*Interface` facades or allow-listed value types.
+Rows marked ⚠ are violations under the declared policy below; edit `POLICY`
+when a boundary consciously moves.
 
 ## Package-level imports
 
@@ -27,53 +30,114 @@ edit `POLICY` when a boundary consciously moves.
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
-| core | `Async` | `Psr` | 2 |
-| core | `Console` | `GuzzleHttp` | 2 |
-| core | `Console` | `OpenTelemetry` | 1 |
-| core | `Console` | `Psr` | 1 |
-| core | `Console` | `Symfony` | 30 |
-| core | `Execution` | `GuzzleHttp` | 2 |
-| core | `Execution` | `OpenTelemetry` | 2 |
-| core | `Execution` | `Psr` | 19 |
-| core | `Execution` | `cebe` | 10 |
-| core | `Generator` | `Psr` | 3 |
-| core | `Infrastructure` | `Psr` | 2 |
-| core | `Normalizer` | `cebe` | 6 |
-| core | `Parser` | `Symfony` | 2 |
-| core | `Protocol` | `Psr` | 6 |
-| core | `Resolver` | `Psr` | 4 |
-| core | `Support` | `Psr` | 4 |
-| core | `Telemetry` | `OpenTelemetry` | 23 |
-| core | `Validator` | `JsonSchema` | 7 |
-| core | `_` | `Flow` | 1 |
-| core | `_` | `GuzzleHttp` | 4 |
-| core | `_` | `Psr` | 3 |
-| laravel | `Bindings` | `GuzzleHttp` | 3 |
-| laravel | `Bindings` | `Illuminate` | 9 |
-| laravel | `Bindings` | `Psr` | 13 |
-| laravel | `Events` | `Illuminate` | 1 |
-| laravel | `Events` | `Psr` | 1 |
-| laravel | `Http` | `GuzzleHttp` | 1 |
-| laravel | `Http` | `Illuminate` | 6 |
-| laravel | `Http` | `Psr` | 2 |
-| laravel | `Lock` | `Illuminate` | 2 |
-| laravel | `Persistence` | `Illuminate` | 5 |
-| laravel | `Persistence` | `Psr` | 1 |
-| laravel | `Queue` | `Illuminate` | 11 |
-| laravel | `State` | `Illuminate` | 1 |
-| laravel | `_` | `Illuminate` | 2 |
-| laravel | `_` | `Spatie` | 2 |
+| cli | `cli:Console` | `GuzzleHttp` | 2 |
+| cli | `cli:Console` | `OpenTelemetry` | 1 |
+| cli | `cli:Console` | `Psr` | 1 |
+| cli | `cli:Console` | `Symfony` | 30 |
+| cli | `cli:Generator` | `Psr` | 3 |
+| contracts | `contracts:Support` | `Psr` | 4 |
+| document | `document:Normalizer` | `cebe` | 6 |
+| document | `document:Parser` | `Symfony` | 2 |
+| document | `document:Resolver` | `Psr` | 4 |
+| document | `document:Validator` | `JsonSchema` | 7 |
+| document | `document:_` | `GuzzleHttp` | 2 |
+| document | `document:_` | `Psr` | 2 |
+| expression | `expression:_` | `Flow` | 1 |
+| runner | `runner:Async` | `Psr` | 2 |
+| runner | `runner:Execution` | `GuzzleHttp` | 2 |
+| runner | `runner:Execution` | `OpenTelemetry` | 2 |
+| runner | `runner:Execution` | `Psr` | 19 |
+| runner | `runner:Execution` | `cebe` | 10 |
+| runner | `runner:Infrastructure` | `Psr` | 2 |
+| runner | `runner:Protocol` | `Psr` | 6 |
+| runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
+| runner | `runner:_` | `GuzzleHttp` | 2 |
+| runner | `runner:_` | `Psr` | 1 |
+| laravel | `laravel:Bindings` | `GuzzleHttp` | 3 |
+| laravel | `laravel:Bindings` | `Illuminate` | 9 |
+| laravel | `laravel:Bindings` | `Psr` | 13 |
+| laravel | `laravel:Events` | `Illuminate` | 1 |
+| laravel | `laravel:Events` | `Psr` | 1 |
+| laravel | `laravel:Http` | `GuzzleHttp` | 1 |
+| laravel | `laravel:Http` | `Illuminate` | 6 |
+| laravel | `laravel:Http` | `Psr` | 2 |
+| laravel | `laravel:Lock` | `Illuminate` | 2 |
+| laravel | `laravel:Persistence` | `Illuminate` | 5 |
+| laravel | `laravel:Persistence` | `Psr` | 1 |
+| laravel | `laravel:Queue` | `Illuminate` | 11 |
+| laravel | `laravel:State` | `Illuminate` | 1 |
+| laravel | `laravel:_` | `Illuminate` | 2 |
+| laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 core boundary violation(s):**
-- `Console` imports `GuzzleHttp\*` (2 refs)
-- `Console` imports `OpenTelemetry\*` (1 refs)
-- `Console` imports `Symfony\*` (30 refs)
-- `Execution` imports `GuzzleHttp\*` (2 refs)
-- `Execution` imports `OpenTelemetry\*` (2 refs)
-- `Execution` imports `cebe\*` (10 refs)
-- `Normalizer` imports `cebe\*` (6 refs)
-- `Parser` imports `Symfony\*` (2 refs)
-- `Telemetry` imports `OpenTelemetry\*` (23 refs)
-- `Validator` imports `JsonSchema\*` (7 refs)
-- `_` imports `Flow\*` (1 refs)
-- `_` imports `GuzzleHttp\*` (4 refs)
+**13 library boundary violation(s):**
+- `cli:Console` imports `GuzzleHttp\*` (2 refs)
+- `cli:Console` imports `OpenTelemetry\*` (1 refs)
+- `cli:Console` imports `Symfony\*` (30 refs)
+- `document:Normalizer` imports `cebe\*` (6 refs)
+- `document:Parser` imports `Symfony\*` (2 refs)
+- `document:Validator` imports `JsonSchema\*` (7 refs)
+- `document:_` imports `GuzzleHttp\*` (2 refs)
+- `expression:_` imports `Flow\*` (1 refs)
+- `runner:Execution` imports `GuzzleHttp\*` (2 refs)
+- `runner:Execution` imports `OpenTelemetry\*` (2 refs)
+- `runner:Execution` imports `cebe\*` (10 refs)
+- `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
+- `runner:_` imports `GuzzleHttp\*` (2 refs)
+
+## Core aggregator emptiness
+
+**Clean** — `packages/core/src` holds no PHP files (aggregator only).
+
+## Facade seams
+
+Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
+
+**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`).
+
+### Concrete references outside facades (review list)
+
+Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolvers): each row is a candidate to consolidate behind a `*Interface` facade. Throwables, enums, and `Contracts\Spec|State|Support` value types are data flow, not coupling, and are excluded.
+
+| From package | Target | In package | Refs | Example site |
+|---|---|---|---:|---|
+| `document` | `ComponentRef` | `expression` | 1 | `ExpressionUnresolvedComponentRefRule` |
+| `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
+| `document` | `DomXpathEvaluator` | `expression` | 1 | `Document` |
+| `document` | `HttpMetaRef` | `expression` | 1 | `ExpressionContextMisuseRule` |
+| `document` | `InputRef` | `expression` | 1 | `ExpressionUnresolvedInputRefRule` |
+| `document` | `OutputPart` | `expression` | 1 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `Parser` | `expression` | 8 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `RequestPart` | `expression` | 2 | `ExpressionJsonPointerSyntaxRule` |
+| `document` | `ResponsePart` | `expression` | 2 | `ExpressionJsonPointerSyntaxRule` |
+| `document` | `SourceRef` | `expression` | 1 | `ExpressionUnresolvedSourceRefRule` |
+| `document` | `StepRef` | `expression` | 3 | `ExpressionUnresolvedStepRefRule` |
+| `document` | `SymbolTable` | `expression` | 53 | `Validator` |
+| `document` | `WorkflowRef` | `expression` | 1 | `ExpressionUnresolvedWorkflowRefRule` |
+| `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
+| `document` | `XpathEvaluator` | `expression` | 1 | `PreflightValidator` |
+| `runner` | `CriteriaEvaluator` | `expression` | 1 | `RunnerFacade` |
+| `runner` | `DefaultSourceResolver` | `document` | 1 | `RunnerFacade` |
+| `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
+| `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
+| `runner` | `DomXpathEvaluator` | `expression` | 3 | `StepOutputExtractor` |
+| `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
+| `runner` | `ExpressionEvaluator` | `expression` | 7 | `SubWorkflowInvoker` |
+| `runner` | `ExpressionResolver` | `expression` | 1 | `RunnerFacade` |
+| `runner` | `HttpFetcher` | `document` | 1 | `RunnerFacade` |
+| `runner` | `JsonPathEvaluator` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `LocalFetcher` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApi30Normalizer` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApi31Normalizer` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApiDocumentLoader` | `document` | 1 | `RunnerFacade` |
+| `runner` | `OpenApiOperationResolver` | `document` | 5 | `ResponseSchemaValidator` |
+| `runner` | `OpenApiVersionDetector` | `document` | 1 | `RunnerFacade` |
+| `runner` | `Parser` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `PayloadReplacer` | `expression` | 2 | `RequestCompiler` |
+| `runner` | `PreflightValidator` | `document` | 5 | `PreflightGuard` |
+| `runner` | `ResolvedOperation` | `document` | 2 | `DefaultOpenApiExecutor` |
+| `runner` | `ResponsePart` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `SelectorEvaluator` | `expression` | 4 | `SubWorkflowInvoker` |
+| `runner` | `SourceRegistry` | `document` | 1 | `RunnerFacade` |
+| `runner` | `StepRef` | `expression` | 1 | `StepOutputExtractor` |
+| `runner` | `StringInterpolator` | `expression` | 2 | `StepExecutor` |
+| `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |

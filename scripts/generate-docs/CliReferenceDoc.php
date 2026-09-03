@@ -20,9 +20,9 @@ MD;
 
 function render(string $root): string
 {
-    $autoload = $root.'/packages/core/vendor/autoload.php';
+    $autoload = $root.'/vendor/autoload.php';
     if (!is_file($autoload)) {
-        return BANNER."_Core vendor autoload not found — run composer install in packages/core._\n";
+        return BANNER."_Root vendor autoload not found — run composer install._\n";
     }
     require_once $autoload;
 

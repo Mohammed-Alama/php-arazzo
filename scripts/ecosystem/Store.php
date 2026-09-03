@@ -69,12 +69,6 @@ final class Store
                 mkdir($dir, 0777, true);
             }
             file_put_contents($this->feedPath, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
-            // also docs/generated mirror
-            $mirror = dirname(__DIR__, 2).'/docs/generated/ecosystem-feed.json';
-            if (!is_dir(dirname($mirror))) {
-                mkdir(dirname($mirror), 0777, true);
-            }
-            file_put_contents($mirror, json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
         }
 
         return ['written' => $new, 'feedCount' => count($all), 'feedPath' => $this->feedPath];

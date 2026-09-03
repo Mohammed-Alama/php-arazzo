@@ -31,55 +31,56 @@ package boundaries directly, not just a flat list of namespaces.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
+ * @param  list<string>|null  $layerOrder  bottom-to-top package order; derived
+ *                                         from composer.json by the caller, PACKAGE_LAYER_ORDER fallback.
  */
-function render(array $core, array $laravel): string
+function render(array $scans, ?array $layerOrder = null): string
 {
-    $all = NamespaceGraphDoc\merge($core, $laravel);
+    $all = NamespaceGraphDoc\merge($scans);
 
     // fqcn => package (ground truth from the scanner, not guessed from name)
     $classPackage = [];
-    // module => package (every module belongs to exactly one package)
+    // package-qualified key => package (each key belongs to exactly one package)
     $modulePackage = [];
-    foreach ($all as $module => $files) {
+    foreach ($all as $key => $files) {
         foreach ($files as $file) {
             $classPackage[$file->namespace.'\\'.$file->className] = $file->package;
-            $modulePackage[$module] = $file->package;
+            $modulePackage[$key] = $file->package;
         }
     }
 
-    [$edges, $violations, $packageEdges, $packageViolations] = computeEdges($all, $classPackage, $modulePackage);
+    [$edges, $violations, $packageEdges, $packageViolations] = computeEdges($all, $classPackage, $modulePackage, $layerOrder);
 
     $lines = [BANNER, '```mermaid', 'flowchart TB'];
 
-    // group modules by package, packages ordered bottom-to-top
+    // group package-qualified keys by package, packages ordered bottom-to-top
     $byPackage = [];
-    foreach ($all as $module => $files) {
-        $byPackage[$modulePackage[$module] ?? '?'][] = $module;
+    foreach ($all as $key => $files) {
+        $byPackage[$modulePackage[$key] ?? '?'][] = $key;
     }
-    foreach (PACKAGE_LAYER_ORDER as $package) {
-        $modules = $byPackage[$package] ?? [];
-        if ($modules === []) {
+    $layerOrder ??= PACKAGE_LAYER_ORDER;
+    foreach ($layerOrder as $package) {
+        $keys = $byPackage[$package] ?? [];
+        if ($keys === []) {
             continue;
         }
-        sort($modules);
+        sort($keys);
         $lines[] = sprintf('    subgraph PKG_%s["%s"]', nodeId($package), $package);
-        foreach ($modules as $module) {
-            $label = $module === '_' ? '(package root)' : $module;
-            $lines[] = sprintf('        %s["%s"]:::%s', nodeId($module), $label, $package === 'laravel' ? 'laravelNode' : 'node');
+        foreach ($keys as $key) {
+            $lines[] = sprintf('        %s["%s"]:::%s', nodeId($key), labelOf($key), $package === 'laravel' ? 'laravelNode' : 'node');
         }
         $lines[] = '    end';
     }
-    // any module whose package fell outside PACKAGE_LAYER_ORDER (shouldn't happen, but stay honest)
-    foreach ($byPackage as $package => $modules) {
-        if (in_array($package, PACKAGE_LAYER_ORDER, true)) {
+    // any key whose package fell outside the layer order (shouldn't happen, but stay honest)
+    foreach ($byPackage as $package => $keys) {
+        if (in_array($package, $layerOrder, true)) {
             continue;
         }
-        sort($modules);
+        sort($keys);
         $lines[] = sprintf('    subgraph PKG_%s["%s (unclassified)"]', nodeId($package === '' ? 'unknown' : $package), $package === '' ? 'unknown package' : $package);
-        foreach ($modules as $module) {
-            $lines[] = sprintf('        %s["%s"]:::rootNode', nodeId($module), $module === '_' ? '(package root)' : $module);
+        foreach ($keys as $key) {
+            $lines[] = sprintf('        %s["%s"]:::rootNode', nodeId($key), labelOf($key));
         }
         $lines[] = '    end';
     }
@@ -159,17 +160,24 @@ function render(array $core, array $laravel): string
  *     3: list<array{string, string, int, list<string>}>
  * }
  */
-function computeEdges(array $all, array $classPackage, array $modulePackage): array
+function computeEdges(array $all, array $classPackage, array $modulePackage, array $layerOrder): array
 {
+    $index = [];
+    foreach ($all as $key => $files) {
+        foreach ($files as $file) {
+            $index[$file->namespace.'\\'.$file->className] = $key;
+        }
+    }
+
     $weights = [];
-    foreach ($all as $module => $files) {
+    foreach ($all as $key => $files) {
         foreach ($files as $file) {
             foreach ($file->uses as $use) {
-                $target = classModuleOf($use, $all);
-                if ($target === null || $target === $module) {
+                $target = $index[$use] ?? null;
+                if ($target === null || $target === $key) {
                     continue;
                 }
-                $weights[$module][$target] = ($weights[$module][$target] ?? 0) + 1;
+                $weights[$key][$target] = ($weights[$key][$target] ?? 0) + 1;
             }
         }
     }
@@ -186,7 +194,7 @@ function computeEdges(array $all, array $classPackage, array $modulePackage): ar
         foreach ($targets as $to => $weight) {
             $toPackage = $modulePackage[$to] ?? '';
 
-            $violation = packageRank($toPackage) > packageRank($fromPackage);
+            $violation = packageRank($toPackage, $layerOrder) > packageRank($fromPackage, $layerOrder);
             $edges[] = [$from, $to, $violation];
             if ($violation) {
                 $violations[] = [$from, $to, $weight];
@@ -203,7 +211,7 @@ function computeEdges(array $all, array $classPackage, array $modulePackage): ar
     $packageViolations = [];
     foreach ($packageEdges as $from => $targets) {
         foreach ($targets as $to => $weight) {
-            if (packageRank($to) > packageRank($from)) {
+            if (packageRank($to, $layerOrder) > packageRank($from, $layerOrder)) {
                 $packageViolations[] = [$from, $to, $weight, array_keys($packageModulePairs[$from][$to] ?? [])];
             }
         }
@@ -213,40 +221,42 @@ function computeEdges(array $all, array $classPackage, array $modulePackage): ar
 }
 
 /**
- * @param  array<string, list<ScannedFile>>  $all
+ * @param  array<string, list<ScannedFile>>  $all  package-qualified key => files
  */
 function classModuleOf(string $fqcn, array $all): ?string
 {
-    static $index = null;
-    if ($index === null) {
-        $index = [];
-        foreach ($all as $module => $files) {
-            foreach ($files as $file) {
-                $index[$file->namespace.'\\'.$file->className] = $module;
+    foreach ($all as $key => $files) {
+        foreach ($files as $file) {
+            if ($file->namespace.'\\'.$file->className === $fqcn) {
+                return $key;
             }
         }
     }
 
-    return $index[$fqcn] ?? null;
+    return null;
 }
 
 /** Lower rank = lower layer, per the real composer require chain. Unknown packages rank top. */
-function packageRank(string $package): int
+function packageRank(string $package, array $layerOrder): int
 {
-    $index = array_search($package, PACKAGE_LAYER_ORDER, true);
+    $index = array_search($package, $layerOrder, true);
 
-    return $index !== false ? (int) $index : count(PACKAGE_LAYER_ORDER) + 1;
+    return $index !== false ? (int) $index : count($layerOrder) + 1;
 }
 
-function labelOf(string $module): string
+function labelOf(string $key): string
 {
-    return match ($module) {
-        '_' => '(package root)',
-        default => str_starts_with($module, 'Laravel:') ? substr($module, strlen('Laravel:')) : $module,
-    };
+    $pos = strpos($key, ':');
+    if ($pos === false) {
+        return $key;
+    }
+    $package = substr($key, 0, $pos);
+    $module = substr($key, $pos + 1);
+
+    return $module === '_' ? "({$package} package root)" : $key;
 }
 
-function nodeId(string $module): string
+function nodeId(string $key): string
 {
-    return 'M_'.((preg_replace('/[^A-Za-z0-9_]/', '_', $module)) ?? $module);
+    return 'M_'.((preg_replace('/[^A-Za-z0-9_]/', '_', $key)) ?? $key);
 }

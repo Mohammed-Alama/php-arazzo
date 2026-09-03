@@ -6,4 +6,78 @@
 Introspected live from the real `Alama\Arazzo\Cli\Console\Application` instance —
 every command, argument and option below is what the binary actually accepts,
 not hand-maintained prose.
-_Console application class missing._
+
+Binary: `bin/arazzo` · 5 commands · version 1.0.0-alpha
+
+## Global options
+
+| Option | Shortcut | Value | Description |
+|---|---|---|---|
+| `--help` | `-h` | flag | Display help for the given command. When no command is given display help for the <info>list</info> command |
+| `--silent` | `` | flag | Do not output any message |
+| `--quiet` | `-q` | flag | Only errors are displayed. All other output is suppressed |
+| `--verbose` | `-v|vv|vvv` | flag | Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug |
+| `--version` | `-V` | flag | Display this application version |
+| `--ansi` | `` | flag | Force (or disable --no-ansi) ANSI output |
+| `--no-interaction` | `-n` | flag | Do not ask any interactive question |
+| `--working-dir` | `-d` | value | If specified, use the given directory as working directory. |
+## `arazzo explain`
+Dump the dependency graph / execution order of a workflow
+
+`$ arazzo explain <file> [options]`
+
+| Argument | Required | Default | Description |
+|---|---|---|---|
+| `file` | yes | — | Path to an Arazzo YAML/JSON document |
+
+| Option | Shortcut | Value | Default | Description |
+|---|---|---|---|---|
+| `--workflow` | `-w` | value | — | workflowId (defaults to the first workflow) |
+
+## `arazzo list-workflows`
+List the workflows defined in an Arazzo document
+
+`$ arazzo list-workflows <file>`
+
+| Argument | Required | Default | Description |
+|---|---|---|---|
+| `file` | yes | — | Path to an Arazzo YAML/JSON document |
+
+## `arazzo render`
+Render an Arazzo document as Markdown docs or a Mermaid flowchart
+
+`$ arazzo render <file> [options]`
+
+| Argument | Required | Default | Description |
+|---|---|---|---|
+| `file` | yes | — | Path to an Arazzo YAML/JSON document |
+
+| Option | Shortcut | Value | Default | Description |
+|---|---|---|---|---|
+| `--format` | `-f` | value | `markdown` | Output format: markdown or mermaid |
+| `--workflow` | `-w` | value | — | Restrict Mermaid output to one workflowId |
+| `--output` | `-o` | value | — | Write to file instead of stdout |
+
+## `arazzo run`
+Execute a workflow from an Arazzo document
+
+`$ arazzo run <file> [options]`
+
+| Argument | Required | Default | Description |
+|---|---|---|---|
+| `file` | yes | — | Path to an Arazzo YAML/JSON document |
+
+| Option | Shortcut | Value | Default | Description |
+|---|---|---|---|---|
+| `--workflow` | `-w` | value | — | workflowId to run (defaults to the first workflow) |
+| `--input` | `-i` | value | — | Workflow inputs as inline JSON or @file.json |
+
+## `arazzo validate`
+Parse and validate an Arazzo document
+
+`$ arazzo validate <file>`
+
+| Argument | Required | Default | Description |
+|---|---|---|---|
+| `file` | yes | — | Path to an Arazzo YAML/JSON document |
+

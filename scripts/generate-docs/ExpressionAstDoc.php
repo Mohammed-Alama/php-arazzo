@@ -12,19 +12,19 @@ const BANNER = <<<'MD'
 
 # Generated: Expression AST Hierarchy
 
-Node classes under `packages/core/src/Expression/Ast`, scanned live from source.
+Node classes under `packages/expression/src/Ast`, scanned live from source.
 `ExpressionEvaluator` pattern-matches on these node types.
 
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core): string
+function render(array $scans): string
 {
     $nodes = [];   // className => ['parent' => ?string, 'abstract' => bool]
-    foreach ($core['Expression'] ?? [] as $file) {
-        if ($file->relativeDir !== 'Expression/Ast') {
+    foreach ($scans['expression']['Ast'] ?? [] as $file) {
+        if (!str_starts_with($file->relativeDir, 'Ast')) {
             continue;
         }
         preg_match('/^(abstract\s+)?(?:final\s+)?(?:readonly\s+)?class\s+(\w+)(?:\s+extends\s+([\w\\\\]+))?/m', $file->content, $m);

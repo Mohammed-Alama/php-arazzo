@@ -18,28 +18,24 @@ source. Use this to decide which exception to throw or catch.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     // shortName => [fqcn, parentShortName, module]
     $exceptions = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$pkg, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                if (!str_ends_with($file->className, 'Exception')) {
-                    continue;
-                }
-                preg_match('/^(?:final\s+)?(?:readonly\s+)?class\s+\w+(?:\s+extends\s+([\w\\\\]+))?/m', $file->content, $m);
-                $parent = basename(str_replace('\\', '/', $m[1] ?? '\RuntimeException'));
-                $exceptions[$file->className] = [
-                    'fqcn' => $file->namespace.'\\'.$file->className,
-                    'parent' => $parent,
-                    'module' => $module === '_' ? '(root)' : ($pkg === 'laravel' ? "Laravel:{$module}" : $module),
-                ];
-            }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if (!str_ends_with($file->className, 'Exception')) {
+            continue;
         }
+        preg_match('/^(?:final\s+)?(?:readonly\s+)?class\s+\w+(?:\s+extends\s+([\w\\\\]+))?/m', $file->content, $m);
+        $parent = basename(str_replace('\\', '/', $m[1] ?? '\RuntimeException'));
+        $module = \ArazzoDocs\packageKey($file->package, \ArazzoDocs\fileModule($file));
+        $exceptions[$file->className] = [
+            'fqcn' => $file->namespace.'\\'.$file->className,
+            'parent' => $parent,
+            'module' => str_ends_with($module, ':_') ? '('.strtok($module, ':').' root)' : $module,
+        ];
     }
     ksort($exceptions);
 

@@ -91,51 +91,53 @@ if (!is_dir($outDir)) {
     mkdir($outDir, 0777, true);
 }
 
-$core = [];
+$scans = [];
 foreach (\ArazzoDocs\CORE_SRC_PACKAGES as $package) {
-    foreach (Scanner::scan($root.'/packages/'.$package.'/src', 'Alama\\Arazzo\\', $package) as $module => $files) {
-        $core[$module] = array_merge($core[$module] ?? [], $files);
-    }
+    $scans[$package] = Scanner::scan($root.'/packages/'.$package.'/src', 'Alama\\Arazzo\\', $package);
 }
+$scans['laravel'] = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\', 'laravel');
 
-$laravel = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\', 'laravel');
+// All renderers consume per-package $scans (package slug => module => files);
+// the legacy bare-module $core/$laravel merge is gone (was the source of
+// cross-package module collisions).
+$layerOrder = \ArazzoDocs\packageLayerOrder($root);
 
 $generated = [
-    'namespace-graph.md' => NamespaceGraphDoc\render($core, $laravel),
-    'document-model.md' => DocumentModelDoc\render($core),
-    'contracts.md' => ContractsDoc\render($core, $laravel),
-    'events.md' => EventsDoc\render($core, $laravel),
-    'validator-rules.md' => ValidatorRulesDoc\render($core),
-    'exceptions.md' => ExceptionTreeDoc\render($core, $laravel),
-    'expression-ast.md' => ExpressionAstDoc\render($core),
+    'namespace-graph.md' => NamespaceGraphDoc\render($scans),
+    'document-model.md' => DocumentModelDoc\render($scans),
+    'contracts.md' => ContractsDoc\render($scans),
+    'events.md' => EventsDoc\render($scans),
+    'validator-rules.md' => ValidatorRulesDoc\render($scans),
+    'exceptions.md' => ExceptionTreeDoc\render($scans),
+    'expression-ast.md' => ExpressionAstDoc\render($scans),
     'database-schema.md' => DatabaseSchemaDoc\render($root.'/packages/laravel/database/migrations'),
-    'pipeline-flow.md' => PipelineFlowDoc\render($core, $laravel),
-    'public-api.md' => PublicApiDoc\render($core, $laravel),
-    'coupling-metrics.md' => CouplingMetricsDoc\render($core, $laravel),
+    'pipeline-flow.md' => PipelineFlowDoc\render($scans),
+    'public-api.md' => PublicApiDoc\render($scans),
+    'coupling-metrics.md' => CouplingMetricsDoc\render($scans),
     'quality-gates.md' => QualityGatesDoc\render($root.'/storage/quality-gates.json'),
-    'failure-modes.md' => FailureModesDoc\render($core, $laravel),
-    'security-surface.md' => SecuritySurfaceDoc\render($core, $laravel),
-    'state-machine.md' => StateMachineDoc\render($core, $laravel),
-    'layering.md' => LayeringDoc\render($core, $laravel),
-    'coverage-risk.md' => CoverageRiskDoc\render($core, $laravel, $root),
-    'churn-hotspots.md' => ChurnHotspotsDoc\render($core, $laravel, $root),
-    'dependency-flow.md' => DependencyFlowDoc\render($core, $laravel),
+    'failure-modes.md' => FailureModesDoc\render($scans),
+    'security-surface.md' => SecuritySurfaceDoc\render($scans),
+    'state-machine.md' => StateMachineDoc\render($scans),
+    'layering.md' => LayeringDoc\render($scans, $layerOrder),
+    'coverage-risk.md' => CoverageRiskDoc\render($scans, $root),
+    'churn-hotspots.md' => ChurnHotspotsDoc\render($scans, $root),
+    'dependency-flow.md' => DependencyFlowDoc\render($scans),
     'test-composition.md' => TestCompositionDoc\render(root: $root),
     'cli-reference.md' => CliReferenceDoc\render($root),
     'bc-diff.md' => BcDiffDoc\render($root),
-    'observability.md' => ObservabilityDoc\render($core, $laravel),
-    'integration-context.md' => IntegrationContextDoc\render($core, $laravel),
-    'extension-points.md' => ExtensionPointsDoc\render($core, $laravel),
-    'trust-boundary-flow.md' => TrustBoundaryFlowDoc\render($core, $laravel),
+    'observability.md' => ObservabilityDoc\render($scans),
+    'integration-context.md' => IntegrationContextDoc\render($scans),
+    'extension-points.md' => ExtensionPointsDoc\render($scans),
+    'trust-boundary-flow.md' => TrustBoundaryFlowDoc\render($scans),
     'gate-trend.md' => GateTrendDoc\render(historyPath: $root.'/storage/quality-history.jsonl'),
     'modularization-progress.md' => ModularizationProgressDoc\render($root),
     'fitness-functions.md' => FitnessFunctionsDoc\render($root),
-    'test-economics.md' => TestEconomicsDoc\render($core, $laravel, $root),
-    'solid-metrics.md' => SolidMetricsDoc\render($core, $laravel),
-    'boundaries-audit.md' => BoundariesAuditDoc\render($core, $laravel),
-    'ubiquitous-language-audit.md' => UbiquitousLanguageAuditDoc\render($core, $laravel),
-    'subdomain-map.md' => SubdomainMapDoc\render($core, $laravel),
-    'aggregate-map.md' => AggregateMapDoc\render($core, $laravel),
+    'test-economics.md' => TestEconomicsDoc\render($scans, $root),
+    'solid-metrics.md' => SolidMetricsDoc\render($scans),
+    'boundaries-audit.md' => BoundariesAuditDoc\render($scans, $root),
+    'ubiquitous-language-audit.md' => UbiquitousLanguageAuditDoc\render($scans),
+    'subdomain-map.md' => SubdomainMapDoc\render($scans),
+    'aggregate-map.md' => AggregateMapDoc\render($scans),
 ];
 
 foreach ($generated as $file => $content) {

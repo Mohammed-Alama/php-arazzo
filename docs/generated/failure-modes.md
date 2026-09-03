@@ -16,28 +16,29 @@ Regenerated before every commit.
 
 | Exception | Raised by |
 |---|---|
-| **ConditionSyntaxException** | `ConditionEvaluator` <small>Evaluation/Condition</small>, `Lexer` <small>Evaluation/Condition</small>, `Parser` <small>Evaluation/Condition</small> |
-| **DecodeException** | `NativeJsonDecoder` <small>Parser/Decoders</small>, `SymfonyYamlDecoder` <small>Parser/Decoders</small> |
-| **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>Persistence</small> |
-| **GotoTargetNotFoundException** | `WorkflowEngine` <small>Execution</small> |
-| **InvalidArgumentException** | `SpecVersion` <small>Spec/Enum</small>, `OpenApi30Normalizer` <small>Normalizer</small>, `OpenApiVersionDetector` <small>Normalizer</small>, `DatabaseDefinitionRegistry` <small>Persistence</small>, `TypeCaster` <small>Execution</small> |
-| **LogicException** | `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small>, `AsyncApiStepExecutor` <small>Protocol</small> |
-| **NotImplementedException** | `Swagger2Normalizer` <small>Normalizer</small> |
-| **PreflightFailureException** | `PreflightGuard` <small>Async</small>, `StepExecutionWorker` <small>Execution</small>, `WorkflowExecutor` <small>Execution</small> |
-| **RuntimeException** | `CliRunner` <small>Console/Cli</small>, `OpenAiClient` <small>Generator/Clients</small>, `OpenApiOperationResolver` <small>Normalizer</small>, `ReusableParameterResolver` <small>Execution</small>, `FileLockStrategy` <small>Infrastructure</small>, `OtelSetup` <small>Telemetry</small> |
-| **SchemaValidationException** | `ResponseSchemaValidator` <small>Execution</small> |
-| **SourceFetchException** | `DefaultSourceResolver` <small>Resolver</small>, `HttpFetcher` <small>Resolver/Fetchers</small>, `LocalFetcher` <small>Resolver/Fetchers</small> |
-| **SourceParseException** | `DefaultSourceResolver` <small>Resolver</small> |
-| **StepBudgetExceededException** | `WorkflowEngine` <small>Execution</small> |
-| **UnresolvableReferenceException** | `SourceRegistry` <small>Resolver</small> |
-| **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>Execution</small> |
-| **WorkflowCycleException** | `WorkflowEngine` <small>Execution</small> |
-| **WorkflowDepthExceededException** | `WorkflowEngine` <small>Execution</small> |
+| **ConditionSyntaxException** | `ConditionEvaluator` <small>expression:Evaluation</small>, `Lexer` <small>expression:Evaluation</small>, `Parser` <small>expression:Evaluation</small> |
+| **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
+| **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
+| **ExpressionSyntaxException** | `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
+| **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Execution</small> |
+| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `OpenApi30Normalizer` <small>document:Normalizer</small>, `OpenApiVersionDetector` <small>document:Normalizer</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>runner:Execution</small> |
+| **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small> |
+| **NotImplementedException** | `Swagger2Normalizer` <small>document:Normalizer</small> |
+| **PreflightFailureException** | `PreflightGuard` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `OpenApiOperationResolver` <small>document:Normalizer</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small> |
+| **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
+| **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
+| **SourceFetchException** | `DefaultSourceResolver` <small>document:Resolver</small>, `HttpFetcher` <small>document:Resolver</small>, `LocalFetcher` <small>document:Resolver</small> |
+| **SourceParseException** | `DefaultSourceResolver` <small>document:Resolver</small> |
+| **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
+| **UnresolvableReferenceException** | `SourceRegistry` <small>document:Resolver</small> |
+| **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>runner:Execution</small> |
+| **WorkflowCycleException** | `WorkflowEngine` <small>runner:Execution</small> |
+| **WorkflowDepthExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
+| **ArazzoException** | _(never raised in src)_ |
 | **ExecutionException** | _(never raised in src)_ |
-| **ExpressionSyntaxException** | _(never raised in src)_ |
 | **LoaderException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
-| **SelectorEvaluationException** | _(never raised in src)_ |
 | **SourceResolutionException** | _(never raised in src)_ |
 | **UnsupportedSourceVersionException** | _(never raised in src)_ |
 
@@ -47,6 +48,7 @@ Regenerated before every commit.
 |---|---|---|
 | `ClientExceptionInterface` | `HttpFetcher` |  |
 | `DecodeException` | `Loader` |  |
+| `ExpressionSyntaxException` | `Parser` |  |
 | `InvalidArgumentException` | `StepOutputExtractor` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
 | `JsonException` | `AsyncApiStepExecutor` |  |
@@ -55,6 +57,7 @@ Regenerated before every commit.
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
+| `SelectorEvaluationException` | `SelectorEvaluator` |  |
 | `Throwable` | `DefaultSourceResolver` |  |
 | `Throwable` | `PreflightValidator` |  |
 | `Throwable` | `DatabaseEventLedger` |  |
@@ -71,6 +74,7 @@ Regenerated before every commit.
 | throws **WorkflowCycleException** | `WorkflowEngine` | — |
 | throws **WorkflowDepthExceededException** | `WorkflowEngine` | — |
 | prop maxQueuedSteps | `CliRunner` | `10_000` |
+| const MAX_DEPTH | `InputSchemaResolver` | `16` |
 | prop ttlSeconds | `CachedFetcher` | `3600` |
 | prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
 | prop stateTtlSeconds | `SuspensionHandler` | `86400` |

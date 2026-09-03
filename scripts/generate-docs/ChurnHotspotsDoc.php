@@ -26,26 +26,23 @@ const TOP_CHART_MODULES = 12;
 const HOTSPOT_COUNT = 3;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel, string $root): string
+function render(array $scans, string $root): string
 {
     $touches = scanChurn($root);
     if ($touches === []) {
         return BANNER."_No git history found — hotspot analysis unavailable._\n";
     }
 
-    // LOC per module from the already-scanned sources.
-    // Scanner returns UNPREFIXED module dirs for both packages, so the
-    // package must be prepended here (mirrors NamespaceGraphDoc\merge()).
+    // LOC per package-qualified module from the already-scanned sources.
     $loc = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$package, $modules]) {
+    foreach ($scans as $package => $modules) {
         foreach ($modules as $module => $files) {
             if ($module === '_') {
                 continue;
             }
-            $key = ($package === 'laravel' ? 'Laravel/' : '').$module;
+            $key = \ArazzoDocs\packageKey($package, $module);
             $loc[$key] = array_sum(array_map(
                 fn (ScannedFile $f): int => substr_count($f->content, "\n") + 1,
                 $files,
@@ -58,7 +55,7 @@ function render(array $core, array $laravel, string $root): string
 
     $rows = [];
     foreach (array_unique([...array_keys($touches), ...array_keys($loc)]) as $module) {
-        if ($module === '_') {
+        if (str_ends_with($module, ':_')) {
             continue;
         }
         $kloc = max(0.001, ($loc[$module] ?? 0) / 1000);
@@ -153,7 +150,7 @@ function scanChurn(string $root): array
             || (!in_array($m[1], CORE_SRC_PACKAGES, true) && $m[1] !== 'laravel')) {
             continue;
         }
-        $module = ($m[1] === 'laravel' ? 'Laravel/' : '').$m[2];
+        $module = $m[1].':'.$m[2];
         if (!isset($seenInCommit[$module])) {
             $seenInCommit[$module] = true;
             $touches[$module] = ($touches[$module] ?? 0) + 1;

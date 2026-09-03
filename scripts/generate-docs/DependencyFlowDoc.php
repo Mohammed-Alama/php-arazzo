@@ -28,9 +28,9 @@ MD;
  * @param  array<string, list<ScannedFile>>  $core
  * @param  array<string, list<ScannedFile>>  $laravel
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    $all = NamespaceGraphDoc\merge($core, $laravel);
+    $all = NamespaceGraphDoc\merge($scans);
 
     $classModule = [];
     foreach ($all as $module => $files) {
@@ -125,17 +125,18 @@ function render(array $core, array $laravel): string
     return implode("\n", $lines)."\n";
 }
 
-function label(string $module): string
+function label(string $key): string
 {
+    $pos = strpos($key, ':');
+    if ($pos === false) {
+        return $key;
+    }
+    $package = substr($key, 0, $pos);
+    $module = substr($key, $pos + 1);
+
     if ($module === '_') {
-        return 'core-root';
-    }
-    if ($module === 'Laravel:_') {
-        return 'laravel-root';
-    }
-    if (str_starts_with($module, 'Laravel:')) {
-        return str_replace(':', '-', $module);
+        return $package.'-root';
     }
 
-    return \ArazzoDocs\modulePackageSegment($module).'\\'.$module;
+    return str_replace(':', '-', $key);
 }

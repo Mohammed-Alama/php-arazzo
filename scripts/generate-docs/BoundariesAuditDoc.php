@@ -12,11 +12,14 @@ const BANNER = <<<'MD'
 
 # Generated: Framework Boundary Audit
 
-Every third-party namespace the source imports, per package. Clean
-architecture lives or dies at these edges: `packages/core` must stay free of
-framework concerns (PSR interfaces are fine — they are contracts, not
-frameworks). Rows marked ⚠ are violations under the declared policy below;
-edit `POLICY` when a boundary consciously moves.
+Every third-party namespace the source imports, per package, plus the two
+structural guards of the monorepo split. Clean architecture lives or dies
+at these edges: the five library packages must stay free of framework
+concerns (PSR interfaces are fine — they are contracts, not frameworks),
+`packages/core/src` must stay empty (aggregator only), and cross-package
+references must target `*Interface` facades or allow-listed value types.
+Rows marked ⚠ are violations under the declared policy below; edit `POLICY`
+when a boundary consciously moves.
 
 MD;
 
@@ -38,24 +41,46 @@ const POLICY = [
 const VENDOR_ROOTS = ['Psr', 'Illuminate', 'Symfony', 'GuzzleHttp', 'OpenApi', 'cebe', 'Seld', 'PHPUnit', 'Webmozart', 'Composer'];
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * Value-type namespaces exempt from the facade-seam rule: cross-package
+ * references to DTOs, state carriers and support value objects are data
+ * flow, not hidden coupling. Everything else must be a `*Interface`.
+ *
+ * @var list<string>
  */
-function render(array $core, array $laravel): string
+const FACADE_ALLOW_NAMESPACES = [
+    'Alama\\Arazzo\\Contracts\\Spec\\',
+    'Alama\\Arazzo\\Contracts\\State\\',
+    'Alama\\Arazzo\\Contracts\\Support\\',
+];
+
+/**
+ * Packages allowed to reference concrete classes across boundaries by
+ * design: `laravel` wires each `*Interface` to its facade in service
+ * providers, and `cli` assembles the execution graph in `RunCommand`.
+ * The four library layers below them have no such licence.
+ *
+ * @var list<string>
+ */
+const SEAM_EXEMPT_PACKAGES = ['laravel', 'cli'];
+
+/**
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
+ */
+function render(array $scans, string $root): string
 {
     $usage = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$package, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                foreach ($file->useStatements as $statement) {
-                    $root = vendorRoot(trim($statement));
-                    if ($root === null || str_starts_with(trim($statement), 'Alama\Arazzo')) {
-                        continue;
-                    }
-                    $key = $package.'|'.$module.'|'.$root;
-                    $usage[$key] = ($usage[$key] ?? 0) + 1;
-                }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        // POLICY verdict buckets stay library-vs-laravel: vendor policy
+        // applies equally to all five library packages.
+        $bucket = $file->package === 'laravel' ? 'laravel' : 'core';
+        $module = \ArazzoDocs\packageKey($file->package, \ArazzoDocs\fileModule($file));
+        foreach ($file->useStatements as $statement) {
+            $root = vendorRoot(trim($statement));
+            if ($root === null || str_starts_with(trim($statement), 'Alama\Arazzo')) {
+                continue;
             }
+            $key = $bucket.'|'.$file->package.'|'.$module.'|'.$root;
+            $usage[$key] = ($usage[$key] ?? 0) + 1;
         }
     }
 
@@ -64,8 +89,8 @@ function render(array $core, array $laravel): string
     $detail = [];
     ksort($usage);
     foreach ($usage as $key => $count) {
-        [$package, $module, $root] = explode('|', $key);
-        $byPackage[$package][$root] = ($byPackage[$package][$root] ?? 0) + $count;
+        [$bucket, $package, $module, $root] = explode('|', $key);
+        $byPackage[$bucket][$root] = ($byPackage[$bucket][$root] ?? 0) + $count;
         $detail[] = [$package, $module, $root, $count];
     }
 
@@ -104,25 +129,174 @@ function render(array $core, array $laravel): string
     // explicit violation section
     $violations = array_filter(
         $detail,
-        fn (array $row): bool => $row[0] === 'core'
+        fn (array $row): bool => $row[0] !== 'laravel'
             && $row[2] !== 'Psr'
             && (POLICY[$row[2]] ?? null) !== true,
     );
     $lines[] = '';
     if ($violations === []) {
-        $lines[] = '**Core boundary clean** — no forbidden vendor namespaces inside `packages/core/src`.';
+        $lines[] = '**Library boundary clean** — no forbidden vendor namespaces inside the five library packages.';
         if (isset($byPackage['core']['Symfony'])) {
             $lines[] = '';
-            $lines[] = '_Note:_ Symfony appears only under `Console/` — the CLI edge adapter. That is a deliberate, contained exception; move it out of core if the CLI grows beyond thin command wrappers.';
+            $lines[] = '_Note:_ Symfony appears only under `Console/` — the CLI edge adapter. That is a deliberate, contained exception; move it out of the CLI package if it grows beyond thin command wrappers.';
         }
     } else {
-        $lines[] = sprintf('**%d core boundary violation(s):**', count($violations));
+        $lines[] = sprintf('**%d library boundary violation(s):**', count($violations));
         foreach ($violations as [$package, $module, $vendorRoot, $count]) {
             $lines[] = sprintf('- `%s` imports `%s\\*` (%d refs)', $module, $vendorRoot, $count);
         }
     }
 
+    $lines[] = '';
+    $lines[] = '## Core aggregator emptiness';
+    $lines[] = '';
+    $stray = coreStrayFiles($root);
+    if ($stray === []) {
+        $lines[] = '**Clean** — `packages/core/src` holds no PHP files (aggregator only).';
+    } else {
+        $lines[] = sprintf('**%d stray file(s) in `packages/core/src`:**', count($stray));
+        foreach ($stray as $relative) {
+            $lines[] = '- `'.$relative.'`';
+        }
+    }
+
+    $lines[] = '';
+    $lines[] = '## Facade seams';
+    $lines[] = '';
+    $lines[] = 'Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.';
+    $lines[] = '';
+    $seams = seamViolations($scans);
+    if ($seams['facades'] === []) {
+        $lines[] = '**Clean** — no library package references another package\'s concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`).';
+    } else {
+        $lines[] = sprintf('**%d facade-seam violation(s):**', count($seams['facades']));
+        $lines[] = '';
+        $lines[] = '| From package | To package | From | References concrete facade |';
+        $lines[] = '|---|---|---|---|';
+        foreach ($seams['facades'] as [$fromPackage, $toPackage, $fromFqcn, $toFqcn]) {
+            $lines[] = sprintf('| `%s` | `%s` | `%s` | `%s` |', $fromPackage, $toPackage, short($fromFqcn), short($toFqcn));
+        }
+    }
+    $lines[] = '';
+    $lines[] = '### Concrete references outside facades (review list)';
+    $lines[] = '';
+    $lines[] = 'Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolvers): each row is a candidate to consolidate behind a `*Interface` facade. Throwables, enums, and `Contracts\\Spec|State|Support` value types are data flow, not coupling, and are excluded.';
+    $lines[] = '';
+    if ($seams['review'] === []) {
+        $lines[] = '_None._';
+    } else {
+        $lines[] = '| From package | Target | In package | Refs | Example site |';
+        $lines[] = '|---|---|---|---:|---|';
+        foreach ($seams['review'] as [$fromPackage, $target, $toPackage, $refs, $example]) {
+            $lines[] = sprintf('| `%s` | `%s` | `%s` | %d | `%s` |', $fromPackage, $target, $toPackage, $refs, short($example));
+        }
+    }
+
     return implode("\n", $lines)."\n";
+}
+
+/** @return list<string> repo-relative paths of stray PHP files in packages/core/src */
+function coreStrayFiles(string $root): array
+{
+    $stray = [];
+    foreach (glob($root.'/packages/core/src/*.php') ?: [] as $path) {
+        if (is_file($path)) {
+            $stray[] = 'packages/core/src/'.basename((string) $path);
+        }
+    }
+    sort($stray);
+
+    return $stray;
+}
+
+/**
+ * Concrete entry-point facades: referencing one of these from another
+ * package bypasses the owning package's `*Interface` seam and is a hard
+ * violation. (Same-package and laravel/cli-wiring uses are fine.)
+ *
+ * @var list<string>
+ */
+const CONCRETE_FACADES = ['ExpressionEngine', 'Document', 'RunnerFacade'];
+
+/**
+ * Cross-package references from non-exempt library packages, split into
+ * hard facade violations and a grouped concrete-reference review list.
+ *
+ * Throwables, enums, `*Interface` targets and FACADE_ALLOW_NAMESPACES value
+ * types are data flow, not coupling, and are excluded from both tiers.
+ *
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans
+ * @return array{facades: list<array{string, string, string, string}>, review: list<array{string, string, string, int, string}>}
+ */
+function seamViolations(array $scans): array
+{
+    $pkgOf = [];
+    $isEnum = [];
+    foreach ($scans as $package => $modules) {
+        foreach ($modules as $files) {
+            foreach ($files as $file) {
+                $fqcn = $file->namespace.'\\'.$file->className;
+                $pkgOf[$fqcn] = $package;
+                if (preg_match('/^(?:final\s*)?enum\s+\w+/m', $file->content) === 1) {
+                    $isEnum[$fqcn] = true;
+                }
+            }
+        }
+    }
+
+    $facades = [];
+    $review = [];   // "fromPkg|targetShort|toPkg" => [fromPkg, targetShort, toPkg, refs, exampleFrom]
+    foreach ($scans as $package => $modules) {
+        if (in_array($package, SEAM_EXEMPT_PACKAGES, true)) {
+            continue;
+        }
+        foreach ($modules as $files) {
+            foreach ($files as $file) {
+                $from = $file->namespace.'\\'.$file->className;
+                foreach ($file->uses as $use) {
+                    $toPackage = $pkgOf[$use] ?? null;
+                    if ($toPackage === null || $toPackage === $package) {
+                        continue;
+                    }
+                    $short = basename(str_replace('\\', '/', $use));
+                    if (str_ends_with($short, 'Interface') || isset($isEnum[$use]) || isThrowable($short)) {
+                        continue;
+                    }
+                    foreach (FACADE_ALLOW_NAMESPACES as $allowed) {
+                        if (str_starts_with($use, $allowed)) {
+                            continue 2;
+                        }
+                    }
+                    if (in_array($short, CONCRETE_FACADES, true)) {
+                        $facades[] = [$package, $toPackage, $from, $use];
+
+                        continue;
+                    }
+                    $key = $package.'|'.$short.'|'.$toPackage;
+                    if (!isset($review[$key])) {
+                        $review[$key] = [$package, $short, $toPackage, 0, $from];
+                    }
+                    $review[$key][3]++;
+                }
+            }
+        }
+    }
+    usort($facades, fn (array $a, array $b): int => [$a[0], $a[1], $a[2], $a[3]] <=> [$b[0], $b[1], $b[2], $b[3]]);
+    usort($review, fn (array $a, array $b): int => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
+
+    return ['facades' => $facades, 'review' => array_values($review)];
+}
+
+function isThrowable(string $short): bool
+{
+    return $short === 'Throwable' || str_ends_with($short, 'Exception') || str_ends_with($short, 'Error');
+}
+
+function short(string $fqcn): string
+{
+    $parts = explode('\\', $fqcn);
+
+    return end($parts);
 }
 
 function vendorRoot(string $statement): ?string

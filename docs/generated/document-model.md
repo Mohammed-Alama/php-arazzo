@@ -47,14 +47,44 @@ classDiagram
     class SuccessEndAction <<value>>
     class SuccessGotoAction <<value>>
     class Workflow
-    RawDocument "1" --> "0..1" Format : holds
+    Action "1" --> "0..1" ActionKind : holds
+    FailureAction "1" --> "0..*" SuccessCriterion : holds
+    FailureEndAction "1" --> "0..*" SuccessCriterion : holds
+    FailureGotoAction "1" --> "0..*" SuccessCriterion : holds
+    FailureGotoAction "1" --> "0..1" Parameter : holds
+    FailureGotoAction "1" --> "0..1" Reusable : holds
+    RetryAction "1" --> "0..*" SuccessCriterion : holds
+    SubWorkflowFailureAction "1" --> "0..1" Expression : holds
+    SubWorkflowFailureAction "1" --> "0..1" Selector : holds
+    SubWorkflowFailureAction "1" --> "0..*" SuccessCriterion : holds
+    SubWorkflowSuccessAction "1" --> "0..1" Expression : holds
+    SubWorkflowSuccessAction "1" --> "0..1" Selector : holds
+    SubWorkflowSuccessAction "1" --> "0..*" SuccessCriterion : holds
+    SuccessAction "1" --> "0..*" SuccessCriterion : holds
+    SuccessEndAction "1" --> "0..*" SuccessCriterion : holds
+    SuccessGotoAction "1" --> "0..*" SuccessCriterion : holds
+    SuccessGotoAction "1" --> "0..1" Parameter : holds
+    SuccessGotoAction "1" --> "0..1" Reusable : holds
     ArazzoDocument "1" --> "0..1" Info : holds
     ArazzoDocument "1" --> "0..1" Components : holds
     ArazzoDocument "1" --> "0..1" SpecVersion : holds
     ArazzoDocument "1" --> "0..*" SourceDescription : holds
     ArazzoDocument "1" --> "0..*" Workflow : holds
+    Components "1" --> "0..1" Parameter : holds
+    Components "1" --> "0..1" SuccessAction : holds
+    Components "1" --> "0..1" FailureAction : holds
+    Parameter "1" --> "0..1" ParameterIn : holds
+    Parameter "1" --> "0..1" Expression : holds
+    Parameter "1" --> "0..1" Selector : holds
+    PayloadReplacement "1" --> "0..1" Expression : holds
+    PayloadReplacement "1" --> "0..1" Selector : holds
+    RawDocument "1" --> "0..1" Format : holds
+    RequestBody "1" --> "0..1" PayloadReplacement : holds
+    Reusable "1" --> "0..1" Expression : holds
+    Reusable "1" --> "0..1" Selector : holds
     Selector "1" --> "0..1" ExpressionType : holds
-    SuccessCriterion "1" --> "0..1" CriterionType : holds
+    SourceDescription "1" --> "0..1" SourceType : holds
+    SourceDocument "1" --> "0..1" SourceType : holds
     Step "1" --> "0..1" RequestBody : holds
     Step "1" --> "0..1" Expression : holds
     Step "1" --> "0..1" Parameter : holds
@@ -63,32 +93,7 @@ classDiagram
     Step "1" --> "0..1" SuccessAction : holds
     Step "1" --> "0..1" FailureAction : holds
     Step "1" --> "0..1" Selector : holds
-    PayloadReplacement "1" --> "0..1" Expression : holds
-    PayloadReplacement "1" --> "0..1" Selector : holds
-    SubWorkflowSuccessAction "1" --> "0..1" Expression : holds
-    SubWorkflowSuccessAction "1" --> "0..1" Selector : holds
-    SubWorkflowSuccessAction "1" --> "0..*" SuccessCriterion : holds
-    RetryAction "1" --> "0..*" SuccessCriterion : holds
-    SubWorkflowFailureAction "1" --> "0..1" Expression : holds
-    SubWorkflowFailureAction "1" --> "0..1" Selector : holds
-    SubWorkflowFailureAction "1" --> "0..*" SuccessCriterion : holds
-    Action "1" --> "0..1" ActionKind : holds
-    FailureEndAction "1" --> "0..*" SuccessCriterion : holds
-    SuccessGotoAction "1" --> "0..*" SuccessCriterion : holds
-    SuccessGotoAction "1" --> "0..1" Parameter : holds
-    SuccessGotoAction "1" --> "0..1" Reusable : holds
-    FailureAction "1" --> "0..*" SuccessCriterion : holds
-    SuccessEndAction "1" --> "0..*" SuccessCriterion : holds
-    SuccessAction "1" --> "0..*" SuccessCriterion : holds
-    FailureGotoAction "1" --> "0..*" SuccessCriterion : holds
-    FailureGotoAction "1" --> "0..1" Parameter : holds
-    FailureGotoAction "1" --> "0..1" Reusable : holds
-    SourceDocument "1" --> "0..1" SourceType : holds
-    Components "1" --> "0..1" Parameter : holds
-    Components "1" --> "0..1" SuccessAction : holds
-    Components "1" --> "0..1" FailureAction : holds
-    RequestBody "1" --> "0..1" PayloadReplacement : holds
-    SourceDescription "1" --> "0..1" SourceType : holds
+    SuccessCriterion "1" --> "0..1" CriterionType : holds
     Workflow "1" --> "0..*" Step : holds
     Workflow "1" --> "0..1" SuccessAction : holds
     Workflow "1" --> "0..1" Reusable : holds
@@ -96,21 +101,16 @@ classDiagram
     Workflow "1" --> "0..1" Expression : holds
     Workflow "1" --> "0..1" Selector : holds
     Workflow "1" --> "0..1" Parameter : holds
-    Parameter "1" --> "0..1" ParameterIn : holds
-    Parameter "1" --> "0..1" Expression : holds
-    Parameter "1" --> "0..1" Selector : holds
-    Reusable "1" --> "0..1" Expression : holds
-    Reusable "1" --> "0..1" Selector : holds
 ```
 
 ## Enumerations
 
-- **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring`
-- **SpecVersion** — `1.0.0` &middot; `1.1.0`
-- **ExpressionType** — `jsonpath` &middot; `xpath` &middot; `jsonpointer`
-- **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`
+- **ActionKind** — `goto` &middot; `end` &middot; `retry` &middot; `invoke`
 - **CriterionType** — `simple` &middot; `regex` &middot; `jsonpath` &middot; `xpath`
 - **ExecutionStatus** — `running` &middot; `succeeded` &middot; `failed`
-- **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
-- **ActionKind** — `goto` &middot; `end` &middot; `retry` &middot; `invoke`
+- **ExpressionType** — `jsonpath` &middot; `xpath` &middot; `jsonpointer`
 - **Format** — `yaml` &middot; `json`
+- **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring`
+- **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
+- **SpecVersion** — `1.0.0` &middot; `1.1.0`
+- **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`

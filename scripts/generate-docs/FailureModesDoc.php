@@ -24,12 +24,11 @@ Regenerated before every commit.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    [$allFiles, $classIndex] = indexClasses($core, $laravel);
+    [$allFiles, $classIndex] = indexClasses($scans);
     $exceptions = exceptionIndex($allFiles);
 
     [$throws, $catches, $swallowed] = scanSites($allFiles, $exceptions, $classIndex);
@@ -107,23 +106,19 @@ function render(array $core, array $laravel): string
 }
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans
  * @return array{0: list<ScannedFile>, 1: array<string, string>}
  */
-function indexClasses(array $core, array $laravel): array
+function indexClasses(array $scans): array
 {
-    $files = [];
+    $files = \ArazzoDocs\flattenScans($scans);
     $index = [];
-    foreach ([...$core, ...$laravel] as $moduleFiles) {
-        foreach ($moduleFiles as $file) {
-            $files[] = $file;
-            $fqcn = $file->namespace.'\\'.$file->className;
-            if (!isset($index[$file->className])) {
-                $index[$file->className] = $fqcn;
-            } else {
-                $index[$file->className] = ''; // ambiguous short name
-            }
+    foreach ($files as $file) {
+        $fqcn = $file->namespace.'\\'.$file->className;
+        if (!isset($index[$file->className])) {
+            $index[$file->className] = $fqcn;
+        } else {
+            $index[$file->className] = ''; // ambiguous short name
         }
     }
 
@@ -190,7 +185,8 @@ function scanSites(array $files, array $exceptions, array $classIndex): array
             $short = basename(str_replace('\\', '/', $rawType));
             $resolved = $resolve($short) ?? $resolve($rawType);
             $key = $resolved !== null ? short((string) $resolved) : $short;
-            $throws[$key][] = [$selfFqcn, $file->relativeDir === '' ? '(root)' : $file->relativeDir];
+            $throwModule = \ArazzoDocs\fileModule($file);
+            $throws[$key][] = [$selfFqcn, $throwModule === '_' ? "({$file->package} root)" : \ArazzoDocs\packageKey($file->package, $throwModule)];
         }
 
         // catches — with swallowed-body detection

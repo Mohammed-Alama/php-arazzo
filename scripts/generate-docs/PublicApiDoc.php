@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ArazzoDocs\PublicApiDoc;
 
+use const ArazzoDocs\PACKAGE_LAYER_ORDER;
+
 use ArazzoDocs\ScannedFile;
 
 const BANNER = <<<'MD'
@@ -14,33 +16,63 @@ const BANNER = <<<'MD'
 
 Every public method signature, constructor promotion and constant of
 classes/interfaces/enums in `packages/*/src`, excluding `Support`, `Internal`
-and `Exceptions` namespaces (exceptions have their own doc). Any diff in this
-file on a commit is a public API change — review it deliberately.
+and `Exceptions` namespaces (exceptions have their own doc). Grouped by
+composer package (bottom layer first); each package's entry-point
+facade(s) come before the alphabetical namespace reference. Any diff in
+this file on a commit is a public API change — review it deliberately.
 
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * Entry-point facades floated to the top of their package section, in order.
+ *
+ * @var array<string, list<string>> package slug => class short names
  */
-function render(array $core, array $laravel): string
+const FACADE_FIRST = [
+    'expression' => ['ExpressionEngineInterface', 'ExpressionEngine'],
+    'document' => ['DocumentInterface', 'Document'],
+    'runner' => ['RunnerFacadeInterface', 'RunnerFacade'],
+];
+
+/**
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
+ */
+function render(array $scans): string
 {
     $lines = [BANNER];
 
-    foreach ([['core', 'Alama\\Arazzo\\', $core], ['laravel', 'Alama\\Arazzo\\Laravel\\', $laravel]] as [$pkg, $prefix, $modules]) {
-        ksort($modules);
-        foreach ($modules as $module => $files) {
-            $entries = collectEntries($files);
-            if ($entries === []) {
-                continue;
+    foreach (PACKAGE_LAYER_ORDER as $package) {
+        $modules = $scans[$package] ?? [];
+        $files = [];
+        foreach ($modules as $moduleFiles) {
+            foreach ($moduleFiles as $file) {
+                $files[] = $file;
             }
-            $nsLabel = $pkg === 'core'
-                ? ($module === '_' ? 'Alama\\Arazzo' : \ArazzoDocs\moduleNamespace($module))
-                : ($module === '_' ? trim($prefix, '\\') : $prefix.$module);
-            $lines[] = sprintf('## %s · `%s`', $pkg, $nsLabel);
+        }
+        usort($files, fn (ScannedFile $a, ScannedFile $b): int => strcmp($a->namespace.'\\'.$a->className, $b->namespace.'\\'.$b->className));
+
+        $byNamespace = [];
+        foreach (collectEntries($files) as $entry) {
+            $byNamespace[$entry['namespace']][] = $entry;
+        }
+        // drop namespaces left empty after facade extraction below (computed after)
+        $facades = extractFacades($byNamespace, FACADE_FIRST[$package] ?? []);
+        $byNamespace = array_filter($byNamespace, fn (array $entries): bool => $entries !== []);
+        if ($facades === [] && $byNamespace === []) {
+            continue;
+        }
+        ksort($byNamespace);
+
+        $lines[] = sprintf('## %s', $package);
+        $lines[] = '';
+        foreach ($facades as $facade) {
+            $lines = [...$lines, ...renderEntry($facade, '###')];
+        }
+        foreach ($byNamespace as $namespace => $entries) {
+            $lines[] = sprintf('### `%s`', $namespace);
             $lines[] = '';
             foreach ($entries as $entry) {
-                $lines = [...$lines, ...renderEntry($entry)];
+                $lines = [...$lines, ...renderEntry($entry, '####')];
             }
         }
     }
@@ -49,24 +81,44 @@ function render(array $core, array $laravel): string
 }
 
 /**
- * @param  list<ScannedFile>  $files
- * @return list<array{kind: string, name: string, signature: list<string>, constants: list<string>, cases: list<string>}>
+ * Pull facade entries out of their namespace groups (preserving FACADE_FIRST
+ * order) so they render directly under the package heading.
+ *
+ * @param  array<string, list<array{kind: string, name: string, namespace: string, fqcn: string, signature: list<string>, constants: list<string>, cases: list<string>}>>  $byNamespace
+ * @param  list<string>  $facadeNames
+ * @return list<array{kind: string, name: string, namespace: string, fqcn: string, signature: list<string>, constants: list<string>, cases: list<string>}>
+ */
+function extractFacades(array &$byNamespace, array $facadeNames): array
+{
+    $facades = [];
+    foreach ($facadeNames as $name) {
+        foreach ($byNamespace as $namespace => $entries) {
+            foreach ($entries as $i => $entry) {
+                if ($entry['name'] === $name) {
+                    $facades[] = $entry;
+                    unset($byNamespace[$namespace][$i]);
+                }
+            }
+        }
+    }
+
+    return $facades;
+}
+
+/**
+ * @param  list<ScannedFile>  $files  pre-sorted by FQCN for deterministic first-wins
+ * @return list<array{kind: string, name: string, namespace: string, fqcn: string, signature: list<string>, constants: list<string>, cases: list<string>}>
  */
 function collectEntries(array $files): array
 {
-    $byName = [];
+    $byFqcn = [];
     foreach ($files as $file) {
         if (isInternal($file)) {
             continue;
         }
-        $name = $file->className;
-        if (isset($byName[$name])) {
-            // duplicate short name across namespaces: keep both, suffix deterministically
-            $suffix = 2;
-            while (isset($byName["{$name}~{$suffix}"])) {
-                $suffix++;
-            }
-            $name = "{$name}~{$suffix}";
+        $fqcn = $file->namespace.'\\'.$file->className;
+        if (isset($byFqcn[$fqcn])) {
+            continue;
         }
 
         $kind = match (true) {
@@ -87,18 +139,20 @@ function collectEntries(array $files): array
             continue;
         }
 
-        $byName[$name] = [
+        $byFqcn[$fqcn] = [
             'kind' => $kind,
-            'name' => $name,
+            'name' => $file->className,
+            'namespace' => $file->namespace,
+            'fqcn' => $fqcn,
             'signature' => $methods,
             'constants' => $constants,
             'cases' => $cases,
         ];
     }
 
-    ksort($byName);
+    ksort($byFqcn);
 
-    return array_values($byName);
+    return array_values($byFqcn);
 }
 
 function isInternal(ScannedFile $file): bool
@@ -226,12 +280,12 @@ function enumCases(string $content): array
 }
 
 /**
- * @param  array{kind: string, name: string, signature: list<string>, constants: list<string>, cases: list<string>}  $entry
+ * @param  array{kind: string, name: string, namespace: string, fqcn: string, signature: list<string>, constants: list<string>, cases: list<string>}  $entry
  * @return list<string>
  */
-function renderEntry(array $entry): array
+function renderEntry(array $entry, string $hashes = '###'): array
 {
-    $lines = [sprintf('### `%s` %s', $entry['name'], $entry['kind'])];
+    $lines = [sprintf('%s `%s` %s', $hashes, $entry['name'], $entry['kind'])];
 
     if ($entry['constants'] !== []) {
         $lines[] = '- Constants: '.implode(', ', array_map(fn (string $c): string => '`'.$c.'`', $entry['constants']));
