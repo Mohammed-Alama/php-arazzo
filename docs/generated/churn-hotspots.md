@@ -14,20 +14,20 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Laravel/Queue", "Laravel/Lock", "Laravel/State", "State", "Async", "Dependency", "Evaluation", "Events", "Exceptions"]
     y-axis "Touches" 0 --> 20
-    bar [16, 14, 13, 10, 8, 7, 3, 2, 2, 2, 2, 2]
+    bar [17, 15, 14, 11, 8, 8, 3, 2, 2, 2, 2, 2]
 ```
 
-Analyzed 117 total file-touches across 34 modules.
+Analyzed 122 total file-touches across 34 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Laravel/Bindings` | 16 | 14% | 476 | 33.6 |
-| `Laravel/Http` | 14 | 12% | 161 | 87 |
-| `Laravel/Persistence` | 13 | 11% | 252 | 51.6 |
-| `Laravel/Queue` | 10 | 9% | 100 | 100 |
+| `Laravel/Bindings` | 17 | 14% | 476 | 35.7 |
+| `Laravel/Http` | 15 | 12% | 161 | 93.2 |
+| `Laravel/Persistence` | 14 | 11% | 252 | 55.6 |
+| `Laravel/Queue` | 11 | 9% | 100 | 110 |
 | `Laravel/Lock` | 8 | 7% | 49 | 163.3 |
-| `Laravel/State` | 7 | 6% | 38 | 184.2 |
-| `State` | 3 | 3% | 1,586 | 1.9 |
+| `Laravel/State` | 8 | 7% | 38 | 210.5 |
+| `State` | 3 | 2% | 1,586 | 1.9 |
 | `Async` | 2 | 2% | 494 | 4 |
 | `Dependency` | 2 | 2% | 328 | 6.1 |
 | `Evaluation` | 2 | 2% | 1,159 | 1.7 |
@@ -56,4 +56,4 @@ Analyzed 117 total file-touches across 34 modules.
 | `Renderer` | 1 | 1% | 253 | 4 |
 | `Xpath` | 1 | 1% | 103 | 9.7 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (100), `Laravel/Http` (87), `Laravel/Persistence` (51.6)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (110), `Laravel/Http` (93.2), `Laravel/Persistence` (55.6)

@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Console\Cli;
+namespace Alama\Arazzo\Cli\Console\Cli;
 
-use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Execution\Data\RunControlFlow;
-use Alama\Arazzo\Execution\Data\RunPersistence;
-use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\StepExecutionWorker;
-use Alama\Arazzo\Execution\SyncQueueDriver;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\StepStatus;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
-use Alama\Arazzo\State\Interfaces\StateStoreInterface;
-use Alama\Arazzo\State\Interfaces\WritableDefinitionRegistryInterface;
-use Alama\Arazzo\Telemetry\OtelSetup;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
+use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
+use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runner\State\Interfaces\WritableDefinitionRegistryInterface;
+use Alama\Arazzo\Runner\Telemetry\OtelSetup;
 use OpenTelemetry\API\Trace\SpanInterface;
 use RuntimeException;
 

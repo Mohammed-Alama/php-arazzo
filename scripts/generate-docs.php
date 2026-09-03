@@ -91,24 +91,14 @@ if (!is_dir($outDir)) {
     mkdir($outDir, 0777, true);
 }
 
-$coreScans = [
-    'contracts' => Scanner::scan($root.'/packages/contracts/src', 'Alama\\Arazzo\\'),
-    'expression' => Scanner::scan($root.'/packages/expression/src', 'Alama\\Arazzo\\'),
-    'document' => Scanner::scan($root.'/packages/document/src', 'Alama\\Arazzo\\'),
-    'cli' => Scanner::scan($root.'/packages/cli/src', 'Alama\\Arazzo\\'),
-    'runner' => Scanner::scan($root.'/packages/runner/src', 'Alama\\Arazzo\\'),
-    'core' => Scanner::scan($root.'/packages/core/src', 'Alama\\Arazzo\\'),
-];
-
 $core = [];
-foreach ($coreScans as $scan) {
-    foreach ($scan as $module => $files) {
+foreach (\ArazzoDocs\CORE_SRC_PACKAGES as $package) {
+    foreach (Scanner::scan($root.'/packages/'.$package.'/src', 'Alama\\Arazzo\\', $package) as $module => $files) {
         $core[$module] = array_merge($core[$module] ?? [], $files);
     }
 }
-ksort($core);
 
-$laravel = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\');
+$laravel = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\', 'laravel');
 
 $generated = [
     'namespace-graph.md' => NamespaceGraphDoc\render($core, $laravel),

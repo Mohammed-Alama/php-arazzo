@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Validator\Rules\AsyncApiFieldsRequire11Rule;
-use Alama\Arazzo\Validator\Rules\DocumentArazzoVersionRule;
-use Alama\Arazzo\Validator\Rules\ParameterQuerystringOperationShapeRule;
-use Alama\Arazzo\Validator\Rules\SelectorTypeSupportedRule;
-use Alama\Arazzo\Validator\Rules\SelfUriSyntaxRule;
-use Alama\Arazzo\Validator\Rules\StepParameterInValidRule;
-use Alama\Arazzo\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
-use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\Validator;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Validator\Rules\AsyncApiFieldsRequire11Rule;
+use Alama\Arazzo\Document\Validator\Rules\DocumentArazzoVersionRule;
+use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
+use Alama\Arazzo\Document\Validator\Rules\SelectorTypeSupportedRule;
+use Alama\Arazzo\Document\Validator\Rules\SelfUriSyntaxRule;
+use Alama\Arazzo\Document\Validator\Rules\StepParameterInValidRule;
+use Alama\Arazzo\Document\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 use Symfony\Component\Yaml\Yaml;
 
 function loadFixture(string $filename): RawDocument

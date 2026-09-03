@@ -137,5 +137,5 @@ function label(string $module): string
         return str_replace(':', '-', $module);
     }
 
-    return $module;
+    return \ArazzoDocs\modulePackageSegment($module).'\\'.$module;
 }

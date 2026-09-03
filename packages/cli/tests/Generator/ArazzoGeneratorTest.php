@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Generator;
 
+use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
-use Alama\Arazzo\Generator\ArazzoGenerator;
 
 it('generates arazzo yaml from openapi and trace', function () {
     $aiClient = new class() implements AiClientInterface

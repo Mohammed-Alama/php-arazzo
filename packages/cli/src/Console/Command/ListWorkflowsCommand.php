@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Console\Command;
+namespace Alama\Arazzo\Cli\Console\Command;
 
-use Alama\Arazzo\Console\DocumentLoader;
+use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Console\Cli;
+namespace Alama\Arazzo\Cli\Console\Cli;
 
-use Alama\Arazzo\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 
 /**
  * In-process registry for CLI runs: the final status lives only as long as

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ArazzoDocs\TestEconomicsDoc;
 
+use const ArazzoDocs\CORE_SRC_PACKAGES;
+
 use ArazzoDocs\ScannedFile;
 
 const BANNER = <<<'MD'
@@ -26,7 +28,7 @@ function render(array $core, array $laravel, string $root): string
 {
     $lines = [BANNER, '| Package | Src LOC | Test LOC | Test/Src | Test files | Test methods | Methods/file |', '|---|---:|---:|---:|---:|---:|---:|'];
 
-    foreach ([['core', $core, $root.'/packages/core'], ['laravel', $laravel, $root.'/packages/laravel']] as [$label, $modules, $packageDir]) {
+    foreach ([['core', $core], ['laravel', $laravel]] as [$label, $modules]) {
         $srcLoc = 0;
         foreach ($modules as $files) {
             foreach ($files as $file) {
@@ -34,7 +36,22 @@ function render(array $core, array $laravel, string $root): string
             }
         }
 
-        [$testLoc, $testFiles, $testMethods] = scanTests($packageDir.'/tests');
+        $testsDirs = $label === 'core'
+            ? [
+                ...array_map(fn (string $package): string => $root.'/packages/'.$package.'/tests', CORE_SRC_PACKAGES),
+                $root.'/packages/core/tests', // cross-cutting integration/architecture/conformance suites
+            ]
+            : [$root.'/packages/laravel/tests'];
+
+        [$testLoc, $testFiles, $testMethods] = array_reduce(
+            $testsDirs,
+            function (array $carry, string $dir): array {
+                [$loc, $files, $methods] = scanTests($dir);
+
+                return [$carry[0] + $loc, $carry[1] + $files, $carry[2] + $methods];
+            },
+            [0, 0, 0],
+        );
         $ratio = $srcLoc > 0 ? round($testLoc / $srcLoc * 100) : 0;
         $density = $testFiles > 0 ? round($testMethods / $testFiles, 1) : 0;
 

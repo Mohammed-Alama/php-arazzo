@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Console;
 
-use Alama\Arazzo\Console\Application;
+use Alama\Arazzo\Cli\Console\Application;
 
 it('sets the application name and version', function (): void {
     $app = new Application();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Generator;
+namespace Alama\Arazzo\Cli\Generator;
 
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 

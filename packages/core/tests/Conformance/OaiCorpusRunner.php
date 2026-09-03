@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\SourceDocument;
-use Alama\Arazzo\Validator\Data\ValidationResult;
-use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\Validator;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 
 /**
  * Runs the vendored OFFICIAL OAI example corpus (see corpus/oai/README.md)

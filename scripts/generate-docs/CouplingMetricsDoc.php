@@ -140,6 +140,6 @@ function label(string $module): string
         'Laravel:_' => '(laravel root)',
         default => str_starts_with($module, 'Laravel:')
             ? 'Laravel:'.substr($module, strlen('Laravel:'))
-            : $module,
+            : \ArazzoDocs\modulePackageSegment($module).'\\'.$module,
     };
 }

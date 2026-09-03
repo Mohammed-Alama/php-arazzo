@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ArazzoDocs\CoverageRiskDoc;
 
+use const ArazzoDocs\CORE_SRC_PACKAGES;
+
 use ArazzoDocs\NamespaceGraphDoc;
 use ArazzoDocs\ScannedFile;
 
@@ -125,10 +127,12 @@ function scanTestMentions(string $root): array
 {
     // module => class short names
     $namesByModule = [];
-    foreach ([
-        [$root.'/packages/core/src', false],
-        [$root.'/packages/laravel/src', true],
-    ] as [$srcDir, $isLaravel]) {
+    $srcDirs = [];
+    foreach (CORE_SRC_PACKAGES as $package) {
+        $srcDirs[] = [$root.'/packages/'.$package.'/src', false];
+    }
+    $srcDirs[] = [$root.'/packages/laravel/src', true];
+    foreach ($srcDirs as [$srcDir, $isLaravel]) {
         if (!is_dir($srcDir)) {
             continue;
         }
@@ -151,10 +155,12 @@ function scanTestMentions(string $root): array
     }
 
     $counts = [];
-    foreach ([
-        $root.'/packages/core/tests',
-        $root.'/packages/laravel/tests',
-    ] as $testsDir) {
+    $testsDirs = [$root.'/packages/core/tests']; // cross-cutting integration/architecture/conformance suites
+    foreach (CORE_SRC_PACKAGES as $package) {
+        $testsDirs[] = $root.'/packages/'.$package.'/tests';
+    }
+    $testsDirs[] = $root.'/packages/laravel/tests';
+    foreach ($testsDirs as $testsDir) {
         if (!is_dir($testsDir)) {
             continue;
         }

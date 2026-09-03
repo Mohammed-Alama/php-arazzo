@@ -20,7 +20,7 @@ require_once __DIR__.'/../packages/core/tests/Conformance/FakerOpenApiExecutor.p
 require_once __DIR__.'/../packages/core/tests/Conformance/OaiFixtureRunner.php';
 require_once __DIR__.'/../packages/core/tests/Conformance/OaiQueueFixtureRunner.php';
 
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Tests\Conformance\OaiCorpusRunner;
 use Alama\Arazzo\Tests\Conformance\OaiFixtureRunner;
 use Alama\Arazzo\Tests\Conformance\OaiQueueFixtureRunner;

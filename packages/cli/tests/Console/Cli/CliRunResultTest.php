@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Console\Cli;
 
-use Alama\Arazzo\Console\Cli\CliRunResult;
-use Alama\Arazzo\Console\Cli\InProcessExecutionRegistry;
-use Alama\Arazzo\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Cli\Console\Cli\CliRunResult;
+use Alama\Arazzo\Cli\Console\Cli\InProcessExecutionRegistry;
+use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 
 it('exposes the raw constructor values', function (): void {
     $result = new CliRunResult('exec_1', 'succeeded', false);

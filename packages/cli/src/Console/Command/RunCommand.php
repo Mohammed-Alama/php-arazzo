@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Console\Command;
+namespace Alama\Arazzo\Cli\Console\Command;
 
-use Alama\Arazzo\Console\DocumentLoader;
-use Alama\Arazzo\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionResolver;
-use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\StepOutputExtractor;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Cli\Console\DocumentLoader;
+use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\Fetchers\HttpFetcher;
-use Alama\Arazzo\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Resolver\SourceRegistry;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;

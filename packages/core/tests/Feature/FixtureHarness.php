@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Feature;
 
-use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Parser\Loader;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Validator\Data\ValidationResult;
-use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\Validator;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Loader;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 
 final class FixtureHarness
 {

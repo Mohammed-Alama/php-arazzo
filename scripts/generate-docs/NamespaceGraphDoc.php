@@ -13,7 +13,8 @@ const BANNER = <<<'MD'
 # Generated: Namespace Dependency Graph
 
 Cross-module `use` relationships between top-level namespaces, scanned live from
-`packages/core/src` and `packages/laravel/src`. Regenerated before every commit.
+the split core packages (`packages/{contracts,expression,document,runner,cli}/src`)
+and `packages/laravel/src`. Regenerated before every commit.
 
 MD;
 
@@ -82,7 +83,7 @@ function render(array $core, array $laravel): string
             'Laravel:_' => '(Laravel package root)',
             default => str_starts_with($id, 'Laravel:')
                 ? 'Alama\\Arazzo\\Laravel\\'.substr($id, strlen('Laravel:'))
-                : 'Alama\\Arazzo\\'.$id,
+                : \ArazzoDocs\moduleNamespace($id),
         };
         $style = str_starts_with($id, 'Laravel:') ? 'laravelNode' : 'coreNode';
         $lines[] = sprintf('    %s["%s"]:::%s', nodeId($id), $label, $style);

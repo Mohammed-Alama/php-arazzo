@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Generator\Clients;
+namespace Alama\Arazzo\Cli\Generator\Clients;
 
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 use Psr\Http\Client\ClientInterface;

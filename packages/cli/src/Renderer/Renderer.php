@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Renderer;
+namespace Alama\Arazzo\Cli\Renderer;
 
-use Alama\Arazzo\Spec\Action\FailureGotoAction;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SuccessEndAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 
 /**
  * Renders Arazzo documents as Mermaid flowcharts and Markdown docs.

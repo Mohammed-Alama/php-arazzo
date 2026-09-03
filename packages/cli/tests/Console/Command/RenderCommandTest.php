@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Console\Command\RenderCommand;
+use Alama\Arazzo\Cli\Console\Command\RenderCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 const RENDER_FIXTURE = __DIR__.'/../../fixtures/loader/minimal.yaml';

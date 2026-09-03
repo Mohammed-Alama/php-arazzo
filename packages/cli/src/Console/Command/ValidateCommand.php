@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Console\Command;
+namespace Alama\Arazzo\Cli\Console\Command;
 
-use Alama\Arazzo\Console\DocumentLoader;
-use Alama\Arazzo\Parser\Exceptions\LoaderException;
-use Alama\Arazzo\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Validator\RuleSet;
-use Alama\Arazzo\Validator\Validator;
+use Alama\Arazzo\Cli\Console\DocumentLoader;
+use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

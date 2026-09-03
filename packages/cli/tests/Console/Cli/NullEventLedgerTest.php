@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Console\Cli;
 
-use Alama\Arazzo\Console\Cli\NullEventLedger;
-use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Cli\Console\Cli\NullEventLedger;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 
 it('accepts an append without recording or throwing', function (): void {
     $ledger = new NullEventLedger();

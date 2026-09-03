@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Console\DocumentLoader;
-use Alama\Arazzo\Renderer\Renderer;
+use Alama\Arazzo\Cli\Console\DocumentLoader;
+use Alama\Arazzo\Cli\Renderer\Renderer;
 
 const RENDER_ACTIONS = __DIR__.'/../fixtures/renderer/actions.yaml';
 

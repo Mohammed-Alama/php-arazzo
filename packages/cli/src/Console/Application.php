@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Console;
+namespace Alama\Arazzo\Cli\Console;
 
-use Alama\Arazzo\Console\Command\ExplainCommand;
-use Alama\Arazzo\Console\Command\ListWorkflowsCommand;
-use Alama\Arazzo\Console\Command\RenderCommand;
-use Alama\Arazzo\Console\Command\RunCommand;
-use Alama\Arazzo\Console\Command\ValidateCommand;
+use Alama\Arazzo\Cli\Console\Command\ExplainCommand;
+use Alama\Arazzo\Cli\Console\Command\ListWorkflowsCommand;
+use Alama\Arazzo\Cli\Console\Command\RenderCommand;
+use Alama\Arazzo\Cli\Console\Command\RunCommand;
+use Alama\Arazzo\Cli\Console\Command\ValidateCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\InputOption;
 
