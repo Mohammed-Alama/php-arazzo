@@ -11,6 +11,8 @@ on:
       - 'composer.json'
       - 'composer.lock'
       - 'phpstan.neon.dist'
+      - '**/phpstan.neon.dist'
+      - '**/phpstan-baseline.neon'
       - 'pint.json'
   pull_request:
     paths:
@@ -20,6 +22,8 @@ on:
       - 'composer.json'
       - 'composer.lock'
       - 'phpstan.neon.dist'
+      - '**/phpstan.neon.dist'
+      - '**/phpstan-baseline.neon'
       - 'pint.json'
 
 concurrency:
