@@ -16,19 +16,16 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 | Package | Readonly | Mutable | Readonly share |
 |---|---:|---:|---:|
-| core | 72 | 180 | 29% |
-| laravel | 0 | 21 | 0% |
+| core | 82 | 174 | 32% |
+| laravel | 0 | 22 | 0% |
 
 ## Mutable clusters
 
 | Class | Package | Dir | Serialization signals |
 |---|---|---|---|
-| `CliRunResult` | core | `Console/Cli` | `hydrate` |
 | `ImplicitDependencies` | core | `Dependency` | `hydrate` |
-| `WorkflowContext` | core | `State` | `toArray`, `hydrate` |
-| `ErrorEntry` | core | `State` | `toArray` |
-| `StepResult` | core | `State` | `toArray` |
-| `ExecutionContext` | core | `State` | `toArray`, `hydrate` |
+| `ExecutionContext` | core | `State/Data` | `toArray`, `hydrate` |
+| `CliRunResult` | core | `Console/Cli` | `hydrate` |
 
 ## Cross-process aggregates
 
@@ -36,7 +33,4 @@ Mutable types that serialize themselves or are carried by queue jobs — each ne
 
 - `CliRunResult` <small>core · `hydrate`</small>
 - `ImplicitDependencies` <small>core · `hydrate`</small>
-- `ErrorEntry` <small>core · `toArray`</small>
 - `ExecutionContext` <small>core · `toArray`, `hydrate`</small>
-- `StepResult` <small>core · `toArray`</small>
-- `WorkflowContext` <small>core · `toArray`, `hydrate`</small>

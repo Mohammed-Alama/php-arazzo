@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Tests\Conformance\OaiCorpusRunner;
 use Alama\Arazzo\Tests\Conformance\OaiFixtureRunner;
 use Alama\Arazzo\Tests\Conformance\OaiQueueFixtureRunner;

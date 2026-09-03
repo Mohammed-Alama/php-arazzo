@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Runner\Protocol;
+
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Runner\Execution\Interfaces\ProtocolExecutorRegistryInterface;
+
+/**
+ * Chain-of-responsibility over registered protocol executors; the first
+ * executor whose supports() returns true wins. Registration order is
+ * significant: more specific executors must register before generic ones.
+ */
+final class ProtocolExecutorRegistry implements ProtocolExecutorRegistryInterface
+{
+    /** @var array<string, StepProtocolExecutorInterface> */
+    private array $executors = [];
+
+    public function register(string $name, StepProtocolExecutorInterface $executor): void
+    {
+        $this->executors[$name] = $executor;
+    }
+
+    public function resolve(Step $step, ArazzoDocument $document): ?StepProtocolExecutorInterface
+    {
+        foreach ($this->executors as $executor) {
+            if ($executor->supports($step, $document)) {
+                return $executor;
+            }
+        }
+
+        return null;
+    }
+
+    /** @return list<string> */
+    public function getSupportedProtocols(): array
+    {
+        return array_keys($this->executors);
+    }
+}

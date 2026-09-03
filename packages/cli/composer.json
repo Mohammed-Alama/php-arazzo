@@ -1,0 +1,43 @@
+{
+    "name": "alama/arazzo-cli",
+    "description": "Arazzo CLI and delivery adapters: console, AI generator, renderer.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-document": "@dev",
+        "alama/arazzo-expression": "@dev",
+        "alama/arazzo-runner": "@dev",
+        "guzzlehttp/guzzle": "^7.9",
+        "open-telemetry/api": "^1.0",
+        "open-telemetry/sdk": "^1.0",
+        "open-telemetry/exporter-otlp": "^1.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0||^2.0",
+        "symfony/console": "^7.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {"Alama\\Arazzo\\Cli\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use GuzzleHttp\Psr7\HttpFactory;
 
 /**

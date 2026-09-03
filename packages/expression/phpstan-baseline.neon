@@ -1,0 +1,97 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot access offset ''method'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''request'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset ''url'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/ExpressionEvaluator.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/JsonPathEvaluator.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/JsonPathEvaluator.php
+
+		-
+			message: '#^Call to function is_int\(\) with \*NEVER\* will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\SourceDescription and Alama\\Arazzo\\Contracts\\Spec\\SourceDescription will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Step and Alama\\Arazzo\\Contracts\\Spec\\Step will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Workflow and Alama\\Arazzo\\Contracts\\Spec\\Workflow will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
+			count: 3
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 7
+			path: src/SymbolTable.php

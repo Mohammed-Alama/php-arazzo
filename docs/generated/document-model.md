@@ -15,6 +15,7 @@ classDiagram
     class ArazzoDocument
     class Components
     class CriterionType
+    class ExecutionStatus
     class Expression
     class ExpressionType
     class FailureAction <<value>>
@@ -22,9 +23,11 @@ classDiagram
     class FailureGotoAction <<value>>
     class Format
     class Info
+    class OpenApiPayload
     class Parameter
     class ParameterIn
     class PayloadReplacement
+    class PendingCorrelation
     class RawDocument
     class RequestBody
     class RetryAction <<value>>
@@ -35,6 +38,7 @@ classDiagram
     class SourceType
     class SpecVersion
     class Step
+    class StepExecutionOutcome
     class StepStatus
     class SubWorkflowFailureAction <<value>>
     class SubWorkflowSuccessAction <<value>>
@@ -106,6 +110,7 @@ classDiagram
 - **ExpressionType** — `jsonpath` &middot; `xpath` &middot; `jsonpointer`
 - **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`
 - **CriterionType** — `simple` &middot; `regex` &middot; `jsonpath` &middot; `xpath`
+- **ExecutionStatus** — `running` &middot; `succeeded` &middot; `failed`
 - **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
 - **ActionKind** — `goto` &middot; `end` &middot; `retry` &middot; `invoke`
 - **Format** — `yaml` &middot; `json`

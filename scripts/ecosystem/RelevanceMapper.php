@@ -22,20 +22,49 @@ final class RelevanceMapper
         'graphql' => 'Roadmap GraphQL step type',
         'transformer' => 'Roadmap transformers/functions',
         'function' => 'Roadmap transformers/functions',
+        'runner' => 'Arazzo runner / step execution',
+        'moonwalk' => 'OAI Moonwalk (next-gen spec)',
+        'security' => 'API security (OAI sig-security)',
         'spec' => 'Conformance / schema validation',
         'schema' => 'P1-7 JSON Schema layer',
+        'depbump' => 'Dependency maintenance',
         'breaking' => 'Potential breaking change (2.0)',
     ];
 
     /**
      * @param  string[]  $tags
+     *
+     * Iterates tags in an explicit priority order instead of insertion order so that
+     * high-specificity roadmap features always win over generic catch-alls.
+     * e.g. a dep-bump PR tagged [soap, breaking] → P0-6 (correct); one tagged only
+     * [breaking] → "Potential breaking change (2.0)" (correct fallback).
      */
     public static function map(array $tags): ?string
     {
-        foreach ($tags as $t) {
-            $k = strtolower($t);
-            if (isset(self::MAP[$k])) {
-                return self::MAP[$k];
+        // Explicit priority: most specific roadmap features first, catch-alls last.
+        $priority = [
+            'soap', 'wsdl',                                       // P0-6
+            'xpath',                                              // P0-5 / P1-6
+            'xml',                                                // P1-6
+            'schema',                                             // P1-7
+            'mcp',                                                // P2-2
+            'cli',                                                // P2-1
+            'a2a', 'grpc', 'graphql', 'transformer', 'function',  // Roadmap
+            'runner',                                             // Arazzo runtime execution
+            'actor', 'human',                                     // Issue #410 kind discriminator
+            'loop',                                               // Issue #410 loops vs goto
+            'moonwalk',                                           // OAI next-gen spec
+            'security',                                           // OAI sig-security
+            'spec',                                               // Conformance (broad catch-all)
+            'depbump',                                            // Dependency maintenance (lowest)
+            'breaking',                                           // Fallback: potential breaking change
+        ];
+
+        $tagSet = array_flip(array_map('strtolower', $tags));
+
+        foreach ($priority as $t) {
+            if (isset($tagSet[$t], self::MAP[$t])) {
+                return self::MAP[$t];
             }
         }
 

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\LockStrategyInterface;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Laravel\Bindings\PersistenceBindings;
 use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 
 function bindingsProp(object $instance, string $name): mixed
 {

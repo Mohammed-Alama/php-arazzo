@@ -14,11 +14,11 @@ edit `POLICY` when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 3 | 4 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 36 | **forbidden** |
+| `GuzzleHttp` | 8 | 4 | **forbidden** ⚠ |
+| `Illuminate` | 0 | 37 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 40 | 17 | allowed |
+| `Psr` | 44 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -32,22 +32,24 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Console` | `OpenTelemetry` | 1 |
 | core | `Console` | `Psr` | 1 |
 | core | `Console` | `Symfony` | 30 |
-| core | `Contracts` | `Psr` | 3 |
-| core | `Execution` | `GuzzleHttp` | 1 |
+| core | `Execution` | `GuzzleHttp` | 2 |
 | core | `Execution` | `OpenTelemetry` | 2 |
-| core | `Execution` | `Psr` | 17 |
-| core | `Execution` | `cebe` | 13 |
-| core | `Expression` | `Flow` | 1 |
+| core | `Execution` | `Psr` | 19 |
+| core | `Execution` | `cebe` | 10 |
 | core | `Generator` | `Psr` | 3 |
+| core | `Infrastructure` | `Psr` | 2 |
+| core | `Normalizer` | `cebe` | 6 |
 | core | `Parser` | `Symfony` | 2 |
 | core | `Protocol` | `Psr` | 6 |
 | core | `Resolver` | `Psr` | 4 |
-| core | `Resolver` | `cebe` | 3 |
 | core | `Support` | `Psr` | 4 |
 | core | `Telemetry` | `OpenTelemetry` | 23 |
 | core | `Validator` | `JsonSchema` | 7 |
+| core | `_` | `Flow` | 1 |
+| core | `_` | `GuzzleHttp` | 4 |
+| core | `_` | `Psr` | 3 |
 | laravel | `Bindings` | `GuzzleHttp` | 3 |
-| laravel | `Bindings` | `Illuminate` | 8 |
+| laravel | `Bindings` | `Illuminate` | 9 |
 | laravel | `Bindings` | `Psr` | 13 |
 | laravel | `Events` | `Illuminate` | 1 |
 | laravel | `Events` | `Psr` | 1 |
@@ -62,15 +64,16 @@ edit `POLICY` when a boundary consciously moves.
 | laravel | `_` | `Illuminate` | 2 |
 | laravel | `_` | `Spatie` | 2 |
 
-**11 core boundary violation(s):**
+**12 core boundary violation(s):**
 - `Console` imports `GuzzleHttp\*` (2 refs)
 - `Console` imports `OpenTelemetry\*` (1 refs)
 - `Console` imports `Symfony\*` (30 refs)
-- `Execution` imports `GuzzleHttp\*` (1 refs)
+- `Execution` imports `GuzzleHttp\*` (2 refs)
 - `Execution` imports `OpenTelemetry\*` (2 refs)
-- `Execution` imports `cebe\*` (13 refs)
-- `Expression` imports `Flow\*` (1 refs)
+- `Execution` imports `cebe\*` (10 refs)
+- `Normalizer` imports `cebe\*` (6 refs)
 - `Parser` imports `Symfony\*` (2 refs)
-- `Resolver` imports `cebe\*` (3 refs)
 - `Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `Validator` imports `JsonSchema\*` (7 refs)
+- `_` imports `Flow\*` (1 refs)
+- `_` imports `GuzzleHttp\*` (4 refs)

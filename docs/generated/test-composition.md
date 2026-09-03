@@ -9,13 +9,85 @@ unit base, a deliberate feature layer, and a conformance slice proving spec
 compliance — not an inverted pyramid of end-to-end tests.
 
 
-## Core package
+## Contracts package
 
 ```mermaid
 pie showData
-    title Core — 182 test files
-    "Module-scoped": 167
-    "Unit": 6
+    title Contracts — 17 test files
+    "Module-scoped": 16
+    "Root": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 16 | 94% |
+| Root | 1 | 6% |
+
+## Expression package
+
+```mermaid
+pie showData
+    title Expression — 10 test files
+    "Module-scoped": 7
+    "Root": 2
+    "Unit": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 7 | 70% |
+| Root | 2 | 20% |
+| Unit | 1 | 10% |
+
+## Document package
+
+```mermaid
+pie showData
+    title Document — 78 test files
+    "Module-scoped": 76
+    "Root": 2
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 76 | 97% |
+| Root | 2 | 3% |
+
+## Runner package
+
+```mermaid
+pie showData
+    title Runner — 58 test files
+    "Module-scoped": 56
+    "Root": 2
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 56 | 97% |
+| Root | 2 | 3% |
+
+## Cli package
+
+```mermaid
+pie showData
+    title Cli — 12 test files
+    "Module-scoped": 11
+    "Root": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 11 | 92% |
+| Root | 1 | 8% |
+
+## Core (integration) package
+
+```mermaid
+pie showData
+    title Core (integration) — 22 test files
+    "Module-scoped": 8
+    "Unit": 5
     "Feature": 4
     "Conformance": 2
     "Architecture": 1
@@ -25,20 +97,20 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 167 | 92% |
-| Unit | 6 | 3% |
-| Feature | 4 | 2% |
-| Conformance | 2 | 1% |
-| Architecture | 1 | 1% |
-| Property | 1 | 1% |
-| Root | 1 | 1% |
+| Module-scoped | 8 | 36% |
+| Unit | 5 | 23% |
+| Feature | 4 | 18% |
+| Conformance | 2 | 9% |
+| Architecture | 1 | 5% |
+| Property | 1 | 5% |
+| Root | 1 | 5% |
 
 ## Laravel package
 
 ```mermaid
 pie showData
-    title Laravel — 27 test files
-    "Module-scoped": 21
+    title Laravel — 28 test files
+    "Module-scoped": 22
     "Root": 3
     "Feature": 2
     "Unit": 1
@@ -46,7 +118,7 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 21 | 78% |
+| Module-scoped | 22 | 79% |
 | Root | 3 | 11% |
 | Feature | 2 | 7% |
 | Unit | 1 | 4% |

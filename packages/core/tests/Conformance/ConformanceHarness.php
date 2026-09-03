@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Events\RunCompleted;
-use Alama\Arazzo\Events\RunFailed;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Events\StepExecuted;
-use Alama\Arazzo\Events\StepFailed;
-use Alama\Arazzo\Events\StepStarted;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\SourceDocument;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Events\RunCompletedEvent;
+use Alama\Arazzo\Runner\Events\RunFailedEvent;
+use Alama\Arazzo\Runner\Events\RunStartedEvent;
+use Alama\Arazzo\Runner\Events\StepExecutedEvent;
+use Alama\Arazzo\Runner\Events\StepFailedEvent;
+use Alama\Arazzo\Runner\Events\StepStartedEvent;
+use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
 use GuzzleHttp\Psr7\Response;
@@ -105,11 +105,11 @@ abstract class ConformanceHarness
     {
         $evaluator = new ExpressionEvaluator();
 
-        return new ArazzoExpressionResolver(
+        return new ExpressionResolver(
             $evaluator,
-            new ArazzoOutputExtractor($operationResolver, $evaluator),
-            new ArazzoCriteriaEvaluator($evaluator),
-            new ArazzoSchemaValidator($operationResolver),
+            new StepOutputExtractor($operationResolver, $evaluator),
+            new CriteriaEvaluator($evaluator),
+            new ResponseSchemaValidator($operationResolver),
         );
     }
 
@@ -141,18 +141,18 @@ abstract class ConformanceHarness
         $eventClasses = [];
 
         foreach ($this->events->events as $event) {
-            if ($event instanceof RunStarted) {
+            if ($event instanceof RunStartedEvent) {
                 continue;
             }
             $eventClasses[] = $event::class;
 
-            if ($event instanceof RunCompleted) {
+            if ($event instanceof RunCompletedEvent) {
                 $status = 'succeeded';
                 $outputs = $event->outputs;
-            } elseif ($event instanceof RunFailed) {
+            } elseif ($event instanceof RunFailedEvent) {
                 $status = 'failed';
                 $errors[] = $event->cause->getMessage();
-            } elseif ($event instanceof StepStarted) {
+            } elseif ($event instanceof StepStartedEvent) {
                 $attempts[$event->stepId] = ($attempts[$event->stepId] ?? 0) + 1;
 
                 if (!in_array($event->stepId, $order, true)) {
@@ -161,10 +161,10 @@ abstract class ConformanceHarness
 
                 // Each new attempt resets the step's provisional outcome.
                 unset($lastAttemptFailed[$event->stepId]);
-            } elseif ($event instanceof StepFailed) {
+            } elseif ($event instanceof StepFailedEvent) {
                 $lastAttemptFailed[$event->stepId] = true;
                 $failureMessages[$event->stepId][] = $event->cause->getMessage();
-            } elseif ($event instanceof StepExecuted && !($event->criteriaMet)) {
+            } elseif ($event instanceof StepExecutedEvent && !($event->criteriaMet)) {
                 $lastAttemptFailed[$event->stepId] = true;
             }
         }

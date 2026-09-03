@@ -8,7 +8,7 @@ classes/interfaces/enums in `packages/*/src`, excluding `Support`, `Internal`
 and `Exceptions` namespaces (exceptions have their own doc). Any diff in this
 file on a commit is a public API change — review it deliberately.
 
-## core · `Alama\Arazzo\Async`
+## core · `Alama\Arazzo\Runner\Async`
 
 ### `ExecutionStateBuilder` class
 - `public function build(?array $persisted, WorkflowContext $resultContext, Workflow $workflow, ?Step $overlayStep = null): ExecutionState`
@@ -36,7 +36,7 @@ file on a commit is a public API change — review it deliberately.
 - `public function stepExecuted(string $executionId, string $workflowId, string $stepId, int $statusCode, array $outputs, bool $criteriaMet): void`
 - `public function stepStarted(string $executionId, string $workflowId, string $stepId, int $attempt): void`
 
-## core · `Alama\Arazzo\Console`
+## core · `Alama\Arazzo\Cli\Console`
 
 ### `Application` class
 - `public function __construct()`
@@ -65,100 +65,14 @@ file on a commit is a public API change — review it deliberately.
 ### `RunCommand` class
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
 
-## core · `Alama\Arazzo\Contracts`
+## core · `Alama\Arazzo\Data\Data`
 
-### `AiClientInterface` interface
-- `public function generate(string $systemPrompt, string $userPrompt): string;`
+### `EvaluationInput` class
+- `public function __construct(private WorkflowContextInterface $workflowContext, private ?string $currentStepId = null, private ?ArazzoDocument $document = null)`
+- `public function getCurrentStepId(): ?string`
+- `public function getDocument(): ?ArazzoDocument`
 
-### `BackoffCalculatorInterface` interface
-- `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
-
-### `CriteriaEvaluatorInterface` interface
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-
-### `DefinitionRegistryInterface` interface
-- `public function get(string $definitionId): ?ArazzoDocument;`
-
-### `EventLedgerInterface` interface
-- `public function append(string $executionId, string $eventType, array $payload): void;`
-
-### `ExecutionRegistryInterface` interface
-- `public function complete(string $executionId, ExecutionStatus $status): void;`
-- `public function start(string $executionId, string $definitionId, string $workflowId): void;`
-
-### `ExpressionEvaluatorInterface` interface
-- `public function evaluate(Expression $expression, EvaluationContext $context): mixed;`
-
-### `ExpressionResolverInterface` interface
-- `public function evaluate(Expression $expression, WorkflowContext $context, ?string $currentStepId = null): mixed;`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool;`
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
-- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
-
-### `FileLockStrategy` class
-- `public function __construct(?string $lockDir = null)`
-- `public function __destruct()`
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
-- `public function release(string $key): void`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `HttpClientInterface` interface
-- `public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface;`
-
-### `LockStrategyInterface` interface
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
-- `public function release(string $key): void;`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool;`
-
-### `NullLockStrategy` class
-- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `OpenApiExecutorInterface` interface
-- `public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null, ): ResponseInterface;`
-
-### `OpenApiNormalizerInterface` interface
-- `public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation;`
-
-### `OutputExtractorInterface` interface
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array;`
-
-### `PendingCorrelationRegistryInterface` interface
-- `public function consume(string $correlationId): void;`
-- `public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void;`
-- `public function existsForExecution(string $executionId): bool;`
-- `public function findByCorrelationId(string $correlationId): ?PendingCorrelation;`
-
-### `PessimisticLockStrategy` class
-- `public function __construct(private LockManagerInterface $lockManager)`
-- `public function release(string $key): void`
-- `public function tryAcquire(string $key, int $ttlSeconds): bool`
-
-### `ProtocolExecutorRegistryInterface` interface
-- `public function getSupportedProtocols(): array;`
-- `public function register(string $name, StepProtocolExecutorInterface $executor): void;`
-- `public function resolve(Step $step, ArazzoDocument $document): ?StepProtocolExecutorInterface;`
-
-### `QueueDriverInterface` interface
-- `public function dispatch(object $job, int $delaySeconds = 0): void;`
-
-### `SchemaValidatorInterface` interface
-- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
-
-### `StateStoreInterface` interface
-- `public function load(string $executionId): ?array;`
-- `public function save(string $executionId, array $state, ?int $ttlSeconds = null): void;`
-
-### `StepProtocolExecutorInterface` interface
-- `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
-- `public function supports(Step $step, ArazzoDocument $document): bool;`
-
-### `WritableDefinitionRegistryInterface` interface
-- `public function register(ArazzoDocument $document): string;`
-
-## core · `Alama\Arazzo\Dependency`
+## core · `Alama\Arazzo\Contracts\Dependency`
 
 ### `DependencyAnalyzer` class
 - `public function __construct(private DependencyGraph $graph)`
@@ -174,27 +88,41 @@ file on a commit is a public API change — review it deliberately.
 ### `ImplicitDependencies` class
 - `public static function fromStep(Step $step): array`
 
-## core · `Alama\Arazzo\Evaluation`
+## core · `Alama\Arazzo\Enum\Enum`
 
-### `ArazzoCriteriaEvaluator` class
-- `public function __construct(private ExpressionEvaluatorInterface $evaluator, ?ConditionEvaluator $conditionEvaluator = null, ?XpathEvaluator $xpathEvaluator = null)`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
+### `TokenKind` enum
+- Cases: `Dollar`, `Dot`, `Hash`, `Keyword`, `Name`, `PointerSegment`, `Slash`
 
-### `ArazzoExpressionResolver` class
-- `public function __construct(private ExpressionEvaluatorInterface $evaluator, private OutputExtractorInterface $outputExtractor, private CriteriaEvaluatorInterface $criteriaEvaluator, private SchemaValidatorInterface $schemaValidator)`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): bool`
-- `public function extractOutputs(Step $step, WorkflowContext $context, ?ArazzoDocument $document = null): array`
-- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
+## core · `Alama\Arazzo\Expression\Evaluation`
 
 ### `ComparisonOperator` enum
 - Cases: `Eq`, `Gt`, `Gte`, `Lt`, `Lte`, `Neq`
 
 ### `ConditionEvaluator` class
 - `public function __construct(private ExpressionEvaluatorInterface $evaluator)`
-- `public function evaluate(string $condition, WorkflowContext $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool`
+- `public function evaluate(string $condition, WorkflowContextInterface $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool`
 - `public static function truthy(mixed $value): bool`
+
+### `CriteriaEvaluator` class
+- `public function __construct(private ExpressionEvaluatorInterface $evaluator, ?ConditionEvaluator $conditionEvaluator = null, ?XpathEvaluator $xpathEvaluator = null)`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+
+### `CriteriaEvaluatorInterface` interface
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+
+### `EvaluationContext` class
+- `public function __construct(public WorkflowContextInterface $workflowContext, public ?string $currentStepId = null, public ?ArazzoDocument $document = null)`
+- `public function getCurrentStepId(): ?string`
+- `public function getDocument(): ?ArazzoDocument`
+
+### `ExpressionResolver` class
+- `public function __construct(private ExpressionEvaluatorInterface $evaluator, private OutputExtractorInterface $outputExtractor, private CriteriaEvaluatorInterface $criteriaEvaluator, private ResponseValidatorInterface $schemaValidator)`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
 
 ### `Lexer` class
 - `public function lex(string $condition): array`
@@ -212,29 +140,28 @@ file on a commit is a public API change — review it deliberately.
 ### `TokenKind` enum
 - Cases: `And`, `Eq`, `Expr`, `Gt`, `Gte`, `Ident`, `LParen`, `Lt`, `Lte`, `Neq`, `Not`, `Number`, `Or`, `RParen`, `String`
 
-## core · `Alama\Arazzo\Exceptions`
+## core · `Alama\Arazzo\Runner\Events`
 
-### `ExecutionException` class
-- `public static function messageFactoryMissing(string $stepId): self`
-- `public static function subWorkflowNotFound(string $workflowId): self`
-- `public static function unresolvableChannelTarget(string $stepId, string $channelPath): self`
+### `EventLedgerInterface` interface
+- `public function append(string $executionId, string $eventType, array $payload): void;`
+
+### `LedgerEventListener` class
+- `public function __construct(private EventLedgerInterface $ledger)`
+- `public function __invoke(object $event): void`
+
+## core · `Alama\Arazzo\Exceptions\Exceptions`
+
+### `ExpressionSyntaxException` class
+- `public function __construct(string $message, public readonly string $expression = '', public readonly int $offset = -1, string $path = '', string $codeId = '', ?Throwable $previous = null)`
 
 ### `SchemaValidationException` class
 - `public function __construct(public readonly string $stepId, public readonly array $violations)`
 
-### `UnsupportedSerializationStyleException` class
-- `public function __construct(string $style, string $location)`
+### `SelectorEvaluationException` class
+- `public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self`
+- `public static function xpathRequiresXml(string $pointer): self`
 
-### `UnsupportedSourceVersionException` class
-- `public static function forVersion(string $version, string $sourceName): self`
-
-## core · `Alama\Arazzo\Execution`
-
-### `ArazzoOutputExtractor` class
-- `public function __construct(private OpenApiOperationResolver $operationResolver, private ExpressionEvaluator $evaluator, private ?LoggerInterface $logger = null)`
-
-### `ArazzoSchemaValidator` class
-- `public function __construct(private OpenApiOperationResolver $operationResolver)`
+## core · `Alama\Arazzo\Runner\Execution`
 
 ### `CorrelationResumer` class
 - `public function __construct(private PendingCorrelationRegistryInterface $pendingCorrelations, private StateStoreInterface $stateStore, private DefinitionRegistryInterface $definitionRegistry, private ExpressionResolverInterface $expressionResolver, private StepOutcomeHandler $outcomeHandler, private EventLedgerInterface $eventLedger, private LockManagerInterface $lockManager, ?EventDispatcherInterface $events = null)`
@@ -243,8 +170,10 @@ file on a commit is a public API change — review it deliberately.
 ### `DefaultOpenApiExecutor` class
 - `public function __construct(private ClientInterface $httpClient, private RequestFactoryInterface $requestFactory, private ?LoggerInterface $logger = null)`
 
-### `ExecutionStatus` enum
-- Cases: `Failed`, `Running`, `Succeeded`
+### `ExecutionException` class
+- `public static function messageFactoryMissing(string $stepId): self`
+- `public static function subWorkflowNotFound(string $workflowId): self`
+- `public static function unresolvableChannelTarget(string $stepId, string $channelPath): self`
 
 ### `ExpressionValueResolver` class
 - `public function __construct(private readonly ExpressionResolverInterface $expressions, ?SelectorEvaluator $selectors = null)`
@@ -257,31 +186,32 @@ file on a commit is a public API change — review it deliberately.
 - `public function get(string $definitionId): ?ArazzoDocument`
 - `public function register(ArazzoDocument $document): string`
 
-### `JsonPointer` class
-- `public static function resolve(array $data, ?string $pointer): mixed`
-
-### `OpenApiDocumentLoader` class
-- `public function __construct(private readonly SourceResolver $sourceResolver)`
+### `OpenApiExecutorInterface` interface
+- `public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null, ): ResponseInterface;`
 
 ### `ParameterSerializer` class
 - `public static function serialize(string $location, array $normalizedParams, array $payload): array`
 - `public static function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string`
 
+### `ProtocolExecutorRegistryInterface` interface
+- `public function getSupportedProtocols(): array;`
+- `public function register(string $name, StepProtocolExecutorInterface $executor): void;`
+- `public function resolve(Step $step, ArazzoDocument $document): ?StepProtocolExecutorInterface;`
+
 ### `RequestCompiler` class
-- `public function __construct(private readonly ExpressionValueResolver $values)`
+- `public function __construct(private ExpressionValueResolver $values)`
 - `public static function decodeResponse(ResponseInterface $response): array`
 - `public static function flattenHeaders(array $headers): array`
 - `public static function requestRecord(?Psr7Request $captured, OpenApiPayload $payload): array`
+
+### `ResponseSchemaValidator` class
+- `public function __construct(private OpenApiOperationResolver $operationResolver)`
 
 ### `ReusableParameterResolver` class
 - `public function resolve(array $parameters, ?ArazzoDocument $document): array`
 
 ### `SchemaValidator` class
 - `public static function validate(Schema $schema, mixed $value, string $path = ''): array`
-
-### `StepExecutionOutcome` class
-- `public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = [], ?string $rawBody = null, ?string $contentType = null, ?string $failureCategory = null): self`
-- `public static function suspended(): self`
 
 ### `StepExecutionWorker` class
 - `public function __construct(RunPersistence $persistence, private LockManagerInterface $lockManager, private DefinitionRegistryInterface $definitionRegistry, private ExpressionResolverInterface $expressionResolver, private array $protocolExecutors, RunControlFlow $controlFlow, private int $stateTtlSeconds = 86400)`
@@ -294,6 +224,9 @@ file on a commit is a public API change — review it deliberately.
 ### `StepOutcomeHandler` class
 - `public function __construct(RunPersistence $persistence, RunControlFlow $controlFlow, private PendingCorrelationRegistryInterface $pendingCorrelations, private SubWorkflowInvoker $invoker, private SelectorEvaluator $selectors, private ExpressionEvaluator $expressions, private int $stateTtlSeconds = 86400)`
 - `public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet, ): void`
+
+### `StepOutputExtractor` class
+- `public function __construct(private OpenApiOperationResolver $operationResolver, private ExpressionEvaluator $evaluator, private ?LoggerInterface $logger = null)`
 
 ### `StepParameterMerger` class
 - `public static function merge(Step $step, ?Workflow $workflow): Step`
@@ -333,49 +266,7 @@ file on a commit is a public API change — review it deliberately.
 - `public function __construct(private StepExecutor $stepExecutor, private WorkflowEngine $workflowEngine, ?EventDispatcherInterface $events = null, private ?PreflightValidator $preflight = null)`
 - `public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult`
 
-## core · `Alama\Arazzo\Expression`
-
-### `DomXpathEvaluator` class
-- `public function query(mixed $rootValue, string $selector, string $version): mixed`
-- `public function supportedVersions(): array`
-
-### `ExpressionEvaluator` class
-- `public function evaluate(Expression $expression, EvaluationContext $context): mixed`
-
-### `ExpressionSyntaxException` class
-- `public function __construct(string $message, public readonly string $expression = '', public readonly int $offset = -1, string $path = '', string $codeId = '', ?Throwable $previous = null)`
-
-### `JsonPathEvaluator` class
-- `public static function evaluate(string $expression, array|object $data): mixed`
-- `public static function normalizeFilters(string $expression): string`
-
-### `Lexer` class
-- `public function tokenize(string $raw): array`
-
-### `Parser` class
-- `public function __construct(private readonly Lexer $lexer = new Lexer())`
-
-### `SelectorEvaluationException` class
-- `public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self`
-- `public static function xpathRequiresXml(string $pointer): self`
-
-### `SelectorEvaluator` class
-- `public function __construct(private XpathEvaluator $xpath, private ExpressionEvaluator $expressions)`
-
-### `StringInterpolator` class
-- `public function __construct(private ExpressionResolverInterface $resolver)`
-
-### `SymbolTable` class
-- `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
-
-### `TokenKind` enum
-- Cases: `Dollar`, `Dot`, `Hash`, `Keyword`, `Name`, `PointerSegment`, `Slash`
-
-### `XpathEvaluator` interface
-- `public function query(mixed $rootValue, string $selector, string $version): mixed;`
-- `public function supportedVersions(): array;`
-
-## core · `Alama\Arazzo\Generator`
+## core · `Alama\Arazzo\Cli\Generator`
 
 ### `ArazzoGenerator` class
 - `public function __construct(private AiClientInterface $aiClient)`
@@ -383,10 +274,81 @@ file on a commit is a public API change — review it deliberately.
 ### `OpenAiClient` class
 - `public function __construct(private ClientInterface $httpClient, private RequestFactoryInterface $requestFactory, private StreamFactoryInterface $streamFactory, private string $apiKey, private string $endpoint, private string $model = 'gpt-4o', private float $temperature = 0.0)`
 
-## core · `Alama\Arazzo\Normalizer`
+## core · `Alama\Arazzo\Runner\Infrastructure`
+
+### `FileLockStrategy` class
+- `public function __construct(?string $lockDir = null)`
+- `public function __destruct()`
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
+- `public function release(string $key): void`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
+
+### `HttpClientInterface` interface
+- `public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface;`
+
+### `NullLockStrategy` class
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
+
+### `PessimisticLockStrategy` class
+- `public function __construct(private LockManagerInterface $lockManager)`
+- `public function release(string $key): void`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool`
+
+## core · `Alama\Arazzo\Interfaces\Interfaces`
+
+### `AiClientInterface` interface
+- `public function generate(string $systemPrompt, string $userPrompt): string;`
+
+### `BackoffCalculatorInterface` interface
+- `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
+
+### `EvaluationInputInterface` interface
+- `public function getCurrentStepId(): ?string;`
+- `public function getDocument(): ?ArazzoDocument;`
+- `public function getWorkflowContext(): WorkflowContextInterface;`
+
+### `ExpressionEvaluatorInterface` interface
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+
+### `ExpressionResolverInterface` interface
+- `public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed;`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
+
+### `LockStrategyInterface` interface
+- `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
+- `public function release(string $key): void;`
+- `public function tryAcquire(string $key, int $ttlSeconds): bool;`
+
+### `OutputExtractorInterface` interface
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
+
+### `QueueDriverInterface` interface
+- `public function dispatch(object $job, int $delaySeconds = 0): void;`
+
+### `ResponseValidatorInterface` interface
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
+
+### `StepProtocolExecutorInterface` interface
+- `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
+- `public function supports(Step $step, ArazzoDocument $document): bool;`
+
+## core · `Alama\Arazzo\Document\Normalizer`
 
 ### `OpenApi30Normalizer` class
 - `public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation`
+
+### `OpenApiDocumentLoader` class
+- `public function __construct(private readonly SourceResolver $sourceResolver)`
+
+### `OpenApiNormalizerInterface` interface
+- `public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation;`
+
+### `OpenApiOperationResolver` class
+- `public function __construct(private OpenApiDocumentLoader $loader, private OpenApiVersionDetector $versionDetector, private OpenApi30Normalizer $normalizer30, private OpenApi31Normalizer $normalizer31)`
 
 ### `OpenApiVersionDetector` class
 - `public function detect(array $document): string`
@@ -394,7 +356,7 @@ file on a commit is a public API change — review it deliberately.
 ### `Swagger2Normalizer` class
 - `public function normalize(array $document, string $path, string $method): NormalizedOpenApiOperation`
 
-## core · `Alama\Arazzo\Parser`
+## core · `Alama\Arazzo\Document\Parser`
 
 ### `JsonDecoder` interface
 - `public function decode(string $source);`
@@ -431,10 +393,13 @@ file on a commit is a public API change — review it deliberately.
 ### `SymfonyYamlDecoder` class
 - `public function decode(string $source): mixed`
 
+### `UnsupportedSerializationStyleException` class
+- `public function __construct(string $style, string $location)`
+
 ### `YamlDecoder` interface
 - `public function decode(string $source);`
 
-## core · `Alama\Arazzo\Policy`
+## core · `Alama\Arazzo\Runner\Policy`
 
 ### `ExponentialBackoffCalculator` class
 - `public function calculate(float $baseDelay, int $attempt, float $multiplier): int`
@@ -444,7 +409,7 @@ file on a commit is a public API change — review it deliberately.
 - `public function calculateDelay(RetryAction $action, Step $step, WorkflowContext $context, int $upcomingAttempt): int`
 - `public function isExhausted(int $attemptsSoFar, ?int $limit): bool`
 
-## core · `Alama\Arazzo\Protocol`
+## core · `Alama\Arazzo\Runner\Protocol`
 
 ### `AsyncApiStepExecutor` class
 - `public function __construct(private PendingCorrelationRegistryInterface $pendingCorrelations, private ExpressionEvaluator $evaluator, private HttpClientInterface $httpClient, private ?RequestFactoryInterface $requestFactory = null, private ?StreamFactoryInterface $streamFactory = null, private ?UriFactoryInterface $uriFactory = null)`
@@ -467,13 +432,13 @@ file on a commit is a public API change — review it deliberately.
 - `public function __construct(private WorkflowExecutor $executor, private ExpressionEvaluator $evaluator)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
-## core · `Alama\Arazzo\Renderer`
+## core · `Alama\Arazzo\Cli\Renderer`
 
 ### `Renderer` class
 - `public function toMarkdown(ArazzoDocument $document): string`
 - `public function toMermaid(ArazzoDocument $document, ?string $workflowId = null): string`
 
-## core · `Alama\Arazzo\Resolver`
+## core · `Alama\Arazzo\Document\Resolver`
 
 ### `CachedFetcher` class
 - `public function __construct(private readonly SourceFetcher $inner, private readonly CacheInterface $cache, private readonly int $ttlSeconds = 3600)`
@@ -486,9 +451,6 @@ file on a commit is a public API change — review it deliberately.
 
 ### `LocalFetcher` class
 - `public function fetch(string $urlOrPath, string $basePath): string`
-
-### `OpenApiOperationResolver` class
-- `public function __construct(private OpenApiDocumentLoader $loader, private OpenApiVersionDetector $versionDetector, private OpenApi30Normalizer $normalizer30, private OpenApi31Normalizer $normalizer31)`
 
 ### `SourceFetcher` interface
 - `public function fetch(string $urlOrPath, string $basePath): string;`
@@ -504,7 +466,10 @@ file on a commit is a public API change — review it deliberately.
 ### `UnresolvableReferenceException` class
 - `public function __construct(string $message, public readonly string $sourceName = '', public readonly string $reference = '', ?Throwable $previous = null)`
 
-## core · `Alama\Arazzo\Spec`
+### `UnsupportedSourceVersionException` class
+- `public static function forVersion(string $version, string $sourceName): self`
+
+## core · `Alama\Arazzo\Contracts\Spec`
 
 ### `ActionKind` enum
 - Cases: `End`, `Goto`, `Invoke`, `Retry`
@@ -515,9 +480,8 @@ file on a commit is a public API change — review it deliberately.
 ### `CriterionType` enum
 - Cases: `JsonPath`, `Regex`, `Simple`, `XPath`
 
-### `Expression` class
-- `public function __construct(public string $raw)`
-- `public function astOrError(): ExpressionAst|ExpressionSyntaxException`
+### `ExecutionStatus` enum
+- Cases: `Failed`, `Running`, `Succeeded`
 
 ### `ExpressionType` enum
 - Cases: `JsonPath`, `JsonPointer`, `XPath`
@@ -548,6 +512,10 @@ file on a commit is a public API change — review it deliberately.
 - Cases: `V1_0`, `V1_1`
 - `public static function fromRaw(string $raw): self`
 
+### `StepExecutionOutcome` class
+- `public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = [], ?string $rawBody = null, ?string $contentType = null, ?string $failureCategory = null): self`
+- `public static function suspended(): self`
+
 ### `StepStatus` enum
 - Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
 
@@ -566,15 +534,26 @@ file on a commit is a public API change — review it deliberately.
 ### `SuccessGotoAction` class
 - `public function __construct(string $name, public ?string $stepId, public ?string $workflowId, array $criteria, public array $parameters = [])`
 
-## core · `Alama\Arazzo\State`
+### `WorkflowContextInterface` interface
+- `public function getComponents(): array;`
+- `public function getInputs(): array;`
+- `public function getStepStatus(string $stepId): ?StepStatus;`
+- `public function getSteps(): array;`
+- `public function getWorkflowId(): ?string;`
+- `public function getWorkflows(): array;`
+
+## core · `Alama\Arazzo\Runner\State`
 
 ### `Budget` class
-- `public function __construct(public readonly int $maxSteps, public readonly int $stepsSpent, public readonly int $maxWorkflowDepth, public readonly array $workflowCallStack)`
+- `public function __construct(public int $maxSteps, public int $stepsSpent, public int $maxWorkflowDepth, public array $workflowCallStack)`
 - `public function canEnterWorkflow(): bool`
 - `public function currentDepth(): int`
 
+### `DefinitionRegistryInterface` interface
+- `public function get(string $definitionId): ?ArazzoDocument;`
+
 ### `ErrorEntry` class
-- `public function __construct(public readonly string $type, public readonly string $stepId, public readonly int $attempts, public readonly string $message = '', public readonly ?\DateTimeImmutable $timestamp = null)`
+- `public function __construct(public string $type, public string $stepId, public int $attempts, public string $message = '', public ?\DateTimeImmutable $timestamp = null)`
 - `public function getTimestamp(): \DateTimeImmutable`
 - `public function toArray(): array`
 
@@ -610,6 +589,10 @@ file on a commit is a public API change — review it deliberately.
 - `public function withWorkflow(string $workflowId): self`
 - `public static function fromWorkflowContext(WorkflowContext $context): self`
 
+### `ExecutionRegistryInterface` interface
+- `public function complete(string $executionId, ExecutionStatus $status): void;`
+- `public function start(string $executionId, string $definitionId, string $workflowId): void;`
+
 ### `ExecutionState` class
 - `public function __construct(public string $executionId, public string $definitionId, public string $workflowId, public ?string $currentStepId = null, public array $inputs = [], public array $stepAttempts = [], public array $stepResults = [], public array $dependencies = [], public array $outputs = [], public array $errors = [], public int $stepsSpent = 0, public int $maxSteps = 1000, public array $workflowCallStack = [], public int $maxWorkflowDepth = 32, public array $components = [], public string $status = 'running')`
 - `public function attemptFor(string $stepId): int`
@@ -644,16 +627,26 @@ file on a commit is a public API change — review it deliberately.
 - `public function load(string $executionId): ?array`
 - `public function save(string $executionId, array $state, ?int $ttlSeconds = null): void`
 
+### `PendingCorrelationRegistryInterface` interface
+- `public function consume(string $correlationId): void;`
+- `public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void;`
+- `public function existsForExecution(string $executionId): bool;`
+- `public function findByCorrelationId(string $correlationId): ?PendingCorrelation;`
+
+### `StateStoreInterface` interface
+- `public function load(string $executionId): ?array;`
+- `public function save(string $executionId, array $state, ?int $ttlSeconds = null): void;`
+
 ### `StepResult` class
-- `public function __construct(public readonly int $statusCode, public readonly array $request = [], public readonly array $response = [], public readonly array $outputs = [], public readonly array $inputs = [], public readonly int $attempts = 0, public readonly ?StepStatus $status = null, public readonly ?string $failureCategory = null, public readonly string $contentType = 'application/json', public readonly string $responseBody = '', public readonly string $rawBody = '', public readonly array $responseHeaders = [])`
+- `public function __construct(public int $statusCode, public array $request = [], public array $response = [], public array $outputs = [], public array $inputs = [], public int $attempts = 0, public ?StepStatus $status = null, public ?string $failureCategory = null, public string $contentType = 'application/json', public string $responseBody = '', public string $rawBody = '', public array $responseHeaders = [])`
 - `public function toArray(): array`
 - `public static function failure(int $statusCode, string $failureCategory, array $outputs, array $inputs, string $contentType = 'application/json', string $responseBody = '', string $rawBody = '', array $responseHeaders = [], array $request = [], int $attempts = 0, ): self`
 
 ### `WorkflowContext` class
-- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, private ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [])`
+- `public function __construct(private string $definitionId, private array $inputs = [], private array $steps = [], private array $components = [], private ?string $workflowId = null, ?string $executionId = null, private array $workflows = [], private int $stepsSpent = 0, /** @var list<string> */ private array $workflowCallStack = [], public ?string $parentRunId = null)`
 - `public function getComponents(): array`
 - `public function getDefinitionId(): string`
-- `public function getExecutionId(): ?string`
+- `public function getExecutionId(): string`
 - `public function getInputs(): array`
 - `public function getStepAttempts(string $stepId): int`
 - `public function getStepStatus(string $stepId): ?StepStatus`
@@ -681,7 +674,10 @@ file on a commit is a public API change — review it deliberately.
 - `public static function fromPersisted(array $persisted, string $executionId): self`
 - `public static function reconciled(self $incoming, array $persisted, string $executionId): self`
 
-## core · `Alama\Arazzo\Telemetry`
+### `WritableDefinitionRegistryInterface` interface
+- `public function register(ArazzoDocument $document): string;`
+
+## core · `Alama\Arazzo\Runner\Telemetry`
 
 ### `OtelSetup` class
 - Constants: `EXPORTER_CONSOLE`, `EXPORTER_FILE`, `EXPORTER_MEMORY`, `EXPORTER_NONE`, `EXPORTER_OTLP`
@@ -698,7 +694,7 @@ file on a commit is a public API change — review it deliberately.
 - `public function extract(array $carrier): ContextInterface`
 - `public static function traceparentOf(array $carrier): ?string`
 
-## core · `Alama\Arazzo\Validator`
+## core · `Alama\Arazzo\Document\Validator`
 
 ### `ActionGotoTargetResolvesRule` class
 - `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
@@ -910,7 +906,7 @@ file on a commit is a public API change — review it deliberately.
 - `public function isValid(): bool`
 
 ### `Validator` class
-- `public function __construct(private readonly RuleSet $rules)`
+- `public function __construct(private RuleSet $rules)`
 
 ### `Warning` class
 - `public function __construct(public string $code, public string $message, public string $path, public ?int $line = null, public Severity $severity = Severity::Warning)`
@@ -939,12 +935,79 @@ file on a commit is a public API change — review it deliberately.
 - `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
 - `public function code(): string`
 
+## core · `Alama\Arazzo\Xpath\Xpath`
+
+### `DomXpathEvaluator` class
+- `public function query(mixed $rootValue, string $selector, string $version): mixed`
+- `public function supportedVersions(): array`
+
+### `XpathEvaluator` interface
+- `public function query(mixed $rootValue, string $selector, string $version): mixed;`
+- `public function supportedVersions(): array;`
+
+## core · `Alama\Arazzo`
+
+### `Document` class
+- `public function __construct(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null)`
+- `public function load(string $path): ArazzoDocument`
+- `public function parse(RawDocument $raw): ArazzoDocument`
+- `public function preflight(ArazzoDocument $document): ValidationResult`
+- `public function validate(ArazzoDocument $document): ValidationResult`
+
+### `DocumentInterface` interface
+- `public function load(string $path): ArazzoDocument;`
+- `public function parse(RawDocument $raw): ArazzoDocument;`
+- `public function preflight(ArazzoDocument $document): ValidationResult;`
+- `public function validate(ArazzoDocument $document): ValidationResult;`
+
+### `ExpressionEngine` class
+- `public function __construct(private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator())`
+
+### `ExpressionEngineInterface` interface
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+
+### `ExpressionEvaluator` class
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
+
+### `JsonPathEvaluator` class
+- `public static function evaluate(string $expression, array|object $data): mixed`
+- `public static function normalizeFilters(string $expression): string`
+
+### `JsonPointer` class
+- `public static function resolve(array $data, ?string $pointer): mixed`
+
+### `Lexer` class
+- `public function tokenize(string $raw): array`
+
+### `Parser` class
+- `public function __construct(private readonly Lexer $lexer = new Lexer())`
+- `public function parseOrError(string $raw): ExpressionAst|ExpressionSyntaxException`
+
+### `RunnerFacade` class
+- `public function __construct(?ClientInterface $httpClient = null, private readonly ?PreflightValidator $preflight = null)`
+- `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
+
+### `RunnerFacadeInterface` interface
+- `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
+
+### `SelectorEvaluator` class
+- `public function __construct(private XpathEvaluator $xpath, private ExpressionEvaluator $expressions)`
+
+### `StringInterpolator` class
+- `public function __construct(private ExpressionResolverInterface $resolver)`
+
+### `SymbolTable` class
+- `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
+
 ## laravel · `Alama\Arazzo\Laravel\Bindings`
 
 ### `EventBindings` class
 - `public static function register(Container $app): void`
 
 ### `ExecutionBindings` class
+- `public static function register(Container $app): void`
+
+### `FacadeBindings` class
 - `public static function register(Container $app): void`
 
 ### `GeneratorBindings` class

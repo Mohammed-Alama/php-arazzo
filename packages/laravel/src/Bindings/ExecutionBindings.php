@@ -4,39 +4,39 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Contracts\DefinitionRegistryInterface;
-use Alama\Arazzo\Contracts\EventLedgerInterface;
-use Alama\Arazzo\Contracts\ExecutionRegistryInterface;
-use Alama\Arazzo\Contracts\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\HttpClientInterface;
-use Alama\Arazzo\Contracts\LockManagerInterface;
-use Alama\Arazzo\Contracts\OpenApiExecutorInterface;
-use Alama\Arazzo\Contracts\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Contracts\QueueDriverInterface;
-use Alama\Arazzo\Contracts\StateStoreInterface;
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\IdempotencyKeyInjector;
-use Alama\Arazzo\Execution\RunControlFlow;
-use Alama\Arazzo\Execution\RunPersistence;
-use Alama\Arazzo\Execution\StepExecutionWorker;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Execution\SubWorkflowInvoker;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
-use Alama\Arazzo\Protocol\AsyncApiStepExecutor;
-use Alama\Arazzo\Protocol\HttpStepExecutor;
-use Alama\Arazzo\Protocol\SubWorkflowStepExecutor;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Validator\PreflightValidator;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
+use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
+use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor;
+use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
@@ -52,11 +52,11 @@ final class ExecutionBindings
             $evaluator = new ExpressionEvaluator();
             $operationResolver = $app->make(OpenApiOperationResolver::class);
 
-            return new ArazzoExpressionResolver(
+            return new ExpressionResolver(
                 $evaluator,
-                new ArazzoOutputExtractor($operationResolver, $evaluator),
-                new ArazzoCriteriaEvaluator($evaluator),
-                new ArazzoSchemaValidator($operationResolver),
+                new StepOutputExtractor($operationResolver, $evaluator),
+                new CriteriaEvaluator($evaluator),
+                new ResponseSchemaValidator($operationResolver),
             );
         });
 

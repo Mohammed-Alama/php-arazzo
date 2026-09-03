@@ -14,6 +14,7 @@
 
 declare(strict_types=1);
 
+require_once __DIR__.'/../packages/contracts/tests/Pest.php';
 require_once __DIR__.'/../packages/core/tests/Pest.php';
 require_once __DIR__.'/../packages/laravel/tests/Pest.php';
 

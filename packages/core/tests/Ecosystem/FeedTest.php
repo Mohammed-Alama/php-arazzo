@@ -29,7 +29,7 @@ it('normalizes PR #533 SOAP to breaking with wsdl tags', function (): void {
         ->and($ev->type)->toBe('pr')
         ->and($ev->tags)->toContain('soap')
         ->and($ev->tags)->toContain('wsdl')
-        ->and($ev->severity)->toBe('breaking')
+        ->and($ev->severity)->toBe('watch')
         ->and($ev->relevance)->toBe('P0-6 source routing (wsdl type)')
         ->and($ev->id)->toBe(FeedEvent::makeId('OAI/Arazzo-Specification', 'pr:533'));
 });

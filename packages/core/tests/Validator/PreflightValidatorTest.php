@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\Validator\Enum\Severity;
+use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\Format;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\RawDocument;
-use Alama\Arazzo\Spec\SourceDocument;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Runner\Events\RunStartedEvent;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
-use Alama\Arazzo\Validator\PreflightFailureException;
-use Alama\Arazzo\Validator\PreflightValidator;
-use Alama\Arazzo\Validator\Severity;
 use GuzzleHttp\Psr7\HttpFactory;
 
 const PETSHOP_OPENAPI = [
@@ -141,7 +141,7 @@ it('rejects unsupported OpenAPI versions in local sources', function (): void {
 it('guards the synchronous adapter before any side effect or event fires', function (): void {
     $events = new SimpleEventDispatcher();
     $fired = [];
-    $events->subscribe(RunStarted::class, function (object $e) use (&$fired): void {
+    $events->subscribe(RunStartedEvent::class, function (object $e) use (&$fired): void {
         $fired[] = $e::class;
     });
 
@@ -152,14 +152,14 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
         ],
     ]);
-    $resolver = new ArazzoExpressionResolver(
+    $resolver = new ExpressionResolver(
         new ExpressionEvaluator(),
-        new ArazzoOutputExtractor(
+        new StepOutputExtractor(
             (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
             new ExpressionEvaluator(),
         ),
-        new ArazzoCriteriaEvaluator(new ExpressionEvaluator()),
-        new ArazzoSchemaValidator(
+        new CriteriaEvaluator(new ExpressionEvaluator()),
+        new ResponseSchemaValidator(
             (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
         ),
     );
@@ -183,6 +183,6 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ->and($e->result->errors)->not->toBeEmpty();
     }
 
-    // Nothing ran: not even RunStarted.
+    // Nothing ran: not even RunStartedEvent.
     expect($fired)->toBe([]);
 });

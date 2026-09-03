@@ -11,7 +11,7 @@ arch('core does not depend on illuminate framework')
     ->not->toUse('Illuminate');
 
 arch('spec dtos are strictly typed and readonly')
-    ->expect('Alama\Arazzo\Spec')
+    ->expect('Alama\Arazzo\Contracts\Spec')
     ->classes()
     ->toBeReadonly()
     ->toUseStrictTypes();

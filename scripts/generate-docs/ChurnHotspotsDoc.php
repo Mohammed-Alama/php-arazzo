@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ArazzoDocs\ChurnHotspotsDoc;
 
+use const ArazzoDocs\CORE_SRC_PACKAGES;
+
 use ArazzoDocs\ScannedFile;
 
 const BANNER = <<<'MD'
@@ -116,8 +118,14 @@ function render(array $core, array $laravel, string $root): string
 /** Path touch counts per module from full git history. */
 function scanChurn(string $root): array
 {
+    $pathspecs = array_map(
+        fn (string $package): string => 'packages/'.$package.'/src',
+        CORE_SRC_PACKAGES,
+    );
+    $pathspecs[] = 'packages/laravel/src';
+
     exec(
-        'git -C '.escapeshellarg($root).' log --name-only --format=%x00 -- packages/core/src packages/laravel/src 2>/dev/null',
+        'git -C '.escapeshellarg($root).' log --name-only --format=%x00 -- '.implode(' ', $pathspecs).' 2>/dev/null',
         $output,
     );
 
@@ -141,7 +149,8 @@ function scanChurn(string $root): array
             $line = end($parts);
             $line = trim($line, '{}');
         }
-        if (!preg_match('#^packages/(core|laravel)/src/([^/]+)/#', $line, $m)) {
+        if (!preg_match('#^packages/([\w-]+)/src/([^/]+)/#', $line, $m)
+            || (!in_array($m[1], CORE_SRC_PACKAGES, true) && $m[1] !== 'laravel')) {
             continue;
         }
         $module = ($m[1] === 'laravel' ? 'Laravel/' : '').$m[2];

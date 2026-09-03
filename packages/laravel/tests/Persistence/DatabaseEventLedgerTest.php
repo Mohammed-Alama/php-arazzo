@@ -19,7 +19,7 @@ it('appends an event to the database', function (): void {
     $db->method('table')->with('arazzo_events')->willReturn($builder);
 
     $ledger = new DatabaseEventLedger($db, 'arazzo_events');
-    $ledger->append('exec_1', 'StepExecuted', ['stepId' => 'A']); // mock's expects($this->once()) is the assertion
+    $ledger->append('exec_1', 'StepExecutedEvent', ['stepId' => 'A']); // mock's expects($this->once()) is the assertion
 });
 
 it('swallows and logs a database failure instead of throwing', function (): void {
@@ -35,5 +35,5 @@ it('swallows and logs a database failure instead of throwing', function (): void
 
     $ledger = new DatabaseEventLedger($db, 'arazzo_events', $logger);
 
-    $ledger->append('exec_1', 'StepExecuted', ['stepId' => 'A']); // must not throw
+    $ledger->append('exec_1', 'StepExecutedEvent', ['stepId' => 'A']); // must not throw
 });

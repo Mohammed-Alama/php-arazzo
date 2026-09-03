@@ -23,36 +23,41 @@ quadrantChart
     quadrant-2 Ideal abstractions
     quadrant-3 Modular building blocks
     quadrant-4 Zone of pain
+    Ast: [0.25, 0]
     Async: [1, 0]
     Console: [1, 0]
-    Contracts: [0.292, 0.875]
+    Data: [0.6, 0]
     Dependency: [0.333, 0]
-    Evaluation: [0.455, 0.056]
-    Events: [0, 0]
+    Enum: [0, 0]
+    Evaluation: [0.545, 0.105]
+    Events: [0.167, 0.091]
     Exceptions: [0.143, 0]
-    Execution: [0.609, 0]
-    Expression: [0.462, 0.033]
+    Execution: [0.739, 0.057]
     Generator: [0.333, 0]
+    Infrastructure: [0.25, 0.25]
+    Interfaces: [0.176, 1]
     Jobs: [0.286, 0]
-    Laravel/Bindings: [0.944, 0]
-    Laravel/Http: [0.714, 0]
+    Laravel/Bindings: [0.955, 0]
+    Laravel/Http: [0.778, 0]
     Laravel/Lock: [0.5, 0]
-    Laravel/Persistence: [0.857, 0]
+    Laravel/Persistence: [0.8, 0]
     Laravel/Queue: [0.75, 0]
     Laravel/State: [0.5, 0]
     Laravel/Support: [0, 0]
     Laravel/_: [1, 0]
-    Normalizer: [0.286, 0]
-    Parser: [0.333, 0.2]
+    Normalizer: [0.333, 0.111]
+    Parser: [0.25, 0.182]
     Policy: [0.75, 0]
     Protocol: [0.9, 0]
     Renderer: [0.5, 0]
-    Resolver: [0.417, 0.231]
-    Spec: [0.056, 0]
-    State: [0.154, 0]
-    Support: [0.182, 0.167]
+    Resolver: [0.25, 0.25]
+    Spec: [0, 0.026]
+    State: [0.071, 0.357]
+    Support: [0, 0.2]
     Telemetry: [0, 0]
-    Validator: [0.6, 0.016]
+    Validator: [0.667, 0.016]
+    Xpath: [0.286, 0.5]
+    _: [0.684, 0.214]
 ```
 
 ## God classes (SRP)
@@ -62,12 +67,13 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `Parser` | 820 |
-| `ExecutionContext` | `State` | 495 |
-| `StepExecutionWorker` | `Execution` | 391 |
-| `StepOutcomeHandler` | `Execution` | 377 |
-| `WorkflowContext` | `State` | 363 |
-| `Parser` | `Expression` | 336 |
+| `ExecutionContext` | `State` | 493 |
+| `StepExecutionWorker` | `Execution` | 376 |
+| `StepOutcomeHandler` | `Execution` | 376 |
+| `WorkflowContext` | `State` | 359 |
+| `Parser` | `_` | 348 |
 | `ExecutionState` | `State` | 308 |
+| `PreflightValidator` | `Validator` | 300 |
 
 ## Fat interfaces (ISP)
 

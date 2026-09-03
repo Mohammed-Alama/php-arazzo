@@ -9,35 +9,6 @@ Node classes under `packages/core/src/Expression/Ast`, scanned live from source.
 ```mermaid
 classDiagram
     direction TB
-    class A_ComponentRef["ComponentRef"]:::node
-    class A_ExpressionAst["ExpressionAst<br/><small>abstract</small>"]:::root
-    class A_HttpMetaRef["HttpMetaRef"]:::node
-    class A_InputPart["InputPart"]:::part
-    class A_InputRef["InputRef"]:::node
-    class A_MessageRef["MessageRef"]:::node
-    class A_OutputPart["OutputPart"]:::part
-    class A_OutputRef["OutputRef"]:::node
-    class A_RequestPart["RequestPart"]:::part
-    class A_ResponsePart["ResponsePart"]:::part
-    class A_SelfRef["SelfRef"]:::node
-    class A_SourceRef["SourceRef"]:::node
-    class A_StepPart["StepPart<br/><small>abstract</small>"]:::part
-    class A_StepRef["StepRef"]:::node
-    class A_WorkflowRef["WorkflowRef"]:::node
-    A_ExpressionAst <|-- A_ComponentRef
-    A_ExpressionAst <|-- A_HttpMetaRef
-    A_StepPart <|-- A_InputPart
-    A_ExpressionAst <|-- A_InputRef
-    A_ExpressionAst <|-- A_MessageRef
-    A_StepPart <|-- A_OutputPart
-    A_ExpressionAst <|-- A_OutputRef
-    A_StepPart <|-- A_RequestPart
-    A_StepPart <|-- A_ResponsePart
-    A_ExpressionAst <|-- A_SelfRef
-    A_ExpressionAst <|-- A_SourceRef
-    A_ExpressionAst <|-- A_StepRef
-    A_ExpressionAst <|-- A_WorkflowRef
-    A_StepRef "1" o-- "1" A_StepPart : part
     classDef root fill:#f1f5f9,stroke:#64748b,color:#1a1a1a;
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef part fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;

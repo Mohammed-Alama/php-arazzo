@@ -11,53 +11,58 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `Async` | 6 | 488 | 0 | 9 | 1.00 |  |
-| `Console` | 11 | 780 | 0 | 14 | 1.00 |  |
-| `Contracts` | 24 | 488 | 17 | 7 | 0.29 |  |
-| `Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
-| `Evaluation` | 18 | 1085 | 6 | 5 | 0.45 |  |
-| `Events` | 9 | 178 | 3 | 0 | 0.00 |  |
-| `Exceptions` | 9 | 143 | 6 | 1 | 0.14 |  |
-| `Execution` | 33 | 3469 | 9 | 14 | 0.61 |  |
-| `Expression` | 30 | 1316 | 7 | 6 | 0.46 |  |
-| `Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
-| `Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
-| `Laravel:Bindings` | 6 | 445 | 1 | 17 | 0.94 |  |
+| `Ast\Ast` | 15 | 179 | 3 | 1 | 0.25 |  |
+| `Runner\Async` | 6 | 488 | 0 | 9 | 1.00 |  |
+| `Cli\Console` | 11 | 780 | 0 | 15 | 1.00 |  |
+| `Data\Data` | 4 | 90 | 2 | 3 | 0.60 |  |
+| `Contracts\Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
+| `Enum\Enum` | 1 | 16 | 2 | 0 | 0.00 |  |
+| `Expression\Evaluation` | 19 | 1140 | 5 | 6 | 0.55 |  |
+| `Runner\Events` | 11 | 284 | 5 | 1 | 0.17 |  |
+| `Exceptions\Exceptions` | 3 | 80 | 6 | 1 | 0.14 |  |
+| `Runner\Execution` | 35 | 3407 | 6 | 17 | 0.74 |  |
+| `Cli\Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
+| `Runner\Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
+| `Interfaces\Interfaces` | 11 | 172 | 14 | 3 | 0.18 |  |
+| `Runner\Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
+| `Laravel:Bindings` | 7 | 469 | 1 | 21 | 0.95 |  |
 | `Laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
-| `Laravel:Http` | 3 | 158 | 2 | 5 | 0.71 |  |
+| `Laravel:Http` | 3 | 158 | 2 | 7 | 0.78 |  |
 | `Laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
-| `Laravel:Persistence` | 4 | 248 | 1 | 6 | 0.86 |  |
+| `Laravel:Persistence` | 4 | 248 | 1 | 4 | 0.80 |  |
 | `Laravel:Queue` | 3 | 97 | 1 | 3 | 0.75 |  |
 | `Laravel:State` | 1 | 37 | 1 | 1 | 0.50 |  |
 | `Laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
-| `(laravel root)` | 1 | 85 | 0 | 2 | 1.00 |  |
-| `Normalizer` | 5 | 308 | 5 | 2 | 0.29 |  |
-| `Parser` | 10 | 1068 | 4 | 2 | 0.33 |  |
-| `Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
-| `Protocol` | 5 | 552 | 1 | 9 | 0.90 |  |
-| `Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
-| `Resolver` | 13 | 536 | 7 | 5 | 0.42 |  |
-| `Spec` | 33 | 688 | 17 | 1 | 0.06 |  |
-| `State` | 9 | 1498 | 11 | 2 | 0.15 |  |
-| `Support` | 6 | 257 | 9 | 2 | 0.18 |  |
-| `Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `Validator` | 62 | 3014 | 4 | 6 | 0.60 |  |
+| `(laravel root)` | 1 | 87 | 0 | 2 | 1.00 |  |
+| `Document\Normalizer` | 9 | 579 | 6 | 3 | 0.33 |  |
+| `Document\Parser` | 11 | 1085 | 6 | 2 | 0.25 |  |
+| `Runner\Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
+| `Runner\Protocol` | 5 | 539 | 1 | 9 | 0.90 |  |
+| `Cli\Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
+| `Document\Resolver` | 12 | 358 | 6 | 2 | 0.25 |  |
+| `Contracts\Spec` | 38 | 785 | 21 | 0 | 0.00 |  |
+| `Runner\State` | 14 | 1572 | 13 | 1 | 0.07 |  |
+| `Contracts\Support` | 5 | 166 | 9 | 0 | 0.00 |  |
+| `Runner\Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
+| `Document\Validator` | 62 | 3042 | 5 | 10 | 0.67 |  |
+| `Xpath\Xpath` | 2 | 101 | 5 | 2 | 0.29 |  |
+| `(core root)` | 14 | 1280 | 6 | 13 | 0.68 |  |
 
-Total cross-module edges: **800**
+Total cross-module edges: **887**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `Validator` → `Spec` | 88 |
-| `Validator` → `Expression` | 79 |
-| `Execution` → `Spec` | 61 |
-| `Execution` → `Contracts` | 33 |
-| `Parser` → `Spec` | 30 |
-| `Laravel:Bindings` → `Contracts` | 21 |
-| `Contracts` → `Spec` | 18 |
-| `Execution` → `Events` | 17 |
-| `Execution` → `State` | 17 |
-| `Protocol` → `Spec` | 17 |
-| `Execution` → `Expression` | 15 |
-| `Console` → `Execution` | 14 |
+| `Document\Validator` → `Contracts\Spec` | 88 |
+| `Runner\Execution` → `Contracts\Spec` | 68 |
+| `Document\Validator` → `(core root)` | 61 |
+| `Document\Parser` → `Contracts\Spec` | 30 |
+| `Runner\Execution` → `Runner\State` | 29 |
+| `(core root)` → `Ast\Ast` | 27 |
+| `Expression\Evaluation` → `Contracts\Spec` | 22 |
+| `(core root)` → `Contracts\Spec` | 21 |
+| `Runner\Execution` → `Runner\Events` | 21 |
+| `Runner\Protocol` → `Contracts\Spec` | 20 |
+| `Interfaces\Interfaces` → `Contracts\Spec` | 16 |
+| `Runner\Execution` → `Interfaces\Interfaces` | 15 |

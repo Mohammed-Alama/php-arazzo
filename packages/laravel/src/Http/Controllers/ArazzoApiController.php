@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Http\Controllers;
 
-use Alama\Arazzo\Generator\ArazzoGenerator;
-use Alama\Arazzo\Resolver\SourceResolver;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\SourceDescription;
+use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

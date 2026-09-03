@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Laravel;
 
 use Alama\Arazzo\Laravel\Bindings\EventBindings;
 use Alama\Arazzo\Laravel\Bindings\ExecutionBindings;
+use Alama\Arazzo\Laravel\Bindings\FacadeBindings;
 use Alama\Arazzo\Laravel\Bindings\GeneratorBindings;
 use Alama\Arazzo\Laravel\Bindings\HttpBindings;
 use Alama\Arazzo\Laravel\Bindings\PersistenceBindings;
@@ -61,6 +62,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
         ResolverBindings::register($this->app);
         GeneratorBindings::register($this->app);
         ExecutionBindings::register($this->app);
+        FacadeBindings::register($this->app);
     }
 
     public function packageBooted(): void

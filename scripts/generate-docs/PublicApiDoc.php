@@ -34,7 +34,10 @@ function render(array $core, array $laravel): string
             if ($entries === []) {
                 continue;
             }
-            $lines[] = sprintf('## %s · `%s`', $pkg, $module === '_' ? trim($prefix, '\\') : $prefix.$module);
+            $nsLabel = $pkg === 'core'
+                ? ($module === '_' ? 'Alama\\Arazzo' : \ArazzoDocs\moduleNamespace($module))
+                : ($module === '_' ? trim($prefix, '\\') : $prefix.$module);
+            $lines[] = sprintf('## %s · `%s`', $pkg, $nsLabel);
             $lines[] = '';
             foreach ($entries as $entry) {
                 $lines = [...$lines, ...renderEntry($entry)];

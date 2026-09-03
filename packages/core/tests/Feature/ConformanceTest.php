@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Feature;
 
-use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Parser\Exceptions\DecodeException;
-use Alama\Arazzo\Parser\Exceptions\LoaderException;
-use Alama\Arazzo\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Parser\Loader;
-use Alama\Arazzo\Parser\Parser;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Exceptions\DecodeException;
+use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
+use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
+use Alama\Arazzo\Document\Parser\Loader;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;

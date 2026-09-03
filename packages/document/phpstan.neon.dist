@@ -1,0 +1,13 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+    scanDirectories:
+        - ../contracts/src
+        - ../expression/src
+    reportUnmatchedIgnoredErrors: false

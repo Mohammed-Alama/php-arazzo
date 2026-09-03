@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ArazzoDocs\LayeringDoc;
 
+use const ArazzoDocs\PACKAGE_LAYER_ORDER;
+
 use ArazzoDocs\NamespaceGraphDoc;
 use ArazzoDocs\ScannedFile;
 
@@ -13,46 +15,20 @@ const BANNER = <<<'MD'
 
 # Generated: Layering Map
 
-The intended architecture as a strict layer order (bottom = depended upon,
-top = depends). Edges that point **upward** violate the layering and are drawn
-red — any red edge in this diagram is a design regression to fix or an order
-to consciously revise in `LAYER_ORDER` below.
+The real architecture is six composer packages, not one monolith with many
+namespaces: `contracts <- expression <- document <- runner <- cli <- laravel`,
+read directly from each package's `composer.json` `require`. A package may
+only depend on packages strictly below it in that chain. Edges that point
+**upward across a package boundary** violate the layering and are drawn red —
+any red edge here is either a design regression to fix or a dependency
+direction to consciously revise (which would mean editing the actual
+`composer.json require`, since this order is derived from it, not declared
+here).
 
-Edit `scripts/generate-docs/LayeringDoc.php → LAYER_ORDER` when the intended
-architecture changes; the map stays honest because edges are always scanned
-live.
+Modules are grouped into their owning package's subgraph so the diagram shows
+package boundaries directly, not just a flat list of namespaces.
 
 MD;
-
-/**
- * Bottom-to-top. A module may only depend on modules strictly below it.
- * Laravel:* and the package roots sit on top implicitly.
- */
-const LAYER_ORDER = [
-    'Expression',
-    'Spec',
-    'Support',
-    'License',
-    'Generator',
-    'Parser',
-    'Resolver',
-    'Normalizer',
-    'Validator',
-    'Contracts',
-    'State',
-    'Dependency',
-    'Evaluation',
-    'Telemetry',
-    'Events',
-    'Exceptions',
-    'Jobs',
-    'Policy',
-    'Execution',
-    'Protocol',
-    'Async',
-    'Console',
-    'Renderer',
-];
 
 /**
  * @param  array<string, list<ScannedFile>>  $core
@@ -62,29 +38,48 @@ function render(array $core, array $laravel): string
 {
     $all = NamespaceGraphDoc\merge($core, $laravel);
 
-    $classModule = [];
+    // fqcn => package (ground truth from the scanner, not guessed from name)
+    $classPackage = [];
+    // module => package (every module belongs to exactly one package)
+    $modulePackage = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace.'\\'.$file->className] = $module;
+            $classPackage[$file->namespace.'\\'.$file->className] = $file->package;
+            $modulePackage[$module] = $file->package;
         }
     }
 
-    [$edges, $violations] = computeEdges($all, $classModule);
-    $layers = assignLayers(array_keys($all));
+    [$edges, $violations, $packageEdges, $packageViolations] = computeEdges($all, $classPackage, $modulePackage);
 
     $lines = [BANNER, '```mermaid', 'flowchart TB'];
 
-    // declare nodes grouped by layer for visual ordering
-    ksort($layers);
-    foreach ($layers as $layerIndex => $modules) {
+    // group modules by package, packages ordered bottom-to-top
+    $byPackage = [];
+    foreach ($all as $module => $files) {
+        $byPackage[$modulePackage[$module] ?? '?'][] = $module;
+    }
+    foreach (PACKAGE_LAYER_ORDER as $package) {
+        $modules = $byPackage[$package] ?? [];
+        if ($modules === []) {
+            continue;
+        }
         sort($modules);
-        $lines[] = sprintf('    subgraph L%d["layer %d"]', $layerIndex, $layerIndex);
+        $lines[] = sprintf('    subgraph PKG_%s["%s"]', nodeId($package), $package);
         foreach ($modules as $module) {
-            $style = str_starts_with($module, 'Laravel:') ? 'laravelNode' : ($module === '_' || $module === 'Laravel:_' ? 'rootNode' : 'node');
-            $label = str_starts_with($module, 'Laravel:')
-                ? substr($module, strlen('Laravel:'))
-                : ($module === '_' ? '(core root)' : ($module === 'Laravel:_' ? '(laravel root)' : $module));
-            $lines[] = sprintf('        %s["%s"]:::%s', nodeId($module), $label, $style);
+            $label = $module === '_' ? '(package root)' : $module;
+            $lines[] = sprintf('        %s["%s"]:::%s', nodeId($module), $label, $package === 'laravel' ? 'laravelNode' : 'node');
+        }
+        $lines[] = '    end';
+    }
+    // any module whose package fell outside PACKAGE_LAYER_ORDER (shouldn't happen, but stay honest)
+    foreach ($byPackage as $package => $modules) {
+        if (in_array($package, PACKAGE_LAYER_ORDER, true)) {
+            continue;
+        }
+        sort($modules);
+        $lines[] = sprintf('    subgraph PKG_%s["%s (unclassified)"]', nodeId($package === '' ? 'unknown' : $package), $package === '' ? 'unknown package' : $package);
+        foreach ($modules as $module) {
+            $lines[] = sprintf('        %s["%s"]:::rootNode', nodeId($module), $module === '_' ? '(package root)' : $module);
         }
         $lines[] = '    end';
     }
@@ -99,11 +94,48 @@ function render(array $core, array $laravel): string
     $lines[] = '    classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;';
     $lines[] = '```';
 
+    // --- package-level rollup: the primary answer to "is this layered?" ---
+    $lines[] = '';
+    $lines[] = '## Package boundaries';
+    $lines[] = '';
+    if ($packageViolations === []) {
+        $lines[] = '**No package-level layering violations.** Every cross-package `use` points downward through `contracts -> expression -> document -> runner -> cli -> laravel`.';
+    } else {
+        $lines[] = sprintf('**%d package boundary violation(s):**', count($packageViolations));
+        $lines[] = '';
+        $lines[] = '| Package | ↑ depends on package | Refs | Modules involved |';
+        $lines[] = '|---|---|---:|---|';
+        usort($packageViolations, fn (array $a, array $b): int => $b[2] <=> $a[2] ?: strcmp($a[0], $b[0]));
+        foreach ($packageViolations as [$from, $to, $weight, $moduleRefs]) {
+            $moduleCells = implode(', ', array_map(
+                fn (string $pair): string => '`'.$pair.'`',
+                array_slice($moduleRefs, 0, 6),
+            )).(count($moduleRefs) > 6 ? sprintf(' + %d more', count($moduleRefs) - 6) : '');
+            $lines[] = sprintf('| `%s` | `%s` | %d | %s |', $from, $to, $weight, $moduleCells);
+        }
+    }
+
+    $lines[] = '';
+    $lines[] = '### All package edges (reference counts)';
+    $lines[] = '';
+    $lines[] = '| From package | To package | Refs |';
+    $lines[] = '|---|---|---:|';
+    ksort($packageEdges);
+    foreach ($packageEdges as $from => $targets) {
+        ksort($targets);
+        foreach ($targets as $to => $weight) {
+            $lines[] = sprintf('| `%s` | `%s` | %d |', $from, $to, $weight);
+        }
+    }
+
+    // --- module-level detail, kept for intra-investigation ---
+    $lines[] = '';
+    $lines[] = '## Module-level detail';
     $lines[] = '';
     if ($violations === []) {
-        $lines[] = '**No layering violations.** All cross-module dependencies point downward.';
+        $lines[] = '**No module-level layering violations.**';
     } else {
-        $lines[] = sprintf('**%d violation(s) found:**', count($violations));
+        $lines[] = sprintf('**%d module-level violation(s) found:**', count($violations));
         $lines[] = '';
         $lines[] = '| From | ↑ depends on | Weight |';
         $lines[] = '|---|---|---:|';
@@ -118,16 +150,22 @@ function render(array $core, array $laravel): string
 
 /**
  * @param  array<string, list<ScannedFile>>  $all
- * @param  array<string, string>  $classModule
- * @return array{0: list<array{string, string, bool}>, 1: list<array{string, string, int}>}
+ * @param  array<string, string>  $classPackage
+ * @param  array<string, string>  $modulePackage
+ * @return array{
+ *     0: list<array{string, string, bool}>,
+ *     1: list<array{string, string, int}>,
+ *     2: array<string, array<string, int>>,
+ *     3: list<array{string, string, int, list<string>}>
+ * }
  */
-function computeEdges(array $all, array $classModule): array
+function computeEdges(array $all, array $classPackage, array $modulePackage): array
 {
     $weights = [];
     foreach ($all as $module => $files) {
         foreach ($files as $file) {
             foreach ($file->uses as $use) {
-                $target = $classModule[$use] ?? null;
+                $target = classModuleOf($use, $all);
                 if ($target === null || $target === $module) {
                     continue;
                 }
@@ -138,61 +176,73 @@ function computeEdges(array $all, array $classModule): array
 
     $edges = [];
     $violations = [];
+    /** @var array<string, array<string, int>> $packageEdges */
+    $packageEdges = [];
+    /** @var array<string, array<string, array<string, true>>> $packageModulePairs */
+    $packageModulePairs = [];
     foreach ($weights as $from => $targets) {
         ksort($targets);
+        $fromPackage = $modulePackage[$from] ?? '';
         foreach ($targets as $to => $weight) {
-            // target ranked HIGHER than source == upward edge == violation
-            $violation = layerRank($to) > layerRank($from);
+            $toPackage = $modulePackage[$to] ?? '';
+
+            $violation = packageRank($toPackage) > packageRank($fromPackage);
             $edges[] = [$from, $to, $violation];
             if ($violation) {
                 $violations[] = [$from, $to, $weight];
+            }
+
+            if ($toPackage !== $fromPackage) {
+                $packageEdges[$fromPackage][$toPackage] = ($packageEdges[$fromPackage][$toPackage] ?? 0) + $weight;
+                $packageModulePairs[$fromPackage][$toPackage][labelOf($from).' -> '.labelOf($to)] = true;
             }
         }
     }
     usort($edges, fn (array $a, array $b): int => strcmp($a[0].$a[1], $b[0].$b[1]));
 
-    return [$edges, $violations];
-}
-
-/** Lower rank = lower layer. Unknown/unplaced modules rank top. */
-function layerRank(string $module): int
-{
-    $bare = str_starts_with($module, 'Laravel:')
-        ? substr($module, strlen('Laravel:'))
-        : $module;
-
-    $index = array_search($bare, LAYER_ORDER, true);
-    if ($index !== false) {
-        return (int) $index;
-    }
-    if (str_starts_with($module, 'Laravel:')) {
-        return count(LAYER_ORDER) + 1;
+    $packageViolations = [];
+    foreach ($packageEdges as $from => $targets) {
+        foreach ($targets as $to => $weight) {
+            if (packageRank($to) > packageRank($from)) {
+                $packageViolations[] = [$from, $to, $weight, array_keys($packageModulePairs[$from][$to] ?? [])];
+            }
+        }
     }
 
-    return count(LAYER_ORDER) + 2; // package roots on very top
+    return [$edges, $violations, $packageEdges, $packageViolations];
 }
 
 /**
- * @param  list<string>  $modules
- * @return array<int, list<string>> rank => modules
+ * @param  array<string, list<ScannedFile>>  $all
  */
-function assignLayers(array $modules): array
+function classModuleOf(string $fqcn, array $all): ?string
 {
-    $layers = [];
-    foreach ($modules as $module) {
-        $layers[layerRank($module)][] = $module;
+    static $index = null;
+    if ($index === null) {
+        $index = [];
+        foreach ($all as $module => $files) {
+            foreach ($files as $file) {
+                $index[$file->namespace.'\\'.$file->className] = $module;
+            }
+        }
     }
-    ksort($layers);
 
-    return $layers;
+    return $index[$fqcn] ?? null;
+}
+
+/** Lower rank = lower layer, per the real composer require chain. Unknown packages rank top. */
+function packageRank(string $package): int
+{
+    $index = array_search($package, PACKAGE_LAYER_ORDER, true);
+
+    return $index !== false ? (int) $index : count(PACKAGE_LAYER_ORDER) + 1;
 }
 
 function labelOf(string $module): string
 {
     return match ($module) {
-        '_' => '(core root)',
-        'Laravel:_' => '(laravel root)',
-        default => $module,
+        '_' => '(package root)',
+        default => str_starts_with($module, 'Laravel:') ? substr($module, strlen('Laravel:')) : $module,
     };
 }
 

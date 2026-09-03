@@ -1,0 +1,35 @@
+arazzo: "1.0.0"
+info:
+  title: Render demo
+  version: "1.0"
+sourceDescriptions:
+  - name: api
+    url: https://api.test/openapi.json
+    type: openapi
+workflows:
+  - workflowId: flow
+    steps:
+      - stepId: fetch
+        operationPath: "{$sourceDescriptions.api.url}#/paths/~1items/get"
+        successCriteria:
+          - condition: "${response.statusCode} == 200"
+        onFailure:
+          - type: retry
+            name: try-again
+            retryAfter: 1
+            retryLimit: 3
+        outputs:
+          item: "$response.body#/item"
+      - stepId: submit
+        operationId: submitItem
+        onSuccess:
+          - type: end
+            name: done
+      - stepId: broken
+        operationId: breakThing
+        onFailure:
+          - type: goto
+            name: recover
+            stepId: submit
+    outputs:
+      finalItem: "$steps.fetch.outputs.item"

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\ExecutionStatus;
-use Alama\Arazzo\State\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Tests\Support\FakeHttpClient;
 use Alama\Arazzo\Tests\Support\FakeLockManager;
 use Alama\Arazzo\Tests\Support\InMemoryPendingCorrelations;

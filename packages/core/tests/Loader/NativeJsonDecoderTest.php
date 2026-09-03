@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Loader;
 
-use Alama\Arazzo\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Parser\Exceptions\DecodeException;
+use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Document\Parser\Exceptions\DecodeException;
 
 it('decodes valid JSON', function (): void {
     expect((new NativeJsonDecoder())->decode('{"a":1}'))->toBe(['a' => 1]);

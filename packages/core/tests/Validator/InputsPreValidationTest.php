@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Console\DocumentLoader;
-use Alama\Arazzo\Evaluation\ArazzoCriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ArazzoExpressionResolver;
-use Alama\Arazzo\Events\RunStarted;
-use Alama\Arazzo\Execution\ArazzoOutputExtractor;
-use Alama\Arazzo\Execution\ArazzoSchemaValidator;
-use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Execution\OpenApiDocumentLoader;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
+use Alama\Arazzo\Cli\Console\DocumentLoader;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Resolver\OpenApiOperationResolver;
-use Alama\Arazzo\Resolver\SourceRegistry;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Runner\Events\RunStartedEvent;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
-use Alama\Arazzo\Validator\PreflightFailureException;
-use Alama\Arazzo\Validator\PreflightValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 
 const INPUTS_SCHEMA_DOC = __DIR__.'/../fixtures/inputs-schema/workflow.arazzo.yaml';
@@ -62,7 +62,7 @@ it('treats documents without an inputs schema as unconstrained', function (): vo
 it('blocks executor runs on invalid inputs before any event fires', function (): void {
     $events = new SimpleEventDispatcher();
     $fired = [];
-    $events->subscribe(RunStarted::class, function (object $e) use (&$fired): void {
+    $events->subscribe(RunStartedEvent::class, function (object $e) use (&$fired): void {
         $fired[] = $e::class;
     });
 
@@ -76,11 +76,11 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
         new OpenApi30Normalizer(),
         new OpenApi31Normalizer(),
     );
-    $resolver = new ArazzoExpressionResolver(
+    $resolver = new ExpressionResolver(
         $evaluator,
-        new ArazzoOutputExtractor($operationResolver, $evaluator),
-        new ArazzoCriteriaEvaluator($evaluator),
-        new ArazzoSchemaValidator($operationResolver),
+        new StepOutputExtractor($operationResolver, $evaluator),
+        new CriteriaEvaluator($evaluator),
+        new ResponseSchemaValidator($operationResolver),
     );
 
     $executor = new WorkflowExecutor(
@@ -104,7 +104,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
         $this->fail('expected PreflightFailureException');
     } catch (PreflightFailureException $e) {
         expect($e->result->errors[0]->code)->toBe('preflight.inputs_schema')
-            ->and($fired)->toBe([]); // nothing executed, not even RunStarted
+            ->and($fired)->toBe([]); // nothing executed, not even RunStartedEvent
     }
 });
 

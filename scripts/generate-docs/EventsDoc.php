@@ -72,6 +72,17 @@ function render(array $core, array $laravel): string
                         $event = $events[$aliasToEvent[$constructed]];
                     }
                     if ($event === null) {
+                        // try matching by short name (basename of FQCN)
+                        $shortConstructed = basename($constructed);
+                        $event = null;
+                        foreach ($events as $fqcn => $eventData) {
+                            if (basename($fqcn) === $shortConstructed) {
+                                $event = [$fqcn, $eventData[1]];
+                                break;
+                            }
+                        }
+                    }
+                    if ($event === null) {
                         continue;
                     }
                     $eventName = basename(str_replace('\\', '/', $event[0]));
@@ -112,10 +123,11 @@ function render(array $core, array $laravel): string
     $lines[] = '| Event | Dispatched from |';
     $lines[] = '|---|---|';
 
-    foreach ($events as $name => [$fqcn, $pkg]) {
-        $sites = $dispatches[$name] ?? [];
+    foreach ($events as $fqcn => [$eventFqcn, $pkg]) {
+        $shortName = basename($fqcn);
+        $sites = $dispatches[$shortName] ?? [];
         if ($sites === []) {
-            $lines[] = "| **{$name}** | _(no dispatch site found)_ |";
+            $lines[] = "| **{$shortName}** | _(no dispatch site found)_ |";
 
             continue;
         }
@@ -123,7 +135,7 @@ function render(array $core, array $laravel): string
         foreach ($sites as $siteFqcn => $_) {
             $cells[] = '`'.basename(str_replace('\\', '/', $siteFqcn)).'`';
         }
-        $lines[] = "| **{$name}** | ".implode(', ', array_unique($cells)).' |';
+        $lines[] = "| **{$shortName}** | ".implode(', ', array_unique($cells)).' |';
     }
 
     return implode("\n", $lines)."\n";

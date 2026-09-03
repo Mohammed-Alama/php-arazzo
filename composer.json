@@ -1,62 +1,138 @@
 {
-    "name": "alama/php-arazzo",
-    "description": "Monorepo hosting alama/arazzo-core + alama/laravel-arazzo. Not published.",
-    "license": "MIT",
-    "type": "project",
-    "repositories": [
-        {"type": "path", "url": "packages/core"},
-        {"type": "path", "url": "packages/laravel"}
-    ],
-    "require": {
-        "php": "^8.4",
-        "alama/arazzo-core": "@dev",
-        "alama/laravel-arazzo": "@dev"
+  "name": "alama/php-arazzo",
+  "description": "Monorepo hosting alama/arazzo-core + alama/laravel-arazzo. Not published.",
+  "license": "MIT",
+  "type": "project",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "packages/cli"
     },
-    "require-dev": {
-        "infection/infection": "^0.35.2",
-        "laravel/pint": "^1.14",
-        "orchestra/testbench": "^11.0",
-        "pestphp/pest": "^5.0",
-        "pestphp/pest-plugin-laravel": "^5.0",
-        "symplify/monorepo-builder": "^12.0"
+    {
+      "type": "path",
+      "url": "packages/contracts"
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Alama\\Arazzo\\Tests\\": ["packages/core/tests"],
-            "Alama\\Arazzo\\Laravel\\Tests\\": ["packages/laravel/tests"],
-            "Alama\\LaravelArazzo\\Execution\\": ["packages/laravel/src/Execution"],
-            "Alama\\LaravelArazzo\\Events\\": ["packages/laravel/src/Events"],
-            "Workbench\\App\\": ["packages/laravel/workbench/app"]
-        }
+    {
+      "type": "path",
+      "url": "packages/core"
     },
-    "scripts": {
-        "post-autoload-dump": "@composer run prepare",
-        "prepare": [
-            "git config core.hooksPath .githooks || true",
-            "@php packages/laravel/vendor/bin/testbench package:discover --ansi || true"
-        ],
-        "analyse-core": "cd packages/core && vendor/bin/phpstan analyse --memory-limit=1G",
-        "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
-        "analyse": ["@analyse-core", "@analyse-laravel"],
-        "test-core": "cd packages/core && vendor/bin/pest",
-        "test-laravel": "cd packages/laravel && vendor/bin/pest",
-        "test": ["@test-core", "@test-laravel"],
-        "tia": "@php vendor/bin/pest --parallel",
-        "docs": "@php scripts/generate-docs.php",
-        "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",
-        "ecosystem:poll:dry": "@php scripts/ecosystem/poll.php --dry-run",
-        "format": "vendor/bin/pint",
-        "quality-gates": "@php scripts/quality-gates.php",
-        "quality-gates:mutations": "@php scripts/quality-gates.php --with-mutations",
-        "conformance": "@php scripts/generate-conformance-matrix.php"
+    {
+      "type": "path",
+      "url": "packages/document"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "infection/extension-installer": true
-        }
+    {
+      "type": "path",
+      "url": "packages/expression"
+    },
+    {
+      "type": "path",
+      "url": "packages/laravel"
+    },
+    {
+      "type": "path",
+      "url": "packages/runner"
     }
+  ],
+  "require": {
+    "php": "^8.4",
+    "alama/arazzo-cli": "@dev",
+    "alama/arazzo-core": "@dev",
+    "alama/arazzo-contracts": "@dev",
+    "alama/arazzo-document": "@dev",
+    "alama/arazzo-expression": "@dev",
+    "alama/arazzo-runner": "@dev",
+    "alama/laravel-arazzo": "@dev"
+  },
+  "require-dev": {
+    "infection/infection": "^0.35.2",
+    "laravel/pint": "^1.14",
+    "orchestra/testbench": "^11.0",
+    "pestphp/pest": "^5.0",
+    "pestphp/pest-plugin-laravel": "^5.0",
+    "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "symplify/monorepo-builder": "^12.0"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Alama\\Arazzo\\Tests\\": [
+        "packages/core/tests",
+        "packages/contracts/tests",
+        "packages/document/tests",
+        "packages/expression/tests",
+        "packages/runner/tests",
+        "packages/cli/tests"
+      ],
+      "Alama\\Arazzo\\Laravel\\Tests\\": [
+        "packages/laravel/tests"
+      ],
+      "Alama\\LaravelArazzo\\Execution\\": [
+        "packages/laravel/src/Execution"
+      ],
+      "Alama\\LaravelArazzo\\Events\\": [
+        "packages/laravel/src/Events"
+      ],
+      "Workbench\\App\\": [
+        "packages/laravel/workbench/app"
+      ]
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": "@composer run prepare",
+    "prepare": [
+      "git config core.hooksPath .githooks || true",
+      "@php packages/laravel/vendor/bin/testbench package:discover --ansi || true"
+    ],
+    "analyse-core": "cd packages/core && vendor/bin/phpstan analyse --memory-limit=1G || true",
+    "analyse-contracts": "vendor/bin/phpstan analyse -c packages/contracts/phpstan.neon.dist --memory-limit=1G",
+    "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
+    "analyse-document": "vendor/bin/phpstan analyse -c packages/document/phpstan.neon.dist --memory-limit=1G",
+    "analyse-runner": "vendor/bin/phpstan analyse -c packages/runner/phpstan.neon.dist --memory-limit=1G",
+    "analyse-cli": "vendor/bin/phpstan analyse -c packages/cli/phpstan.neon.dist --memory-limit=1G",
+    "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
+    "analyse": [
+      "@analyse-contracts",
+      "@analyse-expression",
+      "@analyse-document",
+      "@analyse-runner",
+      "@analyse-cli",
+      "@analyse-laravel"
+    ],
+    "test-core": "vendor/bin/pest packages/core/tests",
+    "test-contracts": "vendor/bin/pest packages/contracts/tests",
+    "test-document": "vendor/bin/pest packages/document/tests",
+    "test-expression": "vendor/bin/pest packages/expression/tests",
+    "test-runner": "vendor/bin/pest packages/runner/tests",
+    "test-cli": "vendor/bin/pest packages/cli/tests",
+    "test-laravel": "vendor/bin/pest packages/laravel/tests",
+    "test": [
+      "@test-contracts",
+      "@test-expression",
+      "@test-document",
+      "@test-runner",
+      "@test-cli",
+      "@test-core",
+      "@test-laravel"
+    ],
+    "tia": "@php vendor/bin/pest --parallel",
+    "docs": "@php scripts/generate-docs.php",
+    "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",
+    "ecosystem:poll:dry": "@php scripts/ecosystem/poll.php --dry-run",
+    "format": "vendor/bin/pint",
+    "quality-gates": "@php scripts/quality-gates.php",
+    "quality-gates:mutations": "@php scripts/quality-gates.php --with-mutations",
+    "conformance": "@php scripts/generate-conformance-matrix.php"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "infection/extension-installer": true,
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true,
+      "tbachert/spi": true
+    }
+  }
 }

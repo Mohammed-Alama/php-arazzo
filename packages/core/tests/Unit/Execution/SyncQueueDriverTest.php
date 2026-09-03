@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Execution;
 
-use Alama\Arazzo\Execution\SyncQueueDriver;
+use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 
 it('dispatch records single job with delay', function (): void {
     $driver = new SyncQueueDriver();

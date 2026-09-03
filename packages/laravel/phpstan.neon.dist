@@ -9,3 +9,10 @@ parameters:
         - src
     excludePaths:
         - tests
+    scanDirectories:
+        - vendor/alama/arazzo-core/src
+        - vendor/alama/arazzo-contracts/src
+        - vendor/alama/arazzo-expression/src
+        - vendor/alama/arazzo-document/src
+        - vendor/alama/arazzo-runner/src
+        - vendor/alama/arazzo-cli/src
