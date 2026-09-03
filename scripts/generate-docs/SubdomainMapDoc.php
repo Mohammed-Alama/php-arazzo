@@ -52,14 +52,14 @@ const SUBDOMAINS = [
 const SUBDOMAIN_LABELS = ['core' => 'Core domain', 'supporting' => 'Supporting', 'generic' => 'Generic subdomain'];
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    // bare module => [package => LOC]
+    // package-qualified module key => ['core'|'laravel' => LOC]
     $modules = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$package, $moduleSet]) {
+    foreach ($scans as $package => $moduleSet) {
+        $bucket = $package === 'laravel' ? 'laravel' : 'core';
         foreach ($moduleSet as $module => $files) {
             if ($module === '_') {
                 continue;
@@ -68,14 +68,16 @@ function render(array $core, array $laravel): string
             foreach ($files as $file) {
                 $loc += substr_count($file->content, "\n") + 1;
             }
-            $modules[$module][$package] = ($modules[$module][$package] ?? 0) + $loc;
+            $key = \ArazzoDocs\packageKey($package, $module);
+            $modules[$key][$bucket] = ($modules[$key][$bucket] ?? 0) + $loc;
         }
     }
     ksort($modules);
 
     $grouped = ['core' => [], 'supporting' => [], 'generic' => [], 'unclassified' => []];
-    foreach ($modules as $module => $locs) {
-        $grouped[SUBDOMAINS[$module] ?? 'unclassified'][$module] = $locs;
+    foreach ($modules as $key => $locs) {
+        $bare = substr((string) strrchr($key, ':'), 1);
+        $grouped[SUBDOMAINS[$bare] ?? 'unclassified'][$key] = $locs;
     }
 
     $lines = [BANNER, '```mermaid', 'flowchart LR'];

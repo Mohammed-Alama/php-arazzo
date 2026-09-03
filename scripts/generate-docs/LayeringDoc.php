@@ -32,8 +32,10 @@ MD;
 
 /**
  * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
+ * @param  list<string>|null  $layerOrder  bottom-to-top package order; derived
+ *                                         from composer.json by the caller, PACKAGE_LAYER_ORDER fallback.
  */
-function render(array $scans): string
+function render(array $scans, ?array $layerOrder = null): string
 {
     $all = NamespaceGraphDoc\merge($scans);
 
@@ -48,7 +50,7 @@ function render(array $scans): string
         }
     }
 
-    [$edges, $violations, $packageEdges, $packageViolations] = computeEdges($all, $classPackage, $modulePackage);
+    [$edges, $violations, $packageEdges, $packageViolations] = computeEdges($all, $classPackage, $modulePackage, $layerOrder);
 
     $lines = [BANNER, '```mermaid', 'flowchart TB'];
 
@@ -57,7 +59,8 @@ function render(array $scans): string
     foreach ($all as $key => $files) {
         $byPackage[$modulePackage[$key] ?? '?'][] = $key;
     }
-    foreach (PACKAGE_LAYER_ORDER as $package) {
+    $layerOrder ??= PACKAGE_LAYER_ORDER;
+    foreach ($layerOrder as $package) {
         $keys = $byPackage[$package] ?? [];
         if ($keys === []) {
             continue;
@@ -69,9 +72,9 @@ function render(array $scans): string
         }
         $lines[] = '    end';
     }
-    // any key whose package fell outside PACKAGE_LAYER_ORDER (shouldn't happen, but stay honest)
+    // any key whose package fell outside the layer order (shouldn't happen, but stay honest)
     foreach ($byPackage as $package => $keys) {
-        if (in_array($package, PACKAGE_LAYER_ORDER, true)) {
+        if (in_array($package, $layerOrder, true)) {
             continue;
         }
         sort($keys);
@@ -157,7 +160,7 @@ function render(array $scans): string
  *     3: list<array{string, string, int, list<string>}>
  * }
  */
-function computeEdges(array $all, array $classPackage, array $modulePackage): array
+function computeEdges(array $all, array $classPackage, array $modulePackage, array $layerOrder): array
 {
     $index = [];
     foreach ($all as $key => $files) {
@@ -191,7 +194,7 @@ function computeEdges(array $all, array $classPackage, array $modulePackage): ar
         foreach ($targets as $to => $weight) {
             $toPackage = $modulePackage[$to] ?? '';
 
-            $violation = packageRank($toPackage) > packageRank($fromPackage);
+            $violation = packageRank($toPackage, $layerOrder) > packageRank($fromPackage, $layerOrder);
             $edges[] = [$from, $to, $violation];
             if ($violation) {
                 $violations[] = [$from, $to, $weight];
@@ -208,7 +211,7 @@ function computeEdges(array $all, array $classPackage, array $modulePackage): ar
     $packageViolations = [];
     foreach ($packageEdges as $from => $targets) {
         foreach ($targets as $to => $weight) {
-            if (packageRank($to) > packageRank($from)) {
+            if (packageRank($to, $layerOrder) > packageRank($from, $layerOrder)) {
                 $packageViolations[] = [$from, $to, $weight, array_keys($packageModulePairs[$from][$to] ?? [])];
             }
         }
@@ -234,11 +237,11 @@ function classModuleOf(string $fqcn, array $all): ?string
 }
 
 /** Lower rank = lower layer, per the real composer require chain. Unknown packages rank top. */
-function packageRank(string $package): int
+function packageRank(string $package, array $layerOrder): int
 {
-    $index = array_search($package, PACKAGE_LAYER_ORDER, true);
+    $index = array_search($package, $layerOrder, true);
 
-    return $index !== false ? (int) $index : count(PACKAGE_LAYER_ORDER) + 1;
+    return $index !== false ? (int) $index : count($layerOrder) + 1;
 }
 
 function labelOf(string $key): string

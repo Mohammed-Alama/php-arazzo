@@ -28,18 +28,13 @@ MD;
 const LOG_LEVELS = ['error', 'warning', 'notice', 'info', 'debug', 'critical', 'alert', 'emergency'];
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     $files = [];
-    foreach ([[...$core], [...$laravel]] as $modules) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                $files[$file->namespace.'\\'.$file->className] = $file;
-            }
-        }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        $files[$file->namespace.'\\'.$file->className] = $file;
     }
     ksort($files);
 

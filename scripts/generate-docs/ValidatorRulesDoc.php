@@ -19,12 +19,12 @@ every commit.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core): string
+function render(array $scans): string
 {
     $rules = [];
-    foreach ($core['Validator'] ?? [] as $file) {
+    foreach ($scans['document']['Validator'] ?? [] as $file) {
         if ($file->relativeDir === 'Validator/Rules' && !$file->isInterface) {
             $rules[] = $file->className;
         }

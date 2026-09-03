@@ -16,21 +16,25 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 | Package | Readonly | Mutable | Readonly share |
 |---|---:|---:|---:|
-| core | 82 | 174 | 32% |
+| contracts | 30 | 9 | 77% |
+| expression | 27 | 18 | 60% |
+| document | 8 | 80 | 9% |
+| runner | 17 | 53 | 24% |
+| cli | 0 | 14 | 0% |
 | laravel | 0 | 22 | 0% |
 
 ## Mutable clusters
 
 | Class | Package | Dir | Serialization signals |
 |---|---|---|---|
-| `ImplicitDependencies` | core | `Dependency` | `hydrate` |
-| `ExecutionContext` | core | `State/Data` | `toArray`, `hydrate` |
-| `CliRunResult` | core | `Console/Cli` | `hydrate` |
+| `ImplicitDependencies` | contracts | `Dependency` | `hydrate` |
+| `ExecutionContext` | runner | `State/Data` | `toArray`, `hydrate` |
+| `CliRunResult` | cli | `Console/Cli` | `hydrate` |
 
 ## Cross-process aggregates
 
 Mutable types that serialize themselves or are carried by queue jobs — each needs an explicit consistency story (versioning, TTLs, idempotency):
 
-- `CliRunResult` <small>core · `hydrate`</small>
-- `ImplicitDependencies` <small>core · `hydrate`</small>
-- `ExecutionContext` <small>core · `toArray`, `hydrate`</small>
+- `CliRunResult` <small>cli · `hydrate`</small>
+- `ImplicitDependencies` <small>contracts · `hydrate`</small>
+- `ExecutionContext` <small>runner · `toArray`, `hydrate`</small>

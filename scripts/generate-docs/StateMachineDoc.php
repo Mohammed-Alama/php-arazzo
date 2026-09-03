@@ -34,17 +34,11 @@ const VERB_EDGES = [
 ];
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    $flat = [];
-    foreach ([...$core, ...$laravel] as $moduleFiles) {
-        foreach ($moduleFiles as $file) {
-            $flat[] = $file;
-        }
-    }
+    $flat = \ArazzoDocs\flattenScans($scans);
 
     $enums = collectEnums($flat);
     $engine = findEngineFile($flat);

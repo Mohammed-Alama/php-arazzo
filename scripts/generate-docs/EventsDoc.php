@@ -18,77 +18,70 @@ every dispatch site found in the live tree. Regenerated before every commit.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     // collect event classes: concrete classes living in an Events/ directory
     $events = [];   // shortName => [fqcn, package]
-    foreach ([['core', $core], ['laravel', $laravel]] as [$pkg, $modules]) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                if ($file->isInterface) {
-                    continue;
-                }
-                $dir = $file->relativeDir;
-                if ($dir !== 'Events' && !str_ends_with($dir, '/Events')) {
-                    continue;
-                }
-                if (str_contains($dir, 'Dispatcher') || str_contains($file->className, 'Dispatcher')) {
-                    continue; // dispatch infrastructure, not a domain event
-                }
-                $events[$file->className] = [$file->namespace.'\\'.$file->className, $pkg];
-            }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if ($file->isInterface) {
+            continue;
         }
+        $dir = $file->relativeDir;
+        if ($dir !== 'Events' && !str_ends_with($dir, '/Events')) {
+            continue;
+        }
+        if (str_contains($dir, 'Dispatcher') || str_contains($file->className, 'Dispatcher')) {
+            continue; // dispatch infrastructure, not a domain event
+        }
+        $events[$file->className] = [$file->namespace.'\\'.$file->className, $file->package];
     }
 
     // find dispatch sites: any class that constructs an event (possibly via
     // a "use ...\StepExecuted as Foo;" alias) and dispatches somewhere
     $dispatches = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$pkg, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                if (!str_contains($file->content, 'dispatch(')) {
-                    continue;
-                }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if (!str_contains($file->content, 'dispatch(')) {
+            continue;
+        }
+        $pkg = $file->package;
+        $module = \ArazzoDocs\packageKey($file->package, \ArazzoDocs\fileModule($file));
 
-                // alias => event short name
-                $aliasToEvent = [];
-                foreach ($file->useStatements as $statement) {
-                    if (preg_match('/^([\w\\\\]+)\s+as\s+(\w+)$/', $statement, $m)) {
-                        $source = basename(str_replace('\\', '/', $m[1]));
-                        if (isset($events[$source])) {
-                            $aliasToEvent[$m[2]] = $source;
-                        }
-                    }
-                }
-
-                // every "new X(" where X resolves to an event
-                preg_match_all('/new\s+(\w+)\s*\(/', $file->content, $news);
-                foreach ($news[1] as $constructed) {
-                    $event = $events[$constructed] ?? null;
-                    if ($event === null && isset($aliasToEvent[$constructed])) {
-                        $event = $events[$aliasToEvent[$constructed]];
-                    }
-                    if ($event === null) {
-                        // try matching by short name (basename of FQCN)
-                        $shortConstructed = basename($constructed);
-                        $event = null;
-                        foreach ($events as $fqcn => $eventData) {
-                            if (basename($fqcn) === $shortConstructed) {
-                                $event = [$fqcn, $eventData[1]];
-                                break;
-                            }
-                        }
-                    }
-                    if ($event === null) {
-                        continue;
-                    }
-                    $eventName = basename(str_replace('\\', '/', $event[0]));
-                    $dispatches[$eventName][$file->namespace.'\\'.$file->className] = [$pkg, $module];
+        // alias => event short name
+        $aliasToEvent = [];
+        foreach ($file->useStatements as $statement) {
+            if (preg_match('/^([\w\\\\]+)\s+as\s+(\w+)$/', $statement, $m)) {
+                $source = basename(str_replace('\\', '/', $m[1]));
+                if (isset($events[$source])) {
+                    $aliasToEvent[$m[2]] = $source;
                 }
             }
+        }
+
+        // every "new X(" where X resolves to an event
+        preg_match_all('/new\s+(\w+)\s*\(/', $file->content, $news);
+        foreach ($news[1] as $constructed) {
+            $event = $events[$constructed] ?? null;
+            if ($event === null && isset($aliasToEvent[$constructed])) {
+                $event = $events[$aliasToEvent[$constructed]];
+            }
+            if ($event === null) {
+                // try matching by short name (basename of FQCN)
+                $shortConstructed = basename($constructed);
+                $event = null;
+                foreach ($events as $fqcn => $eventData) {
+                    if (basename($fqcn) === $shortConstructed) {
+                        $event = [$fqcn, $eventData[1]];
+                        break;
+                    }
+                }
+            }
+            if ($event === null) {
+                continue;
+            }
+            $eventName = basename(str_replace('\\', '/', $event[0]));
+            $dispatches[$eventName][$file->namespace.'\\'.$file->className] = [$pkg, $module];
         }
     }
 
@@ -97,7 +90,7 @@ function render(array $core, array $laravel): string
     $lines = [BANNER, '```mermaid', 'flowchart LR'];
 
     foreach ($events as $name => [$fqcn, $pkg]) {
-        $style = $pkg === 'core' ? 'event' : 'eventLaravel';
+        $style = $pkg === 'laravel' ? 'eventLaravel' : 'event';
         $lines[] = sprintf('    E_%s(["%s"]):::%s', $name, $name, $style);
     }
 
@@ -110,7 +103,7 @@ function render(array $core, array $laravel): string
                 '    %s["%s<br/><small>%s</small>"] -->|dispatches| E_%s',
                 $id,
                 $short,
-                $module,
+                str_ends_with($module, ':_') ? '('.strtok($module, ':').' root)' : $module,
                 $event,
             );
         }

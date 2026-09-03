@@ -8,243 +8,243 @@ from both packages. Core defines contracts; Laravel implements them.
 
 ```mermaid
 flowchart LR
-    I_AiClientInterface["AiClientInterface<br/><small>Interfaces</small>"]:::contract
-    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Interfaces</small>"]:::contract
-    I_ConditionNode["ConditionNode<br/><small>Evaluation</small>"]:::contract
-    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Evaluation</small>"]:::contract
-    I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>State</small>"]:::contract
-    I_DocumentInterface["DocumentInterface<br/><small>(root)</small>"]:::contract
-    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>Interfaces</small>"]:::contract
-    I_EventLedgerInterface["EventLedgerInterface<br/><small>Events</small>"]:::contract
-    I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>State</small>"]:::contract
-    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(root)</small>"]:::contract
-    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Interfaces</small>"]:::contract
-    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Interfaces</small>"]:::contract
-    I_HttpClientInterface["HttpClientInterface<br/><small>Infrastructure</small>"]:::contract
-    I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
-    I_LockManagerInterface["LockManagerInterface<br/><small>Interfaces</small>"]:::contract
-    I_LockStrategyInterface["LockStrategyInterface<br/><small>Interfaces</small>"]:::contract
-    I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Execution</small>"]:::contract
-    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Normalizer</small>"]:::contract
-    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Interfaces</small>"]:::contract
-    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>State</small>"]:::contract
-    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Execution</small>"]:::contract
-    I_QueueDriverInterface["QueueDriverInterface<br/><small>Interfaces</small>"]:::contract
-    I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>Interfaces</small>"]:::contract
-    I_Rule["Rule<br/><small>Validator</small>"]:::contract
-    I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(root)</small>"]:::contract
-    I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
-    I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
-    I_StateStoreInterface["StateStoreInterface<br/><small>State</small>"]:::contract
-    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Interfaces</small>"]:::contract
-    I_WorkflowContextInterface["WorkflowContextInterface<br/><small>Spec</small>"]:::contract
-    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>State</small>"]:::contract
-    I_XpathEvaluator["XpathEvaluator<br/><small>Xpath</small>"]:::contract
-    I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
-    C_core_State_WorkflowContext["WorkflowContext<br/><small>State</small>"]:::implCore
-    C_core_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
-    C_core_State_FileStateStore["FileStateStore<br/><small>State</small>"]:::implCore
-    C_core_State_FileStateStore -.->|implements| I_StateStoreInterface
-    C_core_State_InMemoryStateStore["InMemoryStateStore<br/><small>State</small>"]:::implCore
-    C_core_State_InMemoryStateStore -.->|implements| I_StateStoreInterface
-    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
-    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
-    C_core_Data_EvaluationInput["EvaluationInput<br/><small>Data</small>"]:::implCore
-    C_core_Data_EvaluationInput -.->|implements| I_EvaluationInputInterface
-    C_core_Evaluation_EvaluationContext["EvaluationContext<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
-    C_core_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
-    C_core_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
-    C_core_Evaluation_Literal["Literal<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_Literal -.->|implements| I_ConditionNode
-    C_core_Evaluation_LogicalOp["LogicalOp<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_LogicalOp -.->|implements| I_ConditionNode
-    C_core_Evaluation_Comparison["Comparison<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_Comparison -.->|implements| I_ConditionNode
-    C_core_Evaluation_UnaryNot["UnaryNot<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_UnaryNot -.->|implements| I_ConditionNode
-    C_core_Evaluation_RuntimeExpr["RuntimeExpr<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_RuntimeExpr -.->|implements| I_ConditionNode
-    C_core_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>Xpath</small>"]:::implCore
-    C_core_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
-    C_core___ExpressionEngine["ExpressionEngine<br/><small>(root)</small>"]:::implCore
-    C_core___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
-    C_core___ExpressionEvaluator["ExpressionEvaluator<br/><small>(root)</small>"]:::implCore
-    C_core___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
-    C_core___Document["Document<br/><small>(root)</small>"]:::implCore
-    C_core___Document -.->|implements| I_DocumentInterface
-    C_core___RunnerFacade["RunnerFacade<br/><small>(root)</small>"]:::implCore
-    C_core___RunnerFacade -.->|implements| I_RunnerFacadeInterface
-    C_core_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>Normalizer</small>"]:::implCore
-    C_core_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_core_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Normalizer</small>"]:::implCore
-    C_core_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_core_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>Parser</small>"]:::implCore
-    C_core_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
-    C_core_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>Parser</small>"]:::implCore
-    C_core_Parser_SymfonyYamlDecoder -.->|implements| I_YamlDecoder
-    C_core_Resolver_LocalFetcher["LocalFetcher<br/><small>Resolver</small>"]:::implCore
-    C_core_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
-    C_core_Resolver_CachedFetcher["CachedFetcher<br/><small>Resolver</small>"]:::implCore
-    C_core_Resolver_CachedFetcher -.->|implements| I_SourceFetcher
-    C_core_Resolver_HttpFetcher["HttpFetcher<br/><small>Resolver</small>"]:::implCore
-    C_core_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
-    C_core_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>Resolver</small>"]:::implCore
-    C_core_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
-    C_core_Resolver_SourceRegistry["SourceRegistry<br/><small>Resolver</small>"]:::implCore
-    C_core_Resolver_SourceRegistry -.->|implements| I_SourceResolver
-    C_core_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_OfficialSchemaRule -.->|implements| I_Rule
-    C_core_Validator_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolvesRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SubWorkflowInvokeTargetResolvesRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionUnresolvedStepRefRule["ExpressionUnresolvedStepRefRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionUnresolvedStepRefRule -.->|implements| I_Rule
-    C_core_Validator_SourceUniqueNameRule["SourceUniqueNameRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SourceUniqueNameRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionUnresolvedWorkflowRefRule["ExpressionUnresolvedWorkflowRefRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionUnresolvedWorkflowRefRule -.->|implements| I_Rule
-    C_core_Validator_AsyncApiFieldsRequire11Rule["AsyncApiFieldsRequire11Rule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_AsyncApiFieldsRequire11Rule -.->|implements| I_Rule
-    C_core_Validator_ExpressionUnresolvedSourceRefRule["ExpressionUnresolvedSourceRefRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionUnresolvedSourceRefRule -.->|implements| I_Rule
-    C_core_Validator_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShapeRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ParameterQuerystringOperationShapeRule -.->|implements| I_Rule
-    C_core_Validator_WorkflowIdPatternRule["WorkflowIdPatternRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_WorkflowIdPatternRule -.->|implements| I_Rule
-    C_core_Validator_StepOutputsUniqueRule["StepOutputsUniqueRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepOutputsUniqueRule -.->|implements| I_Rule
-    C_core_Validator_StepTimeoutRequires11Rule["StepTimeoutRequires11Rule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepTimeoutRequires11Rule -.->|implements| I_Rule
-    C_core_Validator_SelfUriSyntaxRule["SelfUriSyntaxRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SelfUriSyntaxRule -.->|implements| I_Rule
-    C_core_Validator_StepUniqueIdRule["StepUniqueIdRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepUniqueIdRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionUnresolvedInputRefRule["ExpressionUnresolvedInputRefRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionUnresolvedInputRefRule -.->|implements| I_Rule
-    C_core_Validator_StepNestedWorkflowExistsRule["StepNestedWorkflowExistsRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepNestedWorkflowExistsRule -.->|implements| I_Rule
-    C_core_Validator_ComponentsUniqueNamesRule["ComponentsUniqueNamesRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ComponentsUniqueNamesRule -.->|implements| I_Rule
-    C_core_Validator_WorkflowAtLeastOneRule["WorkflowAtLeastOneRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_WorkflowAtLeastOneRule -.->|implements| I_Rule
-    C_core_Validator_WorkflowUniqueIdRule["WorkflowUniqueIdRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_WorkflowUniqueIdRule -.->|implements| I_Rule
-    C_core_Validator_DocumentInfoRequiredRule["DocumentInfoRequiredRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_DocumentInfoRequiredRule -.->|implements| I_Rule
-    C_core_Validator_WorkflowInputsValidSchemaRule["WorkflowInputsValidSchemaRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_WorkflowInputsValidSchemaRule -.->|implements| I_Rule
-    C_core_Validator_DocUnknownFieldRule["DocUnknownFieldRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_DocUnknownFieldRule -.->|implements| I_Rule
-    C_core_Validator_StepNestedWorkflowNoCycleRule["StepNestedWorkflowNoCycleRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepNestedWorkflowNoCycleRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionJsonPointerSyntaxRule["ExpressionJsonPointerSyntaxRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionJsonPointerSyntaxRule -.->|implements| I_Rule
-    C_core_Validator_StepOperationIdSourceScopedRule["StepOperationIdSourceScopedRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepOperationIdSourceScopedRule -.->|implements| I_Rule
-    C_core_Validator_StepOperationTargetPresentRule["StepOperationTargetPresentRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepOperationTargetPresentRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionUnresolvedComponentRefRule["ExpressionUnresolvedComponentRefRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionUnresolvedComponentRefRule -.->|implements| I_Rule
-    C_core_Validator_WorkflowDependsOnNoCycleRule["WorkflowDependsOnNoCycleRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_WorkflowDependsOnNoCycleRule -.->|implements| I_Rule
-    C_core_Validator_StepRequestBodyReplacementsTargetRule["StepRequestBodyReplacementsTargetRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepRequestBodyReplacementsTargetRule -.->|implements| I_Rule
-    C_core_Validator_StepIdPatternRule["StepIdPatternRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepIdPatternRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionContextMisuseRule["ExpressionContextMisuseRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionContextMisuseRule -.->|implements| I_Rule
-    C_core_Validator_ActionReusableRefResolvesRule["ActionReusableRefResolvesRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ActionReusableRefResolvesRule -.->|implements| I_Rule
-    C_core_Validator_ActionTypeValidRule["ActionTypeValidRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ActionTypeValidRule -.->|implements| I_Rule
-    C_core_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ActionGotoTargetResolvesRule -.->|implements| I_Rule
-    C_core_Validator_ExtensionsXPrefixRule["ExtensionsXPrefixRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExtensionsXPrefixRule -.->|implements| I_Rule
-    C_core_Validator_StepParametersHaveNameRule["StepParametersHaveNameRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepParametersHaveNameRule -.->|implements| I_Rule
-    C_core_Validator_StepCriteriaTypeContextRule["StepCriteriaTypeContextRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepCriteriaTypeContextRule -.->|implements| I_Rule
-    C_core_Validator_StepParameterInValidRule["StepParameterInValidRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepParameterInValidRule -.->|implements| I_Rule
-    C_core_Validator_StepOperationPathSyntaxRule["StepOperationPathSyntaxRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepOperationPathSyntaxRule -.->|implements| I_Rule
-    C_core_Validator_SourceTypeMatchesRule["SourceTypeMatchesRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SourceTypeMatchesRule -.->|implements| I_Rule
-    C_core_Validator_WorkflowDependsOnExistsRule["WorkflowDependsOnExistsRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_WorkflowDependsOnExistsRule -.->|implements| I_Rule
-    C_core_Validator_StepAtLeastOneRule["StepAtLeastOneRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepAtLeastOneRule -.->|implements| I_Rule
-    C_core_Validator_ActionRetryLimitsRule["ActionRetryLimitsRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ActionRetryLimitsRule -.->|implements| I_Rule
-    C_core_Validator_SourceUrlSyntaxRule["SourceUrlSyntaxRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SourceUrlSyntaxRule -.->|implements| I_Rule
-    C_core_Validator_DocumentArazzoVersionRule["DocumentArazzoVersionRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_DocumentArazzoVersionRule -.->|implements| I_Rule
-    C_core_Validator_StepDependsOnNoCycleRule["StepDependsOnNoCycleRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepDependsOnNoCycleRule -.->|implements| I_Rule
-    C_core_Validator_DocumentSourceDescriptionsPresentRule["DocumentSourceDescriptionsPresentRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_DocumentSourceDescriptionsPresentRule -.->|implements| I_Rule
-    C_core_Validator_StepSuccessCriteriaConditionRule["StepSuccessCriteriaConditionRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_StepSuccessCriteriaConditionRule -.->|implements| I_Rule
-    C_core_Validator_SuccessCriteriaVersionSupportedRule["SuccessCriteriaVersionSupportedRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SuccessCriteriaVersionSupportedRule -.->|implements| I_Rule
-    C_core_Validator_ExpressionSyntaxRule["ExpressionSyntaxRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_ExpressionSyntaxRule -.->|implements| I_Rule
-    C_core_Validator_SelectorTypeSupportedRule["SelectorTypeSupportedRule<br/><small>Validator</small>"]:::implCore
-    C_core_Validator_SelectorTypeSupportedRule -.->|implements| I_Rule
-    C_core_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
-    C_core_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
-    C_core_Execution_StepOutputExtractor["StepOutputExtractor<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_StepOutputExtractor -.->|implements| I_OutputExtractorInterface
-    C_core_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
-    C_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>Queue</small>"]:::implLaravel
-    C_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
-    C_core_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
-    C_core_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>Infrastructure</small>"]:::implCore
-    C_core_Infrastructure_FileLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Infrastructure_NullLockStrategy["NullLockStrategy<br/><small>Infrastructure</small>"]:::implCore
-    C_core_Infrastructure_NullLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Infrastructure_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Infrastructure</small>"]:::implCore
-    C_core_Infrastructure_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Policy_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>Policy</small>"]:::implCore
-    C_core_Policy_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
-    C_core_Protocol_HttpStepExecutor["HttpStepExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
-    C_core_Console_CliRunner["CliRunner<br/><small>Console</small>"]:::implCore
-    C_core_Console_CliRunner -.->|implements| I_LockManagerInterface
-    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
-    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
-    C_core_Console_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>Console</small>"]:::implCore
-    C_core_Console_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_core_Console_NullEventLedger["NullEventLedger<br/><small>Console</small>"]:::implCore
-    C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
-    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
-    C_core_Generator_OpenAiClient -.->|implements| I_AiClientInterface
-    C_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>Http</small>"]:::implLaravel
-    C_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
-    C_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
-    C_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    I_AiClientInterface["AiClientInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_ConditionNode["ConditionNode<br/><small>expression:Evaluation</small>"]:::contract
+    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>expression:Evaluation</small>"]:::contract
+    I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
+    I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
+    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_EventLedgerInterface["EventLedgerInterface<br/><small>runner:Events</small>"]:::contract
+    I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runner:State</small>"]:::contract
+    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(expression root)</small>"]:::contract
+    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_HttpClientInterface["HttpClientInterface<br/><small>runner:Infrastructure</small>"]:::contract
+    I_JsonDecoder["JsonDecoder<br/><small>document:Parser</small>"]:::contract
+    I_LockManagerInterface["LockManagerInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
+    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>document:Normalizer</small>"]:::contract
+    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>runner:State</small>"]:::contract
+    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
+    I_QueueDriverInterface["QueueDriverInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
+    I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
+    I_SourceFetcher["SourceFetcher<br/><small>document:Resolver</small>"]:::contract
+    I_SourceResolver["SourceResolver<br/><small>document:Resolver</small>"]:::contract
+    I_StateStoreInterface["StateStoreInterface<br/><small>runner:State</small>"]:::contract
+    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_WorkflowContextInterface["WorkflowContextInterface<br/><small>contracts:Spec</small>"]:::contract
+    I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
+    I_XpathEvaluator["XpathEvaluator<br/><small>expression:Xpath</small>"]:::contract
+    I_YamlDecoder["YamlDecoder<br/><small>document:Parser</small>"]:::contract
+    C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
+    C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
+    C_expression_expression_Data_EvaluationInput["EvaluationInput<br/><small>expression:Data</small>"]:::implCore
+    C_expression_expression_Data_EvaluationInput -.->|implements| I_EvaluationInputInterface
+    C_expression_expression_Evaluation_EvaluationContext["EvaluationContext<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
+    C_expression_expression_Evaluation_Comparison["Comparison<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_Comparison -.->|implements| I_ConditionNode
+    C_expression_expression_Evaluation_Literal["Literal<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_Literal -.->|implements| I_ConditionNode
+    C_expression_expression_Evaluation_LogicalOp["LogicalOp<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_LogicalOp -.->|implements| I_ConditionNode
+    C_expression_expression_Evaluation_RuntimeExpr["RuntimeExpr<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_RuntimeExpr -.->|implements| I_ConditionNode
+    C_expression_expression_Evaluation_UnaryNot["UnaryNot<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_UnaryNot -.->|implements| I_ConditionNode
+    C_expression_expression_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
+    C_expression_expression_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
+    C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_expression_expression___ExpressionEvaluator["ExpressionEvaluator<br/><small>(expression root)</small>"]:::implCore
+    C_expression_expression___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
+    C_expression_expression_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>expression:Xpath</small>"]:::implCore
+    C_expression_expression_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
+    C_document_document___Document["Document<br/><small>(document root)</small>"]:::implCore
+    C_document_document___Document -.->|implements| I_DocumentInterface
+    C_document_document_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>document:Normalizer</small>"]:::implCore
+    C_document_document_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_document_document_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>document:Normalizer</small>"]:::implCore
+    C_document_document_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_document_document_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>document:Parser</small>"]:::implCore
+    C_document_document_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
+    C_document_document_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>document:Parser</small>"]:::implCore
+    C_document_document_Parser_SymfonyYamlDecoder -.->|implements| I_YamlDecoder
+    C_document_document_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>document:Resolver</small>"]:::implCore
+    C_document_document_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
+    C_document_document_Resolver_SourceRegistry["SourceRegistry<br/><small>document:Resolver</small>"]:::implCore
+    C_document_document_Resolver_SourceRegistry -.->|implements| I_SourceResolver
+    C_document_document_Resolver_CachedFetcher["CachedFetcher<br/><small>document:Resolver</small>"]:::implCore
+    C_document_document_Resolver_CachedFetcher -.->|implements| I_SourceFetcher
+    C_document_document_Resolver_HttpFetcher["HttpFetcher<br/><small>document:Resolver</small>"]:::implCore
+    C_document_document_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
+    C_document_document_Resolver_LocalFetcher["LocalFetcher<br/><small>document:Resolver</small>"]:::implCore
+    C_document_document_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
+    C_document_document_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_OfficialSchemaRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionGotoTargetResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionRetryLimitsRule["ActionRetryLimitsRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionRetryLimitsRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionReusableRefResolvesRule["ActionReusableRefResolvesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionReusableRefResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionTypeValidRule["ActionTypeValidRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionTypeValidRule -.->|implements| I_Rule
+    C_document_document_Validator_AsyncApiFieldsRequire11Rule["AsyncApiFieldsRequire11Rule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_AsyncApiFieldsRequire11Rule -.->|implements| I_Rule
+    C_document_document_Validator_ComponentsUniqueNamesRule["ComponentsUniqueNamesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ComponentsUniqueNamesRule -.->|implements| I_Rule
+    C_document_document_Validator_DocUnknownFieldRule["DocUnknownFieldRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_DocUnknownFieldRule -.->|implements| I_Rule
+    C_document_document_Validator_DocumentArazzoVersionRule["DocumentArazzoVersionRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_DocumentArazzoVersionRule -.->|implements| I_Rule
+    C_document_document_Validator_DocumentInfoRequiredRule["DocumentInfoRequiredRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_DocumentInfoRequiredRule -.->|implements| I_Rule
+    C_document_document_Validator_DocumentSourceDescriptionsPresentRule["DocumentSourceDescriptionsPresentRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_DocumentSourceDescriptionsPresentRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionContextMisuseRule["ExpressionContextMisuseRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionContextMisuseRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionJsonPointerSyntaxRule["ExpressionJsonPointerSyntaxRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionJsonPointerSyntaxRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionSyntaxRule["ExpressionSyntaxRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionSyntaxRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionUnresolvedComponentRefRule["ExpressionUnresolvedComponentRefRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionUnresolvedComponentRefRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionUnresolvedInputRefRule["ExpressionUnresolvedInputRefRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionUnresolvedInputRefRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionUnresolvedSourceRefRule["ExpressionUnresolvedSourceRefRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionUnresolvedSourceRefRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionUnresolvedStepRefRule["ExpressionUnresolvedStepRefRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionUnresolvedStepRefRule -.->|implements| I_Rule
+    C_document_document_Validator_ExpressionUnresolvedWorkflowRefRule["ExpressionUnresolvedWorkflowRefRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExpressionUnresolvedWorkflowRefRule -.->|implements| I_Rule
+    C_document_document_Validator_ExtensionsXPrefixRule["ExtensionsXPrefixRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ExtensionsXPrefixRule -.->|implements| I_Rule
+    C_document_document_Validator_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShapeRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ParameterQuerystringOperationShapeRule -.->|implements| I_Rule
+    C_document_document_Validator_SelectorTypeSupportedRule["SelectorTypeSupportedRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SelectorTypeSupportedRule -.->|implements| I_Rule
+    C_document_document_Validator_SelfUriSyntaxRule["SelfUriSyntaxRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SelfUriSyntaxRule -.->|implements| I_Rule
+    C_document_document_Validator_SourceTypeMatchesRule["SourceTypeMatchesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SourceTypeMatchesRule -.->|implements| I_Rule
+    C_document_document_Validator_SourceUniqueNameRule["SourceUniqueNameRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SourceUniqueNameRule -.->|implements| I_Rule
+    C_document_document_Validator_SourceUrlSyntaxRule["SourceUrlSyntaxRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SourceUrlSyntaxRule -.->|implements| I_Rule
+    C_document_document_Validator_StepAtLeastOneRule["StepAtLeastOneRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepAtLeastOneRule -.->|implements| I_Rule
+    C_document_document_Validator_StepCriteriaTypeContextRule["StepCriteriaTypeContextRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepCriteriaTypeContextRule -.->|implements| I_Rule
+    C_document_document_Validator_StepDependsOnNoCycleRule["StepDependsOnNoCycleRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepDependsOnNoCycleRule -.->|implements| I_Rule
+    C_document_document_Validator_StepIdPatternRule["StepIdPatternRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepIdPatternRule -.->|implements| I_Rule
+    C_document_document_Validator_StepNestedWorkflowExistsRule["StepNestedWorkflowExistsRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepNestedWorkflowExistsRule -.->|implements| I_Rule
+    C_document_document_Validator_StepNestedWorkflowNoCycleRule["StepNestedWorkflowNoCycleRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepNestedWorkflowNoCycleRule -.->|implements| I_Rule
+    C_document_document_Validator_StepOperationIdSourceScopedRule["StepOperationIdSourceScopedRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepOperationIdSourceScopedRule -.->|implements| I_Rule
+    C_document_document_Validator_StepOperationPathSyntaxRule["StepOperationPathSyntaxRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepOperationPathSyntaxRule -.->|implements| I_Rule
+    C_document_document_Validator_StepOperationTargetPresentRule["StepOperationTargetPresentRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepOperationTargetPresentRule -.->|implements| I_Rule
+    C_document_document_Validator_StepOutputsUniqueRule["StepOutputsUniqueRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepOutputsUniqueRule -.->|implements| I_Rule
+    C_document_document_Validator_StepParameterInValidRule["StepParameterInValidRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepParameterInValidRule -.->|implements| I_Rule
+    C_document_document_Validator_StepParametersHaveNameRule["StepParametersHaveNameRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepParametersHaveNameRule -.->|implements| I_Rule
+    C_document_document_Validator_StepRequestBodyReplacementsTargetRule["StepRequestBodyReplacementsTargetRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepRequestBodyReplacementsTargetRule -.->|implements| I_Rule
+    C_document_document_Validator_StepSuccessCriteriaConditionRule["StepSuccessCriteriaConditionRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepSuccessCriteriaConditionRule -.->|implements| I_Rule
+    C_document_document_Validator_StepTimeoutRequires11Rule["StepTimeoutRequires11Rule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepTimeoutRequires11Rule -.->|implements| I_Rule
+    C_document_document_Validator_StepUniqueIdRule["StepUniqueIdRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_StepUniqueIdRule -.->|implements| I_Rule
+    C_document_document_Validator_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SubWorkflowInvokeTargetResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_SuccessCriteriaVersionSupportedRule["SuccessCriteriaVersionSupportedRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_SuccessCriteriaVersionSupportedRule -.->|implements| I_Rule
+    C_document_document_Validator_WorkflowAtLeastOneRule["WorkflowAtLeastOneRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WorkflowAtLeastOneRule -.->|implements| I_Rule
+    C_document_document_Validator_WorkflowDependsOnExistsRule["WorkflowDependsOnExistsRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WorkflowDependsOnExistsRule -.->|implements| I_Rule
+    C_document_document_Validator_WorkflowDependsOnNoCycleRule["WorkflowDependsOnNoCycleRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WorkflowDependsOnNoCycleRule -.->|implements| I_Rule
+    C_document_document_Validator_WorkflowIdPatternRule["WorkflowIdPatternRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WorkflowIdPatternRule -.->|implements| I_Rule
+    C_document_document_Validator_WorkflowInputsValidSchemaRule["WorkflowInputsValidSchemaRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WorkflowInputsValidSchemaRule -.->|implements| I_Rule
+    C_document_document_Validator_WorkflowUniqueIdRule["WorkflowUniqueIdRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WorkflowUniqueIdRule -.->|implements| I_Rule
+    C_runner_runner_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
+    C_runner_runner_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
+    C_runner_runner_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
+    C_runner_runner_Execution_StepOutputExtractor["StepOutputExtractor<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_StepOutputExtractor -.->|implements| I_OutputExtractorInterface
+    C_runner_runner_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
+    C_laravel_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>laravel:Queue</small>"]:::implLaravel
+    C_laravel_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
+    C_runner_runner_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>runner:Infrastructure</small>"]:::implCore
+    C_runner_runner_Infrastructure_FileLockStrategy -.->|implements| I_LockStrategyInterface
+    C_runner_runner_Infrastructure_NullLockStrategy["NullLockStrategy<br/><small>runner:Infrastructure</small>"]:::implCore
+    C_runner_runner_Infrastructure_NullLockStrategy -.->|implements| I_LockStrategyInterface
+    C_runner_runner_Infrastructure_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>runner:Infrastructure</small>"]:::implCore
+    C_runner_runner_Infrastructure_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
+    C_runner_runner_Policy_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>runner:Policy</small>"]:::implCore
+    C_runner_runner_Policy_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
+    C_runner_runner_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
+    C_runner_runner_Protocol_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_runner_runner_Protocol_HttpStepExecutor["HttpStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
+    C_runner_runner_Protocol_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_runner_runner_Protocol_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>runner:Protocol</small>"]:::implCore
+    C_runner_runner_Protocol_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_runner_runner_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
+    C_runner_runner_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_runner_runner_Protocol_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>runner:Protocol</small>"]:::implCore
+    C_runner_runner_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
+    C_runner_runner___RunnerFacade["RunnerFacade<br/><small>(runner root)</small>"]:::implCore
+    C_runner_runner___RunnerFacade -.->|implements| I_RunnerFacadeInterface
+    C_runner_runner_State_FileStateStore["FileStateStore<br/><small>runner:State</small>"]:::implCore
+    C_runner_runner_State_FileStateStore -.->|implements| I_StateStoreInterface
+    C_runner_runner_State_InMemoryStateStore["InMemoryStateStore<br/><small>runner:State</small>"]:::implCore
+    C_runner_runner_State_InMemoryStateStore -.->|implements| I_StateStoreInterface
+    C_laravel_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>laravel:State</small>"]:::implLaravel
+    C_laravel_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
+    C_cli_cli_Console_CliRunner["CliRunner<br/><small>cli:Console</small>"]:::implCore
+    C_cli_cli_Console_CliRunner -.->|implements| I_LockManagerInterface
+    C_laravel_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>laravel:Lock</small>"]:::implLaravel
+    C_laravel_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
+    C_cli_cli_Console_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>cli:Console</small>"]:::implCore
+    C_cli_cli_Console_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_laravel_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
+    C_laravel_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_cli_cli_Console_NullEventLedger["NullEventLedger<br/><small>cli:Console</small>"]:::implCore
+    C_cli_cli_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
+    C_laravel_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>laravel:Persistence</small>"]:::implLaravel
+    C_laravel_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
+    C_cli_cli_Generator_OpenAiClient["OpenAiClient<br/><small>cli:Generator</small>"]:::implCore
+    C_cli_cli_Generator_OpenAiClient -.->|implements| I_AiClientInterface
+    C_laravel_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>laravel:Http</small>"]:::implLaravel
+    C_laravel_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
+    C_laravel_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
+    C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
+    C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

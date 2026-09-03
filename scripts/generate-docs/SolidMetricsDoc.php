@@ -32,9 +32,9 @@ const CONCRETE_HUB_FAN_IN = 4;
  * @param  array<string, list<ScannedFile>>  $core
  * @param  array<string, list<ScannedFile>>  $laravel
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    $all = NamespaceGraphDoc\merge($core, $laravel);
+    $all = NamespaceGraphDoc\merge($scans);
 
     $classModule = [];
     foreach ($all as $module => $files) {
@@ -106,8 +106,8 @@ function render(array $core, array $laravel): string
     if ($fatInterfaces === []) {
         $lines[] = '| — | — |';
     }
-    foreach ($fatInterfaces as [$fqcn, $count]) {
-        $lines[] = sprintf('| `%s` <small>%s</small> | %d |', short($fqcn), packageOf($fqcn), $count);
+    foreach ($fatInterfaces as [$fqcn, $count, $package]) {
+        $lines[] = sprintf('| `%s` <small>%s</small> | %d |', short($fqcn), $package, $count);
     }
 
     // concrete hubs
@@ -234,7 +234,7 @@ function structuralFindings(array $all): array
             if ($file->isInterface) {
                 $methods = (int) preg_match_all('/^\s*(?:public\s+)?function\s+\w+/m', $file->content);
                 if ($methods > FAT_INTERFACE_METHODS) {
-                    $fatInterfaces[] = [$file->namespace.'\\'.$file->className, $methods];
+                    $fatInterfaces[] = [$file->namespace.'\\'.$file->className, $methods, $file->package];
                 }
             }
         }
@@ -248,9 +248,4 @@ function short(string $fqcn): string
     $parts = explode('\\', $fqcn);
 
     return end($parts);
-}
-
-function packageOf(string $fqcn): string
-{
-    return str_contains($fqcn, 'Laravel') ? 'laravel' : 'core';
 }

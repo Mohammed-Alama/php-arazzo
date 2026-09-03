@@ -19,16 +19,14 @@ promoted properties whose types resolve to other `Spec\` classes.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core): string
+function render(array $scans): string
 {
     $files = [];
-    foreach ($core as $moduleFiles) {
-        foreach ($moduleFiles as $file) {
-            if ($file->path === 'Spec') {
-                $files[] = $file;
-            }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if (\ArazzoDocs\fileModule($file) === 'Spec') {
+            $files[] = $file;
         }
     }
 

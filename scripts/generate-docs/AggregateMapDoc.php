@@ -24,18 +24,13 @@ Where mutable state lives, and which of it crosses process boundaries:
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     $files = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$package, $modules]) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                $files[$package][$file->namespace.'\\'.$file->className] = $file;
-            }
-        }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        $files[$file->package][$file->namespace.'\\'.$file->className] = $file;
     }
 
     $lines = [BANNER];
@@ -46,7 +41,7 @@ function render(array $core, array $laravel): string
     $lines[] = '| Package | Readonly | Mutable | Readonly share |';
     $lines[] = '|---|---:|---:|---:|';
     $profile = [];
-    foreach (['core', 'laravel'] as $package) {
+    foreach (\ArazzoDocs\PACKAGE_LAYER_ORDER as $package) {
         $readonly = 0;
         $mutable = 0;
         foreach ($files[$package] ?? [] as $file) {
@@ -73,7 +68,7 @@ function render(array $core, array $laravel): string
     $lines[] = '|---|---|---|---|';
 
     $crossProcess = [];
-    foreach (['core', 'laravel'] as $package) {
+    foreach (\ArazzoDocs\PACKAGE_LAYER_ORDER as $package) {
         foreach ($files[$package] ?? [] as $fqcn => $file) {
             if ($file->isInterface || !isClass($file) || isReadonly($file->content)) {
                 continue;

@@ -20,15 +20,11 @@ objects, enums and exceptions are omitted. Regenerated before every commit.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    [$nodes, $packageOf] = collectNodes($core, 'core');
-    [$laravelNodes, $laravelPackageOf] = collectNodes($laravel, 'laravel');
-    $all = $nodes + $laravelNodes;
-    $packageOf += $laravelPackageOf;
+    [$all, $packageOf] = collectNodes($scans);
 
     if ($all === []) {
         return BANNER."_No runner classes found._\n";
@@ -60,7 +56,7 @@ function render(array $core, array $laravel): string
         }
     }
 
-    $dispatches = dispatchIndex($core, $laravel, $kept, $shortIndex);
+    $dispatches = dispatchIndex($scans, $kept, $shortIndex);
 
     $lines = [BANNER, '```mermaid', 'flowchart TD'];
 
@@ -131,22 +127,21 @@ function render(array $core, array $laravel): string
 }
 
 /**
- * @param  array<string, list<ScannedFile>>  $modules
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans
  * @return array{0: array<string, ScannedFile>, 1: array<string, string>}
  */
-function collectNodes(array $modules, string $package): array
+function collectNodes(array $scans): array
 {
     $nodes = [];
-    foreach ($modules as $files) {
-        foreach ($files as $file) {
-            if (!isPipelineClass($file)) {
-                continue;
-            }
-            $nodes[$file->namespace.'\\'.$file->className] = $file;
+    $packages = [];
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if (!isPipelineClass($file)) {
+            continue;
         }
+        $fqcn = $file->namespace.'\\'.$file->className;
+        $nodes[$fqcn] = $file;
+        $packages[$fqcn] = $file->package;
     }
-    ksort($nodes);
-    $packages = array_fill_keys(array_keys($nodes), $package);
 
     return [$nodes, $packages];
 }
@@ -278,32 +273,26 @@ function aliasMap(ScannedFile $file): array
  * @param  array<string, string>  $shortIndex
  * @return array<string, list<string>>
  */
-function dispatchIndex(array $core, array $laravel, array $pipelineNodes, array $shortIndex): array
+function dispatchIndex(array $scans, array $pipelineNodes, array $shortIndex): array
 {
+    $flat = \ArazzoDocs\flattenScans($scans);
+
     $events = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$pkg, $modules]) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                $dir = $file->relativeDir;
-                $isEventsDir = $dir === 'Events' || str_ends_with($dir, '/Events');
-                if (!$isEventsDir || $file->isInterface) {
-                    continue;
-                }
-                if (str_contains($file->className, 'Dispatcher')) {
-                    continue;
-                }
-                $events[$file->className] = $file->namespace.'\\'.$file->className;
-            }
+    foreach ($flat as $file) {
+        $dir = $file->relativeDir;
+        $isEventsDir = $dir === 'Events' || str_ends_with($dir, '/Events');
+        if (!$isEventsDir || $file->isInterface) {
+            continue;
         }
+        if (str_contains($file->className, 'Dispatcher')) {
+            continue;
+        }
+        $events[$file->className] = $file->namespace.'\\'.$file->className;
     }
 
     $byFqcn = [];
-    foreach ([[...$core], [...$laravel]] as $modules) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                $byFqcn[$file->namespace.'\\'.$file->className] = $file;
-            }
-        }
+    foreach ($flat as $file) {
+        $byFqcn[$file->namespace.'\\'.$file->className] = $file;
     }
 
     $index = [];

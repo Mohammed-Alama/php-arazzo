@@ -29,9 +29,9 @@ MD;
  * @param  array<string, list<ScannedFile>>  $core
  * @param  array<string, list<ScannedFile>>  $laravel
  */
-function render(array $core, array $laravel, string $root): string
+function render(array $scans, string $root): string
 {
-    $all = NamespaceGraphDoc\merge($core, $laravel);
+    $all = NamespaceGraphDoc\merge($scans);
 
     $classModule = [];
     foreach ($all as $module => $files) {
@@ -60,21 +60,21 @@ function render(array $core, array $laravel, string $root): string
     $testMentions = scanTestMentions($root);
 
     $points = [];
-    foreach ($all as $module => $files) {
-        if ($module === '_' || $module === 'Laravel:_') {
-            continue; // roots are not plottable units
+    foreach ($all as $key => $files) {
+        if (str_ends_with($key, ':_')) {
+            continue; // package roots are not plottable units
         }
-        $in = count($fanIn[$module] ?? []);
-        $out = count($fanOut[$module] ?? []);
+        $in = count($fanIn[$key] ?? []);
+        $out = count($fanOut[$key] ?? []);
         $instability = ($in + $out) === 0 ? 0.0 : $out / ($in + $out);
         $srcCount = max(1, count($files));
-        $density = min(1.0, ($testMentions[moduleName($module)] ?? 0) / $srcCount);
+        $density = min(1.0, ($testMentions[$key] ?? 0) / $srcCount);
         $points[] = [
-            'label' => plotLabel($module),
+            'label' => plotLabel($key),
             'x' => round($instability, 3),
             'y' => round($density, 3),
             'src' => $srcCount,
-            'tests' => $testMentions[moduleName($module)] ?? 0,
+            'tests' => $testMentions[$key] ?? 0,
         ];
     }
     usort($points, fn (array $a, array $b): int => strcmp($a['label'], $b['label']));
@@ -129,10 +129,10 @@ function scanTestMentions(string $root): array
     $namesByModule = [];
     $srcDirs = [];
     foreach (CORE_SRC_PACKAGES as $package) {
-        $srcDirs[] = [$root.'/packages/'.$package.'/src', false];
+        $srcDirs[] = [$root.'/packages/'.$package.'/src', $package];
     }
-    $srcDirs[] = [$root.'/packages/laravel/src', true];
-    foreach ($srcDirs as [$srcDir, $isLaravel]) {
+    $srcDirs[] = [$root.'/packages/laravel/src', 'laravel'];
+    foreach ($srcDirs as [$srcDir, $package]) {
         if (!is_dir($srcDir)) {
             continue;
         }
@@ -149,7 +149,7 @@ function scanTestMentions(string $root): array
             if (count($parts) < 2) {
                 continue; // root files have no module dir
             }
-            $module = ($isLaravel ? 'Laravel:' : '').$parts[0];
+            $module = $package.':'.$parts[0];
             $namesByModule[$module][basename((string) $file->getPathname(), '.php')] = true;
         }
     }
@@ -188,12 +188,7 @@ function scanTestMentions(string $root): array
     return $counts;
 }
 
-function moduleName(string $module): string
+function plotLabel(string $key): string
 {
-    return $module;
-}
-
-function plotLabel(string $module): string
-{
-    return str_replace(':', '/', $module);
+    return str_replace(':', '/', $key);
 }

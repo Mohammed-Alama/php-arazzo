@@ -38,24 +38,23 @@ const POLICY = [
 const VENDOR_ROOTS = ['Psr', 'Illuminate', 'Symfony', 'GuzzleHttp', 'OpenApi', 'cebe', 'Seld', 'PHPUnit', 'Webmozart', 'Composer'];
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     $usage = [];
-    foreach ([['core', $core], ['laravel', $laravel]] as [$package, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                foreach ($file->useStatements as $statement) {
-                    $root = vendorRoot(trim($statement));
-                    if ($root === null || str_starts_with(trim($statement), 'Alama\Arazzo')) {
-                        continue;
-                    }
-                    $key = $package.'|'.$module.'|'.$root;
-                    $usage[$key] = ($usage[$key] ?? 0) + 1;
-                }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        // POLICY verdict buckets stay library-vs-laravel: vendor policy
+        // applies equally to all five library packages.
+        $bucket = $file->package === 'laravel' ? 'laravel' : 'core';
+        $module = \ArazzoDocs\packageKey($file->package, \ArazzoDocs\fileModule($file));
+        foreach ($file->useStatements as $statement) {
+            $root = vendorRoot(trim($statement));
+            if ($root === null || str_starts_with(trim($statement), 'Alama\Arazzo')) {
+                continue;
             }
+            $key = $bucket.'|'.$file->package.'|'.$module.'|'.$root;
+            $usage[$key] = ($usage[$key] ?? 0) + 1;
         }
     }
 
@@ -64,8 +63,8 @@ function render(array $core, array $laravel): string
     $detail = [];
     ksort($usage);
     foreach ($usage as $key => $count) {
-        [$package, $module, $root] = explode('|', $key);
-        $byPackage[$package][$root] = ($byPackage[$package][$root] ?? 0) + $count;
+        [$bucket, $package, $module, $root] = explode('|', $key);
+        $byPackage[$bucket][$root] = ($byPackage[$bucket][$root] ?? 0) + $count;
         $detail[] = [$package, $module, $root, $count];
     }
 
@@ -104,19 +103,19 @@ function render(array $core, array $laravel): string
     // explicit violation section
     $violations = array_filter(
         $detail,
-        fn (array $row): bool => $row[0] === 'core'
+        fn (array $row): bool => $row[0] !== 'laravel'
             && $row[2] !== 'Psr'
             && (POLICY[$row[2]] ?? null) !== true,
     );
     $lines[] = '';
     if ($violations === []) {
-        $lines[] = '**Core boundary clean** — no forbidden vendor namespaces inside `packages/core/src`.';
+        $lines[] = '**Library boundary clean** — no forbidden vendor namespaces inside the five library packages.';
         if (isset($byPackage['core']['Symfony'])) {
             $lines[] = '';
-            $lines[] = '_Note:_ Symfony appears only under `Console/` — the CLI edge adapter. That is a deliberate, contained exception; move it out of core if the CLI grows beyond thin command wrappers.';
+            $lines[] = '_Note:_ Symfony appears only under `Console/` — the CLI edge adapter. That is a deliberate, contained exception; move it out of the CLI package if it grows beyond thin command wrappers.';
         }
     } else {
-        $lines[] = sprintf('**%d core boundary violation(s):**', count($violations));
+        $lines[] = sprintf('**%d library boundary violation(s):**', count($violations));
         foreach ($violations as [$package, $module, $vendorRoot, $count]) {
             $lines[] = sprintf('- `%s` imports `%s\\*` (%d refs)', $module, $vendorRoot, $count);
         }

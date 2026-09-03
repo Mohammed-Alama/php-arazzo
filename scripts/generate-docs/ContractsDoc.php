@@ -18,45 +18,36 @@ from both packages. Core defines contracts; Laravel implements them.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     $interfaces = [];   // shortName => ['module' => string, 'fqcn' => string]
-    foreach ([['core', $core], ['laravel', $laravel]] as [$pkg, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                if ($file->isInterface) {
-                    $interfaces[$file->className] = [
-                        'package' => $pkg,
-                        'module' => $module,
-                        'fqcn' => $file->namespace.'\\'.$file->className,
-                    ];
-                }
-            }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if ($file->isInterface) {
+            $interfaces[$file->className] = [
+                'package' => $file->package,
+                'module' => \ArazzoDocs\packageKey($file->package, \ArazzoDocs\fileModule($file)),
+                'fqcn' => $file->namespace.'\\'.$file->className,
+            ];
         }
     }
 
     // find implementations: scan all non-interface files for "implements ...Interface"
     $impls = [];   // interfaceShort => list of [class, package, module]
-    foreach ([['core', $core], ['laravel', $laravel]] as [$pkg, $modules]) {
-        foreach ($modules as $module => $files) {
-            foreach ($files as $file) {
-                if ($file->isInterface) {
-                    continue;
-                }
-                if (!preg_match('/implements\s+([\w\\\\,\s]+)$/m', $file->content, $m)) {
-                    continue;
-                }
-                foreach (explode(',', str_replace("\n", ' ', trim($m[1]))) as $raw) {
-                    $short = basename(str_replace('\\', '/', trim(preg_replace('/\s+/', ' ', $raw))));
-                    if (!isset($interfaces[$short])) {
-                        continue;
-                    }
-                    $impls[$short][] = [$file->className, $pkg, $module, $file->namespace.'\\'.$file->className];
-                }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if ($file->isInterface) {
+            continue;
+        }
+        if (!preg_match('/implements\s+([\w\\\\,\s]+)$/m', $file->content, $m)) {
+            continue;
+        }
+        foreach (explode(',', str_replace("\n", ' ', trim($m[1]))) as $raw) {
+            $short = basename(str_replace('\\', '/', trim(preg_replace('/\s+/', ' ', $raw))));
+            if (!isset($interfaces[$short])) {
+                continue;
             }
+            $impls[$short][] = [$file->className, $file->package, \ArazzoDocs\packageKey($file->package, \ArazzoDocs\fileModule($file)), $file->namespace.'\\'.$file->className];
         }
     }
 
@@ -65,8 +56,8 @@ function render(array $core, array $laravel): string
     $lines = [BANNER, '```mermaid', 'flowchart LR'];
 
     foreach ($interfaces as $name => $meta) {
-        $style = $meta['package'] === 'core' ? 'contract' : 'contractLaravel';
-        $moduleLabel = $meta['module'] === '_' ? '(root)' : $meta['module'];
+        $style = $meta['package'] === 'laravel' ? 'contractLaravel' : 'contract';
+        $moduleLabel = str_ends_with($meta['module'], ':_') ? '('.strtok($meta['module'], ':').' root)' : $meta['module'];
         $lines[] = sprintf(
             '    I_%s["%s<br/><small>%s</small>"]:::%s',
             $name,
@@ -78,13 +69,13 @@ function render(array $core, array $laravel): string
 
     foreach ($impls as $interface => $implementations) {
         foreach ($implementations as [$class, $pkg, $module]) {
-            $style = $pkg === 'core' ? 'implCore' : 'implLaravel';
+            $style = $pkg === 'laravel' ? 'implLaravel' : 'implCore';
             $id = 'C_'.preg_replace('/[^A-Za-z0-9_]/', '_', "{$pkg}_{$module}_{$class}");
             $lines[] = sprintf(
                 '    %s["%s<br/><small>%s</small>"]:::%s',
                 $id,
                 $class,
-                $module === '_' ? '(root)' : $module,
+                str_ends_with($module, ':_') ? '('.strtok($module, ':').' root)' : $module,
                 $style,
             );
             $lines[] = sprintf('    %s -.->|implements| I_%s', $id, $interface);

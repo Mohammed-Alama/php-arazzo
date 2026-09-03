@@ -27,19 +27,14 @@ const VALIDATION_MARKERS = '/(?:Validat|Authorize|Sanitiz|Assert)/';
 const SINK_MARKERS = '/(?:Filesystem|File_|Storage|ProcOpen|ShellExec|Unserialize|RawQuery|Statement|HttpClient|Client\b)/';
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
     $byFqcn = [];
-    foreach ([[...$core], [...$laravel]] as $modules) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                if (!$file->isInterface) {
-                    $byFqcn[$file->namespace.'\\'.$file->className] = $file;
-                }
-            }
+    foreach (\ArazzoDocs\flattenScans($scans) as $file) {
+        if (!$file->isInterface) {
+            $byFqcn[$file->namespace.'\\'.$file->className] = $file;
         }
     }
 

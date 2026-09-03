@@ -23,34 +23,27 @@ MD;
 const CONTRACT_DIR_PATTERN = '/(^|\/)Contracts(\/|$)/';
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
+    $flat = \ArazzoDocs\flattenScans($scans);
+
     $files = [];
-    foreach ([[...$core], [...$laravel]] as $modules) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                if ($file->isInterface && isSpi($file)) {
-                    $files[$file->className] = ['file' => $file, 'implementations' => []];
-                }
-            }
+    foreach ($flat as $file) {
+        if ($file->isInterface && isSpi($file)) {
+            $files[$file->className] = ['file' => $file, 'implementations' => []];
         }
     }
 
-    foreach ([[...$core], [...$laravel]] as $modules) {
-        foreach ($modules as $moduleFiles) {
-            foreach ($moduleFiles as $file) {
-                if ($file->isInterface || preg_match('/implements\s+([^;{]+)/', $file->content, $m) !== 1) {
-                    continue;
-                }
-                foreach (explode(',', str_replace('|', ',', $m[1])) as $raw) {
-                    $name = basename(str_replace('\\', '/', trim($raw)));
-                    if (isset($files[$name])) {
-                        $files[$name]['implementations'][$file->namespace.'\\'.$file->className] = true;
-                    }
-                }
+    foreach ($flat as $file) {
+        if ($file->isInterface || preg_match('/implements\s+([^;{]+)/', $file->content, $m) !== 1) {
+            continue;
+        }
+        foreach (explode(',', str_replace('|', ',', $m[1])) as $raw) {
+            $name = basename(str_replace('\\', '/', trim($raw)));
+            if (isset($files[$name])) {
+                $files[$name]['implementations'][$file->namespace.'\\'.$file->className] = true;
             }
         }
     }

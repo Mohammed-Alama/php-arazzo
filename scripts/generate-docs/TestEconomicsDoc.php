@@ -21,19 +21,27 @@ test-method density, and the last measured suite cost. Cross-reference with
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
  */
-function render(array $core, array $laravel, string $root): string
+function render(array $scans, string $root): string
 {
     $lines = [BANNER, '| Package | Src LOC | Test LOC | Test/Src | Test files | Test methods | Methods/file |', '|---|---:|---:|---:|---:|---:|---:|'];
 
-    foreach ([['core', $core], ['laravel', $laravel]] as [$label, $modules]) {
-        $srcLoc = 0;
+    // library rollup (all non-laravel packages) + laravel rows
+    $buckets = ['core' => [], 'laravel' => []];
+    foreach ($scans as $package => $modules) {
+        $bucket = $package === 'laravel' ? 'laravel' : 'core';
         foreach ($modules as $files) {
             foreach ($files as $file) {
-                $srcLoc += substr_count($file->content, "\n") + 1;
+                $buckets[$bucket][] = $file;
             }
+        }
+    }
+
+    foreach ([['core', $buckets['core']], ['laravel', $buckets['laravel']]] as [$label, $files]) {
+        $srcLoc = 0;
+        foreach ($files as $file) {
+            $srcLoc += substr_count($file->content, "\n") + 1;
         }
 
         $testsDirs = $label === 'core'

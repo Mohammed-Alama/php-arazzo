@@ -29,9 +29,9 @@ const HUB_FAN_IN_THRESHOLD = 3;
  * @param  array<string, list<ScannedFile>>  $core
  * @param  array<string, list<ScannedFile>>  $laravel
  */
-function render(array $core, array $laravel): string
+function render(array $scans): string
 {
-    $all = NamespaceGraphDoc\merge($core, $laravel);
+    $all = NamespaceGraphDoc\merge($scans);
 
     $classModule = [];
     foreach ($all as $module => $files) {
@@ -133,13 +133,14 @@ function computeGraph(array $all, array $classModule): array
     return [$fanIn, $fanOut, $pairWeight, $edgeCount];
 }
 
-function label(string $module): string
+function label(string $key): string
 {
-    return match ($module) {
-        '_' => '(core root)',
-        'Laravel:_' => '(laravel root)',
-        default => str_starts_with($module, 'Laravel:')
-            ? 'Laravel:'.substr($module, strlen('Laravel:'))
-            : \ArazzoDocs\modulePackageSegment($module).'\\'.$module,
-    };
+    $pos = strpos($key, ':');
+    if ($pos === false) {
+        return $key;
+    }
+    $package = substr($key, 0, $pos);
+    $module = substr($key, $pos + 1);
+
+    return $module === '_' ? "({$package} root)" : $key;
 }

@@ -74,6 +74,46 @@ it('keeps generated dir markdown-only', function (): void {
     expect($json)->toBe([]);
 });
 
+it('derives layer order from composer require', function (): void {
+    expect(\ArazzoDocs\packageLayerOrder(dirname(__DIR__, 3)))->toBe(
+        ['contracts', 'expression', 'document', 'runner', 'cli', 'laravel'],
+    );
+});
+
+it('flattens scans deterministically with owning packages', function (): void {
+    $scans = [
+        'runner' => ['State' => [new \ArazzoDocs\ScannedFile(
+            path: 'State',
+            relativeDir: 'State',
+            namespace: 'Alama\\Arazzo\\Runner\\State',
+            className: 'WorkflowState',
+            isInterface: false,
+            uses: [],
+            useStatements: [],
+            content: '',
+            package: 'runner',
+        )]],
+        'contracts' => ['State' => [new \ArazzoDocs\ScannedFile(
+            path: 'State',
+            relativeDir: 'State',
+            namespace: 'Alama\\Arazzo\\Contracts\\State',
+            className: 'WorkflowContext',
+            isInterface: false,
+            uses: [],
+            useStatements: [],
+            content: '',
+            package: 'contracts',
+        )]],
+    ];
+
+    $flat = \ArazzoDocs\flattenScans($scans);
+
+    expect(array_map(fn ($f) => $f->namespace.'\\'.$f->className, $flat))->toBe([
+        'Alama\\Arazzo\\Contracts\\State\\WorkflowContext',
+        'Alama\\Arazzo\\Runner\\State\\WorkflowState',
+    ]);
+});
+
 it('renders update-migration columns in the schema', function (): void {
     $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/database-schema.md');
 

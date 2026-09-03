@@ -17,30 +17,30 @@ flowchart LR
     E_StepFailedEvent(["StepFailedEvent"]):::event
     E_StepRetriedEvent(["StepRetriedEvent"]):::event
     E_StepStartedEvent(["StepStartedEvent"]):::event
-    S_Alama_Arazzo_Runner_Async_SuspensionHandler["SuspensionHandler<br/><small>Async</small>"] -->|dispatches| E_CorrelationPendingEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>Async</small>"] -->|dispatches| E_CorrelationPendingEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>Execution</small>"] -->|dispatches| E_CorrelationPendingEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>Async</small>"] -->|dispatches| E_StepStartedEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>Execution</small>"] -->|dispatches| E_StepStartedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_StepStartedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>Async</small>"] -->|dispatches| E_StepExecutedEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>Execution</small>"] -->|dispatches| E_StepExecutedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_StepExecutedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>Async</small>"] -->|dispatches| E_RunCompletedEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>Execution</small>"] -->|dispatches| E_RunCompletedEvent
-    S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>Execution</small>"] -->|dispatches| E_RunCompletedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_RunCompletedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>Async</small>"] -->|dispatches| E_RunFailedEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>Execution</small>"] -->|dispatches| E_RunFailedEvent
-    S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>Execution</small>"] -->|dispatches| E_RunFailedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_RunFailedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>Async</small>"] -->|dispatches| E_StepFailedEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>Execution</small>"] -->|dispatches| E_StepFailedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_StepFailedEvent
-    S_Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer<br/><small>Execution</small>"] -->|dispatches| E_CorrelationResumedEvent
-    S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>Execution</small>"] -->|dispatches| E_StepRetriedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_StepRetriedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>Execution</small>"] -->|dispatches| E_RunStartedEvent
+    S_Alama_Arazzo_Runner_Async_SuspensionHandler["SuspensionHandler<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationPendingEvent
+    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationPendingEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_CorrelationPendingEvent
+    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_StepStartedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepStartedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepStartedEvent
+    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_StepExecutedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepExecutedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepExecutedEvent
+    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_RunCompletedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_RunCompletedEvent
+    S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Execution</small>"] -->|dispatches| E_RunCompletedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_RunCompletedEvent
+    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_RunFailedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_RunFailedEvent
+    S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Execution</small>"] -->|dispatches| E_RunFailedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_RunFailedEvent
+    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_StepFailedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepFailedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepFailedEvent
+    S_Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer<br/><small>runner:Execution</small>"] -->|dispatches| E_CorrelationResumedEvent
+    S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Execution</small>"] -->|dispatches| E_StepRetriedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepRetriedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_RunStartedEvent
     classDef event fill:#f3e8fd,stroke:#a142f4,color:#1a1a1a;
     classDef eventLaravel fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
 ```
