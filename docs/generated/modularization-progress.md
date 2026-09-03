@@ -3,7 +3,20 @@
 
 # Generated: Modularization Progress
 
-Tracks `docs/superpowers/plans/*-modularization-plan.md` against reality:
-every `.php` path the plan promises is checked against the working tree on
-each commit. A plan that never meets this doc is a wish, not a roadmap.
-_No modularization plan found in docs/superpowers/plans/._
+Tracks the completed split of the monolith into six composer packages
+(`contracts <- expression <- document <- runner <- cli <- laravel`):
+`packages/core/src` must stay empty (aggregator only — `.gitkeep`) and every
+package entry point must expose its `*Interface` + facade pair. Any file in
+`packages/core/src` or any missing facade below is a modularization
+regression to fix, not drift to accept.
+
+- Core aggregator clean: **yes** (0 stray file(s) in `packages/core/src`)
+- Facade pairs present: **6 / 6** (**100%**)
+
+```mermaid
+xychart-beta
+    title "Facade entry points present (100%)"
+    x-axis ["present", "missing"]
+    y-axis "Files" 0 --> 6
+    bar [6, 0]
+```

@@ -61,3 +61,9 @@ it('renders real cli commands', function (): void {
 
     expect($out)->toContain('Binary: `bin/arazzo`')->and($out)->not->toContain('Console application class missing');
 });
+
+it('tracks core emptiness instead of a missing plan', function (): void {
+    $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/modularization-progress.md');
+
+    expect($out)->not->toContain('No modularization plan found');
+});

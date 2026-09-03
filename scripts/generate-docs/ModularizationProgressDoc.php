@@ -10,64 +10,82 @@ const BANNER = <<<'MD'
 
 # Generated: Modularization Progress
 
-Tracks `docs/superpowers/plans/*-modularization-plan.md` against reality:
-every `.php` path the plan promises is checked against the working tree on
-each commit. A plan that never meets this doc is a wish, not a roadmap.
+Tracks the completed split of the monolith into six composer packages
+(`contracts <- expression <- document <- runner <- cli <- laravel`):
+`packages/core/src` must stay empty (aggregator only — `.gitkeep`) and every
+package entry point must expose its `*Interface` + facade pair. Any file in
+`packages/core/src` or any missing facade below is a modularization
+regression to fix, not drift to accept.
 
 MD;
 
-const PLAN_GLOB = '/docs/superpowers/plans/*modularization-plan.md';
+/**
+ * Package entry-point contracts: relative path => [interface, facade].
+ * Every pair must exist; the facade hides the package's internal graph.
+ *
+ * @var array<string, list<string>>
+ */
+const FACADE_PAIRS = [
+    'packages/expression/src' => ['ExpressionEngineInterface.php', 'ExpressionEngine.php'],
+    'packages/document/src' => ['DocumentInterface.php', 'Document.php'],
+    'packages/runner/src' => ['RunnerFacadeInterface.php', 'RunnerFacade.php'],
+];
 
 function render(string $root): string
 {
-    $matches = glob($root.PLAN_GLOB) ?: [];
-    if ($matches === []) {
-        return BANNER."_No modularization plan found in docs/superpowers/plans/._\n";
-    }
-    sort($matches);
-    $planPath = $matches[0];
-    $plan = (string) file_get_contents($planPath);
-    $planName = basename((string) $planPath);
-
-    // promised PHP paths anywhere in the plan
-    preg_match_all('/`(packages\/[\w\/.-]+\.php)`/', $plan, $paths);
-    $promised = array_values(array_unique($paths[1]));
-
-    preg_match_all('/^[-*]\s+\[( |x)\]\s+(.+)$/m', $plan, $boxes, PREG_SET_ORDER);
-    $boxesDone = count(array_filter($boxes, fn (array $b): bool => trim($b[1]) === 'x'));
-
-    $created = [];
-    $missing = [];
-    foreach ($promised as $relative) {
-        if (is_file($root.'/'.$relative)) {
-            $created[] = $relative;
-        } else {
-            $missing[] = $relative;
+    $stray = [];
+    foreach (glob($root.'/packages/core/src/*.php') ?: [] as $file) {
+        if (is_file($file)) {
+            $stray[] = 'packages/core/src/'.basename((string) $file);
         }
     }
+    sort($stray);
 
-    $total = max(1, count($promised));
-    $percent = round(count($created) / $total * 100);
+    $missing = [];
+    $present = 0;
+    foreach (FACADE_PAIRS as $dir => $pair) {
+        foreach ($pair as $file) {
+            if (is_file($root.'/'.$dir.'/'.$file)) {
+                $present++;
+            } else {
+                $missing[] = $dir.'/'.$file;
+            }
+        }
+    }
+    sort($missing);
+
+    $total = 0;
+    foreach (FACADE_PAIRS as $pair) {
+        $total += count($pair);
+    }
+    $percent = (int) round($present / max(1, $total) * 100);
 
     $lines = [
         BANNER,
-        sprintf('Plan: `%s`', $planName),
-        '',
-        sprintf('- Files promised: **%d** · created: **%d** (**%d%%**)', $total, count($created), $percent),
-        sprintf('- Checkboxes ticked: **%d / %d**', $boxesDone, count($boxes)),
+        sprintf('- Core aggregator clean: **%s** (%d stray file(s) in `packages/core/src`)', $stray === [] ? 'yes' : 'no', count($stray)),
+        sprintf('- Facade pairs present: **%d / %d** (**%d%%**)', $present, $total, $percent),
         '',
         '```mermaid',
         'xychart-beta',
-        sprintf('    title "Planned files created (%d%%)"', $percent),
-        '    x-axis ["created", "missing"]',
+        sprintf('    title "Facade entry points present (%d%%)"', $percent),
+        '    x-axis ["present", "missing"]',
         sprintf('    y-axis "Files" 0 --> %d', max(5, $total)),
-        sprintf('    bar [%d, %d]', count($created), count($missing)),
+        sprintf('    bar [%d, %d]', $present, count($missing)),
         '```',
     ];
 
+    if ($stray !== []) {
+        $lines[] = '';
+        $lines[] = '## Stray files in packages/core/src';
+        $lines[] = '';
+        foreach ($stray as $relative) {
+            $lines[] = '- `'.$relative.'`';
+        }
+    }
+
     if ($missing !== []) {
         $lines[] = '';
-        $lines[] = '## Not yet in the tree';
+        $lines[] = '## Missing facade files';
         $lines[] = '';
         foreach ($missing as $relative) {
             $lines[] = '- `'.$relative.'`';
