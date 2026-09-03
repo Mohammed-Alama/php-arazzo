@@ -49,7 +49,7 @@ const SUBDOMAINS = [
     'Events' => 'generic',
 ];
 
-const SUBDOMAIN_LABELS = ['core' => 'Core domain', 'supporting' => 'Supporting', 'generic' => 'Generic subdomain'];
+const SUBDOMAIN_LABELS = ['core' => 'Core domain', 'supporting' => 'Supporting', 'generic' => 'Generic subdomain', 'unclassified' => 'Unclassified'];
 
 /**
  * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)

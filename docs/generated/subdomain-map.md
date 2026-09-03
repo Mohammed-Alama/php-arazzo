@@ -39,7 +39,7 @@ flowchart LR
         S_runner_Events["runner:Events<br/><small>295 LOC</small>"]:::genericDomain
         S_runner_State["runner:State<br/><small>919 LOC</small>"]:::genericDomain
     end
-    subgraph S_unclassified[""]
+    subgraph S_unclassified["Unclassified"]
         S_contracts_Dependency["contracts:Dependency<br/><small>328 LOC</small>"]:::unknownDomain
         S_contracts_Exceptions["contracts:Exceptions<br/><small>28 LOC</small>"]:::unknownDomain
         S_contracts_Interfaces["contracts:Interfaces<br/><small>116 LOC</small>"]:::unknownDomain
@@ -70,7 +70,7 @@ flowchart LR
 | Core domain | 1 | 823 | 0 | 5% |
 | Supporting | 6 | 5,719 | 0 | 33% |
 | Generic subdomain | 12 | 2,052 | 1,157 | 18% |
-|  | 18 | 7,797 | 0 | 44% |
+| Unclassified | 18 | 7,797 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
