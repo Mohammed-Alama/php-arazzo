@@ -233,7 +233,7 @@ Daily **human-readable** poll of 54 github sources via `gh` (30 `OAI/*`, 4 `usea
 
 > **Human dashboard:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) — regrouped by severity (Breaking / Actionable / Watch),levance, with summary stats, legend, and newest-200 table. Any contributor can open it without running a command.
 
-* **Human:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated `Human Dashboard`) · **Raw:** `storage/ecosystem-feed/feed.json` + [`docs/generated/ecosystem-feed.json`](docs/generated/ecosystem-feed.json) · **Snapshots:** `storage/ecosystem-feed/snapshots/`
+* **Human:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated `Human Dashboard`) · **Raw:** `storage/ecosystem-feed/feed.json` · **Snapshots:** `storage/ecosystem-feed/snapshots/`
 * **Poll locally:** `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) or `php scripts/ecosystem/poll.php --fixtures --dry-run` (offline fixtures including `OAI/Arazzo-Specification#533` SOAP + `#410` actor/loop)
 * **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php --verbose` → `.scratch/ecosystem-triage/<date>.md` → `/to-tickets`
 * **Workflow:** `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags, 30-day prune

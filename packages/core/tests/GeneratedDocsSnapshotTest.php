@@ -67,3 +67,9 @@ it('tracks core emptiness instead of a missing plan', function (): void {
 
     expect($out)->not->toContain('No modularization plan found');
 });
+
+it('keeps generated dir markdown-only', function (): void {
+    $json = glob(dirname(__DIR__, 3).'/docs/generated/*.json') ?: [];
+
+    expect($json)->toBe([]);
+});

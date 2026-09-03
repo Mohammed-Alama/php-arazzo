@@ -34,7 +34,7 @@ $opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose
 if (isset($opts['help'])) {
     echo "Usage: php scripts/ecosystem/poll.php [--dry-run|--commit] [--since=YYYY-MM-DD] [--source=REPO] [--limit=N] [--verbose] [--fixtures]\n";
     echo "  --dry-run : normalize+render without writing snapshots/feed\n";
-    echo "  --commit  : write storage/ecosystem-feed/* + docs/generated/ecosystem-feed.json + docs/ECOSYSTEM_FEED.md\n";
+    echo "  --commit  : write storage/ecosystem-feed/* + docs/ECOSYSTEM_FEED.md\n";
     echo "  --since   : filter events publishedAt >= date (post-normalize)\n";
     echo "  --source  : filter to single source id (e.g. OAI/Arazzo-Specification)\n";
     echo "  --limit   : per-endpoint cap (default 20, fixtures mode ignores)\n";
