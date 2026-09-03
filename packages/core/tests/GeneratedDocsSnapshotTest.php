@@ -82,7 +82,7 @@ it('derives layer order from composer require', function (): void {
 
 it('flattens scans deterministically with owning packages', function (): void {
     $scans = [
-        'runner' => ['State' => [new \ArazzoDocs\ScannedFile(
+        'runner' => ['State' => [new ScannedFile(
             path: 'State',
             relativeDir: 'State',
             namespace: 'Alama\\Arazzo\\Runner\\State',
@@ -93,7 +93,7 @@ it('flattens scans deterministically with owning packages', function (): void {
             content: '',
             package: 'runner',
         )]],
-        'contracts' => ['State' => [new \ArazzoDocs\ScannedFile(
+        'contracts' => ['State' => [new ScannedFile(
             path: 'State',
             relativeDir: 'State',
             namespace: 'Alama\\Arazzo\\Contracts\\State',
