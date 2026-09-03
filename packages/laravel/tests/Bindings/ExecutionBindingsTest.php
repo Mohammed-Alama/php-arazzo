@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
 use Alama\Arazzo\Laravel\Bindings\ExecutionBindings;
+use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 
 function engineProp(WorkflowEngine $engine, string $name): mixed
 {

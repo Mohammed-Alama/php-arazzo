@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Http;
 
-use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
 use GuzzleHttp\Client;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

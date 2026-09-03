@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
+use Alama\Arazzo\Cli\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
-use Alama\Arazzo\Generator\ArazzoGenerator;
-use Alama\Arazzo\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Laravel\Bindings\GeneratorBindings;
 
 function generatorClientProp(object $client, string $name): mixed
