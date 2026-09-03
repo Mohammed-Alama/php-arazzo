@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 
 /**
  * Applies workflow-level parameters to a step before execution. A step-level

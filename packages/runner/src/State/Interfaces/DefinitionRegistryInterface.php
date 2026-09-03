@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State\Interfaces;
+namespace Alama\Arazzo\Runner\State\Interfaces;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 
 interface DefinitionRegistryInterface
 {

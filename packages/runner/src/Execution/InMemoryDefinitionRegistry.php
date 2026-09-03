@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\State\Interfaces\WritableDefinitionRegistryInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Runner\State\Interfaces\WritableDefinitionRegistryInterface;
 
 class InMemoryDefinitionRegistry implements WritableDefinitionRegistryInterface
 {

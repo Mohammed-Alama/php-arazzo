@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Spec\Action\FailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Execution\Data\Transition;
-use Alama\Arazzo\Execution\Exceptions\GotoTargetNotFoundException;
-use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Execution\Exceptions\WorkflowCycleException;
-use Alama\Arazzo\Execution\Exceptions\WorkflowDepthExceededException;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Policy\RetryPolicy;
-use Alama\Arazzo\Spec\Action\FailureAction;
-use Alama\Arazzo\Spec\Action\FailureEndAction;
-use Alama\Arazzo\Spec\Action\FailureGotoAction;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Spec\Action\SuccessAction;
-use Alama\Arazzo\Spec\Action\SuccessEndAction;
-use Alama\Arazzo\Spec\Action\SuccessGotoAction;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\StepStatus;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\Data\ExecutionContext;
+use Alama\Arazzo\Runner\Execution\Data\Transition;
+use Alama\Arazzo\Runner\Execution\Exceptions\GotoTargetNotFoundException;
+use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
+use Alama\Arazzo\Runner\Execution\Exceptions\WorkflowCycleException;
+use Alama\Arazzo\Runner\Execution\Exceptions\WorkflowDepthExceededException;
+use Alama\Arazzo\Runner\Policy\RetryPolicy;
+use Alama\Arazzo\Runner\State\Data\ExecutionContext;
 
 /** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events. */
 final class WorkflowEngine

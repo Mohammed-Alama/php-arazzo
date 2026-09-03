@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol;
+namespace Alama\Arazzo\Runner\Protocol;
 
-use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\ExpressionValueResolver;
-use Alama\Arazzo\Execution\IdempotencyKeyInjector;
-use Alama\Arazzo\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Execution\RequestCompiler;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Execution\RequestCompiler;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
 final class HttpStepExecutor implements StepProtocolExecutorInterface

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Execution\Data\SubWorkflowResult;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\Exceptions\ExecutionException;
+use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\SelectorEvaluator;
-use Alama\Arazzo\Spec\Action\SubWorkflowFailureAction;
-use Alama\Arazzo\Spec\Action\SubWorkflowSuccessAction;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
+use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
+use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 
 class SubWorkflowInvoker
 {

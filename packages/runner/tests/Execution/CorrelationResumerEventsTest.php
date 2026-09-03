@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Events\CorrelationResumedEvent;
-use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Spec\PendingCorrelation;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
-use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\State\Interfaces\StateStoreInterface;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Runner\Events\CorrelationResumedEvent;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
+use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 
 class CorrelationResumerEventsLockManager implements LockManagerInterface
 {

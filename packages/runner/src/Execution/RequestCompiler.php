@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Evaluation\PayloadReplacer;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\OpenApiPayload;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Expression\Evaluation\PayloadReplacer;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Psr\Http\Message\ResponseInterface;
 

@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Events\RunCompletedEvent;
-use Alama\Arazzo\Events\RunFailedEvent;
-use Alama\Arazzo\Events\RunStartedEvent;
-use Alama\Arazzo\Events\StepExecutedEvent as EventStepExecuted;
-use Alama\Arazzo\Events\StepFailedEvent;
-use Alama\Arazzo\Events\StepStartedEvent;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\StepExecutor;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Execution\WorkflowExecutor;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Runner\Events\RunCompletedEvent;
+use Alama\Arazzo\Runner\Events\RunFailedEvent;
+use Alama\Arazzo\Runner\Events\RunStartedEvent;
+use Alama\Arazzo\Runner\Events\StepExecutedEvent as EventStepExecuted;
+use Alama\Arazzo\Runner\Events\StepFailedEvent;
+use Alama\Arazzo\Runner\Events\StepStartedEvent;
+use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null): StepExecutor

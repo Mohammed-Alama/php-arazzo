@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State\Data;
+namespace Alama\Arazzo\Runner\State\Data;
 
 final readonly class Budget
 {

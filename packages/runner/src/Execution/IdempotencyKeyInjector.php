@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Execution\Data\InjectionResult;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
 use Psr\Http\Message\RequestInterface;
 
 final class IdempotencyKeyInjector

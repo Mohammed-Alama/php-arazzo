@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol;
+namespace Alama\Arazzo\Runner\Protocol;
 
-use Alama\Arazzo\Execution\Interfaces\ProtocolExecutorRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Runner\Execution\Interfaces\ProtocolExecutorRegistryInterface;
 
 /**
  * Chain-of-responsibility over registered protocol executors; the first

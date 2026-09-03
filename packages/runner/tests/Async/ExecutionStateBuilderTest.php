@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Async\ExecutionStateBuilder;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Runner\Async\ExecutionStateBuilder;
 
 function builderStep(string $id): Step
 {

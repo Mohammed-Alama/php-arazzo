@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Infrastructure;
+namespace Alama\Arazzo\Runner\Infrastructure;
 
 use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
 

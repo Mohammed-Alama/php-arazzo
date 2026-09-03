@@ -8,4 +8,3 @@ if (!function_exists('tempStateDir')) {
         return sys_get_temp_dir().'/arazzo-state-'.bin2hex(random_bytes(4));
     }
 }
-

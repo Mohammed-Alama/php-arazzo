@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Telemetry;
+namespace Alama\Arazzo\Runner\Telemetry;
 
 use ErrorException;
 use OpenTelemetry\API\Globals;

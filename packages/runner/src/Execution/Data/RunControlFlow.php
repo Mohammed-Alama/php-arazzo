@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Data;
+namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Validator\PreflightValidator;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**

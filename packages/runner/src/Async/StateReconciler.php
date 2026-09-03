@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Async;
+namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 
 /**
  * Merges the job-carried context with whatever a previous job persisted for

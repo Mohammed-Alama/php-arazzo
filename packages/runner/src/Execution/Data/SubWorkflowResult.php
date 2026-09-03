@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Data;
+namespace Alama\Arazzo\Runner\Execution\Data;
 
 final readonly class SubWorkflowResult
 {

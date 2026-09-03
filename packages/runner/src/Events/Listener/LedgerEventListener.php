@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Events\Listener;
+namespace Alama\Arazzo\Runner\Events\Listener;
 
-use Alama\Arazzo\Events\CorrelationPendingEvent;
-use Alama\Arazzo\Events\CorrelationResumedEvent;
-use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Events\RunCompletedEvent;
-use Alama\Arazzo\Events\RunFailedEvent;
-use Alama\Arazzo\Events\RunStartedEvent;
-use Alama\Arazzo\Events\StepExecutedEvent;
-use Alama\Arazzo\Events\StepFailedEvent;
-use Alama\Arazzo\Events\StepRetriedEvent;
-use Alama\Arazzo\Events\StepStartedEvent;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Runner\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Runner\Events\CorrelationResumedEvent;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Events\RunCompletedEvent;
+use Alama\Arazzo\Runner\Events\RunFailedEvent;
+use Alama\Arazzo\Runner\Events\RunStartedEvent;
+use Alama\Arazzo\Runner\Events\StepExecutedEvent;
+use Alama\Arazzo\Runner\Events\StepFailedEvent;
+use Alama\Arazzo\Runner\Events\StepRetriedEvent;
+use Alama\Arazzo\Runner\Events\StepStartedEvent;
 use Throwable;
 
 final class LedgerEventListener

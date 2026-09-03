@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Execution\Data\Transition;
-use Alama\Arazzo\Execution\Enum\TransitionType;
-use Alama\Arazzo\Execution\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Execution\WorkflowEngine;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Policy\RetryPolicy;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\Data\ExecutionContext;
-use Alama\Arazzo\State\Data\StepResult;
+use Alama\Arazzo\Runner\Execution\Data\Transition;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Policy\RetryPolicy;
+use Alama\Arazzo\Runner\State\Data\ExecutionContext;
+use Alama\Arazzo\Runner\State\Data\StepResult;
 
 function workflowEngineResolver(): ExpressionResolverInterface
 {

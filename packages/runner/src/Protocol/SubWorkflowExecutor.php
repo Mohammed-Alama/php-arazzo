@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol;
+namespace Alama\Arazzo\Runner\Protocol;
 
-use Alama\Arazzo\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\Enum\TransitionType;
-use Alama\Arazzo\Execution\WorkflowEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\StepExecutionOutcome;
-use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Throwable;
 
 /**

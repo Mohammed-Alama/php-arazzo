@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Async;
+namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Execution\Data\Transition;
-use Alama\Arazzo\Execution\Enum\TransitionType;
-use Alama\Arazzo\Execution\WorkflowEngine;
-use Alama\Arazzo\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
-use Alama\Arazzo\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Execution\Data\Transition;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 
 /**
  * Performs the side effects a {@see Transition} describes: persists the next

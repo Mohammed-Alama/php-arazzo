@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution;
+namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Parser\Exceptions\UnsupportedSerializationStyleException;
+use Alama\Arazzo\Document\Parser\Exceptions\UnsupportedSerializationStyleException;
 use Stringable;
 
 class ParameterSerializer

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 
 it('returns the event unchanged', function () {
     $event = new stdClass();

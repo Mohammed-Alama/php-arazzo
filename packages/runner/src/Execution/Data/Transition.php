@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Data;
+namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Execution\Enum\TransitionType;
-use Alama\Arazzo\State\Data\ExecutionContext;
+use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
+use Alama\Arazzo\Runner\State\Data\ExecutionContext;
 
 final readonly class Transition
 {

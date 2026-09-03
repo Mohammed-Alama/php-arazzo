@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Enum;
+namespace Alama\Arazzo\Runner\Execution\Enum;
 
 enum TransitionType: string
 {

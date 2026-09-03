@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State\Data;
+namespace Alama\Arazzo\Runner\State\Data;
 
-use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 
 final readonly class StepResult
 {

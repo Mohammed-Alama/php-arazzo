@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Async;
+namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Validator\PreflightValidator;
+use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 
 /**
  * Runs document preflight validation before the FIRST side effect of a run.

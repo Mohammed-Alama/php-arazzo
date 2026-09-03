@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State\Interfaces;
+namespace Alama\Arazzo\Runner\State\Interfaces;
 
-use Alama\Arazzo\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 
 // Framework port (kept as a seam): run registry persistence is adapter-specific.
 

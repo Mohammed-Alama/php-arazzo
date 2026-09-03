@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol;
+namespace Alama\Arazzo\Runner\Protocol;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Evaluation\PayloadReplacer;
-use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Execution\Exceptions\ExecutionException;
-use Alama\Arazzo\Execution\ReusableParameterResolver;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\SpecVersion;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\StepExecutionOutcome;
-use Alama\Arazzo\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Evaluation\PayloadReplacer;
+use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
+use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
+use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use JsonException;
 use LogicException;
 use Psr\Http\Message\RequestFactoryInterface;

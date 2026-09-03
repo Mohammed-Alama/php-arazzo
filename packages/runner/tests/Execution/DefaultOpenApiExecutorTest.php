@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Normalizer\ResolvedOperation;
-use Alama\Arazzo\Resolver\Interfaces\SourceResolver;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\OpenApiPayload;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\SourceDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
+use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use cebe\openapi\Reader;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;

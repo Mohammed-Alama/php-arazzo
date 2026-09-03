@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Async;
+namespace Alama\Arazzo\Runner\Async;
 
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\Workflow;
 
 /**
  * Assembles the engine-ready {@see ExecutionState} for a transition decision:

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Interfaces;
+namespace Alama\Arazzo\Runner\Execution\Interfaces;
 
-use Alama\Arazzo\Normalizer\ResolvedOperation;
-use Alama\Arazzo\Spec\OpenApiPayload;
+use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
+use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Psr\Http\Message\ResponseInterface;
 
 interface OpenApiExecutorInterface

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Async;
+namespace Alama\Arazzo\Runner\Async;
 
-use Alama\Arazzo\Events\CorrelationPendingEvent;
-use Alama\Arazzo\Events\RunCompletedEvent;
-use Alama\Arazzo\Events\RunFailedEvent;
-use Alama\Arazzo\Events\StepExecutedEvent;
-use Alama\Arazzo\Events\StepFailedEvent;
-use Alama\Arazzo\Events\StepStartedEvent;
-use Alama\Arazzo\Support\Events\Dispatcher\NullEventDispatcher;
-use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Runner\Events\CorrelationPendingEvent;
+use Alama\Arazzo\Runner\Events\RunCompletedEvent;
+use Alama\Arazzo\Runner\Events\RunFailedEvent;
+use Alama\Arazzo\Runner\Events\StepExecutedEvent;
+use Alama\Arazzo\Runner\Events\StepFailedEvent;
+use Alama\Arazzo\Runner\Events\StepStartedEvent;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;

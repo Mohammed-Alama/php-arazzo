@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State\Exceptions;
+namespace Alama\Arazzo\Runner\State\Exceptions;
 
 use RuntimeException;
 

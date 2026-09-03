@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
-use Alama\Arazzo\Execution\CorrelationResumer;
-use Alama\Arazzo\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use DateTimeImmutable;
 
 require_once __DIR__.'/CorrelationResumerTest.php';

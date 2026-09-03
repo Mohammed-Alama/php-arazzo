@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\SourceDescription;
 
 it('evaluates input references', function () {
     $context = new WorkflowContext('def_1', ['userId' => 123]);

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Execution\StepParameterMerger;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Runner\Execution\StepParameterMerger;
 use Alama\Arazzo\Tests\Support\Fx;
 
 function wfParam(string $name, ParameterIn $in, mixed $value): Parameter

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Async\WorkerEvents;
-use Alama\Arazzo\Events\RunCompletedEvent;
-use Alama\Arazzo\Events\RunFailedEvent;
-use Alama\Arazzo\Events\StepExecutedEvent;
-use Alama\Arazzo\Events\StepFailedEvent;
-use Alama\Arazzo\Events\StepStartedEvent;
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Components;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Validator\Data\Error;
-use Alama\Arazzo\Validator\Data\ValidationResult;
-use Alama\Arazzo\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Document\Validator\Data\Error;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
+use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Runner\Async\WorkerEvents;
+use Alama\Arazzo\Runner\Events\RunCompletedEvent;
+use Alama\Arazzo\Runner\Events\RunFailedEvent;
+use Alama\Arazzo\Runner\Events\StepExecutedEvent;
+use Alama\Arazzo\Runner\Events\StepFailedEvent;
+use Alama\Arazzo\Runner\Events\StepStartedEvent;
 
 function guardDocumentForEvents(): ArazzoDocument
 {

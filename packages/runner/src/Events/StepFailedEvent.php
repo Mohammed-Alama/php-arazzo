@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Events;
+namespace Alama\Arazzo\Runner\Events;
 
 use DateTimeImmutable;
 use Throwable;

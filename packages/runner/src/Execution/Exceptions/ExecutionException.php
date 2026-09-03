@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Execution\Exceptions;
+namespace Alama\Arazzo\Runner\Execution\Exceptions;
 
-use Alama\Arazzo\Support\Exceptions\ArazzoException;
+use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
 
 final class ExecutionException extends ArazzoException
 {

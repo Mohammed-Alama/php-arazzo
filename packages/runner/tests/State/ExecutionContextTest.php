@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\State\Data\Budget;
-use Alama\Arazzo\State\Data\ErrorEntry;
-use Alama\Arazzo\State\Data\ExecutionContext;
-use Alama\Arazzo\State\Data\StepResult;
+use Alama\Arazzo\Runner\State\Data\Budget;
+use Alama\Arazzo\Runner\State\Data\ErrorEntry;
+use Alama\Arazzo\Runner\State\Data\ExecutionContext;
+use Alama\Arazzo\Runner\State\Data\StepResult;
 
 it('starts with a seeded call stack and running status', function (): void {
     $context = ExecutionContext::start('exec_1', 'def_1', 'wf_1', inputs: ['a' => 1], maxSteps: 50);

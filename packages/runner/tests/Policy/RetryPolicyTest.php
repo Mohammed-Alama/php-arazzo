@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Policy\ExponentialBackoffCalculator;
-use Alama\Arazzo\Policy\RetryPolicy;
-use Alama\Arazzo\Spec\Action\RetryAction;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Runner\Policy\ExponentialBackoffCalculator;
+use Alama\Arazzo\Runner\Policy\RetryPolicy;
 
 function retryPolicyStep(): Step
 {

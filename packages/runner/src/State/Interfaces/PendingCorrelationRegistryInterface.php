@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\State\Interfaces;
+namespace Alama\Arazzo\Runner\State\Interfaces;
 
-use Alama\Arazzo\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 
 // Framework port (kept as a seam): pending correlations persist per deployment (DB table today).
 

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Events\RunStartedEvent;
-use Alama\Arazzo\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 it('delivers to subscribed listeners in subscription order', function () {
