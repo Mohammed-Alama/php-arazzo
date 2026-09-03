@@ -55,3 +55,9 @@ it('groups public api by package with facades first', function (): void {
     expect($out)->toContain('## contracts')
         ->and($out)->not->toContain('Alama\\Arazzo\\Data\\Data');
 });
+
+it('renders real cli commands', function (): void {
+    $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/cli-reference.md');
+
+    expect($out)->toContain('Binary: `bin/arazzo`')->and($out)->not->toContain('Console application class missing');
+});
