@@ -48,3 +48,10 @@ it('keeps same-named modules from different packages separate', function (): voi
         ->and($out)->toContain('Alama\\Arazzo\\Contracts\\State')
         ->and($out)->toContain('Alama\\Arazzo\\Runner\\State');
 });
+
+it('groups public api by package with facades first', function (): void {
+    $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/public-api.md');
+
+    expect($out)->toContain('## contracts')
+        ->and($out)->not->toContain('Alama\\Arazzo\\Data\\Data');
+});
