@@ -14,6 +14,10 @@
     },
     {
       "type": "path",
+      "url": "packages/core"
+    },
+    {
+      "type": "path",
       "url": "packages/document"
     },
     {
@@ -32,6 +36,7 @@
   "require": {
     "php": "^8.4",
     "alama/arazzo-cli": "@dev",
+    "alama/arazzo-core": "@dev",
     "alama/arazzo-contracts": "@dev",
     "alama/arazzo-document": "@dev",
     "alama/arazzo-expression": "@dev",
