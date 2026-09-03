@@ -73,3 +73,15 @@ it('keeps generated dir markdown-only', function (): void {
 
     expect($json)->toBe([]);
 });
+
+it('renders update-migration columns in the schema', function (): void {
+    $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/database-schema.md');
+
+    expect($out)->toContain('status')->and($out)->toContain('completed_at');
+});
+
+it('labels security sites with owning packages, not core', function (): void {
+    $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/security-surface.md');
+
+    expect($out)->not->toContain('<small>core</small>');
+});

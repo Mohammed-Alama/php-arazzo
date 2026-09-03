@@ -22,8 +22,10 @@ erDiagram
         json payload 
     }
     arazzo_executions {
+        timestamp completed_at 
         ulid definition_id FK "indexed"
         ulid id PK
+        string status 
         string workflow_id 
     }
     arazzo_pending_correlations {

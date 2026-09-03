@@ -17,12 +17,17 @@ MD;
 
 /**
  * Parses `$table->type('name')` calls plus index/FK modifiers out of the
- * migration files and renders a mermaid erDiagram.
+ * migration files and renders a mermaid erDiagram. `Schema::create` blocks
+ * define tables; later `Schema::table` alterations merge columns in
+ * (migration-basename order), so the diagram reflects the migrated schema,
+ * not just day-one tables.
  */
 function render(string $migrationsDir): string
 {
     $tables = [];
-    foreach (glob($migrationsDir.'/*.php') ?: [] as $path) {
+    $paths = glob($migrationsDir.'/*.php') ?: [];
+    sort($paths);
+    foreach ($paths as $path) {
         $base = basename($path);
         if (!preg_match('/create_(\w+)_table/', $base, $m)) {
             continue; // only create-table migrations define entities
@@ -30,52 +35,28 @@ function render(string $migrationsDir): string
         $table = $m[1];
         $content = (string) file_get_contents($path);
 
-        // columns: $table->type('name')
-        preg_match_all('/\$table->(\w+)\(\'(\w+)\'(?:,\s*[^)]+)?\)([^;]*);/', $content, $cols, PREG_SET_ORDER);
-        // standalone constraints: ->primary(), ->unique(), ->index()
-        preg_match_all('/\$table->(\w+)\(\'(\w+)\'\)->(primary|unique|index)\(/', $content, $chained, PREG_SET_ORDER);
-
-        $entries = [];
-        $composites = [];
-        foreach ($cols as $c) {
-            $type = $c[1];
-            $name = $c[2];
-            $tail = $c[3];
-            if ($type === 'foreign') {
-                continue; // handled as relationship below
-            }
-            $keys = [];
-            $comments = [];
-            if ($type === 'id' || str_contains($tail, '->primary(')) {
-                $keys[] = 'PK';
-            }
-            if (str_contains($tail, '->unique(')) {
-                $keys[] = 'UK';
-            }
-            if (str_contains($tail, '->index(')) {
-                $comments[] = 'indexed';
-            }
-            if (preg_match('/\$table->foreign\(\''.$name.'\'\)/', $content)) {
-                $keys[] = 'FK';
-            }
-            $entries[$name] = sprintf(
-                '        %s %s %s%s',
-                columnType($type),
-                $name,
-                implode(',', $keys),
-                $comments === [] ? '' : ' "'.implode(' ', $comments).'"',
-            );
-        }
-
-        // composite unique/index definitions -> notes under the diagram
-        preg_match_all('/\$table->(unique|index)\(\[([^\]]+)\]\)/', $content, $compMatches, PREG_SET_ORDER);
-        foreach ($compMatches as $comp) {
-            $names = array_map(static fn (string $n): string => trim($n, "'\" "), explode(',', $comp[2]));
-            $composites[] = sprintf('%s(%s)', $comp[1], implode(', ', $names));
-        }
-
+        [$entries, $composites] = parseColumns($content, $content);
         ksort($entries);
         $tables[$table] = ['columns' => $entries, 'composites' => $composites];
+    }
+
+    // table alterations: Schema::table('x', fn) blocks merge columns in
+    foreach ($paths as $path) {
+        $content = (string) file_get_contents($path);
+        // never parse down() — dropColumn calls are not schema
+        $content = (string) preg_replace('/function down\(\).*?\n    \}\n?\}/s', '', $content);
+        if (preg_match_all('/Schema::table\(\'(\w+)\',\s*function\s*\([^)]*\)\s*(?:use\s*\([^)]*\)\s*)?\{(.*?)\n\s*\}\);/s', $content, $alters, PREG_SET_ORDER) !== false) {
+            foreach ($alters as [, $table, $body]) {
+                if (!isset($tables[$table])) {
+                    continue;
+                }
+                [$entries] = parseColumns($body, $content);
+                foreach ($entries as $name => $entry) {
+                    $tables[$table]['columns'][$name] = $entry;
+                }
+                ksort($tables[$table]['columns']);
+            }
+        }
     }
 
     ksort($tables);
@@ -115,6 +96,56 @@ function render(string $migrationsDir): string
     }
 
     return implode("\n", $lines)."\n";
+}
+
+/**
+ * @return array{0: array<string, string>, 1: list<string>} columns + composites
+ */
+function parseColumns(string $block, string $fullContent): array
+{
+    // columns: $table->type('name')
+    preg_match_all('/\$table->(\w+)\(\'(\w+)\'(?:,\s*[^)]+)?\)([^;]*);/', $block, $cols, PREG_SET_ORDER);
+
+    $entries = [];
+    $composites = [];
+    foreach ($cols as $c) {
+        $type = $c[1];
+        $name = $c[2];
+        $tail = $c[3];
+        if ($type === 'foreign') {
+            continue; // handled as relationship below
+        }
+        $keys = [];
+        $comments = [];
+        if ($type === 'id' || str_contains($tail, '->primary(')) {
+            $keys[] = 'PK';
+        }
+        if (str_contains($tail, '->unique(')) {
+            $keys[] = 'UK';
+        }
+        if (str_contains($tail, '->index(')) {
+            $comments[] = 'indexed';
+        }
+        if (preg_match('/\$table->foreign\(\''.$name.'\'\)/', $fullContent)) {
+            $keys[] = 'FK';
+        }
+        $entries[$name] = sprintf(
+            '        %s %s %s%s',
+            columnType($type),
+            $name,
+            implode(',', $keys),
+            $comments === [] ? '' : ' "'.implode(' ', $comments).'"',
+        );
+    }
+
+    // composite unique/index definitions -> notes under the diagram
+    preg_match_all('/\$table->(unique|index)\(\[([^\]]+)\]\)/', $block, $compMatches, PREG_SET_ORDER);
+    foreach ($compMatches as $comp) {
+        $names = array_map(static fn (string $n): string => trim($n, "'\" "), explode(',', $comp[2]));
+        $composites[] = sprintf('%s(%s)', $comp[1], implode(', ', $names));
+    }
+
+    return [$entries, $composites];
 }
 
 function columnType(string $migrationType): string

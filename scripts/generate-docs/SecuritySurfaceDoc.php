@@ -106,10 +106,10 @@ function render(array $core, array $laravel): string
     usort($sinks, fn (array $a, array $b): int => [$a['category'], $a['symbol']] <=> [$b['category'], $b['symbol']]);
     foreach ($sinks as $entry) {
         $cells = [];
-        $sites = array_values(array_unique($entry['sites']));
-        sort($sites);
+        $sites = array_values(array_unique($entry['sites'], SORT_REGULAR));
+        usort($sites, fn (array $a, array $b): int => [$a['package'], $a['fqcn']] <=> [$b['package'], $b['fqcn']]);
         foreach ($sites as $site) {
-            $cells[] = '`'.short((string) $site).'` <small>'.moduleOf((string) $site).'</small>';
+            $cells[] = '`'.short($site['fqcn']).'` <small>'.$site['package'].'</small>';
         }
         $suffix = $entry['note'] !== '' ? ' — _'.$entry['note'].'_' : '';
         $lines[] = '| '.$entry['category'].' | `'.$entry['symbol'].'`'.$suffix.' | '.implode(', ', $cells).' |';
@@ -129,8 +129,10 @@ function render(array $core, array $laravel): string
         ksort($weak);
         foreach ($weak as $primitive => $sites) {
             $cells = [];
-            foreach (array_unique($sites) as $site) {
-                $cells[] = '`'.short((string) $site).'` <small>'.moduleOf((string) $site).'</small>';
+            $unique = array_values(array_unique($sites, SORT_REGULAR));
+            usort($unique, fn (array $a, array $b): int => [$a['package'], $a['fqcn']] <=> [$b['package'], $b['fqcn']]);
+            foreach ($unique as $site) {
+                $cells[] = '`'.short($site['fqcn']).'` <small>'.$site['package'].'</small>';
             }
             $lines[] = '| `'.$primitive.'` | '.implode(', ', $cells).' |';
         }
@@ -141,7 +143,7 @@ function render(array $core, array $laravel): string
 
 /**
  * @param  list<ScannedFile>  $files
- * @return array{0: list<array{string, string}>, 1: list<array{category: string, symbol: string, note: string, sites: list<string>}>, 2: array<string, list<string>>}
+ * @return array{0: list<array{string, string}>, 1: list<array{category: string, symbol: string, note: string, sites: list<array{fqcn: string, package: string}>}>, 2: array<string, list<array{fqcn: string, package: string}>>}
  */
 function scan(array $files): array
 {
@@ -151,6 +153,7 @@ function scan(array $files): array
 
     foreach ($files as $file) {
         $selfFqcn = $file->namespace.'\\'.$file->className;
+        $site = ['fqcn' => $selfFqcn, 'package' => $file->package];
         $dir = $file->relativeDir;
 
         // trust boundaries: controllers, jobs, middleware
@@ -174,7 +177,7 @@ function scan(array $files): array
                     if (!isset($sinks[$key])) {
                         $sinks[$key] = ['category' => $category, 'symbol' => $symbol, 'note' => (string) ($note ?? ''), 'sites' => []];
                     }
-                    $sinks[$key]['sites'][] = $selfFqcn;
+                    $sinks[$key]['sites'][] = $site;
                 }
             }
         }
@@ -185,7 +188,7 @@ function scan(array $files): array
     foreach ($files as $file) {
         foreach (WEAK_PATTERNS as $name => $pattern) {
             if (preg_match('#'.$pattern.'#', $file->content) === 1) {
-                $weak[$name][] = $file->namespace.'\\'.$file->className;
+                $weak[$name][] = ['fqcn' => $file->namespace.'\\'.$file->className, 'package' => $file->package];
             }
         }
     }
@@ -200,9 +203,4 @@ function short(string $fqcn): string
     $parts = explode('\\', $fqcn);
 
     return end($parts);
-}
-
-function moduleOf(string $fqcn): string
-{
-    return str_contains($fqcn, 'Arazzo\\Laravel\\') ? 'laravel' : 'core';
 }
