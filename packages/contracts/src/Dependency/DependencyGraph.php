@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Dependency;
+namespace Alama\Arazzo\Contracts\Dependency;
 
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Step;
 
 class DependencyGraph
 {

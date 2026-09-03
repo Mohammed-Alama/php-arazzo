@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Contracts\Spec;
 
-use Alama\Arazzo\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 
 final readonly class SourceDescription
 {

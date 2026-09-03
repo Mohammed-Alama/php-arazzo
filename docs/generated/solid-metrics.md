@@ -23,18 +23,21 @@ quadrantChart
     quadrant-2 Ideal abstractions
     quadrant-3 Modular building blocks
     quadrant-4 Zone of pain
+    Ast: [0.25, 0]
     Async: [1, 0]
     Console: [1, 0]
-    Contracts: [0.063, 0.727]
+    Data: [0.6, 0]
     Dependency: [0.333, 0]
-    Evaluation: [0.5, 0.105]
+    Enum: [0, 0]
+    Evaluation: [0.545, 0.105]
     Events: [0.167, 0.091]
-    Execution: [0.737, 0.057]
-    Expression: [0.222, 0.114]
+    Exceptions: [0.143, 0]
+    Execution: [0.739, 0.057]
     Generator: [0.333, 0]
     Infrastructure: [0.25, 0.25]
+    Interfaces: [0.176, 1]
     Jobs: [0.286, 0]
-    Laravel/Bindings: [0.952, 0]
+    Laravel/Bindings: [0.955, 0]
     Laravel/Http: [0.778, 0]
     Laravel/Lock: [0.5, 0]
     Laravel/Persistence: [0.8, 0]
@@ -42,17 +45,19 @@ quadrantChart
     Laravel/State: [0.5, 0]
     Laravel/Support: [0, 0]
     Laravel/_: [1, 0]
-    Normalizer: [0.375, 0.111]
-    Parser: [0.286, 0.182]
-    Policy: [0.667, 0]
+    Normalizer: [0.333, 0.111]
+    Parser: [0.25, 0.182]
+    Policy: [0.75, 0]
     Protocol: [0.9, 0]
     Renderer: [0.5, 0]
-    Resolver: [0.286, 0.25]
+    Resolver: [0.25, 0.25]
     Spec: [0, 0.026]
-    State: [0.2, 0.417]
+    State: [0.071, 0.357]
     Support: [0, 0.2]
     Telemetry: [0, 0]
-    Validator: [0.6, 0.016]
+    Validator: [0.667, 0.016]
+    Xpath: [0.286, 0.5]
+    _: [0.684, 0.214]
 ```
 
 ## God classes (SRP)
@@ -65,9 +70,9 @@ Concrete types over 300 LOC:
 | `ExecutionContext` | `State` | 493 |
 | `StepExecutionWorker` | `Execution` | 376 |
 | `StepOutcomeHandler` | `Execution` | 376 |
-| `WorkflowContext` | `Contracts` | 359 |
-| `Parser` | `Expression` | 348 |
-| `ExecutionState` | `Contracts` | 308 |
+| `WorkflowContext` | `State` | 359 |
+| `Parser` | `_` | 348 |
+| `ExecutionState` | `State` | 308 |
 | `PreflightValidator` | `Validator` | 300 |
 
 ## Fat interfaces (ISP)

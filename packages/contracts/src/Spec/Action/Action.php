@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec\Action;
+namespace Alama\Arazzo\Contracts\Spec\Action;
 
-use Alama\Arazzo\Spec\Enum\ActionKind;
+use Alama\Arazzo\Contracts\Spec\Enum\ActionKind;
 
 abstract readonly class Action
 {

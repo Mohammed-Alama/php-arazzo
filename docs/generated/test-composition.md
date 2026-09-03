@@ -9,11 +9,83 @@ unit base, a deliberate feature layer, and a conformance slice proving spec
 compliance — not an inverted pyramid of end-to-end tests.
 
 
-## Core package
+## Contracts package
 
 ```mermaid
 pie showData
-    title Core — 22 test files
+    title Contracts — 17 test files
+    "Module-scoped": 16
+    "Root": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 16 | 94% |
+| Root | 1 | 6% |
+
+## Expression package
+
+```mermaid
+pie showData
+    title Expression — 10 test files
+    "Module-scoped": 7
+    "Root": 2
+    "Unit": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 7 | 70% |
+| Root | 2 | 20% |
+| Unit | 1 | 10% |
+
+## Document package
+
+```mermaid
+pie showData
+    title Document — 78 test files
+    "Module-scoped": 76
+    "Root": 2
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 76 | 97% |
+| Root | 2 | 3% |
+
+## Runner package
+
+```mermaid
+pie showData
+    title Runner — 58 test files
+    "Module-scoped": 56
+    "Root": 2
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 56 | 97% |
+| Root | 2 | 3% |
+
+## Cli package
+
+```mermaid
+pie showData
+    title Cli — 12 test files
+    "Module-scoped": 11
+    "Root": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 11 | 92% |
+| Root | 1 | 8% |
+
+## Core (integration) package
+
+```mermaid
+pie showData
+    title Core (integration) — 22 test files
     "Module-scoped": 8
     "Unit": 5
     "Feature": 4

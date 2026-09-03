@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Contracts\Spec;
 
-use Alama\Arazzo\Spec\Action\FailureAction;
-use Alama\Arazzo\Spec\Action\SuccessAction;
+use Alama\Arazzo\Contracts\Spec\Action\FailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SuccessAction;
 
 final readonly class Workflow
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Support\Events\Dispatcher;
+namespace Alama\Arazzo\Contracts\Support\Events\Dispatcher;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 

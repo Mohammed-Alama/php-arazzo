@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Contracts\Interfaces;
 
-use Alama\Arazzo\Spec\ArazzoDocument;
-use Alama\Arazzo\Spec\Step;
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Step;
 
 interface ResponseValidatorInterface
 {

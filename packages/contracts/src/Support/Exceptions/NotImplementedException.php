@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Support\Exceptions;
+namespace Alama\Arazzo\Contracts\Support\Exceptions;
 
 class NotImplementedException extends ArazzoException {}

@@ -18,8 +18,8 @@ Evans' first question: does the code speak one language?
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
 - **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
-- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 7 more (11 types)
-- **Runner**: `CliRunner` (1 types)
+- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 9 more (13 types)
+- **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface` (3 types)
 
 ### parse vs load vs decode
 
@@ -30,7 +30,7 @@ Evans' first question: does the code speak one language?
 ### document vs definition vs spec
 
 - **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
-- **Document**: `ArazzoDocument`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentLoader` + 4 more (8 types)
+- **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 6 more (10 types)
 - **Spec**: `SpecVersion` (1 types)
 
 ### fetch vs resolve vs retrieve
@@ -63,8 +63,8 @@ Evans' first question: does the code speak one language?
 
 | Name | Locations | Packages |
 |---|---|---|
-| `Lexer` | `Evaluation\Condition\Lexer`<br/>`Expression\Lexer` | core |
-| `Parser` | `Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Parser\Parser` | core |
-| `StepResult` | `Execution\Data\StepResult`<br/>`State\Data\StepResult` | core |
-| `Token` | `Evaluation\Condition\Token`<br/>`Expression\Data\Token` | core |
-| `TokenKind` | `Evaluation\Enum\TokenKind`<br/>`Expression\Enum\TokenKind` | core |
+| `Lexer` | `Expression\Evaluation\Condition\Lexer`<br/>`Expression\Lexer` | core |
+| `Parser` | `Expression\Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Document\Parser\Parser` | core |
+| `StepResult` | `Runner\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | core |
+| `Token` | `Expression\Data\Token`<br/>`Expression\Evaluation\Condition\Token` | core |
+| `TokenKind` | `Expression\Enum\TokenKind`<br/>`Expression\Evaluation\Enum\TokenKind` | core |

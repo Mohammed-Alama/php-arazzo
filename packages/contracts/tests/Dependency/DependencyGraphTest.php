@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Spec\Step;
 
 it('computes topological order correctly', function (): void {
     $steps = [

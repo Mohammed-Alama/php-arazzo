@@ -20,18 +20,21 @@ quadrantChart
     quadrant-2 Solid & stable
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
-    Async: [1, 0]
-    Console: [1, 0]
-    Contracts: [0.063, 0]
-    Dependency: [0.333, 0]
-    Evaluation: [0.5, 0]
-    Events: [0.167, 0]
-    Execution: [0.737, 0]
-    Expression: [0.222, 0]
-    Generator: [0.333, 0]
-    Infrastructure: [0.25, 0]
-    Jobs: [0.286, 0]
-    Laravel/Bindings: [0.952, 1]
+    Ast: [0.25, 0.267]
+    Async: [1, 1]
+    Console: [1, 1]
+    Data: [0.6, 0.5]
+    Dependency: [0.333, 1]
+    Enum: [0, 1]
+    Evaluation: [0.545, 1]
+    Events: [0.167, 1]
+    Exceptions: [0.143, 1]
+    Execution: [0.739, 1]
+    Generator: [0.333, 1]
+    Infrastructure: [0.25, 1]
+    Interfaces: [0.176, 1]
+    Jobs: [0.286, 1]
+    Laravel/Bindings: [0.955, 0.857]
     Laravel/Events: [0, 1]
     Laravel/Http: [0.778, 1]
     Laravel/Lock: [0.5, 1]
@@ -39,33 +42,37 @@ quadrantChart
     Laravel/Queue: [0.75, 1]
     Laravel/State: [0.5, 1]
     Laravel/Support: [0, 1]
-    Normalizer: [0.375, 0]
-    Parser: [0.286, 0]
-    Policy: [0.667, 0]
-    Protocol: [0.9, 0]
-    Renderer: [0.5, 0]
-    Resolver: [0.286, 0]
-    Spec: [0, 0]
-    State: [0.2, 0]
-    Support: [0, 0]
-    Telemetry: [0, 0]
-    Validator: [0.6, 0]
+    Normalizer: [0.333, 1]
+    Parser: [0.25, 1]
+    Policy: [0.75, 1]
+    Protocol: [0.9, 1]
+    Renderer: [0.5, 1]
+    Resolver: [0.25, 1]
+    Spec: [0, 1]
+    State: [0.071, 1]
+    Support: [0, 1]
+    Telemetry: [0, 1]
+    Validator: [0.667, 1]
+    Xpath: [0.286, 1]
 ```
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
-| `Async` | 1.00 | 0 | 6 | 0% |
-| `Console` | 1.00 | 0 | 11 | 0% |
-| `Contracts` | 0.06 | 0 | 11 | 0% |
-| `Dependency` | 0.33 | 0 | 3 | 0% |
-| `Evaluation` | 0.50 | 0 | 19 | 0% |
-| `Events` | 0.17 | 0 | 11 | 0% |
-| `Execution` | 0.74 | 0 | 35 | 0% |
-| `Expression` | 0.22 | 0 | 35 | 0% |
-| `Generator` | 0.33 | 0 | 2 | 0% |
-| `Infrastructure` | 0.25 | 0 | 4 | 0% |
-| `Jobs` | 0.29 | 0 | 2 | 0% |
-| `Laravel/Bindings` | 0.95 | 6 | 6 | 100% |
+| `Ast` | 0.25 | 4 | 15 | 27% |
+| `Async` | 1.00 | 6 | 6 | 100% |
+| `Console` | 1.00 | 11 | 11 | 100% |
+| `Data` | 0.60 | 2 | 4 | 50% |
+| `Dependency` | 0.33 | 5 | 3 | 100% |
+| `Enum` | 0.00 | 1 | 1 | 100% |
+| `Evaluation` | 0.55 | 43 | 19 | 100% |
+| `Events` | 0.17 | 29 | 11 | 100% |
+| `Exceptions` | 0.14 | 8 | 3 | 100% |
+| `Execution` | 0.74 | 51 | 35 | 100% |
+| `Generator` | 0.33 | 5 | 2 | 100% |
+| `Infrastructure` | 0.25 | 7 | 4 | 100% |
+| `Interfaces` | 0.18 | 33 | 11 | 100% |
+| `Jobs` | 0.29 | 7 | 2 | 100% |
+| `Laravel/Bindings` | 0.95 | 6 | 7 | 86% |
 | `Laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `Laravel/Http` | 0.78 | 4 | 3 | 100% |
 | `Laravel/Lock` | 0.50 | 3 | 1 | 100% |
@@ -73,16 +80,15 @@ quadrantChart
 | `Laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `Laravel/State` | 0.50 | 3 | 1 | 100% |
 | `Laravel/Support` | 0.00 | 1 | 1 | 100% |
-| `Normalizer` | 0.38 | 0 | 9 | 0% |
-| `Parser` | 0.29 | 0 | 11 | 0% |
-| `Policy` | 0.67 | 0 | 2 | 0% |
-| `Protocol` | 0.90 | 0 | 5 | 0% |
-| `Renderer` | 0.50 | 0 | 1 | 0% |
-| `Resolver` | 0.29 | 0 | 12 | 0% |
-| `Spec` | 0.00 | 0 | 38 | 0% |
-| `State` | 0.20 | 0 | 12 | 0% |
-| `Support` | 0.00 | 0 | 5 | 0% |
-| `Telemetry` | 0.00 | 0 | 2 | 0% |
-| `Validator` | 0.60 | 0 | 62 | 0% |
-
-**Refactor-now list** (untested churn): `Async`, `Console`, `Protocol`, `Execution`, `Policy`, `Validator`, `Evaluation`, `Renderer`
+| `Normalizer` | 0.33 | 21 | 9 | 100% |
+| `Parser` | 0.25 | 33 | 11 | 100% |
+| `Policy` | 0.75 | 2 | 2 | 100% |
+| `Protocol` | 0.90 | 10 | 5 | 100% |
+| `Renderer` | 0.50 | 3 | 1 | 100% |
+| `Resolver` | 0.25 | 22 | 12 | 100% |
+| `Spec` | 0.00 | 165 | 38 | 100% |
+| `State` | 0.07 | 60 | 14 | 100% |
+| `Support` | 0.00 | 18 | 5 | 100% |
+| `Telemetry` | 0.00 | 2 | 2 | 100% |
+| `Validator` | 0.67 | 65 | 62 | 100% |
+| `Xpath` | 0.29 | 7 | 2 | 100% |

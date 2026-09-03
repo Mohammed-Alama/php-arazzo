@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec\Enum;
+namespace Alama\Arazzo\Contracts\Spec\Enum;
 
 enum ParameterIn: string
 {

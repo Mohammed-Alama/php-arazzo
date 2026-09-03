@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Dependency;
+namespace Alama\Arazzo\Contracts\Dependency;
 
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Spec\Enum\StepStatus;
-use Alama\Arazzo\Spec\Step;
 
 class DependencyAnalyzer
 {

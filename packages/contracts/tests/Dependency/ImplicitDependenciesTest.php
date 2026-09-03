@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Evaluation;
 
-use Alama\Arazzo\Dependency\DependencyAnalyzer;
-use Alama\Arazzo\Dependency\DependencyGraph;
-use Alama\Arazzo\Dependency\ImplicitDependencies;
+use Alama\Arazzo\Contracts\Dependency\DependencyAnalyzer;
+use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Dependency\ImplicitDependencies;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Enum\StepStatus;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\RequestBody;
-use Alama\Arazzo\Spec\Step;
-use Alama\Arazzo\Spec\SuccessCriterion;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('extracts output references from parameters, body, criteria and correlation ids', function (): void {

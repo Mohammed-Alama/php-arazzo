@@ -8,4 +8,52 @@ appear in `git log` commits (full history, deterministic per HEAD). The
 hotspot score normalizes churn by size: high touches-per-KLOC means a module
 is edited far more often than its mass justifies — the classic "working in the
 same corner every week" signal that static structure graphs cannot show.
-_No git history found — hotspot analysis unavailable._
+
+```mermaid
+xychart-beta
+    title "Edit churn per module (git touches)"
+    x-axis ["Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Laravel/Queue", "Laravel/Lock", "Laravel/State", "Laravel/Events", "Async", "Console", "Dependency", "Evaluation", "Events"]
+    y-axis "Touches" 0 --> 20
+    bar [16, 14, 13, 10, 8, 7, 2, 1, 1, 1, 1, 1]
+```
+
+Analyzed 91 total file-touches across 34 modules.
+
+| Module | Touches | Share | LOC | Touches/KLOC |
+|---|---:|---:|---:|---:|
+| `Laravel/Bindings` | 16 | 18% | 476 | 33.6 |
+| `Laravel/Http` | 14 | 15% | 161 | 87 |
+| `Laravel/Persistence` | 13 | 14% | 252 | 51.6 |
+| `Laravel/Queue` | 10 | 11% | 100 | 100 |
+| `Laravel/Lock` | 8 | 9% | 49 | 163.3 |
+| `Laravel/State` | 7 | 8% | 38 | 184.2 |
+| `Laravel/Events` | 2 | 2% | 21 | 95.2 |
+| `Async` | 1 | 1% | 494 | 2 |
+| `Console` | 1 | 1% | 791 | 1.3 |
+| `Dependency` | 1 | 1% | 328 | 3 |
+| `Evaluation` | 1 | 1% | 1,159 | 0.9 |
+| `Events` | 1 | 1% | 295 | 3.4 |
+| `Execution` | 1 | 1% | 3,442 | 0.3 |
+| `Generator` | 1 | 1% | 105 | 9.5 |
+| `Infrastructure` | 1 | 1% | 160 | 6.3 |
+| `Jobs` | 1 | 1% | 34 | 29.4 |
+| `Laravel/Support` | 1 | 1% | 60 | 16.7 |
+| `Normalizer` | 1 | 1% | 588 | 1.7 |
+| `Parser` | 1 | 1% | 1,096 | 0.9 |
+| `Policy` | 1 | 1% | 96 | 10.4 |
+| `Protocol` | 1 | 1% | 544 | 1.8 |
+| `Renderer` | 1 | 1% | 253 | 4 |
+| `Resolver` | 1 | 1% | 370 | 2.7 |
+| `Spec` | 1 | 1% | 823 | 1.2 |
+| `State` | 1 | 1% | 1,586 | 0.6 |
+| `Support` | 1 | 1% | 171 | 5.8 |
+| `Telemetry` | 1 | 1% | 278 | 3.6 |
+| `Validator` | 1 | 1% | 3,104 | 0.3 |
+| `Ast` | 0 | 0% | 194 | 0 |
+| `Data` | 0 | 0% | 94 | 0 |
+| `Enum` | 0 | 0% | 17 | 0 |
+| `Exceptions` | 0 | 0% | 83 | 0 |
+| `Interfaces` | 0 | 0% | 183 | 0 |
+| `Xpath` | 0 | 0% | 103 | 0 |
+
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (100), `Laravel/Http` (87), `Laravel/Persistence` (51.6)

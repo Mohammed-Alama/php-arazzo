@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Support;
+namespace Alama\Arazzo\Contracts\Support;
 
 /**
  * Resolves local JSON Pointer references of the form "#/components/inputs/<name>"

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Dependency;
+namespace Alama\Arazzo\Contracts\Dependency;
 
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\Step;
 
 /**
  * Extracts implicit dependencies from runtime expression output references

@@ -14,11 +14,11 @@ edit `POLICY` when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 4 | 4 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 36 | **forbidden** |
+| `GuzzleHttp` | 8 | 4 | **forbidden** ⚠ |
+| `Illuminate` | 0 | 37 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 41 | 17 | allowed |
+| `Psr` | 44 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -36,7 +36,6 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Execution` | `OpenTelemetry` | 2 |
 | core | `Execution` | `Psr` | 19 |
 | core | `Execution` | `cebe` | 10 |
-| core | `Expression` | `Flow` | 1 |
 | core | `Generator` | `Psr` | 3 |
 | core | `Infrastructure` | `Psr` | 2 |
 | core | `Normalizer` | `cebe` | 6 |
@@ -46,8 +45,11 @@ edit `POLICY` when a boundary consciously moves.
 | core | `Support` | `Psr` | 4 |
 | core | `Telemetry` | `OpenTelemetry` | 23 |
 | core | `Validator` | `JsonSchema` | 7 |
+| core | `_` | `Flow` | 1 |
+| core | `_` | `GuzzleHttp` | 4 |
+| core | `_` | `Psr` | 3 |
 | laravel | `Bindings` | `GuzzleHttp` | 3 |
-| laravel | `Bindings` | `Illuminate` | 8 |
+| laravel | `Bindings` | `Illuminate` | 9 |
 | laravel | `Bindings` | `Psr` | 13 |
 | laravel | `Events` | `Illuminate` | 1 |
 | laravel | `Events` | `Psr` | 1 |
@@ -62,15 +64,16 @@ edit `POLICY` when a boundary consciously moves.
 | laravel | `_` | `Illuminate` | 2 |
 | laravel | `_` | `Spatie` | 2 |
 
-**11 core boundary violation(s):**
+**12 core boundary violation(s):**
 - `Console` imports `GuzzleHttp\*` (2 refs)
 - `Console` imports `OpenTelemetry\*` (1 refs)
 - `Console` imports `Symfony\*` (30 refs)
 - `Execution` imports `GuzzleHttp\*` (2 refs)
 - `Execution` imports `OpenTelemetry\*` (2 refs)
 - `Execution` imports `cebe\*` (10 refs)
-- `Expression` imports `Flow\*` (1 refs)
 - `Normalizer` imports `cebe\*` (6 refs)
 - `Parser` imports `Symfony\*` (2 refs)
 - `Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `Validator` imports `JsonSchema\*` (7 refs)
+- `_` imports `Flow\*` (1 refs)
+- `_` imports `GuzzleHttp\*` (4 refs)

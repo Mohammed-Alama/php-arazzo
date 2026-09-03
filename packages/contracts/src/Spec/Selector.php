@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Contracts\Spec;
 
-use Alama\Arazzo\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 
 final readonly class Selector
 {

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Dto;
 
-use Alama\Arazzo\Spec\Enum\CriterionType;
-use Alama\Arazzo\Spec\Enum\ParameterIn;
-use Alama\Arazzo\Spec\Enum\SourceType;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Info;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\PayloadReplacement;
-use Alama\Arazzo\Spec\RequestBody;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\SourceDescription;
-use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
+use Alama\Arazzo\Contracts\Spec\RequestBody;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 
 it('maps enum spec strings', function (): void {
     expect(SourceType::from('openapi'))->toBe(SourceType::Openapi)

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Contracts\State;
 
-use Alama\Arazzo\Spec\Enum\StepStatus;
-use Alama\Arazzo\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Spec\Workflow;
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 
 final readonly class WorkflowContext implements WorkflowContextInterface
 {

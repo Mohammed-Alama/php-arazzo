@@ -20,15 +20,19 @@ mindmap
       CriteriaEvaluator
     DefinitionRegistryInterface
       DatabaseDefinitionRegistry
+    DocumentInterface
+      Document
     EvaluationInputInterface
-      EvaluationContext
       EvaluationInput
+      EvaluationContext
     EventLedgerInterface
       NullEventLedger
       DatabaseEventLedger
     ExecutionRegistryInterface
       InProcessExecutionRegistry
       DatabaseExecutionRegistry
+    ExpressionEngineInterface
+      ExpressionEngine
     ExpressionEvaluatorInterface
       ExpressionEvaluator
     ExpressionResolverInterface
@@ -58,6 +62,8 @@ mindmap
       LaravelQueueDriver
     ResponseValidatorInterface
       ResponseSchemaValidator
+    RunnerFacadeInterface
+      RunnerFacade
     StateStoreInterface
       FileStateStore
       InMemoryStateStore
@@ -75,26 +81,29 @@ mindmap
 
 | Contract | SPI dir | Implementations |
 |---|---|---|
-| `AiClientInterface` | **yes** | `OpenAiClient` <small>core</small> |
-| `BackoffCalculatorInterface` | **yes** | `ExponentialBackoffCalculator` <small>core</small> |
+| `AiClientInterface` | no | `OpenAiClient` <small>core</small> |
+| `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
-| `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `EvaluationInput` <small>core</small> |
+| `DocumentInterface` | no | `Document` <small>core</small> |
+| `EvaluationInputInterface` | no | `EvaluationInput` <small>core</small>, `EvaluationContext` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
+| `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
 | `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
-| `LockManagerInterface` | **yes** | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
-| `LockStrategyInterface` | **yes** | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
+| `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
+| `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | no | `DefaultOpenApiExecutor` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `Swagger2Normalizer` <small>core</small>, `OpenApi30Normalizer` <small>core</small> |
-| `OutputExtractorInterface` | **yes** | `StepOutputExtractor` <small>core</small> |
+| `OutputExtractorInterface` | no | `StepOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
-| `QueueDriverInterface` | **yes** | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
-| `ResponseValidatorInterface` | **yes** | `ResponseSchemaValidator` <small>core</small> |
+| `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
+| `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
+| `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
-| `StepProtocolExecutorInterface` | **yes** | `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `StepProtocolExecutorInterface` | no | `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `AsyncApiStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |

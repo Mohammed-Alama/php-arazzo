@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec\Action;
+namespace Alama\Arazzo\Contracts\Spec\Action;
 
-use Alama\Arazzo\Spec\Enum\ActionKind;
-use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Enum\ActionKind;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 
 abstract readonly class FailureAction extends Action
 {

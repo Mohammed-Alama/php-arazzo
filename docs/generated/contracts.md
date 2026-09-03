@@ -8,50 +8,51 @@ from both packages. Core defines contracts; Laravel implements them.
 
 ```mermaid
 flowchart LR
-    I_AiClientInterface["AiClientInterface<br/><small>Contracts</small>"]:::contract
-    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Contracts</small>"]:::contract
+    I_AiClientInterface["AiClientInterface<br/><small>Interfaces</small>"]:::contract
+    I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>Interfaces</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>Evaluation</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>Evaluation</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>State</small>"]:::contract
-    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>Expression</small>"]:::contract
+    I_DocumentInterface["DocumentInterface<br/><small>(root)</small>"]:::contract
+    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>Interfaces</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>Events</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>State</small>"]:::contract
-    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Expression</small>"]:::contract
-    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Expression</small>"]:::contract
+    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(root)</small>"]:::contract
+    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>Interfaces</small>"]:::contract
+    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>Infrastructure</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>Parser</small>"]:::contract
-    I_LockManagerInterface["LockManagerInterface<br/><small>Contracts</small>"]:::contract
-    I_LockStrategyInterface["LockStrategyInterface<br/><small>Contracts</small>"]:::contract
+    I_LockManagerInterface["LockManagerInterface<br/><small>Interfaces</small>"]:::contract
+    I_LockStrategyInterface["LockStrategyInterface<br/><small>Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>Execution</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>Normalizer</small>"]:::contract
-    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Contracts</small>"]:::contract
+    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>State</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>Execution</small>"]:::contract
-    I_QueueDriverInterface["QueueDriverInterface<br/><small>Contracts</small>"]:::contract
-    I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>Contracts</small>"]:::contract
+    I_QueueDriverInterface["QueueDriverInterface<br/><small>Interfaces</small>"]:::contract
+    I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>Interfaces</small>"]:::contract
     I_Rule["Rule<br/><small>Validator</small>"]:::contract
+    I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(root)</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>State</small>"]:::contract
-    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Contracts</small>"]:::contract
+    I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>Interfaces</small>"]:::contract
     I_WorkflowContextInterface["WorkflowContextInterface<br/><small>Spec</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>State</small>"]:::contract
-    I_XpathEvaluator["XpathEvaluator<br/><small>Expression</small>"]:::contract
+    I_XpathEvaluator["XpathEvaluator<br/><small>Xpath</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>Parser</small>"]:::contract
-    C_core_Console_CliRunner["CliRunner<br/><small>Console</small>"]:::implCore
-    C_core_Console_CliRunner -.->|implements| I_LockManagerInterface
-    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
-    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
-    C_core_Console_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>Console</small>"]:::implCore
-    C_core_Console_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
-    C_core_Console_NullEventLedger["NullEventLedger<br/><small>Console</small>"]:::implCore
-    C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
-    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
-    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
-    C_core_Contracts_WorkflowContext["WorkflowContext<br/><small>Contracts</small>"]:::implCore
-    C_core_Contracts_WorkflowContext -.->|implements| I_WorkflowContextInterface
+    C_core_State_WorkflowContext["WorkflowContext<br/><small>State</small>"]:::implCore
+    C_core_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
+    C_core_State_FileStateStore["FileStateStore<br/><small>State</small>"]:::implCore
+    C_core_State_FileStateStore -.->|implements| I_StateStoreInterface
+    C_core_State_InMemoryStateStore["InMemoryStateStore<br/><small>State</small>"]:::implCore
+    C_core_State_InMemoryStateStore -.->|implements| I_StateStoreInterface
+    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
+    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
+    C_core_Data_EvaluationInput["EvaluationInput<br/><small>Data</small>"]:::implCore
+    C_core_Data_EvaluationInput -.->|implements| I_EvaluationInputInterface
+    C_core_Evaluation_EvaluationContext["EvaluationContext<br/><small>Evaluation</small>"]:::implCore
+    C_core_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_core_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_core_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>Evaluation</small>"]:::implCore
@@ -66,34 +67,16 @@ flowchart LR
     C_core_Evaluation_UnaryNot -.->|implements| I_ConditionNode
     C_core_Evaluation_RuntimeExpr["RuntimeExpr<br/><small>Evaluation</small>"]:::implCore
     C_core_Evaluation_RuntimeExpr -.->|implements| I_ConditionNode
-    C_core_Evaluation_EvaluationContext["EvaluationContext<br/><small>Evaluation</small>"]:::implCore
-    C_core_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
-    C_core_Expression_EvaluationInput["EvaluationInput<br/><small>Expression</small>"]:::implCore
-    C_core_Expression_EvaluationInput -.->|implements| I_EvaluationInputInterface
-    C_core_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
-    C_core_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
-    C_core_Execution_StepOutputExtractor["StepOutputExtractor<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_StepOutputExtractor -.->|implements| I_OutputExtractorInterface
-    C_core_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
-    C_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>Queue</small>"]:::implLaravel
-    C_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
-    C_core_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>Execution</small>"]:::implCore
-    C_core_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
-    C_core_Expression_DomXpathEvaluator["DomXpathEvaluator<br/><small>Expression</small>"]:::implCore
-    C_core_Expression_DomXpathEvaluator -.->|implements| I_XpathEvaluator
-    C_core_Expression_ExpressionEvaluator["ExpressionEvaluator<br/><small>Expression</small>"]:::implCore
-    C_core_Expression_ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
-    C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
-    C_core_Generator_OpenAiClient -.->|implements| I_AiClientInterface
-    C_core_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>Infrastructure</small>"]:::implCore
-    C_core_Infrastructure_FileLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Infrastructure_NullLockStrategy["NullLockStrategy<br/><small>Infrastructure</small>"]:::implCore
-    C_core_Infrastructure_NullLockStrategy -.->|implements| I_LockStrategyInterface
-    C_core_Infrastructure_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Infrastructure</small>"]:::implCore
-    C_core_Infrastructure_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>Xpath</small>"]:::implCore
+    C_core_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
+    C_core___ExpressionEngine["ExpressionEngine<br/><small>(root)</small>"]:::implCore
+    C_core___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_core___ExpressionEvaluator["ExpressionEvaluator<br/><small>(root)</small>"]:::implCore
+    C_core___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
+    C_core___Document["Document<br/><small>(root)</small>"]:::implCore
+    C_core___Document -.->|implements| I_DocumentInterface
+    C_core___RunnerFacade["RunnerFacade<br/><small>(root)</small>"]:::implCore
+    C_core___RunnerFacade -.->|implements| I_RunnerFacadeInterface
     C_core_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>Normalizer</small>"]:::implCore
     C_core_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_core_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>Normalizer</small>"]:::implCore
@@ -102,18 +85,6 @@ flowchart LR
     C_core_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
     C_core_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>Parser</small>"]:::implCore
     C_core_Parser_SymfonyYamlDecoder -.->|implements| I_YamlDecoder
-    C_core_Policy_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>Policy</small>"]:::implCore
-    C_core_Policy_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
-    C_core_Protocol_HttpStepExecutor["HttpStepExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_core_Protocol_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Protocol</small>"]:::implCore
-    C_core_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
     C_core_Resolver_LocalFetcher["LocalFetcher<br/><small>Resolver</small>"]:::implCore
     C_core_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
     C_core_Resolver_CachedFetcher["CachedFetcher<br/><small>Resolver</small>"]:::implCore
@@ -124,12 +95,6 @@ flowchart LR
     C_core_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_core_Resolver_SourceRegistry["SourceRegistry<br/><small>Resolver</small>"]:::implCore
     C_core_Resolver_SourceRegistry -.->|implements| I_SourceResolver
-    C_core_State_FileStateStore["FileStateStore<br/><small>State</small>"]:::implCore
-    C_core_State_FileStateStore -.->|implements| I_StateStoreInterface
-    C_core_State_InMemoryStateStore["InMemoryStateStore<br/><small>State</small>"]:::implCore
-    C_core_State_InMemoryStateStore -.->|implements| I_StateStoreInterface
-    C_laravel_State_RedisHotStateStore["RedisHotStateStore<br/><small>State</small>"]:::implLaravel
-    C_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
     C_core_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>Validator</small>"]:::implCore
     C_core_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_core_Validator_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolvesRule<br/><small>Validator</small>"]:::implCore
@@ -230,6 +195,50 @@ flowchart LR
     C_core_Validator_ExpressionSyntaxRule -.->|implements| I_Rule
     C_core_Validator_SelectorTypeSupportedRule["SelectorTypeSupportedRule<br/><small>Validator</small>"]:::implCore
     C_core_Validator_SelectorTypeSupportedRule -.->|implements| I_Rule
+    C_core_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
+    C_core_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
+    C_core_Execution_StepOutputExtractor["StepOutputExtractor<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_StepOutputExtractor -.->|implements| I_OutputExtractorInterface
+    C_core_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
+    C_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>Queue</small>"]:::implLaravel
+    C_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
+    C_core_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>Execution</small>"]:::implCore
+    C_core_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
+    C_core_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>Infrastructure</small>"]:::implCore
+    C_core_Infrastructure_FileLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Infrastructure_NullLockStrategy["NullLockStrategy<br/><small>Infrastructure</small>"]:::implCore
+    C_core_Infrastructure_NullLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Infrastructure_PessimisticLockStrategy["PessimisticLockStrategy<br/><small>Infrastructure</small>"]:::implCore
+    C_core_Infrastructure_PessimisticLockStrategy -.->|implements| I_LockStrategyInterface
+    C_core_Policy_ExponentialBackoffCalculator["ExponentialBackoffCalculator<br/><small>Policy</small>"]:::implCore
+    C_core_Policy_ExponentialBackoffCalculator -.->|implements| I_BackoffCalculatorInterface
+    C_core_Protocol_HttpStepExecutor["HttpStepExecutor<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Protocol_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
+    C_core_Protocol_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>Protocol</small>"]:::implCore
+    C_core_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
+    C_core_Console_CliRunner["CliRunner<br/><small>Console</small>"]:::implCore
+    C_core_Console_CliRunner -.->|implements| I_LockManagerInterface
+    C_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>Lock</small>"]:::implLaravel
+    C_laravel_Lock_LaravelRedisLockManager -.->|implements| I_LockManagerInterface
+    C_core_Console_InProcessExecutionRegistry["InProcessExecutionRegistry<br/><small>Console</small>"]:::implCore
+    C_core_Console_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_core_Console_NullEventLedger["NullEventLedger<br/><small>Console</small>"]:::implCore
+    C_core_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
+    C_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>Persistence</small>"]:::implLaravel
+    C_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
+    C_core_Generator_OpenAiClient["OpenAiClient<br/><small>Generator</small>"]:::implCore
+    C_core_Generator_OpenAiClient -.->|implements| I_AiClientInterface
     C_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>Http</small>"]:::implLaravel
     C_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
     C_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>Persistence</small>"]:::implLaravel

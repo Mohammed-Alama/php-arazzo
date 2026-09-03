@@ -16,16 +16,16 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 | Package | Readonly | Mutable | Readonly share |
 |---|---:|---:|---:|
-| core | 82 | 171 | 32% |
-| laravel | 0 | 21 | 0% |
+| core | 82 | 174 | 32% |
+| laravel | 0 | 22 | 0% |
 
 ## Mutable clusters
 
 | Class | Package | Dir | Serialization signals |
 |---|---|---|---|
-| `CliRunResult` | core | `Console/Cli` | `hydrate` |
 | `ImplicitDependencies` | core | `Dependency` | `hydrate` |
 | `ExecutionContext` | core | `State/Data` | `toArray`, `hydrate` |
+| `CliRunResult` | core | `Console/Cli` | `hydrate` |
 
 ## Cross-process aggregates
 

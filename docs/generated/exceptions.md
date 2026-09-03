@@ -15,14 +15,14 @@ classDiagram
     class E_DecodeException["DecodeException<br/><small>Parser</small>"]:::domain
     class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>State</small>"]:::domain
     class E_ExecutionException["ExecutionException<br/><small>Execution</small>"]:::domain
-    class E_ExpressionSyntaxException["ExpressionSyntaxException<br/><small>Expression</small>"]:::domain
+    class E_ExpressionSyntaxException["ExpressionSyntaxException<br/><small>Exceptions</small>"]:::domain
     class E_GotoTargetNotFoundException["GotoTargetNotFoundException<br/><small>Execution</small>"]:::domain
     class E_LoaderException["LoaderException<br/><small>Parser</small>"]:::domain
     class E_NotImplementedException["NotImplementedException<br/><small>Support</small>"]:::domain
     class E_ParserException["ParserException<br/><small>Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>Validator</small>"]:::domain
-    class E_SchemaValidationException["SchemaValidationException<br/><small>Contracts</small>"]:::domain
-    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>Expression</small>"]:::domain
+    class E_SchemaValidationException["SchemaValidationException<br/><small>Exceptions</small>"]:::domain
+    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>Exceptions</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>Resolver</small>"]:::domain
@@ -65,14 +65,14 @@ classDiagram
 | `DecodeException` | `RuntimeException` | Parser |
 | `DefinitionHydrationException` | `RuntimeException` | State |
 | `ExecutionException` | `ArazzoException` | Execution |
-| `ExpressionSyntaxException` | `ArazzoException` | Expression |
+| `ExpressionSyntaxException` | `ArazzoException` | Exceptions |
 | `GotoTargetNotFoundException` | `RuntimeException` | Execution |
 | `LoaderException` | `ArazzoException` | Parser |
 | `NotImplementedException` | `ArazzoException` | Support |
 | `ParserException` | `ArazzoException` | Parser |
 | `PreflightFailureException` | `ArazzoException` | Validator |
-| `SchemaValidationException` | `RuntimeException` | Contracts |
-| `SelectorEvaluationException` | `ArazzoException` | Expression |
+| `SchemaValidationException` | `RuntimeException` | Exceptions |
+| `SelectorEvaluationException` | `ArazzoException` | Exceptions |
 | `SourceFetchException` | `SourceResolutionException` | Resolver |
 | `SourceParseException` | `SourceResolutionException` | Resolver |
 | `SourceResolutionException` | `RuntimeException` | Resolver |

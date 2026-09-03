@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Contracts\Spec;
 
-use Alama\Arazzo\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
 
 final readonly class RawDocument
 {

@@ -10,6 +10,122 @@ objects, enums and exceptions are omitted. Regenerated before every commit.
 
 ```mermaid
 flowchart TD
+    subgraph G_Async["Async"]
+        Alama_Arazzo_Runner_Async_SuspensionHandler["SuspensionHandler"]:::entry
+        Alama_Arazzo_Runner_Async_TransitionApplier["TransitionApplier"]:::entry
+        Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents"]:::service
+    end
+    subgraph G_Events["Events"]
+        Alama_Arazzo_Runner_Events_CorrelationPendingEvent["CorrelationPendingEvent"]:::service
+        Alama_Arazzo_Runner_Events_CorrelationResumedEvent["CorrelationResumedEvent"]:::service
+        Alama_Arazzo_Runner_Events_RunCompletedEvent["RunCompletedEvent"]:::service
+        Alama_Arazzo_Runner_Events_RunFailedEvent["RunFailedEvent"]:::service
+        Alama_Arazzo_Runner_Events_RunStartedEvent["RunStartedEvent"]:::service
+        Alama_Arazzo_Runner_Events_StepExecutedEvent["StepExecutedEvent"]:::service
+        Alama_Arazzo_Runner_Events_StepFailedEvent["StepFailedEvent"]:::service
+        Alama_Arazzo_Runner_Events_StepRetriedEvent["StepRetriedEvent"]:::service
+        Alama_Arazzo_Runner_Events_StepStartedEvent["StepStartedEvent"]:::service
+    end
+    subgraph G_Execution["Execution"]
+        Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer"]:::entry
+        Alama_Arazzo_Runner_Execution_ExpressionValueResolver["ExpressionValueResolver"]:::service
+        Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector["IdempotencyKeyInjector"]:::service
+        Alama_Arazzo_Runner_Execution_RequestCompiler["RequestCompiler"]:::service
+        Alama_Arazzo_Runner_Execution_ReusableParameterResolver["ReusableParameterResolver"]:::service
+        Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker"]:::entry
+        Alama_Arazzo_Runner_Execution_StepExecutor["StepExecutor"]:::service
+        Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler"]:::service
+        Alama_Arazzo_Runner_Execution_SubWorkflowInvoker["SubWorkflowInvoker"]:::service
+        Alama_Arazzo_Runner_Execution_WorkflowEngine["WorkflowEngine"]:::service
+        Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor"]:::service
+    end
+    subgraph G_Execution_Data["Execution/Data"]
+        Alama_Arazzo_Runner_Execution_Data_ExecutionResult["ExecutionResult"]:::service
+        Alama_Arazzo_Runner_Execution_Data_InjectionResult["InjectionResult"]:::service
+        Alama_Arazzo_Runner_Execution_Data_RunControlFlow["RunControlFlow"]:::entry
+        Alama_Arazzo_Runner_Execution_Data_SubWorkflowResult["SubWorkflowResult"]:::service
+        Alama_Arazzo_Runner_Execution_Data_Transition["Transition"]:::entry
+    end
+    subgraph G_Jobs["Jobs"]
+        Alama_Arazzo_Runner_Jobs_ExecuteStepJob["ExecuteStepJob"]:::service
+        Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob["ResumeCorrelationJob"]:::service
+    end
+    subgraph G_Policy["Policy"]
+        Alama_Arazzo_Runner_Policy_ExponentialBackoffCalculator["ExponentialBackoffCalculator"]:::service
+        Alama_Arazzo_Runner_Policy_RetryPolicy["RetryPolicy"]:::service
+    end
+    subgraph G_Protocol["Protocol"]
+        Alama_Arazzo_Runner_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor"]:::entry
+        Alama_Arazzo_Runner_Protocol_HttpStepExecutor["HttpStepExecutor"]:::entry
+        Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor["SubWorkflowExecutor"]:::entry
+        Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor"]:::entry
+    end
+    subgraph G_Queue_Jobs["Queue/Jobs"]
+        Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob["RunExecuteStepJob"]:::entry
+        Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob["RunResumeCorrelationJob"]:::entry
+    end
+    subgraph G_State_Data["State/Data"]
+        Alama_Arazzo_Runner_State_Data_Budget["Budget"]:::service
+        Alama_Arazzo_Runner_State_Data_ExecutionContext["ExecutionContext"]:::service
+    end
+    Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
+    Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob
+    Alama_Arazzo_Runner_Async_SuspensionHandler --> Alama_Arazzo_Runner_Events_CorrelationPendingEvent
+    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Async_WorkerEvents
+    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
+    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_CorrelationPendingEvent
+    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_RunCompletedEvent
+    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_RunFailedEvent
+    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_StepExecutedEvent
+    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_StepFailedEvent
+    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_StepStartedEvent
+    Alama_Arazzo_Runner_Execution_CorrelationResumer --> Alama_Arazzo_Runner_Events_CorrelationResumedEvent
+    Alama_Arazzo_Runner_Execution_CorrelationResumer --> Alama_Arazzo_Runner_Execution_StepOutcomeHandler
+    Alama_Arazzo_Runner_Execution_Data_RunControlFlow --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Execution_Data_Transition --> Alama_Arazzo_Runner_State_Data_ExecutionContext
+    Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector --> Alama_Arazzo_Runner_Execution_Data_InjectionResult
+    Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
+    Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Events_CorrelationPendingEvent
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Events_RunCompletedEvent
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Events_RunFailedEvent
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Events_StepExecutedEvent
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Events_StepFailedEvent
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Events_StepStartedEvent
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
+    Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
+    Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector
+    Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_RequestCompiler
+    Alama_Arazzo_Runner_Execution_StepOutcomeHandler --> Alama_Arazzo_Runner_Events_RunCompletedEvent
+    Alama_Arazzo_Runner_Execution_StepOutcomeHandler --> Alama_Arazzo_Runner_Events_RunFailedEvent
+    Alama_Arazzo_Runner_Execution_StepOutcomeHandler --> Alama_Arazzo_Runner_Events_StepRetriedEvent
+    Alama_Arazzo_Runner_Execution_StepOutcomeHandler --> Alama_Arazzo_Runner_Execution_SubWorkflowInvoker
+    Alama_Arazzo_Runner_Execution_StepOutcomeHandler --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Execution_StepOutcomeHandler --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
+    Alama_Arazzo_Runner_Execution_SubWorkflowInvoker --> Alama_Arazzo_Runner_Execution_Data_SubWorkflowResult
+    Alama_Arazzo_Runner_Execution_SubWorkflowInvoker --> Alama_Arazzo_Runner_Execution_WorkflowExecutor
+    Alama_Arazzo_Runner_Execution_WorkflowEngine --> Alama_Arazzo_Runner_Policy_RetryPolicy
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_RunCompletedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_RunFailedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_RunStartedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_StepExecutedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_StepFailedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_StepRetriedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Events_StepStartedEvent
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_Data_ExecutionResult
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_StepExecutor
+    Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Policy_RetryPolicy --> Alama_Arazzo_Runner_Policy_ExponentialBackoffCalculator
+    Alama_Arazzo_Runner_Protocol_AsyncApiStepExecutor --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
+    Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
+    Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector
+    Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_RequestCompiler
+    Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor --> Alama_Arazzo_Runner_Execution_WorkflowEngine
+    Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
+    Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_WorkflowExecutor
+    Alama_Arazzo_Runner_State_Data_ExecutionContext --> Alama_Arazzo_Runner_State_Data_Budget
     classDef entry fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef service fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
@@ -17,3 +133,43 @@ flowchart TD
 
 | Service | Package | Depends on | Used by | Dispatches |
 |---|---|---|---|---|
+| **RunExecuteStepJob** | laravel | `ExecuteStepJob` | — | — |
+| **RunResumeCorrelationJob** | laravel | `ResumeCorrelationJob` | — | — |
+| **SuspensionHandler** | core | `CorrelationPendingEvent` | — | `CorrelationPendingEvent` |
+| **TransitionApplier** | core | `WorkerEvents`, `WorkflowEngine`, `ExecuteStepJob` | — | — |
+| **WorkerEvents** | core | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent` | `TransitionApplier` | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent` |
+| **CorrelationPendingEvent** | core | — | `SuspensionHandler`, `WorkerEvents`, `StepExecutionWorker` | — |
+| **CorrelationResumedEvent** | core | — | `CorrelationResumer` | — |
+| **RunCompletedEvent** | core | — | `WorkerEvents`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
+| **RunFailedEvent** | core | — | `WorkerEvents`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
+| **RunStartedEvent** | core | — | `WorkflowExecutor` | — |
+| **StepExecutedEvent** | core | — | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` | — |
+| **StepFailedEvent** | core | — | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` | — |
+| **StepRetriedEvent** | core | — | `StepOutcomeHandler`, `WorkflowExecutor` | — |
+| **StepStartedEvent** | core | — | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` | — |
+| **CorrelationResumer** | core | `CorrelationResumedEvent`, `StepOutcomeHandler` | — | `CorrelationResumedEvent` |
+| **ExecutionResult** | core | — | `WorkflowExecutor` | — |
+| **InjectionResult** | core | — | `IdempotencyKeyInjector` | — |
+| **RunControlFlow** | core | `WorkflowEngine` | — | — |
+| **SubWorkflowResult** | core | — | `SubWorkflowInvoker` | — |
+| **Transition** | core | `ExecutionContext` | — | — |
+| **ExpressionValueResolver** | core | — | `RequestCompiler`, `StepExecutor`, `HttpStepExecutor` | — |
+| **IdempotencyKeyInjector** | core | `InjectionResult` | `StepExecutor`, `HttpStepExecutor` | — |
+| **RequestCompiler** | core | `ExpressionValueResolver`, `ReusableParameterResolver` | `StepExecutor`, `HttpStepExecutor` | — |
+| **ReusableParameterResolver** | core | — | `RequestCompiler`, `AsyncApiStepExecutor`, `SubWorkflowStepExecutor` | — |
+| **StepExecutionWorker** | core | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent`, `WorkflowEngine`, `ExecuteStepJob` | — | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent` |
+| **StepExecutor** | core | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler` | `WorkflowExecutor` | — |
+| **StepOutcomeHandler** | core | `RunCompletedEvent`, `RunFailedEvent`, `StepRetriedEvent`, `SubWorkflowInvoker`, `WorkflowEngine`, `ExecuteStepJob` | `CorrelationResumer` | `RunCompletedEvent`, `RunFailedEvent`, `StepRetriedEvent` |
+| **SubWorkflowInvoker** | core | `SubWorkflowResult`, `WorkflowExecutor` | `StepOutcomeHandler` | — |
+| **WorkflowEngine** | core | `RetryPolicy` | `TransitionApplier`, `RunControlFlow`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor`, `SubWorkflowExecutor` | — |
+| **WorkflowExecutor** | core | `RunCompletedEvent`, `RunFailedEvent`, `RunStartedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepRetriedEvent`, `StepStartedEvent`, `ExecutionResult`, `StepExecutor`, `WorkflowEngine` | `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | `RunCompletedEvent`, `RunFailedEvent`, `RunStartedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepRetriedEvent`, `StepStartedEvent` |
+| **ExecuteStepJob** | core | — | `RunExecuteStepJob`, `TransitionApplier`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
+| **ResumeCorrelationJob** | core | — | `RunResumeCorrelationJob` | — |
+| **ExponentialBackoffCalculator** | core | — | `RetryPolicy` | — |
+| **RetryPolicy** | core | `ExponentialBackoffCalculator` | `WorkflowEngine` | — |
+| **AsyncApiStepExecutor** | core | `ReusableParameterResolver` | — | — |
+| **HttpStepExecutor** | core | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler` | — | — |
+| **SubWorkflowExecutor** | core | `WorkflowEngine` | — | — |
+| **SubWorkflowStepExecutor** | core | `ReusableParameterResolver`, `WorkflowExecutor` | — | — |
+| **Budget** | core | — | `ExecutionContext` | — |
+| **ExecutionContext** | core | `Budget` | `Transition` | — |

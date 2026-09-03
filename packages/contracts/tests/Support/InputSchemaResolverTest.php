@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Support\InputSchemaResolver;
+use Alama\Arazzo\Contracts\Support\InputSchemaResolver;
 
 function componentInputs(): array
 {

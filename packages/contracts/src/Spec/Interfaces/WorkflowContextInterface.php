@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec\Interfaces;
+namespace Alama\Arazzo\Contracts\Spec\Interfaces;
 
-use Alama\Arazzo\Spec\Enum\StepStatus;
+use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 
 interface WorkflowContextInterface
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec;
+namespace Alama\Arazzo\Contracts\Spec;
 
-use Alama\Arazzo\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 
 final readonly class Parameter
 {

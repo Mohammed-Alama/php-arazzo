@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec\Action;
+namespace Alama\Arazzo\Contracts\Spec\Action;
 
-use Alama\Arazzo\Spec\Enum\ActionKind;
-use Alama\Arazzo\Spec\Parameter;
-use Alama\Arazzo\Spec\Reusable;
-use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Enum\ActionKind;
+use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 
 final readonly class FailureGotoAction extends FailureAction
 {

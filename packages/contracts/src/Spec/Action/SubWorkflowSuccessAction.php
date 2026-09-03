@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Spec\Action;
+namespace Alama\Arazzo\Contracts\Spec\Action;
 
-use Alama\Arazzo\Spec\Enum\ActionKind;
-use Alama\Arazzo\Spec\Expression;
-use Alama\Arazzo\Spec\Selector;
-use Alama\Arazzo\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Spec\Enum\ActionKind;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 
 final readonly class SubWorkflowSuccessAction extends SuccessAction
 {
