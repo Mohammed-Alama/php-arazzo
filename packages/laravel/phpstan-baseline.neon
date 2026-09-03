@@ -91,7 +91,7 @@ parameters:
 			path: src/Http/Controllers/ArazzoApiController.php
 
 		-
-			message: '#^Parameter \#1 \$openapiSpec of method Alama\\Arazzo\\Generator\\ArazzoGenerator\:\:generate\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$openapiSpec of method Alama\\Arazzo\\Cli\\Generator\\ArazzoGenerator\:\:generate\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Http/Controllers/ArazzoApiController.php
@@ -139,7 +139,7 @@ parameters:
 			path: src/Http/Controllers/ArazzoApiController.php
 
 		-
-			message: '#^Parameter \#2 \$response of class Alama\\Arazzo\\Jobs\\ResumeCorrelationJob constructor expects array\{statusCode\?\: int, headers\?\: array\<string, mixed\>, body\?\: mixed\}, array\<string, mixed\> given\.$#'
+			message: '#^Parameter \#2 \$response of class Alama\\Arazzo\\Runner\\Jobs\\ResumeCorrelationJob constructor expects array\{statusCode\?\: int, headers\?\: array\<string, mixed\>, body\?\: mixed\}, array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Http/Controllers/WebhookResumeController.php
@@ -157,7 +157,7 @@ parameters:
 			path: src/Persistence/DatabaseDefinitionRegistry.php
 
 		-
-			message: '#^Parameter \#1 \$data of class Alama\\Arazzo\\Spec\\RawDocument constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			message: '#^Parameter \#1 \$data of class Alama\\Arazzo\\Contracts\\Spec\\RawDocument constructor expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabaseDefinitionRegistry.php
@@ -169,25 +169,25 @@ parameters:
 			path: src/Persistence/DatabaseDefinitionRegistry.php
 
 		-
-			message: '#^Parameter \#1 \$correlationId of class Alama\\Arazzo\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$correlationId of class Alama\\Arazzo\\Contracts\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php
 
 		-
-			message: '#^Parameter \#2 \$executionId of class Alama\\Arazzo\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#2 \$executionId of class Alama\\Arazzo\\Contracts\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php
 
 		-
-			message: '#^Parameter \#3 \$stepId of class Alama\\Arazzo\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#3 \$stepId of class Alama\\Arazzo\\Contracts\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php
 
 		-
-			message: '#^Parameter \#4 \$channelPath of class Alama\\Arazzo\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
+			message: '#^Parameter \#4 \$channelPath of class Alama\\Arazzo\\Contracts\\Spec\\PendingCorrelation constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Persistence/DatabasePendingCorrelationRegistry.php

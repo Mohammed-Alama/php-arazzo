@@ -1,3 +1,4 @@
+Relocated to packages/contracts/CONTEXT.md
 # Domain Glossary
 
 - **Expression Evaluator**: The low-level module that parses and resolves an Arazzo Expression string against the current Workflow Context.

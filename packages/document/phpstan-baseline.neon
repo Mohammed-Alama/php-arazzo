@@ -1,0 +1,67 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Document\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Contracts\\Spec\\Expression\|Alama\\Arazzo\\Contracts\\Spec\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:optionalString\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:optionalString\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:requireString\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:requireString\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 11
+			path: src/Parser/Parser.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Resolver/Fetchers/CachedFetcher.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Validator/Rules/DocUnknownFieldRule.php
+
+		-
+			message: '#^Offset ''jsonpath''\|''jsonpointer''\|''xpath'' on array\{jsonpath\: array\{''rfc9535''\}, xpath\: array\{''xpath\-10'', ''xpath\-20'', ''xpath\-30'', ''xpath\-31''\}, jsonpointer\: array\{''rfc6901''\}\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/Validator/Rules/SelectorTypeSupportedRule.php
+
+		-
+			message: '#^Call to function is_scalar\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Validator/Rules/WorkflowDependsOnExistsRule.php

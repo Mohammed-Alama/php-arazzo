@@ -12,48 +12,48 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Laravel/Queue", "Laravel/Lock", "Laravel/State", "Dependency", "Evaluation", "Exceptions", "Interfaces", "Laravel/Events", "Normalizer"]
+    x-axis ["Laravel/Bindings", "Laravel/Http", "Laravel/Persistence", "Laravel/Queue", "Laravel/Lock", "Laravel/State", "State", "Async", "Dependency", "Evaluation", "Events", "Exceptions"]
     y-axis "Touches" 0 --> 20
-    bar [16, 14, 13, 10, 8, 7, 2, 2, 2, 2, 2, 2]
+    bar [16, 14, 13, 10, 8, 7, 3, 2, 2, 2, 2, 2]
 ```
 
-Analyzed 108 total file-touches across 34 modules.
+Analyzed 117 total file-touches across 34 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `Laravel/Bindings` | 16 | 15% | 476 | 33.6 |
-| `Laravel/Http` | 14 | 13% | 161 | 87 |
-| `Laravel/Persistence` | 13 | 12% | 252 | 51.6 |
+| `Laravel/Bindings` | 16 | 14% | 476 | 33.6 |
+| `Laravel/Http` | 14 | 12% | 161 | 87 |
+| `Laravel/Persistence` | 13 | 11% | 252 | 51.6 |
 | `Laravel/Queue` | 10 | 9% | 100 | 100 |
 | `Laravel/Lock` | 8 | 7% | 49 | 163.3 |
 | `Laravel/State` | 7 | 6% | 38 | 184.2 |
+| `State` | 3 | 3% | 1,586 | 1.9 |
+| `Async` | 2 | 2% | 494 | 4 |
 | `Dependency` | 2 | 2% | 328 | 6.1 |
 | `Evaluation` | 2 | 2% | 1,159 | 1.7 |
+| `Events` | 2 | 2% | 295 | 6.8 |
 | `Exceptions` | 2 | 2% | 83 | 24.1 |
+| `Execution` | 2 | 2% | 3,442 | 0.6 |
+| `Infrastructure` | 2 | 2% | 160 | 12.5 |
 | `Interfaces` | 2 | 2% | 183 | 10.9 |
+| `Jobs` | 2 | 2% | 34 | 58.8 |
 | `Laravel/Events` | 2 | 2% | 21 | 95.2 |
 | `Normalizer` | 2 | 2% | 588 | 3.4 |
 | `Parser` | 2 | 2% | 1,096 | 1.8 |
+| `Policy` | 2 | 2% | 96 | 20.8 |
+| `Protocol` | 2 | 2% | 544 | 3.7 |
 | `Resolver` | 2 | 2% | 370 | 5.4 |
 | `Spec` | 2 | 2% | 823 | 2.4 |
-| `State` | 2 | 2% | 1,586 | 1.3 |
 | `Support` | 2 | 2% | 171 | 11.7 |
+| `Telemetry` | 2 | 2% | 278 | 7.2 |
 | `Validator` | 2 | 2% | 3,104 | 0.6 |
 | `Ast` | 1 | 1% | 194 | 5.2 |
-| `Async` | 1 | 1% | 494 | 2 |
 | `Console` | 1 | 1% | 791 | 1.3 |
 | `Data` | 1 | 1% | 94 | 10.6 |
 | `Enum` | 1 | 1% | 17 | 58.8 |
-| `Events` | 1 | 1% | 295 | 3.4 |
-| `Execution` | 1 | 1% | 3,442 | 0.3 |
 | `Generator` | 1 | 1% | 105 | 9.5 |
-| `Infrastructure` | 1 | 1% | 160 | 6.3 |
-| `Jobs` | 1 | 1% | 34 | 29.4 |
 | `Laravel/Support` | 1 | 1% | 60 | 16.7 |
-| `Policy` | 1 | 1% | 96 | 10.4 |
-| `Protocol` | 1 | 1% | 544 | 1.8 |
 | `Renderer` | 1 | 1% | 253 | 4 |
-| `Telemetry` | 1 | 1% | 278 | 3.6 |
 | `Xpath` | 1 | 1% | 103 | 9.7 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `Laravel/Queue` (100), `Laravel/Http` (87), `Laravel/Persistence` (51.6)

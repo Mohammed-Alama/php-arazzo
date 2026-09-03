@@ -26,14 +26,23 @@ format: ## Format code using Laravel Pint
 analyse: ## Run PHPStan static analysis
 	composer run analyse
 
-analyse-baseline: ## Regenerate PHPStan baselines
-	@# Comment out the baseline includes so PHPStan generates a fresh baseline
-	sed -i '' 's/^    - phpstan-baseline\.neon/    # - phpstan-baseline.neon/' packages/core/phpstan.neon.dist
-	sed -i '' 's/^    - phpstan-baseline\.neon/    # - phpstan-baseline.neon/' packages/laravel/phpstan.neon.dist
-	cd packages/core && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; \
-	  sed -i '' 's/^    # - phpstan-baseline\.neon/    - phpstan-baseline.neon/' ../core/phpstan.neon.dist
-	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; \
-	  sed -i '' 's/^    # - phpstan-baseline\.neon/    - phpstan-baseline.neon/' ../laravel/phpstan.neon.dist
+analyse-baseline: ## Regenerate PHPStan baselines for the split core packages + laravel
+	@# Each sub-package config inlines `includes: - phpstan-baseline.neon`; PHPStan can
+	@# regenerate an in-place baseline, but the first run needs the file to exist. Run
+	@# from inside each package dir so baseline `path:` entries stay config-relative.
+	@# Sub-packages & laravel use their own vendor/bin/phpstan (fall back to core's).
+	@for pkg in contracts expression document runner cli; do \
+	  echo "==> $$pkg"; \
+	  ( cd packages/$$pkg && ( \
+	      vendor/bin/phpstan analyse -c phpstan.neon.dist --generate-baseline --memory-limit=1G || \
+	      ../../../vendor/bin/phpstan analyse -c phpstan.neon.dist --generate-baseline --memory-limit=1G || \
+	      ../core/vendor/bin/phpstan analyse -c phpstan.neon.dist --generate-baseline --memory-limit=1G \
+	  ) ); \
+	done
+	@echo "==> laravel"; \
+	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; cd ../..
+	@echo "==> core (hollow — src empty, baseline optional/absent)"; \
+	cd packages/core && (vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G || true); cd ../..
 
 ci-all: ## Run all GitHub Actions locally using act
 	act --container-architecture linux/amd64

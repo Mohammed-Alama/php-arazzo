@@ -1,0 +1,43 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Binary operation "\." between ''API Error\: '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Cannot access offset ''choices'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Cannot access offset ''content'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Cannot access offset ''error'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Cannot access offset ''message'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Cli\\Generator\\Clients\\OpenAiClient\:\:generate\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
