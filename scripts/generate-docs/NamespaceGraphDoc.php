@@ -19,17 +19,35 @@ and `packages/laravel/src`. Regenerated before every commit.
 MD;
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
- * @return array<string, list<ScannedFile>> laravel modules prefixed "Laravel:"
+ * Dual-mode merge (Task 8 unifies everything onto $scans and drops legacy):
+ * - merge($scans): package slug => (module => files); keys output on
+ *   package-qualified keys (`expression:Ast`).
+ * - merge($core, $laravel): historic bare-module shape for renderers not yet
+ *   migrated; output is byte-identical to the pre-split behavior.
+ *
+ * @param  array<string, array<string, list<ScannedFile>>>|array<string, list<ScannedFile>>  $a
+ * @param  array<string, list<ScannedFile>>  $b
+ * @return array<string, list<ScannedFile>>
  */
-function merge(array $core, array $laravel): array
+function merge(array $a, array $b = []): array
 {
+    if (func_num_args() === 1) {
+        $merged = [];
+        foreach ($a as $package => $modules) {
+            foreach ($modules as $module => $files) {
+                $key = \ArazzoDocs\packageKey($package, $module);
+                $merged[$key] = array_merge($merged[$key] ?? [], $files);
+            }
+        }
+
+        return $merged;
+    }
+
     $merged = [];
-    foreach ($core as $module => $files) {
+    foreach ($a as $module => $files) {
         $merged[$module] = $files;
     }
-    foreach ($laravel as $module => $files) {
+    foreach ($b as $module => $files) {
         $merged["Laravel:{$module}"] = $files;
     }
 
@@ -37,31 +55,46 @@ function merge(array $core, array $laravel): array
 }
 
 /**
- * @param  array<string, list<ScannedFile>>  $core
- * @param  array<string, list<ScannedFile>>  $laravel
+ * Deterministic display namespace for a module: most common real namespace
+ * across its files, tie-broken alphabetically (scanner file order is
+ * filesystem-dependent, so first-file picks would be nondeterministic).
  */
-function render(array $core, array $laravel): string
+function displayNamespace(string $package, string $module, array $files): string
 {
-    $all = merge($core, $laravel);
+    $namespaces = [];
+    foreach ($files as $file) {
+        $namespaces[$file->namespace] = ($namespaces[$file->namespace] ?? 0) + 1;
+    }
+    uksort($namespaces, fn (string $a, string $b): int => $namespaces[$b] <=> $namespaces[$a] ?: strcmp($a, $b));
 
-    // fqcn => module map
+    return \ArazzoDocs\moduleLabel($package, $module, array_key_first($namespaces) ?? '');
+}
+
+/**
+ * @param  array<string, array<string, list<ScannedFile>>>  $scans  package slug => (module => files)
+ */
+function render(array $scans): string
+{
+    $all = merge($scans);
+
+    // fqcn => package-qualified module key
     $classModule = [];
-    foreach ($all as $module => $files) {
+    foreach ($all as $key => $files) {
         foreach ($files as $file) {
-            $classModule[$file->namespace.'\\'.$file->className] = $module;
+            $classModule[$file->namespace.'\\'.$file->className] = $key;
         }
     }
 
     // module-level edges
     $edges = [];
-    foreach ($all as $module => $files) {
+    foreach ($all as $key => $files) {
         foreach ($files as $file) {
             foreach ($file->uses as $use) {
                 $target = $classModule[$use] ?? null;
-                if ($target === null || $target === $module) {
+                if ($target === null || $target === $key) {
                     continue;
                 }
-                $edges[$module][$target] = true;
+                $edges[$key][$target] = true;
             }
         }
     }
@@ -76,16 +109,21 @@ function render(array $core, array $laravel): string
     $nodeIds = array_values(array_unique($nodeIds));
     sort($nodeIds);
 
+    // package-qualified key => [package, module] for labels
+    $split = [];
+    foreach ($nodeIds as $id) {
+        $pos = strpos($id, ':');
+        $split[$id] = $pos === false ? ['', $id] : [substr($id, 0, $pos), substr($id, $pos + 1)];
+    }
+
     $lines = [BANNER, '```mermaid', 'flowchart LR'];
     foreach ($nodeIds as $id) {
-        $label = match ($id) {
-            '_' => '(core package root)',
-            'Laravel:_' => '(Laravel package root)',
-            default => str_starts_with($id, 'Laravel:')
-                ? 'Alama\\Arazzo\\Laravel\\'.substr($id, strlen('Laravel:'))
-                : \ArazzoDocs\moduleNamespace($id),
+        [$package, $module] = $split[$id];
+        $label = match (true) {
+            $module === '_' => "({$package} package root)",
+            default => displayNamespace($package, $module, $all[$id]),
         };
-        $style = str_starts_with($id, 'Laravel:') ? 'laravelNode' : 'coreNode';
+        $style = $package === 'laravel' ? 'laravelNode' : 'coreNode';
         $lines[] = sprintf('    %s["%s"]:::%s', nodeId($id), $label, $style);
     }
 

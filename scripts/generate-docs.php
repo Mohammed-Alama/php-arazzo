@@ -91,17 +91,29 @@ if (!is_dir($outDir)) {
     mkdir($outDir, 0777, true);
 }
 
-$core = [];
+$scans = [];
 foreach (\ArazzoDocs\CORE_SRC_PACKAGES as $package) {
-    foreach (Scanner::scan($root.'/packages/'.$package.'/src', 'Alama\\Arazzo\\', $package) as $module => $files) {
+    $scans[$package] = Scanner::scan($root.'/packages/'.$package.'/src', 'Alama\\Arazzo\\', $package);
+}
+$scans['laravel'] = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\', 'laravel');
+
+// BC: renderers not yet migrated to $scans keep the historic bare-module
+// $core/$laravel shape so their output stays byte-identical (Task 8 migrates
+// the rest one batch at a time).
+$core = [];
+foreach ($scans as $package => $modules) {
+    if ($package === 'laravel') {
+        continue;
+    }
+    foreach ($modules as $module => $files) {
         $core[$module] = array_merge($core[$module] ?? [], $files);
     }
 }
 
-$laravel = Scanner::scan($root.'/packages/laravel/src', 'Alama\\Arazzo\\Laravel\\', 'laravel');
+$laravel = $scans['laravel'];
 
 $generated = [
-    'namespace-graph.md' => NamespaceGraphDoc\render($core, $laravel),
+    'namespace-graph.md' => NamespaceGraphDoc\render($scans),
     'document-model.md' => DocumentModelDoc\render($core),
     'contracts.md' => ContractsDoc\render($core, $laravel),
     'events.md' => EventsDoc\render($core, $laravel),
@@ -116,7 +128,7 @@ $generated = [
     'failure-modes.md' => FailureModesDoc\render($core, $laravel),
     'security-surface.md' => SecuritySurfaceDoc\render($core, $laravel),
     'state-machine.md' => StateMachineDoc\render($core, $laravel),
-    'layering.md' => LayeringDoc\render($core, $laravel),
+    'layering.md' => LayeringDoc\render($scans),
     'coverage-risk.md' => CoverageRiskDoc\render($core, $laravel, $root),
     'churn-hotspots.md' => ChurnHotspotsDoc\render($core, $laravel, $root),
     'dependency-flow.md' => DependencyFlowDoc\render($core, $laravel),
