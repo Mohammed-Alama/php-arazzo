@@ -7,10 +7,9 @@
     "publishedAt": "2026-06-11T12:50:01Z",
     "tags": [
         "mcp",
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
+    "severity": "actionable",
     "relevance": "P2-2 MCP server exposure",
     "raw": {
         "source": "Specmatic/specmatic",

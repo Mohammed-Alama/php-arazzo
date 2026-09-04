@@ -5,9 +5,11 @@
     "title": "Added example of query parameter versioning",
     "url": "https://github.com/OAI/sig-moonwalk/pull/174",
     "publishedAt": "2025-02-23T19:20:55Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "watch",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

@@ -5,11 +5,9 @@
     "title": "fix: upgrade axios to 1.8.2, 0.30.0 (CVE-2025-27152)",
     "url": "https://github.com/OAI/tools.openapis.org/pull/271",
     "publishedAt": "2026-07-30T06:18:45Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "pr",

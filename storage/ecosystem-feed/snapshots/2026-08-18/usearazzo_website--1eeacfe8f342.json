@@ -5,11 +5,9 @@
     "title": "fix(blog): fix first post slug",
     "url": "https://github.com/usearazzo/website/commit/8427113d5ae3684c4bb4f262b3f92ce0284b3cfc",
     "publishedAt": "2026-08-18T11:42:46Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "usearazzo/website",
         "type": "commit",

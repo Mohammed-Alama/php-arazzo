@@ -7,10 +7,9 @@
     "publishedAt": "2026-08-19T07:11:51Z",
     "tags": [
         "soap",
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
+    "severity": "actionable",
     "relevance": "P0-6 source routing (wsdl type)",
     "raw": {
         "source": "OAI/Arazzo-Specification",

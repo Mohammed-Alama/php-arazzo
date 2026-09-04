@@ -7,10 +7,9 @@
     "publishedAt": "2026-02-04T15:36:11Z",
     "tags": [
         "xml",
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
+    "severity": "watch",
     "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
     "raw": {
         "source": "jentic/arazzo-engine",

@@ -9,10 +9,10 @@
         "xml",
         "mcp",
         "actor",
-        "breaking",
+        "security",
         "spec"
     ],
-    "severity": "breaking",
+    "severity": "actionable",
     "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
     "raw": {
         "source": "Specmatic/specmatic",

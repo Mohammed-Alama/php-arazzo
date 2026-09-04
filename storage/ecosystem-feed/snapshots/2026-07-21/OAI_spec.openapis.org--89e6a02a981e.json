@@ -5,11 +5,9 @@
     "title": "Merge pull request #111 from baywet/fix/extension-versions",
     "url": "https://github.com/OAI/spec.openapis.org/commit/e9fbdd513564ecb033f36610c4a5f3d5fcbadbfa",
     "publishedAt": "2026-07-21T15:52:09Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "commit",

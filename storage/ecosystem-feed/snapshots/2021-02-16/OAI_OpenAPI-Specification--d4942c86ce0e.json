@@ -11,7 +11,7 @@
         "spec"
     ],
     "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "OAI/OpenAPI-Specification",
         "type": "release",

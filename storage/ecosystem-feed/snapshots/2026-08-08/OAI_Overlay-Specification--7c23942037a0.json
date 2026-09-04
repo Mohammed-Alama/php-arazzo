@@ -5,11 +5,9 @@
     "title": "Prepare Overlay repository for new Build process",
     "url": "https://github.com/OAI/Overlay-Specification/issues/369",
     "publishedAt": "2026-08-08T20:22:07Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "issue",

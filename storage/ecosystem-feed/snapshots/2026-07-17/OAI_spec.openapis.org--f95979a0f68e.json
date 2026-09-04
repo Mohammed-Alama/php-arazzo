@@ -6,8 +6,7 @@
     "url": "https://github.com/OAI/spec.openapis.org/commit/402b7e017753bf4122b4691ceeabc9db3703d83a",
     "publishedAt": "2026-07-17T18:55:41Z",
     "tags": [
-        "schema",
-        "spec"
+        "schema"
     ],
     "severity": "watch",
     "relevance": "P1-7 JSON Schema layer",

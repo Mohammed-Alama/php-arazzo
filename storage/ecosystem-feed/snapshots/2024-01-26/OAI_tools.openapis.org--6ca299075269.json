@@ -5,11 +5,9 @@
     "title": "fix: Added tests for invalid URLs and more test cases",
     "url": "https://github.com/OAI/tools.openapis.org/pull/129",
     "publishedAt": "2024-01-26T17:27:26Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "pr",

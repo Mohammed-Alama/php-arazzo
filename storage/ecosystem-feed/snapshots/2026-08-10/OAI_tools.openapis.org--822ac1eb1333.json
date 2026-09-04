@@ -7,12 +7,11 @@
     "publishedAt": "2026-08-10T08:49:59Z",
     "tags": [
         "cli",
-        "breaking",
         "schema",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "P2-1 CLI binary",
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "issue",

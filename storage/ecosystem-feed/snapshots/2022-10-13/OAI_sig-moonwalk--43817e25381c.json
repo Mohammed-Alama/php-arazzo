@@ -6,7 +6,8 @@
     "url": "https://github.com/OAI/sig-moonwalk/pull/35",
     "publishedAt": "2022-10-13T15:48:28Z",
     "tags": [
-        "schema"
+        "schema",
+        "moonwalk"
     ],
     "severity": "actionable",
     "relevance": "P1-7 JSON Schema layer",

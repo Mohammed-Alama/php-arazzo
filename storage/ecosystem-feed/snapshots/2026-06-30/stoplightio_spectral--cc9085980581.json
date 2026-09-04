@@ -7,11 +7,9 @@
     "publishedAt": "2026-06-30T10:33:10Z",
     "tags": [
         "cli",
-        "breaking",
-        "schema",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
+    "severity": "actionable",
     "relevance": "P2-1 CLI binary",
     "raw": {
         "source": "stoplightio/spectral",

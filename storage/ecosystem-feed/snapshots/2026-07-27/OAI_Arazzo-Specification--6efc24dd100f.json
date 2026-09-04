@@ -6,10 +6,10 @@
     "url": "https://github.com/OAI/Arazzo-Specification/commit/c8b9468d16589293cbfe03f6bc44bd2f44ef791d",
     "publishedAt": "2026-07-27T10:39:18Z",
     "tags": [
-        "spec"
+        "depbump"
     ],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "OAI/Arazzo-Specification",
         "type": "commit",

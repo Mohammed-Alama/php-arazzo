@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/learn.openapis.org/pull/194",
     "publishedAt": "2026-04-06T13:39:20Z",
     "tags": [
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

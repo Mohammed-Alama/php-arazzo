@@ -5,9 +5,11 @@
     "title": "security scheme apiKey in body form data parameter",
     "url": "https://github.com/OAI/sig-lifecycle/issues/9",
     "publishedAt": "2026-08-21T18:10:00Z",
-    "tags": [],
+    "tags": [
+        "security"
+    ],
     "severity": "watch",
-    "relevance": null,
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-lifecycle",
         "type": "issue",

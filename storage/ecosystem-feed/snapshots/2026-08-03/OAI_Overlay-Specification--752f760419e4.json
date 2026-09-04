@@ -8,7 +8,7 @@
     "tags": [
         "cli",
         "breaking",
-        "spec"
+        "depbump"
     ],
     "severity": "breaking",
     "relevance": "P2-1 CLI binary",

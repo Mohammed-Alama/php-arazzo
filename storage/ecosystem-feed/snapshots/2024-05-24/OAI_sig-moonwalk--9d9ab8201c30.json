@@ -7,12 +7,12 @@
     "publishedAt": "2024-05-24T19:39:09Z",
     "tags": [
         "xml",
-        "loop",
         "grpc",
         "graphql",
         "breaking",
         "schema",
-        "spec"
+        "moonwalk",
+        "depbump"
     ],
     "severity": "breaking",
     "relevance": "P1-6 payload XPath / P0-5 XPath criteria",

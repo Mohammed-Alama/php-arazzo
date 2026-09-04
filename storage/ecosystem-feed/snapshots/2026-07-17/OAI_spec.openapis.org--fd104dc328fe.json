@@ -5,11 +5,9 @@
     "title": "Merge branch 'main' into fix/extension-versions",
     "url": "https://github.com/OAI/spec.openapis.org/commit/78cabc2a37132c0cbb44ba7226e50d7d44e09e72",
     "publishedAt": "2026-07-17T18:28:34Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "commit",

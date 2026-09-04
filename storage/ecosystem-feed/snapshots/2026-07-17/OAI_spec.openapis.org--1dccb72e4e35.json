@@ -6,8 +6,7 @@
     "url": "https://github.com/OAI/spec.openapis.org/pull/110",
     "publishedAt": "2026-07-17T18:11:13Z",
     "tags": [
-        "schema",
-        "spec"
+        "schema"
     ],
     "severity": "actionable",
     "relevance": "P1-7 JSON Schema layer",

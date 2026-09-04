@@ -5,12 +5,9 @@
     "title": "dev: sync with main",
     "url": "https://github.com/OAI/OpenAPI-Specification/pull/5510",
     "publishedAt": "2026-08-21T20:44:37Z",
-    "tags": [
-        "schema",
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": null,
     "raw": {
         "source": "OAI/OpenAPI-Specification",
         "type": "pr",

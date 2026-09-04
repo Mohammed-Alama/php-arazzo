@@ -6,12 +6,11 @@
     "url": "https://github.com/OAI/learn.openapis.org/pull/193",
     "publishedAt": "2026-03-16T18:26:31Z",
     "tags": [
-        "breaking",
         "schema",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

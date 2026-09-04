@@ -6,7 +6,8 @@
     "url": "https://github.com/OAI/build-infra/pull/18",
     "publishedAt": "2026-08-20T16:23:00Z",
     "tags": [
-        "schema"
+        "schema",
+        "depbump"
     ],
     "severity": "watch",
     "relevance": "P1-7 JSON Schema layer",

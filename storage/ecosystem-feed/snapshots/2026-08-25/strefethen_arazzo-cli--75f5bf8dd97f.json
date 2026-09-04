@@ -7,8 +7,7 @@
     "publishedAt": "2026-08-25T21:29:43Z",
     "tags": [
         "cli",
-        "breaking",
-        "spec"
+        "breaking"
     ],
     "severity": "breaking",
     "relevance": "P2-1 CLI binary",

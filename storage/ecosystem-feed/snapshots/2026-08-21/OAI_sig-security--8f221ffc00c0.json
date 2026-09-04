@@ -7,7 +7,7 @@
     "publishedAt": "2026-08-21T18:05:42Z",
     "tags": [
         "human",
-        "spec"
+        "security"
     ],
     "severity": "watch",
     "relevance": "Issue #410 kind discriminator / human-in-loop",

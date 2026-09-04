@@ -5,12 +5,9 @@
     "title": "feat: adds reusable actions",
     "url": "https://github.com/OAI/Overlay-Specification/pull/296",
     "publishedAt": "2026-08-10T12:02:54Z",
-    "tags": [
-        "loop",
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Issue #410 loops vs goto",
+    "relevance": null,
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "pr",

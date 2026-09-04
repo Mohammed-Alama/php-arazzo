@@ -5,9 +5,11 @@
     "title": "Define Oauth2 authentication Object",
     "url": "https://github.com/OAI/sig-security/issues/26",
     "publishedAt": "2026-08-21T18:07:51Z",
-    "tags": [],
+    "tags": [
+        "security"
+    ],
     "severity": "watch",
-    "relevance": null,
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

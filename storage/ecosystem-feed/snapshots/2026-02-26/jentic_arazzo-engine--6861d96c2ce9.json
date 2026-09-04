@@ -6,10 +6,10 @@
     "url": "https://github.com/jentic/arazzo-engine/pull/139",
     "publishedAt": "2026-02-26T11:18:21Z",
     "tags": [
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "jentic/arazzo-engine",
         "type": "pr",

@@ -5,11 +5,9 @@
     "title": "Prepare Overlay 1.2 Release Notes",
     "url": "https://github.com/OAI/Overlay-Specification/issues/371",
     "publishedAt": "2026-08-11T15:20:27Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "issue",

@@ -5,11 +5,9 @@
     "title": "Merge pull request #123 from baywet/feat/license-identifier",
     "url": "https://github.com/OAI/spec.openapis.org/commit/c6494e7698cfaeefdd34e8f168358ee6afa396df",
     "publishedAt": "2026-07-21T18:13:21Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "commit",

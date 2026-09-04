@@ -5,9 +5,11 @@
     "title": "Clean up principles",
     "url": "https://github.com/OAI/sig-moonwalk/pull/182",
     "publishedAt": "2025-03-31T17:54:18Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

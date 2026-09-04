@@ -7,7 +7,7 @@
     "publishedAt": "2022-10-25T14:25:49Z",
     "tags": [
         "actor",
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
     "relevance": "Issue #410 kind discriminator / human-in-loop",

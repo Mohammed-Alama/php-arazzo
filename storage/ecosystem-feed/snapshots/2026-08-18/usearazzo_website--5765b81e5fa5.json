@@ -5,11 +5,9 @@
     "title": "feat(blog): add initial blog post",
     "url": "https://github.com/usearazzo/website/commit/92bad43531002e08d9912b30ecbff8d86675f744",
     "publishedAt": "2026-08-18T11:29:36Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "usearazzo/website",
         "type": "commit",

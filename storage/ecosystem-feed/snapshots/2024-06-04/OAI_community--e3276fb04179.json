@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/community/issues/17",
     "publishedAt": "2024-06-04T06:51:39Z",
     "tags": [
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/community",
         "type": "issue",

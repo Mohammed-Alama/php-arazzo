@@ -5,9 +5,11 @@
     "title": "JWT-grant as a new Oauth2 flow",
     "url": "https://github.com/OAI/sig-security/issues/19",
     "publishedAt": "2026-08-21T18:05:33Z",
-    "tags": [],
+    "tags": [
+        "security"
+    ],
     "severity": "watch",
-    "relevance": null,
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

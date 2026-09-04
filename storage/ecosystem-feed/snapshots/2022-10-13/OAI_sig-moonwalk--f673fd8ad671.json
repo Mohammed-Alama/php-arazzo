@@ -5,9 +5,11 @@
     "title": "Fix typos and normalize YAML formatting in `petstore.yaml`",
     "url": "https://github.com/OAI/sig-moonwalk/pull/39",
     "publishedAt": "2022-10-13T15:43:51Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

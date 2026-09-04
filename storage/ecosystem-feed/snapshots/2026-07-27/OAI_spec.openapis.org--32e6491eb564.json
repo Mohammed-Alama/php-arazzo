@@ -6,12 +6,10 @@
     "url": "https://github.com/OAI/spec.openapis.org/pull/109",
     "publishedAt": "2026-07-27T10:40:01Z",
     "tags": [
-        "loop",
-        "schema",
         "spec"
     ],
     "severity": "watch",
-    "relevance": "Issue #410 loops vs goto",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "pr",

@@ -6,7 +6,8 @@
     "url": "https://github.com/OAI/sig-moonwalk/pull/62",
     "publishedAt": "2023-07-12T12:42:39Z",
     "tags": [
-        "actor"
+        "actor",
+        "moonwalk"
     ],
     "severity": "actionable",
     "relevance": "Issue #410 kind discriminator / human-in-loop",

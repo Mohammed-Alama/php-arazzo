@@ -9,10 +9,10 @@
         "cli",
         "a2a",
         "schema",
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
-    "relevance": "P2-1 CLI binary",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "speakeasy-api/openapi",
         "type": "release",

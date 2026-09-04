@@ -5,9 +5,11 @@
     "title": "Auth URL Variables",
     "url": "https://github.com/OAI/sig-security/issues/33",
     "publishedAt": "2026-08-21T18:09:42Z",
-    "tags": [],
+    "tags": [
+        "security"
+    ],
     "severity": "watch",
-    "relevance": null,
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

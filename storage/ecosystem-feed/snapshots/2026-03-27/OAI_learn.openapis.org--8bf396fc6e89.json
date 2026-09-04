@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/learn.openapis.org/pull/196",
     "publishedAt": "2026-03-27T17:44:57Z",
     "tags": [
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

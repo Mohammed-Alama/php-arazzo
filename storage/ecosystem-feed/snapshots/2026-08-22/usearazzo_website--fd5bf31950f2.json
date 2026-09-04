@@ -5,11 +5,9 @@
     "title": "fix(ecosystem): process final review notes",
     "url": "https://github.com/usearazzo/website/commit/a5439bd6d0197204b485bcd1690ea756b126c906",
     "publishedAt": "2026-08-22T12:53:39Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "usearazzo/website",
         "type": "commit",

@@ -5,11 +5,9 @@
     "title": "minor amendments to the parameters guide",
     "url": "https://github.com/OAI/learn.openapis.org/pull/182",
     "publishedAt": "2026-03-02T18:18:11Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

@@ -6,10 +6,11 @@
     "url": "https://github.com/OAI/sig-moonwalk/pull/135",
     "publishedAt": "2024-06-16T16:41:16Z",
     "tags": [
+        "moonwalk",
         "spec"
     ],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

@@ -5,11 +5,9 @@
     "title": "docs: add llm.txt with repository context",
     "url": "https://github.com/OAI/learn.openapis.org/pull/198",
     "publishedAt": "2026-06-07T19:22:37Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

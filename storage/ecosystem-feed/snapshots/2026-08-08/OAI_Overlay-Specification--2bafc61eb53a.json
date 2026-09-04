@@ -5,11 +5,9 @@
     "title": "Add Bielu.AspNetCore.ApiDescriptions to the list of Overlay tools",
     "url": "https://github.com/OAI/Overlay-Specification/pull/377",
     "publishedAt": "2026-08-08T18:38:55Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "pr",

@@ -7,10 +7,9 @@
     "publishedAt": "2026-07-23T06:23:45Z",
     "tags": [
         "mcp",
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
+    "severity": "watch",
     "relevance": "P2-2 MCP server exposure",
     "raw": {
         "source": "OAI/tools.openapis.org",

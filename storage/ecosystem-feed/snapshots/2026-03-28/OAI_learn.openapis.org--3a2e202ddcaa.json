@@ -5,11 +5,9 @@
     "title": "Add next page buttons that are missing on 3 pages",
     "url": "https://github.com/OAI/learn.openapis.org/pull/189",
     "publishedAt": "2026-03-28T19:31:15Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

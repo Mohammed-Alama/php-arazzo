@@ -6,11 +6,11 @@
     "url": "https://github.com/OAI/sig-security/issues/36",
     "publishedAt": "2026-08-21T18:10:25Z",
     "tags": [
-        "breaking",
-        "spec"
+        "spec",
+        "security"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

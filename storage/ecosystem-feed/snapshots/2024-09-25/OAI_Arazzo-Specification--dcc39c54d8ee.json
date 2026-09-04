@@ -9,10 +9,11 @@
         "xml",
         "xpath",
         "schema",
+        "runner",
         "spec"
     ],
     "severity": "breaking",
-    "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
+    "relevance": "P0-5 XPath criteria + P1-6 targetSelectorType",
     "raw": {
         "source": "OAI/Arazzo-Specification",
         "type": "release",

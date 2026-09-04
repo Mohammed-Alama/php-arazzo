@@ -5,11 +5,9 @@
     "title": "fix: Updated Prism data and added repository data override to decouple sources",
     "url": "https://github.com/OAI/tools.openapis.org/pull/142",
     "publishedAt": "2024-02-26T18:29:23Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "pr",

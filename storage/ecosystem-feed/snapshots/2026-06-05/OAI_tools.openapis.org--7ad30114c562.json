@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/tools.openapis.org/issues/266",
     "publishedAt": "2026-06-05T16:38:05Z",
     "tags": [
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "issue",

@@ -8,11 +8,10 @@
     "tags": [
         "actor",
         "a2a",
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "severity": "actionable",
+    "relevance": "Roadmap A2A step type",
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "pr",

@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/community/issues/5",
     "publishedAt": "2024-03-12T09:27:57Z",
     "tags": [
-        "schema",
         "spec"
     ],
     "severity": "watch",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/community",
         "type": "issue",

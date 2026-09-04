@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/spec.openapis.org/pull/38",
     "publishedAt": "2026-08-11T09:50:54Z",
     "tags": [
-        "schema",
         "spec"
     ],
     "severity": "actionable",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "pr",

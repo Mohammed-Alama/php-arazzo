@@ -5,9 +5,11 @@
     "title": "Use local npm install in build",
     "url": "https://github.com/OAI/sig-moonwalk/pull/137",
     "publishedAt": "2024-06-16T18:45:58Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

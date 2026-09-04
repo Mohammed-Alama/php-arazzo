@@ -5,11 +5,9 @@
     "title": "feat: add ecosystem article",
     "url": "https://github.com/usearazzo/website/commit/d888bda7e05f251979d1ba7b6a7af8b10aee32d4",
     "publishedAt": "2026-08-22T13:52:25Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "usearazzo/website",
         "type": "commit",

@@ -5,11 +5,9 @@
     "title": "3.2 add query method example",
     "url": "https://github.com/OAI/learn.openapis.org/pull/205",
     "publishedAt": "2026-05-07T15:53:40Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

@@ -6,10 +6,11 @@
     "url": "https://github.com/OAI/sig-moonwalk/issues/117",
     "publishedAt": "2024-05-24T19:32:35Z",
     "tags": [
+        "moonwalk",
         "spec"
     ],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "issue",

@@ -5,11 +5,9 @@
     "title": "Merge pull request #124 from baywet/feat/examples-extension",
     "url": "https://github.com/OAI/spec.openapis.org/commit/fc94196e5449b8f1ae2490bc0a5edec95a2bf907",
     "publishedAt": "2026-07-20T15:02:31Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "commit",

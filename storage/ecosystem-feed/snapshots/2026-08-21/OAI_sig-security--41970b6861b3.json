@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/sig-security/issues/27",
     "publishedAt": "2026-08-21T18:07:58Z",
     "tags": [
-        "schema",
-        "spec"
+        "security"
     ],
     "severity": "watch",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

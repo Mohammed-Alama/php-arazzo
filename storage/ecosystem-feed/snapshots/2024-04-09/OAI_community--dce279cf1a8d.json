@@ -5,9 +5,11 @@
     "title": "chore: Update SIG data with Moonwalk",
     "url": "https://github.com/OAI/community/pull/14",
     "publishedAt": "2024-04-09T10:18:00Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/community",
         "type": "pr",

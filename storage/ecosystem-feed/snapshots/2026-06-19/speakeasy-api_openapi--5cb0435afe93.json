@@ -7,12 +7,11 @@
     "publishedAt": "2026-06-19T06:19:15Z",
     "tags": [
         "cli",
-        "breaking",
         "schema",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "P2-1 CLI binary",
+    "severity": "actionable",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "speakeasy-api/openapi",
         "type": "release",

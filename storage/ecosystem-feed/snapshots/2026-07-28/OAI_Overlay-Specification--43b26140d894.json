@@ -6,12 +6,11 @@
     "url": "https://github.com/OAI/Overlay-Specification/pull/370",
     "publishedAt": "2026-07-28T16:02:21Z",
     "tags": [
-        "breaking",
         "schema",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "pr",

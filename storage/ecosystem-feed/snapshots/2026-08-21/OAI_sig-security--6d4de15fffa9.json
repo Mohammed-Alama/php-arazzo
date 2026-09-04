@@ -7,10 +7,11 @@
     "publishedAt": "2026-08-21T18:08:30Z",
     "tags": [
         "breaking",
+        "security",
         "spec"
     ],
     "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

@@ -5,9 +5,11 @@
     "title": "Issue template & config to point people filing issues to discussions",
     "url": "https://github.com/OAI/sig-moonwalk/pull/71",
     "publishedAt": "2024-02-28T20:48:34Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

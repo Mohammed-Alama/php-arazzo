@@ -5,11 +5,9 @@
     "title": "Add Callbacks, Links and Webhooks pages",
     "url": "https://github.com/OAI/learn.openapis.org/pull/90",
     "publishedAt": "2026-04-03T12:43:25Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

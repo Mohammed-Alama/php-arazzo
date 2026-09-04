@@ -7,7 +7,7 @@
     "publishedAt": "2026-08-10T00:54:57Z",
     "tags": [
         "schema",
-        "spec"
+        "depbump"
     ],
     "severity": "watch",
     "relevance": "P1-7 JSON Schema layer",

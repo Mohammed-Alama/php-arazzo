@@ -6,12 +6,10 @@
     "url": "https://github.com/OAI/Overlay-Specification/pull/381",
     "publishedAt": "2026-08-17T10:03:46Z",
     "tags": [
-        "breaking",
-        "schema",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "actionable",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "pr",

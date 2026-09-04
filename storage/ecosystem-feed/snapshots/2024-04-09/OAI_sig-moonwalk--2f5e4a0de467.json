@@ -5,9 +5,11 @@
     "title": "Broken link - Typo",
     "url": "https://github.com/OAI/sig-moonwalk/pull/101",
     "publishedAt": "2024-04-09T16:07:46Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

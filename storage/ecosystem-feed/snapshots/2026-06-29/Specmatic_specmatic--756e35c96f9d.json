@@ -9,7 +9,7 @@
         "soap",
         "wsdl",
         "xml",
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
     "relevance": "P0-6 source routing (wsdl type)",

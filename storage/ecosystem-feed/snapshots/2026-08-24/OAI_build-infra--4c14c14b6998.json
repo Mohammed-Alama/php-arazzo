@@ -6,10 +6,11 @@
     "url": "https://github.com/OAI/build-infra/pull/22",
     "publishedAt": "2026-08-24T22:26:55Z",
     "tags": [
-        "breaking"
+        "breaking",
+        "depbump"
     ],
     "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "OAI/build-infra",
         "type": "pr",

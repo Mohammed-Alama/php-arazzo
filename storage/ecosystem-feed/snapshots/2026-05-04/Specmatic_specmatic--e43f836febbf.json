@@ -6,10 +6,10 @@
     "url": "https://github.com/specmatic/specmatic/releases/tag/2.45.0",
     "publishedAt": "2026-05-04T14:48:59Z",
     "tags": [
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "Specmatic/specmatic",
         "type": "release",

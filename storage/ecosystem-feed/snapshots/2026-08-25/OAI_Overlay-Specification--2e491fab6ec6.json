@@ -5,12 +5,9 @@
     "title": "Prepare for new Build Infra",
     "url": "https://github.com/OAI/Overlay-Specification/pull/379",
     "publishedAt": "2026-08-25T17:04:29Z",
-    "tags": [
-        "schema",
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": null,
     "raw": {
         "source": "OAI/Overlay-Specification",
         "type": "pr",

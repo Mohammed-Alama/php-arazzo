@@ -5,11 +5,9 @@
     "title": "fix/extension versions",
     "url": "https://github.com/OAI/spec.openapis.org/pull/111",
     "publishedAt": "2026-07-21T15:52:13Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "pr",

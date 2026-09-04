@@ -6,10 +6,10 @@
     "url": "https://github.com/stoplightio/spectral/releases/tag/v6.5.1",
     "publishedAt": "2022-08-29T09:18:30Z",
     "tags": [
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "stoplightio/spectral",
         "type": "release",

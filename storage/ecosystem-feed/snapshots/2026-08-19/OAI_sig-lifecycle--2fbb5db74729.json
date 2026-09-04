@@ -5,11 +5,9 @@
     "title": "Add `info.lifecycle` with maturity/lifecycle informations.",
     "url": "https://github.com/OAI/sig-lifecycle/issues/7",
     "publishedAt": "2026-08-19T19:24:01Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/sig-lifecycle",
         "type": "issue",

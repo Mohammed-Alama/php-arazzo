@@ -5,11 +5,9 @@
     "title": "Remove link to no-longer-used GitHub project",
     "url": "https://github.com/OAI/tools.openapis.org/pull/210",
     "publishedAt": "2025-12-02T16:19:00Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "pr",

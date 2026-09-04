@@ -6,11 +6,10 @@
     "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3",
     "publishedAt": "2026-02-08T22:43:08Z",
     "tags": [
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "swaggerexpert/arazzo-runtime-expression",
         "type": "release",

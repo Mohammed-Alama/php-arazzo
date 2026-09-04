@@ -6,8 +6,7 @@
     "url": "https://github.com/OAI/tools.openapis.org/pull/143",
     "publishedAt": "2024-02-27T14:27:22Z",
     "tags": [
-        "actor",
-        "spec"
+        "actor"
     ],
     "severity": "actionable",
     "relevance": "Issue #410 kind discriminator / human-in-loop",

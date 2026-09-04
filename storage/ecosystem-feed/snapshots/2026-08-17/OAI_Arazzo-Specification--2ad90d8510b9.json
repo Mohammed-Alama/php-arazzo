@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/Arazzo-Specification/commit/c70d623ac1d63afa0688a6022ae53e956225fde0",
     "publishedAt": "2026-08-17T00:54:06Z",
     "tags": [
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "OAI/Arazzo-Specification",
         "type": "commit",

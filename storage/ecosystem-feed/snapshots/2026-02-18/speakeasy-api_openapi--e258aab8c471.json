@@ -7,7 +7,7 @@
     "publishedAt": "2026-02-18T02:21:19Z",
     "tags": [
         "cli",
-        "spec"
+        "depbump"
     ],
     "severity": "actionable",
     "relevance": "P2-1 CLI binary",

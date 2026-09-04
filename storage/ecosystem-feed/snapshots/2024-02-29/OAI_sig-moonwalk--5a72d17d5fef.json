@@ -5,9 +5,11 @@
     "title": "Set up Architectural Decision Records (ADRs)",
     "url": "https://github.com/OAI/sig-moonwalk/pull/85",
     "publishedAt": "2024-02-29T16:19:50Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

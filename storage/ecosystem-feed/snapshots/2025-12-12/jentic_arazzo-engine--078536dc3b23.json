@@ -7,10 +7,10 @@
     "publishedAt": "2025-12-12T21:19:12Z",
     "tags": [
         "breaking",
-        "spec"
+        "depbump"
     ],
     "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "jentic/arazzo-engine",
         "type": "pr",

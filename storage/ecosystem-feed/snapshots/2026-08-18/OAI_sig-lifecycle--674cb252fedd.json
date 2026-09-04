@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/sig-lifecycle/pull/1",
     "publishedAt": "2026-08-18T18:08:49Z",
     "tags": [
-        "schema",
         "spec"
     ],
     "severity": "watch",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/sig-lifecycle",
         "type": "pr",

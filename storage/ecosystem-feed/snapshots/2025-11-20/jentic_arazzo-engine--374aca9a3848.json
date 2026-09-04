@@ -6,11 +6,10 @@
     "url": "https://github.com/jentic/arazzo-engine/pull/133",
     "publishedAt": "2025-11-20T21:23:30Z",
     "tags": [
-        "breaking",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "watch",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "jentic/arazzo-engine",
         "type": "pr",

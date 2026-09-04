@@ -8,11 +8,9 @@
     "tags": [
         "xml",
         "cli",
-        "breaking",
-        "schema",
-        "spec"
+        "depbump"
     ],
-    "severity": "breaking",
+    "severity": "actionable",
     "relevance": "P1-6 payload XPath / P0-5 XPath criteria",
     "raw": {
         "source": "stoplightio/spectral",

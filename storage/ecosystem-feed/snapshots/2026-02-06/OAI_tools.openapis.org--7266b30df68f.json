@@ -5,11 +5,9 @@
     "title": "Add 3.2 support",
     "url": "https://github.com/OAI/tools.openapis.org/pull/254",
     "publishedAt": "2026-02-06T12:12:36Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "pr",

@@ -5,12 +5,9 @@
     "title": "docs: rewords the versioning for the schema namespace",
     "url": "https://github.com/OAI/spec.openapis.org/commit/3c2b5a169b4a7b5e5f7badefe188422c13e6fbf8",
     "publishedAt": "2026-07-17T15:44:33Z",
-    "tags": [
-        "schema",
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "commit",

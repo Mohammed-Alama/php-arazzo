@@ -11,7 +11,7 @@
         "spec"
     ],
     "severity": "actionable",
-    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "OAI/OpenAPI-Specification",
         "type": "release",

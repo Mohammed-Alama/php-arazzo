@@ -7,10 +7,11 @@
     "publishedAt": "2024-05-24T19:32:56Z",
     "tags": [
         "human",
-        "schema"
+        "schema",
+        "moonwalk"
     ],
     "severity": "watch",
-    "relevance": "Issue #410 kind discriminator / human-in-loop",
+    "relevance": "P1-7 JSON Schema layer",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "issue",

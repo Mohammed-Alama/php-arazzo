@@ -6,8 +6,7 @@
     "url": "https://github.com/strefethen/arazzo-cli/commit/3eee30f1573ac93f8a9a63991c02927da5717292",
     "publishedAt": "2026-08-25T21:20:10Z",
     "tags": [
-        "cli",
-        "spec"
+        "cli"
     ],
     "severity": "watch",
     "relevance": "P2-1 CLI binary",

@@ -6,11 +6,10 @@
     "url": "https://github.com/OAI/Outreach/issues/69",
     "publishedAt": "2026-04-02T13:59:52Z",
     "tags": [
-        "loop",
         "spec"
     ],
     "severity": "watch",
-    "relevance": "Issue #410 loops vs goto",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "OAI/Outreach",
         "type": "issue",

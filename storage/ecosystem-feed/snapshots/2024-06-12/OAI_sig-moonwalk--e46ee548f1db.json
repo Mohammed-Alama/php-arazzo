@@ -5,9 +5,11 @@
     "title": "Add ADR for using IRIs",
     "url": "https://github.com/OAI/sig-moonwalk/pull/86",
     "publishedAt": "2024-06-12T19:30:06Z",
-    "tags": [],
+    "tags": [
+        "moonwalk"
+    ],
     "severity": "actionable",
-    "relevance": null,
+    "relevance": "OAI Moonwalk (next-gen spec)",
     "raw": {
         "source": "OAI/sig-moonwalk",
         "type": "pr",

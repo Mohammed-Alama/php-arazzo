@@ -5,11 +5,9 @@
     "title": "Update JSON example files",
     "url": "https://github.com/OAI/learn.openapis.org/pull/197",
     "publishedAt": "2026-07-23T16:42:06Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "pr",

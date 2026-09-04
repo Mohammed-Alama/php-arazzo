@@ -7,10 +7,11 @@
     "publishedAt": "2026-04-29T12:30:15Z",
     "tags": [
         "loop",
+        "runner",
         "spec"
     ],
     "severity": "watch",
-    "relevance": "Issue #410 loops vs goto",
+    "relevance": "Arazzo runner / step execution",
     "raw": {
         "source": "jentic/arazzo-engine",
         "type": "pr",

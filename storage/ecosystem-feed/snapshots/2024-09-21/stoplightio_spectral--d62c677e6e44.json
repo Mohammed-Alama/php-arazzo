@@ -6,11 +6,11 @@
     "url": "https://github.com/stoplightio/spectral/releases/tag/v6.13.1",
     "publishedAt": "2024-09-21T08:32:24Z",
     "tags": [
-        "schema",
-        "spec"
+        "security",
+        "depbump"
     ],
     "severity": "actionable",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "stoplightio/spectral",
         "type": "release",

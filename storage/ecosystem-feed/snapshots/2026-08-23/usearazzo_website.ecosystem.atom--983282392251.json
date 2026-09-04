@@ -5,11 +5,9 @@
     "title": "feat(ecosystem): extend the list of resources",
     "url": "https://github.com/usearazzo/website/commit/9626bdb657fdeaf5417f1bd8663dd94273714cf2",
     "publishedAt": "2026-08-23T16:02:14+00:00",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "usearazzo/website.ecosystem.atom",
         "type": "commit",

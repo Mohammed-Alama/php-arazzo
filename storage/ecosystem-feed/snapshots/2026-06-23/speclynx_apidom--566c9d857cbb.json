@@ -6,11 +6,10 @@
     "url": "https://github.com/speclynx/apidom/releases/tag/v4.12.0",
     "publishedAt": "2026-06-23T10:18:18Z",
     "tags": [
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "speclynx/apidom",
         "type": "release",

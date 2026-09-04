@@ -5,11 +5,9 @@
     "title": "Create devcontainer.json",
     "url": "https://github.com/OAI/tools.openapis.org/pull/192",
     "publishedAt": "2025-03-03T08:45:48Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/tools.openapis.org",
         "type": "pr",

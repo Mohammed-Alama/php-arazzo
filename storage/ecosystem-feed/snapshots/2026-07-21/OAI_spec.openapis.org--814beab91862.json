@@ -5,11 +5,9 @@
     "title": "feat: adds license identifier extension",
     "url": "https://github.com/OAI/spec.openapis.org/pull/123",
     "publishedAt": "2026-07-21T18:13:25Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "actionable",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "pr",

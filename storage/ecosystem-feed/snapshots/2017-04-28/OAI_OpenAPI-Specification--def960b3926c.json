@@ -6,11 +6,11 @@
     "url": "https://github.com/OAI/OpenAPI-Specification/releases/tag/3.0.0-rc1",
     "publishedAt": "2017-04-28T02:12:42Z",
     "tags": [
-        "schema",
+        "security",
         "spec"
     ],
     "severity": "actionable",
-    "relevance": "P1-7 JSON Schema layer",
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/OpenAPI-Specification",
         "type": "release",

@@ -6,10 +6,11 @@
     "url": "https://github.com/OAI/sig-security/issues/21",
     "publishedAt": "2026-08-21T18:05:51Z",
     "tags": [
-        "breaking"
+        "breaking",
+        "security"
     ],
     "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "relevance": "API security (OAI sig-security)",
     "raw": {
         "source": "OAI/sig-security",
         "type": "issue",

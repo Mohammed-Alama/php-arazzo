@@ -7,7 +7,8 @@
     "publishedAt": "2026-08-21T18:10:11Z",
     "tags": [
         "actor",
-        "spec"
+        "spec",
+        "security"
     ],
     "severity": "watch",
     "relevance": "Issue #410 kind discriminator / human-in-loop",

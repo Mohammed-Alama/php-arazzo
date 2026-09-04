@@ -5,11 +5,9 @@
     "title": "Add LLM.txt to the learn site",
     "url": "https://github.com/OAI/learn.openapis.org/issues/199",
     "publishedAt": "2026-04-07T15:05:50Z",
-    "tags": [
-        "spec"
-    ],
+    "tags": [],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": null,
     "raw": {
         "source": "OAI/learn.openapis.org",
         "type": "issue",

@@ -10,7 +10,7 @@
         "spec"
     ],
     "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "speclynx/apidom",
         "type": "release",

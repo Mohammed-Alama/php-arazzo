@@ -6,10 +6,10 @@
     "url": "https://github.com/OAI/spec.openapis.org/commit/9b36e2e69af032019cffaa5358159a50bf06e84e",
     "publishedAt": "2026-08-03T08:34:15Z",
     "tags": [
-        "spec"
+        "depbump"
     ],
     "severity": "watch",
-    "relevance": "Conformance / schema validation",
+    "relevance": "Dependency maintenance",
     "raw": {
         "source": "OAI/spec.openapis.org",
         "type": "commit",

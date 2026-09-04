@@ -6,11 +6,10 @@
     "url": "https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0",
     "publishedAt": "2025-09-03T10:37:27Z",
     "tags": [
-        "breaking",
         "spec"
     ],
-    "severity": "breaking",
-    "relevance": "Potential breaking change (2.0)",
+    "severity": "actionable",
+    "relevance": "Conformance / schema validation",
     "raw": {
         "source": "jentic/arazzo-engine",
         "type": "release",
