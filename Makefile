@@ -1,4 +1,4 @@
-.PHONY: help test test-coverage test-mutate format analyse analyse-baseline ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights quality-gates detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
+.PHONY: help test test-coverage test-mutate format analyse analyse-baseline phpmd phpmd-report phpmd-baseline pdepend phpdoc ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights quality-gates detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
 
 docs: ## Regenerate architecture diagrams into docs/generated/
 	php scripts/generate-docs.php
@@ -43,6 +43,27 @@ analyse-baseline: ## Regenerate PHPStan baselines for the split core packages + 
 	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; cd ../..
 	@echo "==> core (hollow — src empty, baseline optional/absent)"; \
 	cd packages/core && (vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G || true); cd ../..
+
+phpmd: ## Run PHP Mess Detector with baseline (new violations only)
+	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src ansi phpmd.xml --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit
+
+phpmd-report: ## Generate PHPMD XML report to storage/phpmd-report.xml
+	@mkdir -p storage
+	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src xml phpmd.xml --reportfile storage/phpmd-report.xml --ignore-violations-on-exit --ignore-errors-on-exit || true
+
+phpmd-baseline: ## Regenerate PHPMD baseline (resets all suppressed violations)
+	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src xml phpmd.xml --generate-baseline --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit
+
+pdepend: ## Run PHP-Depend structural metrics (outputs to storage/pdepend/)
+	@mkdir -p storage/pdepend
+	vendor/bin/pdepend \
+		--summary-xml=storage/pdepend/summary.xml \
+		--jdepend-chart=storage/pdepend/jdepend.svg \
+		--overview-pyramid=storage/pdepend/pyramid.svg \
+		packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src
+
+phpdoc: ## Generate API documentation into docs/generated/api/
+	vendor/bin/phpdoc run
 
 ci-all: ## Run all GitHub Actions locally using act
 	act --container-architecture linux/amd64
