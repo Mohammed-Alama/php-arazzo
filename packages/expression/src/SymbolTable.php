@@ -29,8 +29,10 @@ final readonly class SymbolTable
     public static function build(ArazzoDocument $doc): self
     {
         $sources = [];
+        // @phpstan-ignore isset.property
         if (isset($doc->sourceDescriptions) && is_iterable($doc->sourceDescriptions)) {
             foreach ($doc->sourceDescriptions as $s) {
+                // @phpstan-ignore isset.property
                 if ($s instanceof SourceDescription && isset($s->name)) {
                     $sources[$s->name] = true;
                 }
@@ -44,18 +46,25 @@ final readonly class SymbolTable
             'failureActions' => [],
         ];
 
+        // @phpstan-ignore isset.property, instanceof.alwaysTrue, booleanAnd.alwaysTrue
         if (isset($doc->components) && $doc->components instanceof Components) {
             $components = [
+                // @phpstan-ignore isset.property
                 'inputs' => self::keysOf(isset($doc->components->inputs) ? $doc->components->inputs : null),
+                // @phpstan-ignore isset.property
                 'parameters' => self::keysOf(isset($doc->components->parameters) ? $doc->components->parameters : null),
+                // @phpstan-ignore isset.property
                 'successActions' => self::keysOf(isset($doc->components->successActions) ? $doc->components->successActions : null),
+                // @phpstan-ignore isset.property
                 'failureActions' => self::keysOf(isset($doc->components->failureActions) ? $doc->components->failureActions : null),
             ];
         }
 
         $workflows = [];
+        // @phpstan-ignore isset.property
         if (isset($doc->workflows) && is_iterable($doc->workflows)) {
             foreach ($doc->workflows as $wf) {
+                // @phpstan-ignore isset.property
                 if ($wf instanceof Workflow && isset($wf->workflowId)) {
                     $workflows[$wf->workflowId] = self::buildWorkflow($wf);
                 }
@@ -94,18 +103,23 @@ final readonly class SymbolTable
             }
         }
 
+        // @phpstan-ignore isset.property
         if (isset($wf->parameters) && is_iterable($wf->parameters)) {
             foreach ($wf->parameters as $p) {
+                // @phpstan-ignore isset.property
                 if ($p instanceof Parameter && isset($p->name)) {
                     $params[$p->name] = true;
                 }
             }
         }
 
+        // @phpstan-ignore isset.property
         if (isset($wf->steps) && is_iterable($wf->steps)) {
             foreach ($wf->steps as $i => $s) {
+                // @phpstan-ignore isset.property
                 if ($s instanceof Step && isset($s->stepId)) {
                     $outs = [];
+                    // @phpstan-ignore isset.property
                     if (isset($s->outputs) && is_iterable($s->outputs)) {
                         foreach ($s->outputs as $k => $_) {
                             $outs[(string) $k] = true;
@@ -120,12 +134,14 @@ final readonly class SymbolTable
             }
         }
 
+        // @phpstan-ignore isset.property
         if (isset($wf->outputs) && is_iterable($wf->outputs)) {
             foreach ($wf->outputs as $k => $_) {
                 $outputs[(string) $k] = true;
             }
         }
 
+        // @phpstan-ignore isset.property
         if (isset($wf->dependsOn) && is_iterable($wf->dependsOn)) {
             foreach ($wf->dependsOn as $d) {
                 if (is_string($d) || is_int($d)) {

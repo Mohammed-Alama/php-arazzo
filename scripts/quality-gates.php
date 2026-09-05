@@ -152,8 +152,8 @@ $gateDefs = [
         '--ignore-violations-on-exit',
         '--ignore-errors-on-exit',
     ]), $root, 'parsePhpMd'],
-    ['phpstan-core', 'Static Analysis · core', 'vendor/bin/phpstan analyse packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src --memory-limit=1G --no-progress', $root, 'parsePhpStan'],
-    ['phpstan-laravel', 'Static Analysis · laravel', 'vendor/bin/phpstan analyse packages/laravel/src --memory-limit=1G --no-progress', $root, 'parsePhpStan'],
+    ['phpstan-core', 'Static Analysis · core', 'composer run analyse-contracts && composer run analyse-expression && composer run analyse-document && composer run analyse-runner && composer run analyse-cli', $root, 'parsePhpStan'],
+    ['phpstan-laravel', 'Static Analysis · laravel', 'composer run analyse-laravel', $root, 'parsePhpStan'],
     ['pest-core', 'Tests · core', 'vendor/bin/pest packages/core/tests --no-coverage', $root, 'parsePest'],
     ['pest-laravel', 'Tests · laravel', 'vendor/bin/pest packages/laravel/tests --no-coverage', $root, 'parsePest'],
 ];

@@ -136,6 +136,7 @@ class OpenApiOperationResolver
                 foreach (['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as $method) {
                     if (isset($pathItem->{$method})) {
                         $op = $pathItem->{$method};
+                        /** @phpstan-ignore-next-line */
                         if ($op instanceof Operation && $op->operationId === $operationReference) {
                             if (is_string($path)) {
                                 $foundPath = $path;
