@@ -103,6 +103,24 @@ function parsePint(int $code, string $text): array
 }
 
 /** @return array{status: string, metrics: array<string, int|float|string>, notes: string} */
+function parsePhpMd(int $code, string $text): array
+{
+    preg_match_all('/^\s+\S+\.php:\d+/m', $text, $matches);
+    $violations = count($matches[0]);
+
+    preg_match('/(\d+)\s+violation/i', $text, $summaryMatch);
+    if (isset($summaryMatch[1])) {
+        $violations = (int) $summaryMatch[1];
+    }
+
+    return [
+        'status' => $code === 0 ? 'pass' : 'fail',
+        'metrics' => ['violations' => $violations],
+        'notes' => $violations > 0 ? "New violations detected: {$violations}" : '',
+    ];
+}
+
+/** @return array{status: string, metrics: array<string, int|float|string>, notes: string} */
 function parseMutations(int $code, string $text): array
 {
     preg_match('/MSI:\s*([\d.]+)/', $text, $msi);
@@ -125,10 +143,19 @@ $laravelDir = $root.'/packages/laravel';
 
 $gateDefs = [
     ['pint', 'Code Style (Pint)', 'vendor/bin/pint --test', $root, 'parsePint'],
-    ['phpstan-core', 'Static Analysis · core', 'vendor/bin/phpstan analyse --memory-limit=1G --no-progress', $coreDir, 'parsePhpStan'],
-    ['phpstan-laravel', 'Static Analysis · laravel', 'vendor/bin/phpstan analyse --memory-limit=1G --no-progress', $laravelDir, 'parsePhpStan'],
-    ['pest-core', 'Tests · core', 'vendor/bin/pest --no-coverage', $coreDir, 'parsePest'],
-    ['pest-laravel', 'Tests · laravel', 'vendor/bin/pest --no-coverage', $laravelDir, 'parsePest'],
+    ['phpmd', 'Mess Detector (PHPMD)', implode(' ', [
+        'vendor/bin/phpmd',
+        'packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src',
+        'text',
+        'phpmd.xml',
+        '--baseline-file phpmd.baseline.xml',
+        '--ignore-violations-on-exit',
+        '--ignore-errors-on-exit',
+    ]), $root, 'parsePhpMd'],
+    ['phpstan-core', 'Static Analysis · core', 'vendor/bin/phpstan analyse packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src --memory-limit=1G --no-progress', $root, 'parsePhpStan'],
+    ['phpstan-laravel', 'Static Analysis · laravel', 'vendor/bin/phpstan analyse packages/laravel/src --memory-limit=1G --no-progress', $root, 'parsePhpStan'],
+    ['pest-core', 'Tests · core', 'vendor/bin/pest packages/core/tests --no-coverage', $root, 'parsePest'],
+    ['pest-laravel', 'Tests · laravel', 'vendor/bin/pest packages/laravel/tests --no-coverage', $root, 'parsePest'],
 ];
 
 if ($withMutations) {
@@ -171,7 +198,7 @@ $historyEntry = [
 ];
 foreach ($gates as $gate) {
     $record = ['status' => $gate['status']];
-    foreach (['errors', 'passed', 'failed', 'skipped', 'msi_percent', 'files_reported'] as $key) {
+    foreach (['errors', 'passed', 'failed', 'skipped', 'msi_percent', 'files_reported', 'violations'] as $key) {
         if (isset($gate['metrics'][$key])) {
             $record[$key] = $gate['metrics'][$key];
         }

@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/cli/src/Console/Cli/CliRunner.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="packages/cli/src/Console/Cli/CliRunner.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/cli/src/Console/Command/RunCommand.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/cli/src/Console/Command/RunCommand.php" method="execute"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/cli/src/Console/Command/RunCommand.php" method="execute"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/cli/src/Renderer/Renderer.php" method="toMarkdown"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/cli/src/Renderer/Renderer.php" method="toMarkdown"/>
+  <violation rule="PHPMD\Rule\Naming\ShortMethodName" file="packages/cli/src/Renderer/Renderer.php" method="id"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/contracts/src/Dependency/DependencyGraph.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/contracts/src/Dependency/DependencyGraph.php" method="analyze"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/contracts/src/Dependency/DependencyGraph.php" method="analyze"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/contracts/src/Dependency/ImplicitDependencies.php" method="fromStep"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/contracts/src/Dependency/ImplicitDependencies.php" method="fromStep"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/contracts/src/Spec/ArazzoDocument.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/contracts/src/Spec/Step.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/contracts/src/Spec/StepExecutionOutcome.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/contracts/src/Spec/Workflow.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="packages/contracts/src/State/ExecutionState.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/contracts/src/State/ExecutionState.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/contracts/src/State/ExecutionState.php" method="copy"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/contracts/src/State/WorkflowContext.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/contracts/src/State/WorkflowContext.php" method="fromPersisted"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Document.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="packages/document/src/Normalizer/OpenApi30Normalizer.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Normalizer/OpenApi30Normalizer.php" method="resolveServerUrl"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Normalizer/OpenApi30Normalizer.php" method="resolveServerUrl"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Normalizer/OpenApi30Normalizer.php" method="resolveParameters"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Normalizer/OpenApi30Normalizer.php" method="resolveParameters"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="packages/document/src/Normalizer/OpenApi30Normalizer.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Normalizer/OpenApiOperationResolver.php" method="resolve"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Normalizer/OpenApiOperationResolver.php" method="resolve"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="packages/document/src/Normalizer/OpenApiOperationResolver.php" method="resolve"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="packages/document/src/Parser/Parser.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="packages/document/src/Parser/Parser.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Parser/Parser.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parse"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseWorkflow"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Parser/Parser.php" method="parseWorkflow"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseStep"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Parser/Parser.php" method="parseStep"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseValueOrSelector"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/document/src/Parser/Parser.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="packages/document/src/Parser/Parser.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseComponents"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Parser/Parser.php" method="parseComponents"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/OfficialSchemaRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Validator/OfficialSchemaRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Validator/PreflightValidator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/PreflightValidator.php" method="checkStep"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Validator/PreflightValidator.php" method="checkStep"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="packages/document/src/Validator/PreflightValidator.php" method="checkStep"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Validator/RuleSet.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/ActionGotoTargetResolvesRule.php" method="checkList"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/DocUnknownFieldRule.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/ExpressionJsonPointerSyntaxRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/ExpressionUnresolvedStepRefRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Validator/Rules/ExpressionUnresolvedStepRefRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/ExtensionsXPrefixRule.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/SelectorTypeSupportedRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Validator/Rules/SelectorTypeSupportedRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/StepOperationIdSourceScopedRule.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/StepOperationPathSyntaxRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/StepParameterInValidRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/WorkflowDependsOnNoCycleRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Validator/Rules/WorkflowDependsOnNoCycleRule.php" method="check"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/WorkflowDependsOnNoCycleRule.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Support/ExpressionWalker.php" method="walk"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/document/src/Validator/Support/ExpressionWalker.php" method="walk"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/expression/src/Evaluation/Condition/ConditionEvaluator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Evaluation/Condition/ConditionEvaluator.php" method="looseEquals"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Evaluation/Condition/Lexer.php" method="lex"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/expression/src/Evaluation/Condition/Lexer.php" method="lex"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Evaluation/Condition/Lexer.php" method="expressionEnd"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/expression/src/Evaluation/Condition/Parser.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/expression/src/Evaluation/CriteriaEvaluator.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="packages/expression/src/Evaluation/PayloadReplacer.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Lexer.php" method="tokenize"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/expression/src/Lexer.php" method="tokenize"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="packages/expression/src/Parser.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/expression/src/Parser.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Parser.php" method="parseNamedPart"/>
+  <violation rule="PHPMD\Rule\Design\CountInLoopExpression" file="packages/expression/src/Parser.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Parser.php" method="parseWorkflowRef"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/Parser.php" method="parseSourceRef"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/SymbolTable.php" method="build"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/expression/src/SymbolTable.php" method="build"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/expression/src/SymbolTable.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/expression/src/SymbolTable.php" method="buildWorkflow"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/expression/src/SymbolTable.php" method="buildWorkflow"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/laravel/src/Bindings/ExecutionBindings.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="packages/laravel/src/Bindings/ExecutionBindings.php" method="register"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/laravel/src/Bindings/PersistenceBindings.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/laravel/src/Bindings/ResolverBindings.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/laravel/src/Http/Controllers/ArazzoApiController.php" method="endpoints"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Async/ExecutionStateBuilder.php" method="build"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Async/ExecutionStateBuilder.php" method="build"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Async/TransitionApplier.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Async/WorkerEvents.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Events/Listener/LedgerEventListener.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Execution/CorrelationResumer.php"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="packages/runner/src/Execution/CorrelationResumer.php" method="resume"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Execution/DefaultOpenApiExecutor.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/DefaultOpenApiExecutor.php" method="execute"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/DefaultOpenApiExecutor.php" method="execute"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="packages/runner/src/Execution/DefaultOpenApiExecutor.php" method="execute"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/ExpressionValueResolver.php" method="resolve"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="packages/runner/src/Execution/ParameterSerializer.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="packages/runner/src/Execution/ParameterSerializer.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/ResponseSchemaValidator.php" method="findResponseSchema"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/ResponseSchemaValidator.php" method="findResponseSchema"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="packages/runner/src/Execution/SchemaValidator.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validate"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validate"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validateObject"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validateObject"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validateArray"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validateString"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validateNumber"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/SchemaValidator.php" method="validateNumber"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Execution/StepExecutionWorker.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/StepExecutionWorker.php" method="handleUnderSpan"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/StepExecutionWorker.php" method="handleUnderSpan"/>
+  <violation rule="PHPMD\Rule\Design\LongMethod" file="packages/runner/src/Execution/StepExecutionWorker.php" method="handleUnderSpan"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Execution/StepExecutor.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/runner/src/Execution/StepExecutor.php"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/runner/src/Execution/StepExecutor.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="packages/runner/src/Execution/WorkflowEngine.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Execution/WorkflowEngine.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/runner/src/Execution/WorkflowEngine.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/WorkflowEngine.php" method="transition"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/WorkflowEngine.php" method="transition"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/runner/src/Execution/WorkflowEngine.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="packages/runner/src/Execution/WorkflowEngine.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/Execution/WorkflowExecutor.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/runner/src/Execution/WorkflowExecutor.php" method="executeCanonically"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="packages/runner/src/Execution/WorkflowExecutor.php" method="executeCanonically"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/runner/src/Protocol/HttpStepExecutor.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/runner/src/RunnerFacade.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="packages/runner/src/State/Data/ExecutionContext.php"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/runner/src/State/Data/ExecutionContext.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/runner/src/State/Data/StepResult.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\LongParameterList" file="packages/runner/src/State/Data/StepResult.php" method="failure"/>
+</phpmd-baseline>
