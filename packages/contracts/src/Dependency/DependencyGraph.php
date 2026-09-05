@@ -91,7 +91,6 @@ class DependencyGraph
                     $dfs($next);
                 }
 
-                /** @phpstan-ignore if.alwaysFalse */
                 if ($reported) {
                     return;
                 }

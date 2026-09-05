@@ -19,7 +19,6 @@ use Throwable;
 
 class StepExecutor
 {
-    /** @phpstan-ignore property.onlyWritten */
     private EventDispatcherInterface $events;
 
     public function __construct(

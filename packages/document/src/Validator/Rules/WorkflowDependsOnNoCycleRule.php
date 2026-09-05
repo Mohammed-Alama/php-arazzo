@@ -50,7 +50,6 @@ final class WorkflowDependsOnNoCycleRule implements Rule
                 if ($color[$next] === 0) {
                     $dfs($next);
                 }
-                /** @phpstan-ignore if.alwaysFalse */
                 if ($reported) {
                     return;
                 }
