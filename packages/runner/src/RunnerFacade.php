@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Runner;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\ExecutionGraphFactory;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
@@ -19,9 +20,10 @@ final class RunnerFacade implements RunnerFacadeInterface
 
     public function __construct(
         DocumentInterface $documents,
+        ExpressionEngineInterface $engine,
         ?ClientInterface $httpClient = null,
     ) {
-        $this->executor = (new ExecutionGraphFactory($documents, $httpClient))->createWorkflowExecutor();
+        $this->executor = (new ExecutionGraphFactory($documents, $engine, $httpClient))->createWorkflowExecutor();
     }
 
     public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array

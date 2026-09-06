@@ -117,7 +117,6 @@ flowchart LR
     runner_Execution --> contracts_Spec
     runner_Execution --> runner_State
     runner_Execution --> contracts_State
-    runner_Execution --> expression_Evaluation
     runner_Execution --> expression__
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
@@ -132,8 +131,7 @@ flowchart LR
     runner_Execution --> document__
     runner_Execution --> document_Normalizer
     runner_Execution --> document_Parser
-    runner_Execution --> expression_Ast
-    runner_Execution --> expression_Xpath
+    runner_Execution --> expression_Enum
     runner_Infrastructure --> contracts_Interfaces
     runner_Jobs --> contracts_Spec
     runner_Jobs --> contracts_State
@@ -144,17 +142,17 @@ flowchart LR
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
     runner_Protocol --> document_Normalizer
+    runner_Protocol --> expression__
     runner_Protocol --> expression_Interfaces
     runner_Protocol --> runner_Execution
     runner_Protocol --> contracts_Dependency
-    runner_Protocol --> expression_Evaluation
-    runner_Protocol --> expression__
     runner_Protocol --> runner_Infrastructure
     runner_Protocol --> runner_State
     runner_State --> contracts_Spec
     runner_State --> contracts_State
     runner__ --> contracts_Spec
     runner__ --> document__
+    runner__ --> expression__
     runner__ --> runner_Execution
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
@@ -171,14 +169,12 @@ flowchart LR
     cli_Console --> cli_Renderer
     cli_Console --> document_Normalizer
     cli_Console --> document_Resolver
-    cli_Console --> expression_Evaluation
     cli_Console --> expression__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> contracts_Interfaces
     laravel_Bindings --> document_Normalizer
     laravel_Bindings --> document_Validator
-    laravel_Bindings --> expression_Evaluation
     laravel_Bindings --> expression__
     laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> laravel_Support

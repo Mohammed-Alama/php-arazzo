@@ -12,8 +12,8 @@ use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Expression\StringInterpolator;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
@@ -28,13 +28,12 @@ class StepExecutor
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
         private OpenApiOperationResolver|DocumentInterface $operationResolver,
+        private ExpressionEngineInterface $engine,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
-        ?StringInterpolator $interpolator = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
-        unset($interpolator); // kept for BC; interpolation now flows through ExpressionValueResolver
     }
 
     /**
@@ -45,7 +44,7 @@ class StepExecutor
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
     {
         ['payload' => $payload] =
-            (new RequestCompiler(new ExpressionValueResolver($this->expressionResolver)))->compile($step, $document, $context);
+            (new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine))->compile($step, $document, $context);
 
         $resolved = $this->resolveOperation($step, $document);
 

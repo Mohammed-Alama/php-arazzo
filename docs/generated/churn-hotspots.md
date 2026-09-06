@@ -12,23 +12,24 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "expression:Evaluation", "cli:Console", "cli:Generator", "cli:Renderer", "contracts:Dependency", "contracts:Spec"]
-    y-axis "Touches" 0 --> 20
-    bar [17, 15, 14, 11, 8, 8, 3, 2, 2, 2, 2, 2]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "expression:Evaluation", "runner:Execution", "cli:Console", "cli:Generator", "cli:Renderer", "contracts:Dependency"]
+    y-axis "Touches" 0 --> 30
+    bar [18, 15, 14, 11, 8, 8, 3, 3, 2, 2, 2, 2]
 ```
 
-Analyzed 128 total file-touches across 37 modules.
+Analyzed 130 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 17 | 13% | 478 | 35.6 |
+| `laravel:Bindings` | 18 | 14% | 467 | 38.5 |
 | `laravel:Http` | 15 | 12% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 11% | 252 | 55.6 |
-| `laravel:Queue` | 11 | 9% | 100 | 110 |
+| `laravel:Queue` | 11 | 8% | 100 | 110 |
 | `laravel:Lock` | 8 | 6% | 49 | 163.3 |
 | `laravel:State` | 8 | 6% | 38 | 210.5 |
 | `expression:Evaluation` | 3 | 2% | 1,211 | 2.5 |
-| `cli:Console` | 2 | 2% | 791 | 2.5 |
+| `runner:Execution` | 3 | 2% | 3,643 | 0.8 |
+| `cli:Console` | 2 | 2% | 790 | 2.5 |
 | `cli:Generator` | 2 | 2% | 105 | 19 |
 | `cli:Renderer` | 2 | 2% | 253 | 7.9 |
 | `contracts:Dependency` | 2 | 2% | 328 | 6.1 |
@@ -43,11 +44,10 @@ Analyzed 128 total file-touches across 37 modules.
 | `laravel:Events` | 2 | 2% | 21 | 95.2 |
 | `runner:Async` | 2 | 2% | 494 | 4 |
 | `runner:Events` | 2 | 2% | 295 | 6.8 |
-| `runner:Execution` | 2 | 2% | 3,562 | 0.6 |
 | `runner:Infrastructure` | 2 | 2% | 160 | 12.5 |
 | `runner:Jobs` | 2 | 2% | 34 | 58.8 |
 | `runner:Policy` | 2 | 2% | 96 | 20.8 |
-| `runner:Protocol` | 2 | 2% | 544 | 3.7 |
+| `runner:Protocol` | 2 | 2% | 545 | 3.7 |
 | `runner:State` | 2 | 2% | 919 | 2.2 |
 | `runner:Telemetry` | 2 | 2% | 278 | 7.2 |
 | `contracts:Exceptions` | 1 | 1% | 28 | 35.7 |

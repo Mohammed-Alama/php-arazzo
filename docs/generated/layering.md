@@ -80,7 +80,6 @@ flowchart TB
     M_cli_Console --> M_document_Parser
     M_cli_Console --> M_document_Resolver
     M_cli_Console --> M_document_Validator
-    M_cli_Console --> M_expression_Evaluation
     M_cli_Console --> M_expression_Interfaces
     M_cli_Console --> M_expression__
     M_cli_Console --> M_runner_Events
@@ -151,7 +150,6 @@ flowchart TB
     M_laravel_Bindings --> M_document_Resolver
     M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
-    M_laravel_Bindings --> M_expression_Evaluation
     M_laravel_Bindings --> M_expression_Interfaces
     M_laravel_Bindings --> M_expression_Xpath
     M_laravel_Bindings --> M_expression__
@@ -207,10 +205,8 @@ flowchart TB
     M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
-    M_runner_Execution --> M_expression_Ast
-    M_runner_Execution --> M_expression_Evaluation
+    M_runner_Execution --> M_expression_Enum
     M_runner_Execution --> M_expression_Interfaces
-    M_runner_Execution --> M_expression_Xpath
     M_runner_Execution --> M_expression__
     M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
@@ -228,7 +224,6 @@ flowchart TB
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
     M_runner_Protocol --> M_document_Normalizer
-    M_runner_Protocol --> M_expression_Evaluation
     M_runner_Protocol --> M_expression_Interfaces
     M_runner_Protocol --> M_expression__
     M_runner_Protocol --> M_runner_Execution
@@ -238,6 +233,7 @@ flowchart TB
     M_runner_State --> M_contracts_State
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_document__
+    M_runner__ --> M_expression__
     M_runner__ --> M_runner_Execution
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
@@ -254,19 +250,19 @@ flowchart TB
 |---|---|---:|
 | `cli` | `contracts` | 20 |
 | `cli` | `document` | 19 |
-| `cli` | `expression` | 4 |
-| `cli` | `runner` | 21 |
+| `cli` | `expression` | 2 |
+| `cli` | `runner` | 22 |
 | `document` | `contracts` | 146 |
 | `document` | `expression` | 88 |
 | `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 20 |
-| `laravel` | `expression` | 11 |
-| `laravel` | `runner` | 48 |
-| `runner` | `contracts` | 179 |
+| `laravel` | `expression` | 6 |
+| `laravel` | `runner` | 49 |
+| `runner` | `contracts` | 187 |
 | `runner` | `document` | 25 |
-| `runner` | `expression` | 36 |
+| `runner` | `expression` | 23 |
 
 ## Module-level detail
 

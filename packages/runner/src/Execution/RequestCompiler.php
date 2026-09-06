@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Evaluation\PayloadReplacer;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Psr\Http\Message\ResponseInterface;
 
@@ -22,7 +22,10 @@ use Psr\Http\Message\ResponseInterface;
  */
 final readonly class RequestCompiler
 {
-    public function __construct(private ExpressionValueResolver $values) {}
+    public function __construct(
+        private ExpressionValueResolver $values,
+        private ExpressionEngineInterface $engine,
+    ) {}
 
     /**
      * Resolves reusable parameters, evaluates every runtime value, applies
@@ -56,10 +59,11 @@ final readonly class RequestCompiler
         $bodyData = [];
 
         if ($step->requestBody && $step->requestBody->payload !== null) {
-            $bodyData = PayloadReplacer::apply(
+            $bodyData = $this->engine->replacePayload(
                 $step,
                 is_array($step->requestBody->payload) ? $step->requestBody->payload : [],
                 fn (PayloadReplacement $replacement) => $this->values->resolve($replacement->value, $context, $step->stepId),
+                $context,
             );
         }
 

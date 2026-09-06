@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -18,14 +16,15 @@ use Psr\Http\Message\RequestFactoryInterface;
  *
  * The runner consumes the document package through its public face: source
  * resolution/fetching, preflight validation and OpenAPI operation resolution
- * all flow through {@see DocumentInterface}. The remaining expression
- * services are composed here until the internals migrate to the expression
- * public face.
+ * all flow through {@see DocumentInterface}. Expression services flow
+ * through the injected expression public face ({@see ExpressionEngineInterface}),
+ * with the runner composing output extraction and schema validation itself.
  */
 final class ExecutionGraphFactory
 {
     public function __construct(
         private readonly DocumentInterface $documents,
+        private readonly ExpressionEngineInterface $engine,
         private readonly ?ClientInterface $httpClient = null,
         private readonly ?RequestFactoryInterface $requestFactory = null,
     ) {}
@@ -35,11 +34,9 @@ final class ExecutionGraphFactory
         $client = $this->httpClient ?? new Client();
         $factory = $this->requestFactory ?? new HttpFactory();
 
-        $evaluator = new ExpressionEvaluator();
-        $expressionResolver = new ExpressionResolver(
-            $evaluator,
-            new StepOutputExtractor($this->documents, $evaluator),
-            new CriteriaEvaluator($evaluator),
+        $expressionResolver = new ExecutionExpressionResolver(
+            $this->engine,
+            new StepOutputExtractor($this->documents, $this->engine),
             new ResponseSchemaValidator($this->documents),
         );
 
@@ -48,6 +45,7 @@ final class ExecutionGraphFactory
                 new DefaultOpenApiExecutor($client, $factory),
                 $expressionResolver,
                 $this->documents,
+                engine: $this->engine,
             ),
             workflowEngine: new WorkflowEngine($expressionResolver),
             preflight: $this->documents,

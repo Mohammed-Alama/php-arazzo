@@ -13,14 +13,9 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
-use Alama\Arazzo\Expression\Ast\ResponsePart;
-use Alama\Arazzo\Expression\Ast\StepRef;
-use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\JsonPathEvaluator;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
-use Alama\Arazzo\Expression\SelectorEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Responses;
@@ -30,11 +25,9 @@ use Psr\Log\LoggerInterface;
 
 class StepOutputExtractor implements OutputExtractorInterface
 {
-    private ?SelectorEvaluator $selectorEvaluator = null;
-
     public function __construct(
         private OpenApiOperationResolver|DocumentInterface $operationResolver,
-        private ExpressionEvaluator $evaluator,
+        private ExpressionEngineInterface $engine,
         private ?LoggerInterface $logger = null,
     ) {}
 
@@ -48,7 +41,7 @@ class StepOutputExtractor implements OutputExtractorInterface
         $outputs = [];
         foreach ($step->outputs as $outputName => $expression) {
             if ($expression instanceof Selector) {
-                $outputs[$outputName] = $this->selectors()->evaluate($expression, $context, $step->stepId);
+                $outputs[$outputName] = $this->engine->evaluateSelector($expression, $context, $step->stepId);
 
                 continue;
             }
@@ -57,12 +50,12 @@ class StepOutputExtractor implements OutputExtractorInterface
                 $raw = trim($expression->raw);
 
                 if (str_starts_with($raw, '$.')) {
-                    $outputs[$outputName] = JsonPathEvaluator::evaluate($raw, is_array($responseBody) ? $responseBody : []);
+                    $outputs[$outputName] = $this->engine->jsonPath($raw, is_array($responseBody) ? $responseBody : []);
 
                     continue;
                 }
 
-                $value = $this->evaluator->evaluate($expression, new EvaluationContext($context, $step->stepId, $document));
+                $value = $this->engine->evaluate($expression, new ExecutionEvaluationInput($context, $step->stepId, $document));
                 $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
             } else {
                 $outputs[$outputName] = $expression;
@@ -70,11 +63,6 @@ class StepOutputExtractor implements OutputExtractorInterface
         }
 
         return $outputs;
-    }
-
-    private function selectors(): SelectorEvaluator
-    {
-        return $this->selectorEvaluator ??= new SelectorEvaluator(new DomXpathEvaluator(), $this->evaluator);
     }
 
     private function castOutputAgainstResponseSchema(
@@ -88,8 +76,13 @@ class StepOutputExtractor implements OutputExtractorInterface
             return $value;
         }
 
-        $ast = new ExpressionParser()->parse($expression->raw);
-        if (!$ast instanceof StepRef || !$ast->part instanceof ResponsePart || $ast->part->httpPart !== 'body' || $ast->part->jsonPointer === null) {
+        $ref = $this->engine->expressionReferences($expression->raw);
+        if ($ref === null
+            || $ref->kind !== ReferenceKind::Step
+            || $ref->part !== 'response'
+            || $ref->httpPart !== 'body'
+            || $ref->jsonPointer === null
+        ) {
             return $value;
         }
 
@@ -114,7 +107,7 @@ class StepOutputExtractor implements OutputExtractorInterface
         if ($schema instanceof Reference) {
             $schema = $schema->resolve();
         }
-        $leafSchema = $this->resolveSchemaAtPointer($schema instanceof Schema ? $schema : null, $ast->part->jsonPointer);
+        $leafSchema = $this->resolveSchemaAtPointer($schema instanceof Schema ? $schema : null, $ref->jsonPointer);
 
         return $this->castToSchemaType($value, $leafSchema);
     }

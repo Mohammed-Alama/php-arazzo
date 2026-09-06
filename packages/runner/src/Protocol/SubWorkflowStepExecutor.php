@@ -10,8 +10,8 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
@@ -25,7 +25,7 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private WorkflowExecutor $executor,
-        private ExpressionEvaluator $evaluator,
+        private ExpressionEngineInterface $engine,
     ) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
@@ -47,14 +47,14 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
             throw ExecutionException::subWorkflowNotFound((string) $step->workflowId);
         }
 
-        $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
+        $evaluationContext = new ExecutionEvaluationInput($context, $step->stepId, $document);
 
         $bound = [];
         $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
 
         foreach ($parameters as $parameter) {
             $bound[$parameter->name] = $parameter->value instanceof Expression
-                ? $this->evaluator->evaluate($parameter->value, $evaluationContext)
+                ? $this->engine->evaluate($parameter->value, $evaluationContext)
                 : $parameter->value;
         }
 

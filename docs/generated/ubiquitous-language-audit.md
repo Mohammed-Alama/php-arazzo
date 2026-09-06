@@ -36,7 +36,7 @@ Evans' first question: does the code speak one language?
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `DefaultSourceResolver`, `ExpressionResolver`, `ExpressionResolverInterface`, `ExpressionValueResolver` + 6 more (10 types)
+- **Resolver**: `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver`, `ExpressionResolverInterface` + 7 more (11 types)
 
 ### state vs status
 
