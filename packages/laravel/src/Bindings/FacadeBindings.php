@@ -21,6 +21,7 @@ final class FacadeBindings
         $app->singleton(DocumentInterface::class, fn (): Document => new Document());
         $app->singleton(RunnerFacadeInterface::class, fn (): RunnerFacade => new RunnerFacade(
             $app->make(DocumentInterface::class),
+            $app->make(ExpressionEngineInterface::class),
         ));
     }
 }
