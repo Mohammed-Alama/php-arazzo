@@ -24,6 +24,7 @@ require __DIR__.'/generate-docs/ExpressionAstDoc.php';
 require __DIR__.'/generate-docs/DatabaseSchemaDoc.php';
 require __DIR__.'/generate-docs/PipelineFlowDoc.php';
 require __DIR__.'/generate-docs/PublicApiDoc.php';
+require __DIR__.'/generate-docs/PackageContractsDoc.php';
 require __DIR__.'/generate-docs/CouplingMetricsDoc.php';
 require __DIR__.'/generate-docs/QualityGatesDoc.php';
 require __DIR__.'/generate-docs/FailureModesDoc.php';
@@ -73,6 +74,7 @@ use ArazzoDocs\LayeringDoc;
 use ArazzoDocs\ModularizationProgressDoc;
 use ArazzoDocs\NamespaceGraphDoc;
 use ArazzoDocs\ObservabilityDoc;
+use ArazzoDocs\PackageContractsDoc;
 use ArazzoDocs\PipelineFlowDoc;
 use ArazzoDocs\PublicApiDoc;
 use ArazzoDocs\QualityGatesDoc;
@@ -113,6 +115,7 @@ $generated = [
     'database-schema.md' => DatabaseSchemaDoc\render($root.'/packages/laravel/database/migrations'),
     'pipeline-flow.md' => PipelineFlowDoc\render($scans),
     'public-api.md' => PublicApiDoc\render($scans),
+    'package-contracts.md' => PackageContractsDoc\render($scans),
     'coupling-metrics.md' => CouplingMetricsDoc\render($scans),
     'quality-gates.md' => QualityGatesDoc\render($root.'/storage/quality-gates.json'),
     'failure-modes.md' => FailureModesDoc\render($scans),

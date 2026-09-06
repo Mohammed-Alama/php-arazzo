@@ -159,6 +159,27 @@ function fileModule(ScannedFile $file): string
 }
 
 /**
+ * True when the type declaration carries an `@internal` docblock (the public
+ * API convention for "hidden from the advertised contract, stays in place for
+ * composition-root wiring"). Only the docblock immediately preceding the
+ * primary class/interface/enum/trait declaration counts — `@internal`
+ * sprinkled on methods does not hide the containing type.
+ */
+function hasInternalDocblock(string $content): bool
+{
+    if (!str_contains($content, '@internal')) {
+        return false;
+    }
+    if (preg_match('/^(?:abstract\s+|final\s+)*(?:class|interface|enum|trait)\s+\w+/m', $content, $m, PREG_OFFSET_CAPTURE) !== 1) {
+        return false;
+    }
+    $lead = substr($content, 0, $m[0][1]);
+
+    return preg_match('/\/\*\*.*?\*\/(?:\s*#\[[^\]]*\]\s*)*$/s', $lead, $block) === 1
+        && str_contains($block[0], '@internal');
+}
+
+/**
  * Flatten per-package scans into one deterministic file list: packages in
  * layer order (bottom first), modules alphabetical, files by FQCN.
  *

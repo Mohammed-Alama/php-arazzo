@@ -166,7 +166,7 @@ function isInternal(ScannedFile $file): bool
         return true;
     }
 
-    return false;
+    return \ArazzoDocs\hasInternalDocblock($file->content);
 }
 
 /** @return list<string> normalized one-line signatures */

@@ -12,36 +12,36 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "contracts:Dependency", "document:Normalizer", "document:Validator", "runner:Execution", "cli:Console", "cli:Generator"]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "cli:Console", "cli:Generator", "cli:Renderer", "contracts:Dependency", "contracts:Spec", "contracts:Support"]
     y-axis "Touches" 0 --> 20
-    bar [17, 15, 14, 11, 8, 8, 4, 4, 4, 4, 2, 2]
+    bar [17, 15, 14, 11, 8, 8, 2, 2, 2, 2, 2, 2]
 ```
 
-Analyzed 133 total file-touches across 37 modules.
+Analyzed 125 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 17 | 13% | 476 | 35.7 |
-| `laravel:Http` | 15 | 11% | 161 | 93.2 |
+| `laravel:Bindings` | 17 | 14% | 476 | 35.7 |
+| `laravel:Http` | 15 | 12% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 11% | 252 | 55.6 |
-| `laravel:Queue` | 11 | 8% | 100 | 110 |
+| `laravel:Queue` | 11 | 9% | 100 | 110 |
 | `laravel:Lock` | 8 | 6% | 49 | 163.3 |
 | `laravel:State` | 8 | 6% | 38 | 210.5 |
-| `contracts:Dependency` | 4 | 3% | 328 | 12.2 |
-| `document:Normalizer` | 4 | 3% | 588 | 6.8 |
-| `document:Validator` | 4 | 3% | 3,104 | 1.3 |
-| `runner:Execution` | 4 | 3% | 3,442 | 1.2 |
 | `cli:Console` | 2 | 2% | 791 | 2.5 |
 | `cli:Generator` | 2 | 2% | 105 | 19 |
 | `cli:Renderer` | 2 | 2% | 253 | 7.9 |
+| `contracts:Dependency` | 2 | 2% | 328 | 6.1 |
 | `contracts:Spec` | 2 | 2% | 823 | 2.4 |
 | `contracts:Support` | 2 | 2% | 171 | 11.7 |
+| `document:Normalizer` | 2 | 2% | 588 | 3.4 |
 | `document:Parser` | 2 | 2% | 1,096 | 1.8 |
 | `document:Resolver` | 2 | 2% | 370 | 5.4 |
+| `document:Validator` | 2 | 2% | 3,104 | 0.6 |
 | `expression:Evaluation` | 2 | 2% | 1,159 | 1.7 |
 | `laravel:Events` | 2 | 2% | 21 | 95.2 |
 | `runner:Async` | 2 | 2% | 494 | 4 |
 | `runner:Events` | 2 | 2% | 295 | 6.8 |
+| `runner:Execution` | 2 | 2% | 3,442 | 0.6 |
 | `runner:Infrastructure` | 2 | 2% | 160 | 12.5 |
 | `runner:Jobs` | 2 | 2% | 34 | 58.8 |
 | `runner:Policy` | 2 | 2% | 96 | 20.8 |
