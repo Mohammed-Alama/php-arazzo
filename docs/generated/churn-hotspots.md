@@ -12,21 +12,22 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "cli:Console", "cli:Generator", "cli:Renderer", "contracts:Dependency", "contracts:Spec", "contracts:Support"]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "expression:Evaluation", "cli:Console", "cli:Generator", "cli:Renderer", "contracts:Dependency", "contracts:Spec"]
     y-axis "Touches" 0 --> 20
-    bar [17, 15, 14, 11, 8, 8, 2, 2, 2, 2, 2, 2]
+    bar [17, 15, 14, 11, 8, 8, 3, 2, 2, 2, 2, 2]
 ```
 
-Analyzed 125 total file-touches across 37 modules.
+Analyzed 128 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 17 | 14% | 476 | 35.7 |
+| `laravel:Bindings` | 17 | 13% | 476 | 35.7 |
 | `laravel:Http` | 15 | 12% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 11% | 252 | 55.6 |
 | `laravel:Queue` | 11 | 9% | 100 | 110 |
 | `laravel:Lock` | 8 | 6% | 49 | 163.3 |
 | `laravel:State` | 8 | 6% | 38 | 210.5 |
+| `expression:Evaluation` | 3 | 2% | 1,211 | 2.5 |
 | `cli:Console` | 2 | 2% | 791 | 2.5 |
 | `cli:Generator` | 2 | 2% | 105 | 19 |
 | `cli:Renderer` | 2 | 2% | 253 | 7.9 |
@@ -37,7 +38,8 @@ Analyzed 125 total file-touches across 37 modules.
 | `document:Parser` | 2 | 2% | 1,096 | 1.8 |
 | `document:Resolver` | 2 | 2% | 370 | 5.4 |
 | `document:Validator` | 2 | 2% | 3,104 | 0.6 |
-| `expression:Evaluation` | 2 | 2% | 1,211 | 1.7 |
+| `expression:Data` | 2 | 2% | 140 | 14.3 |
+| `expression:Enum` | 2 | 2% | 42 | 47.6 |
 | `laravel:Events` | 2 | 2% | 21 | 95.2 |
 | `runner:Async` | 2 | 2% | 494 | 4 |
 | `runner:Events` | 2 | 2% | 295 | 6.8 |
@@ -52,8 +54,6 @@ Analyzed 125 total file-touches across 37 modules.
 | `contracts:Interfaces` | 1 | 1% | 116 | 8.6 |
 | `contracts:State` | 1 | 1% | 667 | 1.5 |
 | `expression:Ast` | 1 | 1% | 194 | 5.2 |
-| `expression:Data` | 1 | 1% | 140 | 7.1 |
-| `expression:Enum` | 1 | 1% | 42 | 23.8 |
 | `expression:Exceptions` | 1 | 1% | 55 | 18.2 |
 | `expression:Interfaces` | 1 | 1% | 67 | 14.9 |
 | `expression:Xpath` | 1 | 1% | 103 | 9.7 |
