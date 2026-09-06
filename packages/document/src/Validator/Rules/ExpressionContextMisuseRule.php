@@ -8,28 +8,27 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
-use Alama\Arazzo\Expression\Ast\HttpMetaRef;
-use Alama\Arazzo\Expression\Ast\RequestPart;
-use Alama\Arazzo\Expression\Ast\ResponsePart;
-use Alama\Arazzo\Expression\Ast\StepRef;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
 final class ExpressionContextMisuseRule implements Rule
 {
     private const ALLOWED = ['criteria', 'outputs', 'onSuccess', 'onFailure'];
 
+    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
-            if ($ast instanceof ExpressionSyntaxException) {
+            $ref = $this->engine->expressionReferences($site->expression->raw);
+            if ($ref === null) {
                 continue;
             }
 
-            $isRuntime = $ast instanceof HttpMetaRef
-                || ($ast instanceof StepRef && ($ast->part instanceof RequestPart || $ast->part instanceof ResponsePart));
+            $isRuntime = $ref->kind === ReferenceKind::HttpMeta
+                || ($ref->kind === ReferenceKind::Step
+                    && ($ref->part === 'request' || $ref->part === 'response'));
 
             if ($isRuntime && !in_array($site->context, self::ALLOWED, true)) {
                 $errors->error(

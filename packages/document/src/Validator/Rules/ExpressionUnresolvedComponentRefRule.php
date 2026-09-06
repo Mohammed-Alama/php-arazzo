@@ -8,27 +8,25 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
-use Alama\Arazzo\Expression\Ast\ComponentRef;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
 final class ExpressionUnresolvedComponentRefRule implements Rule
 {
+    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
-            if ($ast instanceof ExpressionSyntaxException) {
-                continue;
-            }
-            if (!$ast instanceof ComponentRef) {
+            $ref = $this->engine->expressionReferences($site->expression->raw);
+            if ($ref === null || $ref->kind !== ReferenceKind::Component) {
                 continue;
             }
 
-            $bag = $symbols->components[$ast->type] ?? null;
-            if ($bag === null || !isset($bag[$ast->name])) {
-                $errors->error($this->code(), "Component reference '{$ast->type}.{$ast->name}' is not declared.", $site->pointer);
+            $bag = $symbols->components[$ref->target] ?? null;
+            if ($bag === null || !isset($bag[$ref->name])) {
+                $errors->error($this->code(), "Component reference '{$ref->target}.{$ref->name}' is not declared.", $site->pointer);
             }
         }
     }

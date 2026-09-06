@@ -8,21 +8,19 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
-use Alama\Arazzo\Expression\Ast\InputRef;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
 final class ExpressionUnresolvedInputRefRule implements Rule
 {
+    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
-            if ($ast instanceof ExpressionSyntaxException) {
-                continue;
-            }
-            if (!$ast instanceof InputRef) {
+            $ref = $this->engine->expressionReferences($site->expression->raw);
+            if ($ref === null || $ref->kind !== ReferenceKind::Input) {
                 continue;
             }
 
@@ -30,10 +28,10 @@ final class ExpressionUnresolvedInputRefRule implements Rule
             if ($syms === null) {
                 continue;
             }
-            if (!isset($syms->inputs[$ast->name]) && !isset($syms->parameters[$ast->name])) {
+            if (!isset($syms->inputs[$ref->target]) && !isset($syms->parameters[$ref->target])) {
                 $errors->error(
                     $this->code(),
-                    "Expression references unknown input '{$ast->name}'.",
+                    "Expression references unknown input '{$ref->target}'.",
                     $site->pointer,
                 );
             }

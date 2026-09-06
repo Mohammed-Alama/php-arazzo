@@ -90,18 +90,16 @@ flowchart LR
     document_Validator --> expression__
     document_Validator --> document_Normalizer
     document_Validator --> document_Resolver
-    document_Validator --> expression_Xpath
     document_Validator --> contracts_Support
     document_Validator --> expression_Data
-    document_Validator --> expression_Ast
-    document_Validator --> expression_Exceptions
+    document_Validator --> expression_Enum
     document_Validator --> contracts_Dependency
     document__ --> contracts_Spec
     document__ --> document_Normalizer
     document__ --> document_Parser
     document__ --> document_Resolver
     document__ --> document_Validator
-    document__ --> expression_Xpath
+    document__ --> expression__
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
     runner_Async --> expression_Interfaces
@@ -165,11 +163,11 @@ flowchart LR
     cli_Console --> runner_Telemetry
     cli_Console --> document_Parser
     cli_Console --> document_Validator
+    cli_Console --> expression__
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
     cli_Console --> document_Normalizer
     cli_Console --> document_Resolver
-    cli_Console --> expression__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> contracts_Interfaces
@@ -191,7 +189,6 @@ flowchart LR
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
     laravel_Bindings --> document_Resolver
-    laravel_Bindings --> expression_Xpath
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
     laravel_Bindings --> runner__

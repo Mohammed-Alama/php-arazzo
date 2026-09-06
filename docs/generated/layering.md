@@ -107,17 +107,15 @@ flowchart TB
     M_document_Validator --> M_contracts_Support
     M_document_Validator --> M_document_Normalizer
     M_document_Validator --> M_document_Resolver
-    M_document_Validator --> M_expression_Ast
     M_document_Validator --> M_expression_Data
-    M_document_Validator --> M_expression_Exceptions
-    M_document_Validator --> M_expression_Xpath
+    M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression__
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Normalizer
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Resolver
     M_document__ --> M_document_Validator
-    M_document__ --> M_expression_Xpath
+    M_document__ --> M_expression__
     M_expression_Ast --> M_contracts_Spec
     M_expression_Data --> M_contracts_Spec
     M_expression_Data --> M_expression_Enum
@@ -151,7 +149,6 @@ flowchart TB
     M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
     M_laravel_Bindings --> M_expression_Interfaces
-    M_laravel_Bindings --> M_expression_Xpath
     M_laravel_Bindings --> M_expression__
     M_laravel_Bindings --> M_laravel_Http
     M_laravel_Bindings --> M_laravel_Lock
@@ -250,15 +247,15 @@ flowchart TB
 |---|---|---:|
 | `cli` | `contracts` | 20 |
 | `cli` | `document` | 19 |
-| `cli` | `expression` | 2 |
+| `cli` | `expression` | 3 |
 | `cli` | `runner` | 22 |
 | `document` | `contracts` | 146 |
-| `document` | `expression` | 88 |
+| `document` | `expression` | 76 |
 | `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 20 |
-| `laravel` | `expression` | 6 |
+| `laravel` | `expression` | 5 |
 | `laravel` | `runner` | 49 |
 | `runner` | `contracts` | 187 |
 | `runner` | `document` | 25 |

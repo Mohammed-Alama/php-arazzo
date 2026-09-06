@@ -21,14 +21,14 @@ Analyzed 134 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 19 | 14% | 467 | 40.7 |
+| `laravel:Bindings` | 19 | 14% | 464 | 40.9 |
 | `laravel:Http` | 15 | 11% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 10% | 252 | 55.6 |
 | `laravel:Queue` | 11 | 8% | 100 | 110 |
 | `laravel:Lock` | 8 | 6% | 49 | 163.3 |
 | `laravel:State` | 8 | 6% | 38 | 210.5 |
 | `runner:Execution` | 4 | 3% | 3,643 | 1.1 |
-| `cli:Console` | 3 | 2% | 790 | 3.8 |
+| `cli:Console` | 3 | 2% | 792 | 3.8 |
 | `expression:Evaluation` | 3 | 2% | 1,211 | 2.5 |
 | `runner:Protocol` | 3 | 2% | 545 | 5.5 |
 | `cli:Generator` | 2 | 1% | 105 | 19 |
@@ -39,7 +39,7 @@ Analyzed 134 total file-touches across 37 modules.
 | `document:Normalizer` | 2 | 1% | 588 | 3.4 |
 | `document:Parser` | 2 | 1% | 1,096 | 1.8 |
 | `document:Resolver` | 2 | 1% | 370 | 5.4 |
-| `document:Validator` | 2 | 1% | 3,104 | 0.6 |
+| `document:Validator` | 2 | 1% | 3,092 | 0.6 |
 | `expression:Data` | 2 | 1% | 140 | 14.3 |
 | `expression:Enum` | 2 | 1% | 42 | 47.6 |
 | `laravel:Events` | 2 | 1% | 21 | 95.2 |

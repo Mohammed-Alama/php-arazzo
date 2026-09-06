@@ -8,18 +8,19 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
 final class ExpressionSyntaxRule implements Rule
 {
+    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
-            if ($ast instanceof ExpressionSyntaxException) {
-                $errors->error($this->code(), $ast->getMessage(), $site->pointer);
+            $syntaxError = $this->engine->parseExpression($site->expression->raw);
+            if ($syntaxError !== null) {
+                $errors->error($this->code(), $syntaxError->getMessage(), $site->pointer);
             }
         }
     }

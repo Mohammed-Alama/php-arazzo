@@ -12,6 +12,7 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 
 it('detects unresolved $steps ref inside a Selector context', function () {
@@ -27,7 +28,7 @@ it('detects unresolved $steps ref inside a Selector context', function () {
     $errors = new ErrorCollector();
     $symbols = SymbolTable::build($doc);
 
-    (new ExpressionUnresolvedStepRefRule())->check($doc, $symbols, $errors);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, $symbols, $errors);
 
     expect($errors->errors())->toHaveCount(1)
         ->and($errors->errors()[0]->message)->toContain("unknown step 'does-not-exist'");

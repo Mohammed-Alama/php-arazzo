@@ -8,23 +8,20 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
-use Alama\Arazzo\Expression\Ast\OutputPart;
-use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
 final class ExpressionUnresolvedStepRefRule implements Rule
 {
+    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ((new ExpressionWalker())->walk($doc, $symbols) as $site) {
-            $ast = (new ExpressionParser())->parseOrError($site->expression->raw);
-            if ($ast instanceof ExpressionSyntaxException) {
-                continue;
-            }
-            if (!$ast instanceof StepRef) {
+            $ref = $this->engine->expressionReferences($site->expression->raw);
+            if ($ref === null || $ref->kind !== ReferenceKind::Step) {
                 continue;
             }
 
@@ -33,7 +30,7 @@ final class ExpressionUnresolvedStepRefRule implements Rule
                 continue;
             }
 
-            $targetStepId = $ast->stepId ?? $site->currentStepId;
+            $targetStepId = $ref->target ?? $site->currentStepId;
 
             if ($targetStepId === null) {
                 $errors->error($this->code(), 'Expression implicitly references current step but is used outside a step context.', $site->pointer);
@@ -51,7 +48,7 @@ final class ExpressionUnresolvedStepRefRule implements Rule
             if ($site->currentStepId !== null && isset($syms->stepsById[$site->currentStepId])) {
                 $currentIdx = $syms->stepsById[$site->currentStepId]->index;
 
-                if ($ast->stepId !== null && $targetStepId !== $site->currentStepId && $target->index >= $currentIdx) {
+                if ($ref->target !== null && $targetStepId !== $site->currentStepId && $target->index >= $currentIdx) {
                     // A reference to an earlier step is a valid implicit dependency
                     // (Arazzo 1.1 "Tool Behavior"): the engine must order it before
                     // the referencing step even without an explicit dependsOn entry.
@@ -60,16 +57,16 @@ final class ExpressionUnresolvedStepRefRule implements Rule
                     // workflow relies on pure sequential execution (no dependsOn used).
                     // Otherwise the engine is expected to infer the implicit edge.
                     if ($this->workflowUsesDependsOn($syms)) {
-                        $errors->warning('expr.forward_step_ref', "Expression references step '{$ast->stepId}' which appears later in the steps array; it forms an implicit dependency.", $site->pointer);
+                        $errors->warning('expr.forward_step_ref', "Expression references step '{$ref->target}' which appears later in the steps array; it forms an implicit dependency.", $site->pointer);
                     } else {
-                        $errors->error($this->code(), "Expression references step '{$ast->stepId}' which appears later in the steps array, and the workflow does not use dependsOn to make the ordering explicit.", $site->pointer);
+                        $errors->error($this->code(), "Expression references step '{$ref->target}' which appears later in the steps array, and the workflow does not use dependsOn to make the ordering explicit.", $site->pointer);
                     }
 
                     continue;
                 }
             }
-            if ($ast->part instanceof OutputPart && !isset($target->outputs[$ast->part->name])) {
-                $errors->error($this->code(), "Step '{$ast->stepId}' does not declare output '{$ast->part->name}'.", $site->pointer);
+            if ($ref->part === 'outputs' && $ref->name !== null && !isset($target->outputs[$ref->name])) {
+                $errors->error($this->code(), "Step '{$ref->target}' does not declare output '{$ref->name}'.", $site->pointer);
             }
         }
     }

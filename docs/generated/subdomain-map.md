@@ -18,17 +18,17 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>823 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>790 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>792 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>105 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>253 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1096 LOC</small>"]:::supportingDomain
         S_document_Resolver["document:Resolver<br/><small>370 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3104 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3092 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>171 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>467 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>464 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>21 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>161 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>49 LOC</small>"]:::genericDomain
@@ -68,9 +68,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 823 | 0 | 5% |
-| Supporting | 6 | 5,718 | 0 | 32% |
-| Generic subdomain | 12 | 2,052 | 1,148 | 18% |
-| Unclassified | 18 | 8,122 | 0 | 45% |
+| Supporting | 6 | 5,708 | 0 | 32% |
+| Generic subdomain | 12 | 2,052 | 1,145 | 18% |
+| Unclassified | 18 | 8,122 | 0 | 46% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

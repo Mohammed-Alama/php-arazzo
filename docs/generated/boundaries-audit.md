@@ -90,7 +90,13 @@ when a boundary consciously moves.
 
 Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
 
-**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`).
+**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
+
+### Facade-to-facade transitions (allowed by seam policy)
+
+| From package | To package | From | References concrete facade |
+|---|---|---|---|
+| `document` | `expression` | `Document` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -98,21 +104,9 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
-| `document` | `ComponentRef` | `expression` | 1 | `ExpressionUnresolvedComponentRefRule` |
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
-| `document` | `DomXpathEvaluator` | `expression` | 1 | `Document` |
-| `document` | `HttpMetaRef` | `expression` | 1 | `ExpressionContextMisuseRule` |
-| `document` | `InputRef` | `expression` | 1 | `ExpressionUnresolvedInputRefRule` |
-| `document` | `OutputPart` | `expression` | 1 | `ExpressionUnresolvedStepRefRule` |
-| `document` | `Parser` | `expression` | 8 | `ExpressionUnresolvedStepRefRule` |
-| `document` | `RequestPart` | `expression` | 2 | `ExpressionJsonPointerSyntaxRule` |
-| `document` | `ResponsePart` | `expression` | 2 | `ExpressionJsonPointerSyntaxRule` |
-| `document` | `SourceRef` | `expression` | 1 | `ExpressionUnresolvedSourceRefRule` |
-| `document` | `StepRef` | `expression` | 3 | `ExpressionUnresolvedStepRefRule` |
-| `document` | `SymbolTable` | `expression` | 53 | `Validator` |
-| `document` | `WorkflowRef` | `expression` | 1 | `ExpressionUnresolvedWorkflowRefRule` |
+| `document` | `SymbolTable` | `expression` | 52 | `ExpressionWalker` |
 | `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
-| `document` | `XpathEvaluator` | `expression` | 1 | `PreflightValidator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
 | `runner` | `OpenApiOperationResolver` | `document` | 4 | `ResponseSchemaValidator` |
