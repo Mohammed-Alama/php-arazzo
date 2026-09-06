@@ -7,6 +7,8 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Document;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 
@@ -20,17 +22,22 @@ function runnerDocument(): ArazzoDocument
     );
 }
 
+function runnerFacade(): RunnerFacade
+{
+    return new RunnerFacade(new Document(), new ExpressionEngine());
+}
+
 it('exposes the RunnerFacadeInterface entry point', function () {
-    $runner = new RunnerFacade();
+    $runner = runnerFacade();
     expect($runner)->toBeInstanceOf(RunnerFacadeInterface::class);
 });
 
-it('builds its own execution graph without wiring', function () {
-    $runner = new RunnerFacade();
+it('executes with only the document public face injected', function () {
+    $runner = runnerFacade();
     expect($runner)->toBeInstanceOf(RunnerFacade::class);
 });
 
 it('throws on an unknown workflow id', function () {
-    $runner = new RunnerFacade();
+    $runner = runnerFacade();
     $runner->run(runnerDocument(), 'missing', []);
 })->throws(RuntimeException::class, "unknown workflow 'missing'");

@@ -47,6 +47,8 @@ flowchart LR
     C_expression_expression_Data_EvaluationInput -.->|implements| I_EvaluationInputInterface
     C_expression_expression_Evaluation_EvaluationContext["EvaluationContext<br/><small>expression:Evaluation</small>"]:::implCore
     C_expression_expression_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
+    C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
     C_expression_expression_Evaluation_Comparison["Comparison<br/><small>expression:Evaluation</small>"]:::implCore
     C_expression_expression_Evaluation_Comparison -.->|implements| I_ConditionNode
     C_expression_expression_Evaluation_Literal["Literal<br/><small>expression:Evaluation</small>"]:::implCore
@@ -63,6 +65,8 @@ flowchart LR
     C_expression_expression_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_expression_expression_Evaluation_InterpolationResolver["InterpolationResolver<br/><small>expression:Evaluation</small>"]:::implCore
     C_expression_expression_Evaluation_InterpolationResolver -.->|implements| I_ExpressionResolverInterface
+    C_runner_runner_Execution_ExecutionExpressionResolver["ExecutionExpressionResolver<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_ExecutionExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
     C_expression_expression___ExpressionEvaluator["ExpressionEvaluator<br/><small>(expression root)</small>"]:::implCore

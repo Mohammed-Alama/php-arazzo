@@ -275,7 +275,7 @@ parameters:
 			path: src/Execution/StepOutcomeHandler.php
 
 		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Execution/StepOutcomeHandler.php
 
@@ -299,6 +299,11 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method castOutputAgainstResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/StepOutputExtractor.php
 
 		-
 			message: '#^Cannot access offset ''body'' on mixed\.$#'
@@ -334,6 +339,11 @@ parameters:
 			identifier: identical.alwaysFalse
 			count: 1
 			path: src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Protocol/HttpStepExecutor.php
 
 		-
 			message: '#^Cannot access offset ''status'' on mixed\.$#'

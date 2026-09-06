@@ -13,6 +13,7 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
@@ -65,7 +66,7 @@ it('validates response schema if configured globally or locally', function (): v
         return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), engine: new ExpressionEngine());
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], [], [], null, null, null, true);
 
     try {
@@ -91,7 +92,7 @@ it('skips validation if configured off globally and locally', function (): void 
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), engine: new ExpressionEngine());
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], [], [], null, null, null, null);
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
@@ -120,6 +121,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
         operationResolver: createMockOperationResolver(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
+        engine: new ExpressionEngine(),
     );
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
 
@@ -146,7 +148,7 @@ it('does not inject a header when no injector is passed', function (): void {
         return new Response(200, [], '{}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), engine: new ExpressionEngine());
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
 
     $executor->execute($step, new WorkflowContext('def-1'), createTestDocument());
@@ -176,6 +178,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
         operationResolver: createMockOperationResolver(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
+        engine: new ExpressionEngine(),
     );
     $step = new Step('test-step', null, 'op', null, null, [], null, [], [], [], []);
 

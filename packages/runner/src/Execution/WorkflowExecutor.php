@@ -11,6 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
@@ -38,7 +39,7 @@ class WorkflowExecutor
         private StepExecutor $stepExecutor,
         private WorkflowEngine $workflowEngine,
         ?EventDispatcherInterface $events = null,
-        private ?PreflightValidator $preflight = null,
+        private PreflightValidator|DocumentInterface|null $preflight = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -50,14 +51,14 @@ class WorkflowExecutor
     {
         // Preflight runs before the first side effect (no events, no state).
         if ($this->preflight !== null) {
-            $result = $this->preflight->validate($document);
+            $result = $this->preflightDocument($document);
 
             // Workflow `inputs` JSON-Schema pre-validation (first-mover:
             // no other Arazzo tool validates inputs before spending calls).
             $inputsSchema = $workflow->inputs;
 
             if (is_array($inputsSchema) && $inputsSchema !== []) {
-                $inputResult = $this->preflight->validateInputs($document, $workflow->workflowId, $inputs);
+                $inputResult = $this->preflightInputs($document, $workflow->workflowId, $inputs);
 
                 if ($inputResult->errors !== []) {
                     $result = new ValidationResult(
@@ -198,5 +199,34 @@ class WorkflowExecutor
                 return $workflow;
             }
         } throw new LogicException("Unknown workflow '{$id}'.");
+    }
+
+    private function preflightDocument(ArazzoDocument $document): ValidationResult
+    {
+        $preflight = $this->preflight;
+        if ($preflight === null) {
+            return new ValidationResult($document, [], []);
+        }
+        if ($preflight instanceof DocumentInterface) {
+            return $preflight->preflight($document);
+        }
+
+        return $preflight->validate($document);
+    }
+
+    /**
+     * @param  array<string, mixed>  $inputs
+     */
+    private function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult
+    {
+        $preflight = $this->preflight;
+        if ($preflight === null) {
+            return new ValidationResult($document, [], []);
+        }
+        if ($preflight instanceof DocumentInterface) {
+            return $preflight->preflightInputs($document, $workflowId, $inputs);
+        }
+
+        return $preflight->validateInputs($document, $workflowId, $inputs);
     }
 }

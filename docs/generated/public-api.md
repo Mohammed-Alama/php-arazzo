@@ -746,10 +746,12 @@ this file on a commit is a public API change — review it deliberately.
 ## runner
 
 ### `RunnerFacadeInterface` interface
+- `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(?ClientInterface $httpClient = null, private readonly ?PreflightValidator $preflight = null)`
+- `public function __construct(DocumentInterface $documents, ExpressionEngineInterface $engine, ?ClientInterface $httpClient = null)`
+- `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 
 ### `Alama\Arazzo\Runner\Async`
@@ -800,9 +802,18 @@ this file on a commit is a public API change — review it deliberately.
 #### `DefaultOpenApiExecutor` class
 - `public function __construct(private ClientInterface $httpClient, private RequestFactoryInterface $requestFactory, private ?LoggerInterface $logger = null)`
 
+#### `ExecutionExpressionResolver` class
+- `public function __construct(private ExpressionEngineInterface $engine, private OutputExtractorInterface $outputExtractor, private ResponseValidatorInterface $schemaValidator)`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
+
+#### `ExecutionGraphFactory` class
+- `public function __construct(private readonly DocumentInterface $documents, private readonly ExpressionEngineInterface $engine, private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $requestFactory = null)`
+
 #### `ExpressionValueResolver` class
-- `public function __construct(private readonly ExpressionResolverInterface $expressions, ?SelectorEvaluator $selectors = null)`
-- `public function resolve(mixed $value, WorkflowContext $context, ?string $stepId = null): mixed`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 
 #### `IdempotencyKeyInjector` class
 - `public function __construct(private bool $enabledDefault, private string $headerDefault)`
@@ -816,13 +827,13 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string`
 
 #### `RequestCompiler` class
-- `public function __construct(private ExpressionValueResolver $values)`
+- `public function __construct(private ExpressionValueResolver $values, private ExpressionEngineInterface $engine)`
 - `public static function decodeResponse(ResponseInterface $response): array`
 - `public static function flattenHeaders(array $headers): array`
 - `public static function requestRecord(?Psr7Request $captured, OpenApiPayload $payload): array`
 
 #### `ResponseSchemaValidator` class
-- `public function __construct(private OpenApiOperationResolver $operationResolver)`
+- `public function __construct(private OpenApiOperationResolver|DocumentInterface $operationResolver)`
 
 #### `ReusableParameterResolver` class
 - `public function resolve(array $parameters, ?ArazzoDocument $document): array`
@@ -835,21 +846,21 @@ this file on a commit is a public API change — review it deliberately.
 - `public function handle(ExecuteStepJob $job): void`
 
 #### `StepExecutor` class
-- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private OpenApiOperationResolver $operationResolver, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null, ?EventDispatcherInterface $events = null, ?StringInterpolator $interpolator = null)`
+- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private OpenApiOperationResolver|DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null, ?EventDispatcherInterface $events = null)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array`
 
 #### `StepOutcomeHandler` class
-- `public function __construct(RunPersistence $persistence, RunControlFlow $controlFlow, private PendingCorrelationRegistryInterface $pendingCorrelations, private SubWorkflowInvoker $invoker, private SelectorEvaluator $selectors, private ExpressionEvaluator $expressions, private int $stateTtlSeconds = 86400)`
+- `public function __construct(RunPersistence $persistence, RunControlFlow $controlFlow, private PendingCorrelationRegistryInterface $pendingCorrelations, private SubWorkflowInvoker $invoker, private ExpressionEngineInterface $engine, private int $stateTtlSeconds = 86400)`
 - `public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet, ): void`
 
 #### `StepOutputExtractor` class
-- `public function __construct(private OpenApiOperationResolver $operationResolver, private ExpressionEvaluator $evaluator, private ?LoggerInterface $logger = null)`
+- `public function __construct(private OpenApiOperationResolver|DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private ?LoggerInterface $logger = null)`
 
 #### `StepParameterMerger` class
 - `public static function merge(Step $step, ?Workflow $workflow): Step`
 
 #### `SubWorkflowInvoker` class
-- `public function __construct(private DefinitionRegistryInterface $registry, private WorkflowExecutor $executor, private ExpressionEvaluator $expressions, private SelectorEvaluator $selectors)`
+- `public function __construct(private DefinitionRegistryInterface $registry, private WorkflowExecutor $executor, private ExpressionEngineInterface $engine)`
 
 #### `SyncQueueDriver` class
 - `public function dispatch(object $job, int $delaySeconds = 0): void`
@@ -868,10 +879,15 @@ this file on a commit is a public API change — review it deliberately.
 - `public function transition(ArazzoDocument $document, Workflow $workflow, Step $step, ExecutionState|ExecutionContext $incoming, bool $criteriaMet, bool $suspended = false): Transition`
 
 #### `WorkflowExecutor` class
-- `public function __construct(private StepExecutor $stepExecutor, private WorkflowEngine $workflowEngine, ?EventDispatcherInterface $events = null, private ?PreflightValidator $preflight = null)`
+- `public function __construct(private StepExecutor $stepExecutor, private WorkflowEngine $workflowEngine, ?EventDispatcherInterface $events = null, private PreflightValidator|DocumentInterface|null $preflight = null)`
 - `public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult`
 
 ### `Alama\Arazzo\Runner\Execution\Data`
+
+#### `ExecutionEvaluationInput` class
+- `public function __construct(public WorkflowContextInterface $workflowContext, public ?string $currentStepId = null, public ?ArazzoDocument $document = null)`
+- `public function getCurrentStepId(): ?string`
+- `public function getDocument(): ?ArazzoDocument`
 
 #### `Transition` class
 - `public function isTerminal(): bool`
@@ -940,11 +956,11 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Runner\Protocol`
 
 #### `AsyncApiStepExecutor` class
-- `public function __construct(private PendingCorrelationRegistryInterface $pendingCorrelations, private ExpressionEvaluator $evaluator, private HttpClientInterface $httpClient, private ?RequestFactoryInterface $requestFactory = null, private ?StreamFactoryInterface $streamFactory = null, private ?UriFactoryInterface $uriFactory = null)`
+- `public function __construct(private PendingCorrelationRegistryInterface $pendingCorrelations, private ExpressionEngineInterface $engine, private HttpClientInterface $httpClient, private ?RequestFactoryInterface $requestFactory = null, private ?StreamFactoryInterface $streamFactory = null, private ?UriFactoryInterface $uriFactory = null)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
 #### `HttpStepExecutor` class
-- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private OpenApiOperationResolver $operationResolver, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null)`
+- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private OpenApiOperationResolver $operationResolver, private ExpressionEngineInterface $engine, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
 #### `ProtocolExecutorRegistry` class
@@ -957,7 +973,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
 #### `SubWorkflowStepExecutor` class
-- `public function __construct(private WorkflowExecutor $executor, private ExpressionEvaluator $evaluator)`
+- `public function __construct(private WorkflowExecutor $executor, private ExpressionEngineInterface $engine)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
 ### `Alama\Arazzo\Runner\State`

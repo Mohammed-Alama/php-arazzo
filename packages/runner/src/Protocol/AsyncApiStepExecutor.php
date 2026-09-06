@@ -12,9 +12,8 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Expression\Evaluation\PayloadReplacer;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
@@ -31,7 +30,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private PendingCorrelationRegistryInterface $pendingCorrelations,
-        private ExpressionEvaluator $evaluator,
+        private ExpressionEngineInterface $engine,
         private HttpClientInterface $httpClient,
         private ?RequestFactoryInterface $requestFactory = null,
         private ?StreamFactoryInterface $streamFactory = null,
@@ -69,7 +68,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no channelPath.");
         }
 
-        $correlationId = (string) $this->evaluator->evaluate($step->correlationId, new EvaluationContext($context, $step->stepId, $document));
+        $correlationId = (string) $this->engine->evaluate($step->correlationId, new ExecutionEvaluationInput($context, $step->stepId, $document));
 
         $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->channelPath, $step->timeout !== null ? $step->timeout : null);
 
@@ -93,14 +92,14 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $uri = $this->resolveChannelUri($step);
 
-        $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
+        $evaluationContext = new ExecutionEvaluationInput($context, $step->stepId, $document);
 
         $query = [];
         $headers = [];
         $parameters = new ReusableParameterResolver()->resolve($step->parameters, $document);
         foreach ($parameters as $parameter) {
             $value = $parameter->value instanceof Expression
-                ? $this->evaluator->evaluate($parameter->value, $evaluationContext)
+                ? $this->engine->evaluate($parameter->value, $evaluationContext)
                 : $parameter->value;
 
             if ($parameter->in?->value === 'header') {
@@ -153,16 +152,16 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
     /**
      * @return array<array-key, mixed>
      */
-    private function buildPayload(Step $step, EvaluationContext $context): array
+    private function buildPayload(Step $step, ExecutionEvaluationInput $context): array
     {
         $requestBody = $step->requestBody;
 
         return $requestBody !== null && is_array($requestBody->payload)
-            ? PayloadReplacer::apply(
+            ? $this->engine->replacePayload(
                 $step,
                 $requestBody->payload,
                 fn (PayloadReplacement $replacement) => $replacement->value instanceof Expression
-                    ? $this->evaluator->evaluate($replacement->value, $context)
+                    ? $this->engine->evaluate($replacement->value, $context)
                     : $replacement->value,
             )
             : [];

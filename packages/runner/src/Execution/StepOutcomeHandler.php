@@ -20,13 +20,12 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
-use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Events\RunCompletedEvent;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
 use Alama\Arazzo\Runner\Events\StepRetriedEvent;
+use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
@@ -66,8 +65,7 @@ class StepOutcomeHandler
         RunControlFlow $controlFlow,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private SubWorkflowInvoker $invoker,
-        private SelectorEvaluator $selectors,
-        private ExpressionEvaluator $expressions,
+        private ExpressionEngineInterface $engine,
         private int $stateTtlSeconds = 86400,
     ) {
         $this->queueDriver = $controlFlow->queueDriver;
@@ -88,8 +86,8 @@ class StepOutcomeHandler
     ): void {
         foreach ($step->outputs as $name => $value) {
             $resolved = match (true) {
-                $value instanceof Selector => $this->selectors->evaluate($value, $context, $step->stepId),
-                $value instanceof Expression => $this->expressions->evaluate($value, new EvaluationContext($context, $step->stepId)),
+                $value instanceof Selector => $this->engine->evaluateSelector($value, $context, $step->stepId),
+                $value instanceof Expression => $this->engine->evaluate($value, new ExecutionEvaluationInput($context, $step->stepId)),
                 default => $value,
             };
             $context = $context->withStepOutput($step->stepId, $name, $resolved);

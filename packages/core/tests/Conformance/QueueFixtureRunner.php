@@ -60,6 +60,7 @@ final class QueueFixtureRunner extends ConformanceHarness
                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                 $resolver,
                 $operationResolver,
+                engine: $this->engine(),
             )],
             new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),
         );

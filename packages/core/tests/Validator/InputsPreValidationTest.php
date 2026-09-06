@@ -15,6 +15,7 @@ use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
@@ -69,6 +70,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
     $document = DocumentLoader::load(INPUTS_SCHEMA_DOC);
 
     $evaluator = new ExpressionEvaluator();
+    $engine = new ExpressionEngine();
     $registry = new SourceRegistry(new DefaultSourceResolver([]));
     $operationResolver = new OpenApiOperationResolver(
         new OpenApiDocumentLoader($registry),
@@ -78,7 +80,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
     );
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($operationResolver, $evaluator),
+        new StepOutputExtractor($operationResolver, $engine),
         new CriteriaEvaluator($evaluator),
         new ResponseSchemaValidator($operationResolver),
     );
@@ -88,6 +90,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
             $operationResolver,
+            engine: $engine,
         ),
         workflowEngine: new WorkflowEngine($resolver),
         events: $events,

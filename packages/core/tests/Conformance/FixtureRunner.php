@@ -42,6 +42,7 @@ final class FixtureRunner extends ConformanceHarness
                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                 $this->resolver($operationResolver),
                 $operationResolver,
+                engine: $this->engine(),
             ),
             new WorkflowEngine($this->resolver($operationResolver)),
             events: $this->events,

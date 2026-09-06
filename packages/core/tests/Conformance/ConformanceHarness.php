@@ -19,6 +19,8 @@ use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\RunCompletedEvent;
@@ -101,13 +103,18 @@ abstract class ConformanceHarness
         return $document;
     }
 
+    protected function engine(): ExpressionEngineInterface
+    {
+        return new ExpressionEngine();
+    }
+
     protected function resolver(OpenApiOperationResolver $operationResolver): ExpressionResolverInterface
     {
         $evaluator = new ExpressionEvaluator();
 
         return new ExpressionResolver(
             $evaluator,
-            new StepOutputExtractor($operationResolver, $evaluator),
+            new StepOutputExtractor($operationResolver, $this->engine()),
             new CriteriaEvaluator($evaluator),
             new ResponseSchemaValidator($operationResolver),
         );

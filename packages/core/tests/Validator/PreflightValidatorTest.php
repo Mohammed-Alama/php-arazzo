@@ -21,6 +21,7 @@ use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
@@ -156,7 +157,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
         new ExpressionEvaluator(),
         new StepOutputExtractor(
             (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
-            new ExpressionEvaluator(),
+            new ExpressionEngine(),
         ),
         new CriteriaEvaluator(new ExpressionEvaluator()),
         new ResponseSchemaValidator(
@@ -169,6 +170,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
             (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
+            engine: new ExpressionEngine(),
         ),
         new WorkflowEngine($resolver),
         events: $events,

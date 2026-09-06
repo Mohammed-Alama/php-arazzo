@@ -7,7 +7,8 @@ use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\SelectorEvaluator;
+use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 
 it('aliases SourceRegistry onto the same instance as SourceResolver', function (): void {
@@ -23,8 +24,8 @@ it('resolves the operation-resolution stack as singletons', function (): void {
 });
 
 it('resolves capability evaluators and the preflight gate', function (): void {
-    expect(app(SelectorEvaluator::class))->toBeInstanceOf(SelectorEvaluator::class)
-        ->and(app(SelectorEvaluator::class))->toBe(app(SelectorEvaluator::class))
+    expect(app(XpathEvaluator::class))->toBeInstanceOf(DomXpathEvaluator::class)
+        ->and(app(XpathEvaluator::class))->toBe(app(XpathEvaluator::class))
         ->and(app(PreflightValidator::class))->toBeInstanceOf(PreflightValidator::class);
 });
 

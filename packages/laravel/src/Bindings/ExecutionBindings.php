@@ -8,17 +8,15 @@ use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\ExecutionExpressionResolver;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -49,13 +47,12 @@ final class ExecutionBindings
     public static function register(Container $app): void
     {
         $app->singleton(ExpressionResolverInterface::class, function (Container $app) {
-            $evaluator = new ExpressionEvaluator();
+            $engine = $app->make(ExpressionEngineInterface::class);
             $operationResolver = $app->make(OpenApiOperationResolver::class);
 
-            return new ExpressionResolver(
-                $evaluator,
-                new StepOutputExtractor($operationResolver, $evaluator),
-                new CriteriaEvaluator($evaluator),
+            return new ExecutionExpressionResolver(
+                $engine,
+                new StepOutputExtractor($operationResolver, $engine),
                 new ResponseSchemaValidator($operationResolver),
             );
         });
@@ -80,8 +77,9 @@ final class ExecutionBindings
                 $app->make(OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 $app->make(OpenApiOperationResolver::class),
-                ConfigValue::bool(config('arazzo.strict_schema_validation', false), false),
-                $app->make(IdempotencyKeyInjector::class),
+                engine: $app->make(ExpressionEngineInterface::class),
+                strictValidationDefault: ConfigValue::bool(config('arazzo.strict_schema_validation', false), false),
+                injector: $app->make(IdempotencyKeyInjector::class),
             );
         });
 
@@ -105,8 +103,7 @@ final class ExecutionBindings
             return new SubWorkflowInvoker(
                 $app->make(DefinitionRegistryInterface::class),
                 $app->make(WorkflowExecutor::class),
-                new ExpressionEvaluator(),
-                $app->make(SelectorEvaluator::class),
+                $app->make(ExpressionEngineInterface::class),
             );
         });
 
@@ -123,8 +120,7 @@ final class ExecutionBindings
                 ),
                 pendingCorrelations: $app->make(PendingCorrelationRegistryInterface::class),
                 invoker: $app->make(SubWorkflowInvoker::class),
-                selectors: $app->make(SelectorEvaluator::class),
-                expressions: new ExpressionEvaluator(),
+                engine: $app->make(ExpressionEngineInterface::class),
                 stateTtlSeconds: ConfigValue::int(config('arazzo.state_ttl', 86400), 86400),
             );
         });
@@ -134,8 +130,9 @@ final class ExecutionBindings
                 $app->make(OpenApiExecutorInterface::class),
                 $app->make(ExpressionResolverInterface::class),
                 $app->make(OpenApiOperationResolver::class),
-                ConfigValue::bool(config('arazzo.strict_schema_validation', false), false),
-                $app->make(IdempotencyKeyInjector::class),
+                engine: $app->make(ExpressionEngineInterface::class),
+                strictValidationDefault: ConfigValue::bool(config('arazzo.strict_schema_validation', false), false),
+                injector: $app->make(IdempotencyKeyInjector::class),
             );
         });
 
@@ -144,7 +141,7 @@ final class ExecutionBindings
 
             return new AsyncApiStepExecutor(
                 $app->make(PendingCorrelationRegistryInterface::class),
-                new ExpressionEvaluator(),
+                $app->make(ExpressionEngineInterface::class),
                 $app->make(HttpClientInterface::class),
                 $httpFactory,
                 $httpFactory,

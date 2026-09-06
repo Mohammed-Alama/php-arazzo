@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 37 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 44 | 17 | allowed |
+| `Psr` | 46 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -44,14 +44,13 @@ when a boundary consciously moves.
 | document | `document:_` | `Psr` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
-| runner | `runner:Execution` | `GuzzleHttp` | 2 |
+| runner | `runner:Execution` | `GuzzleHttp` | 4 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 19 |
+| runner | `runner:Execution` | `Psr` | 21 |
 | runner | `runner:Execution` | `cebe` | 10 |
 | runner | `runner:Infrastructure` | `Psr` | 2 |
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
-| runner | `runner:_` | `GuzzleHttp` | 2 |
 | runner | `runner:_` | `Psr` | 1 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 3 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
@@ -69,7 +68,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**13 library boundary violation(s):**
+**12 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
@@ -78,11 +77,10 @@ when a boundary consciously moves.
 - `document:Validator` imports `JsonSchema\*` (7 refs)
 - `document:_` imports `GuzzleHttp\*` (2 refs)
 - `expression:_` imports `Flow\*` (1 refs)
-- `runner:Execution` imports `GuzzleHttp\*` (2 refs)
+- `runner:Execution` imports `GuzzleHttp\*` (4 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
-- `runner:_` imports `GuzzleHttp\*` (2 refs)
 
 ## Core aggregator emptiness
 
@@ -115,29 +113,9 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `WorkflowRef` | `expression` | 1 | `ExpressionUnresolvedWorkflowRefRule` |
 | `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
 | `document` | `XpathEvaluator` | `expression` | 1 | `PreflightValidator` |
-| `runner` | `CriteriaEvaluator` | `expression` | 1 | `RunnerFacade` |
-| `runner` | `DefaultSourceResolver` | `document` | 1 | `RunnerFacade` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
-| `runner` | `DomXpathEvaluator` | `expression` | 3 | `StepOutputExtractor` |
-| `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
-| `runner` | `ExpressionEvaluator` | `expression` | 7 | `SubWorkflowInvoker` |
-| `runner` | `ExpressionResolver` | `expression` | 1 | `RunnerFacade` |
-| `runner` | `HttpFetcher` | `document` | 1 | `RunnerFacade` |
-| `runner` | `JsonPathEvaluator` | `expression` | 1 | `StepOutputExtractor` |
-| `runner` | `LocalFetcher` | `document` | 1 | `RunnerFacade` |
-| `runner` | `OpenApi30Normalizer` | `document` | 1 | `RunnerFacade` |
-| `runner` | `OpenApi31Normalizer` | `document` | 1 | `RunnerFacade` |
-| `runner` | `OpenApiDocumentLoader` | `document` | 1 | `RunnerFacade` |
-| `runner` | `OpenApiOperationResolver` | `document` | 5 | `ResponseSchemaValidator` |
-| `runner` | `OpenApiVersionDetector` | `document` | 1 | `RunnerFacade` |
-| `runner` | `Parser` | `expression` | 1 | `StepOutputExtractor` |
-| `runner` | `PayloadReplacer` | `expression` | 2 | `RequestCompiler` |
-| `runner` | `PreflightValidator` | `document` | 5 | `PreflightGuard` |
-| `runner` | `ResolvedOperation` | `document` | 2 | `DefaultOpenApiExecutor` |
-| `runner` | `ResponsePart` | `expression` | 1 | `StepOutputExtractor` |
-| `runner` | `SelectorEvaluator` | `expression` | 4 | `SubWorkflowInvoker` |
-| `runner` | `SourceRegistry` | `document` | 1 | `RunnerFacade` |
-| `runner` | `StepRef` | `expression` | 1 | `StepOutputExtractor` |
-| `runner` | `StringInterpolator` | `expression` | 2 | `StepExecutor` |
+| `runner` | `OpenApiOperationResolver` | `document` | 4 | `ResponseSchemaValidator` |
+| `runner` | `PreflightValidator` | `document` | 4 | `PreflightGuard` |
+| `runner` | `ResolvedOperation` | `document` | 5 | `ResponseSchemaValidator` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |

@@ -14,10 +14,9 @@ use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\ExecutionExpressionResolver;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
@@ -102,17 +101,16 @@ final class RunCommand extends Command
             'file' => new LocalFetcher(),
         ]));
 
-        $evaluator = new ExpressionEvaluator();
+        $engine = new ExpressionEngine();
         $operationResolver = new OpenApiOperationResolver(
             new OpenApiDocumentLoader($registry),
             new OpenApiVersionDetector(),
             new OpenApi30Normalizer(),
             new OpenApi31Normalizer(),
         );
-        $resolver = new ExpressionResolver(
-            $evaluator,
-            new StepOutputExtractor($operationResolver, $evaluator),
-            new CriteriaEvaluator($evaluator),
+        $resolver = new ExecutionExpressionResolver(
+            $engine,
+            new StepOutputExtractor($operationResolver, $engine),
             new ResponseSchemaValidator($operationResolver),
         );
 
@@ -121,6 +119,7 @@ final class RunCommand extends Command
                 new DefaultOpenApiExecutor($client, $factory),
                 $resolver,
                 $operationResolver,
+                engine: $engine,
             ),
             workflowEngine: new WorkflowEngine($resolver),
         );

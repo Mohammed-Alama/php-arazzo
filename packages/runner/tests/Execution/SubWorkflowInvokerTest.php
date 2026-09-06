@@ -9,9 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\SelectorEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
@@ -56,8 +54,7 @@ it('binds parameters, executes child workflow, returns SubWorkflowResult', funct
         })
         ->andReturn(new ExecutionResult('reconcile', 'completed', ['some_output' => 'val'], []));
 
-    $exprEval = new ExpressionEvaluator();
-    $selEval = new SelectorEvaluator(new DomXpathEvaluator(), $exprEval);
+    $engine = new ExpressionEngine();
 
     $parent = new WorkflowContext($definitionId, ['rideId' => 'r-42']);
     $action = new SubWorkflowSuccessAction(
@@ -66,7 +63,7 @@ it('binds parameters, executes child workflow, returns SubWorkflowResult', funct
         [],
     );
 
-    $invoker = new SubWorkflowInvoker($registry, $executor, $exprEval, $selEval);
+    $invoker = new SubWorkflowInvoker($registry, $executor, $engine);
     $result = $invoker->invoke($action, $parent);
 
     expect($result)->toBeInstanceOf(SubWorkflowResult::class)
@@ -89,8 +86,7 @@ it('throws ExecutionException when sub workflow cannot be found', function () {
     $definitionId = $registry->register($document);
 
     $executor = Mockery::mock(WorkflowExecutor::class);
-    $exprEval = new ExpressionEvaluator();
-    $selEval = new SelectorEvaluator(new DomXpathEvaluator(), $exprEval);
+    $engine = new ExpressionEngine();
 
     $parent = new WorkflowContext($definitionId, []);
     $action = new SubWorkflowSuccessAction(
@@ -99,7 +95,7 @@ it('throws ExecutionException when sub workflow cannot be found', function () {
         [],
     );
 
-    $invoker = new SubWorkflowInvoker($registry, $executor, $exprEval, $selEval);
+    $invoker = new SubWorkflowInvoker($registry, $executor, $engine);
 
     expect(fn () => $invoker->invoke($action, $parent))
         ->toThrow(ExecutionException::class, "Sub-workflow 'not-found-workflow' not found in registry.");

@@ -23,9 +23,8 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
@@ -189,8 +188,7 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
         new RunControlFlow($workflowEngine, $queue),
         pendingCorrelations: $pendingCorrelations,
         invoker: \Mockery::mock(SubWorkflowInvoker::class),
-        selectors: \Mockery::mock(SelectorEvaluator::class),
-        expressions: \Mockery::mock(ExpressionEvaluator::class),
+        engine: \Mockery::mock(ExpressionEngineInterface::class),
         stateTtlSeconds: 86400,
     );
 
