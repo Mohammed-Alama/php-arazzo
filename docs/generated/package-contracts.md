@@ -80,7 +80,8 @@ public contract between packages.
 
 ### Capabilities
 
-- Parse expression strings into ASTs with typed syntax errors surfaced through the face
+- Parse expression strings with typed syntax errors surfaced through the face
+- Expose expression reference projections (kind + target fields) without leaking the AST
 - Evaluate expressions against an evaluation context
 - Evaluate success-criteria / condition expressions
 - Evaluate selectors (JSONPath, JSON-pointer, XPath)
@@ -91,6 +92,18 @@ public contract between packages.
 
 - `ExpressionEngineInterface` (`interface`)
   - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+  - `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
+  - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
+  - `public function expressionReferences(string $raw): ?ExpressionReference;`
+  - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+  - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+  - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
+  - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+  - `public function supportedXPathVersions(): array;`
+  - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
+  - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
+  - `public function jsonPath(string $expression, array|object $data): mixed;`
+  - `public function jsonPointer(array $data, ?string $pointer): mixed;`
 
 ### Cross-boundary value types
 
@@ -101,6 +114,8 @@ public contract between packages.
 - `EvaluationInput` — present
 - `ExpressionSyntaxException` — present
 - `SelectorEvaluationException` — present
+- `ExpressionReference` — present
+- `ReferenceKind` — present
 
 ### Deliberately internal
 

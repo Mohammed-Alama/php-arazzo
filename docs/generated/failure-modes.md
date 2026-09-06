@@ -16,6 +16,7 @@ Regenerated before every commit.
 
 | Exception | Raised by |
 |---|---|
+| **BadMethodCallException** | `InterpolationResolver` <small>expression:Evaluation</small> |
 | **ConditionSyntaxException** | `ConditionEvaluator` <small>expression:Evaluation</small>, `Lexer` <small>expression:Evaluation</small>, `Parser` <small>expression:Evaluation</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |

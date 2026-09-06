@@ -18,7 +18,7 @@ targets. Regenerated before every commit.
 | `contracts:Exceptions` | 1 | 27 | 3 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 8 | 108 | 12 | 3 | 0.20 |  |
 | `contracts:Spec` | 38 | 785 | 25 | 0 | 0.00 |  |
-| `contracts:State` | 2 | 665 | 10 | 1 | 0.09 |  |
+| `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 166 | 9 | 0 | 0.00 |  |
 | `document:Normalizer` | 9 | 579 | 7 | 3 | 0.30 |  |
 | `document:Parser` | 11 | 1085 | 6 | 2 | 0.25 |  |
@@ -26,13 +26,13 @@ targets. Regenerated before every commit.
 | `document:Validator` | 62 | 3042 | 6 | 10 | 0.63 |  |
 | `(document root)` | 2 | 141 | 1 | 6 | 0.86 |  |
 | `expression:Ast` | 15 | 179 | 3 | 1 | 0.25 |  |
-| `expression:Data` | 4 | 90 | 2 | 3 | 0.60 |  |
-| `expression:Enum` | 1 | 16 | 2 | 0 | 0.00 |  |
-| `expression:Evaluation` | 19 | 1140 | 5 | 7 | 0.58 |  |
+| `expression:Data` | 5 | 135 | 2 | 3 | 0.60 |  |
+| `expression:Enum` | 2 | 40 | 2 | 0 | 0.00 |  |
+| `expression:Evaluation` | 20 | 1191 | 6 | 7 | 0.54 |  |
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
 | `expression:Interfaces` | 3 | 64 | 8 | 1 | 0.11 |  |
 | `expression:Xpath` | 2 | 101 | 7 | 2 | 0.22 |  |
-| `(expression root)` | 10 | 1017 | 7 | 7 | 0.50 |  |
+| `(expression root)` | 10 | 1293 | 7 | 9 | 0.56 |  |
 | `laravel:Bindings` | 7 | 469 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 158 | 2 | 7 | 0.78 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 2 | 122 | 1 | 8 | 0.89 |  |
 
-Total cross-module edges: **890**
+Total cross-module edges: **932**
 
 ## Most entangled module pairs
 
@@ -62,12 +62,12 @@ Total cross-module edges: **890**
 | `document:Validator` → `contracts:Spec` | 88 |
 | `runner:Execution` → `contracts:Spec` | 68 |
 | `document:Validator` → `(expression root)` | 61 |
+| `(expression root)` → `expression:Ast` | 40 |
 | `document:Parser` → `contracts:Spec` | 30 |
-| `(expression root)` → `expression:Ast` | 27 |
-| `expression:Evaluation` → `contracts:Spec` | 22 |
+| `(expression root)` → `contracts:Spec` | 26 |
+| `expression:Evaluation` → `contracts:Spec` | 26 |
 | `runner:Execution` → `runner:Events` | 21 |
 | `runner:Protocol` → `contracts:Spec` | 20 |
-| `(expression root)` → `contracts:Spec` | 15 |
 | `runner:Execution` → `runner:State` | 15 |
 | `laravel:Bindings` → `runner:Execution` | 14 |
 | `runner:Execution` → `contracts:State` | 14 |

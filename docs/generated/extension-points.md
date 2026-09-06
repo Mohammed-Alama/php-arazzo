@@ -37,6 +37,7 @@ mindmap
       ExpressionEvaluator
     ExpressionResolverInterface
       ExpressionResolver
+      InterpolationResolver
     HttpClientInterface
       Psr18HttpClient
     LockManagerInterface
@@ -91,7 +92,7 @@ mindmap
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
-| `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small> |
+| `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small>, `InterpolationResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
 | `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |

@@ -61,6 +61,8 @@ flowchart LR
     C_expression_expression_Evaluation_CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_expression_expression_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>expression:Evaluation</small>"]:::implCore
     C_expression_expression_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_expression_expression_Evaluation_InterpolationResolver["InterpolationResolver<br/><small>expression:Evaluation</small>"]:::implCore
+    C_expression_expression_Evaluation_InterpolationResolver -.->|implements| I_ExpressionResolverInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
     C_expression_expression___ExpressionEvaluator["ExpressionEvaluator<br/><small>(expression root)</small>"]:::implCore

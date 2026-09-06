@@ -197,10 +197,35 @@ this file on a commit is a public API change — review it deliberately.
 ## expression
 
 ### `ExpressionEngineInterface` interface
+- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function expressionReferences(string $raw): ?ExpressionReference;`
+- `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
+- `public function jsonPath(string $expression, array|object $data): mixed;`
+- `public function jsonPointer(array $data, ?string $pointer): mixed;`
+- `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
+- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+- `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
+- `public function supportedXPathVersions(): array;`
 
 ### `ExpressionEngine` class
-- `public function __construct(private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator())`
+- `public function __construct(private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(), private readonly ExpressionParser $parser = new ExpressionParser(), private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator())`
+- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable`
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function expressionReferences(string $raw): ?ExpressionReference`
+- `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string`
+- `public function jsonPath(string $expression, array|object $data): mixed`
+- `public function jsonPointer(array $data, ?string $pointer): mixed`
+- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
+- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
+- `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
+- `public function supportedXPathVersions(): array`
 
 ### `Alama\Arazzo\Expression`
 
@@ -238,6 +263,9 @@ this file on a commit is a public API change — review it deliberately.
 - `public function getDocument(): ?ArazzoDocument`
 
 ### `Alama\Arazzo\Expression\Enum`
+
+#### `ReferenceKind` enum
+- Cases: `Component`, `HttpMeta`, `Input`, `Message`, `Output`, `Self`, `Source`, `Step`, `Workflow`
 
 #### `TokenKind` enum
 - Cases: `Dollar`, `Dot`, `Hash`, `Keyword`, `Name`, `PointerSegment`, `Slash`

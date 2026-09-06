@@ -64,26 +64,27 @@ document-root,document-Validator,5
 document-root,expression-Xpath,1
 expression-Ast,contracts-Spec,1
 expression-Data,contracts-Spec,2
-expression-Data,expression-Enum,1
+expression-Data,expression-Enum,2
 expression-Data,expression-Interfaces,1
 expression-Evaluation,contracts-Interfaces,2
-expression-Evaluation,contracts-Spec,22
+expression-Evaluation,contracts-Spec,26
 expression-Evaluation,contracts-State,1
 expression-Evaluation,contracts-Support,1
-expression-Evaluation,expression-Interfaces,5
+expression-Evaluation,expression-Interfaces,7
 expression-Evaluation,expression-Xpath,3
-expression-Evaluation,expression-root,2
 expression-Exceptions,contracts-Support,2
 expression-Interfaces,contracts-Spec,8
 expression-Xpath,contracts-Spec,1
 expression-Xpath,expression-Exceptions,1
-expression-root,contracts-Spec,15
-expression-root,expression-Ast,27
-expression-root,expression-Data,5
-expression-root,expression-Enum,2
-expression-root,expression-Exceptions,3
+expression-root,contracts-Spec,26
+expression-root,contracts-State,2
+expression-root,expression-Ast,40
+expression-root,expression-Data,7
+expression-root,expression-Enum,3
+expression-root,expression-Evaluation,3
+expression-root,expression-Exceptions,5
 expression-root,expression-Interfaces,5
-expression-root,expression-Xpath,1
+expression-root,expression-Xpath,2
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,6
 laravel-Bindings,contracts-Support,1
@@ -185,3 +186,11 @@ runner-root,expression-Xpath,1
 runner-root,expression-root,1
 runner-root,runner-Execution,6
 ```
+
+## Folded flows
+
+These references exist in the code but are not drawn: drawing them would close a dependency cycle and Sankey diagrams must stay acyclic. The heavier direction of each cycle is shown above.
+
+| From | To | References |
+|---|---|---:|
+| `expression-Evaluation` | `expression-root` | 2 |

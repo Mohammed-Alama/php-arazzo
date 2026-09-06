@@ -30,7 +30,7 @@ quadrantChart
     contracts/Exceptions: [0, 0]
     contracts/Interfaces: [0.2, 1]
     contracts/Spec: [0, 0.026]
-    contracts/State: [0.091, 0]
+    contracts/State: [0.083, 0]
     contracts/Support: [0, 0.2]
     document/Normalizer: [0.3, 0.111]
     document/Parser: [0.25, 0.182]
@@ -40,11 +40,11 @@ quadrantChart
     expression/Ast: [0.25, 0]
     expression/Data: [0.6, 0]
     expression/Enum: [0, 0]
-    expression/Evaluation: [0.583, 0.105]
+    expression/Evaluation: [0.538, 0.1]
     expression/Exceptions: [0.25, 0]
     expression/Interfaces: [0.111, 1]
     expression/Xpath: [0.222, 0.5]
-    expression/_: [0.5, 0.1]
+    expression/_: [0.563, 0.1]
     laravel/Bindings: [0.96, 0]
     laravel/Http: [0.778, 0]
     laravel/Lock: [0.5, 0]
@@ -86,7 +86,7 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| — | — |
+| `ExpressionEngineInterface` <small>expression</small> | 13 |
 
 ## Concrete hubs (DIP)
 

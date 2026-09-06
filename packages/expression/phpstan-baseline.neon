@@ -21,6 +21,11 @@ parameters:
 			path: src/Exceptions/ExpressionSyntaxException.php
 
 		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Data/ExpressionReference.php
+
+		-
 			message: '#^Cannot access offset ''method'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1

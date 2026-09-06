@@ -51,7 +51,8 @@ const PACKAGE_CONTRACTS = [
     'expression' => [
         'provides' => 'Parses and evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.',
         'capabilities' => [
-            'Parse expression strings into ASTs with typed syntax errors surfaced through the face',
+            'Parse expression strings with typed syntax errors surfaced through the face',
+            'Expose expression reference projections (kind + target fields) without leaking the AST',
             'Evaluate expressions against an evaluation context',
             'Evaluate success-criteria / condition expressions',
             'Evaluate selectors (JSONPath, JSON-pointer, XPath)',
@@ -59,7 +60,7 @@ const PACKAGE_CONTRACTS = [
             'Build symbol tables over the parsed document (value data for downstream consumers)',
         ],
         'faces' => ['ExpressionEngineInterface'],
-        'value_types' => ['SymbolTable', 'WorkflowSymbols', 'StepSymbols', 'EvaluationInputInterface', 'EvaluationInput', 'ExpressionSyntaxException', 'SelectorEvaluationException'],
+        'value_types' => ['SymbolTable', 'WorkflowSymbols', 'StepSymbols', 'EvaluationInputInterface', 'EvaluationInput', 'ExpressionSyntaxException', 'SelectorEvaluationException', 'ExpressionReference', 'ReferenceKind'],
         'internal' => ['ExpressionEvaluatorInterface', 'ExpressionResolverInterface', 'ExpressionEvaluator', 'SelectorEvaluator', 'StringInterpolator', 'JsonPathEvaluator', 'JsonPointer', 'DomXpathEvaluator', 'XpathEvaluator', 'Lexer', 'Parser', 'Token', 'Ast\\*', 'Evaluation\\*'],
     ],
     'document' => [

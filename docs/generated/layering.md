@@ -135,9 +135,11 @@ flowchart TB
     M_expression_Xpath --> M_contracts_Spec
     M_expression_Xpath --> M_expression_Exceptions
     M_expression__ --> M_contracts_Spec
+    M_expression__ --> M_contracts_State
     M_expression__ --> M_expression_Ast
     M_expression__ --> M_expression_Data
     M_expression__ --> M_expression_Enum
+    M_expression__ --> M_expression_Evaluation
     M_expression__ --> M_expression_Exceptions
     M_expression__ --> M_expression_Interfaces
     M_expression__ --> M_expression_Xpath
@@ -260,7 +262,7 @@ flowchart TB
 | `cli` | `runner` | 21 |
 | `document` | `contracts` | 140 |
 | `document` | `expression` | 88 |
-| `expression` | `contracts` | 55 |
+| `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 20 |
