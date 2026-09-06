@@ -67,6 +67,7 @@ final class OaiFixtureRunner extends ConformanceHarness
                 ),
                 $this->resolver($operationResolver),
                 $operationResolver,
+                engine: $this->engine(),
             ),
             new WorkflowEngine($this->resolver($operationResolver)),
             events: $this->events,

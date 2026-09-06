@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Document;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 
@@ -23,7 +24,7 @@ function runnerDocument(): ArazzoDocument
 
 function runnerFacade(): RunnerFacade
 {
-    return new RunnerFacade(new Document());
+    return new RunnerFacade(new Document(), new ExpressionEngine());
 }
 
 it('exposes the RunnerFacadeInterface entry point', function () {

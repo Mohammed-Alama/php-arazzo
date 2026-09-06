@@ -21,7 +21,7 @@ use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 
 beforeEach(function () {
@@ -68,7 +68,7 @@ beforeEach(function () {
             new OpenApi31Normalizer(),
         );
 
-        return new StepOutputExtractor($resolver, new ExpressionEvaluator());
+        return new StepOutputExtractor($resolver, new ExpressionEngine());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

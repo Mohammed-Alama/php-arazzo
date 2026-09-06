@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Tests\Conformance;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
@@ -97,10 +96,11 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                             ),
                             $resolver,
                             $operationResolver,
+                            engine: $this->engine(),
                         ),
                         new WorkflowEngine($resolver),
                     ),
-                    new ExpressionEvaluator(),
+                    $this->engine(),
                 ),
                 new HttpStepExecutor(
                     new FakerOpenApiExecutor(
@@ -109,6 +109,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                     ),
                     $resolver,
                     $operationResolver,
+                    engine: $this->engine(),
                 ),
             ],
             new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),

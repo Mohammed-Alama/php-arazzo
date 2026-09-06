@@ -16,9 +16,8 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Events\RunCompletedEvent;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
@@ -145,8 +144,7 @@ function createStepOutcomeEventsHarness(): array
         new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $dispatcher),
         pendingCorrelations: $correlations,
         invoker: Mockery::mock(SubWorkflowInvoker::class),
-        selectors: Mockery::mock(SelectorEvaluator::class),
-        expressions: new ExpressionEvaluator(),
+        engine: Mockery::mock(ExpressionEngineInterface::class),
     );
 
     return [$handler, $collector];

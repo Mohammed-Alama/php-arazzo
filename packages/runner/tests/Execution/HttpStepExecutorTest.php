@@ -18,6 +18,7 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
@@ -114,14 +115,14 @@ function httpStepExecutorDocument(): ArazzoDocument
 }
 
 it('supports a step with no action set', function (): void {
-    $executor = new HttpStepExecutor(new HttpStepExecutorMockOpenApiExecutor(new Response(200)), new HttpStepExecutorMockResolver(), createMockOperationResolver());
+    $executor = new HttpStepExecutor(new HttpStepExecutorMockOpenApiExecutor(new Response(200)), new HttpStepExecutorMockResolver(), createMockOperationResolver(), new ExpressionEngine());
     $step = new Step('s1', null, null, null, null, [], null, [], [], [], []);
 
     expect($executor->supports($step, httpStepExecutorDocument()))->toBeTrue();
 });
 
 it('does not support a step with an action set', function (): void {
-    $executor = new HttpStepExecutor(new HttpStepExecutorMockOpenApiExecutor(new Response(200)), new HttpStepExecutorMockResolver(), createMockOperationResolver());
+    $executor = new HttpStepExecutor(new HttpStepExecutorMockOpenApiExecutor(new Response(200)), new HttpStepExecutorMockResolver(), createMockOperationResolver(), new ExpressionEngine());
     $step = new Step('s1', null, null, null, null, [], null, [], [], [], [], [], 'send');
 
     expect($executor->supports($step, httpStepExecutorDocument()))->toBeFalse();
@@ -131,7 +132,7 @@ it('executes the request and returns a resolved outcome with statusCode/outputs/
     $response = new Response(201, [], json_encode(['id' => 42]));
     $openApiExecutor = new HttpStepExecutorMockOpenApiExecutor($response);
     $resolver = new HttpStepExecutorMockResolver();
-    $executor = new HttpStepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
+    $executor = new HttpStepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), new ExpressionEngine());
 
     $step = new Step('s1', null, null, null, null, [], null, [], [], [], []);
     $context = new WorkflowContext('def_1', [], [], [], 'wf_1', 'exec_1');
@@ -148,7 +149,7 @@ it('stores the response on the context before calling extractOutputs, fixing the
     $response = new Response(200, [], json_encode(['x' => 1]));
     $openApiExecutor = new HttpStepExecutorMockOpenApiExecutor($response);
     $resolver = new HttpStepExecutorMockResolver();
-    $executor = new HttpStepExecutor($openApiExecutor, $resolver, createMockOperationResolver());
+    $executor = new HttpStepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), new ExpressionEngine());
 
     $step = new Step('s1', null, null, null, null, [], null, [], [], [], []);
     $context = new WorkflowContext('def_1');
@@ -174,7 +175,7 @@ it('validates response schema and fails fast on failure', function (): void {
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new HttpStepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), true); // strict default
+    $executor = new HttpStepExecutor($openApiExecutor, $resolver, createMockOperationResolver(), engine: new ExpressionEngine(), strictValidationDefault: true); // strict default
     $step = new Step(
         stepId: 'sync-step',
         description: null,

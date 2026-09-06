@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
@@ -17,7 +17,7 @@ use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 it('rejects async fields on 1.0 doc at execution', function () {
     $executor = new AsyncApiStepExecutor(
         Mockery::mock(PendingCorrelationRegistryInterface::class),
-        Mockery::mock(ExpressionEvaluator::class),
+        Mockery::mock(ExpressionEngineInterface::class),
         Mockery::mock(HttpClientInterface::class),
     );
 
@@ -48,12 +48,12 @@ it('accepts async fields on 1.1 doc', function () {
     $pending = Mockery::mock(PendingCorrelationRegistryInterface::class);
     $pending->shouldReceive('create')->with('corr-1', 'exec_1', 'step1', 'test/channel', null)->once();
 
-    $evaluator = Mockery::mock(ExpressionEvaluator::class);
-    $evaluator->shouldReceive('evaluate')->once()->andReturn('corr-1');
+    $engine = Mockery::mock(ExpressionEngineInterface::class);
+    $engine->shouldReceive('evaluate')->once()->andReturn('corr-1');
 
     $executor = new AsyncApiStepExecutor(
         $pending,
-        $evaluator,
+        $engine,
         Mockery::mock(HttpClientInterface::class),
     );
 

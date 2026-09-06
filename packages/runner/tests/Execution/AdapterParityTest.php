@@ -24,6 +24,7 @@ use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
@@ -68,6 +69,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 99])));
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $evaluator = new ExpressionEvaluator();
+    $engine = new ExpressionEngine();
     $operationResolver = new OpenApiOperationResolver(
         new OpenApiDocumentLoader(new class() implements SourceResolver
         {
@@ -87,7 +89,7 @@ function parityFixtures(): array
     );
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($operationResolver, $evaluator),
+        new StepOutputExtractor($operationResolver, $engine),
         new CriteriaEvaluator($evaluator),
         new ResponseSchemaValidator($operationResolver),
     );
@@ -95,6 +97,7 @@ function parityFixtures(): array
         new DefaultOpenApiExecutor($httpClient, new HttpFactory()),
         $resolver,
         $operationResolver,
+        engine: $engine,
     );
 
     // Both adapters execute steps through THIS object.

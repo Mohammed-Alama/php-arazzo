@@ -13,7 +13,7 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
@@ -51,7 +51,7 @@ function nestedExecutorDocument(): ArazzoDocument
 it('supports steps targeting a workflowId and not plain operation steps', function (): void {
     $executor = new SubWorkflowStepExecutor(
         Mockery::mock(WorkflowExecutor::class),
-        new ExpressionEvaluator(),
+        new ExpressionEngine(),
     );
 
     $document = nestedExecutorDocument();
@@ -75,7 +75,7 @@ it('executes the child workflow and surfaces its outputs as step outputs', funct
         })
         ->andReturn(new ExecutionResult('fetch-user', 'succeeded', ['name' => 'user-42'], []));
 
-    $executor = new SubWorkflowStepExecutor($childExecutor, new ExpressionEvaluator());
+    $executor = new SubWorkflowStepExecutor($childExecutor, new ExpressionEngine());
 
     $document = nestedExecutorDocument();
     $step = $document->workflows[0]->steps[0];
@@ -94,7 +94,7 @@ it('executes the child workflow and surfaces its outputs as step outputs', funct
 });
 
 it('throws a typed error when the target workflow does not exist', function (): void {
-    $executor = new SubWorkflowStepExecutor(Mockery::mock(WorkflowExecutor::class), new ExpressionEvaluator());
+    $executor = new SubWorkflowStepExecutor(Mockery::mock(WorkflowExecutor::class), new ExpressionEngine());
 
     $document = nestedExecutorDocument();
     $orphan = new Step('ghost', null, null, null, 'missing-wf', [], null, [], [], [], []);

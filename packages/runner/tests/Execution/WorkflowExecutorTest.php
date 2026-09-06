@@ -24,6 +24,7 @@ use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -501,16 +502,17 @@ it('executes a workflow end-to-end', function () {
             return new SourceDocument($description->name, $description->type, $description->url, $json);
         }
     };
+    $engine = new ExpressionEngine();
     $evaluator = new ExpressionEvaluator();
     $openApiLoader = new OpenApiDocumentLoader($sourceResolver);
     $operationResolver = new OpenApiOperationResolver($openApiLoader, new OpenApiVersionDetector(), new OpenApi30Normalizer(), new OpenApi31Normalizer());
-    $outputExtractor = new StepOutputExtractor($operationResolver, $evaluator);
+    $outputExtractor = new StepOutputExtractor($operationResolver, $engine);
     $criteriaEvaluator = new CriteriaEvaluator($evaluator);
     $schemaValidator = new ResponseSchemaValidator($operationResolver);
     $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver, engine: $engine);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver()));
 

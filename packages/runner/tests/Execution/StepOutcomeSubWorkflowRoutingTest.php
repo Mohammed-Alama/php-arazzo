@@ -11,9 +11,8 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Expression\SelectorEvaluator;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
@@ -50,8 +49,7 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
         new RunControlFlow(new WorkflowEngine($resolver), Mockery::mock(QueueDriverInterface::class)),
         pendingCorrelations: $pending,
         invoker: $invoker,
-        selectors: Mockery::mock(SelectorEvaluator::class),
-        expressions: Mockery::mock(ExpressionEvaluator::class),
+        engine: Mockery::mock(ExpressionEngineInterface::class),
     );
 
     $step = new Step(
