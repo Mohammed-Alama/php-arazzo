@@ -1,4 +1,5 @@
 includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
     - phpstan-baseline.neon
 
 parameters:

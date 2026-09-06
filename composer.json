@@ -70,6 +70,7 @@
       "Alama\\Arazzo\\Laravel\\Tests\\": [
         "packages/laravel/tests"
       ],
+      "Arazzo\\PHPStan\\Rules\\": "packages/core/phpstan/rules/",
       "Alama\\LaravelArazzo\\Execution\\": [
         "packages/laravel/src/Execution"
       ],

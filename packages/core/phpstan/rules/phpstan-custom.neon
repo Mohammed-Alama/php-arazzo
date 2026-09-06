@@ -1,0 +1,9 @@
+rules:
+    - Arazzo\PHPStan\Rules\MethodLengthRule
+    - Arazzo\PHPStan\Rules\MaxParameterCountRule
+    - Arazzo\PHPStan\Rules\ForbiddenFunctionsRule
+    - Arazzo\PHPStan\Rules\BooleanMethodNamingRule
+    - Arazzo\PHPStan\Rules\CyclomaticComplexityRule
+    - Arazzo\PHPStan\Rules\MaxInheritanceDepthRule
+    - Arazzo\PHPStan\Rules\MaxMethodCountRule
+    - Arazzo\PHPStan\Rules\IdentifierLengthRule

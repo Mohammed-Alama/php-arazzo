@@ -1,14 +1,79 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method build has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Async/ExecutionStateBuilder.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Async/SuspensionHandler.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Async/TransitionApplier.php
+
+		-
+			message: '#^Method stepExecuted has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Async/WorkerEvents.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Events/CorrelationPendingEvent.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Events/StepExecutedEvent.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Events/StepFailedEvent.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Events/StepRetriedEvent.php
+
+		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 2
 			path: src/Execution/CorrelationResumer.php
 
 		-
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/CorrelationResumer.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/Data/ExecutionResult.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/Data/SubWorkflowResult.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/Data/Transition.php
+
+		-
 			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
 			identifier: greater.alwaysTrue
+			count: 1
+			path: src/Execution/DefaultOpenApiExecutor.php
+
+		-
+			message: '#^Method execute has too high cyclomatic complexity \(20\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Execution/DefaultOpenApiExecutor.php
 
@@ -19,10 +84,30 @@ parameters:
 			path: src/Execution/DefaultOpenApiExecutor.php
 
 		-
+			message: '#^Method findResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/ResponseSchemaValidator.php
+
+		-
 			message: '#^Strict comparison using \=\=\= between array\<cebe\\openapi\\spec\\MediaType\> and null will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: src/Execution/ResponseSchemaValidator.php
+
+		-
+			message: '#^Method validate has too high cyclomatic complexity \(35\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Method validateNumber has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Method validateObject has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/SchemaValidator.php
 
 		-
 			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
@@ -91,6 +176,16 @@ parameters:
 			path: src/Execution/StepExecutionWorker.php
 
 		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(24\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/StepExecutionWorker.php
+
+		-
 			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 2
@@ -139,6 +234,11 @@ parameters:
 			path: src/Execution/StepExecutor.php
 
 		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/StepExecutor.php
+
+		-
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -175,6 +275,26 @@ parameters:
 			path: src/Execution/StepOutcomeHandler.php
 
 		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method applyGoto has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method applyRetry has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method handle has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/StepOutcomeHandler.php
+
+		-
 			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Runner\\Events\\RunCompletedEvent constructor expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -205,6 +325,11 @@ parameters:
 			path: src/Execution/StepOutputExtractor.php
 
 		-
+			message: '#^Method name ''castOutputAgainstResponseSchema'' length \(31\) is outside allowed range \(3\-30\)\.$#'
+			count: 1
+			path: src/Execution/StepOutputExtractor.php
+
+		-
 			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
@@ -217,13 +342,63 @@ parameters:
 			path: src/Execution/WorkflowEngine.php
 
 		-
+			message: '#^Method transition has too high cyclomatic complexity \(23\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/WorkflowEngine.php
+
+		-
+			message: '#^Method transition has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/WorkflowEngine.php
+
+		-
 			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Execution/WorkflowEngine.php
 
 		-
+			message: '#^Method executeCanonically has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/WorkflowExecutor.php
+
+		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 1
 			path: src/Protocol/AsyncApiStepExecutor.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Protocol/AsyncApiStepExecutor.php
+
+		-
+			message: '#^Class ExecutionContext has too many methods \(31\)\. Maximum allowed is 20\.$#'
+			count: 1
+			path: src/State/Data/ExecutionContext.php
+
+		-
+			message: '#^Method __construct has too many parameters \(13\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/Data/ExecutionContext.php
+
+		-
+			message: '#^Method start has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/Data/ExecutionContext.php
+
+		-
+			message: '#^Method __construct has too many parameters \(12\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/Data/StepResult.php
+
+		-
+			message: '#^Method failure has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/Data/StepResult.php
+
+		-
+			message: '#^Method success has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/Data/StepResult.php

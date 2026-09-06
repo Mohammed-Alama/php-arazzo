@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method looseEquals has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Evaluation/Condition/ConditionEvaluator.php
+
+		-
+			message: '#^Method expressionEnd has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Evaluation/Condition/Lexer.php
+
+		-
+			message: '#^Method lex has too high cyclomatic complexity \(21\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Evaluation/Condition/Lexer.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Exceptions/ExpressionSyntaxException.php
+
+		-
 			message: '#^Cannot access offset ''method'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -37,6 +57,11 @@ parameters:
 			path: src/ExpressionEvaluator.php
 
 		-
+			message: '#^Method evaluateAst has too high cyclomatic complexity \(48\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/ExpressionEvaluator.php
+
+		-
 			message: '#^Cannot access offset 0 on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -47,6 +72,16 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/JsonPathEvaluator.php
+
+		-
+			message: '#^Method tokenize has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Lexer.php
+
+		-
+			message: '#^Method parseWorkflowRef has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Parser.php
 
 		-
 			message: '#^Call to function is_int\(\) with \*NEVER\* will always evaluate to true\.$#'
@@ -81,6 +116,16 @@ parameters:
 		-
 			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Workflow and Alama\\Arazzo\\Contracts\\Spec\\Workflow will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Method build has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/SymbolTable.php
+
+		-
+			message: '#^Method buildWorkflow has too high cyclomatic complexity \(26\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/SymbolTable.php
 
