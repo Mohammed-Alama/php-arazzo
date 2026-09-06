@@ -16,8 +16,7 @@ use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Illuminate\Contracts\Cache\Repository as CacheInterface;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
@@ -55,13 +54,11 @@ final class ResolverBindings
             );
         });
 
-        $app->singleton(XpathEvaluator::class, fn (Container $app) => new DomXpathEvaluator());
-
         $app->singleton(PreflightValidator::class, function (Container $app) {
             return new PreflightValidator(
                 $app->make(SourceRegistry::class),
                 $app->make(OpenApiOperationResolver::class),
-                new DomXpathEvaluator(),
+                $app->make(ExpressionEngineInterface::class),
             );
         });
     }

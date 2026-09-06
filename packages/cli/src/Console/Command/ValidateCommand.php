@@ -9,6 +9,7 @@ use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,7 +37,8 @@ final class ValidateCommand extends Command
             return Command::FAILURE;
         }
 
-        $result = (new Validator(RuleSet::default()))->validate($document);
+        $engine = new ExpressionEngine();
+        $result = (new Validator($engine, RuleSet::default($engine)))->validate($document);
 
         if ($result->isValid()) {
             $output->writeln('<info>✔ valid</info> '.$file);

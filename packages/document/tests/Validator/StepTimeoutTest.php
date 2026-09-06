@@ -13,6 +13,7 @@ use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Tests\Support\Fx;
 
 function timeoutDoc(string $arazzoVersion): ArazzoDocument
@@ -56,7 +57,7 @@ it('parses timeout in milliseconds on steps', function (): void {
 });
 
 it('flags timeout on 1.0 documents and non-positive values', function (): void {
-    $validator = new Validator(RuleSet::default());
+    $validator = new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine()));
 
     $on10 = $validator->validate(timeoutDoc('1.0.0'));
     $codes = array_map(fn ($e) => $e->code, $on10->errors);

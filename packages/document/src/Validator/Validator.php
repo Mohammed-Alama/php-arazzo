@@ -6,15 +6,18 @@ namespace Alama\Arazzo\Document\Validator;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 
 final readonly class Validator
 {
-    public function __construct(private RuleSet $rules) {}
+    public function __construct(
+        private readonly ExpressionEngineInterface $engine,
+        private readonly RuleSet $rules,
+    ) {}
 
     public function validate(ArazzoDocument $doc): ValidationResult
     {
-        $symbols = SymbolTable::build($doc);
+        $symbols = $this->engine->buildSymbolTable($doc);
         $collector = new ErrorCollector();
 
         foreach ($this->rules->activeRules() as $rule) {

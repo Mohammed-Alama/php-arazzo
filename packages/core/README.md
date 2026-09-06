@@ -85,7 +85,7 @@ $stepExecutor = new StepExecutor(
 $preflight = new PreflightValidator(
     $sourceResolver,
     $operationResolver,
-    new DomXpathEvaluator(),
+    new ExpressionEngine(),
 );
 
 // The canonical engine makes every control-flow decision; adapters apply
@@ -120,7 +120,7 @@ For **durable, queue-driven, resumable** execution (steps run as background jobs
 use Alama\Arazzo\Validator\RuleSet;
 use Alama\Arazzo\Validator\Validator;
 
-$result = (new Validator(RuleSet::default()))->validate($document);
+$result = (new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine())))->validate($document);
 
 if (!$result->isValid()) {
     foreach ($result->errors as $error) {

@@ -17,7 +17,6 @@ use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -123,6 +122,6 @@ function preflightForInputsDoc(): PreflightValidator
             new OpenApi30Normalizer(),
             new OpenApi31Normalizer(),
         ),
-        new DomXpathEvaluator(),
+        new ExpressionEngine(),
     );
 }
