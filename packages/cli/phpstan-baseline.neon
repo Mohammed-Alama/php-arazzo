@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Console/Cli/CliRunner.php
+
+		-
+			message: '#^Method execute has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Console/Command/RunCommand.php
+
+		-
 			message: '#^Binary operation "\." between ''API Error\: '' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 1
@@ -41,3 +51,18 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Generator/Clients/OpenAiClient.php
+
+		-
+			message: '#^Method name ''id'' length \(2\) is outside allowed range \(3\-30\)\.$#'
+			count: 1
+			path: src/Renderer/Renderer.php
+
+		-
+			message: '#^Method toMarkdown has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Renderer/Renderer.php

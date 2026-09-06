@@ -1,6 +1,51 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Method analyze has too high cyclomatic complexity \(16\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Dependency/DependencyGraph.php
+
+		-
+			message: '#^Method fromStep has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Dependency/ImplicitDependencies.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/Action/RetryAction.php
+
+		-
+			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/ArazzoDocument.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/OpenApiPayload.php
+
+		-
+			message: '#^Method __construct has too many parameters \(19\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/Step.php
+
+		-
+			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepExecutionOutcome.php
+
+		-
+			message: '#^Method resolved has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepExecutionOutcome.php
+
+		-
+			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/Workflow.php
+
+		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 3
@@ -10,6 +55,11 @@ parameters:
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 5
+			path: src/State/ExecutionState.php
+
+		-
+			message: '#^Class ExecutionState has too many methods \(22\)\. Maximum allowed is 20\.$#'
+			count: 1
 			path: src/State/ExecutionState.php
 
 		-
@@ -69,6 +119,21 @@ parameters:
 		-
 			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:toArray\(\) should return array\<string, mixed\> but returns array\<mixed\>\.$#'
 			identifier: return.type
+			count: 1
+			path: src/State/ExecutionState.php
+
+		-
+			message: '#^Method __construct has too many parameters \(16\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/ExecutionState.php
+
+		-
+			message: '#^Method copy has too many parameters \(16\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/State/ExecutionState.php
+
+		-
+			message: '#^Method start has too many parameters \(9\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/State/ExecutionState.php
 
@@ -217,7 +282,17 @@ parameters:
 			path: src/State/WorkflowContext.php
 
 		-
+			message: '#^Class WorkflowContext has too many methods \(30\)\. Maximum allowed is 20\.$#'
+			count: 1
+			path: src/State/WorkflowContext.php
+
+		-
 			message: '#^Method Alama\\Arazzo\\Contracts\\State\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
 			identifier: return.type
+			count: 1
+			path: src/State/WorkflowContext.php
+
+		-
+			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/State/WorkflowContext.php
