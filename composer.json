@@ -47,8 +47,11 @@
     "infection/infection": "^0.35.2",
     "laravel/pint": "^1.14",
     "orchestra/testbench": "^11.0",
+    "pdepend/pdepend": "^2.16",
     "pestphp/pest": "^5.0",
     "pestphp/pest-plugin-laravel": "^5.0",
+    "phpdocumentor/shim": "^3.0",
+    "phpmd/phpmd": "^2.15",
     "phpstan/phpstan": "^2.0",
     "phpstan/phpstan-deprecation-rules": "^2.0",
     "phpstan/phpstan-phpunit": "^2.0",
@@ -132,6 +135,7 @@
       "infection/extension-installer": true,
       "pestphp/pest-plugin": true,
       "php-http/discovery": true,
+      "phpdocumentor/shim": true,
       "tbachert/spi": true
     }
   }

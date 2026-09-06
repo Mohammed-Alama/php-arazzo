@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org"
+    xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/xsd/phpdoc.xsd"
+>
+    <title>Arazzo PHP Engine API</title>
+
+    <paths>
+        <output>docs/generated/api</output>
+        <cache>.cache/phpdoc</cache>
+    </paths>
+
+    <version number="latest">
+        <api>
+            <source dsn=".">
+                <path>packages/core/src</path>
+                <path>packages/contracts/src</path>
+                <path>packages/document/src</path>
+                <path>packages/expression/src</path>
+                <path>packages/runner/src</path>
+                <path>packages/cli/src</path>
+                <path>packages/laravel/src</path>
+            </source>
+            <output>api</output>
+            <ignore hidden="true">
+                <path>vendor</path>
+                <path>tests</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+        </api>
+    </version>
+</phpdocumentor>

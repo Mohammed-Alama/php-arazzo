@@ -14,6 +14,9 @@ on:
       - '**/phpstan.neon.dist'
       - '**/phpstan-baseline.neon'
       - 'pint.json'
+      - 'phpmd.xml'
+      - 'phpmd.baseline.xml'
+      - 'phpdoc.dist.xml'
   pull_request:
     paths:
       - '**.php'
@@ -25,6 +28,9 @@ on:
       - '**/phpstan.neon.dist'
       - '**/phpstan-baseline.neon'
       - 'pint.json'
+      - 'phpmd.xml'
+      - 'phpmd.baseline.xml'
+      - 'phpdoc.dist.xml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -66,6 +72,51 @@ jobs:
           cd ../..
       - name: Run PHPStan
         run: composer run analyse
+
+  phpmd:
+    name: PHP Mess Detector
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          cache: composer
+      - name: Install composer dependencies
+        run: |
+          composer update --no-progress --prefer-dist --no-interaction
+      - name: Run PHPMD
+        run: |
+          vendor/bin/phpmd \
+            packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src \
+            github phpmd.xml \
+            --baseline-file phpmd.baseline.xml \
+            --ignore-violations-on-exit \
+            --ignore-errors-on-exit
+
+  phpdoc:
+    name: phpDocumentor (smoke)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, intl, iconv, simplexml, xml
+          coverage: none
+          cache: composer
+      - name: Install composer dependencies
+        run: |
+          composer update --no-progress --prefer-dist --no-interaction
+      - name: Generate API docs (smoke check)
+        run: vendor/bin/phpdoc run
 
   test:
     name: Test P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}

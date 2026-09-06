@@ -56,3 +56,13 @@ storage/**
 
 # Ecosystem feed (snapshots + generated feed)
 /storage/ecosystem-feed
+
+# PHPMD cache
+/.phpmd.result-cache.php
+
+# phpDocumentor generated output and cache
+/docs/generated/api/
+/.cache/phpdoc/
+
+# PHP-Depend output
+/storage/pdepend/
