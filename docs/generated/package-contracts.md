@@ -142,9 +142,9 @@ public contract between packages.
 
 - Load and parse Arazzo documents from YAML/JSON (or already-decoded raw documents)
 - Static conformance validation via rule sets
-- Preflight validation incl. operation-targeted steps and source-audited inputs
-- Source resolution and fetching (URL, local, cached)
-- OpenAPI operation resolution, normalization and version detection
+- Preflight validation incl. source-audited steps and runtime-input schema checks
+- Source-document resolution and fetching (URL, local, cached) exposed through the face
+- OpenAPI operation resolution plus normalization and version detection through the face
 
 ### Public entry surface
 
@@ -153,6 +153,10 @@ public contract between packages.
   - `public function parse(RawDocument $raw): ArazzoDocument;`
   - `public function validate(ArazzoDocument $document): ValidationResult;`
   - `public function preflight(ArazzoDocument $document): ValidationResult;`
+  - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult;`
+  - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;`
+  - `public function detectOpenApiVersion(array $document): string;`
+  - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation;`
 
 ### Cross-boundary value types
 
@@ -160,6 +164,7 @@ public contract between packages.
 - `Error` — present
 - `Warning` — present
 - `ResolvedOperation` — present
+- `NormalizedOpenApiOperation` — present
 - `LoaderException` — present
 - `ParserException` — present
 - `PreflightFailureException` — present
@@ -180,7 +185,6 @@ public contract between packages.
 - `OpenApiVersionDetector` — `@internal`: no (target for the sweep)
 - `OpenApiDocumentLoader` — `@internal`: no (target for the sweep)
 - `OpenApiOperationResolver` — `@internal`: no (target for the sweep)
-- `NormalizedOpenApiOperation` — `@internal`: no (target for the sweep)
 - `YamlDecoder` — `@internal`: no (target for the sweep)
 - `JsonDecoder` — `@internal`: no (target for the sweep)
 - `SymfonyYamlDecoder` — `@internal`: no (target for the sweep)

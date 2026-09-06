@@ -260,7 +260,7 @@ flowchart TB
 | `cli` | `document` | 19 |
 | `cli` | `expression` | 4 |
 | `cli` | `runner` | 21 |
-| `document` | `contracts` | 140 |
+| `document` | `contracts` | 146 |
 | `document` | `expression` | 88 |
 | `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
