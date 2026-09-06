@@ -68,13 +68,13 @@ const PACKAGE_CONTRACTS = [
         'capabilities' => [
             'Load and parse Arazzo documents from YAML/JSON (or already-decoded raw documents)',
             'Static conformance validation via rule sets',
-            'Preflight validation incl. operation-targeted steps and source-audited inputs',
-            'Source resolution and fetching (URL, local, cached)',
-            'OpenAPI operation resolution, normalization and version detection',
+            'Preflight validation incl. source-audited steps and runtime-input schema checks',
+            'Source-document resolution and fetching (URL, local, cached) exposed through the face',
+            'OpenAPI operation resolution plus normalization and version detection through the face',
         ],
         'faces' => ['DocumentInterface'],
-        'value_types' => ['ValidationResult', 'Error', 'Warning', 'ResolvedOperation', 'LoaderException', 'ParserException', 'PreflightFailureException'],
-        'internal' => ['SourceResolver', 'SourceFetcher', 'SourceRegistry', 'DefaultSourceResolver', 'HttpFetcher', 'LocalFetcher', 'CachedFetcher', 'OpenApiNormalizerInterface', 'OpenApi30Normalizer', 'OpenApi31Normalizer', 'Swagger2Normalizer', 'OpenApiVersionDetector', 'OpenApiDocumentLoader', 'OpenApiOperationResolver', 'NormalizedOpenApiOperation', 'YamlDecoder', 'JsonDecoder', 'SymfonyYamlDecoder', 'NativeJsonDecoder', 'Loader', 'Parser', 'ParseContext', 'RuleSet', 'Validator', 'PreflightValidator', 'ErrorCollector', 'OfficialSchemaRule', 'Rules\\*', 'Validator\\Support\\*'],
+        'value_types' => ['ValidationResult', 'Error', 'Warning', 'ResolvedOperation', 'NormalizedOpenApiOperation', 'LoaderException', 'ParserException', 'PreflightFailureException'],
+        'internal' => ['SourceResolver', 'SourceFetcher', 'SourceRegistry', 'DefaultSourceResolver', 'HttpFetcher', 'LocalFetcher', 'CachedFetcher', 'OpenApiNormalizerInterface', 'OpenApi30Normalizer', 'OpenApi31Normalizer', 'Swagger2Normalizer', 'OpenApiVersionDetector', 'OpenApiDocumentLoader', 'OpenApiOperationResolver', 'YamlDecoder', 'JsonDecoder', 'SymfonyYamlDecoder', 'NativeJsonDecoder', 'Loader', 'Parser', 'ParseContext', 'RuleSet', 'Validator', 'PreflightValidator', 'ErrorCollector', 'OfficialSchemaRule', 'Rules\\*', 'Validator\\Support\\*'],
     ],
     'runner' => [
         'provides' => 'Executes Arazzo workflows: step dispatch, state transitions, async/queued execution, protocol executors and persistence registries.',

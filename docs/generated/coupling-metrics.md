@@ -24,7 +24,7 @@ targets. Regenerated before every commit.
 | `document:Parser` | 11 | 1085 | 6 | 2 | 0.25 |  |
 | `document:Resolver` | 12 | 358 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 62 | 3042 | 6 | 10 | 0.63 |  |
-| `(document root)` | 2 | 141 | 1 | 6 | 0.86 |  |
+| `(document root)` | 2 | 215 | 1 | 6 | 0.86 |  |
 | `expression:Ast` | 15 | 179 | 3 | 1 | 0.25 |  |
 | `expression:Data` | 5 | 135 | 2 | 3 | 0.60 |  |
 | `expression:Enum` | 2 | 40 | 2 | 0 | 0.00 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 2 | 122 | 1 | 8 | 0.89 |  |
 
-Total cross-module edges: **932**
+Total cross-module edges: **941**
 
 ## Most entangled module pairs
 

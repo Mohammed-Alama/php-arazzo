@@ -6,11 +6,15 @@ namespace Alama\Arazzo\Document;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Loader;
@@ -46,6 +50,12 @@ final class Document implements DocumentInterface
 
     private PreflightValidator $preflight;
 
+    private SourceRegistry $sources;
+
+    private OpenApiOperationResolver $operations;
+
+    private OpenApiVersionDetector $versionDetector;
+
     public function __construct(
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $httpFactory = null,
@@ -56,21 +66,22 @@ final class Document implements DocumentInterface
         $this->loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
         $this->parser = new Parser();
         $this->validator = new Validator(RuleSet::default());
+        $this->versionDetector = new OpenApiVersionDetector();
 
-        $sources = new SourceRegistry(new DefaultSourceResolver([
+        $this->sources = new SourceRegistry(new DefaultSourceResolver([
             'http' => new HttpFetcher($client, $factory),
             'https' => new HttpFetcher($client, $factory),
             'file' => new LocalFetcher(),
         ]));
 
-        $operations = new OpenApiOperationResolver(
-            new OpenApiDocumentLoader($sources),
-            new OpenApiVersionDetector(),
+        $this->operations = new OpenApiOperationResolver(
+            new OpenApiDocumentLoader($this->sources),
+            $this->versionDetector,
             new OpenApi30Normalizer(),
             new OpenApi31Normalizer(),
         );
 
-        $this->preflight = new PreflightValidator($sources, $operations, new DomXpathEvaluator());
+        $this->preflight = new PreflightValidator($this->sources, $this->operations, new DomXpathEvaluator());
     }
 
     public function load(string $path): ArazzoDocument
@@ -91,5 +102,25 @@ final class Document implements DocumentInterface
     public function preflight(ArazzoDocument $document): ValidationResult
     {
         return $this->preflight->validate($document);
+    }
+
+    public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult
+    {
+        return $this->preflight->validateInputs($document, $workflowId, $inputs);
+    }
+
+    public function resolveSource(SourceDescription $source, string $basePath): SourceDocument
+    {
+        return $this->sources->resolve($source, $basePath);
+    }
+
+    public function detectOpenApiVersion(array $document): string
+    {
+        return $this->versionDetector->detect($document);
+    }
+
+    public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation
+    {
+        return $this->operations->resolve($step, $document);
     }
 }

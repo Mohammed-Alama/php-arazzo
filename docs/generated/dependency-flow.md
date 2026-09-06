@@ -56,10 +56,10 @@ document-Validator,expression-Data,4
 document-Validator,expression-Exceptions,8
 document-Validator,expression-Xpath,1
 document-Validator,expression-root,61
-document-root,contracts-Spec,4
-document-root,document-Normalizer,5
+document-root,contracts-Spec,10
+document-root,document-Normalizer,7
 document-root,document-Parser,6
-document-root,document-Resolver,4
+document-root,document-Resolver,5
 document-root,document-Validator,5
 document-root,expression-Xpath,1
 expression-Ast,contracts-Spec,1
