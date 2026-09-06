@@ -56,6 +56,53 @@ it('groups public api by package with facades first', function (): void {
         ->and($out)->not->toContain('Alama\\Arazzo\\Data\\Data');
 });
 
+it('renders a per-package capability contract', function (): void {
+    $doc = file_get_contents(dirname(__DIR__, 3).'/docs/generated/package-contracts.md');
+
+    expect($doc)->toContain('## contracts')
+        ->and($doc)->toContain('## expression')
+        ->and($doc)->toContain('## document')
+        ->and($doc)->toContain('## runner')
+        ->and($doc)->toContain('## cli')
+        ->and($doc)->toContain('## laravel')
+        ->and($doc)->toContain('Deliberately internal')
+        ->and($doc)->toContain('### Capabilities')
+        ->and($doc)->toContain('Public entry surface')
+        ->and($doc)->toContain('Cross-boundary value types');
+});
+
+it('excludes @internal-docblocked types from the public api surface', function (): void {
+    require_once dirname(__DIR__, 3).'/scripts/generate-docs/PublicApiDoc.php';
+
+    $hidden = new ScannedFile(
+        path: '',
+        relativeDir: '',
+        namespace: 'Alama\\Arazzo\\Expression',
+        className: 'HiddenEvaluator',
+        isInterface: true,
+        uses: [],
+        useStatements: [],
+        content: "/**\n * Internal seam, not part of the advertised contract.\n *\n * @internal\n */\ninterface HiddenEvaluator\n{\n    public function resolve(): void;\n}\n",
+        package: 'expression',
+    );
+    $visible = new ScannedFile(
+        path: '',
+        relativeDir: '',
+        namespace: 'Alama\\Arazzo\\Expression',
+        className: 'VisibleFacade',
+        isInterface: true,
+        uses: [],
+        useStatements: [],
+        content: "/**\n * Public entry seam.\n */\ninterface VisibleFacade\n{\n    public function run(): void;\n}\n",
+        package: 'expression',
+    );
+
+    $out = \ArazzoDocs\PublicApiDoc\render(['expression' => ['_' => [$hidden, $visible]]]);
+
+    expect($out)->toContain('VisibleFacade')
+        ->and($out)->not->toContain('HiddenEvaluator');
+});
+
 it('renders real cli commands', function (): void {
     $out = file_get_contents(dirname(__DIR__, 3).'/docs/generated/cli-reference.md');
 
@@ -136,7 +183,7 @@ it('snapshots every generated doc', function (): void {
     $dir = dirname(__DIR__, 3).'/docs/generated';
     $files = glob($dir.'/*.md') ?: [];
 
-    expect(count($files))->toBe(35);
+    expect(count($files))->toBe(36);
 
     foreach ($files as $f) {
         $out = (string) file_get_contents($f);
