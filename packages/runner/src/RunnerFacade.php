@@ -5,28 +5,11 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
-use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
+use Alama\Arazzo\Runner\Execution\ExecutionGraphFactory;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 use RuntimeException;
 
@@ -34,60 +17,43 @@ final class RunnerFacade implements RunnerFacadeInterface
 {
     private WorkflowExecutor $executor;
 
-    public function __construct(?ClientInterface $httpClient = null, private readonly ?PreflightValidator $preflight = null)
-    {
-        $client = $httpClient ?? new Client();
-        $factory = new HttpFactory();
-        $httpFetcher = new HttpFetcher($client, $factory);
-
-        $registry = new SourceRegistry(new DefaultSourceResolver([
-            'http' => $httpFetcher,
-            'https' => $httpFetcher,
-            'file' => new LocalFetcher(),
-        ]));
-
-        $evaluator = new ExpressionEvaluator();
-        $operationResolver = new OpenApiOperationResolver(
-            new OpenApiDocumentLoader($registry),
-            new OpenApiVersionDetector(),
-            new OpenApi30Normalizer(),
-            new OpenApi31Normalizer(),
-        );
-        $resolver = new ExpressionResolver(
-            $evaluator,
-            new StepOutputExtractor($operationResolver, $evaluator),
-            new CriteriaEvaluator($evaluator),
-            new ResponseSchemaValidator($operationResolver),
-        );
-
-        $this->executor = new WorkflowExecutor(
-            new StepExecutor(
-                new DefaultOpenApiExecutor($client, $factory),
-                $resolver,
-                $operationResolver,
-            ),
-            workflowEngine: new WorkflowEngine($resolver),
-            preflight: $this->preflight ?? $this->defaultPreflight($registry, $operationResolver),
-        );
+    public function __construct(
+        DocumentInterface $documents,
+        ?ClientInterface $httpClient = null,
+    ) {
+        $this->executor = (new ExecutionGraphFactory($documents, $httpClient))->createWorkflowExecutor();
     }
 
     public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array
     {
-        $workflow = null;
+        $result = $this->executor->execute($this->workflow($document, $workflowId), $document, $inputs);
 
-        foreach ($document->workflows as $candidate) {
-            if ($candidate->workflowId === $workflowId) {
-                $workflow = $candidate;
-                break;
-            }
+        return $this->baseResult($result);
+    }
+
+    public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array
+    {
+        $result = $this->executor->execute($this->workflow($document, $workflowId), $document, $inputs);
+
+        $steps = [];
+        foreach ($result->stepResults as $stepId => $stepResult) {
+            $steps[$stepId] = [
+                'stepId' => $stepResult->stepId,
+                'success' => $stepResult->success,
+                'outputs' => $stepResult->outputs,
+                'error' => $stepResult->error?->getMessage(),
+            ];
         }
 
-        if ($workflow === null) {
-            throw new RuntimeException(sprintf("unknown workflow '%s'", $workflowId));
-        }
+        return [
+            ...$this->baseResult($result),
+            'steps' => $steps,
+        ];
+    }
 
-        $result = $this->executor->execute($workflow, $document, $inputs);
-
+    /** @return array{workflowId: string, status: string, outputs: array<string, mixed>, stepsSpent: int, workflowCallStack: list<string>} */
+    private function baseResult(ExecutionResult $result): array
+    {
         return [
             'workflowId' => $result->workflowId,
             'status' => $result->status,
@@ -97,8 +63,14 @@ final class RunnerFacade implements RunnerFacadeInterface
         ];
     }
 
-    private function defaultPreflight(SourceRegistry $registry, OpenApiOperationResolver $operationResolver): PreflightValidator
+    private function workflow(ArazzoDocument $document, string $workflowId): Workflow
     {
-        return new PreflightValidator($registry, $operationResolver, new DomXpathEvaluator());
+        foreach ($document->workflows as $candidate) {
+            if ($candidate->workflowId === $workflowId) {
+                return $candidate;
+            }
+        }
+
+        throw new RuntimeException(sprintf("unknown workflow '%s'", $workflowId));
     }
 }

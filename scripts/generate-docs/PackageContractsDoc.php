@@ -79,7 +79,8 @@ const PACKAGE_CONTRACTS = [
     'runner' => [
         'provides' => 'Executes Arazzo workflows: step dispatch, state transitions, async/queued execution, protocol executors and persistence registries.',
         'capabilities' => [
-            'Execute a workflow from its document (runner facade)',
+            'Execute a workflow from its document (runner facade): compact summary and per-step verdicts',
+            'Source resolution/fetching, preflight validation and OpenAPI operation resolution obtained through the document face',
             'Step dispatch: HTTP, async and sub-workflow protocol executors',
             'State transitions, budgeting, retries and correlation resume',
             'Async/queued step execution with suspension and reconciliation',

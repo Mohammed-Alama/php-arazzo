@@ -21,7 +21,7 @@ Analyzed 128 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 17 | 13% | 476 | 35.7 |
+| `laravel:Bindings` | 17 | 13% | 478 | 35.6 |
 | `laravel:Http` | 15 | 12% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 11% | 252 | 55.6 |
 | `laravel:Queue` | 11 | 9% | 100 | 110 |
@@ -43,7 +43,7 @@ Analyzed 128 total file-touches across 37 modules.
 | `laravel:Events` | 2 | 2% | 21 | 95.2 |
 | `runner:Async` | 2 | 2% | 494 | 4 |
 | `runner:Events` | 2 | 2% | 295 | 6.8 |
-| `runner:Execution` | 2 | 2% | 3,442 | 0.6 |
+| `runner:Execution` | 2 | 2% | 3,562 | 0.6 |
 | `runner:Infrastructure` | 2 | 2% | 160 | 12.5 |
 | `runner:Jobs` | 2 | 2% | 34 | 58.8 |
 | `runner:Policy` | 2 | 2% | 96 | 20.8 |

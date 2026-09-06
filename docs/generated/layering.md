@@ -206,6 +206,7 @@ flowchart TB
     M_runner_Execution --> M_document_Normalizer
     M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
+    M_runner_Execution --> M_document__
     M_runner_Execution --> M_expression_Ast
     M_runner_Execution --> M_expression_Evaluation
     M_runner_Execution --> M_expression_Interfaces
@@ -236,12 +237,7 @@ flowchart TB
     M_runner_State --> M_contracts_Spec
     M_runner_State --> M_contracts_State
     M_runner__ --> M_contracts_Spec
-    M_runner__ --> M_document_Normalizer
-    M_runner__ --> M_document_Resolver
-    M_runner__ --> M_document_Validator
-    M_runner__ --> M_expression_Evaluation
-    M_runner__ --> M_expression_Xpath
-    M_runner__ --> M_expression__
+    M_runner__ --> M_document__
     M_runner__ --> M_runner_Execution
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
@@ -268,9 +264,9 @@ flowchart TB
 | `laravel` | `document` | 20 |
 | `laravel` | `expression` | 11 |
 | `laravel` | `runner` | 48 |
-| `runner` | `contracts` | 178 |
-| `runner` | `document` | 26 |
-| `runner` | `expression` | 37 |
+| `runner` | `contracts` | 179 |
+| `runner` | `document` | 25 |
+| `runner` | `expression` | 36 |
 
 ## Module-level detail
 

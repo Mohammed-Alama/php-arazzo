@@ -129,6 +129,7 @@ flowchart LR
     runner_Execution --> runner_Telemetry
     runner_Execution --> contracts_Dependency
     runner_Execution --> runner_Policy
+    runner_Execution --> document__
     runner_Execution --> document_Normalizer
     runner_Execution --> document_Parser
     runner_Execution --> expression_Ast
@@ -153,12 +154,7 @@ flowchart LR
     runner_State --> contracts_Spec
     runner_State --> contracts_State
     runner__ --> contracts_Spec
-    runner__ --> document_Normalizer
-    runner__ --> document_Resolver
-    runner__ --> document_Validator
-    runner__ --> expression_Evaluation
-    runner__ --> expression__
-    runner__ --> expression_Xpath
+    runner__ --> document__
     runner__ --> runner_Execution
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec

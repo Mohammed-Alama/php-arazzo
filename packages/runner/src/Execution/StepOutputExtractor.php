@@ -10,7 +10,9 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
@@ -31,7 +33,7 @@ class StepOutputExtractor implements OutputExtractorInterface
     private ?SelectorEvaluator $selectorEvaluator = null;
 
     public function __construct(
-        private OpenApiOperationResolver $operationResolver,
+        private OpenApiOperationResolver|DocumentInterface $operationResolver,
         private ExpressionEvaluator $evaluator,
         private ?LoggerInterface $logger = null,
     ) {}
@@ -92,7 +94,7 @@ class StepOutputExtractor implements OutputExtractorInterface
         }
 
         try {
-            $resolved = $this->operationResolver->resolve($step, $document);
+            $resolved = $this->resolveOperation($step, $document);
             $operation = $resolved->cebeOperation;
         } catch (\RuntimeException) {
             return $value;
@@ -115,6 +117,15 @@ class StepOutputExtractor implements OutputExtractorInterface
         $leafSchema = $this->resolveSchemaAtPointer($schema instanceof Schema ? $schema : null, $ast->part->jsonPointer);
 
         return $this->castToSchemaType($value, $leafSchema);
+    }
+
+    private function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation
+    {
+        if ($this->operationResolver instanceof DocumentInterface) {
+            return $this->operationResolver->resolveOperation($step, $document);
+        }
+
+        return $this->operationResolver->resolve($step, $document);
     }
 
     private function resolveSchemaAtPointer(?Schema $schema, string $pointer): ?Schema

@@ -206,7 +206,8 @@ public contract between packages.
 
 ### Capabilities
 
-- Execute a workflow from its document (runner facade)
+- Execute a workflow from its document (runner facade): compact summary and per-step verdicts
+- Source resolution/fetching, preflight validation and OpenAPI operation resolution obtained through the document face
 - Step dispatch: HTTP, async and sub-workflow protocol executors
 - State transitions, budgeting, retries and correlation resume
 - Async/queued step execution with suspension and reconciliation
@@ -217,6 +218,7 @@ public contract between packages.
 
 - `RunnerFacadeInterface` (`interface`)
   - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
+  - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### Cross-boundary value types
 

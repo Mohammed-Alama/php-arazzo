@@ -28,7 +28,7 @@ flowchart LR
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>171 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>476 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>478 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>21 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>161 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>49 LOC</small>"]:::genericDomain
@@ -52,7 +52,7 @@ flowchart LR
         S_expression_Interfaces["expression:Interfaces<br/><small>67 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>103 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>494 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>3442 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>3562 LOC</small>"]:::unknownDomain
         S_runner_Infrastructure["runner:Infrastructure<br/><small>160 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>34 LOC</small>"]:::unknownDomain
         S_runner_Policy["runner:Policy<br/><small>96 LOC</small>"]:::unknownDomain
@@ -69,8 +69,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 823 | 0 | 5% |
 | Supporting | 6 | 5,719 | 0 | 32% |
-| Generic subdomain | 12 | 2,052 | 1,157 | 18% |
-| Unclassified | 18 | 7,920 | 0 | 45% |
+| Generic subdomain | 12 | 2,052 | 1,159 | 18% |
+| Unclassified | 18 | 8,040 | 0 | 45% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

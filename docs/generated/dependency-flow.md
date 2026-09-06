@@ -145,14 +145,15 @@ runner-Execution,contracts-Interfaces,10
 runner-Execution,contracts-Spec,68
 runner-Execution,contracts-State,14
 runner-Execution,contracts-Support,9
-runner-Execution,document-Normalizer,5
+runner-Execution,document-Normalizer,8
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,6
+runner-Execution,document-root,5
 runner-Execution,expression-Ast,2
-runner-Execution,expression-Evaluation,4
+runner-Execution,expression-Evaluation,6
 runner-Execution,expression-Interfaces,5
 runner-Execution,expression-Xpath,2
-runner-Execution,expression-root,12
+runner-Execution,expression-root,13
 runner-Execution,runner-Events,21
 runner-Execution,runner-Jobs,2
 runner-Execution,runner-Policy,1
@@ -177,14 +178,9 @@ runner-Protocol,runner-Infrastructure,1
 runner-Protocol,runner-State,1
 runner-State,contracts-Spec,5
 runner-State,contracts-State,2
-runner-root,contracts-Spec,2
-runner-root,document-Normalizer,5
-runner-root,document-Resolver,4
-runner-root,document-Validator,1
-runner-root,expression-Evaluation,2
-runner-root,expression-Xpath,1
-runner-root,expression-root,1
-runner-root,runner-Execution,6
+runner-root,contracts-Spec,3
+runner-root,document-root,1
+runner-root,runner-Execution,3
 ```
 
 ## Folded flows

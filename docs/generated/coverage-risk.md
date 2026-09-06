@@ -29,17 +29,17 @@ quadrantChart
     contracts/Spec: [0, 1]
     contracts/State: [0.083, 1]
     contracts/Support: [0, 1]
-    document/Normalizer: [0.3, 1]
+    document/Normalizer: [0.333, 1]
     document/Parser: [0.25, 1]
-    document/Resolver: [0.222, 1]
-    document/Validator: [0.625, 1]
+    document/Resolver: [0.25, 1]
+    document/Validator: [0.667, 1]
     expression/Ast: [0.25, 0.333]
     expression/Data: [0.6, 0.6]
     expression/Enum: [0, 1]
-    expression/Evaluation: [0.538, 1]
+    expression/Evaluation: [0.583, 1]
     expression/Exceptions: [0.25, 1]
     expression/Interfaces: [0.111, 1]
-    expression/Xpath: [0.222, 1]
+    expression/Xpath: [0.25, 1]
     laravel/Bindings: [0.96, 0.857]
     laravel/Events: [0, 1]
     laravel/Http: [0.778, 1]
@@ -50,7 +50,7 @@ quadrantChart
     laravel/Support: [0, 1]
     runner/Async: [1, 1]
     runner/Events: [0.167, 1]
-    runner/Execution: [0.76, 1]
+    runner/Execution: [0.769, 1]
     runner/Infrastructure: [0.25, 1]
     runner/Jobs: [0.286, 1]
     runner/Policy: [0.75, 1]
@@ -67,20 +67,20 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.20 | 17 | 8 | 100% |
-| `contracts/Spec` | 0.00 | 168 | 38 | 100% |
+| `contracts/Spec` | 0.00 | 169 | 38 | 100% |
 | `contracts/State` | 0.08 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
-| `document/Normalizer` | 0.30 | 22 | 9 | 100% |
+| `document/Normalizer` | 0.33 | 22 | 9 | 100% |
 | `document/Parser` | 0.25 | 33 | 11 | 100% |
-| `document/Resolver` | 0.22 | 22 | 12 | 100% |
-| `document/Validator` | 0.62 | 65 | 62 | 100% |
+| `document/Resolver` | 0.25 | 22 | 12 | 100% |
+| `document/Validator` | 0.67 | 65 | 62 | 100% |
 | `expression/Ast` | 0.25 | 5 | 15 | 33% |
 | `expression/Data` | 0.60 | 3 | 5 | 60% |
 | `expression/Enum` | 0.00 | 2 | 2 | 100% |
-| `expression/Evaluation` | 0.54 | 44 | 20 | 100% |
+| `expression/Evaluation` | 0.58 | 44 | 20 | 100% |
 | `expression/Exceptions` | 0.25 | 6 | 2 | 100% |
 | `expression/Interfaces` | 0.11 | 23 | 3 | 100% |
-| `expression/Xpath` | 0.22 | 7 | 2 | 100% |
+| `expression/Xpath` | 0.25 | 7 | 2 | 100% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `laravel/Http` | 0.78 | 4 | 3 | 100% |
@@ -91,7 +91,7 @@ quadrantChart
 | `laravel/Support` | 0.00 | 1 | 1 | 100% |
 | `runner/Async` | 1.00 | 6 | 6 | 100% |
 | `runner/Events` | 0.17 | 29 | 11 | 100% |
-| `runner/Execution` | 0.76 | 51 | 35 | 100% |
+| `runner/Execution` | 0.77 | 51 | 36 | 100% |
 | `runner/Infrastructure` | 0.25 | 7 | 4 | 100% |
 | `runner/Jobs` | 0.29 | 7 | 2 | 100% |
 | `runner/Policy` | 0.75 | 2 | 2 | 100% |
