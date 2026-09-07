@@ -35,16 +35,16 @@ final class FixtureRunner extends ConformanceHarness
             throw new \InvalidArgumentException('Fixture has no workflows');
         }
 
-        $operationResolver = $this->operationResolver($this->sourceRegistry);
+        $documents = $this->documents($this->sourceRegistry);
 
         $executor = new WorkflowExecutor(
             new StepExecutor(
                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
-                $this->resolver($operationResolver),
-                $operationResolver,
+                $this->resolver($documents),
+                $documents,
                 engine: $this->engine(),
             ),
-            new WorkflowEngine($this->resolver($operationResolver)),
+            new WorkflowEngine($this->resolver($documents)),
             events: $this->events,
         );
 

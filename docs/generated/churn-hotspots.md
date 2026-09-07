@@ -12,26 +12,27 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "cli:Console", "document:Validator", "runner:Execution", "expression:Evaluation", "runner:Protocol", "cli:Generator"]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "cli:Console", "runner:Execution", "document:Validator", "runner:Protocol", "expression:Evaluation", "runner:Async"]
     y-axis "Touches" 0 --> 30
-    bar [20, 15, 14, 11, 8, 8, 4, 4, 4, 3, 3, 2]
+    bar [21, 15, 14, 11, 8, 8, 5, 5, 4, 4, 3, 3]
 ```
 
-Analyzed 138 total file-touches across 37 modules.
+Analyzed 143 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 20 | 14% | 464 | 43.1 |
-| `laravel:Http` | 15 | 11% | 161 | 93.2 |
+| `laravel:Bindings` | 21 | 15% | 463 | 45.4 |
+| `laravel:Http` | 15 | 10% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 10% | 252 | 55.6 |
 | `laravel:Queue` | 11 | 8% | 100 | 110 |
 | `laravel:Lock` | 8 | 6% | 49 | 163.3 |
 | `laravel:State` | 8 | 6% | 38 | 210.5 |
-| `cli:Console` | 4 | 3% | 792 | 5.1 |
+| `cli:Console` | 5 | 3% | 773 | 6.5 |
+| `runner:Execution` | 5 | 3% | 3,621 | 1.4 |
 | `document:Validator` | 4 | 3% | 3,092 | 1.3 |
-| `runner:Execution` | 4 | 3% | 3,643 | 1.1 |
+| `runner:Protocol` | 4 | 3% | 545 | 7.3 |
 | `expression:Evaluation` | 3 | 2% | 1,211 | 2.5 |
-| `runner:Protocol` | 3 | 2% | 545 | 5.5 |
+| `runner:Async` | 3 | 2% | 494 | 6.1 |
 | `cli:Generator` | 2 | 1% | 105 | 19 |
 | `cli:Renderer` | 2 | 1% | 253 | 7.9 |
 | `contracts:Dependency` | 2 | 1% | 328 | 6.1 |
@@ -43,7 +44,6 @@ Analyzed 138 total file-touches across 37 modules.
 | `expression:Data` | 2 | 1% | 140 | 14.3 |
 | `expression:Enum` | 2 | 1% | 42 | 47.6 |
 | `laravel:Events` | 2 | 1% | 21 | 95.2 |
-| `runner:Async` | 2 | 1% | 494 | 4 |
 | `runner:Events` | 2 | 1% | 295 | 6.8 |
 | `runner:Infrastructure` | 2 | 1% | 160 | 12.5 |
 | `runner:Jobs` | 2 | 1% | 34 | 58.8 |

@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -33,7 +28,7 @@ it('accepts inputs matching the declared schema', function (): void {
     $document = DocumentLoader::load(INPUTS_SCHEMA_DOC);
     $validator = preflightForInputsDoc();
 
-    $result = $validator->validateInputs($document, 'bookRide', ['rideId' => 42, 'rider' => 'sam']);
+    $result = $validator->preflightInputs($document, 'bookRide', ['rideId' => 42, 'rider' => 'sam']);
 
     expect($result->isValid())->toBeTrue(json_encode($result->errors));
 });
@@ -43,7 +38,7 @@ it('rejects missing required and wrong-typed inputs before execution', function 
     $validator = preflightForInputsDoc();
 
     // rideId as string violates the integer type; rider is not required.
-    $result = $validator->validateInputs($document, 'bookRide', ['rideId' => 'not-an-int']);
+    $result = $validator->preflightInputs($document, 'bookRide', ['rideId' => 'not-an-int']);
 
     expect($result->isValid())->toBeFalse()
         ->and($result->errors[0]->code)->toBe('preflight.inputs_schema')
@@ -54,7 +49,7 @@ it('treats documents without an inputs schema as unconstrained', function (): vo
     $document = DocumentLoader::load(__DIR__.'/../fixtures/loader/minimal.yaml');
     $validator = preflightForInputsDoc();
 
-    $result = $validator->validateInputs($document, 'wf', ['anything' => ['goes' => true]]);
+    $result = $validator->preflightInputs($document, 'wf', ['anything' => ['goes' => true]]);
 
     expect($result->isValid())->toBeTrue();
 });
@@ -70,30 +65,24 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
 
     $evaluator = new ExpressionEvaluator();
     $engine = new ExpressionEngine();
-    $registry = new SourceRegistry(new DefaultSourceResolver([]));
-    $operationResolver = new OpenApiOperationResolver(
-        new OpenApiDocumentLoader($registry),
-        new OpenApiVersionDetector(),
-        new OpenApi30Normalizer(),
-        new OpenApi31Normalizer(),
-    );
+    $documents = new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($operationResolver, $engine),
+        new StepOutputExtractor($documents, $engine),
         new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($operationResolver),
+        new ResponseSchemaValidator($documents),
     );
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
-            $operationResolver,
+            $documents,
             engine: $engine,
         ),
         workflowEngine: new WorkflowEngine($resolver),
         events: $events,
-        preflight: preflightForInputsDoc(),
+        preflight: $documents,
     );
 
     try {
@@ -110,18 +99,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
     }
 });
 
-function preflightForInputsDoc(): PreflightValidator
+function preflightForInputsDoc(): Document
 {
-    $registry = new SourceRegistry(new DefaultSourceResolver([]));
-
-    return new PreflightValidator(
-        $registry,
-        new OpenApiOperationResolver(
-            new OpenApiDocumentLoader($registry),
-            new OpenApiVersionDetector(),
-            new OpenApi30Normalizer(),
-            new OpenApi31Normalizer(),
-        ),
-        new ExpressionEngine(),
-    );
+    return new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
 }

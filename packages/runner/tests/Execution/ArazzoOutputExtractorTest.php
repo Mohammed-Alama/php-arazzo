@@ -14,13 +14,10 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 
@@ -57,18 +54,11 @@ beforeEach(function () {
     file_put_contents($this->openApiFile, $openApiJson);
 
     $this->makeExtractor = function (): StepOutputExtractor {
-        $sourceResolver = new DefaultSourceResolver(
-            fetchers: ['file' => new LocalFetcher()],
-        );
-        $loader = new OpenApiDocumentLoader($sourceResolver);
-        $resolver = new OpenApiOperationResolver(
-            $loader,
-            new OpenApiVersionDetector(),
-            new OpenApi30Normalizer(),
-            new OpenApi31Normalizer(),
-        );
+        $documents = new Document(null, null, new SourceRegistry(
+            new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
+        ));
 
-        return new StepOutputExtractor($resolver, new ExpressionEngine());
+        return new StepOutputExtractor($documents, new ExpressionEngine());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

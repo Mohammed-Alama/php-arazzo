@@ -14,7 +14,6 @@ use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Runner\Events\RunCompletedEvent;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
@@ -39,7 +38,7 @@ class WorkflowExecutor
         private StepExecutor $stepExecutor,
         private WorkflowEngine $workflowEngine,
         ?EventDispatcherInterface $events = null,
-        private PreflightValidator|DocumentInterface|null $preflight = null,
+        private ?DocumentInterface $preflight = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
     }
@@ -207,11 +206,8 @@ class WorkflowExecutor
         if ($preflight === null) {
             return new ValidationResult($document, [], []);
         }
-        if ($preflight instanceof DocumentInterface) {
-            return $preflight->preflight($document);
-        }
 
-        return $preflight->validate($document);
+        return $preflight->preflight($document);
     }
 
     /**
@@ -223,10 +219,7 @@ class WorkflowExecutor
         if ($preflight === null) {
             return new ValidationResult($document, [], []);
         }
-        if ($preflight instanceof DocumentInterface) {
-            return $preflight->preflightInputs($document, $workflowId, $inputs);
-        }
 
-        return $preflight->validateInputs($document, $workflowId, $inputs);
+        return $preflight->preflightInputs($document, $workflowId, $inputs);
     }
 }

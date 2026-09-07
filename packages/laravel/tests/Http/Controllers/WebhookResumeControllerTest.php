@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
@@ -13,11 +14,12 @@ use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
@@ -125,8 +127,8 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         }
     });
 
-    $opResolver = \Mockery::mock(OpenApiOperationResolver::class);
-    $opResolver->shouldReceive('resolve')->andReturn(
+    $documents = \Mockery::mock(DocumentInterface::class);
+    $documents->shouldReceive('resolveOperation')->andReturn(
         new ResolvedOperation(
             new SourceDescription('src', 'openapi.yaml', SourceType::Openapi),
             new NormalizedOpenApiOperation('/paths/~1rides/post', 'post', 'http://api.example.com', [], [], [], [], [], []),
@@ -135,7 +137,9 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
             new Operation([]),
         ),
     );
-    $this->app->instance(OpenApiOperationResolver::class, $opResolver);
+    $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
+    $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
+    $this->app->instance(DocumentInterface::class, $documents);
 
     $rawYaml = file_get_contents(__DIR__.'/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
     $decoded = (new SymfonyYamlDecoder())->decode($rawYaml);

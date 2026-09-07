@@ -5,14 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Cli\Console\Command;
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
-use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
@@ -93,32 +86,20 @@ final class RunCommand extends Command
 
         $client = $this->httpClient ?? new Client();
         $factory = new HttpFactory();
-        $httpFetcher = new HttpFetcher($client, $factory);
-
-        $registry = $this->registry ?? new SourceRegistry(new DefaultSourceResolver([
-            'http' => $httpFetcher,
-            'https' => $httpFetcher,
-            'file' => new LocalFetcher(),
-        ]));
 
         $engine = new ExpressionEngine();
-        $operationResolver = new OpenApiOperationResolver(
-            new OpenApiDocumentLoader($registry),
-            new OpenApiVersionDetector(),
-            new OpenApi30Normalizer(),
-            new OpenApi31Normalizer(),
-        );
+        $documents = new Document($client, $factory, $this->registry);
         $resolver = new ExecutionExpressionResolver(
             $engine,
-            new StepOutputExtractor($operationResolver, $engine),
-            new ResponseSchemaValidator($operationResolver),
+            new StepOutputExtractor($documents, $engine),
+            new ResponseSchemaValidator($documents),
         );
 
         $executor = new WorkflowExecutor(
             new StepExecutor(
                 new DefaultOpenApiExecutor($client, $factory),
                 $resolver,
-                $operationResolver,
+                $documents,
                 engine: $engine,
             ),
             workflowEngine: new WorkflowEngine($resolver),

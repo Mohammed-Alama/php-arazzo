@@ -9,11 +9,8 @@ use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Document;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
@@ -108,25 +105,20 @@ abstract class ConformanceHarness
         return new ExpressionEngine();
     }
 
-    protected function resolver(OpenApiOperationResolver $operationResolver): ExpressionResolverInterface
+    protected function documents(SourceRegistry $registry): DocumentInterface
+    {
+        return new Document(null, null, $registry);
+    }
+
+    protected function resolver(DocumentInterface $documents): ExpressionResolverInterface
     {
         $evaluator = new ExpressionEvaluator();
 
         return new ExpressionResolver(
             $evaluator,
-            new StepOutputExtractor($operationResolver, $this->engine()),
+            new StepOutputExtractor($documents, $this->engine()),
             new CriteriaEvaluator($evaluator),
-            new ResponseSchemaValidator($operationResolver),
-        );
-    }
-
-    protected function operationResolver(SourceRegistry $registry): OpenApiOperationResolver
-    {
-        return new OpenApiOperationResolver(
-            new OpenApiDocumentLoader($registry),
-            new OpenApiVersionDetector(),
-            new OpenApi30Normalizer(),
-            new OpenApi31Normalizer(),
+            new ResponseSchemaValidator($documents),
         );
     }
 
