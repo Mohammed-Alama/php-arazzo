@@ -149,7 +149,6 @@ flowchart TB
     M_laravel_Bindings --> M_document_Resolver
     M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
-    M_laravel_Bindings --> M_expression_Interfaces
     M_laravel_Bindings --> M_expression__
     M_laravel_Bindings --> M_laravel_Http
     M_laravel_Bindings --> M_laravel_Lock
@@ -160,7 +159,6 @@ flowchart TB
     M_laravel_Bindings --> M_runner_Events
     M_laravel_Bindings --> M_runner_Execution
     M_laravel_Bindings --> M_runner_Infrastructure
-    M_laravel_Bindings --> M_runner_Protocol
     M_laravel_Bindings --> M_runner_State
     M_laravel_Bindings --> M_runner__
     M_laravel_Http --> M_cli_Generator
@@ -179,6 +177,13 @@ flowchart TB
     M_laravel_Queue --> M_runner_Execution
     M_laravel_Queue --> M_runner_Jobs
     M_laravel_State --> M_runner_State
+    M_laravel_Support --> M_contracts_Interfaces
+    M_laravel_Support --> M_expression_Interfaces
+    M_laravel_Support --> M_runner_Events
+    M_laravel_Support --> M_runner_Execution
+    M_laravel_Support --> M_runner_Infrastructure
+    M_laravel_Support --> M_runner_State
+    M_laravel_Support --> M_runner__
     M_laravel__ --> M_laravel_Bindings
     M_laravel__ --> M_laravel_Http
     M_runner_Async --> M_contracts_Exceptions
@@ -263,11 +268,11 @@ flowchart TB
 | `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
-| `laravel` | `document` | 19 |
-| `laravel` | `expression` | 5 |
-| `laravel` | `runner` | 49 |
+| `laravel` | `document` | 18 |
+| `laravel` | `expression` | 4 |
+| `laravel` | `runner` | 44 |
 | `runner` | `contracts` | 190 |
-| `runner` | `document` | 23 |
+| `runner` | `document` | 22 |
 | `runner` | `expression` | 27 |
 
 ## Module-level detail
