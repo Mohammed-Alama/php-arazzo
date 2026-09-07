@@ -57,7 +57,7 @@ final class OaiFixtureRunner extends ConformanceHarness
             throw new \InvalidArgumentException('Document has no workflows');
         }
 
-        $operationResolver = $this->operationResolver($this->sourceRegistry);
+        $documents = $this->documents($this->sourceRegistry);
 
         $executor = new WorkflowExecutor(
             new StepExecutor(
@@ -65,11 +65,11 @@ final class OaiFixtureRunner extends ConformanceHarness
                     new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                     FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
                 ),
-                $this->resolver($operationResolver),
-                $operationResolver,
+                $this->resolver($documents),
+                $documents,
                 engine: $this->engine(),
             ),
-            new WorkflowEngine($this->resolver($operationResolver)),
+            new WorkflowEngine($this->resolver($documents)),
             events: $this->events,
         );
 

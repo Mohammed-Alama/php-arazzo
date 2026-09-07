@@ -7,12 +7,7 @@ namespace Tests\Execution;
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;
@@ -37,14 +32,7 @@ it('validates a response against the OpenAPI schema', function (): void {
         ],
     ]);
 
-    $resolver = new DefaultSourceResolver([]);
-    $loader = new OpenApiDocumentLoader($resolver);
-    $opResolver = new OpenApiOperationResolver(
-        $loader,
-        new OpenApiVersionDetector(),
-        new OpenApi30Normalizer(),
-        new OpenApi31Normalizer(),
-    );
+    $opResolver = \Mockery::mock(DocumentInterface::class);
 
     $validator = new class($opResolver) extends ResponseSchemaValidator
     {

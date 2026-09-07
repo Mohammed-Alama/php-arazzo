@@ -62,6 +62,7 @@ final class Document implements DocumentInterface
     public function __construct(
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $httpFactory = null,
+        ?SourceRegistry $sources = null,
     ) {
         $client = $httpClient ?? new Client();
         $factory = $httpFactory ?? new HttpFactory();
@@ -72,7 +73,7 @@ final class Document implements DocumentInterface
         $this->validator = new Validator($this->engine, RuleSet::default($this->engine));
         $this->versionDetector = new OpenApiVersionDetector();
 
-        $this->sources = new SourceRegistry(new DefaultSourceResolver([
+        $this->sources = $sources ?? new SourceRegistry(new DefaultSourceResolver([
             'http' => new HttpFetcher($client, $factory),
             'https' => new HttpFetcher($client, $factory),
             'file' => new LocalFetcher(),

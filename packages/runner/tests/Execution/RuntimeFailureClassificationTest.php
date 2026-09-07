@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -43,12 +43,12 @@ $classificationHarness = new class() extends ConformanceHarness
         return $this->prepare($fixture);
     }
 
-    public function ops(): OpenApiOperationResolver
+    public function ops(): DocumentInterface
     {
-        return $this->operationResolver($this->sourceRegistry);
+        return $this->documents($this->sourceRegistry);
     }
 
-    public function res(OpenApiOperationResolver $r): ExpressionResolverInterface
+    public function res(DocumentInterface $r): ExpressionResolverInterface
     {
         return $this->resolver($r);
     }
@@ -91,13 +91,13 @@ it('names the source on unresolvable circular source references', function (): v
 it('preserves raw body, content type, and transport category on synthetic failures', function () use ($classificationHarness): void {
     $fixture = requestConstructionFixture();
     $document = $classificationHarness->boot($fixture);
-    $operationResolver = $classificationHarness->ops();
-    $resolver = $classificationHarness->res($operationResolver);
+    $documents = $classificationHarness->ops();
+    $resolver = $classificationHarness->res($documents);
 
     $executor = new HttpStepExecutor(
         new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
         $resolver,
-        $operationResolver,
+        $documents,
         engine: new ExpressionEngine(),
     );
 
@@ -117,7 +117,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
     $executor = new HttpStepExecutor(
         new DefaultOpenApiExecutor($failingHttp, new HttpFactory()),
         $resolver,
-        $operationResolver,
+        $documents,
         engine: new ExpressionEngine(),
     );
 
@@ -137,7 +137,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
     $executor2 = new HttpStepExecutor(
         new DefaultOpenApiExecutor($http2, new HttpFactory()),
         $resolver,
-        $operationResolver,
+        $documents,
         engine: new ExpressionEngine(),
     );
 
@@ -150,8 +150,8 @@ it('preserves raw body, content type, and transport category on synthetic failur
 it('classifies unmet-criteria failures on step events while keeping execution faults distinct', function () use ($classificationHarness): void {
     $fixture = json_decode((string) file_get_contents(__DIR__.'/../Conformance/fixtures/goto-on-failure.json'), true);
     $document = $classificationHarness->boot($fixture);
-    $operationResolver = $classificationHarness->ops();
-    $resolver = $classificationHarness->res($operationResolver);
+    $documents = $classificationHarness->ops();
+    $resolver = $classificationHarness->res($documents);
 
     foreach ($fixture['responses'] as $response) {
         $classificationHarness->client()->enqueue(new Response((int) $response['status'], [], json_encode($response['body'] ?? new stdClass())));
@@ -161,7 +161,7 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
         new StepExecutor(
             new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
             $resolver,
-            $operationResolver,
+            $documents,
             engine: new ExpressionEngine(),
         ),
         new WorkflowEngine($resolver),

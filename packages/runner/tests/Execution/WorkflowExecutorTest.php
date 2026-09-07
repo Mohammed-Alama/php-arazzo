@@ -16,12 +16,9 @@ use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -504,15 +501,14 @@ it('executes a workflow end-to-end', function () {
     };
     $engine = new ExpressionEngine();
     $evaluator = new ExpressionEvaluator();
-    $openApiLoader = new OpenApiDocumentLoader($sourceResolver);
-    $operationResolver = new OpenApiOperationResolver($openApiLoader, new OpenApiVersionDetector(), new OpenApi30Normalizer(), new OpenApi31Normalizer());
-    $outputExtractor = new StepOutputExtractor($operationResolver, $engine);
+    $documents = new Document(null, null, new SourceRegistry($sourceResolver));
+    $outputExtractor = new StepOutputExtractor($documents, $engine);
     $criteriaEvaluator = new CriteriaEvaluator($evaluator);
-    $schemaValidator = new ResponseSchemaValidator($operationResolver);
+    $schemaValidator = new ResponseSchemaValidator($documents);
     $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $operationResolver, engine: $engine);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $documents, engine: $engine);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver()));
 

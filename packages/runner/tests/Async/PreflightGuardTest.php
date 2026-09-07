@@ -6,37 +6,25 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Document;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Async\PreflightGuard;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
-function guardValidator(): PreflightValidator
+function guardValidator(): DocumentInterface
 {
     $registry = new SourceRegistry(new DefaultSourceResolver([
         'https' => new HttpFetcher(new Client(), new HttpFactory()),
     ]));
 
-    $operations = new OpenApiOperationResolver(
-        new OpenApiDocumentLoader($registry),
-        new OpenApiVersionDetector(),
-        new OpenApi30Normalizer(),
-        new OpenApi31Normalizer(),
-    );
-
-    return new PreflightValidator($registry, $operations, new ExpressionEngine());
+    return new Document(null, null, $registry);
 }
 
 function guardDocument(array $stepOverrides = []): ArazzoDocument

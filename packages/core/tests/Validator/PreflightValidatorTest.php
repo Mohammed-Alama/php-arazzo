@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
@@ -152,28 +153,24 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
         ],
     ]);
+    $documents = new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $resolver = new ExpressionResolver(
         new ExpressionEvaluator(),
-        new StepOutputExtractor(
-            (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
-            new ExpressionEngine(),
-        ),
+        new StepOutputExtractor($documents, new ExpressionEngine()),
         new CriteriaEvaluator(new ExpressionEvaluator()),
-        new ResponseSchemaValidator(
-            (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
-        ),
+        new ResponseSchemaValidator($documents),
     );
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
-            (new ReflectionClass(OpenApiOperationResolver::class))->newInstanceWithoutConstructor(),
+            $documents,
             engine: new ExpressionEngine(),
         ),
         new WorkflowEngine($resolver),
         events: $events,
-        preflight: preflightValidator(),
+        preflight: $documents,
     );
 
     try {

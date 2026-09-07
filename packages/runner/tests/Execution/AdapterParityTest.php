@@ -16,12 +16,9 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
+use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -70,33 +67,28 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $evaluator = new ExpressionEvaluator();
     $engine = new ExpressionEngine();
-    $operationResolver = new OpenApiOperationResolver(
-        new OpenApiDocumentLoader(new class() implements SourceResolver
+    $documents = new Document(null, null, new SourceRegistry(new class() implements SourceResolver
+    {
+        public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {
-            public function resolve(SourceDescription $description, string $basePath): SourceDocument
-            {
-                return new SourceDocument(
-                    $description->name,
-                    $description->type,
-                    $description->url,
-                    json_decode((string) file_get_contents($description->url), true),
-                );
-            }
-        }),
-        new OpenApiVersionDetector(),
-        new OpenApi30Normalizer(),
-        new OpenApi31Normalizer(),
-    );
+            return new SourceDocument(
+                $description->name,
+                $description->type,
+                $description->url,
+                json_decode((string) file_get_contents($description->url), true),
+            );
+        }
+    }));
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($operationResolver, $engine),
+        new StepOutputExtractor($documents, $engine),
         new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($operationResolver),
+        new ResponseSchemaValidator($documents),
     );
     $stepExecutor = new StepExecutor(
         new DefaultOpenApiExecutor($httpClient, new HttpFactory()),
         $resolver,
-        $operationResolver,
+        $documents,
         engine: $engine,
     );
 

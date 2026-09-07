@@ -11,9 +11,10 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -46,8 +47,8 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
     $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
     app()->instance(ExpressionResolverInterface::class, $resolver);
 
-    $opResolver = \Mockery::mock(OpenApiOperationResolver::class);
-    $opResolver->shouldReceive('resolve')->andReturn(
+    $documents = \Mockery::mock(DocumentInterface::class);
+    $documents->shouldReceive('resolveOperation')->andReturn(
         new ResolvedOperation(
             new SourceDescription('src', 'http://api.example.com', SourceType::Openapi),
             new NormalizedOpenApiOperation('/charges', 'post', 'http://api.example.com', [], [], [], [], [], []),
@@ -56,7 +57,9 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
             new Operation([]),
         ),
     );
-    app()->instance(OpenApiOperationResolver::class, $opResolver);
+    $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
+    $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
+    app()->instance(DocumentInterface::class, $documents);
 
     $executor = app(StepExecutor::class);
 

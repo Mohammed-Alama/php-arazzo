@@ -70,8 +70,8 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
         }
 
         $workflow = $document->workflows[0];
-        $operationResolver = $this->operationResolver($this->sourceRegistry);
-        $resolver = $this->resolver($operationResolver);
+        $documents = $this->documents($this->sourceRegistry);
+        $resolver = $this->resolver($documents);
 
         $definitionRegistry = new InMemoryDefinitionRegistry();
         $definitionId = $definitionRegistry->register($document);
@@ -95,7 +95,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                                 FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
                             ),
                             $resolver,
-                            $operationResolver,
+                            $documents,
                             engine: $this->engine(),
                         ),
                         new WorkflowEngine($resolver),
@@ -108,7 +108,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                         FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
                     ),
                     $resolver,
-                    $operationResolver,
+                    $documents,
                     engine: $this->engine(),
                 ),
             ],
