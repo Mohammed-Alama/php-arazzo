@@ -16,7 +16,7 @@ use Alama\Arazzo\Document\Validator\Data\Error;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\Data\Warning;
 use Alama\Arazzo\Document\Validator\Enum\Severity;
-use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
@@ -35,7 +35,7 @@ final class PreflightValidator
     public function __construct(
         private readonly SourceRegistry $sources,
         private readonly OpenApiOperationResolver $operations,
-        private readonly XpathEvaluator $xpath,
+        private readonly ExpressionEngineInterface $engine,
     ) {
         $this->versionDetector = new OpenApiVersionDetector();
     }
@@ -250,7 +250,7 @@ final class PreflightValidator
         foreach ($this->selectorsOf($step) as $selector) {
             $version = $selector->version ?? null;
             if ($version !== null && $selector->type->value === 'xpath') {
-                $supported = $this->xpath->supportedVersions();
+                $supported = $this->engine->supportedXPathVersions();
 
                 if (!in_array($version, $supported, true)) {
                     $errors->add(new Error(

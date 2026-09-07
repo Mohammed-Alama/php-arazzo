@@ -12,6 +12,7 @@ use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 final class FixtureHarness
 {
@@ -33,7 +34,7 @@ final class FixtureHarness
     {
         $doc = (new Parser())->parse(self::load($path));
 
-        return (new Validator(RuleSet::default()))->validate($doc);
+        return (new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine())))->validate($doc);
     }
 
     public static function load(string $path): RawDocument

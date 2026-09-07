@@ -27,7 +27,8 @@ use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -50,6 +51,8 @@ final class Document implements DocumentInterface
 
     private PreflightValidator $preflight;
 
+    private ExpressionEngineInterface $engine;
+
     private SourceRegistry $sources;
 
     private OpenApiOperationResolver $operations;
@@ -65,7 +68,8 @@ final class Document implements DocumentInterface
 
         $this->loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
         $this->parser = new Parser();
-        $this->validator = new Validator(RuleSet::default());
+        $this->engine = new ExpressionEngine();
+        $this->validator = new Validator($this->engine, RuleSet::default($this->engine));
         $this->versionDetector = new OpenApiVersionDetector();
 
         $this->sources = new SourceRegistry(new DefaultSourceResolver([
@@ -81,7 +85,7 @@ final class Document implements DocumentInterface
             new OpenApi31Normalizer(),
         );
 
-        $this->preflight = new PreflightValidator($this->sources, $this->operations, new DomXpathEvaluator());
+        $this->preflight = new PreflightValidator($this->sources, $this->operations, $this->engine);
     }
 
     public function load(string $path): ArazzoDocument

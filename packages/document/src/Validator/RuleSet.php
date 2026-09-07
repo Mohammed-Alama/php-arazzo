@@ -54,6 +54,7 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowDependsOnNoCycleRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 
 final readonly class RuleSet
 {
@@ -70,7 +71,7 @@ final readonly class RuleSet
     /**
      * @param  list<string>  $disabled
      */
-    public static function default(array $disabled = [], bool $strict = true): self
+    public static function default(ExpressionEngineInterface $engine, array $disabled = [], bool $strict = true): self
     {
         return new self([
             new OfficialSchemaRule(),
@@ -84,14 +85,14 @@ final readonly class RuleSet
             new DocumentArazzoVersionRule(),
             new DocumentSourceDescriptionsPresentRule(),
             new DocumentInfoRequiredRule(),
-            new ExpressionContextMisuseRule(),
-            new ExpressionJsonPointerSyntaxRule(),
-            new ExpressionSyntaxRule(),
-            new ExpressionUnresolvedComponentRefRule(),
-            new ExpressionUnresolvedInputRefRule(),
-            new ExpressionUnresolvedSourceRefRule(),
-            new ExpressionUnresolvedStepRefRule(),
-            new ExpressionUnresolvedWorkflowRefRule(),
+            new ExpressionContextMisuseRule($engine),
+            new ExpressionJsonPointerSyntaxRule($engine),
+            new ExpressionSyntaxRule($engine),
+            new ExpressionUnresolvedComponentRefRule($engine),
+            new ExpressionUnresolvedInputRefRule($engine),
+            new ExpressionUnresolvedSourceRefRule($engine),
+            new ExpressionUnresolvedStepRefRule($engine),
+            new ExpressionUnresolvedWorkflowRefRule($engine),
             new ExtensionsXPrefixRule(),
             new ParameterQuerystringOperationShapeRule(),
             new SelectorTypeSupportedRule(),

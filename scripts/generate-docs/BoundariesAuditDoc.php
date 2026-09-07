@@ -167,7 +167,7 @@ function render(array $scans, string $root): string
     $lines[] = '';
     $seams = seamViolations($scans);
     if ($seams['facades'] === []) {
-        $lines[] = '**Clean** — no library package references another package\'s concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`).';
+        $lines[] = '**Clean** — no library package references another package\'s concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.';
     } else {
         $lines[] = sprintf('**%d facade-seam violation(s):**', count($seams['facades']));
         $lines[] = '';
@@ -178,6 +178,16 @@ function render(array $scans, string $root): string
         }
     }
     $lines[] = '';
+    if ($seams['facadeToFacade'] !== []) {
+        $lines[] = '### Facade-to-facade transitions (allowed by seam policy)';
+        $lines[] = '';
+        $lines[] = '| From package | To package | From | References concrete facade |';
+        $lines[] = '|---|---|---|---|';
+        foreach ($seams['facadeToFacade'] as [$fromPackage, $toPackage, $fromFqcn, $toFqcn]) {
+            $lines[] = sprintf('| `%s` | `%s` | `%s` | `%s` |', $fromPackage, $toPackage, short($fromFqcn), short($toFqcn));
+        }
+        $lines[] = '';
+    }
     $lines[] = '### Concrete references outside facades (review list)';
     $lines[] = '';
     $lines[] = 'Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolvers): each row is a candidate to consolidate behind a `*Interface` facade. Throwables, enums, and `Contracts\\Spec|State|Support` value types are data flow, not coupling, and are excluded.';
@@ -226,7 +236,7 @@ const CONCRETE_FACADES = ['ExpressionEngine', 'Document', 'RunnerFacade'];
  * types are data flow, not coupling, and are excluded from both tiers.
  *
  * @param  array<string, array<string, list<ScannedFile>>>  $scans
- * @return array{facades: list<array{string, string, string, string}>, review: list<array{string, string, string, int, string}>}
+ * @return array{facades: list<array{string, string, string, string}>, facadeToFacade: list<array{string, string, string, string}>, review: list<array{string, string, string, int, string}>}
  */
 function seamViolations(array $scans): array
 {
@@ -245,6 +255,7 @@ function seamViolations(array $scans): array
     }
 
     $facades = [];
+    $facadeToFacade = [];
     $review = [];   // "fromPkg|targetShort|toPkg" => [fromPkg, targetShort, toPkg, refs, exampleFrom]
     foreach ($scans as $package => $modules) {
         if (in_array($package, SEAM_EXEMPT_PACKAGES, true)) {
@@ -268,7 +279,14 @@ function seamViolations(array $scans): array
                         }
                     }
                     if (in_array($short, CONCRETE_FACADES, true)) {
-                        $facades[] = [$package, $toPackage, $from, $use];
+                        // Facade-to-facade transitions are allowed by the seam
+                        // policy; only non-facade library code may not reach a
+                        // concrete facade of another package.
+                        if (in_array(basename(str_replace('\\', '/', $from)), CONCRETE_FACADES, true)) {
+                            $facadeToFacade[$package.'|'.$toPackage.'|'.$from.'|'.$use] = [$package, $toPackage, $from, $use];
+                        } else {
+                            $facades[] = [$package, $toPackage, $from, $use];
+                        }
 
                         continue;
                     }
@@ -282,9 +300,10 @@ function seamViolations(array $scans): array
         }
     }
     usort($facades, fn (array $a, array $b): int => [$a[0], $a[1], $a[2], $a[3]] <=> [$b[0], $b[1], $b[2], $b[3]]);
+    usort($facadeToFacade, fn (array $a, array $b): int => [$a[0], $a[1], $a[2], $a[3]] <=> [$b[0], $b[1], $b[2], $b[3]]);
     usort($review, fn (array $a, array $b): int => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
 
-    return ['facades' => $facades, 'review' => array_values($review)];
+    return ['facades' => $facades, 'facadeToFacade' => array_values($facadeToFacade), 'review' => array_values($review)];
 }
 
 function isThrowable(string $short): bool

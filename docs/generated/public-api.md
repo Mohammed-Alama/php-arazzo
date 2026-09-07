@@ -506,7 +506,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function code(): string`
 
 #### `PreflightValidator` class
-- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly XpathEvaluator $xpath)`
+- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly ExpressionEngineInterface $engine)`
 - `public function validate(ArazzoDocument $document): ValidationResult`
 - `public function validateInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
 
@@ -518,7 +518,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function withRule(Rule $rule): self`
 
 #### `Validator` class
-- `public function __construct(private RuleSet $rules)`
+- `public function __construct(private readonly ExpressionEngineInterface $engine, private readonly RuleSet $rules)`
 
 ### `Alama\Arazzo\Document\Validator\Data`
 
@@ -589,35 +589,35 @@ this file on a commit is a public API change — review it deliberately.
 - `public function code(): string`
 
 #### `ExpressionContextMisuseRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionJsonPointerSyntaxRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionSyntaxRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionUnresolvedComponentRefRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionUnresolvedInputRefRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionUnresolvedSourceRefRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionUnresolvedStepRefRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExpressionUnresolvedWorkflowRefRule` class
-- `public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void`
+- `public function __construct(private readonly ExpressionEngineInterface $engine)`
 - `public function code(): string`
 
 #### `ExtensionsXPrefixRule` class

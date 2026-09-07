@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 
 class DummyRule implements Rule
@@ -41,6 +42,6 @@ it('honours disabled list', function (): void {
 });
 
 it('exposes strict flag via isStrict()', function (): void {
-    expect(RuleSet::default(strict: true)->isStrict())->toBeTrue()
-        ->and(RuleSet::default(strict: false)->isStrict())->toBeFalse();
+    expect(RuleSet::default(new ExpressionEngine(), strict: true)->isStrict())->toBeTrue()
+        ->and(RuleSet::default(new ExpressionEngine(), strict: false)->isStrict())->toBeFalse();
 });

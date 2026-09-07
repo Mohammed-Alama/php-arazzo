@@ -110,7 +110,7 @@ parameters:
 			path: src/Validator/Rules/DocUnknownFieldRule.php
 
 		-
-			message: '#^Method check has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
+			message: '#^Method check has too high cyclomatic complexity \(16\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Validator/Rules/ExpressionUnresolvedStepRefRule.php
 

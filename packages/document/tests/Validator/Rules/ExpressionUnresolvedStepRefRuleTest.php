@@ -11,6 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
@@ -25,7 +26,7 @@ it('flags OutputPart referencing missing step output', function (): void {
             [], [$s1, $s2], [], [], [], []),
     ]);
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1);
 });
 
@@ -35,7 +36,7 @@ it('flags reference to unknown stepId', function (): void {
     ]);
     $doc = Fx::doc(workflows: [Fx::wf('main', [$s])]);
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1);
 });
 
@@ -46,7 +47,7 @@ it('allows backward output references without dependsOn as implicit dependencies
     ]);
     $doc = Fx::doc(workflows: [Fx::wf('main', [$s1, $s2])]);
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBeEmpty()->and($ec->warnings())->toBeEmpty();
 });
 
@@ -57,7 +58,7 @@ it('flags forward output references when the workflow uses no dependsOn', functi
     $s2 = Fx::step('second', 'op', outputs: ['y' => new Expression('{$response.body#/id}')]);
     $doc = Fx::doc(workflows: [Fx::wf('main', [$s1, $s2])]);
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1)->and($ec->warnings())->toBeEmpty();
 });
 
@@ -70,7 +71,7 @@ it('warns instead of failing on forward references when the workflow uses depend
     $s2 = Fx::step('second', 'op', outputs: ['y' => new Expression('{$response.body#/id}')]);
     $doc = Fx::doc(workflows: [Fx::wf('main', [$s0, $s1, $s2], dep: ['other'])]);
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBeEmpty()
         ->and($ec->warnings())->toHaveCount(1)
         ->and($ec->warnings()[0]->code)->toBe('expr.forward_step_ref');
@@ -83,6 +84,6 @@ it('still flags a declared-but-missing output on an implicit backward dependency
     ]);
     $doc = Fx::doc(workflows: [Fx::wf('main', [$s1, $s2])]);
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1);
 });

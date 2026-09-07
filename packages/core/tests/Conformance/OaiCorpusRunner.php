@@ -15,6 +15,7 @@ use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 /**
  * Runs the vendored OFFICIAL OAI example corpus (see corpus/oai/README.md)
@@ -114,7 +115,7 @@ final class OaiCorpusRunner
 
         $document = (new Parser())->parse($raw);
 
-        return (new Validator(RuleSet::default()))->validate($document);
+        return (new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine())))->validate($document);
     }
 
     /** Builds a registry pre-seeded with this document's local companions. */

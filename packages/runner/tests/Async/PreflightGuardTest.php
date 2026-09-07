@@ -17,7 +17,7 @@ use Alama\Arazzo\Document\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Async\PreflightGuard;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use GuzzleHttp\Client;
@@ -36,7 +36,7 @@ function guardValidator(): PreflightValidator
         new OpenApi31Normalizer(),
     );
 
-    return new PreflightValidator($registry, $operations, new DomXpathEvaluator());
+    return new PreflightValidator($registry, $operations, new ExpressionEngine());
 }
 
 function guardDocument(array $stepOverrides = []): ArazzoDocument

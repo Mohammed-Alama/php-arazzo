@@ -18,6 +18,7 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedInputRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedSourceRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
@@ -45,42 +46,42 @@ function docWithMixedExpressions(): ArazzoDocument
 it('ExpressionUnresolvedInputRefRule skips syntax errors, non-InputRefs, and null workflow syms', function (): void {
     $doc = docWithMixedExpressions();
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedInputRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedInputRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
 
 it('ExpressionUnresolvedStepRefRule skips syntax errors and null workflow syms', function (): void {
     $doc = docWithMixedExpressions();
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedStepRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedStepRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
 
 it('ExpressionUnresolvedWorkflowRefRule skips syntax errors and non-workflow refs', function (): void {
     $doc = docWithMixedExpressions();
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedWorkflowRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedWorkflowRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
 
 it('ExpressionUnresolvedSourceRefRule skips syntax errors and non-source refs', function (): void {
     $doc = docWithMixedExpressions();
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedSourceRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedSourceRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
 
 it('ExpressionUnresolvedComponentRefRule skips syntax errors and non-component refs', function (): void {
     $doc = docWithMixedExpressions();
     $ec = new ErrorCollector();
-    (new ExpressionUnresolvedComponentRefRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionUnresolvedComponentRefRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
 
 it('ExpressionContextMisuseRule skips syntax errors', function (): void {
     $doc = docWithMixedExpressions();
     $ec = new ErrorCollector();
-    (new ExpressionContextMisuseRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionContextMisuseRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });
 
@@ -99,6 +100,6 @@ it('ExpressionJsonPointerSyntaxRule skips syntax errors, non-step refs, non-http
     );
     $doc = Fx::doc(workflows: [$wf]);
     $ec = new ErrorCollector();
-    (new ExpressionJsonPointerSyntaxRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionJsonPointerSyntaxRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toBe([]);
 });

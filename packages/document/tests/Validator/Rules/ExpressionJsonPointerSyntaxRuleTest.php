@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionJsonPointerSyntaxRule;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
@@ -20,6 +21,6 @@ it('flags bad pointer segment in request part; accepts valid response pointer', 
     $s2 = Fx::step('b', 'op', body: $bodyBad);
     $doc = Fx::doc(workflows: [Fx::wf('main', [$s, $s2])]);
     $ec = new ErrorCollector();
-    (new ExpressionJsonPointerSyntaxRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new ExpressionJsonPointerSyntaxRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1);
 });

@@ -23,7 +23,6 @@ use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -94,7 +93,7 @@ function preflightValidator(?SourceRegistry $registry = null): PreflightValidato
         new OpenApi31Normalizer(),
     );
 
-    return new PreflightValidator($registry, $operations, new DomXpathEvaluator());
+    return new PreflightValidator($registry, $operations, new ExpressionEngine());
 }
 
 it('passes a fully resolvable document with zero diagnostics', function (): void {
