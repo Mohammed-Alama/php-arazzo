@@ -87,6 +87,7 @@ flowchart TB
     M_cli_Console --> M_runner_Jobs
     M_cli_Console --> M_runner_State
     M_cli_Console --> M_runner_Telemetry
+    M_cli_Console --> M_runner__
     M_cli_Generator --> M_contracts_Interfaces
     M_cli_Renderer --> M_contracts_Spec
     M_contracts_Dependency --> M_contracts_Spec
@@ -256,7 +257,7 @@ flowchart TB
 | `cli` | `contracts` | 20 |
 | `cli` | `document` | 12 |
 | `cli` | `expression` | 3 |
-| `cli` | `runner` | 22 |
+| `cli` | `runner` | 16 |
 | `document` | `contracts` | 146 |
 | `document` | `expression` | 76 |
 | `expression` | `contracts` | 72 |

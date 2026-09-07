@@ -176,6 +176,7 @@ flowchart LR
     cli_Console --> cli_Renderer
     cli_Console --> document__
     cli_Console --> document_Resolver
+    cli_Console --> runner__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> contracts_Interfaces

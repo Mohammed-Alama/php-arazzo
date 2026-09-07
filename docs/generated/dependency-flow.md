@@ -26,10 +26,11 @@ cli-Console,document-root,1
 cli-Console,expression-Interfaces,1
 cli-Console,expression-root,2
 cli-Console,runner-Events,2
-cli-Console,runner-Execution,12
+cli-Console,runner-Execution,5
 cli-Console,runner-Jobs,1
 cli-Console,runner-State,6
 cli-Console,runner-Telemetry,1
+cli-Console,runner-root,1
 cli-Generator,contracts-Interfaces,2
 cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6

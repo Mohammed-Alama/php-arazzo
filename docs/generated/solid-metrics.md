@@ -62,7 +62,7 @@ quadrantChart
     runner/Protocol: [0.833, 0]
     runner/State: [0.182, 0.417]
     runner/Telemetry: [0, 0]
-    runner/_: [0.818, 0.333]
+    runner/_: [0.75, 0.333]
 ```
 
 ## God classes (SRP)

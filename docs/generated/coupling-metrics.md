@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 762 | 0 | 16 | 1.00 |  |
+| `cli:Console` | 11 | 743 | 0 | 17 | 1.00 |  |
 | `cli:Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
@@ -51,9 +51,9 @@ targets. Regenerated before every commit.
 | `runner:Protocol` | 5 | 540 | 2 | 10 | 0.83 |  |
 | `runner:State` | 12 | 907 | 9 | 2 | 0.18 |  |
 | `runner:Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `(runner root)` | 6 | 273 | 2 | 9 | 0.82 |  |
+| `(runner root)` | 6 | 273 | 3 | 9 | 0.75 |  |
 
-Total cross-module edges: **932**
+Total cross-module edges: **926**
 
 ## Most entangled module pairs
 
