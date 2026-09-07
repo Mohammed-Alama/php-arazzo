@@ -33,6 +33,7 @@ flowchart LR
     I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
+    I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>document:Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>document:Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>runner:State</small>"]:::contract
@@ -251,6 +252,7 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
+    N_RunnerGraphBuilderInterface["no implementation found"]:::orphan --> I_RunnerGraphBuilderInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

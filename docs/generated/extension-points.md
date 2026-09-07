@@ -110,3 +110,9 @@ mindmap
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |
+
+## Unimplemented contracts
+
+Declared but nothing in src implements them — candidates for removal or for a first adapter:
+
+- `RunnerGraphBuilderInterface` <small></small>

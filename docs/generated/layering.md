@@ -229,10 +229,15 @@ flowchart TB
     M_runner_Protocol --> M_runner_State
     M_runner_State --> M_contracts_Spec
     M_runner_State --> M_contracts_State
+    M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_document__
+    M_runner__ --> M_expression_Interfaces
     M_runner__ --> M_expression__
+    M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
+    M_runner__ --> M_runner_Infrastructure
+    M_runner__ --> M_runner_State
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
@@ -258,9 +263,9 @@ flowchart TB
 | `laravel` | `document` | 19 |
 | `laravel` | `expression` | 5 |
 | `laravel` | `runner` | 49 |
-| `runner` | `contracts` | 187 |
+| `runner` | `contracts` | 190 |
 | `runner` | `document` | 21 |
-| `runner` | `expression` | 23 |
+| `runner` | `expression` | 25 |
 
 ## Module-level detail
 

@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 37 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 46 | 17 | allowed |
+| `Psr` | 48 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -51,7 +51,7 @@ when a boundary consciously moves.
 | runner | `runner:Infrastructure` | `Psr` | 2 |
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
-| runner | `runner:_` | `Psr` | 1 |
+| runner | `runner:_` | `Psr` | 3 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 3 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
 | laravel | `laravel:Bindings` | `Psr` | 13 |

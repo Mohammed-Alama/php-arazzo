@@ -754,6 +754,20 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 
+### `Alama\Arazzo\Runner`
+
+#### `AsyncExecutionGraph` class
+- `public function __construct(private StepExecutor $stepExecutor, private WorkflowExecutor $workflowExecutor, private StepOutcomeHandler $outcomeHandler, private CorrelationResumer $resumer, private StepExecutionWorker $worker, private ExpressionResolverInterface $expressionResolver, private array $protocolExecutors)`
+- `public function expressionResolver(): ExpressionResolverInterface`
+- `public function outcomeHandler(): StepOutcomeHandler`
+- `public function protocolExecutors(): array`
+- `public function resumer(): CorrelationResumer`
+- `public function worker(): StepExecutionWorker`
+- `public function workflowExecutor(): WorkflowExecutor`
+
+#### `RunnerGraphBuilderInterface` interface
+- `public function buildAsync(AsyncGraphSeams $seams): AsyncExecutionGraph;`
+
 ### `Alama\Arazzo\Runner\Async`
 
 #### `ExecutionStateBuilder` class

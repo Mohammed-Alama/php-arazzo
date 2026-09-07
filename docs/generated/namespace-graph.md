@@ -149,10 +149,15 @@ flowchart LR
     runner_Protocol --> runner_State
     runner_State --> contracts_Spec
     runner_State --> contracts_State
+    runner__ --> contracts_Interfaces
+    runner__ --> expression_Interfaces
+    runner__ --> runner_Execution
+    runner__ --> runner_Events
+    runner__ --> runner_Infrastructure
+    runner__ --> runner_State
     runner__ --> contracts_Spec
     runner__ --> document__
     runner__ --> expression__
-    runner__ --> runner_Execution
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State

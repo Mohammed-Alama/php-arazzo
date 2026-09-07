@@ -16,7 +16,7 @@ targets. Regenerated before every commit.
 | `cli:Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 27 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 8 | 108 | 12 | 3 | 0.20 |  |
+| `contracts:Interfaces` | 8 | 108 | 13 | 3 | 0.19 |  |
 | `contracts:Spec` | 38 | 785 | 25 | 0 | 0.00 |  |
 | `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 166 | 9 | 0 | 0.00 |  |
@@ -30,7 +30,7 @@ targets. Regenerated before every commit.
 | `expression:Enum` | 2 | 40 | 4 | 0 | 0.00 |  |
 | `expression:Evaluation` | 20 | 1191 | 1 | 7 | 0.88 |  |
 | `expression:Exceptions` | 2 | 53 | 2 | 1 | 0.33 |  |
-| `expression:Interfaces` | 3 | 64 | 8 | 1 | 0.11 |  |
+| `expression:Interfaces` | 3 | 64 | 9 | 1 | 0.10 |  |
 | `expression:Xpath` | 2 | 101 | 2 | 2 | 0.50 |  |
 | `(expression root)` | 10 | 1293 | 8 | 9 | 0.53 |  |
 | `laravel:Bindings` | 7 | 456 | 1 | 22 | 0.96 |  |
@@ -43,17 +43,17 @@ targets. Regenerated before every commit.
 | `laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 87 | 0 | 2 | 1.00 |  |
 | `runner:Async` | 6 | 488 | 0 | 12 | 1.00 |  |
-| `runner:Events` | 11 | 284 | 5 | 1 | 0.17 |  |
+| `runner:Events` | 11 | 284 | 6 | 1 | 0.14 |  |
 | `runner:Execution` | 38 | 3583 | 6 | 18 | 0.75 |  |
-| `runner:Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
+| `runner:Infrastructure` | 4 | 156 | 4 | 1 | 0.20 |  |
 | `runner:Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
 | `runner:Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
 | `runner:Protocol` | 5 | 540 | 1 | 10 | 0.91 |  |
-| `runner:State` | 12 | 907 | 8 | 2 | 0.20 |  |
+| `runner:State` | 12 | 907 | 9 | 2 | 0.18 |  |
 | `runner:Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
-| `(runner root)` | 2 | 106 | 1 | 4 | 0.80 |  |
+| `(runner root)` | 5 | 240 | 1 | 9 | 0.90 |  |
 
-Total cross-module edges: **905**
+Total cross-module edges: **922**
 
 ## Most entangled module pairs
 

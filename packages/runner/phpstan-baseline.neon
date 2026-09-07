@@ -21,6 +21,16 @@ parameters:
 			path: src/Async/WorkerEvents.php
 
 		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/AsyncExecutionGraph.php
+
+		-
+			message: '#^Method __construct has too many parameters \(18\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/AsyncGraphSeams.php
+
+		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Events/CorrelationPendingEvent.php
