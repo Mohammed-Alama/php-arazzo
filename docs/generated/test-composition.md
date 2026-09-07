@@ -109,8 +109,8 @@ pie showData
 
 ```mermaid
 pie showData
-    title Laravel — 28 test files
-    "Module-scoped": 22
+    title Laravel — 29 test files
+    "Module-scoped": 23
     "Root": 3
     "Feature": 2
     "Unit": 1
@@ -118,7 +118,7 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 22 | 79% |
-| Root | 3 | 11% |
+| Module-scoped | 23 | 79% |
+| Root | 3 | 10% |
 | Feature | 2 | 7% |
-| Unit | 1 | 4% |
+| Unit | 1 | 3% |

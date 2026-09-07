@@ -91,7 +91,7 @@ quadrantChart
 | `laravel/Support` | 0.88 | 1 | 2 | 50% |
 | `runner/Async` | 1.00 | 6 | 6 | 100% |
 | `runner/Events` | 0.12 | 31 | 11 | 100% |
-| `runner/Execution` | 0.74 | 53 | 39 | 100% |
+| `runner/Execution` | 0.74 | 54 | 39 | 100% |
 | `runner/Infrastructure` | 0.17 | 9 | 4 | 100% |
 | `runner/Jobs` | 0.29 | 7 | 2 | 100% |
 | `runner/Policy` | 0.75 | 2 | 2 | 100% |
