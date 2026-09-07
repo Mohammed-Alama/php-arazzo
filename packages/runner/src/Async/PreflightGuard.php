@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 
 /**
@@ -18,7 +18,7 @@ final class PreflightGuard
 {
     public function __construct(
         private readonly DefinitionRegistryInterface $definitions,
-        private readonly ?PreflightValidator $preflight,
+        private readonly ?DocumentInterface $preflight,
     ) {}
 
     /**
@@ -36,7 +36,7 @@ final class PreflightGuard
             return; // missing definition is handled downstream as execution.workflow_missing
         }
 
-        $result = $this->preflight->validate($document);
+        $result = $this->preflight->preflight($document);
 
         if (!$result->isValid()) {
             throw new PreflightFailureException(

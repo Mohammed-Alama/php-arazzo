@@ -76,10 +76,10 @@ flowchart TB
     M_cli_Console --> M_contracts_Interfaces
     M_cli_Console --> M_contracts_Spec
     M_cli_Console --> M_contracts_State
-    M_cli_Console --> M_document_Normalizer
     M_cli_Console --> M_document_Parser
     M_cli_Console --> M_document_Resolver
     M_cli_Console --> M_document_Validator
+    M_cli_Console --> M_document__
     M_cli_Console --> M_expression_Interfaces
     M_cli_Console --> M_expression__
     M_cli_Console --> M_runner_Events
@@ -186,6 +186,7 @@ flowchart TB
     M_runner_Async --> M_contracts_State
     M_runner_Async --> M_contracts_Support
     M_runner_Async --> M_document_Validator
+    M_runner_Async --> M_document__
     M_runner_Async --> M_expression_Interfaces
     M_runner_Async --> M_runner_Events
     M_runner_Async --> M_runner_Execution
@@ -220,7 +221,7 @@ flowchart TB
     M_runner_Protocol --> M_contracts_Interfaces
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
-    M_runner_Protocol --> M_document_Normalizer
+    M_runner_Protocol --> M_document__
     M_runner_Protocol --> M_expression_Interfaces
     M_runner_Protocol --> M_expression__
     M_runner_Protocol --> M_runner_Execution
@@ -246,7 +247,7 @@ flowchart TB
 | From package | To package | Refs |
 |---|---|---:|
 | `cli` | `contracts` | 20 |
-| `cli` | `document` | 19 |
+| `cli` | `document` | 12 |
 | `cli` | `expression` | 3 |
 | `cli` | `runner` | 22 |
 | `document` | `contracts` | 146 |
@@ -254,11 +255,11 @@ flowchart TB
 | `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
-| `laravel` | `document` | 20 |
+| `laravel` | `document` | 19 |
 | `laravel` | `expression` | 5 |
 | `laravel` | `runner` | 49 |
 | `runner` | `contracts` | 187 |
-| `runner` | `document` | 25 |
+| `runner` | `document` | 21 |
 | `runner` | `expression` | 23 |
 
 ## Module-level detail

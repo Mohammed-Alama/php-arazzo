@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 781 | 0 | 16 | 1.00 |  |
+| `cli:Console` | 11 | 762 | 0 | 16 | 1.00 |  |
 | `cli:Generator` | 2 | 103 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 252 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 325 | 4 | 2 | 0.33 |  |
@@ -20,11 +20,11 @@ targets. Regenerated before every commit.
 | `contracts:Spec` | 38 | 785 | 25 | 0 | 0.00 |  |
 | `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 166 | 9 | 0 | 0.00 |  |
-| `document:Normalizer` | 9 | 579 | 6 | 3 | 0.33 |  |
+| `document:Normalizer` | 9 | 579 | 4 | 3 | 0.43 |  |
 | `document:Parser` | 11 | 1085 | 6 | 2 | 0.25 |  |
 | `document:Resolver` | 12 | 358 | 6 | 2 | 0.25 |  |
 | `document:Validator` | 62 | 3030 | 5 | 8 | 0.62 |  |
-| `(document root)` | 2 | 219 | 3 | 6 | 0.67 |  |
+| `(document root)` | 2 | 220 | 6 | 6 | 0.50 |  |
 | `expression:Ast` | 15 | 179 | 1 | 1 | 0.50 |  |
 | `expression:Data` | 5 | 135 | 2 | 3 | 0.60 |  |
 | `expression:Enum` | 2 | 40 | 4 | 0 | 0.00 |  |
@@ -33,7 +33,7 @@ targets. Regenerated before every commit.
 | `expression:Interfaces` | 3 | 64 | 8 | 1 | 0.11 |  |
 | `expression:Xpath` | 2 | 101 | 2 | 2 | 0.50 |  |
 | `(expression root)` | 10 | 1293 | 8 | 9 | 0.53 |  |
-| `laravel:Bindings` | 7 | 457 | 1 | 22 | 0.96 |  |
+| `laravel:Bindings` | 7 | 456 | 1 | 22 | 0.96 |  |
 | `laravel:Events` | 1 | 20 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 158 | 2 | 7 | 0.78 |  |
 | `laravel:Lock` | 1 | 48 | 1 | 1 | 0.50 |  |
@@ -42,9 +42,9 @@ targets. Regenerated before every commit.
 | `laravel:State` | 1 | 37 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 1 | 59 | 1 | 0 | 0.00 |  |
 | `(laravel root)` | 1 | 87 | 0 | 2 | 1.00 |  |
-| `runner:Async` | 6 | 488 | 0 | 11 | 1.00 |  |
+| `runner:Async` | 6 | 488 | 0 | 12 | 1.00 |  |
 | `runner:Events` | 11 | 284 | 5 | 1 | 0.17 |  |
-| `runner:Execution` | 38 | 3605 | 6 | 18 | 0.75 |  |
+| `runner:Execution` | 38 | 3583 | 6 | 18 | 0.75 |  |
 | `runner:Infrastructure` | 4 | 156 | 3 | 1 | 0.25 |  |
 | `runner:Jobs` | 2 | 32 | 5 | 2 | 0.29 |  |
 | `runner:Policy` | 2 | 94 | 1 | 3 | 0.75 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 276 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 2 | 106 | 1 | 4 | 0.80 |  |
 
-Total cross-module edges: **917**
+Total cross-module edges: **905**
 
 ## Most entangled module pairs
 

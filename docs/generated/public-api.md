@@ -374,7 +374,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function validate(ArazzoDocument $document): ValidationResult;`
 
 ### `Document` class
-- `public function __construct(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null)`
+- `public function __construct(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $sources = null)`
 - `public function detectOpenApiVersion(array $document): string`
 - `public function load(string $path): ArazzoDocument`
 - `public function parse(RawDocument $raw): ArazzoDocument`
@@ -760,7 +760,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function build(?array $persisted, WorkflowContext $resultContext, Workflow $workflow, ?Step $overlayStep = null): ExecutionState`
 
 #### `PreflightGuard` class
-- `public function __construct(private readonly DefinitionRegistryInterface $definitions, private readonly ?PreflightValidator $preflight)`
+- `public function __construct(private readonly DefinitionRegistryInterface $definitions, private readonly ?DocumentInterface $preflight)`
 
 #### `StateReconciler` class
 - `public function __construct(private readonly StateStoreInterface $stateStore)`
@@ -833,7 +833,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function requestRecord(?Psr7Request $captured, OpenApiPayload $payload): array`
 
 #### `ResponseSchemaValidator` class
-- `public function __construct(private OpenApiOperationResolver|DocumentInterface $operationResolver)`
+- `public function __construct(private DocumentInterface $operationResolver)`
 
 #### `ReusableParameterResolver` class
 - `public function resolve(array $parameters, ?ArazzoDocument $document): array`
@@ -846,7 +846,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function handle(ExecuteStepJob $job): void`
 
 #### `StepExecutor` class
-- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private OpenApiOperationResolver|DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null, ?EventDispatcherInterface $events = null)`
+- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null, ?EventDispatcherInterface $events = null)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array`
 
 #### `StepOutcomeHandler` class
@@ -854,7 +854,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet, ): void`
 
 #### `StepOutputExtractor` class
-- `public function __construct(private OpenApiOperationResolver|DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private ?LoggerInterface $logger = null)`
+- `public function __construct(private DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private ?LoggerInterface $logger = null)`
 
 #### `StepParameterMerger` class
 - `public static function merge(Step $step, ?Workflow $workflow): Step`
@@ -879,7 +879,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function transition(ArazzoDocument $document, Workflow $workflow, Step $step, ExecutionState|ExecutionContext $incoming, bool $criteriaMet, bool $suspended = false): Transition`
 
 #### `WorkflowExecutor` class
-- `public function __construct(private StepExecutor $stepExecutor, private WorkflowEngine $workflowEngine, ?EventDispatcherInterface $events = null, private PreflightValidator|DocumentInterface|null $preflight = null)`
+- `public function __construct(private StepExecutor $stepExecutor, private WorkflowEngine $workflowEngine, ?EventDispatcherInterface $events = null, private ?DocumentInterface $preflight = null)`
 - `public function execute(Workflow $workflow, ArazzoDocument $document, array $inputs, ?WorkflowContext $context = null): ExecutionResult`
 
 ### `Alama\Arazzo\Runner\Execution\Data`
@@ -960,7 +960,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
 #### `HttpStepExecutor` class
-- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private OpenApiOperationResolver $operationResolver, private ExpressionEngineInterface $engine, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null)`
+- `public function __construct(private OpenApiExecutorInterface $openApiExecutor, private ExpressionResolverInterface $expressionResolver, private DocumentInterface $operationResolver, private ExpressionEngineInterface $engine, private bool $strictValidationDefault = false, private ?IdempotencyKeyInjector $injector = null)`
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome`
 
 #### `ProtocolExecutorRegistry` class

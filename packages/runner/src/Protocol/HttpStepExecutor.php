@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
@@ -23,7 +23,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
-        private OpenApiOperationResolver $operationResolver,
+        private DocumentInterface $operationResolver,
         private ExpressionEngineInterface $engine,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
@@ -39,7 +39,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         ['payload' => $payload, 'resolvedInputs' => $resolvedInputs] =
             (new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine))->compile($step, $document, $context);
 
-        $resolved = $this->operationResolver->resolve($step, $document);
+        $resolved = $this->operationResolver->resolveOperation($step, $document);
 
         $capturedRequest = null;
         try {

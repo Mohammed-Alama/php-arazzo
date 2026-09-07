@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -19,6 +19,6 @@ final readonly class RunControlFlow
         public WorkflowEngine $workflowEngine,
         public QueueDriverInterface $queueDriver,
         public ?EventDispatcherInterface $events = null,
-        public ?PreflightValidator $preflight = null,
+        public ?DocumentInterface $preflight = null,
     ) {}
 }

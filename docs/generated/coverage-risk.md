@@ -29,7 +29,7 @@ quadrantChart
     contracts/Spec: [0, 1]
     contracts/State: [0.083, 1]
     contracts/Support: [0, 1]
-    document/Normalizer: [0.333, 1]
+    document/Normalizer: [0.429, 1]
     document/Parser: [0.25, 1]
     document/Resolver: [0.25, 1]
     document/Validator: [0.615, 1]
@@ -67,17 +67,17 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.20 | 17 | 8 | 100% |
-| `contracts/Spec` | 0.00 | 168 | 38 | 100% |
+| `contracts/Spec` | 0.00 | 169 | 38 | 100% |
 | `contracts/State` | 0.08 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
-| `document/Normalizer` | 0.33 | 22 | 9 | 100% |
-| `document/Parser` | 0.25 | 34 | 11 | 100% |
-| `document/Resolver` | 0.25 | 22 | 12 | 100% |
-| `document/Validator` | 0.61 | 66 | 62 | 100% |
+| `document/Normalizer` | 0.43 | 15 | 9 | 100% |
+| `document/Parser` | 0.25 | 35 | 11 | 100% |
+| `document/Resolver` | 0.25 | 21 | 12 | 100% |
+| `document/Validator` | 0.61 | 70 | 62 | 100% |
 | `expression/Ast` | 0.50 | 5 | 15 | 33% |
 | `expression/Data` | 0.60 | 3 | 5 | 60% |
 | `expression/Enum` | 0.00 | 3 | 2 | 100% |
-| `expression/Evaluation` | 0.88 | 45 | 20 | 100% |
+| `expression/Evaluation` | 0.88 | 46 | 20 | 100% |
 | `expression/Exceptions` | 0.33 | 6 | 2 | 100% |
 | `expression/Interfaces` | 0.11 | 23 | 3 | 100% |
 | `expression/Xpath` | 0.50 | 2 | 2 | 100% |

@@ -11,7 +11,6 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
@@ -26,7 +25,7 @@ use Psr\Log\LoggerInterface;
 class StepOutputExtractor implements OutputExtractorInterface
 {
     public function __construct(
-        private OpenApiOperationResolver|DocumentInterface $operationResolver,
+        private DocumentInterface $operationResolver,
         private ExpressionEngineInterface $engine,
         private ?LoggerInterface $logger = null,
     ) {}
@@ -114,11 +113,7 @@ class StepOutputExtractor implements OutputExtractorInterface
 
     private function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation
     {
-        if ($this->operationResolver instanceof DocumentInterface) {
-            return $this->operationResolver->resolveOperation($step, $document);
-        }
-
-        return $this->operationResolver->resolve($step, $document);
+        return $this->operationResolver->resolveOperation($step, $document);
     }
 
     private function resolveSchemaAtPointer(?Schema $schema, string $pointer): ?Schema

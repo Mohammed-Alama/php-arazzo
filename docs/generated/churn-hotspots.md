@@ -21,15 +21,15 @@ Analyzed 138 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 20 | 14% | 464 | 43.1 |
+| `laravel:Bindings` | 20 | 14% | 463 | 43.2 |
 | `laravel:Http` | 15 | 11% | 161 | 93.2 |
 | `laravel:Persistence` | 14 | 10% | 252 | 55.6 |
 | `laravel:Queue` | 11 | 8% | 100 | 110 |
 | `laravel:Lock` | 8 | 6% | 49 | 163.3 |
 | `laravel:State` | 8 | 6% | 38 | 210.5 |
-| `cli:Console` | 4 | 3% | 792 | 5.1 |
+| `cli:Console` | 4 | 3% | 773 | 5.2 |
 | `document:Validator` | 4 | 3% | 3,092 | 1.3 |
-| `runner:Execution` | 4 | 3% | 3,643 | 1.1 |
+| `runner:Execution` | 4 | 3% | 3,621 | 1.1 |
 | `expression:Evaluation` | 3 | 2% | 1,211 | 2.5 |
 | `runner:Protocol` | 3 | 2% | 545 | 5.5 |
 | `cli:Generator` | 2 | 1% | 105 | 19 |

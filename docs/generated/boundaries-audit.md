@@ -109,7 +109,5 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
-| `runner` | `OpenApiOperationResolver` | `document` | 4 | `ResponseSchemaValidator` |
-| `runner` | `PreflightValidator` | `document` | 4 | `PreflightGuard` |
 | `runner` | `ResolvedOperation` | `document` | 5 | `ResponseSchemaValidator` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |

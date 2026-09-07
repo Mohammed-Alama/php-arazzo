@@ -108,6 +108,7 @@ flowchart LR
     runner_Async --> contracts_Exceptions
     runner_Async --> contracts_Support
     runner_Async --> document_Validator
+    runner_Async --> document__
     runner_Async --> contracts_Interfaces
     runner_Async --> runner_Execution
     runner_Async --> runner_Jobs
@@ -119,6 +120,7 @@ flowchart LR
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
+    runner_Execution --> document__
     runner_Execution --> document_Validator
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner_Events
@@ -126,7 +128,6 @@ flowchart LR
     runner_Execution --> runner_Telemetry
     runner_Execution --> contracts_Dependency
     runner_Execution --> runner_Policy
-    runner_Execution --> document__
     runner_Execution --> document_Normalizer
     runner_Execution --> document_Parser
     runner_Execution --> expression_Enum
@@ -139,7 +140,7 @@ flowchart LR
     runner_Protocol --> contracts_Interfaces
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
-    runner_Protocol --> document_Normalizer
+    runner_Protocol --> document__
     runner_Protocol --> expression__
     runner_Protocol --> expression_Interfaces
     runner_Protocol --> runner_Execution
@@ -166,13 +167,12 @@ flowchart LR
     cli_Console --> expression__
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
-    cli_Console --> document_Normalizer
+    cli_Console --> document__
     cli_Console --> document_Resolver
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> contracts_Interfaces
-    laravel_Bindings --> document_Normalizer
-    laravel_Bindings --> document_Validator
+    laravel_Bindings --> document__
     laravel_Bindings --> expression__
     laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> laravel_Support
@@ -188,9 +188,10 @@ flowchart LR
     laravel_Bindings --> laravel_Persistence
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
+    laravel_Bindings --> document_Normalizer
     laravel_Bindings --> document_Resolver
+    laravel_Bindings --> document_Validator
     laravel_Bindings --> cli_Generator
-    laravel_Bindings --> document__
     laravel_Bindings --> runner__
     laravel_Http --> runner_Infrastructure
     laravel_Http --> cli_Generator
