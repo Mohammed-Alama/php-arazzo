@@ -26,7 +26,7 @@ Regenerated before every commit.
 | **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>document:Normalizer</small> |
 | **PreflightFailureException** | `PreflightGuard` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
-| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `OpenApiOperationResolver` <small>document:Normalizer</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `OpenApiOperationResolver` <small>document:Normalizer</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small> |
 | **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>document:Resolver</small>, `HttpFetcher` <small>document:Resolver</small>, `LocalFetcher` <small>document:Resolver</small> |

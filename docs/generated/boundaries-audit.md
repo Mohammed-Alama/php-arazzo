@@ -17,11 +17,11 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 8 | 4 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 37 | **forbidden** |
+| `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
+| `Illuminate` | 0 | 38 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 46 | 17 | allowed |
+| `Psr` | 52 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -44,17 +44,17 @@ when a boundary consciously moves.
 | document | `document:_` | `Psr` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
-| runner | `runner:Execution` | `GuzzleHttp` | 4 |
+| runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 21 |
+| runner | `runner:Execution` | `Psr` | 23 |
 | runner | `runner:Execution` | `cebe` | 10 |
 | runner | `runner:Infrastructure` | `Psr` | 2 |
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
-| runner | `runner:_` | `Psr` | 1 |
-| laravel | `laravel:Bindings` | `GuzzleHttp` | 3 |
+| runner | `runner:_` | `Psr` | 5 |
+| laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
-| laravel | `laravel:Bindings` | `Psr` | 13 |
+| laravel | `laravel:Bindings` | `Psr` | 11 |
 | laravel | `laravel:Events` | `Illuminate` | 1 |
 | laravel | `laravel:Events` | `Psr` | 1 |
 | laravel | `laravel:Http` | `GuzzleHttp` | 1 |
@@ -65,6 +65,8 @@ when a boundary consciously moves.
 | laravel | `laravel:Persistence` | `Psr` | 1 |
 | laravel | `laravel:Queue` | `Illuminate` | 11 |
 | laravel | `laravel:State` | `Illuminate` | 1 |
+| laravel | `laravel:Support` | `Illuminate` | 1 |
+| laravel | `laravel:Support` | `Psr` | 2 |
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
@@ -77,7 +79,7 @@ when a boundary consciously moves.
 - `document:Validator` imports `JsonSchema\*` (7 refs)
 - `document:_` imports `GuzzleHttp\*` (2 refs)
 - `expression:_` imports `Flow\*` (1 refs)
-- `runner:Execution` imports `GuzzleHttp\*` (4 refs)
+- `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
@@ -109,5 +111,5 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
-| `runner` | `ResolvedOperation` | `document` | 5 | `ResponseSchemaValidator` |
+| `runner` | `ResolvedOperation` | `document` | 4 | `StepOutputExtractor` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |

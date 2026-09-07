@@ -102,9 +102,11 @@ Where async suspend/resume bookkeeping happens:
 | `DatabasePendingCorrelationRegistry` <small>laravel</small> | consumes correlation, creates pending correlation, reads pending state |
 | `RunResumeCorrelationJob` <small>laravel</small> | resumes from webhook |
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
+| `AsyncExecutionGraph` <small>core</small> | resumes from webhook |
 | `TransitionApplier` <small>core</small> | resumes from webhook |
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
+| `AsyncExecutionGraphAssembler` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |

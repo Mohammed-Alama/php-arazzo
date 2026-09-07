@@ -9,7 +9,6 @@ use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
@@ -84,16 +83,11 @@ class ResponseSchemaValidator implements ResponseValidatorInterface
         }
 
         try {
-            $resolved = $this->resolveOperation($step, $document);
+            $resolved = $this->operationResolver->resolveOperation($step, $document);
 
             return $resolved->cebeOperation;
         } catch (\RuntimeException) {
             return null;
         }
-    }
-
-    private function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation
-    {
-        return $this->operationResolver->resolveOperation($step, $document);
     }
 }

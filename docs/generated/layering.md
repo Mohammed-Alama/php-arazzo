@@ -87,6 +87,7 @@ flowchart TB
     M_cli_Console --> M_runner_Jobs
     M_cli_Console --> M_runner_State
     M_cli_Console --> M_runner_Telemetry
+    M_cli_Console --> M_runner__
     M_cli_Generator --> M_contracts_Interfaces
     M_cli_Renderer --> M_contracts_Spec
     M_contracts_Dependency --> M_contracts_Spec
@@ -148,7 +149,6 @@ flowchart TB
     M_laravel_Bindings --> M_document_Resolver
     M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
-    M_laravel_Bindings --> M_expression_Interfaces
     M_laravel_Bindings --> M_expression__
     M_laravel_Bindings --> M_laravel_Http
     M_laravel_Bindings --> M_laravel_Lock
@@ -159,7 +159,6 @@ flowchart TB
     M_laravel_Bindings --> M_runner_Events
     M_laravel_Bindings --> M_runner_Execution
     M_laravel_Bindings --> M_runner_Infrastructure
-    M_laravel_Bindings --> M_runner_Protocol
     M_laravel_Bindings --> M_runner_State
     M_laravel_Bindings --> M_runner__
     M_laravel_Http --> M_cli_Generator
@@ -178,6 +177,13 @@ flowchart TB
     M_laravel_Queue --> M_runner_Execution
     M_laravel_Queue --> M_runner_Jobs
     M_laravel_State --> M_runner_State
+    M_laravel_Support --> M_contracts_Interfaces
+    M_laravel_Support --> M_expression_Interfaces
+    M_laravel_Support --> M_runner_Events
+    M_laravel_Support --> M_runner_Execution
+    M_laravel_Support --> M_runner_Infrastructure
+    M_laravel_Support --> M_runner_State
+    M_laravel_Support --> M_runner__
     M_laravel__ --> M_laravel_Bindings
     M_laravel__ --> M_laravel_Http
     M_runner_Async --> M_contracts_Exceptions
@@ -209,8 +215,10 @@ flowchart TB
     M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
     M_runner_Execution --> M_runner_Policy
+    M_runner_Execution --> M_runner_Protocol
     M_runner_Execution --> M_runner_State
     M_runner_Execution --> M_runner_Telemetry
+    M_runner_Execution --> M_runner__
     M_runner_Infrastructure --> M_contracts_Interfaces
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
@@ -229,10 +237,15 @@ flowchart TB
     M_runner_Protocol --> M_runner_State
     M_runner_State --> M_contracts_Spec
     M_runner_State --> M_contracts_State
+    M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_document__
+    M_runner__ --> M_expression_Interfaces
     M_runner__ --> M_expression__
+    M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
+    M_runner__ --> M_runner_Infrastructure
+    M_runner__ --> M_runner_State
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
@@ -249,18 +262,18 @@ flowchart TB
 | `cli` | `contracts` | 20 |
 | `cli` | `document` | 12 |
 | `cli` | `expression` | 3 |
-| `cli` | `runner` | 22 |
+| `cli` | `runner` | 16 |
 | `document` | `contracts` | 146 |
 | `document` | `expression` | 76 |
 | `expression` | `contracts` | 72 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
-| `laravel` | `document` | 19 |
-| `laravel` | `expression` | 5 |
-| `laravel` | `runner` | 49 |
-| `runner` | `contracts` | 187 |
-| `runner` | `document` | 21 |
-| `runner` | `expression` | 23 |
+| `laravel` | `document` | 18 |
+| `laravel` | `expression` | 4 |
+| `laravel` | `runner` | 44 |
+| `runner` | `contracts` | 190 |
+| `runner` | `document` | 22 |
+| `runner` | `expression` | 27 |
 
 ## Module-level detail
 

@@ -8,13 +8,7 @@ use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\ExecutionExpressionResolver;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\RunnerFacade;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -89,39 +83,26 @@ final class RunCommand extends Command
 
         $engine = new ExpressionEngine();
         $documents = new Document($client, $factory, $this->registry);
-        $resolver = new ExecutionExpressionResolver(
-            $engine,
-            new StepOutputExtractor($documents, $engine),
-            new ResponseSchemaValidator($documents),
-        );
 
-        $executor = new WorkflowExecutor(
-            new StepExecutor(
-                new DefaultOpenApiExecutor($client, $factory),
-                $resolver,
-                $documents,
-                engine: $engine,
-            ),
-            workflowEngine: new WorkflowEngine($resolver),
-        );
+        $runner = new RunnerFacade($documents, $engine, $this->httpClient);
 
         /** @var array<string, mixed> $inputs */
-        $result = $executor->execute($workflow, $document, $inputs);
+        $result = $runner->execute($document, (string) $workflow->workflowId, $inputs);
 
-        $output->writeln(sprintf('workflow <info>%s</info>: <comment>%s</comment>', $result->workflowId, $result->status));
+        $output->writeln(sprintf('workflow <info>%s</info>: <comment>%s</comment>', $result['workflowId'], $result['status']));
 
-        foreach ($result->stepResults as $stepId => $stepResult) {
-            $status = $stepResult->success ? '<info>✔</info>' : '<error>✘</error>';
-            $output->writeln(sprintf('  %s %s', $status, $stepId));
+        foreach ($result['steps'] as $stepResult) {
+            $status = $stepResult['success'] ? '<info>✔</info>' : '<error>✘</error>';
+            $output->writeln(sprintf('  %s %s', $status, $stepResult['stepId']));
         }
 
-        if ($result->outputs !== []) {
+        if ($result['outputs'] !== []) {
             $output->writeln('outputs:');
-            foreach ($result->outputs as $name => $value) {
+            foreach ($result['outputs'] as $name => $value) {
                 $output->writeln(sprintf('  %s = %s', $name, json_encode($value)));
             }
         }
 
-        return $result->status === 'succeeded' ? Command::SUCCESS : Command::FAILURE;
+        return $result['status'] === 'succeeded' ? Command::SUCCESS : Command::FAILURE;
     }
 }

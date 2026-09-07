@@ -3,10 +3,15 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Cli\Console\Command\RunCommand;
+use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Runner\RunnerFacade;
+use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -92,4 +97,35 @@ it('fails with a clear message for an unknown workflow id', function (): void {
 
     expect($tester->getStatusCode())->toBe(1)
         ->and($tester->getDisplay())->toContain('unknown workflow');
+});
+
+it('exposes the facade result shape the CLI output rendering depends on', function (): void {
+    $registry = new SourceRegistry(new DefaultSourceResolver([]));
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $client = new class() implements ClientInterface
+    {
+        public function sendRequest(RequestInterface $request): ResponseInterface
+        {
+            return new Response(200, ['Content-Type' => 'application/json'], '{}');
+        }
+    };
+
+    $doc = sys_get_temp_dir().'/arazzo-cli-shape-'.uniqid().'.yaml';
+    arazzoDoc($doc);
+
+    $document = DocumentLoader::load($doc);
+    $runner = new RunnerFacade(
+        new Document($client, new HttpFactory(), $registry),
+        new ExpressionEngine(),
+        $client,
+    );
+
+    unlink($doc);
+
+    $result = $runner->execute($document, 'pingFlow');
+
+    expect($result['status'])->toBe('succeeded')
+        ->and($result['steps'])->toHaveKey('ping')
+        ->and($result['steps']['ping'])->toMatchArray(['stepId' => 'ping', 'success' => true, 'error' => null]);
 });

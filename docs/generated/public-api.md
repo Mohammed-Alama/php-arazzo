@@ -64,6 +64,9 @@ this file on a commit is a public API change — review it deliberately.
 #### `ArazzoDocument` class
 - `public function __construct(public string $arazzo, public Info $info, public array $sourceDescriptions, public array $workflows, public Components $components, public array $specificationExtensions, public ?array $rawRoot = null, public SpecVersion $specVersion = SpecVersion::V1_0, public ?string $self = null)`
 
+#### `Reusable` class
+- `public function __construct(public string $reference, public mixed $value = null)`
+
 #### `StepExecutionOutcome` class
 - `public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = [], ?string $rawBody = null, ?string $contentType = null, ?string $failureCategory = null): self`
 - `public static function suspended(): self`
@@ -754,6 +757,23 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 
+### `Alama\Arazzo\Runner`
+
+#### `AsyncExecutionGraph` class
+- `public function __construct(private StepExecutor $stepExecutor, private WorkflowExecutor $workflowExecutor, private StepOutcomeHandler $outcomeHandler, private CorrelationResumer $resumer, private StepExecutionWorker $worker, private ExpressionResolverInterface $expressionResolver, private array $protocolExecutors)`
+- `public function expressionResolver(): ExpressionResolverInterface`
+- `public function outcomeHandler(): StepOutcomeHandler`
+- `public function protocolExecutors(): array`
+- `public function resumer(): CorrelationResumer`
+- `public function worker(): StepExecutionWorker`
+- `public function workflowExecutor(): WorkflowExecutor`
+
+#### `RunnerGraphBuilder` class
+- `public function __construct(private readonly DocumentInterface $documents, private readonly ExpressionEngineInterface $engine, private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $requestFactory = null)`
+
+#### `RunnerGraphBuilderInterface` interface
+- `public function buildAsync(AsyncGraphSeams $seams): AsyncExecutionGraph;`
+
 ### `Alama\Arazzo\Runner\Async`
 
 #### `ExecutionStateBuilder` class
@@ -794,6 +814,9 @@ this file on a commit is a public API change — review it deliberately.
 - `public function __invoke(object $event): void`
 
 ### `Alama\Arazzo\Runner\Execution`
+
+#### `AsyncExecutionGraphAssembler` class
+- `public function __construct(private readonly DocumentInterface $documents, private readonly ExpressionEngineInterface $engine, private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $requestFactory = null)`
 
 #### `CorrelationResumer` class
 - `public function __construct(private PendingCorrelationRegistryInterface $pendingCorrelations, private StateStoreInterface $stateStore, private DefinitionRegistryInterface $definitionRegistry, private ExpressionResolverInterface $expressionResolver, private StepOutcomeHandler $outcomeHandler, private EventLedgerInterface $eventLedger, private LockManagerInterface $lockManager, ?EventDispatcherInterface $events = null)`

@@ -29,8 +29,7 @@ final class ReusableParameterResolver
 
                 continue;
             }
-
-            $component = $this->lookup($parameter->reference, $document);
+            $component = $parameter->getParamterComponent($document);
 
             if ($component === null) {
                 throw new RuntimeException(
@@ -45,14 +44,5 @@ final class ReusableParameterResolver
         }
 
         return $resolved;
-    }
-
-    private function lookup(string $reference, ?ArazzoDocument $document): ?Parameter
-    {
-        if (!preg_match('/^\$components\.parameters\.(.+)$/', $reference, $m) || $document === null) {
-            return null;
-        }
-
-        return $document->components->parameters[$m[1]] ?? null;
     }
 }

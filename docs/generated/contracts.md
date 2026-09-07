@@ -33,6 +33,7 @@ flowchart LR
     I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
+    I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>document:Resolver</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>document:Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>runner:State</small>"]:::contract
@@ -225,6 +226,8 @@ flowchart LR
     C_runner_runner_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
     C_runner_runner___RunnerFacade["RunnerFacade<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerFacade -.->|implements| I_RunnerFacadeInterface
+    C_runner_runner___RunnerGraphBuilder["RunnerGraphBuilder<br/><small>(runner root)</small>"]:::implCore
+    C_runner_runner___RunnerGraphBuilder -.->|implements| I_RunnerGraphBuilderInterface
     C_runner_runner_State_FileStateStore["FileStateStore<br/><small>runner:State</small>"]:::implCore
     C_runner_runner_State_FileStateStore -.->|implements| I_StateStoreInterface
     C_runner_runner_State_InMemoryStateStore["InMemoryStateStore<br/><small>runner:State</small>"]:::implCore

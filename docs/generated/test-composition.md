@@ -57,15 +57,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Runner — 60 test files
-    "Module-scoped": 57
-    "Root": 3
+    title Runner — 63 test files
+    "Module-scoped": 59
+    "Root": 4
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 57 | 95% |
-| Root | 3 | 5% |
+| Module-scoped | 59 | 94% |
+| Root | 4 | 6% |
 
 ## Cli package
 
@@ -109,8 +109,8 @@ pie showData
 
 ```mermaid
 pie showData
-    title Laravel — 27 test files
-    "Module-scoped": 21
+    title Laravel — 29 test files
+    "Module-scoped": 23
     "Root": 3
     "Feature": 2
     "Unit": 1
@@ -118,7 +118,7 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 21 | 78% |
-| Root | 3 | 11% |
+| Module-scoped | 23 | 79% |
+| Root | 3 | 10% |
 | Feature | 2 | 7% |
-| Unit | 1 | 4% |
+| Unit | 1 | 3% |
