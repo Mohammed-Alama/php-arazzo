@@ -64,6 +64,9 @@ flowchart LR
         A_Alama_Arazzo_Laravel_Http_Psr18HttpClient["Psr18HttpClient"]:::adapter
         A_Alama_Arazzo_Laravel_Http_Psr18HttpClient --- CORE
         A_Alama_Arazzo_Laravel_Http_Psr18HttpClient --- net
+        A_Alama_Arazzo_Runner_Execution_AsyncExecutionGraphAssembler["AsyncExecutionGraphAssembler"]:::adapter
+        A_Alama_Arazzo_Runner_Execution_AsyncExecutionGraphAssembler --- CORE
+        A_Alama_Arazzo_Runner_Execution_AsyncExecutionGraphAssembler --- net
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory["ExecutionGraphFactory"]:::adapter
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --- CORE
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --- net

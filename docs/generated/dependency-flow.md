@@ -144,10 +144,10 @@ runner-Execution,contracts-Support,9
 runner-Execution,document-Normalizer,5
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
-runner-Execution,document-root,7
+runner-Execution,document-root,8
 runner-Execution,expression-Enum,1
 runner-Execution,expression-Interfaces,6
-runner-Execution,expression-root,9
+runner-Execution,expression-root,10
 runner-Execution,runner-Events,21
 runner-Execution,runner-Jobs,2
 runner-Execution,runner-Policy,1
@@ -173,11 +173,11 @@ runner-State,contracts-Spec,5
 runner-State,contracts-State,2
 runner-root,contracts-Interfaces,3
 runner-root,contracts-Spec,3
-runner-root,document-root,1
+runner-root,document-root,2
 runner-root,expression-Interfaces,2
-runner-root,expression-root,1
+runner-root,expression-root,2
 runner-root,runner-Events,1
-runner-root,runner-Execution,9
+runner-root,runner-Execution,10
 runner-root,runner-Infrastructure,1
 runner-root,runner-State,4
 ```
@@ -189,3 +189,5 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `expression-Evaluation` | `expression-root` | 2 |
+| `runner-Execution` | `runner-Protocol` | 3 |
+| `runner-Execution` | `runner-root` | 2 |

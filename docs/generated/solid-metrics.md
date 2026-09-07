@@ -55,14 +55,14 @@ quadrantChart
     laravel/_: [1, 0]
     runner/Async: [1, 0]
     runner/Events: [0.143, 0.091]
-    runner/Execution: [0.75, 0.053]
+    runner/Execution: [0.769, 0.051]
     runner/Infrastructure: [0.2, 0.25]
     runner/Jobs: [0.286, 0]
     runner/Policy: [0.75, 0]
-    runner/Protocol: [0.909, 0]
+    runner/Protocol: [0.833, 0]
     runner/State: [0.182, 0.417]
     runner/Telemetry: [0, 0]
-    runner/_: [0.9, 0.4]
+    runner/_: [0.818, 0.333]
 ```
 
 ## God classes (SRP)

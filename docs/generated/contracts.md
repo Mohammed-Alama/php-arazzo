@@ -226,6 +226,8 @@ flowchart LR
     C_runner_runner_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
     C_runner_runner___RunnerFacade["RunnerFacade<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerFacade -.->|implements| I_RunnerFacadeInterface
+    C_runner_runner___RunnerGraphBuilder["RunnerGraphBuilder<br/><small>(runner root)</small>"]:::implCore
+    C_runner_runner___RunnerGraphBuilder -.->|implements| I_RunnerGraphBuilderInterface
     C_runner_runner_State_FileStateStore["FileStateStore<br/><small>runner:State</small>"]:::implCore
     C_runner_runner_State_FileStateStore -.->|implements| I_StateStoreInterface
     C_runner_runner_State_InMemoryStateStore["InMemoryStateStore<br/><small>runner:State</small>"]:::implCore
@@ -252,7 +254,6 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
-    N_RunnerGraphBuilderInterface["no implementation found"]:::orphan --> I_RunnerGraphBuilderInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

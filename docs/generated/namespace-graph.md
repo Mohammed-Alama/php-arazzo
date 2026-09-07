@@ -131,6 +131,8 @@ flowchart LR
     runner_Execution --> document_Normalizer
     runner_Execution --> document_Parser
     runner_Execution --> expression_Enum
+    runner_Execution --> runner__
+    runner_Execution --> runner_Protocol
     runner_Infrastructure --> contracts_Interfaces
     runner_Jobs --> contracts_Spec
     runner_Jobs --> contracts_State
@@ -155,9 +157,9 @@ flowchart LR
     runner__ --> runner_Events
     runner__ --> runner_Infrastructure
     runner__ --> runner_State
-    runner__ --> contracts_Spec
     runner__ --> document__
     runner__ --> expression__
+    runner__ --> contracts_Spec
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State

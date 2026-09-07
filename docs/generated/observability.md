@@ -106,6 +106,7 @@ Where async suspend/resume bookkeeping happens:
 | `TransitionApplier` <small>core</small> | resumes from webhook |
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
+| `AsyncExecutionGraphAssembler` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |

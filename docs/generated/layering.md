@@ -209,8 +209,10 @@ flowchart TB
     M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
     M_runner_Execution --> M_runner_Policy
+    M_runner_Execution --> M_runner_Protocol
     M_runner_Execution --> M_runner_State
     M_runner_Execution --> M_runner_Telemetry
+    M_runner_Execution --> M_runner__
     M_runner_Infrastructure --> M_contracts_Interfaces
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
@@ -264,8 +266,8 @@ flowchart TB
 | `laravel` | `expression` | 5 |
 | `laravel` | `runner` | 49 |
 | `runner` | `contracts` | 190 |
-| `runner` | `document` | 21 |
-| `runner` | `expression` | 25 |
+| `runner` | `document` | 23 |
+| `runner` | `expression` | 27 |
 
 ## Module-level detail
 

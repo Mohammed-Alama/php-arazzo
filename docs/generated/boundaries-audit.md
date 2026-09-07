@@ -17,11 +17,11 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 8 | 4 | **forbidden** ⚠ |
+| `GuzzleHttp` | 10 | 4 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 37 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 48 | 17 | allowed |
+| `Psr` | 52 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 16 | 0 | **forbidden** ⚠ |
@@ -44,14 +44,14 @@ when a boundary consciously moves.
 | document | `document:_` | `Psr` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
-| runner | `runner:Execution` | `GuzzleHttp` | 4 |
+| runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 21 |
+| runner | `runner:Execution` | `Psr` | 23 |
 | runner | `runner:Execution` | `cebe` | 10 |
 | runner | `runner:Infrastructure` | `Psr` | 2 |
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
-| runner | `runner:_` | `Psr` | 3 |
+| runner | `runner:_` | `Psr` | 5 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 3 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
 | laravel | `laravel:Bindings` | `Psr` | 13 |
@@ -77,7 +77,7 @@ when a boundary consciously moves.
 - `document:Validator` imports `JsonSchema\*` (7 refs)
 - `document:_` imports `GuzzleHttp\*` (2 refs)
 - `expression:_` imports `Flow\*` (1 refs)
-- `runner:Execution` imports `GuzzleHttp\*` (4 refs)
+- `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)

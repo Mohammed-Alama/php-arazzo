@@ -67,6 +67,8 @@ mindmap
       ResponseSchemaValidator
     RunnerFacadeInterface
       RunnerFacade
+    RunnerGraphBuilderInterface
+      RunnerGraphBuilder
     StateStoreInterface
       FileStateStore
       InMemoryStateStore
@@ -106,13 +108,8 @@ mindmap
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
+| `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |
-
-## Unimplemented contracts
-
-Declared but nothing in src implements them — candidates for removal or for a first adapter:
-
-- `RunnerGraphBuilderInterface` <small></small>
