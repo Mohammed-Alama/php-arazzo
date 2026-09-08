@@ -12,6 +12,8 @@ use Alama\Arazzo\Expression\SymbolTable;
 /**
  * Arazzo requires at least one Source Description: "an info field, a
  * sourceDescriptions field with at least one defined Source Description".
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class DocumentSourceDescriptionsPresentRule implements Rule
 {

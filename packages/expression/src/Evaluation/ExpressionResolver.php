@@ -15,6 +15,9 @@ use Alama\Arazzo\Expression\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class ExpressionResolver implements ExpressionResolverInterface
 {
     public function __construct(

@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class StepResult
 {
     /**

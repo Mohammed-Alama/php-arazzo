@@ -10,6 +10,9 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 interface ExpressionResolverInterface
 {
     public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed;

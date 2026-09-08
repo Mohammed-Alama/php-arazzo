@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Document\Normalizer\Interfaces;
 
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 interface OpenApiNormalizerInterface
 {
     /**

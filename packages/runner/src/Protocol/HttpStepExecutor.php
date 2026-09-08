@@ -18,6 +18,9 @@ use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\RequestCompiler;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class HttpStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(

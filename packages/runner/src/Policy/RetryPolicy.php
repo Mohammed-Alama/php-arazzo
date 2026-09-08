@@ -9,6 +9,9 @@ use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class RetryPolicy
 {
     public function __construct(

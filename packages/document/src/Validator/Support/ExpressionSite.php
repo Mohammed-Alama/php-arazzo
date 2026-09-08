@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Document\Validator\Support;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class ExpressionSite
 {
     /**

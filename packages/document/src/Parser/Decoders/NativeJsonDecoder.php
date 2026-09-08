@@ -8,6 +8,9 @@ use Alama\Arazzo\Document\Parser\Exceptions\DecodeException;
 use Alama\Arazzo\Document\Parser\Interfaces\JsonDecoder;
 use JsonException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class NativeJsonDecoder implements JsonDecoder
 {
     public function decode(string $source): mixed

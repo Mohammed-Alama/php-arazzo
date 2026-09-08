@@ -11,6 +11,8 @@ use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
  * Merges the job-carried context with whatever a previous job persisted for
  * the same execution: persisted steps win (they are newer), and the stored
  * budget/call-stack is authoritative.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class StateReconciler
 {

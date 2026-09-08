@@ -21,6 +21,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  * persist the Suspended status, mark the execution started, ledger it, and —
  * for `receive` steps carrying correlation coordinates — announce that the
  * run is waiting on an external message.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class SuspensionHandler
 {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Contracts\Support;
 
 /**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ *
  * Resolves local JSON Pointer references of the form "#/components/inputs/<name>"
  * inside a workflow inputs schema, replacing them with the referenced component
  * schema. Cycles are guarded with a depth budget.

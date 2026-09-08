@@ -11,6 +11,9 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Expression\SymbolTable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ExpressionWalker
 {
     /**

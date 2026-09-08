@@ -9,6 +9,8 @@ use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 /**
  * Ledger sink for CLI/single-process runs that do not want durable event
  * history. Accepts everything, records nothing.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class NullEventLedger implements EventLedgerInterface
 {

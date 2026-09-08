@@ -8,6 +8,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
 
+/**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ */
 final class SimpleEventDispatcher implements EventDispatcherInterface, ListenerProviderInterface
 {
     /** @var array<class-string, list<callable>> */

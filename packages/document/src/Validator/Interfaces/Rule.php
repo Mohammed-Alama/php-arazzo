@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Expression\SymbolTable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 interface Rule
 {
     public function code(): string;

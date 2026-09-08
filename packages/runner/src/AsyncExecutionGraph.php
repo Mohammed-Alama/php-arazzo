@@ -14,8 +14,9 @@ use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 
 /**
  * The assembled async execution graph. Accessors return the concrete runtime
- * handles the framework packages type against; the @internal sweep (#63)
- * owns the advertised-surface story, these are wiring handles.
+ * handles the framework packages type against; these are wiring handles.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class AsyncExecutionGraph
 {

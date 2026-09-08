@@ -24,6 +24,8 @@ use Throwable;
  * Every emit site names its intent (step started, run failed with reason…)
  * so the worker reads as orchestration instead of event-constructor soup,
  * and failure-category classification lives in exactly one place.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class WorkerEvents
 {

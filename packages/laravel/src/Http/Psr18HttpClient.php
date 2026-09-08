@@ -9,6 +9,9 @@ use GuzzleHttp\Client;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class Psr18HttpClient implements HttpClientInterface
 {
     public function __construct(private readonly Client $client) {}

@@ -22,7 +22,10 @@ use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
-/** Source resolution + OpenAPI operation resolution + capability evaluators. */
+/** Source resolution + OpenAPI operation resolution + capability evaluators.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ResolverBindings
 {
     public static function register(Container $app): void

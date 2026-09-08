@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Document\Parser;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class ParseContext
 {
     /** @param list<string> $segments */

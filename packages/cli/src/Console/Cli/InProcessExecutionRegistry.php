@@ -11,6 +11,8 @@ use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
  * In-process registry for CLI runs: the final status lives only as long as
  * the process (and is surfaced through CliRunResult). Durable run records
  * remain an adapter concern (Laravel persists to its database).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class InProcessExecutionRegistry implements ExecutionRegistryInterface
 {

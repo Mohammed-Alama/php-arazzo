@@ -9,6 +9,9 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
 use Psr\Http\Message\RequestInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class IdempotencyKeyInjector
 {
     private const MUTATING_METHODS = ['POST', 'PATCH', 'DELETE'];

@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Contracts\Support\Exceptions;
 use RuntimeException;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ */
 abstract class ArazzoException extends RuntimeException
 {
     public function __construct(

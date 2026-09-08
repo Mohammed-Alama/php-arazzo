@@ -9,6 +9,9 @@ use Alama\Arazzo\Document\Parser\Interfaces\YamlDecoder;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class SymfonyYamlDecoder implements YamlDecoder
 {
     public function decode(string $source): mixed

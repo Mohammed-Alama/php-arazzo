@@ -15,7 +15,10 @@ use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
 
-/** Entry-point facade bindings: each *Interface resolves to its self-contained concrete facade. */
+/** Entry-point facade bindings: each *Interface resolves to its self-contained concrete facade.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class FacadeBindings
 {
     public static function register(Container $app): void

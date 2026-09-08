@@ -10,6 +10,8 @@ use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 /**
  * Terminal snapshot of a CLI run: the registry status at drain end, plus
  * whether steps remain suspended (resume-worthy).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class CliRunResult
 {

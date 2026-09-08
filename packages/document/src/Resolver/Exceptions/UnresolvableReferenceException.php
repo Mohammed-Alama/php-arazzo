@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Document\Resolver\Exceptions;
 
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class UnresolvableReferenceException extends SourceResolutionException
 {
     public function __construct(

@@ -13,6 +13,8 @@ use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
  * Runs document preflight validation before the FIRST side effect of a run.
  * Resumed jobs already passed it, so it only fires when no step has
  * recorded a result yet.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class PreflightGuard
 {

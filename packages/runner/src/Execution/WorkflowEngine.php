@@ -30,7 +30,10 @@ use Alama\Arazzo\Runner\Execution\Exceptions\WorkflowDepthExceededException;
 use Alama\Arazzo\Runner\Policy\RetryPolicy;
 use Alama\Arazzo\Runner\State\Data\ExecutionContext;
 
-/** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events. */
+/** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class WorkflowEngine
 {
     private RetryPolicy $retryPolicy;
@@ -234,6 +237,7 @@ final class WorkflowEngine
      * Evaluates the workflow-level `outputs` expressions against the final
      * step results. Unresolvable expressions evaluate to null instead of
      * failing the run.
+
      *
      * @return array<string, mixed>
      */

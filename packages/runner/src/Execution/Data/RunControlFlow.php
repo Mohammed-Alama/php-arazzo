@@ -12,6 +12,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 /**
  * Control-flow capability: the collaborators an orchestrator needs to
  * decide and route execution (engine, queue, events, preflight gate).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class RunControlFlow
 {

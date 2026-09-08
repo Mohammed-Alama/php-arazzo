@@ -11,6 +11,9 @@ use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Interfaces\JsonDecoder;
 use Alama\Arazzo\Document\Parser\Interfaces\YamlDecoder;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class Loader
 {
     public function __construct(

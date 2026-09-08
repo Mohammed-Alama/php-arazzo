@@ -8,6 +8,8 @@ use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 
 /**
  * Process-local state store for tests and synchronous in-memory runs.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class InMemoryStateStore implements StateStoreInterface
 {

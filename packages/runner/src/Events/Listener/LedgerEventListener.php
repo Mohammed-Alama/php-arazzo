@@ -17,6 +17,9 @@ use Alama\Arazzo\Runner\Events\StepRetriedEvent;
 use Alama\Arazzo\Runner\Events\StepStartedEvent;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class LedgerEventListener
 {
     public function __construct(private EventLedgerInterface $ledger) {}

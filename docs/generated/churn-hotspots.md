@@ -12,51 +12,51 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "runner:Execution", "cli:Console", "document:Validator", "runner:Protocol", "contracts:Spec", "expression:Evaluation"]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "runner:Execution", "cli:Console", "document:Validator", "runner:Protocol", "expression:Evaluation", "runner:Async"]
     y-axis "Touches" 0 --> 30
-    bar [22, 15, 14, 11, 8, 8, 7, 6, 4, 4, 3, 3]
+    bar [23, 16, 15, 12, 9, 9, 8, 7, 5, 5, 4, 4]
 ```
 
-Analyzed 149 total file-touches across 37 modules.
+Analyzed 182 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 22 | 15% | 340 | 64.7 |
-| `laravel:Http` | 15 | 10% | 161 | 93.2 |
-| `laravel:Persistence` | 14 | 9% | 252 | 55.6 |
-| `laravel:Queue` | 11 | 7% | 100 | 110 |
-| `laravel:Lock` | 8 | 5% | 49 | 163.3 |
-| `laravel:State` | 8 | 5% | 38 | 210.5 |
-| `runner:Execution` | 7 | 5% | 3,753 | 1.9 |
-| `cli:Console` | 6 | 4% | 754 | 8 |
-| `document:Validator` | 4 | 3% | 3,092 | 1.3 |
-| `runner:Protocol` | 4 | 3% | 545 | 7.3 |
+| `laravel:Bindings` | 23 | 13% | 359 | 64.1 |
+| `laravel:Http` | 16 | 9% | 170 | 94.1 |
+| `laravel:Persistence` | 15 | 8% | 264 | 56.8 |
+| `laravel:Queue` | 12 | 7% | 109 | 110.1 |
+| `laravel:Lock` | 9 | 5% | 52 | 173.1 |
+| `laravel:State` | 9 | 5% | 41 | 219.5 |
+| `runner:Execution` | 8 | 4% | 3,860 | 2.1 |
+| `cli:Console` | 7 | 4% | 765 | 9.2 |
+| `document:Validator` | 5 | 3% | 3,261 | 1.5 |
+| `runner:Protocol` | 5 | 3% | 557 | 9 |
+| `expression:Evaluation` | 4 | 2% | 1,267 | 3.2 |
+| `runner:Async` | 4 | 2% | 506 | 7.9 |
+| `cli:Generator` | 3 | 2% | 111 | 27 |
+| `cli:Renderer` | 3 | 2% | 255 | 11.8 |
+| `contracts:Dependency` | 3 | 2% | 336 | 8.9 |
 | `contracts:Spec` | 3 | 2% | 844 | 3.6 |
-| `expression:Evaluation` | 3 | 2% | 1,211 | 2.5 |
-| `runner:Async` | 3 | 2% | 494 | 6.1 |
-| `cli:Generator` | 2 | 1% | 105 | 19 |
-| `cli:Renderer` | 2 | 1% | 253 | 7.9 |
-| `contracts:Dependency` | 2 | 1% | 328 | 6.1 |
-| `contracts:Support` | 2 | 1% | 171 | 11.7 |
-| `document:Normalizer` | 2 | 1% | 588 | 3.4 |
-| `document:Parser` | 2 | 1% | 1,096 | 1.8 |
-| `document:Resolver` | 2 | 1% | 370 | 5.4 |
-| `expression:Data` | 2 | 1% | 140 | 14.3 |
-| `expression:Enum` | 2 | 1% | 42 | 47.6 |
-| `laravel:Events` | 2 | 1% | 21 | 95.2 |
-| `laravel:Support` | 2 | 1% | 116 | 17.2 |
-| `runner:Events` | 2 | 1% | 295 | 6.8 |
-| `runner:Infrastructure` | 2 | 1% | 160 | 12.5 |
-| `runner:Jobs` | 2 | 1% | 34 | 58.8 |
-| `runner:Policy` | 2 | 1% | 96 | 20.8 |
-| `runner:State` | 2 | 1% | 919 | 2.2 |
-| `runner:Telemetry` | 2 | 1% | 278 | 7.2 |
-| `contracts:Exceptions` | 1 | 1% | 28 | 35.7 |
+| `contracts:Support` | 3 | 2% | 185 | 16.2 |
+| `document:Normalizer` | 3 | 2% | 608 | 4.9 |
+| `document:Parser` | 3 | 2% | 1,123 | 2.7 |
+| `document:Resolver` | 3 | 2% | 406 | 7.4 |
+| `expression:Data` | 3 | 2% | 143 | 21 |
+| `expression:Enum` | 3 | 2% | 45 | 66.7 |
+| `laravel:Events` | 3 | 2% | 24 | 125 |
+| `laravel:Support` | 3 | 2% | 119 | 25.2 |
+| `runner:Events` | 3 | 2% | 328 | 9.1 |
+| `runner:Infrastructure` | 3 | 2% | 172 | 17.4 |
+| `runner:Jobs` | 3 | 2% | 40 | 75 |
+| `runner:Policy` | 3 | 2% | 102 | 29.4 |
+| `runner:State` | 3 | 2% | 952 | 3.2 |
+| `runner:Telemetry` | 3 | 2% | 282 | 10.6 |
+| `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
+| `expression:Ast` | 2 | 1% | 237 | 8.4 |
+| `expression:Interfaces` | 2 | 1% | 73 | 27.4 |
+| `expression:Xpath` | 2 | 1% | 109 | 18.3 |
 | `contracts:Interfaces` | 1 | 1% | 116 | 8.6 |
 | `contracts:State` | 1 | 1% | 667 | 1.5 |
-| `expression:Ast` | 1 | 1% | 194 | 5.2 |
 | `expression:Exceptions` | 1 | 1% | 55 | 18.2 |
-| `expression:Interfaces` | 1 | 1% | 67 | 14.9 |
-| `expression:Xpath` | 1 | 1% | 103 | 9.7 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110), `laravel:Http` (93.2), `laravel:Bindings` (64.7)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110.1), `laravel:Http` (94.1), `laravel:Bindings` (64.1)

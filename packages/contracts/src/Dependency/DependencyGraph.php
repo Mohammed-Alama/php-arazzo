@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Contracts\Dependency;
 
 use Alama\Arazzo\Contracts\Spec\Step;
 
+/**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ */
 class DependencyGraph
 {
     /** @var array<string, Step> */

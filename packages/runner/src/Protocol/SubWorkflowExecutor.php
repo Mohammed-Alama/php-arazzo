@@ -22,6 +22,8 @@ use Throwable;
  * Runs a child workflow inline for high-frequency `invoke` steps, drawing
  * from the caller's shared budget via a child ExecutionState seeded with the
  * parent's spend and call stack.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class SubWorkflowExecutor implements StepProtocolExecutorInterface
 {

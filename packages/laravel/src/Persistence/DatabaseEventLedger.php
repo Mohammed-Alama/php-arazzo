@@ -9,6 +9,9 @@ use Illuminate\Database\ConnectionInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class DatabaseEventLedger implements EventLedgerInterface
 {
     public function __construct(

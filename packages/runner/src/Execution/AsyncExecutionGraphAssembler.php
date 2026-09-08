@@ -21,6 +21,8 @@ use Psr\Http\Message\RequestFactoryInterface;
 /**
  * Assembles the async/queue execution graph. Every node is constructed
  * here — hosts supply ports and config through {@see AsyncGraphSeams}.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class AsyncExecutionGraphAssembler
 {

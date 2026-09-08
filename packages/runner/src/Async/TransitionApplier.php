@@ -22,6 +22,8 @@ use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
  * Performs the side effects a {@see Transition} describes: persists the next
  * context, completes or fails the execution when terminal, and dispatches
  * the follow-up job otherwise. All decisions were already made by the engine.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class TransitionApplier
 {

@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Runner\Policy;
 
 use Alama\Arazzo\Contracts\Interfaces\BackoffCalculatorInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ExponentialBackoffCalculator implements BackoffCalculatorInterface
 {
     public function calculate(float $baseDelay, int $attempt, float $multiplier): int

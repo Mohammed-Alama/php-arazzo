@@ -71,14 +71,14 @@ Concrete types over 300 LOC:
 
 | Class | Module | LOC |
 |---|---|---:|
-| `Parser` | `document:Parser` | 820 |
-| `ExecutionContext` | `runner:State` | 493 |
-| `StepExecutionWorker` | `runner:Execution` | 376 |
-| `StepOutcomeHandler` | `runner:Execution` | 374 |
+| `Parser` | `document:Parser` | 823 |
+| `ExecutionContext` | `runner:State` | 496 |
+| `StepExecutionWorker` | `runner:Execution` | 379 |
+| `StepOutcomeHandler` | `runner:Execution` | 376 |
 | `WorkflowContext` | `contracts:State` | 359 |
-| `Parser` | `expression:_` | 348 |
+| `Parser` | `expression:_` | 351 |
 | `ExecutionState` | `contracts:State` | 308 |
-| `PreflightValidator` | `document:Validator` | 300 |
+| `PreflightValidator` | `document:Validator` | 302 |
 
 ## Fat interfaces (ISP)
 

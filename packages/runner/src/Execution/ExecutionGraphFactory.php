@@ -19,6 +19,8 @@ use Psr\Http\Message\RequestFactoryInterface;
  * all flow through {@see DocumentInterface}. Expression services flow
  * through the injected expression public face ({@see ExpressionEngineInterface}),
  * with the runner composing output extraction and schema validation itself.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ExecutionGraphFactory
 {

@@ -17,6 +17,8 @@ use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
  * `evaluate` requires an {@see EvaluationInputInterface}. This value object
  * is the runner's own implementation of that cross-seam contract, so the
  * runner never touches the expression package's internal `EvaluationContext`.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class ExecutionEvaluationInput implements EvaluationInputInterface
 {

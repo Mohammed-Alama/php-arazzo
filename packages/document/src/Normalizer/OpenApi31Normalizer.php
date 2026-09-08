@@ -17,5 +17,7 @@ namespace Alama\Arazzo\Document\Normalizer;
  *   `["string","null"]`, `$dynamicRef`, vocabulary keywords) are passed
  *   through as opaque schema data.
  * - The `webhooks` map is not normalized (no Arazzo step can target it).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 class OpenApi31Normalizer extends OpenApi30Normalizer {}

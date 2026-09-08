@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Document\Normalizer;
 
 use InvalidArgumentException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class OpenApiVersionDetector
 {
     /**

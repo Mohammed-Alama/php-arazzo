@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class EvaluationContext implements EvaluationInputInterface
 {
     public function __construct(

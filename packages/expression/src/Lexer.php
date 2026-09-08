@@ -8,6 +8,9 @@ use Alama\Arazzo\Expression\Data\Token;
 use Alama\Arazzo\Expression\Enum\TokenKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 final class Lexer
 {
     private const KEYWORDS = [

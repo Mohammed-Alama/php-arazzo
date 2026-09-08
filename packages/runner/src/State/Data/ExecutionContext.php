@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runner\State\Data;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ExecutionContext
 {
     /**

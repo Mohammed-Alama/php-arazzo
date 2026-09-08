@@ -7,6 +7,8 @@ namespace Alama\Arazzo\Expression\Ast;
 /**
  * 1.1 Message reference: {$message.header.<name>} or {$message.payload[#/ptr]}.
  * Resolved against the current step's received message (response headers/body).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class MessageRef extends ExpressionAst
 {

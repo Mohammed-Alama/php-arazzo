@@ -17,6 +17,8 @@ use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
  *
  * Consumes the expression package exclusively through its public face
  * ({@see ExpressionEngineInterface}); no expression internals.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ExpressionValueResolver
 {

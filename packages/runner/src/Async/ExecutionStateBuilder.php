@@ -19,6 +19,8 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
  * is the 1-based number of the attempt that just ran, while the engine must
  * see the count of PREVIOUS attempts — matching the sync loop's decision-time
  * semantics.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ExecutionStateBuilder
 {

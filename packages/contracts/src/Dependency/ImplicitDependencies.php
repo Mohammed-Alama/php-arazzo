@@ -9,6 +9,8 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 
 /**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ *
  * Extracts implicit dependencies from runtime expression output references
  * (e.g. {$steps.other.outputs.id}) per the Arazzo 1.1 "Tool Behavior" section:
  * such references create ordering edges exactly like an explicit dependsOn.

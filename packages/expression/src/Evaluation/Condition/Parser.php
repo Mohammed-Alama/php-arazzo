@@ -15,6 +15,9 @@ use Alama\Arazzo\Expression\Evaluation\Enum\LogicalOperator;
 use Alama\Arazzo\Expression\Evaluation\Enum\TokenKind;
 use Alama\Arazzo\Expression\Evaluation\Interfaces\ConditionNode;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class Parser
 {
     private const array TERMINAL_KINDS = [

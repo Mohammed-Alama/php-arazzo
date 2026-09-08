@@ -10,6 +10,9 @@ use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 final class DomXpathEvaluator implements XpathEvaluator
 {
     public function query(mixed $rootValue, string $selector, string $version): mixed

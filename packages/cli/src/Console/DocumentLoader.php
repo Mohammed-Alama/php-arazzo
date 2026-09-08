@@ -12,7 +12,10 @@ use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Parser\Loader;
 use Alama\Arazzo\Document\Parser\Parser;
 
-/** Shared document loading for console commands. */
+/** Shared document loading for console commands.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class DocumentLoader
 {
     /**

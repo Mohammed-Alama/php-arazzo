@@ -14,6 +14,9 @@ use Alama\Arazzo\Document\Resolver\Interfaces\SourceFetcher;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class DefaultSourceResolver implements SourceResolver
 {
     public function __construct(

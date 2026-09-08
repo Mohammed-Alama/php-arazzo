@@ -67,12 +67,12 @@ public contract between packages.
 
 ### Deliberately internal
 
-- `InputSchemaResolver` — `@internal`: no (target for the sweep)
-- `NullEventDispatcher` — `@internal`: no (target for the sweep)
-- `SimpleEventDispatcher` — `@internal`: no (target for the sweep)
-- `DependencyAnalyzer` — `@internal`: no (target for the sweep)
-- `ImplicitDependencies` — `@internal`: no (target for the sweep)
-- `DependencyGraph` — `@internal`: no (target for the sweep)
+- `InputSchemaResolver` — `@internal`: yes
+- `NullEventDispatcher` — `@internal`: yes
+- `SimpleEventDispatcher` — `@internal`: yes
+- `DependencyAnalyzer` — `@internal`: yes
+- `ImplicitDependencies` — `@internal`: yes
+- `DependencyGraph` — `@internal`: yes
 
 ## expression
 
@@ -119,18 +119,18 @@ public contract between packages.
 
 ### Deliberately internal
 
-- `ExpressionEvaluatorInterface` — `@internal`: no (target for the sweep)
-- `ExpressionResolverInterface` — `@internal`: no (target for the sweep)
-- `ExpressionEvaluator` — `@internal`: no (target for the sweep)
-- `SelectorEvaluator` — `@internal`: no (target for the sweep)
-- `StringInterpolator` — `@internal`: no (target for the sweep)
-- `JsonPathEvaluator` — `@internal`: no (target for the sweep)
-- `JsonPointer` — `@internal`: no (target for the sweep)
-- `DomXpathEvaluator` — `@internal`: no (target for the sweep)
-- `XpathEvaluator` — `@internal`: no (target for the sweep)
-- `Lexer` — `@internal`: no (target for the sweep)
-- `Parser` — `@internal`: no (target for the sweep)
-- `Token` — `@internal`: no (target for the sweep)
+- `ExpressionEvaluatorInterface` — `@internal`: yes
+- `ExpressionResolverInterface` — `@internal`: yes
+- `ExpressionEvaluator` — `@internal`: yes
+- `SelectorEvaluator` — `@internal`: yes
+- `StringInterpolator` — `@internal`: yes
+- `JsonPathEvaluator` — `@internal`: yes
+- `JsonPointer` — `@internal`: yes
+- `DomXpathEvaluator` — `@internal`: yes
+- `XpathEvaluator` — `@internal`: yes
+- `Lexer` — `@internal`: yes
+- `Parser` — `@internal`: yes
+- `Token` — `@internal`: yes
 - `Ast\*` — whole namespace (declared target)
 - `Evaluation\*` — whole namespace (declared target)
 
@@ -171,32 +171,32 @@ public contract between packages.
 
 ### Deliberately internal
 
-- `SourceResolver` — `@internal`: no (target for the sweep)
-- `SourceFetcher` — `@internal`: no (target for the sweep)
-- `SourceRegistry` — `@internal`: no (target for the sweep)
-- `DefaultSourceResolver` — `@internal`: no (target for the sweep)
-- `HttpFetcher` — `@internal`: no (target for the sweep)
-- `LocalFetcher` — `@internal`: no (target for the sweep)
-- `CachedFetcher` — `@internal`: no (target for the sweep)
-- `OpenApiNormalizerInterface` — `@internal`: no (target for the sweep)
-- `OpenApi30Normalizer` — `@internal`: no (target for the sweep)
-- `OpenApi31Normalizer` — `@internal`: no (target for the sweep)
-- `Swagger2Normalizer` — `@internal`: no (target for the sweep)
-- `OpenApiVersionDetector` — `@internal`: no (target for the sweep)
-- `OpenApiDocumentLoader` — `@internal`: no (target for the sweep)
-- `OpenApiOperationResolver` — `@internal`: no (target for the sweep)
-- `YamlDecoder` — `@internal`: no (target for the sweep)
-- `JsonDecoder` — `@internal`: no (target for the sweep)
-- `SymfonyYamlDecoder` — `@internal`: no (target for the sweep)
-- `NativeJsonDecoder` — `@internal`: no (target for the sweep)
-- `Loader` — `@internal`: no (target for the sweep)
-- `Parser` — `@internal`: no (target for the sweep)
-- `ParseContext` — `@internal`: no (target for the sweep)
-- `RuleSet` — `@internal`: no (target for the sweep)
-- `Validator` — `@internal`: no (target for the sweep)
-- `PreflightValidator` — `@internal`: no (target for the sweep)
-- `ErrorCollector` — `@internal`: no (target for the sweep)
-- `OfficialSchemaRule` — `@internal`: no (target for the sweep)
+- `SourceResolver` — `@internal`: yes
+- `SourceFetcher` — `@internal`: yes
+- `SourceRegistry` — `@internal`: yes
+- `DefaultSourceResolver` — `@internal`: yes
+- `HttpFetcher` — `@internal`: yes
+- `LocalFetcher` — `@internal`: yes
+- `CachedFetcher` — `@internal`: yes
+- `OpenApiNormalizerInterface` — `@internal`: yes
+- `OpenApi30Normalizer` — `@internal`: yes
+- `OpenApi31Normalizer` — `@internal`: yes
+- `Swagger2Normalizer` — `@internal`: yes
+- `OpenApiVersionDetector` — `@internal`: yes
+- `OpenApiDocumentLoader` — `@internal`: yes
+- `OpenApiOperationResolver` — `@internal`: yes
+- `YamlDecoder` — `@internal`: yes
+- `JsonDecoder` — `@internal`: yes
+- `SymfonyYamlDecoder` — `@internal`: yes
+- `NativeJsonDecoder` — `@internal`: yes
+- `Loader` — `@internal`: yes
+- `Parser` — `@internal`: yes
+- `ParseContext` — `@internal`: yes
+- `RuleSet` — `@internal`: yes
+- `Validator` — `@internal`: yes
+- `PreflightValidator` — `@internal`: yes
+- `ErrorCollector` — `@internal`: yes
+- `OfficialSchemaRule` — `@internal`: yes
 - `Rules\*` — whole namespace (declared target)
 - `Validator\Support\*` — whole namespace (declared target)
 
@@ -226,22 +226,22 @@ _None — the entry surface exchanges plain arrays._
 
 ### Deliberately internal
 
-- `StateStoreInterface` — `@internal`: no (target for the sweep)
-- `DefinitionRegistryInterface` — `@internal`: no (target for the sweep)
-- `WritableDefinitionRegistryInterface` — `@internal`: no (target for the sweep)
-- `ExecutionRegistryInterface` — `@internal`: no (target for the sweep)
-- `PendingCorrelationRegistryInterface` — `@internal`: no (target for the sweep)
-- `InMemoryStateStore` — `@internal`: no (target for the sweep)
-- `FileStateStore` — `@internal`: no (target for the sweep)
-- `EventLedgerInterface` — `@internal`: no (target for the sweep)
-- `HttpClientInterface` — `@internal`: no (target for the sweep)
-- `ProtocolExecutorRegistryInterface` — `@internal`: no (target for the sweep)
-- `OpenApiExecutorInterface` — `@internal`: no (target for the sweep)
-- `PessimisticLockStrategy` — `@internal`: no (target for the sweep)
-- `NullLockStrategy` — `@internal`: no (target for the sweep)
-- `FileLockStrategy` — `@internal`: no (target for the sweep)
-- `RetryPolicy` — `@internal`: no (target for the sweep)
-- `ExponentialBackoffCalculator` — `@internal`: no (target for the sweep)
+- `StateStoreInterface` — `@internal`: yes
+- `DefinitionRegistryInterface` — `@internal`: yes
+- `WritableDefinitionRegistryInterface` — `@internal`: yes
+- `ExecutionRegistryInterface` — `@internal`: yes
+- `PendingCorrelationRegistryInterface` — `@internal`: yes
+- `InMemoryStateStore` — `@internal`: yes
+- `FileStateStore` — `@internal`: yes
+- `EventLedgerInterface` — `@internal`: yes
+- `HttpClientInterface` — `@internal`: yes
+- `ProtocolExecutorRegistryInterface` — `@internal`: yes
+- `OpenApiExecutorInterface` — `@internal`: yes
+- `PessimisticLockStrategy` — `@internal`: yes
+- `NullLockStrategy` — `@internal`: yes
+- `FileLockStrategy` — `@internal`: yes
+- `RetryPolicy` — `@internal`: yes
+- `ExponentialBackoffCalculator` — `@internal`: yes
 - `Execution\*` — whole namespace (declared target)
 - `Async\*` — whole namespace (declared target)
 - `Jobs\*` — whole namespace (declared target)
@@ -280,14 +280,14 @@ _None — the entry surface exchanges plain arrays._
 
 ### Deliberately internal
 
-- `ArazzoGenerator` — `@internal`: no (target for the sweep)
-- `OpenAiClient` — `@internal`: no (target for the sweep)
-- `Renderer` — `@internal`: no (target for the sweep)
-- `DocumentLoader` — `@internal`: no (target for the sweep)
-- `CliRunner` — `@internal`: no (target for the sweep)
-- `CliRunResult` — `@internal`: no (target for the sweep)
-- `NullEventLedger` — `@internal`: no (target for the sweep)
-- `InProcessExecutionRegistry` — `@internal`: no (target for the sweep)
+- `ArazzoGenerator` — `@internal`: yes
+- `OpenAiClient` — `@internal`: yes
+- `Renderer` — `@internal`: yes
+- `DocumentLoader` — `@internal`: yes
+- `CliRunner` — `@internal`: yes
+- `CliRunResult` — `@internal`: yes
+- `NullEventLedger` — `@internal`: yes
+- `InProcessExecutionRegistry` — `@internal`: yes
 
 ## laravel
 
@@ -315,24 +315,24 @@ _None — the entry surface exchanges plain arrays._
 
 ### Deliberately internal
 
-- `FacadeBindings` — `@internal`: no (target for the sweep)
-- `GeneratorBindings` — `@internal`: no (target for the sweep)
-- `ResolverBindings` — `@internal`: no (target for the sweep)
-- `PersistenceBindings` — `@internal`: no (target for the sweep)
-- `EventBindings` — `@internal`: no (target for the sweep)
-- `HttpBindings` — `@internal`: no (target for the sweep)
-- `ExecutionBindings` — `@internal`: no (target for the sweep)
-- `DatabaseDefinitionRegistry` — `@internal`: no (target for the sweep)
-- `DatabaseExecutionRegistry` — `@internal`: no (target for the sweep)
-- `DatabaseEventLedger` — `@internal`: no (target for the sweep)
-- `DatabasePendingCorrelationRegistry` — `@internal`: no (target for the sweep)
-- `IlluminatePsrEventDispatcher` — `@internal`: no (target for the sweep)
-- `Psr18HttpClient` — `@internal`: no (target for the sweep)
-- `LaravelQueueDriver` — `@internal`: no (target for the sweep)
-- `LaravelRedisLockManager` — `@internal`: no (target for the sweep)
-- `RedisHotStateStore` — `@internal`: no (target for the sweep)
-- `RunExecuteStepJob` — `@internal`: no (target for the sweep)
-- `RunResumeCorrelationJob` — `@internal`: no (target for the sweep)
-- `WebhookResumeController` — `@internal`: no (target for the sweep)
-- `ArazzoApiController` — `@internal`: no (target for the sweep)
+- `FacadeBindings` — `@internal`: yes
+- `GeneratorBindings` — `@internal`: yes
+- `ResolverBindings` — `@internal`: yes
+- `PersistenceBindings` — `@internal`: yes
+- `EventBindings` — `@internal`: yes
+- `HttpBindings` — `@internal`: yes
+- `ExecutionBindings` — `@internal`: yes
+- `DatabaseDefinitionRegistry` — `@internal`: yes
+- `DatabaseExecutionRegistry` — `@internal`: yes
+- `DatabaseEventLedger` — `@internal`: yes
+- `DatabasePendingCorrelationRegistry` — `@internal`: yes
+- `IlluminatePsrEventDispatcher` — `@internal`: yes
+- `Psr18HttpClient` — `@internal`: yes
+- `LaravelQueueDriver` — `@internal`: yes
+- `LaravelRedisLockManager` — `@internal`: yes
+- `RedisHotStateStore` — `@internal`: yes
+- `RunExecuteStepJob` — `@internal`: yes
+- `RunResumeCorrelationJob` — `@internal`: yes
+- `WebhookResumeController` — `@internal`: yes
+- `ArazzoApiController` — `@internal`: yes
 

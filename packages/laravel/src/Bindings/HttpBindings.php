@@ -13,7 +13,10 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-/** PSR-7/18 HTTP ports bound to Guzzle unless the app already provides them. */
+/** PSR-7/18 HTTP ports bound to Guzzle unless the app already provides them.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class HttpBindings
 {
     public static function register(Container $app): void

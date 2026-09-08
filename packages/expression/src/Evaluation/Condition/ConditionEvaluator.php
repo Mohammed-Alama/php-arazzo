@@ -12,6 +12,9 @@ use Alama\Arazzo\Expression\Evaluation\Enum\LogicalOperator;
 use Alama\Arazzo\Expression\Evaluation\Interfaces\ConditionNode;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ConditionEvaluator
 {
     private Lexer $lexer;

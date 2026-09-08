@@ -22,6 +22,9 @@ use cebe\openapi\spec\Schema;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class StepOutputExtractor implements OutputExtractorInterface
 {
     public function __construct(

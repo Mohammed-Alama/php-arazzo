@@ -13,6 +13,8 @@ use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
  * orchestrator needs to record and resume runs. Grouping them
  * keeps orchestrator interfaces small and makes test fakes cheap
  * (one fake per seam instead of one per constructor parameter).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class RunPersistence
 {

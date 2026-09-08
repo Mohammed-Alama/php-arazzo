@@ -15,6 +15,8 @@ use OpenTelemetry\Context\ContextInterface;
  *
  * Carriers are plain string-keyed arrays — queue job payloads, PSR-7 header
  * arrays, or CLI env maps all work without framework coupling.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class TraceContextPropagator
 {

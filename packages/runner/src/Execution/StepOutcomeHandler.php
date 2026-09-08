@@ -45,6 +45,8 @@ use RuntimeException;
  * this class performs only the side effects those transitions describe:
  * persisting state, dispatching follow-up jobs, completing the registry,
  * appending ledger entries, and emitting framework events.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 class StepOutcomeHandler
 {

@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Cli\Generator;
 
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class ArazzoGenerator
 {
     public function __construct(private AiClientInterface $aiClient) {}

@@ -12,6 +12,9 @@ use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ExpressionUnresolvedInputRefRule implements Rule
 {
     public function __construct(private readonly ExpressionEngineInterface $engine) {}

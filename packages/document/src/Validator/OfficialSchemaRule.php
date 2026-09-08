@@ -19,6 +19,8 @@ use JsonSchema\Validator as JsonSchemaValidator;
  * Known limitation: workflow `inputs` schemas $ref the full 2020-12
  * metaschema over the network; structural checks for those subtrees are
  * skipped offline (the semantic rules still cover their shape).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class OfficialSchemaRule implements Rule
 {

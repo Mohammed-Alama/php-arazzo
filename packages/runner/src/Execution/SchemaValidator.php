@@ -9,6 +9,9 @@ use cebe\openapi\spec\Schema;
 use DateTime;
 use DateTimeInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class SchemaValidator
 {
     /**

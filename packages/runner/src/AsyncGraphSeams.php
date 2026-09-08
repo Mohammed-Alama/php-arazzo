@@ -21,6 +21,8 @@ use Psr\Log\LoggerInterface;
  * Framework-owned ports and config knobs the async execution graph needs.
  * Nullable expression/open-api/transport ports default to runner-built
  * implementations inside the assembler.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class AsyncGraphSeams
 {

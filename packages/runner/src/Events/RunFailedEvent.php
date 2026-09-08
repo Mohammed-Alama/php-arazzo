@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runner\Events;
 use DateTimeImmutable;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class RunFailedEvent
 {
     public function __construct(

@@ -13,6 +13,8 @@ use Alama\Arazzo\Expression\SymbolTable;
 /**
  * The Step Object `timeout` field is an Arazzo 1.1 addition; it must not
  * appear on documents declaring 1.0.x, and its value must be positive.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class StepTimeoutRequires11Rule implements Rule
 {

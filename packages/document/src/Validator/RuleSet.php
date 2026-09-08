@@ -56,6 +56,9 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class RuleSet
 {
     /**

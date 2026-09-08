@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Expression\Xpath;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 interface XpathEvaluator
 {
     /** @return list<string> Supported version tokens e.g. ['xpath-10']. */

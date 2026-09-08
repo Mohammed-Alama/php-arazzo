@@ -13,6 +13,8 @@ use Alama\Arazzo\Expression\SymbolTable;
  * Enum enforcement happens at parse time; this rule exists so that a stable
  * `source.type_matches` code is reserved and so future non-parser-time checks
  * (e.g. "type: arazzo yet url points to an OpenAPI file") can land here.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class SourceTypeMatchesRule implements Rule
 {

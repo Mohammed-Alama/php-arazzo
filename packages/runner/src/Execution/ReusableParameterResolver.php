@@ -13,6 +13,8 @@ use RuntimeException;
  * Substitutes reusable parameter references ({reference: $components.parameters.x})
  * with the component's declared parameter at execution-prep time, so executors
  * only ever deal with concrete Parameter objects.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ReusableParameterResolver
 {
