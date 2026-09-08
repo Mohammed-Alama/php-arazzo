@@ -28,6 +28,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Durable-execution persistence ports: hot state, ledger, registries,
  * pending correlations, plus the queue/lock transports.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class PersistenceBindings
 {

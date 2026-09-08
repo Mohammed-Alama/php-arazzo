@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 
 // Framework port (kept as a seam): pending correlations persist per deployment (DB table today).
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 interface PendingCorrelationRegistryInterface
 {
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void;

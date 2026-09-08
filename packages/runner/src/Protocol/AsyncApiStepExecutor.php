@@ -26,6 +26,9 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(

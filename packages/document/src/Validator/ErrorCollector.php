@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Document\Validator;
 use Alama\Arazzo\Document\Validator\Data\Error;
 use Alama\Arazzo\Document\Validator\Data\Warning;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class ErrorCollector
 {
     /** @var list<Error> */

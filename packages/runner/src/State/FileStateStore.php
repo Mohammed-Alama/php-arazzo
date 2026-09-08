@@ -13,6 +13,8 @@ use RuntimeException;
  * One JSON document per execution at {dir}/{executionId}.json. TTL is
  * accepted for interface parity but intentionally ignored: a resumed CLI
  * run must find its state even days later.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class FileStateStore implements StateStoreInterface
 {

@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Expression\Evaluation\Condition;
 
 use Alama\Arazzo\Expression\Evaluation\Enum\TokenKind;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class Token
 {
     public function __construct(

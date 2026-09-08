@@ -16,6 +16,8 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 /**
  * Renders Arazzo documents as Mermaid flowcharts and Markdown docs.
  * Pure presentation: no parsing, no execution.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class Renderer
 {

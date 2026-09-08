@@ -15,6 +15,9 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
 {
     public function __construct(

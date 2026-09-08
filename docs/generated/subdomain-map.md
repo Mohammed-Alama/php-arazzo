@@ -18,46 +18,46 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>844 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>754 LOC</small>"]:::supportingDomain
-        S_cli_Generator["cli:Generator<br/><small>105 LOC</small>"]:::supportingDomain
-        S_cli_Renderer["cli:Renderer<br/><small>253 LOC</small>"]:::supportingDomain
-        S_document_Parser["document:Parser<br/><small>1096 LOC</small>"]:::supportingDomain
-        S_document_Resolver["document:Resolver<br/><small>370 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3092 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>765 LOC</small>"]:::supportingDomain
+        S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
+        S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
+        S_document_Parser["document:Parser<br/><small>1123 LOC</small>"]:::supportingDomain
+        S_document_Resolver["document:Resolver<br/><small>406 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3261 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
-        S_contracts_Support["contracts:Support<br/><small>171 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>340 LOC</small>"]:::genericDomain
-        S_laravel_Events["laravel:Events<br/><small>21 LOC</small>"]:::genericDomain
-        S_laravel_Http["laravel:Http<br/><small>161 LOC</small>"]:::genericDomain
-        S_laravel_Lock["laravel:Lock<br/><small>49 LOC</small>"]:::genericDomain
-        S_laravel_Persistence["laravel:Persistence<br/><small>252 LOC</small>"]:::genericDomain
-        S_laravel_Queue["laravel:Queue<br/><small>100 LOC</small>"]:::genericDomain
-        S_laravel_State["laravel:State<br/><small>38 LOC</small>"]:::genericDomain
-        S_laravel_Support["laravel:Support<br/><small>116 LOC</small>"]:::genericDomain
-        S_runner_Events["runner:Events<br/><small>295 LOC</small>"]:::genericDomain
-        S_runner_State["runner:State<br/><small>919 LOC</small>"]:::genericDomain
+        S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>359 LOC</small>"]:::genericDomain
+        S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
+        S_laravel_Http["laravel:Http<br/><small>170 LOC</small>"]:::genericDomain
+        S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
+        S_laravel_Persistence["laravel:Persistence<br/><small>264 LOC</small>"]:::genericDomain
+        S_laravel_Queue["laravel:Queue<br/><small>109 LOC</small>"]:::genericDomain
+        S_laravel_State["laravel:State<br/><small>41 LOC</small>"]:::genericDomain
+        S_laravel_Support["laravel:Support<br/><small>119 LOC</small>"]:::genericDomain
+        S_runner_Events["runner:Events<br/><small>328 LOC</small>"]:::genericDomain
+        S_runner_State["runner:State<br/><small>952 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified["Unclassified"]
-        S_contracts_Dependency["contracts:Dependency<br/><small>328 LOC</small>"]:::unknownDomain
-        S_contracts_Exceptions["contracts:Exceptions<br/><small>28 LOC</small>"]:::unknownDomain
+        S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
+        S_contracts_Exceptions["contracts:Exceptions<br/><small>31 LOC</small>"]:::unknownDomain
         S_contracts_Interfaces["contracts:Interfaces<br/><small>116 LOC</small>"]:::unknownDomain
-        S_document_Normalizer["document:Normalizer<br/><small>588 LOC</small>"]:::unknownDomain
-        S_expression_Ast["expression:Ast<br/><small>194 LOC</small>"]:::unknownDomain
-        S_expression_Data["expression:Data<br/><small>140 LOC</small>"]:::unknownDomain
-        S_expression_Enum["expression:Enum<br/><small>42 LOC</small>"]:::unknownDomain
-        S_expression_Evaluation["expression:Evaluation<br/><small>1211 LOC</small>"]:::unknownDomain
+        S_document_Normalizer["document:Normalizer<br/><small>608 LOC</small>"]:::unknownDomain
+        S_expression_Ast["expression:Ast<br/><small>237 LOC</small>"]:::unknownDomain
+        S_expression_Data["expression:Data<br/><small>143 LOC</small>"]:::unknownDomain
+        S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
+        S_expression_Evaluation["expression:Evaluation<br/><small>1267 LOC</small>"]:::unknownDomain
         S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
-        S_expression_Interfaces["expression:Interfaces<br/><small>67 LOC</small>"]:::unknownDomain
-        S_expression_Xpath["expression:Xpath<br/><small>103 LOC</small>"]:::unknownDomain
-        S_runner_Async["runner:Async<br/><small>494 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>3753 LOC</small>"]:::unknownDomain
-        S_runner_Infrastructure["runner:Infrastructure<br/><small>160 LOC</small>"]:::unknownDomain
-        S_runner_Jobs["runner:Jobs<br/><small>34 LOC</small>"]:::unknownDomain
-        S_runner_Policy["runner:Policy<br/><small>96 LOC</small>"]:::unknownDomain
-        S_runner_Protocol["runner:Protocol<br/><small>545 LOC</small>"]:::unknownDomain
-        S_runner_Telemetry["runner:Telemetry<br/><small>278 LOC</small>"]:::unknownDomain
+        S_expression_Interfaces["expression:Interfaces<br/><small>73 LOC</small>"]:::unknownDomain
+        S_expression_Xpath["expression:Xpath<br/><small>109 LOC</small>"]:::unknownDomain
+        S_runner_Async["runner:Async<br/><small>506 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>3860 LOC</small>"]:::unknownDomain
+        S_runner_Infrastructure["runner:Infrastructure<br/><small>172 LOC</small>"]:::unknownDomain
+        S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
+        S_runner_Policy["runner:Policy<br/><small>102 LOC</small>"]:::unknownDomain
+        S_runner_Protocol["runner:Protocol<br/><small>557 LOC</small>"]:::unknownDomain
+        S_runner_Telemetry["runner:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -68,9 +68,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 844 | 0 | 5% |
-| Supporting | 6 | 5,670 | 0 | 32% |
-| Generic subdomain | 12 | 2,052 | 1,077 | 18% |
-| Unclassified | 18 | 8,232 | 0 | 46% |
+| Supporting | 6 | 5,921 | 0 | 32% |
+| Generic subdomain | 12 | 2,132 | 1,138 | 18% |
+| Unclassified | 18 | 8,539 | 0 | 46% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

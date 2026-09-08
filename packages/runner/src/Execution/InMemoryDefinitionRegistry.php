@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Runner\State\Interfaces\WritableDefinitionRegistryInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class InMemoryDefinitionRegistry implements WritableDefinitionRegistryInterface
 {
     /** @var array<string, ArazzoDocument> */

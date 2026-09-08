@@ -11,6 +11,9 @@ use cebe\openapi\ReferenceContext;
 use cebe\openapi\spec\OpenApi;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class OpenApiDocumentLoader
 {
     /** @var array<string, OpenApi> */

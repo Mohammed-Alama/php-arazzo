@@ -19,6 +19,8 @@ use Illuminate\Contracts\Container\Container;
  * Execution pipeline: one lazily-sampled AsyncExecutionGraph, with the
  * individual nodes re-exported as singleton aliases. WorkflowEngine keeps
  * a config-live binding so retry config re-reads on forget+resolve.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ExecutionBindings
 {

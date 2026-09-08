@@ -170,7 +170,7 @@ function hasInternalDocblock(string $content): bool
     if (!str_contains($content, '@internal')) {
         return false;
     }
-    if (preg_match('/^(?:abstract\s+|final\s+)*(?:class|interface|enum|trait)\s+\w+/m', $content, $m, PREG_OFFSET_CAPTURE) !== 1) {
+    if (preg_match('/^(?:abstract\s+|final\s+|readonly\s+)*(?:class|interface|enum|trait)\s+\w+/m', $content, $m, PREG_OFFSET_CAPTURE) !== 1) {
         return false;
     }
     $lead = substr($content, 0, $m[0][1]);
@@ -277,7 +277,7 @@ final class Scanner
         preg_match('/^namespace\s+([^;]+);/m', $content, $nsMatches);
         $namespace = trim($nsMatches[1] ?? $namespacePrefix);
 
-        preg_match('/^(?:abstract|final)?\s*(?:class|interface|enum|trait)\s+(\w+)/m', $content, $classMatches);
+        preg_match('/^(?:abstract\s+|final\s+|readonly\s+)*(?:class|interface|enum|trait)\s+(\w+)/m', $content, $classMatches);
         $className = $classMatches[1] ?? basename($pathname, '.php');
 
         // module = first directory under src/ (or "_" for src root)

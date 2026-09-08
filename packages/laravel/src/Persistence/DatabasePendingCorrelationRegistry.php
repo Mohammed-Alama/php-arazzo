@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Illuminate\Database\ConnectionInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryInterface
 {
     public function __construct(

@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Document\Normalizer;
 use Alama\Arazzo\Document\Normalizer\Interfaces\OpenApiNormalizerInterface;
 use InvalidArgumentException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class OpenApi30Normalizer implements OpenApiNormalizerInterface
 {
     /**

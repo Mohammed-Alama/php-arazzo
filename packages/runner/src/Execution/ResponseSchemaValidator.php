@@ -14,6 +14,9 @@ use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class ResponseSchemaValidator implements ResponseValidatorInterface
 {
     public function __construct(

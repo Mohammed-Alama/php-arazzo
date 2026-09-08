@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class Validator
 {
     public function __construct(

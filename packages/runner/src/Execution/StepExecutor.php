@@ -18,6 +18,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class StepExecutor
 {
     /** @phpstan-ignore property.onlyWritten */

@@ -11,6 +11,9 @@ use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Runner\Jobs\ResumeCorrelationJob;
 use Illuminate\Support\Facades\Queue;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class LaravelQueueDriver implements QueueDriverInterface
 {
     public function dispatch(object $job, int $delaySeconds = 0): void

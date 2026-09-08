@@ -12,6 +12,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class RunResumeCorrelationJob implements ShouldQueue
 {
     use Dispatchable;

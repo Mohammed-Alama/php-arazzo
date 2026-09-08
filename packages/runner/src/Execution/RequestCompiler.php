@@ -19,6 +19,8 @@ use Psr\Http\Message\ResponseInterface;
  * "response -> canonical record", consumed by every HTTP pipeline
  * (sync StepExecutor and queued HttpStepExecutor) so request shapes
  * cannot drift between adapters.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class RequestCompiler
 {

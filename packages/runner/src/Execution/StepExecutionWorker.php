@@ -42,6 +42,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
 use Throwable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class StepExecutionWorker
 {
     private EventDispatcherInterface $events;

@@ -13,7 +13,10 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-/** AI generator stack (dormant license gate lives elsewhere). */
+/** AI generator stack (dormant license gate lives elsewhere).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class GeneratorBindings
 {
     public static function register(Container $app): void

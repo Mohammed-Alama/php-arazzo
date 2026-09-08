@@ -15,6 +15,9 @@ use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class SubWorkflowInvoker
 {
     public function __construct(

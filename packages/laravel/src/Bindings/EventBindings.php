@@ -10,7 +10,10 @@ use Alama\Arazzo\Runner\Events\Listener\LedgerEventListener;
 use Illuminate\Contracts\Container\Container;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-/** PSR-14 event bus: in-memory dispatcher bridged to the durable ledger. */
+/** PSR-14 event bus: in-memory dispatcher bridged to the durable ledger.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class EventBindings
 {
     public static function register(Container $app): void

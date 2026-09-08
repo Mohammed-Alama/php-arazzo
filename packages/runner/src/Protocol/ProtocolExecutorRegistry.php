@@ -13,6 +13,8 @@ use Alama\Arazzo\Runner\Execution\Interfaces\ProtocolExecutorRegistryInterface;
  * Chain-of-responsibility over registered protocol executors; the first
  * executor whose supports() returns true wins. Registration order is
  * significant: more specific executors must register before generic ones.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ProtocolExecutorRegistry implements ProtocolExecutorRegistryInterface
 {

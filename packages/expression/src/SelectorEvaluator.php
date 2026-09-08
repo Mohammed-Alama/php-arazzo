@@ -12,6 +12,9 @@ use Alama\Arazzo\Expression\Data\EvaluationInput;
 use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 class SelectorEvaluator
 {
     public function __construct(

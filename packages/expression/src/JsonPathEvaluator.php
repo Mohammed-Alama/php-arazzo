@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Expression;
 
 use Flow\JSONPath\JSONPath;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 class JsonPathEvaluator
 {
     /**

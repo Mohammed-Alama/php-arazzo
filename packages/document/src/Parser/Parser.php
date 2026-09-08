@@ -35,6 +35,9 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use InvalidArgumentException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class Parser
 {
     public function parse(RawDocument $raw): ArazzoDocument

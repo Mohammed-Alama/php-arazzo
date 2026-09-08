@@ -9,6 +9,9 @@ use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Document\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class SourceRegistry implements SourceResolver
 {
     /** @var array<string, SourceDocument> */

@@ -17,6 +17,9 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {
     public function __construct(

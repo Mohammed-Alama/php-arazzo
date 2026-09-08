@@ -13,6 +13,8 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
  * Applies workflow-level parameters to a step before execution. A step-level
  * parameter with the same name and location overrides the workflow one, but
  * workflow parameters cannot be removed by steps (Arazzo Workflow Object).
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class StepParameterMerger
 {

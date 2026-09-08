@@ -10,6 +10,9 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use RuntimeException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class OpenAiClient implements AiClientInterface
 {
     public function __construct(

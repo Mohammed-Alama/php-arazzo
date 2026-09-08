@@ -20,6 +20,8 @@ use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
  *
  * Shared by every protocol executor so replacement semantics stay identical
  * across HTTP, AsyncAPI and sub-workflow steps.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class PayloadReplacer
 {

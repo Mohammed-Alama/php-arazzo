@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Document\Resolver\Fetchers;
 use Alama\Arazzo\Document\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceFetcher;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class LocalFetcher implements SourceFetcher
 {
     public function fetch(string $urlOrPath, string $basePath): string

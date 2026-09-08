@@ -12,6 +12,9 @@ use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Expression\SymbolTable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class StepParameterInValidRule implements Rule
 {
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void

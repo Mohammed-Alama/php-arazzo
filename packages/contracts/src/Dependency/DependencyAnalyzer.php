@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 
+/**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ */
 class DependencyAnalyzer
 {
     public function __construct(

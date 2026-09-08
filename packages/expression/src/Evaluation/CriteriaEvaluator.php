@@ -19,6 +19,9 @@ use Alama\Arazzo\Expression\JsonPathEvaluator;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class CriteriaEvaluator implements CriteriaEvaluatorInterface
 {
     private ConditionEvaluator $conditionEvaluator;

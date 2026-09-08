@@ -12,6 +12,9 @@ use Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException;
 use cebe\openapi\spec\Operation;
 use RuntimeException;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class OpenApiOperationResolver
 {
     public function __construct(

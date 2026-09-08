@@ -10,6 +10,9 @@ use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
 {
     public function __construct(

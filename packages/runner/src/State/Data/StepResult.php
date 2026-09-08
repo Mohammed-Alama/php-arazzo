@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Runner\State\Data;
 
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final readonly class StepResult
 {
     /**

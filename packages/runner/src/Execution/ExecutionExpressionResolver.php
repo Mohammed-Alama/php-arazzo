@@ -22,6 +22,8 @@ use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
  * validation) with pure expression evaluation. Building that resolver here,
  * from the expression public face plus the runner's own extractor and
  * validator, keeps the runner free of expression internals.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ExecutionExpressionResolver implements ExpressionResolverInterface
 {

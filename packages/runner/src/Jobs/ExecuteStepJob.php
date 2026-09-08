@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runner\Jobs;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class ExecuteStepJob
 {
     public function __construct(

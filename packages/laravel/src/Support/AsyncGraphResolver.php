@@ -21,7 +21,10 @@ use Illuminate\Contracts\Container\Container;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
 
-/** Builds AsyncGraphSeams from the current container state and calls the runner builder. */
+/** Builds AsyncGraphSeams from the current container state and calls the runner builder.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class AsyncGraphResolver
 {
     public static function resolve(Container $app): AsyncExecutionGraph

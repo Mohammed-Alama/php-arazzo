@@ -27,6 +27,8 @@ use JsonSchema\Validator;
  *
  * Diagnostics are stable-coded (`preflight.*`), carry severity and a
  * pointer that embeds the workflow/step location.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class PreflightValidator
 {

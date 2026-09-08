@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Runner\Events\Interfaces;
 
 // Framework port (kept as a seam): durable event append targets differ per deployment (DB table today).
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 interface EventLedgerInterface
 {
     /**

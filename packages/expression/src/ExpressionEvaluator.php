@@ -22,6 +22,9 @@ use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 class ExpressionEvaluator implements ExpressionEvaluatorInterface
 {
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed

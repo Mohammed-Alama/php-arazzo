@@ -20,6 +20,8 @@ use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
  * Executes steps that target a nested workflow via workflowId. The child
  * workflow runs in its own child context; its outputs are surfaced as the
  * step's outputs so parent expressions like {$steps.s.outputs.x} resolve.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
 {

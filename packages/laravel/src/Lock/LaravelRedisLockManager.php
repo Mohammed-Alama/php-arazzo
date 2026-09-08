@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Illuminate\Contracts\Cache\Lock;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class LaravelRedisLockManager implements LockManagerInterface
 {
     /** @var array<string, Lock> locks owned by this process via tryAcquire */

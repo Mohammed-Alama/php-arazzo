@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 
+/**
+ * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ */
 class StringInterpolator
 {
     public function __construct(private ExpressionResolverInterface $resolver) {}

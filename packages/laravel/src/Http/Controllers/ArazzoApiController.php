@@ -12,6 +12,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class ArazzoApiController extends Controller
 {
     public function endpoints(Request $request, SourceResolver $resolver): JsonResponse

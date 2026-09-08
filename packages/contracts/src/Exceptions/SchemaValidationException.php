@@ -6,6 +6,9 @@ namespace Alama\Arazzo\Contracts\Exceptions;
 
 use RuntimeException;
 
+/**
+ * @internal stays out of the advertised contract; used internally by the contracts package.
+ */
 final class SchemaValidationException extends RuntimeException
 {
     /**

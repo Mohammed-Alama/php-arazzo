@@ -37,6 +37,8 @@ use RuntimeException;
  * Post-transition side effects (next-step dispatch, terminal completion)
  * live inside the worker itself; only webhook-driven correlation resume
  * needs the richer Laravel handler stack.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class CliRunner
 {

@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runner\Infrastructure;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 final class PessimisticLockStrategy implements LockStrategyInterface
 {
     public function __construct(

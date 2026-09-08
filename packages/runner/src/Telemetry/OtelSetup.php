@@ -39,6 +39,8 @@ use OpenTelemetry\SDK\Trace\TracerProviderBuilder;
  *  - ARAZZO_OTEL_EXPORTER       one of the names above (default 'none')
  *  - ARAZZO_OTEL_FILE           target path for the 'file' exporter
  *  - OTEL_EXPORTER_OTLP_ENDPOINT base endpoint for the 'otlp' exporter
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class OtelSetup
 {

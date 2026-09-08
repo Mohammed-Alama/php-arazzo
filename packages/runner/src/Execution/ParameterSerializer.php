@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Document\Parser\Exceptions\UnsupportedSerializationStyleException;
 use Stringable;
 
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
 class ParameterSerializer
 {
     /**
