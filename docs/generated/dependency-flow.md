@@ -60,7 +60,6 @@ document-root,document-Parser,6
 document-root,document-Resolver,5
 document-root,document-Validator,5
 document-root,expression-root,2
-expression-Ast,contracts-Spec,1
 expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
 expression-Data,expression-Interfaces,1

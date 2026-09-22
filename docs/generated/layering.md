@@ -117,7 +117,6 @@ flowchart TB
     M_document__ --> M_document_Resolver
     M_document__ --> M_document_Validator
     M_document__ --> M_expression__
-    M_expression_Ast --> M_contracts_Spec
     M_expression_Data --> M_contracts_Spec
     M_expression_Data --> M_expression_Enum
     M_expression_Data --> M_expression_Interfaces
@@ -265,7 +264,7 @@ flowchart TB
 | `cli` | `runner` | 16 |
 | `document` | `contracts` | 146 |
 | `document` | `expression` | 76 |
-| `expression` | `contracts` | 72 |
+| `expression` | `contracts` | 71 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 18 |

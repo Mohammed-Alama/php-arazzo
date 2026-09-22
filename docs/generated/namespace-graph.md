@@ -55,7 +55,6 @@ flowchart LR
     contracts_Interfaces --> contracts_State
     contracts_Interfaces --> contracts_Exceptions
     contracts_State --> contracts_Spec
-    expression_Ast --> contracts_Spec
     expression_Data --> contracts_Spec
     expression_Data --> expression_Interfaces
     expression_Data --> expression_Enum

@@ -33,7 +33,7 @@ quadrantChart
     document/Parser: [0.25, 1]
     document/Resolver: [0.25, 1]
     document/Validator: [0.615, 1]
-    expression/Ast: [0.5, 0.333]
+    expression/Ast: [0, 0.333]
     expression/Data: [0.6, 0.6]
     expression/Enum: [0, 1]
     expression/Evaluation: [0.875, 1]
@@ -74,7 +74,7 @@ quadrantChart
 | `document/Parser` | 0.25 | 35 | 11 | 100% |
 | `document/Resolver` | 0.25 | 21 | 12 | 100% |
 | `document/Validator` | 0.61 | 70 | 62 | 100% |
-| `expression/Ast` | 0.50 | 5 | 15 | 33% |
+| `expression/Ast` | 0.00 | 5 | 15 | 33% |
 | `expression/Data` | 0.60 | 3 | 5 | 60% |
 | `expression/Enum` | 0.00 | 3 | 2 | 100% |
 | `expression/Evaluation` | 0.88 | 46 | 20 | 100% |

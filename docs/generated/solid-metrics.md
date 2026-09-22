@@ -37,7 +37,7 @@ quadrantChart
     document/Resolver: [0.25, 0.25]
     document/Validator: [0.615, 0.016]
     document/_: [0.5, 0.5]
-    expression/Ast: [0.5, 0]
+    expression/Ast: [0, 0]
     expression/Data: [0.6, 0]
     expression/Enum: [0, 0]
     expression/Evaluation: [0.875, 0.1]

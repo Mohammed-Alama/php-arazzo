@@ -17,7 +17,7 @@ targets. Regenerated before every commit.
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 8 | 108 | 14 | 3 | 0.18 |  |
-| `contracts:Spec` | 38 | 806 | 25 | 0 | 0.00 |  |
+| `contracts:Spec` | 38 | 806 | 24 | 0 | 0.00 |  |
 | `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Normalizer` | 9 | 599 | 4 | 3 | 0.43 |  |
@@ -25,7 +25,7 @@ targets. Regenerated before every commit.
 | `document:Resolver` | 12 | 394 | 6 | 2 | 0.25 |  |
 | `document:Validator` | 62 | 3199 | 5 | 8 | 0.62 |  |
 | `(document root)` | 2 | 220 | 6 | 6 | 0.50 |  |
-| `expression:Ast` | 15 | 222 | 1 | 1 | 0.50 |  |
+| `expression:Ast` | 15 | 220 | 1 | 0 | 0.00 |  |
 | `expression:Data` | 5 | 138 | 2 | 3 | 0.60 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Evaluation` | 20 | 1247 | 1 | 7 | 0.88 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 281 | 4 | 9 | 0.69 |  |
 
-Total cross-module edges: **919**
+Total cross-module edges: **918**
 
 ## Most entangled module pairs
 
