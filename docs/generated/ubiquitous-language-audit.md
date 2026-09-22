@@ -40,19 +40,20 @@ Evans' first question: does the code speak one language?
 
 ### state vs status
 
-- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 4 more (8 types)
+- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 5 more (9 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
 - **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 9 more (13 types)
+- **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
 ### workflow vs process vs flow
 
 - **Flow**: `RunControlFlow` (1 types)
 - **Process**: `InProcessExecutionRegistry` (1 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 22 more (26 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 23 more (27 types)
 
 ### render vs generate
 

@@ -46,6 +46,7 @@ flowchart LR
     I_StateStoreInterface["StateStoreInterface<br/><small>runner:State</small>"]:::contract
     I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WorkflowContextInterface["WorkflowContextInterface<br/><small>contracts:Spec</small>"]:::contract
+    I_WorkflowStateRepositoryInterface["WorkflowStateRepositoryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>expression:Xpath</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>document:Parser</small>"]:::contract
@@ -268,6 +269,7 @@ flowchart LR
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
     N_SourceNormalizerInterface["no implementation found"]:::orphan --> I_SourceNormalizerInterface
     N_SourceNormalizerRegistryInterface["no implementation found"]:::orphan --> I_SourceNormalizerRegistryInterface
+    N_WorkflowStateRepositoryInterface["no implementation found"]:::orphan --> I_WorkflowStateRepositoryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

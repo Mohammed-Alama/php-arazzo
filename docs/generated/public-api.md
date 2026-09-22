@@ -66,6 +66,11 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`
 
+#### `WorkflowStateRepositoryInterface` interface
+- `public function delete(string $executionId): void;`
+- `public function load(string $executionId): ?WorkflowContextInterface;`
+- `public function save(string $executionId, WorkflowContextInterface $state): void;`
+
 ### `Alama\Arazzo\Contracts\Spec`
 
 #### `ArazzoDocument` class

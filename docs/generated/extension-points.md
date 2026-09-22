@@ -125,3 +125,4 @@ Declared but nothing in src implements them — candidates for removal or for a 
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
 - `SourceNormalizerInterface` <small>Interfaces</small>
 - `SourceNormalizerRegistryInterface` <small>Interfaces</small>
+- `WorkflowStateRepositoryInterface` <small>Interfaces</small>

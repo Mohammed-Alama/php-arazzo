@@ -16,7 +16,7 @@ targets. Regenerated before every commit.
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 15 | 231 | 14 | 3 | 0.18 |  |
+| `contracts:Interfaces` | 16 | 251 | 14 | 3 | 0.18 |  |
 | `contracts:Spec` | 39 | 828 | 24 | 0 | 0.00 |  |
 | `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 281 | 4 | 9 | 0.69 |  |
 
-Total cross-module edges: **932**
+Total cross-module edges: **933**
 
 ## Most entangled module pairs
 
@@ -66,8 +66,8 @@ Total cross-module edges: **932**
 | `document:Parser` → `contracts:Spec` | 30 |
 | `(expression root)` → `contracts:Spec` | 26 |
 | `expression:Evaluation` → `contracts:Spec` | 26 |
+| `contracts:Interfaces` → `contracts:Spec` | 21 |
 | `runner:Execution` → `runner:Events` | 21 |
-| `contracts:Interfaces` → `contracts:Spec` | 20 |
 | `runner:Protocol` → `contracts:Spec` | 20 |
 | `runner:Execution` → `runner:State` | 15 |
 | `runner:Execution` → `contracts:State` | 14 |
