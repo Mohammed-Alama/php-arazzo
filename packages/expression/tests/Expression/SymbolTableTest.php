@@ -10,17 +10,19 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Expression\SymbolTable;
 
 it('builds symbol table from document', function (): void {
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'fetch',
-        description: null, operationId: 'op', operationPath: null, workflowId: null,
-        parameters: [], requestBody: null, successCriteria: [],
-        onSuccess: [], onFailure: [],
-        outputs: ['user' => new Expression('{$response.body}')],
+        description: null,
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['user' => new Expression('{$response.body}')]),
+        operationId: 'op',
     );
     $wf = new Workflow(
         workflowId: 'main',

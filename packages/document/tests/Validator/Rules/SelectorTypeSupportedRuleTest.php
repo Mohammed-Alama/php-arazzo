@@ -12,7 +12,9 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\Selector;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\SelectorTypeSupportedRule;
@@ -25,7 +27,7 @@ function docWithOutputSelector(Selector $s, SpecVersion $sv = SpecVersion::V1_1)
         info: new Info('t', null, null, '1'),
         sourceDescriptions: [],
         workflows: [new Workflow('w', null, null, null, [], [
-            new Step('s', null, 'op', null, null, [], null, [], [], [], ['id' => $s]),
+            StepFactory::http('s', null, new StepFlow(), new StepIo(outputs: ['id' => $s]), operationId: 'op'),
         ], [], [], [], [])],
         components: new Components([], [], [], []),
         specificationExtensions: [],
@@ -70,7 +72,15 @@ function docWithVariousSelectors(Selector $s, SpecVersion $sv = SpecVersion::V1_
         info: new Info('t', null, null, '1'),
         sourceDescriptions: [],
         workflows: [new Workflow('w', null, null, null, [], [
-            new Step('s', null, 'op', null, null, [new Parameter('p2', ParameterIn::Header, $s)], new RequestBody(null, null, [new PayloadReplacement('/a', $s)]), [], [], [], []),
+            StepFactory::http(
+                's', null,
+                new StepFlow(),
+                new StepIo(
+                    parameters: [new Parameter('p2', ParameterIn::Header, $s)],
+                    requestBody: new RequestBody(null, null, [new PayloadReplacement('/a', $s)]),
+                ),
+                operationId: 'op',
+            ),
         ], [], [], [], [new Parameter('p', ParameterIn::Header, $s)])],
         components: new Components([], [
             'p' => new Parameter('p3', ParameterIn::Header, $s),

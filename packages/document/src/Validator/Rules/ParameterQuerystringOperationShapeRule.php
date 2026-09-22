@@ -25,7 +25,7 @@ final class ParameterQuerystringOperationShapeRule implements Rule
 
         foreach ($doc->workflows as $wi => $wf) {
             foreach ($wf->steps as $si => $step) {
-                foreach ($step->parameters as $pi => $param) {
+                foreach ($step->io->parameters as $pi => $param) {
                     if ($param instanceof Reusable) {
                         continue;
                     }

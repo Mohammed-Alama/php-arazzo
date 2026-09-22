@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 
 /**
@@ -25,7 +26,7 @@ final class StepParameterMerger
         }
 
         $merged = $workflow->parameters;
-        foreach ($step->parameters as $stepParam) {
+        foreach ($step->io->parameters as $stepParam) {
             $replaced = false;
             foreach ($merged as $i => $base) {
                 if (self::sameTarget($base, $stepParam)) {
@@ -44,22 +45,14 @@ final class StepParameterMerger
         return new Step(
             stepId: $step->stepId,
             description: $step->description,
-            operationId: $step->operationId,
-            operationPath: $step->operationPath,
-            workflowId: $step->workflowId,
-            parameters: $merged,
-            requestBody: $step->requestBody,
-            successCriteria: $step->successCriteria,
-            onSuccess: $step->onSuccess,
-            onFailure: $step->onFailure,
-            outputs: $step->outputs,
-            dependsOn: $step->dependsOn,
-            action: $step->action,
-            channelPath: $step->channelPath,
-            correlationId: $step->correlationId,
-            strictValidation: $step->strictValidation,
-            idempotencyKey: $step->idempotencyKey,
-            idempotencyHeader: $step->idempotencyHeader,
+            target: $step->target,
+            flow: $step->flow,
+            io: new StepIo(
+                parameters: $merged,
+                requestBody: $step->io->requestBody,
+                successCriteria: $step->io->successCriteria,
+                outputs: $step->io->outputs,
+            ),
         );
     }
 

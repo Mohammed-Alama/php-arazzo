@@ -12,7 +12,9 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\Support\ExpressionSite;
@@ -26,13 +28,16 @@ it('walks every expression context', function (): void {
         [new PayloadReplacement('/t', new Expression('{$inputs.y}'))],
     );
     $crit = new SuccessCriterion('{$inputs.ctx}', '{$inputs.cond}', null);
-    $step = new Step(
-        's', null, 'op', null, null,
-        [new Parameter('p', ParameterIn::Query, new Expression('{$inputs.p}'))],
-        $body,
-        [$crit],
-        [], [],
-        ['out' => new Expression('{$inputs.o}')],
+    $step = StepFactory::http(
+        's', null,
+        new StepFlow(),
+        new StepIo(
+            parameters: [new Parameter('p', ParameterIn::Query, new Expression('{$inputs.p}'))],
+            requestBody: $body,
+            successCriteria: [$crit],
+            outputs: ['out' => new Expression('{$inputs.o}')],
+        ),
+        operationId: 'op',
     );
     $wf = new Workflow(
         'w', null, null,
@@ -60,12 +65,15 @@ it('walks every expression context', function (): void {
 
 it('skips non-Expression values', function (): void {
     $body = new RequestBody(null, 'literal', [new PayloadReplacement('/t', 'literal')]);
-    $step = new Step(
-        's', null, 'op', null, null,
-        [new Parameter('p', ParameterIn::Query, 'literal')],
-        $body,
-        [new SuccessCriterion('plain-context', 'plain-condition', null)],
-        [], [], [],
+    $step = StepFactory::http(
+        's', null,
+        new StepFlow(),
+        new StepIo(
+            parameters: [new Parameter('p', ParameterIn::Query, 'literal')],
+            requestBody: $body,
+            successCriteria: [new SuccessCriterion('plain-context', 'plain-condition', null)],
+        ),
+        operationId: 'op',
     );
     $wf = new Workflow(
         'w', null, null, null, [], [$step], [], [], [],

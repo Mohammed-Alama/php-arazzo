@@ -42,15 +42,15 @@ final class SuspensionHandler
         $this->executionRegistry->start($executionId, $newContext->getDefinitionId(), $workflow->workflowId);
         $this->eventLedger->append($executionId, 'step.suspended', ['stepId' => $step->stepId]);
 
-        if ($step->action === 'receive' && $step->correlationId !== null && $step->channelPath !== null) {
-            $evaluated = $this->expressions->evaluate($step->correlationId, $context, $step->stepId);
+        if ($step->target->action === 'receive' && $step->target->correlationId !== null && $step->target->channelPath !== null) {
+            $evaluated = $this->expressions->evaluate($step->target->correlationId, $context, $step->stepId);
             $correlationIdValue = is_scalar($evaluated) ? (string) $evaluated : '';
             $this->events->dispatch(new CorrelationPendingEvent(
                 $executionId,
                 $context->getWorkflowId() ?? '',
                 $step->stepId,
                 $correlationIdValue,
-                $step->channelPath,
+                $step->target->channelPath,
                 new DateTimeImmutable(),
             ));
         }

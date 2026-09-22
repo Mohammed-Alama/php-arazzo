@@ -6,6 +6,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -58,7 +61,7 @@ function captureEvents(SimpleEventDispatcher $d, array &$log): void
 }
 
 it('dispatches happy-path sequence RunStartedEvent -> StepStartedEvent -> StepExecutedEvent -> RunCompletedEvent', function () {
-    $step = new Step('A', null, 'op', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('A', null, new StepFlow(), new StepIo(), 'op');
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
     $d = new SimpleEventDispatcher();
@@ -71,7 +74,7 @@ it('dispatches happy-path sequence RunStartedEvent -> StepStartedEvent -> StepEx
 });
 
 it('dispatches StepFailedEvent + RunFailedEvent on step failure', function () {
-    $step = new Step('A', null, 'op', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('A', null, new StepFlow(), new StepIo(), 'op');
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
     $d = new SimpleEventDispatcher();
@@ -84,7 +87,7 @@ it('dispatches StepFailedEvent + RunFailedEvent on step failure', function () {
 });
 
 it('dispatches RunFailedEvent and rethrows on caught exception', function () {
-    $step = new Step('A', null, 'op', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('A', null, new StepFlow(), new StepIo(), 'op');
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
     $d = new SimpleEventDispatcher();

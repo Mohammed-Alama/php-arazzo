@@ -13,6 +13,9 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -152,7 +155,7 @@ function createStepOutcomeEventsHarness(): array
 
 it('dispatches StepRetriedEvent when RetryAction fires', function () {
     $retryAction = new RetryAction('retryOp', 0, 3, null, null, []);
-    $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [$retryAction], []);
+    $step = StepFactory::http('step1', null, new StepFlow(onFailure: [$retryAction]), new StepIo(), 'op1');
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
         arazzo: '1.0.0',
@@ -180,7 +183,7 @@ it('dispatches StepRetriedEvent when RetryAction fires', function () {
 
 it('dispatches RunCompletedEvent on SuccessEndAction terminal', function () {
     $endAction = new SuccessEndAction('endSuccess', []);
-    $step = new Step('step1', null, 'op1', null, null, [], null, [], [$endAction], [], ['token' => 'abc12345']);
+    $step = StepFactory::http('step1', null, new StepFlow(onSuccess: [$endAction]), new StepIo(outputs: ['token' => 'abc12345']), 'op1');
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
         arazzo: '1.0.0',
@@ -206,7 +209,7 @@ it('dispatches RunCompletedEvent on SuccessEndAction terminal', function () {
 
 it('dispatches RunFailedEvent on FailureEndAction terminal', function () {
     $endAction = new FailureEndAction('endFailure', []);
-    $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [$endAction], []);
+    $step = StepFactory::http('step1', null, new StepFlow(onFailure: [$endAction]), new StepIo(), 'op1');
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
         arazzo: '1.0.0',

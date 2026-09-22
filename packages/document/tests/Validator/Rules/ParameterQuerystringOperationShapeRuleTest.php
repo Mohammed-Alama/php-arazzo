@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
@@ -16,10 +18,11 @@ use Alama\Arazzo\Expression\SymbolTable;
 
 function docWithQuerystring(string $operationId, SpecVersion $sv = SpecVersion::V1_1): ArazzoDocument
 {
-    $step = new Step(
-        's', null, $operationId, null, null,
-        [new Parameter('q', ParameterIn::Querystring, 'x')],
-        null, [], [], [], [],
+    $step = StepFactory::http(
+        's', null,
+        new StepFlow(),
+        new StepIo(parameters: [new Parameter('q', ParameterIn::Querystring, 'x')]),
+        operationId: $operationId,
     );
 
     return new ArazzoDocument(

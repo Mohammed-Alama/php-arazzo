@@ -26,27 +26,27 @@ final class ImplicitDependencies
     {
         $fragments = [];
 
-        foreach ($step->parameters as $parameter) {
+        foreach ($step->io->parameters as $parameter) {
             $fragments[] = $parameter->value;
         }
 
-        if ($step->requestBody !== null) {
-            $fragments[] = $step->requestBody->payload;
-            foreach ($step->requestBody->replacements as $replacement) {
+        if ($step->io->requestBody !== null) {
+            $fragments[] = $step->io->requestBody->payload;
+            foreach ($step->io->requestBody->replacements as $replacement) {
                 $fragments[] = $replacement->value;
             }
         }
 
-        foreach ($step->successCriteria as $criterion) {
+        foreach ($step->io->successCriteria as $criterion) {
             $fragments[] = $criterion->context;
             $fragments[] = $criterion->condition;
         }
 
-        if ($step->correlationId !== null) {
-            $fragments[] = $step->correlationId;
+        if ($step->target->correlationId !== null) {
+            $fragments[] = $step->target->correlationId;
         }
 
-        foreach ($step->outputs as $expression) {
+        foreach ($step->io->outputs as $expression) {
             if ($expression instanceof Expression || $expression instanceof Selector) {
                 $fragments[] = $expression;
             }

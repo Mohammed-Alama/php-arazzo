@@ -34,7 +34,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
-        return $step->action === null;
+        return $step->target->action === null;
     }
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
@@ -58,7 +58,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
                     return $request;
                 },
-                $step->timeout !== null ? $step->timeout / 1000 : null,
+                $step->flow->timeout !== null ? $step->flow->timeout / 1000 : null,
             );
         } catch (\Throwable $e) {
             // Transport-level failures become a synthetic 500 response so
@@ -105,6 +105,6 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
     private function shouldValidateSchema(Step $step): bool
     {
-        return $step->strictValidation ?? $this->strictValidationDefault;
+        return $step->flow->strictValidation ?? $this->strictValidationDefault;
     }
 }

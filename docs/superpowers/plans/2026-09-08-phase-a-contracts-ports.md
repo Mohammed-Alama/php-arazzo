@@ -1,6 +1,6 @@
 # Phase A: Contracts Ports Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Land the zero-dependency contract SPI faces — `PluginInterface`, `OperationExecutorPluginInterface`, the evaluator/normalizer/replacer plugin interfaces, `StepState`, `WorkflowStateRepositoryInterface`, `ResponseTransferInterface` + generic `ResponseTransfer`, and the **breaking `Step` model decomposition** (`StepTarget`, `StepFlow`, `StepIo`, `StepFactory`) — in `alama/arazzo-contracts`, deprecating `StepProtocolExecutorInterface`.
 
@@ -40,7 +40,7 @@ The root of the plugin dispatcher (spec E1). Every protocol/criteria/expression 
 - Consumes: existing `Step`, `ArazzoDocument`, `StepExecutionOutcome` (all `Alama\Arazzo\Contracts\Spec`), `WorkflowContext` (`Alama\Arazzo\Contracts\State`).
 - Produces: `PluginInterface::name(): string`, `PluginInterface::priority(): int`; `OperationExecutorPluginInterface extends PluginInterface` with `supports(Step, ArazzoDocument): bool` and `execute(Step, WorkflowContext, ArazzoDocument, string): StepExecutionOutcome`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Open `packages/contracts/tests/Contracts/SharedContractsTest.php` and replace its content with:
 
@@ -75,13 +75,13 @@ it('declares the plugin base faces')
     ->toBeTrue();
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter "plugin base faces"` (repo root)
 
 Expected: FAIL with "interface_exists failed" for `PluginInterface::class`.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `packages/contracts/src/Interfaces/PluginInterface.php`:
 
@@ -141,13 +141,13 @@ Modify `packages/contracts/src/Interfaces/StepProtocolExecutorInterface.php` —
 interface StepProtocolExecutorInterface
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS (existing 4 assertions + 3 new).
 
-- [ ] **Step 5: Verify the deprecation does not trip PHPStan**
+- [x] **Step 5: Verify the deprecation does not trip PHPStan**
 
 The interface itself being `@deprecated` must not be flagged when only *declared* (deprecation rules flag *usage*, not declarations). Run:
 
@@ -155,7 +155,7 @@ The interface itself being `@deprecated` must not be flagged when only *declared
 
 Expected: PASS (0 errors).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/contracts/src/Interfaces/PluginInterface.php packages/contracts/src/Interfaces/OperationExecutorPluginInterface.php packages/contracts/src/Interfaces/StepProtocolExecutorInterface.php packages/contracts/tests/Contracts/SharedContractsTest.php
@@ -178,7 +178,7 @@ The three eval-side plugin faces (spec E2/E3, contract block lines 202-218). The
 - Consumes: `PluginInterface` (A1), `SuccessCriterion`, `CriterionType`, `Step`, `Expression`, `WorkflowContextInterface`, `EvaluationInputInterface` (deferred — not a contracts type).
 - Produces: `CriterionEvaluatorPluginInterface::supports(CriterionType|SuccessCriterion): bool`, `::evaluate(SuccessCriterion, mixed $context, Step, WorkflowContextInterface): bool`; `ExpressionEvaluatorPluginInterface::supports(Expression): bool`, `::evaluate(Expression, mixed $context): mixed`; `ReplacementTargetResolverInterface::supports(string $targetType): bool`, `::resolve(mixed $container, string $target, mixed $value): mixed`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Open `packages/contracts/tests/Contracts/SharedContractsTest.php` and append:
 
@@ -202,13 +202,13 @@ it('declares the evaluator and replacer plugin faces')
     ->toBeTrue();
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter "evaluator and replacer"` (repo root)
 
 Expected: FAIL.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `packages/contracts/src/Interfaces/CriterionEvaluatorPluginInterface.php`:
 
@@ -271,13 +271,13 @@ interface ReplacementTargetResolverInterface extends PluginInterface
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/contracts/src/Interfaces/CriterionEvaluatorPluginInterface.php packages/contracts/src/Interfaces/ExpressionEvaluatorPluginInterface.php packages/contracts/src/Interfaces/ReplacementTargetResolverInterface.php packages/contracts/tests/Contracts/SharedContractsTest.php
@@ -299,7 +299,7 @@ The schema-source normalizer port (spec D2). Two faces: the plugin and a registr
 - Consumes: `PluginInterface` (A1), `SourceDescription`, `SourceType`, `ArazzoDocument`.
 - Produces: `SourceNormalizerInterface::supports(SourceType): bool`, `::normalize(SourceDescription, string, ?ArazzoDocument): array`; `SourceNormalizerRegistryInterface::register(SourceNormalizerInterface): void`, `::get(SourceType): ?SourceNormalizerInterface`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Open `packages/contracts/tests/Contracts/SharedContractsTest.php` and append:
 
@@ -316,13 +316,13 @@ it('declares the source normalizer faces')
     ->toBeTrue();
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter "source normalizer"` (repo root)
 
 Expected: FAIL.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `packages/contracts/src/Interfaces/SourceNormalizerInterface.php`:
 
@@ -369,13 +369,13 @@ interface SourceNormalizerRegistryInterface
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/contracts/src/Interfaces/SourceNormalizerInterface.php packages/contracts/src/Interfaces/SourceNormalizerRegistryInterface.php packages/contracts/tests/Contracts/SharedContractsTest.php
@@ -396,7 +396,7 @@ The OMS states (spec lines 233-242, 245-273). `StepStatus` (existing) is untouch
 - Consumes: nothing new.
 - Produces: `enum StepState: string` — case order + values exactly per spec transition table: `Pending='pending'`, `ExecutingRequest='executing_request'`, `EvaluatingCriteria='evaluating_criteria'`, `AwaitingActorInput='awaiting_actor_input'`, `ActorInputReceived='actor_input_received'`, `Completed='completed'`, `Failed='failed'`. No `Retrying`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php`:
 
@@ -437,13 +437,13 @@ it('maps retrying to an edge, not a state')
     ->expect(defined('Alama\\Arazzo\\Contracts\\Spec\\Enum\\StepState::Retrying'))->toBeFalse();
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter StepStateTest` (repo root)
 
 Expected: FAIL with "Class StepState not found".
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `packages/contracts/src/Spec/Enum/StepState.php`:
 
@@ -472,13 +472,13 @@ enum StepState: string
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/contracts/src/Spec/Enum/StepState.php packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php
@@ -499,7 +499,7 @@ Persist/reload an entire workflow run's state for safe pause/resume (spec D2/E2,
 - Consumes: `WorkflowContextInterface` (`Alama\Arazzo\Contracts\Spec\Interfaces`).
 - Produces: `WorkflowStateRepositoryInterface::save(string $executionId, WorkflowContextInterface $state): void`, `::load(string $executionId): ?WorkflowContextInterface`, `::delete(string $executionId): void`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/contracts/tests/Contracts/Interfaces/WorkflowStateRepositoryInterfaceTest.php`:
 
@@ -546,13 +546,13 @@ it('round-trips a context through a stub repository', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter WorkflowStateRepositoryInterfaceTest` (repo root)
 
 Expected: FAIL with "Interface WorkflowStateRepositoryInterface not found".
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `packages/contracts/src/Interfaces/WorkflowStateRepositoryInterface.php`:
 
@@ -579,13 +579,13 @@ interface WorkflowStateRepositoryInterface
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/contracts/src/Interfaces/WorkflowStateRepositoryInterface.php packages/contracts/tests/Contracts/Interfaces/WorkflowStateRepositoryInterfaceTest.php
@@ -608,7 +608,7 @@ The protocol-agnostic response seam (spec "ResponseTransfer", D6): contracts own
 - Consumes: nothing new (uses `mixed`, `array`, `int`, `string`).
 - Produces: `ResponseTransferInterface` (`status(): mixed`, `headers(): array`, `rawBody(): mixed`, `hasView(string): bool`, `view(string): mixed`, `meta(): array`); `ResponseTransfer` `final readonly class implements ResponseTransferInterface` with constructor params `mixed $status`, `array $headers`, `mixed $rawBody`, `array $views = []`, `array $meta = []`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/contracts/tests/Contracts/Spec/ResponseTransferTest.php`:
 
@@ -645,13 +645,13 @@ it('implements the contract seam', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter ResponseTransferTest` (repo root)
 
 Expected: FAIL with "Class ResponseTransferInterface not found".
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 Create `packages/contracts/src/Interfaces/ResponseTransferInterface.php`:
 
@@ -757,13 +757,13 @@ final readonly class ResponseTransfer implements ResponseTransferInterface
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/contracts/src/Interfaces/ResponseTransferInterface.php packages/contracts/src/Spec/ResponseTransfer.php packages/contracts/tests/Contracts/Spec/ResponseTransferTest.php packages/contracts/tests/Contracts/SharedContractsTest.php
@@ -834,7 +834,7 @@ Arazzo's 1.2 proposal fields (spec A7 / Public API impact lines 602-604) multipl
 
 ### Part 1: Enumerations + Interaction (additive, Steps 1-12)
 
-- [ ] **Step 1: Write the failing test (RpcProtocol enum)**
+- [x] **Step 1: Write the failing test (RpcProtocol enum)**
 
 Create `packages/contracts/tests/Contracts/Spec/Enum/RpcProtocolTest.php`:
 
@@ -863,13 +863,13 @@ it('uses spec-exact string values')
     ->and(RpcProtocol::Connect->value)->toBe('connect');
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter RpcProtocolTest` (repo root)
 
 Expected: FAIL with "Class RpcProtocol not found".
 
-- [ ] **Step 3: Write minimal implementation (RpcProtocol)**
+- [x] **Step 3: Write minimal implementation (RpcProtocol)**
 
 Create `packages/contracts/src/Spec/Enum/RpcProtocol.php`:
 
@@ -889,13 +889,13 @@ enum RpcProtocol: string
 }
 ```
 
-- [ ] **Step 4: Run test to verify RpcProtocol passes**
+- [x] **Step 4: Run test to verify RpcProtocol passes**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter RpcProtocolTest` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Write the failing test (ValueMode + ParameterIn cases)**
+- [x] **Step 5: Write the failing test (ValueMode + ParameterIn cases)**
 
 Create `packages/contracts/tests/Contracts/Spec/Enum/ValueModeTest.php`:
 
@@ -915,13 +915,13 @@ it('uses spec-exact string values')
     ->and(ValueMode::Selector->value)->toBe('selector');
 ```
 
-- [ ] **Step 6: Run test to verify it fails**
+- [x] **Step 6: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter ValueModeTest` (repo root)
 
 Expected: FAIL with "Class ValueMode not found".
 
-- [ ] **Step 7: Write minimal implementation (ValueMode + ParameterIn)**
+- [x] **Step 7: Write minimal implementation (ValueMode + ParameterIn)**
 
 Create `packages/contracts/src/Spec/Enum/ValueMode.php`:
 
@@ -946,13 +946,13 @@ Edit `packages/contracts/src/Spec/Enum/ParameterIn.php` — append two cases bef
     case Variable = 'variable';
 ```
 
-- [ ] **Step 8: Run test to verify enums pass**
+- [x] **Step 8: Run test to verify enums pass**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter "RpcProtocol|ValueMode"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 9: Write the failing Interaction test**
+- [x] **Step 9: Write the failing Interaction test**
 
 Create `packages/contracts/tests/Contracts/Spec/InteractionTest.php`:
 
@@ -978,13 +978,13 @@ it('defaults to null payload and timeout', function (): void {
 });
 ```
 
-- [ ] **Step 10: Run test to verify it fails**
+- [x] **Step 10: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter InteractionTest` (repo root)
 
 Expected: FAIL with "Class Interaction not found".
 
-- [ ] **Step 11: Write minimal implementation (Interaction)**
+- [x] **Step 11: Write minimal implementation (Interaction)**
 
 Create `packages/contracts/src/Spec/Interaction.php`:
 
@@ -1007,7 +1007,7 @@ final readonly class Interaction
 }
 ```
 
-- [ ] **Step 12: Run test to verify Interaction passes**
+- [x] **Step 12: Run test to verify Interaction passes**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter InteractionTest` (repo root)
 
@@ -1017,7 +1017,7 @@ Expected: PASS.
 
 The flat 20-param `Step` is replaced by `StepTarget` (operation/protocol axis), `StepFlow` (control axis), and `StepIo` (data axis), gathered by the 5-param `Step` aggregate and constructed through `StepFactory` named constructors. All four value files are `final readonly` and stay in the `Alama\Arazzo\Contracts\Spec` namespace, satisfying `packages/contracts/tests/ArchTest.php` (every `Spec` class `toBeReadonly()` + strict types). The public constructor of each axis defaults everything so degenerate steps (dependency-only fake steps in tests, target-less steps the resolver must reject later) remain constructible.
 
-- [ ] **Step 13: Write the failing StepTarget test**
+- [x] **Step 13: Write the failing StepTarget test**
 
 Create `packages/contracts/tests/Contracts/Spec/StepTargetTest.php`:
 
@@ -1096,13 +1096,13 @@ it('builds an interaction target', function (): void {
 });
 ```
 
-- [ ] **Step 14: Run test to verify it fails**
+- [x] **Step 14: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter StepTargetTest` (repo root)
 
 Expected: FAIL with "Class StepTarget not found".
 
-- [ ] **Step 15: Write minimal implementation (StepTarget)**
+- [x] **Step 15: Write minimal implementation (StepTarget)**
 
 Create `packages/contracts/src/Spec/StepTarget.php`:
 
@@ -1180,13 +1180,13 @@ final readonly class StepTarget
 }
 ```
 
-- [ ] **Step 16: Run test to verify StepTarget passes**
+- [x] **Step 16: Run test to verify StepTarget passes**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter StepTargetTest` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 17: Write the failing StepFlow test**
+- [x] **Step 17: Write the failing StepFlow test**
 
 Create `packages/contracts/tests/Contracts/Spec/StepFlowTest.php`:
 
@@ -1231,13 +1231,13 @@ it('carries dependency, timing and idempotency fields', function (): void {
 });
 ```
 
-- [ ] **Step 18: Run test to verify it fails**
+- [x] **Step 18: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter StepFlowTest` (repo root)
 
 Expected: FAIL with "Class StepFlow not found".
 
-- [ ] **Step 19: Write minimal implementation (StepFlow)**
+- [x] **Step 19: Write minimal implementation (StepFlow)**
 
 Create `packages/contracts/src/Spec/StepFlow.php`:
 
@@ -1282,7 +1282,7 @@ Run: `vendor/bin/pest packages/contracts/tests --filter StepFlowTest` (repo root
 
 Expected: PASS.
 
-- [ ] **Step 20: Write the failing StepIo test**
+- [x] **Step 20: Write the failing StepIo test**
 
 Create `packages/contracts/tests/Contracts/Spec/StepIoTest.php`:
 
@@ -1324,13 +1324,13 @@ it('carries parameters, body, criteria and outputs', function (): void {
 });
 ```
 
-- [ ] **Step 21: Run test to verify it fails**
+- [x] **Step 21: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter StepIoTest` (repo root)
 
 Expected: FAIL with "Class StepIo not found".
 
-- [ ] **Step 22: Write minimal implementation (StepIo)**
+- [x] **Step 22: Write minimal implementation (StepIo)**
 
 Create `packages/contracts/src/Spec/StepIo.php`:
 
@@ -1364,7 +1364,7 @@ Run: `vendor/bin/pest packages/contracts/tests --filter StepIoTest` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 23: Write the failing StepFactory test**
+- [x] **Step 23: Write the failing StepFactory test**
 
 Create `packages/contracts/tests/Contracts/Spec/StepFactoryTest.php`:
 
@@ -1441,13 +1441,13 @@ it('attaches the given flow and io to the aggregate', function (): void {
 });
 ```
 
-- [ ] **Step 24: Run test to verify it fails**
+- [x] **Step 24: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter StepFactoryTest` (repo root)
 
 Expected: FAIL with "Class StepFactory not found" (the aggregate `Step` does not exist in its 5-param shape yet).
 
-- [ ] **Step 25: Write minimal implementation (StepFactory + Step rewrite)**
+- [x] **Step 25: Write minimal implementation (StepFactory + Step rewrite)**
 
 Create `packages/contracts/src/Spec/StepFactory.php`. Note: `StepFactory` is `final readonly` (static-only class) so it satisfies the `Spec` namespace `toBeReadonly()` Arch invariant; a readonly class may carry static methods in PHP 8.4:
 
@@ -1536,13 +1536,13 @@ final readonly class Step
 }
 ```
 
-- [ ] **Step 26: Run test to verify the decomposition passes**
+- [x] **Step 26: Run test to verify the decomposition passes**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter "StepTargetTest|StepFlowTest|StepIoTest|StepFactoryTest"` (repo root)
 
 Expected: PASS (all four decomposition files green; the value objects, the factory, and the aggregate agree on the interfaces above).
 
-- [ ] **Step 27: Migrate contracts-internal consumers and verify the contracts suite**
+- [x] **Step 27: Migrate contracts-internal consumers and verify the contracts suite**
 
 `Step` now has 5 params, so the two contracts src files that read flat Step fields and the four contracts test files that construct `Step` directly must migrate in-package before `composer run test-contracts` can pass.
 
@@ -1615,7 +1615,7 @@ Expected: PASS. Migration (not breakage) is complete inside `packages/contracts`
 
 These steps rewrite the monorepo's Step consumers against the decomposed model. Steps 28-30 each migrate one concrete src file (the parser, the parameter merger, the `Fx` test helper). Step 31 then sweeps every remaining construction and read mechanically. Because the package test-suites still hold old-shape fixtures until Step 31, the "run" of each of Steps 28-30 is intentionally expected to surface only those residual failures; the suites turn green together at the Step 31 gate and Step 38's full run.
 
-- [ ] **Step 28: Migrate the document parser to variant detection + StepFactory**
+- [x] **Step 28: Migrate the document parser to variant detection + StepFactory**
 
 In `packages/document/src/Parser/Parser.php`, the `parseStep` body already collects `$parameters`, `$requestBody`, `$criteria`, `$onSuccess`, `$onFailure`, `$outputs`, `$action`, `$channelPath`, `$correlationId`, `$strictValidation`, `$idempotencyKey`, `$idempotencyHeader`, `$dependsOn`, `stepId`, `description`. Replace the whole `return new Step(...)` block (line 338) with variant detection plus the 5-param aggregate, hoisting `operationId`, `operationPath`, `workflowId`, and `timeout` reads above the return:
 
@@ -1668,7 +1668,7 @@ Run: `vendor/bin/pest packages/document/tests/Parser` (repo root)
 
 Expected: FAIL — residual failures are confined to test fixtures that still read flat Step fields (`FullParserTest` line 47 `$s1->operationPath`, lines 93-94 `$step->action`/`$step->channelPath`) and to parser-independent tests that construct `new Step(...)` directly; these are fixed in Step 31. No failures originate from `Parser::parseStep` itself.
 
-- [ ] **Step 29: Migrate StepParameterMerger to rebuild via target + merged io**
+- [x] **Step 29: Migrate StepParameterMerger to rebuild via target + merged io**
 
 In `packages/runner/src/Execution/StepParameterMerger.php`, the merge loop reads `$step->parameters` for the base step (`foreach ($step->parameters as $stepParam)` line 28) — that becomes `$step->io->parameters`. Replace the `return new Step(...)` reconstruction block (line 44) with the aggregate, forwarding `target` and `flow` unchanged and rebuilding only `io` with the merged parameters:
 
@@ -1697,7 +1697,7 @@ Run: `vendor/bin/pest packages/runner/tests/Execution/StepParameterMergerTest.ph
 
 Expected: FAIL — `StepParameterMergerTest` line 77 still constructs `new Step(...)` on the old shape and line 101 reads `$merged->outputs`, both fixed in Step 31. The merger src itself now compiles against the aggregate.
 
-- [ ] **Step 30: Migrate the Fx test helper to the decomposed model**
+- [x] **Step 30: Migrate the Fx test helper to the decomposed model**
 
 `packages/core/tests/Support/Fx.php` keeps its exact public signature (core tests call it positionally with `$id, null, $opId, $opPath, $wfId, $params, $body, $crit, $onSuccess, $onFailure, $outputs`), but its body builds the axes and dispatches to `StepFactory::workflow`/`StepFactory::http` based on `$wfId`, falling back to a bare target for degenerate fake steps (no workflow, no operation):
 
@@ -1738,7 +1738,7 @@ Run: `composer run test-core` (repo root)
 
 Expected: FAIL — residual failures are core tests that read a flat field (e.g. `$step->parameters`, `$step->dependsOn`) on a step returned by `Fx::step()`; those reads migrate in Step 31. Every `Fx::step()` construction itself now returns the aggregate, so no construction-site failure remains in `packages/core`.
 
-- [ ] **Step 31: Repo-wide migration of remaining Step constructions and flat-field reads**
+- [x] **Step 31: Repo-wide migration of remaining Step constructions and flat-field reads**
 
 Every remaining `new Step(...)` call-site and every remaining `$step-><flatField>` read must be remapped. This is a mechanical sweep driven by the migration table — do not hand-edit each file from memory; let the suites tell you what remains.
 
@@ -1836,7 +1836,7 @@ Expected: each suite PASS in turn. The monorepo is green again at the end of thi
 
 The D11 additive extension that pairs with the decomposition. Both target files only append trailing constructor params with defaults — no existing call-site changes (global constraint lines 14-16).
 
-- [ ] **Step 32: Write the failing Parameter extension test**
+- [x] **Step 32: Write the failing Parameter extension test**
 
 Create `packages/contracts/tests/Contracts/Spec/ParameterTest.php`:
 
@@ -1865,13 +1865,13 @@ it('defaults valueMode to null', function (): void {
 });
 ```
 
-- [ ] **Step 33: Run test to verify it fails**
+- [x] **Step 33: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter ParameterTest` (repo root)
 
 Expected: FAIL (missing `$valueMode` param or missing `ParameterIn::Metadata` case).
 
-- [ ] **Step 34: Write minimal Parameter extension**
+- [x] **Step 34: Write minimal Parameter extension**
 
 Edit `packages/contracts/src/Spec/Parameter.php` — append `$valueMode` and add the `ValueMode` import:
 
@@ -1889,13 +1889,13 @@ final readonly class Parameter
 }
 ```
 
-- [ ] **Step 35: Run test to verify Parameter passes**
+- [x] **Step 35: Run test to verify Parameter passes**
 
 Run: `vendor/bin/pest packages/contracts/tests --filter ParameterTest` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 36: Write the failing Components extension test and run it to verify it fails**
+- [x] **Step 36: Write the failing Components extension test and run it to verify it fails**
 
 Create `packages/contracts/tests/Contracts/Spec/ComponentsTest.php`:
 
@@ -1931,7 +1931,7 @@ Run: `vendor/bin/pest packages/contracts/tests --filter ComponentsTest` (repo ro
 
 Expected: FAIL with "Missing named parameter $interactions".
 
-- [ ] **Step 37: Write minimal Components extension and run it to verify it passes**
+- [x] **Step 37: Write minimal Components extension and run it to verify it passes**
 
 Edit `packages/contracts/src/Spec/Components.php` — append `$interactions` and add the `Interaction` import:
 
@@ -1963,13 +1963,13 @@ Expected: PASS.
 
 ### Part 5: Final commit + verification (Steps 38-39)
 
-- [ ] **Step 38: Full repo verification**
+- [x] **Step 38: Full repo verification**
 
 Run: `composer run test` (repo root)
 
 Expected: PASS — all seven suites green (`test-contracts`, `test-expression`, `test-document`, `test-runner`, `test-cli`, `test-core`, `test-laravel`). This is the A7 monorepo gate (global constraint line 25): the one ratified breaking major lands with every consumer migrated in the same change.
 
-- [ ] **Step 39: Commit**
+- [x] **Step 39: Commit**
 
 ```bash
 git add packages/contracts/src/Spec/Step.php packages/contracts/src/Spec/StepTarget.php packages/contracts/src/Spec/StepFlow.php packages/contracts/src/Spec/StepIo.php packages/contracts/src/Spec/StepFactory.php packages/contracts/src/Spec/Interaction.php packages/contracts/src/Spec/Parameter.php packages/contracts/src/Spec/Components.php packages/contracts/src/Spec/Enum/RpcProtocol.php packages/contracts/src/Spec/Enum/ValueMode.php packages/contracts/src/Spec/Enum/ParameterIn.php packages/contracts/src/Dependency/DependencyGraph.php packages/contracts/src/Dependency/ImplicitDependencies.php packages/contracts/tests packages/document/src packages/document/tests packages/runner/src packages/runner/tests packages/expression/src packages/expression/tests packages/cli/src packages/cli/tests packages/laravel/tests packages/core/tests
@@ -1988,35 +1988,35 @@ Close out Phase A: full contracts quality gate and confirm zero drift in the sha
 **Interfaces:**
 - Consumes: all tasks A1–A7.
 
-- [ ] **Step 1: Run the full contracts test suite**
+- [x] **Step 1: Run the full contracts test suite**
 
 Run: `composer run test-contracts` (repo root)
 
 Expected: PASS (all tests, including Arch tests if registered).
 
-- [ ] **Step 2: Run static analysis**
+- [x] **Step 2: Run static analysis**
 
 Run: `composer run analyse-contracts` (repo root)
 
 Expected: PASS (0 errors). If PHPStan reports "Call to an undefined method" on the anonymous-class contexts in A5/A6 tests, fix the test (the interface must be imported) — do not suppress.
 
-- [ ] **Step 3: Run the formatter check**
+- [x] **Step 3: Run the formatter check**
 
 Run: `composer run format` or `vendor/bin/pint --test` (repo root)
 
 Expected: PASS (no style violations). If violations exist, run `vendor/bin/pint` and re-run Step 1.
 
-- [ ] **Step 4: Run the repo-wide gate (if the worker supports it)**
+- [x] **Step 4: Run the repo-wide gate (if the worker supports it)**
 
 Run: `make verify` (repo root)
 
 Expected: PASS — confirms contracts changes do not break `core`/`laravel` consumers: `Parameter`/`Components` appended defaulted params must not affect existing named-arg construction; the decomposed `Step`/`StepTarget`/`StepFlow`/`StepIo` + `StepFactory` must be consistent across every consumer that migrated in A7; the `ParameterIn` new cases must not break exhaustive-match code — the enum is not exhaustive-listed anywhere in tests.
 
-- [ ] **Step 5: Mark this plan's steps complete**
+- [x] **Step 5: Mark this plan's steps complete**
 
-Flip every `- [ ]` in this document to `- [x]`.
+Flip every `- [x]` in this document to `- [x]`.
 
-- [ ] **Step 6: Record completion in the spec**
+- [x] **Step 6: Record completion in the spec**
 
 Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md`, find the "Sequencing" table row for Phase A, and mark it done (e.g. append `✅` to the status column). If the row is not a table, add a line under the Phase A heading:
 
@@ -2024,7 +2024,7 @@ Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md
 Phase A status: ✅ Implemented 2026-09-08 — see `plans/2026-09-08-phase-a-contracts-ports.md`.
 ```
 
-- [ ] **Step 7: Commit the doc update**
+- [x] **Step 7: Commit the doc update**
 
 ```bash
 git add docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md

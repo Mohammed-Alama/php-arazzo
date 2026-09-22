@@ -22,7 +22,7 @@ final class StepTimeoutRequires11Rule implements Rule
     {
         foreach ($doc->workflows as $wi => $w) {
             foreach ($w->steps as $si => $s) {
-                if ($s->timeout === null) {
+                if ($s->flow->timeout === null) {
                     continue;
                 }
 
@@ -34,7 +34,7 @@ final class StepTimeoutRequires11Rule implements Rule
                     );
                 }
 
-                if ($s->timeout <= 0) {
+                if ($s->flow->timeout <= 0) {
                     $errors->error(
                         $this->code(),
                         "Step '{$s->stepId}' timeout must be a positive number of seconds.",

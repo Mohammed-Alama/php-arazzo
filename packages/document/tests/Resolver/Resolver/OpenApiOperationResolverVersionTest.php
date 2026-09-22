@@ -9,7 +9,9 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
@@ -55,18 +57,12 @@ it('rejects Swagger 2.0 sources with a typed error instead of mis-routing them t
             specificationExtensions: [],
         );
 
-        $step = new Step(
+        $step = StepFactory::http(
             stepId: 'step1',
             description: null,
+            flow: new StepFlow(),
+            io: new StepIo(),
             operationId: 'legacy-api.listPets',
-            operationPath: null,
-            workflowId: null,
-            parameters: [],
-            requestBody: null,
-            successCriteria: [],
-            onSuccess: [],
-            onFailure: [],
-            outputs: [],
         );
 
         $resolver->resolve($step, $document);

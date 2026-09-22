@@ -10,6 +10,9 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
@@ -64,7 +67,7 @@ function workflowEngineDocument(Workflow $workflow): ArazzoDocument
 }
 function workflowEngineStep(string $id, array $dependsOn = []): Step
 {
-    return new Step($id, null, null, null, null, [], null, [], [], [], [], $dependsOn);
+    return new Step($id, null, new StepTarget(), new StepFlow(dependsOn: $dependsOn), new StepIo());
 }
 
 function workflowEngineState(string $executionId = 'exec_1', string $definitionId = 'definition_1', string $workflowId = 'workflow_1', int $maxSteps = 1000): ExecutionContext

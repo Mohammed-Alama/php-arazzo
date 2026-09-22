@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
@@ -17,13 +19,13 @@ use Alama\Arazzo\Expression\SymbolTable;
 function docWithInvoke(string $targetId, array $workflowIds = ['w', 'ride-reconcile']): ArazzoDocument
 {
     $workflows = array_map(fn ($id) => new Workflow($id, null, null, null, [], [
-        new Step('s', null, 'op', null, null, [], null, [], [], [], []),
+        StepFactory::http('s', null, new StepFlow(), new StepIo(), operationId: 'op'),
     ], [], [], [], []), $workflowIds);
 
     // Attach invoke onSuccess to the first workflow's first step
-    $step = new Step('s', null, 'op', null, null, [], null, [], [
+    $step = StepFactory::http('s', null, new StepFlow(onSuccess: [
         new SubWorkflowSuccessAction('call', $targetId, [], []),
-    ], [], []);
+    ]), new StepIo(), operationId: 'op');
     $workflows[0] = new Workflow($workflowIds[0], null, null, null, [], [$step], [], [], [], []);
 
     return new ArazzoDocument(

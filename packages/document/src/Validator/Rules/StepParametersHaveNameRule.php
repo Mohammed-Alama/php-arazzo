@@ -19,7 +19,7 @@ final class StepParametersHaveNameRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                foreach ($s->parameters as $k => $p) {
+                foreach ($s->io->parameters as $k => $p) {
                     if ($p instanceof Reusable) {
                         continue;
                     }

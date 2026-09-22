@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepDependsOnNoCycleRule;
@@ -15,9 +18,9 @@ use Alama\Arazzo\Expression\SymbolTable;
 
 it('reports an error when a workflow step contains a dependsOn cycle', function (): void {
     $workflow = new Workflow('w1', null, null, null, [], [
-        new Step('A', null, null, null, null, [], null, [], [], [], [], ['B']),
-        new Step('B', null, null, null, null, [], null, [], [], [], [], ['C']),
-        new Step('C', null, null, null, null, [], null, [], [], [], [], ['A']),
+        new Step('A', null, new StepTarget(), new StepFlow(dependsOn: ['B']), new StepIo()),
+        new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['C']), new StepIo()),
+        new Step('C', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo()),
     ], [], [], [], []);
 
     $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
@@ -33,7 +36,7 @@ it('reports an error when a workflow step contains a dependsOn cycle', function 
 
 it('reports an error when a workflow step contains an unresolved reference', function (): void {
     $workflow = new Workflow('w1', null, null, null, [], [
-        new Step('A', null, null, null, null, [], null, [], [], [], [], ['missingStep']),
+        new Step('A', null, new StepTarget(), new StepFlow(dependsOn: ['missingStep']), new StepIo()),
     ], [], [], [], []);
 
     $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);
@@ -49,8 +52,8 @@ it('reports an error when a workflow step contains an unresolved reference', fun
 
 it('passes cleanly for valid step dependencies', function (): void {
     $workflow = new Workflow('w1', null, null, null, [], [
-        new Step('A', null, null, null, null, [], null, [], [], [], [], []),
-        new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']),
+        new Step('A', null, new StepTarget(), new StepFlow(), new StepIo()),
+        new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo()),
     ], [], [], [], []);
 
     $doc = new ArazzoDocument('1.0.1', new Info('T', null, null, '1.0'), [], [$workflow], new Components([], [], [], []), []);

@@ -42,7 +42,7 @@ final class Renderer
 
             foreach ($workflow->steps as $step) {
                 $node = $nodes[$step->stepId];
-                $label = $step->operationId ?? $step->operationPath ?? ($step->workflowId !== null ? '→ '.$step->workflowId : '?');
+                $label = $step->target->operationId ?? $step->target->operationPath ?? ($step->target->workflowId !== null ? '→ '.$step->target->workflowId : '?');
 
                 $lines[] = sprintf('    %s["%s<br/>%s"]', $node, $this->esc($step->stepId), $this->esc((string) $label));
 
@@ -117,13 +117,13 @@ final class Renderer
             foreach ($workflow->steps as $i => $step) {
                 $criteria = [];
 
-                foreach ($step->successCriteria as $criterion) {
+                foreach ($step->io->successCriteria as $criterion) {
                     $criteria[] = '`'.$criterion->condition.'`';
                 }
 
                 $outputs = [];
 
-                foreach ($step->outputs as $name => $expression) {
+                foreach ($step->io->outputs as $name => $expression) {
                     $raw = is_object($expression) && property_exists($expression, 'raw')
                         ? $expression->raw
                         : (string) json_encode($expression);
@@ -181,7 +181,7 @@ final class Renderer
             $edges[] = [$arrow.$text.'|', $nodes[$targetStepId] ?? ('id_'.$this->id($targetStepId))];
         };
 
-        foreach ([$step->onSuccess, $step->onFailure] as $actions) {
+        foreach ([$step->flow->onSuccess, $step->flow->onFailure] as $actions) {
             foreach ($actions as $action) {
                 if ($action instanceof Reusable) {
                     continue;
@@ -204,7 +204,7 @@ final class Renderer
 
     private function endsSuccessfully(Step $step): bool
     {
-        foreach ($step->onSuccess as $action) {
+        foreach ($step->flow->onSuccess as $action) {
             if ($action instanceof SuccessEndAction) {
                 return true;
             }
@@ -215,15 +215,15 @@ final class Renderer
 
     private function markdownTarget(Step $step): string
     {
-        if ($step->workflowId !== null) {
-            return "`→ {$step->workflowId}`";
+        if ($step->target->workflowId !== null) {
+            return "`→ {$step->target->workflowId}`";
         }
 
-        if (($op = $step->operationPath ?? $step->operationId) !== null) {
+        if (($op = $step->target->operationPath ?? $step->target->operationId) !== null) {
             return "`{$op}`";
         }
 
-        return $step->action !== null ? "`[{$step->action}]`" : '—';
+        return $step->target->action !== null ? "`[{$step->target->action}]`" : '—';
     }
 
     /** @return list<Workflow> */

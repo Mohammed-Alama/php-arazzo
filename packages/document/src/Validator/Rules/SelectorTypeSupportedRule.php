@@ -40,7 +40,7 @@ final class SelectorTypeSupportedRule implements Rule
                 }
             }
             foreach ($wf->steps as $si => $step) {
-                foreach ($step->parameters as $pi => $p) {
+                foreach ($step->io->parameters as $pi => $p) {
                     if ($p instanceof Reusable) {
                         continue;
                     }
@@ -49,14 +49,14 @@ final class SelectorTypeSupportedRule implements Rule
                         $this->validateSelector($p->value, $errors, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value");
                     }
                 }
-                if ($step->requestBody !== null) {
-                    foreach ($step->requestBody->replacements as $ri => $r) {
+                if ($step->io->requestBody !== null) {
+                    foreach ($step->io->requestBody->replacements as $ri => $r) {
                         if ($r->value instanceof Selector) {
                             $this->validateSelector($r->value, $errors, "/workflows/{$wi}/steps/{$si}/requestBody/replacements/{$ri}/value");
                         }
                     }
                 }
-                foreach ($step->outputs as $name => $value) {
+                foreach ($step->io->outputs as $name => $value) {
                     if ($value instanceof Selector) {
                         $this->validateSelector(
                             $value, $errors,

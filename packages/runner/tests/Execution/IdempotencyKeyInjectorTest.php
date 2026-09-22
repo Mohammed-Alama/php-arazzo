@@ -5,26 +5,21 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use GuzzleHttp\Psr7\Request;
 
 function idempotencyStep(?bool $idempotencyKey = null, ?string $idempotencyHeader = null): Step
 {
-    return new Step(
+    return StepFactory::http(
         stepId: 'step-a',
         description: null,
+        flow: new StepFlow(idempotencyKey: $idempotencyKey, idempotencyHeader: $idempotencyHeader),
+        io: new StepIo(),
         operationId: 'op',
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
-        idempotencyKey: $idempotencyKey,
-        idempotencyHeader: $idempotencyHeader,
     );
 }
 
@@ -115,10 +110,12 @@ it('produces different keys when the stepId changes', function (): void {
     $request = new Request('POST', 'https://api.example.com/x', [], '{"a":1}');
 
     $a = $injector->inject($request, idempotencyStep(), $ctx);
-    $stepB = new Step(
+    $stepB = StepFactory::http(
         stepId: 'step-b',
-        description: null, operationId: 'op', operationPath: null, workflowId: null,
-        parameters: [], requestBody: null, successCriteria: [], onSuccess: [], onFailure: [], outputs: [],
+        description: null,
+        flow: new StepFlow(),
+        io: new StepIo(),
+        operationId: 'op',
     );
     $b = $injector->inject($request, $stepB, $ctx);
 

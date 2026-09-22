@@ -16,6 +16,10 @@ use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
@@ -29,32 +33,20 @@ function capabilityStep(?RequestBody $body = null, array $criteria = [], array $
     return new Step(
         stepId: 's1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: $body,
-        successCriteria: $criteria,
-        onSuccess: [],
-        onFailure: [],
-        outputs: $outputs,
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(requestBody: $body, successCriteria: $criteria, outputs: $outputs),
     );
 }
 
 function capabilityDocument(): ArazzoDocument
 {
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'fetch',
         description: null,
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['user' => new Expression('{$response.body}')]),
         operationId: 'op',
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['user' => new Expression('{$response.body}')],
     );
     $wf = new Workflow(
         workflowId: 'main',

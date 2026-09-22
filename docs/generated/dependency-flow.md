@@ -36,13 +36,13 @@ cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
 contracts-Dependency,contracts-State,1
 contracts-Interfaces,contracts-Exceptions,1
-contracts-Interfaces,contracts-Spec,8
-contracts-Interfaces,contracts-State,1
+contracts-Interfaces,contracts-Spec,21
+contracts-Interfaces,contracts-State,2
 contracts-State,contracts-Spec,3
 document-Normalizer,contracts-Spec,6
 document-Normalizer,contracts-Support,1
 document-Normalizer,document-Resolver,2
-document-Parser,contracts-Spec,30
+document-Parser,contracts-Spec,33
 document-Parser,contracts-Support,2
 document-Resolver,contracts-Spec,6
 document-Resolver,document-Parser,2
@@ -144,7 +144,7 @@ runner-Events,contracts-Support,1
 runner-Execution,contracts-Dependency,3
 runner-Execution,contracts-Exceptions,4
 runner-Execution,contracts-Interfaces,12
-runner-Execution,contracts-Spec,74
+runner-Execution,contracts-Spec,75
 runner-Execution,contracts-State,14
 runner-Execution,contracts-Support,9
 runner-Execution,document-Normalizer,4
@@ -194,6 +194,7 @@ These references exist in the code but are not drawn: drawing them would close a
 
 | From | To | References |
 |---|---|---:|
+| `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `expression-Evaluation` | `expression-root` | 2 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

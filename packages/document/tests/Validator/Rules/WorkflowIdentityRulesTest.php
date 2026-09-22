@@ -7,7 +7,9 @@ namespace Alama\Arazzo\Tests\Validation\Rules;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowAtLeastOneRule;
@@ -29,7 +31,7 @@ function docWithWorkflows(array $workflows): ArazzoDocument
 
 function wf(string $id): Workflow
 {
-    $s = new Step('s', null, 'op', null, null, [], null, [], [], [], []);
+    $s = StepFactory::http('s', null, new StepFlow(), new StepIo(), operationId: 'op');
 
     return new Workflow($id, null, null, null, [], [$s], [], [], [], []);
 }

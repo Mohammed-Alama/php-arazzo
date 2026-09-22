@@ -20,28 +20,77 @@ this file on a commit is a public API change — review it deliberately.
 #### `BackoffCalculatorInterface` interface
 - `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
 
+#### `CriterionEvaluatorPluginInterface` interface
+- `public function evaluate(SuccessCriterion $criterion, mixed $context, Step $step, WorkflowContextInterface $workflowContext): bool;`
+- `public function supports(CriterionType|SuccessCriterion $criterion): bool;`
+
+#### `ExpressionEvaluatorPluginInterface` interface
+- `public function evaluate(Expression $expression, mixed $context): mixed;`
+- `public function supports(Expression $expression): bool;`
+
 #### `LockStrategyInterface` interface
 - `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
 - `public function release(string $key): void;`
 - `public function tryAcquire(string $key, int $ttlSeconds): bool;`
 
+#### `OperationExecutorPluginInterface` interface
+- `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
+- `public function supports(Step $step, ArazzoDocument $document): bool;`
+
 #### `OutputExtractorInterface` interface
 - `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
+
+#### `PluginInterface` interface
+- `public function name(): string;`
+- `public function priority(): int;`
 
 #### `QueueDriverInterface` interface
 - `public function dispatch(object $job, int $delaySeconds = 0): void;`
 
+#### `ReplacementTargetResolverInterface` interface
+- `public function resolve(mixed $container, string $target, mixed $value): mixed;`
+- `public function supports(string $targetType): bool;`
+
+#### `ResponseTransferInterface` interface
+- `public function hasView(string $name): bool;`
+- `public function headers(): array;`
+- `public function meta(): array;`
+- `public function rawBody(): mixed;`
+- `public function status(): mixed;`
+- `public function view(string $name): mixed;`
+
 #### `ResponseValidatorInterface` interface
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
+
+#### `SourceNormalizerInterface` interface
+- `public function normalize(SourceDescription $source, string $rawContent, ?ArazzoDocument $document = null): array;`
+- `public function supports(SourceType $type): bool;`
+
+#### `SourceNormalizerRegistryInterface` interface
+- `public function get(SourceType $type): ?SourceNormalizerInterface;`
+- `public function register(SourceNormalizerInterface $normalizer): void;`
 
 #### `StepProtocolExecutorInterface` interface
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`
 
+#### `WorkflowStateRepositoryInterface` interface
+- `public function delete(string $executionId): void;`
+- `public function load(string $executionId): ?WorkflowContextInterface;`
+- `public function save(string $executionId, WorkflowContextInterface $state): void;`
+
 ### `Alama\Arazzo\Contracts\Spec`
 
 #### `ArazzoDocument` class
 - `public function __construct(public string $arazzo, public Info $info, public array $sourceDescriptions, public array $workflows, public Components $components, public array $specificationExtensions, public ?array $rawRoot = null, public SpecVersion $specVersion = SpecVersion::V1_0, public ?string $self = null)`
+
+#### `ResponseTransfer` class
+- `public function __construct(private mixed $status, private array $headers, private mixed $rawBody, private array $views = [], private array $meta = [])`
+- `public function hasView(string $name): bool`
+- `public function headers(): array`
+- `public function meta(): array`
+- `public function rawBody(): mixed`
+- `public function view(string $name): mixed`
 
 #### `Reusable` class
 - `public function __construct(public string $reference, public mixed $value = null)`
@@ -49,6 +98,24 @@ this file on a commit is a public API change — review it deliberately.
 #### `StepExecutionOutcome` class
 - `public static function resolved(int $statusCode, array $outputs, array $responseBody, array $inputs = [], ?array $request = null, array $responseHeaders = [], ?string $rawBody = null, ?string $contentType = null, ?string $failureCategory = null): self`
 - `public static function suspended(): self`
+
+#### `StepFactory` class
+- `public static function async(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $action, string $channelPath, ?Expression $correlationId = null, ): Step`
+- `public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $graphqlOperation): Step`
+- `public static function http(string $stepId, ?string $description, StepFlow $flow, StepIo $io, ?string $operationId = null, ?string $operationPath = null, ): Step`
+- `public static function interaction(string $stepId, ?string $description, StepFlow $flow, StepIo $io, Interaction $interaction): Step`
+- `public static function rpc(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $rpcMethod, RpcProtocol $rpcProtocol): Step`
+- `public static function workflow(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $workflowId): Step`
+- `public static function wsdl(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $operationName): Step`
+
+#### `StepTarget` class
+- `public function __construct(public ?string $operationId = null, public ?string $operationPath = null, public ?string $workflowId = null, public ?string $action = null, public ?string $channelPath = null, public ?Expression $correlationId = null, public ?string $operationName = null, public ?string $rpcMethod = null, public ?RpcProtocol $rpcProtocol = null, public ?string $graphqlOperation = null, public ?Interaction $interaction = null)`
+- `public static function async(string $action, string $channelPath, ?Expression $correlationId = null): self`
+- `public static function graphql(string $graphqlOperation): self`
+- `public static function interaction(Interaction $interaction): self`
+- `public static function rpc(string $rpcMethod, RpcProtocol $rpcProtocol): self`
+- `public static function workflow(string $workflowId): self`
+- `public static function wsdl(string $operationName): self`
 
 ### `Alama\Arazzo\Contracts\Spec\Action`
 
@@ -98,7 +165,10 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function fromExtension(string $extension): ?self`
 
 #### `ParameterIn` enum
-- Cases: `Body`, `Cookie`, `Header`, `Path`, `Query`, `Querystring`
+- Cases: `Body`, `Cookie`, `Header`, `Metadata`, `Path`, `Query`, `Querystring`, `Variable`
+
+#### `RpcProtocol` enum
+- Cases: `Connect`, `Grpc`, `GrpcWeb`, `Twirp`
 
 #### `SourceType` enum
 - Cases: `Arazzo`, `Asyncapi`, `Openapi`
@@ -107,8 +177,14 @@ this file on a commit is a public API change — review it deliberately.
 - Cases: `V1_0`, `V1_1`
 - `public static function fromRaw(string $raw): self`
 
+#### `StepState` enum
+- Cases: `ActorInputReceived`, `AwaitingActorInput`, `Completed`, `EvaluatingCriteria`, `ExecutingRequest`, `Failed`, `Pending`
+
 #### `StepStatus` enum
 - Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
+
+#### `ValueMode` enum
+- Cases: `Literal`, `Selector`
 
 ### `Alama\Arazzo\Contracts\Spec\Interfaces`
 

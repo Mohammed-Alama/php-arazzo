@@ -10,7 +10,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -18,26 +20,12 @@ use Alama\Arazzo\Tests\Support\Fx;
 
 function timeoutDoc(string $arazzoVersion): ArazzoDocument
 {
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'timed',
         description: null,
+        flow: new StepFlow(timeout: 4500),
+        io: new StepIo(),
         operationId: 'op',
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
-        dependsOn: [],
-        action: null,
-        channelPath: null,
-        correlationId: null,
-        strictValidation: null,
-        idempotencyKey: null,
-        idempotencyHeader: null,
-        timeout: 4500,
     );
 
     return new ArazzoDocument(
@@ -53,7 +41,7 @@ function timeoutDoc(string $arazzoVersion): ArazzoDocument
 }
 
 it('parses timeout in milliseconds on steps', function (): void {
-    expect(timeoutDoc('1.1.0')->workflows[0]->steps[0]->timeout)->toBe(4500);
+    expect(timeoutDoc('1.1.0')->workflows[0]->steps[0]->flow->timeout)->toBe(4500);
 });
 
 it('flags timeout on 1.0 documents and non-positive values', function (): void {

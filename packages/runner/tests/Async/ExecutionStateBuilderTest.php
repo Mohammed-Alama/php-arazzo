@@ -3,13 +3,16 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Async\ExecutionStateBuilder;
 
 function builderStep(string $id): Step
 {
-    return new Step($id, null, null, null, null, [], null, [], [], [], []);
+    return new Step($id, null, new StepTarget(), new StepFlow(), new StepIo());
 }
 
 function builderWorkflow(): Workflow

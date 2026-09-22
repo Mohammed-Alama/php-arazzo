@@ -32,27 +32,27 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
-        return $step->workflowId !== null && !in_array($step->action, ['send', 'receive'], true);
+        return $step->target->workflowId !== null && !in_array($step->target->action, ['send', 'receive'], true);
     }
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
         $target = null;
         foreach ($document->workflows as $workflow) {
-            if ($workflow->workflowId === $step->workflowId) {
+            if ($workflow->workflowId === $step->target->workflowId) {
                 $target = $workflow;
                 break;
             }
         }
 
         if ($target === null) {
-            throw ExecutionException::subWorkflowNotFound((string) $step->workflowId);
+            throw ExecutionException::subWorkflowNotFound((string) $step->target->workflowId);
         }
 
         $evaluationContext = new ExecutionEvaluationInput($context, $step->stepId, $document);
 
         $bound = [];
-        $parameters = (new ReusableParameterResolver())->resolve($step->parameters, $document);
+        $parameters = (new ReusableParameterResolver())->resolve($step->io->parameters, $document);
 
         foreach ($parameters as $parameter) {
             $bound[$parameter->name] = $parameter->value instanceof Expression

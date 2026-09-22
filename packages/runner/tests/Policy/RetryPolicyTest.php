@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Policy\ExponentialBackoffCalculator;
 use Alama\Arazzo\Runner\Policy\RetryPolicy;
 
 function retryPolicyStep(): Step
 {
-    return new Step('step', null, null, null, null, [], null, [], [], [], []);
+    return new Step('step', null, new StepTarget(), new StepFlow(), new StepIo());
 }
 
 function retryPolicyContext(array $headers = []): WorkflowContext

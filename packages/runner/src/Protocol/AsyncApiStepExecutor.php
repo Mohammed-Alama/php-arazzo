@@ -42,7 +42,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
-        return in_array($step->action, ['send', 'receive'], true);
+        return in_array($step->target->action, ['send', 'receive'], true);
     }
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
@@ -53,27 +53,27 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
             );
         }
 
-        if ($step->action === 'send') {
+        if ($step->target->action === 'send') {
             $message = $this->compileMessage($step, $context, $document);
-            $response = $this->httpClient->sendRequest($message, $step->timeout !== null ? $step->timeout / 1000 : null);
+            $response = $this->httpClient->sendRequest($message, $step->flow->timeout !== null ? $step->flow->timeout / 1000 : null);
 
             return StepExecutionOutcome::resolved($response->getStatusCode(), [], []);
         }
 
-        if ($step->action !== 'receive') {
-            throw new LogicException("Unsupported action '{$step->action}' for step '{$step->stepId}'.");
+        if ($step->target->action !== 'receive') {
+            throw new LogicException("Unsupported action '{$step->target->action}' for step '{$step->stepId}'.");
         }
 
-        if ($step->correlationId === null) {
+        if ($step->target->correlationId === null) {
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no correlationId expression.");
         }
-        if ($step->channelPath === null) {
+        if ($step->target->channelPath === null) {
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no channelPath.");
         }
 
-        $correlationId = (string) $this->engine->evaluate($step->correlationId, new ExecutionEvaluationInput($context, $step->stepId, $document));
+        $correlationId = (string) $this->engine->evaluate($step->target->correlationId, new ExecutionEvaluationInput($context, $step->stepId, $document));
 
-        $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->channelPath, $step->timeout !== null ? $step->timeout : null);
+        $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->target->channelPath, $step->flow->timeout !== null ? $step->flow->timeout : null);
 
         return StepExecutionOutcome::suspended();
     }
@@ -99,7 +99,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $query = [];
         $headers = [];
-        $parameters = new ReusableParameterResolver()->resolve($step->parameters, $document);
+        $parameters = new ReusableParameterResolver()->resolve($step->io->parameters, $document);
         foreach ($parameters as $parameter) {
             $value = $parameter->value instanceof Expression
                 ? $this->engine->evaluate($parameter->value, $evaluationContext)
@@ -141,7 +141,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
     private function resolveChannelUri(Step $step): UriInterface
     {
-        $channelPath = $step->channelPath
+        $channelPath = $step->target->channelPath
             ?? throw new LogicException("Send step '{$step->stepId}' has no channelPath.");
 
         if (preg_match('#^https?://#i', $channelPath) !== 1) {
@@ -157,7 +157,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
      */
     private function buildPayload(Step $step, ExecutionEvaluationInput $context): array
     {
-        $requestBody = $step->requestBody;
+        $requestBody = $step->io->requestBody;
 
         return $requestBody !== null && is_array($requestBody->payload)
             ? $this->engine->replacePayload(

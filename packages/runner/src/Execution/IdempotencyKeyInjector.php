@@ -23,7 +23,7 @@ final class IdempotencyKeyInjector
 
     public function inject(RequestInterface $request, Step $step, WorkflowContext $context): InjectionResult
     {
-        $enabled = $step->idempotencyKey ?? $this->enabledDefault;
+        $enabled = $step->flow->idempotencyKey ?? $this->enabledDefault;
         if (!$enabled) {
             return new InjectionResult($request);
         }
@@ -41,7 +41,7 @@ final class IdempotencyKeyInjector
             $fingerprint,
         ]));
 
-        $header = $step->idempotencyHeader ?? $this->headerDefault;
+        $header = $step->flow->idempotencyHeader ?? $this->headerDefault;
 
         return new InjectionResult(
             request: $request->withHeader($header, $key),

@@ -19,8 +19,8 @@ final class ActionReusableRefResolvesRule implements Rule
     {
         foreach ($doc->workflows as $wi => $w) {
             foreach ($w->steps as $si => $s) {
-                $this->checkList($s->onSuccess, 'successActions', $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onSuccess");
-                $this->checkList($s->onFailure, 'failureActions', $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onFailure");
+                $this->checkList($s->flow->onSuccess, 'successActions', $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onSuccess");
+                $this->checkList($s->flow->onFailure, 'failureActions', $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onFailure");
             }
         }
     }

@@ -24,7 +24,7 @@ final class SuccessCriteriaVersionSupportedRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                foreach ($s->successCriteria as $k => $c) {
+                foreach ($s->io->successCriteria as $k => $c) {
                     if ($c->type !== CriterionType::XPath || $c->version === null) {
                         continue;
                     }

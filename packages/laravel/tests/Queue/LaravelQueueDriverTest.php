@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Tests\Laravel;
 
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
@@ -16,7 +19,7 @@ use Illuminate\Support\Facades\Queue;
 it('wraps ExecuteStepJob in RunExecuteStepJob and pushes immediately when no delay is given', function (): void {
     Queue::fake();
 
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $job = new ExecuteStepJob($step, new WorkflowContext('def_1'));
 
     (new LaravelQueueDriver())->dispatch($job);
@@ -27,7 +30,7 @@ it('wraps ExecuteStepJob in RunExecuteStepJob and pushes immediately when no del
 it('wraps and dispatches via later() when a delay is given', function (): void {
     Queue::fake();
 
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $job = new ExecuteStepJob($step, new WorkflowContext('def_1'));
 
     (new LaravelQueueDriver())->dispatch($job, 30);

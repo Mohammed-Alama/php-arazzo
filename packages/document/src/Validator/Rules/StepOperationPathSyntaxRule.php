@@ -18,16 +18,16 @@ final class StepOperationPathSyntaxRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                if ($s->operationPath === null) {
+                if ($s->target->operationPath === null) {
                     continue;
                 }
                 $path = "/workflows/{$i}/steps/{$j}/operationPath";
-                if (!str_contains($s->operationPath, '#')) {
-                    $errors->error($this->code(), "operationPath '{$s->operationPath}' must contain '#' separating source and JSON Pointer.", $path);
+                if (!str_contains($s->target->operationPath, '#')) {
+                    $errors->error($this->code(), "operationPath '{$s->target->operationPath}' must contain '#' separating source and JSON Pointer.", $path);
 
                     continue;
                 }
-                [$src, $ptr] = explode('#', $s->operationPath, 2);
+                [$src, $ptr] = explode('#', $s->target->operationPath, 2);
                 $sourceName = null;
 
                 // The source part must be the runtime expression

@@ -20,7 +20,7 @@ final class StepCriteriaTypeContextRule implements Rule
         $needsContext = [CriterionType::JsonPath, CriterionType::XPath, CriterionType::Regex];
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                foreach ($s->successCriteria as $k => $c) {
+                foreach ($s->io->successCriteria as $k => $c) {
                     if ($c->type !== null && in_array($c->type, $needsContext, true) && ($c->context === null || trim($c->context) === '')) {
                         $errors->error(
                             $this->code(),

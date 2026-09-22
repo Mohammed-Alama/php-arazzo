@@ -63,6 +63,8 @@ mindmap
     QueueDriverInterface
       SyncQueueDriver
       LaravelQueueDriver
+    ResponseTransferInterface
+      ResponseTransfer
     ResponseValidatorInterface
       ResponseSchemaValidator
     RunnerFacadeInterface
@@ -106,6 +108,7 @@ mindmap
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
+| `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
@@ -113,3 +116,16 @@ mindmap
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |
+
+## Unimplemented contracts
+
+Declared but nothing in src implements them — candidates for removal or for a first adapter:
+
+- `CriterionEvaluatorPluginInterface` <small>Interfaces</small>
+- `ExpressionEvaluatorPluginInterface` <small>Interfaces</small>
+- `OperationExecutorPluginInterface` <small>Interfaces</small>
+- `PluginInterface` <small>Interfaces</small>
+- `ReplacementTargetResolverInterface` <small>Interfaces</small>
+- `SourceNormalizerInterface` <small>Interfaces</small>
+- `SourceNormalizerRegistryInterface` <small>Interfaces</small>
+- `WorkflowStateRepositoryInterface` <small>Interfaces</small>

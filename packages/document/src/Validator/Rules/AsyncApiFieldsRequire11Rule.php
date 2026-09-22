@@ -24,7 +24,7 @@ final class AsyncApiFieldsRequire11Rule implements Rule
         foreach ($doc->workflows as $wi => $wf) {
             foreach ($wf->steps as $si => $step) {
                 foreach (['action', 'channelPath', 'correlationId'] as $field) {
-                    if ($step->{$field} !== null) {
+                    if ($step->target->{$field} !== null) {
                         $errors->error(
                             $this->code(),
                             "Field '{$field}' requires arazzo 1.1.0+ at /workflows/{$wi}/steps/{$si}/{$field}",

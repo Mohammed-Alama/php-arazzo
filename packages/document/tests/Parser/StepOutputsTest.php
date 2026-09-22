@@ -36,7 +36,7 @@ it('parses 1.1.0 Selector objects in step outputs', function () {
     ], '/tmp/x.yaml', Format::Yaml);
 
     $doc = (new Parser())->parse($raw);
-    $outputs = $doc->workflows[0]->steps[0]->outputs;
+    $outputs = $doc->workflows[0]->steps[0]->io->outputs;
 
     expect($outputs)->toHaveKey('extractedId')
         ->and($outputs['extractedId'])->toBeInstanceOf(Selector::class)

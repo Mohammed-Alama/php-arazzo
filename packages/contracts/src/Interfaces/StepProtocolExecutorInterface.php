@@ -9,6 +9,9 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 
+/**
+ * @deprecated Use OperationExecutorPluginInterface instead.
+ */
 interface StepProtocolExecutorInterface
 {
     public function supports(Step $step, ArazzoDocument $document): bool;

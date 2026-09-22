@@ -16,7 +16,7 @@ Evans' first question: does the code speak one language?
 ### run vs execute vs invoke
 
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
-- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
+- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 8 more (12 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
 - **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 11 more (15 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
@@ -36,23 +36,24 @@ Evans' first question: does the code speak one language?
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver` + 8 more (12 types)
+- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver` + 9 more (13 types)
 
 ### state vs status
 
-- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 3 more (7 types)
+- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 5 more (9 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
-- **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 8 more (12 types)
+- **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 9 more (13 types)
+- **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
 ### workflow vs process vs flow
 
-- **Flow**: `RunControlFlow` (1 types)
+- **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry` (1 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 22 more (26 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 23 more (27 types)
 
 ### render vs generate
 

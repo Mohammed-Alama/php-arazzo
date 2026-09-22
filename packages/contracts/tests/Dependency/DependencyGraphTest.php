@@ -6,12 +6,15 @@ namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 
 it('computes topological order correctly', function (): void {
     $steps = [
-        new Step('C', null, null, null, null, [], null, [], [], [], [], ['A', 'B']),
-        new Step('A', null, null, null, null, [], null, [], [], [], [], []),
-        new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']),
+        new Step('C', null, new StepTarget(), new StepFlow(dependsOn: ['A', 'B']), new StepIo()),
+        new Step('A', null, new StepTarget(), new StepFlow(), new StepIo()),
+        new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo()),
     ];
 
     $graph = new DependencyGraph($steps);
@@ -23,9 +26,9 @@ it('computes topological order correctly', function (): void {
 
 it('detects cycles correctly', function (): void {
     $steps = [
-        new Step('A', null, null, null, null, [], null, [], [], [], [], ['B']),
-        new Step('B', null, null, null, null, [], null, [], [], [], [], ['C']),
-        new Step('C', null, null, null, null, [], null, [], [], [], [], ['A']),
+        new Step('A', null, new StepTarget(), new StepFlow(dependsOn: ['B']), new StepIo()),
+        new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['C']), new StepIo()),
+        new Step('C', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo()),
     ];
 
     $graph = new DependencyGraph($steps);
@@ -36,8 +39,8 @@ it('detects cycles correctly', function (): void {
 
 it('detects unresolved references correctly', function (): void {
     $steps = [
-        new Step('A', null, null, null, null, [], null, [], [], [], [], ['missing1', 'missing2']),
-        new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']),
+        new Step('A', null, new StepTarget(), new StepFlow(dependsOn: ['missing1', 'missing2']), new StepIo()),
+        new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo()),
     ];
 
     $graph = new DependencyGraph($steps);

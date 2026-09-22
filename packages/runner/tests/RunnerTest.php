@@ -5,7 +5,9 @@ declare(strict_types=1);
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -16,7 +18,7 @@ function runnerDocument(): ArazzoDocument
 {
     return new ArazzoDocument(
         arazzo: '1.0.0', info: new Info('t', null, null, '1'),
-        sourceDescriptions: [], workflows: [new Workflow('w', null, null, null, [], [new Step('s', null, 'op', null, null, [], null, [], [], [], [])], [], [], [], [])],
+        sourceDescriptions: [], workflows: [new Workflow('w', null, null, null, [], [StepFactory::http('s', null, new StepFlow(), new StepIo(), 'op')], [], [], [], [])],
         components: new Components([], [], [], []),
         specificationExtensions: [],
     );

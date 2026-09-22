@@ -86,7 +86,7 @@ class StepOutcomeHandler
         string $executionId,
         bool $criteriaMet,
     ): void {
-        foreach ($step->outputs as $name => $value) {
+        foreach ($step->io->outputs as $name => $value) {
             $resolved = match (true) {
                 $value instanceof Selector => $this->engine->evaluateSelector($value, $context, $step->stepId),
                 $value instanceof Expression => $this->engine->evaluate($value, new ExecutionEvaluationInput($context, $step->stepId)),
@@ -319,7 +319,7 @@ class StepOutcomeHandler
 
     private function findAction(ArazzoDocument $document, Workflow $workflow, Step $step, string $class): ?object
     {
-        foreach ([$step->onSuccess, $step->onFailure, $workflow->successActions, $workflow->failureActions] as $list) {
+        foreach ([$step->flow->onSuccess, $step->flow->onFailure, $workflow->successActions, $workflow->failureActions] as $list) {
             foreach ($list as $action) {
                 if ($action instanceof $class) {
                     return $action;

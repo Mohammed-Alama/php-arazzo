@@ -21,7 +21,7 @@ final class StepParameterInValidRule implements Rule
     {
         foreach ($doc->workflows as $wi => $w) {
             foreach ($w->steps as $si => $s) {
-                foreach ($s->parameters as $pi => $p) {
+                foreach ($s->io->parameters as $pi => $p) {
                     if ($p instanceof Reusable) {
                         continue;
                     }

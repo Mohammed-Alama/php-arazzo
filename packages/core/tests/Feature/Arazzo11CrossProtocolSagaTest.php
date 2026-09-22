@@ -54,7 +54,7 @@ it('preserves 1.0.0 parsing', function () {
     $doc = (new Parser())->parse(loadFixture('arazzo-1.0-still-parses.yaml'));
     expect($doc->specVersion)->toBe(SpecVersion::V1_0)
         ->and($doc->self)->toBeNull()
-        ->and($doc->workflows[0]->steps[0]->outputs)->toHaveKey('id');
+        ->and($doc->workflows[0]->steps[0]->io->outputs)->toHaveKey('id');
 });
 
 it('parses per-feature narrow fixtures', function (string $filename) {

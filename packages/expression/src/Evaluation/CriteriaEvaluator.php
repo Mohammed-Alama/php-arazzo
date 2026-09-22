@@ -41,7 +41,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
     {
         // Default success behavior: an operation step without explicit criteria
         // passes on any 2xx response (community/spec-tooling convention).
-        if ($this->hasOperationTarget($step) && $step->successCriteria === []) {
+        if ($this->hasOperationTarget($step) && $step->io->successCriteria === []) {
             $steps = $context->getSteps();
             $stepData = $steps[$step->stepId] ?? null;
             $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
@@ -49,7 +49,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
             return self::isSuccessStatusCode(is_array($response) ? ($response['statusCode'] ?? null) : null);
         }
 
-        return $this->evaluateCriteria($step->successCriteria, $step, $context, $document);
+        return $this->evaluateCriteria($step->io->successCriteria, $step, $context, $document);
     }
 
     /**
@@ -135,7 +135,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
 
     private function hasOperationTarget(Step $step): bool
     {
-        return $step->operationId !== null || $step->operationPath !== null;
+        return $step->target->operationId !== null || $step->target->operationPath !== null;
     }
 
     private static function isSuccessStatusCode(mixed $statusCode): bool

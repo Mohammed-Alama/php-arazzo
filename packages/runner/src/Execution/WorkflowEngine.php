@@ -152,7 +152,7 @@ final class WorkflowEngine
     /** @return list<SuccessAction|FailureAction> */
     private function actions(ArazzoDocument $document, Workflow $workflow, Step $step, bool $criteriaMet): array
     {
-        $actions = $criteriaMet ? $step->onSuccess : $step->onFailure;
+        $actions = $criteriaMet ? $step->flow->onSuccess : $step->flow->onFailure;
         $actions = $actions !== [] ? $actions : ($criteriaMet ? $workflow->successActions : $workflow->failureActions);
         $type = $criteriaMet ? 'successActions' : 'failureActions';
 

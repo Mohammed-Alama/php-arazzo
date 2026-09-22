@@ -19,7 +19,7 @@ final class StepSuccessCriteriaConditionRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                foreach ($s->successCriteria as $k => $c) {
+                foreach ($s->io->successCriteria as $k => $c) {
                     $condition = trim($c->condition);
                     if ($condition === '') {
                         $errors->error(

@@ -9,7 +9,9 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
@@ -63,7 +65,7 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
 
     $executor = app(StepExecutor::class);
 
-    $step = new Step('charge-step', null, 'chargeOp', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('charge-step', null, new StepFlow(), new StepIo(), operationId: 'chargeOp');
     $context = new WorkflowContext('def-1', [], [], [], 'wf-1', 'exec-1');
     $document = new ArazzoDocument('1.0.0', new Info('t', null, null, '1'), [new SourceDescription('src', 'http://api.example.com', SourceType::Openapi)], [], new Components([], [], [], []), []);
 

@@ -11,6 +11,10 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -28,13 +32,15 @@ function nestedExecutorDocument(): ArazzoDocument
     ], inputs: ['type' => 'object', 'properties' => ['userId' => []]]);
 
     $main = Fx::wf('main', [
-        new Step(
+        StepFactory::workflow(
             'enrich',
-            null, null, null,
+            null,
+            new StepFlow(),
+            new StepIo(
+                parameters: [new Parameter('userId', ParameterIn::Query, new Expression('{$inputs.uid}'))],
+                outputs: ['userName' => new Expression('{$steps.enrich.outputs.name}')],
+            ),
             'fetch-user',
-            [new Parameter('userId', ParameterIn::Query, new Expression('{$inputs.uid}'))],
-            null, [], [], [],
-            ['userName' => new Expression('{$steps.enrich.outputs.name}')],
         ),
     ]);
 
@@ -59,7 +65,7 @@ it('supports steps targeting a workflowId and not plain operation steps', functi
     expect($executor->supports($document->workflows[0]->steps[0], $document))->toBeTrue()
         ->and($executor->supports(Fx::step('plain', 'op'), $document))->toBeFalse()
         ->and($executor->supports(new Step(
-            'async', null, null, null, null, [], null, [], [], [], [], [], 'send', 'https://broker/x',
+            'async', null, new StepTarget(action: 'send', channelPath: 'https://broker/x'), new StepFlow(), new StepIo(),
         ), $document))->toBeFalse();
 });
 
@@ -97,7 +103,7 @@ it('throws a typed error when the target workflow does not exist', function (): 
     $executor = new SubWorkflowStepExecutor(Mockery::mock(WorkflowExecutor::class), new ExpressionEngine());
 
     $document = nestedExecutorDocument();
-    $orphan = new Step('ghost', null, null, null, 'missing-wf', [], null, [], [], [], []);
+    $orphan = StepFactory::workflow('ghost', null, new StepFlow(), new StepIo(), 'missing-wf');
 
     $executor->execute($orphan, new WorkflowContext('def_1'), $document, 'exec_1');
 })->throws(ExecutionException::class, "Sub-workflow 'missing-wf' not found");

@@ -23,8 +23,8 @@ final class ActionGotoTargetResolvesRule implements Rule
         foreach ($doc->workflows as $wi => $w) {
             $syms = $symbols->workflows[$w->workflowId] ?? null;
             foreach ($w->steps as $si => $s) {
-                $this->checkList($s->onSuccess, $syms, $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onSuccess");
-                $this->checkList($s->onFailure, $syms, $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onFailure");
+                $this->checkList($s->flow->onSuccess, $syms, $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onSuccess");
+                $this->checkList($s->flow->onFailure, $syms, $symbols, $errors, "/workflows/{$wi}/steps/{$si}/onFailure");
             }
         }
     }
