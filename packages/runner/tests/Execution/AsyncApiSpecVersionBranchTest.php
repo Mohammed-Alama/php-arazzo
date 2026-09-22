@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
@@ -24,18 +27,9 @@ it('rejects async fields on 1.0 doc at execution', function () {
     $step = new Step(
         stepId: 'step1',
         description: 'Test step',
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        action: 'receive',
-        channelPath: 'test/channel',
-        correlationId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: StepTarget::async('receive', 'test/channel'),
+        flow: new StepFlow(),
+        io: new StepIo(),
     );
 
     $document = new ArazzoDocument('1.0.0', new Info('Title', null, null, '1.0.0'), [], [], new Components([], [], [], []), [], null, SpecVersion::V1_0);
@@ -60,18 +54,9 @@ it('accepts async fields on 1.1 doc', function () {
     $step = new Step(
         stepId: 'step1',
         description: 'Test step',
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        action: 'receive',
-        channelPath: 'test/channel',
-        correlationId: new Expression('$.foo'),
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: StepTarget::async('receive', 'test/channel', new Expression('$.foo')),
+        flow: new StepFlow(),
+        io: new StepIo(),
     );
 
     $document = new ArazzoDocument('1.0.0', new Info('Title', null, null, '1.1.0'), [], [], new Components([], [], [], []), [], null, SpecVersion::V1_1);

@@ -30,6 +30,9 @@ use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
@@ -277,6 +280,83 @@ class Parser
     {
         $obj = $this->requireObjectMap($node, $ctx);
 
+        return new Step(
+            stepId: $this->requireString($obj, 'stepId', $ctx),
+            description: $this->optionalString($obj, 'description', $ctx),
+            target: $this->parseStepTarget($obj, $ctx),
+            flow: $this->parseStepFlow($obj, $ctx),
+            io: $this->parseStepIo($obj, $ctx),
+        );
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     */
+    protected function parseStepTarget(array $obj, ParseContext $ctx): StepTarget
+    {
+        $action = $this->optionalString($obj, 'action', $ctx);
+        $channelPath = $this->optionalString($obj, 'channelPath', $ctx);
+        $correlationIdRaw = $this->optionalString($obj, 'correlationId', $ctx);
+        $correlationId = $correlationIdRaw !== null ? new Expression($correlationIdRaw) : null;
+        $operationId = $this->optionalString($obj, 'operationId', $ctx);
+        $operationPath = $this->optionalString($obj, 'operationPath', $ctx);
+        $workflowId = $this->optionalString($obj, 'workflowId', $ctx);
+
+        return match (true) {
+            $workflowId !== null => StepTarget::workflow($workflowId),
+            $action !== null && $channelPath !== null => StepTarget::async($action, $channelPath, $correlationId),
+            $operationId !== null || $operationPath !== null => new StepTarget(operationId: $operationId, operationPath: $operationPath),
+            default => new StepTarget(),
+        };
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     */
+    protected function parseStepFlow(array $obj, ParseContext $ctx): StepFlow
+    {
+        $dependsOn = [];
+        if (($d = $this->optionalList($obj, 'dependsOn', $ctx)) !== null) {
+            foreach (array_values($d) as $i => $item) {
+                if (!is_string($item)) {
+                    throw ParserException::wrongType(
+                        $ctx->push('dependsOn')->push((string) $i), 'string', $item,
+                    );
+                }
+                $dependsOn[] = $item;
+            }
+        }
+
+        $onSuccess = [];
+        if (($o = $this->optionalList($obj, 'onSuccess', $ctx)) !== null) {
+            foreach (array_values($o) as $i => $item) {
+                $onSuccess[] = $this->parseSuccessAction($item, $ctx->push('onSuccess')->push($i));
+            }
+        }
+
+        $onFailure = [];
+        if (($o = $this->optionalList($obj, 'onFailure', $ctx)) !== null) {
+            foreach (array_values($o) as $i => $item) {
+                $onFailure[] = $this->parseFailureAction($item, $ctx->push('onFailure')->push($i));
+            }
+        }
+
+        return new StepFlow(
+            dependsOn: $dependsOn,
+            timeout: $this->optionalInt($obj, 'timeout', $ctx),
+            onSuccess: $onSuccess,
+            onFailure: $onFailure,
+            strictValidation: $this->optionalBool($obj, 'x-strict-validation', $ctx),
+            idempotencyKey: $this->optionalBool($obj, 'x-idempotency-key', $ctx),
+            idempotencyHeader: $this->optionalString($obj, 'x-idempotency-header', $ctx),
+        );
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     */
+    protected function parseStepIo(array $obj, ParseContext $ctx): StepIo
+    {
         $parameters = [];
         if (($p = $this->optionalList($obj, 'parameters', $ctx)) !== null) {
             foreach (array_values($p) as $i => $item) {
@@ -296,65 +376,16 @@ class Parser
             }
         }
 
-        $onSuccess = [];
-        if (($o = $this->optionalList($obj, 'onSuccess', $ctx)) !== null) {
-            foreach (array_values($o) as $i => $item) {
-                $onSuccess[] = $this->parseSuccessAction($item, $ctx->push('onSuccess')->push($i));
-            }
-        }
-
-        $onFailure = [];
-        if (($o = $this->optionalList($obj, 'onFailure', $ctx)) !== null) {
-            foreach (array_values($o) as $i => $item) {
-                $onFailure[] = $this->parseFailureAction($item, $ctx->push('onFailure')->push($i));
-            }
-        }
-
         $outputs = [];
         if (array_key_exists('outputs', $obj) && $obj['outputs'] !== null) {
             $outputs = $this->parseOutputsMap($obj['outputs'], $ctx->push('outputs'));
         }
 
-        $action = $this->optionalString($obj, 'action', $ctx);
-        $channelPath = $this->optionalString($obj, 'channelPath', $ctx);
-        $correlationIdRaw = $this->optionalString($obj, 'correlationId', $ctx);
-        $correlationId = $correlationIdRaw !== null ? new Expression($correlationIdRaw) : null;
-        $strictValidation = $this->optionalBool($obj, 'x-strict-validation', $ctx);
-        $idempotencyKey = $this->optionalBool($obj, 'x-idempotency-key', $ctx);
-        $idempotencyHeader = $this->optionalString($obj, 'x-idempotency-header', $ctx);
-
-        $dependsOn = [];
-        if (($d = $this->optionalList($obj, 'dependsOn', $ctx)) !== null) {
-            foreach (array_values($d) as $i => $item) {
-                if (!is_string($item)) {
-                    throw ParserException::wrongType(
-                        $ctx->push('dependsOn')->push((string) $i), 'string', $item,
-                    );
-                }
-                $dependsOn[] = $item;
-            }
-        }
-
-        return new Step(
-            stepId: $this->requireString($obj, 'stepId', $ctx),
-            description: $this->optionalString($obj, 'description', $ctx),
-            operationId: $this->optionalString($obj, 'operationId', $ctx),
-            operationPath: $this->optionalString($obj, 'operationPath', $ctx),
-            workflowId: $this->optionalString($obj, 'workflowId', $ctx),
+        return new StepIo(
             parameters: $parameters,
             requestBody: $requestBody,
             successCriteria: $criteria,
-            onSuccess: $onSuccess,
-            onFailure: $onFailure,
             outputs: $outputs,
-            dependsOn: $dependsOn,
-            action: $action,
-            channelPath: $channelPath,
-            correlationId: $correlationId,
-            strictValidation: $strictValidation,
-            idempotencyKey: $idempotencyKey,
-            idempotencyHeader: $idempotencyHeader,
-            timeout: $this->optionalInt($obj, 'timeout', $ctx),
         );
     }
 

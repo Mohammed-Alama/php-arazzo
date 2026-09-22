@@ -11,6 +11,9 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionContextMisuseRule;
@@ -26,7 +29,7 @@ use Alama\Arazzo\Expression\SymbolTable;
 
 function stepE(string $id, array $params = [], array $outs = []): Step
 {
-    return new Step($id, null, 'op', null, null, $params, null, [], [], [], $outs);
+    return StepFactory::http($id, null, new StepFlow(), new StepIo(parameters: $params, outputs: $outs), operationId: 'op');
 }
 
 function docE(array $params = [], array $outs = [], ?array $inputs = ['type' => 'object', 'properties' => ['userId' => ['type' => 'string']]], array $sources = [], array $deps = []): ArazzoDocument
@@ -52,8 +55,8 @@ it('flags unresolved input ref', function (): void {
 });
 
 it('flags forward step ref', function (): void {
-    $s1 = new Step('first', null, 'op', null, null, [new Parameter('x', ParameterIn::Query, new Expression('{$steps.second.outputs.y}'))], null, [], [], [], []);
-    $s2 = new Step('second', null, 'op', null, null, [], null, [], [], [], ['y' => new Expression('{$steps.first.outputs.z}')]);
+    $s1 = StepFactory::http('first', null, new StepFlow(), new StepIo(parameters: [new Parameter('x', ParameterIn::Query, new Expression('{$steps.second.outputs.y}'))]), operationId: 'op');
+    $s2 = StepFactory::http('second', null, new StepFlow(), new StepIo(outputs: ['y' => new Expression('{$steps.first.outputs.z}')]), operationId: 'op');
     $wf = new Workflow('main', null, null, null, [], [$s1, $s2], [], [], [], []);
     $doc = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$wf], new Components([], [], [], []), []);
     $ec = new ErrorCollector();

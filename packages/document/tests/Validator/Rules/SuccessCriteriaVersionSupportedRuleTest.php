@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
@@ -17,7 +19,7 @@ use Alama\Arazzo\Expression\SymbolTable;
 
 function versionRuleDoc(SuccessCriterion $c): ArazzoDocument
 {
-    $step = new Step('x', null, 'op', null, null, [], null, [$c], [], [], []);
+    $step = StepFactory::http('x', null, new StepFlow(), new StepIo(successCriteria: [$c]), operationId: 'op');
     $w = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
     return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$w], new Components([], [], [], []), []);

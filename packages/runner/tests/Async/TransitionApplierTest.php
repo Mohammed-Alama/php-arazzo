@@ -9,6 +9,9 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -26,7 +29,7 @@ use Alama\Arazzo\Tests\Support\RecordingStateStore;
 
 function applierStep(string $id): Step
 {
-    return new Step($id, null, null, null, null, [], null, [], [], [], []);
+    return new Step($id, null, new StepTarget(), new StepFlow(), new StepIo());
 }
 
 function applierWorkflow(): Workflow

@@ -26,8 +26,8 @@ class OpenApiOperationResolver
 
     public function resolve(Step $step, ArazzoDocument $document): ResolvedOperation
     {
-        $opId = $step->operationId;
-        $opPath = $step->operationPath;
+        $opId = $step->target->operationId;
+        $opPath = $step->target->operationPath;
 
         if (!$opId && !$opPath) {
             throw new RuntimeException("Step '{$step->stepId}' must have either operationId or operationPath.");

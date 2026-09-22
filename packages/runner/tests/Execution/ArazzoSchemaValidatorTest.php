@@ -7,6 +7,9 @@ namespace Tests\Execution;
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use cebe\openapi\spec\Operation;
@@ -50,7 +53,7 @@ it('validates a response against the OpenAPI schema', function (): void {
     };
     $validator->mockOperation = $operation;
 
-    $step = new Step('test-step', null, 'operationId', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'operationId');
 
     // 1. Valid data -> no exception
     $validator->validateResponseSchema($step, 200, 'application/json', ['id' => 123]);

@@ -41,7 +41,7 @@ class DependencyGraph
     private function analyze(): void
     {
         foreach ($this->stepsById as $id => $step) {
-            $deps = $step->dependsOn;
+            $deps = $step->flow->dependsOn;
             foreach (ImplicitDependencies::fromStep($step) as $implicit) {
                 if (!in_array($implicit, $deps, true)) {
                     $deps[] = $implicit;

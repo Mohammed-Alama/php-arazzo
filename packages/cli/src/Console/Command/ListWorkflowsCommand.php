@@ -41,9 +41,9 @@ final class ListWorkflowsCommand extends Command
             ));
 
             foreach ($workflow->steps as $step) {
-                $target = $step->operationId
-                    ?? $step->operationPath
-                    ?? ($step->workflowId !== null ? "→ {$step->workflowId}" : ($step->action !== null ? "[{$step->action}]" : '?'));
+                $target = $step->target->operationId
+                    ?? $step->target->operationPath
+                    ?? ($step->target->workflowId !== null ? "→ {$step->target->workflowId}" : ($step->target->action !== null ? "[{$step->target->action}]" : '?'));
                 $output->writeln(sprintf('  - %s %s', $step->stepId, (string) $target));
             }
         }

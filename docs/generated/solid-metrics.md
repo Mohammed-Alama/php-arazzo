@@ -29,7 +29,7 @@ quadrantChart
     contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
     contracts/Interfaces: [0.167, 1]
-    contracts/Spec: [0.04, 0.025]
+    contracts/Spec: [0.04, 0.021]
     contracts/State: [0.083, 0]
     contracts/Support: [0, 0.2]
     document/Normalizer: [0.429, 0.111]
@@ -71,7 +71,7 @@ Concrete types over 300 LOC:
 
 | Class | Module | LOC |
 |---|---|---:|
-| `Parser` | `document:Parser` | 823 |
+| `Parser` | `document:Parser` | 854 |
 | `ExecutionContext` | `runner:State` | 496 |
 | `StepExecutionWorker` | `runner:Execution` | 379 |
 | `StepOutcomeHandler` | `runner:Execution` | 376 |

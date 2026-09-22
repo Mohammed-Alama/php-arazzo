@@ -13,6 +13,10 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -203,7 +207,7 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
 }
 
 it('dispatches StepStartedEvent then StepExecutedEvent on happy path', function () {
-    $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('step1', null, new StepFlow(), new StepIo(), 'op1');
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
         arazzo: '1.0.0',
@@ -245,19 +249,9 @@ it('dispatches StepStartedEvent then CorrelationPendingEvent on action receive s
     $step = new Step(
         stepId: 'recvStep',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
-        dependsOn: [],
-        action: 'receive',
-        channelPath: 'notifications/channel',
-        correlationId: new Expression('$inputs.orderId'),
+        target: StepTarget::async('receive', 'notifications/channel', new Expression('$inputs.orderId')),
+        flow: new StepFlow(),
+        io: new StepIo(),
     );
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
@@ -291,7 +285,7 @@ it('dispatches StepStartedEvent then CorrelationPendingEvent on action receive s
 });
 
 it('dispatches StepStartedEvent then StepFailedEvent when executor throws', function () {
-    $step = new Step('step1', null, 'op1', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('step1', null, new StepFlow(), new StepIo(), 'op1');
     $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
         arazzo: '1.0.0',

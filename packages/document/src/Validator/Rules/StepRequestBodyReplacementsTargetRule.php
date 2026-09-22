@@ -18,10 +18,10 @@ final class StepRequestBodyReplacementsTargetRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                if ($s->requestBody === null) {
+                if ($s->io->requestBody === null) {
                     continue;
                 }
-                foreach ($s->requestBody->replacements as $k => $r) {
+                foreach ($s->io->requestBody->replacements as $k => $r) {
                     if ($r->target === '' || $r->target[0] !== '/') {
                         $errors->error(
                             $this->code(),

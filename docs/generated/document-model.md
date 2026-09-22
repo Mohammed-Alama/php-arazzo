@@ -23,6 +23,7 @@ classDiagram
     class FailureGotoAction <<value>>
     class Format
     class Info
+    class Interaction
     class OpenApiPayload
     class Parameter
     class ParameterIn
@@ -33,6 +34,7 @@ classDiagram
     class ResponseTransfer
     class RetryAction <<value>>
     class Reusable
+    class RpcProtocol
     class Selector
     class SourceDescription
     class SourceDocument
@@ -40,14 +42,19 @@ classDiagram
     class SpecVersion
     class Step
     class StepExecutionOutcome
+    class StepFactory
+    class StepFlow
+    class StepIo
     class StepState
     class StepStatus
+    class StepTarget
     class SubWorkflowFailureAction <<value>>
     class SubWorkflowSuccessAction <<value>>
     class SuccessAction <<value>>
     class SuccessCriterion
     class SuccessEndAction <<value>>
     class SuccessGotoAction <<value>>
+    class ValueMode
     class Workflow
     Action "1" --> "0..1" ActionKind : holds
     FailureAction "1" --> "0..*" SuccessCriterion : holds
@@ -75,7 +82,9 @@ classDiagram
     Components "1" --> "0..1" Parameter : holds
     Components "1" --> "0..1" SuccessAction : holds
     Components "1" --> "0..1" FailureAction : holds
+    Components "1" --> "0..1" Interaction : holds
     Parameter "1" --> "0..1" ParameterIn : holds
+    Parameter "1" --> "0..1" ValueMode : holds
     Parameter "1" --> "0..1" Expression : holds
     Parameter "1" --> "0..1" Selector : holds
     PayloadReplacement "1" --> "0..1" Expression : holds
@@ -87,14 +96,21 @@ classDiagram
     Selector "1" --> "0..1" ExpressionType : holds
     SourceDescription "1" --> "0..1" SourceType : holds
     SourceDocument "1" --> "0..1" SourceType : holds
-    Step "1" --> "0..1" RequestBody : holds
-    Step "1" --> "0..1" Expression : holds
-    Step "1" --> "0..1" Parameter : holds
-    Step "1" --> "0..1" Reusable : holds
-    Step "1" --> "0..*" SuccessCriterion : holds
-    Step "1" --> "0..1" SuccessAction : holds
-    Step "1" --> "0..1" FailureAction : holds
-    Step "1" --> "0..1" Selector : holds
+    Step "1" --> "0..1" StepTarget : holds
+    Step "1" --> "0..1" StepFlow : holds
+    Step "1" --> "0..1" StepIo : holds
+    StepFlow "1" --> "0..1" SuccessAction : holds
+    StepFlow "1" --> "0..1" Reusable : holds
+    StepFlow "1" --> "0..1" FailureAction : holds
+    StepIo "1" --> "0..1" RequestBody : holds
+    StepIo "1" --> "0..1" Parameter : holds
+    StepIo "1" --> "0..1" Reusable : holds
+    StepIo "1" --> "0..*" SuccessCriterion : holds
+    StepIo "1" --> "0..1" Expression : holds
+    StepIo "1" --> "0..1" Selector : holds
+    StepTarget "1" --> "0..1" Expression : holds
+    StepTarget "1" --> "0..1" RpcProtocol : holds
+    StepTarget "1" --> "0..1" Interaction : holds
     SuccessCriterion "1" --> "0..1" CriterionType : holds
     Workflow "1" --> "0..*" Step : holds
     Workflow "1" --> "0..1" SuccessAction : holds
@@ -112,8 +128,10 @@ classDiagram
 - **ExecutionStatus** — `running` &middot; `succeeded` &middot; `failed`
 - **ExpressionType** — `jsonpath` &middot; `xpath` &middot; `jsonpointer`
 - **Format** — `yaml` &middot; `json`
-- **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring`
+- **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring` &middot; `metadata` &middot; `variable`
+- **RpcProtocol** — `grpc` &middot; `grpc-web` &middot; `twirp` &middot; `connect`
 - **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
 - **SpecVersion** — `1.0.0` &middot; `1.1.0`
 - **StepState** — `pending` &middot; `executing_request` &middot; `evaluating_criteria` &middot; `awaiting_actor_input` &middot; `actor_input_received` &middot; `completed` &middot; `failed`
 - **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`
+- **ValueMode** — `literal` &middot; `selector`

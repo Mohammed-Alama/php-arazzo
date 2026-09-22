@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Selector;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
@@ -17,7 +19,7 @@ use Alama\Arazzo\Expression\SymbolTable;
 
 it('detects unresolved $steps ref inside a Selector context', function () {
     $sel = new Selector('$steps.does-not-exist.outputs.id', '$.foo', ExpressionType::JsonPath);
-    $step = new Step('s', null, 'op', null, null, [], null, [], [], [], ['x' => $sel]);
+    $step = StepFactory::http('s', null, new StepFlow(), new StepIo(outputs: ['x' => $sel]), operationId: 'op');
     $doc = new ArazzoDocument(
         arazzo: '1.1.0', info: new Info('t', null, null, '1'),
         sourceDescriptions: [], workflows: [new Workflow('w', null, null, null, [], [$step], [], [], [], [])],

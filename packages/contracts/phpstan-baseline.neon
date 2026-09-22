@@ -26,9 +26,29 @@ parameters:
 			path: src/Spec/OpenApiPayload.php
 
 		-
-			message: '#^Method __construct has too many parameters \(19\)\. Maximum allowed is 5\.$#'
+			message: '#^Method http has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Spec/Step.php
+			path: src/Spec/StepFactory.php
+
+		-
+			message: '#^Method async has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepFactory.php
+
+		-
+			message: '#^Method rpc has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepFactory.php
+
+		-
+			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepFlow.php
+
+		-
+			message: '#^Method __construct has too many parameters \(11\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepTarget.php
 
 		-
 			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'

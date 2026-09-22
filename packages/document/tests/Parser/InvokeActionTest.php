@@ -45,12 +45,12 @@ it('parses invoke action in onSuccess and onFailure', function () {
 
     $doc = (new Parser())->parse($raw);
 
-    $success = $doc->workflows[0]->steps[0]->onSuccess[0];
+    $success = $doc->workflows[0]->steps[0]->flow->onSuccess[0];
     expect($success)->toBeInstanceOf(SubWorkflowSuccessAction::class)
         ->and($success->workflowId)->toBe('child-workflow')
         ->and($success->parameters['p1']->raw)->toBe('abc'); // parsed via parseValueOrSelector string expression logic
 
-    $fail = $doc->workflows[0]->steps[0]->onFailure[0];
+    $fail = $doc->workflows[0]->steps[0]->flow->onFailure[0];
     expect($fail)->toBeInstanceOf(SubWorkflowFailureAction::class)
         ->and($fail->workflowId)->toBe('child-2')
         ->and($fail->version)->toBe('2.0')

@@ -14,6 +14,7 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Tests\Support\Fx;
@@ -36,19 +37,12 @@ it('extracts output references from parameters, body, criteria and correlation i
     $step = new Step(
         stepId: $step->stepId,
         description: null,
-        operationId: $step->operationId,
-        operationPath: null,
-        workflowId: null,
-        parameters: $step->parameters,
-        requestBody: $step->requestBody,
-        successCriteria: $step->successCriteria,
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
-        dependsOn: [],
-        action: null,
-        channelPath: null,
-        correlationId: new Expression('{$steps.load-cart.outputs.correlationId}'),
+        target: new StepTarget(
+            operationId: $step->target->operationId,
+            correlationId: new Expression('{$steps.load-cart.outputs.correlationId}'),
+        ),
+        flow: $step->flow,
+        io: $step->io,
     );
 
     expect(ImplicitDependencies::fromStep($step))->toBe(['load-cart', 'price']);

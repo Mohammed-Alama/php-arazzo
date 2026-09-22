@@ -6,11 +6,14 @@ use Alama\Arazzo\Contracts\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 
 test('finds runnable steps based on dependsOn', function () {
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
 
     $graph = new DependencyGraph([$stepA, $stepB]);
     $analyzer = new DependencyAnalyzer($graph);
@@ -30,8 +33,8 @@ test('finds runnable steps based on dependsOn', function () {
 });
 
 test('does not treat a Retrying step as complete or as runnable again', function () {
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
 
     $graph = new DependencyGraph([$stepA, $stepB]);
     $analyzer = new DependencyAnalyzer($graph);
@@ -46,8 +49,8 @@ test('does not treat a Retrying step as complete or as runnable again', function
 });
 
 test('does not treat a Suspended step as complete', function () {
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
-    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
 
     $graph = new DependencyGraph([$stepA, $stepB]);
     $analyzer = new DependencyAnalyzer($graph);
@@ -62,7 +65,7 @@ test('does not treat a Suspended step as complete', function () {
 });
 
 test('treats a goto-reset Pending step as runnable again even though a steps entry exists', function () {
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], [], []);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
 
     $graph = new DependencyGraph([$stepA]);
     $analyzer = new DependencyAnalyzer($graph);

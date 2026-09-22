@@ -34,12 +34,12 @@ final class SubWorkflowExecutor implements StepProtocolExecutorInterface
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {
-        return $step->workflowId !== null && $step->operationPath === null && $step->operationId === null;
+        return $step->target->workflowId !== null && $step->target->operationPath === null && $step->target->operationId === null;
     }
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
-        $targetWorkflowId = (string) $step->workflowId;
+        $targetWorkflowId = (string) $step->target->workflowId;
         $targetWorkflow = $this->findWorkflow($document, $targetWorkflowId);
 
         if ($targetWorkflow === null) {
@@ -99,7 +99,7 @@ final class SubWorkflowExecutor implements StepProtocolExecutorInterface
     private function resolveInputs(Step $step, WorkflowContext $context): array
     {
         $inputs = [];
-        foreach ($step->parameters as $parameter) {
+        foreach ($step->io->parameters as $parameter) {
             if (!property_exists($parameter, 'name')) {
                 continue; // component defaults resolve inside the child scope
             }

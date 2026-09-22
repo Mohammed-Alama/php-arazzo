@@ -12,27 +12,27 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "runner:Execution", "cli:Console", "contracts:Interfaces", "document:Validator", "runner:Protocol", "contracts:Spec"]
+    x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "runner:Execution", "cli:Console", "contracts:Interfaces", "contracts:Spec", "document:Validator", "runner:Protocol"]
     y-axis "Touches" 0 --> 30
-    bar [23, 16, 15, 12, 9, 9, 8, 7, 5, 5, 5, 4]
+    bar [23, 16, 15, 12, 9, 9, 8, 7, 6, 5, 5, 5]
 ```
 
-Analyzed 188 total file-touches across 37 modules.
+Analyzed 190 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 23 | 12% | 359 | 64.1 |
-| `laravel:Http` | 16 | 9% | 170 | 94.1 |
+| `laravel:Http` | 16 | 8% | 170 | 94.1 |
 | `laravel:Persistence` | 15 | 8% | 264 | 56.8 |
 | `laravel:Queue` | 12 | 6% | 109 | 110.1 |
 | `laravel:Lock` | 9 | 5% | 52 | 173.1 |
 | `laravel:State` | 9 | 5% | 41 | 219.5 |
-| `runner:Execution` | 8 | 4% | 3,860 | 2.1 |
+| `runner:Execution` | 8 | 4% | 3,853 | 2.1 |
 | `cli:Console` | 7 | 4% | 765 | 9.2 |
-| `contracts:Interfaces` | 5 | 3% | 305 | 16.4 |
+| `contracts:Interfaces` | 6 | 3% | 305 | 19.7 |
+| `contracts:Spec` | 5 | 3% | 1,148 | 4.4 |
 | `document:Validator` | 5 | 3% | 3,261 | 1.5 |
 | `runner:Protocol` | 5 | 3% | 557 | 9 |
-| `contracts:Spec` | 4 | 2% | 931 | 4.3 |
 | `expression:Evaluation` | 4 | 2% | 1,267 | 3.2 |
 | `runner:Async` | 4 | 2% | 506 | 7.9 |
 | `cli:Generator` | 3 | 2% | 111 | 27 |
@@ -40,7 +40,7 @@ Analyzed 188 total file-touches across 37 modules.
 | `contracts:Dependency` | 3 | 2% | 336 | 8.9 |
 | `contracts:Support` | 3 | 2% | 185 | 16.2 |
 | `document:Normalizer` | 3 | 2% | 608 | 4.9 |
-| `document:Parser` | 3 | 2% | 1,123 | 2.7 |
+| `document:Parser` | 3 | 2% | 1,154 | 2.6 |
 | `document:Resolver` | 3 | 2% | 406 | 7.4 |
 | `expression:Ast` | 3 | 2% | 235 | 12.8 |
 | `expression:Data` | 3 | 2% | 143 | 21 |

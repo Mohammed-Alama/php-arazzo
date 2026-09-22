@@ -42,7 +42,7 @@ contracts-State,contracts-Spec,3
 document-Normalizer,contracts-Spec,6
 document-Normalizer,contracts-Support,1
 document-Normalizer,document-Resolver,2
-document-Parser,contracts-Spec,30
+document-Parser,contracts-Spec,33
 document-Parser,contracts-Support,2
 document-Resolver,contracts-Spec,6
 document-Resolver,document-Parser,2
@@ -144,7 +144,7 @@ runner-Events,contracts-Support,1
 runner-Execution,contracts-Dependency,3
 runner-Execution,contracts-Exceptions,4
 runner-Execution,contracts-Interfaces,12
-runner-Execution,contracts-Spec,74
+runner-Execution,contracts-Spec,75
 runner-Execution,contracts-State,14
 runner-Execution,contracts-Support,9
 runner-Execution,document-Normalizer,4

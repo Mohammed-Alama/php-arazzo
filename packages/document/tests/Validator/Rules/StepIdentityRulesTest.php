@@ -10,6 +10,10 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepAtLeastOneRule;
@@ -23,7 +27,22 @@ use Alama\Arazzo\Expression\SymbolTable;
 
 function stepIdMk(string $id, ?string $opId = 'op', ?string $opPath = null, ?string $wfId = null): Step
 {
-    return new Step($id, null, $opId, $opPath, $wfId, [], null, [], [], [], []);
+    $flow = new StepFlow();
+    $io = new StepIo();
+
+    if ($opId !== null && $opPath !== null) {
+        return new Step($id, null, new StepTarget(operationId: $opId, operationPath: $opPath), $flow, $io);
+    }
+
+    if ($wfId !== null) {
+        return StepFactory::workflow($id, null, $flow, $io, $wfId);
+    }
+
+    if ($opId !== null || $opPath !== null) {
+        return StepFactory::http($id, null, $flow, $io, $opId, $opPath);
+    }
+
+    return new Step($id, null, new StepTarget(), $flow, $io);
 }
 function stepIdWf(string $id, array $steps, array $dep = []): Workflow
 {

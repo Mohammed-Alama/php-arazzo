@@ -12,6 +12,10 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 
@@ -60,7 +64,18 @@ final class Fx
         array $onFailure = [],
         array $outputs = [],
     ): Step {
-        return new Step($id, null, $opId, $opPath, $wfId, $params, $body, $crit, $onSuccess, $onFailure, $outputs);
+        $flow = new StepFlow(onSuccess: $onSuccess, onFailure: $onFailure);
+        $io = new StepIo(parameters: $params, requestBody: $body, successCriteria: $crit, outputs: $outputs);
+
+        if ($opId !== null || $opPath !== null) {
+            return StepFactory::http($id, null, $flow, $io, $opId, $opPath);
+        }
+
+        if ($wfId !== null) {
+            return StepFactory::workflow($id, null, $flow, $io, $wfId);
+        }
+
+        return new Step($id, null, new StepTarget(), $flow, $io);
     }
 
     /**

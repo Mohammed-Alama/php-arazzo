@@ -36,20 +36,20 @@ final class ExpressionWalker
             }
 
             foreach ($wf->steps as $si => $s) {
-                foreach ($s->parameters as $pi => $p) {
+                foreach ($s->io->parameters as $pi => $p) {
                     if ($p instanceof Reusable) {
                         continue;
                     }
 
                     yield from $this->extract($p->value, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value", $syms, $s->stepId, 'parameters');
                 }
-                if ($s->requestBody !== null) {
-                    yield from $this->extract($s->requestBody->payload, "/workflows/{$wi}/steps/{$si}/requestBody/payload", $syms, $s->stepId, 'requestBody');
-                    foreach ($s->requestBody->replacements as $ri => $r) {
+                if ($s->io->requestBody !== null) {
+                    yield from $this->extract($s->io->requestBody->payload, "/workflows/{$wi}/steps/{$si}/requestBody/payload", $syms, $s->stepId, 'requestBody');
+                    foreach ($s->io->requestBody->replacements as $ri => $r) {
                         yield from $this->extract($r->value, "/workflows/{$wi}/steps/{$si}/requestBody/replacements/{$ri}/value", $syms, $s->stepId, 'requestBody');
                     }
                 }
-                foreach ($s->successCriteria as $ci => $c) {
+                foreach ($s->io->successCriteria as $ci => $c) {
                     if ($c->context !== null && str_starts_with($c->context, '{$')) {
                         yield new ExpressionSite(
                             "/workflows/{$wi}/steps/{$si}/successCriteria/{$ci}/context", new Expression($c->context), $syms, $s->stepId, 'criteria',
@@ -61,7 +61,7 @@ final class ExpressionWalker
                         );
                     }
                 }
-                foreach ($s->outputs as $name => $expr) {
+                foreach ($s->io->outputs as $name => $expr) {
                     yield from $this->extract($expr, "/workflows/{$wi}/steps/{$si}/outputs/{$name}", $syms, $s->stepId, 'outputs');
                 }
             }

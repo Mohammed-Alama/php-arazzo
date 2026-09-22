@@ -10,7 +10,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Reusable;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
@@ -29,7 +31,7 @@ function actionDocSteps(array $steps, ?array $rawRoot = null): ArazzoDocument
 }
 
 it('accepts valid action types (no-op passes)', function (): void {
-    $s = new Step('s', null, 'op', null, null, [], null, [], [new SuccessGotoAction('g', 's', null, [])], [], []);
+    $s = StepFactory::http('s', null, new StepFlow(onSuccess: [new SuccessGotoAction('g', 's', null, [])]), new StepIo(), operationId: 'op');
     $doc = actionDocSteps([$s]);
     $ec = new ErrorCollector();
     (new ActionTypeValidRule())->check($doc, SymbolTable::build($doc), $ec);
@@ -37,7 +39,7 @@ it('accepts valid action types (no-op passes)', function (): void {
 });
 
 it('flags goto with unknown stepId', function (): void {
-    $s = new Step('s', null, 'op', null, null, [], null, [], [new SuccessGotoAction('g', 'ghost', null, [])], [], []);
+    $s = StepFactory::http('s', null, new StepFlow(onSuccess: [new SuccessGotoAction('g', 'ghost', null, [])]), new StepIo(), operationId: 'op');
     $doc = actionDocSteps([$s]);
     $ec = new ErrorCollector();
     (new ActionGotoTargetResolvesRule())->check($doc, SymbolTable::build($doc), $ec);
@@ -45,7 +47,7 @@ it('flags goto with unknown stepId', function (): void {
 });
 
 it('flags negative retry limits', function (): void {
-    $s = new Step('s', null, 'op', null, null, [], null, [], [], [new RetryAction('r', -5, -1, 's', null, [])], []);
+    $s = StepFactory::http('s', null, new StepFlow(onFailure: [new RetryAction('r', -5, -1, 's', null, [])]), new StepIo(), operationId: 'op');
     $doc = actionDocSteps([$s]);
     $ec = new ErrorCollector();
     (new ActionRetryLimitsRule())->check($doc, SymbolTable::build($doc), $ec);
@@ -53,7 +55,7 @@ it('flags negative retry limits', function (): void {
 });
 
 it('flags unresolved reusable ref', function (): void {
-    $s = new Step('s', null, 'op', null, null, [], null, [], [new Reusable('$components.successActions.ghost')], [], []);
+    $s = StepFactory::http('s', null, new StepFlow(onSuccess: [new Reusable('$components.successActions.ghost')]), new StepIo(), operationId: 'op');
     $doc = actionDocSteps([$s]);
     $ec = new ErrorCollector();
     (new ActionReusableRefResolvesRule())->check($doc, SymbolTable::build($doc), $ec);

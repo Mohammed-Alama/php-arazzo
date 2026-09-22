@@ -20,6 +20,9 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
@@ -123,8 +126,7 @@ class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
  */
 function stepOutcomeStep(string $id, array $onFailure = [], array $onSuccess = [], array $dependsOn = []): Step
 {
-    /** @phpstan-ignore argument.type */
-    return new Step($id, null, null, null, null, [], null, [], array_values($onSuccess), array_values($onFailure), [], $dependsOn);
+    return new Step($id, null, new StepTarget(), new StepFlow(onSuccess: array_values($onSuccess), onFailure: array_values($onFailure), dependsOn: $dependsOn), new StepIo());
 }
 
 /**

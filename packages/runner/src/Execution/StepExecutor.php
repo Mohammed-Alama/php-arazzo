@@ -77,7 +77,7 @@ class StepExecutor
 
                     return $request;
                 },
-                $step->timeout !== null ? $step->timeout / 1000 : null,
+                $step->flow->timeout !== null ? $step->flow->timeout / 1000 : null,
             );
 
             $decoded = RequestCompiler::decodeResponse($response);
@@ -126,7 +126,7 @@ class StepExecutor
 
     private function shouldValidateSchema(Step $step): bool
     {
-        return $step->strictValidation ?? $this->strictValidationDefault;
+        return $step->flow->strictValidation ?? $this->strictValidationDefault;
     }
 
     private function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation

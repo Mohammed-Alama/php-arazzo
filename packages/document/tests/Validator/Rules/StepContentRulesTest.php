@@ -13,6 +13,9 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
@@ -30,7 +33,12 @@ function stepContentDoc(Step $s): ArazzoDocument
 }
 
 it('flags empty parameter name', function (): void {
-    $step = new Step('x', null, 'op', null, null, [new Parameter('', ParameterIn::Query, 'v')], null, [], [], [], []);
+    $step = StepFactory::http(
+        'x', null,
+        new StepFlow(),
+        new StepIo(parameters: [new Parameter('', ParameterIn::Query, 'v')]),
+        operationId: 'op',
+    );
     $doc = stepContentDoc($step);
     $ec = new ErrorCollector();
     (new StepParametersHaveNameRule())->check($doc, SymbolTable::build($doc), $ec);
@@ -39,7 +47,12 @@ it('flags empty parameter name', function (): void {
 
 it('flags bad replacement target', function (): void {
     $body = new RequestBody(null, [], [new PayloadReplacement('no-slash', 'v')]);
-    $step = new Step('x', null, 'op', null, null, [], $body, [], [], [], []);
+    $step = StepFactory::http(
+        'x', null,
+        new StepFlow(),
+        new StepIo(requestBody: $body),
+        operationId: 'op',
+    );
     $doc = stepContentDoc($step);
     $ec = new ErrorCollector();
     (new StepRequestBodyReplacementsTargetRule())->check($doc, SymbolTable::build($doc), $ec);
@@ -48,7 +61,12 @@ it('flags bad replacement target', function (): void {
 
 it('flags whitespace-only condition', function (): void {
     $crit = new SuccessCriterion(null, '   ', null);
-    $step = new Step('x', null, 'op', null, null, [], null, [$crit], [], [], []);
+    $step = StepFactory::http(
+        'x', null,
+        new StepFlow(),
+        new StepIo(successCriteria: [$crit]),
+        operationId: 'op',
+    );
     $doc = stepContentDoc($step);
     $ec = new ErrorCollector();
     (new StepSuccessCriteriaConditionRule())->check($doc, SymbolTable::build($doc), $ec);
@@ -57,7 +75,12 @@ it('flags whitespace-only condition', function (): void {
 
 it('flags jsonpath criterion missing context', function (): void {
     $crit = new SuccessCriterion(null, '$.id != null', CriterionType::JsonPath);
-    $step = new Step('x', null, 'op', null, null, [], null, [$crit], [], [], []);
+    $step = StepFactory::http(
+        'x', null,
+        new StepFlow(),
+        new StepIo(successCriteria: [$crit]),
+        operationId: 'op',
+    );
     $doc = stepContentDoc($step);
     $ec = new ErrorCollector();
     (new StepCriteriaTypeContextRule())->check($doc, SymbolTable::build($doc), $ec);

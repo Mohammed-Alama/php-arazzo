@@ -27,12 +27,12 @@ final class SubWorkflowInvokeTargetResolvesRule implements Rule
 
         foreach ($doc->workflows as $wi => $wf) {
             foreach ($wf->steps as $si => $step) {
-                foreach ($step->onSuccess as $ai => $action) {
+                foreach ($step->flow->onSuccess as $ai => $action) {
                     if ($action instanceof SubWorkflowSuccessAction) {
                         $this->assertResolves($action->workflowId, $localIds, $errors, "/workflows/{$wi}/steps/{$si}/onSuccess/{$ai}");
                     }
                 }
-                foreach ($step->onFailure as $ai => $action) {
+                foreach ($step->flow->onFailure as $ai => $action) {
                     if ($action instanceof SubWorkflowFailureAction) {
                         $this->assertResolves($action->workflowId, $localIds, $errors, "/workflows/{$wi}/steps/{$si}/onFailure/{$ai}");
                     }

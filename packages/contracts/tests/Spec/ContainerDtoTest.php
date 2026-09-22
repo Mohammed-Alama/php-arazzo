@@ -9,11 +9,13 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 
 it('builds full document tree', function (): void {
-    $step = new Step('s1', null, 'getFoo', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('s1', null, new StepFlow(), new StepIo(), operationId: 'getFoo');
     $wf = new Workflow('wf', null, null, null, [], [$step], [], [], [], []);
     $doc = new ArazzoDocument(
         arazzo: '1.0.0',

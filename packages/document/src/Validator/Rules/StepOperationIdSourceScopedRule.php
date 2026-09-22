@@ -24,12 +24,12 @@ final class StepOperationIdSourceScopedRule implements Rule
 
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                if ($s->operationId === null) {
+                if ($s->target->operationId === null) {
                     continue;
                 }
                 $isQualified = false;
                 foreach ($symbols->sourceDescriptions as $srcName => $source) {
-                    if (str_starts_with($s->operationId, $srcName.'.')) {
+                    if (str_starts_with($s->target->operationId, $srcName.'.')) {
                         $isQualified = true;
                         break;
                     }
@@ -39,7 +39,7 @@ final class StepOperationIdSourceScopedRule implements Rule
                     if (count($doc->sourceDescriptions) !== 1) {
                         $errors->error(
                             $this->code(),
-                            "Step '{$s->stepId}' uses unqualified operationId '{$s->operationId}' but the document does not declare exactly one sourceDescription.",
+                            "Step '{$s->stepId}' uses unqualified operationId '{$s->target->operationId}' but the document does not declare exactly one sourceDescription.",
                             "/workflows/{$i}/steps/{$j}/operationId",
                         );
                     }

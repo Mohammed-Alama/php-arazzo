@@ -7,6 +7,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -47,7 +50,7 @@ function suspensionResolver(): ExpressionResolverInterface
 
 function asyncStep(string $id): Step
 {
-    return new Step($id, null, null, null, null, [], null, [], [], [], []);
+    return new Step($id, null, new StepTarget(), new StepFlow(), new StepIo());
 }
 
 function suspensionWorkflow(): Workflow
@@ -97,19 +100,9 @@ it('announces CorrelationPendingEvent for receive steps carrying correlation coo
     $receiveStep = new Step(
         'wait-for-ride',
         null,
-        null,
-        null,
-        null,
-        [],
-        null,
-        [],
-        [],
-        [],
-        [],
-        [],
-        'receive',
-        'channels/rides',
-        new Expression('{$inputs.rideId}'),
+        StepTarget::async('receive', 'channels/rides', new Expression('{$inputs.rideId}')),
+        new StepFlow(),
+        new StepIo(),
     );
     $handler->handle($receiveStep, (new WorkflowContext('def'))->withExecutionId('e2'), suspensionWorkflow(), 'e2');
 
@@ -123,11 +116,11 @@ it('does not announce CorrelationPendingEvent without full receive coordinates',
     $captured = [];
     $dispatcher->subscribe(CorrelationPendingEvent::class, fn (CorrelationPendingEvent $e) => $captured[] = $e);
 
-    $sendStep = new Step('send-thing', null, null, null, null, [], null, [], [], [], [], [], 'send');
+    $sendStep = new Step('send-thing', null, new StepTarget(action: 'send'), new StepFlow(), new StepIo());
     $handler->handle($sendStep, (new WorkflowContext('def'))->withExecutionId('e3'), suspensionWorkflow(), 'e3');
 
     // Receive but missing correlationId/channelPath -> also silent.
-    $halfReceive = new Step('half', null, null, null, null, [], null, [], [], [], [], [], 'receive', 'channels/x');
+    $halfReceive = new Step('half', null, StepTarget::async('receive', 'channels/x'), new StepFlow(), new StepIo());
     $handler->handle($halfReceive, (new WorkflowContext('def'))->withExecutionId('e4'), suspensionWorkflow(), 'e4');
 
     expect($captured)->toBe([]);

@@ -32,9 +32,9 @@ it('parses x-strict-validation boolean from a step', function (): void {
     $document = (new Parser())->parse($raw);
     $steps = $document->workflows[0]->steps;
 
-    expect($steps[0]->strictValidation)->toBeTrue();
-    expect($steps[1]->strictValidation)->toBeFalse();
-    expect($steps[2]->strictValidation)->toBeNull();
+    expect($steps[0]->flow->strictValidation)->toBeTrue();
+    expect($steps[1]->flow->strictValidation)->toBeFalse();
+    expect($steps[2]->flow->strictValidation)->toBeNull();
 });
 
 it('parses x-idempotency-key boolean from a step', function (): void {
@@ -60,9 +60,9 @@ it('parses x-idempotency-key boolean from a step', function (): void {
     $document = (new Parser())->parse($raw);
     $steps = $document->workflows[0]->steps;
 
-    expect($steps[0]->idempotencyKey)->toBeTrue();
-    expect($steps[1]->idempotencyKey)->toBeFalse();
-    expect($steps[2]->idempotencyKey)->toBeNull();
+    expect($steps[0]->flow->idempotencyKey)->toBeTrue();
+    expect($steps[1]->flow->idempotencyKey)->toBeFalse();
+    expect($steps[2]->flow->idempotencyKey)->toBeNull();
 });
 
 it('parses x-idempotency-header string from a step', function (): void {
@@ -85,6 +85,6 @@ it('parses x-idempotency-header string from a step', function (): void {
     $document = (new Parser())->parse($raw);
     $steps = $document->workflows[0]->steps;
 
-    expect($steps[0]->idempotencyHeader)->toBe('X-Adyen-Idempotency-Key');
-    expect($steps[1]->idempotencyHeader)->toBeNull();
+    expect($steps[0]->flow->idempotencyHeader)->toBe('X-Adyen-Idempotency-Key');
+    expect($steps[1]->flow->idempotencyHeader)->toBeNull();
 });

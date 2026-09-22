@@ -41,7 +41,7 @@ class StepOutputExtractor implements OutputExtractorInterface
         $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
 
         $outputs = [];
-        foreach ($step->outputs as $outputName => $expression) {
+        foreach ($step->io->outputs as $outputName => $expression) {
             if ($expression instanceof Selector) {
                 $outputs[$outputName] = $this->engine->evaluateSelector($expression, $context, $step->stepId);
 

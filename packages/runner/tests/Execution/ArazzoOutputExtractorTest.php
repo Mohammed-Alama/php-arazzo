@@ -13,6 +13,10 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
@@ -81,18 +85,12 @@ it('extracts output via runtime expression with schema cast', function () {
     $extractor = ($this->makeExtractor)();
     $document = ($this->makeDocument)();
 
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'create-user',
         description: null,
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['userId' => new Expression('{$steps.create-user.response.body#/id}')]),
         operationId: 'createUser',
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['userId' => new Expression('{$steps.create-user.response.body#/id}')],
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('create-user', [
@@ -112,15 +110,9 @@ it('extracts output via bare jsonpath', function () {
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['firstId' => new Expression('$.users[0].id')],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['firstId' => new Expression('$.users[0].id')]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
@@ -140,15 +132,9 @@ it('extracts output via json pointer selector', function () {
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['firstUser' => new Selector(null, '/users/0/id', ExpressionType::JsonPointer)],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['firstUser' => new Selector(null, '/users/0/id', ExpressionType::JsonPointer)]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
@@ -168,15 +154,9 @@ it('extracts output via selector with a context expression', function () {
     $step = new Step(
         stepId: 's2',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['token' => new Selector('{$steps.s1.outputs.auth}', '$.access.token', ExpressionType::JsonPath)],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['token' => new Selector('{$steps.s1.outputs.auth}', '$.access.token', ExpressionType::JsonPath)]),
     );
 
     $context = (new WorkflowContext('def_1'))

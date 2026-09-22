@@ -9,6 +9,9 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
@@ -33,8 +36,8 @@ class CliFakeExecutor implements StepProtocolExecutorInterface
 function cliDocument(): ArazzoDocument
 {
     $workflow = new Workflow('cli_wf', null, null, null, [], [
-        new Step('one', null, null, null, null, [], null, [], [], [], []),
-        new Step('two', null, null, null, null, [], null, [], [], [], [], ['one']),
+        new Step('one', null, new StepTarget(), new StepFlow(), new StepIo()),
+        new Step('two', null, new StepTarget(), new StepFlow(dependsOn: ['one']), new StepIo()),
     ], [], [], [], []);
 
     return new ArazzoDocument(

@@ -15,13 +15,13 @@ the declaration honest.
 ```mermaid
 flowchart LR
     subgraph S_core["Core domain"]
-        S_contracts_Spec["contracts:Spec<br/><small>931 LOC</small>"]:::coreDomain
+        S_contracts_Spec["contracts:Spec<br/><small>1148 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_cli_Console["cli:Console<br/><small>765 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
-        S_document_Parser["document:Parser<br/><small>1123 LOC</small>"]:::supportingDomain
+        S_document_Parser["document:Parser<br/><small>1154 LOC</small>"]:::supportingDomain
         S_document_Resolver["document:Resolver<br/><small>406 LOC</small>"]:::supportingDomain
         S_document_Validator["document:Validator<br/><small>3261 LOC</small>"]:::supportingDomain
     end
@@ -52,7 +52,7 @@ flowchart LR
         S_expression_Interfaces["expression:Interfaces<br/><small>73 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>109 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>506 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>3860 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>3853 LOC</small>"]:::unknownDomain
         S_runner_Infrastructure["runner:Infrastructure<br/><small>172 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
         S_runner_Policy["runner:Policy<br/><small>102 LOC</small>"]:::unknownDomain
@@ -67,10 +67,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 931 | 0 | 5% |
-| Supporting | 6 | 5,921 | 0 | 31% |
+| Core domain | 1 | 1,148 | 0 | 6% |
+| Supporting | 6 | 5,952 | 0 | 31% |
 | Generic subdomain | 12 | 2,132 | 1,138 | 17% |
-| Unclassified | 18 | 8,726 | 0 | 46% |
+| Unclassified | 18 | 8,719 | 0 | 46% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

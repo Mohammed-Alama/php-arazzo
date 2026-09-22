@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Selector;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
@@ -49,21 +51,12 @@ it('resolves a Selector output through SelectorEvaluator', function () {
         engine: $exprEngine,
     );
 
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'step1',
         description: 'Test step',
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['id' => new Selector(null, '$.foo', ExpressionType::JsonPath)]),
         operationId: 'op1',
-        operationPath: null,
-        workflowId: null,
-        action: null,
-        channelPath: null,
-        correlationId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['id' => new Selector(null, '$.foo', ExpressionType::JsonPath)],
     );
 
     $workflow = new Workflow('test_wf', null, null, null, [], [$step], [], [], [], []);

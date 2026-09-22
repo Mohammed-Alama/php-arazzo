@@ -6,6 +6,9 @@ namespace Tests\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
@@ -21,19 +24,13 @@ it('evaluates success criteria simple regex jsonpath', function () {
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [
             new SuccessCriterion(null, '{$statusCode} == 200', CriterionType::Simple),
             new SuccessCriterion('{$statusCode}', '^20[0-1]$', CriterionType::Regex),
             new SuccessCriterion(null, '$.users[?(@.id==1)]', CriterionType::JsonPath),
-        ],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        ]),
     );
 
     $context = (new WorkflowContext('def_1'))
@@ -53,17 +50,11 @@ it('evaluates xpath criteria against xml response bodies', function () {
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [
             new SuccessCriterion(null, '/users/user[@id="1"]/name', CriterionType::XPath),
-        ],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        ]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
@@ -90,17 +81,11 @@ it('fails xpath criteria deterministically on non-xml bodies', function () {
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [
             new SuccessCriterion(null, '/users', CriterionType::XPath),
-        ],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        ]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
@@ -118,15 +103,9 @@ it('evaluateCriteria evaluates an arbitrary criteria list against the current st
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: []),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
@@ -154,15 +133,9 @@ it('evaluateCriteria returns true for an empty criteria list', function () {
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: []),
     );
 
     $context = new WorkflowContext('def_1');
@@ -176,15 +149,9 @@ it('simple criteria fail the step when the status code does not match', function
     $makeStep = fn (string $condition) => new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [new SuccessCriterion(null, $condition, CriterionType::Simple)],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [new SuccessCriterion(null, $condition, CriterionType::Simple)]),
     );
 
     $ok = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
@@ -201,15 +168,9 @@ it('malformed simple criteria fail deterministically instead of throwing', funct
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [new SuccessCriterion(null, '$statusCode === 200', CriterionType::Simple)],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [new SuccessCriterion(null, '$statusCode === 200', CriterionType::Simple)]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
@@ -223,15 +184,9 @@ it('jsonpath criteria evaluate against the declared context node', function () {
     $makeStep = fn (string $context) => new Step(
         stepId: 's2',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [new SuccessCriterion($context, '$[?(@.ok == true)]', CriterionType::JsonPath)],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [new SuccessCriterion($context, '$[?(@.ok == true)]', CriterionType::JsonPath)]),
     );
 
     $context = (new WorkflowContext('def_1'))
@@ -253,15 +208,9 @@ it('jsonpath criteria without context fall back to the current response body', f
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [new SuccessCriterion(null, '$.users[*].id', CriterionType::JsonPath)],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [new SuccessCriterion(null, '$.users[*].id', CriterionType::JsonPath)]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
@@ -279,15 +228,9 @@ it('regex criteria without a context fail instead of being skipped', function ()
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [new SuccessCriterion(null, '^20[0-1]$', CriterionType::Regex)],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [new SuccessCriterion(null, '^20[0-1]$', CriterionType::Regex)]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
@@ -301,15 +244,9 @@ it('regex criteria against a missing context value fail deterministically', func
     $step = new Step(
         stepId: 'step1',
         description: null,
-        operationId: null,
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [new SuccessCriterion('{$response.header.X-Missing}', '^.*$', CriterionType::Regex)],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [],
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(successCriteria: [new SuccessCriterion('{$response.header.X-Missing}', '^.*$', CriterionType::Regex)]),
     );
 
     $context = (new WorkflowContext('def_1'))->withStepResponse('step1', ['statusCode' => 200, 'headers' => [], 'body' => []]);

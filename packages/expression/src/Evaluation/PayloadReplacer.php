@@ -32,7 +32,7 @@ final class PayloadReplacer
      */
     public static function apply(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
     {
-        $requestBody = $step->requestBody;
+        $requestBody = $step->io->requestBody;
         if ($requestBody === null || $requestBody->replacements === []) {
             return $body;
         }

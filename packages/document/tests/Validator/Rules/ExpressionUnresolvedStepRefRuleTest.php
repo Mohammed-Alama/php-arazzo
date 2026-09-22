@@ -7,7 +7,9 @@ namespace Alama\Arazzo\Tests\Validation\Rules;
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Parameter;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
@@ -64,7 +66,7 @@ it('flags forward output references when the workflow uses no dependsOn', functi
 
 it('warns instead of failing on forward references when the workflow uses dependsOn elsewhere', function (): void {
     $s0 = Fx::step('entry', 'op');
-    $s0 = new Step($s0->stepId, null, $s0->operationId, null, null, [], null, [], [], [], [], ['other']);
+    $s0 = StepFactory::http($s0->stepId, null, new StepFlow(dependsOn: ['other']), new StepIo(), operationId: $s0->target->operationId);
     $s1 = Fx::step('first', 'op', params: [
         new Parameter('x', ParameterIn::Query, new Expression('{$steps.second.outputs.y}')),
     ]);

@@ -18,7 +18,7 @@ final class StepOperationTargetPresentRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                $set = (int) ($s->operationId !== null) + (int) ($s->operationPath !== null) + (int) ($s->workflowId !== null);
+                $set = (int) ($s->target->operationId !== null) + (int) ($s->target->operationPath !== null) + (int) ($s->target->workflowId !== null);
                 if ($set !== 1) {
                     $errors->error(
                         $this->code(),

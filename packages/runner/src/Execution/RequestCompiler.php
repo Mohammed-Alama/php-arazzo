@@ -38,7 +38,7 @@ final readonly class RequestCompiler
     public function compile(Step $step, ArazzoDocument $document, WorkflowContext $context): array
     {
         $resolvedInputs = [];
-        $parameters = new ReusableParameterResolver()->resolve($step->parameters, $document);
+        $parameters = new ReusableParameterResolver()->resolve($step->io->parameters, $document);
 
         $path = [];
         $query = [];
@@ -60,10 +60,10 @@ final readonly class RequestCompiler
 
         $bodyData = [];
 
-        if ($step->requestBody && $step->requestBody->payload !== null) {
+        if ($step->io->requestBody && $step->io->requestBody->payload !== null) {
             $bodyData = $this->engine->replacePayload(
                 $step,
-                is_array($step->requestBody->payload) ? $step->requestBody->payload : [],
+                is_array($step->io->requestBody->payload) ? $step->io->requestBody->payload : [],
                 fn (PayloadReplacement $replacement) => $this->values->resolve($replacement->value, $context, $step->stepId),
                 $context,
             );

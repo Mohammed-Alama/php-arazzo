@@ -10,6 +10,10 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
@@ -51,7 +55,7 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
     $recorder = new RecordingStepExecutionWorker();
     $this->app->instance(StepExecutionWorker::class, $recorder);
 
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $context = (new WorkflowContext('def_1'))->withExecutionId('exec_1');
     $innerJob = new ExecuteStepJob($step, $context);
 
@@ -73,7 +77,7 @@ it('round-trips ExecuteStepJob through a real Laravel queue connection and reach
 
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
     // 1. Setup minimal step & workflow context
-    $step = new Step('step-1', null, 'op', null, null, [], null, [], [], [], []);
+    $step = StepFactory::http('step-1', null, new StepFlow(), new StepIo(), operationId: 'op');
     $executionId = 'exec-idempotency-test-'.bin2hex(random_bytes(8));
     $context = (new WorkflowContext('def-1'))->withWorkflowId('wf-1')->withExecutionId($executionId);
     $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [], [], [], [], []);

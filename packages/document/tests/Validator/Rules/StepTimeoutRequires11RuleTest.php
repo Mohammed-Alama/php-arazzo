@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepTimeoutRequires11Rule;
@@ -20,7 +22,7 @@ use Alama\Arazzo\Expression\SymbolTable;
  */
 function timeoutDoc(?int $timeout, string $version = '1.1.0'): ArazzoDocument
 {
-    $step = new Step('s', null, 'op', null, null, [], null, [], [], [], [], timeout: $timeout);
+    $step = StepFactory::http('s', null, new StepFlow(timeout: $timeout), new StepIo(), operationId: 'op');
     $wf = new Workflow('w', null, null, null, [], [$step], [], [], [], []);
 
     return new ArazzoDocument(

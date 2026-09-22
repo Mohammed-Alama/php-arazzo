@@ -264,7 +264,7 @@ flowchart TB
 | `cli` | `document` | 12 |
 | `cli` | `expression` | 3 |
 | `cli` | `runner` | 16 |
-| `document` | `contracts` | 146 |
+| `document` | `contracts` | 149 |
 | `document` | `expression` | 76 |
 | `expression` | `contracts` | 71 |
 | `laravel` | `cli` | 3 |
@@ -272,7 +272,7 @@ flowchart TB
 | `laravel` | `document` | 18 |
 | `laravel` | `expression` | 4 |
 | `laravel` | `runner` | 44 |
-| `runner` | `contracts` | 190 |
+| `runner` | `contracts` | 191 |
 | `runner` | `document` | 22 |
 | `runner` | `expression` | 27 |
 

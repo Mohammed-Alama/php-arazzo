@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Reusable;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Runner\Execution\StepParameterMerger;
 use Alama\Arazzo\Tests\Support\Fx;
 
@@ -30,8 +32,8 @@ it('appends workflow parameters that the step does not define', function (): voi
 
     $merged = StepParameterMerger::merge($step, $workflow);
 
-    expect(count($merged->parameters))->toBe(2)
-        ->and(array_map(fn ($p) => $p->name, $merged->parameters))->toBe(['apiVersion', 'q']);
+    expect(count($merged->io->parameters))->toBe(2)
+        ->and(array_map(fn ($p) => $p->name, $merged->io->parameters))->toBe(['apiVersion', 'q']);
 });
 
 it('lets a step parameter override a same-named workflow parameter', function (): void {
@@ -45,9 +47,9 @@ it('lets a step parameter override a same-named workflow parameter', function ()
 
     $merged = StepParameterMerger::merge($step, $workflow);
 
-    expect(count($merged->parameters))->toBe(2);
+    expect(count($merged->io->parameters))->toBe(2);
 
-    $pages = array_values(array_filter($merged->parameters, fn ($p) => $p instanceof Parameter && $p->name === 'page'));
+    $pages = array_values(array_filter($merged->io->parameters, fn ($p) => $p instanceof Parameter && $p->name === 'page'));
     expect($pages)->toHaveCount(1)
         ->and($pages[0]->value)->toBe(99);
 });
@@ -58,7 +60,7 @@ it('treats same name in different locations as distinct parameters', function ()
 
     $merged = StepParameterMerger::merge($step, $workflow);
 
-    expect(count($merged->parameters))->toBe(2);
+    expect(count($merged->io->parameters))->toBe(2);
 });
 
 it('preserves reusables and never collides them with concrete parameters', function (): void {
@@ -68,39 +70,30 @@ it('preserves reusables and never collides them with concrete parameters', funct
 
     $merged = StepParameterMerger::merge($step, $workflow);
 
-    expect(count($merged->parameters))->toBe(2)
-        ->and($merged->parameters[0])->toBeInstanceOf(Reusable::class);
+    expect(count($merged->io->parameters))->toBe(2)
+        ->and($merged->io->parameters[0])->toBeInstanceOf(Reusable::class);
 });
 
 it('keeps every other step property intact after merging', function (): void {
     $expression = new Expression('{$inputs.uid}');
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'enrich',
         description: null,
+        flow: new StepFlow(
+            strictValidation: true,
+            idempotencyKey: true,
+            idempotencyHeader: 'X-Key',
+        ),
+        io: new StepIo(outputs: ['name' => $expression]),
         operationId: 'load-op',
-        operationPath: null,
-        workflowId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [],
-        onFailure: [],
-        outputs: ['name' => $expression],
-        dependsOn: [],
-        action: null,
-        channelPath: null,
-        correlationId: null,
-        strictValidation: true,
-        idempotencyKey: true,
-        idempotencyHeader: 'X-Key',
     );
     $workflow = Fx::wf('w', [$step], parameters: [wfParam('apiVersion', ParameterIn::Query, '2')]);
 
     $merged = StepParameterMerger::merge($step, $workflow);
 
-    expect($merged->outputs)->toBe($step->outputs)
-        ->and($merged->strictValidation)->toBeTrue()
-        ->and($merged->idempotencyKey)->toBeTrue()
-        ->and($merged->idempotencyHeader)->toBe('X-Key')
-        ->and($merged->operationId)->toBe('load-op');
+    expect($merged->io->outputs)->toBe($step->io->outputs)
+        ->and($merged->flow->strictValidation)->toBeTrue()
+        ->and($merged->flow->idempotencyKey)->toBeTrue()
+        ->and($merged->flow->idempotencyHeader)->toBe('X-Key')
+        ->and($merged->target->operationId)->toBe('load-op');
 });

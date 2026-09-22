@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEngineInterface;
@@ -52,21 +54,12 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
         engine: Mockery::mock(ExpressionEngineInterface::class),
     );
 
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'step1',
         description: 'Test step',
+        flow: new StepFlow(onSuccess: [$action]),
+        io: new StepIo(),
         operationId: 'op1',
-        operationPath: null,
-        workflowId: null,
-        action: null,
-        channelPath: null,
-        correlationId: null,
-        parameters: [],
-        requestBody: null,
-        successCriteria: [],
-        onSuccess: [$action],
-        onFailure: [],
-        outputs: [],
     );
 
     $workflow = new Workflow('test_wf', null, null, null, [], [$step], [], [], [], []);

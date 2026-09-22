@@ -13,7 +13,9 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Document;
@@ -441,24 +443,22 @@ it('executes a workflow end-to-end', function () {
     };
 
     // 2. Setup Document and Workflow
-    $step = new Step(
+    $step = StepFactory::http(
         stepId: 'create-ride',
         description: 'Creates a ride',
+        flow: new StepFlow(),
+        io: new StepIo(
+            parameters: [
+                new Parameter('customerId', ParameterIn::Query, new Expression('{$inputs.customerId}')),
+            ],
+            successCriteria: [
+                new SuccessCriterion(null, '$statusCode == 201', null),
+            ],
+            outputs: [
+                'rideId' => new Expression('{$steps.create-ride.response.body#/data/id}'),
+            ],
+        ),
         operationId: 'createRide',
-        operationPath: null,
-        workflowId: null,
-        parameters: [
-            new Parameter('customerId', ParameterIn::Query, new Expression('{$inputs.customerId}')),
-        ],
-        requestBody: null,
-        successCriteria: [
-            new SuccessCriterion(null, '$statusCode == 201', null),
-        ],
-        onSuccess: [],
-        onFailure: [],
-        outputs: [
-            'rideId' => new Expression('{$steps.create-ride.response.body#/data/id}'),
-        ],
     );
 
     $workflow = new Workflow(

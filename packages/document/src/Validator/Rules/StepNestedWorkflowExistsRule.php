@@ -18,14 +18,14 @@ final class StepNestedWorkflowExistsRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                if ($s->workflowId === null) {
+                if ($s->target->workflowId === null) {
                     continue;
                 }
-                if (!isset($symbols->workflows[$s->workflowId])) {
-                    if (!$doc->hasExternalSourceFor($s->workflowId)) {
+                if (!isset($symbols->workflows[$s->target->workflowId])) {
+                    if (!$doc->hasExternalSourceFor($s->target->workflowId)) {
                         $errors->error(
                             $this->code(),
-                            "step.workflowId '{$s->workflowId}' does not resolve to a declared local workflow or an external arazzo source.",
+                            "step.workflowId '{$s->target->workflowId}' does not resolve to a declared local workflow or an external arazzo source.",
                             "/workflows/{$i}/steps/{$j}/workflowId",
                         );
                     }

@@ -52,7 +52,7 @@ it('parses Selectors in parameters and payload replacements', function () {
     expect($param->value)->toBeInstanceOf(Selector::class)
         ->and($param->value->selector)->toBe('$.auth');
 
-    $repl = $doc->workflows[0]->steps[0]->requestBody->replacements[0];
+    $repl = $doc->workflows[0]->steps[0]->io->requestBody->replacements[0];
     expect($repl->value)->toBeInstanceOf(Selector::class)
         ->and($repl->value->selector)->toBe('/user/id');
 });

@@ -8,7 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepParameterInValidRule;
@@ -23,7 +25,7 @@ function docWithParams(array $params, SpecVersion $sv = SpecVersion::V1_1): Araz
         info: new Info('t', null, null, '1'),
         sourceDescriptions: [],
         workflows: [new Workflow('w', null, null, null, [], [
-            new Step('s', null, 'op', null, null, $params, null, [], [], [], []),
+            StepFactory::http('s', null, new StepFlow(), new StepIo(parameters: $params), operationId: 'op'),
         ], [], [], [], [])],
         components: new Components([], [], [], []),
         specificationExtensions: [],

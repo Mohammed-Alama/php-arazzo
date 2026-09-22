@@ -67,7 +67,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.17 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.04 | 174 | 40 | 100% |
+| `contracts/Spec` | 0.04 | 183 | 47 | 100% |
 | `contracts/State` | 0.08 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Normalizer` | 0.43 | 15 | 9 | 100% |
@@ -77,7 +77,7 @@ quadrantChart
 | `expression/Ast` | 0.00 | 5 | 15 | 33% |
 | `expression/Data` | 0.60 | 3 | 5 | 60% |
 | `expression/Enum` | 0.00 | 3 | 2 | 100% |
-| `expression/Evaluation` | 0.88 | 46 | 20 | 100% |
+| `expression/Evaluation` | 0.88 | 48 | 20 | 100% |
 | `expression/Exceptions` | 0.33 | 6 | 2 | 100% |
 | `expression/Interfaces` | 0.10 | 24 | 3 | 100% |
 | `expression/Xpath` | 0.50 | 2 | 2 | 100% |

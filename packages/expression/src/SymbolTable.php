@@ -120,13 +120,13 @@ final readonly class SymbolTable
                 if ($s instanceof Step && isset($s->stepId)) {
                     $outs = [];
                     // @phpstan-ignore isset.property
-                    if (isset($s->outputs) && is_iterable($s->outputs)) {
-                        foreach ($s->outputs as $k => $_) {
+                    if (isset($s->io->outputs) && is_iterable($s->io->outputs)) {
+                        foreach ($s->io->outputs as $k => $_) {
                             $outs[(string) $k] = true;
                         }
                     }
                     $stepDependsOn = [];
-                    foreach ($s->dependsOn as $d) {
+                    foreach ($s->flow->dependsOn as $d) {
                         $stepDependsOn[$d] = true;
                     }
                     $steps[$s->stepId] = new StepSymbols($outs, (int) $i, $stepDependsOn);

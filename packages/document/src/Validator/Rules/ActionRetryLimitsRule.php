@@ -19,7 +19,7 @@ final class ActionRetryLimitsRule implements Rule
     {
         foreach ($doc->workflows as $wi => $w) {
             foreach ($w->steps as $si => $s) {
-                foreach ($s->onFailure as $i => $a) {
+                foreach ($s->flow->onFailure as $i => $a) {
                     if (!$a instanceof RetryAction) {
                         continue;
                     }

@@ -14,6 +14,9 @@ use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Document;
@@ -49,8 +52,8 @@ function parityFixtures(): array
     file_put_contents($openapiFile, $openapiJson);
 
     $workflow = new Workflow('parity_wf', null, null, null, [], [
-        new Step('p1', null, 'createRide', null, null, [], null, [], [], [], []),
-        new Step('p2', null, 'createRide', null, null, [], null, [], [], [], [], ['p1']),
+        StepFactory::http('p1', null, new StepFlow(), new StepIo(), 'createRide'),
+        StepFactory::http('p2', null, new StepFlow(dependsOn: ['p1']), new StepIo(), 'createRide'),
     ], [], [], [], []);
 
     $document = new ArazzoDocument(

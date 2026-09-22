@@ -20,8 +20,8 @@ final class StepNestedWorkflowNoCycleRule implements Rule
         foreach ($doc->workflows as $w) {
             $graph[$w->workflowId] = [];
             foreach ($w->steps as $s) {
-                if ($s->workflowId !== null && !str_contains($s->workflowId, '.')) {
-                    $graph[$w->workflowId][] = $s->workflowId;
+                if ($s->target->workflowId !== null && !str_contains($s->target->workflowId, '.')) {
+                    $graph[$w->workflowId][] = $s->target->workflowId;
                 }
             }
         }

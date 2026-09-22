@@ -7,7 +7,9 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -23,7 +25,7 @@ function runnerFixtureDocument(): ArazzoDocument
         arazzo: '1.0.0',
         info: new Info('t', null, null, '1'),
         sourceDescriptions: [new SourceDescription('pets', __DIR__.'/fixtures/petstore.yaml', SourceType::Openapi)],
-        workflows: [new Workflow('find', null, null, null, [], [new Step('list', null, 'listPets', null, null, [], null, [], [], [], [])], [], [], [], [])],
+        workflows: [new Workflow('find', null, null, null, [], [StepFactory::http('list', null, new StepFlow(), new StepIo(), 'listPets')], [], [], [], [])],
         components: new Components([], [], [], []),
         specificationExtensions: [],
     );

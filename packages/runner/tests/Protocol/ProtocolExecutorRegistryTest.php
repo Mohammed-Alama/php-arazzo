@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Protocol\ProtocolExecutorRegistry;
 
@@ -39,7 +42,7 @@ it('resolves the first registered executor whose supports() matches', function (
     $registry->register('sub-workflow', $specific);
     $registry->register('http', $generic);
 
-    $resolved = $registry->resolve(new Step('s', null, null, null, null, [], null, [], [], [], []), registryDocument());
+    $resolved = $registry->resolve(new Step('s', null, new StepTarget(), new StepFlow(), new StepIo()), registryDocument());
 
     expect($resolved)->toBe($specific)
         ->and($registry->getSupportedProtocols())->toBe(['sub-workflow', 'http']);
@@ -49,10 +52,10 @@ it('skips non-matching executors and returns null when none support the step', f
     $registry = new ProtocolExecutorRegistry();
     $registry->register('a', new RegistryFakeExecutor(supports: false));
 
-    expect($registry->resolve(new Step('s', null, null, null, null, [], null, [], [], [], []), registryDocument()))->toBeNull();
+    expect($registry->resolve(new Step('s', null, new StepTarget(), new StepFlow(), new StepIo()), registryDocument()))->toBeNull();
 });
 
 it('returns null for an empty registry', function (): void {
-    expect((new ProtocolExecutorRegistry())->resolve(new Step('s', null, null, null, null, [], null, [], [], [], []), registryDocument()))->toBeNull()
+    expect((new ProtocolExecutorRegistry())->resolve(new Step('s', null, new StepTarget(), new StepFlow(), new StepIo()), registryDocument()))->toBeNull()
         ->and((new ProtocolExecutorRegistry())->getSupportedProtocols())->toBe([]);
 });

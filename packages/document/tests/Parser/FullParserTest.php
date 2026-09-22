@@ -44,11 +44,11 @@ it('parses a full arazzo document', function (): void {
         ->and($wf->outputs)->toHaveKey('user');
 
     $s1 = $wf->steps[0];
-    expect($s1->operationPath)->toBe('/users/{id}')
-        ->and($s1->successCriteria[0]->type)->toBe(CriterionType::Simple)
-        ->and($s1->successCriteria[0]->context)->toBe('$response.header.status')
-        ->and($s1->onSuccess[0])->toBeInstanceOf(Reusable::class)
-        ->and($s1->onFailure[0])->toBeInstanceOf(RetryAction::class);
+    expect($s1->target->operationPath)->toBe('/users/{id}')
+        ->and($s1->io->successCriteria[0]->type)->toBe(CriterionType::Simple)
+        ->and($s1->io->successCriteria[0]->context)->toBe('$response.header.status')
+        ->and($s1->flow->onSuccess[0])->toBeInstanceOf(Reusable::class)
+        ->and($s1->flow->onFailure[0])->toBeInstanceOf(RetryAction::class);
 
     expect($doc->components->successActions)->toHaveKey('goEnd')
         ->and($doc->components->failureActions)->toHaveKey('globalFail')
@@ -90,9 +90,9 @@ it('parses AsyncAPI action/channelPath/correlationId fields on a step', function
     $document = (new Parser())->parse(new RawDocument($raw, 'memory://test', Format::Json));
     $step = $document->workflows[0]->steps[0];
 
-    expect($step->action)->toBe('receive');
-    expect($step->channelPath)->toBe('channels/rides/created');
-    expect($step->correlationId->raw)->toBe('{$response.body#/rideId}');
+    expect($step->target->action)->toBe('receive');
+    expect($step->target->channelPath)->toBe('channels/rides/created');
+    expect($step->target->correlationId->raw)->toBe('{$response.body#/rideId}');
 });
 
 it('leaves action/channelPath/correlationId null when absent', function (): void {
@@ -108,7 +108,7 @@ it('leaves action/channelPath/correlationId null when absent', function (): void
     $document = (new Parser())->parse(new RawDocument($raw, 'memory://test', Format::Json));
     $step = $document->workflows[0]->steps[0];
 
-    expect($step->action)->toBeNull();
-    expect($step->channelPath)->toBeNull();
-    expect($step->correlationId)->toBeNull();
+    expect($step->target->action)->toBeNull();
+    expect($step->target->channelPath)->toBeNull();
+    expect($step->target->correlationId)->toBeNull();
 });

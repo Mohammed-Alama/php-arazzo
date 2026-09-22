@@ -51,7 +51,7 @@ Evans' first question: does the code speak one language?
 
 ### workflow vs process vs flow
 
-- **Flow**: `RunControlFlow` (1 types)
+- **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry` (1 types)
 - **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 23 more (27 types)
 

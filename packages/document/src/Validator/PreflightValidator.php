@@ -227,7 +227,7 @@ final class PreflightValidator
         }
 
         // 4. Reusable action references must point at existing components.
-        foreach ([$step->onSuccess, $step->onFailure] as $actions) {
+        foreach ([$step->flow->onSuccess, $step->flow->onFailure] as $actions) {
             foreach ($actions as $action) {
                 if (!$action instanceof Reusable) {
                     continue;
@@ -268,7 +268,7 @@ final class PreflightValidator
 
     private function sourceNameOf(Step $step): ?string
     {
-        foreach ([$step->operationPath, $step->operationId] as $reference) {
+        foreach ([$step->target->operationPath, $step->target->operationId] as $reference) {
             if (
                 is_string($reference)
                 && preg_match('/^\{\$sourceDescriptions\.([^}]+)\.url\}/', $reference, $m) === 1) {
@@ -284,13 +284,13 @@ final class PreflightValidator
     {
         $selectors = [];
 
-        foreach ($step->parameters as $parameter) {
+        foreach ($step->io->parameters as $parameter) {
             if ($parameter->value instanceof Selector) {
                 $selectors[] = $parameter->value;
             }
         }
 
-        foreach ($step->outputs as $value) {
+        foreach ($step->io->outputs as $value) {
             if ($value instanceof Selector) {
                 $selectors[] = $value;
             }

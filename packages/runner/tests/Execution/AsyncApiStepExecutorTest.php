@@ -15,6 +15,9 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\RequestBody;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
@@ -72,9 +75,9 @@ it('supports steps with action send or receive, not steps without an action', fu
         new AsyncApiExecutorMockClient(),
     );
 
-    $plainStep = new Step('s1', null, null, null, null, [], null, [], [], [], []);
-    $sendStep = new Step('s2', null, null, null, null, [], null, [], [], [], [], [], 'send');
-    $receiveStep = new Step('s3', null, null, null, null, [], null, [], [], [], [], [], 'receive');
+    $plainStep = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $sendStep = new Step('s2', null, new StepTarget(action: 'send'), new StepFlow(), new StepIo());
+    $receiveStep = new Step('s3', null, new StepTarget(action: 'receive'), new StepFlow(), new StepIo());
 
     expect($executor->supports($plainStep, asyncApiExecutorDocument()))->toBeFalse();
     expect($executor->supports($sendStep, asyncApiExecutorDocument()))->toBeTrue();
@@ -94,9 +97,11 @@ it('publishes and resolves immediately for action send', function (): void {
     );
 
     $step = new Step(
-        'publish-ride', null, null, null, null, [], null, [], [], [], [], [],
-        'send',
-        'https://broker.local/publish/rides',
+        'publish-ride',
+        null,
+        StepTarget::async('send', 'https://broker.local/publish/rides'),
+        new StepFlow(),
+        new StepIo(),
     );
     $context = new WorkflowContext('def_1', [], [], [], 'wf_1', 'exec_1');
 
@@ -123,19 +128,20 @@ it('compiles parameters and requestBody replacements into the message', function
 
     $step = new Step(
         'publish-order',
-        null, null, null, null,
-        [
-            new Parameter('source', ParameterIn::Query, new Expression('{$inputs.origin}')),
-            new Parameter('X-Trace', ParameterIn::Header, 'trace-123'),
-        ],
-        new RequestBody(
-            'application/json',
-            ['orderId' => 'old'],
-            [new PayloadReplacement('/orderId', new Expression('{$inputs.orderId}'))],
+        null,
+        StepTarget::async('send', 'https://broker.local/publish/orders?apiVersion=2'),
+        new StepFlow(),
+        new StepIo(
+            parameters: [
+                new Parameter('source', ParameterIn::Query, new Expression('{$inputs.origin}')),
+                new Parameter('X-Trace', ParameterIn::Header, 'trace-123'),
+            ],
+            requestBody: new RequestBody(
+                'application/json',
+                ['orderId' => 'old'],
+                [new PayloadReplacement('/orderId', new Expression('{$inputs.orderId}'))],
+            ),
         ),
-        [], [], [], [], [],
-        'send',
-        'https://broker.local/publish/orders?apiVersion=2',
     );
     $context = new WorkflowContext('def_1', ['origin' => 'web', 'orderId' => 'ord_42'], [], [], 'wf_1', 'exec_1');
 
@@ -163,8 +169,11 @@ it('writes a PendingCorrelation and suspends for action receive', function (): v
     );
 
     $step = new Step(
-        'wait-for-ride', null, null, null, null, [], null, [], [], [], [], [],
-        'receive', 'channels/rides/created', new Expression('{$inputs.correlationId}'),
+        'wait-for-ride',
+        null,
+        StepTarget::async('receive', 'channels/rides/created', new Expression('{$inputs.correlationId}')),
+        new StepFlow(),
+        new StepIo(),
     );
     $context = new WorkflowContext('def_1', ['correlationId' => 'corr_abc'], [], [], 'wf_1', 'exec_1');
 
@@ -185,7 +194,7 @@ it('throws when a receive step has no correlationId expression', function (): vo
         new AsyncApiExecutorMockClient(),
     );
 
-    $step = new Step('wait', null, null, null, null, [], null, [], [], [], [], [], 'receive', 'channels/x', null);
+    $step = new Step('wait', null, StepTarget::async('receive', 'channels/x'), new StepFlow(), new StepIo());
     $context = new WorkflowContext('def_1', [], [], [], 'wf_1', 'exec_1');
 
     expect(fn () => $executor->execute($step, $context, asyncApiExecutorDocument(), 'exec_1'))

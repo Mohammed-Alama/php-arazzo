@@ -27,7 +27,7 @@ parameters:
 			path: src/Parser/Parser.php
 
 		-
-			message: '#^Class Parser has too many methods \(31\)\. Maximum allowed is 20\.$#'
+			message: '#^Class Parser has too many methods \(34\)\. Maximum allowed is 20\.$#'
 			count: 1
 			path: src/Parser/Parser.php
 

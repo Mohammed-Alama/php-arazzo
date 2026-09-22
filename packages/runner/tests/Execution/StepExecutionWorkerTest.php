@@ -16,6 +16,9 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
@@ -226,7 +229,7 @@ it('skips a step already at Succeeded status', function (): void {
         new InMemoryDefinitionRegistry(),
     );
 
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $context = (new WorkflowContext('def_1'))
         ->withExecutionId('exec_1')
         ->withStepResult('A', ['success' => true])
@@ -245,7 +248,7 @@ it('appends a definition_missing event when the registry returns null', function
         new InMemoryDefinitionRegistry(),
     );
 
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $context = (new WorkflowContext('missing_def'))->withExecutionId('exec_1');
 
     $worker->handle(new ExecuteStepJob($step, $context));
@@ -263,7 +266,7 @@ it('appends a workflow_missing event when the context workflowId is not in the d
 
     [$worker, , , $eventLedger] = makeWorker(StepExecutionOutcome::resolved(200, [], []), $definitionRegistry);
 
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_does_not_exist');
 
     $worker->handle(new ExecuteStepJob($step, $context));
@@ -273,8 +276,8 @@ it('appends a workflow_missing event when the context workflowId is not in the d
 
 it('executes a step, saves state with TTL, appends step.executed, starts the execution, and continues via StepOutcomeHandler', function (): void {
     $definitionRegistry = new InMemoryDefinitionRegistry();
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], []);
-    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB], [], [], [], []);
     $document = makeWorkerDocument($workflow);
     $definitionId = $definitionRegistry->register($document);
@@ -298,7 +301,7 @@ it('executes a step, saves state with TTL, appends step.executed, starts the exe
 
 it('suspends when the protocol executor returns a suspended outcome, without invoking StepOutcomeHandler', function (): void {
     $definitionRegistry = new InMemoryDefinitionRegistry();
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
     $document = makeWorkerDocument($workflow);
     $definitionId = $definitionRegistry->register($document);
@@ -316,9 +319,9 @@ it('suspends when the protocol executor returns a suspended outcome, without inv
 
 it('reloads and merges persisted state before evaluating, so a concurrently-completed sibling step is not lost', function (): void {
     $definitionRegistry = new InMemoryDefinitionRegistry();
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], []);
-    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], []);
-    $stepD = new Step('D', null, null, null, null, [], null, [], [], [], [], ['A', 'B']);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepB = new Step('B', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepD = new Step('D', null, new StepTarget(), new StepFlow(dependsOn: ['A', 'B']), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB, $stepD], [], [], [], []);
     $document = makeWorkerDocument($workflow);
     $definitionId = $definitionRegistry->register($document);
@@ -350,7 +353,7 @@ it('reloads and merges persisted state before evaluating, so a concurrently-comp
 
 it('acquires the lock using an execution-scoped key, not a definition-scoped key', function (): void {
     $definitionRegistry = new InMemoryDefinitionRegistry();
-    $step = new Step('A', null, null, null, null, [], null, [], [], [], []);
+    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
     $document = makeWorkerDocument($workflow);
     $definitionId = $definitionRegistry->register($document);
@@ -366,10 +369,10 @@ it('acquires the lock using an execution-scoped key, not a definition-scoped key
 
 it('resolves a diamond fan-in exactly once: B and C both complete from the same stale context, D dispatches exactly once with A+B+C all present', function (): void {
     $definitionRegistry = new InMemoryDefinitionRegistry();
-    $stepA = new Step('A', null, null, null, null, [], null, [], [], [], []);
-    $stepB = new Step('B', null, null, null, null, [], null, [], [], [], [], ['A']);
-    $stepC = new Step('C', null, null, null, null, [], null, [], [], [], [], ['A']);
-    $stepD = new Step('D', null, null, null, null, [], null, [], [], [], [], ['B', 'C']);
+    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
+    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
+    $stepC = new Step('C', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
+    $stepD = new Step('D', null, new StepTarget(), new StepFlow(dependsOn: ['B', 'C']), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB, $stepC, $stepD], [], [], [], []);
     $document = makeWorkerDocument($workflow);
     $definitionId = $definitionRegistry->register($document);
