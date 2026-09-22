@@ -67,7 +67,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.18 | 19 | 15 | 100% |
-| `contracts/Spec` | 0.00 | 171 | 38 | 100% |
+| `contracts/Spec` | 0.00 | 172 | 39 | 100% |
 | `contracts/State` | 0.08 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Normalizer` | 0.43 | 15 | 9 | 100% |

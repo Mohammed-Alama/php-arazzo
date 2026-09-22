@@ -135,6 +135,9 @@ this file on a commit is a public API change — review it deliberately.
 - Cases: `V1_0`, `V1_1`
 - `public static function fromRaw(string $raw): self`
 
+#### `StepState` enum
+- Cases: `ActorInputReceived`, `AwaitingActorInput`, `Completed`, `EvaluatingCriteria`, `ExecutingRequest`, `Failed`, `Pending`
+
 #### `StepStatus` enum
 - Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
 

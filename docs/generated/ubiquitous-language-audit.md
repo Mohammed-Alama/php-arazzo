@@ -40,7 +40,7 @@ Evans' first question: does the code speak one language?
 
 ### state vs status
 
-- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 3 more (7 types)
+- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 4 more (8 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository

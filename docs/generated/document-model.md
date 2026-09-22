@@ -39,6 +39,7 @@ classDiagram
     class SpecVersion
     class Step
     class StepExecutionOutcome
+    class StepState
     class StepStatus
     class SubWorkflowFailureAction <<value>>
     class SubWorkflowSuccessAction <<value>>
@@ -113,4 +114,5 @@ classDiagram
 - **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring`
 - **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
 - **SpecVersion** — `1.0.0` &middot; `1.1.0`
+- **StepState** — `pending` &middot; `executing_request` &middot; `evaluating_criteria` &middot; `awaiting_actor_input` &middot; `actor_input_received` &middot; `completed` &middot; `failed`
 - **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`

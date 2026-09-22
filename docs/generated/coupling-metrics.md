@@ -17,7 +17,7 @@ targets. Regenerated before every commit.
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 15 | 231 | 14 | 3 | 0.18 |  |
-| `contracts:Spec` | 38 | 806 | 24 | 0 | 0.00 |  |
+| `contracts:Spec` | 39 | 828 | 24 | 0 | 0.00 |  |
 | `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Normalizer` | 9 | 599 | 4 | 3 | 0.43 |  |
