@@ -14,49 +14,49 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "laravel:Queue", "laravel:Lock", "laravel:State", "runner:Execution", "cli:Console", "contracts:Interfaces", "contracts:Spec", "document:Validator", "runner:Protocol"]
     y-axis "Touches" 0 --> 30
-    bar [23, 16, 15, 12, 9, 9, 8, 7, 6, 5, 5, 5]
+    bar [23, 16, 15, 12, 9, 9, 9, 8, 6, 6, 6, 6]
 ```
 
-Analyzed 190 total file-touches across 37 modules.
+Analyzed 201 total file-touches across 37 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 23 | 12% | 359 | 64.1 |
+| `laravel:Bindings` | 23 | 11% | 359 | 64.1 |
 | `laravel:Http` | 16 | 8% | 170 | 94.1 |
-| `laravel:Persistence` | 15 | 8% | 264 | 56.8 |
+| `laravel:Persistence` | 15 | 7% | 264 | 56.8 |
 | `laravel:Queue` | 12 | 6% | 109 | 110.1 |
-| `laravel:Lock` | 9 | 5% | 52 | 173.1 |
-| `laravel:State` | 9 | 5% | 41 | 219.5 |
-| `runner:Execution` | 8 | 4% | 3,853 | 2.1 |
-| `cli:Console` | 7 | 4% | 765 | 9.2 |
+| `laravel:Lock` | 9 | 4% | 52 | 173.1 |
+| `laravel:State` | 9 | 4% | 41 | 219.5 |
+| `runner:Execution` | 9 | 4% | 3,853 | 2.3 |
+| `cli:Console` | 8 | 4% | 765 | 10.5 |
 | `contracts:Interfaces` | 6 | 3% | 305 | 19.7 |
-| `contracts:Spec` | 5 | 3% | 1,148 | 4.4 |
-| `document:Validator` | 5 | 3% | 3,261 | 1.5 |
-| `runner:Protocol` | 5 | 3% | 557 | 9 |
-| `expression:Evaluation` | 4 | 2% | 1,267 | 3.2 |
-| `runner:Async` | 4 | 2% | 506 | 7.9 |
-| `cli:Generator` | 3 | 2% | 111 | 27 |
-| `cli:Renderer` | 3 | 2% | 255 | 11.8 |
-| `contracts:Dependency` | 3 | 2% | 336 | 8.9 |
-| `contracts:Support` | 3 | 2% | 185 | 16.2 |
-| `document:Normalizer` | 3 | 2% | 608 | 4.9 |
-| `document:Parser` | 3 | 2% | 1,154 | 2.6 |
-| `document:Resolver` | 3 | 2% | 406 | 7.4 |
-| `expression:Ast` | 3 | 2% | 235 | 12.8 |
-| `expression:Data` | 3 | 2% | 143 | 21 |
-| `expression:Enum` | 3 | 2% | 45 | 66.7 |
-| `laravel:Events` | 3 | 2% | 24 | 125 |
-| `laravel:Support` | 3 | 2% | 119 | 25.2 |
-| `runner:Events` | 3 | 2% | 328 | 9.1 |
-| `runner:Infrastructure` | 3 | 2% | 172 | 17.4 |
-| `runner:Jobs` | 3 | 2% | 40 | 75 |
-| `runner:Policy` | 3 | 2% | 102 | 29.4 |
-| `runner:State` | 3 | 2% | 952 | 3.2 |
-| `runner:Telemetry` | 3 | 2% | 282 | 10.6 |
+| `contracts:Spec` | 6 | 3% | 1,148 | 5.2 |
+| `document:Validator` | 6 | 3% | 3,261 | 1.8 |
+| `runner:Protocol` | 6 | 3% | 557 | 10.8 |
+| `expression:Evaluation` | 5 | 2% | 1,267 | 3.9 |
+| `runner:Async` | 5 | 2% | 506 | 9.9 |
+| `cli:Renderer` | 4 | 2% | 255 | 15.7 |
+| `contracts:Dependency` | 4 | 2% | 336 | 11.9 |
+| `document:Normalizer` | 4 | 2% | 608 | 6.6 |
+| `document:Parser` | 4 | 2% | 1,154 | 3.5 |
+| `cli:Generator` | 3 | 1% | 111 | 27 |
+| `contracts:Support` | 3 | 1% | 185 | 16.2 |
+| `document:Resolver` | 3 | 1% | 406 | 7.4 |
+| `expression:Ast` | 3 | 1% | 235 | 12.8 |
+| `expression:Data` | 3 | 1% | 143 | 21 |
+| `expression:Enum` | 3 | 1% | 45 | 66.7 |
+| `laravel:Events` | 3 | 1% | 24 | 125 |
+| `laravel:Support` | 3 | 1% | 119 | 25.2 |
+| `runner:Events` | 3 | 1% | 328 | 9.1 |
+| `runner:Infrastructure` | 3 | 1% | 172 | 17.4 |
+| `runner:Jobs` | 3 | 1% | 40 | 75 |
+| `runner:Policy` | 3 | 1% | 102 | 29.4 |
+| `runner:State` | 3 | 1% | 952 | 3.2 |
+| `runner:Telemetry` | 3 | 1% | 282 | 10.6 |
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
 | `expression:Interfaces` | 2 | 1% | 73 | 27.4 |
 | `expression:Xpath` | 2 | 1% | 109 | 18.3 |
-| `contracts:State` | 1 | 1% | 667 | 1.5 |
-| `expression:Exceptions` | 1 | 1% | 55 | 18.2 |
+| `contracts:State` | 1 | 0% | 667 | 1.5 |
+| `expression:Exceptions` | 1 | 0% | 55 | 18.2 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110.1), `laravel:Http` (94.1), `laravel:Bindings` (64.1)

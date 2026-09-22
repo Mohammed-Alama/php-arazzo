@@ -365,6 +365,8 @@ new protocol; a protocol outside the spec falls back to `$response.meta.*`.
 ## Phase tickets
 
 ### Phase A — Contracts ports (zero-dep preserved)
+
+Phase A status: ✅ Implemented 2026-09-08 — see `plans/2026-09-08-phase-a-contracts-ports.md`.
 - **A1** `PluginInterface` + `OperationExecutorPluginInterface`; deprecate
   `StepProtocolExecutorInterface`.
 - **A2** `CriterionEvaluatorPluginInterface` + `ExpressionEvaluatorPluginInterface`
