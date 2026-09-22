@@ -18,7 +18,7 @@ Evans' first question: does the code speak one language?
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
 - **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 8 more (12 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
-- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 11 more (15 types)
+- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 10 more (14 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
 
 ### parse vs load vs decode
@@ -36,7 +36,7 @@ Evans' first question: does the code speak one language?
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver` + 9 more (13 types)
+- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionValueResolver` + 6 more (10 types)
 
 ### state vs status
 
@@ -64,8 +64,5 @@ Evans' first question: does the code speak one language?
 
 | Name | Locations | Packages |
 |---|---|---|
-| `Lexer` | `Expression\Evaluation\Condition\Lexer`<br/>`Expression\Lexer` | expression |
-| `Parser` | `Expression\Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Document\Parser\Parser` | expression, document |
+| `Parser` | `Expression\Parser`<br/>`Document\Parser\Parser` | expression, document |
 | `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |
-| `Token` | `Expression\Data\Token`<br/>`Expression\Evaluation\Condition\Token` | expression |
-| `TokenKind` | `Expression\Enum\TokenKind`<br/>`Expression\Evaluation\Enum\TokenKind` | expression |

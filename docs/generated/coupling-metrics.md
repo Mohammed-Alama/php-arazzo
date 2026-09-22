@@ -11,49 +11,47 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 754 | 0 | 17 | 1.00 |  |
+| `cli:Console` | 11 | 754 | 0 | 15 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 17 | 288 | 15 | 3 | 0.17 |  |
-| `contracts:Spec` | 47 | 1101 | 24 | 1 | 0.04 |  |
-| `contracts:State` | 2 | 665 | 11 | 1 | 0.08 |  |
-| `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
+| `contracts:Interfaces` | 17 | 288 | 14 | 3 | 0.18 |  |
+| `contracts:Spec` | 47 | 1101 | 21 | 1 | 0.05 |  |
+| `contracts:State` | 2 | 665 | 9 | 1 | 0.10 |  |
+| `contracts:Support` | 5 | 180 | 8 | 0 | 0.00 |  |
 | `document:Normalizer` | 9 | 599 | 4 | 3 | 0.43 |  |
 | `document:Parser` | 11 | 1143 | 6 | 2 | 0.25 |  |
 | `document:Resolver` | 12 | 394 | 6 | 2 | 0.25 |  |
 | `document:Validator` | 62 | 3199 | 5 | 8 | 0.62 |  |
-| `(document root)` | 2 | 220 | 6 | 6 | 0.50 |  |
+| `(document root)` | 2 | 220 | 6 | 5 | 0.45 |  |
 | `expression:Ast` | 15 | 220 | 1 | 0 | 0.00 |  |
-| `expression:Data` | 5 | 138 | 2 | 3 | 0.60 |  |
+| `expression:Data` | 4 | 105 | 3 | 1 | 0.25 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
-| `expression:Evaluation` | 20 | 1247 | 1 | 7 | 0.88 |  |
-| `expression:Exceptions` | 2 | 53 | 2 | 1 | 0.33 |  |
-| `expression:Interfaces` | 3 | 70 | 9 | 1 | 0.10 |  |
-| `expression:Xpath` | 2 | 107 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 10 | 1314 | 8 | 9 | 0.53 |  |
-| `laravel:Bindings` | 7 | 352 | 1 | 20 | 0.95 |  |
+| `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
+| `expression:Interfaces` | 1 | 19 | 1 | 4 | 0.80 |  |
+| `(expression root)` | 4 | 728 | 2 | 6 | 0.75 |  |
+| `laravel:Bindings` | 7 | 352 | 1 | 19 | 0.95 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 7 | 0.78 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
 | `laravel:Persistence` | 4 | 260 | 1 | 4 | 0.80 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 40 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 2 | 117 | 2 | 7 | 0.78 |  |
+| `laravel:Support` | 2 | 117 | 2 | 6 | 0.75 |  |
 | `(laravel root)` | 1 | 88 | 0 | 3 | 1.00 |  |
-| `runner:Async` | 6 | 500 | 0 | 12 | 1.00 |  |
+| `runner:Async` | 6 | 500 | 0 | 11 | 1.00 |  |
 | `runner:Events` | 11 | 317 | 7 | 1 | 0.13 |  |
-| `runner:Execution` | 39 | 3814 | 7 | 20 | 0.74 |  |
+| `runner:Execution` | 39 | 3814 | 7 | 18 | 0.72 |  |
 | `runner:Infrastructure` | 4 | 168 | 5 | 1 | 0.17 |  |
 | `runner:Jobs` | 2 | 38 | 5 | 2 | 0.29 |  |
 | `runner:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
-| `runner:Protocol` | 5 | 552 | 1 | 10 | 0.91 |  |
+| `runner:Protocol` | 5 | 552 | 1 | 8 | 0.89 |  |
 | `runner:State` | 12 | 940 | 10 | 2 | 0.17 |  |
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `(runner root)` | 6 | 281 | 4 | 9 | 0.69 |  |
+| `(runner root)` | 6 | 281 | 4 | 7 | 0.64 |  |
 
-Total cross-module edges: **938**
+Total cross-module edges: **781**
 
 ## Most entangled module pairs
 
@@ -61,13 +59,13 @@ Total cross-module edges: **938**
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 88 |
 | `runner:Execution` → `contracts:Spec` | 75 |
-| `document:Validator` → `(expression root)` | 63 |
-| `(expression root)` → `expression:Ast` | 40 |
+| `document:Validator` → `(expression root)` | 52 |
 | `document:Parser` → `contracts:Spec` | 33 |
-| `(expression root)` → `contracts:Spec` | 26 |
-| `expression:Evaluation` → `contracts:Spec` | 26 |
 | `contracts:Interfaces` → `contracts:Spec` | 21 |
 | `runner:Execution` → `runner:Events` | 21 |
 | `runner:Protocol` → `contracts:Spec` | 20 |
 | `runner:Execution` → `runner:State` | 15 |
+| `(expression root)` → `expression:Ast` | 14 |
 | `runner:Execution` → `contracts:State` | 14 |
+| `runner:Protocol` → `runner:Execution` | 14 |
+| `runner:Execution` → `contracts:Interfaces` | 12 |

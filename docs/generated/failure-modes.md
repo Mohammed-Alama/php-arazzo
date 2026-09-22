@@ -16,8 +16,6 @@ Regenerated before every commit.
 
 | Exception | Raised by |
 |---|---|
-| **BadMethodCallException** | `InterpolationResolver` <small>expression:Evaluation</small> |
-| **ConditionSyntaxException** | `ConditionEvaluator` <small>expression:Evaluation</small>, `Lexer` <small>expression:Evaluation</small>, `Parser` <small>expression:Evaluation</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
 | **ExpressionSyntaxException** | `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
@@ -28,7 +26,6 @@ Regenerated before every commit.
 | **PreflightFailureException** | `PreflightGuard` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
 | **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `OpenApiOperationResolver` <small>document:Normalizer</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small> |
 | **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
-| **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>document:Resolver</small>, `HttpFetcher` <small>document:Resolver</small>, `LocalFetcher` <small>document:Resolver</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>document:Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
@@ -58,7 +55,6 @@ Regenerated before every commit.
 | `ParserException` | `ValidateCommand` |  |
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
-| `SelectorEvaluationException` | `SelectorEvaluator` |  |
 | `Throwable` | `DefaultSourceResolver` |  |
 | `Throwable` | `PreflightValidator` |  |
 | `Throwable` | `DatabaseEventLedger` |  |

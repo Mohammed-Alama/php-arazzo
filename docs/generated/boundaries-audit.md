@@ -16,7 +16,6 @@ when a boundary consciously moves.
 
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
-| `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 38 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
@@ -42,7 +41,6 @@ when a boundary consciously moves.
 | document | `document:Validator` | `JsonSchema` | 7 |
 | document | `document:_` | `GuzzleHttp` | 2 |
 | document | `document:_` | `Psr` | 2 |
-| expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
@@ -70,7 +68,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 library boundary violation(s):**
+**11 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
@@ -78,7 +76,6 @@ when a boundary consciously moves.
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (7 refs)
 - `document:_` imports `GuzzleHttp\*` (2 refs)
-- `expression:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
@@ -93,12 +90,6 @@ when a boundary consciously moves.
 Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
 
 **Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
-
-### Facade-to-facade transitions (allowed by seam policy)
-
-| From package | To package | From | References concrete facade |
-|---|---|---|---|
-| `document` | `expression` | `Document` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 

@@ -23,8 +23,6 @@ cli-Console,document-Parser,8
 cli-Console,document-Resolver,1
 cli-Console,document-Validator,2
 cli-Console,document-root,1
-cli-Console,expression-Interfaces,1
-cli-Console,expression-root,2
 cli-Console,runner-Events,2
 cli-Console,runner-Execution,5
 cli-Console,runner-Jobs,1
@@ -53,35 +51,23 @@ document-Validator,document-Normalizer,2
 document-Validator,document-Resolver,1
 document-Validator,expression-Data,4
 document-Validator,expression-Enum,7
-document-Validator,expression-root,63
+document-Validator,expression-root,52
 document-root,contracts-Spec,10
 document-root,document-Normalizer,7
 document-root,document-Parser,6
 document-root,document-Resolver,5
 document-root,document-Validator,5
-document-root,expression-root,2
-expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
-expression-Data,expression-Interfaces,1
-expression-Evaluation,contracts-Interfaces,2
-expression-Evaluation,contracts-Spec,26
-expression-Evaluation,contracts-State,1
-expression-Evaluation,contracts-Support,1
-expression-Evaluation,expression-Interfaces,7
-expression-Evaluation,expression-Xpath,3
-expression-Exceptions,contracts-Support,2
-expression-Interfaces,contracts-Spec,8
-expression-Xpath,contracts-Spec,1
-expression-Xpath,expression-Exceptions,1
-expression-root,contracts-Spec,26
-expression-root,contracts-State,2
-expression-root,expression-Ast,40
-expression-root,expression-Data,7
+expression-Exceptions,contracts-Support,1
+expression-Interfaces,contracts-Spec,1
+expression-Interfaces,expression-Data,1
+expression-Interfaces,expression-Exceptions,1
+expression-Interfaces,expression-root,1
+expression-root,contracts-Spec,7
+expression-root,expression-Ast,14
+expression-root,expression-Data,6
 expression-root,expression-Enum,3
-expression-root,expression-Evaluation,3
-expression-root,expression-Exceptions,5
-expression-root,expression-Interfaces,5
-expression-root,expression-Xpath,2
+expression-root,expression-Exceptions,3
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,4
 laravel-Bindings,contracts-Support,1
@@ -90,7 +76,6 @@ laravel-Bindings,document-Parser,1
 laravel-Bindings,document-Resolver,6
 laravel-Bindings,document-Validator,1
 laravel-Bindings,document-root,2
-laravel-Bindings,expression-root,3
 laravel-Bindings,laravel-Http,1
 laravel-Bindings,laravel-Lock,1
 laravel-Bindings,laravel-Persistence,4
@@ -119,7 +104,6 @@ laravel-Queue,runner-Execution,2
 laravel-Queue,runner-Jobs,4
 laravel-State,runner-State,1
 laravel-Support,contracts-Interfaces,2
-laravel-Support,expression-Interfaces,1
 laravel-Support,runner-Events,1
 laravel-Support,runner-Execution,1
 laravel-Support,runner-Infrastructure,1
@@ -135,7 +119,6 @@ runner-Async,contracts-State,6
 runner-Async,contracts-Support,1
 runner-Async,document-Validator,2
 runner-Async,document-root,1
-runner-Async,expression-Interfaces,1
 runner-Async,runner-Events,9
 runner-Async,runner-Execution,3
 runner-Async,runner-Jobs,1
@@ -152,8 +135,6 @@ runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
 runner-Execution,document-root,8
 runner-Execution,expression-Enum,1
-runner-Execution,expression-Interfaces,6
-runner-Execution,expression-root,10
 runner-Execution,runner-Events,21
 runner-Execution,runner-Jobs,2
 runner-Execution,runner-Policy,1
@@ -170,8 +151,6 @@ runner-Protocol,contracts-Interfaces,5
 runner-Protocol,contracts-Spec,20
 runner-Protocol,contracts-State,5
 runner-Protocol,document-root,1
-runner-Protocol,expression-Interfaces,2
-runner-Protocol,expression-root,3
 runner-Protocol,runner-Execution,14
 runner-Protocol,runner-Infrastructure,1
 runner-Protocol,runner-State,1
@@ -180,8 +159,6 @@ runner-State,contracts-State,2
 runner-root,contracts-Interfaces,3
 runner-root,contracts-Spec,3
 runner-root,document-root,2
-runner-root,expression-Interfaces,2
-runner-root,expression-root,2
 runner-root,runner-Events,1
 runner-root,runner-Execution,10
 runner-root,runner-Infrastructure,1
@@ -195,6 +172,6 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
-| `expression-Evaluation` | `expression-root` | 2 |
+| `expression-root` | `expression-Interfaces` | 1 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

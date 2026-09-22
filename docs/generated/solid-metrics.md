@@ -28,41 +28,39 @@ quadrantChart
     cli/Renderer: [0.5, 0]
     contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
-    contracts/Interfaces: [0.167, 1]
-    contracts/Spec: [0.04, 0.021]
-    contracts/State: [0.083, 0]
+    contracts/Interfaces: [0.176, 1]
+    contracts/Spec: [0.045, 0.021]
+    contracts/State: [0.1, 0]
     contracts/Support: [0, 0.2]
     document/Normalizer: [0.429, 0.111]
     document/Parser: [0.25, 0.182]
     document/Resolver: [0.25, 0.25]
     document/Validator: [0.615, 0.016]
-    document/_: [0.5, 0.5]
+    document/_: [0.455, 0.5]
     expression/Ast: [0, 0]
-    expression/Data: [0.6, 0]
+    expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
-    expression/Evaluation: [0.875, 0.1]
     expression/Exceptions: [0.333, 0]
-    expression/Interfaces: [0.1, 1]
-    expression/Xpath: [0.5, 0.5]
-    expression/_: [0.529, 0.1]
-    laravel/Bindings: [0.952, 0]
+    expression/Interfaces: [0.8, 1]
+    expression/_: [0.75, 0]
+    laravel/Bindings: [0.95, 0]
     laravel/Http: [0.778, 0]
     laravel/Lock: [0.5, 0]
     laravel/Persistence: [0.8, 0]
     laravel/Queue: [0.75, 0]
     laravel/State: [0.5, 0]
-    laravel/Support: [0.778, 0]
+    laravel/Support: [0.75, 0]
     laravel/_: [1, 0]
     runner/Async: [1, 0]
     runner/Events: [0.125, 0.091]
-    runner/Execution: [0.741, 0.051]
+    runner/Execution: [0.72, 0.051]
     runner/Infrastructure: [0.167, 0.25]
     runner/Jobs: [0.286, 0]
     runner/Policy: [0.75, 0]
-    runner/Protocol: [0.909, 0]
+    runner/Protocol: [0.889, 0]
     runner/State: [0.167, 0.417]
     runner/Telemetry: [0, 0]
-    runner/_: [0.692, 0.333]
+    runner/_: [0.636, 0.333]
 ```
 
 ## God classes (SRP)
@@ -73,10 +71,10 @@ Concrete types over 300 LOC:
 |---|---|---:|
 | `Parser` | `document:Parser` | 854 |
 | `ExecutionContext` | `runner:State` | 496 |
+| `Parser` | `expression:_` | 424 |
 | `StepExecutionWorker` | `runner:Execution` | 379 |
 | `StepOutcomeHandler` | `runner:Execution` | 376 |
 | `WorkflowContext` | `contracts:State` | 359 |
-| `Parser` | `expression:_` | 351 |
 | `ExecutionState` | `contracts:State` | 308 |
 | `PreflightValidator` | `document:Validator` | 302 |
 
@@ -86,7 +84,6 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| `ExpressionEngineInterface` <small>expression</small> | 13 |
 | `DocumentInterface` <small>document</small> | 8 |
 
 ## Concrete hubs (DIP)

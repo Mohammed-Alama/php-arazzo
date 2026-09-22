@@ -16,30 +16,18 @@ mindmap
       OpenAiClient
     BackoffCalculatorInterface
       ExponentialBackoffCalculator
-    CriteriaEvaluatorInterface
-      CriteriaEvaluator
     DefinitionRegistryInterface
       DatabaseDefinitionRegistry
     DocumentInterface
       Document
-    EvaluationInputInterface
-      EvaluationInput
-      EvaluationContext
-      ExecutionEvaluationInput
     EventLedgerInterface
       NullEventLedger
       DatabaseEventLedger
     ExecutionRegistryInterface
       InProcessExecutionRegistry
       DatabaseExecutionRegistry
-    ExpressionEngineInterface
-      ExpressionEngine
-    ExpressionEvaluatorInterface
-      ExpressionEvaluator
-    ExpressionResolverInterface
-      ExpressionResolver
-      InterpolationResolver
-      ExecutionExpressionResolver
+    ExpressionInterface
+      ExpressionInspector
     HttpClientInterface
       Psr18HttpClient
     LockManagerInterface
@@ -90,15 +78,11 @@ mindmap
 |---|---|---|
 | `AiClientInterface` | no | `OpenAiClient` <small>core</small> |
 | `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
-| `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `DocumentInterface` | no | `Document` <small>core</small> |
-| `EvaluationInputInterface` | no | `EvaluationInput` <small>core</small>, `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
-| `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
-| `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
-| `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small>, `InterpolationResolver` <small>core</small>, `ExecutionExpressionResolver` <small>core</small> |
+| `ExpressionInterface` | no | `ExpressionInspector` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
 | `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |

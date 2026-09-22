@@ -45,12 +45,10 @@ flowchart LR
         S_contracts_Interfaces["contracts:Interfaces<br/><small>305 LOC</small>"]:::unknownDomain
         S_document_Normalizer["document:Normalizer<br/><small>608 LOC</small>"]:::unknownDomain
         S_expression_Ast["expression:Ast<br/><small>235 LOC</small>"]:::unknownDomain
-        S_expression_Data["expression:Data<br/><small>143 LOC</small>"]:::unknownDomain
+        S_expression_Data["expression:Data<br/><small>109 LOC</small>"]:::unknownDomain
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
-        S_expression_Evaluation["expression:Evaluation<br/><small>1267 LOC</small>"]:::unknownDomain
-        S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
-        S_expression_Interfaces["expression:Interfaces<br/><small>73 LOC</small>"]:::unknownDomain
-        S_expression_Xpath["expression:Xpath<br/><small>109 LOC</small>"]:::unknownDomain
+        S_expression_Exceptions["expression:Exceptions<br/><small>23 LOC</small>"]:::unknownDomain
+        S_expression_Interfaces["expression:Interfaces<br/><small>20 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>506 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>3853 LOC</small>"]:::unknownDomain
         S_runner_Infrastructure["runner:Infrastructure<br/><small>172 LOC</small>"]:::unknownDomain
@@ -67,10 +65,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,148 | 0 | 6% |
-| Supporting | 6 | 5,952 | 0 | 31% |
-| Generic subdomain | 12 | 2,132 | 1,138 | 17% |
-| Unclassified | 18 | 8,719 | 0 | 46% |
+| Core domain | 1 | 1,148 | 0 | 7% |
+| Supporting | 6 | 5,952 | 0 | 34% |
+| Generic subdomain | 12 | 2,132 | 1,138 | 19% |
+| Unclassified | 16 | 7,224 | 0 | 41% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -80,10 +78,8 @@ flowchart LR
 - `expression:Ast`
 - `expression:Data`
 - `expression:Enum`
-- `expression:Evaluation`
 - `expression:Exceptions`
 - `expression:Interfaces`
-- `expression:Xpath`
 - `runner:Async`
 - `runner:Execution`
 - `runner:Infrastructure`
