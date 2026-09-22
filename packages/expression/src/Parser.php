@@ -18,7 +18,9 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Data\Token;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Enum\TokenKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 
@@ -346,5 +348,76 @@ final class Parser
         } catch (ExpressionSyntaxException $e) {
             return $e;
         }
+    }
+
+    public function projectReferences(string $raw): ?ExpressionReference
+    {
+        $result = $this->parseOrError($raw);
+
+        if ($result instanceof ExpressionSyntaxException) {
+            return null;
+        }
+
+        return $this->referenceFor($result);
+    }
+
+    private function referenceFor(ExpressionAst $ast): ExpressionReference
+    {
+        if ($ast instanceof InputRef) {
+            return new ExpressionReference(ReferenceKind::Input, $ast->name, jsonPointer: $ast->jsonPointer);
+        }
+
+        if ($ast instanceof OutputRef) {
+            return new ExpressionReference(ReferenceKind::Output, $ast->name, jsonPointer: $ast->jsonPointer);
+        }
+
+        if ($ast instanceof StepRef) {
+            return $this->stepReference($ast);
+        }
+
+        if ($ast instanceof WorkflowRef) {
+            return new ExpressionReference(ReferenceKind::Workflow, $ast->workflowId, $ast->partKind, $ast->name);
+        }
+
+        if ($ast instanceof SourceRef) {
+            return new ExpressionReference(ReferenceKind::Source, $ast->name, name: $ast->subPath);
+        }
+
+        if ($ast instanceof ComponentRef) {
+            return new ExpressionReference(ReferenceKind::Component, $ast->type, name: $ast->name);
+        }
+
+        if ($ast instanceof MessageRef) {
+            return new ExpressionReference(ReferenceKind::Message, part: $ast->part, name: $ast->name, jsonPointer: $ast->jsonPointer);
+        }
+
+        if ($ast instanceof HttpMetaRef) {
+            return new ExpressionReference(ReferenceKind::HttpMeta, httpPart: $ast->field);
+        }
+
+        return new ExpressionReference(ReferenceKind::Self);
+    }
+
+    private function stepReference(StepRef $ast): ExpressionReference
+    {
+        $part = $ast->part;
+
+        if ($part instanceof OutputPart) {
+            return new ExpressionReference(ReferenceKind::Step, $ast->stepId, 'outputs', $part->name, jsonPointer: $part->jsonPointer);
+        }
+
+        if ($part instanceof InputPart) {
+            return new ExpressionReference(ReferenceKind::Step, $ast->stepId, 'inputs', $part->name);
+        }
+
+        if ($part instanceof RequestPart) {
+            return new ExpressionReference(ReferenceKind::Step, $ast->stepId, 'request', $part->headerName, $part->httpPart, jsonPointer: $part->jsonPointer);
+        }
+
+        if ($part instanceof ResponsePart) {
+            return new ExpressionReference(ReferenceKind::Step, $ast->stepId, 'response', $part->headerName, $part->httpPart, jsonPointer: $part->jsonPointer);
+        }
+
+        return new ExpressionReference(ReferenceKind::Step, $ast->stepId);
     }
 }
