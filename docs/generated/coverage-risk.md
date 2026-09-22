@@ -45,7 +45,7 @@ quadrantChart
     expression/Data: [0.2, 0.5]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.25, 1]
-    expression/Interfaces: [0.8, 1]
+    expression/Interfaces: [0.667, 1]
     laravel/Bindings: [0.952, 0.857]
     laravel/Events: [0, 1]
     laravel/Http: [0.778, 1]
@@ -73,14 +73,14 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.15 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 176 | 47 | 100% |
+| `contracts/Spec` | 0.03 | 177 | 47 | 100% |
 | `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Normalizer` | 0.43 | 15 | 9 | 100% |
-| `document/Parser` | 0.25 | 35 | 11 | 100% |
+| `document/Parser` | 0.25 | 36 | 11 | 100% |
 | `document/Resolver` | 0.25 | 21 | 12 | 100% |
-| `document/Validator` | 0.64 | 70 | 62 | 100% |
-| `evaluation/Condition` | 0.83 | 42 | 10 | 100% |
+| `document/Validator` | 0.64 | 71 | 62 | 100% |
+| `evaluation/Condition` | 0.83 | 43 | 10 | 100% |
 | `evaluation/Data` | 0.50 | 2 | 2 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
@@ -92,7 +92,7 @@ quadrantChart
 | `expression/Data` | 0.20 | 2 | 4 | 50% |
 | `expression/Enum` | 0.00 | 3 | 2 | 100% |
 | `expression/Exceptions` | 0.25 | 5 | 1 | 100% |
-| `expression/Interfaces` | 0.80 | 2 | 1 | 100% |
+| `expression/Interfaces` | 0.67 | 3 | 1 | 100% |
 | `laravel/Bindings` | 0.95 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `laravel/Http` | 0.78 | 4 | 3 | 100% |

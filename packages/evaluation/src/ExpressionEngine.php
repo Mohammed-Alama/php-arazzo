@@ -31,6 +31,7 @@ use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 use Alama\Arazzo\Expression\SymbolTable;
 
@@ -42,7 +43,7 @@ use Alama\Arazzo\Expression\SymbolTable;
  *
  * Delegates every capability to the existing internal services.
  */
-final class ExpressionEngine implements ExpressionEngineInterface
+final class ExpressionEngine implements ExpressionEngineInterface, ExpressionInterface
 {
     public function __construct(
         private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(),

@@ -158,6 +158,7 @@ flowchart TB
     M_evaluation__ --> M_expression_Data
     M_evaluation__ --> M_expression_Enum
     M_evaluation__ --> M_expression_Exceptions
+    M_evaluation__ --> M_expression_Interfaces
     M_evaluation__ --> M_expression__
     M_expression_Data --> M_expression_Enum
     M_expression_Exceptions --> M_contracts_Support
@@ -298,7 +299,7 @@ flowchart TB
 | `document` | `evaluation` | 13 |
 | `document` | `expression` | 63 |
 | `evaluation` | `contracts` | 76 |
-| `evaluation` | `expression` | 35 |
+| `evaluation` | `expression` | 36 |
 | `expression` | `contracts` | 9 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |

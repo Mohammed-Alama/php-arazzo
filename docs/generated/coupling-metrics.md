@@ -33,12 +33,12 @@ targets. Regenerated before every commit.
 | `evaluation:Plugins` | 2 | 93 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 117 | 1 | 3 | 0.75 |  |
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
-| `(evaluation root)` | 11 | 1179 | 8 | 14 | 0.64 |  |
+| `(evaluation root)` | 11 | 1180 | 8 | 15 | 0.65 |  |
 | `expression:Ast` | 15 | 220 | 2 | 0 | 0.00 |  |
 | `expression:Data` | 4 | 105 | 4 | 1 | 0.20 |  |
 | `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 3 | 1 | 0.25 |  |
-| `expression:Interfaces` | 1 | 19 | 1 | 4 | 0.80 |  |
+| `expression:Interfaces` | 1 | 19 | 2 | 4 | 0.67 |  |
 | `(expression root)` | 4 | 728 | 3 | 6 | 0.67 |  |
 | `laravel:Bindings` | 7 | 352 | 1 | 20 | 0.95 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
@@ -60,7 +60,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 281 | 4 | 9 | 0.69 |  |
 
-Total cross-module edges: **990**
+Total cross-module edges: **991**
 
 ## Most entangled module pairs
 
