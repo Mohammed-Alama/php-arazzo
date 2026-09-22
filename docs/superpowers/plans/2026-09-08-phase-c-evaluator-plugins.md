@@ -1567,35 +1567,35 @@ Close out Phase C: full quality gate across all packages, confirming the split h
 **Interfaces:**
 - Consumes: all tasks C0–C5.
 
-- [ ] **Step 1: Run the full test suite**
+- [x] **Step 1: Run the full test suite**
 
 Run: `composer run test` (repo root)
 
 Expected: PASS (all packages: contracts, expression, evaluation, document, runner, cli, core, laravel).
 
-- [ ] **Step 2: Run static analysis**
+- [x] **Step 2: Run static analysis**
 
 Run: `composer run analyse` (repo root)
 
 Expected: PASS (all packages). If PHPStan reports "Class X not found" in evaluation, check that `scanDirectories` in its `phpstan.neon.dist` includes the sibling package `src/` dirs (`../contracts/src`, `../expression/src`).
 
-- [ ] **Step 3: Run the formatter check**
+- [x] **Step 3: Run the formatter check**
 
 Run: `vendor/bin/pint --test` (repo root)
 
 Expected: PASS. If violations exist, run `vendor/bin/pint` and re-run Step 1.
 
-- [ ] **Step 4: Run the repo-wide gate**
+- [x] **Step 4: Run the repo-wide gate**
 
 Run: `make verify` (repo root)
 
 Expected: PASS — confirms the split does not break any composed workflow.
 
-- [ ] **Step 5: Mark this plan's steps complete**
+- [x] **Step 5: Mark this plan's steps complete**
 
 Flip every `- [ ]` in this document to `- [x]`.
 
-- [ ] **Step 6: Record completion in the spec**
+- [x] **Step 6: Record completion in the spec**
 
 Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md`, find the Phase C section, and add:
 
@@ -1603,7 +1603,7 @@ Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md
 Phase C status: ✅ Implemented 2026-09-09 — see `plans/2026-09-08-phase-c-evaluator-plugins.md`.
 ```
 
-- [ ] **Step 7: Commit the doc update**
+- [x] **Step 7: Commit the doc update**
 
 ```bash
 git add docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md docs/superpowers/plans/2026-09-08-phase-c-evaluator-plugins.md
