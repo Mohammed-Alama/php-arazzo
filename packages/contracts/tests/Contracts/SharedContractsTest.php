@@ -10,6 +10,7 @@ use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\PluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseTransferInterface;
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerInterface;
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
@@ -52,4 +53,8 @@ it('declares the source normalizer faces')
     ->and(interface_exists(SourceNormalizerRegistryInterface::class))
     ->toBeTrue()
     ->and(is_subclass_of(SourceNormalizerInterface::class, PluginInterface::class))
+    ->toBeTrue();
+
+it('declares the response transfer seam')
+    ->expect(interface_exists(ResponseTransferInterface::class))
     ->toBeTrue();

@@ -35,6 +35,7 @@ flowchart LR
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ReplacementTargetResolverInterface["ReplacementTargetResolverInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_ResponseTransferInterface["ResponseTransferInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
@@ -50,6 +51,8 @@ flowchart LR
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>expression:Xpath</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>document:Parser</small>"]:::contract
+    C_contracts_contracts_Spec_ResponseTransfer["ResponseTransfer<br/><small>contracts:Spec</small>"]:::implCore
+    C_contracts_contracts_Spec_ResponseTransfer -.->|implements| I_ResponseTransferInterface
     C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
     C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
     C_expression_expression_Data_EvaluationInput["EvaluationInput<br/><small>expression:Data</small>"]:::implCore

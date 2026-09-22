@@ -51,6 +51,14 @@ this file on a commit is a public API change — review it deliberately.
 - `public function resolve(mixed $container, string $target, mixed $value): mixed;`
 - `public function supports(string $targetType): bool;`
 
+#### `ResponseTransferInterface` interface
+- `public function hasView(string $name): bool;`
+- `public function headers(): array;`
+- `public function meta(): array;`
+- `public function rawBody(): mixed;`
+- `public function status(): mixed;`
+- `public function view(string $name): mixed;`
+
 #### `ResponseValidatorInterface` interface
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 
@@ -75,6 +83,14 @@ this file on a commit is a public API change — review it deliberately.
 
 #### `ArazzoDocument` class
 - `public function __construct(public string $arazzo, public Info $info, public array $sourceDescriptions, public array $workflows, public Components $components, public array $specificationExtensions, public ?array $rawRoot = null, public SpecVersion $specVersion = SpecVersion::V1_0, public ?string $self = null)`
+
+#### `ResponseTransfer` class
+- `public function __construct(private mixed $status, private array $headers, private mixed $rawBody, private array $views = [], private array $meta = [])`
+- `public function hasView(string $name): bool`
+- `public function headers(): array`
+- `public function meta(): array`
+- `public function rawBody(): mixed`
+- `public function view(string $name): mixed`
 
 #### `Reusable` class
 - `public function __construct(public string $reference, public mixed $value = null)`

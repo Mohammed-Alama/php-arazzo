@@ -95,6 +95,7 @@ flowchart TB
     M_contracts_Interfaces --> M_contracts_Exceptions
     M_contracts_Interfaces --> M_contracts_Spec
     M_contracts_Interfaces --> M_contracts_State
+    M_contracts_Spec --> M_contracts_Interfaces
     M_contracts_State --> M_contracts_Spec
     M_document_Normalizer --> M_contracts_Spec
     M_document_Normalizer --> M_contracts_Support

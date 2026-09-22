@@ -30,6 +30,7 @@ classDiagram
     class PendingCorrelation
     class RawDocument
     class RequestBody
+    class ResponseTransfer
     class RetryAction <<value>>
     class Reusable
     class Selector

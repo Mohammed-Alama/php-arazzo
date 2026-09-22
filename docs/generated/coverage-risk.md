@@ -25,8 +25,8 @@ quadrantChart
     cli/Renderer: [0.5, 1]
     contracts/Dependency: [0.333, 1]
     contracts/Exceptions: [0, 1]
-    contracts/Interfaces: [0.176, 1]
-    contracts/Spec: [0, 1]
+    contracts/Interfaces: [0.167, 1]
+    contracts/Spec: [0.04, 1]
     contracts/State: [0.083, 1]
     contracts/Support: [0, 1]
     document/Normalizer: [0.429, 1]
@@ -66,8 +66,8 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.18 | 20 | 16 | 100% |
-| `contracts/Spec` | 0.00 | 173 | 39 | 100% |
+| `contracts/Interfaces` | 0.17 | 21 | 17 | 100% |
+| `contracts/Spec` | 0.04 | 174 | 40 | 100% |
 | `contracts/State` | 0.08 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Normalizer` | 0.43 | 15 | 9 | 100% |

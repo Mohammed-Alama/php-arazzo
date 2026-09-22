@@ -63,6 +63,8 @@ mindmap
     QueueDriverInterface
       SyncQueueDriver
       LaravelQueueDriver
+    ResponseTransferInterface
+      ResponseTransfer
     ResponseValidatorInterface
       ResponseSchemaValidator
     RunnerFacadeInterface
@@ -106,6 +108,7 @@ mindmap
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
+| `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
