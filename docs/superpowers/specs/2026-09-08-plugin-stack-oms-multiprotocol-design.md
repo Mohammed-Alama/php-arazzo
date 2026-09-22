@@ -59,11 +59,13 @@ Three forces shape this design:
   seam `ExpressionInterface` (`parseExpression`, `expressionReferences`,
   `buildSymbolTable`), zero-vendor (the expression model).
 - **Evaluation package** — `alama/arazzo-evaluation`: the engine — the
-  `EvaluationInterface` seam (facade `ExpressionEngine`: evaluate, criteria,
+  `ExpressionEngine`/`ExpressionEngineInterface` surface (evaluate, criteria,
   selectors, interpolation, payload replacement, JSONPath/pointer/XPath),
-  evaluators, resolvers, `EvaluationInput`. Every parse/inspect/symbol call
-  delegates to `arazzo-expression`. `Alama\Arazzo\Expression`
-  namespaces are unchanged in both (D11).
+  evaluators, resolvers, `EvaluationInput`, and built-in JsonPath plugins.
+  Every parse/inspect/symbol call uses the `ExpressionInterface` seam from
+  `arazzo-expression`. Evaluation classes use the flat
+  `Alama\Arazzo\Evaluation\` namespace; parse-side classes retain
+  `Alama\Arazzo\Expression\`.
 - **Source type** — the Arazzo 1.2 `sourceDescription.type` enum value
   (`arazzo`, `openapi`, `asyncapi`, `wsdl`, `protobuf`, `graphql`).
 - **rpcProtocol** — the PR #556 execution-variant discriminator
@@ -89,8 +91,8 @@ SPI seam: `OperationExecutorPluginInterface` in `contracts`; the existing
 - `arazzo-contracts`, `arazzo-expression` and the `arazzo-runner`
   engine hot path stay vendor-free.
 - **Expression splits into model + evaluation** (`arazzo-expression` keeps the
-  lexer/parser/AST + reference model side, `arazzo-evaluation` the engine;
-  namespaces unchanged),
+  lexer/parser/AST + reference model side, `arazzo-evaluation` the engine with
+  a flat evaluation namespace and built-in JsonPath plugins),
   so the lexer/parser/AST —
   the piece the spec touches — is small, zero-vendor, and reusable without the
   evaluator.
@@ -111,9 +113,10 @@ SPI seam: `OperationExecutorPluginInterface` in `contracts`; the existing
 - No composer-package renames (`arazzo-runner`/`arazzo-expression` keep their
   published names; the evaluation side of the split ships as a new
   `arazzo-evaluation` package).
-- No changes to existing public faces' signatures (`RunnerFacadeInterface`,
-  `EvaluationInterface` — the former `ExpressionEngineInterface` with the eval
-  methods kept, spare the name — `DocumentInterface`) — additive only.
+- No changes to unrelated public faces' signatures (`RunnerFacadeInterface`,
+  `DocumentInterface`). The expression split intentionally changes moved
+  evaluation FQCNs once; `ExpressionInterface` is the parse-side seam and
+  `ExpressionEngineInterface` remains the evaluation-side engine contract.
 - No MCP/A2A Step targets in this iteration (they are just another protocol
   package later).
 - No OTEL `grpc-trace-bin` propagation in this iteration (lives in the RPC
@@ -135,7 +138,7 @@ SPI seam: `OperationExecutorPluginInterface` in `contracts`; the existing
 | D8 | **Spec-mandated, step-scoped grammar.** The lexer gains only the expression forms the Arazzo spec itself defines, each scoped to its step type (`$response.status#/…`, `$response.metadata.*`, `$response.trailingMetadata.*` on RPC steps; `$interaction.payload` on interaction steps; `$sourceDescriptions.<name>` whole-source for GraphQL) plus ONE generic `$response.meta.<key>` escape hatch for execution-environment extras. A protocol never invents grammar the spec does not define; extra keys go in the `meta` bag. |
 | D9 | **HTTP-first extraction.** `arazzo-protocol-http` (F1) relocates the embedded OpenAPI/AsyncAPI normalizers + HTTP/AsyncAPI executors + `RequestCompiler` + response validators out of `document`/`runner` into the first vertical slice — Guzzle/`cebe`/jsonpath deps move with it. The umbrella (`arazzo-core`, laravel, cli) requires it by default so end-user composition is unchanged; standalone `document`/`runner` consumers resolve OpenAPI through the registry once the package is registered (documented change). |
 | D10 | **Design to PR shapes now.** The four open `v1.2-dev` PRs (#533 SOAP, #556 RPC, #567 GraphQL, #568 actor-in-the-loop) are the design target — their `sourceType` enum + step-object variants and field names are locked in below, flagged **proposal**. Every expression form and validation rule is re-validated against the merged spec at conformance time (Phase H). |
-| D11 | **Expression split (BC-safe).** `alama/arazzo-expression` (kept) becomes the **reference model**: lexer/parser/AST + the static `SymbolTable`/`WorkflowSymbols`/`StepSymbols`. Its public face is the parse/inspect seam `ExpressionInterface` (`parseExpression`, `expressionReferences`, `buildSymbolTable`) — no evaluation capability. `alama/arazzo-evaluation` (new) owns the engine: `ExpressionEngine`/`EvaluationInterface`, evaluators/resolvers, `EvaluationInput` (it absorbs the old all-purpose seam). `Alama\Arazzo\Expression` namespaces stay identical (PSR-4 prefix mapped in both packages, no class conflicts); `arazzo-expression` is zero-vendor and protocol-agnostic; `arazzo-evaluation` requires `arazzo-expression` and delegates parse/inspect/symbols to it. `document` depends on `arazzo-expression` only and consumes `ExpressionInterface` (validation is static); `runner` consumes both (it evaluates). |
+| D11 | **Expression split.** `alama/arazzo-expression` (kept) becomes the **reference model**: lexer/parser/AST + the static `SymbolTable`/`WorkflowSymbols`/`StepSymbols`. Its public face is the parse/inspect seam `ExpressionInterface` (`parseExpression`, `expressionReferences`, `buildSymbolTable`) plus the parse-side `ExpressionInspector` — no evaluation capability. `alama/arazzo-evaluation` (new) owns `ExpressionEngine`/`ExpressionEngineInterface`, evaluators/resolvers, flattened evaluation DTOs, `EvaluationInput`, registries, and built-in JsonPath plugins. Evaluation FQCNs intentionally move once to flat `Alama\Arazzo\Evaluation\`; parse-side FQCNs remain under `Alama\Arazzo\Expression\`. `arazzo-expression` is zero-vendor and protocol-agnostic; `arazzo-evaluation` requires it and delegates parse/inspect/symbols through `ExpressionInterface`. `document` depends on `arazzo-expression` only and consumes `ExpressionInterface` (validation is static); `runner` consumes both (it evaluates). |
 
 ## Architecture
 
@@ -146,7 +149,7 @@ flowchart TB
     subgraph CORE["Core — never imports protocol packages"]
         direction TB
         CONTRACTS["arazzo-contracts<br/>ports + transfers + enums (PSR-only)"]
-        EXPR["arazzo-expression (reference model: lexer/parser/AST + ExpressionInterface)<br/>+ arazzo-evaluation (engine: EvaluationInterface channel + evaluators + registries)"]
+        EXPR["arazzo-expression (reference model: lexer/parser/AST + ExpressionInterface)<br/>+ arazzo-evaluation (engine: ExpressionEngineInterface + evaluators + registries + built-in JsonPath)"]
         DOC["arazzo-document<br/>SourceNormalizerRegistry · parsing/validation primitives · RuleSet"]
         RUN["arazzo-runner<br/>StepStateMachineEngine · OperationExecutorRegistry · state repository"]
         CONTRACTS --> EXPR
@@ -171,8 +174,7 @@ flowchart TB
 |---|---|---|
 | `alama/arazzo-contracts` | ports + value DTOs + Transfers + enums | none (PSR-only) |
 | `alama/arazzo-expression` (kept) | closed, protocol-agnostic reference model: lexer/parser/AST + `SymbolTable`/`WorkflowSymbols`/`StepSymbols`; parse/inspect seam `ExpressionInterface` | `contracts` only (zero-vendor) |
-| `alama/arazzo-evaluation` (new) | **evaluation device**: `ExpressionEngine` facade + `ExpressionResolver`/`CriteriaEvaluator`/`PayloadReplacer` + plugin registries + `EvaluationInput`; delegates parse/inspect/symbols to `arazzo-expression` | requires `arazzo-expression`; drops `softcreatr/jsonpath` |
-| `alama/arazzo-evaluator-jsonpath` (new) | JSONPath expression + criterion plugins | owns `softcreatr/jsonpath` |
+| `alama/arazzo-evaluation` (new) | **evaluation device**: `ExpressionEngine` facade + `ExpressionResolver`/`CriteriaEvaluator`/`PayloadReplacer` + plugin registries + `EvaluationInput`; delegates parse/inspect/symbols to `arazzo-expression`; JsonPath shipped as built-in default plugins (no third package) | requires `arazzo-expression`; keeps `softcreatr/jsonpath` |
 | `alama/arazzo-runner` | engine: OMS state machine, `OperationExecutorRegistry`, state repository | drops Guzzle/OTEL/cebe from hot path (→ protocol-http) |
 | `alama/arazzo-document` | `SourceNormalizerRegistry` + parsing/validation primitives + `RuleSet` (no embedded OpenAPI/AsyncAPI impl after F1) | drops Guzzle/cebe (→ protocol-http); keeps symfony/yaml + json-schema |
 | `alama/arazzo-protocol-http` (new, **F1 — reference**) | first vertical slice: OpenAPI/AsyncAPI normalizers + `HttpStepExecutor`/`AsyncApiStepExecutor` + `RequestCompiler` + `ResponseValidator` + json-pointer resolver | absorbs Guzzle, `cebe/php-openapi`, `softcreatr/jsonpath` from document+runner |
@@ -410,24 +412,27 @@ the evaluation device stay in `arazzo-evaluation` — split per D11;
   concrete per-protocol DTOs) — resolution bridges through `hasView()`/`view()`.
 
 ### Phase C — Evaluator plugins + vendor isolation
-- **C0** Split the current `arazzo-expression` per D11: `arazzo-expression`
-  keeps the lexer/parser/AST + `Token`/`TokenKind` + `ReferenceKind` +
-  `ExpressionReference` + `ExpressionSyntaxException` + `SymbolTable`/
-  `WorkflowSymbols`/`StepSymbols` and exposes them through the new parse/inspect
-  seam `ExpressionInterface` (`parseExpression`, `expressionReferences`,
-  `buildSymbolTable`) — no evaluation capability (namespaces unchanged,
-  `Alama\Arazzo\Expression\` PSR-4 mapped in both packages); new `arazzo-evaluation`
-  owns `ExpressionEngine`/`EvaluationInterface` (delegating parse/inspect/
-  symbols), `ExpressionEvaluator`, `Evaluation\*`, `EvaluationInput` and requires
-  `arazzo-expression`.
+- **C0** Split the current `arazzo-expression` per D11 into **two packages**:
+  `arazzo-expression` keeps the lexer/parser/AST + `Token`/`TokenKind` +
+  `ReferenceKind` + `ExpressionReference` + `ExpressionSyntaxException` +
+  `SymbolTable`/`WorkflowSymbols`/`StepSymbols` and exposes them through the new
+  parse/inspect seam `ExpressionInterface` (`parseExpression`,
+  `expressionReferences`, `buildSymbolTable`) + a new `ExpressionInspector`
+  concrete — zero evaluation capability (namespace `Alama\Arazzo\Expression\`
+  unchanged); new `arazzo-evaluation` owns `ExpressionEngine`/
+  `ExpressionEngineInterface`, `ExpressionEvaluator`, `SelectorEvaluator`,
+  `StringInterpolator`, `JsonPointer`, the flattened `Evaluation\*` subtree,
+  `EvaluationInput` and requires `arazzo-expression`, using a new **flat**
+  namespace `Alama\Arazzo\Evaluation\` (intentional one-time FQCN change).
   `document` depends on `arazzo-expression` only via `ExpressionInterface`
-  (validation is static); `runner` consumes `arazzo-evaluation`
-  (it evaluates).
-- **C1** New `alama/arazzo-evaluator-jsonpath`: move `JsonPathEvaluator` +
-  `softcreatr/jsonpath`; expose jsonpath expression + criterion plugins.
-  `arazzo-evaluation` drops the vendor dep.
+  (validation is static); `runner` consumes `arazzo-evaluation` (it evaluates).
+- **C1** JsonPath stays in `arazzo-evaluation` (no third package) as **built-in
+  default plugins** — `JsonPathExpressionPlugin` + `JsonPathCriterionPlugin`
+  implementing the contracts plugin interfaces; `arazzo-evaluation` keeps
+  `softcreatr/jsonpath`.
 - **C2** `ExpressionEvaluatorRegistry` + `CriterionEvaluatorRegistry`
-  (priority-ordered, first-match) assembled by the `ExpressionEngine` facade.
+  (priority-ordered, first-match) assembled by the `ExpressionEngine` facade;
+  both pre-seeded with the built-in JsonPath plugins.
 - **C3** Refactor `CriteriaEvaluator`'s hard-coded `match`: simple/regex/xpath
   in-core; jsonpath + future types via plugins (typed "unsupported criterion"
   error without the plugin).

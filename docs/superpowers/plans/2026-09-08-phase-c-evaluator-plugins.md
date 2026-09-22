@@ -2,21 +2,22 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Split `arazzo-expression` into reference-model + evaluation packages, isolate `softcreatr/jsonpath` behind a new evaluator plugin, and introduce priority-ordered evaluator registries so the `CriteriaEvaluator` hard-coded `match` becomes plugin-extensible.
+**Goal:** Split `arazzo-expression` into reference-model + evaluation packages, keep `softcreatr/jsonpath` as a built-in default plugin behind the new evaluator registries, and make the `CriteriaEvaluator` hard-coded `match` plugin-extensible.
 
-**Architecture:** The current `arazzo-expression` package (namespace `Alama\Arazzo\Expression`) is split per D11: `arazzo-expression` keeps the zero-vendor lexer/parser/AST/reference-model and exposes a new `ExpressionInterface` parse/inspect seam; a new `arazzo-evaluation` package owns the engine facade, evaluator internals, interpolation, payload replacement, and all evaluation DTOs — requiring `arazzo-expression` and delegating parse/inspect/symbols to it. `Alama\Arazzo\Expression\` PSR-4 prefix is mapped in both packages; every FQCN stays identical (D11 BC-safe). A second new package, `alama/arazzo-evaluator-jsonpath`, isolates `JsonPathEvaluator` + `softcreatr/jsonpath` behind the contracts plugin interfaces (`ExpressionEvaluatorPluginInterface`, `CriterionEvaluatorPluginInterface`). Two new registries — `ExpressionEvaluatorRegistry` and `CriterionEvaluatorRegistry` — provide priority-ordered, first-match plugin resolution. `CriteriaEvaluator` is refactored: `simple`/`regex`/`xpath` stay in-core (no vendor); `jsonpath` and future types delegate through the `CriterionEvaluatorRegistry`.
+**Architecture:** The current `arazzo-expression` package (namespace `Alama\Arazzo\Expression`) is split: `arazzo-expression` keeps the zero-vendor lexer/parser/AST/reference-model and exposes a new `ExpressionInterface` parse/inspect seam implemented by a new parse-side `ExpressionInspector`; a new `arazzo-evaluation` package owns the engine facade, evaluator internals, interpolation, payload replacement, and all evaluation DTOs — requiring `arazzo-expression` and delegating parse/inspect/symbols to it. The evaluation package uses its own **flat** namespace `Alama\Arazzo\Evaluation\` (FQCNs change: `Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator` → `Alama\Arazzo\Evaluation\CriteriaEvaluator`; this is an intentional, one-time breaking change — see C0). `JsonPathEvaluator` + `softcreatr/jsonpath` do NOT move to a third package: they stay in `arazzo-evaluation` and are wired as **built-in default plugins** implementing the contracts plugin interfaces (`ExpressionEvaluatorPluginInterface`, `CriterionEvaluatorPluginInterface`). Two new registries — `ExpressionEvaluatorRegistry` and `CriterionEvaluatorRegistry` — provide priority-ordered, first-match plugin resolution. `CriteriaEvaluator` is refactored: `simple`/`regex`/`xpath` stay in-core (no vendor); `jsonpath` and future types delegate through the `CriterionEvaluatorRegistry`.
 
-**Tech Stack:** PHP ^8.4, Pest v5 (`pestphp/pest`), Pest Arch (`pestphp/pest-plugin-arch`), PHPStan ^2.0 + `phpstan-deprecation-rules`, Laravel Pint, `psr/event-dispatcher` ^1.0, `psr/log` ^3.0, `softcreatr/jsonpath` ^0.10.0 (evaluator-jsonpath only).
+**Tech Stack:** PHP ^8.4, Pest v5 (`pestphp/pest`), Pest Arch (`pestphp/pest-plugin-arch`), PHPStan ^2.0 + `phpstan-deprecation-rules`, Laravel Pint, `psr/event-dispatcher` ^1.0, `psr/log` ^3.0, `softcreatr/jsonpath` ^0.10.0 (owned by `arazzo-evaluation`, built into the default registries).
 
 **Spec:** `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md`
 
 ## Global Constraints
 
-- `Alama\Arazzo\Expression\` PSR-4 prefix mapped in both `arazzo-expression` and `arazzo-evaluation`; no FQCN changes anywhere (D11).
-- `arazzo-expression` stays zero-vendor: `require` = `php: ^8.4` + `alama/arazzo-contracts: @dev` + `psr/event-dispatcher: ^1.0` + `psr/log: ^3.0` only. No `softcreatr/jsonpath`.
-- `arazzo-evaluation` requires `arazzo-expression` + `arazzo-contracts`; drops `softcreatr/jsonpath`.
-- `alama/arazzo-evaluator-jsonpath` owns `softcreatr/jsonpath: ^0.10.0`; requires `arazzo-expression` + `arazzo-contracts`.
-- No breaking changes to existing public faces: `ExpressionEngineInterface`, `ExpressionEngine`, `ExpressionEvaluatorInterface`, `ExpressionResolverInterface`, `EvaluationInputInterface`, `CriteriaEvaluatorInterface`, `XpathEvaluator`, `SelectorEvaluationException` FQCNs all stay identical (D11 non-goal boundary).
+- `arazzo-expression` keeps PSR-4 prefix `Alama\Arazzo\Expression\` for the parse side only (lexer/parser/AST/reference-model). No `softcreatr/jsonpath`.
+- `arazzo-evaluation` uses flat PSR-4 prefix `Alama\Arazzo\Evaluation\`; requires `arazzo-expression` + `arazzo-contracts`; owns `softcreatr/jsonpath: ^0.10.0`.
+- **Breaking namespace change is intentional and in-scope (C0):** every evaluation-side class moves from `Alama\Arazzo\Expression\…` to `Alama\Arazzo\Evaluation\…`; `Evaluation\` is flattened (no `Aliama\Arazzo\Evaluation\Evaluation\`). Consumers (`runner`, `cli`, `laravel`, `core`, `document` tests) update their imports in C4.
+- `arazzo-expression` stays zero-vendor: `require` = `php: ^8.4` + `alama/arazzo-contracts: @dev` + `psr/event-dispatcher: ^1.0` + `psr/log: ^3.0` only.
+- `supportedXPathVersions()` capability moves to the evaluation layer; `document` PreflightValidator no longer checks it (parse-only seam).
+- Public faces that change FQCN (map accordingly): `ExpressionEngine`, `ExpressionEngineInterface`, `ExpressionEvaluator`, `ExpressionEvaluatorInterface`, `ExpressionResolverInterface`, `EvaluationInputInterface`, `CriteriaEvaluator`, `CriteriaEvaluatorInterface`, `SelectorEvaluator`, `StringInterpolator`, `JsonPointer`, `JsonPathEvaluator`, `XpathEvaluator`, `DomXpathEvaluator`, `EvaluationInput`, `EvaluationContext`, `ConditionNode`, `SelectorEvaluationException` → `Alama\Arazzo\Evaluation\…`.
 - Every new interface/value-type file: `declare(strict_types=1)`, repo convention for `final readonly class` / `enum`.
 - No code comments unless explaining a deprecation or a BC seam.
 - Every task ends with the relevant composer script green from the repo root.
@@ -26,48 +27,51 @@
 
 ### Task C0: Scaffold `arazzo-evaluation` package + move evaluation classes
 
-The core of the D11 split. Create `packages/evaluation/` with its own `composer.json`, then move every evaluation-side class from `packages/expression/src/Evaluation/`, `packages/expression/src/Interfaces/`, `packages/expression/src/Data/EvaluationInput.php`, `packages/expression/src/ExpressionEngine.php`, `packages/expression/src/ExpressionEngineInterface.php`, `packages/expression/src/ExpressionEvaluator.php`, `packages/expression/src/SelectorEvaluator.php`, `packages/expression/src/StringInterpolator.php`, `packages/expression/src/JsonPointer.php`, `packages/expression/src/JsonPathEvaluator.php`, and `packages/expression/src/Xpath/` into the new package — preserving exact FQCNs and file-relative namespaces.
+The core of the split. Create `packages/evaluation/` with its own `composer.json`, then move every evaluation-side class from `packages/expression/src/Evaluation/`, `packages/expression/src/Interfaces/`, `packages/expression/src/Data/EvaluationInput.php`, `packages/expression/src/ExpressionEngine.php`, `packages/expression/src/ExpressionEngineInterface.php`, `packages/expression/src/ExpressionEvaluator.php`, `packages/expression/src/SelectorEvaluator.php`, `packages/expression/src/StringInterpolator.php`, `packages/expression/src/JsonPointer.php`, `packages/expression/src/JsonPathEvaluator.php`, and `packages/expression/src/Xpath/` into the new package. Evaluation classes get the **flat** namespace `Alama\Arazzo\Evaluation\` (see table below); `JsonPathEvaluator` stays in `arazzo-evaluation` (no third package). Every moved file's `namespace` statement and internal `use` references are updated to `Alama\Arazzo\Evaluation\…`.
 
 **Files:**
 - Create: `packages/expression/src/Interfaces/ExpressionInterface.php` (new parse/inspect seam — spec D11)
+- Create: `packages/expression/src/ExpressionInspector.php` (parse-side concrete implementing `ExpressionInterface`)
 - Create: `packages/evaluation/composer.json`
 - Create: `packages/evaluation/phpstan.neon.dist`
 - Create: `packages/evaluation/phpstan-baseline.neon` (empty baseline file)
-- Move (FQCN unchanged): all 23 evaluation-side classes listed below
+- Move + rename namespace: all 23 evaluation-side classes listed below
 - Modify: `packages/expression/composer.json` (remove `softcreatr/jsonpath` from `require`)
 - Modify: `composer.json` (root — add repositories + require for `alama/arazzo-evaluation`)
 
 **Interfaces:**
 - Consumes: `ExpressionEngineInterface` (current, in `packages/expression/src/`), `ExpressionEngine` (current), all `Evaluation\*` classes, `ExpressionEvaluator`, `SelectorEvaluator`, `StringInterpolator`, `JsonPointer`, `JsonPathEvaluator`, `Xpath/DomXpathEvaluator`, `Xpath/XpathEvaluator`, `EvaluationInput`, `EvaluationContext`.
-- Produces: `arazzo-evaluation` package with identical FQCNs for all moved classes; `packages/expression/` retains only parse-side classes.
+- Produces: `arazzo-evaluation` package with flat `Alama\Arazzo\Evaluation\` FQCNs for all moved classes; `packages/expression/` retains only parse-side classes.
 
-**Classes that move from `packages/expression/src/` → `packages/evaluation/src/` (FQCN unchanged):**
+**Classes that move from `packages/expression/src/` → `packages/evaluation/src/` (flat namespace):**
 
 | File (relative to `src/`) | FQCN |
 |---|---|
-| `ExpressionEngine.php` | `Alama\Arazzo\Expression\ExpressionEngine` |
-| `ExpressionEngineInterface.php` | `Alama\Arazzo\Expression\ExpressionEngineInterface` |
-| `ExpressionEvaluator.php` | `Alama\Arazzo\Expression\ExpressionEvaluator` |
-| `SelectorEvaluator.php` | `Alama\Arazzo\Expression\SelectorEvaluator` |
-| `StringInterpolator.php` | `Alama\Arazzo\Expression\StringInterpolator` |
-| `JsonPointer.php` | `Alama\Arazzo\Expression\JsonPointer` |
-| `JsonPathEvaluator.php` | `Alama\Arazzo\Expression\JsonPathEvaluator` |
-| `Interfaces/EvaluationInputInterface.php` | `Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface` |
-| `Interfaces/ExpressionEvaluatorInterface.php` | `Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface` |
-| `Interfaces/ExpressionResolverInterface.php` | `Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface` |
-| `Data/EvaluationInput.php` | `Alama\Arazzo\Expression\Data\EvaluationInput` |
-| `Xpath/XpathEvaluator.php` | `Alama\Arazzo\Expression\Xpath\XpathEvaluator` |
-| `Xpath/DomXpathEvaluator.php` | `Alama\Arazzo\Expression\Xpath\DomXpathEvaluator` |
-| `Exceptions/SelectorEvaluationException.php` | `Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException` |
-| `Evaluation/CriteriaEvaluator.php` | `Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator` |
-| `Evaluation/ExpressionResolver.php` | `Alama\Arazzo\Expression\Evaluation\ExpressionResolver` |
-| `Evaluation/PayloadReplacer.php` | `Alama\Arazzo\Expression\Evaluation\PayloadReplacer` |
-| `Evaluation/InterpolationResolver.php` | `Alama\Arazzo\Expression\Evaluation\InterpolationResolver` |
-| `Evaluation/Data/EvaluationContext.php` | `Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext` |
-| `Evaluation/Interfaces/CriteriaEvaluatorInterface.php` | `Alama\Arazzo\Expression\Evaluation\Interfaces\CriteriaEvaluatorInterface` |
-| `Evaluation/Interfaces/ConditionNode.php` | `Alama\Arazzo\Expression\Evaluation\Interfaces\ConditionNode` |
-| `Evaluation/Condition/*` (6 files) | `Alama\Arazzo\Expression\Evaluation\Condition\*` |
-| `Evaluation/Enum/*` (3 files) | `Alama\Arazzo\Expression\Evaluation\Enum\*` |
+| `ExpressionEngine.php` | `Alama\Arazzo\Evaluation\ExpressionEngine` |
+| `ExpressionEngineInterface.php` | `Alama\Arazzo\Evaluation\ExpressionEngineInterface` |
+| `ExpressionEvaluator.php` | `Alama\Arazzo\Evaluation\ExpressionEvaluator` |
+| `SelectorEvaluator.php` | `Alama\Arazzo\Evaluation\SelectorEvaluator` |
+| `StringInterpolator.php` | `Alama\Arazzo\Evaluation\StringInterpolator` |
+| `JsonPointer.php` | `Alama\Arazzo\Evaluation\JsonPointer` |
+| `JsonPathEvaluator.php` | `Alama\Arazzo\Evaluation\JsonPathEvaluator` |
+| `Interfaces/EvaluationInputInterface.php` | `Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface` |
+| `Interfaces/ExpressionEvaluatorInterface.php` | `Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface` |
+| `Interfaces/ExpressionResolverInterface.php` | `Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface` |
+| `Data/EvaluationInput.php` | `Alama\Arazzo\Evaluation\Data\EvaluationInput` |
+| `Xpath/XpathEvaluator.php` | `Alama\Arazzo\Evaluation\Xpath\XpathEvaluator` |
+| `Xpath/DomXpathEvaluator.php` | `Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator` |
+| `Exceptions/SelectorEvaluationException.php` | `Alama\Arazzo\Evaluation\Exceptions\SelectorEvaluationException` |
+| `Evaluation/CriteriaEvaluator.php` | `Alama\Arazzo\Evaluation\CriteriaEvaluator` |
+| `Evaluation/ExpressionResolver.php` | `Alama\Arazzo\Evaluation\ExpressionResolver` |
+| `Evaluation/PayloadReplacer.php` | `Alama\Arazzo\Evaluation\PayloadReplacer` |
+| `Evaluation/InterpolationResolver.php` | `Alama\Arazzo\Evaluation\InterpolationResolver` |
+| `Evaluation/Data/EvaluationContext.php` | `Alama\Arazzo\Evaluation\Data\EvaluationContext` |
+| `Evaluation/Interfaces/CriteriaEvaluatorInterface.php` | `Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface` |
+| `Evaluation/Interfaces/ConditionNode.php` | `Alama\Arazzo\Evaluation\Interfaces\ConditionNode` |
+| `Evaluation/Condition/*` (6 files) | `Alama\Arazzo\Evaluation\Condition\*` |
+| `Evaluation/Enum/*` (3 files) | `Alama\Arazzo\Evaluation\Enum\*` |
+
+**Flattening note:** files under `Evaluation/` lose that segment on the destination filesystem — `packages/expression/src/Evaluation/CriteriaEvaluator.php` → `packages/evaluation/src/CriteriaEvaluator.php` (namespace `Alama\Arazzo\Evaluation`), `Evaluation/Data/EvaluationContext.php` → `packages/evaluation/src/Data/EvaluationContext.php` (namespace `Alama\Arazzo\Evaluation\Data`), `Evaluation/Condition/*` → `packages/evaluation/src/Condition/*`, `Evaluation/Enum/*` → `packages/evaluation/src/Enum/*`, `Evaluation/Interfaces/*` → `packages/evaluation/src/Interfaces/*`.
 
 **Classes that STAY in `packages/expression/src/` (parse side):**
 
@@ -95,8 +99,8 @@ Create `packages/evaluation/tests/PackageScaffoldTest.php`:
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 
 it('autoloads the evaluation package expression engine')
     ->expect(new ExpressionEngine())->toBeInstanceOf(ExpressionEngineInterface::class);
@@ -106,7 +110,7 @@ it('autoloads the evaluation package expression engine')
 
 Run: `vendor/bin/pest packages/evaluation/tests --filter "PackageScaffold"` (repo root)
 
-Expected: FAIL — `Class Alama\Arazzo\Expression\ExpressionEngine not found` (the class still lives in `packages/expression` at this point, but the evaluation package doesn't exist yet).
+Expected: FAIL — `Class Alama\Arazzo\Evaluation\ExpressionEngine not found` (the class still lives in `packages/expression` at this point, but the evaluation package doesn't exist yet).
 
 - [ ] **Step 3: Create `ExpressionInterface` parse/inspect seam**
 
@@ -173,9 +177,9 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
 it('declares the parse/inspect seam interface')
     ->expect(interface_exists(ExpressionInterface::class))->toBeTrue();
 
-it('is implemented by the ExpressionEngine', function (): void {
-    // After the split, ExpressionEngine is in arazzo-evaluation.
-    // This test verifies the interface exists and is subset-compatible.
+it('is implemented by the parse-side ExpressionInspector', function (): void {
+    // After the split, ExpressionInspector (arazzo-expression) implements the seam;
+    // the evaluation ExpressionEngine may also implement it for convenience.
     $rc = new ReflectionClass(ExpressionInterface::class);
 
     expect($rc->getMethods())->toHaveCount(3)
@@ -188,6 +192,90 @@ it('is implemented by the ExpressionEngine', function (): void {
 Run: `vendor/bin/pest packages/expression/tests --filter "ExpressionInterfaceTest"` (repo root)
 
 Expected: PASS (interface is created in this step).
+
+- [ ] **Step 4b: Create parse-side `ExpressionInspector` + failing test**
+
+`ExpressionInspector` is the parse-side concrete that implements `ExpressionInterface`. It wraps the lexer/parser/symbol-table already in `arazzo-expression` — no evaluation classes. `document` constructs this instead of `new ExpressionEngine()`.
+
+Create `packages/expression/src/ExpressionInspector.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Expression;
+
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Expression\Data\ExpressionReference;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
+use Alama\Arazzo\Expression\Parser as ExpressionParser;
+
+final class ExpressionInspector implements ExpressionInterface
+{
+    private readonly ExpressionParser $parser;
+
+    public function __construct(?ExpressionParser $parser = null)
+    {
+        $this->parser = $parser ?? new ExpressionParser();
+    }
+
+    public function parseExpression(string $raw): ?ExpressionSyntaxException
+    {
+        $result = $this->parser->parseOrError($raw);
+
+        return $result instanceof ExpressionSyntaxException ? $result : null;
+    }
+
+    public function expressionReferences(string $raw): ?ExpressionReference
+    {
+        // Projection lives in the parser/reference model (parse side).
+        return $this->parser->parseOrError($raw) instanceof ExpressionSyntaxException
+            ? null
+            : $this->parser->projectReferences($raw);
+    }
+
+    public function buildSymbolTable(ArazzoDocument $document): SymbolTable
+    {
+        return SymbolTable::build($document);
+    }
+}
+```
+
+(Adjust method wiring to the actual parser API when implementing — the invariant is: `ExpressionInspector` never touches `ExpressionEvaluator`/engine internals.)
+
+Create `packages/expression/tests/ExpressionInspectorTest.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Expression\ExpressionInspector;
+use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
+
+it('implements the parse/inspect seam', function (): void {
+    expect(new ExpressionInspector())->toBeInstanceOf(ExpressionInterface::class);
+});
+
+it('parses a valid expression without a syntax error', function (): void {
+    $inspector = new ExpressionInspector();
+
+    expect($inspector->parseExpression('$steps.get.pet.outputs.body'))->toBeNull();
+});
+
+it('builds a symbol table from a document', function (): void {
+    $inspector = new ExpressionInspector();
+
+    expect($inspector->buildSymbolTable(ArazzoDocument::fromArray([])))->toBeInstanceOf(\Alama\Arazzo\Expression\SymbolTable::class);
+});
+```
+
+Run: `vendor/bin/pest packages/expression/tests --filter "ExpressionInspectorTest"` (repo root)
+
+Expected: PASS.
 
 - [ ] **Step 5: Create `packages/evaluation/composer.json`**
 
@@ -204,7 +292,8 @@ Create `packages/evaluation/composer.json`:
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-expression": "@dev",
         "psr/event-dispatcher": "^1.0",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "softcreatr/jsonpath": "^0.10.0"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",
@@ -218,7 +307,7 @@ Create `packages/evaluation/composer.json`:
     },
     "autoload": {
         "psr-4": {
-            "Alama\\Arazzo\\Expression\\": "src/"
+            "Alama\\Arazzo\\Evaluation\\": "src/"
         }
     },
     "autoload-dev": {
@@ -283,18 +372,20 @@ Add to the `require` object (after `"alama/arazzo-expression": "@dev"`):
 "alama/arazzo-evaluation": "@dev",
 ```
 
-- [ ] **Step 7: Move evaluation-side source files**
+- [ ] **Step 7: Move evaluation-side source files (and re-namespace to `Alama\Arazzo\Evaluation\`)**
 
-Move each file, preserving the directory structure relative to `src/`. Every FQCN is identical — only the filesystem home changes.
+Move each file. Because the evaluation package uses the flat `Alama\Arazzo\Evaluation\` prefix, files move up out of `Evaluation/` on the destination side, and the `namespace`/`use` statements inside every moved file change:
+
+- `Alama\Arazzo\Expression\` → `Alama\Arazzo\Evaluation\` for top-level eval classes (`ExpressionEngine`, `ExpressionEngineInterface`, `ExpressionEvaluator`, `SelectorEvaluator`, `StringInterpolator`, `JsonPointer`, `JsonPathEvaluator`), the moved `Interfaces\*`, `Data\EvaluationInput`, `Xpath\*`, `Exceptions\SelectorEvaluationException`.
+- `Alama\Arazzo\Expression\Evaluation\` → `Alama\Arazzo\Evaluation\` (drop the `Evaluation\` segment) for the `Evaluation\*` subtree.
+- Parse-side references that stay (`SymbolTable`, `Parser`, `Lexer`, AST, `Data\{Token, StepSymbols, WorkflowSymbols, ExpressionReference}`, `Enum\{TokenKind, ReferenceKind}`, `Exceptions\ExpressionSyntaxException`) keep `Alama\Arazzo\Expression\…`.
 
 ```bash
-# Create target directories
-mkdir -p packages/evaluation/src/Evaluation/Condition/Ast
-mkdir -p packages/evaluation/src/Evaluation/Data
-mkdir -p packages/evaluation/src/Evaluation/Enum
-mkdir -p packages/evaluation/src/Evaluation/Interfaces
-mkdir -p packages/evaluation/src/Interfaces
+# Create target directories (flat layout — no Evaluation/ segment)
+mkdir -p packages/evaluation/src/Condition/Ast
 mkdir -p packages/evaluation/src/Data
+mkdir -p packages/evaluation/src/Enum
+mkdir -p packages/evaluation/src/Interfaces
 mkdir -p packages/evaluation/src/Xpath
 mkdir -p packages/evaluation/src/Exceptions
 
@@ -322,17 +413,15 @@ mv packages/expression/src/Xpath/DomXpathEvaluator.php packages/evaluation/src/X
 # Move SelectorEvaluationException (evaluation-side exception)
 mv packages/expression/src/Exceptions/SelectorEvaluationException.php packages/evaluation/src/Exceptions/
 
-# Move Evaluation/* subtree
-mv packages/expression/src/Evaluation/CriteriaEvaluator.php packages/evaluation/src/Evaluation/
-mv packages/expression/src/Evaluation/ExpressionResolver.php packages/evaluation/src/Evaluation/
-mv packages/expression/src/Evaluation/PayloadReplacer.php packages/evaluation/src/Evaluation/
-mv packages/expression/src/Evaluation/InterpolationResolver.php packages/evaluation/src/Evaluation/
-
-# Move Evaluation subdirectories
-mv packages/expression/src/Evaluation/Condition/* packages/evaluation/src/Evaluation/Condition/
-mv packages/expression/src/Evaluation/Data/* packages/evaluation/src/Evaluation/Data/
-mv packages/expression/src/Evaluation/Enum/* packages/evaluation/src/Evaluation/Enum/
-mv packages/expression/src/Evaluation/Interfaces/* packages/evaluation/src/Evaluation/Interfaces/
+# Move Evaluation/* subtree — flatten: drop the Evaluation/ segment
+mv packages/expression/src/Evaluation/CriteriaEvaluator.php packages/evaluation/src/
+mv packages/expression/src/Evaluation/ExpressionResolver.php packages/evaluation/src/
+mv packages/expression/src/Evaluation/PayloadReplacer.php packages/evaluation/src/
+mv packages/expression/src/Evaluation/InterpolationResolver.php packages/evaluation/src/
+mv packages/expression/src/Evaluation/Condition/* packages/evaluation/src/Condition/
+mv packages/expression/src/Evaluation/Data/* packages/evaluation/src/Data/
+mv packages/expression/src/Evaluation/Enum/* packages/evaluation/src/Enum/
+mv packages/expression/src/Evaluation/Interfaces/* packages/evaluation/src/Interfaces/
 
 # Clean up empty directories left behind
 rmdir packages/expression/src/Xpath 2>/dev/null || true
@@ -343,6 +432,23 @@ rmdir packages/expression/src/Evaluation/Enum 2>/dev/null || true
 rmdir packages/expression/src/Evaluation/Interfaces 2>/dev/null || true
 rmdir packages/expression/src/Evaluation 2>/dev/null || true
 ```
+
+Then re-namespace every moved file. Replace `namespace Alama\Arazzo\Expression\Evaluation\` → `namespace Alama\Arazzo\Evaluation\` and `namespace Alama\Arazzo\Expression\` → `namespace Alama\Arazzo\Evaluation\` for the top-level eval classes, and update `use Alama\Arazzo\Expression\Evaluation\…` → `use Alama\Arazzo\Evaluation\…` plus `use Alama\Arazzo\Expression\{ExpressionEngine|ExpressionEvaluator|SelectorEvaluator|StringInterpolator|JsonPointer|JsonPathEvaluator|Data\EvaluationInput|Xpath\...|Interfaces\...}` → `use Alama\Arazzo\Evaluation\…`. A bulk sed over `packages/evaluation/src/` is acceptable:
+
+```bash
+# In packages/evaluation/src/** : drop the Expression\Evaluation and Evaluation\ prefix, and
+# re-home eval-side top-level classes under Alama\Arazzo\Evaluation.
+find packages/evaluation/src -name '*.php' -exec sed -i '' \
+  -e 's/Alama\\Arazzo\\Expression\\Evaluation\\/Alama\\Arazzo\\Evaluation\\/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Data\\EvaluationInput/Alama\\Arazzo\\Evaluation\\Data\\EvaluationInput/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Interfaces\\(EvaluationInputInterface|ExpressionEvaluatorInterface|ExpressionResolverInterface)/Alama\\Arazzo\\Evaluation\\Interfaces\\\1/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Xpath\\/Alama\\Arazzo\\Evaluation\\Xpath\\/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Exceptions\\SelectorEvaluationException/Alama\\Arazzo\\Evaluation\\Exceptions\\SelectorEvaluationException/g' \
+  -e 's/Alama\\Arazzo\\Expression\\(ExpressionEngine|ExpressionEngineInterface|ExpressionEvaluator|SelectorEvaluator|StringInterpolator|JsonPointer|JsonPathEvaluator)\b/Alama\\Arazzo\\Evaluation\\\1/g' \
+  {} +
+```
+
+(BSD `sed -i ''` is macOS syntax; on Linux use `sed -i`. Verify with `rg -n 'namespace Alama' packages/evaluation/src` that every namespace is `Alama\Arazzo\Evaluation\…` after this pass.)
 
 - [ ] **Step 8: Remove `softcreatr/jsonpath` from `packages/expression/composer.json`**
 
@@ -361,22 +467,40 @@ Edit `packages/expression/composer.json` — remove the `"softcreatr/jsonpath": 
 
 Run: `composer dump-autoload && vendor/bin/pest packages/evaluation/tests --filter "PackageScaffold"` (repo root)
 
-Expected: PASS — `ExpressionEngine` is now autoloaded from `packages/evaluation/src/` via the `Alama\Arazzo\Expression\` PSR-4 prefix mapped in the evaluation package.
+Expected: PASS — `ExpressionEngine` is now autoloaded from `packages/evaluation/src/` via the `Alama\Arazzo\Evaluation\` PSR-4 prefix mapped in the evaluation package.
 
 - [ ] **Step 10: Run expression package tests to confirm parse-side still works**
 
 Run: `composer run test-expression` (repo root)
 
-Expected: PASS — parse-side classes (`Lexer`, `Parser`, `SymbolTable`, AST, `Token`, `TokenKind`, `ReferenceKind`, `ExpressionSyntaxException`, `ExpressionReference`) remain in `packages/expression` with identical FQCNs. Tests that previously tested `ExpressionEngine` capabilities may need to move to the evaluation test suite (see Step 9).
+Expected: PASS — parse-side classes (`Lexer`, `Parser`, `SymbolTable`, AST, `Token`, `TokenKind`, `ReferenceKind`, `ExpressionSyntaxException`, `ExpressionReference`) remain in `packages/expression` with their `Alama\Arazzo\Expression\…` FQCNs. Tests that previously tested `ExpressionEngine` capabilities must move to the evaluation test suite (Step 11) — fix any leftover stale eval imports there.
 
 - [ ] **Step 11: Move evaluation-related test files**
 
-The following test files test evaluation-side classes and must move from `packages/expression/tests/` to `packages/evaluation/tests/`:
+The following test files test evaluation-side classes and must move from `packages/expression/tests/` to `packages/evaluation/tests/`, with their FQCN imports updated to `Alama\Arazzo\Evaluation\…`:
 
 ```bash
+# Top-level evaluation tests
 mv packages/expression/tests/ExpressionEngineTest.php packages/evaluation/tests/
 mv packages/expression/tests/ExpressionEngineCapabilitiesTest.php packages/evaluation/tests/
+
+# Evaluation/* test subtree (flatten)
+mkdir -p packages/evaluation/tests/Condition
+mkdir -p packages/evaluation/tests/Data
+mkdir -p packages/evaluation/tests/Enum
+mkdir -p packages/evaluation/tests/Interfaces
+mv packages/expression/tests/Evaluation/CriteriaEvaluatorTest.php packages/evaluation/tests/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/PayloadReplacerTest.php packages/evaluation/tests/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/ExpressionResolverTest.php packages/evaluation/tests/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/InterpolationResolverTest.php packages/evaluation/tests/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/Condition/* packages/evaluation/tests/Condition/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/Data/* packages/evaluation/tests/Data/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/Enum/* packages/evaluation/tests/Enum/ 2>/dev/null || true
+mv packages/expression/tests/Evaluation/Interfaces/* packages/evaluation/tests/Interfaces/ 2>/dev/null || true
+rmdir packages/expression/tests/Evaluation 2>/dev/null || true
 ```
+
+Run: `rg -l 'ExpressionEngine|ExpressionEvaluator|CriteriaEvaluator|SelectorEvaluator|StringInterpolator|JsonPointer|JsonPathEvaluator|DomXpathEvaluator|EvaluationInput|EvaluationContext' packages/expression/tests` and move/rewrite any remaining stale evaluation-side tests found.
 
 Update the root `composer.json` autoload-dev PSR-4 for `Alama\Arazzo\Tests\` to include the new evaluation tests directory:
 
@@ -429,35 +553,25 @@ Expected: PASS. PHPStan resolves classes via the `scanDirectories` pointing at s
 - [ ] **Step 15: Commit**
 
 ```bash
-git add packages/evaluation/ packages/expression/src/Interfaces/ExpressionInterface.php packages/expression/tests/ExpressionInterfaceTest.php packages/expression/src/ packages/expression/composer.json packages/expression/tests/ExpressionEngineTest.php packages/expression/tests/ExpressionEngineCapabilitiesTest.php composer.json
-git commit -m "feat(evaluation): split arazzo-expression per D11 — evaluation package owns engine, evaluator internals, and evaluation DTOs"
+git add packages/evaluation/ packages/expression/src/Interfaces/ExpressionInterface.php packages/expression/src/ExpressionInspector.php packages/expression/tests/ExpressionInterfaceTest.php packages/expression/tests/ExpressionInspectorTest.php packages/expression/src/ packages/expression/composer.json packages/expression/tests/ExpressionEngineTest.php packages/expression/tests/ExpressionEngineCapabilitiesTest.php composer.json
+git commit -m "feat(evaluation): split arazzo-expression — evaluation package owns engine, evaluator internals, and evaluation DTOs"
 ```
 
 ---
 
-### Task C1: Create `arazzo-evaluator-jsonpath` package + isolate `JsonPathEvaluator`
+### Task C1: Register JsonPath as built-in default plugins (in `arazzo-evaluation`)
 
-Move `JsonPathEvaluator` + `softcreatr/jsonpath` out of the evaluation package into a new standalone evaluator package, exposing two plugin implementations.
+`JsonPathEvaluator` + `softcreatr/jsonpath` stay in `arazzo-evaluation` (no third package). This task implements them as the **built-in default plugins** that the registries (C2) and `ExpressionEngine` (C3) seed — so `jsonpath` criterion/selector types keep working out of the box, while remaining replaceable by a higher-priority plugin from a future vendor.
 
 **Files:**
-- Create: `packages/evaluator-jsonpath/composer.json`
-- Create: `packages/evaluator-jsonpath/phpstan.neon.dist`
-- Create: `packages/evaluator-jsonpath/phpstan-baseline.neon`
-- Create: `packages/evaluator-jsonpath/src/JsonPathEvaluator.php`
-- Create: `packages/evaluator-jsonpath/src/JsonPathExpressionPlugin.php`
-- Create: `packages/evaluator-jsonpath/src/JsonPathCriterionPlugin.php`
-- Move: `packages/evaluation/src/JsonPathEvaluator.php` → `packages/evaluator-jsonpath/src/JsonPathEvaluator.php` (FQCN changes — see below)
-- Modify: `packages/evaluation/composer.json` (remove `softcreatr/jsonpath` if present — it should already be gone after C0)
-- Modify: `composer.json` (root — add repositories + require)
-- Test: `packages/evaluator-jsonpath/tests/JsonPathEvaluatorTest.php`
-- Test: `packages/evaluator-jsonpath/tests/JsonPathExpressionPluginTest.php`
-- Test: `packages/evaluator-jsonpath/tests/JsonPathCriterionPluginTest.php`
+- Create: `packages/evaluation/src/JsonPathExpressionPlugin.php`
+- Create: `packages/evaluation/src/JsonPathCriterionPlugin.php`
+- Test: `packages/evaluation/tests/JsonPathExpressionPluginTest.php`
+- Test: `packages/evaluation/tests/JsonPathCriterionPluginTest.php`
 
 **Interfaces:**
-- Consumes: `ExpressionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, per Phase A plan task A2), `CriterionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, per Phase A plan task A2), `PluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, per Phase A plan task A1).
-- Produces: `JsonPathEvaluator` (namespace `Alama\Arazzo\Evaluator\JsonPath`), `JsonPathExpressionPlugin` (implements `ExpressionEvaluatorPluginInterface`), `JsonPathCriterionPlugin` (implements `CriterionEvaluatorPluginInterface`).
-
-**FQCN note:** `JsonPathEvaluator` changes its FQCN from `Alama\Arazzo\Expression\JsonPathEvaluator` to `Alama\Arazzo\Evaluator\JsonPath\JsonPathEvaluator`. This is intentional — it is `@internal` (not a public face) and was never part of the advertised API. The only callers are `ExpressionEngine`, `SelectorEvaluator`, and `CriteriaEvaluator`, all in `arazzo-evaluation`, which will reference the new FQCN after this task.
+- Consumes: `ExpressionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A task A2), `CriterionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A task A2), `PluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A task A1), `JsonPathEvaluator` (`Alama\Arazzo\Evaluation\JsonPathEvaluator`, moved in C0).
+- Produces: `Alama\Arazzo\Evaluation\JsonPathExpressionPlugin` (implements `ExpressionEvaluatorPluginInterface`), `Alama\Arazzo\Evaluation\JsonPathCriterionPlugin` (implements `CriterionEvaluatorPluginInterface`).
 
 **Plugin signatures (from Phase A plan task A2):**
 
@@ -477,186 +591,9 @@ interface CriterionEvaluatorPluginInterface extends PluginInterface
 }
 ```
 
-- [ ] **Step 1: Write the failing test — JsonPathEvaluator loads**
+- [ ] **Step 1: Write the failing test — JsonPathExpressionPlugin**
 
-Create `packages/evaluator-jsonpath/tests/JsonPathEvaluatorTest.php`:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-use Alama\Arazzo\Evaluator\JsonPath\JsonPathEvaluator;
-
-it('evaluates a simple JSONPath expression', function (): void {
-    $data = ['users' => [['name' => 'Alice'], ['name' => 'Bob']]];
-
-    $result = JsonPathEvaluator::evaluate('$.users[*].name', $data);
-
-    expect($result)->toBe(['Alice', 'Bob']);
-});
-
-it('normalizes RFC 9535 filter selectors', function (): void {
-    $data = ['items' => [1, 2, 3, 4, 5]];
-
-    $result = JsonPathEvaluator::evaluate('$.items[?@ > 3]', $data);
-
-    expect($result)->toBe([4, 5]);
-});
-```
-
-- [ ] **Step 2: Run test to verify it fails**
-
-Run: `vendor/bin/pest packages/evaluator-jsonpath/tests --filter "JsonPathEvaluatorTest"` (repo root)
-
-Expected: FAIL — `Class Alama\Arazzo\Evaluator\JsonPath\JsonPathEvaluator not found`.
-
-- [ ] **Step 3: Create `packages/evaluator-jsonpath/composer.json`**
-
-Create `packages/evaluator-jsonpath/composer.json`:
-
-```json
-{
-    "name": "alama/arazzo-evaluator-jsonpath",
-    "description": "JSONPath expression and criterion evaluator plugin for Arazzo.",
-    "type": "library",
-    "license": "MIT",
-    "require": {
-        "php": "^8.4",
-        "alama/arazzo-contracts": "@dev",
-        "alama/arazzo-expression": "@dev",
-        "softcreatr/jsonpath": "^0.10.0"
-    },
-    "require-dev": {
-        "larastan/larastan": "^3.0",
-        "laravel/pint": "^1.14",
-        "pestphp/pest": "^5.0",
-        "pestphp/pest-plugin-arch": "^5.0",
-        "phpstan/phpstan": "^2.0",
-        "phpstan/phpstan-deprecation-rules": "^2.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Alama\\Arazzo\\Evaluator\\JsonPath\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Alama\\Arazzo\\Evaluator\\JsonPath\\Tests\\": "tests/"
-        }
-    },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
-}
-```
-
-Create `packages/evaluator-jsonpath/phpstan.neon.dist`:
-
-```neon
-parameters:
-    level: max
-    paths:
-        - src
-    excludePaths:
-        - tests
-    scanDirectories:
-        - ../contracts/src
-        - ../expression/src
-    reportUnmatchedIgnoredErrors: false
-```
-
-Create `packages/evaluator-jsonpath/phpstan-baseline.neon`:
-
-```neon
-parameters:
-    ignoreErrors: []
-```
-
-- [ ] **Step 4: Add `alama/arazzo-evaluator-jsonpath` to root composer.json**
-
-Edit root `composer.json` — add to `repositories`:
-
-```json
-{
-    "type": "path",
-    "url": "packages/evaluator-jsonpath"
-},
-```
-
-Add to `require`:
-
-```json
-"alama/arazzo-evaluator-jsonpath": "@dev",
-```
-
-- [ ] **Step 5: Remove `JsonPathEvaluator.php` from evaluation package and create the new one**
-
-```bash
-rm packages/evaluation/src/JsonPathEvaluator.php
-mkdir -p packages/evaluator-jsonpath/src
-```
-
-Create `packages/evaluator-jsonpath/src/JsonPathEvaluator.php`:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace Alama\Arazzo\Evaluator\JsonPath;
-
-use Flow\JSONPath\JSONPath;
-
-class JsonPathEvaluator
-{
-    /**
-     * @param  array<array-key, mixed>|object  $data
-     */
-    public static function evaluate(string $expression, array|object $data): mixed
-    {
-        $normalized = self::normalizeFilters($expression);
-
-        $isAssocObject = is_array($data) && $data !== [] && !array_is_list($data);
-        $wrapped = $isAssocObject && preg_match('/^\$?\[\?/', $normalized) === 1;
-
-        if ($wrapped) {
-            $data = [$data];
-        }
-
-        $jsonPath = new JSONPath($data);
-        $result = $jsonPath->find($normalized);
-        $arrayResult = $result->getData();
-
-        if (!$wrapped && count($arrayResult) === 1) {
-            return $arrayResult[0];
-        }
-
-        return $arrayResult;
-    }
-
-    public static function normalizeFilters(string $expression): string
-    {
-        return (string) preg_replace('/\[\?([^\]]*)\]/', '[?($1)]', $expression);
-    }
-}
-```
-
-- [ ] **Step 6: Run the JsonPathEvaluator test**
-
-Run: `composer dump-autoload && vendor/bin/pest packages/evaluator-jsonpath/tests --filter "JsonPathEvaluatorTest"` (repo root)
-
-Expected: PASS.
-
-- [ ] **Step 7: Write the failing test — JsonPathExpressionPlugin**
-
-Create `packages/evaluator-jsonpath/tests/JsonPathExpressionPluginTest.php`:
+Create `packages/evaluation/tests/JsonPathExpressionPluginTest.php`:
 
 ```php
 <?php
@@ -664,8 +601,8 @@ Create `packages/evaluator-jsonpath/tests/JsonPathExpressionPluginTest.php`:
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\PluginInterface;
-use Alama\Arazzo\Evaluator\JsonPath\JsonPathExpressionPlugin;
-use Alama\Arazzo\Evaluator\JsonPath\JsonPathEvaluator;
+use Alama\Arazzo\Evaluation\JsonPathExpressionPlugin;
+use Alama\Arazzo\Evaluation\JsonPathEvaluator;
 
 it('is a plugin')
     ->expect(new JsonPathExpressionPlugin())->toBeInstanceOf(PluginInterface::class);
@@ -675,24 +612,32 @@ it('supports jsonpath selector expressions')
 
 it('has priority below zero so built-in evaluators run first')
     ->expect((new JsonPathExpressionPlugin())->priority())->toBeLessThan(0);
+
+it('evaluates a JSONPath selector', function (): void {
+    $data = ['users' => [['name' => 'Alice'], ['name' => 'Bob']]];
+
+    $result = (new JsonPathExpressionPlugin())->evaluate(new Expression('$.users[*].name'), $data);
+
+    expect($result)->toBe(['Alice', 'Bob']);
+});
 ```
 
-- [ ] **Step 8: Run test to verify it fails**
+- [ ] **Step 2: Run test to verify it fails**
 
-Run: `vendor/bin/pest packages/evaluator-jsonpath/tests --filter "JsonPathExpressionPluginTest"` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter "JsonPathExpressionPluginTest"` (repo root)
 
-Expected: FAIL.
+Expected: FAIL (`JsonPathExpressionPlugin` does not exist yet).
 
-- [ ] **Step 9: Create `JsonPathExpressionPlugin`**
+- [ ] **Step 3: Create `JsonPathExpressionPlugin`**
 
-Create `packages/evaluator-jsonpath/src/JsonPathExpressionPlugin.php`:
+Create `packages/evaluation/src/JsonPathExpressionPlugin.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluator\JsonPath;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Interfaces\ExpressionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Expression;
@@ -734,24 +679,24 @@ class JsonPathExpressionPlugin implements ExpressionEvaluatorPluginInterface
 }
 ```
 
-- [ ] **Step 10: Run test to verify it passes**
+- [ ] **Step 4: Run test to verify it passes**
 
-Run: `vendor/bin/pest packages/evaluator-jsonpath/tests --filter "JsonPathExpressionPluginTest"` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter "JsonPathExpressionPluginTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 11: Write the failing test — JsonPathCriterionPlugin**
+- [ ] **Step 5: Write the failing test — JsonPathCriterionPlugin**
 
-Create `packages/evaluator-jsonpath/tests/JsonPathCriterionPluginTest.php`:
+Create `packages/evaluation/tests/JsonPathCriterionPluginTest.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Interfaces\PluginInterface;
-use Alama\Arazzo\Evaluator\JsonPath\JsonPathCriterionPlugin;
+use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Evaluation\JsonPathCriterionPlugin;
 
 it('is a plugin')
     ->expect(new JsonPathCriterionPlugin())->toBeInstanceOf(PluginInterface::class);
@@ -763,26 +708,25 @@ it('rejects unsupported criterion types')
     ->expect((new JsonPathCriterionPlugin())->supports(CriterionType::Simple))->toBeFalse();
 ```
 
-- [ ] **Step 12: Run test to verify it fails**
+- [ ] **Step 6: Run test to verify it fails**
 
-Run: `vendor/bin/pest packages/evaluator-jsonpath/tests --filter "JsonPathCriterionPluginTest"` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter "JsonPathCriterionPluginTest"` (repo root)
 
 Expected: FAIL.
 
-- [ ] **Step 13: Create `JsonPathCriterionPlugin`**
+- [ ] **Step 7: Create `JsonPathCriterionPlugin`**
 
-Create `packages/evaluator-jsonpath/src/JsonPathCriterionPlugin.php`:
+Create `packages/evaluation/src/JsonPathCriterionPlugin.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluator\JsonPath;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Interfaces\CriterionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
-use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
@@ -819,44 +763,44 @@ class JsonPathCriterionPlugin implements CriterionEvaluatorPluginInterface
 }
 ```
 
-- [ ] **Step 14: Run test to verify it passes**
+- [ ] **Step 8: Run test to verify it passes**
 
-Run: `vendor/bin/pest packages/evaluator-jsonpath/tests --filter "JsonPathCriterionPluginTest"` (repo root)
-
-Expected: PASS.
-
-- [ ] **Step 15: Run full evaluator-jsonpath test suite**
-
-Run: `vendor/bin/pest packages/evaluator-jsonpath/tests` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter "JsonPathCriterionPluginTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 16: Commit**
+- [ ] **Step 9: Run full evaluation test suite**
+
+Run: `vendor/bin/pest packages/evaluation/tests` (repo root)
+
+Expected: PASS.
+
+- [ ] **Step 10: Commit**
 
 ```bash
-git add packages/evaluator-jsonpath/ packages/evaluation/src/JsonPathEvaluator.php composer.json
-git commit -m "feat(evaluator-jsonpath): isolate JsonPathEvaluator and softcreatr/jsonpath behind plugin interfaces"
+git add packages/evaluation/src/JsonPathExpressionPlugin.php packages/evaluation/src/JsonPathCriterionPlugin.php packages/evaluation/tests/JsonPathExpressionPluginTest.php packages/evaluation/tests/JsonPathCriterionPluginTest.php
+git commit -m "feat(evaluation): add built-in JsonPath expression and criterion plugin implementations"
 ```
 
 ---
 
 ### Task C2: Evaluator registries — `ExpressionEvaluatorRegistry` + `CriterionEvaluatorRegistry`
 
-Priority-ordered, first-match registries that `ExpressionEngine` assembles and delegates to.
+Priority-ordered, first-match registries that `ExpressionEngine` assembles and delegates to. Both registries ship pre-seeded with the built-in `JsonPathExpressionPlugin` / `JsonPathCriterionPlugin` (C1) so `jsonpath` works out of the box; external plugins register later with higher priority to override.
 
 **Files:**
-- Create: `packages/evaluation/src/Evaluation/ExpressionEvaluatorRegistry.php`
-- Create: `packages/evaluation/src/Evaluation/CriterionEvaluatorRegistry.php`
-- Test: `packages/evaluation/tests/Evaluation/ExpressionEvaluatorRegistryTest.php`
-- Test: `packages/evaluation/tests/Evaluation/CriterionEvaluatorRegistryTest.php`
+- Create: `packages/evaluation/src/ExpressionEvaluatorRegistry.php`
+- Create: `packages/evaluation/src/CriterionEvaluatorRegistry.php`
+- Test: `packages/evaluation/tests/ExpressionEvaluatorRegistryTest.php`
+- Test: `packages/evaluation/tests/CriterionEvaluatorRegistryTest.php`
 
 **Interfaces:**
-- Consumes: `ExpressionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A), `CriterionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A), `Expression` (`Alama\Arazzo\Contracts\Spec`), `CriterionType`, `SuccessCriterion`, `Step`, `WorkflowContextInterface`.
-- Produces: `ExpressionEvaluatorRegistry::register(ExpressionEvaluatorPluginInterface): void`, `::get(Expression): ?ExpressionEvaluatorPluginInterface`; `CriterionEvaluatorRegistry::register(CriterionEvaluatorPluginInterface): void`, `::get(CriterionType|SuccessCriterion): ?CriterionEvaluatorPluginInterface`.
+- Consumes: `ExpressionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A), `CriterionEvaluatorPluginInterface` (`Alama\Arazzo\Contracts\Interfaces`, Phase A), `Expression` (`Alama\Arazzo\Contracts\Spec`), `CriterionType`, `SuccessCriterion`, `Step`, `WorkflowContextInterface`, `JsonPathExpressionPlugin`/`JsonPathCriterionPlugin` (C1).
+- Produces: `ExpressionEvaluatorRegistry::register(ExpressionEvaluatorPluginInterface): void`, `::get(Expression): ?ExpressionEvaluatorPluginInterface`; `CriterionEvaluatorRegistry::register(CriterionEvaluatorPluginInterface): void`, `::get(CriterionType|SuccessCriterion): ?CriterionEvaluatorPluginInterface`. Constructors take the built-in plugin(s) as default parameters and register them on construction.
 
 - [ ] **Step 1: Write the failing test — ExpressionEvaluatorRegistry**
 
-Create `packages/evaluation/tests/Evaluation/ExpressionEvaluatorRegistryTest.php`:
+Create `packages/evaluation/tests/ExpressionEvaluatorRegistryTest.php`:
 
 ```php
 <?php
@@ -864,7 +808,7 @@ Create `packages/evaluation/tests/Evaluation/ExpressionEvaluatorRegistryTest.php
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Expression\Evaluation\ExpressionEvaluatorRegistry;
+use Alama\Arazzo\Evaluation\ExpressionEvaluatorRegistry;
 
 it('resolves the highest-priority matching plugin', function (): void {
     $registry = new ExpressionEvaluatorRegistry();
@@ -903,18 +847,18 @@ it('returns null when no plugin matches', function (): void {
 
 Run: `vendor/bin/pest packages/evaluation/tests --filter "ExpressionEvaluatorRegistryTest"` (repo root)
 
-Expected: FAIL — `Class Alama\Arazzo\Expression\Evaluation\ExpressionEvaluatorRegistry not found`.
+Expected: FAIL — `Class Alama\Arazzo\Evaluation\ExpressionEvaluatorRegistry not found`.
 
 - [ ] **Step 3: Create `ExpressionEvaluatorRegistry`**
 
-Create `packages/evaluation/src/Evaluation/ExpressionEvaluatorRegistry.php`:
+Create `packages/evaluation/src/ExpressionEvaluatorRegistry.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Interfaces\ExpressionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Expression;
@@ -923,6 +867,13 @@ class ExpressionEvaluatorRegistry
 {
     /** @var list<ExpressionEvaluatorPluginInterface> */
     private array $plugins = [];
+
+    public function __construct(?ExpressionEvaluatorPluginInterface $builtIn = null)
+    {
+        if ($builtIn !== null) {
+            $this->register($builtIn);
+        }
+    }
 
     public function register(ExpressionEvaluatorPluginInterface $plugin): void
     {
@@ -951,7 +902,7 @@ Expected: PASS.
 
 - [ ] **Step 5: Write the failing test — CriterionEvaluatorRegistry**
 
-Create `packages/evaluation/tests/Evaluation/CriterionEvaluatorRegistryTest.php`:
+Create `packages/evaluation/tests/CriterionEvaluatorRegistryTest.php`:
 
 ```php
 <?php
@@ -960,7 +911,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
-use Alama\Arazzo\Expression\Evaluation\CriterionEvaluatorRegistry;
+use Alama\Arazzo\Evaluation\CriterionEvaluatorRegistry;
 
 it('resolves by CriterionType enum', function (): void {
     $registry = new CriterionEvaluatorRegistry();
@@ -1004,14 +955,14 @@ Expected: FAIL.
 
 - [ ] **Step 7: Create `CriterionEvaluatorRegistry`**
 
-Create `packages/evaluation/src/Evaluation/CriterionEvaluatorRegistry.php`:
+Create `packages/evaluation/src/CriterionEvaluatorRegistry.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Interfaces\CriterionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
@@ -1021,6 +972,13 @@ class CriterionEvaluatorRegistry
 {
     /** @var list<CriterionEvaluatorPluginInterface> */
     private array $plugins = [];
+
+    public function __construct(?CriterionEvaluatorPluginInterface $builtIn = null)
+    {
+        if ($builtIn !== null) {
+            $this->register($builtIn);
+        }
+    }
 
     public function register(CriterionEvaluatorPluginInterface $plugin): void
     {
@@ -1050,7 +1008,7 @@ Expected: PASS.
 - [ ] **Step 9: Commit**
 
 ```bash
-git add packages/evaluation/src/Evaluation/ExpressionEvaluatorRegistry.php packages/evaluation/src/Evaluation/CriterionEvaluatorRegistry.php packages/evaluation/tests/Evaluation/ExpressionEvaluatorRegistryTest.php packages/evaluation/tests/Evaluation/CriterionEvaluatorRegistryTest.php
+git add packages/evaluation/src/ExpressionEvaluatorRegistry.php packages/evaluation/src/CriterionEvaluatorRegistry.php packages/evaluation/tests/ExpressionEvaluatorRegistryTest.php packages/evaluation/tests/CriterionEvaluatorRegistryTest.php
 git commit -m "feat(evaluation): add priority-ordered evaluator and criterion plugin registries"
 ```
 
@@ -1061,9 +1019,9 @@ git commit -m "feat(evaluation): add priority-ordered evaluator and criterion pl
 Replace the hard-coded `match` in `CriteriaEvaluator::evaluateCriteria` with a plugin-delegating dispatch. `simple`/`regex`/`xpath` stay in-core (no vendor); `jsonpath` and future types go through `CriterionEvaluatorRegistry`.
 
 **Files:**
-- Modify: `packages/evaluation/src/Evaluation/CriteriaEvaluator.php` (refactor `evaluateCriteria`)
-- Create: `packages/evaluation/src/Evaluation/CriterionTypeNotSupportedException.php`
-- Test: `packages/evaluation/tests/Evaluation/CriteriaEvaluatorPluginDispatchTest.php`
+- Modify: `packages/evaluation/src/CriteriaEvaluator.php` (refactor `evaluateCriteria`)
+- Create: `packages/evaluation/src/CriterionTypeNotSupportedException.php`
+- Test: `packages/evaluation/tests/CriteriaEvaluatorPluginDispatchTest.php`
 
 **Interfaces:**
 - Consumes: `CriterionEvaluatorRegistry` (C2), `CriterionEvaluatorPluginInterface` (Phase A contracts), `CriterionType`, `Expression`, `EvaluationContext`.
@@ -1071,7 +1029,7 @@ Replace the hard-coded `match` in `CriteriaEvaluator::evaluateCriteria` with a p
 
 - [ ] **Step 1: Write the failing test — CriteriaEvaluator delegates JsonPath to registry**
 
-Create `packages/evaluation/tests/Evaluation/CriteriaEvaluatorPluginDispatchTest.php`:
+Create `packages/evaluation/tests/CriteriaEvaluatorPluginDispatchTest.php`:
 
 ```php
 <?php
@@ -1087,10 +1045,10 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
-use Alama\Arazzo\Expression\Evaluation\CriterionEvaluatorRegistry;
-use Alama\Arazzo\Expression\Evaluation\CriterionTypeNotSupportedException;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Evaluation\CriterionEvaluatorRegistry;
+use Alama\Arazzo\Evaluation\CriterionTypeNotSupportedException;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
 
 it('delegates jsonpath criteria to a registered plugin', function (): void {
     $evaluated = false;
@@ -1141,14 +1099,14 @@ Expected: FAIL — `CriterionTypeNotSupportedException` does not exist, and `Cri
 
 - [ ] **Step 3: Create `CriterionTypeNotSupportedException`**
 
-Create `packages/evaluation/src/Evaluation/CriterionTypeNotSupportedException.php`:
+Create `packages/evaluation/src/CriterionTypeNotSupportedException.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
@@ -1170,7 +1128,7 @@ final class CriterionTypeNotSupportedException extends ArazzoException
 
 - [ ] **Step 4: Refactor `CriteriaEvaluator`**
 
-Edit `packages/evaluation/src/Evaluation/CriteriaEvaluator.php`:
+Edit `packages/evaluation/src/CriteriaEvaluator.php`:
 
 Add the new constructor parameter and the `CriterionTypeNotSupportedException` import. The `evaluateCriteria` method is refactored to dispatch `JsonPath` through the registry while keeping `Simple`/`Regex`/`XPath` in-core.
 
@@ -1263,16 +1221,17 @@ Expected: PASS.
 
 Run: `composer run test-expression && vendor/bin/pest packages/evaluation/tests` (repo root)
 
-Expected: PASS. Existing criteria tests that use `CriterionType::JsonPath` without a registered plugin will now throw `CriterionTypeNotSupportedException`. Tests that exercise `JsonPath` criteria must be updated to either register the jsonpath plugin or mock the registry. Check each failing test and add the registry wiring (injecting a mock `CriterionEvaluatorRegistry` or a real one with a stub plugin).
+Expected: PASS. Existing criteria tests that use `CriterionType::JsonPath` through `CriteriaEvaluator`'s default registry continue to pass because the default registry is seeded with the built-in `JsonPathCriterionPlugin` (C1). Tests that construct a bare `new CriterionEvaluatorRegistry()` and expect `JsonPath` to resolve must now call `new CriterionEvaluatorRegistry(new JsonPathCriterionPlugin())` or rely on the default. Check each failing test and add the registry wiring.
 
 - [ ] **Step 7: Update `ExpressionEngine` to wire the `CriterionEvaluatorRegistry` through**
 
-Edit `packages/evaluation/src/ExpressionEngine.php` — update the `criteria()` factory to pass the registry, and make `ExpressionEngine` implement `ExpressionInterface` (the parse/inspect seam) so downstream consumers can type-hint the seam and receive the engine:
+Edit `packages/evaluation/src/ExpressionEngine.php` — update the `criteria()` factory to pass a registry pre-seeded with the built-in `JsonPathCriterionPlugin`, and make `ExpressionEngine` implement `ExpressionInterface` (the parse/inspect seam) so downstream consumers can type-hint the seam and receive the engine:
 
 First, add the import and declare the interface on the class:
 
 ```php
 use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
+use Alama\Arazzo\Evaluation\JsonPathCriterionPlugin;
 
 final class ExpressionEngine implements ExpressionEngineInterface, ExpressionInterface
 ```
@@ -1286,7 +1245,7 @@ private function criteria(): CriteriaEvaluator
 }
 ```
 
-Add `criterionRegistry` as a constructor parameter with a default:
+Add `criterionRegistry` as a constructor parameter with a default that seeds the built-in JsonPath plugin:
 
 ```php
 public function __construct(
@@ -1294,10 +1253,12 @@ public function __construct(
     private readonly ExpressionParser $parser = new ExpressionParser(),
     private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(),
     private readonly ?CriterionEvaluatorRegistry $criterionRegistry = null,
-) {}
+) {
+    $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry(new JsonPathCriterionPlugin());
+}
 ```
 
-(The `ExpressionEngine` already implements the three `ExpressionInterface` methods — `parseExpression`, `expressionReferences`, `buildSymbolTable` — from the original `ExpressionEngineInterface`; adding the interface is a declaration-only change.)
+(The `ExpressionEngine` already implements the three `ExpressionInterface` methods — `parseExpression`, `expressionReferences`, `buildSymbolTable` — from the original seam; after C0 those methods live in the eval-side moved class and it implements the parse-side interface via the `Alama\Arazzo\Expression\Interfaces\ExpressionInterface` import. Adding the interface is a declaration-only change.)
 
 - [ ] **Step 8: Run full evaluation test suite**
 
@@ -1308,28 +1269,56 @@ Expected: PASS.
 - [ ] **Step 9: Commit**
 
 ```bash
-git add packages/evaluation/src/Evaluation/CriteriaEvaluator.php packages/evaluation/src/Evaluation/CriterionTypeNotSupportedException.php packages/evaluation/src/ExpressionEngine.php packages/evaluation/tests/Evaluation/CriteriaEvaluatorPluginDispatchTest.php
+git add packages/evaluation/src/CriteriaEvaluator.php packages/evaluation/src/CriterionTypeNotSupportedException.php packages/evaluation/src/ExpressionEngine.php packages/evaluation/tests/CriteriaEvaluatorPluginDispatchTest.php
 git commit -m "feat(evaluation): refactor CriteriaEvaluator to delegate non-core criterion types via plugin registry"
 ```
 
 ---
 
-### Task C4: Update downstream package dependencies
+### Task C4: Update downstream packages — FQCN migration + document goes parse-only
 
-Wire the split into the monorepo dependency graph: `document` keeps `arazzo-expression` only; `runner` gets `arazzo-evaluation`; `laravel`/`cli`/`core` get both.
+Wire the split into the monorepo and migrate every consumer off the old `Alama\Arazzo\Expression\…` evaluation FQCNs (now `Alama\Arazzo\Evaluation\…`). `document` becomes **parse-only**: its validator/rule-set seam now depends on `ExpressionInterface` + `ExpressionInspector` (arazzo-expression) instead of `ExpressionEngine`/`ExpressionEngineInterface` (arazzo-evaluation), and its PreflightValidator drops the `supportedXPathVersions()` check (moves to the evaluation layer). `runner` gets `arazzo-evaluation`; `laravel`/`cli`/`core` get `arazzo-evaluation` too; **no `arazzo-evaluator-jsonpath` anywhere.**
 
 **Files:**
-- Modify: `packages/document/composer.json` (keep `alama/arazzo-expression`; ensure no `alama/arazzo-evaluation` added)
 - Modify: `packages/runner/composer.json` (add `alama/arazzo-evaluation: @dev`, keep `alama/arazzo-expression`)
 - Modify: `packages/laravel/composer.json` (add `alama/arazzo-evaluation: @dev`)
 - Modify: `packages/cli/composer.json` (add `alama/arazzo-evaluation: @dev`)
 - Modify: `packages/core/composer.json` (add `alama/arazzo-evaluation: @dev`)
-- Modify: root `composer.json` autoload-dev (add evaluation tests, add evaluator-jsonpath tests)
-- Modify: root `composer.json` scripts (add `test-evaluation`, `test-evaluator-jsonpath`, `analyse-evaluator-jsonpath`)
+- Modify: `packages/document/composer.json` (keep `alama/arazzo-expression` only; do NOT add `alama/arazzo-evaluation`)
+- Modify: `packages/document/src/*.php` (FQCN + seam swap, drop XPath version preflight) — see Step 6
+- Move: `packages/document/tests/Resolver/SelectorEvaluatorTest.php` + `packages/document/tests/Resolver/Xpath/DomXpathEvaluatorTest.php` → evaluation test suite
+- Modify: root `composer.json` autoload-dev (add evaluation tests) + scripts (`test-evaluation`, `analyse-evaluation`)
+
+**FQCN remap for consumers (src + tests):**
+
+| Old (Alama\Arazzo\Expression\…) | New (Alama\Arazzo\Evaluation\…) |
+|---|---|
+| `ExpressionEngine` | `Evaluation\ExpressionEngine` |
+| `ExpressionEngineInterface` | `Evaluation\ExpressionEngineInterface` |
+| `ExpressionEvaluator` | `Evaluation\ExpressionEvaluator` |
+| `SelectorEvaluator` | `Evaluation\SelectorEvaluator` |
+| `StringInterpolator` | `Evaluation\StringInterpolator` |
+| `JsonPointer` | `Evaluation\JsonPointer` |
+| `JsonPathEvaluator` | `Evaluation\JsonPathEvaluator` |
+| `Data\EvaluationInput` | `Evaluation\Data\EvaluationInput` |
+| `Evaluation\EvaluationContext` | `Evaluation\Data\EvaluationContext` |
+| `Evaluation\CriteriaEvaluator` | `Evaluation\CriteriaEvaluator` |
+| `Evaluation\ExpressionResolver` | `Evaluation\ExpressionResolver` |
+| `Evaluation\PayloadReplacer` | `Evaluation\PayloadReplacer` |
+| `Evaluation\InterpolationResolver` | `Evaluation\InterpolationResolver` |
+| `Interfaces\EvaluationInputInterface` | `Evaluation\Interfaces\EvaluationInputInterface` |
+| `Interfaces\ExpressionEvaluatorInterface` | `Evaluation\Interfaces\ExpressionEvaluatorInterface` |
+| `Interfaces\ExpressionResolverInterface` | `Evaluation\Interfaces\ExpressionResolverInterface` |
+| `Xpath\XpathEvaluator` | `Evaluation\Xpath\XpathEvaluator` |
+| `Xpath\DomXpathEvaluator` | `Evaluation\Xpath\DomXpathEvaluator` |
+| `Exceptions\SelectorEvaluationException` | `Evaluation\Exceptions\SelectorEvaluationException` |
+| `Evaluation\…` (any remaining) | `Evaluation\…` (drop the `Evaluation\` segment) |
+
+**Unchanged (still `Alama\Arazzo\Expression\…`):** `SymbolTable`, `Parser`, `Lexer`, `Ast\*`, `Data\{Token, StepSymbols, WorkflowSymbols, ExpressionReference}`, `Enum\{TokenKind, ReferenceKind}`, `Exceptions\ExpressionSyntaxException`, `Interfaces\ExpressionInterface`.
 
 **Interfaces:**
 - Consumes: all previous tasks (C0–C3).
-- Produces: every sub-package's `composer.json` correctly wired; root scripts work.
+- Produces: every sub-package's `composer.json` correctly wired; all `use` statements migrated; document parse-only; root scripts work.
 
 - [ ] **Step 1: Update `packages/runner/composer.json`**
 
@@ -1369,8 +1358,7 @@ Add to root `composer.json` `scripts`:
 
 ```json
 "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
-"test-evaluator-jsonpath": "vendor/bin/pest packages/evaluator-jsonpath/tests",
-"analyse-evaluator-jsonpath": "vendor/bin/phpstan analyse -c packages/evaluator-jsonpath/phpstan.neon.dist --memory-limit=1G",
+"analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G",
 ```
 
 Update the `test` script array:
@@ -1380,7 +1368,6 @@ Update the `test` script array:
     "@test-contracts",
     "@test-expression",
     "@test-evaluation",
-    "@test-evaluator-jsonpath",
     "@test-document",
     "@test-runner",
     "@test-cli",
@@ -1396,7 +1383,6 @@ Update the `analyse` script array:
     "@analyse-contracts",
     "@analyse-expression",
     "@analyse-evaluation",
-    "@analyse-evaluator-jsonpath",
     "@analyse-document",
     "@analyse-runner",
     "@analyse-cli",
@@ -1404,33 +1390,70 @@ Update the `analyse` script array:
 ],
 ```
 
-- [ ] **Step 6: Add evaluator-jsonpath tests to root autoload-dev**
+- [ ] **Step 6: Make `document` parse-only**
 
-Edit root `composer.json` autoload-dev — add the evaluator-jsonpath test path:
+Already wired in C0's split (Step 2/4b) are the parse-side seam (`ExpressionInterface`, `ExpressionInspector`). Now update `document/src`:
 
-```json
-"Alama\\Arazzo\\Evaluator\\JsonPath\\Tests\\": [
-    "packages/evaluator-jsonpath/tests"
-]
-```
+1. `packages/document/src/Document.php` — replace `use Alama\Arazzo\Expression\ExpressionEngine;` (and `ExpressionEngineInterface`) with `use Alama\Arazzo\Expression\ExpressionInspector;` and construct `$this->engine = new ExpressionInspector();` (line ~72).
+2. `packages/document/src/Validator/Validator.php`, `packages/document/src/Validator/RuleSet.php`, `packages/document/src/Validator/PreflightValidator.php`, and the `Expression*Rule` files — replace the `ExpressionEngineInterface` type-hint with `Alama\Arazzo\Expression\Interfaces\ExpressionInterface`. The serialization/port-in/port-out via the 3-method seam is unchanged (`parseExpression`, `expressionReferences`, `buildSymbolTable`).
+3. `packages/document/src/Validator/PreflightValidator.php` — **remove the `supportedXPathVersions()` preflight** (lines ~251–266). The capability check moves to the evaluation layer (e.g. surfaced by `ExpressionEngineInterface::supportedXPathVersions()` for executors). `document` must not touch it.
+4. Leave all still-valid parse-side imports (`SymbolTable`, `Data\WorkflowSymbols`, `Enum\ReferenceKind`) untouched.
 
-- [ ] **Step 7: Regenerate autoloader and run all gates**
+- [ ] **Step 7: Migrate `document`/`runner`/`ci`/`laravel`/`core` src `use` statements**
 
-Run: `composer dump-autoload && composer run test-expression && composer run test-evaluation && composer run test-evaluator-jsonpath` (repo root)
-
-Expected: PASS across all three packages.
-
-- [ ] **Step 8: Run static analysis on all three packages**
-
-Run: `composer run analyse-expression && composer run analyse-evaluation && composer run analyse-evaluator-jsonpath` (repo root)
-
-Expected: PASS.
-
-- [ ] **Step 9: Commit**
+Apply the C0-era FQCN remap table to downstream source:
 
 ```bash
-git add packages/document/composer.json packages/runner/composer.json packages/laravel/composer.json packages/cli/composer.json packages/core/composer.json composer.json
-git commit -m "chore: wire split packages into monorepo dependency graph"
+# Document is parse-only: only eval-side EXCEPTION of imports; run for runner/cli/laravel/core.
+# Bullet-proof approach: run the same sed family used in C0 Step 7 over packages/runner/src,
+# packages/cli/src, packages/laravel/src, packages/core/src (src only — NOT document/src,
+# which uses the seam instead).
+find packages/runner/src packages/cli/src packages/laravel/src packages/core/src -name '*.php' -exec sed -i '' \
+  -e 's/Alama\\Arazzo\\Expression\\Evaluation\\/Alama\\Arazzo\\Evaluation\\/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Data\\EvaluationInput/Alama\\Arazzo\\Evaluation\\Data\\EvaluationInput/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Interfaces\\(EvaluationInputInterface|ExpressionEvaluatorInterface|ExpressionResolverInterface)/Alama\\Arazzo\\Evaluation\\Interfaces\\\1/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Xpath\\/Alama\\Arazzo\\Evaluation\\Xpath\\/g' \
+  -e 's/Alama\\Arazzo\\Expression\\Exceptions\\SelectorEvaluationException/Alama\\Arazzo\\Evaluation\\Exceptions\\SelectorEvaluationException/g' \
+  -e 's/Alama\\Arazzo\\Expression\\(ExpressionEngine|ExpressionEngineInterface|ExpressionEvaluator|SelectorEvaluator|StringInterpolator|JsonPointer|JsonPathEvaluator)\b/Alama\\Arazzo\\Evaluation\\\1/g' \
+  {} +
+```
+
+(BSD `sed -i ''` on macOS; `sed -i` on Linux.) Then `rg -n 'use Alama\\Arazzo\\Expression\\' packages/runner/src packages/cli/src packages/laravel/src packages/core/src` should only show parse-side imports (`SymbolTable`, `ReferenceKind`, `WorkflowSymbols`, `Interfaces\ExpressionInterface`, etc.). Fix any remaining eval-side imports by hand.
+
+- [ ] **Step 8: Relocate `document` tests that exercise evaluation classes**
+
+Move to `packages/evaluation/tests/` (they test eval behavior, not validation):
+
+```bash
+mkdir -p packages/evaluation/tests/Resolver
+mkdir -p packages/evaluation/tests/Resolver/Xpath
+git mv packages/document/tests/Resolver/SelectorEvaluatorTest.php packages/evaluation/tests/Resolver/SelectorEvaluatorTest.php
+git mv packages/document/tests/Resolver/Xpath/DomXpathEvaluatorTest.php packages/evaluation/tests/Resolver/Xpath/DomXpathEvaluatorTest.php
+```
+
+Then migrate their FQCN imports per the C4 remap table (`XpathEvaluator`/`DomXpathEvaluator` → `Alama\Arazzo\Evaluation\Xpath\…`, `EvaluationContext` → `Alama\Arazzo\Evaluation\Data\EvaluationContext`, etc.).
+
+- [ ] **Step 9: Update code that constructs the engine via `new ExpressionEngine()` in tests**
+
+Sweep all packages' tests for `new ExpressionEngine(` / `ExpressionEngine::` and replace the FQCN with `Alama\Arazzo\Evaluation\ExpressionEngine`. In `document` tests, engine construction should switch to `ExpressionInspector` wherever the seam is under test (`ExpressionSeamTest.php` etc.).
+
+- [ ] **Step 10: Regenerate autoloader and run all gates**
+
+Run: `composer dump-autoload && composer run test-expression && composer run test-evaluation && composer run test-document && composer run test-runner && composer run test-cli && composer run test-core && composer run test-laravel` (repo root)
+
+Expected: PASS across all packages.
+
+- [ ] **Step 11: Run static analysis on all packages**
+
+Run: `composer run analyse-expression && composer run analyse-evaluation && composer run analyse-document && composer run analyse-runner && composer run analyse-cli && composer run analyse-core && composer run analyse-laravel` (repo root)
+
+Expected: PASS. Update phpstan baselines where the split moved symbols; every moved class resolves under its new FQCN.
+
+- [ ] **Step 12: Commit**
+
+```bash
+git add packages/document/composer.json packages/runner/composer.json packages/laravel/composer.json packages/cli/composer.json packages/core/composer.json packages/document/src composer.json packages/document/tests/Resolver packages/evaluation/tests
+git commit -m "feat(evaluation): migrate downstream packages to Alama\Arazzo\Evaluation namespace; document opts into parse-only seam"
 ```
 
 ---
@@ -1469,15 +1492,14 @@ arch('expression does not depend on illuminate framework')
 
 arch('expression does not use evaluation-side classes')
     ->expect('Alama\Arazzo\Expression')
-    ->not->toUse('Alama\Arazzo\Expression\ExpressionEngine')
-    ->not->toUse('Alama\Arazzo\Expression\ExpressionEngineInterface')
-    ->not->toUse('Alama\Arazzo\Expression\ExpressionEvaluator')
-    ->not->toUse('Alama\Arazzo\Expression\SelectorEvaluator')
-    ->not->toUse('Alama\Arazzo\Expression\StringInterpolator')
-    ->not->toUse('Alama\Arazzo\Expression\JsonPointer')
-    ->not->toUse('Alama\Arazzo\Expression\JsonPathEvaluator')
-    ->not->toUse('Alama\Arazzo\Expression\Xpath')
-    ->not->toUse('Alama\Arazzo\Expression\Evaluation');
+    ->not->toUse('Alama\Arazzo\Evaluation\ExpressionEngine')
+    ->not->toUse('Alama\Arazzo\Evaluation\ExpressionEngineInterface')
+    ->not->toUse('Alama\Arazzo\Evaluation\ExpressionEvaluator')
+    ->not->toUse('Alama\Arazzo\Evaluation\SelectorEvaluator')
+    ->not->toUse('Alama\Arazzo\Evaluation\StringInterpolator')
+    ->not->toUse('Alama\Arazzo\Evaluation\JsonPointer')
+    ->not->toUse('Alama\Arazzo\Evaluation\JsonPathEvaluator')
+    ->not->toUse('Alama\Arazzo\Evaluation\Xpath');
 
 arch('expression does not leak document/runner internals')
     ->expect('Alama\Arazzo\Expression')
@@ -1503,14 +1525,23 @@ Create `packages/evaluation/tests/ArchTest.php`:
 declare(strict_types=1);
 
 arch('evaluation does not depend on illuminate framework')
-    ->expect('Alama\Arazzo\Expression')
+    ->expect('Alama\Arazzo\Evaluation')
     ->not->toUse('Illuminate');
 
 arch('evaluation does not leak document/runner internals')
-    ->expect('Alama\Arazzo\Expression')
+    ->expect('Alama\Arazzo\Evaluation')
     ->not->toUse('Alama\Arazzo\Document\Parser')
     ->not->toUse('Alama\Arazzo\Runner\Execution')
-    ->not->toUse('Alama\Arazzo\Cli\Console');
+    ->not->toUse('Alama\Arazzo\Cli\Console')
+    ->not->toUse('Alama\Arazzo\Document\Validator');
+
+arch('evaluation consumes only the parse-side seam from arazzo-expression')
+    ->expect('Alama\Arazzo\Evaluation')
+    ->toUse('Alama\Arazzo\Expression\Interfaces\ExpressionInterface')
+    ->not->toUse('Alama\Arazzo\Expression\Lexer')
+    ->not->toUse('Alama\Arazzo\Expression\Parser')
+    ->not->toUse('Alama\Arazzo\Expression\SymbolTable')
+    ->not->toUse('Alama\Arazzo\Expression\ExpressionInspector');
 ```
 
 Run: `vendor/bin/pest packages/evaluation/tests --filter ArchTest` (repo root)
@@ -1540,13 +1571,13 @@ Close out Phase C: full quality gate across all packages, confirming the split h
 
 Run: `composer run test` (repo root)
 
-Expected: PASS (all packages: contracts, expression, evaluation, evaluator-jsonpath, document, runner, cli, core, laravel).
+Expected: PASS (all packages: contracts, expression, evaluation, document, runner, cli, core, laravel).
 
 - [ ] **Step 2: Run static analysis**
 
 Run: `composer run analyse` (repo root)
 
-Expected: PASS (all packages). If PHPStan reports "Class X not found" in evaluation or evaluator-jsonpath, check that `scanDirectories` in their `phpstan.neon.dist` includes the sibling package `src/` dirs.
+Expected: PASS (all packages). If PHPStan reports "Class X not found" in evaluation, check that `scanDirectories` in its `phpstan.neon.dist` includes the sibling package `src/` dirs (`../contracts/src`, `../expression/src`).
 
 - [ ] **Step 3: Run the formatter check**
 
@@ -1576,5 +1607,5 @@ Phase C status: ✅ Implemented 2026-09-09 — see `plans/2026-09-08-phase-c-eva
 
 ```bash
 git add docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md docs/superpowers/plans/2026-09-08-phase-c-evaluator-plugins.md
-git commit -m "docs: mark Phase C evaluator plugins + vendor isolation complete"
+git commit -m "docs: mark Phase C expression split + evaluator plugin registries complete"
 ```

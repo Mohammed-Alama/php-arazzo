@@ -3,60 +3,75 @@
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:
 > executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Land the spec-mandated, step-scoped expression grammar (D8/D10) and transfer-view resolution in
-`alama/arazzo-expression`: the `$response.status#/…`, `$response.metadata.*`, `$response.trailingMetadata.*`,
+**Goal:** Land the spec-mandated, step-scoped expression grammar (D8/D10) and transfer-view resolution across
+`alama/arazzo-expression` (grammar + projection — parse side) and `alama/arazzo-evaluation` (resolution + registries +
+scope gate — evaluation side, flat `Alama\Arazzo\Evaluation\` namespace after Phase C's C0-C4): the
+`$response.status#/…`, `$response.metadata.*`, `$response.trailingMetadata.*`,
 `$request.metadata.*` (RPC), `$interaction.payload[#/…]` (interaction), `$sourceDescriptions.<name>` whole-source (
 GraphQL), and generic `$response.meta.*` escape-hatch forms — parsed by the shared `Lexer`/`Parser`, projected onto six
 new `ReferenceKind` cases via a new `ReferenceProjector`, resolved against `ResponseTransfer` views when a step records
 one, gated per step type so unknown-for-type expressions are parse errors, and routed through the
 `ReplacementTargetResolverInterface` registry (core default = json-pointer) for payload replacement.
 
-**Architecture:** The spec splits the expression package into a reference model (lexer/parser/AST + `ReferenceKind` +
-`ExpressionReference`) and an evaluation device (`ExpressionEngine`, evaluators, `PayloadReplacer`) — see Phase C (D11).
-This phase works against the **current single `packages/expression` package** where the whole engine already lives, so
-every FQCN (`Alama\Arazzo\Expression\…`) is today's FQCN and no namespace changes appear. Phase C relocates classes
-wholesale between the two packages; nothing in this phase invents a parallel vocabulary.
+**Architecture:** Phase C (D11/C0-C4) has landed and is a **prerequisite**: `arazzo-expression` is now parse-only
+(`Lexer`/`Parser`/`Ast\*`/`ReferenceKind`/`ExpressionReference` + the `ExpressionInterface`/`ExpressionInspector`
+seam) under the unchanged `Alama\Arazzo\Expression\…` namespace; `arazzo-evaluation` owns the engine facade,
+evaluators, `PayloadReplacer`, `CriteriaEvaluator` and transfer-view resolution under the **flat** `Alama\Arazzo\Evaluation\`
+namespace (FQCNs were moved once in C0; there is no `Evaluation\Evaluation\` nesting and no `Expression\` prefix). This
+phase works against that post-split layout:
 
-- **B1 (grammar):** `Lexer::KEYWORDS` gains `status`, `metadata`, `trailingMetadata`, `meta`, `interaction`. `Parser`
-  gains an `interaction` root (`InteractionRef` AST node), the four response/request facets (`status` with optional
-  pointer, `metadata.*`, `trailingMetadata.*`, `meta.<dotted>`), a `reassembleDotted()` helper for opaque `meta` keys,
-  and request/response-side rejection guards. `ReferenceKind` gains six cases. A new `@internal ReferenceProjector`
-  extracts the AST→`ExpressionReference` projection out of `ExpressionEngine` (shared with the criteria evaluator in
-  B4). The whole-source form reuses the existing `$sourceDescriptions.<name>` grammar (subPath-null `SourceRef`) — D8
-  makes it a distinct `WholeSource` kind.
-- **B2 (transfer views):** New `@internal Evaluation\Data\ResponseTransferView` adapts a step-recorded
-  `ResponseTransfer` (`response.transfer` bag key). `ExpressionEvaluator`, `SelectorEvaluator` and `CriteriaEvaluator`
-  read the facet views (json/xml/proto/meta) when present, falling back to today's raw context shapes otherwise (BC
-  additive). Request metadata resolves from `request.metadata`; interaction payload from `interaction.payload`.
-- **B3 (replacement registry):** New `ReplacementTargetResolverRegistry` (priority-ordered first-match) + core
-  `JsonPointerReplacementTargetResolver` (`arazzo.json-pointer`). `PayloadReplacer::apply()` gains an optional registry
-  parameter routed through the `ExpressionEngine` constructor; pointer targets resolve via the registry, `xpath`/
-  `proto-field` selector targets resolve via registered resolvers (xpath keeps the legacy in-core fallback), `jsonpath`
-  stays in-core until Phase C1.
-- **B4 (scope gate):** New `@internal StepExpressionScope::allows(ExpressionReference, Step)`; new additive seam
-  `ExpressionEngineInterface::parseStepExpression(string, Step): ?ExpressionSyntaxException`; `CriteriaEvaluator` fails
-  out-of-scope criteria deterministically. Simple-condition culture: interpolated out-of-scope references fail closed
-  via null resolution (documented, not gated).
+- **B1 (grammar, parse side):** lands in `packages/expression` (`Alama\Arazzo\Expression\…`). `Lexer::KEYWORDS`
+  gains `status`, `metadata`, `trailingMetadata`, `meta`, `interaction`. `Parser` gains an `interaction` root
+  (`InteractionRef` AST node), the four response/request facets (`status` with optional pointer, `metadata.*`,
+  `trailingMetadata.*`, `meta.<dotted>`), a `reassembleDotted()` helper, and request/response-side rejection guards.
+  `ReferenceKind` gains six cases. `ExpressionInspector::expressionReferences()` is re-implemented through the new
+  `@internal ReferenceProjector` (extracting the AST→`ExpressionReference` projection the round-tripped shared with the
+  criteria evaluator in B4). The whole-source form reuses the existing `$sourceDescriptions.<name>` grammar
+  (subPath-null `SourceRef`) — D8 makes it a distinct `WholeSource` kind.
+- **B2 (transfer views, evaluation side):** New `@internal Data\ResponseTransferView` (flat, no `Evaluation\` segment)
+  adapts a step-recorded `ResponseTransfer` (`response.transfer` bag key). `ExpressionEvaluator`, `SelectorEvaluator`
+  and `CriteriaEvaluator` read the facet views (json/xml/proto/meta) when present, falling back to today's raw context
+  shapes otherwise (BC additive). Request metadata resolves from `request.metadata`; interaction payload from
+  `interaction.payload`.
+- **B3 (replacement registry, evaluation side):** New `ReplacementTargetResolverRegistry` (priority-ordered
+  first-match) + core `JsonPointerReplacementTargetResolver` (`arazzo.json-pointer`). `PayloadReplacer::apply()` gains
+  an optional registry parameter routed through the `ExpressionEngine` constructor; pointer targets resolve via the
+   registry, `xpath`/`proto-field` selector targets resolve via registered resolvers (xpath keeps the legacy in-core
+   fallback). `jsonpath` selector targets keep `JsonPathEvaluator` as today — it lives inside
+   `arazzo-evaluation` (built-in default plugin since C1); there is no `arazzo-evaluator-jsonpath` package and
+   no C1 removal step.
+- **B4 (scope gate, both sides):** New `@internal StepExpressionScope::allows(ExpressionReference, Step)` in
+  `arazzo-expression`; new additive seam `ExpressionInterface::parseStepExpression(string, Step): ?ExpressionSyntaxException`
+  implemented by `ExpressionInspector` (parse side) and mirrored on the eval-side `ExpressionEngine`;
+  `CriteriaEvaluator` fails out-of-scope criteria deterministically. Simple-condition culture: interpolated
+  out-of-scope references fail closed via null resolution (documented, not gated).
 
-**Tech Stack:** PHP ^8.4, Pest v5 (`pestphp/pest`), PHPStan ^2.0 level max (`packages/expression/phpstan.neon.dist`),
-Laravel Pint, `softcreatr/jsonpath` (unchanged until Phase C1).
+**Tech Stack:** PHP ^8.4, Pest v5 (`pestphp/pest`), PHPStan ^2.0 level max (`packages/expression/phpstan.neon.dist` +
+`packages/evaluation/phpstan.neon.dist`), Laravel Pint, `softcreatr/jsonpath` ^0.10.0 (owned by `arazzo-evaluation`,
+  reached via the built-in default JsonPath plugins; no `arazzo-evaluator-jsonpath` package exists).
 
 **Spec:** `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md`
 
 ## Global Constraints
 
-- **Prerequisite:** Phase A (`docs/superpowers/plans/2026-09-08-phase-a-contracts-ports.md`) must be merged first: it
-  supplies `ResponseTransfer` (`Alama\Arazzo\Contracts\Spec\ResponseTransfer`, A6),
+- **Prerequisite:** Phase A (`docs/superpowers/plans/2026-09-08-phase-a-contracts-ports.md`) AND **Phase C** must be
+  merged first: Phase A supplies `ResponseTransfer` (`Alama\Arazzo\Contracts\Spec\ResponseTransfer`, A6),
   `ReplacementTargetResolverInterface` (`Alama\Arazzo\Contracts\Interfaces`, A2 — `name()`/`priority()` from
   `PluginInterface`, `supports(string $targetType)` with `json-pointer | xpath | proto-field` semantics,
   `resolve(mixed $container, string $target, mixed $value): mixed`), and the A7 `Step` fields this plan scopes on (
-  `rpcMethod`, `rpcProtocol`, `graphqlOperation`, `interaction`).
-- New/changed files live in `packages/expression` only (namespace `Alama\Arazzo\Expression\…`),
-  `declare(strict_types=1)`. No new composer `require` entries; no changes outside `packages/expression` except the
-  final spec checkmark (B5).
-- This phase targets the **single** `packages/expression` package — the spec's expression/evaluation split (D11/C0) is
-  Phase C and relocates classes wholesale; namespaces stay identical. The plan notes each new class's D11 home in its
-  docblock.
+  `rpcMethod`, `rpcProtocol`, `graphqlOperation`, `interaction`). Phase C lands C0-C4 (the `arazzo-expression` /
+  `arazzo-evaluation` split, built-in default JsonPath plugins, registries, document parse-only) — **if C has not
+  landed when B starts, stop and flag it**: unlike the old plan, nothing here is written against the pre-split single
+  package, and the eval-side FQCNs (`Alama\Arazzo\Evaluation\…`) do not exist until C0.
+- New grammar/projection/changed files live in `packages/expression` (namespace `Alama\Arazzo\Expression\…`); new
+  evaluation files live in `packages/evaluation` (flat `Alama\Arazzo\Evaluation\…`, D11 home: evaluation device).
+  `declare(strict_types=1)` everywhere. No new composer `require` entries beyond the two-package layout already wired in
+  C4; no direct source changes outside `packages/expression` + `packages/evaluation` except the final spec checkmark
+  (B5).
+- This phase targets the **post-split** layout: grammar (B1) and the scope gate's parse half (B4) in
+  `packages/expression`; transfer views, evaluator wiring, replacement registry and the criteria gate (B2-B4) in
+  `packages/evaluation`. Every new class's D11 home is noted in its docblock. Evaluation-side classes are referenced
+  by their post-C0 FQCNs only (`Alama\Arazzo\Evaluation\…`).
 - Keyword additions are BC-safe: every parser name position already accepts `TokenKind::Keyword` (`parseSimpleRef`,
   `parseNamedPart`, `parseStepRef`, `parseSourceRef`, `parseHeaderName`), so a word turning into a keyword does not
   break existing expressions.
@@ -65,15 +80,19 @@ Laravel Pint, `softcreatr/jsonpath` (unchanged until Phase C1).
 - Unknown-for-type expressions are parse errors (D8): well-formed==but-wrong-step-type forms surface as
   `ExpressionSyntaxException` through the new `parseStepExpression` seam (B4). The grammar layer (B1) only rejects
   request/response-side mismatches; step-type scope is applied in B4.
-- Every task ends with `composer run test-expression` green (runs `vendor/bin/pest packages/expression/tests` from the
-  repo root — all monorepo composer scripts are root-run).
-- Every task's `--filter` runs: `vendor/bin/pest packages/expression/tests --filter "<name>"` from the repo root.
-- Static analysis per task: `composer run analyse-expression` (PHPStan with `packages/expression/phpstan.neon.dist`,
-  level max).
+- Every task ends with the touched packages' suites green. Grammar (B1) tasks run `composer run test-expression`
+  (`vendor/bin/pest packages/expression/tests`); evaluation (B2-B4) tasks run `composer run test-evaluation`
+  (`vendor/bin/pest packages/evaluation/tests`); B4 (both sides) runs both — all monorepo composer scripts are
+  root-run.
+- Every task's `--filter` runs: `vendor/bin/pest packages/{expression,evaluation}/tests --filter "<name>"` from the
+  repo root (use the package the file under test lives in).
+- Static analysis per task: `composer run analyse-expression` (PHPStan `packages/expression/phpstan.neon.dist`,
+  level max) and/or `composer run analyse-evaluation` (`packages/evaluation/phpstan.neon.dist`) for the touched
+  package.
 - Keep source comments minimal; docblocks explain spec nuance only (transfer bag key homes, scope matrix, D8/D11
   anchors). No decorative comments.
-- Sequencing (spec): C → B → D. Assume C0's split ran (D11); if C has not landed when B starts, no change is needed —
-  the classes being touched are all in `packages/expression` either way.
+- Sequencing (spec): A → C → B → D. Phase C's C0-C4 must have landed; B1 builds on the parse-side products (B1)
+  and B2-B4 on the evaluation-side products (C0's moved engine; C2 registries; C3 engine wiring).
 
 ---
 
@@ -82,7 +101,9 @@ Laravel Pint, `softcreatr/jsonpath` (unchanged until Phase C1).
 Add the grammar forms from the 1.2 PRs (D8/D10, spec "expression axis"): `$response.status#/…`, `$response.status`,
 `$response.metadata.*`, `$response.trailingMetadata.*`, `$request.metadata.*`, `$interaction.payload[#/…]`, and
 `$response.meta.<dotted>`. Projection of the whole-source `$sourceDescriptions.<name>` (subPath-null) becomes the new
-`WholeSource` kind. The projection logic moves out of `ExpressionEngine` into `ReferenceProjector` so B4 can reuse it.
+`WholeSource` kind. The projection logic moves out of the seam implementors into a parse-side `ReferenceProjector`
+(lives in `arazzo-expression`; shared by `ExpressionInspector` and the eval-side `ExpressionEngine`, which both
+implement `ExpressionInterface`) so B4 can reuse it.
 
 **Files:**
 
@@ -92,11 +113,12 @@ Add the grammar forms from the 1.2 PRs (D8/D10, spec "expression axis"): `$respo
 - Create: `packages/expression/src/Ast/InteractionRef.php`
 - Modify: `packages/expression/src/Enum/ReferenceKind.php`
 - Create: `packages/expression/src/ReferenceProjector.php`
-- Modify: `packages/expression/src/ExpressionEngine.php` (delegate projection; drop unused AST imports)
+- Modify: `packages/expression/src/ExpressionInspector.php` (delegate projection to `ReferenceProjector`)
+- Modify: `packages/evaluation/src/ExpressionEngine.php` (delegate its copy of the projection; drop unused AST imports)
 - Modify: `packages/expression/src/Data/ExpressionReference.php` (docblock only)
 - Test: `packages/expression/tests/Expression/LexerTest.php`
 - Test: `packages/expression/tests/Expression/ParserTest.php`
-- Test: `packages/expression/tests/ExpressionEngineCapabilitiesTest.php`
+- Test: `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` (engine seam rows; moved from expression in C0)
 
 **Interfaces:**
 
@@ -109,7 +131,7 @@ Add the grammar forms from the 1.2 PRs (D8/D10, spec "expression axis"): `$respo
 
 - [ ] **Step 1: Write the failing projection test**
 
-Open `packages/expression/tests/ExpressionEngineCapabilitiesTest.php` and append these rows to the `->with([...])` table
+Open `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` and append these rows to the `->with([...])` table
 of the `'projects every reference kind without leaking the AST'` test:
 
 ```php
@@ -126,7 +148,7 @@ of the `'projects every reference kind without leaking the AST'` test:
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `vendor/bin/pest packages/expression/tests --filter "projects every reference kind"` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter "projects every reference kind"` (repo root)
 
 Expected: FAIL — `ReferenceKind::ResponseStatus` etc. do not exist yet, and
 `expressionReferences('{$response.metadata.k1}')` returns a `Step` projection.
@@ -458,10 +480,10 @@ final class ReferenceProjector
 }
 ```
 
-- [ ] **Step 7: Delegate the engine projection + update the docblock**
+- [ ] **Step 7: Delegate the projection to `ReferenceProjector` + update the docblock**
 
-Edit `packages/expression/src/ExpressionEngine.php` — replace the body of `expressionReferences()` and delete the
-private `referenceFor()`/`stepReference()` methods:
+The projection is owned by the parse-side seam. Edit `packages/expression/src/ExpressionInspector.php` — replace the body
+of `expressionReferences()` so it delegates to the new projector:
 
 ```php
     public function expressionReferences(string $raw): ?ExpressionReference
@@ -475,19 +497,26 @@ private `referenceFor()`/`stepReference()` methods:
     }
 ```
 
-Add the projector to the constructor and the class property:
+Add the projector to the inspector constructor (defaulted, so existing call sites keep working):
 
 ```php
     public function __construct(
-        private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(),
         private readonly ExpressionParser $parser = new ExpressionParser(),
-        private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(),
         private readonly ReferenceProjector $projector = new ReferenceProjector(),
     ) {}
 ```
 
-Update the `use` block: remove the now-unused `Ast\*` and `Enum\ReferenceKind` imports (the projector owns them); keep
+Update its `use` block: remove the now-unused `Ast\*` and `Enum\ReferenceKind` imports (the projector owns them); keep
 `Data\ExpressionReference`.
+
+Then mirror the same change in the eval-side engine so the facade surface is unchanged for consumers
+(`packages/evaluation/src/ExpressionEngine.php`): give its constructor a defaulted `?ReferenceProjector $projector` and
+delegate `expressionReferences()` to it (delete the private `referenceFor()`/`stepReference()` methods). Its
+constructor gains the projector alongside the C0/C3 parameters:
+
+```php
+        private readonly ReferenceProjector $projector = new ReferenceProjector(),
+```
 
 Edit `packages/expression/src/Data/ExpressionReference.php` — extend the field-semantics docblock with the new kinds:
 
@@ -505,22 +534,22 @@ Edit `packages/expression/src/Data/ExpressionReference.php` — extend the field
 
 - [ ] **Step 8: Run tests to verify they pass**
 
-Run: `composer run test-expression` (repo root)
+Run: `composer run test-expression && vendor/bin/pest packages/evaluation/tests --filter "projects every reference kind"` (repo root)
 
-Expected: PASS (lexer/parser/projection/new rows + the pre-existing suite).
+Expected: PASS (lexer/parser/projection/new rows + the pre-existing suites).
 
 Note: the newly parsed forms do **not** evaluate yet (they resolve to `null`) — evaluation lands in B2.
 
 - [ ] **Step 9: Run static analysis**
 
-Run: `composer run analyse-expression` (repo root)
+Run: `composer run analyse-expression && composer run analyse-evaluation` (repo root)
 
-Expected: PASS (0 errors). If PHPStan flags unused imports left over in `ExpressionEngine.php`, remove them and re-run.
+Expected: PASS (0 errors). If PHPStan flags unused imports left over in `ExpressionInspector.php`/`ExpressionEngine.php`, remove them and re-run.
 
 - [ ] **Step 10: Commit**
 
 ```bash
-git add packages/expression/src/Lexer.php packages/expression/src/Parser.php packages/expression/src/Ast/InteractionRef.php packages/expression/src/Enum/ReferenceKind.php packages/expression/src/ReferenceProjector.php packages/expression/src/ExpressionEngine.php packages/expression/src/Data/ExpressionReference.php packages/expression/tests/Expression/LexerTest.php packages/expression/tests/Expression/ParserTest.php packages/expression/tests/ExpressionEngineCapabilitiesTest.php
+git add packages/expression/src/Lexer.php packages/expression/src/Parser.php packages/expression/src/Ast/InteractionRef.php packages/expression/src/Enum/ReferenceKind.php packages/expression/src/ReferenceProjector.php packages/expression/src/ExpressionInspector.php packages/evaluation/src/ExpressionEngine.php packages/expression/src/Data/ExpressionReference.php packages/expression/tests/Expression/LexerTest.php packages/expression/tests/Expression/ParserTest.php packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php
 git commit -m "feat(expression): add step-scoped grammar cases and reference projection"
 ```
 
@@ -535,12 +564,12 @@ adapts it. Without a transfer, every resolution path falls back to today's raw c
 
 **Files:**
 
-- Create: `packages/expression/src/Evaluation/Data/ResponseTransferView.php`
-- Modify: `packages/expression/src/ExpressionEvaluator.php`
-- Modify: `packages/expression/src/SelectorEvaluator.php`
-- Modify: `packages/expression/src/Evaluation/CriteriaEvaluator.php`
-- Test: create `packages/expression/tests/Evaluation/ResponseTransferViewTest.php`
-- Test: `packages/expression/tests/ExpressionEngineCapabilitiesTest.php`
+- Create: `packages/evaluation/src/Data/ResponseTransferView.php`
+- Modify: `packages/evaluation/src/ExpressionEvaluator.php`
+- Modify: `packages/evaluation/src/SelectorEvaluator.php`
+- Modify: `packages/evaluation/src/CriteriaEvaluator.php`
+- Test: create `packages/evaluation/tests/Data/ResponseTransferViewTest.php`
+- Test: `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php`
 
 **Interfaces:**
 
@@ -552,7 +581,7 @@ adapts it. Without a transfer, every resolution path falls back to today's raw c
 
 - [ ] **Step 1: Write the failing view test**
 
-Create `packages/expression/tests/Evaluation/ResponseTransferViewTest.php`:
+Create `packages/evaluation/tests/Data/ResponseTransferViewTest.php`:
 
 ```php
 <?php
@@ -560,7 +589,7 @@ Create `packages/expression/tests/Evaluation/ResponseTransferViewTest.php`:
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\ResponseTransfer;
-use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
+use Alama\Arazzo\Evaluation\Data\ResponseTransferView;
 
 it('is null when no transfer is recorded', function (): void {
     expect(ResponseTransferView::from(null))->toBeNull()
@@ -602,15 +631,15 @@ it('exposes json, meta, metadata, trailing metadata and header facets', function
 
 - [ ] **Step 2: Run the view test to verify it fails**
 
-Run: `vendor/bin/pest packages/expression/tests --filter ResponseTransferViewTest` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter ResponseTransferViewTest` (repo root)
 
 Expected: FAIL with "Class ResponseTransferView not found".
 
 - [ ] **Step 3: Write the failing engine resolution tests**
 
-Append to `packages/expression/tests/ExpressionEngineCapabilitiesTest.php` (imports to add:
+Append to `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` (imports to add:
 `Alama\Arazzo\Contracts\Spec\ResponseTransfer`, `Alama\Arazzo\Contracts\Spec\SourceDescription`,
-`Alama\Arazzo\Expression\Data\EvaluationInput`):
+`Alama\Arazzo\Evaluation\Data\EvaluationInput`, and `Alama\Arazzo\Evaluation\Data\ResponseTransferView`):
 
 ```php
 it('resolves $response.status#/… from the transfer status object', function (): void {
@@ -689,25 +718,25 @@ it('roots xpath criteria on the transfer xml view', function (): void {
 - [ ] **Step 4: Run the engine tests to verify they fail**
 
 Run:
-`vendor/bin/pest packages/expression/tests --filter "transfer status object|transfer meta bag|escape hatch|whole source description|transfer body view|transfer xml view"` (
+`vendor/bin/pest packages/evaluation/tests --filter "transfer status object|transfer meta bag|escape hatch|whole source description|transfer body view|transfer xml view"` (
 repo root)
 
 Expected: FAIL — the new forms evaluate to `null` after B1.
 
 - [ ] **Step 5: Implement the ResponseTransferView**
 
-Create `packages/expression/src/Evaluation/Data/ResponseTransferView.php`:
+Create `packages/evaluation/src/Data/ResponseTransferView.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation\Data;
+namespace Alama\Arazzo\Evaluation\Data;
 
 use Alama\Arazzo\Contracts\Interfaces\ResponseTransferInterface;
 use Alama\Arazzo\Contracts\Spec\ResponseTransfer;
-use Alama\Arazzo\Expression\JsonPointer;
+use Alama\Arazzo\Evaluation\JsonPointer;
 
 /**
  * Read adapter over a {@see ResponseTransfer} recorded on a step as
@@ -787,13 +816,14 @@ final readonly class ResponseTransferView
 
 - [ ] **Step 6: Wire the evaluator**
 
-Edit `packages/expression/src/ExpressionEvaluator.php` — add imports and rework the `StepRef` request/response branches
-plus the new reference branches. Add to the `use` block:
+Edit `packages/evaluation/src/ExpressionEvaluator.php` — add imports and rework the `StepRef` request/response branches
+plus the new reference branches. Add to the `use` block (the `InteractionRef` import comes from the parse side —
+`arazzo-evaluation` requires `arazzo-expression` so AST types are importable):
 
 ```php
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Expression\Ast\InteractionRef;
-use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
+use Alama\Arazzo\Evaluation\Data\ResponseTransferView;
 ```
 
 Replace the `RequestPart` branch inside `evaluateAst()`:
@@ -884,11 +914,11 @@ Extend the `SourceRef` branch so whole-source returns the `SourceDescription`:
 
 - [ ] **Step 7: Root the selector evaluator on the transfer view**
 
-Edit `packages/expression/src/SelectorEvaluator.php` — add the import and replace the default-root block inside
+Edit `packages/evaluation/src/SelectorEvaluator.php` — add the import and replace the default-root block inside
 `evaluate()`:
 
 ```php
-use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
+use Alama\Arazzo\Evaluation\Data\ResponseTransferView;
 ```
 
 ```php
@@ -909,12 +939,12 @@ use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
 
 - [ ] **Step 8: Root the criteria evaluator on the transfer view**
 
-Edit `packages/expression/src/Evaluation/CriteriaEvaluator.php`:
+Edit `packages/evaluation/src/CriteriaEvaluator.php`:
 
 1. Add the import and a `responseRoot()` helper:
 
 ```php
-use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
+use Alama\Arazzo\Evaluation\Data\ResponseTransferView;
 ```
 
 ```php
@@ -952,8 +982,10 @@ use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
         }
 ```
 
-3. In `evaluateCriteria()`, compute the root once and pass it to the jsonpath/xpath branches (replace the
-   `$responseBody` computation):
+3. In `evaluateCriteria()`, compute the root once and pass it through the C3 refactor's dispatch — `XPath` stays
+   in-core and uses the transfer-rooted body directly; `JsonPath` (and any future type) already routes to
+   `evaluateViaPlugin()` (C3), so pass the root as the no-context container there (replace the pre-B2 `$responseBody`
+   computation):
 
 ```php
         $responseRoot = $this->responseRoot($context, $step->stepId);
@@ -965,32 +997,14 @@ use Alama\Arazzo\Expression\Evaluation\Data\ResponseTransferView;
             $passed = match ($type) {
                 CriterionType::Simple => $this->evaluateSimple($criterion, $context, $step->stepId, $document),
                 CriterionType::Regex => $this->evaluateRegex($criterion, $context, $step->stepId, $document),
-                CriterionType::JsonPath => $this->evaluateJsonPath($criterion, $responseRoot, $context, $step->stepId, $document),
                 CriterionType::XPath => $this->evaluateXPath($criterion, $responseRoot, $context, $step->stepId, $document),
+                default => $this->evaluateViaPlugin($criterion, $type, $responseRoot, $context, $step, $document),
             };
 ```
 
-4. Update `evaluateJsonPath()`/`evaluateXPath()` to use the passed root in the no-context case:
-
-```php
-    private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseRoot, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
-    {
-        if ($criterion->context !== null) {
-            try {
-                $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
-            } catch (\Throwable) {
-                // Evaluation errors fail the criterion deterministically.
-                return false;
-            }
-        } else {
-            $root = $responseRoot;
-        }
-
-        $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($root) ? $root : []);
-
-        return !empty($result);
-    }
-```
+4. Update `evaluateXPath()` to use the passed root in the no-context case (`evaluateJsonPath` was removed by C3 —
+   its logic now lives in the built-in `JsonPathCriterionPlugin`, which receives the same `$responseRoot` as its
+   no-context container):
 
 ```php
     private function evaluateXPath(SuccessCriterion $criterion, mixed $responseRoot, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
@@ -1037,8 +1051,8 @@ Expected: PASS (0 errors). If PHPStan complains about `$result` from the anonymo
 - [ ] **Step 11: Commit**
 
 ```bash
-git add packages/expression/src/Evaluation/Data/ResponseTransferView.php packages/expression/src/ExpressionEvaluator.php packages/expression/src/SelectorEvaluator.php packages/expression/src/Evaluation/CriteriaEvaluator.php packages/expression/tests/Evaluation/ResponseTransferViewTest.php packages/expression/tests/ExpressionEngineCapabilitiesTest.php
-git commit -m "feat(expression): resolve expressions against ResponseTransfer views"
+git add packages/evaluation/src/Data/ResponseTransferView.php packages/evaluation/src/ExpressionEvaluator.php packages/evaluation/src/SelectorEvaluator.php packages/evaluation/src/CriteriaEvaluator.php packages/evaluation/tests/Data/ResponseTransferViewTest.php packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php
+git commit -m "feat(evaluation): resolve expressions against ResponseTransfer views"
 ```
 
 ---
@@ -1047,16 +1061,17 @@ git commit -m "feat(expression): resolve expressions against ResponseTransfer vi
 
 Point-replacement goes through the `ReplacementTargetResolverInterface` registry (spec B3, port lines 214-218), seeded
 with the core json-pointer resolver. `payload.targetSelectorType` maps onto SPI target types (
-`jsonpointer → json-pointer`, `xpath`, `proto-field`); `jsonpath` stays in-core until Phase C1.
+`jsonpointer → json-pointer`, `xpath`, `proto-field`). `jsonpath` keeps its in-package resolution via `JsonPathEvaluator`
+— Phase C1's built-in default plugins (C plan) mean nothing moves out of `arazzo-evaluation`.
 
 **Files:**
 
-- Create: `packages/expression/src/Evaluation/ReplacementTargetResolverRegistry.php`
-- Create: `packages/expression/src/Evaluation/JsonPointerReplacementTargetResolver.php`
-- Modify: `packages/expression/src/Evaluation/PayloadReplacer.php`
-- Modify: `packages/expression/src/ExpressionEngine.php`
-- Test: create `packages/expression/tests/Evaluation/ReplacementTargetResolverRegistryTest.php`
-- Test: `packages/expression/tests/ExpressionEngineCapabilitiesTest.php`
+- Create: `packages/evaluation/src/ReplacementTargetResolverRegistry.php`
+- Create: `packages/evaluation/src/JsonPointerReplacementTargetResolver.php`
+- Modify: `packages/evaluation/src/PayloadReplacer.php`
+- Modify: `packages/evaluation/src/ExpressionEngine.php`
+- Test: create `packages/evaluation/tests/ReplacementTargetResolverRegistryTest.php`
+- Test: `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php`
 
 **Interfaces:**
 
@@ -1069,7 +1084,7 @@ with the core json-pointer resolver. `payload.targetSelectorType` maps onto SPI 
 
 - [ ] **Step 1: Write the failing registry test**
 
-Create `packages/expression/tests/Evaluation/ReplacementTargetResolverRegistryTest.php`:
+Create `packages/evaluation/tests/ReplacementTargetResolverRegistryTest.php`:
 
 ```php
 <?php
@@ -1077,8 +1092,8 @@ Create `packages/expression/tests/Evaluation/ReplacementTargetResolverRegistryTe
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
-use Alama\Arazzo\Expression\Evaluation\JsonPointerReplacementTargetResolver;
-use Alama\Arazzo\Expression\Evaluation\ReplacementTargetResolverRegistry;
+use Alama\Arazzo\Evaluation\JsonPointerReplacementTargetResolver;
+use Alama\Arazzo\Evaluation\ReplacementTargetResolverRegistry;
 
 it('finds the highest-priority resolver that supports a target type', function (): void {
     $low = new class implements ReplacementTargetResolverInterface {
@@ -1145,13 +1160,13 @@ it('ships a core json-pointer resolver', function (): void {
 
 - [ ] **Step 2: Run the registry test to verify it fails**
 
-Run: `vendor/bin/pest packages/expression/tests --filter ReplacementTargetResolverRegistryTest` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter ReplacementTargetResolverRegistryTest` (repo root)
 
 Expected: FAIL with "Class ReplacementTargetResolverRegistry not found".
 
 - [ ] **Step 3: Write the failing engine replacement tests**
 
-Append to `packages/expression/tests/ExpressionEngineCapabilitiesTest.php` (import to add:
+Append to `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` (import to add:
 `Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface`):
 
 ```php
@@ -1198,7 +1213,7 @@ it('routes xpath selector targets through a registered resolver', function (): v
 
 - [ ] **Step 4: Run the engine tests to verify they fail**
 
-Run: `vendor/bin/pest packages/expression/tests --filter "seeded json-pointer|registered resolver"` (repo root)
+Run: `vendor/bin/pest packages/evaluation/tests --filter "seeded json-pointer|registered resolver"` (repo root)
 
 Expected: FAIL — `ExpressionEngine` has no `replacementTargets` parameter and the pointer replacement still works
 inline (the first test may pass until the constructor is changed; the xpath-resolver test fails with "Unknown named
@@ -1206,14 +1221,14 @@ parameter $replacementTargets").
 
 - [ ] **Step 5: Implement the registry + core resolver**
 
-Create `packages/expression/src/Evaluation/ReplacementTargetResolverRegistry.php`:
+Create `packages/evaluation/src/ReplacementTargetResolverRegistry.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
 
@@ -1249,14 +1264,14 @@ final class ReplacementTargetResolverRegistry
 }
 ```
 
-Create `packages/expression/src/Evaluation/JsonPointerReplacementTargetResolver.php`:
+Create `packages/evaluation/src/JsonPointerReplacementTargetResolver.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
 
@@ -1316,20 +1331,20 @@ final class JsonPointerReplacementTargetResolver implements ReplacementTargetRes
 
 - [ ] **Step 6: Rewire PayloadReplacer through the registry**
 
-Replace `packages/expression/src/Evaluation/PayloadReplacer.php` with:
+Replace `packages/evaluation/src/PayloadReplacer.php` with:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Evaluation;
+namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\JsonPathEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 
 /**
  * Applies a step's payload replacements to an array-shaped body.
@@ -1339,7 +1354,7 @@ use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
  *   registry's `json-pointer` resolver (B3; core default seeded).
  * - Selector targets declared via targetSelectorType (jsonpointer/xpath/
  *   proto-field) route through registered `ReplacementTargetResolverInterface`
- *   resolvers; `jsonpath` stays in-core until the Phase C1 plugin split.
+ *   resolvers; `jsonpath` stays in this package via `JsonPathEvaluator`.
  *   XPath keeps a legacy in-core fallback until the SOAP slice (F2) ships.
  *
  * Shared by every protocol executor so replacement semantics stay identical
@@ -1500,20 +1515,22 @@ final class PayloadReplacer
 
 - [ ] **Step 7: Wire the engine**
 
-Edit `packages/expression/src/ExpressionEngine.php` — add the registry to the constructor and thread it into
-`replacePayload()`:
+Edit `packages/evaluation/src/ExpressionEngine.php` — add the registry to the constructor and thread it into
+`replacePayload()` (the parse-side imports `Parser as ExpressionParser`, `Ast\*` stay
+`Alama\Arazzo\Expression\…`; `arazzo-evaluation` requires `arazzo-expression`):
 
 ```php
-use Alama\Arazzo\Expression\Evaluation\JsonPointerReplacementTargetResolver;
-use Alama\Arazzo\Expression\Evaluation\ReplacementTargetResolverRegistry;
+use Alama\Arazzo\Evaluation\JsonPointerReplacementTargetResolver;
+use Alama\Arazzo\Evaluation\ReplacementTargetResolverRegistry;
 
     public function __construct(
         private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(),
         private readonly ExpressionParser $parser = new ExpressionParser(),
         private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(),
-        private readonly ReferenceProjector $projector = new ReferenceProjector(),
+        private readonly ?CriterionEvaluatorRegistry $criterionRegistry = null,
         ?ReplacementTargetResolverRegistry $replacementTargets = null,
     ) {
+        $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry(new JsonPathCriterionPlugin());
         $this->replacementTargets = $replacementTargets ?? new ReplacementTargetResolverRegistry(new JsonPointerReplacementTargetResolver());
     }
 
@@ -1529,22 +1546,23 @@ use Alama\Arazzo\Expression\Evaluation\ReplacementTargetResolverRegistry;
 
 - [ ] **Step 8: Run tests to verify they pass**
 
-Run: `composer run test-expression` (repo root)
+Run: `composer run test-evaluation` (repo root)
 
 Expected: PASS — the registry tests, the seeded pointer replacement, the registered-xpath routing, and the full suite (
-the existing "delegates selector targets" capability test keeps its legacy jsonpath semantics).
+the existing "delegates selector targets" capability test keeps its jsonpath semantics via the in-package
+`JsonPathEvaluator`).
 
 - [ ] **Step 9: Run static analysis**
 
-Run: `composer run analyse-expression` (repo root)
+Run: `composer run analyse-evaluation` (repo root)
 
 Expected: PASS (0 errors).
 
 - [ ] **Step 10: Commit**
 
 ```bash
-git add packages/expression/src/Evaluation/ReplacementTargetResolverRegistry.php packages/expression/src/Evaluation/JsonPointerReplacementTargetResolver.php packages/expression/src/Evaluation/PayloadReplacer.php packages/expression/src/ExpressionEngine.php packages/expression/tests/Evaluation/ReplacementTargetResolverRegistryTest.php packages/expression/tests/ExpressionEngineCapabilitiesTest.php
-git commit -m "feat(expression): route replacement targets through the resolver registry"
+git add packages/evaluation/src/ReplacementTargetResolverRegistry.php packages/evaluation/src/JsonPointerReplacementTargetResolver.php packages/evaluation/src/PayloadReplacer.php packages/evaluation/src/ExpressionEngine.php packages/evaluation/tests/ReplacementTargetResolverRegistryTest.php packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php
+git commit -m "feat(evaluation): route replacement targets through the resolver registry"
 ```
 
 ---
@@ -1552,24 +1570,27 @@ git commit -m "feat(expression): route replacement targets through the resolver 
 ### Task B4: Step-type scope enforcement
 
 Every grammar form is only valid on the step type the Arazzo spec defines it for (D8/B4); out-of-scope expressions are
-parse errors. This task adds the scope gate (`StepExpressionScope`), exposes it through a new additive seam (
-`parseStepExpression`), and makes `CriteriaEvaluator` fail out-of-scope criteria deterministically.
+parse errors. This task adds the parse-side scope gate (`StepExpressionScope` in `arazzo-expression`), exposes it
+through a new additive seam (`ExpressionInterface::parseStepExpression`, implemented by `ExpressionInspector`), mirrors
+it on the eval-side `ExpressionEngine` (which implements `ExpressionInterface` since C3), and makes `CriteriaEvaluator`
+fail out-of-scope criteria deterministically.
 
 **Files:**
 
 - Create: `packages/expression/src/StepExpressionScope.php`
-- Modify: `packages/expression/src/ExpressionEngineInterface.php`
-- Modify: `packages/expression/src/ExpressionEngine.php`
-- Modify: `packages/expression/src/Evaluation/CriteriaEvaluator.php`
+- Modify: `packages/expression/src/Interfaces/ExpressionInterface.php` (add `parseStepExpression`)
+- Modify: `packages/expression/src/ExpressionInspector.php` (implement it)
+- Modify: `packages/evaluation/src/ExpressionEngine.php` (mirror it through the eval facade)
+- Modify: `packages/evaluation/src/CriteriaEvaluator.php`
 - Test: create `packages/expression/tests/StepExpressionScopeTest.php`
-- Test: `packages/expression/tests/ExpressionEngineCapabilitiesTest.php`
+- Test: `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php`
 
 **Interfaces:**
 
 - Consumes: `ExpressionReference`, `ReferenceKind`, `Step` (A7 fields), `ReferenceProjector`, `ExpressionParser`,
   `ExpressionSyntaxException`.
 - Produces: `StepExpressionScope::allows(ExpressionReference, Step): bool`;
-  `ExpressionEngineInterface::parseStepExpression(string $raw, Step $step): ?ExpressionSyntaxException`.
+  `ExpressionInterface::parseStepExpression(string $raw, Step $step): ?ExpressionSyntaxException`.
 
 Scope matrix (encoded in `StepExpressionScope`):
 
@@ -1598,7 +1619,7 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Expression\StepExpressionScope;
 
 /**
@@ -1683,7 +1704,7 @@ Expected: FAIL with "Class StepExpressionScope not found" and "Call to undefined
 
 - [ ] **Step 3: Write the failing criteria gate test**
 
-Append to `packages/expression/tests/ExpressionEngineCapabilitiesTest.php` (import to add:
+Append to `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` (import to add:
 `Alama\Arazzo\Contracts\Spec\Interaction`):
 
 ```php
@@ -1734,9 +1755,9 @@ it('evaluates step-scoped criteria against the transfer view (B2+B4)', function 
 
 - [ ] **Step 4: Run the criteria gate tests to verify they fail**
 
-Run: `/vendor/bin/pest packages/expression/tests --filter "out-of-scope criteria|step-scoped criteria"` (repo root —
+Run: `/vendor/bin/pest packages/evaluation/tests --filter "out-of-scope criteria|step-scoped criteria"` (repo root —
 note the leading slash is a typo to avoid; run
-`vendor/bin/pest packages/expression/tests --filter "out-of-scope criteria|step-scoped criteria"`)
+`vendor/bin/pest packages/evaluation/tests --filter "out-of-scope criteria|step-scoped criteria"`)
 
 Expected: FAIL — without the gate the interaction step's regex criterion evaluates its `{$response.statusCode}` context
 to `null` and fails anyway, but the RPC simple-criterion test passes only once B2/B4 both land; the gate is what makes
@@ -1762,7 +1783,7 @@ use Alama\Arazzo\Expression\Enum\ReferenceKind;
  *
  * Every expression form is only valid on the step type the Arazzo spec
  * defines it for; unknown-for-type expressions are parse errors, surfaced by
- * {@see ExpressionEngineInterface::parseStepExpression()} and applied by the
+ * {@see ExpressionInterface::parseStepExpression()} and applied by the
  * criteria evaluator as a deterministic fail. The $response.meta.* bag stays
  * the escape hatch for operation-step extras the spec does not define.
  *
@@ -1795,9 +1816,9 @@ final class StepExpressionScope
 }
 ```
 
-- [ ] **Step 6: Add the engine seam**
+- [ ] **Step 6: Add the parse/inspect seam**
 
-Edit `packages/expression/src/ExpressionEngineInterface.php` — append after `expressionReferences()`:
+Edit `packages/expression/src/Interfaces/ExpressionInterface.php` — append after `expressionReferences()`:
 
 ```php
     /**
@@ -1809,7 +1830,7 @@ Edit `packages/expression/src/ExpressionEngineInterface.php` — append after `e
     public function parseStepExpression(string $raw, Step $step): ?ExpressionSyntaxException;
 ```
 
-Edit `packages/expression/src/ExpressionEngine.php` — implement it next to `parseExpression()`:
+Edit `packages/expression/src/ExpressionInspector.php` — implement it next to `parseExpression()`:
 
 ```php
     public function parseStepExpression(string $raw, Step $step): ?ExpressionSyntaxException
@@ -1830,11 +1851,15 @@ Edit `packages/expression/src/ExpressionEngine.php` — implement it next to `pa
     }
 ```
 
+Mirror the same method on `packages/evaluation/src/ExpressionEngine.php`, which implements the parse-side
+`ExpressionInterface` since C3. It may delegate to its parse-side inspector/projector, but the public engine facade must
+return the same `?ExpressionSyntaxException` result.
+
 - [ ] **Step 7: Gate the criteria evaluator**
 
-Edit `packages/expression/src/Evaluation/CriteriaEvaluator.php`:
+Edit `packages/evaluation/src/CriteriaEvaluator.php`:
 
-1. Add imports and a lazily-initialized projector (constructor param appended after `$xpathEvaluator`):
+1. Add imports and a lazily-initialized projector (constructor param appended after the C3 criterion registry):
 
 ```php
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
@@ -1847,13 +1872,16 @@ use Alama\Arazzo\Expression\StepExpressionScope;
         private ExpressionEvaluatorInterface $evaluator,
         ?ConditionEvaluator $conditionEvaluator = null,
         ?XpathEvaluator $xpathEvaluator = null,
+        ?CriterionEvaluatorRegistry $criterionRegistry = null,
         ?ReferenceProjector $projector = null,
     ) {
         $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
         $this->xpathEvaluator = $xpathEvaluator;
+        $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry();
         $this->projector = $projector;
     }
 
+    private CriterionEvaluatorRegistry $criterionRegistry;
     private ?ReferenceProjector $projector;
 ```
 
@@ -1893,22 +1921,22 @@ inside a condition resolves to `null` and the comparison fails closed.
 
 - [ ] **Step 8: Run tests to verify they pass**
 
-Run: `composer run test-expression` (repo root)
+Run: `composer run test-expression && composer run test-evaluation` (repo root)
 
 Expected: PASS — scope unit tests, engine seam, deterministic out-of-scope fail, in-scope RPC criterion against the
 transfer view, and the full suite.
 
 - [ ] **Step 9: Run static analysis**
 
-Run: `composer run analyse-expression` (repo root)
+Run: `composer run analyse-expression && composer run analyse-evaluation` (repo root)
 
 Expected: PASS (0 errors).
 
 - [ ] **Step 10: Commit**
 
 ```bash
-git add packages/expression/src/StepExpressionScope.php packages/expression/src/ExpressionEngineInterface.php packages/expression/src/ExpressionEngine.php packages/expression/src/Evaluation/CriteriaEvaluator.php packages/expression/tests/StepExpressionScopeTest.php packages/expression/tests/ExpressionEngineCapabilitiesTest.php
-git commit -m "feat(expression): enforce step-type scope on expressions and criteria"
+git add packages/expression/src/StepExpressionScope.php packages/expression/src/Interfaces/ExpressionInterface.php packages/expression/src/ExpressionInspector.php packages/evaluation/src/ExpressionEngine.php packages/evaluation/src/CriteriaEvaluator.php packages/expression/tests/StepExpressionScopeTest.php packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php
+git commit -m "feat(evaluation): enforce step-type scope on expressions and criteria"
 ```
 
 ---
@@ -1926,17 +1954,17 @@ axis" + D8).
 
 - Consumes: all tasks B1–B4.
 
-- [ ] **Step 1: Run the full expression test suite**
+- [ ] **Step 1: Run the full expression + evaluation test suites**
 
-Run: `composer run test-expression` (repo root)
+Run: `composer run test-expression && composer run test-evaluation` (repo root)
 
-Expected: PASS (all tests). Verify the projection `with()` table covers the grammar matrix: status (implicit + step +
-pointer), metadata (implicit + step), trailing metadata, request metadata, meta dotted key, interaction payload pointer,
-whole source.
+Expected: PASS (both packages). Verify the projection `with()` table covers the grammar matrix: status (implicit +
+step + pointer), metadata (implicit + step), trailing metadata, request metadata, meta dotted key, interaction payload
+pointer, whole source; verify transfer-view resolution and built-in JsonPath criteria remain green.
 
 - [ ] **Step 2: Run static analysis**
 
-Run: `composer run analyse-expression` (repo root)
+Run: `composer run analyse-expression && composer run analyse-evaluation` (repo root)
 
 Expected: PASS (0 errors, level max).
 
@@ -1950,9 +1978,9 @@ Expected: PASS (no style violations). If violations exist, run `vendor/bin/pint`
 
 Run: `make verify` (repo root)
 
-Expected: PASS — confirms the additive `ReferenceKind`/grammar changes do not break `document`/`runner`/`core` consumers
-of `ExpressionEngineInterface` (only `ExpressionEngine` implements it in-repo; B4 added one seam method to the
-interface).
+Expected: PASS — confirms the additive `ReferenceKind`/grammar changes do not break `document`'s
+`ExpressionInterface` consumer or evaluation consumers. Both `ExpressionInspector` and the eval-side `ExpressionEngine`
+implement the parse/inspect seam; B4 adds `parseStepExpression` to that seam.
 
 - [ ] **Step 5: Mark this plan's steps complete**
 
@@ -2000,12 +2028,13 @@ git commit -m "docs: mark Phase B expression grammar complete"
 
 - Phase A (contracts ports) — `ResponseTransfer`, `ReplacementTargetResolverInterface`, and the A7 `Step` fields (
   `rpcMethod`, `rpcProtocol`, `graphqlOperation`, `interaction`). This plan's code compiles only after A lands.
-- Phase C (expression split) — optional to land first, but the plan is written against the pre-split single
-  `packages/expression` package and holds either way (D11: FQCNs unchanged).
+- Phase C (expression/evaluation split) — **hard prerequisite**. It creates `packages/evaluation`, moves evaluation-side
+  classes to the flat `Alama\Arazzo\Evaluation\…` namespace, seeds the built-in JsonPath plugins, and makes
+  `document` parse-only. B must not start against the pre-split single package.
 
 ## Sequencing
 
-- Phase A must land before Phase B (contract types used across every task).
-- Phase C can land before or after B; if C has landed, the grammar side (B1) lives in `arazzo-expression` and the
-  evaluation side (B2–B4) in `arazzo-evaluation` — the same files, relocated.
+- Phase A must land before Phase C (contract types used across every task).
+- Phase C must land before Phase B: B1 lives in `arazzo-expression`; B2-B4 live in `arazzo-evaluation` except for the
+  parse-side `StepExpressionScope`/`ExpressionInterface` seam.
 - Phase B must land before Phase D (grammar cases feed validation rules).
