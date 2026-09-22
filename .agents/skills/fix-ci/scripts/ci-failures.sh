@@ -40,14 +40,18 @@ if [ -z "$RUN" ]; then
     BRANCH=$(echo "$info" | jq -r '.headRefName')
     SHA=$(echo "$info"   | jq -r '.headRefOid')
   else
+    CURRENT_BRANCH=$(git branch --show-current)
     if [ -z "$BRANCH" ]; then
-      BRANCH=$(git branch --show-current)
+      BRANCH="$CURRENT_BRANCH"
     fi
     # A PR may exist for this branch; its head SHA pins the exact commit.
-    info=$(gh pr view "$BRANCH" --json number,headRefOid 2>/dev/null) && {
+    if info=$(gh pr view "$BRANCH" --json number,headRefOid 2>/dev/null); then
       PR_NUM=$(echo "$info" | jq -r '.number')
       SHA=$(echo "$info"    | jq -r '.headRefOid')
-    }
+    elif [ "$BRANCH" = "$CURRENT_BRANCH" ]; then
+      # No open PR: pin to the current commit so only its runs are considered.
+      SHA=$(git rev-parse HEAD)
+    fi
   fi
 fi
 
