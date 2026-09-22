@@ -26,8 +26,10 @@ flowchart LR
     I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>document:Normalizer</small>"]:::contract
+    I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>runner:State</small>"]:::contract
+    I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -254,6 +256,8 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
+    N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
+    N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;

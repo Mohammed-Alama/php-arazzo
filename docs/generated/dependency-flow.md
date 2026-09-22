@@ -36,8 +36,8 @@ cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
 contracts-Dependency,contracts-State,1
 contracts-Interfaces,contracts-Exceptions,1
-contracts-Interfaces,contracts-Spec,8
-contracts-Interfaces,contracts-State,1
+contracts-Interfaces,contracts-Spec,11
+contracts-Interfaces,contracts-State,2
 contracts-State,contracts-Spec,3
 document-Normalizer,contracts-Spec,6
 document-Normalizer,contracts-Support,1

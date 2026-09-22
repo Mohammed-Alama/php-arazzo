@@ -55,7 +55,7 @@ Analyzed 183 total file-touches across 37 modules.
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
 | `expression:Interfaces` | 2 | 1% | 73 | 27.4 |
 | `expression:Xpath` | 2 | 1% | 109 | 18.3 |
-| `contracts:Interfaces` | 1 | 1% | 116 | 8.6 |
+| `contracts:Interfaces` | 1 | 1% | 160 | 6.3 |
 | `contracts:State` | 1 | 1% | 667 | 1.5 |
 | `expression:Exceptions` | 1 | 1% | 55 | 18.2 |
 
