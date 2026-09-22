@@ -13,6 +13,8 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
+use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
@@ -46,6 +48,8 @@ final class ExpressionEngine implements ExpressionEngineInterface
         private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(),
         private readonly ExpressionParser $parser = new ExpressionParser(),
         private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(),
+        private readonly ExpressionEvaluatorRegistry $expressionRegistry = new ExpressionEvaluatorRegistry(),
+        private readonly CriterionEvaluatorRegistry $criterionRegistry = new CriterionEvaluatorRegistry(),
     ) {}
 
     private ?CriteriaEvaluator $criteriaEvaluator = null;
@@ -56,6 +60,12 @@ final class ExpressionEngine implements ExpressionEngineInterface
 
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
+        // Try plugin registry first
+        $plugin = $this->expressionRegistry->resolve($expression);
+        if ($plugin !== null) {
+            return $plugin->evaluate($expression, $context);
+        }
+
         return $this->evaluator->evaluate($expression, $context);
     }
 
@@ -133,7 +143,7 @@ final class ExpressionEngine implements ExpressionEngineInterface
 
     private function criteria(): CriteriaEvaluator
     {
-        return $this->criteriaEvaluator ??= new CriteriaEvaluator($this->evaluator);
+        return $this->criteriaEvaluator ??= new CriteriaEvaluator($this->evaluator, null, null, $this->criterionRegistry);
     }
 
     private function selectors(): SelectorEvaluator

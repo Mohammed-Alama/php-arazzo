@@ -16,25 +16,29 @@ use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 
 /**
- * @internal stays out of the advertised contract; not part of the public API surface
- */
-class CriteriaEvaluator implements CriteriaEvaluatorInterface
-{
-    private ConditionEvaluator $conditionEvaluator;
+     * @internal stays out of the advertised contract; not part of the public API surface
+     */
+    class CriteriaEvaluator implements CriteriaEvaluatorInterface
+    {
+        private ConditionEvaluator $conditionEvaluator;
 
-    private ?XpathEvaluator $xpathEvaluator;
+        private ?XpathEvaluator $xpathEvaluator;
 
-    public function __construct(
-        private ExpressionEvaluatorInterface $evaluator,
-        ?ConditionEvaluator $conditionEvaluator = null,
-        ?XpathEvaluator $xpathEvaluator = null,
-    ) {
-        $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
-        $this->xpathEvaluator = $xpathEvaluator;
-    }
+        private ?CriterionEvaluatorRegistry $criterionRegistry;
+
+        public function __construct(
+            private ExpressionEvaluatorInterface $evaluator,
+            ?ConditionEvaluator $conditionEvaluator = null,
+            ?XpathEvaluator $xpathEvaluator = null,
+            ?CriterionEvaluatorRegistry $criterionRegistry = null,
+        ) {
+            $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
+            $this->xpathEvaluator = $xpathEvaluator;
+            $this->criterionRegistry = $criterionRegistry;
+        }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
@@ -67,6 +71,18 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
 
         foreach ($criteria as $criterion) {
             $type = $criterion->type ?? CriterionType::Simple;
+
+            // If we have a registry and it has a plugin for this criterion, delegate.
+            if ($this->criterionRegistry !== null) {
+                $plugin = $this->criterionRegistry->resolve($criterion);
+                if ($plugin !== null) {
+                    $passed = $plugin->evaluate($criterion, $responseBody, $step, $context);
+                    if (!$passed) {
+                        return false;
+                    }
+                    continue;
+                }
+            }
 
             // Evaluation errors inside each branch fail the criterion deterministically.
             $passed = match ($type) {
