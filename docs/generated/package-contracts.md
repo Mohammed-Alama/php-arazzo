@@ -76,49 +76,87 @@ public contract between packages.
 
 ## expression
 
-> **Provides:** Parses and evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.
+> **Provides:** Parses Arazzo expressions and provides the AST nodes and symbol tables for downstream evaluation.
 
 ### Capabilities
 
 - Parse expression strings with typed syntax errors surfaced through the face
 - Expose expression reference projections (kind + target fields) without leaking the AST
-- Evaluate expressions against an evaluation context
-- Evaluate success-criteria / condition expressions
-- Evaluate selectors (JSONPath, JSON-pointer, XPath)
-- String interpolation and payload replacement for request/response bodies
 - Build symbol tables over the parsed document (value data for downstream consumers)
 
 ### Public entry surface
 
-- `ExpressionEngineInterface` — _not found in scan_
+- `ExpressionInspector` (`class`)
+  - `public function __construct(?ExpressionParser $parser = null)`
+  - `public function parseExpression(string $raw): ?ExpressionSyntaxException`
+  - `public function expressionReferences(string $raw): ?ExpressionReference`
+  - `public function buildSymbolTable(ArazzoDocument $document): SymbolTable`
 
 ### Cross-boundary value types
 
 - `SymbolTable` — present
 - `WorkflowSymbols` — present
 - `StepSymbols` — present
-- `EvaluationInputInterface` — not found
-- `EvaluationInput` — not found
 - `ExpressionSyntaxException` — present
-- `SelectorEvaluationException` — not found
 - `ExpressionReference` — present
 - `ReferenceKind` — present
 
 ### Deliberately internal
 
-- `ExpressionEvaluatorInterface` — _not found in scan_
-- `ExpressionResolverInterface` — _not found in scan_
-- `ExpressionEvaluator` — _not found in scan_
-- `SelectorEvaluator` — _not found in scan_
-- `StringInterpolator` — _not found in scan_
-- `JsonPathEvaluator` — _not found in scan_
-- `JsonPointer` — _not found in scan_
-- `DomXpathEvaluator` — _not found in scan_
-- `XpathEvaluator` — _not found in scan_
 - `Lexer` — `@internal`: yes
 - `Parser` — `@internal`: yes
 - `Token` — `@internal`: yes
 - `Ast\*` — whole namespace (declared target)
+
+## evaluation
+
+> **Provides:** Evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.
+
+### Capabilities
+
+- Evaluate expressions against an evaluation context
+- Evaluate success-criteria / condition expressions
+- Evaluate selectors (JSONPath, JSON-pointer, XPath)
+- String interpolation and payload replacement for request/response bodies
+
+### Public entry surface
+
+- `ExpressionEngineInterface` (`interface`)
+  - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+  - `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
+  - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
+  - `public function expressionReferences(string $raw): ?ExpressionReference;`
+  - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+  - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+  - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
+  - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+  - `public function supportedXPathVersions(): array;`
+  - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
+  - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
+  - `public function jsonPath(string $expression, array|object $data): mixed;`
+  - `public function jsonPointer(array $data, ?string $pointer): mixed;`
+
+### Cross-boundary value types
+
+- `WorkflowSymbols` — not found
+- `StepSymbols` — not found
+- `EvaluationInputInterface` — present
+- `EvaluationInput` — present
+- `SelectorEvaluationException` — present
+- `ExpressionReference` — not found
+- `ReferenceKind` — not found
+
+### Deliberately internal
+
+- `ExpressionEvaluatorInterface` — `@internal`: yes
+- `ExpressionResolverInterface` — `@internal`: yes
+- `ExpressionEvaluator` — `@internal`: yes
+- `SelectorEvaluator` — `@internal`: yes
+- `StringInterpolator` — `@internal`: yes
+- `JsonPathEvaluator` — `@internal`: yes
+- `JsonPointer` — `@internal`: yes
+- `DomXpathEvaluator` — `@internal`: yes
+- `XpathEvaluator` — `@internal`: yes
 - `Evaluation\*` — whole namespace (declared target)
 
 ## document

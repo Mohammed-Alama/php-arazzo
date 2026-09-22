@@ -23,6 +23,15 @@ flowchart LR
     document_Resolver["Alama\Arazzo\Document\Resolver\Exceptions"]:::coreNode
     document_Validator["Alama\Arazzo\Document\Validator\Rules"]:::coreNode
     document__["(document package root)"]:::coreNode
+    evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
+    evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
+    evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
+    evaluation_Exceptions["Alama\Arazzo\Evaluation\Exceptions"]:::coreNode
+    evaluation_Interfaces["Alama\Arazzo\Evaluation\Interfaces"]:::coreNode
+    evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
+    evaluation_Registries["Alama\Arazzo\Evaluation\Registries"]:::coreNode
+    evaluation_Xpath["Alama\Arazzo\Evaluation\Xpath"]:::coreNode
+    evaluation__["(evaluation package root)"]:::coreNode
     expression_Ast["Alama\Arazzo\Expression\Ast"]:::coreNode
     expression_Data["Alama\Arazzo\Expression\Data"]:::coreNode
     expression_Enum["Alama\Arazzo\Expression\Enum"]:::coreNode
@@ -66,6 +75,37 @@ flowchart LR
     expression__ --> expression_Exceptions
     expression__ --> contracts_Spec
     expression__ --> expression_Interfaces
+    evaluation_Condition --> evaluation_Enum
+    evaluation_Condition --> contracts_Spec
+    evaluation_Condition --> evaluation_Interfaces
+    evaluation_Condition --> contracts_Support
+    evaluation_Condition --> evaluation_Data
+    evaluation_Data --> contracts_Spec
+    evaluation_Data --> evaluation_Interfaces
+    evaluation_Exceptions --> contracts_Support
+    evaluation_Interfaces --> contracts_Spec
+    evaluation_Plugins --> contracts_Interfaces
+    evaluation_Plugins --> contracts_Spec
+    evaluation_Plugins --> evaluation__
+    evaluation_Registries --> contracts_Interfaces
+    evaluation_Registries --> contracts_Spec
+    evaluation_Registries --> evaluation_Plugins
+    evaluation_Xpath --> contracts_Spec
+    evaluation_Xpath --> evaluation_Exceptions
+    evaluation__ --> contracts_Spec
+    evaluation__ --> contracts_State
+    evaluation__ --> evaluation_Xpath
+    evaluation__ --> evaluation_Interfaces
+    evaluation__ --> evaluation_Registries
+    evaluation__ --> expression_Ast
+    evaluation__ --> expression_Data
+    evaluation__ --> expression_Enum
+    evaluation__ --> expression_Exceptions
+    evaluation__ --> expression__
+    evaluation__ --> contracts_Interfaces
+    evaluation__ --> evaluation_Data
+    evaluation__ --> evaluation_Condition
+    evaluation__ --> evaluation_Exceptions
     document_Normalizer --> contracts_Support
     document_Normalizer --> contracts_Spec
     document_Normalizer --> document_Resolver
@@ -74,6 +114,7 @@ flowchart LR
     document_Resolver --> contracts_Spec
     document_Resolver --> document_Parser
     document_Validator --> contracts_Spec
+    document_Validator --> evaluation__
     document_Validator --> document_Normalizer
     document_Validator --> document_Resolver
     document_Validator --> contracts_Support
@@ -86,8 +127,10 @@ flowchart LR
     document__ --> document_Parser
     document__ --> document_Resolver
     document__ --> document_Validator
+    document__ --> evaluation__
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
+    runner_Async --> evaluation_Interfaces
     runner_Async --> runner_Events
     runner_Async --> runner_State
     runner_Async --> contracts_Exceptions
@@ -101,11 +144,13 @@ flowchart LR
     runner_Execution --> contracts_Spec
     runner_Execution --> runner_State
     runner_Execution --> contracts_State
+    runner_Execution --> evaluation__
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
     runner_Execution --> document__
     runner_Execution --> document_Validator
+    runner_Execution --> evaluation_Interfaces
     runner_Execution --> runner_Events
     runner_Execution --> runner_Jobs
     runner_Execution --> runner_Telemetry
@@ -126,6 +171,8 @@ flowchart LR
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
     runner_Protocol --> document__
+    runner_Protocol --> evaluation__
+    runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
     runner_Protocol --> contracts_Dependency
     runner_Protocol --> runner_Infrastructure
@@ -133,15 +180,18 @@ flowchart LR
     runner_State --> contracts_Spec
     runner_State --> contracts_State
     runner__ --> contracts_Interfaces
+    runner__ --> evaluation_Interfaces
     runner__ --> runner_Execution
     runner__ --> runner_Events
     runner__ --> runner_Infrastructure
     runner__ --> runner_State
     runner__ --> document__
+    runner__ --> evaluation__
     runner__ --> contracts_Spec
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
+    cli_Console --> evaluation_Interfaces
     cli_Console --> runner_Events
     cli_Console --> runner_Execution
     cli_Console --> runner_Jobs
@@ -149,6 +199,7 @@ flowchart LR
     cli_Console --> runner_Telemetry
     cli_Console --> document_Parser
     cli_Console --> document_Validator
+    cli_Console --> evaluation__
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
     cli_Console --> document__
@@ -173,6 +224,7 @@ flowchart LR
     laravel_Bindings --> document_Normalizer
     laravel_Bindings --> document_Resolver
     laravel_Bindings --> document_Validator
+    laravel_Bindings --> evaluation__
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
     laravel_Http --> runner_Infrastructure
@@ -192,6 +244,7 @@ flowchart LR
     laravel_Queue --> runner_Execution
     laravel_State --> runner_State
     laravel_Support --> contracts_Interfaces
+    laravel_Support --> evaluation_Interfaces
     laravel_Support --> runner__
     laravel_Support --> runner_Events
     laravel_Support --> runner_Execution

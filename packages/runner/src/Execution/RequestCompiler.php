@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Psr\Http\Message\ResponseInterface;
 

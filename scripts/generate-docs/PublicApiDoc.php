@@ -29,7 +29,8 @@ MD;
  * @var array<string, list<string>> package slug => class short names
  */
 const FACADE_FIRST = [
-    'expression' => ['ExpressionEngineInterface', 'ExpressionEngine'],
+    'expression' => ['ExpressionInspector', 'Lexer', 'Parser', 'SymbolTable'],
+    'evaluation' => ['ExpressionEngineInterface', 'ExpressionEngine'],
     'document' => ['DocumentInterface', 'Document'],
     'runner' => ['RunnerFacadeInterface', 'RunnerFacade'],
 ];

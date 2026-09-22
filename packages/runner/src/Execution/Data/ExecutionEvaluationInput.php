@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 
 /**
  * Runner-owned evaluation input.

@@ -32,9 +32,6 @@ final class ExpressionEvaluatorRegistry
         krsort($this->plugins); // higher priority first
     }
 
-    /**
-     * @return ExpressionEvaluatorPluginInterface|null
-     */
     public function resolve(Expression $expression): ?ExpressionEvaluatorPluginInterface
     {
         foreach ($this->plugins as $priorityPlugins) {
@@ -44,6 +41,7 @@ final class ExpressionEvaluatorRegistry
                 }
             }
         }
+
         return null;
     }
 
@@ -54,6 +52,7 @@ final class ExpressionEvaluatorRegistry
         foreach ($this->plugins as $priorityPlugins) {
             $flat = array_merge($flat, $priorityPlugins);
         }
+
         return $flat;
     }
 }

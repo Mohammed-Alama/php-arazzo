@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Laravel\Support;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;

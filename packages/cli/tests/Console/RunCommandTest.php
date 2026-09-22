@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;

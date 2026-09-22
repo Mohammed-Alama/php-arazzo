@@ -15,7 +15,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Tests\Support\Fx;
 
 function timeoutDoc(string $arazzoVersion): ArazzoDocument

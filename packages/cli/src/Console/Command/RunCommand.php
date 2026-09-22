@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Cli\Console\Command;
 use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;

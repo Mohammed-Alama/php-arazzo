@@ -16,6 +16,7 @@ when a boundary consciously moves.
 
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
+| `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 38 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
@@ -41,6 +42,7 @@ when a boundary consciously moves.
 | document | `document:Validator` | `JsonSchema` | 7 |
 | document | `document:_` | `GuzzleHttp` | 2 |
 | document | `document:_` | `Psr` | 2 |
+| evaluation | `evaluation:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
@@ -68,7 +70,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**11 library boundary violation(s):**
+**12 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
@@ -76,6 +78,7 @@ when a boundary consciously moves.
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (7 refs)
 - `document:_` imports `GuzzleHttp\*` (2 refs)
+- `evaluation:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
@@ -91,6 +94,12 @@ Cross-package references from library code must target `*Interface` facades, val
 
 **Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
 
+### Facade-to-facade transitions (allowed by seam policy)
+
+| From package | To package | From | References concrete facade |
+|---|---|---|---|
+| `document` | `evaluation` | `Document` | `ExpressionEngine` |
+
 ### Concrete references outside facades (review list)
 
 Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolvers): each row is a candidate to consolidate behind a `*Interface` facade. Throwables, enums, and `Contracts\Spec|State|Support` value types are data flow, not coupling, and are excluded.
@@ -100,6 +109,23 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `SymbolTable` | `expression` | 52 | `ExpressionWalker` |
 | `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
+| `evaluation` | `ComponentRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `ExpressionAst` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `ExpressionReference` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `HttpMetaRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `InputPart` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `InputRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `MessageRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `OutputPart` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `OutputRef` | `expression` | 1 | `ExpressionEngine` |
+| `evaluation` | `Parser` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `RequestPart` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `ResponsePart` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `SelfRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `SourceRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `StepRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `SymbolTable` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `WorkflowRef` | `expression` | 2 | `ExpressionEngine` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
 | `runner` | `ResolvedOperation` | `document` | 4 | `StepOutputExtractor` |

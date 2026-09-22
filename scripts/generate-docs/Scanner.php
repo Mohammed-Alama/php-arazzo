@@ -13,7 +13,7 @@ namespace ArazzoDocs;
  *
  * @var list<string>
  */
-const CORE_SRC_PACKAGES = ['contracts', 'expression', 'document', 'runner', 'cli'];
+const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'runner', 'cli'];
 
 /**
  * Real cross-package dependency direction, bottom (most depended-upon) to top
@@ -24,7 +24,7 @@ const CORE_SRC_PACKAGES = ['contracts', 'expression', 'document', 'runner', 'cli
  *
  * @var list<string>
  */
-const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'document', 'runner', 'cli', 'laravel'];
+const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'document', 'runner', 'cli', 'laravel'];
 
 /**
  * Namespace-segment each package claims, used to render package-qualified
@@ -35,6 +35,7 @@ const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'document', 'runner', 'c
 const PACKAGE_NAMESPACE = [
     'contracts' => 'Contracts',
     'expression' => 'Expression',
+    'evaluation' => 'Evaluation',
     'document' => 'Document',
     'runner' => 'Runner',
     'cli' => 'Cli',
@@ -53,8 +54,8 @@ const MODULE_PACKAGE_MAP = [
     'Dependency' => 'contracts',
     'Spec' => 'contracts',
     'Support' => 'contracts',
-    'Evaluation' => 'expression',
-    'Expression' => 'expression',
+    'Evaluation' => 'evaluation',
+    'Expression' => 'evaluation',
     'Document' => 'document',
     'Normalizer' => 'document',
     'Parser' => 'document',

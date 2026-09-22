@@ -22,7 +22,7 @@ use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 
 beforeEach(function () {

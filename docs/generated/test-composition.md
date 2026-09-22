@@ -37,6 +37,18 @@ pie showData
 | Module-scoped | 4 | 57% |
 | Root | 3 | 43% |
 
+## Evaluation package
+
+```mermaid
+pie showData
+    title Evaluation — 6 test files
+    "Root": 6
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Root | 6 | 100% |
+
 ## Document package
 
 ```mermaid

@@ -34,6 +34,17 @@ flowchart TB
         M_expression_Interfaces["expression:Interfaces"]:::node
         M_expression__["(expression package root)"]:::node
     end
+    subgraph PKG_M_evaluation["evaluation"]
+        M_evaluation_Condition["evaluation:Condition"]:::node
+        M_evaluation_Data["evaluation:Data"]:::node
+        M_evaluation_Enum["evaluation:Enum"]:::node
+        M_evaluation_Exceptions["evaluation:Exceptions"]:::node
+        M_evaluation_Interfaces["evaluation:Interfaces"]:::node
+        M_evaluation_Plugins["evaluation:Plugins"]:::node
+        M_evaluation_Registries["evaluation:Registries"]:::node
+        M_evaluation_Xpath["evaluation:Xpath"]:::node
+        M_evaluation__["(evaluation package root)"]:::node
+    end
     subgraph PKG_M_document["document"]
         M_document_Normalizer["document:Normalizer"]:::node
         M_document_Parser["document:Parser"]:::node
@@ -78,6 +89,8 @@ flowchart TB
     M_cli_Console --> M_document_Resolver
     M_cli_Console --> M_document_Validator
     M_cli_Console --> M_document__
+    M_cli_Console --> M_evaluation_Interfaces
+    M_cli_Console --> M_evaluation__
     M_cli_Console --> M_runner_Events
     M_cli_Console --> M_runner_Execution
     M_cli_Console --> M_runner_Jobs
@@ -105,6 +118,7 @@ flowchart TB
     M_document_Validator --> M_contracts_Support
     M_document_Validator --> M_document_Normalizer
     M_document_Validator --> M_document_Resolver
+    M_document_Validator --> M_evaluation__
     M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression__
@@ -113,6 +127,38 @@ flowchart TB
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Resolver
     M_document__ --> M_document_Validator
+    M_document__ --> M_evaluation__
+    M_evaluation_Condition --> M_contracts_Spec
+    M_evaluation_Condition --> M_contracts_Support
+    M_evaluation_Condition --> M_evaluation_Data
+    M_evaluation_Condition --> M_evaluation_Enum
+    M_evaluation_Condition --> M_evaluation_Interfaces
+    M_evaluation_Data --> M_contracts_Spec
+    M_evaluation_Data --> M_evaluation_Interfaces
+    M_evaluation_Exceptions --> M_contracts_Support
+    M_evaluation_Interfaces --> M_contracts_Spec
+    M_evaluation_Plugins --> M_contracts_Interfaces
+    M_evaluation_Plugins --> M_contracts_Spec
+    M_evaluation_Plugins --> M_evaluation__
+    M_evaluation_Registries --> M_contracts_Interfaces
+    M_evaluation_Registries --> M_contracts_Spec
+    M_evaluation_Registries --> M_evaluation_Plugins
+    M_evaluation_Xpath --> M_contracts_Spec
+    M_evaluation_Xpath --> M_evaluation_Exceptions
+    M_evaluation__ --> M_contracts_Interfaces
+    M_evaluation__ --> M_contracts_Spec
+    M_evaluation__ --> M_contracts_State
+    M_evaluation__ --> M_evaluation_Condition
+    M_evaluation__ --> M_evaluation_Data
+    M_evaluation__ --> M_evaluation_Exceptions
+    M_evaluation__ --> M_evaluation_Interfaces
+    M_evaluation__ --> M_evaluation_Registries
+    M_evaluation__ --> M_evaluation_Xpath
+    M_evaluation__ --> M_expression_Ast
+    M_evaluation__ --> M_expression_Data
+    M_evaluation__ --> M_expression_Enum
+    M_evaluation__ --> M_expression_Exceptions
+    M_evaluation__ --> M_expression__
     M_expression_Data --> M_expression_Enum
     M_expression_Exceptions --> M_contracts_Support
     M_expression_Interfaces --> M_contracts_Spec
@@ -133,6 +179,7 @@ flowchart TB
     M_laravel_Bindings --> M_document_Resolver
     M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
+    M_laravel_Bindings --> M_evaluation__
     M_laravel_Bindings --> M_laravel_Http
     M_laravel_Bindings --> M_laravel_Lock
     M_laravel_Bindings --> M_laravel_Persistence
@@ -161,6 +208,7 @@ flowchart TB
     M_laravel_Queue --> M_runner_Jobs
     M_laravel_State --> M_runner_State
     M_laravel_Support --> M_contracts_Interfaces
+    M_laravel_Support --> M_evaluation_Interfaces
     M_laravel_Support --> M_runner_Events
     M_laravel_Support --> M_runner_Execution
     M_laravel_Support --> M_runner_Infrastructure
@@ -176,6 +224,7 @@ flowchart TB
     M_runner_Async --> M_contracts_Support
     M_runner_Async --> M_document_Validator
     M_runner_Async --> M_document__
+    M_runner_Async --> M_evaluation_Interfaces
     M_runner_Async --> M_runner_Events
     M_runner_Async --> M_runner_Execution
     M_runner_Async --> M_runner_Jobs
@@ -191,6 +240,8 @@ flowchart TB
     M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
+    M_runner_Execution --> M_evaluation_Interfaces
+    M_runner_Execution --> M_evaluation__
     M_runner_Execution --> M_expression_Enum
     M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
@@ -210,6 +261,8 @@ flowchart TB
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
     M_runner_Protocol --> M_document__
+    M_runner_Protocol --> M_evaluation_Interfaces
+    M_runner_Protocol --> M_evaluation__
     M_runner_Protocol --> M_runner_Execution
     M_runner_Protocol --> M_runner_Infrastructure
     M_runner_Protocol --> M_runner_State
@@ -218,6 +271,8 @@ flowchart TB
     M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_document__
+    M_runner__ --> M_evaluation_Interfaces
+    M_runner__ --> M_evaluation__
     M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
     M_runner__ --> M_runner_Infrastructure
@@ -237,16 +292,22 @@ flowchart TB
 |---|---|---:|
 | `cli` | `contracts` | 20 |
 | `cli` | `document` | 12 |
+| `cli` | `evaluation` | 3 |
 | `cli` | `runner` | 16 |
 | `document` | `contracts` | 149 |
+| `document` | `evaluation` | 13 |
 | `document` | `expression` | 63 |
+| `evaluation` | `contracts` | 76 |
+| `evaluation` | `expression` | 35 |
 | `expression` | `contracts` | 9 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 18 |
+| `laravel` | `evaluation` | 4 |
 | `laravel` | `runner` | 44 |
 | `runner` | `contracts` | 191 |
 | `runner` | `document` | 22 |
+| `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 1 |
 
 ## Module-level detail

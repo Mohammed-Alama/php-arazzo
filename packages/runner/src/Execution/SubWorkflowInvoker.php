@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;

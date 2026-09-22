@@ -13,6 +13,7 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

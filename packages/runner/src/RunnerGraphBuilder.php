@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;

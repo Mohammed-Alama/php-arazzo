@@ -18,7 +18,7 @@ Evans' first question: does the code speak one language?
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
 - **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 8 more (12 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
-- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 10 more (14 types)
+- **Run**: `CliRunResult`, `CliRunner`, `RunCommand`, `RunCompletedEvent` + 11 more (15 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
 
 ### parse vs load vs decode
@@ -36,7 +36,7 @@ Evans' first question: does the code speak one language?
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionValueResolver` + 6 more (10 types)
+- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver` + 9 more (13 types)
 
 ### state vs status
 
@@ -45,7 +45,7 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 9 more (13 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 11 more (15 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
@@ -64,5 +64,8 @@ Evans' first question: does the code speak one language?
 
 | Name | Locations | Packages |
 |---|---|---|
-| `Parser` | `Expression\Parser`<br/>`Document\Parser\Parser` | expression, document |
+| `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
+| `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
 | `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |
+| `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
+| `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |

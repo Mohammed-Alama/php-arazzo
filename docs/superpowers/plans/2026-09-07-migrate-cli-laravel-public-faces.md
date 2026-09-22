@@ -1,35 +1,54 @@
 # cli + laravel onto runner public faces Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:
+> executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Collapse cli `RunCommand` and laravel `ExecutionBindings` onto the runner's public surface (`RunnerFacadeInterface` + a new `RunnerGraphBuilderInterface` / `AsyncExecutionGraph` / `AsyncGraphSeams`) so neither package imports runner internal concrete types, with zero behaviour change.
+**Goal:** Collapse cli `RunCommand` and laravel `ExecutionBindings` onto the runner's public surface (
+`RunnerFacadeInterface` + a new `RunnerGraphBuilderInterface` / `AsyncExecutionGraph` / `AsyncGraphSeams`) so neither
+package imports runner internal concrete types, with zero behaviour change.
 
-**Architecture:** The runner ships three new root-namespace public types — a composition-root builder interface, a seams value type, and a built-graph value object. An internal `AsyncExecutionGraphAssembler` wires the whole async/queue graph (worker, resumer, outcome handler, protocol executors, engine, persistence) exactly as laravel wires it today. cli delegates to `RunnerFacade::execute()`. laravel collapses its execution bindings to bind one lazily-built graph and alias the nodes it, keeping `WorkflowEngine` config-live.
+**Architecture:** The runner ships three new root-namespace public types — a composition-root builder interface, a seams
+value type, and a built-graph value object. An internal `AsyncExecutionGraphAssembler` wires the whole async/queue
+graph (worker, resumer, outcome handler, protocol executors, engine, persistence) exactly as laravel wires it today. cli
+delegates to `RunnerFacade::execute()`. laravel collapses its execution bindings to bind one lazily-built graph and
+alias the nodes it, keeping `WorkflowEngine` config-live.
 
-**Tech Stack:** PHP 8.2+ (arrow fns, promoted ctor props, readonly classes — `RunControlFlow` is already `final readonly`), Pest 5, PHPStan, Pint, Laravel container, Symfony Console.
+**Tech Stack:** PHP 8.2+ (arrow fns, promoted ctor props, readonly classes — `RunControlFlow` is already
+`final readonly`), Pest 5, PHPStan, Pint, Laravel container, Symfony Console.
 
 **Spec:** `docs/superpowers/specs/2026-09-07-migrate-cli-laravel-public-faces-design.md`
 
 ## Global Constraints
 
-- No runner/document/expression internal concrete types may be added to either package's wiring; only public faces, value types, SPI ports, and the laravel carve-outs named in the spec.
-- Behaviour/config/tests unchanged: the runner suite, cli suite, and laravel suite must stay green **without editing existing test files** (see ExecutionBindingsTest / WebhookResumeControllerTest / RunExecuteStepJobTest / IdempotencyFeatureTest — these encode the freshness semantics the wiring must preserve).
-- Every commit runs the `.githooks/pre-commit` gate (docs regen + pint --test + `composer analyse` + `composer test`). `docs/generated` drift is auto-staged by the hook — that is expected.
+- No runner/document/expression internal concrete types may be added to either package's wiring; only public faces,
+  value types, SPI ports, and the laravel carve-outs named in the spec.
+- Behaviour/config/tests unchanged: the runner suite, cli suite, and laravel suite must stay green **without editing
+  existing test files** (see ExecutionBindingsTest / WebhookResumeControllerTest / RunExecuteStepJobTest /
+  IdempotencyFeatureTest — these encode the freshness semantics the wiring must preserve).
+- Every commit runs the `.githooks/pre-commit` gate (docs regen + pint --test + `composer analyse` + `composer test`).
+  `docs/generated` drift is auto-staged by the hook — that is expected.
 - Never stage or commit `CONTEXT-MAP.md` (unrelated uncommitted edit).
-- Test runner commands: `composer run test-runner`, `composer run test-cli`, `composer run test-laravel`; full gate `make verify`.
-- `OpenApiExecutorInterface` is a runner execution SPI and is exempt from the laravel src seam guard (tests swap it with `app()->instance()`).
+- Test runner commands: `composer run test-runner`, `composer run test-cli`, `composer run test-laravel`; full gate
+  `make verify`.
+- `OpenApiExecutorInterface` is a runner execution SPI and is exempt from the laravel src seam guard (tests swap it with
+  `app()->instance()`).
 
 ---
 
 ### Task 1: Runner public types (seams, graph value object, builder interface)
 
 **Files:**
+
 - Create: `packages/runner/src/AsyncGraphSeams.php`
 - Create: `packages/runner/src/AsyncExecutionGraph.php`
 - Create: `packages/runner/src/RunnerGraphBuilderInterface.php`
 
 **Interfaces:**
-- Produces: `AsyncGraphSeams` (readonly; ctor accepts the exact fields below with named args), `AsyncExecutionGraph` (readonly; accessors `stepExecutor()`, `workflowExecutor()`, `outcomeHandler()`, `resumer()`, `worker()`, `expressionResolver()`, `protocolExecutors()`), `RunnerGraphBuilderInterface::buildAsync(AsyncGraphSeams): AsyncExecutionGraph`.
+
+- Produces: `AsyncGraphSeams` (readonly; ctor accepts the exact fields below with named args), `AsyncExecutionGraph` (
+  readonly; accessors `stepExecutor()`, `workflowExecutor()`, `outcomeHandler()`, `resumer()`, `worker()`,
+  `expressionResolver()`, `protocolExecutors()`),
+  `RunnerGraphBuilderInterface::buildAsync(AsyncGraphSeams): AsyncExecutionGraph`.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -238,12 +257,16 @@ git commit -m "feat(runner): add async graph seams, graph value object and build
 ### Task 2: Internal async assembler + public builder implementation
 
 **Files:**
+
 - Create: `packages/runner/src/Execution/AsyncExecutionGraphAssembler.php`
 - Create: `packages/runner/src/RunnerGraphBuilder.php`
 
 **Interfaces:**
+
 - Consumes: `AsyncGraphSeams`, `AsyncExecutionGraph` (Task 1); `RunnerGraphBuilderInterface`.
-- Produces: `AsyncExecutionGraphAssembler(#ctor(documents, engine, ?ClientInterface, ?RequestFactoryInterface), #assemble(AsyncGraphSeams): AsyncExecutionGraph)`, `RunnerGraphBuilder` implementing `RunnerGraphBuilderInterface` (same ctor shape as `RunnerFacade`).
+- Produces:
+  `AsyncExecutionGraphAssembler(#ctor(documents, engine, ?ClientInterface, ?RequestFactoryInterface), #assemble(AsyncGraphSeams): AsyncExecutionGraph)`,
+  `RunnerGraphBuilder` implementing `RunnerGraphBuilderInterface` (same ctor shape as `RunnerFacade`).
 
 - [ ] **Step 1: Write the failing wiring test**
 
@@ -363,7 +386,10 @@ it('uses a provided expression resolver instead of building one', function (): v
 });
 ```
 
-Note: the test above uses a vararg-free helper; adapt the `seams()` signature to accept `?ExpressionResolverInterface $expressionResolver = null` and pass it through when implementing Step 3 (keep the stub lambda style from existing runner tests: `seams()` returns `AsyncGraphSeams`; the strict named-arg call requires every public field — assign all port fields, default the rest).
+Note: the test above uses a vararg-free helper; adapt the `seams()` signature to accept
+`?ExpressionResolverInterface $expressionResolver = null` and pass it through when implementing Step 3 (keep the stub
+lambda style from existing runner tests: `seams()` returns `AsyncGraphSeams`; the strict named-arg call requires every
+public field — assign all port fields, default the rest).
 
 Run: `composer run test-runner -- --filter AsyncExecutionGraphAssemblerTest`
 Expected: FAIL — `AsyncExecutionGraphAssembler` not found.
@@ -382,7 +408,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
@@ -537,7 +563,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -568,7 +594,8 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
 - [ ] **Step 5: Run the tests**
 
 Run: `composer run test-runner`
-Expected: PASS. (Fix the `seams()` test helper's `expressionResolver` param wiring so the named-arg call compiles — every public field must be supplied.)
+Expected: PASS. (Fix the `seams()` test helper's `expressionResolver` param wiring so the named-arg call compiles —
+every public field must be supplied.)
 
 - [ ] **Step 6: Commit**
 
@@ -582,16 +609,24 @@ git commit -m "feat(runner): assemble the async execution graph behind the build
 ### Task 3: cli RunCommand delegates to RunnerFacade
 
 **Files:**
-- Modify: `packages/cli/src/Console/Command/RunCommand.php` (lines 11-19 imports; lines 87-109 assembly; lines 111-125 output rendering)
+
+- Modify: `packages/cli/src/Console/Command/RunCommand.php` (lines 11-19 imports; lines 87-109 assembly; lines 111-125
+  output rendering)
 - Test: `packages/cli/tests/Console/RunCommandTest.php` (unchanged — must keep passing)
 
 **Interfaces:**
-- Consumes: `RunnerFacade::execute(ArazzoDocument, string workflowId, array $inputs): array{workflowId,status,outputs,stepsSpent,workflowCallStack,steps: array<string, array{stepId,success,outputs,error}>}`.
-- Produces: `RunCommand` constructs `new RunnerFacade($documents, $engine, $this->httpClient)`; output text identical to today.
+
+- Consumes:
+  `RunnerFacade::execute(ArazzoDocument, string workflowId, array $inputs): array{workflowId,status,outputs,stepsSpent,workflowCallStack,steps: array<string, array{stepId,success,outputs,error}>}`.
+- Produces: `RunCommand` constructs `new RunnerFacade($documents, $engine, $this->httpClient)`; output text identical to
+  today.
 
 - [ ] **Step 1: Write failing test (guards the output shape)**
 
-Add `packages/cli/tests/Console/RunCommandTest.php` a new `it(...)` that asserts the facade shape contract used by the command: the facade must expose `steps` keyed by stepId with `stepId`/`success`/`error` fields and a top-level `status`. Because the facade already ships this, the real harness is the migration itself — Step 3 replaces assembly and the two existing tests in the file (below) are the regression net:
+Add `packages/cli/tests/Console/RunCommandTest.php` a new `it(...)` that asserts the facade shape contract used by the
+command: the facade must expose `steps` keyed by stepId with `stepId`/`success`/`error` fields and a top-level `status`.
+Because the facade already ships this, the real harness is the migration itself — Step 3 replaces assembly and the two
+existing tests in the file (below) are the regression net:
 
 - `it('runs a workflow end-to-end through the CLI', ...)` asserts `pingFlow: succeeded` and `✔ ping`.
 - `it('fails with a clear message for an unknown workflow id', ...)` asserts exit 1 + `unknown workflow`.
@@ -603,7 +638,9 @@ Expected: PASS today (pre-migration baseline).
 
 - [ ] **Step 3: Rewrite RunCommand**
 
-Replace the imports block (keep `DocumentLoader`, `Document`, `SourceRegistry`, `ExpressionEngine`, `GuzzleHttp\Client`, `HttpFactory`, `ClientInterface`, Symfony classes; drop `Runner\Execution\*` imports and add `Alama\Arazzo\Runner\RunnerFacade`):
+Replace the imports block (keep `DocumentLoader`, `Document`, `SourceRegistry`, `ExpressionEngine`, `GuzzleHttp\Client`,
+`HttpFactory`, `ClientInterface`, Symfony classes; drop `Runner\Execution\*` imports and add
+`Alama\Arazzo\Runner\RunnerFacade`):
 
 ```php
 use Alama\Arazzo\Cli\Console\DocumentLoader;
@@ -663,7 +700,8 @@ Run: `composer run test-cli`
 Expected: PASS (both tests, same assertions).
 
 Run: `composer run analyse`
-Expected: PASS (phpstan sees the facade shape via the interface's array docblock; if a union/array-shape nit appears, the interface docblock already casts `steps` — keep the shapes aligned).
+Expected: PASS (phpstan sees the facade shape via the interface's array docblock; if a union/array-shape nit appears,
+the interface docblock already casts `steps` — keep the shapes aligned).
 
 - [ ] **Step 5: Commit**
 
@@ -677,14 +715,18 @@ git commit -m "refactor(cli): run workflows through RunnerFacade instead of asse
 ### Task 4: laravel composition — AsyncGraphResolver + ExecutionBindings + FacadeBindings
 
 **Files:**
+
 - Create: `packages/laravel/src/Support/AsyncGraphResolver.php`
 - Modify: `packages/laravel/src/Bindings/ExecutionBindings.php` (full rewrite)
 - Modify: `packages/laravel/src/Bindings/FacadeBindings.php` (add builder binding)
 - Test: `packages/laravel/tests/Bindings/ExecutionBindingsTest.php` (unchanged)
 
 **Interfaces:**
+
 - Consumes: `RunnerGraphBuilderInterface`, `AsyncExecutionGraph`, `AsyncGraphSeams` (Tasks 1-2).
-- Produces: container bindings — `AsyncExecutionGraph` (singleton), `StepExecutor`, `WorkflowExecutor`, `StepOutcomeHandler`, `CorrelationResumer`, `StepExecutionWorker` (singletons aliasing graph nodes), `WorkflowEngine` (config-live singleton).
+- Produces: container bindings — `AsyncExecutionGraph` (singleton), `StepExecutor`, `WorkflowExecutor`,
+  `StepOutcomeHandler`, `CorrelationResumer`, `StepExecutionWorker` (singletons aliasing graph nodes),
+  `WorkflowEngine` (config-live singleton).
 
 - [ ] **Step 1: Write failing laravel wiring test**
 
@@ -713,7 +755,8 @@ Expected: FAIL — `AsyncExecutionGraph` not bound.
 
 - [ ] **Step 3: Create `Support/AsyncGraphResolver`**
 
-See Global Constraints: it must sample config via `ConfigValue` and ports via `$app->make`/`$app->bound` at resolve time (fresh per graph build):
+See Global Constraints: it must sample config via `ConfigValue` and ports via `$app->make`/`$app->bound` at resolve
+time (fresh per graph build):
 
 ```php
 <?php
@@ -828,9 +871,11 @@ final class ExecutionBindings
 }
 ```
 
-Note the final binding: `ExpressionResolverInterface` stays resolvable through the graph (other host code and `RunExecuteStepJobTest`'s `app()->instance(...)` override both work).
+Note the final binding: `ExpressionResolverInterface` stays resolvable through the graph (other host code and
+`RunExecuteStepJobTest`'s `app()->instance(...)` override both work).
 
-`packages/laravel/src/Bindings/FacadeBindings.php` — add the builder binding after the facade binding (imports `Alama\Arazzo\Runner\RunnerGraphBuilder`, `RunnerGraphBuilderInterface`):
+`packages/laravel/src/Bindings/FacadeBindings.php` — add the builder binding after the facade binding (imports
+`Alama\Arazzo\Runner\RunnerGraphBuilder`, `RunnerGraphBuilderInterface`):
 
 ```php
         $app->singleton(RunnerGraphBuilderInterface::class, function (Container $app): RunnerGraphBuilder {
@@ -847,9 +892,14 @@ Note the final binding: `ExpressionResolverInterface` stays resolvable through t
 - [ ] **Step 5: Run the laravel suite**
 
 Run: `composer run test-laravel`
-Expected: PASS — including the new `ExecutionBindingsGraphTest` and the four existing files that encode freshness idioms (`ExecutionBindingsTest`, `WebhookResumeControllerTest`, `RunExecuteStepJobTest`, `IdempotencyFeatureTest`) with **no edits**.
+Expected: PASS — including the new `ExecutionBindingsGraphTest` and the four existing files that encode freshness
+idioms (`ExecutionBindingsTest`, `WebhookResumeControllerTest`, `RunExecuteStepJobTest`, `IdempotencyFeatureTest`) with
+**no edits**.
 
-If a test fails, re-check the freshness model from the spec (`docs/superpowers/specs/2026-09-07-migrate-cli-laravel-public-faces-design.md` «Wiring freshness»): graph builds lazily at first node resolve, `OpenApiExecutorInterface`/`ExpressionResolverInterface` sampled via `$app->bound()`, config knobs via `ConfigValue` at that moment.
+If a test fails, re-check the freshness model from the spec (
+`docs/superpowers/specs/2026-09-07-migrate-cli-laravel-public-faces-design.md` «Wiring freshness»): graph builds lazily
+at first node resolve, `OpenApiExecutorInterface`/`ExpressionResolverInterface` sampled via `$app->bound()`, config
+knobs via `ConfigValue` at that moment.
 
 - [ ] **Step 6: Commit**
 
@@ -863,11 +913,14 @@ git commit -m "refactor(laravel): consume the runner graph via builder face; dro
 ### Task 5: LaravelFaceSeamTest — machine-checked guard
 
 **Files:**
+
 - Create: `packages/laravel/tests/Validation/LaravelFaceSeamTest.php`
 
 **Interfaces:**
+
 - Consumes: none.
-- Produces: `LARAVEL_FORBIDDEN_SEAM_PREFIXES` const; `laravelSourceFiles()`; `laravelSeamViolations()` returning list of `path => prefix`.
+- Produces: `LARAVEL_FORBIDDEN_SEAM_PREFIXES` const; `laravelSourceFiles()`; `laravelSeamViolations()` returning list of
+  `path => prefix`.
 
 - [ ] **Step 1: Write the failing guard test**
 
@@ -971,7 +1024,10 @@ Expected: FAIL on the sanity test — `laravelSeamViolationsForFile` undefined.
 
 - [ ] **Step 3: Deduplicate the scan into one helper**
 
-Refactor so `laravelSeamViolations()` calls `laravelSeamViolationsForFile()` per file (the sanity test then passes; the src-wide test must pass). Mirror the runner's `RunnerFaceSeamTest` structure. Remember PHP 8.4 + pint: global-namespace file — reference SPL classes (`RecursiveIteratorIterator`, `RecursiveDirectoryIterator`, `SplFileInfo`) without `use` statements and without leading backslashes (compare `packages/runner/tests/Validation/RunnerFaceSeamTest.php`).
+Refactor so `laravelSeamViolations()` calls `laravelSeamViolationsForFile()` per file (the sanity test then passes; the
+src-wide test must pass). Mirror the runner's `RunnerFaceSeamTest` structure. Remember PHP 8.4 + pint: global-namespace
+file — reference SPL classes (`RecursiveIteratorIterator`, `RecursiveDirectoryIterator`, `SplFileInfo`) without `use`
+statements and without leading backslashes (compare `packages/runner/tests/Validation/RunnerFaceSeamTest.php`).
 
 - [ ] **Step 4: Run + analyse**
 
@@ -992,8 +1048,10 @@ git commit -m "test(laravel): enforce runner public-face seam in laravel wiring 
 ### Task 6: Full gate + doc drift
 
 **Files:**
+
 - Modify: `docs/generated/*` (auto, via pre-commit hook — expected cosmetic seam drift)
-- Documentation: `docs/superpowers/specs/2026-09-07-migrate-cli-laravel-public-faces-design.md` remains source of truth (already updated)
+- Documentation: `docs/superpowers/specs/2026-09-07-migrate-cli-laravel-public-faces-design.md` remains source of
+  truth (already updated)
 
 - [ ] **Step 1: Run the full gate**
 
@@ -1002,7 +1060,9 @@ Expected: exit 0 (docs regen → pint → phpstan → pest). The laravel + cli +
 
 - [ ] **Step 2: Draft the PR**
 
-Open PR from the branch with body containing `Closes #61`, listing: runner public types added, cli now delegates to `RunnerFacade`, laravel consumes `RunnerGraphBuilderInterface` + `AsyncExecutionGraph`, `LaravelFaceSeamTest` guard, `make verify` green.
+Open PR from the branch with body containing `Closes #61`, listing: runner public types added, cli now delegates to
+`RunnerFacade`, laravel consumes `RunnerGraphBuilderInterface` + `AsyncExecutionGraph`, `LaravelFaceSeamTest` guard,
+`make verify` green.
 
 - [ ] **Step 3: Final commit (docs drift)**
 
@@ -1011,4 +1071,5 @@ git add docs/generated
 git commit -m "chore(docs): refresh generated boundary reports — Closes #61"
 ```
 
-(If pre-commit already swept the drift into earlier commits, stage and commit whatever remains — the PR body, not the final message, carries `Closes #61`.)
+(If pre-commit already swept the drift into earlier commits, stage and commit whatever remains — the PR body, not the
+final message, carries `Closes #61`.)

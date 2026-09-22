@@ -6,8 +6,8 @@ namespace Alama\Arazzo\Laravel\Bindings;
 
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Runner\RunnerGraphBuilder;

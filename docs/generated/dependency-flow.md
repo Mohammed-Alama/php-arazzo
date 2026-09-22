@@ -23,6 +23,8 @@ cli-Console,document-Parser,8
 cli-Console,document-Resolver,1
 cli-Console,document-Validator,2
 cli-Console,document-root,1
+cli-Console,evaluation-Interfaces,1
+cli-Console,evaluation-root,2
 cli-Console,runner-Events,2
 cli-Console,runner-Execution,5
 cli-Console,runner-Jobs,1
@@ -49,6 +51,7 @@ document-Validator,contracts-Spec,88
 document-Validator,contracts-Support,2
 document-Validator,document-Normalizer,2
 document-Validator,document-Resolver,1
+document-Validator,evaluation-root,11
 document-Validator,expression-Data,4
 document-Validator,expression-Enum,7
 document-Validator,expression-root,52
@@ -57,6 +60,37 @@ document-root,document-Normalizer,7
 document-root,document-Parser,6
 document-root,document-Resolver,5
 document-root,document-Validator,5
+document-root,evaluation-root,2
+evaluation-Condition,contracts-Spec,4
+evaluation-Condition,contracts-Support,1
+evaluation-Condition,evaluation-Data,1
+evaluation-Condition,evaluation-Enum,9
+evaluation-Condition,evaluation-Interfaces,8
+evaluation-Data,contracts-Spec,4
+evaluation-Data,evaluation-Interfaces,2
+evaluation-Exceptions,contracts-Support,1
+evaluation-Interfaces,contracts-Spec,12
+evaluation-Plugins,contracts-Interfaces,2
+evaluation-Plugins,contracts-Spec,5
+evaluation-Plugins,evaluation-root,2
+evaluation-Registries,contracts-Interfaces,2
+evaluation-Registries,contracts-Spec,3
+evaluation-Xpath,contracts-Spec,1
+evaluation-Xpath,evaluation-Exceptions,1
+evaluation-root,contracts-Interfaces,2
+evaluation-root,contracts-Spec,36
+evaluation-root,contracts-State,3
+evaluation-root,evaluation-Condition,2
+evaluation-root,evaluation-Data,4
+evaluation-root,evaluation-Exceptions,1
+evaluation-root,evaluation-Interfaces,12
+evaluation-root,evaluation-Registries,3
+evaluation-root,evaluation-Xpath,5
+evaluation-root,expression-Ast,26
+evaluation-root,expression-Data,2
+evaluation-root,expression-Enum,1
+evaluation-root,expression-Exceptions,2
+evaluation-root,expression-root,4
 expression-Data,expression-Enum,2
 expression-Exceptions,contracts-Support,1
 expression-Interfaces,contracts-Spec,1
@@ -76,6 +110,7 @@ laravel-Bindings,document-Parser,1
 laravel-Bindings,document-Resolver,6
 laravel-Bindings,document-Validator,1
 laravel-Bindings,document-root,2
+laravel-Bindings,evaluation-root,3
 laravel-Bindings,laravel-Http,1
 laravel-Bindings,laravel-Lock,1
 laravel-Bindings,laravel-Persistence,4
@@ -104,6 +139,7 @@ laravel-Queue,runner-Execution,2
 laravel-Queue,runner-Jobs,4
 laravel-State,runner-State,1
 laravel-Support,contracts-Interfaces,2
+laravel-Support,evaluation-Interfaces,1
 laravel-Support,runner-Events,1
 laravel-Support,runner-Execution,1
 laravel-Support,runner-Infrastructure,1
@@ -119,6 +155,7 @@ runner-Async,contracts-State,6
 runner-Async,contracts-Support,1
 runner-Async,document-Validator,2
 runner-Async,document-root,1
+runner-Async,evaluation-Interfaces,1
 runner-Async,runner-Events,9
 runner-Async,runner-Execution,3
 runner-Async,runner-Jobs,1
@@ -134,6 +171,8 @@ runner-Execution,document-Normalizer,4
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
 runner-Execution,document-root,8
+runner-Execution,evaluation-Interfaces,6
+runner-Execution,evaluation-root,10
 runner-Execution,expression-Enum,1
 runner-Execution,runner-Events,21
 runner-Execution,runner-Jobs,2
@@ -151,6 +190,8 @@ runner-Protocol,contracts-Interfaces,5
 runner-Protocol,contracts-Spec,20
 runner-Protocol,contracts-State,5
 runner-Protocol,document-root,1
+runner-Protocol,evaluation-Interfaces,2
+runner-Protocol,evaluation-root,3
 runner-Protocol,runner-Execution,14
 runner-Protocol,runner-Infrastructure,1
 runner-Protocol,runner-State,1
@@ -159,6 +200,8 @@ runner-State,contracts-State,2
 runner-root,contracts-Interfaces,3
 runner-root,contracts-Spec,3
 runner-root,document-root,2
+runner-root,evaluation-Interfaces,2
+runner-root,evaluation-root,2
 runner-root,runner-Events,1
 runner-root,runner-Execution,10
 runner-root,runner-Infrastructure,1
@@ -172,6 +215,7 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
+| `evaluation-Registries` | `evaluation-Plugins` | 2 |
 | `expression-root` | `expression-Interfaces` | 1 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

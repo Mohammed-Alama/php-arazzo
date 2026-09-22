@@ -11,6 +11,7 @@ classDiagram
     direction TB
     class E_RuntimeException["RuntimeException"]:::builtin
     class E_ArazzoException["ArazzoException<br/><small>contracts:Support</small>"]:::domain
+    class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>evaluation:Condition</small>"]:::domain
     class E_DecodeException["DecodeException<br/><small>document:Parser</small>"]:::domain
     class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>runner:State</small>"]:::domain
     class E_ExecutionException["ExecutionException<br/><small>runner:Execution</small>"]:::domain
@@ -21,6 +22,7 @@ classDiagram
     class E_ParserException["ParserException<br/><small>document:Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>document:Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>contracts:Exceptions</small>"]:::domain
+    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>evaluation:Exceptions</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>document:Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>document:Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>document:Resolver</small>"]:::domain
@@ -31,6 +33,7 @@ classDiagram
     class E_WorkflowCycleException["WorkflowCycleException<br/><small>runner:Execution</small>"]:::domain
     class E_WorkflowDepthExceededException["WorkflowDepthExceededException<br/><small>runner:Execution</small>"]:::domain
     E_RuntimeException <|-- E_ArazzoException
+    E_ArazzoException <|-- E_ConditionSyntaxException
     E_RuntimeException <|-- E_DecodeException
     E_RuntimeException <|-- E_DefinitionHydrationException
     E_ArazzoException <|-- E_ExecutionException
@@ -41,6 +44,7 @@ classDiagram
     E_ArazzoException <|-- E_ParserException
     E_ArazzoException <|-- E_PreflightFailureException
     E_RuntimeException <|-- E_SchemaValidationException
+    E_ArazzoException <|-- E_SelectorEvaluationException
     E_SourceResolutionException <|-- E_SourceFetchException
     E_SourceResolutionException <|-- E_SourceParseException
     E_RuntimeException <|-- E_SourceResolutionException
@@ -57,6 +61,7 @@ classDiagram
 | Exception | Extends | Module |
 |---|---|---|
 | `ArazzoException` | `RuntimeException` | contracts:Support |
+| `ConditionSyntaxException` | `ArazzoException` | evaluation:Condition |
 | `DecodeException` | `RuntimeException` | document:Parser |
 | `DefinitionHydrationException` | `RuntimeException` | runner:State |
 | `ExecutionException` | `ArazzoException` | runner:Execution |
@@ -67,6 +72,7 @@ classDiagram
 | `ParserException` | `ArazzoException` | document:Parser |
 | `PreflightFailureException` | `ArazzoException` | document:Validator |
 | `SchemaValidationException` | `RuntimeException` | contracts:Exceptions |
+| `SelectorEvaluationException` | `ArazzoException` | evaluation:Exceptions |
 | `SourceFetchException` | `SourceResolutionException` | document:Resolver |
 | `SourceParseException` | `SourceResolutionException` | document:Resolver |
 | `SourceResolutionException` | `RuntimeException` | document:Resolver |

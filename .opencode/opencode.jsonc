@@ -1,4 +1,15 @@
 {
-	"$schema": "https://opencode.ai/config.json"
-	// Add MCP servers, tools, plugins here
+    "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+        "jetbrains": {
+            "type": "local",
+            "command": [
+                "npx",
+                "-y",
+                "@jetbrains/mcp-proxy"
+            ],
+            "enabled": true
+        }
+    }
+    // Add MCP servers, tools, plugins here
 }

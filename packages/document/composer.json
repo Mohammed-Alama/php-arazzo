@@ -7,6 +7,7 @@
         "php": "^8.4",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-evaluation": "@dev",
         "cebe/php-openapi": "^1.7",
         "justinrainbow/json-schema": "^6.0",
         "psr/http-client": "^1.0",

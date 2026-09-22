@@ -7,8 +7,8 @@ use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 
 it('aliases SourceRegistry onto the same instance as SourceResolver', function (): void {

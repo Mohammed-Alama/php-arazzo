@@ -15,30 +15,31 @@ use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
+use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
 
 /**
-     * @internal stays out of the advertised contract; not part of the public API surface
-     */
-    class CriteriaEvaluator implements CriteriaEvaluatorInterface
-    {
-        private ConditionEvaluator $conditionEvaluator;
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
+class CriteriaEvaluator implements CriteriaEvaluatorInterface
+{
+    private ConditionEvaluator $conditionEvaluator;
 
-        private ?XpathEvaluator $xpathEvaluator;
+    private ?XpathEvaluator $xpathEvaluator;
 
-        private ?CriterionEvaluatorRegistry $criterionRegistry;
+    private ?CriterionEvaluatorRegistry $criterionRegistry;
 
-        public function __construct(
-            private ExpressionEvaluatorInterface $evaluator,
-            ?ConditionEvaluator $conditionEvaluator = null,
-            ?XpathEvaluator $xpathEvaluator = null,
-            ?CriterionEvaluatorRegistry $criterionRegistry = null,
-        ) {
-            $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
-            $this->xpathEvaluator = $xpathEvaluator;
-            $this->criterionRegistry = $criterionRegistry;
-        }
+    public function __construct(
+        private ExpressionEvaluatorInterface $evaluator,
+        ?ConditionEvaluator $conditionEvaluator = null,
+        ?XpathEvaluator $xpathEvaluator = null,
+        ?CriterionEvaluatorRegistry $criterionRegistry = null,
+    ) {
+        $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
+        $this->xpathEvaluator = $xpathEvaluator;
+        $this->criterionRegistry = $criterionRegistry;
+    }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
@@ -80,6 +81,7 @@ use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
                     if (!$passed) {
                         return false;
                     }
+
                     continue;
                 }
             }

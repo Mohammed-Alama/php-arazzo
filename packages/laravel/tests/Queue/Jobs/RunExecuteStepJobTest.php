@@ -20,7 +20,7 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;

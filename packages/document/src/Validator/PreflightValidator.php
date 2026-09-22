@@ -16,7 +16,7 @@ use Alama\Arazzo\Document\Validator\Data\Error;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\Data\Warning;
 use Alama\Arazzo\Document\Validator\Enum\Severity;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;

@@ -6,8 +6,6 @@ namespace Alama\Arazzo\Evaluation\Registries;
 
 use Alama\Arazzo\Contracts\Interfaces\CriterionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
-use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Evaluation\Plugins\JsonPathCriterionPlugin;
 
@@ -35,9 +33,6 @@ final class CriterionEvaluatorRegistry
         krsort($this->plugins);
     }
 
-    /**
-     * @return CriterionEvaluatorPluginInterface|null
-     */
     public function resolve(CriterionType|SuccessCriterion $criterion): ?CriterionEvaluatorPluginInterface
     {
         foreach ($this->plugins as $priorityPlugins) {
@@ -47,6 +42,7 @@ final class CriterionEvaluatorRegistry
                 }
             }
         }
+
         return null;
     }
 
@@ -57,6 +53,7 @@ final class CriterionEvaluatorRegistry
         foreach ($this->plugins as $priorityPlugins) {
             $flat = array_merge($flat, $priorityPlugins);
         }
+
         return $flat;
     }
 }

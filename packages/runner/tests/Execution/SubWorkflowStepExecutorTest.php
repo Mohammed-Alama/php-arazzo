@@ -17,7 +17,7 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;

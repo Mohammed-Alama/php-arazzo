@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Runner;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\ExecutionGraphFactory;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
