@@ -123,3 +123,5 @@ Declared but nothing in src implements them — candidates for removal or for a 
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
+- `SourceNormalizerInterface` <small>Interfaces</small>
+- `SourceNormalizerRegistryInterface` <small>Interfaces</small>

@@ -54,6 +54,14 @@ this file on a commit is a public API change — review it deliberately.
 #### `ResponseValidatorInterface` interface
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 
+#### `SourceNormalizerInterface` interface
+- `public function normalize(SourceDescription $source, string $rawContent, ?ArazzoDocument $document = null): array;`
+- `public function supports(SourceType $type): bool;`
+
+#### `SourceNormalizerRegistryInterface` interface
+- `public function get(SourceType $type): ?SourceNormalizerInterface;`
+- `public function register(SourceNormalizerInterface $normalizer): void;`
+
 #### `StepProtocolExecutorInterface` interface
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`

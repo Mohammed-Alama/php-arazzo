@@ -40,6 +40,8 @@ flowchart LR
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
     I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>document:Resolver</small>"]:::contract
+    I_SourceNormalizerInterface["SourceNormalizerInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_SourceNormalizerRegistryInterface["SourceNormalizerRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_SourceResolver["SourceResolver<br/><small>document:Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>runner:State</small>"]:::contract
     I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -264,6 +266,8 @@ flowchart LR
     N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
+    N_SourceNormalizerInterface["no implementation found"]:::orphan --> I_SourceNormalizerInterface
+    N_SourceNormalizerRegistryInterface["no implementation found"]:::orphan --> I_SourceNormalizerRegistryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
