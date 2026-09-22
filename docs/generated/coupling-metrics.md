@@ -40,8 +40,8 @@ targets. Regenerated before every commit.
 | `laravel:Persistence` | 4 | 260 | 1 | 4 | 0.80 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 40 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 2 | 117 | 1 | 7 | 0.88 |  |
-| `(laravel root)` | 1 | 87 | 0 | 2 | 1.00 |  |
+| `laravel:Support` | 2 | 117 | 2 | 7 | 0.78 |  |
+| `(laravel root)` | 1 | 88 | 0 | 3 | 1.00 |  |
 | `runner:Async` | 6 | 500 | 0 | 12 | 1.00 |  |
 | `runner:Events` | 11 | 317 | 7 | 1 | 0.13 |  |
 | `runner:Execution` | 39 | 3821 | 7 | 20 | 0.74 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 281 | 4 | 9 | 0.69 |  |
 
-Total cross-module edges: **918**
+Total cross-module edges: **919**
 
 ## Most entangled module pairs
 

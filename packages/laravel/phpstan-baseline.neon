@@ -145,12 +145,6 @@ parameters:
 			path: src/Http/Controllers/WebhookResumeController.php
 
 		-
-			message: '#^Parameter \#1 \$prefix of static method Illuminate\\Support\\Facades\\Route\:\:prefix\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/LaravelArazzoServiceProvider.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 3

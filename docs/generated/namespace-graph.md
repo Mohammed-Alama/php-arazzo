@@ -223,6 +223,7 @@ flowchart LR
     laravel_Support --> runner_State
     laravel__ --> laravel_Bindings
     laravel__ --> laravel_Http
+    laravel__ --> laravel_Support
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
 ```

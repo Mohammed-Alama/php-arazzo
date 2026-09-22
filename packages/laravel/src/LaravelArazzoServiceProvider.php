@@ -13,6 +13,7 @@ use Alama\Arazzo\Laravel\Bindings\PersistenceBindings;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 use Alama\Arazzo\Laravel\Http\Controllers\ArazzoApiController;
 use Alama\Arazzo\Laravel\Http\Controllers\WebhookResumeController;
+use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
@@ -76,7 +77,7 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
             return view($view);
         })->middleware('web');
 
-        Route::prefix(config('arazzo.webhook_prefix', 'api/arazzo'))
+        Route::prefix(ConfigValue::string(config('arazzo.webhook_prefix'), 'api/arazzo'))
             ->middleware('api')
             ->group(function () {
                 Route::get('/endpoints', [ArazzoApiController::class, 'endpoints']);

@@ -51,7 +51,7 @@ quadrantChart
     laravel/Persistence: [0.8, 0]
     laravel/Queue: [0.75, 0]
     laravel/State: [0.5, 0]
-    laravel/Support: [0.875, 0]
+    laravel/Support: [0.778, 0]
     laravel/_: [1, 0]
     runner/Async: [1, 0]
     runner/Events: [0.125, 0.091]
