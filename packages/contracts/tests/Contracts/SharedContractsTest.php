@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\BackoffCalculatorInterface;
+use Alama\Arazzo\Contracts\Interfaces\CriterionEvaluatorPluginInterface;
+use Alama\Arazzo\Contracts\Interfaces\ExpressionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\PluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 
 it('declares the shared contracts consumers rely on')
@@ -25,4 +28,18 @@ it('declares the plugin base faces')
     ->and(interface_exists(OperationExecutorPluginInterface::class))
     ->toBeTrue()
     ->and(is_subclass_of(OperationExecutorPluginInterface::class, PluginInterface::class))
+    ->toBeTrue();
+
+it('declares the evaluator and replacer plugin faces')
+    ->expect(interface_exists(CriterionEvaluatorPluginInterface::class))
+    ->toBeTrue()
+    ->and(interface_exists(ExpressionEvaluatorPluginInterface::class))
+    ->toBeTrue()
+    ->and(interface_exists(ReplacementTargetResolverInterface::class))
+    ->toBeTrue()
+    ->and(is_subclass_of(CriterionEvaluatorPluginInterface::class, PluginInterface::class))
+    ->toBeTrue()
+    ->and(is_subclass_of(ExpressionEvaluatorPluginInterface::class, PluginInterface::class))
+    ->toBeTrue()
+    ->and(is_subclass_of(ReplacementTargetResolverInterface::class, PluginInterface::class))
     ->toBeTrue();

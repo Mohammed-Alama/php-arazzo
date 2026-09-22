@@ -118,5 +118,8 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
+- `CriterionEvaluatorPluginInterface` <small>Interfaces</small>
+- `ExpressionEvaluatorPluginInterface` <small>Interfaces</small>
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
+- `ReplacementTargetResolverInterface` <small>Interfaces</small>

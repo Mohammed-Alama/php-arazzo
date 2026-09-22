@@ -20,6 +20,14 @@ this file on a commit is a public API change — review it deliberately.
 #### `BackoffCalculatorInterface` interface
 - `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
 
+#### `CriterionEvaluatorPluginInterface` interface
+- `public function evaluate(SuccessCriterion $criterion, mixed $context, Step $step, WorkflowContextInterface $workflowContext): bool;`
+- `public function supports(CriterionType|SuccessCriterion $criterion): bool;`
+
+#### `ExpressionEvaluatorPluginInterface` interface
+- `public function evaluate(Expression $expression, mixed $context): mixed;`
+- `public function supports(Expression $expression): bool;`
+
 #### `LockStrategyInterface` interface
 - `public function acquire(string $key, int $ttlSeconds, callable $callback): mixed;`
 - `public function release(string $key): void;`
@@ -38,6 +46,10 @@ this file on a commit is a public API change — review it deliberately.
 
 #### `QueueDriverInterface` interface
 - `public function dispatch(object $job, int $delaySeconds = 0): void;`
+
+#### `ReplacementTargetResolverInterface` interface
+- `public function resolve(mixed $container, string $target, mixed $value): mixed;`
+- `public function supports(string $targetType): bool;`
 
 #### `ResponseValidatorInterface` interface
 - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`

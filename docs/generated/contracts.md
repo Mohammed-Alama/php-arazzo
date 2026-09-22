@@ -12,6 +12,7 @@ flowchart LR
     I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>expression:Evaluation</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>expression:Evaluation</small>"]:::contract
+    I_CriterionEvaluatorPluginInterface["CriterionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
     I_EvaluationInputInterface["EvaluationInputInterface<br/><small>expression:Interfaces</small>"]:::contract
@@ -19,6 +20,7 @@ flowchart LR
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(expression root)</small>"]:::contract
     I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>runner:Infrastructure</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>document:Parser</small>"]:::contract
@@ -32,6 +34,7 @@ flowchart LR
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_ReplacementTargetResolverInterface["ReplacementTargetResolverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ResponseValidatorInterface["ResponseValidatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
@@ -256,8 +259,11 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
+    N_CriterionEvaluatorPluginInterface["no implementation found"]:::orphan --> I_CriterionEvaluatorPluginInterface
+    N_ExpressionEvaluatorPluginInterface["no implementation found"]:::orphan --> I_ExpressionEvaluatorPluginInterface
     N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
+    N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef implCore fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
