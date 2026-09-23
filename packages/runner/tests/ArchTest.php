@@ -24,7 +24,7 @@ arch('runner does not depend on illuminate framework')
 
 arch('runner does not leak expression internals')
     ->expect('Alama\Arazzo\Expression')
-    ->not->toUse('Alama\Arazzo\Expression\ExpressionEngine')
+    ->not->toUse('Alama\Arazzo\Expression\EvaluationEngine')
     ->expect('Alama\Arazzo\Runner\Execution')
     ->not->toUse('Alama\Arazzo\Cli\Console')
     ->not->toUse('Alama\Arazzo\Cli\Generator')

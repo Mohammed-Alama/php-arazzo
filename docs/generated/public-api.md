@@ -295,36 +295,32 @@ this file on a commit is a public API change — review it deliberately.
 
 ## evaluation
 
-### `ExpressionEngineInterface` interface
-- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
-- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
-- `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
-- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
-- `public function expressionReferences(string $raw): ?ExpressionReference;`
-- `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
-- `public function jsonPath(string $expression, array|object $data): mixed;`
-- `public function jsonPointer(array $data, ?string $pointer): mixed;`
-- `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
-- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
-- `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
-- `public function supportedXPathVersions(): array;`
+### `Alama\Arazzo\Evaluation`
 
-### `ExpressionEngine` class
-- `public function __construct(private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(), private readonly ExpressionParser $parser = new ExpressionParser(), private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(), private readonly ExpressionEvaluatorRegistry $expressionRegistry = new ExpressionEvaluatorRegistry(), private readonly CriterionEvaluatorRegistry $criterionRegistry = new CriterionEvaluatorRegistry())`
-- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable`
+#### `EvaluationEngine` class
+- `public function __construct(private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(), private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(), private readonly ExpressionEvaluatorRegistry $expressionRegistry = new ExpressionEvaluatorRegistry(), private readonly CriterionEvaluatorRegistry $criterionRegistry = new CriterionEvaluatorRegistry())`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
-- `public function expressionReferences(string $raw): ?ExpressionReference`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
 - `public function jsonPointer(array $data, ?string $pointer): mixed`
-- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
 - `public function supportedXPathVersions(): array`
+
+#### `EvaluationEngineInterface` interface
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
+- `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
+- `public function jsonPath(string $expression, array|object $data): mixed;`
+- `public function jsonPointer(array $data, ?string $pointer): mixed;`
+- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+- `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
+- `public function supportedXPathVersions(): array;`
 
 ### `Alama\Arazzo\Evaluation\Data`
 
@@ -438,7 +434,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, ExpressionEngineInterface $engine, ?ClientInterface $httpClient = null)`
+- `public function __construct(DocumentInterface $documents, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 

@@ -15,7 +15,7 @@ use Alama\Arazzo\Document\Validator\Rules\StepParameterInValidRule;
 use Alama\Arazzo\Document\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Symfony\Component\Yaml\Yaml;
 
 function loadFixture(string $filename): RawDocument

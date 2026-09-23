@@ -15,11 +15,12 @@ use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Events\RunCompletedEvent;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
@@ -100,9 +101,9 @@ abstract class ConformanceHarness
         return $document;
     }
 
-    protected function engine(): ExpressionEngineInterface
+    protected function engine(): EvaluationEngineInterface
     {
-        return new ExpressionEngine();
+        return new EvaluationEngine();
     }
 
     protected function documents(SourceRegistry $registry): DocumentInterface
@@ -116,7 +117,7 @@ abstract class ConformanceHarness
 
         return new ExpressionResolver(
             $evaluator,
-            new StepOutputExtractor($documents, $this->engine()),
+            new StepOutputExtractor($documents, $this->engine(), new ExpressionEngine()),
             new CriteriaEvaluator($evaluator),
             new ResponseSchemaValidator($documents),
         );

@@ -15,7 +15,7 @@ use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 /**
  * Runs the vendored OFFICIAL OAI example corpus (see corpus/oai/README.md)

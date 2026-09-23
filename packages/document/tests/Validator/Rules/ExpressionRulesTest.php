@@ -24,7 +24,7 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedInputRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedSourceRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 
 function stepE(string $id, array $params = [], array $outs = []): Step

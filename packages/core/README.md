@@ -67,7 +67,7 @@ $operationResolver = new OpenApiOperationResolver(
 
 $expressionResolver = new ArazzoExpressionResolver(
     $evaluator,
-    new StepOutputExtractor($operationResolver, $evaluator),
+    new StepOutputExtractor($operationResolver, $evaluator, new \Alama\Arazzo\Expression\ExpressionEngine()),
     new ArazzoCriteriaEvaluator($evaluator),
     new ResponseSchemaValidator($operationResolver),
 );
@@ -85,7 +85,6 @@ $stepExecutor = new StepExecutor(
 $preflight = new PreflightValidator(
     $sourceResolver,
     $operationResolver,
-    new ExpressionEngine(),
 );
 
 // The canonical engine makes every control-flow decision; adapters apply
@@ -120,7 +119,7 @@ For **durable, queue-driven, resumable** execution (steps run as background jobs
 use Alama\Arazzo\Validator\RuleSet;
 use Alama\Arazzo\Validator\Validator;
 
-$result = (new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine())))->validate($document);
+$result = (new Validator(new \Alama\Arazzo\Expression\ExpressionEngine(), RuleSet::default(new \Alama\Arazzo\Expression\ExpressionEngine())))->validate($document);
 
 if (!$result->isValid()) {
     foreach ($result->errors as $error) {

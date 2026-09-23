@@ -7,8 +7,10 @@ use Alama\Arazzo\Document\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 
 it('aliases SourceRegistry onto the same instance as SourceResolver', function (): void {
@@ -23,9 +25,11 @@ it('resolves the operation-resolution stack as singletons', function (): void {
     }
 });
 
-it('resolves capability evaluators and the preflight gate', function (): void {
+it('resolves the engine facades and the preflight gate', function (): void {
     expect(app(ExpressionEngineInterface::class))->toBeInstanceOf(ExpressionEngine::class)
         ->and(app(ExpressionEngineInterface::class))->toBe(app(ExpressionEngineInterface::class))
+        ->and(app(EvaluationEngineInterface::class))->toBeInstanceOf(EvaluationEngine::class)
+        ->and(app(EvaluationEngineInterface::class))->toBe(app(EvaluationEngineInterface::class))
         ->and(app(PreflightValidator::class))->toBeInstanceOf(PreflightValidator::class);
 });
 

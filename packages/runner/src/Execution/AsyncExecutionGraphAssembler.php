@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
@@ -28,7 +29,8 @@ final class AsyncExecutionGraphAssembler
 {
     public function __construct(
         private readonly DocumentInterface $documents,
-        private readonly ExpressionEngineInterface $engine,
+        private readonly EvaluationEngineInterface $engine,
+        private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
         private readonly ?RequestFactoryInterface $requestFactory = null,
     ) {}
@@ -41,7 +43,7 @@ final class AsyncExecutionGraphAssembler
         $openApiExecutor = $seams->openApiExecutor ?? new DefaultOpenApiExecutor($client, $factory, $seams->logger);
         $expressionResolver = $seams->expressionResolver ?? new ExecutionExpressionResolver(
             $this->engine,
-            new StepOutputExtractor($this->documents, $this->engine),
+            new StepOutputExtractor($this->documents, $this->engine, $this->inspector),
             new ResponseSchemaValidator($this->documents),
         );
 

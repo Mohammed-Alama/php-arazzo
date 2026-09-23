@@ -10,7 +10,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Document;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 
@@ -26,7 +26,7 @@ function runnerDocument(): ArazzoDocument
 
 function runnerFacade(): RunnerFacade
 {
-    return new RunnerFacade(new Document(), new ExpressionEngine());
+    return new RunnerFacade(new Document(), new EvaluationEngine());
 }
 
 it('exposes the RunnerFacadeInterface entry point', function () {

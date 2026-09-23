@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -17,7 +18,7 @@ use Psr\Http\Message\RequestFactoryInterface;
  * The runner consumes the document package through its public face: source
  * resolution/fetching, preflight validation and OpenAPI operation resolution
  * all flow through {@see DocumentInterface}. Expression services flow
- * through the injected expression public face ({@see ExpressionEngineInterface}),
+ * through the injected expression public face ({@see EvaluationEngineInterface}),
  * with the runner composing output extraction and schema validation itself.
  *
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -26,7 +27,8 @@ final class ExecutionGraphFactory
 {
     public function __construct(
         private readonly DocumentInterface $documents,
-        private readonly ExpressionEngineInterface $engine,
+        private readonly EvaluationEngineInterface $engine,
+        private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
         private readonly ?RequestFactoryInterface $requestFactory = null,
     ) {}
@@ -38,7 +40,7 @@ final class ExecutionGraphFactory
 
         $expressionResolver = new ExecutionExpressionResolver(
             $this->engine,
-            new StepOutputExtractor($this->documents, $this->engine),
+            new StepOutputExtractor($this->documents, $this->engine, $this->inspector),
             new ResponseSchemaValidator($this->documents),
         );
 

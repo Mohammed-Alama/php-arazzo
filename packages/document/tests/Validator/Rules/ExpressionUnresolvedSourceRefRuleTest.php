@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedSourceRefRule;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 

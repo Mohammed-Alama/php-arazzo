@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Document\Validator;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

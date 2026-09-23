@@ -21,9 +21,10 @@ use Alama\Arazzo\Document\Validator\Enum\Severity;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -94,7 +95,7 @@ function preflightValidator(?SourceRegistry $registry = null): PreflightValidato
         new OpenApi31Normalizer(),
     );
 
-    return new PreflightValidator($registry, $operations, new ExpressionEngine());
+    return new PreflightValidator($registry, $operations);
 }
 
 it('passes a fully resolvable document with zero diagnostics', function (): void {
@@ -156,7 +157,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
     $documents = new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $resolver = new ExpressionResolver(
         new ExpressionEvaluator(),
-        new StepOutputExtractor($documents, new ExpressionEngine()),
+        new StepOutputExtractor($documents, new EvaluationEngine(), new ExpressionEngine()),
         new CriteriaEvaluator(new ExpressionEvaluator()),
         new ResponseSchemaValidator($documents),
     );
@@ -166,7 +167,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
             $documents,
-            engine: new ExpressionEngine(),
+            engine: new EvaluationEngine(),
         ),
         new WorkflowEngine($resolver),
         events: $events,

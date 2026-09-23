@@ -35,7 +35,7 @@ quadrantChart
     document/Normalizer: [0.429, 0.111]
     document/Parser: [0.25, 0.182]
     document/Resolver: [0.25, 0.25]
-    document/Validator: [0.643, 0.016]
+    document/Validator: [0.615, 0.016]
     document/_: [0.5, 0.5]
     evaluation/Condition: [0.833, 0]
     evaluation/Data: [0.5, 0]
@@ -45,14 +45,14 @@ quadrantChart
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.75, 0]
     evaluation/Xpath: [0.667, 0.5]
-    evaluation/_: [0.652, 0.091]
+    evaluation/_: [0.647, 0.091]
     expression/Ast: [0, 0]
-    expression/Data: [0.2, 0]
+    expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
-    expression/Exceptions: [0.25, 0]
-    expression/Interfaces: [0.667, 1]
-    expression/_: [0.667, 0.167]
-    laravel/Bindings: [0.952, 0]
+    expression/Exceptions: [0.333, 0]
+    expression/Interfaces: [0.8, 1]
+    expression/_: [0.429, 0.167]
+    laravel/Bindings: [0.955, 0]
     laravel/Http: [0.778, 0]
     laravel/Lock: [0.5, 0]
     laravel/Persistence: [0.8, 0]
@@ -62,14 +62,14 @@ quadrantChart
     laravel/_: [1, 0]
     runner/Async: [1, 0]
     runner/Events: [0.125, 0.091]
-    runner/Execution: [0.741, 0.051]
+    runner/Execution: [0.75, 0.051]
     runner/Infrastructure: [0.167, 0.25]
     runner/Jobs: [0.286, 0]
     runner/Policy: [0.75, 0]
     runner/Protocol: [0.909, 0]
     runner/State: [0.167, 0.417]
     runner/Telemetry: [0, 0]
-    runner/_: [0.692, 0.333]
+    runner/_: [0.714, 0.333]
 ```
 
 ## God classes (SRP)
@@ -93,7 +93,7 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| `ExpressionEngineInterface` <small>evaluation</small> | 13 |
+| `EvaluationEngineInterface` <small>evaluation</small> | 10 |
 | `DocumentInterface` <small>document</small> | 8 |
 
 ## Concrete hubs (DIP)

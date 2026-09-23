@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
@@ -117,7 +117,7 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
     $document = DocumentLoader::load($doc);
     $runner = new RunnerFacade(
         new Document($client, new HttpFactory(), $registry),
-        new ExpressionEngine(),
+        new EvaluationEngine(),
         $client,
     );
 

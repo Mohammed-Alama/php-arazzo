@@ -14,7 +14,7 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\SymbolTable;
 
 it('detects unresolved $steps ref inside a Selector context', function () {

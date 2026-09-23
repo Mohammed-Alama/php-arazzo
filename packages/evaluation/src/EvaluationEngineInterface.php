@@ -13,47 +13,20 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
-use Alama\Arazzo\Expression\Data\ExpressionReference;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
- * Entry-point seam for the expression package.
+ * Entry-point seam for the runtime evaluation package.
  *
- * Downstream packages depend on this interface (never the concrete
- * {@see ExpressionEngine} or the eval internals). It exposes the full
- * capability set: parsing expressions, evaluating expressions/criteria/
- * selectors, string interpolation, payload replacement, JSONPath and
- * JSON-pointer evaluation, XPath queries and symbol-table construction.
+ * Downstream packages depend on this interface. It exposes dynamic evaluation:
+ * evaluating expressions against state, criteria evaluation, selectors,
+ * string interpolation, payload replacement, JSONPath, JSON Pointer, and XPath queries.
  */
-interface ExpressionEngineInterface
+interface EvaluationEngineInterface
 {
     /**
      * Evaluate an Arazzo expression against a run context.
      */
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;
-
-    /**
-     * Build the symbol table describing a document's declared workflows,
-     * source descriptions and components.
-     */
-    public function buildSymbolTable(ArazzoDocument $document): SymbolTable;
-
-    /**
-     * Parse an expression string.
-     *
-     * Returns the syntax error when the expression does not parse, or null
-     * when it is valid. Callers never touch the lexer/parser internals.
-     */
-    public function parseExpression(string $raw): ?ExpressionSyntaxException;
-
-    /**
-     * Inspect what an expression references.
-     *
-     * Returns null when the expression does not parse. A succesfully-parsed
-     * expression resolves to exactly one reference projection.
-     */
-    public function expressionReferences(string $raw): ?ExpressionReference;
 
     /**
      * Evaluate a list of success criteria against the current workflow step.
@@ -63,14 +36,12 @@ interface ExpressionEngineInterface
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;
 
     /**
-     * Evaluate a step's declared success criteria (2xx default when the step
-     * is operation-targeted and declares none).
+     * Evaluate a step's declared success criteria (2xx default when applicable).
      */
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;
 
     /**
-     * Evaluate a selector (JSONPath, JSON-pointer or XPath) against the
-     * workflow context rooted at the given step.
+     * Evaluate a selector (JSONPath, JSON-pointer or XPath) against the workflow context.
      */
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;
 
@@ -85,8 +56,7 @@ interface ExpressionEngineInterface
     public function supportedXPathVersions(): array;
 
     /**
-     * Interpolate `{$...}` expression references within a string against the
-     * workflow context.
+     * Interpolate {$...} expression references within a string against the workflow context.
      */
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;
 

@@ -15,10 +15,11 @@ flowchart LR
     I_CriterionEvaluatorPluginInterface["CriterionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
+    I_EvaluationEngineInterface["EvaluationEngineInterface<br/><small>(evaluation root)</small>"]:::contract
     I_EvaluationInputInterface["EvaluationInputInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>runner:Events</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runner:State</small>"]:::contract
-    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(evaluation root)</small>"]:::contract
+    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(expression root)</small>"]:::contract
     I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ExpressionInterface["ExpressionInterface<br/><small>expression:Interfaces</small>"]:::contract
@@ -58,14 +59,10 @@ flowchart LR
     C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
-    C_evaluation_evaluation___ExpressionEngine["ExpressionEngine<br/><small>(evaluation root)</small>"]:::implCore
-    C_evaluation_evaluation___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionInterface
     C_expression_expression___ExpressionInspector["ExpressionInspector<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionInspector -.->|implements| I_ExpressionInterface
-    C_evaluation_evaluation___ExpressionEngine["ExpressionEngine<br/><small>(evaluation root)</small>"]:::implCore
-    C_evaluation_evaluation___ExpressionEngine -.->|implements| I_ExpressionInterface
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore
     C_evaluation_evaluation_Condition_Comparison -.->|implements| I_ConditionNode
     C_evaluation_evaluation_Condition_Literal["Literal<br/><small>evaluation:Condition</small>"]:::implCore
@@ -82,6 +79,8 @@ flowchart LR
     C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
+    C_evaluation_evaluation___EvaluationEngine["EvaluationEngine<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___EvaluationEngine -.->|implements| I_EvaluationEngineInterface
     C_evaluation_evaluation___ExpressionEvaluator["ExpressionEvaluator<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
     C_evaluation_evaluation___ExpressionResolver["ExpressionResolver<br/><small>(evaluation root)</small>"]:::implCore

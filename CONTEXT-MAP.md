@@ -2,7 +2,7 @@
 
 ## Package Topology (alama/arazzo-core split)
 
-The monorepo has been split into 6 focused packages with clear layering boundaries:
+The monorepo has been split into 7 focused packages with clear layering boundaries:
 
 ### `alama/arazzo-contracts`
 
@@ -14,21 +14,28 @@ The monorepo has been split into 6 focused packages with clear layering boundari
 
 ### `alama/arazzo-expression`
 
-- **Purpose**: Pure runtime expression evaluation engine
-- **Key contents**: `ExpressionEngineInterface` + `ExpressionEngine` (self-contained facade), `ExpressionEvaluator`,
-  `ExpressionResolver`, `EvaluationInput`, `StepOutputExtractor`, `CriteriaEvaluator`, `ResponseSchemaValidator`,
-  JsonPath evaluator, String interpolator
-- **Layer**: Expression — depends on `contracts` + PSR-3 event-dispatcher + PSR-3 logger + jsonpath; facade
-  `ExpressionEngine` evaluates expressions against runtime workflow contexts
+- **Purpose**: Static Arazzo expression syntax, lexing, parsing, AST, symbol tables, and reference inspection
+- **Key contents**: `ExpressionEngineInterface` + `ExpressionEngine` (static analysis facade), `Lexer`, `Parser`,
+  AST nodes, `SymbolTable`, `ExpressionInspector`, `Data\ExpressionReference`
+- **Layer**: Expression — depends on `contracts` only; facade `ExpressionEngine` parses expressions, projects
+  references statically, and builds the document symbol table
+
+### `alama/arazzo-evaluation`
+
+- **Purpose**: Runtime dynamic evaluation of Arazzo expressions against workflow context
+- **Key contents**: `EvaluationEngineInterface` + `EvaluationEngine` (runtime facade), `ExpressionEvaluator`,
+  `CriteriaEvaluator`, `SelectorEvaluator` (JSONPath, XPath, JSON Pointer), `StringInterpolator`, `PayloadReplacer`
+- **Layer**: Evaluation — depends on `contracts` + `expression` + PSR-3 event-dispatcher + PSR-3 logger + jsonpath;
+  facade `EvaluationEngine` evaluates expressions, criteria, selectors, interpolation, and payload replacement at runtime
 
 ### `alama/arazzo-document`
 
 - **Purpose**: Arazzo document loading, parsing, validation, and preflight
 - **Key contents**: `DocumentInterface` + `Document` (self-contained: Loader → Parser → Validator → PreflightValidator),
   `DocumentSymbols`, `RuleSet::default()`, `SourceRegistry`, `DefaultSourceResolver`, `OpenApiOperationResolver`,
-  `OpenApiVersionDetector`, `OpenApi30Normalizer`, `OpenApi31Normalizer`, `DomXpathEvaluator`
-- **Layer**: Document — depends on `contracts` + cebe json-schema + jsonpath + symfony/yaml + psr/log +
-  psr/event-dispatcher (zero runtime dependency on `expression`)
+  `OpenApiVersionDetector`, `OpenApi30Normalizer`, `OpenApi31Normalizer`
+- **Layer**: Document — depends on `contracts` + `expression` + cebe json-schema + jsonpath + symfony/yaml + psr/log +
+  psr/event-dispatcher (zero dependency on `evaluation`; validation is a static-domain concern)
 
 ### `alama/arazzo-runner`
 
@@ -36,7 +43,7 @@ The monorepo has been split into 6 focused packages with clear layering boundari
 - **Key contents**: `RunnerFacadeInterface` + `RunnerFacade` (adapter-driven facade: `run()` & `resume()`),
   `ExecutionGraphFactory`, `WorkflowExecutor`, `StepExecutor`, `WorkflowEngine`, `StepExecutionWorker`,
   `PreflightValidator`, `OpenApiOperationResolver`
-- **Layer**: Runner — depends on `contracts` + `expression` + `document` + guzzle + otel + psr; facade `RunnerFacade`
+- **Layer**: Runner — depends on `contracts` + `document` + `evaluation` + guzzle + otel + psr; facade `RunnerFacade`
   hides the full execution graph behind external adapters
 
 ### `alama/arazzo-cli`
@@ -48,7 +55,8 @@ The monorepo has been split into 6 focused packages with clear layering boundari
 ### `alama/laravel-arazzo`
 
 - **Purpose**: Laravel integration package
-- **Key contents**: Facade bindings (`ExpressionEngineInterface → ExpressionEngine`, `DocumentInterface → Document`,
+- **Key contents**: Facade bindings (`ExpressionEngineInterface → ExpressionEngine`,
+  `EvaluationEngineInterface → EvaluationEngine`, `DocumentInterface → Document`,
   `RunnerFacadeInterface → RunnerFacade`), `ExecutionBindings` (registers external framework adapters into
   `RunnerFacade`), `PersistenceBindings`, `HttpBindings`, `EventBindings`
 - **Layer**: Laravel — depends on all core packages; binds each `*Interface` to its concrete facade and passes Laravel
@@ -57,45 +65,48 @@ The monorepo has been split into 6 focused packages with clear layering boundari
 ## Layering Order (diamond foundation)
 
 ```
-                  ┌────────────────────────┐
-                  │    arazzo-contracts    │
-                  │  Spec DTOs, AST Grammar│
-                  │   & ExecutionResult    │
-                  └───────────▲────────────┘
-                              │
-               ┌──────────────┴──────────────┐
-               │                             │
-    ┌──────────┴─────────┐        ┌──────────┴──────────┐
-    │   arazzo-document  │        │  arazzo-expression  │
-    │  Loader, Parser &  │        │   Pure Runtime      │
-    │ Validator (Internal│        │   Evaluation Engine │
-    │   DocumentSymbols) │        │ (Context, XPath, JS)│
-    └──────────▲─────────┘        └──────────▲──────────┘
-               │                             │
-               └──────────────┬──────────────┘
-                              │
-                  ┌───────────┴────────────┐
-                  │      arazzo-runner     │
-                  │ Deep Adapter-Driven    │
-                  │ Facade (run & resume)  │
-                  └───────────▲────────────┘
-                              │
-                    ┌─────────┴─────────┐
-                    │                   │
-             ┌──────┴──────┐     ┌──────┴──────┐
-             │ arazzo-cli  │     │laravel-arazzo│
-             └─────────────┘     └─────────────┘
+                   ┌────────────────────────┐
+                   │    arazzo-contracts    │
+                   │    Spec DTOs & Grammar │
+                   └───────────▲────────────┘
+                               │
+                ┌──────────────┴──────────────┐
+                │                             │
+     ┌──────────┴─────────┐        ┌──────────┴──────────┐
+     │   arazzo-document  │        │  arazzo-expression  │
+     │  Parsing, Validation│       │  Syntax, AST, Lexer │
+     │    (Static Domain) │        │    (Static Domain)  │
+     └──────────▲─────────┘        └──────────▲──────────┘
+                │                             │
+                └──────────────┬──────────────┘
+                               │
+                    ┌──────────┴──────────┐
+                    │  arazzo-evaluation  │
+                    │    Runtime Engine   │
+                    └──────────▲──────────┘
+                               │
+                    ┌──────────┴──────────┐
+                    │     arazzo-runner   │
+                    │  Execution Engine   │
+                    └──────────▲──────────┘
+                               │
+                     ┌─────────┴─────────┐
+                     │                   │
+              ┌──────┴──────┐     ┌──────┴──────┐
+              │ arazzo-cli  │     │laravel-arazzo│
+              └─────────────┘     └─────────────┘
 ```
 
 ## Facade Seams
 
 Each package exposes a single entry-point interface that hides its internal graph:
 
-| Package      | Interface                                           | Facade                                     | What it hides                                                                          |
-|--------------|-----------------------------------------------------|--------------------------------------------|----------------------------------------------------------------------------------------|
-| `expression` | `Alama\Arazzo\Evaluation\ExpressionEngineInterface` | `Alama\Arazzo\Expression\ExpressionEngine` | Evaluator, XPath, JSONPath, criteria, runtime payload replacer                         |
-| `document`   | `Alama\Arazzo\Document\DocumentInterface`           | `Alama\Arazzo\Document\Document`           | Loader, Parser, Validator, DocumentSymbols, PreflightValidator, RuleSet                |
-| `runner`     | `Alama\Arazzo\Runner\RunnerFacadeInterface`         | `Alama\Arazzo\Runner\RunnerFacade`         | WorkflowExecutor, StepExecutor, WorkflowEngine, State Machine, Protocol, Async Workers |
+| Package       | Interface                                              | Facade                                        | What it hides                                                          |
+|---------------|--------------------------------------------------------|-----------------------------------------------|----------------------------------------------------------------------|
+| `expression`  | `Alama\Arazzo\Expression\ExpressionEngineInterface`    | `Alama\Arazzo\Expression\ExpressionEngine`    | Lexer, Parser, AST, SymbolTable, reference inspection (static domain) |
+| `evaluation`  | `Alama\Arazzo\Evaluation\EvaluationEngineInterface`   | `Alama\Arazzo\Evaluation\EvaluationEngine`   | Evaluator, XPath, JSONPath, criteria, runtime payload replacer        |
+| `document`    | `Alama\Arazzo\Document\DocumentInterface`              | `Alama\Arazzo\Document\Document`              | Loader, Parser, Validator, DocumentSymbols, PreflightValidator, RuleSet |
+| `runner`      | `Alama\Arazzo\Runner\RunnerFacadeInterface`            | `Alama\Arazzo\Runner\RunnerFacade`            | WorkflowExecutor, StepExecutor, WorkflowEngine, State Machine, Protocol, Async Workers |
 
 Cross-package edges must point only at `*Interface` entry points; never another package's concrete Facade.
 

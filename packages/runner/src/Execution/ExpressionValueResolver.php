@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 
 /**
@@ -16,13 +16,13 @@ use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
  * synchronous and queued execution paths cannot drift apart.
  *
  * Consumes the expression package exclusively through its public face
- * ({@see ExpressionEngineInterface}); no expression internals.
+ * ({@see EvaluationEngineInterface}); no expression internals.
  *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class ExpressionValueResolver
 {
-    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+    public function __construct(private readonly EvaluationEngineInterface $engine) {}
 
     public function resolve(mixed $value, WorkflowContext $context, ?string $stepId = null): mixed
     {

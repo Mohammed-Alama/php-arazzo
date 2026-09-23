@@ -19,7 +19,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
@@ -71,7 +71,7 @@ function asyncApiExecutorDocument(): ArazzoDocument
 it('supports steps with action send or receive, not steps without an action', function (): void {
     $executor = new AsyncApiStepExecutor(
         new AsyncApiExecutorMockPendingCorrelations(),
-        new ExpressionEngine(),
+        new EvaluationEngine(),
         new AsyncApiExecutorMockClient(),
     );
 
@@ -89,7 +89,7 @@ it('publishes and resolves immediately for action send', function (): void {
     $httpFactory = new HttpFactory();
     $executor = new AsyncApiStepExecutor(
         new AsyncApiExecutorMockPendingCorrelations(),
-        new ExpressionEngine(),
+        new EvaluationEngine(),
         $client,
         $httpFactory,
         $httpFactory,
@@ -119,7 +119,7 @@ it('compiles parameters and requestBody replacements into the message', function
     $httpFactory = new HttpFactory();
     $executor = new AsyncApiStepExecutor(
         new AsyncApiExecutorMockPendingCorrelations(),
-        new ExpressionEngine(),
+        new EvaluationEngine(),
         $client,
         $httpFactory,
         $httpFactory,
@@ -164,7 +164,7 @@ it('writes a PendingCorrelation and suspends for action receive', function (): v
     $pendingCorrelations = new AsyncApiExecutorMockPendingCorrelations();
     $executor = new AsyncApiStepExecutor(
         $pendingCorrelations,
-        new ExpressionEngine(),
+        new EvaluationEngine(),
         new AsyncApiExecutorMockClient(),
     );
 
@@ -190,7 +190,7 @@ it('writes a PendingCorrelation and suspends for action receive', function (): v
 it('throws when a receive step has no correlationId expression', function (): void {
     $executor = new AsyncApiStepExecutor(
         new AsyncApiExecutorMockPendingCorrelations(),
-        new ExpressionEngine(),
+        new EvaluationEngine(),
         new AsyncApiExecutorMockClient(),
     );
 

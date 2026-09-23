@@ -16,7 +16,6 @@ use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\PreflightValidator;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use Illuminate\Contracts\Cache\Repository as CacheInterface;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
@@ -61,7 +60,6 @@ final class ResolverBindings
             return new PreflightValidator(
                 $app->make(SourceRegistry::class),
                 $app->make(OpenApiOperationResolver::class),
-                $app->make(ExpressionEngineInterface::class),
             );
         });
     }

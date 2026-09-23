@@ -22,7 +22,8 @@ use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 
 beforeEach(function () {
@@ -62,7 +63,7 @@ beforeEach(function () {
             new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
         ));
 
-        return new StepOutputExtractor($documents, new ExpressionEngine());
+        return new StepOutputExtractor($documents, new EvaluationEngine(), new ExpressionEngine());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

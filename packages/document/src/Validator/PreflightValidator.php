@@ -16,7 +16,6 @@ use Alama\Arazzo\Document\Validator\Data\Error;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\Data\Warning;
 use Alama\Arazzo\Document\Validator\Enum\Severity;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 use JsonSchema\Constraints\Constraint;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
@@ -34,10 +33,13 @@ final class PreflightValidator
 {
     private OpenApiVersionDetector $versionDetector;
 
+    /**
+     * @param  list<string>  $supportedXPathVersions
+     */
     public function __construct(
         private readonly SourceRegistry $sources,
         private readonly OpenApiOperationResolver $operations,
-        private readonly ExpressionEngineInterface $engine,
+        private array $supportedXPathVersions = ['xpath-10'],
     ) {
         $this->versionDetector = new OpenApiVersionDetector();
     }
@@ -252,12 +254,10 @@ final class PreflightValidator
         foreach ($this->selectorsOf($step) as $selector) {
             $version = $selector->version ?? null;
             if ($version !== null && $selector->type->value === 'xpath') {
-                $supported = $this->engine->supportedXPathVersions();
-
-                if (!in_array($version, $supported, true)) {
+                if (!in_array($version, $this->supportedXPathVersions, true)) {
                     $errors->add(new Error(
                         'preflight.unsupported_selector_version',
-                        "Selector requests XPath version '{$version}'; evaluator supports: ".implode(', ', $supported).'.',
+                        "Selector requests XPath version '{$version}'; evaluator supports: ".implode(', ', $this->supportedXPathVersions).'.',
                         $base.'/parameters',
                         severity: Severity::Error,
                     ));

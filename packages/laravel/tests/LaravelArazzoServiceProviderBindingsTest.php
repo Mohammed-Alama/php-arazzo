@@ -11,9 +11,11 @@ use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Evaluation\ExpressionEngine;
-use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
 use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;
@@ -96,6 +98,7 @@ it('binds the async control flow classes', function () {
 
 it('binds the entry-point facade interfaces to their self-contained facades', function () {
     expect(app(ExpressionEngineInterface::class))->toBeInstanceOf(ExpressionEngine::class);
+    expect(app(EvaluationEngineInterface::class))->toBeInstanceOf(EvaluationEngine::class);
     expect(app(DocumentInterface::class))->toBeInstanceOf(Document::class);
     expect(app(RunnerFacadeInterface::class))->toBeInstanceOf(RunnerFacade::class);
 });

@@ -98,7 +98,8 @@ Cross-package references from library code must target `*Interface` facades, val
 
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
-| `document` | `evaluation` | `Document` | `ExpressionEngine` |
+| `document` | `expression` | `Document` | `ExpressionEngine` |
+| `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -109,23 +110,20 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `SymbolTable` | `expression` | 52 | `ExpressionWalker` |
 | `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
-| `evaluation` | `ComponentRef` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `ExpressionAst` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `ExpressionReference` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `HttpMetaRef` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `InputPart` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `InputRef` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `MessageRef` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `OutputPart` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `OutputRef` | `expression` | 1 | `ExpressionEngine` |
-| `evaluation` | `Parser` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `RequestPart` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `ResponsePart` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `InputPart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `InputRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `MessageRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `OutputPart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `Parser` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `RequestPart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `ResponsePart` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `SelfRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `SourceRef` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `StepRef` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `SymbolTable` | `expression` | 2 | `ExpressionEngine` |
-| `evaluation` | `WorkflowRef` | `expression` | 2 | `ExpressionEngine` |
+| `evaluation` | `SourceRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `StepRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
 | `runner` | `ResolvedOperation` | `document` | 4 | `StepOutputExtractor` |
