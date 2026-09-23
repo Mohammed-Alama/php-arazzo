@@ -81,7 +81,7 @@ quadrantChart
 | `document/Resolver` | 0.25 | 21 | 12 | 100% |
 | `document/Validator` | 0.64 | 71 | 62 | 100% |
 | `evaluation/Condition` | 0.83 | 43 | 10 | 100% |
-| `evaluation/Data` | 0.50 | 2 | 2 | 100% |
+| `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
 | `evaluation/Interfaces` | 0.10 | 24 | 5 | 100% |

@@ -74,8 +74,6 @@ flowchart LR
     C_evaluation_evaluation___CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_evaluation_evaluation_Data_EvaluationContext["EvaluationContext<br/><small>evaluation:Data</small>"]:::implCore
     C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
-    C_evaluation_evaluation_Data_EvaluationInput["EvaluationInput<br/><small>evaluation:Data</small>"]:::implCore
-    C_evaluation_evaluation_Data_EvaluationInput -.->|implements| I_EvaluationInputInterface
     C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
     C_evaluation_evaluation___ExpressionEngine["ExpressionEngine<br/><small>(evaluation root)</small>"]:::implCore

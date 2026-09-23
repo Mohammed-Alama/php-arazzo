@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
-use Alama\Arazzo\Evaluation\Data\EvaluationInput;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Exceptions\SelectorEvaluationException;
 use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
 
@@ -26,7 +26,7 @@ class SelectorEvaluator
     {
         // Spec default when context is omitted: the current step's response body.
         if ($sel->context !== null) {
-            $root = $this->expressions->evaluate(new Expression($sel->context), new EvaluationInput($wf, $stepId));
+            $root = $this->expressions->evaluate(new Expression($sel->context), new EvaluationContext($wf, $stepId));
         } else {
             $steps = $wf->getSteps();
             $stepData = $steps[$stepId] ?? null;

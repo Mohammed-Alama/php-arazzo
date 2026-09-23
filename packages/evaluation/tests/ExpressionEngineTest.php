@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Data\EvaluationInput;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\ExpressionEngine;
 use Alama\Arazzo\Evaluation\ExpressionEngineInterface;
 
-function engineInput(WorkflowContext $context, ?string $stepId = null): EvaluationInput
+function engineInput(WorkflowContext $context, ?string $stepId = null): EvaluationContext
 {
-    return new EvaluationInput($context, $stepId);
+    return new EvaluationContext($context, $stepId);
 }
 
 it('exposes a single entry-point interface', function (): void {

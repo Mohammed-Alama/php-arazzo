@@ -313,13 +313,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
 - `public function supportedXPathVersions(): array`
 
-### `Alama\Arazzo\Evaluation\Data`
-
-#### `EvaluationInput` class
-- `public function __construct(private WorkflowContextInterface $workflowContext, private ?string $currentStepId = null, private ?ArazzoDocument $document = null)`
-- `public function getCurrentStepId(): ?string`
-- `public function getDocument(): ?ArazzoDocument`
-
 ### `Alama\Arazzo\Evaluation\Exceptions`
 
 #### `SelectorEvaluationException` class

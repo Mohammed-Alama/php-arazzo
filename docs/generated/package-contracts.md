@@ -141,7 +141,7 @@ public contract between packages.
 - `WorkflowSymbols` — not found
 - `StepSymbols` — not found
 - `EvaluationInputInterface` — present
-- `EvaluationInput` — present
+- `EvaluationInput` — not found
 - `SelectorEvaluationException` — present
 - `ExpressionReference` — not found
 - `ReferenceKind` — not found

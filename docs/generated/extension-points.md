@@ -26,7 +26,6 @@ mindmap
       Document
     EvaluationInputInterface
       EvaluationContext
-      EvaluationInput
       ExecutionEvaluationInput
     EventLedgerInterface
       NullEventLedger
@@ -101,7 +100,7 @@ mindmap
 | `CriterionEvaluatorPluginInterface` | no | `JsonPathCriterionPlugin` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `DocumentInterface` | no | `Document` <small>core</small> |
-| `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `EvaluationInput` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
+| `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |

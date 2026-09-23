@@ -66,8 +66,8 @@ evaluation-Condition,contracts-Support,1
 evaluation-Condition,evaluation-Data,1
 evaluation-Condition,evaluation-Enum,9
 evaluation-Condition,evaluation-Interfaces,8
-evaluation-Data,contracts-Spec,4
-evaluation-Data,evaluation-Interfaces,2
+evaluation-Data,contracts-Spec,2
+evaluation-Data,evaluation-Interfaces,1
 evaluation-Exceptions,contracts-Support,1
 evaluation-Interfaces,contracts-Spec,12
 evaluation-Plugins,contracts-Interfaces,2
