@@ -16,7 +16,7 @@ targets. Regenerated before every commit.
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 17 | 288 | 17 | 3 | 0.15 |  |
+| `contracts:Interfaces` | 17 | 289 | 17 | 3 | 0.15 |  |
 | `contracts:Spec` | 47 | 1101 | 28 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 10 | 1 | 0.09 |  |
 | `contracts:Support` | 5 | 180 | 10 | 0 | 0.00 |  |
@@ -26,12 +26,12 @@ targets. Regenerated before every commit.
 | `document:Validator` | 62 | 3199 | 5 | 9 | 0.64 |  |
 | `(document root)` | 2 | 220 | 6 | 6 | 0.50 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
-| `evaluation:Data` | 1 | 36 | 2 | 2 | 0.50 |  |
+| `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Exceptions` | 1 | 31 | 2 | 1 | 0.33 |  |
 | `evaluation:Interfaces` | 5 | 103 | 9 | 1 | 0.10 |  |
 | `evaluation:Plugins` | 2 | 93 | 1 | 3 | 0.75 |  |
-| `evaluation:Registries` | 2 | 117 | 1 | 3 | 0.75 |  |
+| `evaluation:Registries` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
 | `(evaluation root)` | 11 | 1180 | 8 | 15 | 0.65 |  |
 | `expression:Ast` | 15 | 220 | 2 | 0 | 0.00 |  |
