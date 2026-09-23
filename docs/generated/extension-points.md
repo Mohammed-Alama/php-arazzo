@@ -41,8 +41,6 @@ mindmap
       ExpressionEvaluator
     ExpressionEvaluatorPluginInterface
       JsonPathExpressionPlugin
-    ExpressionInterface
-      ExpressionEngine
     ExpressionResolverInterface
       ExpressionResolver
       InterpolationResolver
@@ -108,7 +106,6 @@ mindmap
 | `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
 | `ExpressionEvaluatorPluginInterface` | no | `JsonPathExpressionPlugin` <small>core</small> |
-| `ExpressionInterface` | no | `ExpressionEngine` <small>core</small> |
 | `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small>, `InterpolationResolver` <small>core</small>, `ExecutionExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |

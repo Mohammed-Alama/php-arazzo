@@ -29,7 +29,7 @@ arch('document does not depend on evaluation package')
 
 arch('document consumes expression engine interface')
     ->expect('Alama\Arazzo\Document\Validator\Rules')
-    ->toUse('Alama\Arazzo\Expression\ExpressionEngineInterface')
+    ->toUse('Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface')
     ->not->toUse('Alama\Arazzo\Expression\Lexer')
     ->not->toUse('Alama\Arazzo\Expression\Parser');
 

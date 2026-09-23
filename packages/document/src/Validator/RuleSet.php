@@ -54,7 +54,7 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowDependsOnNoCycleRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

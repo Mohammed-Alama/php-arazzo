@@ -10,7 +10,7 @@ use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Support\ExpressionWalker;
 use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\SymbolTable;
 
 /**

@@ -15,7 +15,7 @@ use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
 use Alama\Arazzo\Laravel\Lock\LaravelRedisLockManager;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;

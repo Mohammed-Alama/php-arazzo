@@ -19,10 +19,9 @@ flowchart LR
     I_EvaluationInputInterface["EvaluationInputInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>runner:Events</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runner:State</small>"]:::contract
-    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(expression root)</small>"]:::contract
+    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_ExpressionInterface["ExpressionInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>runner:Infrastructure</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>document:Parser</small>"]:::contract
@@ -59,8 +58,6 @@ flowchart LR
     C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
-    C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
-    C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionInterface
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore
     C_evaluation_evaluation_Condition_Comparison -.->|implements| I_ConditionNode
     C_evaluation_evaluation_Condition_Literal["Literal<br/><small>evaluation:Condition</small>"]:::implCore

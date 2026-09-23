@@ -265,11 +265,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function expressionReferences(string $raw): ?ExpressionReference`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException`
 
-#### `ExpressionEngineInterface` interface
-- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
-- `public function expressionReferences(string $raw): ?ExpressionReference;`
-- `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
-
 ### `Alama\Arazzo\Expression\Enum`
 
 #### `ReferenceKind` enum
@@ -282,7 +277,7 @@ this file on a commit is a public API change — review it deliberately.
 
 ### `Alama\Arazzo\Expression\Interfaces`
 
-#### `ExpressionInterface` interface
+#### `ExpressionEngineInterface` interface
 - `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
 - `public function expressionReferences(string $raw): ?ExpressionReference;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`

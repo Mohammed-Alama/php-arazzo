@@ -9,12 +9,22 @@
 
 ## 1. Executive Summary & Problem Statement
 
-During the modularization of `php-arazzo`, domain concepts between expression parsing/static analysis and runtime evaluation were partially intertwined:
-1. **Misplaced Facade & Domain Leak**: A class named `ExpressionEngine` was placed inside `packages/evaluation`, implementing an interface that exposed both static parsing/inspection (`parseExpression`, `expressionReferences`, `buildSymbolTable`) and runtime dynamic evaluation (`evaluate`, `evaluateCriteria`, `interpolate`, etc.).
-2. **Duplicated AST Mapping**: `ExpressionEngine` inside `packages/evaluation` maintained a private `referenceFor()` method that duplicated AST reference extraction already present in `packages/expression`.
-3. **Imbalanced Inbound Coupling**: `packages/document` (responsible for document loading, parsing, and static validation) imported and depended on `Alama\Arazzo\Evaluation\ExpressionEngineInterface` and `alama/arazzo-evaluation`, violating the diamond foundation where `document` has zero dependency on runtime evaluation.
+During the modularization of `php-arazzo`, domain concepts between expression parsing/static analysis and runtime
+evaluation were partially intertwined:
 
-This specification formalizes the architectural separation between static syntax/grammar analysis (`alama/arazzo-expression`) and dynamic runtime evaluation (`alama/arazzo-evaluation`), ensuring symmetrical facade naming, zero domain leakage, and clean dependency edges.
+1. **Misplaced Facade & Domain Leak**: A class named `ExpressionEngine` was placed inside `packages/evaluation`,
+   implementing an interface that exposed both static parsing/inspection (`parseExpression`, `expressionReferences`,
+   `buildSymbolTable`) and runtime dynamic evaluation (`evaluate`, `evaluateCriteria`, `interpolate`, etc.).
+2. **Duplicated AST Mapping**: `ExpressionEngine` inside `packages/evaluation` maintained a private `referenceFor()`
+   method that duplicated AST reference extraction already present in `packages/expression`.
+3. **Imbalanced Inbound Coupling**: `packages/document` (responsible for document loading, parsing, and static
+   validation) imported and depended on `Alama\Arazzo\Evaluation\ExpressionEngineInterface` and
+   `alama/arazzo-evaluation`, violating the diamond foundation where `document` has zero dependency on runtime
+   evaluation.
+
+This specification formalizes the architectural separation between static syntax/grammar analysis (
+`alama/arazzo-expression`) and dynamic runtime evaluation (`alama/arazzo-evaluation`), ensuring symmetrical facade
+naming, zero domain leakage, and clean dependency edges.
 
 ---
 
@@ -54,17 +64,19 @@ This specification formalizes the architectural separation between static syntax
 ```
 
 ### Layer Rules:
+
 - **`alama/arazzo-expression`**: Static syntax, Lexer, Parser, AST nodes, Symbol Table, and static reference inspection.
-  - Allowed dependencies: `alama/arazzo-contracts`.
-  - Disallowed dependencies: `alama/arazzo-evaluation`, `alama/arazzo-document`, `alama/arazzo-runner`.
-- **`alama/arazzo-evaluation`**: Runtime dynamic evaluation of expressions against context, condition evaluation, criteria matching, selectors (JSONPath, XPath, JSON Pointer), string interpolation, and payload replacement.
-  - Allowed dependencies: `alama/arazzo-contracts`, `alama/arazzo-expression`.
-  - Disallowed dependencies: `alama/arazzo-document`, `alama/arazzo-runner`.
+    - Allowed dependencies: `alama/arazzo-contracts`.
+    - Disallowed dependencies: `alama/arazzo-evaluation`, `alama/arazzo-document`, `alama/arazzo-runner`.
+- **`alama/arazzo-evaluation`**: Runtime dynamic evaluation of expressions against context, condition evaluation,
+  criteria matching, selectors (JSONPath, XPath, JSON Pointer), string interpolation, and payload replacement.
+    - Allowed dependencies: `alama/arazzo-contracts`, `alama/arazzo-expression`.
+    - Disallowed dependencies: `alama/arazzo-document`, `alama/arazzo-runner`.
 - **`alama/arazzo-document`**: Document parsing and static schema/expression validation.
-  - Allowed dependencies: `alama/arazzo-contracts`, `alama/arazzo-expression`.
-  - Disallowed dependencies: `alama/arazzo-evaluation`.
+    - Allowed dependencies: `alama/arazzo-contracts`, `alama/arazzo-expression`.
+    - Disallowed dependencies: `alama/arazzo-evaluation`.
 - **`alama/arazzo-runner`**: Workflow execution engine.
-  - Allowed dependencies: `alama/arazzo-contracts`, `alama/arazzo-document`, `alama/arazzo-evaluation`.
+    - Allowed dependencies: `alama/arazzo-contracts`, `alama/arazzo-document`, `alama/arazzo-evaluation`.
 
 ---
 
@@ -73,6 +85,7 @@ This specification formalizes the architectural separation between static syntax
 ### 3.1 `packages/expression` (The Static Domain Seam)
 
 #### Interface: `Alama\Arazzo\Expression\ExpressionEngineInterface`
+
 ```php
 namespace Alama\Arazzo\Expression;
 
@@ -100,6 +113,7 @@ interface ExpressionEngineInterface
 ```
 
 #### Facade: `Alama\Arazzo\Expression\ExpressionEngine`
+
 * Implements `Alama\Arazzo\Expression\ExpressionEngineInterface`.
 * Replaces / encapsulates `ExpressionInspector`.
 * Directly delegates to internal `ExpressionParser` and `SymbolTable::build($document)`.
@@ -109,6 +123,7 @@ interface ExpressionEngineInterface
 ### 3.2 `packages/evaluation` (The Runtime Domain Seam)
 
 #### Interface: `Alama\Arazzo\Evaluation\EvaluationEngineInterface`
+
 ```php
 namespace Alama\Arazzo\Evaluation;
 
@@ -187,32 +202,35 @@ interface EvaluationEngineInterface
 ```
 
 #### Facade: `Alama\Arazzo\Evaluation\EvaluationEngine`
+
 * Implements `Alama\Arazzo\Evaluation\EvaluationEngineInterface`.
 * Renamed from previous `Alama\Arazzo\Evaluation\ExpressionEngine`.
 * Coordinates:
-  * `ExpressionEvaluator` & `ExpressionEvaluatorRegistry`
-  * `CriteriaEvaluator` & `CriterionEvaluatorRegistry`
-  * `SelectorEvaluator` (JsonPath, JsonPointer, DomXpathEvaluator)
-  * `StringInterpolator`
-  * `PayloadReplacer`
+    * `ExpressionEvaluator` & `ExpressionEvaluatorRegistry`
+    * `CriteriaEvaluator` & `CriterionEvaluatorRegistry`
+    * `SelectorEvaluator` (JsonPath, JsonPointer, DomXpathEvaluator)
+    * `StringInterpolator`
+    * `PayloadReplacer`
 * **Removed**:
-  * No longer implements `ExpressionInterface`.
-  * Removed `parseExpression()`, `expressionReferences()`, and `buildSymbolTable()`.
-  * Removed internal `referenceFor()` AST translation method.
+    * No longer implements `ExpressionInterface`.
+    * Removed `parseExpression()`, `expressionReferences()`, and `buildSymbolTable()`.
+    * Removed internal `referenceFor()` AST translation method.
 
 ---
 
 ### 3.3 Consumer Updates
 
 1. **`packages/document`**:
-   * Update `composer.json` to remove `"alama/arazzo-evaluation": "@dev"`.
-   * Update `Document.php`, `Validator.php`, `RuleSet.php`, and validation rules (`ExpressionSyntaxRule`, `ExpressionUnresolved*Rule`, etc.) to typehint `Alama\Arazzo\Expression\ExpressionEngineInterface`.
+    * Update `composer.json` to remove `"alama/arazzo-evaluation": "@dev"`.
+    * Update `Document.php`, `Validator.php`, `RuleSet.php`, and validation rules (`ExpressionSyntaxRule`,
+      `ExpressionUnresolved*Rule`, etc.) to typehint `Alama\Arazzo\Expression\ExpressionEngineInterface`.
 2. **`packages/runner`**:
-   * Update `RunnerFacade.php`, `StepExecutor.php`, `RequestCompiler.php`, `StepOutcomeHandler.php`, and protocol executors to typehint `Alama\Arazzo\Evaluation\EvaluationEngineInterface`.
+    * Update `RunnerFacade.php`, `StepExecutor.php`, `RequestCompiler.php`, `StepOutcomeHandler.php`, and protocol
+      executors to typehint `Alama\Arazzo\Evaluation\EvaluationEngineInterface`.
 3. **`packages/laravel`**:
-   * In `FacadeBindings.php` and `ResolverBindings.php`:
-     * Bind `Alama\Arazzo\Expression\ExpressionEngineInterface` -> `Alama\Arazzo\Expression\ExpressionEngine`.
-     * Bind `Alama\Arazzo\Evaluation\EvaluationEngineInterface` -> `Alama\Arazzo\Evaluation\EvaluationEngine`.
+    * In `FacadeBindings.php` and `ResolverBindings.php`:
+        * Bind `Alama\Arazzo\Expression\ExpressionEngineInterface` -> `Alama\Arazzo\Expression\ExpressionEngine`.
+        * Bind `Alama\Arazzo\Evaluation\EvaluationEngineInterface` -> `Alama\Arazzo\Evaluation\EvaluationEngine`.
 
 ---
 
@@ -221,6 +239,7 @@ interface EvaluationEngineInterface
 Boundary enforcement tests to ensure no leakage:
 
 ### `packages/document/tests/ArchTest.php`
+
 ```php
 arch('document does not depend on evaluation package')
     ->expect('Alama\Arazzo\Document')
@@ -228,12 +247,13 @@ arch('document does not depend on evaluation package')
 
 arch('document consumes expression engine interface')
     ->expect('Alama\Arazzo\Document\Validator\Rules')
-    ->toUse('Alama\Arazzo\Expression\ExpressionEngineInterface')
+    ->toUse('Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface')
     ->not->toUse('Alama\Arazzo\Expression\Lexer')
     ->not->toUse('Alama\Arazzo\Expression\Parser');
 ```
 
 ### `packages/expression/tests/ArchTest.php`
+
 ```php
 arch('expression does not use evaluation classes')
     ->expect('Alama\Arazzo\Expression')
@@ -241,6 +261,7 @@ arch('expression does not use evaluation classes')
 ```
 
 ### `packages/evaluation/tests/ArchTest.php`
+
 ```php
 arch('evaluation does not leak document or runner internals')
     ->expect('Alama\Arazzo\Evaluation')
@@ -251,10 +272,13 @@ arch('evaluation does not leak document or runner internals')
 ---
 
 ## 5. Migration Checklist
+
 1. Create `Alama\Arazzo\Expression\ExpressionEngineInterface` and `Alama\Arazzo\Expression\ExpressionEngine`.
 2. Rename `Alama\Arazzo\Evaluation\ExpressionEngineInterface` to `EvaluationEngineInterface`.
-3. Rename `Alama\Arazzo\Evaluation\ExpressionEngine` to `EvaluationEngine`, stripping static parsing methods and redundant AST mapping.
+3. Rename `Alama\Arazzo\Evaluation\ExpressionEngine` to `EvaluationEngine`, stripping static parsing methods and
+   redundant AST mapping.
 4. Update `packages/document`: remove `evaluation` from `composer.json`, switch imports to `ExpressionEngineInterface`.
-5. Update `packages/runner`: switch imports from `Evaluation\ExpressionEngineInterface` to `Evaluation\EvaluationEngineInterface`.
+5. Update `packages/runner`: switch imports from `Evaluation\ExpressionEngineInterface` to
+   `Evaluation\EvaluationEngineInterface`.
 6. Update `packages/laravel`: register container bindings for both interfaces.
 7. Run complete test suites (`pest`) and static analysis (`phpstan`) across all packages.

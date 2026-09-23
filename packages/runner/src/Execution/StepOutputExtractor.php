@@ -14,7 +14,7 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;

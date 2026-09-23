@@ -10,7 +10,7 @@ use Alama\Arazzo\Document\Validator\PreflightValidator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 
 it('aliases SourceRegistry onto the same instance as SourceResolver', function (): void {

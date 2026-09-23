@@ -111,11 +111,12 @@ flowchart LR
     document_Resolver --> contracts_Spec
     document_Resolver --> document_Parser
     document_Validator --> contracts_Spec
-    document_Validator --> expression__
+    document_Validator --> expression_Interfaces
     document_Validator --> document_Normalizer
     document_Validator --> document_Resolver
     document_Validator --> contracts_Support
     document_Validator --> expression_Data
+    document_Validator --> expression__
     document_Validator --> expression_Enum
     document_Validator --> contracts_Dependency
     document__ --> contracts_Spec
@@ -124,6 +125,7 @@ flowchart LR
     document__ --> document_Resolver
     document__ --> document_Validator
     document__ --> expression__
+    document__ --> expression_Interfaces
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
     runner_Async --> evaluation_Interfaces
@@ -155,7 +157,7 @@ flowchart LR
     runner_Execution --> document_Parser
     runner_Execution --> document_Normalizer
     runner_Execution --> expression_Enum
-    runner_Execution --> expression__
+    runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
     runner_Execution --> runner_Protocol
     runner_Infrastructure --> contracts_Interfaces
@@ -184,8 +186,9 @@ flowchart LR
     runner__ --> runner_State
     runner__ --> document__
     runner__ --> evaluation__
-    runner__ --> expression__
+    runner__ --> expression_Interfaces
     runner__ --> contracts_Spec
+    runner__ --> expression__
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
@@ -227,6 +230,7 @@ flowchart LR
     laravel_Bindings --> document__
     laravel_Bindings --> evaluation__
     laravel_Bindings --> expression__
+    laravel_Bindings --> expression_Interfaces
     laravel_Http --> runner_Infrastructure
     laravel_Http --> cli_Generator
     laravel_Http --> contracts_Spec

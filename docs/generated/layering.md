@@ -121,12 +121,14 @@ flowchart TB
     M_document_Validator --> M_document_Resolver
     M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
+    M_document_Validator --> M_expression_Interfaces
     M_document_Validator --> M_expression__
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Normalizer
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Resolver
     M_document__ --> M_document_Validator
+    M_document__ --> M_expression_Interfaces
     M_document__ --> M_expression__
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
@@ -177,6 +179,7 @@ flowchart TB
     M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
     M_laravel_Bindings --> M_evaluation__
+    M_laravel_Bindings --> M_expression_Interfaces
     M_laravel_Bindings --> M_expression__
     M_laravel_Bindings --> M_laravel_Http
     M_laravel_Bindings --> M_laravel_Lock
@@ -241,7 +244,7 @@ flowchart TB
     M_runner_Execution --> M_evaluation_Interfaces
     M_runner_Execution --> M_evaluation__
     M_runner_Execution --> M_expression_Enum
-    M_runner_Execution --> M_expression__
+    M_runner_Execution --> M_expression_Interfaces
     M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
     M_runner_Execution --> M_runner_Policy
@@ -272,6 +275,7 @@ flowchart TB
     M_runner__ --> M_document__
     M_runner__ --> M_evaluation_Interfaces
     M_runner__ --> M_evaluation__
+    M_runner__ --> M_expression_Interfaces
     M_runner__ --> M_expression__
     M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
@@ -299,7 +303,7 @@ flowchart TB
 | `document` | `expression` | 75 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
-| `expression` | `contracts` | 10 |
+| `expression` | `contracts` | 9 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 18 |

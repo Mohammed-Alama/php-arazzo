@@ -35,8 +35,8 @@ quadrantChart
     document/Normalizer: [0.429, 0.111]
     document/Parser: [0.25, 0.182]
     document/Resolver: [0.25, 0.25]
-    document/Validator: [0.615, 0.016]
-    document/_: [0.5, 0.5]
+    document/Validator: [0.643, 0.016]
+    document/_: [0.538, 0.5]
     evaluation/Condition: [0.833, 0]
     evaluation/Data: [0.5, 0]
     evaluation/Enum: [0, 0]
@@ -50,9 +50,9 @@ quadrantChart
     expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.333, 0]
-    expression/Interfaces: [0.8, 1]
-    expression/_: [0.429, 0.2]
-    laravel/Bindings: [0.955, 0]
+    expression/Interfaces: [0.4, 1]
+    expression/_: [0.462, 0]
+    laravel/Bindings: [0.957, 0]
     laravel/Http: [0.778, 0]
     laravel/Lock: [0.5, 0]
     laravel/Persistence: [0.8, 0]
@@ -69,7 +69,7 @@ quadrantChart
     runner/Protocol: [0.909, 0]
     runner/State: [0.167, 0.417]
     runner/Telemetry: [0, 0]
-    runner/_: [0.714, 0.333]
+    runner/_: [0.733, 0.333]
 ```
 
 ## God classes (SRP)

@@ -23,8 +23,8 @@ targets. Regenerated before every commit.
 | `document:Normalizer` | 9 | 599 | 4 | 3 | 0.43 |  |
 | `document:Parser` | 11 | 1143 | 6 | 2 | 0.25 |  |
 | `document:Resolver` | 12 | 394 | 6 | 2 | 0.25 |  |
-| `document:Validator` | 62 | 3199 | 5 | 8 | 0.62 |  |
-| `(document root)` | 2 | 220 | 6 | 6 | 0.50 |  |
+| `document:Validator` | 62 | 3199 | 5 | 9 | 0.64 |  |
+| `(document root)` | 2 | 220 | 6 | 7 | 0.54 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -38,16 +38,16 @@ targets. Regenerated before every commit.
 | `expression:Data` | 4 | 105 | 3 | 1 | 0.25 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
-| `expression:Interfaces` | 1 | 19 | 1 | 4 | 0.80 |  |
-| `(expression root)` | 5 | 761 | 8 | 6 | 0.43 |  |
-| `laravel:Bindings` | 7 | 354 | 1 | 21 | 0.95 |  |
+| `expression:Interfaces` | 1 | 31 | 6 | 4 | 0.40 |  |
+| `(expression root)` | 4 | 731 | 7 | 6 | 0.46 |  |
+| `laravel:Bindings` | 7 | 354 | 1 | 22 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 7 | 0.78 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
 | `laravel:Persistence` | 4 | 260 | 1 | 4 | 0.80 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 40 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 2 | 117 | 2 | 7 | 0.78 |  |
+| `laravel:Support` | 2 | 124 | 2 | 7 | 0.78 |  |
 | `(laravel root)` | 1 | 88 | 0 | 3 | 1.00 |  |
 | `runner:Async` | 6 | 500 | 0 | 12 | 1.00 |  |
 | `runner:Events` | 11 | 317 | 7 | 1 | 0.13 |  |
@@ -58,9 +58,9 @@ targets. Regenerated before every commit.
 | `runner:Protocol` | 5 | 552 | 1 | 10 | 0.91 |  |
 | `runner:State` | 12 | 940 | 10 | 2 | 0.17 |  |
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `(runner root)` | 6 | 287 | 4 | 10 | 0.71 |  |
+| `(runner root)` | 6 | 287 | 4 | 11 | 0.73 |  |
 
-Total cross-module edges: **974**
+Total cross-module edges: **971**
 
 ## Most entangled module pairs
 
@@ -68,7 +68,7 @@ Total cross-module edges: **974**
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 88 |
 | `runner:Execution` → `contracts:Spec` | 75 |
-| `document:Validator` → `(expression root)` | 62 |
+| `document:Validator` → `(expression root)` | 52 |
 | `(evaluation root)` → `contracts:Spec` | 35 |
 | `document:Parser` → `contracts:Spec` | 33 |
 | `contracts:Interfaces` → `contracts:Spec` | 21 |

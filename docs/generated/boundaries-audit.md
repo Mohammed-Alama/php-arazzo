@@ -18,7 +18,7 @@ when a boundary consciously moves.
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 38 | **forbidden** |
+| `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
 | `Psr` | 52 | 17 | allowed |
@@ -65,7 +65,7 @@ when a boundary consciously moves.
 | laravel | `laravel:Persistence` | `Psr` | 1 |
 | laravel | `laravel:Queue` | `Illuminate` | 11 |
 | laravel | `laravel:State` | `Illuminate` | 1 |
-| laravel | `laravel:Support` | `Illuminate` | 1 |
+| laravel | `laravel:Support` | `Illuminate` | 2 |
 | laravel | `laravel:Support` | `Psr` | 2 |
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |

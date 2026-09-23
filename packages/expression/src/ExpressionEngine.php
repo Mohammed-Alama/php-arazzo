@@ -7,15 +7,15 @@ namespace Alama\Arazzo\Expression;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 /**
  * Concrete expression facade for static parsing, reference projection, and symbol table generation.
  */
-final class ExpressionEngine implements ExpressionEngineInterface, ExpressionInterface
+final readonly class ExpressionEngine implements ExpressionEngineInterface
 {
-    private readonly ExpressionParser $parser;
+    private ExpressionParser $parser;
 
     public function __construct(?ExpressionParser $parser = null)
     {

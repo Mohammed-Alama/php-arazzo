@@ -17,6 +17,7 @@ use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -27,11 +28,17 @@ use Psr\Log\LoggerInterface;
  */
 final class AsyncGraphResolver
 {
+    /**
+     * @throws BindingResolutionException
+     */
     public static function resolve(Container $app): AsyncExecutionGraph
     {
         return $app->make(RunnerGraphBuilderInterface::class)->buildAsync(self::seams($app));
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     private static function seams(Container $app): AsyncGraphSeams
     {
         return new AsyncGraphSeams(

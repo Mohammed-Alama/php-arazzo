@@ -1,13 +1,21 @@
 # Expression and Evaluation Package Separation Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:
+> executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Establish clean domain separation between `alama/arazzo-expression` (static syntax, parsing, AST, symbols) and `alama/arazzo-evaluation` (runtime dynamic evaluation against context), eliminating domain leaks, duplicate AST mapping, and decoupling `alama/arazzo-document` from `alama/arazzo-evaluation`.
+**Goal:** Establish clean domain separation between `alama/arazzo-expression` (static syntax, parsing, AST, symbols) and
+`alama/arazzo-evaluation` (runtime dynamic evaluation against context), eliminating domain leaks, duplicate AST mapping,
+and decoupling `alama/arazzo-document` from `alama/arazzo-evaluation`.
 
-**Architecture:** 
-- `alama/arazzo-expression` exposes facade `Alama\Arazzo\Expression\ExpressionEngine` implementing `Alama\Arazzo\Expression\ExpressionEngineInterface` for syntax checks, symbol table compilation, and reference inspection.
-- `alama/arazzo-evaluation` exposes facade `Alama\Arazzo\Evaluation\EvaluationEngine` implementing `Alama\Arazzo\Evaluation\EvaluationEngineInterface` for runtime evaluation, selectors, interpolation, and criteria.
-- `alama/arazzo-document` drops `alama/arazzo-evaluation` dependency and consumes `Alama\Arazzo\Expression\ExpressionEngineInterface`.
+**Architecture:**
+
+- `alama/arazzo-expression` exposes facade `Alama\Arazzo\Expression\ExpressionEngine` implementing
+  `Alama\Arazzo\Expression\ExpressionEngineInterface` for syntax checks, symbol table compilation, and reference
+  inspection.
+- `alama/arazzo-evaluation` exposes facade `Alama\Arazzo\Evaluation\EvaluationEngine` implementing
+  `Alama\Arazzo\Evaluation\EvaluationEngineInterface` for runtime evaluation, selectors, interpolation, and criteria.
+- `alama/arazzo-document` drops `alama/arazzo-evaluation` dependency and consumes
+  `Alama\Arazzo\Expression\ExpressionEngineInterface`.
 - `alama/arazzo-runner` consumes `Alama\Arazzo\Evaluation\EvaluationEngineInterface`.
 - `alama/laravel-arazzo` binds both interfaces in its container bindings.
 
@@ -18,6 +26,7 @@
 ### Task 1: Create `ExpressionEngineInterface` and `ExpressionEngine` in `packages/expression`
 
 **Files:**
+
 - Create: `packages/expression/src/ExpressionEngineInterface.php`
 - Create: `packages/expression/src/ExpressionEngine.php`
 - Test: `packages/expression/tests/ExpressionEngineTest.php`
@@ -26,21 +35,13 @@
 - [ ] **Step 1: Write the failing unit test for `ExpressionEngine`**
 
 Create `packages/expression/tests/ExpressionEngineTest.php`:
+
 ```php
 <?php
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\SpecVersion;
-use Alama\Arazzo\Expression\Data\ExpressionReference;
-use Alama\Arazzo\Expression\Enum\ReferenceKind;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
-use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;use Alama\Arazzo\Contracts\Spec\Info;use Alama\Arazzo\Contracts\Spec\SpecVersion;use Alama\Arazzo\Expression\Data\ExpressionReference;use Alama\Arazzo\Expression\Enum\ReferenceKind;use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;use Alama\Arazzo\Expression\ExpressionEngine;use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;use Alama\Arazzo\Expression\SymbolTable;
 
 it('implements ExpressionEngineInterface and ExpressionInterface', function () {
     $engine = new ExpressionEngine();
@@ -84,14 +85,17 @@ it('builds symbol table from document', function () {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run:
+
 ```bash
 ./vendor/bin/pest packages/expression/tests/ExpressionEngineTest.php
 ```
+
 Expected: FAIL with "Class Alama\Arazzo\Expression\ExpressionEngine not found"
 
 - [ ] **Step 3: Implement `ExpressionEngineInterface` and `ExpressionEngine`**
 
 Create `packages/expression/src/ExpressionEngineInterface.php`:
+
 ```php
 <?php
 
@@ -126,6 +130,7 @@ interface ExpressionEngineInterface
 ```
 
 Create `packages/expression/src/ExpressionEngine.php`:
+
 ```php
 <?php
 
@@ -133,11 +138,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Expression\Data\ExpressionReference;
-use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;
-use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;use Alama\Arazzo\Expression\Data\ExpressionReference;use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;use Alama\Arazzo\Expression\Interfaces\ExpressionInterface;use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 /**
  * Concrete expression facade for static parsing, reference projection, and symbol table generation.
@@ -179,9 +180,11 @@ Ensure `ArchTest.php` permits `Alama\Arazzo\Expression\ExpressionEngine` while m
 - [ ] **Step 5: Run tests to verify they pass**
 
 Run:
+
 ```bash
 ./vendor/bin/pest packages/expression
 ```
+
 Expected: PASS with all tests passing.
 
 - [ ] **Step 6: Commit changes**
@@ -196,18 +199,21 @@ git commit -m "feat(expression): add ExpressionEngine and ExpressionEngineInterf
 ### Task 2: Refactor `packages/evaluation` to `EvaluationEngine`
 
 **Files:**
+
 - Create: `packages/evaluation/src/EvaluationEngineInterface.php`
 - Create: `packages/evaluation/src/EvaluationEngine.php`
 - Delete: `packages/evaluation/src/ExpressionEngineInterface.php`
 - Delete: `packages/evaluation/src/ExpressionEngine.php`
 - Test: `packages/evaluation/tests/EvaluationEngineTest.php` (renamed from `ExpressionEngineTest.php`)
-- Test: `packages/evaluation/tests/EvaluationEngineCapabilitiesTest.php` (renamed from `ExpressionEngineCapabilitiesTest.php`)
+- Test: `packages/evaluation/tests/EvaluationEngineCapabilitiesTest.php` (renamed from
+  `ExpressionEngineCapabilitiesTest.php`)
 - Modify: `packages/evaluation/tests/PackageScaffoldTest.php`
 - Modify: `packages/evaluation/tests/ArchTest.php`
 
 - [ ] **Step 1: Create `EvaluationEngineInterface.php`**
 
 Create `packages/evaluation/src/EvaluationEngineInterface.php`:
+
 ```php
 <?php
 
@@ -298,7 +304,9 @@ interface EvaluationEngineInterface
 
 - [ ] **Step 2: Create `EvaluationEngine.php` with cleaned domain responsibilities**
 
-Create `packages/evaluation/src/EvaluationEngine.php` (stripping `parseExpression`, `expressionReferences`, `buildSymbolTable`, and `referenceFor`):
+Create `packages/evaluation/src/EvaluationEngine.php` (stripping `parseExpression`, `expressionReferences`,
+`buildSymbolTable`, and `referenceFor`):
+
 ```php
 <?php
 
@@ -414,23 +422,28 @@ final class EvaluationEngine implements EvaluationEngineInterface
 - [ ] **Step 3: Delete legacy `ExpressionEngine.php` and `ExpressionEngineInterface.php` from `packages/evaluation`**
 
 Remove:
+
 - `packages/evaluation/src/ExpressionEngine.php`
 - `packages/evaluation/src/ExpressionEngineInterface.php`
 
 - [ ] **Step 4: Update evaluation tests and arch tests**
 
 Rename and update:
+
 - `packages/evaluation/tests/ExpressionEngineTest.php` -> `packages/evaluation/tests/EvaluationEngineTest.php`
-- `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` -> `packages/evaluation/tests/EvaluationEngineCapabilitiesTest.php`
+- `packages/evaluation/tests/ExpressionEngineCapabilitiesTest.php` ->
+  `packages/evaluation/tests/EvaluationEngineCapabilitiesTest.php`
 - Update `packages/evaluation/tests/PackageScaffoldTest.php` to verify `EvaluationEngine`.
 - Update `packages/evaluation/tests/ArchTest.php` to verify `EvaluationEngine` does not leak into document or runner.
 
 - [ ] **Step 5: Run evaluation tests**
 
 Run:
+
 ```bash
 ./vendor/bin/pest packages/evaluation
 ```
+
 Expected: PASS with all tests passing.
 
 - [ ] **Step 6: Commit changes**
@@ -445,6 +458,7 @@ git commit -m "refactor(evaluation): rename to EvaluationEngine and decouple fro
 ### Task 3: Decouple `packages/document` from `alama/arazzo-evaluation`
 
 **Files:**
+
 - Modify: `packages/document/composer.json`
 - Modify: `packages/document/src/Document.php`
 - Modify: `packages/document/src/Validator/Validator.php`
@@ -462,7 +476,9 @@ In `packages/document/composer.json`, remove:
 - [ ] **Step 2: Update `PreflightValidator.php`**
 
 In `packages/document/src/Validator/PreflightValidator.php`:
-Change constructor from receiving `ExpressionEngineInterface $engine` to `array $supportedXPathVersions = ['xpath-10']` (or optional parameter). Update line 255 to check against `$this->supportedXPathVersions`.
+Change constructor from receiving `ExpressionEngineInterface $engine` to
+`array $supportedXPathVersions = ['xpath-10']` (or optional parameter). Update line 255 to check against
+`$this->supportedXPathVersions`.
 
 - [ ] **Step 3: Update `RuleSet.php`, `Validator.php`, and `Document.php`**
 
@@ -475,7 +491,9 @@ and in `Document.php`:
 
 - [ ] **Step 4: Update the 8 expression validation rules**
 
-In each of the following files, update imports from `Alama\Arazzo\Evaluation\ExpressionEngineInterface` to `Alama\Arazzo\Expression\ExpressionEngineInterface`:
+In each of the following files, update imports from `Alama\Arazzo\Evaluation\ExpressionEngineInterface` to
+`Alama\Arazzo\Expression\ExpressionEngineInterface`:
+
 - `packages/document/src/Validator/Rules/ExpressionSyntaxRule.php`
 - `packages/document/src/Validator/Rules/ExpressionContextMisuseRule.php`
 - `packages/document/src/Validator/Rules/ExpressionJsonPointerSyntaxRule.php`
@@ -489,6 +507,7 @@ In each of the following files, update imports from `Alama\Arazzo\Evaluation\Exp
 
 Update test files in `packages/document/tests/Validator/` to use `Alama\Arazzo\Expression\ExpressionEngine`.
 Add arch test in `packages/document/tests/ArchTest.php`:
+
 ```php
 arch('document does not depend on evaluation package')
     ->expect('Alama\Arazzo\Document')
@@ -498,9 +517,11 @@ arch('document does not depend on evaluation package')
 - [ ] **Step 6: Run document test suite**
 
 Run:
+
 ```bash
 ./vendor/bin/pest packages/document
 ```
+
 Expected: PASS with 0 dependencies on `alama/arazzo-evaluation`.
 
 - [ ] **Step 7: Commit changes**
@@ -515,6 +536,7 @@ git commit -m "refactor(document): decouple document package from evaluation"
 ### Task 4: Update `packages/runner` to Consume `EvaluationEngineInterface`
 
 **Files:**
+
 - Modify: `packages/runner/src/RunnerFacade.php`
 - Modify: `packages/runner/src/RunnerGraphBuilder.php`
 - Modify: `packages/runner/src/Execution/ExecutionGraphFactory.php`
@@ -541,14 +563,17 @@ Update property and parameter typehints from `ExpressionEngineInterface` to `Eva
 
 - [ ] **Step 2: Update test doubles and mocks in `packages/runner/tests/`**
 
-Update `packages/runner/tests/` where `ExpressionEngineInterface` or `ExpressionEngine` was mocked or instantiated to use `EvaluationEngineInterface` / `EvaluationEngine`.
+Update `packages/runner/tests/` where `ExpressionEngineInterface` or `ExpressionEngine` was mocked or instantiated to
+use `EvaluationEngineInterface` / `EvaluationEngine`.
 
 - [ ] **Step 3: Run runner test suite**
 
 Run:
+
 ```bash
 ./vendor/bin/pest packages/runner
 ```
+
 Expected: PASS.
 
 - [ ] **Step 4: Commit changes**
@@ -563,6 +588,7 @@ git commit -m "refactor(runner): consume EvaluationEngineInterface instead of Ex
 ### Task 5: Update `packages/laravel` Container Bindings
 
 **Files:**
+
 - Modify: `packages/laravel/src/Bindings/FacadeBindings.php`
 - Modify: `packages/laravel/src/Bindings/ResolverBindings.php`
 - Modify: `packages/laravel/tests/LaravelArazzoServiceProviderBindingsTest.php`
@@ -571,9 +597,11 @@ git commit -m "refactor(runner): consume EvaluationEngineInterface instead of Ex
 - [ ] **Step 1: Update `FacadeBindings.php`**
 
 In `packages/laravel/src/Bindings/FacadeBindings.php`:
+
 - Import `Alama\Arazzo\Expression\ExpressionEngineInterface` and `Alama\Arazzo\Expression\ExpressionEngine`.
 - Import `Alama\Arazzo\Evaluation\EvaluationEngineInterface` and `Alama\Arazzo\Evaluation\EvaluationEngine`.
 - Bind both facades:
+
 ```php
 $app->singleton(ExpressionEngineInterface::class, fn (): ExpressionEngine => new ExpressionEngine());
 $app->singleton(EvaluationEngineInterface::class, fn (): EvaluationEngine => new EvaluationEngine());
@@ -598,14 +626,17 @@ Update `PreflightValidator` resolution to pass `['xpath-10']` or use the updated
 
 - [ ] **Step 3: Update Laravel tests**
 
-Update `packages/laravel/tests/LaravelArazzoServiceProviderBindingsTest.php` and `ResolverBindingsTest.php` to verify `ExpressionEngineInterface` and `EvaluationEngineInterface` bindings.
+Update `packages/laravel/tests/LaravelArazzoServiceProviderBindingsTest.php` and `ResolverBindingsTest.php` to verify
+`ExpressionEngineInterface` and `EvaluationEngineInterface` bindings.
 
 - [ ] **Step 4: Run Laravel test suite**
 
 Run:
+
 ```bash
 ./vendor/bin/pest packages/laravel
 ```
+
 Expected: PASS.
 
 - [ ] **Step 5: Commit changes**
@@ -620,6 +651,7 @@ git commit -m "refactor(laravel): bind ExpressionEngineInterface and EvaluationE
 ### Task 6: Add Architectural Fitness Functions & Update CONTEXT-MAP
 
 **Files:**
+
 - Modify: `CONTEXT-MAP.md`
 - Modify: `packages/expression/tests/ArchTest.php`
 - Modify: `packages/evaluation/tests/ArchTest.php`
@@ -628,13 +660,17 @@ git commit -m "refactor(laravel): bind ExpressionEngineInterface and EvaluationE
 - [ ] **Step 1: Update `CONTEXT-MAP.md`**
 
 Update package topology table and descriptions in `CONTEXT-MAP.md` reflecting:
-- `alama/arazzo-expression`: Facade `Alama\Arazzo\Expression\ExpressionEngine`, Interface `Alama\Arazzo\Expression\ExpressionEngineInterface`.
-- `alama/arazzo-evaluation`: Facade `Alama\Arazzo\Evaluation\EvaluationEngine`, Interface `Alama\Arazzo\Evaluation\EvaluationEngineInterface`.
+
+- `alama/arazzo-expression`: Facade `Alama\Arazzo\Expression\ExpressionEngine`, Interface
+  `Alama\Arazzo\Expression\ExpressionEngineInterface`.
+- `alama/arazzo-evaluation`: Facade `Alama\Arazzo\Evaluation\EvaluationEngine`, Interface
+  `Alama\Arazzo\Evaluation\EvaluationEngineInterface`.
 - `alama/arazzo-document`: Zero dependency on `evaluation`.
 
 - [ ] **Step 2: Enforce Pest Arch tests across packages**
 
 Ensure all 3 arch tests enforce:
+
 1. `Document` cannot use `Evaluation`.
 2. `Expression` cannot use `Evaluation`.
 3. `Evaluation` cannot leak into `Document` or `Runner`.
@@ -651,28 +687,35 @@ git commit -m "docs: update context map and arch fitness functions for expressio
 ### Task 7: Full Monorepo Quality Gates Verification
 
 **Files:**
+
 - None (verification across entire monorepo)
 
 - [ ] **Step 1: Run complete Pest test suite**
 
 Run:
+
 ```bash
 ./vendor/bin/pest
 ```
+
 Expected: PASS (all tests pass across all packages).
 
 - [ ] **Step 2: Run Pint code style fixer**
 
 Run:
+
 ```bash
 ./vendor/bin/pint --test
 ```
+
 Expected: PASS.
 
 - [ ] **Step 3: Run PHPStan static analysis**
 
 Run:
+
 ```bash
 ./vendor/bin/phpstan analyse --configuration=phpstan.neon.dist
 ```
+
 Expected: PASS (0 errors).
