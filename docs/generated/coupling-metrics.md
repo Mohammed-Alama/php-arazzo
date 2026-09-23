@@ -39,7 +39,7 @@ targets. Regenerated before every commit.
 | `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 3 | 1 | 0.25 |  |
 | `expression:Interfaces` | 1 | 19 | 2 | 4 | 0.67 |  |
-| `(expression root)` | 4 | 728 | 3 | 6 | 0.67 |  |
+| `(expression root)` | 4 | 727 | 3 | 6 | 0.67 |  |
 | `laravel:Bindings` | 7 | 352 | 1 | 20 | 0.95 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 7 | 0.78 |  |
