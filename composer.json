@@ -46,7 +46,9 @@
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-runner": "@dev",
-        "alama/laravel-arazzo": "@dev"
+        "alama/laravel-arazzo": "@dev",
+        "ext-dom": "*",
+        "ext-libxml": "*"
     },
     "require-dev": {
         "infection/infection": "^0.35.2",

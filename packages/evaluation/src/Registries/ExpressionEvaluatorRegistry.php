@@ -49,6 +49,7 @@ final class ExpressionEvaluatorRegistry
     public function all(): array
     {
         $flat = [];
+        /** @var ExpressionEvaluatorPluginInterface[] $priorityPlugins */
         foreach ($this->plugins as $priorityPlugins) {
             $flat = array_merge($flat, $priorityPlugins);
         }

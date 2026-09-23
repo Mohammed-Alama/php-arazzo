@@ -42,7 +42,7 @@ flowchart LR
     subgraph S_unclassified["Unclassified"]
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
         S_contracts_Exceptions["contracts:Exceptions<br/><small>31 LOC</small>"]:::unknownDomain
-        S_contracts_Interfaces["contracts:Interfaces<br/><small>306 LOC</small>"]:::unknownDomain
+        S_contracts_Interfaces["contracts:Interfaces<br/><small>305 LOC</small>"]:::unknownDomain
         S_document_Normalizer["document:Normalizer<br/><small>608 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>654 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>34 LOC</small>"]:::unknownDomain
@@ -76,7 +76,7 @@ flowchart LR
 | Core domain | 1 | 1,148 | 0 | 6% |
 | Supporting | 6 | 5,952 | 0 | 32% |
 | Generic subdomain | 12 | 2,132 | 1,138 | 17% |
-| Unclassified | 24 | 8,459 | 0 | 45% |
+| Unclassified | 24 | 8,458 | 0 | 45% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
