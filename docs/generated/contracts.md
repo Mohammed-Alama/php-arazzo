@@ -61,8 +61,6 @@ flowchart LR
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionInterface
-    C_expression_expression___ExpressionInspector["ExpressionInspector<br/><small>(expression root)</small>"]:::implCore
-    C_expression_expression___ExpressionInspector -.->|implements| I_ExpressionInterface
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore
     C_evaluation_evaluation_Condition_Comparison -.->|implements| I_ConditionNode
     C_evaluation_evaluation_Condition_Literal["Literal<br/><small>evaluation:Condition</small>"]:::implCore

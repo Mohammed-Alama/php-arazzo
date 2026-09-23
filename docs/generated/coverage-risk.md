@@ -73,7 +73,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.15 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 181 | 47 | 100% |
+| `contracts/Spec` | 0.03 | 180 | 47 | 100% |
 | `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Normalizer` | 0.43 | 15 | 9 | 100% |
@@ -92,7 +92,7 @@ quadrantChart
 | `expression/Data` | 0.25 | 2 | 4 | 50% |
 | `expression/Enum` | 0.00 | 3 | 2 | 100% |
 | `expression/Exceptions` | 0.33 | 5 | 1 | 100% |
-| `expression/Interfaces` | 0.80 | 3 | 1 | 100% |
+| `expression/Interfaces` | 0.80 | 2 | 1 | 100% |
 | `laravel/Bindings` | 0.95 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `laravel/Http` | 0.78 | 4 | 3 | 100% |

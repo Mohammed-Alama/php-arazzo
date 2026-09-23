@@ -299,7 +299,7 @@ flowchart TB
 | `document` | `expression` | 75 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
-| `expression` | `contracts` | 11 |
+| `expression` | `contracts` | 10 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 18 |

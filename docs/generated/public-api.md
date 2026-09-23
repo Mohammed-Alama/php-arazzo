@@ -254,12 +254,6 @@ this file on a commit is a public API change — review it deliberately.
 
 ## expression
 
-### `ExpressionInspector` class
-- `public function __construct(?ExpressionParser $parser = null)`
-- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable`
-- `public function expressionReferences(string $raw): ?ExpressionReference`
-- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
-
 ### `SymbolTable` class
 - `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
 

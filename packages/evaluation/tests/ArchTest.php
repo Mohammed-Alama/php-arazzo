@@ -14,5 +14,4 @@ arch('evaluation does not leak document/runner internals')
 
 arch('evaluation consumes only parser from expression')
     ->expect('Alama\Arazzo\Evaluation')
-    ->not->toUse('Alama\Arazzo\Expression\Lexer')
-    ->not->toUse('Alama\Arazzo\Expression\ExpressionInspector');
+    ->not->toUse('Alama\Arazzo\Expression\Lexer');

@@ -39,7 +39,7 @@ targets. Regenerated before every commit.
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
 | `expression:Interfaces` | 1 | 19 | 1 | 4 | 0.80 |  |
-| `(expression root)` | 6 | 801 | 8 | 6 | 0.43 |  |
+| `(expression root)` | 5 | 761 | 8 | 6 | 0.43 |  |
 | `laravel:Bindings` | 7 | 354 | 1 | 21 | 0.95 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 7 | 0.78 |  |
@@ -60,7 +60,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 287 | 4 | 10 | 0.71 |  |
 
-Total cross-module edges: **978**
+Total cross-module edges: **974**
 
 ## Most entangled module pairs
 
