@@ -51,7 +51,7 @@ quadrantChart
     expression/Enum: [0, 0]
     expression/Exceptions: [0.25, 0]
     expression/Interfaces: [0.667, 1]
-    expression/_: [0.667, 0]
+    expression/_: [0.667, 0.167]
     laravel/Bindings: [0.952, 0]
     laravel/Http: [0.778, 0]
     laravel/Lock: [0.5, 0]

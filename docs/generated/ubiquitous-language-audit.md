@@ -64,6 +64,8 @@ Evans' first question: does the code speak one language?
 
 | Name | Locations | Packages |
 |---|---|---|
+| `ExpressionEngine` | `Expression\ExpressionEngine`<br/>`Evaluation\ExpressionEngine` | expression, evaluation |
+| `ExpressionEngineInterface` | `Expression\ExpressionEngineInterface`<br/>`Evaluation\ExpressionEngineInterface` | expression, evaluation |
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
 | `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |

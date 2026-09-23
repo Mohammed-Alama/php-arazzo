@@ -69,12 +69,12 @@ flowchart LR
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
     expression_Interfaces --> expression__
-    expression__ --> expression_Ast
-    expression__ --> expression_Data
-    expression__ --> expression_Enum
-    expression__ --> expression_Exceptions
     expression__ --> contracts_Spec
+    expression__ --> expression_Data
+    expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
+    expression__ --> expression_Ast
+    expression__ --> expression_Enum
     evaluation_Condition --> evaluation_Enum
     evaluation_Condition --> contracts_Spec
     evaluation_Condition --> evaluation_Interfaces

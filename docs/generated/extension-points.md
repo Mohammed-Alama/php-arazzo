@@ -35,11 +35,13 @@ mindmap
       DatabaseExecutionRegistry
     ExpressionEngineInterface
       ExpressionEngine
+      ExpressionEngine
     ExpressionEvaluatorInterface
       ExpressionEvaluator
     ExpressionEvaluatorPluginInterface
       JsonPathExpressionPlugin
     ExpressionInterface
+      ExpressionEngine
       ExpressionInspector
       ExpressionEngine
     ExpressionResolverInterface
@@ -103,10 +105,10 @@ mindmap
 | `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
-| `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
+| `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small>, `ExpressionEngine` <small>core</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
 | `ExpressionEvaluatorPluginInterface` | no | `JsonPathExpressionPlugin` <small>core</small> |
-| `ExpressionInterface` | no | `ExpressionInspector` <small>core</small>, `ExpressionEngine` <small>core</small> |
+| `ExpressionInterface` | no | `ExpressionEngine` <small>core</small>, `ExpressionInspector` <small>core</small>, `ExpressionEngine` <small>core</small> |
 | `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small>, `InterpolationResolver` <small>core</small>, `ExecutionExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |

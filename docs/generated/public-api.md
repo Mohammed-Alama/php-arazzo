@@ -263,6 +263,19 @@ this file on a commit is a public API change — review it deliberately.
 ### `SymbolTable` class
 - `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
 
+### `Alama\Arazzo\Expression`
+
+#### `ExpressionEngine` class
+- `public function __construct(?ExpressionParser $parser = null)`
+- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable`
+- `public function expressionReferences(string $raw): ?ExpressionReference`
+- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
+
+#### `ExpressionEngineInterface` interface
+- `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
+- `public function expressionReferences(string $raw): ?ExpressionReference;`
+- `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
+
 ### `Alama\Arazzo\Expression\Enum`
 
 #### `ReferenceKind` enum

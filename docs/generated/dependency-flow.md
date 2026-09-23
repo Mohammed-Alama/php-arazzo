@@ -97,12 +97,12 @@ expression-Exceptions,contracts-Support,1
 expression-Interfaces,contracts-Spec,1
 expression-Interfaces,expression-Data,1
 expression-Interfaces,expression-Exceptions,1
-expression-Interfaces,expression-root,1
-expression-root,contracts-Spec,7
+expression-root,contracts-Spec,9
 expression-root,expression-Ast,14
-expression-root,expression-Data,6
+expression-root,expression-Data,8
 expression-root,expression-Enum,3
-expression-root,expression-Exceptions,3
+expression-root,expression-Exceptions,5
+expression-root,expression-Interfaces,2
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,4
 laravel-Bindings,contracts-Support,1
@@ -217,6 +217,6 @@ These references exist in the code but are not drawn: drawing them would close a
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `evaluation-Registries` | `evaluation-Plugins` | 2 |
-| `expression-root` | `expression-Interfaces` | 1 |
+| `expression-Interfaces` | `expression-root` | 1 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

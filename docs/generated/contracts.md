@@ -56,6 +56,12 @@ flowchart LR
     C_contracts_contracts_Spec_ResponseTransfer -.->|implements| I_ResponseTransferInterface
     C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
     C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
+    C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
+    C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_evaluation_evaluation___ExpressionEngine["ExpressionEngine<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
+    C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionInterface
     C_expression_expression___ExpressionInspector["ExpressionInspector<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionInspector -.->|implements| I_ExpressionInterface
     C_evaluation_evaluation___ExpressionEngine["ExpressionEngine<br/><small>(evaluation root)</small>"]:::implCore
@@ -76,8 +82,6 @@ flowchart LR
     C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
-    C_evaluation_evaluation___ExpressionEngine["ExpressionEngine<br/><small>(evaluation root)</small>"]:::implCore
-    C_evaluation_evaluation___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
     C_evaluation_evaluation___ExpressionEvaluator["ExpressionEvaluator<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
     C_evaluation_evaluation___ExpressionResolver["ExpressionResolver<br/><small>(evaluation root)</small>"]:::implCore
