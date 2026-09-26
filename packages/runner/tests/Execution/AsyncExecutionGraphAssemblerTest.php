@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
@@ -18,7 +19,6 @@ use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;

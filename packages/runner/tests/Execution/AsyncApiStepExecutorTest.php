@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
@@ -20,7 +21,6 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use GuzzleHttp\Psr7\HttpFactory;

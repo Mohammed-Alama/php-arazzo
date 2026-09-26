@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Support;
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
@@ -11,7 +12,6 @@ use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
 use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;

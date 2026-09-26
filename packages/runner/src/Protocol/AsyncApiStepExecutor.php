@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Protocol;
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
@@ -16,7 +17,6 @@ use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
-use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use JsonException;
 use LogicException;
