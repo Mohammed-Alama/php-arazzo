@@ -66,7 +66,6 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
-| `SourceNormalizerRegistry` | `Sources\Normalizer\SourceNormalizerRegistry`<br/>`Sources\Resolver\SourceNormalizerRegistry` | sources |
 | `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
 | `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |

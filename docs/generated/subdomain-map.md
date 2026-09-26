@@ -18,12 +18,12 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>1202 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>766 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>795 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1256 LOC</small>"]:::supportingDomain
         S_document_Validator["document:Validator<br/><small>3470 LOC</small>"]:::supportingDomain
-        S_sources_Resolver["sources:Resolver<br/><small>457 LOC</small>"]:::supportingDomain
+        S_sources_Resolver["sources:Resolver<br/><small>488 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
@@ -64,7 +64,7 @@ flowchart LR
         S_runner_Policy["runner:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runner_Protocol["runner:Protocol<br/><small>557 LOC</small>"]:::unknownDomain
         S_runner_Telemetry["runner:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
-        S_sources_Normalizer["sources:Normalizer<br/><small>823 LOC</small>"]:::unknownDomain
+        S_sources_Normalizer["sources:Normalizer<br/><small>788 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -75,9 +75,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,202 | 0 | 6% |
-| Supporting | 7 | 6,618 | 0 | 33% |
+| Supporting | 7 | 6,678 | 0 | 34% |
 | Generic subdomain | 12 | 2,132 | 1,158 | 17% |
-| Unclassified | 24 | 8,778 | 0 | 44% |
+| Unclassified | 24 | 8,743 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

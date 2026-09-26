@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 755 | 0 | 18 | 1.00 |  |
+| `cli:Console` | 11 | 784 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
@@ -57,12 +57,12 @@ targets. Regenerated before every commit.
 | `runner:State` | 12 | 940 | 10 | 2 | 0.17 |  |
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 290 | 4 | 12 | 0.75 |  |
-| `sources:Normalizer` | 10 | 813 | 7 | 5 | 0.42 |  |
-| `sources:Resolver` | 13 | 444 | 6 | 3 | 0.33 |  |
+| `sources:Normalizer` | 9 | 779 | 7 | 5 | 0.42 |  |
+| `sources:Resolver` | 13 | 475 | 6 | 3 | 0.33 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 328 | 2 | 9 | 0.82 |  |
+| `(sources root)` | 3 | 288 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **991**
+Total cross-module edges: **990**
 
 ## Most entangled module pairs
 

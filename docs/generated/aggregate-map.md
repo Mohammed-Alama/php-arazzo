@@ -20,7 +20,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | expression | 18 | 3 | 86% |
 | evaluation | 9 | 18 | 33% |
 | document | 11 | 68 | 14% |
-| sources | 3 | 21 | 12% |
+| sources | 3 | 20 | 13% |
 | runner | 21 | 57 | 27% |
 | cli | 0 | 14 | 0% |
 | laravel | 0 | 23 | 0% |

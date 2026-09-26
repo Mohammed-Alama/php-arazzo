@@ -10,8 +10,12 @@ use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Sources\Resolver\Exceptions\SourceFetchException;
 use Alama\Arazzo\Sources\Resolver\Exceptions\SourceParseException;
+use Alama\Arazzo\Sources\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceFetcher;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
 use Throwable;
 
 /**
@@ -23,6 +27,33 @@ final readonly class DefaultSourceResolver implements SourceResolver
         /** @var array<string, SourceFetcher> */
         private array $fetchers,
     ) {}
+
+    /**
+     * Create a resolver with the standard fetchers (http, https, file).
+     * Uses Guzzle Client and PSR-7 HttpFactory internally.
+     */
+    public static function withDefaults(): self
+    {
+        $client = new Client();
+        $factory = new HttpFactory();
+
+        return new self([
+            'http' => new HttpFetcher($client, $factory),
+            'https' => new HttpFetcher($client, $factory),
+            'file' => new LocalFetcher(),
+        ]);
+    }
+
+    /**
+     * Create a resolver with custom fetchers.
+     * Useful for testing or when different HTTP client configuration is needed.
+     *
+     * @param  array<string, SourceFetcher>  $fetchers
+     */
+    public static function withFetchers(array $fetchers): self
+    {
+        return new self($fetchers);
+    }
 
     public function resolve(SourceDescription $source, string $basePath): SourceDocument
     {

@@ -314,7 +314,7 @@ flowchart TB
 
 | From package | To package | Refs |
 |---|---|---:|
-| `cli` | `contracts` | 20 |
+| `cli` | `contracts` | 22 |
 | `cli` | `document` | 10 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
@@ -338,7 +338,7 @@ flowchart TB
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
 | `runner` | `sources` | 10 |
-| `sources` | `contracts` | 32 |
+| `sources` | `contracts` | 29 |
 | `sources` | `document` | 25 |
 | `sources` | `expression` | 1 |
 

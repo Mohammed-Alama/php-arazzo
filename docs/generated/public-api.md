@@ -427,10 +427,11 @@ this file on a commit is a public API change — review it deliberately.
 ## sources
 
 ### `SourceGraph` class
+- `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
 - `public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface`
-- `public static function loader(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $registry = null, ): SourceLoader`
-- `public static function runtime(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $registry = null, ): SourceRuntime`
-- `public static function using(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $registry = null, ): DocumentInterface`
+- `public static function loader(?SourceRegistry $registry = null): SourceLoader`
+- `public static function runtime(?SourceRegistry $registry = null): SourceRuntime`
+- `public static function using(?SourceRegistry $registry = null): DocumentInterface`
 
 ### `Alama\Arazzo\Sources`
 
@@ -462,7 +463,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Cli\Console\Command`
 
 #### `RunCommand` class
-- `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
+- `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
 
 ## laravel
 

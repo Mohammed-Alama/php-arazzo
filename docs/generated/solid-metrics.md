@@ -68,7 +68,7 @@ quadrantChart
     runner/State: [0.167, 0.417]
     runner/Telemetry: [0, 0]
     runner/_: [0.75, 0.333]
-    sources/Normalizer: [0.417, 0.1]
+    sources/Normalizer: [0.417, 0.111]
     sources/Resolver: [0.333, 0.231]
     sources/Validator: [0.571, 0]
     sources/_: [0.818, 0]

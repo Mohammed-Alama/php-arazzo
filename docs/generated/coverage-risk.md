@@ -109,8 +109,8 @@ quadrantChart
 | `runner/Protocol` | 0.91 | 11 | 5 | 100% |
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.42 | 17 | 10 | 100% |
-| `sources/Resolver` | 0.33 | 25 | 13 | 100% |
+| `sources/Normalizer` | 0.42 | 16 | 9 | 100% |
+| `sources/Resolver` | 0.33 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 3 | 1 | 100% |
 
 **Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`

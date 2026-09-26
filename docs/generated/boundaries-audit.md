@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 52 | 17 | allowed |
+| `Psr` | 53 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 20 | 0 | **forbidden** ⚠ |
@@ -30,9 +30,8 @@ when a boundary consciously moves.
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
-| cli | `cli:Console` | `GuzzleHttp` | 2 |
 | cli | `cli:Console` | `OpenTelemetry` | 1 |
-| cli | `cli:Console` | `Psr` | 1 |
+| cli | `cli:Console` | `Psr` | 2 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Support` | `Psr` | 4 |
@@ -50,6 +49,7 @@ when a boundary consciously moves.
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
 | runner | `runner:_` | `Psr` | 5 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
+| sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
 | sources | `sources:_` | `GuzzleHttp` | 2 |
@@ -73,7 +73,6 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **14 library boundary violation(s):**
-- `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
@@ -85,6 +84,7 @@ when a boundary consciously moves.
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
+- `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
 - `sources:_` imports `GuzzleHttp\*` (2 refs)
 
