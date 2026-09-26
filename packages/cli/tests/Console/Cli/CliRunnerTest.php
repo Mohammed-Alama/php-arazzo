@@ -15,8 +15,8 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\State\FileStateStore;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
+use Alama\Arazzo\Runtime\State\FileStateStore;
+use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
 
 class CliFakeExecutor implements StepProtocolExecutorInterface
 {

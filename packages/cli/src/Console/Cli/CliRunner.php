@@ -18,11 +18,11 @@ use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
-use Alama\Arazzo\Runner\State\Interfaces\WritableDefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Telemetry\OtelSetup;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\WritableDefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\Telemetry\OtelSetup;
 use OpenTelemetry\API\Trace\SpanInterface;
 use RuntimeException;
 
