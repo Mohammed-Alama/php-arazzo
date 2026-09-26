@@ -31,7 +31,7 @@ targets. Regenerated before every commit.
 | `evaluation:Exceptions` | 1 | 31 | 2 | 1 | 0.33 |  |
 | `evaluation:Interfaces` | 5 | 103 | 9 | 1 | 0.10 |  |
 | `evaluation:Plugins` | 2 | 93 | 1 | 3 | 0.75 |  |
-| `evaluation:Registries` | 2 | 118 | 1 | 3 | 0.75 |  |
+| `evaluation:Registries` | 2 | 119 | 1 | 3 | 0.75 |  |
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
 | `(evaluation root)` | 11 | 1039 | 6 | 11 | 0.65 |  |
 | `expression:Ast` | 15 | 335 | 2 | 2 | 0.50 |  |

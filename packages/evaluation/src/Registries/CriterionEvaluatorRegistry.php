@@ -50,6 +50,7 @@ final class CriterionEvaluatorRegistry
     public function all(): array
     {
         $flat = [];
+        /** @var CriterionEvaluatorPluginInterface[] $priorityPlugins */
         foreach ($this->plugins as $priorityPlugins) {
             $flat = array_merge($flat, $priorityPlugins);
         }
