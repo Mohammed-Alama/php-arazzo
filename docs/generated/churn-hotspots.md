@@ -14,16 +14,16 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "laravel:Http", "cli:Console", "document:Validator", "laravel:Persistence", "runner:Execution", "laravel:Queue", "contracts:Spec", "laravel:Lock", "laravel:State", "runner:Protocol", "document:Parser"]
     y-axis "Touches" 0 --> 40
-    bar [29, 17, 15, 15, 15, 14, 12, 9, 9, 9, 9, 7]
+    bar [29, 17, 16, 15, 15, 14, 12, 9, 9, 9, 9, 7]
 ```
 
-Analyzed 256 total file-touches across 44 modules.
+Analyzed 257 total file-touches across 44 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 29 | 11% | 372 | 78 |
 | `laravel:Http` | 17 | 7% | 170 | 100 |
-| `cli:Console` | 15 | 6% | 793 | 18.9 |
+| `cli:Console` | 16 | 6% | 793 | 20.2 |
 | `document:Validator` | 15 | 6% | 3,470 | 4.3 |
 | `laravel:Persistence` | 15 | 6% | 264 | 56.8 |
 | `runner:Execution` | 14 | 5% | 3,886 | 3.6 |
