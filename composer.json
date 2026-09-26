@@ -38,6 +38,10 @@
         },
         {
             "type": "path",
+            "url": "packages/engine"
+        },
+        {
+            "type": "path",
             "url": "packages/runner"
         },
         {
@@ -55,6 +59,7 @@
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-runner": "@dev",
         "alama/arazzo-runtime": "@dev",
+        "alama/arazzo-engine": "@dev",
         "alama/arazzo-sources": "@dev",
         "alama/laravel-arazzo": "@dev",
         "ext-dom": "*",
@@ -83,6 +88,7 @@
             "Alama\\Arazzo\\Cli\\": "packages/cli/src/",
             "Alama\\Arazzo\\Runner\\": "packages/runner/src/",
             "Alama\\Arazzo\\Runtime\\": "packages/runtime/src/",
+            "Alama\\Arazzo\\Engine\\": "packages/engine/src/",
             "Alama\\Arazzo\\Sources\\": "packages/sources/src/",
             "Arazzo\\PHPStan\\Rules\\": "packages/core/phpstan/rules/"
         }
@@ -96,7 +102,8 @@
             "Alama\\Arazzo\\Tests\\Runtime\\": "packages/runtime/tests/",
             "Alama\\Arazzo\\Tests\\Runner\\": "packages/runner/tests/",
             "Alama\\Arazzo\\Tests\\Laravel\\": "packages/laravel/tests/",
-            "Alama\\Arazzo\\Tests\\Sources\\": "packages/sources/tests/"
+            "Alama\\Arazzo\\Tests\\Sources\\": "packages/sources/tests/",
+            "Alama\\Arazzo\\Tests\\Engine\\": "packages/engine/tests/"
         }
     },
     "scripts": {
@@ -108,7 +115,8 @@
             "@analyse-runtime",
             "@analyse-runner",
             "@analyse-cli",
-            "@analyse-laravel"
+            "@analyse-laravel",
+            "@analyse-engine"
         ],
         "analyse-contracts": "vendor/bin/phpstan analyse -c packages/contracts/phpstan.neon.dist --memory-limit=1G",
         "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
@@ -120,6 +128,7 @@
         "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
         "analyse-core": "vendor/bin/phpstan analyse -c packages/core/phpstan.neon.dist --memory-limit=1G",
         "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G",
+        "analyse-engine": "vendor/bin/phpstan analyse -c packages/engine/phpstan.neon.dist --memory-limit=1G",
         "test-core": "vendor/bin/pest packages/core/tests",
         "test-contracts": "vendor/bin/pest packages/contracts/tests",
         "test-document": "vendor/bin/pest packages/document/tests",
@@ -130,6 +139,7 @@
         "test-cli": "vendor/bin/pest packages/cli/tests",
         "test-laravel": "vendor/bin/pest packages/laravel/tests",
         "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
+        "test-engine": "vendor/bin/pest packages/engine/tests",
         "test": [
             "@test-contracts",
             "@test-expression",
@@ -139,7 +149,8 @@
             "@test-runner",
             "@test-cli",
             "@test-core",
-            "@test-laravel"
+            "@test-laravel",
+            "@test-engine"
         ],
         "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",
@@ -148,9 +159,7 @@
         "format": "vendor/bin/pint",
         "quality-gates": "@php scripts/quality-gates.php",
         "quality-gates:mutations": "@php scripts/quality-gates.php --with-mutations",
-        "conformance": "@php scripts/generate-conformance-matrix.php",
-        "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
-        "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G"
+        "conformance": "@php scripts/generate-conformance-matrix.php"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

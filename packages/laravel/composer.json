@@ -21,7 +21,7 @@
     "require": {
         "php": "^8.4",
         "alama/arazzo-cli": "@dev",
-        "alama/arazzo-core": "^1.0@alpha",
+        "alama/arazzo-core": "@dev",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-evaluation": "@dev",
