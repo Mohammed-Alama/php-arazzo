@@ -17,13 +17,13 @@ xychart-beta
     bar [26, 16, 15, 12, 12, 11, 10, 9, 9, 8, 7, 6]
 ```
 
-Analyzed 230 total file-touches across 43 modules.
+Analyzed 231 total file-touches across 43 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 26 | 11% | 361 | 72 |
 | `laravel:Http` | 16 | 7% | 170 | 94.1 |
-| `laravel:Persistence` | 15 | 7% | 264 | 56.8 |
+| `laravel:Persistence` | 15 | 6% | 264 | 56.8 |
 | `laravel:Queue` | 12 | 5% | 109 | 110.1 |
 | `runner:Execution` | 12 | 5% | 3,863 | 3.1 |
 | `cli:Console` | 11 | 5% | 765 | 14.4 |
@@ -40,12 +40,12 @@ Analyzed 230 total file-touches across 43 modules.
 | `contracts:Dependency` | 4 | 2% | 336 | 11.9 |
 | `document:Normalizer` | 4 | 2% | 608 | 6.6 |
 | `document:Parser` | 4 | 2% | 1,154 | 3.5 |
+| `evaluation:Registries` | 4 | 2% | 121 | 33.1 |
 | `expression:Ast` | 4 | 2% | 350 | 11.4 |
 | `cli:Generator` | 3 | 1% | 111 | 27 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
 | `document:Resolver` | 3 | 1% | 406 | 7.4 |
 | `evaluation:Data` | 3 | 1% | 34 | 88.2 |
-| `evaluation:Registries` | 3 | 1% | 121 | 24.8 |
 | `expression:Data` | 3 | 1% | 66 | 45.5 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
 | `laravel:Events` | 3 | 1% | 24 | 125 |

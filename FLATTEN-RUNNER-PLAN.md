@@ -1,5 +1,15 @@
 # Flatten Runner: Plan & Task Tracker
 
+> ⚠️ **SUPERSEDED — do not execute this plan. Its target structure was never built.**
+>
+> This was a good plan against a layout that no longer exists. It flattens `Runner/` into top-level directories under **`packages/core/src/`** and consolidates 21 interfaces into `packages/core/src/Contracts/`. The monorepo instead moved to **package-per-concern** — `packages/contracts`, `packages/document`, `packages/expression`, `packages/evaluation`, `packages/runner`, and so on — so neither the target tree below nor the `packages/core/src/Contracts/` consolidation is what shipped.
+>
+> What *did* survive is the plan's central idea, **"one place for interfaces"**, realised as `packages/contracts` (Phase A — `docs/superpowers/plans/2026-09-08-phase-a-contracts-ports.md`, and the spec-backed design). The boundary between "interface" and "implementation" also survived, but the axis is **package dependency direction**, not directory nesting: see `docs/research/2026-09-26-runner-package-split-validation.md` for the validated layering and `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md` for the governing design.
+>
+> **Why it is kept rather than deleted:** it records a real branch (`feat/runner-flatten`, worktree `.worktrees/feat/runner-flatten`) whose commits are in history, and the runner-split research cites it as the pre-extraction baseline. Treat it as evidence, not as instructions.
+>
+> The unchecked boxes in the Verification Checklist below are therefore **not** a live tracker — they were never satisfied and are not meant to be. For what actually shipped, read the Phase A–H plans under `docs/superpowers/plans/`.
+
 > **Branch:** `feat/runner-flatten`
 > **Worktree:** `.worktrees/feat/runner-flatten`
 > **Goal:** Lift all internal modules out of `Runner/` into flat, single-word top-level directories under `packages/core/src/`. Consolidate all interfaces into a global `Contracts/` directory. Move `Cli/` under `Console/`.
