@@ -171,7 +171,7 @@ this file on a commit is a public API change — review it deliberately.
 - Cases: `Connect`, `Grpc`, `GrpcWeb`, `Twirp`
 
 #### `SourceType` enum
-- Cases: `Arazzo`, `Asyncapi`, `Openapi`
+- Cases: `Arazzo`, `Asyncapi`, `Graphql`, `Openapi`, `Protobuf`, `Wsdl`
 
 #### `SpecVersion` enum
 - Cases: `V1_0`, `V1_1`

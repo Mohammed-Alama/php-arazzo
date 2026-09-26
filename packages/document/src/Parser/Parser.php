@@ -168,7 +168,7 @@ class Parser
         $type = $this->requireString($obj, 'type', $ctx);
         $enum = SourceType::tryFrom($type)
             ?? throw ParserException::invalidEnum(
-                $ctx->push('type'), 'openapi|arazzo', $type,
+                $ctx->push('type'), 'openapi|arazzo|asyncapi|wsdl|protobuf|graphql', $type,
             );
 
         return new SourceDescription(

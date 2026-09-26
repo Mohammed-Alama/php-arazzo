@@ -72,7 +72,7 @@ it('parses SourceDescription', function () use ($ctx): void {
 });
 
 it('rejects bad source type', function () use ($ctx): void {
-    (new LeafProbe())->pSrc(['name' => 'api', 'url' => '/x', 'type' => 'graphql'], $ctx());
+    (new LeafProbe())->pSrc(['name' => 'api', 'url' => '/x', 'type' => 'soap'], $ctx());
 })->throws(ParserException::class);
 
 it('parses Parameter with expression value', function () use ($ctx): void {

@@ -130,7 +130,7 @@ classDiagram
 - **Format** — `yaml` &middot; `json`
 - **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring` &middot; `metadata` &middot; `variable`
 - **RpcProtocol** — `grpc` &middot; `grpc-web` &middot; `twirp` &middot; `connect`
-- **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi`
+- **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi` &middot; `wsdl` &middot; `protobuf` &middot; `graphql`
 - **SpecVersion** — `1.0.0` &middot; `1.1.0`
 - **StepState** — `pending` &middot; `executing_request` &middot; `evaluating_criteria` &middot; `awaiting_actor_input` &middot; `actor_input_received` &middot; `completed` &middot; `failed`
 - **StepStatus** — `pending` &middot; `succeeded` &middot; `failed` &middot; `retrying` &middot; `suspended`

@@ -17,7 +17,7 @@ xychart-beta
     bar [29, 17, 15, 14, 14, 12, 10, 9, 9, 9, 7, 6]
 ```
 
-Analyzed 238 total file-touches across 44 modules.
+Analyzed 239 total file-touches across 44 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -33,7 +33,7 @@ Analyzed 238 total file-touches across 44 modules.
 | `runner:Protocol` | 9 | 4% | 557 | 16.2 |
 | `runner:Async` | 7 | 3% | 500 | 14 |
 | `contracts:Interfaces` | 6 | 3% | 305 | 19.7 |
-| `contracts:Spec` | 6 | 3% | 1,148 | 5.2 |
+| `contracts:Spec` | 6 | 3% | 1,151 | 5.2 |
 | `expression:Interfaces` | 5 | 2% | 25 | 200 |
 | `laravel:Support` | 5 | 2% | 126 | 39.7 |
 | `cli:Renderer` | 4 | 2% | 255 | 15.7 |
@@ -56,6 +56,7 @@ Analyzed 238 total file-touches across 44 modules.
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
 | `evaluation:Plugins` | 2 | 1% | 95 | 21.1 |
 | `sources:Normalizer` | 2 | 1% | 594 | 3.4 |
+| `sources:Resolver` | 2 | 1% | 457 | 4.4 |
 | `contracts:State` | 1 | 0% | 667 | 1.5 |
 | `evaluation:Condition` | 1 | 0% | 654 | 1.5 |
 | `evaluation:Enum` | 1 | 0% | 82 | 12.2 |
@@ -63,7 +64,6 @@ Analyzed 238 total file-touches across 44 modules.
 | `evaluation:Interfaces` | 1 | 0% | 108 | 9.3 |
 | `evaluation:Xpath` | 1 | 0% | 109 | 9.2 |
 | `expression:Exceptions` | 1 | 0% | 23 | 43.5 |
-| `sources:Resolver` | 1 | 0% | 457 | 2.2 |
 | `sources:Validator` | 1 | 0% | 303 | 3.3 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110.1), `laravel:Http` (100), `laravel:Bindings` (78)
