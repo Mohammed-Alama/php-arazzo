@@ -319,7 +319,7 @@ flowchart TB
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
 | `cli` | `sources` | 2 |
-| `document` | `contracts` | 144 |
+| `document` | `contracts` | 146 |
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
 | `evaluation` | `contracts` | 73 |

@@ -22,7 +22,7 @@ flowchart LR
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1256 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3259 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3338 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>457 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
@@ -75,9 +75,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,202 | 0 | 6% |
-| Supporting | 7 | 6,407 | 0 | 33% |
+| Supporting | 7 | 6,486 | 0 | 33% |
 | Generic subdomain | 12 | 2,132 | 1,158 | 17% |
-| Unclassified | 24 | 8,743 | 0 | 45% |
+| Unclassified | 24 | 8,743 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

@@ -25,6 +25,7 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
 use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
+use Alama\Arazzo\Document\Validator\Rules\RpcStepRule;
 use Alama\Arazzo\Document\Validator\Rules\SelectorTypeSupportedRule;
 use Alama\Arazzo\Document\Validator\Rules\SelfUriSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\SourceTypeMatchesRule;
@@ -129,6 +130,7 @@ final readonly class RuleSet
             new WorkflowIdPatternRule(),
             new WorkflowInputsValidSchemaRule(),
             new WorkflowUniqueIdRule(),
+            new RpcStepRule(),
         ], $disabled, $strict);
     }
 
