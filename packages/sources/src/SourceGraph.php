@@ -7,8 +7,6 @@ namespace Alama\Arazzo\Sources;
 use Alama\Arazzo\Document\Document as DocumentFacade;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\ModelStack;
-use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Loader;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\RuleSet;
@@ -57,16 +55,13 @@ final class SourceGraph
         ]));
     }
 
-    /**
-     * Generic façade only – pure document pipeline.
-     */
     public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface
     {
         $operations = $operationResolver ?? self::operations(new SourceRegistry(DefaultSourceResolver::withDefaults()));
 
         return new DocumentFacade(
             new ModelStack(
-                loader: new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()),
+                loader: Loader::new(),
                 parser: new Parser(),
                 validator: new Validator(RuleSet::default(new ExpressionEngine())),
                 engine: new ExpressionEngine(),
