@@ -109,7 +109,7 @@ abstract class ConformanceHarness
 
     protected function runtime(SourceRegistry $registry): SourceRuntime
     {
-        return SourceGraph::runtime(null, null, $registry);
+        return SourceGraph::runtime($registry);
     }
 
     protected function documents(SourceRegistry $registry): DocumentInterface
