@@ -1,5 +1,21 @@
 # Phase C — Evaluator plugins + vendor isolation
 
+> **STATUS: EXECUTED — this plan is a historical record, not a live task tracker. Do not work through the checkboxes below.**
+>
+> This phase landed. The unchecked `- [ ]` boxes were never flipped as it was implemented; the checked ones are not a reliable progress signal, so read the git history instead of the tracker.
+>
+> **One part of this plan was implemented and then deliberately reversed — read this before citing it:**
+>
+> - `e22c0fb` extracted the parse-side seam this plan's C0 Step 4b describes: `ExpressionInterface` + `ExpressionInspector` in `packages/expression/src/`.
+> - `209f7e8` removed `ExpressionInspector`, superseded by `ExpressionEngineInterface` as the expression facade.
+> - `1b9830a` removed `ExpressionInterface` entirely and relocated `ExpressionEngineInterface` to `packages/expression/src/Interfaces/`.
+>
+> So `ExpressionInterface` and `ExpressionInspector` **do not exist on `main`**. The surviving seam is `Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface`. Every reference to the removed pair below — the C0 architecture paragraph, Step 4b, the `ExpressionInspectorTest` block, the C0 `git add` line, and the C5 arch rule at ~line 1544 — describes a state that was reverted, and those passages are kept only to record what was tried and why it changed.
+>
+> Still-current outcomes of this phase: the two-package split (`arazzo-expression` = zero-vendor lexer/parser/AST/reference model, `arazzo-evaluation` = engine facade, interpolation, payload replacement, evaluator DTOs), the flat `Alama\Arazzo\Evaluation\` namespace, `softcreatr/jsonpath` as a built-in default plugin behind `ExpressionEvaluatorRegistry` + `CriterionEvaluatorRegistry`, and the `CriteriaEvaluator` refactor keeping `simple`/`regex`/`xpath` vendor-free.
+>
+> Design spec: `docs/superpowers/specs/2026-09-23-expression-evaluation-package-separation-design.md`. Downstream: Phase E extracts `arazzo-request-pipeline` and `arazzo-engine` from this layout, and Phase F extracts the protocol packages.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Split `arazzo-expression` into reference-model + evaluation packages, keep `softcreatr/jsonpath` as a built-in default plugin behind the new evaluator registries, and make the `CriteriaEvaluator` hard-coded `match` plugin-extensible.
@@ -194,6 +210,8 @@ Run: `vendor/bin/pest packages/expression/tests --filter "ExpressionInterfaceTes
 Expected: PASS (interface is created in this step).
 
 - [ ] **Step 4b: Create parse-side `ExpressionInspector` + failing test**
+
+> ⚠️ **REVERTED — do not implement.** This step shipped in `e22c0fb` and was undone in `209f7e8` + `1b9830a`: `ExpressionEngineInterface` (in `packages/expression/src/Interfaces/`) is the expression facade that replaced both `ExpressionInspector` and `ExpressionInterface`. The body below is kept as a record of the rejected approach.
 
 `ExpressionInspector` is the parse-side concrete that implements `ExpressionInterface`. It wraps the lexer/parser/symbol-table already in `arazzo-expression` — no evaluation classes. `document` constructs this instead of `new ExpressionEngine()`.
 
