@@ -41,6 +41,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `ExpressionUnresolvedWorkflowRefRule` <small>core</small> | `error` | 3 |
 | `ExtensionsXPrefixRule` <small>core</small> | `warning` | 1 |
 | `GraphQlStepRule` <small>core</small> | `error` | 3 |
+| `InteractionStepRule` <small>core</small> | `error` | 4 |
 | `ParameterQuerystringOperationShapeRule` <small>core</small> | `warning` | 1 |
 | `RpcStepRule` <small>core</small> | `error` | 4 |
 | `SelectorTypeSupportedRule` <small>core</small> | `error` | 1 |
@@ -74,7 +75,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 | `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-81 logging calls total. PSR-14 events are dispatched independently (see events.md).
+85 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 

@@ -204,4 +204,8 @@ parameters:
             message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
             count: 1
             path: src/ModelStack.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(13\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Rules/InteractionStepRule.php
 
