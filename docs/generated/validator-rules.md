@@ -9,7 +9,7 @@ every commit.
 
 ```mermaid
 flowchart TD
-    ROOT["Validator rules (51)"]
+    ROOT["Validator rules (52)"]
     G_Actions["Actions — 4"]
     ROOT --> G_Actions
     R_ActionGotoTargetResolvesRule["ActionGotoTargetResolves"]
@@ -56,8 +56,10 @@ flowchart TD
     G_Expressions --> R_ExpressionUnresolvedStepRefRule
     R_ExpressionUnresolvedWorkflowRefRule["ExpressionUnresolvedWorkflowRef"]
     G_Expressions --> R_ExpressionUnresolvedWorkflowRefRule
-    G_General["General — 4"]
+    G_General["General — 5"]
     ROOT --> G_General
+    R_GraphQlStepRule["GraphQlStep"]
+    G_General --> R_GraphQlStepRule
     R_RpcStepRule["RpcStep"]
     G_General --> R_RpcStepRule
     R_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolves"]
@@ -145,7 +147,7 @@ flowchart TD
 | **Components** | `ComponentsUniqueNamesRule` |
 | **Document-level** | `DocUnknownFieldRule`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentSourceDescriptionsPresentRule` |
 | **Expressions** | `ExpressionContextMisuseRule`, `ExpressionJsonPointerSyntaxRule`, `ExpressionSyntaxRule`, `ExpressionUnresolvedComponentRefRule`, `ExpressionUnresolvedInputRefRule`, `ExpressionUnresolvedSourceRefRule`, `ExpressionUnresolvedStepRefRule`, `ExpressionUnresolvedWorkflowRefRule` |
-| **General** | `RpcStepRule`, `SubWorkflowInvokeTargetResolvesRule`, `SuccessCriteriaVersionSupportedRule`, `WsdlStepRule` |
+| **General** | `GraphQlStepRule`, `RpcStepRule`, `SubWorkflowInvokeTargetResolvesRule`, `SuccessCriteriaVersionSupportedRule`, `WsdlStepRule` |
 | **Parameters** | `ParameterQuerystringOperationShapeRule` |
 | **Selectors** | `SelectorTypeSupportedRule` |
 | **Sources** | `SelfUriSyntaxRule`, `SourceTypeMatchesRule`, `SourceUniqueNameRule`, `SourceUrlSyntaxRule` |

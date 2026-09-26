@@ -74,11 +74,11 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.14 | 22 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 185 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 186 | 49 | 100% |
 | `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Parser` | 0.22 | 36 | 11 | 100% |
-| `document/Validator` | 0.46 | 74 | 66 | 100% |
+| `document/Validator` | 0.46 | 75 | 67 | 100% |
 | `evaluation/Condition` | 0.83 | 44 | 10 | 100% |
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |

@@ -136,6 +136,8 @@ flowchart LR
     C_document_document_Validator_ExpressionUnresolvedWorkflowRefRule -.->|implements| I_Rule
     C_document_document_Validator_ExtensionsXPrefixRule["ExtensionsXPrefixRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ExtensionsXPrefixRule -.->|implements| I_Rule
+    C_document_document_Validator_GraphQlStepRule["GraphQlStepRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_GraphQlStepRule -.->|implements| I_Rule
     C_document_document_Validator_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShapeRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ParameterQuerystringOperationShapeRule -.->|implements| I_Rule
     C_document_document_Validator_RpcStepRule["RpcStepRule<br/><small>document:Validator</small>"]:::implCore
