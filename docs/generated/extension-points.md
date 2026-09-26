@@ -80,6 +80,7 @@ mindmap
       OpenApiSourceNormalizer
     SourceNormalizerRegistryInterface
       SourceNormalizerRegistry
+      SourceNormalizerRegistry
     StateStoreInterface
       FileStateStore
       InMemoryStateStore
@@ -125,7 +126,7 @@ mindmap
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
 | `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small> |
-| `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
+| `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small>, `SourceNormalizerRegistry` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |

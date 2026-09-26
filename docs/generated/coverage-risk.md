@@ -25,7 +25,7 @@ quadrantChart
     cli/Renderer: [0.5, 1]
     contracts/Dependency: [0.333, 1]
     contracts/Exceptions: [0, 1]
-    contracts/Interfaces: [0.136, 1]
+    contracts/Interfaces: [0.13, 1]
     contracts/Spec: [0.034, 1]
     contracts/State: [0.091, 1]
     contracts/Support: [0, 1]
@@ -73,8 +73,8 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.14 | 22 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 187 | 49 | 100% |
+| `contracts/Interfaces` | 0.13 | 22 | 17 | 100% |
+| `contracts/Spec` | 0.03 | 188 | 49 | 100% |
 | `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Parser` | 0.22 | 36 | 11 | 100% |
@@ -109,7 +109,7 @@ quadrantChart
 | `runner/Protocol` | 0.91 | 11 | 5 | 100% |
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.42 | 16 | 9 | 100% |
+| `sources/Normalizer` | 0.42 | 17 | 10 | 100% |
 | `sources/Resolver` | 0.33 | 25 | 13 | 100% |
 | `sources/Validator` | 0.57 | 3 | 1 | 100% |
 

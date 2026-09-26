@@ -200,8 +200,8 @@ runner-root,runner-Execution,12
 runner-root,runner-Infrastructure,1
 runner-root,runner-State,4
 runner-root,sources-Normalizer,1
-sources-Normalizer,contracts-Interfaces,1
-sources-Normalizer,contracts-Spec,8
+sources-Normalizer,contracts-Interfaces,3
+sources-Normalizer,contracts-Spec,9
 sources-Normalizer,contracts-Support,1
 sources-Normalizer,document-root,6
 sources-Normalizer,sources-Resolver,3
@@ -212,12 +212,13 @@ sources-Validator,contracts-Spec,5
 sources-Validator,document-Validator,5
 sources-Validator,sources-Normalizer,2
 sources-Validator,sources-Resolver,1
+sources-root,contracts-Interfaces,1
 sources-root,contracts-Spec,4
 sources-root,document-Parser,4
 sources-root,document-Validator,3
-sources-root,document-root,4
+sources-root,document-root,5
 sources-root,expression-root,1
-sources-root,sources-Normalizer,9
+sources-root,sources-Normalizer,11
 sources-root,sources-Resolver,5
 sources-root,sources-Validator,2
 ```

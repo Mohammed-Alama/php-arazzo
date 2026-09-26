@@ -435,8 +435,9 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Sources`
 
 #### `SourceLoader` class
-- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight)`
+- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
 - `public function detectOpenApiVersion(array $document): string`
+- `public function normalizeSources(ArazzoDocument $document, string $basePath = ''): array`
 - `public function preflightSource(ArazzoDocument $document): ValidationResult`
 - `public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle`
 

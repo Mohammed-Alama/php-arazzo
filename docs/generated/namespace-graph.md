@@ -129,12 +129,13 @@ flowchart LR
     sources_Validator --> document_Validator
     sources_Validator --> sources_Normalizer
     sources_Validator --> sources_Resolver
+    sources__ --> contracts_Interfaces
     sources__ --> contracts_Spec
+    sources__ --> document__
     sources__ --> document_Validator
     sources__ --> sources_Normalizer
     sources__ --> sources_Resolver
     sources__ --> sources_Validator
-    sources__ --> document__
     sources__ --> document_Parser
     sources__ --> expression__
     runner_Async --> contracts_Spec

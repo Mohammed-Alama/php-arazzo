@@ -18,7 +18,9 @@ use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiSourceNormalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Sources\Normalizer\SourceNormalizerRegistry;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
@@ -104,6 +106,23 @@ final class SourceGraph
 
         $defaultOperations = self::operations($defaultRegistry);
 
+        $defaultSources = $registry ?? new SourceRegistry(new DefaultSourceResolver([
+            'http' => new HttpFetcher(new Client(), new HttpFactory()),
+            'https' => new HttpFetcher(new Client(), new HttpFactory()),
+            'file' => new LocalFetcher(),
+        ]));
+
+        $defaultOperations = self::operations($defaultRegistry);
+
+        // Build normalizer registry
+        $normalizerRegistry = new SourceNormalizerRegistry();
+        $normalizerRegistry->register(new OpenApiSourceNormalizer(
+            new OpenApiDocumentLoader($defaultRegistry),
+            new OpenApiVersionDetector(),
+            new OpenApi30Normalizer(),
+            new OpenApi31Normalizer(),
+        ));
+
         $loader = new SourceLoader(
             sources: $registry ?? $defaultSources,
             operations: $defaultOperations,
@@ -114,12 +133,9 @@ final class SourceGraph
                     'https' => new HttpFetcher(new Client(), new HttpFactory()),
                     'file' => new LocalFetcher(),
                 ])),
-                self::operations(new SourceRegistry(new DefaultSourceResolver([
-                    'http' => new HttpFetcher(new Client(), new HttpFactory()),
-                    'https' => new HttpFetcher(new Client(), new HttpFactory()),
-                    'file' => new LocalFetcher(),
-                ]))),
+                $defaultOperations,
             ),
+            normalizers: $normalizerRegistry,
         );
 
         // Only cache when using default registry
@@ -146,11 +162,21 @@ final class SourceGraph
         ]));
 
         $operations = self::operations($sources);
+
+        $normalizerRegistry = new SourceNormalizerRegistry();
+        $normalizerRegistry->register(new OpenApiSourceNormalizer(
+            new OpenApiDocumentLoader($sources),
+            new OpenApiVersionDetector(),
+            new OpenApi30Normalizer(),
+            new OpenApi31Normalizer(),
+        ));
+
         $loader = new SourceLoader(
             sources: $sources,
             operations: $operations,
-            versionDetector: $operations->versionDetector(),
+            versionDetector: new OpenApiVersionDetector(),
             preflight: new PreflightValidator($sources, $operations),
+            normalizers: new SourceNormalizerRegistry(),
         );
         $document = self::document($operations);
 

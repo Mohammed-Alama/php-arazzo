@@ -210,6 +210,10 @@ flowchart LR
     C_sources_sources_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_sources_sources_Normalizer_OpenApiSourceNormalizer["OpenApiSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
     C_sources_sources_Normalizer_OpenApiSourceNormalizer -.->|implements| I_SourceNormalizerInterface
+    C_sources_sources_Normalizer_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
+    C_sources_sources_Resolver_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
     C_sources_sources_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_sources_sources_Resolver_SourceRegistry["SourceRegistry<br/><small>sources:Resolver</small>"]:::implCore
@@ -220,8 +224,6 @@ flowchart LR
     C_sources_sources_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
     C_sources_sources_Resolver_LocalFetcher["LocalFetcher<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
-    C_sources_sources_Resolver_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Resolver</small>"]:::implCore
-    C_sources_sources_Resolver_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
     C_runner_runner_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
     C_runner_runner_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>runner:Execution</small>"]:::implCore

@@ -140,7 +140,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `sources` | `NativeJsonDecoder` | `document` | 2 | `DefaultSourceResolver` |
 | `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
 | `sources` | `Parser` | `document` | 1 | `SourceGraph` |
-| `sources` | `ResolvedOperation` | `document` | 3 | `OpenApiOperationHandle` |
+| `sources` | `ResolvedOperation` | `document` | 4 | `OpenApiOperationHandle` |
 | `sources` | `RuleSet` | `document` | 1 | `SourceGraph` |
 | `sources` | `SymfonyYamlDecoder` | `document` | 2 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
