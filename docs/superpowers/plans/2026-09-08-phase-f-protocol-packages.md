@@ -35,11 +35,11 @@
 
 - **Prerequisites (hard preconditions).** This plan assumes **Phase A** (contracts ports A1–A6 incl. `PluginInterface`, `OperationExecutorPluginInterface`, `SourceNormalizerInterface`, `SourceNormalizerRegistryInterface`, `ResponseTransferInterface` + generic `ResponseTransfer`, `StepState`), **Phase B** (step-scoped grammar + transfer views), **Phase C** (expression/evaluation split, JsonPath as built-in default plugins), **Phase D** (`SourceNormalizerRegistry`, `OpenApiSourceNormalizer`, two-axis `ResolvedOperation`, `RuleSet` WSDL step rules) and **Phase E** (the four-layer split, then `OperationExecutorRegistry`, `ResponseValidatorDispatcher`, `StepStateMachineEngine`) have landed. If any are not on `main`, **stop and flag it before executing the first task** — exactly as the D/E plans gate on A/B/C. Where a later-phase registry does not exist at implementation time, use the concrete today-bound surface and note the hand-off. Per the spec's transfer seam (D6, phase A A6): each protocol package ships a **typed transfer DTO implementing `ResponseTransferInterface`** (`status(): mixed`, `headers(): array`, `rawBody(): mixed`, `hasView(string): bool`, `view(string): mixed`, `meta(): array`) — HTTP keeps the generic `ResponseTransfer`, SOAP ships `SoapResponseTransfer`, RPC ships `RpcResponseTransfer`. Concrete facets live in the DTO's `views`/`meta` bags under documented keys, never as flat constructor props.
 - **The plan is the boss.** Follow the exact task order; only deviate where the code forces you to, and note the deviation in the commit message. No code/spec edits outside the files each task lists (except root/umbrella/Laravel `composer.json` require+repositories, and the Laravel wiring each task lists).
-- **FQCN stability (D9).** `Alama\Arazzo\Document\Normalizer\ResolvedOperation` and `…\NormalizedOpenApiOperation` are the ONLY relocated types whose FQCNs do not change. They must exist in exactly one package after F1 (protocol-http) — never re-declared in `document`. All other relocated types move to `Alama\Arazzo\Protocol\Http\…` marked `@internal stays out of the advertised contract; not part of the public API surface`.
+- **The two DTOs are not relocated.** D0 made `ResolvedOperation` and `NormalizedOpenApiOperation` pure model types owned by `alama/arazzo-document` at `Alama\Arazzo\Document\ResolvedOperation` and `Alama\Arazzo\Document\NormalizedOpenApiOperation`. F1.1 does not move them. The cebe handles they used to expose travel on `Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle`, which **does** move to `alama/arazzo-protocol-http` as an `@internal` type.
 - **Layers 0–3 never import a protocol package (H2 invariant).** No `use Alama\Arazzo\Protocol\...` may appear under `packages/{contracts,expression,document,evaluation,runtime,events,request-pipeline,engine}/src`. `arazzo-runner` is the one package above them that legitimately does.
 - **Direction of dependencies.** `arazzo-protocol-http` requires `contracts` + `document` + `expression` + `evaluation` + `arazzo-request-pipeline` + `arazzo-engine` — and **not** `arazzo-runner`. `arazzo-protocol-soap` and `arazzo-protocol-rpc` require the same set. No package under `alama/` requires `arazzo-runner` except the umbrella, `laravel` and `cli`.
 - **Priority convention (locked with G1).** Higher `PluginInterface::priority()` = resolved earlier. All registries here sort descending.
-- **No new code comments** unless explaining a priority/BC decision or the dual-PSR-4 map. Existing relocated docblocks stay.
+- **No new code comments** unless explaining a priority/BC decision. Existing relocated docblocks stay.
 - Every task's `--filter` runs `vendor/bin/pest packages/<pkg>/tests --filter "<name>"` from the repo root. Every task ends with its package suite green (`test-http`/`test-soap`/`test-rpc` + `test-runner`/`test-laravel`/`test-engine` where touched). Static analysis per task: `composer run analyse-http` / `analyse-soap` / `analyse-rpc` (plus the touched package's `analyse-*`).
 - New-command plumbing (F1.0, and separately F4.0/F5.0 as the first task of their package) is the ONLY place that edits root `composer.json` `scripts`; later tasks only add `require`/`repositories` entries.
 - **Arch guards in this phase are regression guards, not red-first cycles.** Each is committed with the move that establishes the boundary and verified to bite by temporarily introducing a forbidden import, confirming RED, then reverting. Do not claim a red-first cycle that does not exist.
@@ -48,7 +48,7 @@
 
 ## Task F1.0: `arazzo-protocol-http` package scaffold + root plumbing
 
-Create the package directory, composer manifest (incl. the dual PSR-4 map), Pest/PHPStan scaffolding, and root monorepo plumbing (repositories, require, autoload-dev, `scripts`). This task only *declares* the package — no relocated classes yet, so `composer update` must succeed with a valid (empty) package.
+Create the package directory, composer manifest, Pest/PHPStan scaffolding, and root monorepo plumbing (repositories, require, autoload-dev, `scripts`). This task only *declares* the package — no relocated classes yet, so `composer update` must succeed with a valid (empty) package.
 
 **Files:**
 - Create `packages/protocol-http/composer.json`
@@ -128,7 +128,7 @@ Create the package directory, composer manifest (incl. the dual PSR-4 map), Pest
 }
 ```
 
-Note what is **absent** from `require`: `alama/arazzo-runner`. That omission is the DIP boundary written as a manifest — the package cannot reach runner internals because it cannot resolve them. The dual PSR-4 map (`Alama\Arazzo\Document\Normalizer\ → src/Document/Normalizer/`) keeps the two DTO FQCNs byte-identical (D9); the `extra.laravel.providers` entry is the Laravel auto-discovery hook (the provider class ships in F1.3 — until then the entry is inert). `illuminate/contracts` + `illuminate/support` are required so the provider can extend `Illuminate\Support\ServiceProvider`; they are the package's only non-PSR/north-of-core deps besides the transport.
+Note what is **absent** from `require`: `alama/arazzo-runner`. That omission is the DIP boundary written as a manifest — the package cannot reach runner internals because it cannot resolve them. No dual PSR-4 map is needed: D0 left the two DTOs in `alama/arazzo-document`, which this package already requires, so their FQCNs are unchanged by construction; the `extra.laravel.providers` entry is the Laravel auto-discovery hook (the provider class ships in F1.3 — until then the entry is inert). `illuminate/contracts` + `illuminate/support` are required so the provider can extend `Illuminate\Support\ServiceProvider`; they are the package's only non-PSR/north-of-core deps besides the transport.
 
 - [ ] **Step 2: Create the PHPStan config**
 
@@ -221,11 +221,10 @@ git commit -m "build(protocol-http): scaffold arazzo-protocol-http package + roo
 
 ## Task F1.1: Relocate the document OpenAPI normalizers into `arazzo-protocol-http`
 
-Move the normalizer classes out of `document` into the payload-http package. `ResolvedOperation` + `NormalizedOpenApiOperation` keep their FQCNs (land in `src/Document/Normalizer/`); the rest relocate to `Alama\Arazzo\Protocol\Http\Normalizer\`. `OpenApiVersionDetector` and `Interfaces/OpenApiNormalizerInterface` **stay in `document`** — they are zero-vendor sniffing/scoping primitives the spec's F1 list does not include, and `OpenApiOperationResolver.Type`-users in `document` (PreflightValidator) still need the detector. Protocol-http importing them is legal (protocol → core).
+Move the normalizer classes out of `arazzo-sources` into the payload-http package. D0 moved them: the source normalizers, `OpenApiDocumentLoader`, `OpenApiOperationResolver` and `OpenApiOperationHandle` now live in `packages/sources/src/Normalizer/`, so F1.1 relocates them **out of `arazzo-sources`**. They move to `Alama\Arazzo\Protocol\Http\Normalizer\` marked `@internal`. `ResolvedOperation` and `NormalizedOpenApiOperation` **stay in `packages/document/src/`** untouched — D0 already made them vendor-free model types, so there is nothing to move. `OpenApiVersionDetector` and `Interfaces/OpenApiNormalizerInterface` move too: after D0 they sit in `arazzo-sources` alongside the other normalizers, so they relocate unless a reason to keep them appears. Protocol-http importing document types is legal (protocol → core).
 
 **Files moved (git mv) — see the real inventory verified on `main`:**
-- → `packages/protocol-http/src/Document/Normalizer/ResolvedOperation.php` (FQCN `Alama\Arazzo\Document\Normalizer\ResolvedOperation` unchanged)
-- → `packages/protocol-http/src/Document/Normalizer/NormalizedOpenApiOperation.php` (FQCN unchanged)
+- `ResolvedOperation` and `NormalizedOpenApiOperation` **stay in `packages/document/src/`** — D0 made them vendor-free model types, so F1.1 does not move them and `packages/protocol-http/src/Document/Normalizer/` is not created.
 - → `packages/protocol-http/src/Normalizer/OpenApi30Normalizer.php` (ns `Alama\Arazzo\Protocol\Http\Normalizer`)
 - → `packages/protocol-http/src/Normalizer/OpenApi31Normalizer.php`
 - → `packages/protocol-http/src/Normalizer/Swagger2Normalizer.php`
@@ -238,26 +237,24 @@ Move the normalizer classes out of `document` into the payload-http package. `Re
 
 **Files edited to fix imports (document side re-points to protocol package FQCN only where legal):**
 - `packages/document/src/DocumentInterface.php` — return type `ResolvedOperation` (FQCN unchanged; no edit needed beyond verifying the `use` matches the DTO FQCN).
-- `packages/document/src/Document.php` — remove the in-constructor plumbing of `OpenApiDocumentLoader`/`OpenApiOperationResolver`/`OpenApiVersionDetector`; after D5 the constructor receives `SourceNormalizerRegistryInterface` (`packages/document/src/Resolver/SourceNormalizerRegistry.php` from D1) and `PreflightValidator` accepts the resolver seam (F1.2). This task only removes the moved classes' construction — the concrete replacement wiring is F1.2.
-- `packages/document/src/Validator/PreflightValidator.php` — constructor type for `$operations` changes from `OpenApiOperationResolver` to the new document-side interface (F1.2); its own `new OpenApiVersionDetector()` stays (detector is not relocated).
+- `packages/sources/src/Document.php` (D0 moved it out of `document`) — remove the in-constructor plumbing of `OpenApiDocumentLoader`/`OpenApiOperationResolver`/`OpenApiVersionDetector`; after D5 the constructor receives `SourceNormalizerRegistryInterface` (`packages/sources/src/Resolver/SourceNormalizerRegistry.php` from D1) and `PreflightValidator` accepts the resolver seam (F1.2). This task only removes the moved classes' construction — the concrete replacement wiring is F1.2.
+- `packages/sources/src/Validator/PreflightValidator.php` (D0 moved it into arazzo-sources alongside the resolver) — constructor type for `$operations` changes from `OpenApiOperationResolver` to the new document-side interface (F1.2); its own `new OpenApiVersionDetector()` stays (detector is not relocated).
 - `packages/laravel/src/Bindings/ResolverBindings.php` — the `OpenApiDocumentLoader`/`OpenApiOperationResolver` singletons construct the protocol-http classes now (F1.3) — do NOT edit until F1.3 to keep this task compilable in one commit; instead, keep this edit in F1.3.
 
 **Interfaces:**
-- Consumes (protocol-http): `SourceResolver` (`Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver`), `UnsupportedSourceVersionException`, `OpenApiNormalizerInterface`+`OpenApiVersionDetector` (both stay in document), the two DTO FQCNs.
+- Consumes (protocol-http): `SourceResolver` (`Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver`), `UnsupportedSourceVersionException`, `OpenApiNormalizerInterface`+`OpenApiVersionDetector` (both move out of arazzo-sources with the rest), the two DTO FQCNs (which stay in document).
 - Produces: `Alama\Arazzo\Protocol\Http\Normalizer\{OpenApi30Normalizer, OpenApi31Normalizer, Swagger2Normalizer, OpenApiDocumentLoader, OpenApiOperationResolver, OpenApiSourceNormalizer}`.
 
 - [ ] **Step 1: `git mv` the eight files**
 
 ```bash
 mkdir -p packages/protocol-http/src/Normalizer packages/protocol-http/src/Document/Normalizer
-git mv packages/document/src/Normalizer/ResolvedOperation.php packages/protocol-http/src/Document/Normalizer/ResolvedOperation.php
-git mv packages/document/src/Normalizer/NormalizedOpenApiOperation.php packages/protocol-http/src/Document/Normalizer/NormalizedOpenApiOperation.php
-git mv packages/document/src/Normalizer/OpenApi30Normalizer.php packages/protocol-http/src/Normalizer/OpenApi30Normalizer.php
-git mv packages/document/src/Normalizer/OpenApi31Normalizer.php packages/protocol-http/src/Normalizer/OpenApi31Normalizer.php
-git mv packages/document/src/Normalizer/Swagger2Normalizer.php packages/protocol-http/src/Normalizer/Swagger2Normalizer.php
-git mv packages/document/src/Normalizer/OpenApiDocumentLoader.php packages/protocol-http/src/Normalizer/OpenApiDocumentLoader.php
-git mv packages/document/src/Normalizer/OpenApiOperationResolver.php packages/protocol-http/src/Normalizer/OpenApiOperationResolver.php
-git mv packages/document/src/Normalizer/OpenApiSourceNormalizer.php packages/protocol-http/src/Normalizer/OpenApiSourceNormalizer.php
+git mv packages/sources/src/Normalizer/OpenApi30Normalizer.php packages/protocol-http/src/Normalizer/OpenApi30Normalizer.php
+git mv packages/sources/src/Normalizer/OpenApi31Normalizer.php packages/protocol-http/src/Normalizer/OpenApi31Normalizer.php
+git mv packages/sources/src/Normalizer/Swagger2Normalizer.php packages/protocol-http/src/Normalizer/Swagger2Normalizer.php
+git mv packages/sources/src/Normalizer/OpenApiDocumentLoader.php packages/protocol-http/src/Normalizer/OpenApiDocumentLoader.php
+git mv packages/sources/src/Normalizer/OpenApiOperationResolver.php packages/protocol-http/src/Normalizer/OpenApiOperationResolver.php
+git mv packages/sources/src/Normalizer/OpenApiSourceNormalizer.php packages/protocol-http/src/Normalizer/OpenApiSourceNormalizer.php
 ```
 
 (If D2's `OpenApiSourceNormalizer` does not exist on `main`, the D plan was not completed — stop and flag before proceeding.)
@@ -265,19 +262,19 @@ git mv packages/document/src/Normalizer/OpenApiSourceNormalizer.php packages/pro
 - [ ] **Step 2: Rewrite namespaces in the six relocated `@internal` classes**
 
 `OpenApi30Normalizer`, `OpenApi31Normalizer`, `Swagger2Normalizer`, `OpenApiDocumentLoader`, `OpenApiOperationResolver`, `OpenApiSourceNormalizer`: `namespace Alama\Arazzo\Document\Normalizer;` → `namespace Alama\Arazzo\Protocol\Http\Normalizer;`, and update their internal imports:
-- `use Alama\Arazzo\Document\Normalizer\Interfaces\OpenApiNormalizerInterface;` → `use Alama\Arazzo\Document\Normalizer\Interfaces\OpenApiNormalizerInterface;` (**unchanged** — the interface stays in document).
-- The two DTOs resolve by unchanged FQCN — keep the existing `use Alama\Arazzo\Document\Normalizer\ResolvedOperation;` / `NormalizedOpenApiOperation` imports as-is.
+- `use Alama\Arazzo\Sources\Normalizer\Interfaces\OpenApiNormalizerInterface;` — this interface relocates with the rest, so rewrite it to `use Alama\Arazzo\Protocol\Http\Normalizer\Interfaces\OpenApiNormalizerInterface;` (or drop it where the class is in-package).
+- The two DTOs now resolve from document without a `Normalizer` segment — rewrite to `use Alama\Arazzo\Document\ResolvedOperation;` / `use Alama\Arazzo\Document\NormalizedOpenApiOperation;`.
 - `OpenApiSourceNormalizer` (D2 impl) imports `Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader` / `OpenApiVersionDetector` / `OpenApi30Normalizer` / `OpenApi31Normalizer` — within-package now, so drop those `use` statements or point them at `Alama\Arazzo\Protocol\Http\Normalizer\*`; keep `Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException` etc.
-- `OpenApiOperationResolver` keeps `use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;` and `use Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException;` (both stay in document).
+- `OpenApiOperationResolver` keeps `use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;` and `use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;` — both move out of `arazzo-sources` with it, so rewrite them to the protocol-http namespace or to wherever those types land.
 - Docblocks: leave as-is (they already carry `@internal`; the "relocated" notes in D2/D3c docblocks are now accurate).
 
 - [ ] **Step 3: Drop `cebe/php-openapi` from `document`, move it in protocol-http**
 
-Edit `packages/document/composer.json`: remove `"cebe/php-openapi": "^1.7"` from `require`. **Keep** `symfony/yaml` + `justinrainbow/json-schema` + `psr/http-client`/`psr/http-message` + `psr/simple-cache` (verified: `packages/document/src/Resolver/Fetchers/HttpFetcher.php` still uses `Psr\Http\Client\ClientInterface`/`RequestFactoryInterface`, `CachedFetcher` uses `Psr\SimpleCache`). protocol-http `require` already lists `cebe/php-openapi` (F1.0).
+No manifest edit is needed here: D0 already removed `"cebe/php-openapi"` from `packages/document/composer.json` (along with the PSR HTTP/cache deps, which moved with the fetchers) and added it to `packages/sources/composer.json`, which is where `cebe/php-openapi` lives today. protocol-http `require` already lists `cebe/php-openapi` (F1.0); when the normalizers move out of `arazzo-sources`, drop `cebe/php-openapi` from `packages/sources/composer.json` too and re-run `composer run analyse-sources`.
 
 - [ ] **Step 4: Repoint `PreflightValidator`'s operation-resolver seam (document side)**
 
-Create `packages/document/src/Normalizer/OpenApiOperationResolverInterface.php`:
+Create `packages/sources/src/Normalizer/OpenApiOperationResolverInterface.php`:
 
 ```php
 <?php
@@ -336,7 +333,7 @@ composer run test-document
 composer run analyse-document
 ```
 
-Expected: `test-http` green on the relocated suites; `test-document`/`analyse-document` still green (the only document refs are the FQCN-preserved DTOs + the new interface). `analyse-document` must NOT error on resolving `ResolvedOperation` — verify `packages/document/phpstan.neon.dist` `scanDirectories` includes `../protocol-http/src` (add it if document's config doesn't already resolve the DTO room after the move).
+Expected: `test-http` green on the relocated suites; `test-document`/`analyse-document` still green. `analyse-document` must NOT error on resolving `ResolvedOperation` — it resolves inside document's own tree, because D0 left both DTOs in `alama/arazzo-document`. If it does error, you have wrongly moved a DTO; move it back rather than adding a `scanDirectories` entry.
 
 - [ ] **Step 7: Commit**
 
@@ -351,7 +348,9 @@ git commit -m "refactor(protocol-http): relocate OpenAPI normalizers out of docu
 
 Move the HTTP execution stack out of `runner` into `protocol-http`, and finish the DIP inversion by promoting the last two types the executors need out of `runner`.
 
-**What is *not* moved here (it already moved in Phase E):** `RequestCompiler`, `ParameterSerializer`, `TypeCaster`, `SchemaValidator`, `ResponseSchemaValidator`, `ExpressionValueResolver`, `ExecutionExpressionResolver`, `IdempotencyKeyInjector`, `StepParameterMerger`, `ReusableParameterResolver` and `StepOutputExtractor` are already in `alazzo-request-pipeline` (E3). protocol-http consumes them from there; this task only rewrites their `use` statements. Do not move them again.
+**What is *not* moved here (it already moved in Phase E):** `RequestCompiler`, `ParameterSerializer`, `TypeCaster`, `SchemaValidator`, `ExpressionValueResolver`, `ExecutionExpressionResolver`, `IdempotencyKeyInjector`, `StepParameterMerger`, `ReusableParameterResolver` are already in `alazzo-request-pipeline` (E3). protocol-http consumes them from there; this task only rewrites their `use` statements. Do not move them again.
+
+**The two exceptions:** `ResponseSchemaValidator` and `StepOutputExtractor` are *not* in request-pipeline and this task moves them into protocol-http — both are OpenAPI-specific because they read the cebe `Operation` (the former's `$operation->responses`, the latter's returned handle). See the files-moved list below.
 
 **What stays in `runner` deliberately:** `Protocol/SubWorkflowStepExecutor` — it is not a protocol. It implements Arazzo recursive-workflow semantics and delegates to `WorkflowExecutor`, which the engine may not depend on, so it belongs above the engine with the runners. (Its dead sibling `Protocol/SubWorkflowExecutor` and the dead `Protocol/ProtocolExecutorRegistry` were deleted in E0.)
 
@@ -369,6 +368,10 @@ Phase E already dissolved the other three: `ReusableParameterResolver` → `alaz
 - → `packages/protocol-http/src/Protocol/HttpStepExecutor.php` (ns `Alama\Arazzo\Protocol\Http\Protocol`)
 - → `packages/protocol-http/src/Protocol/AsyncApiStepExecutor.php` (same ns)
 - → `packages/protocol-http/src/Execution/Interfaces/OpenApiExecutorInterface.php` (canonical, see Step 2)
+- `packages/runner/src/Execution/StepOutputExtractor.php` → `packages/protocol-http/src/Execution/StepOutputExtractor.php`
+- `packages/runner/src/Execution/ResponseSchemaValidator.php` → `packages/protocol-http/src/Execution/ResponseSchemaValidator.php`
+
+  Both are OpenAPI-specific, so they cannot live in vendor-free `alama/arazzo-request-pipeline`: `StepOutputExtractor` reads the cebe `Operation`'s `responses`, and `ResponseSchemaValidator` reads the handle's cebe `Operation`. Since D0.5 they take `OpenApiOperationResolver` directly rather than the document, and since D0.5's `OperationRuntime` bundling they reach the vendor types only through `OpenApiOperationHandle` — which is exactly the coupling that makes them protocol-http's problem. This supersedes E3, which had them moving to request-pipeline; Phase E's migration list is amended in the Phase E plan.
 
 **Files moved into contracts (git mv):**
 - `packages/runner/src/Execution/Data/ExecutionEvaluationInput.php` → `packages/contracts/src/Execution/ExecutionEvaluationInput.php`
@@ -381,7 +384,7 @@ Phase E already dissolved the other three: `ReusableParameterResolver` → `alaz
 - `packages/runner/src/Execution/StepExecutor.php` — stop constructing pipeline classes directly (Step 3)
 - `packages/runner/src/RunnerFacade.php`, `packages/runner/src/RunnerGraphBuilder.php` — forward the new executor seam (Step 3)
 - `packages/runtime/src/State/{InMemoryStateStore,FileStateStore}.php` — implement the relocated `PendingCorrelationRegistryInterface` (Step 1)
-- `packages/runner/phpstan.neon.dist` + `packages/document/phpstan.neon.dist` — add `../protocol-http/src` to `scanDirectories` (Step 5)
+- `packages/runner/phpstan.neon.dist` — add `../protocol-http/src` to `scanDirectories` (Step 5). `document` deliberately does **not**: D0 made the two DTOs document-owned, so document never needs to resolve a protocol-http type, and scanning it would let a layer-0→protocol import creep back in. Guard it with an arch assertion that `arazzo-document` does not reference `protocol-http`.
 
 **Interfaces:**
 - Produces (protocol-http): `Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface` (canonical signature of today's runner interface).
@@ -421,7 +424,7 @@ Namespace changes: `Alama\Arazzo\Runner\Execution` → `Alama\Arazzo\Protocol\Ht
 
 Then re-point every import in the three moved files:
 - `HttpStepExecutor` / `AsyncApiStepExecutor`: `ExecutionEvaluationInput` and `PendingCorrelationRegistryInterface` now resolve from `Alama\Arazzo\Contracts\...` (Step 1); `ReusableParameterResolver` from `Alama\Arazzo\RequestPipeline\...`; `ExecutionException` from `Alama\Arazzo\Engine\Exceptions\...`; `HttpClientInterface` from `Alama\Arazzo\Contracts\Interfaces\...`. The pipeline collaborators (`RequestCompiler`, `ExpressionValueResolver`, `IdempotencyKeyInjector`) come from `Alama\Arazzo\RequestPipeline\...`; the same-package ones (`DefaultOpenApiExecutor`) drop their `use`.
-- `DefaultOpenApiExecutor`: keeps its Guzzle imports (`GuzzleHttp\Psr7\Utils`, `GuzzleHttp\Client`) and `Alama\Arazzo\Document\Normalizer\{ResolvedOperation,NormalizedOpenApiOperation}` (FQCNs unchanged by D9); gains `Alama\Arazzo\RequestPipeline\...` for the compiler/serializer it drives.
+- `DefaultOpenApiExecutor`: keeps its Guzzle imports (`GuzzleHttp\Psr7\Utils`, `GuzzleHttp\Client`) and gains `Alama\Arazzo\RequestPipeline\...` for the compiler/serializer it drives. Its operation types are `Alama\Arazzo\Document\ResolvedOperation` (the model, no `Normalizer` segment) and `Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle` — D0 split them, and F1.2 relocates the handle to `Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle`.
 - Add/keep `@internal stays out of the advertised contract; not part of the public API surface` on all three.
 
 **The DIP check — protocol-http must now have zero runner references:**
@@ -501,7 +504,15 @@ Any hit in the first = a core→protocol construction; eliminate it (move the co
 
 - [ ] **Step 6: PHPStan scan directories**
 
-In `packages/document/phpstan.neon.dist` AND `packages/runner/phpstan.neon.dist`, add to `scanDirectories`: `../protocol-http/src` (and keep `../evaluation/src`, `../engine/src`, `../request-pipeline/src` if Phase E added them). Rationale: relocated DTOs/types are imported by document/runner code (e.g. `DocumentInterface::resolveOperation(): ResolvedOperation` in document) and must resolve without a composer dependency. Analyse runs from repo root so `cebe/php-openapi` resolves via protocol-http's `require`.
+In `packages/runner/phpstan.neon.dist` ONLY, add to `scanDirectories`: `../protocol-http/src` (and keep `../evaluation/src`, `../engine/src`, `../request-pipeline/src` if Phase E added them). Rationale: `runner` reads `OpenApiOperationHandle` and the relocated executor interface, so it must resolve them without a composer dependency. Analyse runs from repo root so `cebe/php-openapi` resolves via protocol-http's `require`.
+
+Do **not** add `../protocol-http/src` to `packages/document/phpstan.neon.dist`. D0 left `ResolvedOperation` and `NormalizedOpenApiOperation` in `arazzo/document`, so `DocumentInterface::resolveOperation(): ResolvedOperation` resolves inside document's own source tree and needs no scan entry. Scanning protocol-http from document would paper over exactly the layer-0→protocol import the D0 guards forbid; assert the absence instead:
+
+```php
+arch('document does not depend on protocol-http')
+    ->expect('Alama\Arazzo\Document')
+    ->not->toUse('Alama\Arazzo\Protocol');
+```
 
 - [ ] **Step 7: Move the tests that exercise relocated classes**
 
@@ -1129,7 +1140,7 @@ Read a WSDL 1.1/2.0 document (DOM, no vendor) and produce `ResolvedOperation`s f
 **Interfaces:**
 - Implements `Alama\Arazzo\Contracts\...\SourceNormalizerInterface` (A2); consumes `Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver` + `Document\Parser\...` (document, unchanged) — no protocol-http types.
 
-- [ ] **Step 1:** Class skeleton implementing `SourceNormalizerInterface::supports($source): bool` (WSDL sniffs `definition` root + `wsdl:` namespace / `definitions`), `normalize($source): NormalizedOpenApiOperation`? NO — normalize yields `Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation` (F1 DTO, reused by value-slice for a shared shape).
+- [ ] **Step 1:** Class skeleton implementing `SourceNormalizerInterface::supports($source): bool` (WSDL sniffs `definition` root + `wsdl:` namespace / `definitions`), `normalize($source): NormalizedOpenApiOperation`? NO — normalize yields `Alama\Arazzo\Document\NormalizedOpenApiOperation` (F1 DTO, reused by value-slice for a shared shape).
 - [ ] **Step 2:** `dom_import_simplexml`/`DOMDocument::loadXML` parse; extract `service` → `port` → `binding` (`@type` → portType/interface) → `operation` (`@name`) → `bindingOperation` (`soap:operation soapAction` = operation URL suffix; `soap:body use="literal"`). Build the `ResolvedOperation`'s `targetResolver`-compatible fields: target URL = `$port['location']` (+ optional per-step path), `method` = SOAP post, headers `Content-Type: text/xml; charset=utf-8` (+ `SOAPAction` from the soapAction attr). Include two-axis fields per D3c (`bodySchema`/`responseSchema` derived from the XSD types referenced by `message` parts — resolve via `types`/`schema` `import` best-effort; keep `null` when unresolvable with a `// note(doc): xsd import not inlined` in code).
 - [ ] **Step 3:** Fixture WSDLs in `tests/Fixtures/` (handwritten minimal calculator + order-service with imports). Test: `supports()` true for WSDL strings/`{url: ...}` raw JSON values, false for plain JSON; `normalize()` returns a `NormalizedOpenApiOperation`/`ResolvedOperation` with expected target + soapAction + `portType` values.
 - [ ] **Step 4:** Register into the registrar (F4.6) + `SoapServiceProvider`; for now instantiate + unit-test directly.

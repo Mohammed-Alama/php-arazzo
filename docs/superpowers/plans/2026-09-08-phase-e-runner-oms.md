@@ -309,11 +309,11 @@ git commit -m "refactor(events): extract event DTOs, EventLedgerInterface and le
 The shared request-compilation pipeline. It is extracted **before** the engine and before the protocol packages because it has exactly two current consumers — the sync `StepExecutor` and the async `Protocol/HttpStepExecutor` — and both sit in layers above it. Extracting it first means neither the protocol packages nor the runners end up owning a shared pipeline that both need.
 
 **Contents moved (all currently in `packages/runner/src/Execution/`):**
-- `RequestCompiler.php`, `ParameterSerializer.php`, `TypeCaster.php`, `SchemaValidator.php`, `ResponseSchemaValidator.php`, `ExpressionValueResolver.php`, `ExecutionExpressionResolver.php`, `IdempotencyKeyInjector.php`, `StepParameterMerger.php`, `ReusableParameterResolver.php`, `StepOutputExtractor.php` → `packages/request-pipeline/src/`
+- `RequestCompiler.php`, `ParameterSerializer.php`, `TypeCaster.php`, `SchemaValidator.php`, `ExpressionValueResolver.php`, `ExecutionExpressionResolver.php`, `IdempotencyKeyInjector.php`, `StepParameterMerger.php`, `ReusableParameterResolver.php` → `packages/request-pipeline/src/`
 
 **Deliberately not moved:** `DefaultOpenApiExecutor.php` and `Execution/Interfaces/OpenApiExecutorInterface.php` stay in `runner` for now. `DefaultOpenApiExecutor` binds to a `ResolvedOperation` (an OpenAPI-specific DTO) and drives a PSR-18 client, so it is OpenAPI/transport-specific, not generic pipeline — it relocates to `alama/protocol-http` in Phase F1.2. `OpenApiExecutorInterface` is the transport seam the runner injects; F1.2 makes it a BC alias of the protocol-http canonical rather than resolving its home here.
 
-`StepOutputExtractor` moves here too — note it imports `Expression\Enum\ReferenceKind`, which is an allowed L2→L0 dependency.
+`StepOutputExtractor` and `ResponseSchemaValidator` do **not** move here: both are OpenAPI-specific (they read the cebe `Operation` that D0 moved behind `OpenApiOperationHandle`), so Phase F's F1.2 relocates them into `alama/arazzo-protocol-http` instead. `alama/arazzo-request-pipeline` stays vendor-free.
 
 **Files:**
 - Create: `packages/request-pipeline/` (full package: `composer.json`, `phpstan.neon.dist`, `tests/Pest.php`, `tests/Architecture/ArchTest.php`, `src/`)
