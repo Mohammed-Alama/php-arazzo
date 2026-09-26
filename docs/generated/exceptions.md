@@ -23,13 +23,8 @@ classDiagram
     class E_PreflightFailureException["PreflightFailureException<br/><small>document:Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>contracts:Exceptions</small>"]:::domain
     class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>evaluation:Exceptions</small>"]:::domain
-    class E_SourceFetchException["SourceFetchException<br/><small>document:Resolver</small>"]:::domain
-    class E_SourceParseException["SourceParseException<br/><small>document:Resolver</small>"]:::domain
-    class E_SourceResolutionException["SourceResolutionException<br/><small>document:Resolver</small>"]:::domain
     class E_StepBudgetExceededException["StepBudgetExceededException<br/><small>runner:Execution</small>"]:::domain
-    class E_UnresolvableReferenceException["UnresolvableReferenceException<br/><small>document:Resolver</small>"]:::domain
     class E_UnsupportedSerializationStyleException["UnsupportedSerializationStyleException<br/><small>document:Parser</small>"]:::domain
-    class E_UnsupportedSourceVersionException["UnsupportedSourceVersionException<br/><small>document:Resolver</small>"]:::domain
     class E_WorkflowCycleException["WorkflowCycleException<br/><small>runner:Execution</small>"]:::domain
     class E_WorkflowDepthExceededException["WorkflowDepthExceededException<br/><small>runner:Execution</small>"]:::domain
     E_RuntimeException <|-- E_ArazzoException
@@ -45,13 +40,8 @@ classDiagram
     E_ArazzoException <|-- E_PreflightFailureException
     E_RuntimeException <|-- E_SchemaValidationException
     E_ArazzoException <|-- E_SelectorEvaluationException
-    E_SourceResolutionException <|-- E_SourceFetchException
-    E_SourceResolutionException <|-- E_SourceParseException
-    E_RuntimeException <|-- E_SourceResolutionException
     E_ArazzoException <|-- E_StepBudgetExceededException
-    E_SourceResolutionException <|-- E_UnresolvableReferenceException
     E_RuntimeException <|-- E_UnsupportedSerializationStyleException
-    E_RuntimeException <|-- E_UnsupportedSourceVersionException
     E_ArazzoException <|-- E_WorkflowCycleException
     E_ArazzoException <|-- E_WorkflowDepthExceededException
     classDef builtin fill:#f1f5f9,stroke:#64748b,color:#1a1a1a;
@@ -73,12 +63,7 @@ classDiagram
 | `PreflightFailureException` | `ArazzoException` | document:Validator |
 | `SchemaValidationException` | `RuntimeException` | contracts:Exceptions |
 | `SelectorEvaluationException` | `ArazzoException` | evaluation:Exceptions |
-| `SourceFetchException` | `SourceResolutionException` | document:Resolver |
-| `SourceParseException` | `SourceResolutionException` | document:Resolver |
-| `SourceResolutionException` | `RuntimeException` | document:Resolver |
 | `StepBudgetExceededException` | `ArazzoException` | runner:Execution |
-| `UnresolvableReferenceException` | `SourceResolutionException` | document:Resolver |
 | `UnsupportedSerializationStyleException` | `RuntimeException` | document:Parser |
-| `UnsupportedSourceVersionException` | `RuntimeException` | document:Resolver |
 | `WorkflowCycleException` | `ArazzoException` | runner:Execution |
 | `WorkflowDepthExceededException` | `ArazzoException` | runner:Execution |

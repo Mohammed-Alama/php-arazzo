@@ -16,3 +16,4 @@ parameters:
         - vendor/alama/arazzo-document/src
         - vendor/alama/arazzo-runner/src
         - vendor/alama/arazzo-cli/src
+        - vendor/alama/arazzo-sources/src

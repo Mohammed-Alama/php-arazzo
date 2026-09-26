@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Utils;

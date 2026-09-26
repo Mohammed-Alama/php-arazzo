@@ -366,17 +366,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;`
 - `public function validate(ArazzoDocument $document): ValidationResult;`
 
-### `Document` class
-- `public function __construct(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $sources = null)`
-- `public function detectOpenApiVersion(array $document): string`
-- `public function load(string $path): ArazzoDocument`
-- `public function parse(RawDocument $raw): ArazzoDocument`
-- `public function preflight(ArazzoDocument $document): ValidationResult`
-- `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
-- `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation`
-- `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument`
-- `public function validate(ArazzoDocument $document): ValidationResult`
-
 ### `Alama\Arazzo\Document\Parser\Exceptions`
 
 #### `LoaderException` class

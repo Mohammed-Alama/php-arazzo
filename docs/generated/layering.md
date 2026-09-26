@@ -46,9 +46,7 @@ flowchart TB
         M_evaluation__["(evaluation package root)"]:::node
     end
     subgraph PKG_M_document["document"]
-        M_document_Normalizer["document:Normalizer"]:::node
         M_document_Parser["document:Parser"]:::node
-        M_document_Resolver["document:Resolver"]:::node
         M_document_Validator["document:Validator"]:::node
         M_document__["(document package root)"]:::node
     end
@@ -86,9 +84,7 @@ flowchart TB
     M_cli_Console --> M_contracts_Spec
     M_cli_Console --> M_contracts_State
     M_cli_Console --> M_document_Parser
-    M_cli_Console --> M_document_Resolver
     M_cli_Console --> M_document_Validator
-    M_cli_Console --> M_document__
     M_cli_Console --> M_evaluation_Interfaces
     M_cli_Console --> M_evaluation__
     M_cli_Console --> M_expression__
@@ -107,27 +103,16 @@ flowchart TB
     M_contracts_Interfaces --> M_contracts_State
     M_contracts_Spec --> M_contracts_Interfaces
     M_contracts_State --> M_contracts_Spec
-    M_document_Normalizer --> M_contracts_Spec
-    M_document_Normalizer --> M_contracts_Support
-    M_document_Normalizer --> M_document_Resolver
     M_document_Parser --> M_contracts_Spec
     M_document_Parser --> M_contracts_Support
-    M_document_Resolver --> M_contracts_Spec
-    M_document_Resolver --> M_document_Parser
     M_document_Validator --> M_contracts_Dependency
     M_document_Validator --> M_contracts_Spec
     M_document_Validator --> M_contracts_Support
-    M_document_Validator --> M_document_Normalizer
-    M_document_Validator --> M_document_Resolver
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression_Interfaces
     M_document__ --> M_contracts_Spec
-    M_document__ --> M_document_Normalizer
     M_document__ --> M_document_Parser
-    M_document__ --> M_document_Resolver
     M_document__ --> M_document_Validator
-    M_document__ --> M_expression_Interfaces
-    M_document__ --> M_expression__
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
     M_evaluation_Condition --> M_evaluation_Data
@@ -170,10 +155,7 @@ flowchart TB
     M_laravel_Bindings --> M_cli_Generator
     M_laravel_Bindings --> M_contracts_Interfaces
     M_laravel_Bindings --> M_contracts_Support
-    M_laravel_Bindings --> M_document_Normalizer
     M_laravel_Bindings --> M_document_Parser
-    M_laravel_Bindings --> M_document_Resolver
-    M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
     M_laravel_Bindings --> M_evaluation__
     M_laravel_Bindings --> M_expression_Interfaces
@@ -192,7 +174,6 @@ flowchart TB
     M_laravel_Http --> M_cli_Generator
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
-    M_laravel_Http --> M_document_Resolver
     M_laravel_Http --> M_runner_Infrastructure
     M_laravel_Http --> M_runner_Jobs
     M_laravel_Http --> M_runner_State
@@ -234,7 +215,6 @@ flowchart TB
     M_runner_Execution --> M_contracts_Spec
     M_runner_Execution --> M_contracts_State
     M_runner_Execution --> M_contracts_Support
-    M_runner_Execution --> M_document_Normalizer
     M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
@@ -292,23 +272,23 @@ flowchart TB
 | From package | To package | Refs |
 |---|---|---:|
 | `cli` | `contracts` | 20 |
-| `cli` | `document` | 12 |
+| `cli` | `document` | 10 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
-| `document` | `contracts` | 155 |
-| `document` | `expression` | 18 |
+| `document` | `contracts` | 132 |
+| `document` | `expression` | 16 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
 | `expression` | `contracts` | 1 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
-| `laravel` | `document` | 18 |
+| `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 3 |
 | `laravel` | `expression` | 2 |
 | `laravel` | `runner` | 44 |
 | `runner` | `contracts` | 191 |
-| `runner` | `document` | 22 |
+| `runner` | `document` | 18 |
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
 

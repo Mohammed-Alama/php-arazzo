@@ -12,7 +12,8 @@
         {"type": "path", "url": "../document"},
         {"type": "path", "url": "../evaluation"},
         {"type": "path", "url": "../expression"},
-        {"type": "path", "url": "../runner"}
+        {"type": "path", "url": "../runner"},
+        {"type": "path", "url": "../sources"}
     ],
     "authors": [
         {"name": "Mohammed Alama", "email": "mohammedalama96@icloud.com", "role": "Developer"}
@@ -26,6 +27,7 @@
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-runner": "@dev",
+        "alama/arazzo-sources": "@dev",
         "guzzlehttp/guzzle": "^7.8||^8.0",
         "illuminate/contracts": "^11.0||^12.0||^13.0",
         "spatie/laravel-package-tools": "^1.16"

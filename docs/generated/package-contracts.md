@@ -183,28 +183,28 @@ public contract between packages.
 - `ValidationResult` — present
 - `Error` — present
 - `Warning` — present
-- `ResolvedOperation` — present
-- `NormalizedOpenApiOperation` — present
+- `ResolvedOperation` — not found
+- `NormalizedOpenApiOperation` — not found
 - `LoaderException` — present
 - `ParserException` — present
 - `PreflightFailureException` — present
 
 ### Deliberately internal
 
-- `SourceResolver` — `@internal`: yes
-- `SourceFetcher` — `@internal`: yes
-- `SourceRegistry` — `@internal`: yes
-- `DefaultSourceResolver` — `@internal`: yes
-- `HttpFetcher` — `@internal`: yes
-- `LocalFetcher` — `@internal`: yes
-- `CachedFetcher` — `@internal`: yes
-- `OpenApiNormalizerInterface` — `@internal`: yes
-- `OpenApi30Normalizer` — `@internal`: yes
-- `OpenApi31Normalizer` — `@internal`: yes
-- `Swagger2Normalizer` — `@internal`: yes
-- `OpenApiVersionDetector` — `@internal`: yes
-- `OpenApiDocumentLoader` — `@internal`: yes
-- `OpenApiOperationResolver` — `@internal`: yes
+- `SourceResolver` — _not found in scan_
+- `SourceFetcher` — _not found in scan_
+- `SourceRegistry` — _not found in scan_
+- `DefaultSourceResolver` — _not found in scan_
+- `HttpFetcher` — _not found in scan_
+- `LocalFetcher` — _not found in scan_
+- `CachedFetcher` — _not found in scan_
+- `OpenApiNormalizerInterface` — _not found in scan_
+- `OpenApi30Normalizer` — _not found in scan_
+- `OpenApi31Normalizer` — _not found in scan_
+- `Swagger2Normalizer` — _not found in scan_
+- `OpenApiVersionDetector` — _not found in scan_
+- `OpenApiDocumentLoader` — _not found in scan_
+- `OpenApiOperationResolver` — _not found in scan_
 - `YamlDecoder` — `@internal`: yes
 - `JsonDecoder` — `@internal`: yes
 - `SymfonyYamlDecoder` — `@internal`: yes
@@ -214,7 +214,7 @@ public contract between packages.
 - `ParseContext` — `@internal`: yes
 - `RuleSet` — `@internal`: yes
 - `Validator` — `@internal`: yes
-- `PreflightValidator` — `@internal`: yes
+- `PreflightValidator` — _not found in scan_
 - `ErrorCollector` — `@internal`: yes
 - `OfficialSchemaRule` — `@internal`: yes
 - `Rules\*` — whole namespace (declared target)

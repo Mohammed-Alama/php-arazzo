@@ -17,3 +17,11 @@ it('maps the sources namespace onto the package src directory', function (): voi
         ->and($root['autoload-dev']['psr-4']['Alama\\Arazzo\\Tests\\'])->toContain('packages/sources/tests')
         ->and(is_dir(__DIR__.'/../src'))->toBeTrue();
 });
+
+arch('sources does not leak runner internals')
+    ->expect('Alama\Arazzo\Sources\Resolver')
+    ->not->toUse('Alama\Arazzo\Runner\Execution')
+    ->not->toUse('Alama\Arazzo\Cli\Console')
+    ->expect('Alama\Arazzo\Sources\Normalizer')
+    ->not->toUse('Alama\Arazzo\Runner\Execution')
+    ->not->toUse('Alama\Arazzo\Cli\Console');

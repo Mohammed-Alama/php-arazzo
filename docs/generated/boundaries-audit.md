@@ -17,14 +17,14 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
+| `GuzzleHttp` | 8 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 39 | **forbidden** |
-| `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
+| `JsonSchema` | 4 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 52 | 17 | allowed |
+| `Psr` | 46 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 16 | 0 | **forbidden** ⚠ |
+| `cebe` | 10 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -36,12 +36,8 @@ when a boundary consciously moves.
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Support` | `Psr` | 4 |
-| document | `document:Normalizer` | `cebe` | 6 |
 | document | `document:Parser` | `Symfony` | 2 |
-| document | `document:Resolver` | `Psr` | 4 |
-| document | `document:Validator` | `JsonSchema` | 7 |
-| document | `document:_` | `GuzzleHttp` | 2 |
-| document | `document:_` | `Psr` | 2 |
+| document | `document:Validator` | `JsonSchema` | 4 |
 | evaluation | `evaluation:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
@@ -70,14 +66,12 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 library boundary violation(s):**
+**10 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
-- `document:Normalizer` imports `cebe\*` (6 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
-- `document:Validator` imports `JsonSchema\*` (7 refs)
-- `document:_` imports `GuzzleHttp\*` (2 refs)
+- `document:Validator` imports `JsonSchema\*` (4 refs)
 - `evaluation:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
@@ -98,7 +92,6 @@ Cross-package references from library code must target `*Interface` facades, val
 
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
-| `document` | `expression` | `Document` | `ExpressionEngine` |
 | `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
@@ -124,5 +117,4 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
-| `runner` | `ResolvedOperation` | `document` | 4 | `StepOutputExtractor` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |

@@ -17,20 +17,20 @@ xychart-beta
     bar [26, 16, 15, 12, 12, 11, 10, 9, 9, 8, 7, 6]
 ```
 
-Analyzed 231 total file-touches across 43 modules.
+Analyzed 224 total file-touches across 41 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 26 | 11% | 361 | 72 |
+| `laravel:Bindings` | 26 | 12% | 361 | 72 |
 | `laravel:Http` | 16 | 7% | 170 | 94.1 |
-| `laravel:Persistence` | 15 | 6% | 264 | 56.8 |
+| `laravel:Persistence` | 15 | 7% | 264 | 56.8 |
 | `laravel:Queue` | 12 | 5% | 109 | 110.1 |
 | `runner:Execution` | 12 | 5% | 3,863 | 3.1 |
 | `cli:Console` | 11 | 5% | 765 | 14.4 |
-| `document:Validator` | 10 | 4% | 3,457 | 2.9 |
+| `document:Validator` | 10 | 4% | 3,155 | 3.2 |
 | `laravel:Lock` | 9 | 4% | 52 | 173.1 |
 | `laravel:State` | 9 | 4% | 41 | 219.5 |
-| `runner:Protocol` | 8 | 3% | 557 | 14.4 |
+| `runner:Protocol` | 8 | 4% | 557 | 14.4 |
 | `runner:Async` | 7 | 3% | 500 | 14 |
 | `contracts:Interfaces` | 6 | 3% | 305 | 19.7 |
 | `contracts:Spec` | 6 | 3% | 1,148 | 5.2 |
@@ -38,13 +38,11 @@ Analyzed 231 total file-touches across 43 modules.
 | `laravel:Support` | 5 | 2% | 126 | 39.7 |
 | `cli:Renderer` | 4 | 2% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 2% | 336 | 11.9 |
-| `document:Normalizer` | 4 | 2% | 608 | 6.6 |
 | `document:Parser` | 4 | 2% | 1,154 | 3.5 |
 | `evaluation:Registries` | 4 | 2% | 121 | 33.1 |
 | `expression:Ast` | 4 | 2% | 350 | 11.4 |
 | `cli:Generator` | 3 | 1% | 111 | 27 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
-| `document:Resolver` | 3 | 1% | 406 | 7.4 |
 | `evaluation:Data` | 3 | 1% | 34 | 88.2 |
 | `expression:Data` | 3 | 1% | 66 | 45.5 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |

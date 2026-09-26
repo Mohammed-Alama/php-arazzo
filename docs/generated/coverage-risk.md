@@ -26,29 +26,27 @@ quadrantChart
     contracts/Dependency: [0.333, 1]
     contracts/Exceptions: [0, 1]
     contracts/Interfaces: [0.15, 1]
-    contracts/Spec: [0.037, 1]
+    contracts/Spec: [0.04, 1]
     contracts/State: [0.091, 1]
     contracts/Support: [0, 1]
-    document/Normalizer: [0.429, 1]
-    document/Parser: [0.25, 1]
-    document/Resolver: [0.25, 1]
-    document/Validator: [0.583, 1]
+    document/Parser: [0.286, 1]
+    document/Validator: [0.556, 1]
     evaluation/Condition: [0.833, 1]
     evaluation/Data: [0.5, 1]
     evaluation/Enum: [0, 0.333]
-    evaluation/Exceptions: [0.333, 1]
+    evaluation/Exceptions: [0.333, 0]
     evaluation/Interfaces: [0.1, 1]
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.75, 0]
-    evaluation/Xpath: [0.667, 1]
+    evaluation/Xpath: [0.667, 0]
     expression/Ast: [0.5, 0.333]
     expression/Data: [0.25, 1]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.333, 1]
-    expression/Interfaces: [0.25, 1]
-    laravel/Bindings: [0.957, 0.857]
+    expression/Interfaces: [0.286, 1]
+    laravel/Bindings: [0.95, 0.857]
     laravel/Events: [0, 1]
-    laravel/Http: [0.778, 1]
+    laravel/Http: [0.75, 1]
     laravel/Lock: [0.5, 1]
     laravel/Persistence: [0.8, 1]
     laravel/Queue: [0.75, 1]
@@ -56,7 +54,7 @@ quadrantChart
     laravel/Support: [0.778, 0.5]
     runner/Async: [1, 1]
     runner/Events: [0.125, 1]
-    runner/Execution: [0.75, 1]
+    runner/Execution: [0.741, 1]
     runner/Infrastructure: [0.167, 1]
     runner/Jobs: [0.286, 1]
     runner/Policy: [0.75, 1]
@@ -73,29 +71,27 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.15 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.04 | 174 | 47 | 100% |
-| `contracts/State` | 0.09 | 53 | 2 | 100% |
-| `contracts/Support` | 0.00 | 18 | 5 | 100% |
-| `document/Normalizer` | 0.43 | 15 | 9 | 100% |
-| `document/Parser` | 0.25 | 35 | 11 | 100% |
-| `document/Resolver` | 0.25 | 21 | 12 | 100% |
-| `document/Validator` | 0.58 | 71 | 65 | 100% |
-| `evaluation/Condition` | 0.83 | 43 | 10 | 100% |
+| `contracts/Spec` | 0.04 | 168 | 47 | 100% |
+| `contracts/State` | 0.09 | 52 | 2 | 100% |
+| `contracts/Support` | 0.00 | 17 | 5 | 100% |
+| `document/Parser` | 0.29 | 35 | 11 | 100% |
+| `document/Validator` | 0.56 | 70 | 64 | 100% |
+| `evaluation/Condition` | 0.83 | 42 | 10 | 100% |
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
-| `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
+| `evaluation/Exceptions` | 0.33 | 0 | 1 | 0% |
 | `evaluation/Interfaces` | 0.10 | 24 | 5 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
-| `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
+| `evaluation/Xpath` | 0.67 | 0 | 2 | 0% |
 | `expression/Ast` | 0.50 | 5 | 15 | 33% |
-| `expression/Data` | 0.25 | 3 | 2 | 100% |
+| `expression/Data` | 0.25 | 2 | 2 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.33 | 5 | 1 | 100% |
-| `expression/Interfaces` | 0.25 | 5 | 1 | 100% |
-| `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
+| `expression/Interfaces` | 0.29 | 5 | 1 | 100% |
+| `laravel/Bindings` | 0.95 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
-| `laravel/Http` | 0.78 | 4 | 3 | 100% |
+| `laravel/Http` | 0.75 | 4 | 3 | 100% |
 | `laravel/Lock` | 0.50 | 3 | 1 | 100% |
 | `laravel/Persistence` | 0.80 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
@@ -103,7 +99,7 @@ quadrantChart
 | `laravel/Support` | 0.78 | 1 | 2 | 50% |
 | `runner/Async` | 1.00 | 6 | 6 | 100% |
 | `runner/Events` | 0.12 | 31 | 11 | 100% |
-| `runner/Execution` | 0.75 | 54 | 39 | 100% |
+| `runner/Execution` | 0.74 | 54 | 39 | 100% |
 | `runner/Infrastructure` | 0.17 | 9 | 4 | 100% |
 | `runner/Jobs` | 0.29 | 7 | 2 | 100% |
 | `runner/Policy` | 0.75 | 2 | 2 | 100% |
@@ -111,4 +107,4 @@ quadrantChart
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
 
-**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`
+**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`, `evaluation/Xpath`

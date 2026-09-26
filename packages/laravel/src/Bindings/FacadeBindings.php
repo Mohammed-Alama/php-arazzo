@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
@@ -14,6 +13,7 @@ use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Runner\RunnerGraphBuilder;
 use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
+use Alama\Arazzo\Sources\Document;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
 

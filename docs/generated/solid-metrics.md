@@ -29,14 +29,12 @@ quadrantChart
     contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
     contracts/Interfaces: [0.15, 1]
-    contracts/Spec: [0.037, 0.021]
+    contracts/Spec: [0.04, 0.021]
     contracts/State: [0.091, 0]
     contracts/Support: [0, 0.2]
-    document/Normalizer: [0.429, 0.111]
-    document/Parser: [0.25, 0.182]
-    document/Resolver: [0.25, 0.25]
-    document/Validator: [0.583, 0.015]
-    document/_: [0.538, 0.5]
+    document/Parser: [0.286, 0.182]
+    document/Validator: [0.556, 0.016]
+    document/_: [0.375, 1]
     evaluation/Condition: [0.833, 0]
     evaluation/Data: [0.5, 0]
     evaluation/Enum: [0, 0]
@@ -50,10 +48,10 @@ quadrantChart
     expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.333, 0]
-    expression/Interfaces: [0.25, 1]
-    expression/_: [0.5, 0]
-    laravel/Bindings: [0.957, 0]
-    laravel/Http: [0.778, 0]
+    expression/Interfaces: [0.286, 1]
+    expression/_: [0.556, 0]
+    laravel/Bindings: [0.95, 0]
+    laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
     laravel/Persistence: [0.8, 0]
     laravel/Queue: [0.75, 0]
@@ -62,7 +60,7 @@ quadrantChart
     laravel/_: [1, 0]
     runner/Async: [1, 0]
     runner/Events: [0.125, 0.091]
-    runner/Execution: [0.75, 0.051]
+    runner/Execution: [0.741, 0.051]
     runner/Infrastructure: [0.167, 0.25]
     runner/Jobs: [0.286, 0]
     runner/Policy: [0.75, 0]
@@ -85,7 +83,6 @@ Concrete types over 300 LOC:
 | `Parser` | `expression:_` | 365 |
 | `WorkflowContext` | `contracts:State` | 359 |
 | `ExecutionState` | `contracts:State` | 308 |
-| `PreflightValidator` | `document:Validator` | 302 |
 
 ## Fat interfaces (ISP)
 

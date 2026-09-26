@@ -24,19 +24,14 @@ Evans' first question: does the code speak one language?
 ### parse vs load vs decode
 
 - **Decoder**: `JsonDecoder`, `NativeJsonDecoder`, `SymfonyYamlDecoder`, `YamlDecoder` (4 types)
-- **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` (4 types)
+- **Loader**: `DocumentLoader`, `Loader`, `LoaderException` (3 types)
 - **Parser**: `Parser`, `ParserException` (2 types)
 
 ### document vs definition vs spec
 
 - **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
-- **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 6 more (10 types)
+- **Document**: `ArazzoDocument`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentInterface` + 4 more (8 types)
 - **Spec**: `SpecVersion` (1 types)
-
-### fetch vs resolve vs retrieve
-
-- **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver` + 9 more (13 types)
 
 ### state vs status
 
@@ -45,7 +40,7 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 11 more (15 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 10 more (14 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 

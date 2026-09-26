@@ -9,6 +9,7 @@
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-document": "@dev",
+        "alama/arazzo-sources": "@dev",
         "guzzlehttp/guzzle": "^7.9",
         "open-telemetry/api": "^1.0",
         "open-telemetry/sdk": "^1.0",

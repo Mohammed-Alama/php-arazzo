@@ -9,11 +9,11 @@ use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Document\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
+use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Resolver\Exceptions\UnresolvableReferenceException;
 use InvalidArgumentException;
 use RuntimeException;
 

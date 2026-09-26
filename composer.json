@@ -127,6 +127,7 @@
             "@analyse-contracts",
             "@analyse-expression",
             "@analyse-document",
+            "@analyse-sources",
             "@analyse-runner",
             "@analyse-cli",
             "@analyse-laravel"

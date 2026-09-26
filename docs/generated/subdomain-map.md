@@ -22,8 +22,7 @@ flowchart LR
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1154 LOC</small>"]:::supportingDomain
-        S_document_Resolver["document:Resolver<br/><small>406 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3457 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3155 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
@@ -43,7 +42,6 @@ flowchart LR
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
         S_contracts_Exceptions["contracts:Exceptions<br/><small>31 LOC</small>"]:::unknownDomain
         S_contracts_Interfaces["contracts:Interfaces<br/><small>305 LOC</small>"]:::unknownDomain
-        S_document_Normalizer["document:Normalizer<br/><small>608 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>654 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>34 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
@@ -74,15 +72,14 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,148 | 0 | 6% |
-| Supporting | 6 | 6,148 | 0 | 32% |
-| Generic subdomain | 12 | 2,132 | 1,147 | 17% |
-| Unclassified | 24 | 8,540 | 0 | 45% |
+| Supporting | 5 | 5,440 | 0 | 31% |
+| Generic subdomain | 12 | 2,132 | 1,147 | 18% |
+| Unclassified | 23 | 7,932 | 0 | 45% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
 - `contracts:Exceptions`
 - `contracts:Interfaces`
-- `document:Normalizer`
 - `evaluation:Condition`
 - `evaluation:Data`
 - `evaluation:Enum`
