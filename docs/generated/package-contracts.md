@@ -174,8 +174,6 @@ public contract between packages.
   - `public function validate(ArazzoDocument $document): ValidationResult;`
   - `public function preflight(ArazzoDocument $document): ValidationResult;`
   - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult;`
-  - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;`
-  - `public function detectOpenApiVersion(array $document): string;`
   - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation;`
 
 ### Cross-boundary value types

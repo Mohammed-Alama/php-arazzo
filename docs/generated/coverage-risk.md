@@ -34,11 +34,11 @@ quadrantChart
     evaluation/Condition: [0.833, 1]
     evaluation/Data: [0.5, 1]
     evaluation/Enum: [0, 0.333]
-    evaluation/Exceptions: [0.333, 0]
+    evaluation/Exceptions: [0.333, 1]
     evaluation/Interfaces: [0.1, 1]
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.75, 0]
-    evaluation/Xpath: [0.667, 0]
+    evaluation/Xpath: [0.667, 1]
     expression/Ast: [0.5, 0.333]
     expression/Data: [0.25, 1]
     expression/Enum: [0, 1]
@@ -71,19 +71,19 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.15 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.04 | 169 | 47 | 100% |
-| `contracts/State` | 0.09 | 52 | 2 | 100% |
+| `contracts/Spec` | 0.04 | 170 | 47 | 100% |
+| `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 17 | 5 | 100% |
 | `document/Parser` | 0.29 | 35 | 11 | 100% |
 | `document/Validator` | 0.56 | 70 | 64 | 100% |
 | `evaluation/Condition` | 0.83 | 42 | 10 | 100% |
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
-| `evaluation/Exceptions` | 0.33 | 0 | 1 | 0% |
+| `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
 | `evaluation/Interfaces` | 0.10 | 23 | 5 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
-| `evaluation/Xpath` | 0.67 | 0 | 2 | 0% |
+| `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
 | `expression/Ast` | 0.50 | 5 | 15 | 33% |
 | `expression/Data` | 0.25 | 2 | 2 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
@@ -107,4 +107,4 @@ quadrantChart
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
 
-**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`, `evaluation/Xpath`
+**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`

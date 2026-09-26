@@ -45,3 +45,7 @@ arch('runner does not leak expression internals')
     ->not->toUse('Alama\Arazzo\Cli\Console')
     ->expect('Alama\Arazzo\Runner\Infrastructure')
     ->not->toUse('Alama\Arazzo\Cli\Console');
+
+arch('runner does not depend on cebe directly')
+    ->expect('Alama\Arazzo\Runner')
+    ->not->toUse('cebe');

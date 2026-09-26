@@ -18,10 +18,20 @@ it('maps the sources namespace onto the package src directory', function (): voi
         ->and(is_dir(__DIR__.'/../src'))->toBeTrue();
 });
 
-arch('sources does not leak runner internals')
-    ->expect('Alama\Arazzo\Sources\Resolver')
-    ->not->toUse('Alama\Arazzo\Runner\Execution')
-    ->not->toUse('Alama\Arazzo\Cli\Console')
-    ->expect('Alama\Arazzo\Sources\Normalizer')
-    ->not->toUse('Alama\Arazzo\Runner\Execution')
-    ->not->toUse('Alama\Arazzo\Cli\Console');
+arch('sources does not depend on outer layers')
+    ->expect('Alama\Arazzo\Sources')
+    ->not->toUse('Alama\Arazzo\Runner')
+    ->not->toUse('Alama\Arazzo\Cli')
+    ->not->toUse('Alama\Arazzo\Protocol')
+    ->not->toUse('Alama\Arazzo\Runtime')
+    ->not->toUse('Illuminate');
+
+arch('sources may reach the model package and the transport')
+    ->expect('Alama\Arazzo\Sources')
+    ->toUse('Alama\Arazzo\Document');
+
+arch('only the sources composition root constructs http clients')
+    ->expect('Alama\Arazzo\Sources\Document')
+    ->not->toUse('GuzzleHttp')
+    ->expect('Alama\Arazzo\Sources\Resolver\DefaultSourceResolver')
+    ->not->toUse('GuzzleHttp');

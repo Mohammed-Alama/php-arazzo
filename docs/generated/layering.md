@@ -276,7 +276,7 @@ flowchart TB
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
-| `document` | `contracts` | 133 |
+| `document` | `contracts` | 131 |
 | `document` | `expression` | 17 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |

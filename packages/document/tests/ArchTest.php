@@ -32,3 +32,11 @@ arch('document facade seams are entry-point only')
     ->not->toUse('Alama\Arazzo\Sources\Document')
     ->not->toUse('Alama\Arazzo\Runner\RunnerFacade')
     ->not->toUse('Alama\Arazzo\Expression\Expression');
+
+arch('document model is vendor-free')
+    ->expect('Alama\Arazzo\Document')
+    ->not->toUse('cebe')
+    ->not->toUse('GuzzleHttp')
+    ->not->toUse('Psr\Http')
+    ->not->toUse('Psr\SimpleCache')
+    ->not->toUse('Softcreatr');

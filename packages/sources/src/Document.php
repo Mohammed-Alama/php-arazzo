@@ -65,6 +65,12 @@ final class Document implements DocumentInterface
         return $this->sources->resolve($source, $basePath);
     }
 
+    /**
+     * Detect the OpenAPI/Swagger version of a decoded source document.
+     *
+     * @param  array<string, mixed>  $document
+     * @return string One of '2.0', '3.0' or '3.1'.
+     */
     public function detectOpenApiVersion(array $document): string
     {
         return $this->versionDetector->detect($document);
