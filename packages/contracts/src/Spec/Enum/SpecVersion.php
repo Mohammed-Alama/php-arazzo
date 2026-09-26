@@ -10,6 +10,7 @@ enum SpecVersion: string
 {
     case V1_0 = '1.0.0';
     case V1_1 = '1.1.0';
+    case V1_2 = '1.2.0';
 
     public static function fromRaw(string $raw): self
     {
@@ -21,8 +22,12 @@ enum SpecVersion: string
             return self::V1_1;
         }
 
+        if (preg_match('/^1\.2\.\d+$/', $raw) === 1) {
+            return self::V1_2;
+        }
+
         throw new InvalidArgumentException(
-            "Unsupported arazzo version '{$raw}'; expected 1.0.x or 1.1.x.",
+            "Unsupported arazzo version '{$raw}'; expected 1.0.x, 1.1.x, or 1.2.x.",
         );
     }
 }

@@ -80,7 +80,7 @@ Concrete types over 300 LOC:
 
 | Class | Module | LOC |
 |---|---|---:|
-| `Parser` | `document:Parser` | 854 |
+| `Parser` | `document:Parser` | 956 |
 | `ExecutionContext` | `runner:State` | 496 |
 | `StepExecutionWorker` | `runner:Execution` | 379 |
 | `StepOutcomeHandler` | `runner:Execution` | 376 |

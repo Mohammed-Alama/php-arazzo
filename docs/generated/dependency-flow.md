@@ -40,7 +40,7 @@ contracts-Interfaces,contracts-Exceptions,1
 contracts-Interfaces,contracts-Spec,21
 contracts-Interfaces,contracts-State,2
 contracts-State,contracts-Spec,3
-document-Parser,contracts-Spec,33
+document-Parser,contracts-Spec,37
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
 document-Validator,contracts-Spec,89

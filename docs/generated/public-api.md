@@ -180,7 +180,7 @@ this file on a commit is a public API change — review it deliberately.
 - Cases: `Arazzo`, `Asyncapi`, `Graphql`, `Openapi`, `Protobuf`, `Wsdl`
 
 #### `SpecVersion` enum
-- Cases: `V1_0`, `V1_1`
+- Cases: `V1_0`, `V1_1`, `V1_2`
 - `public static function fromRaw(string $raw): self`
 
 #### `StepState` enum

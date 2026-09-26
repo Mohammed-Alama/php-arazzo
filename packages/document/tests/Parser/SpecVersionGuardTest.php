@@ -30,6 +30,11 @@ it('accepts 1.1.x', function (string $v) {
     expect($doc->specVersion)->toBe(SpecVersion::V1_1);
 })->with(['1.1.0', '1.1.3']);
 
+it('accepts 1.2.x', function (string $v) {
+    $doc = (new Parser())->parse(minimalDoc($v));
+    expect($doc->specVersion)->toBe(SpecVersion::V1_2);
+})->with(['1.2.0', '1.2.1']);
+
 it('rejects unsupported versions', function (string $v) {
     (new Parser())->parse(minimalDoc($v));
-})->throws(ParserException::class)->with(['0.9.0', '1.2.0', '2.0.0', 'abc']);
+})->throws(ParserException::class)->with(['0.9.0', '2.0.0', 'abc']);
