@@ -19,7 +19,7 @@ cli-Console,contracts-Dependency,1
 cli-Console,contracts-Interfaces,2
 cli-Console,contracts-Spec,8
 cli-Console,contracts-State,1
-cli-Console,document-Parser,8
+cli-Console,document-Parser,6
 cli-Console,document-Validator,2
 cli-Console,evaluation-Interfaces,1
 cli-Console,evaluation-root,1
@@ -40,7 +40,7 @@ contracts-Interfaces,contracts-Exceptions,1
 contracts-Interfaces,contracts-Spec,21
 contracts-Interfaces,contracts-State,2
 contracts-State,contracts-Spec,3
-document-Parser,contracts-Spec,37
+document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
 document-Validator,contracts-Spec,98
@@ -48,7 +48,7 @@ document-Validator,contracts-Support,2
 document-Validator,expression-Enum,7
 document-Validator,expression-Interfaces,9
 document-root,contracts-Spec,10
-document-root,document-Parser,6
+document-root,document-Parser,4
 document-root,document-Validator,4
 document-root,expression-Interfaces,1
 evaluation-Condition,contracts-Spec,4
@@ -214,7 +214,7 @@ sources-Validator,sources-Normalizer,2
 sources-Validator,sources-Resolver,1
 sources-root,contracts-Interfaces,1
 sources-root,contracts-Spec,4
-sources-root,document-Parser,4
+sources-root,document-Parser,2
 sources-root,document-Validator,3
 sources-root,document-root,5
 sources-root,expression-root,1

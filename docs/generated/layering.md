@@ -315,12 +315,12 @@ flowchart TB
 | From package | To package | Refs |
 |---|---|---:|
 | `cli` | `contracts` | 22 |
-| `cli` | `document` | 10 |
+| `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
 | `cli` | `sources` | 2 |
-| `document` | `contracts` | 150 |
+| `document` | `contracts` | 151 |
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
 | `evaluation` | `contracts` | 73 |
@@ -339,7 +339,7 @@ flowchart TB
 | `runner` | `expression` | 7 |
 | `runner` | `sources` | 10 |
 | `sources` | `contracts` | 29 |
-| `sources` | `document` | 25 |
+| `sources` | `document` | 23 |
 | `sources` | `expression` | 1 |
 
 ## Module-level detail

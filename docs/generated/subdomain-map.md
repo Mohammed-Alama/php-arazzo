@@ -18,10 +18,10 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>1202 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>795 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>793 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
-        S_document_Parser["document:Parser<br/><small>1256 LOC</small>"]:::supportingDomain
+        S_document_Parser["document:Parser<br/><small>1316 LOC</small>"]:::supportingDomain
         S_document_Validator["document:Validator<br/><small>3470 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>488 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
@@ -75,8 +75,8 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,202 | 0 | 6% |
-| Supporting | 7 | 6,678 | 0 | 34% |
-| Generic subdomain | 12 | 2,132 | 1,158 | 17% |
+| Supporting | 7 | 6,736 | 0 | 34% |
+| Generic subdomain | 12 | 2,132 | 1,158 | 16% |
 | Unclassified | 24 | 8,743 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:

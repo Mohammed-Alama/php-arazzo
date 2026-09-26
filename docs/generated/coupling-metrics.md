@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 784 | 0 | 18 | 1.00 |  |
+| `cli:Console` | 11 | 782 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
@@ -20,9 +20,9 @@ targets. Regenerated before every commit.
 | `contracts:Spec` | 49 | 1153 | 28 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 10 | 1 | 0.09 |  |
 | `contracts:Support` | 5 | 180 | 10 | 0 | 0.00 |  |
-| `document:Parser` | 11 | 1245 | 7 | 2 | 0.22 |  |
+| `document:Parser` | 11 | 1305 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 68 | 3402 | 6 | 5 | 0.45 |  |
-| `(document root)` | 5 | 272 | 6 | 6 | 0.50 |  |
+| `(document root)` | 5 | 270 | 6 | 6 | 0.50 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -60,9 +60,9 @@ targets. Regenerated before every commit.
 | `sources:Normalizer` | 9 | 779 | 7 | 5 | 0.42 |  |
 | `sources:Resolver` | 13 | 475 | 6 | 3 | 0.33 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 288 | 2 | 9 | 0.82 |  |
+| `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **990**
+Total cross-module edges: **985**
 
 ## Most entangled module pairs
 
@@ -70,7 +70,7 @@ Total cross-module edges: **990**
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 98 |
 | `runner:Execution` → `contracts:Spec` | 75 |
-| `document:Parser` → `contracts:Spec` | 37 |
+| `document:Parser` → `contracts:Spec` | 38 |
 | `(evaluation root)` → `contracts:Spec` | 35 |
 | `contracts:Interfaces` → `contracts:Spec` | 21 |
 | `runner:Execution` → `runner:Events` | 21 |

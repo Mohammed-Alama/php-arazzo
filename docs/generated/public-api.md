@@ -396,6 +396,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function readFailed(string $path): self`
 - `public static function rootNotObject(string $path): self`
 - `public static function unsupportedExtension(string $ext): self`
+- `public static function unsupportedFormat(Format $format): self`
 
 #### `ParserException` class
 - `public static function invalidActionType(ParseContext $ctx, string $actual): self`

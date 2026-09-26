@@ -20,6 +20,9 @@ mindmap
       CriteriaEvaluator
     CriterionEvaluatorPluginInterface
       JsonPathCriterionPlugin
+    DecoderInterface
+      NativeJsonDecoder
+      SymfonyYamlDecoder
     DefinitionRegistryInterface
       DatabaseDefinitionRegistry
     DocumentInterface
@@ -101,6 +104,7 @@ mindmap
 | `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `CriterionEvaluatorPluginInterface` | no | `JsonPathCriterionPlugin` <small>core</small> |
+| `DecoderInterface` | no | `NativeJsonDecoder` <small>core</small>, `SymfonyYamlDecoder` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `DocumentInterface` | no | `Document` <small>core</small> |
 | `EvaluationEngineInterface` | no | `EvaluationEngine` <small>core</small> |

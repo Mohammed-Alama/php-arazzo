@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Document\Parser\Exceptions;
 
+use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
 use Throwable;
 
@@ -37,5 +38,10 @@ final class LoaderException extends ArazzoException
     public static function rootNotObject(string $path): self
     {
         return new self("Root of Arazzo document must be an object: {$path}", $path, 'loader.root_not_object');
+    }
+
+    public static function unsupportedFormat(Format $format): self
+    {
+        return new self("Unsupported format: {$format->value}", '', 'loader.unsupported_format');
     }
 }

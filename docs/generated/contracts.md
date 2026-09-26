@@ -13,6 +13,7 @@ flowchart LR
     I_ConditionNode["ConditionNode<br/><small>evaluation:Interfaces</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_CriterionEvaluatorPluginInterface["CriterionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_DecoderInterface["DecoderInterface<br/><small>document:Parser</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
     I_EvaluationEngineInterface["EvaluationEngineInterface<br/><small>(evaluation root)</small>"]:::contract
@@ -24,7 +25,6 @@ flowchart LR
     I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>runner:Infrastructure</small>"]:::contract
-    I_JsonDecoder["JsonDecoder<br/><small>document:Parser</small>"]:::contract
     I_LockManagerInterface["LockManagerInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
@@ -51,7 +51,6 @@ flowchart LR
     I_WorkflowStateRepositoryInterface["WorkflowStateRepositoryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>evaluation:Xpath</small>"]:::contract
-    I_YamlDecoder["YamlDecoder<br/><small>document:Parser</small>"]:::contract
     C_contracts_contracts_Spec_ResponseTransfer["ResponseTransfer<br/><small>contracts:Spec</small>"]:::implCore
     C_contracts_contracts_Spec_ResponseTransfer -.->|implements| I_ResponseTransferInterface
     C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
@@ -93,9 +92,9 @@ flowchart LR
     C_document_document___Document["Document<br/><small>(document root)</small>"]:::implCore
     C_document_document___Document -.->|implements| I_DocumentInterface
     C_document_document_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>document:Parser</small>"]:::implCore
-    C_document_document_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
+    C_document_document_Parser_NativeJsonDecoder -.->|implements| I_DecoderInterface
     C_document_document_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>document:Parser</small>"]:::implCore
-    C_document_document_Parser_SymfonyYamlDecoder -.->|implements| I_YamlDecoder
+    C_document_document_Parser_SymfonyYamlDecoder -.->|implements| I_DecoderInterface
     C_document_document_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_document_document_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore

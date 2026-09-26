@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Document;
 
-use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Loader;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\RuleSet;
@@ -39,7 +37,7 @@ final readonly class ModelStack
         ?OpenApiOperationResolver $operationResolver = null,
     ): self {
         return new self(
-            loader: new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()),
+            loader: Loader::new(),
             parser: new Parser(),
             validator: new Validator(RuleSet::default($engine)),
             engine: $engine,

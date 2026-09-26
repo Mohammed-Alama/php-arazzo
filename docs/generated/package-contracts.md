@@ -189,8 +189,8 @@ public contract between packages.
 
 ### Deliberately internal
 
-- `YamlDecoder` — `@internal`: yes
-- `JsonDecoder` — `@internal`: yes
+- `YamlDecoder` — _not found in scan_
+- `JsonDecoder` — _not found in scan_
 - `SymfonyYamlDecoder` — `@internal`: yes
 - `NativeJsonDecoder` — `@internal`: yes
 - `Loader` — `@internal`: yes

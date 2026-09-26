@@ -23,7 +23,7 @@ Analyzed 255 total file-touches across 44 modules.
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 29 | 11% | 372 | 78 |
 | `laravel:Http` | 17 | 7% | 170 | 100 |
-| `cli:Console` | 15 | 6% | 795 | 18.9 |
+| `cli:Console` | 15 | 6% | 793 | 18.9 |
 | `document:Validator` | 15 | 6% | 3,470 | 4.3 |
 | `laravel:Persistence` | 15 | 6% | 264 | 56.8 |
 | `runner:Execution` | 14 | 5% | 3,886 | 3.6 |
@@ -34,7 +34,7 @@ Analyzed 255 total file-touches across 44 modules.
 | `runner:Protocol` | 9 | 4% | 557 | 16.2 |
 | `runner:Async` | 7 | 3% | 500 | 14 |
 | `contracts:Interfaces` | 6 | 2% | 305 | 19.7 |
-| `document:Parser` | 6 | 2% | 1,256 | 4.8 |
+| `document:Parser` | 6 | 2% | 1,316 | 4.6 |
 | `sources:Normalizer` | 6 | 2% | 788 | 7.6 |
 | `expression:Interfaces` | 5 | 2% | 25 | 200 |
 | `laravel:Support` | 5 | 2% | 126 | 39.7 |

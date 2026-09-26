@@ -32,7 +32,7 @@ quadrantChart
     contracts/Spec: [0.034, 0.02]
     contracts/State: [0.091, 0]
     contracts/Support: [0, 0.2]
-    document/Parser: [0.222, 0.182]
+    document/Parser: [0.222, 0.091]
     document/Validator: [0.455, 0.015]
     document/_: [0.5, 0.2]
     evaluation/Condition: [0.833, 0]

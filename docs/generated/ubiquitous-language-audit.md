@@ -23,7 +23,7 @@ Evans' first question: does the code speak one language?
 
 ### parse vs load vs decode
 
-- **Decoder**: `JsonDecoder`, `NativeJsonDecoder`, `SymfonyYamlDecoder`, `YamlDecoder` (4 types)
+- **Decoder**: `DecoderInterface`, `DecoderRegistry`, `NativeJsonDecoder`, `SymfonyYamlDecoder` (4 types)
 - **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` + 1 more (5 types)
 - **Parser**: `Parser`, `ParserException` (2 types)
 
@@ -45,7 +45,7 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 12 more (16 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 13 more (17 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
