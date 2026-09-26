@@ -23,6 +23,8 @@ flowchart LR
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1154 LOC</small>"]:::supportingDomain
         S_document_Validator["document:Validator<br/><small>3155 LOC</small>"]:::supportingDomain
+        S_sources_Resolver["sources:Resolver<br/><small>406 LOC</small>"]:::supportingDomain
+        S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
@@ -62,6 +64,7 @@ flowchart LR
         S_runner_Policy["runner:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runner_Protocol["runner:Protocol<br/><small>557 LOC</small>"]:::unknownDomain
         S_runner_Telemetry["runner:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
+        S_sources_Normalizer["sources:Normalizer<br/><small>594 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -72,9 +75,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,148 | 0 | 6% |
-| Supporting | 5 | 5,441 | 0 | 31% |
-| Generic subdomain | 12 | 2,132 | 1,158 | 18% |
-| Unclassified | 23 | 7,955 | 0 | 45% |
+| Supporting | 7 | 6,150 | 0 | 32% |
+| Generic subdomain | 12 | 2,132 | 1,158 | 17% |
+| Unclassified | 24 | 8,549 | 0 | 45% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -100,3 +103,4 @@ flowchart LR
 - `runner:Policy`
 - `runner:Protocol`
 - `runner:Telemetry`
+- `sources:Normalizer`

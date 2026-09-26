@@ -156,15 +156,14 @@ public contract between packages.
 
 ## document
 
-> **Provides:** Loads, parses, validates and preflights Arazzo documents, and resolves the OpenAPI operations they reference.
+> **Provides:** Loads, parses and validates Arazzo documents, and holds the vendor-free model types steps resolve to.
 
 ### Capabilities
 
 - Load and parse Arazzo documents from YAML/JSON (or already-decoded raw documents)
 - Static conformance validation via rule sets
 - Preflight validation incl. source-audited steps and runtime-input schema checks
-- Source-document resolution and fetching (URL, local, cached) exposed through the face
-- OpenAPI operation resolution plus normalization and version detection through the face
+- Vendor-free resolved-operation model shared with downstream packages
 
 ### Public entry surface
 
@@ -183,26 +182,13 @@ public contract between packages.
 - `Warning` — present
 - `ResolvedOperation` — present
 - `NormalizedOpenApiOperation` — present
+- `ModelStack` — present
 - `LoaderException` — present
 - `ParserException` — present
 - `PreflightFailureException` — present
 
 ### Deliberately internal
 
-- `SourceResolver` — _not found in scan_
-- `SourceFetcher` — _not found in scan_
-- `SourceRegistry` — _not found in scan_
-- `DefaultSourceResolver` — _not found in scan_
-- `HttpFetcher` — _not found in scan_
-- `LocalFetcher` — _not found in scan_
-- `CachedFetcher` — _not found in scan_
-- `OpenApiNormalizerInterface` — _not found in scan_
-- `OpenApi30Normalizer` — _not found in scan_
-- `OpenApi31Normalizer` — _not found in scan_
-- `Swagger2Normalizer` — _not found in scan_
-- `OpenApiVersionDetector` — _not found in scan_
-- `OpenApiDocumentLoader` — _not found in scan_
-- `OpenApiOperationResolver` — _not found in scan_
 - `YamlDecoder` — `@internal`: yes
 - `JsonDecoder` — `@internal`: yes
 - `SymfonyYamlDecoder` — `@internal`: yes
@@ -212,11 +198,68 @@ public contract between packages.
 - `ParseContext` — `@internal`: yes
 - `RuleSet` — `@internal`: yes
 - `Validator` — `@internal`: yes
-- `PreflightValidator` — _not found in scan_
 - `ErrorCollector` — `@internal`: yes
 - `OfficialSchemaRule` — `@internal`: yes
 - `Rules\*` — whole namespace (declared target)
 - `Validator\Support\*` — whole namespace (declared target)
+- `Validator\Data\*` — whole namespace (declared target)
+- `Validator\Interfaces\*` — whole namespace (declared target)
+
+## sources
+
+> **Provides:** Resolves, fetches and decodes Arazzo sources, and normalizes the OpenAPI/Swagger operations steps target.
+
+### Capabilities
+
+- Resolve source descriptions to decoded source documents (local file, HTTP, cached)
+- Normalize OpenAPI 3.0/3.1 and Swagger 2.0 operations to a vendor-free model
+- Detect the OpenAPI/Swagger version of a decoded source document
+- Hand callers a transport-bound operation handle for execution
+- Preflight validation of operation-targeted steps against resolved sources
+- Composition root wiring document, resolver, fetchers and cache behind one graph
+
+### Public entry surface
+
+- `Document` (`class`)
+  - `public function __construct(private readonly ModelStack $model, private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight)`
+  - `public function parse(RawDocument $raw): ArazzoDocument`
+  - `public function validate(ArazzoDocument $document): ValidationResult`
+  - `public function preflight(ArazzoDocument $document): ValidationResult`
+  - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
+  - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument`
+  - `public function detectOpenApiVersion(array $document): string`
+  - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation`
+
+### Cross-boundary value types
+
+- `OpenApiOperationHandle` — present
+- `SourceRuntime` — present
+- `SourceFetchException` — present
+- `SourceParseException` — present
+- `SourceResolutionException` — present
+- `UnresolvableReferenceException` — present
+- `UnsupportedSourceVersionException` — present
+
+### Deliberately internal
+
+- `SourceResolver` — `@internal`: yes
+- `SourceFetcher` — `@internal`: yes
+- `SourceRegistry` — `@internal`: yes
+- `DefaultSourceResolver` — `@internal`: yes
+- `HttpFetcher` — `@internal`: yes
+- `LocalFetcher` — `@internal`: yes
+- `CachedFetcher` — `@internal`: yes
+- `OpenApiNormalizerInterface` — `@internal`: yes
+- `OpenApi30Normalizer` — `@internal`: yes
+- `OpenApi31Normalizer` — `@internal`: yes
+- `Swagger2Normalizer` — `@internal`: yes
+- `OpenApiVersionDetector` — `@internal`: yes
+- `OpenApiDocumentLoader` — `@internal`: yes
+- `OpenApiOperationResolver` — `@internal`: yes
+- `PreflightValidator` — `@internal`: yes
+- `SourceGraph` — `@internal`: no (target for the sweep)
+- `Normalizer\*` — whole namespace (declared target)
+- `Resolver\*` — whole namespace (declared target)
 
 ## runner
 

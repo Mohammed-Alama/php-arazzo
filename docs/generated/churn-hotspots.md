@@ -14,10 +14,10 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "laravel:Http", "laravel:Persistence", "cli:Console", "runner:Execution", "laravel:Queue", "document:Validator", "laravel:Lock", "laravel:State", "runner:Protocol", "runner:Async", "contracts:Interfaces"]
     y-axis "Touches" 0 --> 40
-    bar [29, 17, 15, 14, 14, 12, 11, 9, 9, 9, 7, 6]
+    bar [29, 17, 15, 14, 14, 12, 10, 9, 9, 9, 7, 6]
 ```
 
-Analyzed 235 total file-touches across 41 modules.
+Analyzed 238 total file-touches across 44 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -27,7 +27,7 @@ Analyzed 235 total file-touches across 41 modules.
 | `cli:Console` | 14 | 6% | 766 | 18.3 |
 | `runner:Execution` | 14 | 6% | 3,886 | 3.6 |
 | `laravel:Queue` | 12 | 5% | 109 | 110.1 |
-| `document:Validator` | 11 | 5% | 3,155 | 3.5 |
+| `document:Validator` | 10 | 4% | 3,155 | 3.2 |
 | `laravel:Lock` | 9 | 4% | 52 | 173.1 |
 | `laravel:State` | 9 | 4% | 41 | 219.5 |
 | `runner:Protocol` | 9 | 4% | 557 | 16.2 |
@@ -55,6 +55,7 @@ Analyzed 235 total file-touches across 41 modules.
 | `runner:Telemetry` | 3 | 1% | 282 | 10.6 |
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
 | `evaluation:Plugins` | 2 | 1% | 95 | 21.1 |
+| `sources:Normalizer` | 2 | 1% | 594 | 3.4 |
 | `contracts:State` | 1 | 0% | 667 | 1.5 |
 | `evaluation:Condition` | 1 | 0% | 654 | 1.5 |
 | `evaluation:Enum` | 1 | 0% | 82 | 12.2 |
@@ -62,5 +63,7 @@ Analyzed 235 total file-touches across 41 modules.
 | `evaluation:Interfaces` | 1 | 0% | 108 | 9.3 |
 | `evaluation:Xpath` | 1 | 0% | 109 | 9.2 |
 | `expression:Exceptions` | 1 | 0% | 23 | 43.5 |
+| `sources:Resolver` | 1 | 0% | 406 | 2.5 |
+| `sources:Validator` | 1 | 0% | 303 | 3.3 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110.1), `laravel:Http` (100), `laravel:Bindings` (78)

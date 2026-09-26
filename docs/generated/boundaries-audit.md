@@ -17,14 +17,14 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 8 | 3 | **forbidden** ⚠ |
+| `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 39 | **forbidden** |
-| `JsonSchema` | 4 | 0 | _unclassified_ ⚠ |
+| `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 46 | 17 | allowed |
+| `Psr` | 52 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 10 | 0 | **forbidden** ⚠ |
+| `cebe` | 16 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -48,6 +48,11 @@ when a boundary consciously moves.
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
 | runner | `runner:_` | `Psr` | 5 |
+| sources | `sources:Normalizer` | `cebe` | 6 |
+| sources | `sources:Resolver` | `Psr` | 4 |
+| sources | `sources:Validator` | `JsonSchema` | 3 |
+| sources | `sources:_` | `GuzzleHttp` | 2 |
+| sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
 | laravel | `laravel:Bindings` | `Psr` | 11 |
@@ -66,7 +71,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**10 library boundary violation(s):**
+**13 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (2 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
@@ -77,6 +82,9 @@ when a boundary consciously moves.
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
+- `sources:Normalizer` imports `cebe\*` (6 refs)
+- `sources:Validator` imports `JsonSchema\*` (3 refs)
+- `sources:_` imports `GuzzleHttp\*` (2 refs)
 
 ## Core aggregator emptiness
 
@@ -93,6 +101,7 @@ Cross-package references from library code must target `*Interface` facades, val
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
 | `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
+| `sources` | `expression` | `SourceGraph` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -117,4 +126,14 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
+| `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
+| `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
+| `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
+| `sources` | `ModelStack` | `document` | 2 | `Document` |
+| `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
+| `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
+| `sources` | `ResolvedOperation` | `document` | 3 | `OpenApiOperationHandle` |
+| `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
+| `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
+| `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

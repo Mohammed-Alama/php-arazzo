@@ -30,6 +30,8 @@ cli-Console,runner-Jobs,1
 cli-Console,runner-State,6
 cli-Console,runner-Telemetry,1
 cli-Console,runner-root,1
+cli-Console,sources-Resolver,1
+cli-Console,sources-root,1
 cli-Generator,contracts-Interfaces,2
 cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
@@ -106,12 +108,17 @@ laravel-Bindings,runner-Execution,7
 laravel-Bindings,runner-Infrastructure,1
 laravel-Bindings,runner-State,4
 laravel-Bindings,runner-root,5
+laravel-Bindings,sources-Normalizer,6
+laravel-Bindings,sources-Resolver,6
+laravel-Bindings,sources-Validator,1
+laravel-Bindings,sources-root,2
 laravel-Http,cli-Generator,1
 laravel-Http,contracts-Interfaces,1
 laravel-Http,contracts-Spec,2
 laravel-Http,runner-Infrastructure,1
 laravel-Http,runner-Jobs,1
 laravel-Http,runner-State,1
+laravel-Http,sources-Resolver,1
 laravel-Lock,contracts-Interfaces,1
 laravel-Persistence,contracts-Spec,5
 laravel-Persistence,document-Parser,2
@@ -162,6 +169,7 @@ runner-Execution,runner-Jobs,2
 runner-Execution,runner-Policy,1
 runner-Execution,runner-State,15
 runner-Execution,runner-Telemetry,1
+runner-Execution,sources-Normalizer,8
 runner-Infrastructure,contracts-Interfaces,4
 runner-Jobs,contracts-Spec,1
 runner-Jobs,contracts-State,1
@@ -177,6 +185,7 @@ runner-Protocol,evaluation-root,3
 runner-Protocol,runner-Execution,14
 runner-Protocol,runner-Infrastructure,1
 runner-Protocol,runner-State,1
+runner-Protocol,sources-Normalizer,1
 runner-State,contracts-Spec,5
 runner-State,contracts-State,2
 runner-root,contracts-Interfaces,3
@@ -190,6 +199,24 @@ runner-root,runner-Events,1
 runner-root,runner-Execution,12
 runner-root,runner-Infrastructure,1
 runner-root,runner-State,4
+runner-root,sources-Normalizer,1
+sources-Normalizer,contracts-Spec,5
+sources-Normalizer,contracts-Support,1
+sources-Normalizer,document-root,5
+sources-Normalizer,sources-Resolver,2
+sources-Resolver,contracts-Spec,6
+sources-Resolver,document-Parser,2
+sources-Validator,contracts-Spec,5
+sources-Validator,document-Validator,5
+sources-Validator,sources-Normalizer,2
+sources-Validator,sources-Resolver,1
+sources-root,contracts-Spec,5
+sources-root,document-Validator,1
+sources-root,document-root,5
+sources-root,expression-root,1
+sources-root,sources-Normalizer,8
+sources-root,sources-Resolver,5
+sources-root,sources-Validator,2
 ```
 
 ## Folded flows

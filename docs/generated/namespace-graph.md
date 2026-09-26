@@ -54,6 +54,10 @@ flowchart LR
     runner_State["Alama\Arazzo\Runner\State\Interfaces"]:::coreNode
     runner_Telemetry["Alama\Arazzo\Runner\Telemetry"]:::coreNode
     runner__["(runner package root)"]:::coreNode
+    sources_Normalizer["Alama\Arazzo\Sources\Normalizer"]:::coreNode
+    sources_Resolver["Alama\Arazzo\Sources\Resolver\Exceptions"]:::coreNode
+    sources_Validator["Alama\Arazzo\Sources\Validator"]:::coreNode
+    sources__["(sources package root)"]:::coreNode
     contracts_Dependency --> contracts_Spec
     contracts_Dependency --> contracts_State
     contracts_Interfaces --> contracts_Spec
@@ -111,6 +115,23 @@ flowchart LR
     document__ --> document_Parser
     document__ --> document_Validator
     document__ --> expression_Interfaces
+    sources_Normalizer --> contracts_Support
+    sources_Normalizer --> document__
+    sources_Normalizer --> contracts_Spec
+    sources_Normalizer --> sources_Resolver
+    sources_Resolver --> contracts_Spec
+    sources_Resolver --> document_Parser
+    sources_Validator --> contracts_Spec
+    sources_Validator --> document_Validator
+    sources_Validator --> sources_Normalizer
+    sources_Validator --> sources_Resolver
+    sources__ --> contracts_Spec
+    sources__ --> document__
+    sources__ --> document_Validator
+    sources__ --> sources_Normalizer
+    sources__ --> sources_Resolver
+    sources__ --> sources_Validator
+    sources__ --> expression__
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
     runner_Async --> evaluation_Interfaces
@@ -125,6 +146,7 @@ flowchart LR
     runner_Async --> runner_Jobs
     runner_Events --> contracts_Support
     runner_Execution --> document__
+    runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
     runner_Execution --> runner_State
     runner_Execution --> contracts_State
@@ -156,6 +178,7 @@ flowchart LR
     runner_Protocol --> evaluation__
     runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
+    runner_Protocol --> sources_Normalizer
     runner_Protocol --> contracts_Dependency
     runner_Protocol --> runner_Infrastructure
     runner_Protocol --> runner_State
@@ -172,6 +195,7 @@ flowchart LR
     runner__ --> contracts_Spec
     runner__ --> document__
     runner__ --> expression__
+    runner__ --> sources_Normalizer
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
@@ -188,6 +212,8 @@ flowchart LR
     cli_Console --> cli_Renderer
     cli_Console --> evaluation__
     cli_Console --> runner__
+    cli_Console --> sources_Resolver
+    cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> laravel_Support
@@ -204,14 +230,19 @@ flowchart LR
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
     laravel_Bindings --> runner_State
+    laravel_Bindings --> sources_Normalizer
+    laravel_Bindings --> sources_Resolver
+    laravel_Bindings --> sources_Validator
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
     laravel_Bindings --> evaluation__
     laravel_Bindings --> expression__
     laravel_Bindings --> expression_Interfaces
+    laravel_Bindings --> sources__
     laravel_Http --> runner_Infrastructure
     laravel_Http --> cli_Generator
     laravel_Http --> contracts_Spec
+    laravel_Http --> sources_Resolver
     laravel_Http --> contracts_Interfaces
     laravel_Http --> runner_Jobs
     laravel_Http --> runner_State

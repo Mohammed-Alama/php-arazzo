@@ -50,6 +50,12 @@ flowchart TB
         M_document_Validator["document:Validator"]:::node
         M_document__["(document package root)"]:::node
     end
+    subgraph PKG_M_sources["sources"]
+        M_sources_Normalizer["sources:Normalizer"]:::node
+        M_sources_Resolver["sources:Resolver"]:::node
+        M_sources_Validator["sources:Validator"]:::node
+        M_sources__["(sources package root)"]:::node
+    end
     subgraph PKG_M_runner["runner"]
         M_runner_Async["runner:Async"]:::node
         M_runner_Events["runner:Events"]:::node
@@ -94,6 +100,8 @@ flowchart TB
     M_cli_Console --> M_runner_State
     M_cli_Console --> M_runner_Telemetry
     M_cli_Console --> M_runner__
+    M_cli_Console --> M_sources_Resolver
+    M_cli_Console --> M_sources__
     M_cli_Generator --> M_contracts_Interfaces
     M_cli_Renderer --> M_contracts_Spec
     M_contracts_Dependency --> M_contracts_Spec
@@ -172,12 +180,17 @@ flowchart TB
     M_laravel_Bindings --> M_runner_Infrastructure
     M_laravel_Bindings --> M_runner_State
     M_laravel_Bindings --> M_runner__
+    M_laravel_Bindings --> M_sources_Normalizer
+    M_laravel_Bindings --> M_sources_Resolver
+    M_laravel_Bindings --> M_sources_Validator
+    M_laravel_Bindings --> M_sources__
     M_laravel_Http --> M_cli_Generator
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
     M_laravel_Http --> M_runner_Infrastructure
     M_laravel_Http --> M_runner_Jobs
     M_laravel_Http --> M_runner_State
+    M_laravel_Http --> M_sources_Resolver
     M_laravel_Lock --> M_contracts_Interfaces
     M_laravel_Persistence --> M_contracts_Spec
     M_laravel_Persistence --> M_document_Parser
@@ -230,6 +243,7 @@ flowchart TB
     M_runner_Execution --> M_runner_State
     M_runner_Execution --> M_runner_Telemetry
     M_runner_Execution --> M_runner__
+    M_runner_Execution --> M_sources_Normalizer
     M_runner_Infrastructure --> M_contracts_Interfaces
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
@@ -245,6 +259,7 @@ flowchart TB
     M_runner_Protocol --> M_runner_Execution
     M_runner_Protocol --> M_runner_Infrastructure
     M_runner_Protocol --> M_runner_State
+    M_runner_Protocol --> M_sources_Normalizer
     M_runner_State --> M_contracts_Spec
     M_runner_State --> M_contracts_State
     M_runner__ --> M_contracts_Interfaces
@@ -258,6 +273,24 @@ flowchart TB
     M_runner__ --> M_runner_Execution
     M_runner__ --> M_runner_Infrastructure
     M_runner__ --> M_runner_State
+    M_runner__ --> M_sources_Normalizer
+    M_sources_Normalizer --> M_contracts_Spec
+    M_sources_Normalizer --> M_contracts_Support
+    M_sources_Normalizer --> M_document__
+    M_sources_Normalizer --> M_sources_Resolver
+    M_sources_Resolver --> M_contracts_Spec
+    M_sources_Resolver --> M_document_Parser
+    M_sources_Validator --> M_contracts_Spec
+    M_sources_Validator --> M_document_Validator
+    M_sources_Validator --> M_sources_Normalizer
+    M_sources_Validator --> M_sources_Resolver
+    M_sources__ --> M_contracts_Spec
+    M_sources__ --> M_document_Validator
+    M_sources__ --> M_document__
+    M_sources__ --> M_expression__
+    M_sources__ --> M_sources_Normalizer
+    M_sources__ --> M_sources_Resolver
+    M_sources__ --> M_sources_Validator
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
@@ -265,7 +298,7 @@ flowchart TB
 
 ## Package boundaries
 
-**No package-level layering violations.** Every cross-package `use` points downward through `contracts -> expression -> document -> runner -> cli -> laravel`.
+**No package-level layering violations.** Every cross-package `use` points downward through `contracts -> expression -> evaluation -> document -> sources -> runner -> cli -> laravel`
 
 ### All package edges (reference counts)
 
@@ -276,6 +309,7 @@ flowchart TB
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
+| `cli` | `sources` | 2 |
 | `document` | `contracts` | 131 |
 | `document` | `expression` | 17 |
 | `evaluation` | `contracts` | 73 |
@@ -287,10 +321,15 @@ flowchart TB
 | `laravel` | `evaluation` | 3 |
 | `laravel` | `expression` | 2 |
 | `laravel` | `runner` | 45 |
+| `laravel` | `sources` | 16 |
 | `runner` | `contracts` | 191 |
 | `runner` | `document` | 13 |
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
+| `runner` | `sources` | 10 |
+| `sources` | `contracts` | 22 |
+| `sources` | `document` | 18 |
+| `sources` | `expression` | 1 |
 
 ## Module-level detail
 

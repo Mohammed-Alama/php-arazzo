@@ -22,6 +22,8 @@ mindmap
       JsonPathCriterionPlugin
     DefinitionRegistryInterface
       DatabaseDefinitionRegistry
+    DocumentInterface
+      Document
     EvaluationEngineInterface
       EvaluationEngine
     EvaluationInputInterface
@@ -54,6 +56,9 @@ mindmap
       PessimisticLockStrategy
     OpenApiExecutorInterface
       DefaultOpenApiExecutor
+    OpenApiNormalizerInterface
+      OpenApi30Normalizer
+      Swagger2Normalizer
     OutputExtractorInterface
       StepOutputExtractor
     PendingCorrelationRegistryInterface
@@ -93,6 +98,7 @@ mindmap
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `CriterionEvaluatorPluginInterface` | no | `JsonPathCriterionPlugin` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
+| `DocumentInterface` | no | `Document` <small>core</small> |
 | `EvaluationEngineInterface` | no | `EvaluationEngine` <small>core</small> |
 | `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
@@ -105,6 +111,7 @@ mindmap
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
 | `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | no | `DefaultOpenApiExecutor` <small>core</small> |
+| `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `OutputExtractorInterface` | no | `StepOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
@@ -122,7 +129,6 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
-- `DocumentInterface` <small></small>
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>

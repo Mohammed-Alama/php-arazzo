@@ -13,18 +13,18 @@ namespace ArazzoDocs;
  *
  * @var list<string>
  */
-const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'runner', 'cli'];
+const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runner', 'cli'];
 
 /**
  * Real cross-package dependency direction, bottom (most depended-upon) to top
  * (most dependent), read directly from each package's composer.json `require`:
- * contracts <- expression <- document <- runner <- cli <- laravel. A package
- * may only import from packages strictly below it in this list; an import
- * pointing the other way is a layering violation.
+ * contracts <- expression <- {evaluation, document} <- sources <- runner <-
+ * cli <- laravel. A package may only import from packages strictly below it
+ * in this list; an import pointing the other way is a layering violation.
  *
  * @var list<string>
  */
-const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'document', 'runner', 'cli', 'laravel'];
+const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runner', 'cli', 'laravel'];
 
 /**
  * Namespace-segment each package claims, used to render package-qualified
@@ -37,6 +37,7 @@ const PACKAGE_NAMESPACE = [
     'expression' => 'Expression',
     'evaluation' => 'Evaluation',
     'document' => 'Document',
+    'sources' => 'Sources',
     'runner' => 'Runner',
     'cli' => 'Cli',
     'laravel' => 'Laravel',
@@ -44,8 +45,10 @@ const PACKAGE_NAMESPACE = [
 
 /**
  * Owning package (composer slug) of each core module (first dir under a package's
- * src/). Module names are unique across packages, so this is authoritative and
- * deterministic.
+ * src/). This is only the fallback for renderers that lost the package; the
+ * authoritative source is the directory a file was scanned from, and renderers
+ * working on flat lists must key on packageKey() rather than this, because the
+ * D0 split gave both arazzo-document and arazzo-sources a Validator module.
  *
  * @var array<string, string> module => package slug
  */
@@ -56,11 +59,9 @@ const MODULE_PACKAGE_MAP = [
     'Support' => 'contracts',
     'Evaluation' => 'evaluation',
     'Expression' => 'evaluation',
-    'Document' => 'document',
-    'Normalizer' => 'document',
+    'Normalizer' => 'sources',
     'Parser' => 'document',
-    'Resolver' => 'document',
-    'Validator' => 'document',
+    'Resolver' => 'sources',
     'Async' => 'runner',
     'Events' => 'runner',
     'Execution' => 'runner',

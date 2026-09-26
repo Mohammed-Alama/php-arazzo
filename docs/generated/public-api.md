@@ -406,6 +406,23 @@ this file on a commit is a public API change — review it deliberately.
 #### `PreflightFailureException` class
 - `public function __construct(string $message, public readonly ValidationResult $result)`
 
+## sources
+
+### `SourceGraph` class
+- `public static function default(): DocumentInterface`
+- `public static function runtime(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $registry = null, ): SourceRuntime`
+- `public static function using(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $registry = null, ): DocumentInterface`
+
+### `Document` class
+- `public function __construct(private readonly ModelStack $model, private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight)`
+- `public function detectOpenApiVersion(array $document): string`
+- `public function parse(RawDocument $raw): ArazzoDocument`
+- `public function preflight(ArazzoDocument $document): ValidationResult`
+- `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
+- `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation`
+- `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument`
+- `public function validate(ArazzoDocument $document): ValidationResult`
+
 ## runner
 
 ### `RunnerFacadeInterface` interface

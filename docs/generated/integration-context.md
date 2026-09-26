@@ -64,6 +64,12 @@ flowchart LR
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory["ExecutionGraphFactory"]:::adapter
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --- CORE
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --- net
+        A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher["HttpFetcher"]:::adapter
+        A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher --- CORE
+        A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher --- net
+        A_Alama_Arazzo_Sources_SourceGraph["SourceGraph"]:::adapter
+        A_Alama_Arazzo_Sources_SourceGraph --- CORE
+        A_Alama_Arazzo_Sources_SourceGraph --- net
     net["HTTP network"]:::system
     openai["OpenAI API"]:::system
     queue["Application queue backend"]:::system

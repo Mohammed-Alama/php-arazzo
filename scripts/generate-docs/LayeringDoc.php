@@ -100,7 +100,8 @@ function render(array $scans, ?array $layerOrder = null): string
     $lines[] = '## Package boundaries';
     $lines[] = '';
     if ($packageViolations === []) {
-        $lines[] = '**No package-level layering violations.** Every cross-package `use` points downward through `contracts -> expression -> document -> runner -> cli -> laravel`.';
+        $chain = implode(' -> ', PACKAGE_LAYER_ORDER);
+        $lines[] = '**No package-level layering violations.** Every cross-package `use` points downward through `'.$chain.'`';
     } else {
         $lines[] = sprintf('**%d package boundary violation(s):**', count($packageViolations));
         $lines[] = '';
