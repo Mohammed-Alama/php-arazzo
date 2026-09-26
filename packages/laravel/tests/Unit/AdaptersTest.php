@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Unit;
+uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
 
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Illuminate\Support\Facades\Queue;

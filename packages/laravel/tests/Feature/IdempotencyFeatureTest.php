@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Tests\Feature;
+uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Tests\Laravel;
+uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;

@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Laravel\Tests;
 use Alama\Arazzo\Laravel\LaravelArazzoServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Events\Dispatcher as LaravelDispatcher;
+use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -16,21 +17,27 @@ class TestCase extends Orchestra
         return [LaravelArazzoServiceProvider::class];
     }
 
+    protected function defineEnvironment($app): void
+    {
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
+        ]);
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Debug: check if provider is loaded
-        $providers = $this->app->getLoadedProviders();
-        error_log('Loaded providers: '.implode(', ', array_keys($providers)));
+        // Load package migrations
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Ensure packageRegistered is called for proper binding registration
         $provider = $this->app->getProvider(LaravelArazzoServiceProvider::class);
-        error_log('Provider: '.($provider ? 'found' : 'NOT FOUND'));
         if ($provider) {
-            error_log('Calling packageRegistered...');
             $provider->packageRegistered();
-            error_log('packageRegistered called');
         }
 
         // Ensure Laravel's default event dispatcher is bound

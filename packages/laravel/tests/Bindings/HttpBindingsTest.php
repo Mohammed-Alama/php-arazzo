@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Laravel\Bindings\HttpBindings;

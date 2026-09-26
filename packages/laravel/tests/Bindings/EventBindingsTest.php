@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Laravel\Bindings\EventBindings;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
