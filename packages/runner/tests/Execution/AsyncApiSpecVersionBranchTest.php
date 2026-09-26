@@ -13,7 +13,7 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Infrastructure\Interfaces;
+namespace Alama\Arazzo\Contracts\Interfaces;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

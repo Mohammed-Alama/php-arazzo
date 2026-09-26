@@ -31,7 +31,7 @@ use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\RunnerFacade;
