@@ -34,7 +34,7 @@ final class ExecutionStateBuilder
         $state = $persisted !== null && isset($persisted['executionId'])
             ? ExecutionState::fromArray($persisted)
             : ExecutionState::start(
-                (string) $resultContext->getExecutionId(),
+                $resultContext->getExecutionId(),
                 $resultContext->getDefinitionId(),
                 $workflowId,
                 $resultContext->getInputs(),
@@ -47,12 +47,9 @@ final class ExecutionStateBuilder
             }
             // Normalize to string-keyed records so persisted payloads of any
             // shape satisfy the engine's step-result contract.
-            $record = [];
-            foreach ($completedResult as $key => $value) {
-                if (is_string($key)) {
-                    $record[$key] = $value;
-                }
-            }
+            $record = array_filter($completedResult, function ($key) {
+                return is_string($key);
+            }, ARRAY_FILTER_USE_KEY);
             $state = $state->withStepResult($completedStepId, $record);
         }
 
@@ -91,12 +88,9 @@ final class ExecutionStateBuilder
             if (!is_array($raw)) {
                 continue;
             }
-            $record = [];
-            foreach ($raw as $key => $value) {
-                if (is_string($key)) {
-                    $record[$key] = $value;
-                }
-            }
+            $record = array_filter($raw, function ($key) {
+                return is_string($key);
+            }, ARRAY_FILTER_USE_KEY);
             $records[$stepId] = $record;
         }
 
