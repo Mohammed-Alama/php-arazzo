@@ -12,9 +12,10 @@ use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
+use Alama\Arazzo\Sources\SourceLoader;
 
 it('builds a document that satisfies the port without inline http construction', function (): void {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
 
     expect($document)->toBeInstanceOf(DocumentInterface::class);
 });
@@ -32,9 +33,9 @@ it('honours an injected source registry', function (): void {
         }
     });
 
-    $document = SourceGraph::using(registry: $registry);
+    $loader = SourceGraph::loader(registry: $registry);
 
-    $resolved = $document->resolveSource(
+    $resolved = $loader->resolveSource(
         new SourceDescription('api', 'https://example.test/openapi.json', SourceType::Openapi),
         'memory://',
     );
@@ -43,9 +44,9 @@ it('honours an injected source registry', function (): void {
 });
 
 it('keeps the default registry usable when none is injected', function (): void {
-    $document = SourceGraph::default();
+    $loader = SourceGraph::loader();
 
-    $resolved = $document->resolveSource(
+    $resolved = $loader->resolveSource(
         new SourceDescription('api', __DIR__.'/fixtures/document/openapi30.yaml', SourceType::Openapi),
         __DIR__.'/fixtures/document',
     );
@@ -53,14 +54,14 @@ it('keeps the default registry usable when none is injected', function (): void 
     expect($resolved->type)->toBe(SourceType::Openapi);
 });
 
-it('does not construct a guzzle client inside the document implementation', function (): void {
-    $source = file_get_contents(__DIR__.'/../src/Document.php');
+it('does not construct a guzzle client inside the source loader implementation', function (): void {
+    $source = file_get_contents(__DIR__.'/../src/SourceLoader.php');
 
     expect($source)->not->toContain('GuzzleHttp\Client');
 });
 
-it('builds a document from the default source resolver without arguments', function (): void {
-    $document = SourceGraph::using(registry: new SourceRegistry(new DefaultSourceResolver([])));
+it('builds a loader from the default source resolver without arguments', function (): void {
+    $loader = SourceGraph::loader(registry: new SourceRegistry(new DefaultSourceResolver([])));
 
-    expect($document)->toBeInstanceOf(DocumentInterface::class);
+    expect($loader)->toBeInstanceOf(SourceLoader::class);
 });

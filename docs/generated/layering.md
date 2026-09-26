@@ -3,8 +3,8 @@
 
 # Generated: Layering Map
 
-The real architecture is six composer packages, not one monolith with many
-namespaces: `contracts <- expression <- document <- runner <- cli <- laravel`,
+The real architecture is eight composer packages, not one monolith with many
+namespaces: `contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel`,
 read directly from each package's `composer.json` `require`. A package may
 only depend on packages strictly below it in that chain. Edges that point
 **upward across a package boundary** violate the layering and are drawn red —
@@ -122,6 +122,8 @@ flowchart TB
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Validator
     M_document__ --> M_expression_Interfaces
+    M_document__ -.->|violation| M_sources_Normalizer
+    M_document__ -.->|violation| M_sources_Validator
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
     M_evaluation_Condition --> M_evaluation_Data
@@ -287,6 +289,7 @@ flowchart TB
     M_sources_Validator --> M_sources_Normalizer
     M_sources_Validator --> M_sources_Resolver
     M_sources__ --> M_contracts_Spec
+    M_sources__ --> M_document_Parser
     M_sources__ --> M_document_Validator
     M_sources__ --> M_document__
     M_sources__ --> M_expression__
@@ -300,7 +303,11 @@ flowchart TB
 
 ## Package boundaries
 
-**No package-level layering violations.** Every cross-package `use` points downward through `contracts -> expression -> evaluation -> document -> sources -> runner -> cli -> laravel`
+**1 package boundary violation(s):**
+
+| Package | ↑ depends on package | Refs | Modules involved |
+|---|---|---:|---|
+| `document` | `sources` | 3 | `(document package root) -> sources:Normalizer`, `(document package root) -> sources:Validator` |
 
 ### All package edges (reference counts)
 
@@ -312,8 +319,9 @@ flowchart TB
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
 | `cli` | `sources` | 2 |
-| `document` | `contracts` | 141 |
+| `document` | `contracts` | 144 |
 | `document` | `expression` | 17 |
+| `document` | `sources` | 3 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
 | `expression` | `contracts` | 1 |
@@ -329,10 +337,15 @@ flowchart TB
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
 | `runner` | `sources` | 10 |
-| `sources` | `contracts` | 29 |
-| `sources` | `document` | 19 |
+| `sources` | `contracts` | 28 |
+| `sources` | `document` | 24 |
 | `sources` | `expression` | 1 |
 
 ## Module-level detail
 
-**No module-level layering violations.**
+**2 module-level violation(s) found:**
+
+| From | ↑ depends on | Weight |
+|---|---|---:|
+| `(document package root)` | `sources:Normalizer` | 2 |
+| `(document package root)` | `sources:Validator` | 1 |

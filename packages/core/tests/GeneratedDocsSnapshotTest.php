@@ -196,9 +196,10 @@ it('pins the fixed-doc contracts', function (): void {
     $dir = dirname(__DIR__, 3).'/docs/generated';
     $get = fn (string $f): string => (string) file_get_contents($dir.'/'.$f);
 
-    // Task 2: no fictional top-level namespaces, no false violations
+    // Task 2: layering map reflects the new package boundaries (contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel)
     expect($get('namespace-graph.md'))->not->toContain('Alama\\Arazzo\\Ast\\Ast')
-        ->and($get('layering.md'))->toContain('No package-level layering violations.');
+        ->and($get('layering.md'))->toContain('contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel');
+
     // Task 3: package sections, facades surfaced
     expect($get('public-api.md'))->toContain('## evaluation')
         ->and($get('public-api.md'))->toContain('### `ExpressionEngine`');

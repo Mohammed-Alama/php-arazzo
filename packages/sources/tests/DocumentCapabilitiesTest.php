@@ -13,7 +13,7 @@ use Alama\Arazzo\Sources\SourceGraph;
 
 function capabilityDocument(array $workflows, array $sourceDescriptions = []): ArazzoDocument
 {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
 
     return $document->parse(new RawDocument([
         'arazzo' => '1.0.0',
@@ -26,7 +26,7 @@ function capabilityDocument(array $workflows, array $sourceDescriptions = []): A
 it('resolves a source description to a source document through the face', function (): void {
     $source = new SourceDescription('pets', __DIR__.'/fixtures/document/openapi30.yaml', SourceType::Openapi);
 
-    $resolved = (SourceGraph::default())->resolveSource($source, __DIR__.'/fixtures/document');
+    $resolved = SourceGraph::loader()->resolveSource($source, __DIR__.'/fixtures/document');
 
     expect($resolved)->toBeInstanceOf(SourceDocument::class)
         ->and($resolved->name)->toBe('pets')
@@ -36,24 +36,24 @@ it('resolves a source description to a source document through the face', functi
 
 it('caches resolved sources in the registry', function (): void {
     $source = new SourceDescription('pets', __DIR__.'/fixtures/document/openapi30.yaml', SourceType::Openapi);
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
 
-    $first = $document->resolveSource($source, __DIR__.'/fixtures/document');
-    $second = $document->resolveSource($source, __DIR__.'/fixtures/document');
+    $first = SourceGraph::loader()->resolveSource($source, __DIR__.'/fixtures/document');
+    $second = SourceGraph::loader()->resolveSource($source, __DIR__.'/fixtures/document');
 
     expect($second)->toBe($first);
 });
 
 it('detects OpenAPI versions through the face', function (): void {
-    $document = SourceGraph::default();
+    $loader = SourceGraph::loader();
 
-    expect($document->detectOpenApiVersion(['openapi' => '3.0.3']))->toBe('3.0')
-        ->and($document->detectOpenApiVersion(['openapi' => '3.1.1']))->toBe('3.1')
-        ->and($document->detectOpenApiVersion(['swagger' => '2.0']))->toBe('2.0');
+    expect($loader->detectOpenApiVersion(['openapi' => '3.0.3']))->toBe('3.0')
+        ->and($loader->detectOpenApiVersion(['openapi' => '3.1.1']))->toBe('3.1')
+        ->and($loader->detectOpenApiVersion(['swagger' => '2.0']))->toBe('2.0');
 });
 
 it('rejects unsupported OpenAPI versions through the face', function (): void {
-    (SourceGraph::default())->detectOpenApiVersion(['openapi' => '4.0.0']);
+    SourceGraph::loader()->detectOpenApiVersion(['openapi' => '4.0.0']);
 })->throws(InvalidArgumentException::class);
 
 it('resolves an operation-targeted step through the face', function (): void {
@@ -85,7 +85,7 @@ it('resolves an operation-targeted step through the face', function (): void {
 });
 
 it('fails fast when a step declares no operation target', function (): void {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
     $arazzo = capabilityDocument(workflows: [
         ['workflowId' => 'w', 'steps' => [
             ['stepId' => 'orphan', 'requestBody' => ['payload' => ['foo' => 'bar']]],
@@ -96,7 +96,7 @@ it('fails fast when a step declares no operation target', function (): void {
 })->throws(RuntimeException::class, 'must have either operationId or operationPath');
 
 it('reports unknown workflows during input preflight', function (): void {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
     $arazzo = capabilityDocument(workflows: [
         ['workflowId' => 'w', 'steps' => []],
     ]);
@@ -108,7 +108,7 @@ it('reports unknown workflows during input preflight', function (): void {
 });
 
 it('accepts inputs matching the declared workflow schema', function (): void {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
     $arazzo = capabilityDocument(workflows: [
         ['workflowId' => 'w', 'inputs' => [
             'type' => 'object',
@@ -123,7 +123,7 @@ it('accepts inputs matching the declared workflow schema', function (): void {
 });
 
 it('rejects inputs violating the declared workflow schema', function (): void {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
     $arazzo = capabilityDocument(workflows: [
         ['workflowId' => 'w', 'inputs' => [
             'type' => 'object',
@@ -139,7 +139,7 @@ it('rejects inputs violating the declared workflow schema', function (): void {
 });
 
 it('treats documents without an inputs schema as unconstrained', function (): void {
-    $document = SourceGraph::default();
+    $document = SourceGraph::document();
     $arazzo = capabilityDocument(workflows: [
         ['workflowId' => 'w', 'steps' => []],
     ]);

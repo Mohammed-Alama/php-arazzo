@@ -220,15 +220,7 @@ public contract between packages.
 
 ### Public entry surface
 
-- `Document` (`class`)
-  - `public function __construct(private readonly ModelStack $model, private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight)`
-  - `public function parse(RawDocument $raw): ArazzoDocument`
-  - `public function validate(ArazzoDocument $document): ValidationResult`
-  - `public function preflight(ArazzoDocument $document): ValidationResult`
-  - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
-  - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument`
-  - `public function detectOpenApiVersion(array $document): string`
-  - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation`
+- `Document` — _not found in scan_
 
 ### Cross-boundary value types
 

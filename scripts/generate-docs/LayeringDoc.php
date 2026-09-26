@@ -15,8 +15,8 @@ const BANNER = <<<'MD'
 
 # Generated: Layering Map
 
-The real architecture is six composer packages, not one monolith with many
-namespaces: `contracts <- expression <- document <- runner <- cli <- laravel`,
+The real architecture is eight composer packages, not one monolith with many
+namespaces: `contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel`,
 read directly from each package's `composer.json` `require`. A package may
 only depend on packages strictly below it in that chain. Edges that point
 **upward across a package boundary** violate the layering and are drawn red —

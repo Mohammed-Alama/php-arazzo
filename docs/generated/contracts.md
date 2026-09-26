@@ -90,6 +90,8 @@ flowchart LR
     C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin -.->|implements| I_ExpressionEvaluatorPluginInterface
     C_evaluation_evaluation_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>evaluation:Xpath</small>"]:::implCore
     C_evaluation_evaluation_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
+    C_document_document___Document["Document<br/><small>(document root)</small>"]:::implCore
+    C_document_document___Document -.->|implements| I_DocumentInterface
     C_document_document_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>document:Parser</small>"]:::implCore
     C_document_document_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
     C_document_document_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>document:Parser</small>"]:::implCore
@@ -196,8 +198,6 @@ flowchart LR
     C_document_document_Validator_WorkflowUniqueIdRule -.->|implements| I_Rule
     C_document_document_Validator_WsdlStepRule["WsdlStepRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_WsdlStepRule -.->|implements| I_Rule
-    C_sources_sources___Document["Document<br/><small>(sources root)</small>"]:::implCore
-    C_sources_sources___Document -.->|implements| I_DocumentInterface
     C_sources_sources_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>sources:Normalizer</small>"]:::implCore
     C_sources_sources_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_sources_sources_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>sources:Normalizer</small>"]:::implCore

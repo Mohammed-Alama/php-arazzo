@@ -11,6 +11,8 @@ use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Validator\PreflightValidator;
 
 /**
  * The pure model half of the Document graph: parsing primitives, the
@@ -27,15 +29,22 @@ final readonly class ModelStack
         public Parser $parser,
         public Validator $validator,
         public ExpressionEngineInterface $engine,
+        public ?PreflightValidator $preflight = null,
+        public ?OpenApiOperationResolver $operationResolver = null,
     ) {}
 
-    public static function default(ExpressionEngineInterface $engine): self
-    {
+    public static function default(
+        ExpressionEngineInterface $engine,
+        ?PreflightValidator $preflight = null,
+        ?OpenApiOperationResolver $operationResolver = null,
+    ): self {
         return new self(
             loader: new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()),
             parser: new Parser(),
             validator: new Validator(RuleSet::default($engine)),
             engine: $engine,
+            preflight: $preflight,
+            operationResolver: $operationResolver,
         );
     }
 }

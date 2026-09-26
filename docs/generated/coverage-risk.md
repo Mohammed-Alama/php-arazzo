@@ -29,7 +29,7 @@ quadrantChart
     contracts/Spec: [0.034, 1]
     contracts/State: [0.091, 1]
     contracts/Support: [0, 1]
-    document/Parser: [0.25, 1]
+    document/Parser: [0.222, 1]
     document/Validator: [0.455, 1]
     evaluation/Condition: [0.833, 1]
     evaluation/Data: [0.5, 1]
@@ -61,9 +61,9 @@ quadrantChart
     runner/Protocol: [0.909, 1]
     runner/State: [0.167, 1]
     runner/Telemetry: [0, 1]
-    sources/Normalizer: [0.455, 1]
+    sources/Normalizer: [0.417, 1]
     sources/Resolver: [0.333, 1]
-    sources/Validator: [0.667, 1]
+    sources/Validator: [0.571, 1]
 ```
 
 | Module | Instability | Test files | Src files | Density |
@@ -77,7 +77,7 @@ quadrantChart
 | `contracts/Spec` | 0.03 | 184 | 49 | 100% |
 | `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
-| `document/Parser` | 0.25 | 36 | 11 | 100% |
+| `document/Parser` | 0.22 | 36 | 11 | 100% |
 | `document/Validator` | 0.46 | 73 | 65 | 100% |
 | `evaluation/Condition` | 0.83 | 44 | 10 | 100% |
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
@@ -109,8 +109,8 @@ quadrantChart
 | `runner/Protocol` | 0.91 | 11 | 5 | 100% |
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.46 | 16 | 9 | 100% |
+| `sources/Normalizer` | 0.42 | 16 | 9 | 100% |
 | `sources/Resolver` | 0.33 | 25 | 13 | 100% |
-| `sources/Validator` | 0.67 | 3 | 1 | 100% |
+| `sources/Validator` | 0.57 | 3 | 1 | 100% |
 
 **Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`

@@ -112,9 +112,11 @@ flowchart LR
     document_Validator --> expression_Enum
     document_Validator --> contracts_Dependency
     document__ --> contracts_Spec
-    document__ --> document_Parser
     document__ --> document_Validator
+    document__ --> sources_Normalizer
+    document__ --> document_Parser
     document__ --> expression_Interfaces
+    document__ --> sources_Validator
     sources_Normalizer --> contracts_Support
     sources_Normalizer --> document__
     sources_Normalizer --> contracts_Spec
@@ -128,11 +130,12 @@ flowchart LR
     sources_Validator --> sources_Normalizer
     sources_Validator --> sources_Resolver
     sources__ --> contracts_Spec
-    sources__ --> document__
     sources__ --> document_Validator
     sources__ --> sources_Normalizer
     sources__ --> sources_Resolver
     sources__ --> sources_Validator
+    sources__ --> document__
+    sources__ --> document_Parser
     sources__ --> expression__
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State

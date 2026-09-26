@@ -47,9 +47,9 @@ document-Validator,contracts-Spec,92
 document-Validator,contracts-Support,2
 document-Validator,expression-Enum,7
 document-Validator,expression-Interfaces,9
-document-root,contracts-Spec,7
+document-root,contracts-Spec,10
 document-root,document-Parser,6
-document-root,document-Validator,3
+document-root,document-Validator,4
 document-root,expression-Interfaces,1
 evaluation-Condition,contracts-Spec,4
 evaluation-Condition,contracts-Support,1
@@ -212,11 +212,12 @@ sources-Validator,contracts-Spec,5
 sources-Validator,document-Validator,5
 sources-Validator,sources-Normalizer,2
 sources-Validator,sources-Resolver,1
-sources-root,contracts-Spec,5
-sources-root,document-Validator,1
-sources-root,document-root,5
+sources-root,contracts-Spec,4
+sources-root,document-Parser,4
+sources-root,document-Validator,3
+sources-root,document-root,4
 sources-root,expression-root,1
-sources-root,sources-Normalizer,8
+sources-root,sources-Normalizer,9
 sources-root,sources-Resolver,5
 sources-root,sources-Validator,2
 ```
@@ -228,6 +229,8 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
+| `document-root` | `sources-Normalizer` | 2 |
+| `document-root` | `sources-Validator` | 1 |
 | `evaluation-Registries` | `evaluation-Plugins` | 2 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

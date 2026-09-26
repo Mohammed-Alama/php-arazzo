@@ -103,6 +103,7 @@ Cross-package references from library code must target `*Interface` facades, val
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
 | `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
+| `sources` | `document` | `SourceGraph` | `Document` |
 | `sources` | `expression` | `SourceGraph` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
@@ -112,6 +113,8 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
+| `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
+| `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |
@@ -132,10 +135,14 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
-| `sources` | `ModelStack` | `document` | 2 | `Document` |
-| `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
+| `sources` | `Loader` | `document` | 1 | `SourceGraph` |
+| `sources` | `ModelStack` | `document` | 1 | `SourceGraph` |
+| `sources` | `NativeJsonDecoder` | `document` | 2 | `DefaultSourceResolver` |
 | `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
-| `sources` | `ResolvedOperation` | `document` | 4 | `OpenApiOperationHandle` |
-| `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
+| `sources` | `Parser` | `document` | 1 | `SourceGraph` |
+| `sources` | `ResolvedOperation` | `document` | 3 | `OpenApiOperationHandle` |
+| `sources` | `RuleSet` | `document` | 1 | `SourceGraph` |
+| `sources` | `SymfonyYamlDecoder` | `document` | 2 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
+| `sources` | `Validator` | `document` | 1 | `SourceGraph` |
 | `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Sources;
 
+use Alama\Arazzo\Document\Document as DocumentFacade;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\ModelStack;
+use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Loader;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
@@ -23,26 +30,107 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
 /**
- * Composition root for source resolution. This is the only class in the
- * repository permitted to construct a Guzzle client.
- *
- * It is also the sources package's entry-point facade, which is why
- * building the expression engine here is allowed: facade-to-facade
- * construction is the seam policy's permitted exception. ModelStack, which
- * is not a facade, receives the engine instead of constructing it.
+ * Composition root for the *sources* package.
+ * It is the only place that constructs Guzzle / PSR‑HTTP objects.
  */
 final class SourceGraph
 {
-    public static function default(): DocumentInterface
-    {
-        return self::using();
-    }
+    private static ?SourceLoader $cachedLoader = null;
 
     /**
-     * The document plus the resolver that produced its operation handles.
-     * Runner wiring needs both, and one call is what guarantees they share
-     * a single transport.
+     * Generic façade only – pure document pipeline.
      */
+    public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface
+    {
+        $sources = new SourceRegistry(new DefaultSourceResolver([]));
+        $operations = $operationResolver ?? self::operations(new SourceRegistry(new DefaultSourceResolver([])));
+        $preflight = new PreflightValidator(
+            new SourceRegistry(new DefaultSourceResolver([
+                'http' => new HttpFetcher(new Client(), new HttpFactory()),
+                'https' => new HttpFetcher(new Client(), new HttpFactory()),
+                'file' => new LocalFetcher(),
+            ])),
+            $operationResolver ?? self::operations(new SourceRegistry(new DefaultSourceResolver([
+                'http' => new HttpFetcher(new Client(), new HttpFactory()),
+                'https' => new HttpFetcher(new Client(), new HttpFactory()),
+                'file' => new LocalFetcher(),
+            ]))),
+        );
+
+        return new DocumentFacade(
+            new ModelStack(
+                loader: new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()),
+                parser: new Parser(),
+                validator: new Validator(RuleSet::default(new ExpressionEngine())),
+                engine: new ExpressionEngine(),
+                preflight: new PreflightValidator(
+                    new SourceRegistry(new DefaultSourceResolver([
+                        'http' => new HttpFetcher(new Client(), new HttpFactory()),
+                        'https' => new HttpFetcher(new Client(), new HttpFactory()),
+                        'file' => new LocalFetcher(),
+                    ])),
+                    $operations,
+                ),
+                operationResolver: $operationResolver,
+            ),
+            $operationResolver,
+        );
+    }
+
+    /** Source‑only loader (no generic pipeline) - cached singleton */
+    public static function loader(
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $httpFactory = null,
+        ?SourceRegistry $registry = null,
+    ): SourceLoader {
+        // Only use cache when no custom registry is provided
+        if ($registry === null && self::$cachedLoader !== null) {
+            return self::$cachedLoader;
+        }
+
+        $defaultRegistry = new SourceRegistry(new DefaultSourceResolver([
+            'http' => new HttpFetcher(new Client(), new HttpFactory()),
+            'https' => new HttpFetcher(new Client(), new HttpFactory()),
+            'file' => new LocalFetcher(),
+        ]));
+
+        $defaultOperations = self::operations($defaultRegistry);
+
+        $defaultSources = new SourceRegistry(new DefaultSourceResolver([
+            'http' => new HttpFetcher(new Client(), new HttpFactory()),
+            'https' => new HttpFetcher(new Client(), new HttpFactory()),
+            'file' => new LocalFetcher(),
+        ]));
+
+        $defaultOperations = self::operations($defaultRegistry);
+
+        $loader = new SourceLoader(
+            sources: $registry ?? $defaultSources,
+            operations: $defaultOperations,
+            versionDetector: new OpenApiVersionDetector(),
+            preflight: new PreflightValidator(
+                new SourceRegistry(new DefaultSourceResolver([
+                    'http' => new HttpFetcher(new Client(), new HttpFactory()),
+                    'https' => new HttpFetcher(new Client(), new HttpFactory()),
+                    'file' => new LocalFetcher(),
+                ])),
+                self::operations(new SourceRegistry(new DefaultSourceResolver([
+                    'http' => new HttpFetcher(new Client(), new HttpFactory()),
+                    'https' => new HttpFetcher(new Client(), new HttpFactory()),
+                    'file' => new LocalFetcher(),
+                ]))),
+            ),
+        );
+
+        // Only cache when using default registry
+        if ($registry === null) {
+            self::$cachedLoader = $loader;
+        }
+
+        return $loader;
+    }
+
+    /** Bundle both independent façades for the runner */
     public static function runtime(
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $httpFactory = null,
@@ -58,51 +146,38 @@ final class SourceGraph
         ]));
 
         $operations = self::operations($sources);
-
-        return new SourceRuntime(
-            document: new Document(
-                model: ModelStack::default(new ExpressionEngine()),
-                sources: $sources,
-                operations: $operations,
-                versionDetector: $operations->versionDetector(),
-                preflight: new PreflightValidator($sources, $operations),
-            ),
-            operations: $operations,
-        );
-    }
-
-    public static function using(
-        ?ClientInterface $httpClient = null,
-        ?RequestFactoryInterface $httpFactory = null,
-        ?SourceRegistry $registry = null,
-    ): DocumentInterface {
-        $client = $httpClient ?? new Client();
-        $factory = $httpFactory ?? new HttpFactory();
-
-        $sources = $registry ?? new SourceRegistry(new DefaultSourceResolver([
-            'http' => new HttpFetcher($client, $factory),
-            'https' => new HttpFetcher($client, $factory),
-            'file' => new LocalFetcher(),
-        ]));
-
-        $operations = self::operations($sources);
-
-        return new Document(
-            model: ModelStack::default(new ExpressionEngine()),
+        $loader = new SourceLoader(
             sources: $sources,
             operations: $operations,
             versionDetector: $operations->versionDetector(),
             preflight: new PreflightValidator($sources, $operations),
         );
+        $document = self::document($operations);
+
+        return new SourceRuntime(
+            document: $document,
+            loader: $loader,
+            operations: $operations,
+        );
     }
 
+    /** Generic façade only – pure document pipeline */
+    public static function using(
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $httpFactory = null,
+        ?SourceRegistry $registry = null,
+    ): DocumentInterface {
+        return self::document();
+    }
+
+    /** Factory used by the two public methods above */
     private static function operations(SourceRegistry $sources): OpenApiOperationResolver
     {
-        $versionDetector = new OpenApiVersionDetector();
+        $detector = new OpenApiVersionDetector();
 
         return new OpenApiOperationResolver(
             new OpenApiDocumentLoader($sources),
-            $versionDetector,
+            $detector,
             new OpenApi30Normalizer(),
             new OpenApi31Normalizer(),
         );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Sources;
 
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 
 /**
@@ -18,7 +19,8 @@ use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 final readonly class SourceRuntime
 {
     public function __construct(
-        public Document $document,
+        public DocumentInterface $document,
+        public SourceLoader $loader,
         public OpenApiOperationResolver $operations,
     ) {}
 }
