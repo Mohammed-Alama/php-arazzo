@@ -63,7 +63,7 @@ Analyzed 238 total file-touches across 44 modules.
 | `evaluation:Interfaces` | 1 | 0% | 108 | 9.3 |
 | `evaluation:Xpath` | 1 | 0% | 109 | 9.2 |
 | `expression:Exceptions` | 1 | 0% | 23 | 43.5 |
-| `sources:Resolver` | 1 | 0% | 406 | 2.5 |
+| `sources:Resolver` | 1 | 0% | 457 | 2.2 |
 | `sources:Validator` | 1 | 0% | 303 | 3.3 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (110.1), `laravel:Http` (100), `laravel:Bindings` (78)

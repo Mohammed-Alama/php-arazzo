@@ -25,7 +25,7 @@ quadrantChart
     cli/Renderer: [0.5, 1]
     contracts/Dependency: [0.333, 1]
     contracts/Exceptions: [0, 1]
-    contracts/Interfaces: [0.15, 1]
+    contracts/Interfaces: [0.143, 1]
     contracts/Spec: [0.034, 1]
     contracts/State: [0.091, 1]
     contracts/Support: [0, 1]
@@ -62,7 +62,7 @@ quadrantChart
     runner/State: [0.167, 1]
     runner/Telemetry: [0, 1]
     sources/Normalizer: [0.4, 1]
-    sources/Resolver: [0.25, 1]
+    sources/Resolver: [0.333, 1]
     sources/Validator: [0.667, 1]
 ```
 
@@ -73,8 +73,8 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.15 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 176 | 47 | 100% |
+| `contracts/Interfaces` | 0.14 | 22 | 17 | 100% |
+| `contracts/Spec` | 0.03 | 177 | 47 | 100% |
 | `contracts/State` | 0.09 | 53 | 2 | 100% |
 | `contracts/Support` | 0.00 | 18 | 5 | 100% |
 | `document/Parser` | 0.25 | 35 | 11 | 100% |
@@ -110,7 +110,7 @@ quadrantChart
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
 | `sources/Normalizer` | 0.40 | 15 | 8 | 100% |
-| `sources/Resolver` | 0.25 | 23 | 12 | 100% |
+| `sources/Resolver` | 0.33 | 24 | 13 | 100% |
 | `sources/Validator` | 0.67 | 3 | 1 | 100% |
 
 **Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`

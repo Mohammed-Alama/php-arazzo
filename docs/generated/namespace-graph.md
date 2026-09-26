@@ -121,6 +121,7 @@ flowchart LR
     sources_Normalizer --> sources_Resolver
     sources_Resolver --> contracts_Spec
     sources_Resolver --> document_Parser
+    sources_Resolver --> contracts_Interfaces
     sources_Validator --> contracts_Spec
     sources_Validator --> document_Validator
     sources_Validator --> sources_Normalizer

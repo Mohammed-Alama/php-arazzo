@@ -278,6 +278,7 @@ flowchart TB
     M_sources_Normalizer --> M_contracts_Support
     M_sources_Normalizer --> M_document__
     M_sources_Normalizer --> M_sources_Resolver
+    M_sources_Resolver --> M_contracts_Interfaces
     M_sources_Resolver --> M_contracts_Spec
     M_sources_Resolver --> M_document_Parser
     M_sources_Validator --> M_contracts_Spec
@@ -327,7 +328,7 @@ flowchart TB
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
 | `runner` | `sources` | 10 |
-| `sources` | `contracts` | 22 |
+| `sources` | `contracts` | 25 |
 | `sources` | `document` | 18 |
 | `sources` | `expression` | 1 |
 

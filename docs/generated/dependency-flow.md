@@ -204,7 +204,8 @@ sources-Normalizer,contracts-Spec,5
 sources-Normalizer,contracts-Support,1
 sources-Normalizer,document-root,5
 sources-Normalizer,sources-Resolver,2
-sources-Resolver,contracts-Spec,6
+sources-Resolver,contracts-Interfaces,2
+sources-Resolver,contracts-Spec,7
 sources-Resolver,document-Parser,2
 sources-Validator,contracts-Spec,5
 sources-Validator,document-Validator,5

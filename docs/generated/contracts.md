@@ -210,6 +210,8 @@ flowchart LR
     C_sources_sources_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
     C_sources_sources_Resolver_LocalFetcher["LocalFetcher<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
+    C_sources_sources_Resolver_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
     C_runner_runner_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
     C_runner_runner_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>runner:Execution</small>"]:::implCore
@@ -274,7 +276,6 @@ flowchart LR
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
     N_SourceNormalizerInterface["no implementation found"]:::orphan --> I_SourceNormalizerInterface
-    N_SourceNormalizerRegistryInterface["no implementation found"]:::orphan --> I_SourceNormalizerRegistryInterface
     N_WorkflowStateRepositoryInterface["no implementation found"]:::orphan --> I_WorkflowStateRepositoryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

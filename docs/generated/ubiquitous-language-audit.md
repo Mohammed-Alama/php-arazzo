@@ -45,7 +45,7 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 11 more (15 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 12 more (16 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 

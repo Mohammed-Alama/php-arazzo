@@ -76,6 +76,8 @@ mindmap
       RunnerFacade
     RunnerGraphBuilderInterface
       RunnerGraphBuilder
+    SourceNormalizerRegistryInterface
+      SourceNormalizerRegistry
     StateStoreInterface
       FileStateStore
       InMemoryStateStore
@@ -120,6 +122,7 @@ mindmap
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
+| `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
@@ -133,5 +136,4 @@ Declared but nothing in src implements them — candidates for removal or for a 
 - `PluginInterface` <small>Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
 - `SourceNormalizerInterface` <small>Interfaces</small>
-- `SourceNormalizerRegistryInterface` <small>Interfaces</small>
 - `WorkflowStateRepositoryInterface` <small>Interfaces</small>

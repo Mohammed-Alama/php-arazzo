@@ -16,7 +16,7 @@ targets. Regenerated before every commit.
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 17 | 288 | 17 | 3 | 0.15 |  |
+| `contracts:Interfaces` | 17 | 288 | 18 | 3 | 0.14 |  |
 | `contracts:Spec` | 47 | 1101 | 28 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 10 | 1 | 0.09 |  |
 | `contracts:Support` | 5 | 180 | 10 | 0 | 0.00 |  |
@@ -58,11 +58,11 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 290 | 4 | 12 | 0.75 |  |
 | `sources:Normalizer` | 8 | 586 | 6 | 4 | 0.40 |  |
-| `sources:Resolver` | 12 | 394 | 6 | 2 | 0.25 |  |
+| `sources:Resolver` | 13 | 444 | 6 | 3 | 0.33 |  |
 | `sources:Validator` | 1 | 302 | 2 | 4 | 0.67 |  |
 | `(sources root)` | 3 | 217 | 2 | 7 | 0.78 |  |
 
-Total cross-module edges: **947**
+Total cross-module edges: **950**
 
 ## Most entangled module pairs
 

@@ -28,7 +28,7 @@ quadrantChart
     cli/Renderer: [0.5, 0]
     contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
-    contracts/Interfaces: [0.15, 1]
+    contracts/Interfaces: [0.143, 1]
     contracts/Spec: [0.034, 0.021]
     contracts/State: [0.091, 0]
     contracts/Support: [0, 0.2]
@@ -69,7 +69,7 @@ quadrantChart
     runner/Telemetry: [0, 0]
     runner/_: [0.75, 0.333]
     sources/Normalizer: [0.4, 0.125]
-    sources/Resolver: [0.25, 0.25]
+    sources/Resolver: [0.333, 0.231]
     sources/Validator: [0.667, 0]
     sources/_: [0.778, 0]
 ```
