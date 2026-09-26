@@ -19,9 +19,9 @@ use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Policy\RetryPolicy;
-use Alama\Arazzo\Runner\State\Data\ExecutionContext;
-use Alama\Arazzo\Runner\State\Data\StepResult;
+use Alama\Arazzo\Runtime\Policy\RetryPolicy;
+use Alama\Arazzo\Runtime\State\Data\ExecutionContext;
+use Alama\Arazzo\Runtime\State\Data\StepResult;
 
 function workflowEngineResolver(): ExpressionResolverInterface
 {

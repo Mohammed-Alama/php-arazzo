@@ -8,8 +8,8 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 it('persists and restores the shared budget across queue job boundaries', function (): void {
     $state = ExecutionState::start('exec_b', 'def', 'wf', [], maxSteps: 3);

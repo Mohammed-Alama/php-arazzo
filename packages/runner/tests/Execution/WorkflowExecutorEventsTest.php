@@ -21,7 +21,7 @@ use Alama\Arazzo\Runner\Events\StepStartedEvent;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
 
 function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null): StepExecutor
 {

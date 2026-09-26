@@ -32,7 +32,7 @@ use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
