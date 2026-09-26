@@ -84,6 +84,9 @@ this file on a commit is a public API change — review it deliberately.
 #### `ArazzoDocument` class
 - `public function __construct(public string $arazzo, public Info $info, public array $sourceDescriptions, public array $workflows, public Components $components, public array $specificationExtensions, public ?array $rawRoot = null, public SpecVersion $specVersion = SpecVersion::V1_0, public ?string $self = null)`
 
+#### `GraphQlOperation` class
+- `public function __construct(public string $schema, public string $operation, /** @param array<string,mixed>|null $extensions */ ?iterable $extensions = null, public ?Selector $extensionsSelector = null)`
+
 #### `ResponseTransfer` class
 - `public function __construct(private mixed $status, private array $headers, private mixed $rawBody, private array $views = [], private array $meta = [])`
 - `public function hasView(string $name): bool`
@@ -101,7 +104,7 @@ this file on a commit is a public API change — review it deliberately.
 
 #### `StepFactory` class
 - `public static function async(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $action, string $channelPath, ?Expression $correlationId = null, ): Step`
-- `public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $graphqlOperation): Step`
+- `public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, GraphQlOperation $graphqlOperation): Step`
 - `public static function http(string $stepId, ?string $description, StepFlow $flow, StepIo $io, ?string $operationId = null, ?string $operationPath = null, ): Step`
 - `public static function interaction(string $stepId, ?string $description, StepFlow $flow, StepIo $io, Interaction $interaction): Step`
 - `public static function rpc(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $rpcMethod, RpcProtocol $rpcProtocol): Step`
@@ -109,9 +112,9 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function wsdl(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $operationName): Step`
 
 #### `StepTarget` class
-- `public function __construct(public ?string $operationId = null, public ?string $operationPath = null, public ?string $workflowId = null, public ?string $action = null, public ?string $channelPath = null, public ?Expression $correlationId = null, public ?string $operationName = null, public ?string $rpcMethod = null, public ?RpcProtocol $rpcProtocol = null, public ?string $graphqlOperation = null, public ?Interaction $interaction = null)`
+- `public function __construct(public ?string $operationId = null, public ?string $operationPath = null, public ?string $workflowId = null, public ?string $action = null, public ?string $channelPath = null, public ?Expression $correlationId = null, public ?string $operationName = null, public ?string $rpcMethod = null, public ?RpcProtocol $rpcProtocol = null, public ?GraphQlOperation $graphqlOperation = null, public ?Interaction $interaction = null)`
 - `public static function async(string $action, string $channelPath, ?Expression $correlationId = null): self`
-- `public static function graphql(string $graphqlOperation): self`
+- `public static function graphql(GraphQlOperation $graphqlOperation): self`
 - `public static function interaction(Interaction $interaction): self`
 - `public static function rpc(string $rpcMethod, RpcProtocol $rpcProtocol): self`
 - `public static function workflow(string $workflowId): self`
@@ -163,6 +166,9 @@ this file on a commit is a public API change — review it deliberately.
 #### `Format` enum
 - Cases: `Json`, `Yaml`
 - `public static function fromExtension(string $extension): ?self`
+
+#### `InteractionMode` enum
+- Cases: `Acknowledge`, `Form`, `Redirect`
 
 #### `ParameterIn` enum
 - Cases: `Body`, `Cookie`, `Header`, `Metadata`, `Path`, `Query`, `Querystring`, `Variable`

@@ -15,7 +15,7 @@ the declaration honest.
 ```mermaid
 flowchart LR
     subgraph S_core["Core domain"]
-        S_contracts_Spec["contracts:Spec<br/><small>1151 LOC</small>"]:::coreDomain
+        S_contracts_Spec["contracts:Spec<br/><small>1193 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_cli_Console["cli:Console<br/><small>766 LOC</small>"]:::supportingDomain
@@ -74,10 +74,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,151 | 0 | 6% |
+| Core domain | 1 | 1,193 | 0 | 6% |
 | Supporting | 7 | 6,201 | 0 | 32% |
 | Generic subdomain | 12 | 2,132 | 1,158 | 17% |
-| Unclassified | 24 | 8,549 | 0 | 45% |
+| Unclassified | 24 | 8,549 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

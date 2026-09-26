@@ -22,8 +22,10 @@ classDiagram
     class FailureEndAction <<value>>
     class FailureGotoAction <<value>>
     class Format
+    class GraphQlOperation
     class Info
     class Interaction
+    class InteractionMode
     class OpenApiPayload
     class Parameter
     class ParameterIn
@@ -83,6 +85,8 @@ classDiagram
     Components "1" --> "0..1" SuccessAction : holds
     Components "1" --> "0..1" FailureAction : holds
     Components "1" --> "0..1" Interaction : holds
+    GraphQlOperation "1" --> "0..1" Selector : holds
+    Interaction "1" --> "0..1" InteractionMode : holds
     Parameter "1" --> "0..1" ParameterIn : holds
     Parameter "1" --> "0..1" ValueMode : holds
     Parameter "1" --> "0..1" Expression : holds
@@ -110,6 +114,7 @@ classDiagram
     StepIo "1" --> "0..1" Selector : holds
     StepTarget "1" --> "0..1" Expression : holds
     StepTarget "1" --> "0..1" RpcProtocol : holds
+    StepTarget "1" --> "0..1" GraphQlOperation : holds
     StepTarget "1" --> "0..1" Interaction : holds
     SuccessCriterion "1" --> "0..1" CriterionType : holds
     Workflow "1" --> "0..*" Step : holds
@@ -128,6 +133,7 @@ classDiagram
 - **ExecutionStatus** — `running` &middot; `succeeded` &middot; `failed`
 - **ExpressionType** — `jsonpath` &middot; `xpath` &middot; `jsonpointer`
 - **Format** — `yaml` &middot; `json`
+- **InteractionMode** — `form` &middot; `redirect` &middot; `acknowledge`
 - **ParameterIn** — `path` &middot; `query` &middot; `header` &middot; `cookie` &middot; `body` &middot; `querystring` &middot; `metadata` &middot; `variable`
 - **RpcProtocol** — `grpc` &middot; `grpc-web` &middot; `twirp` &middot; `connect`
 - **SourceType** — `openapi` &middot; `arazzo` &middot; `asyncapi` &middot; `wsdl` &middot; `protobuf` &middot; `graphql`

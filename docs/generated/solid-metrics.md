@@ -29,7 +29,7 @@ quadrantChart
     contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
     contracts/Interfaces: [0.143, 1]
-    contracts/Spec: [0.034, 0.021]
+    contracts/Spec: [0.034, 0.02]
     contracts/State: [0.091, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.25, 0.182]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 
@@ -58,9 +59,13 @@ it('builds an rpc target with its wire protocol', function (): void {
 });
 
 it('builds a graphql target', function (): void {
-    $target = StepTarget::graphql('query GetToken');
+    $graphql = new GraphQlOperation(
+        schema: '$sourceDescriptions.gql',
+        operation: 'query GetToken',
+    );
+    $target = StepTarget::graphql($graphql);
 
-    expect($target->graphqlOperation)->toBe('query GetToken');
+    expect($target->graphqlOperation)->toBe($graphql);
 });
 
 it('builds an interaction target', function (): void {

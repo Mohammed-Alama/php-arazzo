@@ -44,7 +44,7 @@ final readonly class StepFactory
         return new Step($stepId, $description, StepTarget::rpc($rpcMethod, $rpcProtocol), $flow, $io);
     }
 
-    public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $graphqlOperation): Step
+    public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, GraphQlOperation $graphqlOperation): Step
     {
         return new Step($stepId, $description, StepTarget::graphql($graphqlOperation), $flow, $io);
     }

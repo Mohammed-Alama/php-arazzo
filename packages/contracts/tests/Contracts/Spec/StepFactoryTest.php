@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
@@ -41,9 +42,13 @@ it('builds an rpc step', function (): void {
 });
 
 it('builds a graphql step', function (): void {
-    $step = StepFactory::graphql('load', null, new StepFlow(), new StepIo(), 'query Load');
+    $graphql = new GraphQlOperation(
+        schema: '$sourceDescriptions.gql',
+        operation: 'query Load { item }',
+    );
+    $step = StepFactory::graphql('load', null, new StepFlow(), new StepIo(), $graphql);
 
-    expect($step->target->graphqlOperation)->toBe('query Load');
+    expect($step->target->graphqlOperation)->toBe($graphql);
 });
 
 it('builds an interaction step', function (): void {

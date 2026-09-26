@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Spec\Enum\InteractionMode;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 
 it('models an actor interaction with expected payload and timeout', function (): void {
@@ -15,5 +16,12 @@ it('defaults to null payload and timeout', function (): void {
     $interaction = new Interaction();
 
     expect($interaction->expectedPayload)->toBeNull()
-        ->and($interaction->timeout)->toBeNull();
+        ->and($interaction->timeout)->toBeNull()
+        ->and($interaction->mode)->toBeNull();
+});
+
+it('accepts an interaction mode', function (): void {
+    $interaction = new Interaction(mode: InteractionMode::Form);
+
+    expect($interaction->mode)->toBe(InteractionMode::Form);
 });
