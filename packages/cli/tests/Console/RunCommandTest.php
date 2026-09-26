@@ -8,12 +8,12 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
-use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -53,10 +53,12 @@ function arazzoDoc(string $tmp): void
         YAML);
 }
 
-it('runs a workflow end-to-end through the CLI', function (): void {
-    $registry = new SourceRegistry(new DefaultSourceResolver([]));
-    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+function createTestRegistry(ClientInterface $client, RequestFactoryInterface $factory): SourceRegistry
+{
+    return SourceGraph::createRegistry($client, $factory);
+}
 
+it('runs a workflow end-to-end through the CLI', function (): void {
     // PSR-18 client that answers every request with 200 {}
     $client = new class() implements ClientInterface
     {
@@ -65,8 +67,12 @@ it('runs a workflow end-to-end through the CLI', function (): void {
             return new Response(200, ['Content-Type' => 'application/json'], '{}');
         }
     };
+    $factory = new HttpFactory();
 
-    $command = new RunCommand($client, $registry);
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
+
+    $command = new RunCommand($client, $factory, $registry);
     $tester = new CommandTester($command);
 
     $doc = sys_get_temp_dir().'/arazzo-cli-run-'.uniqid().'.yaml';
@@ -82,10 +88,19 @@ it('runs a workflow end-to-end through the CLI', function (): void {
 });
 
 it('fails with a clear message for an unknown workflow id', function (): void {
-    $registry = new SourceRegistry(new DefaultSourceResolver([]));
+    $client = new class() implements ClientInterface
+    {
+        public function sendRequest(RequestInterface $request): ResponseInterface
+        {
+            return new Response(200, ['Content-Type' => 'application/json'], '{}');
+        }
+    };
+    $factory = new HttpFactory();
+
+    $registry = createTestRegistry($client, $factory);
     $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
 
-    $command = new RunCommand(null, $registry);
+    $command = new RunCommand($client, $factory, $registry);
     $tester = new CommandTester($command);
 
     $doc = sys_get_temp_dir().'/arazzo-cli-unknown-'.uniqid().'.yaml';
@@ -100,9 +115,6 @@ it('fails with a clear message for an unknown workflow id', function (): void {
 });
 
 it('exposes the facade result shape the CLI output rendering depends on', function (): void {
-    $registry = new SourceRegistry(new DefaultSourceResolver([]));
-    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
-
     $client = new class() implements ClientInterface
     {
         public function sendRequest(RequestInterface $request): ResponseInterface
@@ -110,12 +122,16 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
             return new Response(200, ['Content-Type' => 'application/json'], '{}');
         }
     };
+    $factory = new HttpFactory();
+
+    $registry = createTestRegistry($client, $factory);
+    $registry->register(new SourceDocument('api', SourceType::Openapi, 'https://mini.test/openapi.json', PETSTORE_MINI));
 
     $doc = sys_get_temp_dir().'/arazzo-cli-shape-'.uniqid().'.yaml';
     arazzoDoc($doc);
 
     $document = DocumentLoader::load($doc);
-    $runtime = SourceGraph::runtime($client, new HttpFactory(), $registry);
+    $runtime = SourceGraph::runtime(registry: $registry);
     $runner = new RunnerFacade(
         $runtime->document,
         $runtime->operations,

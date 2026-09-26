@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Cli\Console\Command;
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,6 +25,7 @@ final class RunCommand extends Command
 {
     public function __construct(
         private readonly ?ClientInterface $httpClient = null,
+        private readonly ?RequestFactoryInterface $httpFactory = null,
         private readonly ?SourceRegistry $registry = null,
     ) {
         parent::__construct();
@@ -42,18 +44,9 @@ final class RunCommand extends Command
         /** @var string $file */
         $file = $input->getArgument('file');
         $document = DocumentLoader::load($file);
-
         /** @var string|null $workflowId */
         $workflowId = $input->getOption('workflow');
-
-        $workflow = null;
-
-        foreach ($document->workflows as $candidate) {
-            if ($workflowId === null || $candidate->workflowId === $workflowId) {
-                $workflow = $candidate;
-                break;
-            }
-        }
+        $workflow = $this->findWorkflow($document, $workflowId);
 
         if ($workflow === null) {
             $output->writeln('<error>'.sprintf("unknown workflow '%s'", (string) $workflowId).'</error>');
@@ -63,33 +56,71 @@ final class RunCommand extends Command
 
         /** @var string|null $rawInput */
         $rawInput = $input->getOption('input');
-        $inputs = [];
-
-        if (is_string($rawInput) && $rawInput !== '') {
-            $json = str_starts_with($rawInput, '@') ? (string) file_get_contents(substr($rawInput, 1)) : $rawInput;
-            $decoded = json_decode($json, true);
-
-            if (!is_array($decoded)) {
-                $output->writeln('<error>--input must be a JSON object or @file containing one</error>');
-
-                return Command::FAILURE;
-            }
-
-            $inputs = $decoded;
+        $inputs = $this->parseInputs($rawInput, $output);
+        if ($inputs === null) {
+            return Command::FAILURE;
         }
 
-        $client = $this->httpClient ?? new Client();
-        $factory = new HttpFactory();
-
+        $registry = $this->resolveRegistry();
         $engine = new EvaluationEngine();
-        $runtime = SourceGraph::runtime($client, $factory, $this->registry);
-        $documents = $runtime->document;
-
-        $runner = new RunnerFacade($documents, $runtime->operations, $engine, $this->httpClient);
+        $runtime = SourceGraph::runtime(registry: $registry);
+        $runner = new RunnerFacade($runtime->document, $runtime->operations, $engine, $this->httpClient);
 
         /** @var array<string, mixed> $inputs */
         $result = $runner->execute($document, (string) $workflow->workflowId, $inputs);
 
+        $this->renderOutput($output, $result);
+
+        return $result['status'] === 'succeeded' ? Command::SUCCESS : Command::FAILURE;
+    }
+
+    private function findWorkflow(ArazzoDocument $document, ?string $workflowId): ?Workflow
+    {
+        foreach ($document->workflows as $candidate) {
+            if ($workflowId === null || $candidate->workflowId === $workflowId) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    /** @return array<string, mixed>|null */
+    private function parseInputs(?string $rawInput, OutputInterface $output): ?array
+    {
+        if (!is_string($rawInput) || $rawInput === '') {
+            return [];
+        }
+
+        $json = str_starts_with($rawInput, '@') ? (string) file_get_contents(substr($rawInput, 1)) : $rawInput;
+        /** @var array<string, mixed>|null $decoded */
+        $decoded = json_decode($json, true);
+
+        if (!is_array($decoded)) {
+            $output->writeln('<error>--input must be a JSON object or @file containing one</error>');
+
+            return null;
+        }
+
+        return $decoded;
+    }
+
+    private function resolveRegistry(): ?SourceRegistry
+    {
+        if ($this->registry !== null) {
+            return $this->registry;
+        }
+
+        if ($this->httpClient !== null || $this->httpFactory !== null) {
+            return SourceGraph::createRegistry($this->httpClient, $this->httpFactory);
+        }
+
+        return null;
+    }
+
+    /** @param array{workflowId: string, status: string, steps: array<string, array{success: bool, stepId: string, error?: string|null}>, outputs: array<string, mixed>} $result */
+    private function renderOutput(OutputInterface $output, array $result): void
+    {
         $output->writeln(sprintf('workflow <info>%s</info>: <comment>%s</comment>', $result['workflowId'], $result['status']));
 
         foreach ($result['steps'] as $stepResult) {
@@ -103,7 +134,5 @@ final class RunCommand extends Command
                 $output->writeln(sprintf('  %s = %s', $name, json_encode($value)));
             }
         }
-
-        return $result['status'] === 'succeeded' ? Command::SUCCESS : Command::FAILURE;
     }
 }
