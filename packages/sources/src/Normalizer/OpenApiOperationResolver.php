@@ -179,7 +179,18 @@ class OpenApiOperationResolver
         $normalized = $normalizer->normalize($rawDocument, (string) $foundPath, (string) $foundMethod);
 
         return new OpenApiOperationHandle(
-            new ResolvedOperation($targetSource, $normalized),
+            new ResolvedOperation(
+                $targetSource,
+                $normalized,
+                $openApi,
+                $rawDocument,
+                $cebeOperation,
+                null,
+                null,
+                null,
+                null,
+                null,
+            ),
             $openApi,
             $cebeOperation,
         );

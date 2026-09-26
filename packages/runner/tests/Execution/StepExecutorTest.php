@@ -43,8 +43,16 @@ function createMockDocumentResolver(): OpenApiOperationResolver
     $mock = Mockery::mock(OpenApiOperationResolver::class);
     $mock->shouldReceive('resolve')->andReturn(new OpenApiOperationHandle(
         new ResolvedOperation(
-            new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
-            new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
+            source: new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
+            normalized: new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
+            openApi: new OpenApi([]),
+            rawDocument: [],
+            cebeOperation: new Operation([]),
+            rpcProtocol: null,
+            operationName: null,
+            rpcMethod: null,
+            graphqlOperation: null,
+            interaction: null,
         ),
         new OpenApi([]),
         new Operation([]),

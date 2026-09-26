@@ -22,7 +22,7 @@ targets. Regenerated before every commit.
 | `contracts:Support` | 5 | 180 | 10 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1143 | 6 | 2 | 0.25 |  |
 | `document:Validator` | 64 | 3091 | 6 | 5 | 0.45 |  |
-| `(document root)` | 4 | 150 | 6 | 4 | 0.40 |  |
+| `(document root)` | 4 | 195 | 6 | 4 | 0.40 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -57,12 +57,12 @@ targets. Regenerated before every commit.
 | `runner:State` | 12 | 940 | 10 | 2 | 0.17 |  |
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 290 | 4 | 12 | 0.75 |  |
-| `sources:Normalizer` | 8 | 586 | 6 | 4 | 0.40 |  |
+| `sources:Normalizer` | 8 | 597 | 6 | 4 | 0.40 |  |
 | `sources:Resolver` | 13 | 444 | 6 | 3 | 0.33 |  |
 | `sources:Validator` | 1 | 302 | 2 | 4 | 0.67 |  |
 | `(sources root)` | 3 | 217 | 2 | 7 | 0.78 |  |
 
-Total cross-module edges: **950**
+Total cross-module edges: **953**
 
 ## Most entangled module pairs
 

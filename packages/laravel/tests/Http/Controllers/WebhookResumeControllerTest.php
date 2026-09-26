@@ -134,8 +134,16 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
     $operations->shouldReceive('resolve')->andReturn(
         new OpenApiOperationHandle(
             new ResolvedOperation(
-                new SourceDescription('src', 'openapi.yaml', SourceType::Openapi),
-                new NormalizedOpenApiOperation('/paths/~1rides/post', 'post', 'http://api.example.com', [], [], [], [], [], []),
+                source: new SourceDescription('src', 'openapi.yaml', SourceType::Openapi),
+                normalized: new NormalizedOpenApiOperation('/paths/~1rides/post', 'post', 'http://api.example.com', [], [], [], [], [], []),
+                openApi: new OpenApi([]),
+                rawDocument: [],
+                cebeOperation: new Operation([]),
+                rpcProtocol: null,
+                operationName: null,
+                rpcMethod: null,
+                graphqlOperation: null,
+                interaction: null,
             ),
             new OpenApi([]),
             new Operation([]),

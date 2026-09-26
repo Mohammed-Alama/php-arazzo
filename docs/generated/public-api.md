@@ -375,6 +375,10 @@ this file on a commit is a public API change — review it deliberately.
 #### `ModelStack` class
 - `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine)`
 
+#### `ResolvedOperation` class
+- `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly OpenApi $openApi, public readonly array $rawDocument, public readonly Operation $cebeOperation, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?string $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
+- `public function binding(): string`
+
 ### `Alama\Arazzo\Document\Parser\Exceptions`
 
 #### `LoaderException` class

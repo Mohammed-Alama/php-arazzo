@@ -311,7 +311,7 @@ flowchart TB
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
 | `cli` | `sources` | 2 |
-| `document` | `contracts` | 131 |
+| `document` | `contracts` | 134 |
 | `document` | `expression` | 17 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
