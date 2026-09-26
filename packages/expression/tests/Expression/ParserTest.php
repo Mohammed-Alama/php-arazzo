@@ -16,6 +16,8 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Data\ExpressionReference;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Parser;
 use Alama\Arazzo\Expression\Parser as ExprParser;
@@ -151,4 +153,32 @@ it('rejects malformed message and self forms', function (string $raw): void {
     '$message',
     '$message.payload.extra',
     '$self.url',
+]);
+
+it('projects every reference form to the expected ExpressionReference', function (string $raw, ExpressionReference $expected): void {
+    $ref = (new Parser())->projectReferences($raw);
+
+    expect($ref)->toBeInstanceOf(ExpressionReference::class);
+    foreach (['kind', 'target', 'part', 'name', 'httpPart', 'jsonPointer'] as $field) {
+        expect($ref->{$field})->toBe($expected->{$field});
+    }
+})->with([
+    '$inputs.userId' => ['$inputs.userId', new ExpressionReference(ReferenceKind::Input, 'userId')],
+    '$inputs.userId#/ptr' => ['$inputs.userId#/address/city', new ExpressionReference(ReferenceKind::Input, 'userId', jsonPointer: '/address/city')],
+    '$outputs.token' => ['$outputs.token', new ExpressionReference(ReferenceKind::Output, 'token')],
+    '$steps.s.outputs.o' => ['$steps.fetch.outputs.user', new ExpressionReference(ReferenceKind::Step, 'fetch', 'outputs', 'user')],
+    '$steps.s.outputs.o#/ptr' => ['$steps.fetch.outputs.user#/profile/email', new ExpressionReference(ReferenceKind::Step, 'fetch', 'outputs', 'user', jsonPointer: '/profile/email')],
+    '$steps.s.inputs.i' => ['$steps.fetch.inputs.query', new ExpressionReference(ReferenceKind::Step, 'fetch', 'inputs', 'query')],
+    '$steps.s.request.query.n' => ['$steps.fetch.request.query.page', new ExpressionReference(ReferenceKind::Step, 'fetch', 'request', 'page', 'query')],
+    '$steps.s.response.body#/ptr' => ['$steps.s.response.body#/x/0', new ExpressionReference(ReferenceKind::Step, 's', 'response', httpPart: 'body', jsonPointer: '/x/0')],
+    '$request.query.n (current step)' => ['$request.query.page', new ExpressionReference(ReferenceKind::Step, null, 'request', 'page', 'query')],
+    '$response.url (current step)' => ['$response.url', new ExpressionReference(ReferenceKind::Step, null, 'response', httpPart: 'url')],
+    '$workflows.w.outputs.o' => ['$workflows.main.outputs.token', new ExpressionReference(ReferenceKind::Workflow, 'main', 'outputs', 'token')],
+    '$sourceDescriptions.api.sub' => ['$sourceDescriptions.api.workflows.x', new ExpressionReference(ReferenceKind::Source, 'api', name: 'workflows.x')],
+    '$sourceDescriptions.api (no sub)' => ['$sourceDescriptions.api', new ExpressionReference(ReferenceKind::Source, 'api')],
+    '$components.type.name' => ['$components.parameters.Trace', new ExpressionReference(ReferenceKind::Component, 'parameters', name: 'Trace')],
+    '$message.header.name' => ['$message.header.X-Trace', new ExpressionReference(ReferenceKind::Message, part: 'header', name: 'X-Trace')],
+    '$message.payload#/ptr' => ['$message.payload#/order/id', new ExpressionReference(ReferenceKind::Message, part: 'payload', jsonPointer: '/order/id')],
+    '$statusCode' => ['$statusCode', new ExpressionReference(ReferenceKind::HttpMeta, httpPart: 'statusCode')],
+    '$self' => ['$self', new ExpressionReference(ReferenceKind::Self)],
 ]);
