@@ -18,7 +18,7 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>1148 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>765 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>766 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1154 LOC</small>"]:::supportingDomain
@@ -27,7 +27,7 @@ flowchart LR
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>361 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>372 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>170 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
@@ -56,7 +56,7 @@ flowchart LR
         S_expression_Exceptions["expression:Exceptions<br/><small>23 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>500 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>3863 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>3886 LOC</small>"]:::unknownDomain
         S_runner_Infrastructure["runner:Infrastructure<br/><small>172 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
         S_runner_Policy["runner:Policy<br/><small>102 LOC</small>"]:::unknownDomain
@@ -72,9 +72,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,148 | 0 | 6% |
-| Supporting | 5 | 5,440 | 0 | 31% |
-| Generic subdomain | 12 | 2,132 | 1,147 | 18% |
-| Unclassified | 23 | 7,932 | 0 | 45% |
+| Supporting | 5 | 5,441 | 0 | 31% |
+| Generic subdomain | 12 | 2,132 | 1,158 | 18% |
+| Unclassified | 23 | 7,955 | 0 | 45% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

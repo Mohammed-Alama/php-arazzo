@@ -38,6 +38,39 @@ final class SourceGraph
         return self::using();
     }
 
+    /**
+     * The document plus the resolver that produced its operation handles.
+     * Runner wiring needs both, and one call is what guarantees they share
+     * a single transport.
+     */
+    public static function runtime(
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $httpFactory = null,
+        ?SourceRegistry $registry = null,
+    ): SourceRuntime {
+        $client = $httpClient ?? new Client();
+        $factory = $httpFactory ?? new HttpFactory();
+
+        $sources = $registry ?? new SourceRegistry(new DefaultSourceResolver([
+            'http' => new HttpFetcher($client, $factory),
+            'https' => new HttpFetcher($client, $factory),
+            'file' => new LocalFetcher(),
+        ]));
+
+        $operations = self::operations($sources);
+
+        return new SourceRuntime(
+            document: new Document(
+                model: ModelStack::default(new ExpressionEngine()),
+                sources: $sources,
+                operations: $operations,
+                versionDetector: $operations->versionDetector(),
+                preflight: new PreflightValidator($sources, $operations),
+            ),
+            operations: $operations,
+        );
+    }
+
     public static function using(
         ?ClientInterface $httpClient = null,
         ?RequestFactoryInterface $httpFactory = null,
@@ -52,21 +85,26 @@ final class SourceGraph
             'file' => new LocalFetcher(),
         ]));
 
-        $versionDetector = new OpenApiVersionDetector();
-
-        $operations = new OpenApiOperationResolver(
-            new OpenApiDocumentLoader($sources),
-            $versionDetector,
-            new OpenApi30Normalizer(),
-            new OpenApi31Normalizer(),
-        );
+        $operations = self::operations($sources);
 
         return new Document(
             model: ModelStack::default(new ExpressionEngine()),
             sources: $sources,
             operations: $operations,
-            versionDetector: $versionDetector,
+            versionDetector: $operations->versionDetector(),
             preflight: new PreflightValidator($sources, $operations),
+        );
+    }
+
+    private static function operations(SourceRegistry $sources): OpenApiOperationResolver
+    {
+        $versionDetector = new OpenApiVersionDetector();
+
+        return new OpenApiOperationResolver(
+            new OpenApiDocumentLoader($sources),
+            $versionDetector,
+            new OpenApi30Normalizer(),
+            new OpenApi31Normalizer(),
         );
     }
 }

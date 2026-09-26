@@ -71,7 +71,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
-    $documents = SourceGraph::using(null, null, new SourceRegistry(new class() implements SourceResolver
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new class() implements SourceResolver
     {
         public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {
@@ -85,14 +85,14 @@ function parityFixtures(): array
     }));
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($documents, $engine, new ExpressionEngine()),
+        new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
         new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($documents),
+        new ResponseSchemaValidator($runtime->operations),
     );
     $stepExecutor = new StepExecutor(
         new DefaultOpenApiExecutor($httpClient, new HttpFactory()),
         $resolver,
-        $documents,
+        $runtime->operations,
         engine: $engine,
     );
 

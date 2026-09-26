@@ -6,9 +6,10 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Sources\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use cebe\openapi\Reader;
 use GuzzleHttp\Psr7\Request;
@@ -87,12 +88,13 @@ it('builds and sends an openapi request using the schema to route parameters', f
         responses: [],
     );
 
-    $resolved = new ResolvedOperation(
-        source: $source,
-        normalized: $normalized,
-        openApi: $openApi,
-        rawDocument: json_decode($openapiJson, true),
-        cebeOperation: clone $openApi->paths->getPath('/users/{userId}')->get,
+    $resolved = new OpenApiOperationHandle(
+        new ResolvedOperation(
+            source: $source,
+            normalized: $normalized,
+        ),
+        $openApi,
+        clone $openApi->paths->getPath('/users/{userId}')->get,
     );
 
     $response = $executor->execute($resolved, $payload);

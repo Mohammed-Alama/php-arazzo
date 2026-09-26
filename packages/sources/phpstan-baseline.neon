@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Normalizer/NormalizedOpenApiOperation.php
-
-		-
 			message: '#^Method resolveParameters has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Normalizer/OpenApi30Normalizer.php

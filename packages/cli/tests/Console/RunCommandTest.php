@@ -115,8 +115,10 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
     arazzoDoc($doc);
 
     $document = DocumentLoader::load($doc);
+    $runtime = SourceGraph::runtime($client, new HttpFactory(), $registry);
     $runner = new RunnerFacade(
-        SourceGraph::using($client, new HttpFactory(), $registry),
+        $runtime->document,
+        $runtime->operations,
         new EvaluationEngine(),
         $client,
     );

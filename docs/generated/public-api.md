@@ -415,7 +415,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
+- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 

@@ -58,7 +58,7 @@ quadrantChart
     runner/Infrastructure: [0.167, 1]
     runner/Jobs: [0.286, 1]
     runner/Policy: [0.75, 1]
-    runner/Protocol: [0.909, 1]
+    runner/Protocol: [0.9, 1]
     runner/State: [0.167, 1]
     runner/Telemetry: [0, 1]
 ```
@@ -71,7 +71,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.15 | 21 | 17 | 100% |
-| `contracts/Spec` | 0.04 | 168 | 47 | 100% |
+| `contracts/Spec` | 0.04 | 169 | 47 | 100% |
 | `contracts/State` | 0.09 | 52 | 2 | 100% |
 | `contracts/Support` | 0.00 | 17 | 5 | 100% |
 | `document/Parser` | 0.29 | 35 | 11 | 100% |
@@ -80,7 +80,7 @@ quadrantChart
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 0 | 1 | 0% |
-| `evaluation/Interfaces` | 0.10 | 24 | 5 | 100% |
+| `evaluation/Interfaces` | 0.10 | 23 | 5 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Xpath` | 0.67 | 0 | 2 | 0% |
@@ -99,11 +99,11 @@ quadrantChart
 | `laravel/Support` | 0.78 | 1 | 2 | 50% |
 | `runner/Async` | 1.00 | 6 | 6 | 100% |
 | `runner/Events` | 0.12 | 31 | 11 | 100% |
-| `runner/Execution` | 0.74 | 54 | 39 | 100% |
+| `runner/Execution` | 0.74 | 54 | 40 | 100% |
 | `runner/Infrastructure` | 0.17 | 9 | 4 | 100% |
 | `runner/Jobs` | 0.29 | 7 | 2 | 100% |
 | `runner/Policy` | 0.75 | 2 | 2 | 100% |
-| `runner/Protocol` | 0.91 | 11 | 5 | 100% |
+| `runner/Protocol` | 0.90 | 11 | 5 | 100% |
 | `runner/State` | 0.17 | 27 | 12 | 100% |
 | `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
 

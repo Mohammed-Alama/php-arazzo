@@ -40,8 +40,9 @@ final class QueueFixtureRunner extends ConformanceHarness
         }
 
         $workflow = $document->workflows[0];
-        $documents = $this->documents($this->sourceRegistry);
-        $resolver = $this->resolver($documents);
+        $runtime = $this->runtime($this->sourceRegistry);
+        $documents = $runtime->document;
+        $resolver = $this->resolver($runtime);
 
         $definitionRegistry = new InMemoryDefinitionRegistry();
         $definitionId = $definitionRegistry->register($document);
@@ -59,7 +60,7 @@ final class QueueFixtureRunner extends ConformanceHarness
             [new HttpStepExecutor(
                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                 $resolver,
-                $documents,
+                $runtime->operations,
                 engine: $this->engine(),
             )],
             new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Sources\Normalizer\Interfaces;
 
-use Alama\Arazzo\Sources\Normalizer\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

@@ -82,9 +82,10 @@ final class RunCommand extends Command
         $factory = new HttpFactory();
 
         $engine = new EvaluationEngine();
-        $documents = SourceGraph::using($client, $factory, $this->registry);
+        $runtime = SourceGraph::runtime($client, $factory, $this->registry);
+        $documents = $runtime->document;
 
-        $runner = new RunnerFacade($documents, $engine, $this->httpClient);
+        $runner = new RunnerFacade($documents, $runtime->operations, $engine, $this->httpClient);
 
         /** @var array<string, mixed> $inputs */
         $result = $runner->execute($document, (string) $workflow->workflowId, $inputs);

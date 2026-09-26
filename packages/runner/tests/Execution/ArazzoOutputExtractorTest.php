@@ -59,11 +59,11 @@ beforeEach(function () {
     file_put_contents($this->openApiFile, $openApiJson);
 
     $this->makeExtractor = function (): StepOutputExtractor {
-        $documents = SourceGraph::using(null, null, new SourceRegistry(
+        $runtime = SourceGraph::runtime(null, null, new SourceRegistry(
             new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
         ));
 
-        return new StepOutputExtractor($documents, new EvaluationEngine(), new ExpressionEngine());
+        return new StepOutputExtractor($runtime->operations, new EvaluationEngine(), new ExpressionEngine());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

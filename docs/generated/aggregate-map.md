@@ -19,8 +19,8 @@ Where mutable state lives, and which of it crosses process boundaries:
 | contracts | 36 | 9 | 80% |
 | expression | 18 | 3 | 86% |
 | evaluation | 9 | 18 | 33% |
-| document | 11 | 61 | 15% |
-| runner | 20 | 57 | 26% |
+| document | 11 | 63 | 15% |
+| runner | 21 | 57 | 27% |
 | cli | 0 | 14 | 0% |
 | laravel | 0 | 23 | 0% |
 

@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Tests\Conformance;
 
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
@@ -46,7 +46,7 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
     }
 
     public function execute(
-        ResolvedOperation $resolvedOperation,
+        OpenApiOperationHandle $resolvedOperation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
         ?float $timeoutSeconds = null,
@@ -55,7 +55,7 @@ final class FakerOpenApiExecutor implements OpenApiExecutorInterface
         // in a fabricated response derived from the operation's own contract.
         $this->inner->execute($resolvedOperation, $payload, $requestInterceptor, $timeoutSeconds);
 
-        [$status, $body] = self::synthesizeResponse($resolvedOperation->normalized->responses ?? []);
+        [$status, $body] = self::synthesizeResponse($resolvedOperation->operation->normalized->responses ?? []);
 
         foreach ($this->referencedBodyFields as $field) {
             $body[$field] = $body[$field] ?? false;

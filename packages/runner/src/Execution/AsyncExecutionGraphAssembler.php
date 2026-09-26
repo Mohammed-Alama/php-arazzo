@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
@@ -28,7 +27,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 final class AsyncExecutionGraphAssembler
 {
     public function __construct(
-        private readonly DocumentInterface $documents,
+        private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $engine,
         private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
@@ -43,8 +42,8 @@ final class AsyncExecutionGraphAssembler
         $openApiExecutor = $seams->openApiExecutor ?? new DefaultOpenApiExecutor($client, $factory, $seams->logger);
         $expressionResolver = $seams->expressionResolver ?? new ExecutionExpressionResolver(
             $this->engine,
-            new StepOutputExtractor($this->documents, $this->engine, $this->inspector),
-            new ResponseSchemaValidator($this->documents),
+            new StepOutputExtractor($this->operations->resolver, $this->engine, $this->inspector),
+            new ResponseSchemaValidator($this->operations->resolver),
         );
 
         $workflowEngine = new WorkflowEngine(
@@ -61,7 +60,7 @@ final class AsyncExecutionGraphAssembler
         $stepExecutor = new StepExecutor(
             $openApiExecutor,
             $expressionResolver,
-            $this->documents,
+            $this->operations->resolver,
             engine: $this->engine,
             strictValidationDefault: $seams->strictValidation,
             injector: $injector,
@@ -70,7 +69,7 @@ final class AsyncExecutionGraphAssembler
         $httpStepExecutor = new HttpStepExecutor(
             $openApiExecutor,
             $expressionResolver,
-            $this->documents,
+            $this->operations->resolver,
             engine: $this->engine,
             strictValidationDefault: $seams->strictValidation,
             injector: $injector,
@@ -79,7 +78,7 @@ final class AsyncExecutionGraphAssembler
         $workflowExecutor = new WorkflowExecutor(
             $stepExecutor,
             workflowEngine: $workflowEngine,
-            preflight: $this->documents,
+            preflight: $this->operations->document,
         );
 
         $subWorkflowExecutor = new SubWorkflowStepExecutor($workflowExecutor, $this->engine);
@@ -94,7 +93,7 @@ final class AsyncExecutionGraphAssembler
         $controlFlow = new RunControlFlow(
             workflowEngine: $workflowEngine,
             queueDriver: $seams->queueDriver,
-            preflight: $this->documents,
+            preflight: $this->operations->document,
         );
 
         $outcomeHandler = new StepOutcomeHandler(

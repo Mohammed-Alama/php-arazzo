@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 754 | 0 | 16 | 1.00 |  |
+| `cli:Console` | 11 | 755 | 0 | 16 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
@@ -22,7 +22,7 @@ targets. Regenerated before every commit.
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1143 | 5 | 2 | 0.29 |  |
 | `document:Validator` | 64 | 3091 | 4 | 5 | 0.56 |  |
-| `(document root)` | 2 | 130 | 5 | 4 | 0.44 |  |
+| `(document root)` | 4 | 172 | 4 | 4 | 0.50 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -38,7 +38,7 @@ targets. Regenerated before every commit.
 | `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
 | `expression:Interfaces` | 1 | 24 | 6 | 2 | 0.25 |  |
 | `(expression root)` | 3 | 510 | 4 | 5 | 0.56 |  |
-| `laravel:Bindings` | 7 | 354 | 1 | 19 | 0.95 |  |
+| `laravel:Bindings` | 7 | 365 | 1 | 19 | 0.95 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 6 | 0.75 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
@@ -49,16 +49,16 @@ targets. Regenerated before every commit.
 | `(laravel root)` | 1 | 88 | 0 | 3 | 1.00 |  |
 | `runner:Async` | 6 | 494 | 0 | 12 | 1.00 |  |
 | `runner:Events` | 11 | 317 | 7 | 1 | 0.13 |  |
-| `runner:Execution` | 39 | 3824 | 7 | 20 | 0.74 |  |
+| `runner:Execution` | 40 | 3846 | 7 | 20 | 0.74 |  |
 | `runner:Infrastructure` | 4 | 168 | 5 | 1 | 0.17 |  |
 | `runner:Jobs` | 2 | 38 | 5 | 2 | 0.29 |  |
 | `runner:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
-| `runner:Protocol` | 5 | 552 | 1 | 10 | 0.91 |  |
+| `runner:Protocol` | 5 | 552 | 1 | 9 | 0.90 |  |
 | `runner:State` | 12 | 940 | 10 | 2 | 0.17 |  |
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `(runner root)` | 6 | 287 | 4 | 11 | 0.73 |  |
+| `(runner root)` | 6 | 290 | 4 | 11 | 0.73 |  |
 
-Total cross-module edges: **861**
+Total cross-module edges: **860**
 
 ## Most entangled module pairs
 

@@ -172,3 +172,8 @@ parameters:
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 7
 			path: src/Validator/Data/SymbolTable.php
+
+		-
+			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/NormalizedOpenApiOperation.php

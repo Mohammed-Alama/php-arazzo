@@ -29,6 +29,7 @@ use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
+use Alama\Arazzo\Sources\SourceRuntime;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
 use GuzzleHttp\Psr7\Response;
@@ -106,20 +107,25 @@ abstract class ConformanceHarness
         return new EvaluationEngine();
     }
 
-    protected function documents(SourceRegistry $registry): DocumentInterface
+    protected function runtime(SourceRegistry $registry): SourceRuntime
     {
-        return SourceGraph::using(null, null, $registry);
+        return SourceGraph::runtime(null, null, $registry);
     }
 
-    protected function resolver(DocumentInterface $documents): ExpressionResolverInterface
+    protected function documents(SourceRegistry $registry): DocumentInterface
+    {
+        return $this->runtime($registry)->document;
+    }
+
+    protected function resolver(SourceRuntime $runtime): ExpressionResolverInterface
     {
         $evaluator = new ExpressionEvaluator();
 
         return new ExpressionResolver(
             $evaluator,
-            new StepOutputExtractor($documents, $this->engine(), new ExpressionEngine()),
+            new StepOutputExtractor($runtime->operations, $this->engine(), new ExpressionEngine()),
             new CriteriaEvaluator($evaluator),
-            new ResponseSchemaValidator($documents),
+            new ResponseSchemaValidator($runtime->operations),
         );
     }
 

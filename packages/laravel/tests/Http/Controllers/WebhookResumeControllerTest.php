@@ -15,8 +15,10 @@ use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
@@ -26,8 +28,8 @@ use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
-use Alama\Arazzo\Sources\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Response;
@@ -121,25 +123,28 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
 
     $this->app->instance(OpenApiExecutorInterface::class, new class() implements OpenApiExecutorInterface
     {
-        public function execute(ResolvedOperation $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null): ResponseInterface
+        public function execute(OpenApiOperationHandle $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null): ResponseInterface
         {
             return new Response(201, [], json_encode(['rideId' => 'r_1']));
         }
     });
 
     $documents = \Mockery::mock(DocumentInterface::class);
-    $documents->shouldReceive('resolveOperation')->andReturn(
-        new ResolvedOperation(
-            new SourceDescription('src', 'openapi.yaml', SourceType::Openapi),
-            new NormalizedOpenApiOperation('/paths/~1rides/post', 'post', 'http://api.example.com', [], [], [], [], [], []),
+    $operations = \Mockery::mock(OpenApiOperationResolver::class);
+    $operations->shouldReceive('resolve')->andReturn(
+        new OpenApiOperationHandle(
+            new ResolvedOperation(
+                new SourceDescription('src', 'openapi.yaml', SourceType::Openapi),
+                new NormalizedOpenApiOperation('/paths/~1rides/post', 'post', 'http://api.example.com', [], [], [], [], [], []),
+            ),
             new OpenApi([]),
-            [],
             new Operation([]),
         ),
     );
     $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     $this->app->instance(DocumentInterface::class, $documents);
+    $this->app->instance(OpenApiOperationResolver::class, $operations);
 
     $rawYaml = file_get_contents(__DIR__.'/../../fixtures/parser/arazzo-1.0-webhook-saga.yaml');
     $decoded = (new SymfonyYamlDecoder())->decode($rawYaml);

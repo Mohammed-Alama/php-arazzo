@@ -12,7 +12,6 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnresolvableReferenceException;
 use InvalidArgumentException;
 use RuntimeException;

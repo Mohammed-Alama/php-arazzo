@@ -26,7 +26,9 @@ function runnerDocument(): ArazzoDocument
 
 function runnerFacade(): RunnerFacade
 {
-    return new RunnerFacade(SourceGraph::default(), new EvaluationEngine());
+    $runtime = SourceGraph::runtime();
+
+    return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine());
 }
 
 it('exposes the RunnerFacadeInterface entry point', function () {

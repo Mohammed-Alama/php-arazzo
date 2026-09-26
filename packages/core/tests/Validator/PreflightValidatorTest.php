@@ -154,19 +154,20 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
         ],
     ]);
-    $documents = SourceGraph::using(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $documents = $runtime->document;
     $resolver = new ExpressionResolver(
         new ExpressionEvaluator(),
-        new StepOutputExtractor($documents, new EvaluationEngine(), new ExpressionEngine()),
+        new StepOutputExtractor($runtime->operations, new EvaluationEngine(), new ExpressionEngine()),
         new CriteriaEvaluator(new ExpressionEvaluator()),
-        new ResponseSchemaValidator($documents),
+        new ResponseSchemaValidator($runtime->operations),
     );
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
-            $documents,
+            $runtime->operations,
             engine: new EvaluationEngine(),
         ),
         new WorkflowEngine($resolver),

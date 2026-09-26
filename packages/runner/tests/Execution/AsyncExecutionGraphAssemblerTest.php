@@ -15,6 +15,7 @@ use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
@@ -117,8 +118,10 @@ function seams(
 
 function internal(AsyncGraphSeams $s): AsyncExecutionGraphAssembler
 {
+    $runtime = SourceGraph::runtime();
+
     return new AsyncExecutionGraphAssembler(
-        SourceGraph::default(),
+        new OperationRuntime($runtime->document, $runtime->operations),
         new EvaluationEngine(),
         new ExpressionEngine(),
     );

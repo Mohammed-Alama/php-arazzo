@@ -124,6 +124,7 @@ flowchart LR
     runner_Async --> runner_Execution
     runner_Async --> runner_Jobs
     runner_Events --> contracts_Support
+    runner_Execution --> document__
     runner_Execution --> contracts_Spec
     runner_Execution --> runner_State
     runner_Execution --> contracts_State
@@ -131,7 +132,6 @@ flowchart LR
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
-    runner_Execution --> document__
     runner_Execution --> document_Validator
     runner_Execution --> evaluation_Interfaces
     runner_Execution --> runner_Events
@@ -153,7 +153,6 @@ flowchart LR
     runner_Protocol --> contracts_Interfaces
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
-    runner_Protocol --> document__
     runner_Protocol --> evaluation__
     runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
@@ -168,10 +167,10 @@ flowchart LR
     runner__ --> runner_Events
     runner__ --> runner_Infrastructure
     runner__ --> runner_State
-    runner__ --> document__
     runner__ --> evaluation__
     runner__ --> expression_Interfaces
     runner__ --> contracts_Spec
+    runner__ --> document__
     runner__ --> expression__
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec

@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
 use cebe\openapi\spec\Operation;
 use RuntimeException;
@@ -24,7 +25,21 @@ class OpenApiOperationResolver
         private OpenApi31Normalizer $normalizer31,
     ) {}
 
-    public function resolve(Step $step, ArazzoDocument $document): ResolvedOperation
+    /**
+     * The detector this resolver was built with, so a caller wiring both
+     * does not have to construct a second one.
+     */
+    public function versionDetector(): OpenApiVersionDetector
+    {
+        return $this->versionDetector;
+    }
+
+    public function resolveModel(Step $step, ArazzoDocument $document): ResolvedOperation
+    {
+        return $this->resolve($step, $document)->operation;
+    }
+
+    public function resolve(Step $step, ArazzoDocument $document): OpenApiOperationHandle
     {
         $opId = $step->target->operationId;
         $opPath = $step->target->operationPath;
@@ -163,11 +178,9 @@ class OpenApiOperationResolver
 
         $normalized = $normalizer->normalize($rawDocument, (string) $foundPath, (string) $foundMethod);
 
-        return new ResolvedOperation(
-            $targetSource,
-            $normalized,
+        return new OpenApiOperationHandle(
+            new ResolvedOperation($targetSource, $normalized),
             $openApi,
-            $rawDocument,
             $cebeOperation,
         );
     }

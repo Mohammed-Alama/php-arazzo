@@ -67,19 +67,20 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
 
     $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
-    $documents = SourceGraph::using(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $documents = $runtime->document;
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($documents, $engine, new ExpressionEngine()),
+        new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
         new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($documents),
+        new ResponseSchemaValidator($runtime->operations),
     );
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
-            $documents,
+            $runtime->operations,
             engine: $engine,
         ),
         workflowEngine: new WorkflowEngine($resolver),

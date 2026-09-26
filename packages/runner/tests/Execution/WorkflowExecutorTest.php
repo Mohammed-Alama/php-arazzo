@@ -502,14 +502,14 @@ it('executes a workflow end-to-end', function () {
     };
     $engine = new EvaluationEngine();
     $evaluator = new ExpressionEvaluator();
-    $documents = SourceGraph::using(null, null, new SourceRegistry($sourceResolver));
-    $outputExtractor = new StepOutputExtractor($documents, $engine, new ExpressionEngine());
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry($sourceResolver));
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $criteriaEvaluator = new CriteriaEvaluator($evaluator);
-    $schemaValidator = new ResponseSchemaValidator($documents);
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
     $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $documents, engine: $engine);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $runtime->operations, engine: $engine);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver()));
 

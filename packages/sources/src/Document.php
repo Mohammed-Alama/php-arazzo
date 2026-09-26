@@ -11,10 +11,10 @@ use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\ModelStack;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\Validator\PreflightValidator;
 
@@ -72,6 +72,6 @@ final class Document implements DocumentInterface
 
     public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation
     {
-        return $this->operations->resolve($step, $document);
+        return $this->operations->resolveModel($step, $document);
     }
 }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
@@ -17,6 +16,7 @@ use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnresolvableReferenceException;
+use Alama\Arazzo\Sources\SourceRuntime;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
@@ -43,12 +43,12 @@ $classificationHarness = new class() extends ConformanceHarness
         return $this->prepare($fixture);
     }
 
-    public function ops(): DocumentInterface
+    public function sourceRuntime(): SourceRuntime
     {
-        return $this->documents($this->sourceRegistry);
+        return $this->runtime($this->sourceRegistry);
     }
 
-    public function res(DocumentInterface $r): ExpressionResolverInterface
+    public function res(SourceRuntime $r): ExpressionResolver
     {
         return $this->resolver($r);
     }
@@ -91,13 +91,14 @@ it('names the source on unresolvable circular source references', function (): v
 it('preserves raw body, content type, and transport category on synthetic failures', function () use ($classificationHarness): void {
     $fixture = requestConstructionFixture();
     $document = $classificationHarness->boot($fixture);
-    $documents = $classificationHarness->ops();
-    $resolver = $classificationHarness->res($documents);
+    $runtime = $classificationHarness->sourceRuntime();
+    $documents = $runtime->document;
+    $resolver = $classificationHarness->res($runtime);
 
     $executor = new HttpStepExecutor(
         new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
         $resolver,
-        $documents,
+        $runtime->operations,
         engine: new EvaluationEngine(),
     );
 
@@ -117,7 +118,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
     $executor = new HttpStepExecutor(
         new DefaultOpenApiExecutor($failingHttp, new HttpFactory()),
         $resolver,
-        $documents,
+        $runtime->operations,
         engine: new EvaluationEngine(),
     );
 
@@ -137,7 +138,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
     $executor2 = new HttpStepExecutor(
         new DefaultOpenApiExecutor($http2, new HttpFactory()),
         $resolver,
-        $documents,
+        $runtime->operations,
         engine: new EvaluationEngine(),
     );
 
@@ -150,8 +151,9 @@ it('preserves raw body, content type, and transport category on synthetic failur
 it('classifies unmet-criteria failures on step events while keeping execution faults distinct', function () use ($classificationHarness): void {
     $fixture = json_decode((string) file_get_contents(__DIR__.'/../Conformance/fixtures/goto-on-failure.json'), true);
     $document = $classificationHarness->boot($fixture);
-    $documents = $classificationHarness->ops();
-    $resolver = $classificationHarness->res($documents);
+    $runtime = $classificationHarness->sourceRuntime();
+    $documents = $runtime->document;
+    $resolver = $classificationHarness->res($runtime);
 
     foreach ($fixture['responses'] as $response) {
         $classificationHarness->client()->enqueue(new Response((int) $response['status'], [], json_encode($response['body'] ?? new stdClass())));
@@ -161,7 +163,7 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
         new StepExecutor(
             new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
             $resolver,
-            $documents,
+            $runtime->operations,
             engine: new EvaluationEngine(),
         ),
         new WorkflowEngine($resolver),

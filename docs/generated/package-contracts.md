@@ -183,8 +183,8 @@ public contract between packages.
 - `ValidationResult` — present
 - `Error` — present
 - `Warning` — present
-- `ResolvedOperation` — not found
-- `NormalizedOpenApiOperation` — not found
+- `ResolvedOperation` — present
+- `NormalizedOpenApiOperation` — present
 - `LoaderException` — present
 - `ParserException` — present
 - `PreflightFailureException` — present

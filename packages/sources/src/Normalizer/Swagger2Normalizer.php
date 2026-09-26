@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Sources\Normalizer;
 
 use Alama\Arazzo\Contracts\Support\Exceptions\NotImplementedException;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Sources\Normalizer\Interfaces\OpenApiNormalizerInterface;
 
 /**

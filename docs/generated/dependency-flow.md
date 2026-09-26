@@ -45,7 +45,7 @@ document-Validator,contracts-Spec,89
 document-Validator,contracts-Support,2
 document-Validator,expression-Enum,7
 document-Validator,expression-Interfaces,9
-document-root,contracts-Spec,5
+document-root,contracts-Spec,6
 document-root,document-Parser,6
 document-root,document-Validator,3
 document-root,expression-Interfaces,1
@@ -102,7 +102,7 @@ laravel-Bindings,laravel-Queue,1
 laravel-Bindings,laravel-State,1
 laravel-Bindings,laravel-Support,4
 laravel-Bindings,runner-Events,3
-laravel-Bindings,runner-Execution,6
+laravel-Bindings,runner-Execution,7
 laravel-Bindings,runner-Infrastructure,1
 laravel-Bindings,runner-State,4
 laravel-Bindings,runner-root,5
@@ -152,7 +152,7 @@ runner-Execution,contracts-State,14
 runner-Execution,contracts-Support,9
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
-runner-Execution,document-root,8
+runner-Execution,document-root,5
 runner-Execution,evaluation-Interfaces,6
 runner-Execution,evaluation-root,10
 runner-Execution,expression-Enum,1
@@ -172,7 +172,6 @@ runner-Protocol,contracts-Dependency,1
 runner-Protocol,contracts-Interfaces,5
 runner-Protocol,contracts-Spec,20
 runner-Protocol,contracts-State,5
-runner-Protocol,document-root,1
 runner-Protocol,evaluation-Interfaces,2
 runner-Protocol,evaluation-root,3
 runner-Protocol,runner-Execution,14
@@ -182,13 +181,13 @@ runner-State,contracts-Spec,5
 runner-State,contracts-State,2
 runner-root,contracts-Interfaces,3
 runner-root,contracts-Spec,3
-runner-root,document-root,2
+runner-root,document-root,1
 runner-root,evaluation-Interfaces,2
 runner-root,evaluation-root,2
 runner-root,expression-Interfaces,2
 runner-root,expression-root,1
 runner-root,runner-Events,1
-runner-root,runner-Execution,10
+runner-root,runner-Execution,12
 runner-root,runner-Infrastructure,1
 runner-root,runner-State,4
 ```

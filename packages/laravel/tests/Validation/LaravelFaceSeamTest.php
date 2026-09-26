@@ -24,6 +24,7 @@ const LARAVEL_SEAM_SPI_ALLOWLIST = [
     'Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer',
     'Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker',
     'Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine',
+    'Alama\\Arazzo\\Runner\\Execution\\OperationRuntime',
 ];
 
 function laravelSourceFiles(): array

@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Sources\SourceGraph;
 
 function capabilityDocument(array $workflows, array $sourceDescriptions = []): ArazzoDocument
@@ -57,7 +57,7 @@ it('rejects unsupported OpenAPI versions through the face', function (): void {
 })->throws(InvalidArgumentException::class);
 
 it('resolves an operation-targeted step through the face', function (): void {
-    $document = SourceGraph::default();
+    $runtime = SourceGraph::runtime();
     $arazzo = capabilityDocument(
         sourceDescriptions: [
             ['name' => 'pets', 'type' => 'openapi', 'url' => __DIR__.'/fixtures/document/openapi30.yaml'],
@@ -69,13 +69,19 @@ it('resolves an operation-targeted step through the face', function (): void {
         ],
     );
 
-    $resolved = $document->resolveOperation($arazzo->workflows[0]->steps[0], $arazzo);
+    $step = $arazzo->workflows[0]->steps[0];
+
+    // The port yields the vendor-free model; the cebe handle comes from the
+    // resolver, which is why the runtime hands out both.
+    $resolved = $runtime->document->resolveOperation($step, $arazzo);
+    $handle = $runtime->operations->resolve($step, $arazzo);
 
     expect($resolved)->toBeInstanceOf(ResolvedOperation::class)
         ->and($resolved->normalized->path)->toBe('/pets')
         ->and($resolved->normalized->method)->toBe('get')
         ->and($resolved->normalized->resolvedServerUrl)->toBeNull()
-        ->and($resolved->cebeOperation->operationId)->toBe('listPets');
+        ->and($handle->operation->normalized->path)->toBe($resolved->normalized->path)
+        ->and($handle->cebeOperation->operationId)->toBe('listPets');
 });
 
 it('fails fast when a step declares no operation target', function (): void {

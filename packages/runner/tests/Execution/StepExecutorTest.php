@@ -12,14 +12,15 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Sources\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Sources\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
@@ -37,14 +38,15 @@ function createTestDocument(): ArazzoDocument
     );
 }
 
-function createMockDocumentResolver(): DocumentInterface
+function createMockDocumentResolver(): OpenApiOperationResolver
 {
-    $mock = Mockery::mock(DocumentInterface::class);
-    $mock->shouldReceive('resolveOperation')->andReturn(new ResolvedOperation(
-        new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
-        new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
+    $mock = Mockery::mock(OpenApiOperationResolver::class);
+    $mock->shouldReceive('resolve')->andReturn(new OpenApiOperationHandle(
+        new ResolvedOperation(
+            new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
+            new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
+        ),
         new OpenApi([]),
-        [],
         new Operation([]),
     ));
 
