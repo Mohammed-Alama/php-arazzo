@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 2 | 665 | 10 | 1 | 0.09 |  |
 | `contracts:Support` | 5 | 180 | 10 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1245 | 6 | 2 | 0.25 |  |
-| `document:Validator` | 64 | 3091 | 6 | 5 | 0.45 |  |
+| `document:Validator` | 64 | 3101 | 6 | 5 | 0.45 |  |
 | `(document root)` | 4 | 195 | 6 | 4 | 0.40 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
