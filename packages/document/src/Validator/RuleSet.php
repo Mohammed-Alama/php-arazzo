@@ -54,6 +54,7 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowDependsOnNoCycleRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
+use Alama\Arazzo\Document\Validator\Rules\WsdlStepRule;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
@@ -112,6 +113,7 @@ final readonly class RuleSet
             new StepOperationIdSourceScopedRule(),
             new StepOperationPathSyntaxRule(),
             new StepOperationTargetPresentRule(),
+            new WsdlStepRule(),
             new StepTimeoutRequires11Rule(),
             new StepOutputsUniqueRule(),
             new StepParameterInValidRule(),

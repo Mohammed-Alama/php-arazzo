@@ -194,6 +194,8 @@ flowchart LR
     C_document_document_Validator_WorkflowInputsValidSchemaRule -.->|implements| I_Rule
     C_document_document_Validator_WorkflowUniqueIdRule["WorkflowUniqueIdRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_WorkflowUniqueIdRule -.->|implements| I_Rule
+    C_document_document_Validator_WsdlStepRule["WsdlStepRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WsdlStepRule -.->|implements| I_Rule
     C_sources_sources___Document["Document<br/><small>(sources root)</small>"]:::implCore
     C_sources_sources___Document -.->|implements| I_DocumentInterface
     C_sources_sources_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>sources:Normalizer</small>"]:::implCore

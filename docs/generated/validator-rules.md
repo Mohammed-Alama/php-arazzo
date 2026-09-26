@@ -9,7 +9,7 @@ every commit.
 
 ```mermaid
 flowchart TD
-    ROOT["Validator rules (49)"]
+    ROOT["Validator rules (50)"]
     G_Actions["Actions — 4"]
     ROOT --> G_Actions
     R_ActionGotoTargetResolvesRule["ActionGotoTargetResolves"]
@@ -56,12 +56,14 @@ flowchart TD
     G_Expressions --> R_ExpressionUnresolvedStepRefRule
     R_ExpressionUnresolvedWorkflowRefRule["ExpressionUnresolvedWorkflowRef"]
     G_Expressions --> R_ExpressionUnresolvedWorkflowRefRule
-    G_General["General — 2"]
+    G_General["General — 3"]
     ROOT --> G_General
     R_SubWorkflowInvokeTargetResolvesRule["SubWorkflowInvokeTargetResolves"]
     G_General --> R_SubWorkflowInvokeTargetResolvesRule
     R_SuccessCriteriaVersionSupportedRule["SuccessCriteriaVersionSupported"]
     G_General --> R_SuccessCriteriaVersionSupportedRule
+    R_WsdlStepRule["WsdlStep"]
+    G_General --> R_WsdlStepRule
     G_Parameters["Parameters — 1"]
     ROOT --> G_Parameters
     R_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShape"]
@@ -141,7 +143,7 @@ flowchart TD
 | **Components** | `ComponentsUniqueNamesRule` |
 | **Document-level** | `DocUnknownFieldRule`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule`, `DocumentSourceDescriptionsPresentRule` |
 | **Expressions** | `ExpressionContextMisuseRule`, `ExpressionJsonPointerSyntaxRule`, `ExpressionSyntaxRule`, `ExpressionUnresolvedComponentRefRule`, `ExpressionUnresolvedInputRefRule`, `ExpressionUnresolvedSourceRefRule`, `ExpressionUnresolvedStepRefRule`, `ExpressionUnresolvedWorkflowRefRule` |
-| **General** | `SubWorkflowInvokeTargetResolvesRule`, `SuccessCriteriaVersionSupportedRule` |
+| **General** | `SubWorkflowInvokeTargetResolvesRule`, `SuccessCriteriaVersionSupportedRule`, `WsdlStepRule` |
 | **Parameters** | `ParameterQuerystringOperationShapeRule` |
 | **Selectors** | `SelectorTypeSupportedRule` |
 | **Sources** | `SelfUriSyntaxRule`, `SourceTypeMatchesRule`, `SourceUniqueNameRule`, `SourceUrlSyntaxRule` |

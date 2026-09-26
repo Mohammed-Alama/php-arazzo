@@ -68,10 +68,11 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowIdPatternRule` <small>core</small> | `error` | 1 |
 | `WorkflowInputsValidSchemaRule` <small>core</small> | `error` | 3 |
 | `WorkflowUniqueIdRule` <small>core</small> | `error` | 1 |
+| `WsdlStepRule` <small>core</small> | `error` | 2 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 | `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-72 logging calls total. PSR-14 events are dispatched independently (see events.md).
+74 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 
