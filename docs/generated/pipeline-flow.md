@@ -10,11 +10,6 @@ objects, enums and exceptions are omitted. Regenerated before every commit.
 
 ```mermaid
 flowchart TD
-    subgraph G_Async["Async"]
-        Alama_Arazzo_Runner_Async_SuspensionHandler["SuspensionHandler"]:::entry
-        Alama_Arazzo_Runner_Async_TransitionApplier["TransitionApplier"]:::entry
-        Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents"]:::service
-    end
     subgraph G_Events["Events"]
         Alama_Arazzo_Runner_Events_CorrelationPendingEvent["CorrelationPendingEvent"]:::service
         Alama_Arazzo_Runner_Events_CorrelationResumedEvent["CorrelationResumedEvent"]:::service
@@ -66,7 +61,6 @@ flowchart TD
     subgraph G_Protocol["Protocol"]
         Alama_Arazzo_Runner_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor"]:::service
         Alama_Arazzo_Runner_Protocol_HttpStepExecutor["HttpStepExecutor"]:::service
-        Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor["SubWorkflowExecutor"]:::entry
         Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor"]:::service
     end
     subgraph G_Queue_Jobs["Queue/Jobs"]
@@ -79,16 +73,6 @@ flowchart TD
     end
     Alama_Arazzo_Laravel_Queue_Jobs_RunExecuteStepJob --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
     Alama_Arazzo_Laravel_Queue_Jobs_RunResumeCorrelationJob --> Alama_Arazzo_Runner_Jobs_ResumeCorrelationJob
-    Alama_Arazzo_Runner_Async_SuspensionHandler --> Alama_Arazzo_Runner_Events_CorrelationPendingEvent
-    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Async_WorkerEvents
-    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Execution_WorkflowEngine
-    Alama_Arazzo_Runner_Async_TransitionApplier --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
-    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_CorrelationPendingEvent
-    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_RunCompletedEvent
-    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_RunFailedEvent
-    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_StepExecutedEvent
-    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_StepFailedEvent
-    Alama_Arazzo_Runner_Async_WorkerEvents --> Alama_Arazzo_Runner_Events_StepStartedEvent
     Alama_Arazzo_Runner_Execution_AsyncExecutionGraphAssembler --> Alama_Arazzo_Runner_Execution_CorrelationResumer
     Alama_Arazzo_Runner_Execution_AsyncExecutionGraphAssembler --> Alama_Arazzo_Runner_Execution_Data_RunControlFlow
     Alama_Arazzo_Runner_Execution_AsyncExecutionGraphAssembler --> Alama_Arazzo_Runner_Execution_Data_RunPersistence
@@ -163,7 +147,6 @@ flowchart TD
     Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
     Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector
     Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_RequestCompiler
-    Alama_Arazzo_Runner_Protocol_SubWorkflowExecutor --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_Data_ExecutionEvaluationInput
     Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
     Alama_Arazzo_Runner_Protocol_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Execution_WorkflowExecutor
@@ -177,18 +160,15 @@ flowchart TD
 |---|---|---|---|---|
 | **RunExecuteStepJob** | laravel | `ExecuteStepJob` | — | — |
 | **RunResumeCorrelationJob** | laravel | `ResumeCorrelationJob` | — | — |
-| **SuspensionHandler** | runner | `CorrelationPendingEvent` | — | `CorrelationPendingEvent` |
-| **TransitionApplier** | runner | `WorkerEvents`, `WorkflowEngine`, `ExecuteStepJob` | — | — |
-| **WorkerEvents** | runner | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent` | `TransitionApplier` | `CorrelationPendingEvent`, `RunCompletedEvent`, `RunFailedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepStartedEvent` |
-| **CorrelationPendingEvent** | runner | — | `SuspensionHandler`, `WorkerEvents`, `StepExecutionWorker` | — |
+| **CorrelationPendingEvent** | runner | — | `StepExecutionWorker` | — |
 | **CorrelationResumedEvent** | runner | — | `CorrelationResumer` | — |
-| **RunCompletedEvent** | runner | — | `WorkerEvents`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
-| **RunFailedEvent** | runner | — | `WorkerEvents`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
+| **RunCompletedEvent** | runner | — | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
+| **RunFailedEvent** | runner | — | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
 | **RunStartedEvent** | runner | — | `WorkflowExecutor` | — |
-| **StepExecutedEvent** | runner | — | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` | — |
-| **StepFailedEvent** | runner | — | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` | — |
+| **StepExecutedEvent** | runner | — | `StepExecutionWorker`, `WorkflowExecutor` | — |
+| **StepFailedEvent** | runner | — | `StepExecutionWorker`, `WorkflowExecutor` | — |
 | **StepRetriedEvent** | runner | — | `StepOutcomeHandler`, `WorkflowExecutor` | — |
-| **StepStartedEvent** | runner | — | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` | — |
+| **StepStartedEvent** | runner | — | `StepExecutionWorker`, `WorkflowExecutor` | — |
 | **AsyncExecutionGraphAssembler** | runner | `CorrelationResumer`, `RunControlFlow`, `RunPersistence`, `DefaultOpenApiExecutor`, `ExecutionExpressionResolver`, `IdempotencyKeyInjector`, `OperationRuntime`, `ResponseSchemaValidator`, `StepExecutionWorker`, `StepExecutor`, `StepOutcomeHandler`, `StepOutputExtractor`, `SubWorkflowInvoker`, `WorkflowEngine`, `WorkflowExecutor`, `AsyncApiStepExecutor`, `HttpStepExecutor`, `SubWorkflowStepExecutor` | — | — |
 | **CorrelationResumer** | runner | `CorrelationResumedEvent`, `StepOutcomeHandler` | `AsyncExecutionGraphAssembler` | `CorrelationResumedEvent` |
 | **ExecutionEvaluationInput** | runner | — | `ExecutionExpressionResolver`, `ExpressionValueResolver`, `StepOutcomeHandler`, `StepOutputExtractor`, `SubWorkflowInvoker`, `AsyncApiStepExecutor`, `SubWorkflowStepExecutor` | — |
@@ -212,15 +192,14 @@ flowchart TD
 | **StepOutcomeHandler** | runner | `RunCompletedEvent`, `RunFailedEvent`, `StepRetriedEvent`, `ExecutionEvaluationInput`, `SubWorkflowInvoker`, `WorkflowEngine`, `ExecuteStepJob` | `AsyncExecutionGraphAssembler`, `CorrelationResumer` | `RunCompletedEvent`, `RunFailedEvent`, `StepRetriedEvent` |
 | **StepOutputExtractor** | runner | `ExecutionEvaluationInput` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
 | **SubWorkflowInvoker** | runner | `ExecutionEvaluationInput`, `SubWorkflowResult`, `WorkflowExecutor` | `AsyncExecutionGraphAssembler`, `StepOutcomeHandler` | — |
-| **WorkflowEngine** | runner | `RetryPolicy` | `TransitionApplier`, `AsyncExecutionGraphAssembler`, `RunControlFlow`, `ExecutionGraphFactory`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor`, `SubWorkflowExecutor` | — |
+| **WorkflowEngine** | runner | `RetryPolicy` | `AsyncExecutionGraphAssembler`, `RunControlFlow`, `ExecutionGraphFactory`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` | — |
 | **WorkflowExecutor** | runner | `RunCompletedEvent`, `RunFailedEvent`, `RunStartedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepRetriedEvent`, `StepStartedEvent`, `ExecutionResult`, `StepExecutor`, `WorkflowEngine` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory`, `SubWorkflowInvoker`, `SubWorkflowStepExecutor` | `RunCompletedEvent`, `RunFailedEvent`, `RunStartedEvent`, `StepExecutedEvent`, `StepFailedEvent`, `StepRetriedEvent`, `StepStartedEvent` |
-| **ExecuteStepJob** | runner | — | `RunExecuteStepJob`, `TransitionApplier`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
+| **ExecuteStepJob** | runner | — | `RunExecuteStepJob`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
 | **ResumeCorrelationJob** | runner | — | `RunResumeCorrelationJob` | — |
 | **ExponentialBackoffCalculator** | runner | — | `RetryPolicy` | — |
 | **RetryPolicy** | runner | `ExponentialBackoffCalculator` | `WorkflowEngine` | — |
 | **AsyncApiStepExecutor** | runner | `ExecutionEvaluationInput`, `ReusableParameterResolver` | `AsyncExecutionGraphAssembler` | — |
 | **HttpStepExecutor** | runner | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler` | `AsyncExecutionGraphAssembler` | — |
-| **SubWorkflowExecutor** | runner | `WorkflowEngine` | — | — |
 | **SubWorkflowStepExecutor** | runner | `ExecutionEvaluationInput`, `ReusableParameterResolver`, `WorkflowExecutor` | `AsyncExecutionGraphAssembler` | — |
 | **Budget** | runner | — | `ExecutionContext` | — |
 | **ExecutionContext** | runner | `Budget` | `Transition` | — |

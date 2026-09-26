@@ -25,7 +25,7 @@ Regenerated before every commit.
 | **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>runner:Execution</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
 | **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>sources:Normalizer</small> |
-| **PreflightFailureException** | `PreflightGuard` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
+| **PreflightFailureException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
 | **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
 | **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(evaluation root)</small> |
@@ -77,9 +77,6 @@ Regenerated before every commit.
 | prop maxQueuedSteps | `CliRunner` | `10_000` |
 | const MAX_DEPTH | `InputSchemaResolver` | `16` |
 | prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
-| prop stateTtlSeconds | `SuspensionHandler` | `86400` |
-| const OUTCOME_TERMINAL | `TransitionApplier` | `'terminal'` |
-| prop stateTtlSeconds | `TransitionApplier` | `86400` |
 | prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
 | prop ttlSeconds | `CachedFetcher` | `3600` |

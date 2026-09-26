@@ -44,7 +44,6 @@ flowchart LR
     laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
     laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     laravel__["(laravel package root)"]:::laravelNode
-    runner_Async["Alama\Arazzo\Runner\Async"]:::coreNode
     runner_Events["Alama\Arazzo\Runner\Events"]:::coreNode
     runner_Execution["Alama\Arazzo\Runner\Execution"]:::coreNode
     runner_Infrastructure["Alama\Arazzo\Runner\Infrastructure"]:::coreNode
@@ -138,18 +137,6 @@ flowchart LR
     sources__ --> sources_Validator
     sources__ --> document_Parser
     sources__ --> expression__
-    runner_Async --> contracts_Spec
-    runner_Async --> contracts_State
-    runner_Async --> evaluation_Interfaces
-    runner_Async --> runner_Events
-    runner_Async --> runner_State
-    runner_Async --> contracts_Exceptions
-    runner_Async --> contracts_Support
-    runner_Async --> document_Validator
-    runner_Async --> document__
-    runner_Async --> contracts_Interfaces
-    runner_Async --> runner_Execution
-    runner_Async --> runner_Jobs
     runner_Events --> contracts_Support
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
@@ -185,7 +172,6 @@ flowchart LR
     runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
     runner_Protocol --> sources_Normalizer
-    runner_Protocol --> contracts_Dependency
     runner_Protocol --> runner_Infrastructure
     runner_Protocol --> runner_State
     runner_State --> contracts_Spec

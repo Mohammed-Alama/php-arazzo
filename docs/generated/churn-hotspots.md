@@ -17,23 +17,22 @@ xychart-beta
     bar [29, 17, 16, 15, 15, 14, 12, 9, 9, 9, 9, 8]
 ```
 
-Analyzed 259 total file-touches across 44 modules.
+Analyzed 252 total file-touches across 43 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 29 | 11% | 372 | 78 |
+| `laravel:Bindings` | 29 | 12% | 372 | 78 |
 | `laravel:Http` | 17 | 7% | 170 | 100 |
 | `cli:Console` | 16 | 6% | 793 | 20.2 |
 | `document:Validator` | 15 | 6% | 3,470 | 4.3 |
 | `laravel:Persistence` | 15 | 6% | 264 | 56.8 |
-| `runner:Execution` | 14 | 5% | 3,886 | 3.6 |
+| `runner:Execution` | 14 | 6% | 3,886 | 3.6 |
 | `laravel:Queue` | 12 | 5% | 109 | 110.1 |
-| `contracts:Spec` | 9 | 3% | 1,202 | 7.5 |
-| `laravel:Lock` | 9 | 3% | 52 | 173.1 |
-| `laravel:State` | 9 | 3% | 41 | 219.5 |
-| `runner:Protocol` | 9 | 3% | 557 | 16.2 |
+| `contracts:Spec` | 9 | 4% | 1,202 | 7.5 |
+| `laravel:Lock` | 9 | 4% | 52 | 173.1 |
+| `laravel:State` | 9 | 4% | 41 | 219.5 |
+| `runner:Protocol` | 9 | 4% | 366 | 24.6 |
 | `document:Parser` | 8 | 3% | 1,316 | 6.1 |
-| `runner:Async` | 7 | 3% | 500 | 14 |
 | `sources:Normalizer` | 7 | 3% | 782 | 9 |
 | `contracts:Interfaces` | 6 | 2% | 305 | 19.7 |
 | `expression:Interfaces` | 5 | 2% | 25 | 200 |

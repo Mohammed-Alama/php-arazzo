@@ -16,7 +16,7 @@ Evans' first question: does the code speak one language?
 ### run vs execute vs invoke
 
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
-- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 8 more (12 types)
+- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 6 more (10 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
 - **Run**: `CliRunResult`, `CliRunner`, `OperationRuntime`, `RunCommand` + 13 more (17 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
@@ -40,12 +40,12 @@ Evans' first question: does the code speak one language?
 
 ### state vs status
 
-- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 5 more (9 types)
+- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore` + 3 more (7 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 13 more (17 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 12 more (16 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
@@ -53,7 +53,7 @@ Evans' first question: does the code speak one language?
 
 - **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry` (1 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 23 more (27 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 22 more (26 types)
 
 ### render vs generate
 

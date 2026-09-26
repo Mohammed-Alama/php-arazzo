@@ -66,8 +66,6 @@ mindmap
       StepOutputExtractor
     PendingCorrelationRegistryInterface
       DatabasePendingCorrelationRegistry
-    ProtocolExecutorRegistryInterface
-      ProtocolExecutorRegistry
     QueueDriverInterface
       SyncQueueDriver
       LaravelQueueDriver
@@ -90,7 +88,6 @@ mindmap
     StepProtocolExecutorInterface
       AsyncApiStepExecutor
       HttpStepExecutor
-      SubWorkflowExecutor
       SubWorkflowStepExecutor
     WorkflowContextInterface
       WorkflowContext
@@ -122,7 +119,6 @@ mindmap
 | `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `OutputExtractorInterface` | no | `StepOutputExtractor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
-| `ProtocolExecutorRegistryInterface` | no | `ProtocolExecutorRegistry` <small>core</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
@@ -131,7 +127,7 @@ mindmap
 | `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small> |
 | `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
-| `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |
 
@@ -141,5 +137,6 @@ Declared but nothing in src implements them — candidates for removal or for a 
 
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
+- `ProtocolExecutorRegistryInterface` <small>Execution/Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
 - `WorkflowStateRepositoryInterface` <small>Interfaces</small>

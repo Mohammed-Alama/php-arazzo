@@ -245,12 +245,8 @@ flowchart LR
     C_runner_runner_Protocol_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_runner_runner_Protocol_HttpStepExecutor["HttpStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
     C_runner_runner_Protocol_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_runner_runner_Protocol_SubWorkflowExecutor["SubWorkflowExecutor<br/><small>runner:Protocol</small>"]:::implCore
-    C_runner_runner_Protocol_SubWorkflowExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_runner_runner_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
     C_runner_runner_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_runner_runner_Protocol_ProtocolExecutorRegistry["ProtocolExecutorRegistry<br/><small>runner:Protocol</small>"]:::implCore
-    C_runner_runner_Protocol_ProtocolExecutorRegistry -.->|implements| I_ProtocolExecutorRegistryInterface
     C_runner_runner___RunnerFacade["RunnerFacade<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerFacade -.->|implements| I_RunnerFacadeInterface
     C_runner_runner___RunnerGraphBuilder["RunnerGraphBuilder<br/><small>(runner root)</small>"]:::implCore
@@ -283,6 +279,7 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
     N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
+    N_ProtocolExecutorRegistryInterface["no implementation found"]:::orphan --> I_ProtocolExecutorRegistryInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
     N_WorkflowStateRepositoryInterface["no implementation found"]:::orphan --> I_WorkflowStateRepositoryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

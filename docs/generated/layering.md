@@ -57,7 +57,6 @@ flowchart TB
         M_sources__["(sources package root)"]:::node
     end
     subgraph PKG_M_runner["runner"]
-        M_runner_Async["runner:Async"]:::node
         M_runner_Events["runner:Events"]:::node
         M_runner_Execution["runner:Execution"]:::node
         M_runner_Infrastructure["runner:Infrastructure"]:::node
@@ -212,18 +211,6 @@ flowchart TB
     M_laravel__ --> M_laravel_Bindings
     M_laravel__ --> M_laravel_Http
     M_laravel__ --> M_laravel_Support
-    M_runner_Async --> M_contracts_Exceptions
-    M_runner_Async --> M_contracts_Interfaces
-    M_runner_Async --> M_contracts_Spec
-    M_runner_Async --> M_contracts_State
-    M_runner_Async --> M_contracts_Support
-    M_runner_Async --> M_document_Validator
-    M_runner_Async --> M_document__
-    M_runner_Async --> M_evaluation_Interfaces
-    M_runner_Async --> M_runner_Events
-    M_runner_Async --> M_runner_Execution
-    M_runner_Async --> M_runner_Jobs
-    M_runner_Async --> M_runner_State
     M_runner_Events --> M_contracts_Support
     M_runner_Execution --> M_contracts_Dependency
     M_runner_Execution --> M_contracts_Exceptions
@@ -252,7 +239,6 @@ flowchart TB
     M_runner_Policy --> M_contracts_Interfaces
     M_runner_Policy --> M_contracts_Spec
     M_runner_Policy --> M_contracts_State
-    M_runner_Protocol --> M_contracts_Dependency
     M_runner_Protocol --> M_contracts_Interfaces
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
@@ -333,9 +319,9 @@ flowchart TB
 | `laravel` | `expression` | 2 |
 | `laravel` | `runner` | 45 |
 | `laravel` | `sources` | 16 |
-| `runner` | `contracts` | 191 |
-| `runner` | `document` | 13 |
-| `runner` | `evaluation` | 26 |
+| `runner` | `contracts` | 161 |
+| `runner` | `document` | 10 |
+| `runner` | `evaluation` | 24 |
 | `runner` | `expression` | 7 |
 | `runner` | `sources` | 10 |
 | `sources` | `contracts` | 29 |

@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 53 | 17 | allowed |
+| `Psr` | 51 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 18 | 0 | **forbidden** ⚠ |
@@ -38,7 +38,6 @@ when a boundary consciously moves.
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
 | evaluation | `evaluation:_` | `Flow` | 1 |
-| runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
 | runner | `runner:Execution` | `Psr` | 23 |
@@ -128,7 +127,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `evaluation` | `StepRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
-| `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
+| `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
