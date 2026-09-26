@@ -6,19 +6,40 @@
 >
 > This plan assumes that **Phase A (contracts ports)**, **Phase B (expression grammar)**, **Phase C (expression split)**, and **#20 (JSON Schema validation)** have already landed. If any of those are not yet on `main`, stop and flag it before executing the first task.
 >
+> **D0 is new and runs first.** This plan previously began at D1. D0 splits `packages/document` into `alama/arazzo-document` (vendor-free model) and `alama/arazzo-sources` (resolution + cebe) before any normalizer work, and repoints D1, D2, D3c and D5 at the new boundary. If you are resuming from an older checkout of this plan, read D0 in full — it is a deliberate breaking change with no deprecation shims.
+>
 > The plan is the boss. If you can find a way to execute a task exactly as written, do it that way. Only deviate where the code forces you to, and note the deviation in the commit message. Follow the exact task order — do not reorder tasks.
 
 ## Goal
 
-Port the OpenAPI normalization pipeline and the per-protocol step-validation rules for the 1.2 step variants so that source normalization is reachable through a pluggable `SourceNormalizerInterface` registry, and `ResolvedOperation` becomes the two-axis (source type + RPC protocol) value that later phases (F) relay on. Privileges for the normalizers during D; **F1 relocates** the OpenAPI normalizer classes, `OpenApiDocumentLoader`, `OpenApiOperationResolver`, `ResolvedOperation`, and `NormalizedOpenApiOperation` to `alama/arazzo-protocol-http`. The registry, parsing primitives, `Validator`, and `RuleSet` stay in `document`.
+**D0 splits the package first.** `packages/document` currently carries five concerns that change for different reasons, and its public face leaks `cebe/php-openapi` through `ResolvedOperation`. D0 splits it into a vendor-free model package (`alama/arazzo-document`: `Parser`, `Validator`, the Spec AST, `DocumentInterface`, `ResolvedOperation`) and a source-resolution package (`alama/arazzo-sources`: `Resolver`, `Normalizer`, the `Document` implementation, every cebe touchpoint). D0 is a green state on its own, and every later task in this plan targets the boundary it establishes.
+
+Then: port the OpenAPI normalization pipeline and the per-protocol step-validation rules for the 1.2 step variants so that source normalization is reachable through a pluggable `SourceNormalizerInterface` registry, and `ResolvedOperation` becomes the two-axis (source type + RPC protocol) value that later phases (F) relay on.
+
+**Ownership after D0.** The registry (`alama-sources`), the normalizers, `OpenApiDocumentLoader`, `OpenApiOperationResolver` and `OpenApiVersionDetector` live in `alama/arazzo-sources`. `ResolvedOperation` and `NormalizedOpenApiOperation` are **pure model types in `alama/arazzo-document`** — they are *not* relocated to `alama/arazzo-protocol-http` by F1. The parsing primitives, `Validator`, and `RuleSet` stay in `arazzo-document`. The cebe handles that `ResolvedOperation` used to expose are carried by `Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle`.
 
 ## Architecture
+
+Two packages, outer to inner. `arazzo-sources` depends on `arazzo-document`;
+never the reverse.
+
+```
+laravel, cli                                       ← composition roots
+     │
+     ├── arazzo-sources   Resolver/ · Normalizer/ · Document (impl) · cebe · Guzzle
+     │        │
+     │        ▼
+     └── arazzo-document  Parser · Validator · Spec AST · DocumentInterface
+              │           · ResolvedOperation · NormalizedOpenApiOperation
+              ▼
+          contracts / expression                   ← zero vendor below here
+```
 
 ```
 SourceNormalizerInterface (contracts, Phase A)
         ▲
         │ implements
-OpenApiSourceNormalizer (document/src/Normalizer — D2)
+OpenApiSourceNormalizer (sources/src/Normalizer — D2)
         │ composes
         ├─ OpenApiDocumentLoader
         ├─ OpenApiVersionDetector
@@ -27,10 +48,13 @@ OpenApiSourceNormalizer (document/src/Normalizer — D2)
 
 SourceNormalizerRegistryInterface (contracts, Phase A)
         ▲
-SourceNormalizerRegistry (document/src/Resolver — D1)
+SourceNormalizerRegistry (sources/src/Resolver — D1)
         └─ get(SourceType): registers → OpenApiSourceNormalizer (D2)
 
-ResolvedOperation (document/src/Normalizer — D3c)
+OpenApiOperationHandle (sources/src/Normalizer — D0)
+        └─ carries cebe OpenApi + Operation for the 3 OpenAPI-specific runner sites
+
+ResolvedOperation (document/src — D0, two-axis in D3c)
         ├─ sourceType(): SourceType        (derived from $source->type)
         ├─ binding(): string              (derived: http/soap/grpc/... )
         └─ + rpcProtocol, operationName, rpcMethod, graphqlOperation, interaction
@@ -45,14 +69,16 @@ Rules (document/src/Validator/Rules — D4b..f)
 
 - **PHP 8.4** with strict types, readonly classes (contracts), plain classes with promoted readonly props (`ResolvedOperation`).
 - **Pest 5** tests, one test file per class. Tests live in `packages/{pkg}/tests`. The shared test helper `Alama\Arazzo\Tests\Support\Fx` (in `packages/core/tests/Support/Fx.php`) is autoloaded across all packages.
-- **PHPStan** analysis per package: `composer run analyse-document`, `composer run analyse-contracts`.
-- **cebe/openapi** for the loaded `OpenApi`/`Operation` models (versions 3.0/3.1 share the cebe object model).
+- **PHPStan** analysis per package: `composer run analyse-document`, `composer run analyse-contracts`, and — added by D0 — `composer run analyse-sources`.
+- **cebe/openapi** for the loaded `OpenApi`/`Operation` models (versions 3.0/3.1 share the cebe object model). After D0 this dependency belongs to `arazzo-sources` only; `arazzo-document` is cebe-free and `ArchTest` enforces it.
 - **pint** for formatting (`composer run format`).
-- Tests run from repo root: `composer run test-document`, `composer run test-contracts`. Final gate: `make verify`.
+- Tests run from repo root: `composer run test-document`, `composer run test-contracts`, and — added by D0 — `composer run test-sources`. Final gate: `make verify`.
 
 ## Spec
 
 Master spec: [`2026-09-08-plugin-stack-oms-multiprotocol-design.md`](../specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md) — Phase D section (rows D1–D11), decision table (D2, D3, D9), sequencing (`#23` superseded, `#20` before D), Public API impact, Risks.
+
+Split spec: [`2026-09-26-document-package-split-design.md`](../specs/2026-09-26-document-package-split-design.md) — the approved two-package boundary, the `ResolvedOperation` cebe purge, the composition root, and the five architecture guards that D0 lands. **D0 implements this spec; where this plan and the split spec disagree, the split spec wins.**
 
 Research: [`2026-09-08-arazzo-protocol-spec-prs-impact.md`](../../research/2026-09-08-arazzo-protocol-spec-prs-impact.md) — PR #533 (SOAP/WSDL), #556 (RPC), #567 (GraphQL), #568 (interaction steps).
 
@@ -60,9 +86,9 @@ Research: [`2026-09-08-arazzo-protocol-spec-prs-impact.md`](../../research/2026-
 
 1. **Only one deliverable**: this plan file's execution. Do not change the parent spec; do not run `git push`. Each task commits its own work with a descriptive message.
 2. **No placeholders.** Every class, test, method, command, and error code below is real, was verified against the current tree, and must exist verbatim by the end of its task.
-3. **`SourceNormalizerInterface` signature is frozen** (Phase A): `normalize(SourceDescription $source, string $rawContent, ?ArazzoDocument $document = null): array`. `OpenApiSourceNormalizer::normalize()` returns an **operation index** whose *values* are `ResolvedOperation` objects (D3c) — this is a `mixed` subtype of `array<string, mixed>` and is the documented reconciliation of the two-axis model with the contracts signature. F1 relocates `ResolvedOperation` with the normalizer, so the FQCNs stay coherent.
-4. **BC across dependencies is preserved within the phase**: `ResolvedOperation`'s constructor only grows *trailing defaulted* parameters (runner tests construct it with 5 positional args); the internal per-version normalizer method `OpenApiNormalizerInterface::normalize(array, string, string)` is **not** renamed or re-typed; `DocumentInterface` is **not** extended (new entry points go on the concrete `Document` facade only).
-5. **Deviations from earlier phases are documented**, they are: `Step::$graphqlOperation` revised from `?string` (Phase A7) to `?GraphQlOperation` (D3b); `Components` gains `interactions` (D4a).
+3. **`SourceNormalizerInterface` signature is frozen** (Phase A): `normalize(SourceDescription $source, string $rawContent, ?ArazzoDocument $document = null): array`. `OpenApiSourceNormalizer::normalize()` returns an **operation index** whose *values* are `ResolvedOperation` objects (D3c) — this is a `mixed` subtype of `array<string, mixed>` and is the documented reconciliation of the two-axis model with the contracts signature. `ResolvedOperation` is a model type in `arazzo-document`; the normalizer that produces it lives in `arazzo-sources` and depends inward, so no F1 relocation is needed for coherence.
+4. **D0 is a deliberate breaking change; D1–D5 are not.** D0 performs clean FQCN renames (`Alama\Arazzo\Document\Normalizer\ResolvedOperation` → `Alama\Arazzo\Document\ResolvedOperation`, and the whole `Normalizer/` + `Resolver/` trees → `Alama\Arazzo\Sources\`) with **no deprecation shims and no BC aliases**, and it **removes** `ResolvedOperation::$openApi`, `$cebeOperation` and `$rawDocument` outright rather than growing trailing defaulted parameters. The three consumers of the removed cebe handles (`StepOutputExtractor`, `ResponseSchemaValidator`, `DefaultOpenApiExecutor`) receive `OpenApiOperationHandle` and are amended in Phase E's E3 and Phase F's F1.2. After D0 lands, D1–D5 preserve BC: the internal per-version normalizer method `OpenApiNormalizerInterface::normalize(array, string, string)` is **not** renamed or re-typed, and `DocumentInterface` is **not** extended (new entry points go on the concrete `Document` facade only).
+5. **Deviations from earlier phases are documented**, they are: `Step::$graphqlOperation` revised from `?string` (Phase A7) to `?GraphQlOperation` (D3b); `Components` gains `interactions` (D4a); `DocumentInterface` loses the dead `resolveSource()` and `detectOpenApiVersion()` methods in D0 (no consumer outside `document/src` calls either).
 
 ## Sequencing
 
@@ -70,11 +96,12 @@ Execution order (each task lists its prereqs explicitly):
 
 | # | Task | Prereqs |
 |---|------|---------|
-| D1 | `SourceNormalizerRegistry` | A3 landed |
+| D0 | **package split** — scaffold `arazzo-sources`, move `Normalizer/` + `Resolver/`, purge cebe from the model, extract the composition root, land 5 guards | Phase A landed |
+| D1 | `SourceNormalizerRegistry` | D0 landed, A3 landed |
 | D3a | `SourceType` cases `Wsdl`, `Protobuf`, `Graphql` | contracts |
 | D3b | contracts model: `GraphQlOperation`, `InteractionMode`, `Interaction` extension, `Step::$graphqlOperation` | A7 landed |
-| D3c | two-axis `ResolvedOperation` | D3b |
-| D2 | `OpenApiSourceNormalizer` | D1, D3c |
+| D3c | two-axis `ResolvedOperation` | D0 landed, D3b |
+| D2 | `OpenApiSourceNormalizer` | D0 landed, D1, D3c |
 | D4a | parser: 1.2 step fields + `components.interactions` | D3b, A7 |
 | D4b | `StepOperationTargetPresentRule` six-target mutual exclusion | D3b |
 | D4c | `WsdlStepRule` | D4b |
@@ -85,6 +112,1040 @@ Execution order (each task lists its prereqs explicitly):
 
 `D3a` and `D3b` can be interleaved freely; `D4b` must land before `D4c..f` because each new rule reuses the extended mutual-exclusion step, and the six-target rule needs the D3b Step fields.
 
+**D0 runs first and is not optional.** It is split into nine sub-tasks that execute strictly in order (D0.1 → D0.9); D0.4 is the green-state gate that proves the split stands on its own before any normalizer work begins. D1, D2, D3c and D5 all write into directories D0 creates, so none of them can run before it. D0.9 amends the Phase E and Phase F plans so they no longer contradict the boundary D0 establishes.
+
+---
+
+## Task D0 — package split: `arazzo-document` (model) + `arazzo-sources` (resolution)
+
+**Prereqs:** Phase A landed. Implements
+[`2026-09-26-document-package-split-design.md`](../specs/2026-09-26-document-package-split-design.md).
+
+**Files:**
+- Create `packages/sources/composer.json`, `packages/sources/phpstan.neon.dist`, `packages/sources/tests/Pest.php`, `packages/sources/tests/ArchTest.php`
+- Move `packages/document/src/Normalizer/**` → `packages/sources/src/Normalizer/**`
+- Move `packages/document/src/Resolver/**` → `packages/sources/src/Resolver/**`
+- Move `packages/document/src/Document.php` → `packages/sources/src/Document.php`
+- Move `packages/document/src/ResolvedOperation.php` (from D0.5), `packages/document/src/NormalizedOpenApiOperation.php` (from D0.5)
+- Create `packages/sources/src/ModelStack.php`, `packages/sources/src/SourceGraph.php`, `packages/sources/src/Normalizer/OpenApiOperationHandle.php`
+- Create `packages/document/src/ModelStack.php` (from D0.3)
+- Modify `packages/document/composer.json`, `packages/document/src/DocumentInterface.php`, `composer.json`
+- Move `packages/document/tests/Normalizer/**`, `packages/document/tests/Resolver/**` → `packages/sources/tests/**`; move `DocumentTest.php`, `DocumentCapabilitiesTest.php`
+- Modify the three cebe consumers in `packages/runner/src/Execution/`
+
+**Interfaces:**
+```
+Consumes: (nothing — D0 is the first task in the phase)
+Produces:
+  Alama\Arazzo\Document\DocumentInterface   (unchanged name; loses resolveSource() + detectOpenApiVersion())
+  Alama\Arazzo\Document\ModelStack::default(): ModelStack
+  Alama\Arazzo\Document\ResolvedOperation   (namespace + shape changed: no cebe)
+  Alama\Arazzo\Document\NormalizedOpenApiOperation
+  Alama\Arazzo\Sources\Document             (implements DocumentInterface; moved FQCN)
+  Alama\Arazzo\Sources\SourceGraph::default(): DocumentInterface
+  Alama\Arazzo\Sources\SourceGraph::using(?ClientInterface, ?RequestFactoryInterface, ?SourceRegistry): DocumentInterface
+  Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle
+```
+
+D0 is eight ordered sub-tasks. **D0.4 is the green-state gate**: the split must stand on its own, with all suites green, before any normalizer work starts.
+
+---
+
+### D0.1 — Scaffold `alama/arazzo-sources`
+
+- [ ] **Step 1: Write the failing smoke test**
+
+`packages/sources/tests/ArchTest.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+arch('sources package is autoloadable')
+    ->expect('Alama\Arazzo\Sources')
+    ->toUse('PHPUnit\Framework\TestCase');
+```
+
+- [ ] **Step 2: Run it to verify it fails**
+
+Run: `vendor/bin/pest packages/sources/tests`
+Expected: FAIL — `Pest.php` not found, or the `Alama\Arazzo\Sources` namespace is not in the autoload map.
+
+- [ ] **Step 3: Create the package manifest**
+
+`packages/sources/composer.json`:
+
+```json
+{
+    "name": "alama/arazzo-sources",
+    "description": "Arazzo source resolution, fetching and OpenAPI normalization.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-document": "@dev",
+        "alama/arazzo-expression": "@dev",
+        "cebe/php-openapi": "^1.7",
+        "guzzlehttp/guzzle": "^7.9",
+        "psr/http-client": "^1.0",
+        "psr/http-message": "^1.0||^2.0",
+        "psr/simple-cache": "^3.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.14",
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alama\\Arazzo\\Sources\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
+```
+
+`guzzlehttp/guzzle` is declared **here** because D0.2 moves the code that imports it, and today it is imported by `Document.php` without being declared anywhere `document` can see.
+
+- [ ] **Step 4: Create `packages/sources/phpstan.neon.dist`**
+
+Mirror `packages/document/phpstan.neon.dist` exactly, changing only the scanned sibling:
+
+```neon
+includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+    scanDirectories:
+        - ../contracts/src
+        - ../expression/src
+        - ../document/src
+    reportUnmatchedIgnoredErrors: false
+```
+
+Create an empty `packages/sources/phpstan-baseline.neon` containing `parameters: {}` so the include resolves.
+
+- [ ] **Step 5: Create `packages/sources/tests/Pest.php`**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Arazzo\Tests\TestCase;
+
+require_once __DIR__.'/../../../vendor/autoload.php';
+
+// cebe/php-openapi emits PHP 8.4 "implicitly nullable parameter"
+// deprecations when its spec classes are compiled. That is vendor noise,
+// so load the whole spec folder once inside a silenced window instead of
+// letting every test record the same deprecation.
+set_error_handler(static fn (): bool => true, E_DEPRECATED);
+
+$cebeSrc = dirname(__DIR__, 2).'/vendor/cebe/php-openapi/src/';
+
+foreach (array_merge(
+    [$cebeSrc.'SpecBaseObject.php', $cebeSrc.'SpecObjectInterface.php', $cebeSrc.'ReferenceContext.php', $cebeSrc.'Reference.php', $cebeSrc.'Reader.php'],
+    glob($cebeSrc.'spec/*.php') ?: [],
+) as $cebeFile) {
+    if (is_string($cebeFile) && is_file($cebeFile)) {
+        require_once $cebeFile;
+    }
+}
+
+restore_error_handler();
+
+pest()->extend(TestCase::class)->in(__DIR__);
+```
+
+This block is **moved** from `packages/document/tests/Pest.php` in D0.2, because it exists only to silence cebe and cebe leaves `arazzo-document` in D0.6.
+
+- [ ] **Step 6: Wire the autoload map and scripts in the root `composer.json`**
+
+Add to `autoload.psr-4`, keeping the map alphabetical:
+
+```json
+"Alama\\Arazzo\\Sources\\": "packages/sources/src/"
+```
+
+Add to `autoload-dev.psr-4."Alama\\Arazzo\\Tests\\"`:
+
+```json
+"packages/sources/tests"
+```
+
+Add the two scripts, matching the existing `test-*` / `analyse-*` shapes:
+
+```json
+"test-sources": "vendor/bin/pest packages/sources/tests",
+"analyse-sources": "vendor/bin/phpstan analyse -c packages/sources/phpstan.neon.dist --memory-limit=1G"
+```
+
+Then add `"@test-sources"` to the `test` array (after `"@test-document"`) and `"@analyse-sources"` to the `analyse` array (after `"@analyse-document"`), so both run in CI.
+
+- [ ] **Step 7: Create `packages/sources/src/` so the namespace resolves**
+
+```bash
+mkdir -p packages/sources/src
+```
+
+- [ ] **Step 8: Regenerate the autoloader and run the test**
+
+Run: `composer dump-autoload && vendor/bin/pest packages/sources/tests`
+Expected: PASS.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add packages/sources composer.json
+git commit -m "chore(sources): scaffold alama/arazzo-sources package"
+```
+
+---
+
+### D0.2 — Mechanically move `Normalizer/`, `Resolver/` and the `Document` implementation
+
+- [ ] **Step 1: Move the source trees with history preserved**
+
+```bash
+git mv packages/document/src/Normalizer packages/sources/src/Normalizer
+git mv packages/document/src/Resolver    packages/sources/src/Resolver
+git mv packages/document/src/Document.php packages/sources/src/Document.php
+git mv packages/document/tests/Normalizer packages/sources/tests/Normalizer
+git mv packages/document/tests/Resolver    packages/sources/tests/Resolver
+git mv packages/document/tests/DocumentTest.php             packages/sources/tests/DocumentTest.php
+git mv packages/document/tests/DocumentCapabilitiesTest.php packages/sources/tests/DocumentCapabilitiesTest.php
+```
+
+`git mv` on the whole directory moves the entire tree — including `Normalizer/Interfaces/OpenApiNormalizerInterface.php`, `Resolver/Exceptions/*`, `Resolver/Fetchers/*` and `Resolver/Interfaces/*` — so no per-file listing is needed.
+
+- [ ] **Step 2: Rewrite the namespace declarations in the moved trees**
+
+Every file under `packages/sources/src/Normalizer` and `packages/sources/src/Resolver`:
+
+```bash
+# namespace declarations
+rg -l '^namespace Alama\\Arazzo\\Document\\(Normalizer|Resolver)' packages/sources/src \
+  | xargs sed -i '' 's/^namespace Alama\\Arazzo\\Document\\/namespace Alama\\Arazzo\\Sources\\/'
+
+# every import of the moved trees, anywhere in the repo
+rg -l 'Alama\\Arazzo\\Document\\(Normalizer|Resolver)\\' packages \
+  | xargs sed -i '' 's/Alama\\Arazzo\\Document\\/Alama\\Arazzo\\Sources\\/g'
+
+# the moved implementation itself
+sed -i '' 's/^namespace Alama\\Arazzo\\Document;/namespace Alama\\Arazzo\\Sources;/' packages/sources/src/Document.php
+sed -i '' 's/use Alama\\Arazzo\\Document\\/use Alama\\Arazzo\\Sources\\/' packages/sources/src/Document.php
+```
+
+`DocumentInterface` is **not** touched — it stays in `Alama\Arazzo\Document`.
+
+- [ ] **Step 3: Verify no stale references remain**
+
+Run: `rg -n 'Alama\\Arazzo\\Document\\(Normalizer|Resolver)' packages --glob '!*/vendor/*'`
+Expected: no output.
+
+Run: `rg -n '^namespace' packages/sources/src | sort`
+Expected: every file reports `namespace Alama\Arazzo\Sources\...`.
+
+- [ ] **Step 4: Repoint the consumers**
+
+`composer.json` of `runner`, `laravel`, `cli` and `core` each need the new requirement. In each, add `"alama/arazzo-sources": "@dev"` alongside the existing `alama/arazzo-document` entry. `packages/core` keeps its `alama/arazzo-document` requirement because `core` still uses the validator and parser.
+
+`packages/laravel/src/Bindings/FacadeBindings.php` — the singleton moves to the builder that D0.3 creates. For this sub-task, repoint the import only:
+
+```php
+-use Alama\Arazzo\Document\Document;
++use Alama\Arazzo\Sources\Document;
+```
+
+Leave `$app->singleton(DocumentInterface::class, fn (): Document => new Document());` as-is for now; D0.3 replaces its body.
+
+- [ ] **Step 5: Run the full suite**
+
+Run: `composer run test`
+Expected: PASS. `DocumentInterface` and the class names are unchanged, so the D0.2 move is behaviour-preserving.
+
+- [ ] **Step 6: Run static analysis**
+
+Run: `composer run analyse-document && composer run analyse-sources`
+Expected: clean. If `analyse-sources` reports the empty baseline as unmatched, set `reportUnmatchedIgnoredErrors: false` (already set in D0.1 Step 4) and re-run.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add packages composer.json
+git commit -m "refactor(sources): move Normalizer, Resolver and Document into arazzo-sources"
+```
+
+---
+
+### D0.3 — Extract the composition root (`ModelStack` + `SourceGraph`)
+
+- [ ] **Step 1: Write the failing test**
+
+`packages/sources/tests/SourceGraphTest.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests;
+
+use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Sources\SourceGraph;
+
+it('builds a document that satisfies the port without inline http construction', function (): void {
+    $document = SourceGraph::default();
+
+    expect($document)->toBeInstanceOf(DocumentInterface::class);
+});
+
+it('honours an injected source registry', function (): void {
+    $registry = new \Alama\Arazzo\Sources\Resolver\SourceRegistry(
+        new \Alama\Arazzo\Sources\Resolver\DefaultSourceResolver([])
+    );
+
+    $document = SourceGraph::using(registry: $registry);
+
+    expect($document->resolveOperation)->toBeCallable();
+});
+
+it('does not construct a guzzle client inside the document implementation', function (): void {
+    $source = file_get_contents(__DIR__.'/../../document/src/Document.php');
+
+    expect($source)->not->toContain('GuzzleHttp\Client');
+});
+```
+
+The third test is the executable form of the composition-root rule; it fails now and passes in Step 4.
+
+- [ ] **Step 2: Run it to verify it fails**
+
+Run: `vendor/bin/pest packages/sources/tests/SourceGraphTest.php`
+Expected: FAIL — `Alama\Arazzo\Sources\SourceGraph` not found.
+
+- [ ] **Step 3: Create `ModelStack` in the model package**
+
+`packages/document/src/ModelStack.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Document;
+
+use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
+use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Document\Parser\Loader;
+use Alama\Arazzo\Document\Parser\Parser;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use Alama\Arazzo\Document\Validator\RuleSet;
+use Alama\Arazzo\Document\Validator\Validator;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+
+/**
+ * The pure model half of the Document graph: parsing primitives, the
+ * validator and the expression engine. No vendor sits behind any of these,
+ * so a consumer may construct them without violating the dependency rule.
+ */
+final readonly class ModelStack
+{
+    public function __construct(
+        public Loader $loader,
+        public Parser $parser,
+        public Validator $validator,
+        public ExpressionEngineInterface $engine,
+    ) {}
+
+    public static function default(): self
+    {
+        $engine = new ExpressionEngine();
+
+        return new self(
+            loader: new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()),
+            parser: new Parser(),
+            validator: new Validator(RuleSet::default($engine)),
+            engine: $engine,
+        );
+    }
+}
+```
+
+`PreflightValidator` is **not** in the stack: it is constructed by `SourceGraph` because it needs the `SourceRegistry` and the `OpenApiOperationResolver`, which are source-side.
+
+- [ ] **Step 4: Create `SourceGraph`, the single place that knows about Guzzle**
+
+`packages/sources/src/SourceGraph.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Sources;
+
+use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Document\ModelStack;
+use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\Fetchers\HttpFetcher;
+use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\Validator\PreflightValidator;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+
+/**
+ * Composition root for source resolution. This is the only class in the
+ * repository permitted to construct a Guzzle client.
+ */
+final class SourceGraph
+{
+    public static function default(): DocumentInterface
+    {
+        return self::using();
+    }
+
+    public static function using(
+        ?ClientInterface $httpClient = null,
+        ?RequestFactoryInterface $httpFactory = null,
+        ?SourceRegistry $registry = null,
+    ): DocumentInterface {
+        $client = $httpClient ?? new Client();
+        $factory = $httpFactory ?? new HttpFactory();
+
+        $sources = $registry ?? new SourceRegistry(new DefaultSourceResolver([
+            'http' => new HttpFetcher($client, $factory),
+            'https' => new HttpFetcher($client, $factory),
+            'file' => new LocalFetcher(),
+        ]));
+
+        $versionDetector = new OpenApiVersionDetector();
+
+        $operations = new OpenApiOperationResolver(
+            new OpenApiDocumentLoader($sources),
+            $versionDetector,
+            new OpenApi30Normalizer(),
+            new OpenApi31Normalizer(),
+        );
+
+        return new Document(
+            model: ModelStack::default(),
+            sources: $sources,
+            operations: $operations,
+            versionDetector: $versionDetector,
+            preflight: new PreflightValidator($sources, $operations),
+        );
+    }
+}
+```
+
+- [ ] **Step 5: Rewrite the `Document` constructor to take explicit collaborators**
+
+In `packages/sources/src/Document.php`, replace the constructor (currently lines 62–90) with:
+
+```php
+    public function __construct(
+        private readonly ModelStack $model,
+        private readonly SourceRegistry $sources,
+        private readonly OpenApiOperationResolver $operations,
+        private readonly OpenApiVersionDetector $versionDetector,
+        private readonly PreflightValidator $preflight,
+    ) {}
+```
+
+and drop the `GuzzleHttp\Client`, `GuzzleHttp\Psr7\HttpFactory`, `HttpFetcher`, `LocalFetcher`, `DefaultSourceResolver`, `OpenApiDocumentLoader`, `OpenApi30Normalizer`, `OpenApi31Normalizer`, `OpenApiOperationResolver` construction imports. The `$loader`, `$parser`, `$validator` and `$engine` properties are removed; their call sites read through `$this->model`:
+
+- `load()` → `$this->model->parser->parse($this->model->loader->load($path))`
+- `parse()` → `$this->model->parser->parse($raw)`
+- `validate()` → `$this->model->validator->validate($document)`
+
+`GuzzleHttp\Client` must no longer appear in this file — that is what Step 1's third test asserts.
+
+- [ ] **Step 6: Update every construction site**
+
+`rg -n 'new Document\(' packages --glob '!*/vendor/*'` currently reports 12 sites. Each becomes a `SourceGraph` call:
+
+```php
+- new Document()
++ SourceGraph::default()
+```
+
+```php
+- new Document(null, null, $registry)
++ SourceGraph::using(registry: $registry)
+```
+
+Sites: `packages/laravel/src/Bindings/FacadeBindings.php` (use `SourceGraph::default()` in the singleton), `packages/core/tests/Validator/PreflightValidatorTest.php`, `packages/core/tests/Validator/InputsPreValidationTest.php` (×2), `packages/core/tests/Conformance/ConformanceHarness.php`, `packages/runner/tests/RunnerCapabilitiesTest.php` (×3), `packages/runner/tests/RunnerTest.php`, `packages/runner/tests/Execution/ArazzoOutputExtractorTest.php`, `packages/runner/tests/Execution/AdapterParityTest.php`, `packages/runner/tests/Execution/WorkflowExecutorTest.php`, `packages/runner/tests/Execution/AsyncExecutionGraphAssemblerTest.php`, `packages/runner/tests/Async/PreflightGuardTest.php`.
+
+`AdapterParityTest` passes an anonymous `SourceResolver`; route it through `SourceGraph::using(registry: new SourceRegistry($anonymousResolver))`.
+
+- [ ] **Step 7: Run the tests to verify they pass**
+
+Run: `composer run test && vendor/bin/pest packages/sources/tests/SourceGraphTest.php`
+Expected: PASS, including the `GuzzleHttp\Client` assertion.
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add packages composer.json
+git commit -m "refactor(sources): extract ModelStack and SourceGraph composition root"
+```
+
+---
+
+### D0.4 — Green-state gate
+
+The split must stand on its own before any normalizer work begins. Do not proceed if anything here fails.
+
+- [ ] **Step 1: Confirm the package boundary is real**
+
+Run: `ls packages/sources/src`
+Expected: `Normalizer/`, `Resolver/`, `Document.php`, `ModelStack.php`, `SourceGraph.php`.
+
+Run: `ls packages/document/src`
+Expected: `Parser/`, `Validator/`, `DocumentInterface.php`, `ModelStack.php`. **No `Normalizer/`, no `Resolver/`, no `Document.php`.**
+
+- [ ] **Step 2: Confirm `document` no longer reaches a transport client**
+
+Run: `rg -n 'GuzzleHttp|Psr\\Http|Psr\\SimpleCache' packages/document/src`
+Expected: no output.
+
+- [ ] **Step 3: Run the whole suite and both analysers**
+
+Run: `composer run test && composer run analyse-document && composer run analyse-sources`
+Expected: all green.
+
+- [ ] **Step 4: Confirm the dependency direction**
+
+Run: `rg -n 'Alama\\Arazzo\\Sources' packages/document/src`
+Expected: no output — `arazzo-document` must not name `arazzo-sources`.
+
+- [ ] **Step 5: Commit the gate as a no-op if needed**
+
+Nothing to commit unless a fix landed. Record the result in the D0 commit trail.
+
+---
+
+### D0.5 — Make `ResolvedOperation` a pure model type
+
+The cebe purge. This is the breaking change Global constraint 4 sanctions, and the reason the model package can be vendor-free.
+
+- [ ] **Step 1: Write the failing test**
+
+`packages/document/tests/ResolvedOperationTest.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests;
+
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
+
+it('carries only vendor-free collaborators', function (): void {
+    $normalized = new NormalizedOpenApiOperation(
+        path: '/pets/{id}',
+        method: 'get',
+        resolvedServerUrl: 'https://example.test',
+        pathParameters: ['id' => ['style' => 'simple']],
+        queryParameters: [],
+        headerParameters: [],
+        cookieParameters: [],
+        requestBodies: [],
+        responses: ['200' => ['contentType' => 'application/json']],
+    );
+
+    $operation = new ResolvedOperation(
+        source: new SourceDescription(
+            name: 'api',
+            url: 'https://example.test/openapi.json',
+            type: SourceType::Openapi,
+        ),
+        normalized: $normalized,
+    );
+
+    expect($operation->normalized)->toBe($normalized)
+        ->and($operation->source->name)->toBe('api');
+});
+
+it('does not expose cebe handles on the public surface', function (): void {
+    $properties = array_map(
+        static fn (\ReflectionProperty $p): string => $p->getName(),
+        (new \ReflectionClass(ResolvedOperation::class))->getProperties(),
+    );
+
+    expect($properties)->toBe(['source', 'normalized']);
+});
+```
+
+`NormalizedOpenApiOperation`'s constructor takes all nine arguments with no defaults, in this order: `path`, `method`, `resolvedServerUrl`, `pathParameters`, `queryParameters`, `headerParameters`, `cookieParameters`, `requestBodies`, `responses`. `SourceDescription`'s takes `name`, `url`, `type` — note `url` precedes `type`, though named arguments make the order irrelevant at the call site.
+
+The second test fails today: the class is in the `Normalizer` namespace and its properties are `source`, `normalized`, `openApi`, `rawDocument`, `cebeOperation`.
+
+- [ ] **Step 2: Run it to verify it fails**
+
+Run: `vendor/bin/pest packages/document/tests/ResolvedOperationTest.php`
+Expected: FAIL — class not found at the new FQCN.
+
+- [ ] **Step 3: Move both DTOs to the model package root and purge the cebe handles**
+
+```bash
+git mv packages/sources/src/Normalizer/ResolvedOperation.php        packages/document/src/ResolvedOperation.php
+git mv packages/sources/src/Normalizer/NormalizedOpenApiOperation.php packages/document/src/NormalizedOpenApiOperation.php
+sed -i '' 's/^namespace Alama\\Arazzo\\Sources\\Normalizer;/namespace Alama\\Arazzo\\Document;/' \
+  packages/document/src/ResolvedOperation.php packages/document/src/NormalizedOpenApiOperation.php
+```
+
+`ResolvedOperation` becomes exactly:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Document;
+
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+
+class ResolvedOperation
+{
+    public function __construct(
+        public readonly SourceDescription $source,
+        public readonly NormalizedOpenApiOperation $normalized,
+    ) {}
+}
+```
+
+The `use cebe\openapi\spec\OpenApi;` and `use cebe\openapi\spec\Operation;` imports and the `@param array<string, mixed> $rawDocument` docblock go. The class stays non-`final` with promoted `public readonly` props because D3c extends it in place and runner tests construct it positionally.
+
+- [ ] **Step 4: Add the wrapper that carries the cebe handles**
+
+`packages/sources/src/Normalizer/OpenApiOperationHandle.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Sources\Normalizer;
+
+use Alama\Arazzo\Document\ResolvedOperation;
+use cebe\openapi\spec\OpenApi;
+use cebe\openapi\spec\Operation;
+
+/**
+ * The cebe-facing view of a resolved operation. The three OpenAPI-specific
+ * consumers in the runner receive this instead of the model type, which is
+ * what lets alama/arazzo-document stay cebe-free.
+ */
+final readonly class OpenApiOperationHandle
+{
+    public function __construct(
+        public ResolvedOperation $operation,
+        public OpenApi $openApi,
+        public Operation $cebeOperation,
+    ) {}
+}
+```
+
+- [ ] **Step 5: Make the resolver return the handle alongside the model**
+
+`OpenApiOperationResolver::resolve()` currently returns `ResolvedOperation` and is the sole producer of the cebe handles. Change it to return `OpenApiOperationHandle`, and add a `resolveModel()` that returns just the `ResolvedOperation`:
+
+```php
+    public function resolve(Step $step, ArazzoDocument $document): OpenApiOperationHandle;
+
+    public function resolveModel(Step $step, ArazzoDocument $document): ResolvedOperation
+    {
+        return $this->resolve($step, $document)->operation;
+    }
+```
+
+`Document::resolveOperation()` — still on the port, still returning `ResolvedOperation` — now calls `$this->operations->resolveModel(...)`, so the public face is unchanged.
+
+`PreflightValidator` line 218 also calls `$this->operations->resolve($step, $document)`, but discards the return value. Widening the return type to `OpenApiOperationHandle` therefore needs no edit there — confirm it is still a bare statement after the change rather than assuming.
+
+- [ ] **Step 6: Repoint the three cebe consumers**
+
+Run: `rg -n -- '->(openApi|cebeOperation)' packages/runner/src`
+Expected: exactly three hits, in `StepOutputExtractor.php:99`, `ResponseSchemaValidator.php:91` and `DefaultOpenApiExecutor.php`.
+
+All three currently call a private `resolveOperation()` helper that returns the model type and then read a cebe property off it. Change the helper's return type to `?OpenApiOperationHandle` and have it return the handle:
+
+```php
+    private function resolveOperation(Step $step, ArazzoDocument $document): ?OpenApiOperationHandle
+    {
+        try {
+            return $this->operationResolver->resolve($step, $document);
+        } catch (\RuntimeException) {
+            return null;
+        }
+    }
+```
+
+Then update the three read sites:
+
+- `StepOutputExtractor.php:99` — `$operation = $resolved->cebeOperation;` becomes `$operation = $handle?->cebeOperation;`, and the `$operation->responses` access on line 105 is guarded for `null`.
+- `ResponseSchemaValidator.php:91` — `return $resolved->cebeOperation;` becomes `return $handle?->cebeOperation;`.
+- `DefaultOpenApiExecutor.php` — `$openApi = $operation->openApi;` becomes `$openApi = $handle->openApi;`. The `->normalized->*` reads on that class are untouched: `NormalizedOpenApiOperation` is a model type, so those stay on the model.
+
+Add `use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;` to all three files.
+
+- [ ] **Step 7: Fix every construction and import of the moved DTOs**
+
+Run: `rg -l 'Alama\\Arazzo\\Sources\\Normalizer\\(ResolvedOperation|NormalizedOpenApiOperation)' packages --glob '!*/vendor/*' | xargs sed -i '' 's/Alama\\Arazzo\\Sources\\Normalizer\\/Alama\\Arazzo\\Document\\/g'`
+
+Run: `rg -l 'Alama\\Arazzo\\Document\\Normalizer\\' packages --glob '!*/vendor/*' | xargs sed -i '' 's/Alama\\Arazzo\\Document\\Normalizer\\/Alama\\Arazzo\\Document\\/g'`
+
+Any test constructing `ResolvedOperation` with five positional arguments drops the last three.
+
+- [ ] **Step 8: Run the tests to verify they pass**
+
+Run: `composer run test && vendor/bin/pest packages/document/tests/ResolvedOperationTest.php`
+Expected: PASS.
+
+- [ ] **Step 9: Confirm the purge landed**
+
+Run: `rg -n 'cebe' packages/document/src`
+Expected: no output.
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add packages
+git commit -m "refactor(document): make ResolvedOperation a vendor-free model type"
+```
+
+---
+
+### D0.6 — Make the manifests tell the truth
+
+- [ ] **Step 1: Update `packages/sources/composer.json`**
+
+Already declares `guzzlehttp/guzzle` and `cebe/php-openapi` from D0.1. Verify nothing is missing by running:
+
+Run: `rg -o 'GuzzleHttp\\[A-Za-z]+|Psr\\[A-Za-z]+\\[A-Za-z]+' packages/sources/src -N | sort -u`
+Expected: every root namespace found is declared in `packages/sources/composer.json`.
+
+- [ ] **Step 2: Trim `packages/document/composer.json`**
+
+Remove `"cebe/php-openapi"`, `"psr/http-client"`, `"psr/http-message"`, `"psr/simple-cache"` and `"softcreatr/jsonpath"`. The result is:
+
+```json
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-expression": "@dev",
+        "justinrainbow/json-schema": "^6.0",
+        "symfony/yaml": "^7.0"
+    },
+```
+
+- [ ] **Step 3: Prove `softcreatr/jsonpath` is genuinely unused before removing it**
+
+Grepping `jsonpath` is a trap: the tree is full of `jsonpath` *selector-type enum strings* that have nothing to do with this library. Grep for the vendor symbol:
+
+Run: `rg -n 'Softcreatr' packages --glob '!*/vendor/*'`
+Expected: **no output**. Only then is the removal safe.
+
+- [ ] **Step 4: Refresh the lock and reinstall**
+
+Run: `composer update --lock && composer install`
+Expected: `softcreatr/jsonpath`, `cebe/php-openapi` and the `psr/*` entries drop out of `packages/document`'s resolved set.
+
+- [ ] **Step 5: Verify the model package resolves standalone**
+
+Run: `composer run analyse-document && composer run test-document`
+Expected: green, with no cebe class referenced.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add packages/document/composer.json composer.lock
+git commit -m "chore(document): drop cebe, psr and unused softcreatr/jsonpath"
+```
+
+---
+
+### D0.7 — Guards, dead API, and two misfiled tests
+
+- [ ] **Step 1: Add guard 1 — the model package is vendor-free**
+
+Append to `packages/document/tests/ArchTest.php`:
+
+```php
+arch('document model is vendor-free')
+    ->expect('Alama\Arazzo\Document')
+    ->not->toUse('cebe')
+    ->not->toUse('GuzzleHttp')
+    ->not->toUse('Psr\Http')
+    ->not->toUse('Psr\SimpleCache')
+    ->not->toUse('Softcreatr');
+```
+
+- [ ] **Step 2: Add guard 2 — sources does not point at outer layers**
+
+Replace the placeholder arch block written in D0.1 Step 1 with:
+
+```php
+arch('sources does not depend on outer layers')
+    ->expect('Alama\Arazzo\Sources')
+    ->not->toUse('Alama\Arazzo\Runner')
+    ->not->toUse('Alama\Arazzo\Cli')
+    ->not->toUse('Alama\Arazzo\Protocol')
+    ->not->toUse('Alama\Arazzo\Runtime')
+    ->not->toUse('Illuminate');
+
+arch('sources may reach the model package and the transport')
+    ->expect('Alama\Arazzo\Sources')
+    ->toUse('Alama\Arazzo\Document');
+```
+
+- [ ] **Step 3: Add guard 3 — only the composition root constructs http clients**
+
+Append to `packages/sources/tests/ArchTest.php`:
+
+```php
+arch('only the sources composition root constructs http clients')
+    ->expect('Alama\Arazzo\Sources\Document')
+    ->not->toUse('GuzzleHttp')
+    ->expect('Alama\Arazzo\Sources\Resolver\DefaultSourceResolver')
+    ->not->toUse('GuzzleHttp');
+```
+
+- [ ] **Step 4: Add guard 4 — the runner is cebe-free**
+
+Append to `packages/runner/tests/ArchTest.php`:
+
+```php
+arch('runner does not depend on cebe directly')
+    ->expect('Alama\Arazzo\Runner')
+    ->not->toUse('cebe');
+```
+
+`DefaultOpenApiExecutor` is cebe-free after D0.5 Step 6 because it now reads the handle's properties rather than naming a cebe type. If this guard fails, the class is still importing a cebe type in a signature — move that read into the handle.
+
+- [ ] **Step 5: Add guard 5 — the manifests agree with the code**
+
+Create `packages/document/tests/PackageManifestTest.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests;
+
+it('does not declare transport or openapi dependencies', function (): void {
+    $manifest = json_decode(
+        (string) file_get_contents(__DIR__.'/../composer.json'),
+        true,
+        flags: JSON_THROW_ON_ERROR,
+    );
+
+    $require = array_keys($manifest['require']);
+
+    expect($require)
+        ->not->toContain('cebe/php-openapi')
+        ->not->toContain('guzzlehttp/guzzle')
+        ->not->toContain('psr/http-client')
+        ->not->toContain('psr/http-message')
+        ->not->toContain('psr/simple-cache')
+        ->not->toContain('softcreatr/jsonpath');
+});
+```
+
+- [ ] **Step 6: Remove the two dead methods from the public face**
+
+`resolveSource()` and `detectOpenApiVersion()` are called by nobody outside `document/src`. Delete them from `DocumentInterface` (lines 70 and 80 of the pre-split file) **only**. Keep them as public methods on the concrete `Alama\Arazzo\Sources\Document` so `DocumentCapabilitiesTest` still covers them.
+
+- [ ] **Step 7: Relocate two misfiled tests**
+
+`packages/sources/tests/Resolver/SelectorEvaluatorTest.php` and `packages/sources/tests/Resolver/Xpath/DomXpathEvaluatorTest.php` test `Alama\Arazzo\Evaluation\SelectorEvaluator` and `Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator` — classes that live in `packages/evaluation`, not here. Moving them wholesale into `arazzo-sources` would propagate a pre-existing mistake:
+
+```bash
+git mv packages/sources/tests/Resolver/SelectorEvaluatorTest.php        packages/evaluation/tests/SelectorEvaluatorTest.php
+git mv packages/sources/tests/Resolver/Xpath/DomXpathEvaluatorTest.php   packages/evaluation/tests/Xpath/DomXpathEvaluatorTest.php
+rmdir packages/sources/tests/Resolver/Xpath
+```
+
+`packages/evaluation/tests/ArchTest.php` already asserts that `Alama\Arazzo\Evaluation` does not use `Alama\Arazzo\Document`, so these tests must not import from the model package — check their imports when moving.
+
+- [ ] **Step 8: Run the guards**
+
+Run: `vendor/bin/pest packages/document/tests/ArchTest.php packages/sources/tests/ArchTest.php packages/runner/tests/ArchTest.php`
+Expected: PASS.
+
+- [ ] **Step 9: Run the full suite**
+
+Run: `composer run test`
+Expected: PASS.
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add packages
+git commit -m "test(sources): add boundary guards, drop dead document interface methods"
+```
+
+---
+
+### D0.8 — D0 final gate
+
+- [ ] **Step 1: Full verification**
+
+Run: `make verify`
+Expected: green — docs generation, pint, phpstan across all seven packages, every pest suite.
+
+- [ ] **Step 2: Confirm each file the design names exists**
+
+Run: `ls packages/sources/src/SourceGraph.php packages/sources/src/Normalizer/OpenApiOperationHandle.php packages/document/src/ModelStack.php`
+Expected: all three present.
+
+- [ ] **Step 3: Confirm the dependency direction one final time**
+
+Run: `rg -n 'Alama\\Arazzo\\Sources' packages/document/src` and `rg -n 'cebe|GuzzleHttp' packages/document/src`
+Expected: no output from either.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git commit --allow-empty -m "chore(document): D0 package split complete"
+```
+
+---
+
+### D0.9 — Amend the Phase E and Phase F plans
+
+D0 changes where the normalizers and the two DTOs live, which invalidates specific instructions in two already-written plans. Leaving them unamended would hand the next implementer contradictory instructions. This sub-task is a documentation-only change to two plan files.
+
+**Files:**
+- Modify `docs/superpowers/plans/2026-09-08-phase-f-protocol-packages.md`
+- Modify `docs/superpowers/plans/2026-09-08-phase-e-runner-oms.md`
+
+- [ ] **Step 1: Delete the FQCN-stability rule from the Phase F plan**
+
+In `docs/superpowers/plans/2026-09-08-phase-f-protocol-packages.md`, delete the constraint that begins:
+
+> **FQCN stability (D9).** `Alama\Arazzo\Document\Normalizer\ResolvedOperation` and `…\NormalizedOpenApiOperation` are the ONLY relocated types whose FQCNs do not change.
+
+Replace it with:
+
+> **The two DTOs are not relocated.** D0 made `ResolvedOperation` and `NormalizedOpenApiOperation` pure model types owned by `alama/arazzo-document` at `Alama\Arazzo\Document\ResolvedOperation` and `Alama\Arazzo\Document\NormalizedOpenApiOperation`. F1.1 does not move them. The cebe handles they used to expose travel on `Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle`, which **does** move to `alama/arazzo-protocol-http` as an `@internal` type.
+
+- [ ] **Step 2: Correct F1.1's premise — normalizers come out of `arazzo-sources`, not `document`**
+
+In the same file, the F1.1 step beginning "Move the normalizer classes out of `document` into the payload-http package" must be rewritten: the source normalizers, `OpenApiDocumentLoader`, `OpenApiOperationResolver` and `OpenApiDocumentLoader`'s cebe usage now live in `packages/sources/src/Normalizer/`, so F1.1 moves them **out of `arazzo-sources`**. Delete the two `git mv` commands that relocate the DTOs:
+
+```bash
+git mv packages/document/src/Normalizer/ResolvedOperation.php packages/protocol-http/src/Document/Normalizer/ResolvedOperation.php
+git mv packages/document/src/Normalizer/NormalizedOpenApiOperation.php packages/protocol-http/src/Document/Normalizer/NormalizedOpenApiOperation.php
+```
+
+and replace the two resulting `→  packages/protocol-http/src/Document/Normalizer/…` file entries with a note that both DTOs stay in `packages/document/src/`.
+
+Also correct the sentence asserting that `OpenApiVersionDetector` and `Interfaces/OpenApiNormalizerInterface` "**stay in `document`**": after D0 they are in `alama/arazzo-sources` alongside the other normalizers, so F1.1 relocates them too unless a reason to keep them appears.
+
+- [ ] **Step 3: Remove the dual-PSR-4 and scanDirectories instructions**
+
+Three instructions in the Phase F plan exist only to make the DTOs resolvable from `protocol-http`, and are now wrong:
+
+- the "dual PSR-4 map (`Alama\Arazzo\Document\Normalizer\ → src/Document/Normalizer/`)" note — delete it;
+- the step telling the implementer to add `../protocol-http/src` to `scanDirectories` in `packages/document/phpstan.neon.dist` — delete it, and add the guard-1 assertion instead: `arazzo-document` must not reference `protocol-http`;
+- the instruction to add `../protocol-http/src` to `scanDirectories` in `packages/runner/phpstan.neon.dist` — keep this one; `runner` does read `OpenApiOperationHandle` after D0.5.
+
+Update `DefaultOpenApiExecutor`'s description to import `Alama\Arazzo\Document\ResolvedOperation` (model, no `Normalizer` segment) and `Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle`.
+
+- [ ] **Step 4: Give F1.2 the two OpenAPI-specific classes**
+
+In the Phase F plan's F1.2 files-moved list, add:
+
+```
+- packages/runner/src/Execution/StepOutputExtractor.php
+- packages/runner/src/Execution/ResponseSchemaValidator.php
+```
+
+with the rationale: both read the cebe `Operation` (the former's `$operation->responses`, the latter's returned handle), so they are OpenAPI-specific and cannot live in vendor-free `alama/arazzo-request-pipeline`. Remove them from that list in the Phase E plan.
+
+- [ ] **Step 5: Amend Phase E's E3 migration list**
+
+In `docs/superpowers/plans/2026-09-08-phase-e-runner-oms.md`, the E3 line beginning `- \`RequestCompiler.php\`, \`ParameterSerializer.php\`, …` lists eleven files moving to `packages/request-pipeline/src/`. Delete `ResponseSchemaValidator.php` and `StepOutputExtractor.php` from that list, leaving nine. Delete the follow-on sentence that begins:
+
+> `StepOutputExtractor` moves here too — note it imports `Expression\Enum\ReferenceKind`
+
+and replace it with:
+
+> `StepOutputExtractor` and `ResponseSchemaValidator` do **not** move here: both are OpenAPI-specific (they read the cebe `Operation` that D0 moved behind `OpenApiOperationHandle`), so Phase F's F1.2 relocates them into `alama/arazzo-protocol-http` instead. `alama/arazzo-request-pipeline` stays vendor-free.
+
+- [ ] **Step 6: Fix the F4 SOAP task's DTO reference**
+
+In the Phase F plan, the SOAP normalizer step states that `normalize()` yields `Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation`. Change it to `Alama\Arazzo\Document\NormalizedOpenApiOperation`.
+
+- [ ] **Step 7: Verify no stale references survive in either plan**
+
+Run:
+```bash
+rg -n 'Document\\Normalizer\\(ResolvedOperation|NormalizedOpenApiOperation)' \
+  docs/superpowers/plans/2026-09-08-phase-e-runner-oms.md \
+  docs/superpowers/plans/2026-09-08-phase-f-protocol-packages.md
+```
+Expected: no output.
+
+Run:
+```bash
+rg -n 'packages/document/src/(Normalizer|Resolver)' \
+  docs/superpowers/plans/2026-09-08-phase-e-runner-oms.md \
+  docs/superpowers/plans/2026-09-08-phase-f-protocol-packages.md
+```
+Expected: no output, except any line that explicitly describes the D0 move itself.
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add docs/superpowers/plans/2026-09-08-phase-e-runner-oms.md docs/superpowers/plans/2026-09-08-phase-f-protocol-packages.md
+git commit -m "docs(plans): amend phases E and F for the arazzo-sources boundary"
+```
+
 ---
 
 ## Task D1 — `SourceNormalizerRegistry`
@@ -92,8 +1153,8 @@ Execution order (each task lists its prereqs explicitly):
 **Prereqs:** Phase A landed (`SourceNormalizerInterface` + `SourceNormalizerRegistryInterface` exist in `packages/contracts/src/Interfaces`). If they do not exist on `main`, stop and flag that Phase A has not landed.
 
 **Files:**
-- Create `packages/document/src/Resolver/SourceNormalizerRegistry.php`
-- Create `packages/document/tests/Resolver/SourceNormalizerRegistryTest.php`
+- Create `packages/sources/src/Resolver/SourceNormalizerRegistry.php`
+- Create `packages/sources/tests/Resolver/SourceNormalizerRegistryTest.php`
 
 **Interfaces:**
 ```
@@ -105,7 +1166,7 @@ Produces: SourceNormalizerRegistryInterface
 
 1. Write the failing registry test.
 
-`packages/document/tests/Resolver/SourceNormalizerRegistryTest.php`:
+`packages/sources/tests/Resolver/SourceNormalizerRegistryTest.php`:
 
 ```php
 <?php
@@ -118,7 +1179,7 @@ use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Document\Resolver\SourceNormalizerRegistry;
+use Alama\Arazzo\Sources\Resolver\SourceNormalizerRegistry;
 
 final class FakeNormalizer implements SourceNormalizerInterface
 {
@@ -197,14 +1258,14 @@ composer run test-document -- --filter=SourceNormalizerRegistry
 
 3. Implement the registry.
 
-`packages/document/src/Resolver/SourceNormalizerRegistry.php`:
+`packages/sources/src/Resolver/SourceNormalizerRegistry.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Document\Resolver;
+namespace Alama\Arazzo\Sources\Resolver;
 
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerInterface;
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerRegistryInterface;
@@ -262,7 +1323,7 @@ composer run analyse-document
 5. Commit:
 
 ```bash
-git add packages/document/src/Resolver/SourceNormalizerRegistry.php packages/document/tests/Resolver/SourceNormalizerRegistryTest.php
+git add packages/sources/src/Resolver/SourceNormalizerRegistry.php packages/sources/tests/Resolver/SourceNormalizerRegistryTest.php
 git commit -m "feat(document): add SourceNormalizerRegistry (D1)"
 ```
 
@@ -615,14 +1676,14 @@ git commit -m "feat(contracts): model GraphQL operations and interaction-step fi
 **Prereqs:** D3b landed (`GraphQlOperation` exists; `Interaction` extended).
 
 **Files:**
-- Edit `packages/document/src/Normalizer/ResolvedOperation.php`
-- Create `packages/document/tests/Normalizer/ResolvedOperationTest.php`
+- Edit `packages/document/src/ResolvedOperation.php`
+- Create `packages/document/tests/ResolvedOperationTest.php`
 
 ### Steps
 
 1. Write the failing test.
 
-`packages/document/tests/Normalizer/ResolvedOperationTest.php`. Reuse the minimal OpenAPI fixture built inline (mirrors `OpenApiOperationResolverVersionTest`):
+`packages/document/tests/ResolvedOperationTest.php`. Reuse the minimal OpenAPI fixture built inline (mirrors `OpenApiOperationResolverVersionTest`):
 
 ```php
 <?php
@@ -635,8 +1696,8 @@ use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 
@@ -720,14 +1781,14 @@ composer run test-document -- --filter=ResolvedOperation
 
 3. Implement.
 
-`packages/document/src/Normalizer/ResolvedOperation.php`:
+`packages/document/src/ResolvedOperation.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Document\Normalizer;
+namespace Alama\Arazzo\Document;
 
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
@@ -787,7 +1848,7 @@ class ResolvedOperation
 composer run test-document -- --filter=ResolvedOperation
 composer run test-runner
 composer run analyse-document
-git add packages/document/src/Normalizer/ResolvedOperation.php packages/document/tests/Normalizer/ResolvedOperationTest.php
+git add packages/document/src/ResolvedOperation.php packages/document/tests/ResolvedOperationTest.php
 git commit -m "feat(document): two-axis ResolvedOperation with derived binding (D3c)"
 ```
 
@@ -798,14 +1859,14 @@ git commit -m "feat(document): two-axis ResolvedOperation with derived binding (
 **Prereqs:** D1 (registry), D3c (`ResolvedOperation` two-axis). The zero-arg per-version normalizers, `OpenApiDocumentLoader`, and `OpenApiVersionDetector` are used as-is; the internal `OpenApiNormalizerInterface` is **not** changed.
 
 **Files:**
-- Create `packages/document/src/Normalizer/OpenApiSourceNormalizer.php`
-- Create `packages/document/tests/Normalizer/OpenApiSourceNormalizerTest.php`
+- Create `packages/sources/src/Normalizer/OpenApiSourceNormalizer.php`
+- Create `packages/sources/tests/Normalizer/OpenApiSourceNormalizerTest.php`
 
 ### Steps
 
 1. Write the failing test (mirrors the `LocalFetcher` + temp-file pattern from `OpenApiOperationResolverVersionTest`).
 
-`packages/document/tests/Normalizer/OpenApiSourceNormalizerTest.php`:
+`packages/sources/tests/Normalizer/OpenApiSourceNormalizerTest.php`:
 
 ```php
 <?php
@@ -816,15 +1877,15 @@ namespace Alama\Arazzo\Tests\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Document\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Document\Normalizer\OpenApiSourceNormalizer;
-use Alama\Arazzo\Document\Normalizer\OpenApiVersionDetector;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException;
-use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Sources\Normalizer\OpenApiSourceNormalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
+use Alama\Arazzo\Document\ResolvedOperation;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
+use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
 
 function makeOpenApiSourceNormalizer(): OpenApiSourceNormalizer
 {
@@ -904,20 +1965,20 @@ composer run test-document -- --filter=OpenApiSourceNormalizer
 
 3. Implement the composed normalizer. It needs the sniffing helpers already used by `DefaultSourceResolver`; reuse `SymfonyYamlDecoder`/`NativeJsonDecoder` for decoding:
 
-`packages/document/src/Normalizer/OpenApiSourceNormalizer.php`:
+`packages/sources/src/Normalizer/OpenApiSourceNormalizer.php`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Document\Normalizer;
+namespace Alama\Arazzo\Sources\Normalizer;
 
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Document\Resolver\Exceptions\UnsupportedSourceVersionException;
+use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
 
 /**
  * Port (D2): turns a described source + raw content into an operation index.
@@ -1030,7 +2091,7 @@ Adjust imports at the top when implementing (`NativeJsonDecoder`, `SymfonyYamlDe
 ```bash
 composer run test-document -- --filter=OpenApiSourceNormalizer
 composer run analyse-document
-git add packages/document/src/Normalizer/OpenApiSourceNormalizer.php packages/document/tests/Normalizer/OpenApiSourceNormalizerTest.php
+git add packages/sources/src/Normalizer/OpenApiSourceNormalizer.php packages/sources/tests/Normalizer/OpenApiSourceNormalizerTest.php
 git commit -m "feat(document): OpenApiSourceNormalizer port implementing SourceNormalizerInterface (D2)"
 ```
 
@@ -2240,14 +3301,14 @@ git commit -m "feat(document): interaction-step validation rule (D4f)"
 **Prereqs:** D1, D2, D3a–c, D4a–f all landed.
 
 **Files:**
-- Edit `packages/document/src/Document.php`
-- Create `packages/document/tests/DocumentFacadeNormalizeTest.php`
+- Edit `packages/sources/src/Document.php`
+- Create `packages/sources/tests/DocumentFacadeNormalizeTest.php`
 
 ### Steps
 
 1. Failing facade test.
 
-`packages/document/tests/DocumentFacadeNormalizeTest.php`:
+`packages/sources/tests/DocumentFacadeNormalizeTest.php`:
 
 ```php
 <?php
@@ -2257,8 +3318,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests;
 
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
-use Alama\Arazzo\Document\Document;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Document;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('normalizes document sources through the registry', function (): void {
@@ -2368,9 +3429,12 @@ git commit -m "feat(document): expose normalizeSources on the facade, typed regi
 
 ## Final gate
 
-- [ ] `make verify` is green on `main` (docs generation, pint, phpstan all six packages, all pest suites).
-- [ ] Every file listed in D1–D5 exists with the names above.
-- [ ] No `DocumentInterface` changes beyond those approved in Phase A.
-- [ ] `ResolvedOperation` still constructs with 5 positional args (runner BC).
+- [ ] `make verify` is green on `main` (docs generation, pint, phpstan all seven packages, all pest suites).
+- [ ] Every file listed in D0–D5 exists with the names above.
+- [ ] The package boundary holds: `rg -n 'Alama\\Arazzo\\Sources' packages/document/src` and `rg -n 'cebe|GuzzleHttp|Psr\\Http|Psr\\SimpleCache|Softcreatr' packages/document/src` both return nothing.
+- [ ] All five D0 guards pass: `vendor/bin/pest packages/document/tests/ArchTest.php packages/sources/tests/ArchTest.php packages/runner/tests/ArchTest.php packages/document/tests/PackageManifestTest.php`.
+- [ ] `DocumentInterface` changed only as D0 sanctions: `resolveSource()` and `detectOpenApiVersion()` removed, nothing else altered.
+- [ ] `ResolvedOperation` constructs with **2** positional args (`$source`, `$normalized`) and exposes no cebe handle. The three former consumers read `OpenApiOperationHandle`.
+- [ ] Phase E's E3 no longer lists `StepOutputExtractor` / `ResponseSchemaValidator`, and Phase F's F1.1 no longer relocates `ResolvedOperation` — both amended as Global constraint 4 requires.
 - [ ] `#23` closed as superseded by D in the spec.
 - [ ] Commit each task separately with the exact messages above.
