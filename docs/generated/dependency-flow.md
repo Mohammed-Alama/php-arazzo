@@ -90,6 +90,8 @@ evaluation-root,evaluation-Registries,3
 evaluation-root,evaluation-Xpath,5
 evaluation-root,expression-Ast,13
 evaluation-root,expression-root,1
+expression-Ast,expression-Data,9
+expression-Ast,expression-Enum,9
 expression-Data,expression-Enum,2
 expression-Exceptions,contracts-Support,1
 expression-Interfaces,contracts-Spec,1
@@ -99,7 +101,7 @@ expression-Interfaces,expression-root,1
 expression-root,contracts-Spec,7
 expression-root,expression-Ast,14
 expression-root,expression-Data,6
-expression-root,expression-Enum,3
+expression-root,expression-Enum,2
 expression-root,expression-Exceptions,3
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,4

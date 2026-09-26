@@ -34,12 +34,12 @@ targets. Regenerated before every commit.
 | `evaluation:Registries` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
 | `(evaluation root)` | 11 | 1039 | 6 | 11 | 0.65 |  |
-| `expression:Ast` | 15 | 220 | 2 | 0 | 0.00 |  |
-| `expression:Data` | 4 | 105 | 3 | 1 | 0.25 |  |
-| `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
+| `expression:Ast` | 15 | 335 | 2 | 2 | 0.50 |  |
+| `expression:Data` | 4 | 105 | 4 | 1 | 0.20 |  |
+| `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
 | `expression:Interfaces` | 1 | 31 | 6 | 4 | 0.40 |  |
-| `(expression root)` | 4 | 731 | 7 | 6 | 0.46 |  |
+| `(expression root)` | 4 | 671 | 7 | 6 | 0.46 |  |
 | `laravel:Bindings` | 7 | 354 | 1 | 22 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 7 | 0.78 |  |
@@ -49,7 +49,7 @@ targets. Regenerated before every commit.
 | `laravel:State` | 1 | 40 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 2 | 124 | 2 | 7 | 0.78 |  |
 | `(laravel root)` | 1 | 88 | 0 | 3 | 1.00 |  |
-| `runner:Async` | 6 | 500 | 0 | 12 | 1.00 |  |
+| `runner:Async` | 6 | 494 | 0 | 12 | 1.00 |  |
 | `runner:Events` | 11 | 317 | 7 | 1 | 0.13 |  |
 | `runner:Execution` | 39 | 3824 | 7 | 21 | 0.75 |  |
 | `runner:Infrastructure` | 4 | 168 | 5 | 1 | 0.17 |  |
@@ -60,7 +60,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 287 | 4 | 11 | 0.73 |  |
 
-Total cross-module edges: **971**
+Total cross-module edges: **988**
 
 ## Most entangled module pairs
 

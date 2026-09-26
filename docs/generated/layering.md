@@ -158,6 +158,8 @@ flowchart TB
     M_evaluation__ --> M_evaluation_Xpath
     M_evaluation__ --> M_expression_Ast
     M_evaluation__ --> M_expression__
+    M_expression_Ast --> M_expression_Data
+    M_expression_Ast --> M_expression_Enum
     M_expression_Data --> M_expression_Enum
     M_expression_Exceptions --> M_contracts_Support
     M_expression_Interfaces --> M_contracts_Spec

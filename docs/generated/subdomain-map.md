@@ -52,12 +52,12 @@ flowchart LR
         S_evaluation_Plugins["evaluation:Plugins<br/><small>95 LOC</small>"]:::unknownDomain
         S_evaluation_Registries["evaluation:Registries<br/><small>120 LOC</small>"]:::unknownDomain
         S_evaluation_Xpath["evaluation:Xpath<br/><small>109 LOC</small>"]:::unknownDomain
-        S_expression_Ast["expression:Ast<br/><small>235 LOC</small>"]:::unknownDomain
+        S_expression_Ast["expression:Ast<br/><small>350 LOC</small>"]:::unknownDomain
         S_expression_Data["expression:Data<br/><small>109 LOC</small>"]:::unknownDomain
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
         S_expression_Exceptions["expression:Exceptions<br/><small>23 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>32 LOC</small>"]:::unknownDomain
-        S_runner_Async["runner:Async<br/><small>506 LOC</small>"]:::unknownDomain
+        S_runner_Async["runner:Async<br/><small>500 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>3863 LOC</small>"]:::unknownDomain
         S_runner_Infrastructure["runner:Infrastructure<br/><small>172 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
@@ -74,9 +74,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,148 | 0 | 6% |
-| Supporting | 6 | 5,952 | 0 | 32% |
+| Supporting | 6 | 5,952 | 0 | 31% |
 | Generic subdomain | 12 | 2,132 | 1,147 | 17% |
-| Unclassified | 24 | 8,480 | 0 | 45% |
+| Unclassified | 24 | 8,589 | 0 | 45% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

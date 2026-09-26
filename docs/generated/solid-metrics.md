@@ -46,8 +46,8 @@ quadrantChart
     evaluation/Registries: [0.75, 0]
     evaluation/Xpath: [0.667, 0.5]
     evaluation/_: [0.647, 0.091]
-    expression/Ast: [0, 0]
-    expression/Data: [0.25, 0]
+    expression/Ast: [0.5, 0]
+    expression/Data: [0.2, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.333, 0]
     expression/Interfaces: [0.4, 1]
@@ -80,9 +80,9 @@ Concrete types over 300 LOC:
 |---|---|---:|
 | `Parser` | `document:Parser` | 854 |
 | `ExecutionContext` | `runner:State` | 496 |
-| `Parser` | `expression:_` | 424 |
 | `StepExecutionWorker` | `runner:Execution` | 379 |
 | `StepOutcomeHandler` | `runner:Execution` | 376 |
+| `Parser` | `expression:_` | 365 |
 | `WorkflowContext` | `contracts:State` | 359 |
 | `ExecutionState` | `contracts:State` | 308 |
 | `PreflightValidator` | `document:Validator` | 302 |

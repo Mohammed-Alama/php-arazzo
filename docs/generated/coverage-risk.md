@@ -41,8 +41,8 @@ quadrantChart
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.75, 0]
     evaluation/Xpath: [0.667, 1]
-    expression/Ast: [0, 0.333]
-    expression/Data: [0.25, 0.5]
+    expression/Ast: [0.5, 0.333]
+    expression/Data: [0.2, 0.75]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.333, 1]
     expression/Interfaces: [0.4, 1]
@@ -88,9 +88,9 @@ quadrantChart
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
-| `expression/Ast` | 0.00 | 5 | 15 | 33% |
-| `expression/Data` | 0.25 | 2 | 4 | 50% |
-| `expression/Enum` | 0.00 | 3 | 2 | 100% |
+| `expression/Ast` | 0.50 | 5 | 15 | 33% |
+| `expression/Data` | 0.20 | 3 | 4 | 75% |
+| `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.33 | 5 | 1 | 100% |
 | `expression/Interfaces` | 0.40 | 5 | 1 | 100% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
