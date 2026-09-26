@@ -35,6 +35,10 @@
         {
             "type": "path",
             "url": "packages/runner"
+        },
+        {
+            "type": "path",
+            "url": "packages/sources"
         }
     ],
     "require": {
@@ -46,6 +50,7 @@
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-runner": "@dev",
+        "alama/arazzo-sources": "@dev",
         "alama/laravel-arazzo": "@dev",
         "ext-dom": "*",
         "ext-libxml": "*"
@@ -72,6 +77,7 @@
             "Alama\\Arazzo\\Contracts\\": "packages/contracts/src/",
             "Alama\\Arazzo\\Cli\\": "packages/cli/src/",
             "Alama\\Arazzo\\Runner\\": "packages/runner/src/",
+            "Alama\\Arazzo\\Sources\\": "packages/sources/src/",
             "Alama\\Arazzo\\": "packages/core/src/",
             "Alama\\Arazzo\\Evaluation\\": "packages/evaluation/src/"
         }
@@ -85,7 +91,8 @@
                 "packages/expression/tests",
                 "packages/evaluation/tests",
                 "packages/runner/tests",
-                "packages/cli/tests"
+                "packages/cli/tests",
+                "packages/sources/tests"
             ],
             "Alama\\Arazzo\\Laravel\\Tests\\": [
                 "packages/laravel/tests"
@@ -112,6 +119,7 @@
         "analyse-contracts": "vendor/bin/phpstan analyse -c packages/contracts/phpstan.neon.dist --memory-limit=1G",
         "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
         "analyse-document": "vendor/bin/phpstan analyse -c packages/document/phpstan.neon.dist --memory-limit=1G",
+        "analyse-sources": "vendor/bin/phpstan analyse -c packages/sources/phpstan.neon.dist --memory-limit=1G",
         "analyse-runner": "vendor/bin/phpstan analyse -c packages/runner/phpstan.neon.dist --memory-limit=1G",
         "analyse-cli": "vendor/bin/phpstan analyse -c packages/cli/phpstan.neon.dist --memory-limit=1G",
         "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
@@ -126,6 +134,7 @@
         "test-core": "vendor/bin/pest packages/core/tests",
         "test-contracts": "vendor/bin/pest packages/contracts/tests",
         "test-document": "vendor/bin/pest packages/document/tests",
+        "test-sources": "vendor/bin/pest packages/sources/tests",
         "test-expression": "vendor/bin/pest packages/expression/tests",
         "test-runner": "vendor/bin/pest packages/runner/tests",
         "test-cli": "vendor/bin/pest packages/cli/tests",
@@ -134,6 +143,7 @@
             "@test-contracts",
             "@test-expression",
             "@test-document",
+            "@test-sources",
             "@test-runner",
             "@test-cli",
             "@test-core",
