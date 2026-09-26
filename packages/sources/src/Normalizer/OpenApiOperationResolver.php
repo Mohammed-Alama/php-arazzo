@@ -182,9 +182,6 @@ class OpenApiOperationResolver
             new ResolvedOperation(
                 $targetSource,
                 $normalized,
-                $openApi,
-                $rawDocument,
-                $cebeOperation,
                 null,
                 null,
                 null,

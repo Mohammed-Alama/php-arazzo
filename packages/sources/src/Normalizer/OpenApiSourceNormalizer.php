@@ -134,9 +134,6 @@ final class OpenApiSourceNormalizer implements SourceNormalizerInterface
                 $resolved = new ResolvedOperation(
                     source: $source,
                     normalized: $normalized,
-                    openApi: $openApi,
-                    rawDocument: $rawDocument,
-                    cebeOperation: $cebeOperation,
                     rpcProtocol: null,
                     operationName: null,
                     rpcMethod: null,
