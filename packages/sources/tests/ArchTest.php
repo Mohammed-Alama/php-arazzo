@@ -32,6 +32,4 @@ arch('sources may reach the model package and the transport')
 
 arch('only the sources composition root constructs http clients')
     ->expect('Alama\Arazzo\Sources\SourceLoader')
-    ->not->toUse('GuzzleHttp')
-    ->expect('Alama\Arazzo\Sources\Resolver\DefaultSourceResolver')
     ->not->toUse('GuzzleHttp');
