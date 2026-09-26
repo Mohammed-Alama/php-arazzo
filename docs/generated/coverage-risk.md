@@ -43,7 +43,7 @@ quadrantChart
     expression/Data: [0.25, 1]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.333, 1]
-    expression/Interfaces: [0.286, 1]
+    expression/Interfaces: [0.25, 1]
     laravel/Bindings: [0.95, 0.857]
     laravel/Events: [0, 1]
     laravel/Http: [0.75, 1]
@@ -88,7 +88,7 @@ quadrantChart
 | `expression/Data` | 0.25 | 2 | 2 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.33 | 5 | 1 | 100% |
-| `expression/Interfaces` | 0.29 | 5 | 1 | 100% |
+| `expression/Interfaces` | 0.25 | 5 | 1 | 100% |
 | `laravel/Bindings` | 0.95 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `laravel/Http` | 0.75 | 4 | 3 | 100% |

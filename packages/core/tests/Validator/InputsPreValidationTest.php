@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
@@ -17,9 +18,9 @@ use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Sources\Document;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
@@ -66,7 +67,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
 
     $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
-    $documents = new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $documents = SourceGraph::using(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $resolver = new ExpressionResolver(
         $evaluator,
         new StepOutputExtractor($documents, $engine, new ExpressionEngine()),
@@ -100,7 +101,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
     }
 });
 
-function preflightForInputsDoc(): Document
+function preflightForInputsDoc(): DocumentInterface
 {
-    return new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    return SourceGraph::using(null, null, new SourceRegistry(new DefaultSourceResolver([])));
 }

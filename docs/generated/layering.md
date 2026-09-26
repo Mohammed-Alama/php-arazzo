@@ -113,6 +113,7 @@ flowchart TB
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Validator
+    M_document__ --> M_expression_Interfaces
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
     M_evaluation_Condition --> M_evaluation_Data
@@ -277,7 +278,7 @@ flowchart TB
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
 | `document` | `contracts` | 132 |
-| `document` | `expression` | 16 |
+| `document` | `expression` | 17 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
 | `expression` | `contracts` | 1 |

@@ -366,6 +366,11 @@ this file on a commit is a public API change — review it deliberately.
 - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;`
 - `public function validate(ArazzoDocument $document): ValidationResult;`
 
+### `Alama\Arazzo\Document`
+
+#### `ModelStack` class
+- `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine)`
+
 ### `Alama\Arazzo\Document\Parser\Exceptions`
 
 #### `LoaderException` class

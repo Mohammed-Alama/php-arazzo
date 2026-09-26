@@ -22,7 +22,7 @@ use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
-use Alama\Arazzo\Sources\Document;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
@@ -118,7 +118,7 @@ function seams(
 function internal(AsyncGraphSeams $s): AsyncExecutionGraphAssembler
 {
     return new AsyncExecutionGraphAssembler(
-        new Document(),
+        SourceGraph::default(),
         new EvaluationEngine(),
         new ExpressionEngine(),
     );

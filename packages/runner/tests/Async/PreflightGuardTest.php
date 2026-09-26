@@ -11,10 +11,10 @@ use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Runner\Async\PreflightGuard;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Sources\Document;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Fetchers\HttpFetcher;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
@@ -24,7 +24,7 @@ function guardValidator(): DocumentInterface
         'https' => new HttpFetcher(new Client(), new HttpFactory()),
     ]));
 
-    return new Document(null, null, $registry);
+    return SourceGraph::using(null, null, $registry);
 }
 
 function guardDocument(array $stepOverrides = []): ArazzoDocument

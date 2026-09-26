@@ -8,9 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
-use Alama\Arazzo\Sources\Document;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;
@@ -116,7 +116,7 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
 
     $document = DocumentLoader::load($doc);
     $runner = new RunnerFacade(
-        new Document($client, new HttpFactory(), $registry),
+        SourceGraph::using($client, new HttpFactory(), $registry),
         new EvaluationEngine(),
         $client,
     );

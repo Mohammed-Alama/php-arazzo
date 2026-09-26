@@ -32,9 +32,9 @@ use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\State\FileStateStore;
-use Alama\Arazzo\Sources\Document;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -71,7 +71,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
-    $documents = new Document(null, null, new SourceRegistry(new class() implements SourceResolver
+    $documents = SourceGraph::using(null, null, new SourceRegistry(new class() implements SourceResolver
     {
         public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {

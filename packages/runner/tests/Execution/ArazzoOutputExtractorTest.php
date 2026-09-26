@@ -21,10 +21,10 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Sources\Document;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 
 beforeEach(function () {
     $openApiJson = json_encode([
@@ -59,7 +59,7 @@ beforeEach(function () {
     file_put_contents($this->openApiFile, $openApiJson);
 
     $this->makeExtractor = function (): StepOutputExtractor {
-        $documents = new Document(null, null, new SourceRegistry(
+        $documents = SourceGraph::using(null, null, new SourceRegistry(
             new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
         ));
 

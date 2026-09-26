@@ -22,7 +22,7 @@ targets. Regenerated before every commit.
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1143 | 5 | 2 | 0.29 |  |
 | `document:Validator` | 64 | 3091 | 4 | 5 | 0.56 |  |
-| `(document root)` | 1 | 89 | 5 | 3 | 0.38 |  |
+| `(document root)` | 2 | 130 | 5 | 4 | 0.44 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -36,7 +36,7 @@ targets. Regenerated before every commit.
 | `expression:Data` | 2 | 64 | 3 | 1 | 0.25 |  |
 | `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
-| `expression:Interfaces` | 1 | 24 | 5 | 2 | 0.29 |  |
+| `expression:Interfaces` | 1 | 24 | 6 | 2 | 0.25 |  |
 | `(expression root)` | 3 | 510 | 4 | 5 | 0.56 |  |
 | `laravel:Bindings` | 7 | 354 | 1 | 19 | 0.95 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
@@ -58,7 +58,7 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 287 | 4 | 11 | 0.73 |  |
 
-Total cross-module edges: **854**
+Total cross-module edges: **861**
 
 ## Most entangled module pairs
 

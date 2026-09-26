@@ -13,7 +13,7 @@ use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Runner\RunnerGraphBuilder;
 use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
-use Alama\Arazzo\Sources\Document;
+use Alama\Arazzo\Sources\SourceGraph;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Client\ClientInterface;
 
@@ -27,7 +27,7 @@ final class FacadeBindings
     {
         $app->singleton(ExpressionEngineInterface::class, fn (): ExpressionEngine => new ExpressionEngine());
         $app->singleton(EvaluationEngineInterface::class, fn (): EvaluationEngine => new EvaluationEngine());
-        $app->singleton(DocumentInterface::class, fn (): Document => new Document());
+        $app->singleton(DocumentInterface::class, fn (): DocumentInterface => SourceGraph::default());
         $app->singleton(RunnerFacadeInterface::class, fn (): RunnerFacade => new RunnerFacade(
             $app->make(DocumentInterface::class),
             $app->make(EvaluationEngineInterface::class),

@@ -167,7 +167,7 @@ function render(array $scans, string $root): string
     $lines[] = '';
     $seams = seamViolations($scans);
     if ($seams['facades'] === []) {
-        $lines[] = '**Clean** — no library package references another package\'s concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.';
+        $lines[] = '**Clean** — no library package references another package\'s concrete entry-point facade (`ExpressionEngine`, `Document`, `SourceGraph`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.';
     } else {
         $lines[] = sprintf('**%d facade-seam violation(s):**', count($seams['facades']));
         $lines[] = '';
@@ -226,7 +226,7 @@ function coreStrayFiles(string $root): array
  *
  * @var list<string>
  */
-const CONCRETE_FACADES = ['ExpressionEngine', 'Document', 'RunnerFacade'];
+const CONCRETE_FACADES = ['ExpressionEngine', 'Document', 'RunnerFacade', 'SourceGraph'];
 
 /**
  * Cross-package references from non-exempt library packages, split into

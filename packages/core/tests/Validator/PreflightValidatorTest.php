@@ -23,7 +23,6 @@ use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Sources\Document;
 use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
@@ -31,6 +30,7 @@ use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Sources\Validator\PreflightValidator;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -154,7 +154,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
         ],
     ]);
-    $documents = new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $documents = SourceGraph::using(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $resolver = new ExpressionResolver(
         new ExpressionEvaluator(),
         new StepOutputExtractor($documents, new EvaluationEngine(), new ExpressionEngine()),

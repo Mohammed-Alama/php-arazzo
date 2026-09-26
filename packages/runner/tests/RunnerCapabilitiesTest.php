@@ -14,7 +14,7 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
-use Alama\Arazzo\Sources\Document;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;
 use Psr\Http\Client\ClientInterface;
@@ -48,23 +48,23 @@ it('exposes the enriched runner facade entry point', function () {
 });
 
 it('accepts the document public face as the required seam dependency', function () {
-    $runner = new RunnerFacade(new Document(), new EvaluationEngine());
+    $runner = new RunnerFacade(SourceGraph::default(), new EvaluationEngine());
 
     expect($runner)->toBeInstanceOf(RunnerFacadeInterface::class);
 });
 
 it('runs a workflow whose operation resolves through the document face', function () {
-    $result = (new RunnerFacade(new Document(), new EvaluationEngine(), runnerStubClient()))->run(runnerFixtureDocument(), 'find');
+    $result = (new RunnerFacade(SourceGraph::default(), new EvaluationEngine(), runnerStubClient()))->run(runnerFixtureDocument(), 'find');
     expect($result['status'])->toBe('succeeded');
 });
 
 it('keeps the run output shape stable for existing consumers', function () {
-    $result = (new RunnerFacade(new Document(), new EvaluationEngine(), runnerStubClient()))->run(runnerFixtureDocument(), 'find');
+    $result = (new RunnerFacade(SourceGraph::default(), new EvaluationEngine(), runnerStubClient()))->run(runnerFixtureDocument(), 'find');
     expect(array_keys($result))->toBe(['workflowId', 'status', 'outputs', 'stepsSpent', 'workflowCallStack']);
 });
 
 it('execute exposes per-step verdicts for cli and laravel consumers', function () {
-    $result = (new RunnerFacade(new Document(), new EvaluationEngine(), runnerStubClient()))->execute(runnerFixtureDocument(), 'find');
+    $result = (new RunnerFacade(SourceGraph::default(), new EvaluationEngine(), runnerStubClient()))->execute(runnerFixtureDocument(), 'find');
 
     expect($result['status'])->toBe('succeeded')
         ->and($result['steps'])->toBeArray()

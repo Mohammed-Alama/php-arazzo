@@ -12,7 +12,7 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
-use Alama\Arazzo\Sources\Document;
+use Alama\Arazzo\Sources\SourceGraph;
 
 function runnerDocument(): ArazzoDocument
 {
@@ -26,7 +26,7 @@ function runnerDocument(): ArazzoDocument
 
 function runnerFacade(): RunnerFacade
 {
-    return new RunnerFacade(new Document(), new EvaluationEngine());
+    return new RunnerFacade(SourceGraph::default(), new EvaluationEngine());
 }
 
 it('exposes the RunnerFacadeInterface entry point', function () {

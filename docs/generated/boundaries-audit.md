@@ -86,7 +86,7 @@ when a boundary consciously moves.
 
 Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
 
-**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
+**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `SourceGraph`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
 
 ### Facade-to-facade transitions (allowed by seam policy)
 

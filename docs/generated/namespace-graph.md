@@ -110,6 +110,7 @@ flowchart LR
     document__ --> contracts_Spec
     document__ --> document_Parser
     document__ --> document_Validator
+    document__ --> expression_Interfaces
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
     runner_Async --> evaluation_Interfaces
