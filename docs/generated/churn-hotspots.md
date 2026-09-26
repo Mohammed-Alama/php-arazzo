@@ -17,7 +17,7 @@ xychart-beta
     bar [29, 17, 15, 14, 14, 12, 10, 9, 9, 9, 8, 7]
 ```
 
-Analyzed 242 total file-touches across 44 modules.
+Analyzed 243 total file-touches across 44 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -53,9 +53,9 @@ Analyzed 242 total file-touches across 44 modules.
 | `runner:Policy` | 3 | 1% | 102 | 29.4 |
 | `runner:State` | 3 | 1% | 952 | 3.2 |
 | `runner:Telemetry` | 3 | 1% | 282 | 10.6 |
+| `sources:Normalizer` | 3 | 1% | 788 | 3.8 |
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
 | `evaluation:Plugins` | 2 | 1% | 95 | 21.1 |
-| `sources:Normalizer` | 2 | 1% | 605 | 3.3 |
 | `sources:Resolver` | 2 | 1% | 457 | 4.4 |
 | `contracts:State` | 1 | 0% | 667 | 1.5 |
 | `evaluation:Condition` | 1 | 0% | 654 | 1.5 |

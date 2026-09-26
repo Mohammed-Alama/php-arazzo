@@ -24,7 +24,7 @@ when a boundary consciously moves.
 | `Psr` | 52 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 18 | 0 | **forbidden** ⚠ |
+| `cebe` | 20 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -49,7 +49,7 @@ when a boundary consciously moves.
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
 | runner | `runner:_` | `Psr` | 5 |
-| sources | `sources:Normalizer` | `cebe` | 6 |
+| sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
 | sources | `sources:_` | `GuzzleHttp` | 2 |
@@ -84,7 +84,7 @@ when a boundary consciously moves.
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
-- `sources:Normalizer` imports `cebe\*` (6 refs)
+- `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
 - `sources:_` imports `GuzzleHttp\*` (2 refs)
 
@@ -135,7 +135,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `sources` | `ModelStack` | `document` | 2 | `Document` |
 | `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
-| `sources` | `ResolvedOperation` | `document` | 3 | `OpenApiOperationHandle` |
+| `sources` | `ResolvedOperation` | `document` | 4 | `OpenApiOperationHandle` |
 | `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
 | `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

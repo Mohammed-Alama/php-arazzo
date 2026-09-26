@@ -274,6 +274,7 @@ flowchart TB
     M_runner__ --> M_runner_Infrastructure
     M_runner__ --> M_runner_State
     M_runner__ --> M_sources_Normalizer
+    M_sources_Normalizer --> M_contracts_Interfaces
     M_sources_Normalizer --> M_contracts_Spec
     M_sources_Normalizer --> M_contracts_Support
     M_sources_Normalizer --> M_document__
@@ -328,8 +329,8 @@ flowchart TB
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
 | `runner` | `sources` | 10 |
-| `sources` | `contracts` | 25 |
-| `sources` | `document` | 18 |
+| `sources` | `contracts` | 29 |
+| `sources` | `document` | 19 |
 | `sources` | `expression` | 1 |
 
 ## Module-level detail

@@ -200,10 +200,11 @@ runner-root,runner-Execution,12
 runner-root,runner-Infrastructure,1
 runner-root,runner-State,4
 runner-root,sources-Normalizer,1
-sources-Normalizer,contracts-Spec,5
+sources-Normalizer,contracts-Interfaces,1
+sources-Normalizer,contracts-Spec,8
 sources-Normalizer,contracts-Support,1
-sources-Normalizer,document-root,5
-sources-Normalizer,sources-Resolver,2
+sources-Normalizer,document-root,6
+sources-Normalizer,sources-Resolver,3
 sources-Resolver,contracts-Interfaces,2
 sources-Resolver,contracts-Spec,7
 sources-Resolver,document-Parser,2
