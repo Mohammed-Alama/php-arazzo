@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Validation\Rules;
 
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
-use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('flags list inputs, wrong root type, non-object properties; accepts valid and null inputs', function (): void {

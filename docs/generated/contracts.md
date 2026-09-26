@@ -10,18 +10,19 @@ from both packages. Core defines contracts; Laravel implements them.
 flowchart LR
     I_AiClientInterface["AiClientInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_ConditionNode["ConditionNode<br/><small>expression:Evaluation</small>"]:::contract
-    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>expression:Evaluation</small>"]:::contract
+    I_ConditionNode["ConditionNode<br/><small>evaluation:Interfaces</small>"]:::contract
+    I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_CriterionEvaluatorPluginInterface["CriterionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
-    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_EvaluationEngineInterface["EvaluationEngineInterface<br/><small>(evaluation root)</small>"]:::contract
+    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>runner:Events</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runner:State</small>"]:::contract
-    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>(expression root)</small>"]:::contract
-    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>runner:Infrastructure</small>"]:::contract
     I_JsonDecoder["JsonDecoder<br/><small>document:Parser</small>"]:::contract
     I_LockManagerInterface["LockManagerInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -49,42 +50,46 @@ flowchart LR
     I_WorkflowContextInterface["WorkflowContextInterface<br/><small>contracts:Spec</small>"]:::contract
     I_WorkflowStateRepositoryInterface["WorkflowStateRepositoryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
-    I_XpathEvaluator["XpathEvaluator<br/><small>expression:Xpath</small>"]:::contract
+    I_XpathEvaluator["XpathEvaluator<br/><small>evaluation:Xpath</small>"]:::contract
     I_YamlDecoder["YamlDecoder<br/><small>document:Parser</small>"]:::contract
     C_contracts_contracts_Spec_ResponseTransfer["ResponseTransfer<br/><small>contracts:Spec</small>"]:::implCore
     C_contracts_contracts_Spec_ResponseTransfer -.->|implements| I_ResponseTransferInterface
     C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
     C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
-    C_expression_expression_Data_EvaluationInput["EvaluationInput<br/><small>expression:Data</small>"]:::implCore
-    C_expression_expression_Data_EvaluationInput -.->|implements| I_EvaluationInputInterface
-    C_expression_expression_Evaluation_EvaluationContext["EvaluationContext<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_EvaluationContext -.->|implements| I_EvaluationInputInterface
-    C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
-    C_expression_expression_Evaluation_Comparison["Comparison<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_Comparison -.->|implements| I_ConditionNode
-    C_expression_expression_Evaluation_Literal["Literal<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_Literal -.->|implements| I_ConditionNode
-    C_expression_expression_Evaluation_LogicalOp["LogicalOp<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_LogicalOp -.->|implements| I_ConditionNode
-    C_expression_expression_Evaluation_RuntimeExpr["RuntimeExpr<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_RuntimeExpr -.->|implements| I_ConditionNode
-    C_expression_expression_Evaluation_UnaryNot["UnaryNot<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_UnaryNot -.->|implements| I_ConditionNode
-    C_expression_expression_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
-    C_expression_expression_Evaluation_ExpressionResolver["ExpressionResolver<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_ExpressionResolver -.->|implements| I_ExpressionResolverInterface
-    C_expression_expression_Evaluation_InterpolationResolver["InterpolationResolver<br/><small>expression:Evaluation</small>"]:::implCore
-    C_expression_expression_Evaluation_InterpolationResolver -.->|implements| I_ExpressionResolverInterface
-    C_runner_runner_Execution_ExecutionExpressionResolver["ExecutionExpressionResolver<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_ExecutionExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
-    C_expression_expression___ExpressionEvaluator["ExpressionEvaluator<br/><small>(expression root)</small>"]:::implCore
-    C_expression_expression___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
-    C_expression_expression_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>expression:Xpath</small>"]:::implCore
-    C_expression_expression_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
+    C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_Comparison -.->|implements| I_ConditionNode
+    C_evaluation_evaluation_Condition_Literal["Literal<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_Literal -.->|implements| I_ConditionNode
+    C_evaluation_evaluation_Condition_LogicalOp["LogicalOp<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_LogicalOp -.->|implements| I_ConditionNode
+    C_evaluation_evaluation_Condition_RuntimeExpr["RuntimeExpr<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_RuntimeExpr -.->|implements| I_ConditionNode
+    C_evaluation_evaluation_Condition_UnaryNot["UnaryNot<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_UnaryNot -.->|implements| I_ConditionNode
+    C_evaluation_evaluation___CriteriaEvaluator["CriteriaEvaluator<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
+    C_evaluation_evaluation_Data_EvaluationContext["EvaluationContext<br/><small>evaluation:Data</small>"]:::implCore
+    C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
+    C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
+    C_evaluation_evaluation___EvaluationEngine["EvaluationEngine<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___EvaluationEngine -.->|implements| I_EvaluationEngineInterface
+    C_evaluation_evaluation___ExpressionEvaluator["ExpressionEvaluator<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
+    C_evaluation_evaluation___ExpressionResolver["ExpressionResolver<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___ExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_evaluation_evaluation___InterpolationResolver["InterpolationResolver<br/><small>(evaluation root)</small>"]:::implCore
+    C_evaluation_evaluation___InterpolationResolver -.->|implements| I_ExpressionResolverInterface
+    C_runner_runner_Execution_ExecutionExpressionResolver["ExecutionExpressionResolver<br/><small>runner:Execution</small>"]:::implCore
+    C_runner_runner_Execution_ExecutionExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin["JsonPathCriterionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
+    C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin -.->|implements| I_CriterionEvaluatorPluginInterface
+    C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin["JsonPathExpressionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
+    C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin -.->|implements| I_ExpressionEvaluatorPluginInterface
+    C_evaluation_evaluation_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>evaluation:Xpath</small>"]:::implCore
+    C_evaluation_evaluation_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_document_document___Document["Document<br/><small>(document root)</small>"]:::implCore
     C_document_document___Document -.->|implements| I_DocumentInterface
     C_document_document_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>document:Normalizer</small>"]:::implCore
@@ -265,8 +270,6 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
-    N_CriterionEvaluatorPluginInterface["no implementation found"]:::orphan --> I_CriterionEvaluatorPluginInterface
-    N_ExpressionEvaluatorPluginInterface["no implementation found"]:::orphan --> I_ExpressionEvaluatorPluginInterface
     N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface

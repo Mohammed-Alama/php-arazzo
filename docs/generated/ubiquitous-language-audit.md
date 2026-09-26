@@ -45,7 +45,7 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry`, `DefinitionRegistryInterface` + 9 more (13 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 11 more (15 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
 
@@ -64,8 +64,8 @@ Evans' first question: does the code speak one language?
 
 | Name | Locations | Packages |
 |---|---|---|
-| `Lexer` | `Expression\Evaluation\Condition\Lexer`<br/>`Expression\Lexer` | expression |
-| `Parser` | `Expression\Evaluation\Condition\Parser`<br/>`Expression\Parser`<br/>`Document\Parser\Parser` | expression, document |
+| `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
+| `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
 | `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |
-| `Token` | `Expression\Data\Token`<br/>`Expression\Evaluation\Condition\Token` | expression |
-| `TokenKind` | `Expression\Enum\TokenKind`<br/>`Expression\Evaluation\Enum\TokenKind` | expression |
+| `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
+| `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |

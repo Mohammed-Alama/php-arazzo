@@ -60,7 +60,7 @@ it('renders a per-package capability contract', function (): void {
     $doc = file_get_contents(dirname(__DIR__, 3).'/docs/generated/package-contracts.md');
 
     expect($doc)->toContain('## contracts')
-        ->and($doc)->toContain('## expression')
+        ->and($doc)->toContain('## evaluation')
         ->and($doc)->toContain('## document')
         ->and($doc)->toContain('## runner')
         ->and($doc)->toContain('## cli')
@@ -77,27 +77,27 @@ it('excludes @internal-docblocked types from the public api surface', function (
     $hidden = new ScannedFile(
         path: '',
         relativeDir: '',
-        namespace: 'Alama\\Arazzo\\Expression',
+        namespace: 'Alama\\Arazzo\\Evaluation',
         className: 'HiddenEvaluator',
         isInterface: true,
         uses: [],
         useStatements: [],
         content: "/**\n * Internal seam, not part of the advertised contract.\n *\n * @internal\n */\ninterface HiddenEvaluator\n{\n    public function resolve(): void;\n}\n",
-        package: 'expression',
+        package: 'evaluation',
     );
     $visible = new ScannedFile(
         path: '',
         relativeDir: '',
-        namespace: 'Alama\\Arazzo\\Expression',
+        namespace: 'Alama\\Arazzo\\Evaluation',
         className: 'VisibleFacade',
         isInterface: true,
         uses: [],
         useStatements: [],
         content: "/**\n * Public entry seam.\n */\ninterface VisibleFacade\n{\n    public function run(): void;\n}\n",
-        package: 'expression',
+        package: 'evaluation',
     );
 
-    $out = \ArazzoDocs\PublicApiDoc\render(['expression' => ['_' => [$hidden, $visible]]]);
+    $out = \ArazzoDocs\PublicApiDoc\render(['evaluation' => ['_' => [$hidden, $visible]]]);
 
     expect($out)->toContain('VisibleFacade')
         ->and($out)->not->toContain('HiddenEvaluator');
@@ -123,7 +123,7 @@ it('keeps generated dir markdown-only', function (): void {
 
 it('derives layer order from composer require', function (): void {
     expect(\ArazzoDocs\packageLayerOrder(dirname(__DIR__, 3)))->toBe(
-        ['contracts', 'expression', 'document', 'runner', 'cli', 'laravel'],
+        ['contracts', 'expression', 'evaluation', 'document', 'runner', 'cli', 'laravel'],
     );
 });
 
@@ -200,7 +200,7 @@ it('pins the fixed-doc contracts', function (): void {
     expect($get('namespace-graph.md'))->not->toContain('Alama\\Arazzo\\Ast\\Ast')
         ->and($get('layering.md'))->toContain('No package-level layering violations.');
     // Task 3: package sections, facades surfaced
-    expect($get('public-api.md'))->toContain('## expression')
+    expect($get('public-api.md'))->toContain('## evaluation')
         ->and($get('public-api.md'))->toContain('### `ExpressionEngine`');
     // Task 4: real CLI introspection
     expect($get('cli-reference.md'))->toContain('arazzo run');

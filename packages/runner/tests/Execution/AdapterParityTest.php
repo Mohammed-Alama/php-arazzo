@@ -22,10 +22,11 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -69,7 +70,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 99])));
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $evaluator = new ExpressionEvaluator();
-    $engine = new ExpressionEngine();
+    $engine = new EvaluationEngine();
     $documents = new Document(null, null, new SourceRegistry(new class() implements SourceResolver
     {
         public function resolve(SourceDescription $description, string $basePath): SourceDocument
@@ -84,7 +85,7 @@ function parityFixtures(): array
     }));
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($documents, $engine),
+        new StepOutputExtractor($documents, $engine, new ExpressionEngine()),
         new CriteriaEvaluator($evaluator),
         new ResponseSchemaValidator($documents),
     );

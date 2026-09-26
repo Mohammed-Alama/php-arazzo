@@ -23,13 +23,20 @@ flowchart LR
     document_Resolver["Alama\Arazzo\Document\Resolver\Exceptions"]:::coreNode
     document_Validator["Alama\Arazzo\Document\Validator\Rules"]:::coreNode
     document__["(document package root)"]:::coreNode
+    evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
+    evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
+    evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
+    evaluation_Exceptions["Alama\Arazzo\Evaluation\Exceptions"]:::coreNode
+    evaluation_Interfaces["Alama\Arazzo\Evaluation\Interfaces"]:::coreNode
+    evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
+    evaluation_Registries["Alama\Arazzo\Evaluation\Registries"]:::coreNode
+    evaluation_Xpath["Alama\Arazzo\Evaluation\Xpath"]:::coreNode
+    evaluation__["(evaluation package root)"]:::coreNode
     expression_Ast["Alama\Arazzo\Expression\Ast"]:::coreNode
     expression_Data["Alama\Arazzo\Expression\Data"]:::coreNode
     expression_Enum["Alama\Arazzo\Expression\Enum"]:::coreNode
-    expression_Evaluation["Alama\Arazzo\Expression\Evaluation\Condition"]:::coreNode
     expression_Exceptions["Alama\Arazzo\Expression\Exceptions"]:::coreNode
     expression_Interfaces["Alama\Arazzo\Expression\Interfaces"]:::coreNode
-    expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
     laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
     laravel_Http["Alama\Arazzo\Laravel\Http\Controllers"]:::laravelNode
@@ -56,29 +63,45 @@ flowchart LR
     contracts_Interfaces --> contracts_Exceptions
     contracts_Spec --> contracts_Interfaces
     contracts_State --> contracts_Spec
-    expression_Data --> contracts_Spec
-    expression_Data --> expression_Interfaces
+    expression_Ast --> expression_Data
+    expression_Ast --> expression_Enum
     expression_Data --> expression_Enum
-    expression_Evaluation --> contracts_Spec
-    expression_Evaluation --> contracts_State
-    expression_Evaluation --> expression__
-    expression_Evaluation --> expression_Xpath
-    expression_Evaluation --> contracts_Interfaces
-    expression_Evaluation --> expression_Interfaces
-    expression_Evaluation --> contracts_Support
     expression_Exceptions --> contracts_Support
-    expression_Interfaces --> contracts_Spec
-    expression_Xpath --> contracts_Spec
-    expression_Xpath --> expression_Exceptions
-    expression__ --> contracts_Spec
-    expression__ --> contracts_State
-    expression__ --> expression_Ast
+    expression_Interfaces --> expression_Data
+    expression_Interfaces --> expression_Exceptions
     expression__ --> expression_Data
-    expression__ --> expression_Enum
-    expression__ --> expression_Evaluation
     expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
-    expression__ --> expression_Xpath
+    expression__ --> expression_Ast
+    expression__ --> expression_Enum
+    evaluation_Condition --> evaluation_Enum
+    evaluation_Condition --> contracts_Spec
+    evaluation_Condition --> evaluation_Interfaces
+    evaluation_Condition --> contracts_Support
+    evaluation_Condition --> evaluation_Data
+    evaluation_Data --> contracts_Spec
+    evaluation_Data --> evaluation_Interfaces
+    evaluation_Exceptions --> contracts_Support
+    evaluation_Interfaces --> contracts_Spec
+    evaluation_Plugins --> contracts_Interfaces
+    evaluation_Plugins --> contracts_Spec
+    evaluation_Plugins --> evaluation__
+    evaluation_Registries --> contracts_Interfaces
+    evaluation_Registries --> contracts_Spec
+    evaluation_Registries --> evaluation_Plugins
+    evaluation_Xpath --> contracts_Spec
+    evaluation_Xpath --> evaluation_Exceptions
+    evaluation__ --> contracts_Spec
+    evaluation__ --> contracts_State
+    evaluation__ --> evaluation_Xpath
+    evaluation__ --> evaluation_Interfaces
+    evaluation__ --> expression_Ast
+    evaluation__ --> expression__
+    evaluation__ --> contracts_Interfaces
+    evaluation__ --> evaluation_Data
+    evaluation__ --> evaluation_Condition
+    evaluation__ --> evaluation_Registries
+    evaluation__ --> evaluation_Exceptions
     document_Normalizer --> contracts_Support
     document_Normalizer --> contracts_Spec
     document_Normalizer --> document_Resolver
@@ -87,11 +110,10 @@ flowchart LR
     document_Resolver --> contracts_Spec
     document_Resolver --> document_Parser
     document_Validator --> contracts_Spec
-    document_Validator --> expression__
     document_Validator --> document_Normalizer
     document_Validator --> document_Resolver
+    document_Validator --> expression_Interfaces
     document_Validator --> contracts_Support
-    document_Validator --> expression_Data
     document_Validator --> expression_Enum
     document_Validator --> contracts_Dependency
     document__ --> contracts_Spec
@@ -100,9 +122,10 @@ flowchart LR
     document__ --> document_Resolver
     document__ --> document_Validator
     document__ --> expression__
+    document__ --> expression_Interfaces
     runner_Async --> contracts_Spec
     runner_Async --> contracts_State
-    runner_Async --> expression_Interfaces
+    runner_Async --> evaluation_Interfaces
     runner_Async --> runner_Events
     runner_Async --> runner_State
     runner_Async --> contracts_Exceptions
@@ -116,13 +139,13 @@ flowchart LR
     runner_Execution --> contracts_Spec
     runner_Execution --> runner_State
     runner_Execution --> contracts_State
-    runner_Execution --> expression__
+    runner_Execution --> evaluation__
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
     runner_Execution --> document__
     runner_Execution --> document_Validator
-    runner_Execution --> expression_Interfaces
+    runner_Execution --> evaluation_Interfaces
     runner_Execution --> runner_Events
     runner_Execution --> runner_Jobs
     runner_Execution --> runner_Telemetry
@@ -131,6 +154,7 @@ flowchart LR
     runner_Execution --> document_Parser
     runner_Execution --> document_Normalizer
     runner_Execution --> expression_Enum
+    runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
     runner_Execution --> runner_Protocol
     runner_Infrastructure --> contracts_Interfaces
@@ -143,8 +167,8 @@ flowchart LR
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
     runner_Protocol --> document__
-    runner_Protocol --> expression__
-    runner_Protocol --> expression_Interfaces
+    runner_Protocol --> evaluation__
+    runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
     runner_Protocol --> contracts_Dependency
     runner_Protocol --> runner_Infrastructure
@@ -152,18 +176,20 @@ flowchart LR
     runner_State --> contracts_Spec
     runner_State --> contracts_State
     runner__ --> contracts_Interfaces
-    runner__ --> expression_Interfaces
+    runner__ --> evaluation_Interfaces
     runner__ --> runner_Execution
     runner__ --> runner_Events
     runner__ --> runner_Infrastructure
     runner__ --> runner_State
     runner__ --> document__
-    runner__ --> expression__
+    runner__ --> evaluation__
+    runner__ --> expression_Interfaces
     runner__ --> contracts_Spec
+    runner__ --> expression__
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
-    cli_Console --> expression_Interfaces
+    cli_Console --> evaluation_Interfaces
     cli_Console --> runner_Events
     cli_Console --> runner_Execution
     cli_Console --> runner_Jobs
@@ -176,6 +202,7 @@ flowchart LR
     cli_Console --> cli_Renderer
     cli_Console --> document__
     cli_Console --> document_Resolver
+    cli_Console --> evaluation__
     cli_Console --> runner__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
@@ -196,9 +223,11 @@ flowchart LR
     laravel_Bindings --> document_Normalizer
     laravel_Bindings --> document_Resolver
     laravel_Bindings --> document_Validator
-    laravel_Bindings --> expression__
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
+    laravel_Bindings --> evaluation__
+    laravel_Bindings --> expression__
+    laravel_Bindings --> expression_Interfaces
     laravel_Http --> runner_Infrastructure
     laravel_Http --> cli_Generator
     laravel_Http --> contracts_Spec
@@ -216,7 +245,7 @@ flowchart LR
     laravel_Queue --> runner_Execution
     laravel_State --> runner_State
     laravel_Support --> contracts_Interfaces
-    laravel_Support --> expression_Interfaces
+    laravel_Support --> evaluation_Interfaces
     laravel_Support --> runner__
     laravel_Support --> runner_Events
     laravel_Support --> runner_Execution

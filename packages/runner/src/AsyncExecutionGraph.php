@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;

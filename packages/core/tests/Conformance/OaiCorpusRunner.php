@@ -115,7 +115,7 @@ final class OaiCorpusRunner
 
         $document = (new Parser())->parse($raw);
 
-        return (new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine())))->validate($document);
+        return (new Validator(RuleSet::default(new ExpressionEngine())))->validate($document);
     }
 
     /** Builds a registry pre-seeded with this document's local companions. */

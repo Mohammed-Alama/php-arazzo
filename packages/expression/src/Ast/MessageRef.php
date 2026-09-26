@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Ast;
 
+use Alama\Arazzo\Expression\Data\ExpressionReference;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+
 /**
  * 1.1 Message reference: {$message.header.<name>} or {$message.payload[#/ptr]}.
  * Resolved against the current step's received message (response headers/body).
@@ -17,4 +20,14 @@ final readonly class MessageRef extends ExpressionAst
         public ?string $name = null,
         public ?string $jsonPointer = null,
     ) {}
+
+    public function mapToExpressionReference(): ExpressionReference
+    {
+        return new ExpressionReference(
+            ReferenceKind::Message,
+            part: $this->part,
+            name: $this->name,
+            jsonPointer: $this->jsonPointer,
+        );
+    }
 }

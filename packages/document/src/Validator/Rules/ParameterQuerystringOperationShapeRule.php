@@ -8,9 +8,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

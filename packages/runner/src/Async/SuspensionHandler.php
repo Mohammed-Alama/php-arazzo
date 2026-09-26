@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;

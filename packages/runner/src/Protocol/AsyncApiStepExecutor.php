@@ -12,7 +12,7 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
@@ -33,7 +33,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private PendingCorrelationRegistryInterface $pendingCorrelations,
-        private ExpressionEngineInterface $engine,
+        private EvaluationEngineInterface $engine,
         private HttpClientInterface $httpClient,
         private ?RequestFactoryInterface $requestFactory = null,
         private ?StreamFactoryInterface $streamFactory = null,

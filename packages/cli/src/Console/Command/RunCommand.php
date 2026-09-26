@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Cli\Console\Command;
 use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -81,7 +81,7 @@ final class RunCommand extends Command
         $client = $this->httpClient ?? new Client();
         $factory = new HttpFactory();
 
-        $engine = new ExpressionEngine();
+        $engine = new EvaluationEngine();
         $documents = new Document($client, $factory, $this->registry);
 
         $runner = new RunnerFacade($documents, $engine, $this->httpClient);

@@ -13,6 +13,10 @@ arch('expression does not leak document/runner internals')
     ->not->toUse('Alama\Arazzo\Cli\Console')
     ->not->toUse('Alama\Arazzo\Document\Validator');
 
+arch('expression does not use evaluation classes')
+    ->expect('Alama\Arazzo\Expression')
+    ->not->toUse('Alama\Arazzo\Evaluation');
+
 arch('expression facade seams are entry-point only')
     ->expect('Alama\Arazzo\Expression')
     ->not->toUse('Alama\Arazzo\Expression\ExpressionEngine')

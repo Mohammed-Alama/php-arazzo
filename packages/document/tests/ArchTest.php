@@ -23,6 +23,16 @@ arch('document does not leak runner internals')
     ->not->toUse('Alama\Arazzo\Cli\Console')
     ->not->toUse('Alama\Arazzo\Runner\Events');
 
+arch('document does not depend on evaluation package')
+    ->expect('Alama\Arazzo\Document')
+    ->not->toUse('Alama\Arazzo\Evaluation');
+
+arch('document consumes expression engine interface')
+    ->expect('Alama\Arazzo\Document\Validator\Rules')
+    ->toUse('Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface')
+    ->not->toUse('Alama\Arazzo\Expression\Lexer')
+    ->not->toUse('Alama\Arazzo\Expression\Parser');
+
 arch('document facade seams are entry-point only')
     ->expect('Alama\Arazzo\Document\Parser')
     ->not->toUse('Alama\Arazzo\Document\Document')

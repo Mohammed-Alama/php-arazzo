@@ -1,0 +1,16 @@
+includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+        - ../../.worktrees (?)
+    scanDirectories:
+        - ../contracts/src
+        - ../expression/src
+        - src
+    reportUnmatchedIgnoredErrors: false

@@ -6,9 +6,9 @@ namespace Alama\Arazzo\Tests\Validation\Rules;
 
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
-use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('flags missing hash, unknown source, empty pointer, and non-slash pointer', function (): void {

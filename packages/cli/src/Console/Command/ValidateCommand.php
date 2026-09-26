@@ -38,7 +38,7 @@ final class ValidateCommand extends Command
         }
 
         $engine = new ExpressionEngine();
-        $result = (new Validator($engine, RuleSet::default($engine)))->validate($document);
+        $result = (new Validator(RuleSet::default($engine)))->validate($document);
 
         if ($result->isValid()) {
             $output->writeln('<info>✔ valid</info> '.$file);

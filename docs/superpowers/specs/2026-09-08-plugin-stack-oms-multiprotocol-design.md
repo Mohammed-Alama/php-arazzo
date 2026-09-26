@@ -437,6 +437,8 @@ the evaluation device stay in `arazzo-evaluation` — split per D11;
   in-core; jsonpath + future types via plugins (typed "unsupported criterion"
   error without the plugin).
 
+Phase C status: ✅ Implemented 2026-09-22 — see `plans/2026-09-08-phase-c-evaluator-plugins.md`.
+
 ### Phase D — Document: normalizer port + registry (privileges during D, relocated in F1)
 - **D1** `SourceNormalizerRegistry`: `SourceResolver`/`SourceRegistry`
   resolve source types through registered `SourceNormalizerInterface` plugins.

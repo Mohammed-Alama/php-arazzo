@@ -34,7 +34,7 @@ final class FixtureHarness
     {
         $doc = (new Parser())->parse(self::load($path));
 
-        return (new Validator(new ExpressionEngine(), RuleSet::default(new ExpressionEngine())))->validate($doc);
+        return (new Validator(RuleSet::default(new ExpressionEngine())))->validate($doc);
     }
 
     public static function load(string $path): RawDocument

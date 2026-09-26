@@ -9,8 +9,8 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 
 it('evaluates input references', function () {
     $context = new WorkflowContext('def_1', ['userId' => 123]);

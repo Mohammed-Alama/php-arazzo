@@ -18,7 +18,7 @@ when a boundary consciously moves.
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 38 | **forbidden** |
+| `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
 | `Psr` | 52 | 17 | allowed |
@@ -42,7 +42,7 @@ when a boundary consciously moves.
 | document | `document:Validator` | `JsonSchema` | 7 |
 | document | `document:_` | `GuzzleHttp` | 2 |
 | document | `document:_` | `Psr` | 2 |
-| expression | `expression:_` | `Flow` | 1 |
+| evaluation | `evaluation:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
@@ -65,7 +65,7 @@ when a boundary consciously moves.
 | laravel | `laravel:Persistence` | `Psr` | 1 |
 | laravel | `laravel:Queue` | `Illuminate` | 11 |
 | laravel | `laravel:State` | `Illuminate` | 1 |
-| laravel | `laravel:Support` | `Illuminate` | 1 |
+| laravel | `laravel:Support` | `Illuminate` | 2 |
 | laravel | `laravel:Support` | `Psr` | 2 |
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
@@ -78,7 +78,7 @@ when a boundary consciously moves.
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (7 refs)
 - `document:_` imports `GuzzleHttp\*` (2 refs)
-- `expression:_` imports `Flow\*` (1 refs)
+- `evaluation:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
@@ -99,6 +99,7 @@ Cross-package references from library code must target `*Interface` facades, val
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
 | `document` | `expression` | `Document` | `ExpressionEngine` |
+| `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -107,8 +108,20 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
-| `document` | `SymbolTable` | `expression` | 52 | `ExpressionWalker` |
-| `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
+| `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `InputPart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `InputRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `MessageRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `OutputPart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `Parser` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `RequestPart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `ResponsePart` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `SelfRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `SourceRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `StepRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
 | `runner` | `ResolvedOperation` | `document` | 4 | `StepOutputExtractor` |

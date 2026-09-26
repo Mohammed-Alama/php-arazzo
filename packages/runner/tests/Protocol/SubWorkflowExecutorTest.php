@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Protocol\SubWorkflowExecutor;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;

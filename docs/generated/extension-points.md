@@ -18,12 +18,15 @@ mindmap
       ExponentialBackoffCalculator
     CriteriaEvaluatorInterface
       CriteriaEvaluator
+    CriterionEvaluatorPluginInterface
+      JsonPathCriterionPlugin
     DefinitionRegistryInterface
       DatabaseDefinitionRegistry
     DocumentInterface
       Document
+    EvaluationEngineInterface
+      EvaluationEngine
     EvaluationInputInterface
-      EvaluationInput
       EvaluationContext
       ExecutionEvaluationInput
     EventLedgerInterface
@@ -36,6 +39,8 @@ mindmap
       ExpressionEngine
     ExpressionEvaluatorInterface
       ExpressionEvaluator
+    ExpressionEvaluatorPluginInterface
+      JsonPathExpressionPlugin
     ExpressionResolverInterface
       ExpressionResolver
       InterpolationResolver
@@ -91,13 +96,16 @@ mindmap
 | `AiClientInterface` | no | `OpenAiClient` <small>core</small> |
 | `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
+| `CriterionEvaluatorPluginInterface` | no | `JsonPathCriterionPlugin` <small>core</small> |
 | `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `DocumentInterface` | no | `Document` <small>core</small> |
-| `EvaluationInputInterface` | no | `EvaluationInput` <small>core</small>, `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
+| `EvaluationEngineInterface` | no | `EvaluationEngine` <small>core</small> |
+| `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
+| `ExpressionEvaluatorPluginInterface` | no | `JsonPathExpressionPlugin` <small>core</small> |
 | `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small>, `InterpolationResolver` <small>core</small>, `ExecutionExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
@@ -121,8 +129,6 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
-- `CriterionEvaluatorPluginInterface` <small>Interfaces</small>
-- `ExpressionEvaluatorPluginInterface` <small>Interfaces</small>
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>

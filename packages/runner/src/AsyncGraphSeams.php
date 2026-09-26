@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;

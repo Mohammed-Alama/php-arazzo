@@ -21,10 +21,11 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Document\Resolver\SourceRegistry;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -499,10 +500,10 @@ it('executes a workflow end-to-end', function () {
             return new SourceDocument($description->name, $description->type, $description->url, $json);
         }
     };
-    $engine = new ExpressionEngine();
+    $engine = new EvaluationEngine();
     $evaluator = new ExpressionEvaluator();
     $documents = new Document(null, null, new SourceRegistry($sourceResolver));
-    $outputExtractor = new StepOutputExtractor($documents, $engine);
+    $outputExtractor = new StepOutputExtractor($documents, $engine, new ExpressionEngine());
     $criteriaEvaluator = new CriteriaEvaluator($evaluator);
     $schemaValidator = new ResponseSchemaValidator($documents);
     $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);

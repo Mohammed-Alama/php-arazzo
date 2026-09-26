@@ -13,7 +13,7 @@ use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Throwable;

@@ -27,30 +27,40 @@ pie showData
 
 ```mermaid
 pie showData
-    title Expression — 11 test files
-    "Module-scoped": 7
-    "Root": 3
-    "Unit": 1
+    title Expression — 5 test files
+    "Module-scoped": 3
+    "Root": 2
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 7 | 64% |
-| Root | 3 | 27% |
-| Unit | 1 | 9% |
+| Module-scoped | 3 | 60% |
+| Root | 2 | 40% |
+
+## Evaluation package
+
+```mermaid
+pie showData
+    title Evaluation — 7 test files
+    "Root": 7
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Root | 7 | 100% |
 
 ## Document package
 
 ```mermaid
 pie showData
-    title Document — 80 test files
-    "Module-scoped": 77
+    title Document — 81 test files
+    "Module-scoped": 78
     "Root": 3
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 77 | 96% |
+| Module-scoped | 78 | 96% |
 | Root | 3 | 4% |
 
 ## Runner package

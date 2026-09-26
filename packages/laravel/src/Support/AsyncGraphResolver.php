@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Laravel\Support;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
@@ -17,6 +17,7 @@ use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -27,11 +28,17 @@ use Psr\Log\LoggerInterface;
  */
 final class AsyncGraphResolver
 {
+    /**
+     * @throws BindingResolutionException
+     */
     public static function resolve(Container $app): AsyncExecutionGraph
     {
         return $app->make(RunnerGraphBuilderInterface::class)->buildAsync(self::seams($app));
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     private static function seams(Container $app): AsyncGraphSeams
     {
         return new AsyncGraphSeams(

@@ -6,14 +6,14 @@ namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 
 /**
  * Runner-owned evaluation input.
  *
  * The runner reaches the expression package through its public face
- * ({@see ExpressionEngineInterface}), whose
+ * ({@see EvaluationEngineInterface}), whose
  * `evaluate` requires an {@see EvaluationInputInterface}. This value object
  * is the runner's own implementation of that cross-seam contract, so the
  * runner never touches the expression package's internal `EvaluationContext`.

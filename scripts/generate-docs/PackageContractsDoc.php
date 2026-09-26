@@ -49,19 +49,27 @@ const PACKAGE_CONTRACTS = [
         'internal' => ['InputSchemaResolver', 'NullEventDispatcher', 'SimpleEventDispatcher', 'DependencyAnalyzer', 'ImplicitDependencies', 'DependencyGraph'],
     ],
     'expression' => [
-        'provides' => 'Parses and evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.',
+        'provides' => 'Parses Arazzo expressions and provides the AST nodes and symbol tables for downstream evaluation.',
         'capabilities' => [
             'Parse expression strings with typed syntax errors surfaced through the face',
             'Expose expression reference projections (kind + target fields) without leaking the AST',
+            'Build symbol tables over the parsed document (value data for downstream consumers)',
+        ],
+        'faces' => ['ExpressionEngineInterface'],
+        'value_types' => ['SymbolTable', 'WorkflowSymbols', 'StepSymbols', 'ExpressionSyntaxException', 'ExpressionReference', 'ReferenceKind'],
+        'internal' => ['Lexer', 'Parser', 'Token', 'Ast\\*'],
+    ],
+    'evaluation' => [
+        'provides' => 'Evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.',
+        'capabilities' => [
             'Evaluate expressions against an evaluation context',
             'Evaluate success-criteria / condition expressions',
             'Evaluate selectors (JSONPath, JSON-pointer, XPath)',
             'String interpolation and payload replacement for request/response bodies',
-            'Build symbol tables over the parsed document (value data for downstream consumers)',
         ],
-        'faces' => ['ExpressionEngineInterface'],
-        'value_types' => ['SymbolTable', 'WorkflowSymbols', 'StepSymbols', 'EvaluationInputInterface', 'EvaluationInput', 'ExpressionSyntaxException', 'SelectorEvaluationException', 'ExpressionReference', 'ReferenceKind'],
-        'internal' => ['ExpressionEvaluatorInterface', 'ExpressionResolverInterface', 'ExpressionEvaluator', 'SelectorEvaluator', 'StringInterpolator', 'JsonPathEvaluator', 'JsonPointer', 'DomXpathEvaluator', 'XpathEvaluator', 'Lexer', 'Parser', 'Token', 'Ast\\*', 'Evaluation\\*'],
+        'faces' => ['EvaluationEngineInterface'],
+        'value_types' => ['WorkflowSymbols', 'StepSymbols', 'EvaluationInputInterface', 'EvaluationInput', 'SelectorEvaluationException', 'ExpressionReference', 'ReferenceKind'],
+        'internal' => ['ExpressionEvaluatorInterface', 'ExpressionResolverInterface', 'ExpressionEvaluator', 'SelectorEvaluator', 'StringInterpolator', 'JsonPathEvaluator', 'JsonPointer', 'DomXpathEvaluator', 'XpathEvaluator', 'Evaluation\\*'],
     ],
     'document' => [
         'provides' => 'Loads, parses, validates and preflights Arazzo documents, and resolves the OpenAPI operations they reference.',

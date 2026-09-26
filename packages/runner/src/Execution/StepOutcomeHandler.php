@@ -20,7 +20,7 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Events\RunCompletedEvent;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
@@ -67,7 +67,7 @@ class StepOutcomeHandler
         RunControlFlow $controlFlow,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private SubWorkflowInvoker $invoker,
-        private ExpressionEngineInterface $engine,
+        private EvaluationEngineInterface $engine,
         private int $stateTtlSeconds = 86400,
     ) {
         $this->queueDriver = $controlFlow->queueDriver;

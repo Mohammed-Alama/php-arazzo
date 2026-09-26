@@ -13,7 +13,7 @@ use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
  */
 final class Lexer
 {
-    private const KEYWORDS = [
+    private const array KEYWORDS = [
         'inputs', 'outputs', 'steps', 'workflows', 'sourceDescriptions',
         'components', 'response', 'request', 'url', 'method', 'statusCode',
         'body', 'header', 'query', 'path', 'message', 'payload', 'self',
@@ -31,7 +31,6 @@ final class Lexer
             // `${token}` is the alternate Arazzo spelling of `{$token}`:
             // drop the wrapper braces but keep the leading `$`.
             $inner = '$'.substr($raw, 2, -1);
-            $absOffsetBase = 0;
         } elseif (str_starts_with($raw, '$')) {
             $inner = substr($raw, 1);
             $absOffsetBase = 1;

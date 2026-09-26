@@ -15,8 +15,8 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -68,7 +68,7 @@ it('validates response schema if configured globally or locally', function (): v
         return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new ExpressionEngine());
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new EvaluationEngine());
     $step = StepFactory::http('test-step', null, new StepFlow(strictValidation: true), new StepIo(), 'op');
 
     try {
@@ -94,7 +94,7 @@ it('skips validation if configured off globally and locally', function (): void 
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new ExpressionEngine());
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new EvaluationEngine());
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
@@ -123,7 +123,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
         operationResolver: createMockDocumentResolver(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
-        engine: new ExpressionEngine(),
+        engine: new EvaluationEngine(),
     );
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
@@ -150,7 +150,7 @@ it('does not inject a header when no injector is passed', function (): void {
         return new Response(200, [], '{}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new ExpressionEngine());
+    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new EvaluationEngine());
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
     $executor->execute($step, new WorkflowContext('def-1'), createTestDocument());
@@ -180,7 +180,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
         operationResolver: createMockDocumentResolver(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
-        engine: new ExpressionEngine(),
+        engine: new EvaluationEngine(),
     );
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 

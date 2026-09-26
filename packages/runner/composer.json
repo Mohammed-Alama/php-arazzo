@@ -7,6 +7,7 @@
         "php": "^8.4",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-document": "@dev",
         "guzzlehttp/guzzle": "^7.9",
         "open-telemetry/api": "^1.0",

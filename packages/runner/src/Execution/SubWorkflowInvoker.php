@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
@@ -23,7 +23,7 @@ class SubWorkflowInvoker
     public function __construct(
         private DefinitionRegistryInterface $registry,
         private WorkflowExecutor $executor,
-        private ExpressionEngineInterface $engine,
+        private EvaluationEngineInterface $engine,
     ) {}
 
     public function invoke(

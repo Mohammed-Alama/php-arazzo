@@ -11,7 +11,7 @@ classDiagram
     direction TB
     class E_RuntimeException["RuntimeException"]:::builtin
     class E_ArazzoException["ArazzoException<br/><small>contracts:Support</small>"]:::domain
-    class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>expression:Evaluation</small>"]:::domain
+    class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>evaluation:Condition</small>"]:::domain
     class E_DecodeException["DecodeException<br/><small>document:Parser</small>"]:::domain
     class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>runner:State</small>"]:::domain
     class E_ExecutionException["ExecutionException<br/><small>runner:Execution</small>"]:::domain
@@ -22,7 +22,7 @@ classDiagram
     class E_ParserException["ParserException<br/><small>document:Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>document:Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>contracts:Exceptions</small>"]:::domain
-    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>expression:Exceptions</small>"]:::domain
+    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>evaluation:Exceptions</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>document:Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>document:Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>document:Resolver</small>"]:::domain
@@ -61,7 +61,7 @@ classDiagram
 | Exception | Extends | Module |
 |---|---|---|
 | `ArazzoException` | `RuntimeException` | contracts:Support |
-| `ConditionSyntaxException` | `ArazzoException` | expression:Evaluation |
+| `ConditionSyntaxException` | `ArazzoException` | evaluation:Condition |
 | `DecodeException` | `RuntimeException` | document:Parser |
 | `DefinitionHydrationException` | `RuntimeException` | runner:State |
 | `ExecutionException` | `ArazzoException` | runner:Execution |
@@ -72,7 +72,7 @@ classDiagram
 | `ParserException` | `ArazzoException` | document:Parser |
 | `PreflightFailureException` | `ArazzoException` | document:Validator |
 | `SchemaValidationException` | `RuntimeException` | contracts:Exceptions |
-| `SelectorEvaluationException` | `ArazzoException` | expression:Exceptions |
+| `SelectorEvaluationException` | `ArazzoException` | evaluation:Exceptions |
 | `SourceFetchException` | `SourceResolutionException` | document:Resolver |
 | `SourceParseException` | `SourceResolutionException` | document:Resolver |
 | `SourceResolutionException` | `RuntimeException` | document:Resolver |

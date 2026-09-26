@@ -20,8 +20,8 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Events\StepExecutedEvent as EventStepExecuted;
@@ -188,7 +188,7 @@ function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throw
         new RunControlFlow(new WorkflowEngine($resolver), $queue),
         pendingCorrelations: new WorkerEventsMockPendingCorrelationRegistry(),
         invoker: Mockery::mock(SubWorkflowInvoker::class),
-        engine: Mockery::mock(ExpressionEngineInterface::class),
+        engine: Mockery::mock(EvaluationEngineInterface::class),
     );
 
     $executor = new WorkerEventsFakeExecutor($outcome, $toThrow);

@@ -12,9 +12,9 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepDependsOnNoCycleRule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 it('reports an error when a workflow step contains a dependsOn cycle', function (): void {
     $workflow = new Workflow('w1', null, null, null, [], [

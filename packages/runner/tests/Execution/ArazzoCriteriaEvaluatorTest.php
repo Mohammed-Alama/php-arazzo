@@ -11,8 +11,8 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 
 beforeEach(function () {
     $this->evaluator = new CriteriaEvaluator(new ExpressionEvaluator());

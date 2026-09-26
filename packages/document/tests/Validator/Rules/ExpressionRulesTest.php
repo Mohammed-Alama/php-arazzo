@@ -15,6 +15,7 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionContextMisuseRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionJsonPointerSyntaxRule;
@@ -25,7 +26,6 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedSourceRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\SymbolTable;
 
 function stepE(string $id, array $params = [], array $outs = []): Step
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Validator\Rules;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
  * Arazzo requires at least one Source Description: "an info field, a

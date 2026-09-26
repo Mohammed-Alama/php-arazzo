@@ -13,8 +13,8 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
@@ -26,7 +26,7 @@ use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
 
 it('resolves a Selector output through SelectorEvaluator', function () {
-    $exprEngine = Mockery::mock(ExpressionEngineInterface::class);
+    $exprEngine = Mockery::mock(EvaluationEngineInterface::class);
     $exprEngine->shouldReceive('evaluateSelector')->once()->andReturn('bar');
 
     $engine = new WorkflowEngine(Mockery::mock(ExpressionResolverInterface::class));

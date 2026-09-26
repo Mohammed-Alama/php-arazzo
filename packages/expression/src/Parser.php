@@ -18,6 +18,7 @@ use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Data\Token;
 use Alama\Arazzo\Expression\Enum\TokenKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
@@ -27,7 +28,9 @@ use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
  */
 final class Parser
 {
-    public function __construct(private readonly Lexer $lexer = new Lexer()) {}
+    public function __construct(
+        private readonly Lexer $lexer = new Lexer(),
+    ) {}
 
     public function parse(string $raw): ExpressionAst
     {
@@ -346,5 +349,16 @@ final class Parser
         } catch (ExpressionSyntaxException $e) {
             return $e;
         }
+    }
+
+    public function projectReferences(string $raw): ?ExpressionReference
+    {
+        $result = $this->parseOrError($raw);
+
+        if ($result instanceof ExpressionSyntaxException) {
+            return null;
+        }
+
+        return $result->mapToExpressionReference();
     }
 }

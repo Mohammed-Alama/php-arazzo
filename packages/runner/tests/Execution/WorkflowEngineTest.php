@@ -14,7 +14,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;

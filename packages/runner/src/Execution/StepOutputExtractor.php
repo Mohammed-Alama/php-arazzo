@@ -12,8 +12,9 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
@@ -27,11 +28,16 @@ use Psr\Log\LoggerInterface;
  */
 class StepOutputExtractor implements OutputExtractorInterface
 {
+    private readonly ExpressionEngineInterface $inspector;
+
     public function __construct(
         private DocumentInterface $operationResolver,
-        private ExpressionEngineInterface $engine,
+        private EvaluationEngineInterface $engine,
+        ExpressionEngineInterface $inspector,
         private ?LoggerInterface $logger = null,
-    ) {}
+    ) {
+        $this->inspector = $inspector;
+    }
 
     /**
      * @return array<string, mixed>
@@ -78,7 +84,7 @@ class StepOutputExtractor implements OutputExtractorInterface
             return $value;
         }
 
-        $ref = $this->engine->expressionReferences($expression->raw);
+        $ref = $this->inspector->expressionReferences($expression->raw);
         if ($ref === null
             || $ref->kind !== ReferenceKind::Step
             || $ref->part !== 'response'

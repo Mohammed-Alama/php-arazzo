@@ -7,10 +7,10 @@ namespace Alama\Arazzo\Tests\Validation\Rules;
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Parameter;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionContextMisuseRule;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('flags HttpMetaRef in parameters context', function (): void {

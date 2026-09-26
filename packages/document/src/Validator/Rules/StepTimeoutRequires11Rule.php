@@ -6,9 +6,9 @@ namespace Alama\Arazzo\Document\Validator\Rules;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
  * The Step Object `timeout` field is an Arazzo 1.1 addition; it must not

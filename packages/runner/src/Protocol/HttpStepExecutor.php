@@ -10,8 +10,8 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
@@ -27,7 +27,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
         private DocumentInterface $operationResolver,
-        private ExpressionEngineInterface $engine,
+        private EvaluationEngineInterface $engine,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
     ) {}

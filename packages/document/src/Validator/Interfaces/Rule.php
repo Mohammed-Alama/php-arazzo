@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Validator\Interfaces;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

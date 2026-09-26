@@ -10,8 +10,8 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Expression\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 
 /**
@@ -28,7 +28,7 @@ use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 final class ExecutionExpressionResolver implements ExpressionResolverInterface
 {
     public function __construct(
-        private ExpressionEngineInterface $engine,
+        private EvaluationEngineInterface $engine,
         private OutputExtractorInterface $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
     ) {}

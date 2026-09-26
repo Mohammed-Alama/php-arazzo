@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * The runner consumes the expression + document engines exclusively through their
- * public faces (ExpressionEngineInterface, DocumentInterface) and shared value
+ * public faces (EvaluationEngineInterface, DocumentInterface) and shared value
  * shapes. Any direct import of their internals below would couple the runner to
  * implementation details that the two engines are free to change.
  */

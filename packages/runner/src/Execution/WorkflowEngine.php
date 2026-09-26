@@ -21,7 +21,7 @@ use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;

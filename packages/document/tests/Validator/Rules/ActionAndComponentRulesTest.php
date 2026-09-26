@@ -14,6 +14,7 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
@@ -21,7 +22,6 @@ use Alama\Arazzo\Document\Validator\Rules\ActionReusableRefResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionTypeValidRule;
 use Alama\Arazzo\Document\Validator\Rules\DocUnknownFieldRule;
 use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 function actionDocSteps(array $steps, ?array $rawRoot = null): ArazzoDocument
 {

@@ -6,9 +6,9 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Resolver\Exceptions\UnresolvableReferenceException;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Runner\Events\RunFailedEvent;
 use Alama\Arazzo\Runner\Events\StepFailedEvent;
@@ -98,7 +98,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
         $resolver,
         $documents,
-        engine: new ExpressionEngine(),
+        engine: new EvaluationEngine(),
     );
 
     $step = $document->workflows[0]->steps[0];
@@ -118,7 +118,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($failingHttp, new HttpFactory()),
         $resolver,
         $documents,
-        engine: new ExpressionEngine(),
+        engine: new EvaluationEngine(),
     );
 
     $outcome = $executor->execute($step, $context, $document, 'exec_classification');
@@ -138,7 +138,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($http2, new HttpFactory()),
         $resolver,
         $documents,
-        engine: new ExpressionEngine(),
+        engine: new EvaluationEngine(),
     );
 
     $outcome2 = $executor2->execute($step, $context, $document, 'exec_classification');
@@ -162,7 +162,7 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
             new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
             $resolver,
             $documents,
-            engine: new ExpressionEngine(),
+            engine: new EvaluationEngine(),
         ),
         new WorkflowEngine($resolver),
         events: $classificationHarness->ev(),

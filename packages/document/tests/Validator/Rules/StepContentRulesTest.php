@@ -18,12 +18,12 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepCriteriaTypeContextRule;
 use Alama\Arazzo\Document\Validator\Rules\StepParametersHaveNameRule;
 use Alama\Arazzo\Document\Validator\Rules\StepRequestBodyReplacementsTargetRule;
 use Alama\Arazzo\Document\Validator\Rules\StepSuccessCriteriaConditionRule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 function stepContentDoc(Step $s): ArazzoDocument
 {

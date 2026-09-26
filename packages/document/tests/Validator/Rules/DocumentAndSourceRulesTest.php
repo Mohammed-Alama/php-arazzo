@@ -9,13 +9,13 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\DocumentArazzoVersionRule;
 use Alama\Arazzo\Document\Validator\Rules\DocumentInfoRequiredRule;
 use Alama\Arazzo\Document\Validator\Rules\SourceTypeMatchesRule;
 use Alama\Arazzo\Document\Validator\Rules\SourceUniqueNameRule;
 use Alama\Arazzo\Document\Validator\Rules\SourceUrlSyntaxRule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 function baseDoc(string $version = '1.0.0', string $title = 'T', string $ver = '1', array $sources = []): ArazzoDocument
 {

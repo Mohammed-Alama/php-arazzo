@@ -26,6 +26,10 @@
         },
         {
             "type": "path",
+            "url": "packages/evaluation"
+        },
+        {
+            "type": "path",
             "url": "packages/laravel"
         },
         {
@@ -40,8 +44,11 @@
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-runner": "@dev",
-        "alama/laravel-arazzo": "@dev"
+        "alama/laravel-arazzo": "@dev",
+        "ext-dom": "*",
+        "ext-libxml": "*"
     },
     "require-dev": {
         "infection/infection": "^0.35.2",
@@ -65,7 +72,8 @@
             "Alama\\Arazzo\\Contracts\\": "packages/contracts/src/",
             "Alama\\Arazzo\\Cli\\": "packages/cli/src/",
             "Alama\\Arazzo\\Runner\\": "packages/runner/src/",
-            "Alama\\Arazzo\\": "packages/core/src/"
+            "Alama\\Arazzo\\": "packages/core/src/",
+            "Alama\\Arazzo\\Evaluation\\": "packages/evaluation/src/"
         }
     },
     "autoload-dev": {
@@ -75,6 +83,7 @@
                 "packages/contracts/tests",
                 "packages/document/tests",
                 "packages/expression/tests",
+                "packages/evaluation/tests",
                 "packages/runner/tests",
                 "packages/cli/tests"
             ],
@@ -137,7 +146,9 @@
         "format": "vendor/bin/pint",
         "quality-gates": "@php scripts/quality-gates.php",
         "quality-gates:mutations": "@php scripts/quality-gates.php --with-mutations",
-        "conformance": "@php scripts/generate-conformance-matrix.php"
+        "conformance": "@php scripts/generate-conformance-matrix.php",
+        "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
+        "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

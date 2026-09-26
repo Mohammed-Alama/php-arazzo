@@ -76,25 +76,51 @@ public contract between packages.
 
 ## expression
 
-> **Provides:** Parses and evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.
+> **Provides:** Parses Arazzo expressions and provides the AST nodes and symbol tables for downstream evaluation.
 
 ### Capabilities
 
 - Parse expression strings with typed syntax errors surfaced through the face
 - Expose expression reference projections (kind + target fields) without leaking the AST
-- Evaluate expressions against an evaluation context
-- Evaluate success-criteria / condition expressions
-- Evaluate selectors (JSONPath, JSON-pointer, XPath)
-- String interpolation and payload replacement for request/response bodies
 - Build symbol tables over the parsed document (value data for downstream consumers)
 
 ### Public entry surface
 
 - `ExpressionEngineInterface` (`interface`)
-  - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
-  - `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
   - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
   - `public function expressionReferences(string $raw): ?ExpressionReference;`
+
+### Cross-boundary value types
+
+- `SymbolTable` — not found
+- `WorkflowSymbols` — not found
+- `StepSymbols` — not found
+- `ExpressionSyntaxException` — present
+- `ExpressionReference` — present
+- `ReferenceKind` — present
+
+### Deliberately internal
+
+- `Lexer` — `@internal`: yes
+- `Parser` — `@internal`: yes
+- `Token` — `@internal`: yes
+- `Ast\*` — whole namespace (declared target)
+
+## evaluation
+
+> **Provides:** Evaluates Arazzo expressions, selectors and payload substitutions against the workflow context.
+
+### Capabilities
+
+- Evaluate expressions against an evaluation context
+- Evaluate success-criteria / condition expressions
+- Evaluate selectors (JSONPath, JSON-pointer, XPath)
+- String interpolation and payload replacement for request/response bodies
+
+### Public entry surface
+
+- `EvaluationEngineInterface` (`interface`)
+  - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
   - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
@@ -107,15 +133,13 @@ public contract between packages.
 
 ### Cross-boundary value types
 
-- `SymbolTable` — present
-- `WorkflowSymbols` — present
-- `StepSymbols` — present
+- `WorkflowSymbols` — not found
+- `StepSymbols` — not found
 - `EvaluationInputInterface` — present
-- `EvaluationInput` — present
-- `ExpressionSyntaxException` — present
+- `EvaluationInput` — not found
 - `SelectorEvaluationException` — present
-- `ExpressionReference` — present
-- `ReferenceKind` — present
+- `ExpressionReference` — not found
+- `ReferenceKind` — not found
 
 ### Deliberately internal
 
@@ -128,10 +152,6 @@ public contract between packages.
 - `JsonPointer` — `@internal`: yes
 - `DomXpathEvaluator` — `@internal`: yes
 - `XpathEvaluator` — `@internal`: yes
-- `Lexer` — `@internal`: yes
-- `Parser` — `@internal`: yes
-- `Token` — `@internal`: yes
-- `Ast\*` — whole namespace (declared target)
 - `Evaluation\*` — whole namespace (declared target)
 
 ## document

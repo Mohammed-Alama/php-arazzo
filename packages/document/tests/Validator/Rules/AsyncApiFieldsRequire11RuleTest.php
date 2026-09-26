@@ -12,9 +12,9 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\AsyncApiFieldsRequire11Rule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 function docWithAsyncStep(?string $action, ?string $channelPath, ?Expression $corr, SpecVersion $sv): ArazzoDocument
 {

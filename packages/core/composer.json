@@ -12,6 +12,7 @@
         {"type": "path", "url": "../cli"},
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
+        {"type": "path", "url": "../evaluation"},
         {"type": "path", "url": "../expression"},
         {"type": "path", "url": "../runner"}
     ],
@@ -20,6 +21,7 @@
         "alama/arazzo-cli": "@dev",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
+        "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-runner": "@dev",
         "cebe/php-openapi": "^1.7",
