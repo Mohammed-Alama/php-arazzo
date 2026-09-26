@@ -26,7 +26,7 @@ Regenerated before every commit.
 | **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>sources:Normalizer</small> |
 | **PreflightFailureException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
-| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
 | **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(evaluation root)</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |

@@ -59,12 +59,8 @@ flowchart TB
     subgraph PKG_M_runner["runner"]
         M_runner_Events["runner:Events"]:::node
         M_runner_Execution["runner:Execution"]:::node
-        M_runner_Infrastructure["runner:Infrastructure"]:::node
         M_runner_Jobs["runner:Jobs"]:::node
-        M_runner_Policy["runner:Policy"]:::node
         M_runner_Protocol["runner:Protocol"]:::node
-        M_runner_State["runner:State"]:::node
-        M_runner_Telemetry["runner:Telemetry"]:::node
         M_runner__["(runner package root)"]:::node
     end
     subgraph PKG_M_cli["cli"]
@@ -96,8 +92,6 @@ flowchart TB
     M_cli_Console --> M_runner_Events
     M_cli_Console --> M_runner_Execution
     M_cli_Console --> M_runner_Jobs
-    M_cli_Console --> M_runner_State
-    M_cli_Console --> M_runner_Telemetry
     M_cli_Console --> M_runner__
     M_cli_Console --> M_sources_Resolver
     M_cli_Console --> M_sources__
@@ -178,8 +172,6 @@ flowchart TB
     M_laravel_Bindings --> M_laravel_Support
     M_laravel_Bindings --> M_runner_Events
     M_laravel_Bindings --> M_runner_Execution
-    M_laravel_Bindings --> M_runner_Infrastructure
-    M_laravel_Bindings --> M_runner_State
     M_laravel_Bindings --> M_runner__
     M_laravel_Bindings --> M_sources_Normalizer
     M_laravel_Bindings --> M_sources_Resolver
@@ -188,25 +180,19 @@ flowchart TB
     M_laravel_Http --> M_cli_Generator
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
-    M_laravel_Http --> M_runner_Infrastructure
     M_laravel_Http --> M_runner_Jobs
-    M_laravel_Http --> M_runner_State
     M_laravel_Http --> M_sources_Resolver
     M_laravel_Lock --> M_contracts_Interfaces
     M_laravel_Persistence --> M_contracts_Spec
     M_laravel_Persistence --> M_document_Parser
     M_laravel_Persistence --> M_runner_Events
-    M_laravel_Persistence --> M_runner_State
     M_laravel_Queue --> M_contracts_Interfaces
     M_laravel_Queue --> M_runner_Execution
     M_laravel_Queue --> M_runner_Jobs
-    M_laravel_State --> M_runner_State
     M_laravel_Support --> M_contracts_Interfaces
     M_laravel_Support --> M_evaluation_Interfaces
     M_laravel_Support --> M_runner_Events
     M_laravel_Support --> M_runner_Execution
-    M_laravel_Support --> M_runner_Infrastructure
-    M_laravel_Support --> M_runner_State
     M_laravel_Support --> M_runner__
     M_laravel__ --> M_laravel_Bindings
     M_laravel__ --> M_laravel_Http
@@ -227,29 +213,18 @@ flowchart TB
     M_runner_Execution --> M_expression_Interfaces
     M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
-    M_runner_Execution --> M_runner_Policy
     M_runner_Execution --> M_runner_Protocol
-    M_runner_Execution --> M_runner_State
-    M_runner_Execution --> M_runner_Telemetry
     M_runner_Execution --> M_runner__
     M_runner_Execution --> M_sources_Normalizer
-    M_runner_Infrastructure --> M_contracts_Interfaces
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
-    M_runner_Policy --> M_contracts_Interfaces
-    M_runner_Policy --> M_contracts_Spec
-    M_runner_Policy --> M_contracts_State
     M_runner_Protocol --> M_contracts_Interfaces
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
     M_runner_Protocol --> M_evaluation_Interfaces
     M_runner_Protocol --> M_evaluation__
     M_runner_Protocol --> M_runner_Execution
-    M_runner_Protocol --> M_runner_Infrastructure
-    M_runner_Protocol --> M_runner_State
     M_runner_Protocol --> M_sources_Normalizer
-    M_runner_State --> M_contracts_Spec
-    M_runner_State --> M_contracts_State
     M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_document__
@@ -259,8 +234,6 @@ flowchart TB
     M_runner__ --> M_expression__
     M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
-    M_runner__ --> M_runner_Infrastructure
-    M_runner__ --> M_runner_State
     M_runner__ --> M_sources_Normalizer
     M_sources_Normalizer --> M_contracts_Interfaces
     M_sources_Normalizer --> M_contracts_Spec
@@ -304,7 +277,7 @@ flowchart TB
 | `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
-| `cli` | `runner` | 16 |
+| `cli` | `runner` | 9 |
 | `cli` | `sources` | 2 |
 | `document` | `contracts` | 152 |
 | `document` | `expression` | 17 |
@@ -313,13 +286,13 @@ flowchart TB
 | `evaluation` | `expression` | 14 |
 | `expression` | `contracts` | 1 |
 | `laravel` | `cli` | 3 |
-| `laravel` | `contracts` | 17 |
+| `laravel` | `contracts` | 20 |
 | `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 3 |
 | `laravel` | `expression` | 2 |
-| `laravel` | `runner` | 45 |
+| `laravel` | `runner` | 23 |
 | `laravel` | `sources` | 16 |
-| `runner` | `contracts` | 161 |
+| `runner` | `contracts` | 147 |
 | `runner` | `document` | 10 |
 | `runner` | `evaluation` | 24 |
 | `runner` | `expression` | 7 |

@@ -46,12 +46,8 @@ flowchart LR
     laravel__["(laravel package root)"]:::laravelNode
     runner_Events["Alama\Arazzo\Runner\Events"]:::coreNode
     runner_Execution["Alama\Arazzo\Runner\Execution"]:::coreNode
-    runner_Infrastructure["Alama\Arazzo\Runner\Infrastructure"]:::coreNode
     runner_Jobs["Alama\Arazzo\Runner\Jobs"]:::coreNode
-    runner_Policy["Alama\Arazzo\Runner\Policy"]:::coreNode
     runner_Protocol["Alama\Arazzo\Runner\Protocol"]:::coreNode
-    runner_State["Alama\Arazzo\Runner\State\Interfaces"]:::coreNode
-    runner_Telemetry["Alama\Arazzo\Runner\Telemetry"]:::coreNode
     runner__["(runner package root)"]:::coreNode
     sources_Normalizer["Alama\Arazzo\Sources\Normalizer"]:::coreNode
     sources_Resolver["Alama\Arazzo\Sources\Resolver\Exceptions"]:::coreNode
@@ -141,7 +137,6 @@ flowchart LR
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
-    runner_Execution --> runner_State
     runner_Execution --> contracts_State
     runner_Execution --> evaluation__
     runner_Execution --> contracts_Exceptions
@@ -151,20 +146,14 @@ flowchart LR
     runner_Execution --> evaluation_Interfaces
     runner_Execution --> runner_Events
     runner_Execution --> runner_Jobs
-    runner_Execution --> runner_Telemetry
     runner_Execution --> contracts_Dependency
-    runner_Execution --> runner_Policy
     runner_Execution --> document_Parser
     runner_Execution --> expression_Enum
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
     runner_Execution --> runner_Protocol
-    runner_Infrastructure --> contracts_Interfaces
     runner_Jobs --> contracts_Spec
     runner_Jobs --> contracts_State
-    runner_Policy --> contracts_Interfaces
-    runner_Policy --> contracts_Spec
-    runner_Policy --> contracts_State
     runner_Protocol --> contracts_Interfaces
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
@@ -172,16 +161,10 @@ flowchart LR
     runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
     runner_Protocol --> sources_Normalizer
-    runner_Protocol --> runner_Infrastructure
-    runner_Protocol --> runner_State
-    runner_State --> contracts_Spec
-    runner_State --> contracts_State
     runner__ --> contracts_Interfaces
     runner__ --> evaluation_Interfaces
     runner__ --> runner_Execution
     runner__ --> runner_Events
-    runner__ --> runner_Infrastructure
-    runner__ --> runner_State
     runner__ --> evaluation__
     runner__ --> expression_Interfaces
     runner__ --> contracts_Spec
@@ -195,8 +178,6 @@ flowchart LR
     cli_Console --> runner_Events
     cli_Console --> runner_Execution
     cli_Console --> runner_Jobs
-    cli_Console --> runner_State
-    cli_Console --> runner_Telemetry
     cli_Console --> document_Parser
     cli_Console --> document_Validator
     cli_Console --> expression__
@@ -211,17 +192,15 @@ flowchart LR
     laravel_Bindings --> laravel_Support
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Execution
-    laravel_Bindings --> laravel_Http
-    laravel_Bindings --> runner_Infrastructure
-    laravel_Bindings --> contracts_Support
-    laravel_Bindings --> runner_Events
     laravel_Bindings --> contracts_Interfaces
+    laravel_Bindings --> laravel_Http
+    laravel_Bindings --> contracts_Support
     laravel_Bindings --> document_Parser
     laravel_Bindings --> laravel_Lock
     laravel_Bindings --> laravel_Persistence
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
-    laravel_Bindings --> runner_State
+    laravel_Bindings --> runner_Events
     laravel_Bindings --> sources_Normalizer
     laravel_Bindings --> sources_Resolver
     laravel_Bindings --> sources_Validator
@@ -231,29 +210,23 @@ flowchart LR
     laravel_Bindings --> expression__
     laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> sources__
-    laravel_Http --> runner_Infrastructure
+    laravel_Http --> contracts_Interfaces
     laravel_Http --> cli_Generator
     laravel_Http --> contracts_Spec
     laravel_Http --> sources_Resolver
-    laravel_Http --> contracts_Interfaces
     laravel_Http --> runner_Jobs
-    laravel_Http --> runner_State
     laravel_Lock --> contracts_Interfaces
     laravel_Persistence --> contracts_Spec
-    laravel_Persistence --> runner_State
     laravel_Persistence --> runner_Events
     laravel_Persistence --> document_Parser
     laravel_Queue --> contracts_Interfaces
     laravel_Queue --> runner_Jobs
     laravel_Queue --> runner_Execution
-    laravel_State --> runner_State
     laravel_Support --> contracts_Interfaces
     laravel_Support --> evaluation_Interfaces
     laravel_Support --> runner__
     laravel_Support --> runner_Events
     laravel_Support --> runner_Execution
-    laravel_Support --> runner_Infrastructure
-    laravel_Support --> runner_State
     laravel__ --> laravel_Bindings
     laravel__ --> laravel_Http
     laravel__ --> laravel_Support

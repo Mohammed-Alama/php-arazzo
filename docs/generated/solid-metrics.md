@@ -28,9 +28,9 @@ quadrantChart
     cli/Renderer: [0.5, 0]
     contracts/Dependency: [0.4, 0]
     contracts/Exceptions: [0, 0]
-    contracts/Interfaces: [0.136, 1]
-    contracts/Spec: [0.036, 0.02]
-    contracts/State: [0.1, 0]
+    contracts/Interfaces: [0.15, 1]
+    contracts/Spec: [0.038, 0.02]
+    contracts/State: [0.125, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.222, 0.091]
     document/Validator: [0.5, 0.015]
@@ -50,23 +50,19 @@ quadrantChart
     expression/Exceptions: [0.333, 0]
     expression/Interfaces: [0.25, 1]
     expression/_: [0.5, 0]
-    laravel/Bindings: [0.958, 0]
-    laravel/Http: [0.778, 0]
+    laravel/Bindings: [0.955, 0]
+    laravel/Http: [0.714, 0]
     laravel/Lock: [0.5, 0]
-    laravel/Persistence: [0.8, 0]
+    laravel/Persistence: [0.75, 0]
     laravel/Queue: [0.75, 0]
-    laravel/State: [0.5, 0]
-    laravel/Support: [0.778, 0]
+    laravel/State: [0, 0]
+    laravel/Support: [0.714, 0]
     laravel/_: [1, 0]
     runner/Events: [0.143, 0.091]
-    runner/Execution: [0.778, 0.05]
-    runner/Infrastructure: [0.167, 0.25]
+    runner/Execution: [0.75, 0.05]
     runner/Jobs: [0.333, 0]
-    runner/Policy: [0.75, 0]
-    runner/Protocol: [0.9, 0]
-    runner/State: [0.182, 0.417]
-    runner/Telemetry: [0, 0]
-    runner/_: [0.75, 0.333]
+    runner/Protocol: [0.875, 0]
+    runner/_: [0.714, 0.333]
     sources/Normalizer: [0.417, 0.111]
     sources/Resolver: [0.333, 0.231]
     sources/Validator: [0.571, 0]
@@ -80,7 +76,6 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 956 |
-| `ExecutionContext` | `runner:State` | 496 |
 | `StepExecutionWorker` | `runner:Execution` | 379 |
 | `StepOutcomeHandler` | `runner:Execution` | 376 |
 | `Parser` | `expression:_` | 365 |

@@ -29,7 +29,7 @@ Evans' first question: does the code speak one language?
 
 ### document vs definition vs spec
 
-- **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
+- **Definition**: `DatabaseDefinitionRegistry`, `InMemoryDefinitionRegistry` (2 types)
 - **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 6 more (10 types)
 - **Spec**: `SpecVersion` (1 types)
 
@@ -40,14 +40,14 @@ Evans' first question: does the code speak one language?
 
 ### state vs status
 
-- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore` + 3 more (7 types)
+- **State**: `ExecutionState`, `RedisHotStateStore`, `StepState`, `WorkflowStateRepositoryInterface` (4 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 12 more (16 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 8 more (12 types)
 - **Repository**: `WorkflowStateRepositoryInterface` (1 types)
-- **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
+- **Store**: `RedisHotStateStore` (1 types)
 
 ### workflow vs process vs flow
 
@@ -66,6 +66,5 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
-| `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
 | `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |

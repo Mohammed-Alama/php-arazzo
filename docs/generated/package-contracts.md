@@ -279,22 +279,22 @@ _None — the entry surface exchanges plain arrays._
 
 ### Deliberately internal
 
-- `StateStoreInterface` — `@internal`: yes
-- `DefinitionRegistryInterface` — `@internal`: yes
-- `WritableDefinitionRegistryInterface` — `@internal`: yes
-- `ExecutionRegistryInterface` — `@internal`: yes
-- `PendingCorrelationRegistryInterface` — `@internal`: yes
-- `InMemoryStateStore` — `@internal`: yes
-- `FileStateStore` — `@internal`: yes
+- `StateStoreInterface` — _not found in scan_
+- `DefinitionRegistryInterface` — _not found in scan_
+- `WritableDefinitionRegistryInterface` — _not found in scan_
+- `ExecutionRegistryInterface` — _not found in scan_
+- `PendingCorrelationRegistryInterface` — _not found in scan_
+- `InMemoryStateStore` — _not found in scan_
+- `FileStateStore` — _not found in scan_
 - `EventLedgerInterface` — `@internal`: yes
-- `HttpClientInterface` — `@internal`: yes
+- `HttpClientInterface` — _not found in scan_
 - `ProtocolExecutorRegistryInterface` — `@internal`: yes
 - `OpenApiExecutorInterface` — `@internal`: yes
-- `PessimisticLockStrategy` — `@internal`: yes
-- `NullLockStrategy` — `@internal`: yes
-- `FileLockStrategy` — `@internal`: yes
-- `RetryPolicy` — `@internal`: yes
-- `ExponentialBackoffCalculator` — `@internal`: yes
+- `PessimisticLockStrategy` — _not found in scan_
+- `NullLockStrategy` — _not found in scan_
+- `FileLockStrategy` — _not found in scan_
+- `RetryPolicy` — _not found in scan_
+- `ExponentialBackoffCalculator` — _not found in scan_
 - `Execution\*` — whole namespace (declared target)
 - `Async\*` — whole namespace (declared target)
 - `Jobs\*` — whole namespace (declared target)

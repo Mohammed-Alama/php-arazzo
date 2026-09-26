@@ -20,7 +20,7 @@ when a boundary consciously moves.
 | `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
-| `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
+| `OpenTelemetry` | 3 | 0 | _unclassified_ ⚠ |
 | `Psr` | 51 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
@@ -34,6 +34,7 @@ when a boundary consciously moves.
 | cli | `cli:Console` | `Psr` | 2 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
+| contracts | `contracts:Interfaces` | `Psr` | 2 |
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
@@ -42,9 +43,7 @@ when a boundary consciously moves.
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
 | runner | `runner:Execution` | `Psr` | 23 |
 | runner | `runner:Execution` | `cebe` | 10 |
-| runner | `runner:Infrastructure` | `Psr` | 2 |
 | runner | `runner:Protocol` | `Psr` | 6 |
-| runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
 | runner | `runner:_` | `Psr` | 5 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
@@ -70,7 +69,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**13 library boundary violation(s):**
+**12 library boundary violation(s):**
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
@@ -79,7 +78,6 @@ when a boundary consciously moves.
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
-- `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)

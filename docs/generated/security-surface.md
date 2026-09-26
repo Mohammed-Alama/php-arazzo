@@ -27,9 +27,7 @@ Entry points where untrusted data (HTTP requests, queue payloads) first touches 
 
 | Category | Symbol | Sites |
 |---|---|---|
-| filesystem | `file_put_contents` | `RenderCommand` <small>cli</small>, `FileStateStore` <small>runner</small> |
-| filesystem | `fopen / fwrite` | `FileLockStrategy` <small>runner</small>, `OtelSetup` <small>runner</small> |
-| filesystem | `unlink` | `FileStateStore` <small>runner</small> |
+| filesystem | `file_put_contents` | `RenderCommand` <small>cli</small> |
 
 ## Weak or risky primitives
 

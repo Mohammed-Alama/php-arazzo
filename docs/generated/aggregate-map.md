@@ -21,7 +21,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | evaluation | 9 | 18 | 33% |
 | document | 11 | 69 | 14% |
 | sources | 3 | 20 | 13% |
-| runner | 21 | 49 | 30% |
+| runner | 18 | 38 | 32% |
 | cli | 0 | 14 | 0% |
 | laravel | 0 | 23 | 0% |
 
@@ -31,7 +31,6 @@ Where mutable state lives, and which of it crosses process boundaries:
 |---|---|---|---|
 | `ImplicitDependencies` | contracts | `Dependency` | `hydrate` |
 | `DecoderRegistry` | document | `Parser` | `hydrate` |
-| `ExecutionContext` | runner | `State/Data` | `toArray`, `hydrate` |
 | `CliRunResult` | cli | `Console/Cli` | `hydrate` |
 
 ## Cross-process aggregates
@@ -41,4 +40,3 @@ Mutable types that serialize themselves or are carried by queue jobs — each ne
 - `CliRunResult` <small>cli · `hydrate`</small>
 - `ImplicitDependencies` <small>contracts · `hydrate`</small>
 - `DecoderRegistry` <small>document · `hydrate`</small>
-- `ExecutionContext` <small>runner · `toArray`, `hydrate`</small>
