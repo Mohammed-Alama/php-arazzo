@@ -1,205 +1,211 @@
 parameters:
-	ignoreErrors:
-		-
-			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Normalizer/NormalizedOpenApiOperation.php
+    ignoreErrors:
+        -
+            message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+            count: 1
+            path: src/NormalizedOpenApiOperation.php
 
-		-
-			message: '#^Method resolveParameters has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Normalizer/OpenApi30Normalizer.php
+        -
+            message: '#^Call to an undefined method Alama\\Arazzo\\Document\\Parser\\Parser\:\:parseSelector\(\)\.$#'
+            identifier: method.notFound
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method resolveServerUrl has too high cyclomatic complexity \(19\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Normalizer/OpenApi30Normalizer.php
+        -
+            message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+            identifier: function.alreadyNarrowedType
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method resolve has too high cyclomatic complexity \(37\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Normalizer/OpenApiOperationResolver.php
+        -
+            message: '#^Class Parser has too many methods \(36\)\. Maximum allowed is 20\.$#'
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^Method Alama\\Arazzo\\Document\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Contracts\\Spec\\Expression\|Alama\\Arazzo\\Contracts\\Spec\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
+            identifier: return.type
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Class Parser has too many methods \(34\)\. Maximum allowed is 20\.$#'
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^Method parseComponents has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method Alama\\Arazzo\\Document\\Parser\\Parser\:\:parseValueOrSelector\(\) should return Alama\\Arazzo\\Contracts\\Spec\\Expression\|Alama\\Arazzo\\Contracts\\Spec\\Selector\|array\<mixed\>\|bool\|float\|int\|string\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^Method parseStepTarget has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method parseComponents has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^Method parseValueOrSelector has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method parseStep has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^Method parseWorkflow has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method parseValueOrSelector has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^PHPDoc tag @param references unknown parameter\: \$obj$#'
+            identifier: parameter.notFound
+            count: 2
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Method parseWorkflow has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Parser/Parser.php
+        -
+            message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:optionalString\(\) expects array\<string, mixed\>, array given\.$#'
+            identifier: argument.type
+            count: 2
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:optionalString\(\) expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Parser/Parser.php
+        -
+            message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:optionalString\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+            identifier: argument.type
+            count: 2
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:optionalString\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Parser/Parser.php
+        -
+            message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:requireString\(\) expects array\<string, mixed\>, array given\.$#'
+            identifier: argument.type
+            count: 2
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:requireString\(\) expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Parser/Parser.php
+        -
+            message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:requireString\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+            identifier: argument.type
+            count: 2
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Parameter \#1 \$arr of method Alama\\Arazzo\\Document\\Parser\\Parser\:\:requireString\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Parser/Parser.php
+        -
+            message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
+            identifier: arrayValues.list
+            count: 11
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 11
-			path: src/Parser/Parser.php
+        -
+            message: '#^Parameter \$extensionsSelector of class Alama\\Arazzo\\Contracts\\Spec\\GraphQlOperation constructor expects Alama\\Arazzo\\Contracts\\Spec\\Selector\|null, mixed given\.$#'
+            identifier: argument.type
+            count: 1
+            path: src/Parser/Parser.php
 
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Resolver/Fetchers/CachedFetcher.php
+        -
+            message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+            count: 1
+            path: src/ResolvedOperation.php
 
-		-
-			message: '#^Method check has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/OfficialSchemaRule.php
+        -
+            message: '#^Call to function is_int\(\) with \*NEVER\* will always evaluate to true\.$#'
+            identifier: function.alreadyNarrowedType
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Method checkStep has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/PreflightValidator.php
+        -
+            message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+            identifier: function.alreadyNarrowedType
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Validator/Rules/DocUnknownFieldRule.php
+        -
+            message: '#^Cannot cast mixed to string\.$#'
+            identifier: cast.string
+            count: 2
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Method check has too high cyclomatic complexity \(16\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Rules/ExpressionUnresolvedStepRefRule.php
+        -
+            message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\SourceDescription and Alama\\Arazzo\\Contracts\\Spec\\SourceDescription will always evaluate to true\.$#'
+            identifier: instanceof.alwaysTrue
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Method check has too high cyclomatic complexity \(19\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Rules/SelectorTypeSupportedRule.php
+        -
+            message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Step and Alama\\Arazzo\\Contracts\\Spec\\Step will always evaluate to true\.$#'
+            identifier: instanceof.alwaysTrue
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Offset ''jsonpath''\|''jsonpointer''\|''xpath'' on array\{jsonpath\: array\{''rfc9535''\}, xpath\: array\{''xpath\-10'', ''xpath\-20'', ''xpath\-30'', ''xpath\-31''\}, jsonpointer\: array\{''rfc6901''\}\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/Validator/Rules/SelectorTypeSupportedRule.php
+        -
+            message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Workflow and Alama\\Arazzo\\Contracts\\Spec\\Workflow will always evaluate to true\.$#'
+            identifier: instanceof.alwaysTrue
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Method check has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php
+        -
+            message: '#^Method build has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Call to function is_scalar\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Validator/Rules/WorkflowDependsOnExistsRule.php
+        -
+            message: '#^Method buildWorkflow has too high cyclomatic complexity \(26\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Method check has too high cyclomatic complexity \(13\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Rules/WorkflowDependsOnNoCycleRule.php
+        -
+            message: '#^Result of && is always true\.$#'
+            identifier: booleanAnd.alwaysTrue
+            count: 3
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Method walk has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Support/ExpressionWalker.php
+        -
+            message: '#^Right side of && is always true\.$#'
+            identifier: booleanAnd.rightAlwaysTrue
+            count: 7
+            path: src/Validator/Data/SymbolTable.php
 
-		-
-			message: '#^Call to function is_int\(\) with \*NEVER\* will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/OfficialSchemaRule.php
 
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+            identifier: function.alreadyNarrowedType
+            count: 1
+            path: src/Validator/Rules/DocUnknownFieldRule.php
 
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 2
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(16\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Rules/ExpressionUnresolvedStepRefRule.php
 
-		-
-			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\SourceDescription and Alama\\Arazzo\\Contracts\\Spec\\SourceDescription will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(19\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Rules/SelectorTypeSupportedRule.php
 
-		-
-			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Step and Alama\\Arazzo\\Contracts\\Spec\\Step will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Offset ''jsonpath''\|''jsonpointer''\|''xpath'' on array\{jsonpath\: array\{''rfc9535''\}, xpath\: array\{''xpath\-10'', ''xpath\-20'', ''xpath\-30'', ''xpath\-31''\}, jsonpointer\: array\{''rfc6901''\}\} on left side of \?\? always exists and is not nullable\.$#'
+            identifier: nullCoalesce.offset
+            count: 1
+            path: src/Validator/Rules/SelectorTypeSupportedRule.php
 
-		-
-			message: '#^Instanceof between Alama\\Arazzo\\Contracts\\Spec\\Workflow and Alama\\Arazzo\\Contracts\\Spec\\Workflow will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php
 
-		-
-			message: '#^Method build has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Call to function is_scalar\(\) with string will always evaluate to true\.$#'
+            identifier: function.alreadyNarrowedType
+            count: 1
+            path: src/Validator/Rules/WorkflowDependsOnExistsRule.php
 
-		-
-			message: '#^Method buildWorkflow has too high cyclomatic complexity \(26\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(13\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Rules/WorkflowDependsOnNoCycleRule.php
 
-		-
-			message: '#^Result of && is always true\.$#'
-			identifier: booleanAnd.alwaysTrue
-			count: 3
-			path: src/Validator/Data/SymbolTable.php
+        -
+            message: '#^Method walk has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Support/ExpressionWalker.php
+        -
+            message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+            count: 1
+            path: src/ModelStack.php
+        -
+            message: '#^Method check has too high cyclomatic complexity \(13\)\. Maximum allowed is 10\.$#'
+            count: 1
+            path: src/Validator/Rules/InteractionStepRule.php
 
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 7
-			path: src/Validator/Data/SymbolTable.php

@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Loader;
 
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
-use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Loader;
 
 function makeLoader(): Loader
 {
-    return new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
+    return Loader::new();
 }
 
 it('loads a yaml file', function (): void {

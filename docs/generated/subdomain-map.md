@@ -15,20 +15,21 @@ the declaration honest.
 ```mermaid
 flowchart LR
     subgraph S_core["Core domain"]
-        S_contracts_Spec["contracts:Spec<br/><small>1148 LOC</small>"]:::coreDomain
+        S_contracts_Spec["contracts:Spec<br/><small>1202 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>765 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>793 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
-        S_document_Parser["document:Parser<br/><small>1154 LOC</small>"]:::supportingDomain
-        S_document_Resolver["document:Resolver<br/><small>406 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3457 LOC</small>"]:::supportingDomain
+        S_document_Parser["document:Parser<br/><small>1316 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3470 LOC</small>"]:::supportingDomain
+        S_sources_Resolver["sources:Resolver<br/><small>488 LOC</small>"]:::supportingDomain
+        S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>361 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>372 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>170 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
@@ -43,7 +44,6 @@ flowchart LR
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
         S_contracts_Exceptions["contracts:Exceptions<br/><small>31 LOC</small>"]:::unknownDomain
         S_contracts_Interfaces["contracts:Interfaces<br/><small>305 LOC</small>"]:::unknownDomain
-        S_document_Normalizer["document:Normalizer<br/><small>608 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>654 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>34 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
@@ -58,12 +58,13 @@ flowchart LR
         S_expression_Exceptions["expression:Exceptions<br/><small>23 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>500 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>3863 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>3886 LOC</small>"]:::unknownDomain
         S_runner_Infrastructure["runner:Infrastructure<br/><small>172 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
         S_runner_Policy["runner:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runner_Protocol["runner:Protocol<br/><small>557 LOC</small>"]:::unknownDomain
         S_runner_Telemetry["runner:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
+        S_sources_Normalizer["sources:Normalizer<br/><small>782 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -73,16 +74,15 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,148 | 0 | 6% |
-| Supporting | 6 | 6,148 | 0 | 32% |
-| Generic subdomain | 12 | 2,132 | 1,147 | 17% |
-| Unclassified | 24 | 8,540 | 0 | 45% |
+| Core domain | 1 | 1,202 | 0 | 6% |
+| Supporting | 7 | 6,736 | 0 | 34% |
+| Generic subdomain | 12 | 2,132 | 1,158 | 16% |
+| Unclassified | 24 | 8,737 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
 - `contracts:Exceptions`
 - `contracts:Interfaces`
-- `document:Normalizer`
 - `evaluation:Condition`
 - `evaluation:Data`
 - `evaluation:Enum`
@@ -103,3 +103,4 @@ flowchart LR
 - `runner:Policy`
 - `runner:Protocol`
 - `runner:Telemetry`
+- `sources:Normalizer`

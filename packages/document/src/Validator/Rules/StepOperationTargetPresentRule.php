@@ -18,11 +18,21 @@ final class StepOperationTargetPresentRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
-                $set = (int) ($s->target->operationId !== null) + (int) ($s->target->operationPath !== null) + (int) ($s->target->workflowId !== null);
-                if ($set !== 1) {
+                $target = $s->target;
+                $fields = [
+                    'operationId' => $target->operationId,
+                    'operationPath' => $target->operationPath,
+                    'workflowId' => $target->workflowId,
+                    'operationName' => $target->operationName,
+                    'rpcMethod' => $target->rpcMethod,
+                    'interaction' => $target->interaction,
+                    'graphqlOperation' => $target->graphqlOperation,
+                ];
+                $set = array_filter($fields, static fn ($v) => $v !== null);
+                if (count($set) !== 1) {
                     $errors->error(
                         $this->code(),
-                        "Step '{$s->stepId}' must set exactly one of operationId, operationPath, workflowId (got {$set}).",
+                        "Step '{$s->stepId}' must set exactly one of operationId, operationPath, workflowId, operationName, rpcMethod, interaction, graphqlOperation (got ".count($set).').',
                         "/workflows/{$i}/steps/{$j}",
                     );
                 }

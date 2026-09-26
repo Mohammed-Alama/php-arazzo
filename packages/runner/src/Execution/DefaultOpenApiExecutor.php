@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Utils;
@@ -34,20 +34,21 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
      * @throws \JsonException
      */
     public function execute(
-        ResolvedOperation $operation,
+        OpenApiOperationHandle $operation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
         ?float $timeoutSeconds = null,
     ): ResponseInterface {
         $openApi = $operation->openApi;
+        $normalized = $operation->operation->normalized;
 
         $baseUrl = '';
         if ($openApi->servers && count($openApi->servers) > 0) {
             $baseUrl = rtrim($openApi->servers[0]->url, '/');
         }
 
-        $method = strtoupper($operation->normalized->method);
-        $urlPath = $operation->normalized->path;
+        $method = strtoupper($normalized->method);
+        $urlPath = $normalized->path;
 
         $path = $payload->path;
         $query = $payload->query;
@@ -55,25 +56,25 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         $cookie = $payload->cookie;
 
         foreach ($payload->auto as $name => $value) {
-            if (isset($operation->normalized->pathParameters[$name])) {
+            if (isset($normalized->pathParameters[$name])) {
                 $path[$name] = $value;
-            } elseif (isset($operation->normalized->headerParameters[$name])) {
+            } elseif (isset($normalized->headerParameters[$name])) {
                 $header[$name] = $value;
-            } elseif (isset($operation->normalized->cookieParameters[$name])) {
+            } elseif (isset($normalized->cookieParameters[$name])) {
                 $cookie[$name] = $value;
             } else {
                 $query[$name] = $value;
             }
         }
 
-        $path = $this->castParameters($operation->normalized->pathParameters, $path);
-        $query = $this->castParameters($operation->normalized->queryParameters, $query);
-        $header = $this->castParameters($operation->normalized->headerParameters, $header);
-        $cookie = $this->castParameters($operation->normalized->cookieParameters, $cookie);
+        $path = $this->castParameters($normalized->pathParameters, $path);
+        $query = $this->castParameters($normalized->queryParameters, $query);
+        $header = $this->castParameters($normalized->headerParameters, $header);
+        $cookie = $this->castParameters($normalized->cookieParameters, $cookie);
 
-        $serializedPath = ParameterSerializer::serialize('path', $operation->normalized->pathParameters, $path);
+        $serializedPath = ParameterSerializer::serialize('path', $normalized->pathParameters, $path);
         foreach ($serializedPath as $name => $value) {
-            $style = $operation->normalized->pathParameters[$name]['style'] ?? 'simple';
+            $style = $normalized->pathParameters[$name]['style'] ?? 'simple';
             $replacement = $style === 'simple' ? urlencode($value) : $value;
             // matrix and label include the prefix in the serialized value,
             // so we replace the template
@@ -82,7 +83,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $url = $baseUrl.$urlPath;
 
-        $serializedQuery = ParameterSerializer::serialize('query', $operation->normalized->queryParameters, $query);
+        $serializedQuery = ParameterSerializer::serialize('query', $normalized->queryParameters, $query);
         $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
         if (!empty($filteredQuery)) {
             $url .= '?'.implode('&', array_values($filteredQuery));
@@ -90,12 +91,12 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $request = $this->requestFactory->createRequest($method, $url);
 
-        $serializedHeader = ParameterSerializer::serialize('header', $operation->normalized->headerParameters, $header);
+        $serializedHeader = ParameterSerializer::serialize('header', $normalized->headerParameters, $header);
         foreach ($serializedHeader as $k => $v) {
             $request = $request->withHeader($k, (string) $v);
         }
 
-        $serializedCookie = ParameterSerializer::serialize('cookie', $operation->normalized->cookieParameters, $cookie);
+        $serializedCookie = ParameterSerializer::serialize('cookie', $normalized->cookieParameters, $cookie);
         if (!empty($serializedCookie)) {
             $cookieString = implode('; ', array_values($serializedCookie));
             $request = $request->withHeader('Cookie', $cookieString);

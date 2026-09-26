@@ -26,7 +26,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 final class ExecutionGraphFactory
 {
     public function __construct(
-        private readonly DocumentInterface $documents,
+        private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $engine,
         private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
@@ -40,19 +40,19 @@ final class ExecutionGraphFactory
 
         $expressionResolver = new ExecutionExpressionResolver(
             $this->engine,
-            new StepOutputExtractor($this->documents, $this->engine, $this->inspector),
-            new ResponseSchemaValidator($this->documents),
+            new StepOutputExtractor($this->operations->resolver, $this->engine, $this->inspector),
+            new ResponseSchemaValidator($this->operations->resolver),
         );
 
         return new WorkflowExecutor(
             new StepExecutor(
                 new DefaultOpenApiExecutor($client, $factory),
                 $expressionResolver,
-                $this->documents,
+                $this->operations->resolver,
                 engine: $this->engine,
             ),
             workflowEngine: new WorkflowEngine($expressionResolver),
-            preflight: $this->documents,
+            preflight: $this->operations->document,
         );
     }
 }

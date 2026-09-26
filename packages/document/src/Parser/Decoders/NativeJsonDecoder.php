@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Parser\Decoders;
 
 use Alama\Arazzo\Document\Parser\Exceptions\DecodeException;
-use Alama\Arazzo\Document\Parser\Interfaces\JsonDecoder;
+use Alama\Arazzo\Document\Parser\Interfaces\DecoderInterface;
 use JsonException;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final class NativeJsonDecoder implements JsonDecoder
+final class NativeJsonDecoder implements DecoderInterface
 {
     public function decode(string $source): mixed
     {

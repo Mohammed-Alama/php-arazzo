@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Feature;
 
 use Alama\Arazzo\Contracts\Spec\RawDocument;
-use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Loader;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
@@ -39,6 +37,6 @@ final class FixtureHarness
 
     public static function load(string $path): RawDocument
     {
-        return (new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder()))->load($path);
+        return Loader::new()->load($path);
     }
 }

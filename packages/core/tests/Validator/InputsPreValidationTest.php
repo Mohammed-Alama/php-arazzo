@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Document\Document;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
@@ -20,6 +18,9 @@ use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
@@ -66,19 +67,20 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
 
     $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
-    $documents = new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $documents = $runtime->document;
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($documents, $engine, new ExpressionEngine()),
+        new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
         new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($documents),
+        new ResponseSchemaValidator($runtime->operations),
     );
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
             $resolver,
-            $documents,
+            $runtime->operations,
             engine: $engine,
         ),
         workflowEngine: new WorkflowEngine($resolver),
@@ -100,7 +102,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
     }
 });
 
-function preflightForInputsDoc(): Document
+function preflightForInputsDoc(): DocumentInterface
 {
-    return new Document(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    return SourceGraph::using(null, null, new SourceRegistry(new DefaultSourceResolver([])));
 }

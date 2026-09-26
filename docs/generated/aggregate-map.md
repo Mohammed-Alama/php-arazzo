@@ -16,11 +16,12 @@ Where mutable state lives, and which of it crosses process boundaries:
 
 | Package | Readonly | Mutable | Readonly share |
 |---|---:|---:|---:|
-| contracts | 36 | 9 | 80% |
+| contracts | 37 | 9 | 80% |
 | expression | 18 | 3 | 86% |
 | evaluation | 9 | 18 | 33% |
-| document | 11 | 80 | 12% |
-| runner | 20 | 57 | 26% |
+| document | 11 | 69 | 14% |
+| sources | 3 | 20 | 13% |
+| runner | 21 | 57 | 27% |
 | cli | 0 | 14 | 0% |
 | laravel | 0 | 23 | 0% |
 
@@ -29,6 +30,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | Class | Package | Dir | Serialization signals |
 |---|---|---|---|
 | `ImplicitDependencies` | contracts | `Dependency` | `hydrate` |
+| `DecoderRegistry` | document | `Parser` | `hydrate` |
 | `ExecutionContext` | runner | `State/Data` | `toArray`, `hydrate` |
 | `CliRunResult` | cli | `Console/Cli` | `hydrate` |
 
@@ -38,4 +40,5 @@ Mutable types that serialize themselves or are carried by queue jobs — each ne
 
 - `CliRunResult` <small>cli · `hydrate`</small>
 - `ImplicitDependencies` <small>contracts · `hydrate`</small>
+- `DecoderRegistry` <small>document · `hydrate`</small>
 - `ExecutionContext` <small>runner · `toArray`, `hydrate`</small>

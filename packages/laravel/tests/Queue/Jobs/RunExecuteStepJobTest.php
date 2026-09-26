@@ -17,8 +17,8 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Document\Normalizer\NormalizedOpenApiOperation;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
@@ -27,6 +27,8 @@ use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
@@ -97,15 +99,16 @@ it('injects idempotency key natively during job execution independently of StepE
     app()->instance(OpenApiExecutorInterface::class, $openApiMock);
 
     $documents = \Mockery::mock(DocumentInterface::class);
-    $documents->shouldReceive('resolveOperation')->andReturn(
+    $operations = \Mockery::mock(OpenApiOperationResolver::class);
+    app()->instance(OpenApiOperationResolver::class, $operations);
+    $operations->shouldReceive('resolve')->andReturn(new OpenApiOperationHandle(
         new ResolvedOperation(
             new SourceDescription('src', 'http://api.example.com', SourceType::Openapi),
             new NormalizedOpenApiOperation('/charges', 'post', 'http://api.example.com', [], [], [], [], [], []),
-            new OpenApi([]),
-            [],
-            new Operation([]),
         ),
-    );
+        new OpenApi([]),
+        new Operation([]),
+    ));
     $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     app()->instance(DocumentInterface::class, $documents);

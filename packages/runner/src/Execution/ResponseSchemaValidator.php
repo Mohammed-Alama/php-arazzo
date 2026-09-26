@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Response;
@@ -20,7 +20,7 @@ use cebe\openapi\spec\Schema;
 class ResponseSchemaValidator implements ResponseValidatorInterface
 {
     public function __construct(
-        private DocumentInterface $operationResolver,
+        private OpenApiOperationResolver $operationResolver,
     ) {}
 
     public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void
@@ -86,9 +86,7 @@ class ResponseSchemaValidator implements ResponseValidatorInterface
         }
 
         try {
-            $resolved = $this->operationResolver->resolveOperation($step, $document);
-
-            return $resolved->cebeOperation;
+            return $this->operationResolver->resolve($step, $document)->cebeOperation;
         } catch (\RuntimeException) {
             return null;
         }

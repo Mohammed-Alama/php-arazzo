@@ -31,7 +31,8 @@ MD;
 const FACADE_FIRST = [
     'expression' => ['ExpressionInspector', 'Lexer', 'Parser', 'SymbolTable'],
     'evaluation' => ['ExpressionEngineInterface', 'ExpressionEngine'],
-    'document' => ['DocumentInterface', 'Document'],
+    'document' => ['DocumentInterface'],
+    'sources' => ['SourceGraph', 'Document'],
     'runner' => ['RunnerFacadeInterface', 'RunnerFacade'],
 ];
 

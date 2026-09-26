@@ -9,11 +9,11 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
-use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Throwable;
@@ -29,7 +29,7 @@ class StepExecutor
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private ExpressionResolverInterface $expressionResolver,
-        private DocumentInterface $operationResolver,
+        private OpenApiOperationResolver $operationResolver,
         private EvaluationEngineInterface $engine,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
@@ -129,8 +129,8 @@ class StepExecutor
         return $step->flow->strictValidation ?? $this->strictValidationDefault;
     }
 
-    private function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation
+    private function resolveOperation(Step $step, ArazzoDocument $document): OpenApiOperationHandle
     {
-        return $this->operationResolver->resolveOperation($step, $document);
+        return $this->operationResolver->resolve($step, $document);
     }
 }

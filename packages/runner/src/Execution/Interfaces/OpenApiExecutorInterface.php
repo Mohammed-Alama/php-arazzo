@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution\Interfaces;
 
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 interface OpenApiExecutorInterface
 {
     public function execute(
-        ResolvedOperation $operation,
+        OpenApiOperationHandle $operation,
         OpenApiPayload $payload,
         ?callable $requestInterceptor = null,
         ?float $timeoutSeconds = null,

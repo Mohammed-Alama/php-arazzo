@@ -22,17 +22,17 @@ Regenerated before every commit.
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
 | **ExpressionSyntaxException** | `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Execution</small> |
-| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `OpenApi30Normalizer` <small>document:Normalizer</small>, `OpenApiVersionDetector` <small>document:Normalizer</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>runner:Execution</small> |
+| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>runner:Execution</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
 | **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small> |
-| **NotImplementedException** | `Swagger2Normalizer` <small>document:Normalizer</small> |
+| **NotImplementedException** | `Swagger2Normalizer` <small>sources:Normalizer</small> |
 | **PreflightFailureException** | `PreflightGuard` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
-| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `OpenApiOperationResolver` <small>document:Normalizer</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `FileLockStrategy` <small>runner:Infrastructure</small>, `RunnerFacade` <small>(runner root)</small>, `FileStateStore` <small>runner:State</small>, `OtelSetup` <small>runner:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
 | **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(evaluation root)</small> |
-| **SourceFetchException** | `DefaultSourceResolver` <small>document:Resolver</small>, `HttpFetcher` <small>document:Resolver</small>, `LocalFetcher` <small>document:Resolver</small> |
-| **SourceParseException** | `DefaultSourceResolver` <small>document:Resolver</small> |
+| **SourceFetchException** | `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
+| **SourceParseException** | `DefaultSourceResolver` <small>sources:Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
-| **UnresolvableReferenceException** | `SourceRegistry` <small>document:Resolver</small> |
+| **UnresolvableReferenceException** | `SourceRegistry` <small>sources:Resolver</small> |
 | **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>runner:Execution</small> |
 | **WorkflowCycleException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **WorkflowDepthExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
@@ -59,13 +59,13 @@ Regenerated before every commit.
 | `ParserException` | `DatabaseDefinitionRegistry` |  |
 | `SchemaValidationException` | `StepExecutor` |  |
 | `SelectorEvaluationException` | `SelectorEvaluator` |  |
-| `Throwable` | `DefaultSourceResolver` |  |
-| `Throwable` | `PreflightValidator` |  |
 | `Throwable` | `DatabaseEventLedger` |  |
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
 | `Throwable` | `HttpStepExecutor` |  |
+| `Throwable` | `DefaultSourceResolver` |  |
+| `Throwable` | `PreflightValidator` |  |
 
 ## Safety interlocks
 
@@ -76,10 +76,10 @@ Regenerated before every commit.
 | throws **WorkflowDepthExceededException** | `WorkflowEngine` | — |
 | prop maxQueuedSteps | `CliRunner` | `10_000` |
 | const MAX_DEPTH | `InputSchemaResolver` | `16` |
-| prop ttlSeconds | `CachedFetcher` | `3600` |
 | prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
 | prop stateTtlSeconds | `SuspensionHandler` | `86400` |
 | const OUTCOME_TERMINAL | `TransitionApplier` | `'terminal'` |
 | prop stateTtlSeconds | `TransitionApplier` | `86400` |
 | prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
+| prop ttlSeconds | `CachedFetcher` | `3600` |

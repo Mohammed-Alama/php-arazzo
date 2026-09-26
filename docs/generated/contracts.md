@@ -13,6 +13,7 @@ flowchart LR
     I_ConditionNode["ConditionNode<br/><small>evaluation:Interfaces</small>"]:::contract
     I_CriteriaEvaluatorInterface["CriteriaEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_CriterionEvaluatorPluginInterface["CriterionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_DecoderInterface["DecoderInterface<br/><small>document:Parser</small>"]:::contract
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
     I_EvaluationEngineInterface["EvaluationEngineInterface<br/><small>(evaluation root)</small>"]:::contract
@@ -24,11 +25,10 @@ flowchart LR
     I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>runner:Infrastructure</small>"]:::contract
-    I_JsonDecoder["JsonDecoder<br/><small>document:Parser</small>"]:::contract
     I_LockManagerInterface["LockManagerInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
-    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>document:Normalizer</small>"]:::contract
+    I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>sources:Normalizer</small>"]:::contract
     I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>runner:State</small>"]:::contract
@@ -41,17 +41,16 @@ flowchart LR
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
     I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
-    I_SourceFetcher["SourceFetcher<br/><small>document:Resolver</small>"]:::contract
+    I_SourceFetcher["SourceFetcher<br/><small>sources:Resolver</small>"]:::contract
     I_SourceNormalizerInterface["SourceNormalizerInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_SourceNormalizerRegistryInterface["SourceNormalizerRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_SourceResolver["SourceResolver<br/><small>document:Resolver</small>"]:::contract
+    I_SourceResolver["SourceResolver<br/><small>sources:Resolver</small>"]:::contract
     I_StateStoreInterface["StateStoreInterface<br/><small>runner:State</small>"]:::contract
     I_StepProtocolExecutorInterface["StepProtocolExecutorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WorkflowContextInterface["WorkflowContextInterface<br/><small>contracts:Spec</small>"]:::contract
     I_WorkflowStateRepositoryInterface["WorkflowStateRepositoryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runner:State</small>"]:::contract
     I_XpathEvaluator["XpathEvaluator<br/><small>evaluation:Xpath</small>"]:::contract
-    I_YamlDecoder["YamlDecoder<br/><small>document:Parser</small>"]:::contract
     C_contracts_contracts_Spec_ResponseTransfer["ResponseTransfer<br/><small>contracts:Spec</small>"]:::implCore
     C_contracts_contracts_Spec_ResponseTransfer -.->|implements| I_ResponseTransferInterface
     C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
@@ -92,24 +91,10 @@ flowchart LR
     C_evaluation_evaluation_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_document_document___Document["Document<br/><small>(document root)</small>"]:::implCore
     C_document_document___Document -.->|implements| I_DocumentInterface
-    C_document_document_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>document:Normalizer</small>"]:::implCore
-    C_document_document_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_document_document_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>document:Normalizer</small>"]:::implCore
-    C_document_document_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_document_document_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>document:Parser</small>"]:::implCore
-    C_document_document_Parser_NativeJsonDecoder -.->|implements| I_JsonDecoder
+    C_document_document_Parser_NativeJsonDecoder -.->|implements| I_DecoderInterface
     C_document_document_Parser_SymfonyYamlDecoder["SymfonyYamlDecoder<br/><small>document:Parser</small>"]:::implCore
-    C_document_document_Parser_SymfonyYamlDecoder -.->|implements| I_YamlDecoder
-    C_document_document_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>document:Resolver</small>"]:::implCore
-    C_document_document_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
-    C_document_document_Resolver_SourceRegistry["SourceRegistry<br/><small>document:Resolver</small>"]:::implCore
-    C_document_document_Resolver_SourceRegistry -.->|implements| I_SourceResolver
-    C_document_document_Resolver_CachedFetcher["CachedFetcher<br/><small>document:Resolver</small>"]:::implCore
-    C_document_document_Resolver_CachedFetcher -.->|implements| I_SourceFetcher
-    C_document_document_Resolver_HttpFetcher["HttpFetcher<br/><small>document:Resolver</small>"]:::implCore
-    C_document_document_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
-    C_document_document_Resolver_LocalFetcher["LocalFetcher<br/><small>document:Resolver</small>"]:::implCore
-    C_document_document_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
+    C_document_document_Parser_SymfonyYamlDecoder -.->|implements| I_DecoderInterface
     C_document_document_Validator_OfficialSchemaRule["OfficialSchemaRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_OfficialSchemaRule -.->|implements| I_Rule
     C_document_document_Validator_ActionGotoTargetResolvesRule["ActionGotoTargetResolvesRule<br/><small>document:Validator</small>"]:::implCore
@@ -150,8 +135,14 @@ flowchart LR
     C_document_document_Validator_ExpressionUnresolvedWorkflowRefRule -.->|implements| I_Rule
     C_document_document_Validator_ExtensionsXPrefixRule["ExtensionsXPrefixRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ExtensionsXPrefixRule -.->|implements| I_Rule
+    C_document_document_Validator_GraphQlStepRule["GraphQlStepRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_GraphQlStepRule -.->|implements| I_Rule
+    C_document_document_Validator_InteractionStepRule["InteractionStepRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_InteractionStepRule -.->|implements| I_Rule
     C_document_document_Validator_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShapeRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ParameterQuerystringOperationShapeRule -.->|implements| I_Rule
+    C_document_document_Validator_RpcStepRule["RpcStepRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_RpcStepRule -.->|implements| I_Rule
     C_document_document_Validator_SelectorTypeSupportedRule["SelectorTypeSupportedRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_SelectorTypeSupportedRule -.->|implements| I_Rule
     C_document_document_Validator_SelfUriSyntaxRule["SelfUriSyntaxRule<br/><small>document:Validator</small>"]:::implCore
@@ -210,6 +201,26 @@ flowchart LR
     C_document_document_Validator_WorkflowInputsValidSchemaRule -.->|implements| I_Rule
     C_document_document_Validator_WorkflowUniqueIdRule["WorkflowUniqueIdRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_WorkflowUniqueIdRule -.->|implements| I_Rule
+    C_document_document_Validator_WsdlStepRule["WsdlStepRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_WsdlStepRule -.->|implements| I_Rule
+    C_sources_sources_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_sources_sources_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_sources_sources_Normalizer_OpenApiSourceNormalizer["OpenApiSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_OpenApiSourceNormalizer -.->|implements| I_SourceNormalizerInterface
+    C_sources_sources_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
+    C_sources_sources_Resolver_SourceRegistry["SourceRegistry<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_SourceRegistry -.->|implements| I_SourceResolver
+    C_sources_sources_Resolver_CachedFetcher["CachedFetcher<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_CachedFetcher -.->|implements| I_SourceFetcher
+    C_sources_sources_Resolver_HttpFetcher["HttpFetcher<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
+    C_sources_sources_Resolver_LocalFetcher["LocalFetcher<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
+    C_sources_sources_Resolver_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Resolver</small>"]:::implCore
+    C_sources_sources_Resolver_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
     C_runner_runner_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
     C_runner_runner_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>runner:Execution</small>"]:::implCore
@@ -273,8 +284,6 @@ flowchart LR
     N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
-    N_SourceNormalizerInterface["no implementation found"]:::orphan --> I_SourceNormalizerInterface
-    N_SourceNormalizerRegistryInterface["no implementation found"]:::orphan --> I_SourceNormalizerRegistryInterface
     N_WorkflowStateRepositoryInterface["no implementation found"]:::orphan --> I_WorkflowStateRepositoryInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

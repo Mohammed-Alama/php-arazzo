@@ -156,15 +156,14 @@ public contract between packages.
 
 ## document
 
-> **Provides:** Loads, parses, validates and preflights Arazzo documents, and resolves the OpenAPI operations they reference.
+> **Provides:** Loads, parses and validates Arazzo documents, and holds the vendor-free model types steps resolve to.
 
 ### Capabilities
 
 - Load and parse Arazzo documents from YAML/JSON (or already-decoded raw documents)
 - Static conformance validation via rule sets
 - Preflight validation incl. source-audited steps and runtime-input schema checks
-- Source-document resolution and fetching (URL, local, cached) exposed through the face
-- OpenAPI operation resolution plus normalization and version detection through the face
+- Vendor-free resolved-operation model shared with downstream packages
 
 ### Public entry surface
 
@@ -174,8 +173,6 @@ public contract between packages.
   - `public function validate(ArazzoDocument $document): ValidationResult;`
   - `public function preflight(ArazzoDocument $document): ValidationResult;`
   - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult;`
-  - `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;`
-  - `public function detectOpenApiVersion(array $document): string;`
   - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation;`
 
 ### Cross-boundary value types
@@ -185,9 +182,55 @@ public contract between packages.
 - `Warning` — present
 - `ResolvedOperation` — present
 - `NormalizedOpenApiOperation` — present
+- `ModelStack` — present
 - `LoaderException` — present
 - `ParserException` — present
 - `PreflightFailureException` — present
+
+### Deliberately internal
+
+- `YamlDecoder` — _not found in scan_
+- `JsonDecoder` — _not found in scan_
+- `SymfonyYamlDecoder` — `@internal`: yes
+- `NativeJsonDecoder` — `@internal`: yes
+- `Loader` — `@internal`: yes
+- `Parser` — `@internal`: yes
+- `ParseContext` — `@internal`: yes
+- `RuleSet` — `@internal`: yes
+- `Validator` — `@internal`: yes
+- `ErrorCollector` — `@internal`: yes
+- `OfficialSchemaRule` — `@internal`: yes
+- `Rules\*` — whole namespace (declared target)
+- `Validator\Support\*` — whole namespace (declared target)
+- `Validator\Data\*` — whole namespace (declared target)
+- `Validator\Interfaces\*` — whole namespace (declared target)
+
+## sources
+
+> **Provides:** Resolves, fetches and decodes Arazzo sources, and normalizes the OpenAPI/Swagger operations steps target.
+
+### Capabilities
+
+- Resolve source descriptions to decoded source documents (local file, HTTP, cached)
+- Normalize OpenAPI 3.0/3.1 and Swagger 2.0 operations to a vendor-free model
+- Detect the OpenAPI/Swagger version of a decoded source document
+- Hand callers a transport-bound operation handle for execution
+- Preflight validation of operation-targeted steps against resolved sources
+- Composition root wiring document, resolver, fetchers and cache behind one graph
+
+### Public entry surface
+
+- `Document` — _not found in scan_
+
+### Cross-boundary value types
+
+- `OpenApiOperationHandle` — present
+- `SourceRuntime` — present
+- `SourceFetchException` — present
+- `SourceParseException` — present
+- `SourceResolutionException` — present
+- `UnresolvableReferenceException` — present
+- `UnsupportedSourceVersionException` — present
 
 ### Deliberately internal
 
@@ -205,20 +248,10 @@ public contract between packages.
 - `OpenApiVersionDetector` — `@internal`: yes
 - `OpenApiDocumentLoader` — `@internal`: yes
 - `OpenApiOperationResolver` — `@internal`: yes
-- `YamlDecoder` — `@internal`: yes
-- `JsonDecoder` — `@internal`: yes
-- `SymfonyYamlDecoder` — `@internal`: yes
-- `NativeJsonDecoder` — `@internal`: yes
-- `Loader` — `@internal`: yes
-- `Parser` — `@internal`: yes
-- `ParseContext` — `@internal`: yes
-- `RuleSet` — `@internal`: yes
-- `Validator` — `@internal`: yes
 - `PreflightValidator` — `@internal`: yes
-- `ErrorCollector` — `@internal`: yes
-- `OfficialSchemaRule` — `@internal`: yes
-- `Rules\*` — whole namespace (declared target)
-- `Validator\Support\*` — whole namespace (declared target)
+- `SourceGraph` — `@internal`: no (target for the sweep)
+- `Normalizer\*` — whole namespace (declared target)
+- `Resolver\*` — whole namespace (declared target)
 
 ## runner
 
@@ -288,7 +321,7 @@ _None — the entry surface exchanges plain arrays._
 - `Application` (`class`)
   - `public function __construct()`
 - `RunCommand` (`class`)
-  - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
+  - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
 - `ValidateCommand` (`class`)
 - `ListWorkflowsCommand` (`class`)
 - `ExplainCommand` (`class`)

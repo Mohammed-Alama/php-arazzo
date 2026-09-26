@@ -9,11 +9,8 @@ use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Parser\Parser;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
@@ -29,6 +26,10 @@ use Alama\Arazzo\Runner\Events\StepFailedEvent;
 use Alama\Arazzo\Runner\Events\StepStartedEvent;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
+use Alama\Arazzo\Sources\SourceRuntime;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
 use GuzzleHttp\Psr7\Response;
@@ -106,20 +107,25 @@ abstract class ConformanceHarness
         return new EvaluationEngine();
     }
 
-    protected function documents(SourceRegistry $registry): DocumentInterface
+    protected function runtime(SourceRegistry $registry): SourceRuntime
     {
-        return new Document(null, null, $registry);
+        return SourceGraph::runtime($registry);
     }
 
-    protected function resolver(DocumentInterface $documents): ExpressionResolverInterface
+    protected function documents(SourceRegistry $registry): DocumentInterface
+    {
+        return $this->runtime($registry)->document;
+    }
+
+    protected function resolver(SourceRuntime $runtime): ExpressionResolverInterface
     {
         $evaluator = new ExpressionEvaluator();
 
         return new ExpressionResolver(
             $evaluator,
-            new StepOutputExtractor($documents, $this->engine(), new ExpressionEngine()),
+            new StepOutputExtractor($runtime->operations, $this->engine(), new ExpressionEngine()),
             new CriteriaEvaluator($evaluator),
-            new ResponseSchemaValidator($documents),
+            new ResponseSchemaValidator($runtime->operations),
         );
     }
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
-use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
+use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 
@@ -17,7 +17,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
 {
     public function __construct(
-        private readonly DocumentInterface $documents,
+        private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $engine,
         private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
@@ -27,7 +27,7 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
     public function buildAsync(AsyncGraphSeams $seams): AsyncExecutionGraph
     {
         $assembler = new AsyncExecutionGraphAssembler(
-            $this->documents,
+            $this->operations,
             $this->engine,
             $this->inspector,
             $this->httpClient,

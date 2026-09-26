@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
+use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Mockery;
 
 use function Pest\Laravel\getJson;

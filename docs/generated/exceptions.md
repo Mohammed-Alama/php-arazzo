@@ -23,13 +23,13 @@ classDiagram
     class E_PreflightFailureException["PreflightFailureException<br/><small>document:Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>contracts:Exceptions</small>"]:::domain
     class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>evaluation:Exceptions</small>"]:::domain
-    class E_SourceFetchException["SourceFetchException<br/><small>document:Resolver</small>"]:::domain
-    class E_SourceParseException["SourceParseException<br/><small>document:Resolver</small>"]:::domain
-    class E_SourceResolutionException["SourceResolutionException<br/><small>document:Resolver</small>"]:::domain
+    class E_SourceFetchException["SourceFetchException<br/><small>sources:Resolver</small>"]:::domain
+    class E_SourceParseException["SourceParseException<br/><small>sources:Resolver</small>"]:::domain
+    class E_SourceResolutionException["SourceResolutionException<br/><small>sources:Resolver</small>"]:::domain
     class E_StepBudgetExceededException["StepBudgetExceededException<br/><small>runner:Execution</small>"]:::domain
-    class E_UnresolvableReferenceException["UnresolvableReferenceException<br/><small>document:Resolver</small>"]:::domain
+    class E_UnresolvableReferenceException["UnresolvableReferenceException<br/><small>sources:Resolver</small>"]:::domain
     class E_UnsupportedSerializationStyleException["UnsupportedSerializationStyleException<br/><small>document:Parser</small>"]:::domain
-    class E_UnsupportedSourceVersionException["UnsupportedSourceVersionException<br/><small>document:Resolver</small>"]:::domain
+    class E_UnsupportedSourceVersionException["UnsupportedSourceVersionException<br/><small>sources:Resolver</small>"]:::domain
     class E_WorkflowCycleException["WorkflowCycleException<br/><small>runner:Execution</small>"]:::domain
     class E_WorkflowDepthExceededException["WorkflowDepthExceededException<br/><small>runner:Execution</small>"]:::domain
     E_RuntimeException <|-- E_ArazzoException
@@ -73,12 +73,12 @@ classDiagram
 | `PreflightFailureException` | `ArazzoException` | document:Validator |
 | `SchemaValidationException` | `RuntimeException` | contracts:Exceptions |
 | `SelectorEvaluationException` | `ArazzoException` | evaluation:Exceptions |
-| `SourceFetchException` | `SourceResolutionException` | document:Resolver |
-| `SourceParseException` | `SourceResolutionException` | document:Resolver |
-| `SourceResolutionException` | `RuntimeException` | document:Resolver |
+| `SourceFetchException` | `SourceResolutionException` | sources:Resolver |
+| `SourceParseException` | `SourceResolutionException` | sources:Resolver |
+| `SourceResolutionException` | `RuntimeException` | sources:Resolver |
 | `StepBudgetExceededException` | `ArazzoException` | runner:Execution |
-| `UnresolvableReferenceException` | `SourceResolutionException` | document:Resolver |
+| `UnresolvableReferenceException` | `SourceResolutionException` | sources:Resolver |
 | `UnsupportedSerializationStyleException` | `RuntimeException` | document:Parser |
-| `UnsupportedSourceVersionException` | `RuntimeException` | document:Resolver |
+| `UnsupportedSourceVersionException` | `RuntimeException` | sources:Resolver |
 | `WorkflowCycleException` | `ArazzoException` | runner:Execution |
 | `WorkflowDepthExceededException` | `ArazzoException` | runner:Execution |

@@ -84,6 +84,9 @@ this file on a commit is a public API change — review it deliberately.
 #### `ArazzoDocument` class
 - `public function __construct(public string $arazzo, public Info $info, public array $sourceDescriptions, public array $workflows, public Components $components, public array $specificationExtensions, public ?array $rawRoot = null, public SpecVersion $specVersion = SpecVersion::V1_0, public ?string $self = null)`
 
+#### `GraphQlOperation` class
+- `public function __construct(public string $schema, public string $operation, /** @param array<string,mixed>|null $extensions */ ?iterable $extensions = null, public ?Selector $extensionsSelector = null)`
+
 #### `ResponseTransfer` class
 - `public function __construct(private mixed $status, private array $headers, private mixed $rawBody, private array $views = [], private array $meta = [])`
 - `public function hasView(string $name): bool`
@@ -101,7 +104,7 @@ this file on a commit is a public API change — review it deliberately.
 
 #### `StepFactory` class
 - `public static function async(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $action, string $channelPath, ?Expression $correlationId = null, ): Step`
-- `public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $graphqlOperation): Step`
+- `public static function graphql(string $stepId, ?string $description, StepFlow $flow, StepIo $io, GraphQlOperation $graphqlOperation): Step`
 - `public static function http(string $stepId, ?string $description, StepFlow $flow, StepIo $io, ?string $operationId = null, ?string $operationPath = null, ): Step`
 - `public static function interaction(string $stepId, ?string $description, StepFlow $flow, StepIo $io, Interaction $interaction): Step`
 - `public static function rpc(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $rpcMethod, RpcProtocol $rpcProtocol): Step`
@@ -109,9 +112,9 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function wsdl(string $stepId, ?string $description, StepFlow $flow, StepIo $io, string $operationName): Step`
 
 #### `StepTarget` class
-- `public function __construct(public ?string $operationId = null, public ?string $operationPath = null, public ?string $workflowId = null, public ?string $action = null, public ?string $channelPath = null, public ?Expression $correlationId = null, public ?string $operationName = null, public ?string $rpcMethod = null, public ?RpcProtocol $rpcProtocol = null, public ?string $graphqlOperation = null, public ?Interaction $interaction = null)`
+- `public function __construct(public ?string $operationId = null, public ?string $operationPath = null, public ?string $workflowId = null, public ?string $action = null, public ?string $channelPath = null, public ?Expression $correlationId = null, public ?string $operationName = null, public ?string $rpcMethod = null, public ?RpcProtocol $rpcProtocol = null, public ?GraphQlOperation $graphqlOperation = null, public ?Interaction $interaction = null)`
 - `public static function async(string $action, string $channelPath, ?Expression $correlationId = null): self`
-- `public static function graphql(string $graphqlOperation): self`
+- `public static function graphql(GraphQlOperation $graphqlOperation): self`
 - `public static function interaction(Interaction $interaction): self`
 - `public static function rpc(string $rpcMethod, RpcProtocol $rpcProtocol): self`
 - `public static function workflow(string $workflowId): self`
@@ -164,6 +167,9 @@ this file on a commit is a public API change — review it deliberately.
 - Cases: `Json`, `Yaml`
 - `public static function fromExtension(string $extension): ?self`
 
+#### `InteractionMode` enum
+- Cases: `Acknowledge`, `Form`, `Redirect`
+
 #### `ParameterIn` enum
 - Cases: `Body`, `Cookie`, `Header`, `Metadata`, `Path`, `Query`, `Querystring`, `Variable`
 
@@ -171,10 +177,10 @@ this file on a commit is a public API change — review it deliberately.
 - Cases: `Connect`, `Grpc`, `GrpcWeb`, `Twirp`
 
 #### `SourceType` enum
-- Cases: `Arazzo`, `Asyncapi`, `Openapi`
+- Cases: `Arazzo`, `Asyncapi`, `Graphql`, `Openapi`, `Protobuf`, `Wsdl`
 
 #### `SpecVersion` enum
-- Cases: `V1_0`, `V1_1`
+- Cases: `V1_0`, `V1_1`, `V1_2`
 - `public static function fromRaw(string $raw): self`
 
 #### `StepState` enum
@@ -357,25 +363,29 @@ this file on a commit is a public API change — review it deliberately.
 ## document
 
 ### `DocumentInterface` interface
-- `public function detectOpenApiVersion(array $document): string;`
 - `public function load(string $path): ArazzoDocument;`
 - `public function parse(RawDocument $raw): ArazzoDocument;`
 - `public function preflight(ArazzoDocument $document): ValidationResult;`
 - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult;`
 - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation;`
-- `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;`
 - `public function validate(ArazzoDocument $document): ValidationResult;`
 
-### `Document` class
-- `public function __construct(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ?SourceRegistry $sources = null)`
-- `public function detectOpenApiVersion(array $document): string`
-- `public function load(string $path): ArazzoDocument`
+### `Alama\Arazzo\Document`
+
+#### `Document` class
+- `public function __construct(private readonly ModelStack $model, private readonly ?OpenApiOperationResolver $operationResolver = null)`
 - `public function parse(RawDocument $raw): ArazzoDocument`
 - `public function preflight(ArazzoDocument $document): ValidationResult`
 - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
 - `public function resolveOperation(Step $step, ArazzoDocument $document): ResolvedOperation`
-- `public function resolveSource(SourceDescription $source, string $basePath): SourceDocument`
 - `public function validate(ArazzoDocument $document): ValidationResult`
+
+#### `ModelStack` class
+- `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolver $operationResolver = null)`
+
+#### `ResolvedOperation` class
+- `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?GraphQlOperation $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
+- `public function binding(): string`
 
 ### `Alama\Arazzo\Document\Parser\Exceptions`
 
@@ -386,6 +396,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function readFailed(string $path): self`
 - `public static function rootNotObject(string $path): self`
 - `public static function unsupportedExtension(string $ext): self`
+- `public static function unsupportedFormat(Format $format): self`
 
 #### `ParserException` class
 - `public static function invalidActionType(ParseContext $ctx, string $actual): self`
@@ -414,6 +425,24 @@ this file on a commit is a public API change — review it deliberately.
 #### `PreflightFailureException` class
 - `public function __construct(string $message, public readonly ValidationResult $result)`
 
+## sources
+
+### `SourceGraph` class
+- `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
+- `public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface`
+- `public static function loader(?SourceRegistry $registry = null): SourceLoader`
+- `public static function runtime(?SourceRegistry $registry = null): SourceRuntime`
+- `public static function using(?SourceRegistry $registry = null): DocumentInterface`
+
+### `Alama\Arazzo\Sources`
+
+#### `SourceLoader` class
+- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
+- `public function detectOpenApiVersion(array $document): string`
+- `public function normalizeSources(ArazzoDocument $document, string $basePath = ''): array`
+- `public function preflightSource(ArazzoDocument $document): ValidationResult`
+- `public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle`
+
 ## runner
 
 ### `RunnerFacadeInterface` interface
@@ -421,7 +450,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
+- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 
@@ -435,7 +464,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Cli\Console\Command`
 
 #### `RunCommand` class
-- `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?SourceRegistry $registry = null)`
+- `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
 
 ## laravel
 

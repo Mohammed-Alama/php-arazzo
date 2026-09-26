@@ -9,10 +9,10 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
+use Alama\Arazzo\Sources\SourceGraph;
 
 function runnerDocument(): ArazzoDocument
 {
@@ -26,7 +26,9 @@ function runnerDocument(): ArazzoDocument
 
 function runnerFacade(): RunnerFacade
 {
-    return new RunnerFacade(new Document(), new EvaluationEngine());
+    $runtime = SourceGraph::runtime();
+
+    return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine());
 }
 
 it('exposes the RunnerFacadeInterface entry point', function () {

@@ -6,15 +6,10 @@ namespace Alama\Arazzo\Document;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
-use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Document\Normalizer\ResolvedOperation;
 use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
-use Alama\Arazzo\Document\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -23,8 +18,7 @@ use RuntimeException;
  * Downstream packages depend on this interface (never the concrete
  * {@see Document} or the parse/normalize/validate internals). It exposes the
  * full capability set: loading/parsing documents, static validation,
- * preflight validation, source resolution and OpenAPI operation resolution
- * (with version detection).
+ * preflight validation and vendor-free OpenAPI operation resolution.
  */
 interface DocumentInterface
 {
@@ -61,23 +55,6 @@ interface DocumentInterface
      * @param  array<string, mixed>  $inputs
      */
     public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult;
-
-    /**
-     * Resolve a source description into its fetched and decoded document.
-     *
-     * @throws UnresolvableReferenceException
-     */
-    public function resolveSource(SourceDescription $source, string $basePath): SourceDocument;
-
-    /**
-     * Detect the OpenAPI/Swagger version of a decoded source document.
-     *
-     * @param  array<string, mixed>  $document
-     * @return string One of '2.0', '3.0' or '3.1'.
-     *
-     * @throws InvalidArgumentException
-     */
-    public function detectOpenApiVersion(array $document): string;
 
     /**
      * Resolve a step's operation target against its source and normalize the

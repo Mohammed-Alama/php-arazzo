@@ -24,7 +24,7 @@ final readonly class StepTarget
         public ?string $operationName = null,
         public ?string $rpcMethod = null,
         public ?RpcProtocol $rpcProtocol = null,
-        public ?string $graphqlOperation = null,
+        public ?GraphQlOperation $graphqlOperation = null,
         public ?Interaction $interaction = null,
     ) {}
 
@@ -59,7 +59,7 @@ final readonly class StepTarget
         return new self(rpcMethod: $rpcMethod, rpcProtocol: $rpcProtocol);
     }
 
-    public static function graphql(string $graphqlOperation): self
+    public static function graphql(GraphQlOperation $graphqlOperation): self
     {
         return new self(graphqlOperation: $graphqlOperation);
     }

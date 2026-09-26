@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Parser;
 
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Parser;
@@ -87,4 +88,26 @@ it('parses x-idempotency-header string from a step', function (): void {
 
     expect($steps[0]->flow->idempotencyHeader)->toBe('X-Adyen-Idempotency-Key');
     expect($steps[1]->flow->idempotencyHeader)->toBeNull();
+});
+
+it('parses wsdl source descriptions', function (): void {
+    $yaml = <<<'YAML'
+    arazzo: 1.0.0
+    info: { title: "Test", version: "1.0.0" }
+    sourceDescriptions:
+      - name: legacy
+        type: wsdl
+        url: ./service.wsdl
+    workflows:
+      - workflowId: w
+        steps: []
+    YAML;
+
+    $document = (new Parser())->parse(new RawDocument(
+        (new SymfonyYamlDecoder())->decode($yaml),
+        'memory://wsdl',
+        Format::Yaml,
+    ));
+
+    expect($document->sourceDescriptions[0]->type)->toBe(SourceType::Wsdl);
 });

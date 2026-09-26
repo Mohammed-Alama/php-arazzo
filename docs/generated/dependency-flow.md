@@ -17,12 +17,10 @@ sankey-beta
 cli-Console,cli-Renderer,1
 cli-Console,contracts-Dependency,1
 cli-Console,contracts-Interfaces,2
-cli-Console,contracts-Spec,6
+cli-Console,contracts-Spec,8
 cli-Console,contracts-State,1
-cli-Console,document-Parser,8
-cli-Console,document-Resolver,1
+cli-Console,document-Parser,6
 cli-Console,document-Validator,2
-cli-Console,document-root,1
 cli-Console,evaluation-Interfaces,1
 cli-Console,evaluation-root,1
 cli-Console,expression-root,1
@@ -32,6 +30,8 @@ cli-Console,runner-Jobs,1
 cli-Console,runner-State,6
 cli-Console,runner-Telemetry,1
 cli-Console,runner-root,1
+cli-Console,sources-Resolver,1
+cli-Console,sources-root,1
 cli-Generator,contracts-Interfaces,2
 cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
@@ -40,27 +40,17 @@ contracts-Interfaces,contracts-Exceptions,1
 contracts-Interfaces,contracts-Spec,21
 contracts-Interfaces,contracts-State,2
 contracts-State,contracts-Spec,3
-document-Normalizer,contracts-Spec,6
-document-Normalizer,contracts-Support,1
-document-Normalizer,document-Resolver,2
-document-Parser,contracts-Spec,33
+document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
-document-Resolver,contracts-Spec,6
-document-Resolver,document-Parser,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,94
+document-Validator,contracts-Spec,98
 document-Validator,contracts-Support,2
-document-Validator,document-Normalizer,2
-document-Validator,document-Resolver,1
 document-Validator,expression-Enum,7
 document-Validator,expression-Interfaces,9
-document-root,contracts-Spec,10
-document-root,document-Normalizer,7
-document-root,document-Parser,6
-document-root,document-Resolver,5
-document-root,document-Validator,5
+document-root,contracts-Spec,11
+document-root,document-Parser,4
+document-root,document-Validator,4
 document-root,expression-Interfaces,1
-document-root,expression-root,1
 evaluation-Condition,contracts-Spec,4
 evaluation-Condition,contracts-Support,1
 evaluation-Condition,evaluation-Data,1
@@ -102,11 +92,8 @@ expression-root,expression-Interfaces,1
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,4
 laravel-Bindings,contracts-Support,1
-laravel-Bindings,document-Normalizer,5
 laravel-Bindings,document-Parser,1
-laravel-Bindings,document-Resolver,6
-laravel-Bindings,document-Validator,1
-laravel-Bindings,document-root,2
+laravel-Bindings,document-root,1
 laravel-Bindings,evaluation-root,2
 laravel-Bindings,expression-Interfaces,1
 laravel-Bindings,expression-root,1
@@ -117,17 +104,21 @@ laravel-Bindings,laravel-Queue,1
 laravel-Bindings,laravel-State,1
 laravel-Bindings,laravel-Support,4
 laravel-Bindings,runner-Events,3
-laravel-Bindings,runner-Execution,6
+laravel-Bindings,runner-Execution,7
 laravel-Bindings,runner-Infrastructure,1
 laravel-Bindings,runner-State,4
 laravel-Bindings,runner-root,5
+laravel-Bindings,sources-Normalizer,6
+laravel-Bindings,sources-Resolver,6
+laravel-Bindings,sources-Validator,1
+laravel-Bindings,sources-root,2
 laravel-Http,cli-Generator,1
 laravel-Http,contracts-Interfaces,1
 laravel-Http,contracts-Spec,2
-laravel-Http,document-Resolver,1
 laravel-Http,runner-Infrastructure,1
 laravel-Http,runner-Jobs,1
 laravel-Http,runner-State,1
+laravel-Http,sources-Resolver,1
 laravel-Lock,contracts-Interfaces,1
 laravel-Persistence,contracts-Spec,5
 laravel-Persistence,document-Parser,2
@@ -166,10 +157,9 @@ runner-Execution,contracts-Interfaces,12
 runner-Execution,contracts-Spec,75
 runner-Execution,contracts-State,14
 runner-Execution,contracts-Support,9
-runner-Execution,document-Normalizer,4
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
-runner-Execution,document-root,8
+runner-Execution,document-root,5
 runner-Execution,evaluation-Interfaces,6
 runner-Execution,evaluation-root,10
 runner-Execution,expression-Enum,1
@@ -179,6 +169,7 @@ runner-Execution,runner-Jobs,2
 runner-Execution,runner-Policy,1
 runner-Execution,runner-State,15
 runner-Execution,runner-Telemetry,1
+runner-Execution,sources-Normalizer,8
 runner-Infrastructure,contracts-Interfaces,4
 runner-Jobs,contracts-Spec,1
 runner-Jobs,contracts-State,1
@@ -189,25 +180,47 @@ runner-Protocol,contracts-Dependency,1
 runner-Protocol,contracts-Interfaces,5
 runner-Protocol,contracts-Spec,20
 runner-Protocol,contracts-State,5
-runner-Protocol,document-root,1
 runner-Protocol,evaluation-Interfaces,2
 runner-Protocol,evaluation-root,3
 runner-Protocol,runner-Execution,14
 runner-Protocol,runner-Infrastructure,1
 runner-Protocol,runner-State,1
+runner-Protocol,sources-Normalizer,1
 runner-State,contracts-Spec,5
 runner-State,contracts-State,2
 runner-root,contracts-Interfaces,3
 runner-root,contracts-Spec,3
-runner-root,document-root,2
+runner-root,document-root,1
 runner-root,evaluation-Interfaces,2
 runner-root,evaluation-root,2
 runner-root,expression-Interfaces,2
 runner-root,expression-root,1
 runner-root,runner-Events,1
-runner-root,runner-Execution,10
+runner-root,runner-Execution,12
 runner-root,runner-Infrastructure,1
 runner-root,runner-State,4
+runner-root,sources-Normalizer,1
+sources-Normalizer,contracts-Interfaces,1
+sources-Normalizer,contracts-Spec,8
+sources-Normalizer,contracts-Support,1
+sources-Normalizer,document-root,6
+sources-Normalizer,sources-Resolver,3
+sources-Resolver,contracts-Interfaces,2
+sources-Resolver,contracts-Spec,7
+sources-Resolver,document-Parser,2
+sources-Validator,contracts-Spec,5
+sources-Validator,document-Validator,5
+sources-Validator,sources-Normalizer,2
+sources-Validator,sources-Resolver,1
+sources-root,contracts-Interfaces,1
+sources-root,contracts-Spec,4
+sources-root,document-Parser,2
+sources-root,document-Validator,3
+sources-root,document-root,5
+sources-root,expression-root,1
+sources-root,sources-Normalizer,10
+sources-root,sources-Resolver,6
+sources-root,sources-Validator,2
 ```
 
 ## Folded flows
@@ -217,6 +230,8 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
+| `document-root` | `sources-Normalizer` | 2 |
+| `document-root` | `sources-Validator` | 1 |
 | `evaluation-Registries` | `evaluation-Plugins` | 2 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

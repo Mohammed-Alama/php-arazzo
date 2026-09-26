@@ -21,27 +21,22 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 52 | 17 | allowed |
+| `Psr` | 53 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 16 | 0 | **forbidden** ⚠ |
+| `cebe` | 18 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
-| cli | `cli:Console` | `GuzzleHttp` | 2 |
 | cli | `cli:Console` | `OpenTelemetry` | 1 |
-| cli | `cli:Console` | `Psr` | 1 |
+| cli | `cli:Console` | `Psr` | 2 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Support` | `Psr` | 4 |
-| document | `document:Normalizer` | `cebe` | 6 |
 | document | `document:Parser` | `Symfony` | 2 |
-| document | `document:Resolver` | `Psr` | 4 |
-| document | `document:Validator` | `JsonSchema` | 7 |
-| document | `document:_` | `GuzzleHttp` | 2 |
-| document | `document:_` | `Psr` | 2 |
+| document | `document:Validator` | `JsonSchema` | 4 |
 | evaluation | `evaluation:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
@@ -52,6 +47,12 @@ when a boundary consciously moves.
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
 | runner | `runner:_` | `Psr` | 5 |
+| sources | `sources:Normalizer` | `cebe` | 8 |
+| sources | `sources:Resolver` | `GuzzleHttp` | 2 |
+| sources | `sources:Resolver` | `Psr` | 4 |
+| sources | `sources:Validator` | `JsonSchema` | 3 |
+| sources | `sources:_` | `GuzzleHttp` | 2 |
+| sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
 | laravel | `laravel:Bindings` | `Psr` | 11 |
@@ -70,19 +71,20 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 library boundary violation(s):**
-- `cli:Console` imports `GuzzleHttp\*` (2 refs)
+**13 library boundary violation(s):**
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
-- `document:Normalizer` imports `cebe\*` (6 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
-- `document:Validator` imports `JsonSchema\*` (7 refs)
-- `document:_` imports `GuzzleHttp\*` (2 refs)
+- `document:Validator` imports `JsonSchema\*` (4 refs)
 - `evaluation:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
+- `sources:Normalizer` imports `cebe\*` (8 refs)
+- `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
+- `sources:Validator` imports `JsonSchema\*` (3 refs)
+- `sources:_` imports `GuzzleHttp\*` (2 refs)
 
 ## Core aggregator emptiness
 
@@ -92,14 +94,15 @@ when a boundary consciously moves.
 
 Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
 
-**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
+**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `SourceGraph`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
 
 ### Facade-to-facade transitions (allowed by seam policy)
 
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
-| `document` | `expression` | `Document` | `ExpressionEngine` |
 | `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
+| `sources` | `document` | `SourceGraph` | `Document` |
+| `sources` | `expression` | `SourceGraph` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -108,6 +111,8 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
+| `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
+| `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |
@@ -124,5 +129,18 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
-| `runner` | `ResolvedOperation` | `document` | 4 | `StepOutputExtractor` |
+| `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
+| `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
+| `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
+| `sources` | `Loader` | `document` | 1 | `SourceGraph` |
+| `sources` | `ModelStack` | `document` | 1 | `SourceGraph` |
+| `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
+| `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
+| `sources` | `Parser` | `document` | 1 | `SourceGraph` |
+| `sources` | `ResolvedOperation` | `document` | 4 | `OpenApiOperationHandle` |
+| `sources` | `RuleSet` | `document` | 1 | `SourceGraph` |
+| `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
+| `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
+| `sources` | `Validator` | `document` | 1 | `SourceGraph` |
+| `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

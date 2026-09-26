@@ -10,8 +10,8 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;
 use cebe\openapi\spec\Schema;
@@ -35,7 +35,7 @@ it('validates a response against the OpenAPI schema', function (): void {
         ],
     ]);
 
-    $opResolver = \Mockery::mock(DocumentInterface::class);
+    $opResolver = \Mockery::mock(OpenApiOperationResolver::class);
 
     $validator = new class($opResolver) extends ResponseSchemaValidator
     {

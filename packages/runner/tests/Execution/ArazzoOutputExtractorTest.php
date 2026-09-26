@@ -18,13 +18,13 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Document;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\Fetchers\LocalFetcher;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 
 beforeEach(function () {
     $openApiJson = json_encode([
@@ -59,11 +59,11 @@ beforeEach(function () {
     file_put_contents($this->openApiFile, $openApiJson);
 
     $this->makeExtractor = function (): StepOutputExtractor {
-        $documents = new Document(null, null, new SourceRegistry(
+        $runtime = SourceGraph::runtime(null, null, new SourceRegistry(
             new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
         ));
 
-        return new StepOutputExtractor($documents, new EvaluationEngine(), new ExpressionEngine());
+        return new StepOutputExtractor($runtime->operations, new EvaluationEngine(), new ExpressionEngine());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

@@ -9,8 +9,8 @@ test-method density, and the last measured suite cost. Cross-reference with
 
 | Package | Src LOC | Test LOC | Test/Src | Test files | Test methods | Methods/file |
 |---|---:|---:|---:|---:|---:|---:|
-| core | 20,046 | 17,596 | 88% | 220 | 860 | 3.9 |
-| laravel | 1,236 | 1,748 | 141% | 29 | 91 | 3.1 |
+| core | 21,220 | 18,634 | 88% | 236 | 912 | 3.9 |
+| laravel | 1,247 | 1,760 | 141% | 29 | 91 | 3.1 |
 
 ## Last measured suite cost
 

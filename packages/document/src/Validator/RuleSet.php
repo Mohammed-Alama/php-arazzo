@@ -24,7 +24,10 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedSourceRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedStepRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
+use Alama\Arazzo\Document\Validator\Rules\GraphQlStepRule;
+use Alama\Arazzo\Document\Validator\Rules\InteractionStepRule;
 use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
+use Alama\Arazzo\Document\Validator\Rules\RpcStepRule;
 use Alama\Arazzo\Document\Validator\Rules\SelectorTypeSupportedRule;
 use Alama\Arazzo\Document\Validator\Rules\SelfUriSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\SourceTypeMatchesRule;
@@ -54,6 +57,7 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowDependsOnNoCycleRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
+use Alama\Arazzo\Document\Validator\Rules\WsdlStepRule;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
@@ -112,6 +116,7 @@ final readonly class RuleSet
             new StepOperationIdSourceScopedRule(),
             new StepOperationPathSyntaxRule(),
             new StepOperationTargetPresentRule(),
+            new WsdlStepRule(),
             new StepTimeoutRequires11Rule(),
             new StepOutputsUniqueRule(),
             new StepParameterInValidRule(),
@@ -127,6 +132,9 @@ final readonly class RuleSet
             new WorkflowIdPatternRule(),
             new WorkflowInputsValidSchemaRule(),
             new WorkflowUniqueIdRule(),
+            new RpcStepRule(),
+            new GraphQlStepRule(),
+            new InteractionStepRule(),
         ], $disabled, $strict);
     }
 

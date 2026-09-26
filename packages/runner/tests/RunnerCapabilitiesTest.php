@@ -11,13 +11,20 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;
 use Psr\Http\Client\ClientInterface;
+
+function runtimeRunner(?ClientInterface $client = null): RunnerFacade
+{
+    $runtime = SourceGraph::runtime();
+
+    return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(), $client);
+}
 
 function runnerFixtureDocument(): ArazzoDocument
 {
@@ -48,23 +55,24 @@ it('exposes the enriched runner facade entry point', function () {
 });
 
 it('accepts the document public face as the required seam dependency', function () {
-    $runner = new RunnerFacade(new Document(), new EvaluationEngine());
+    $runtime = SourceGraph::runtime();
+    $runner = new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine());
 
     expect($runner)->toBeInstanceOf(RunnerFacadeInterface::class);
 });
 
 it('runs a workflow whose operation resolves through the document face', function () {
-    $result = (new RunnerFacade(new Document(), new EvaluationEngine(), runnerStubClient()))->run(runnerFixtureDocument(), 'find');
+    $result = (runtimeRunner(runnerStubClient()))->run(runnerFixtureDocument(), 'find');
     expect($result['status'])->toBe('succeeded');
 });
 
 it('keeps the run output shape stable for existing consumers', function () {
-    $result = (new RunnerFacade(new Document(), new EvaluationEngine(), runnerStubClient()))->run(runnerFixtureDocument(), 'find');
+    $result = (runtimeRunner(runnerStubClient()))->run(runnerFixtureDocument(), 'find');
     expect(array_keys($result))->toBe(['workflowId', 'status', 'outputs', 'stepsSpent', 'workflowCallStack']);
 });
 
 it('execute exposes per-step verdicts for cli and laravel consumers', function () {
-    $result = (new RunnerFacade(new Document(), new EvaluationEngine(), runnerStubClient()))->execute(runnerFixtureDocument(), 'find');
+    $result = (runtimeRunner(runnerStubClient()))->execute(runnerFixtureDocument(), 'find');
 
     expect($result['status'])->toBe('succeeded')
         ->and($result['steps'])->toBeArray()

@@ -3,8 +3,8 @@
 
 # Generated: Layering Map
 
-The real architecture is six composer packages, not one monolith with many
-namespaces: `contracts <- expression <- document <- runner <- cli <- laravel`,
+The real architecture is eight composer packages, not one monolith with many
+namespaces: `contracts <- expression <- evaluation <- document <- sources <- runner <- cli <- laravel`,
 read directly from each package's `composer.json` `require`. A package may
 only depend on packages strictly below it in that chain. Edges that point
 **upward across a package boundary** violate the layering and are drawn red —
@@ -46,11 +46,15 @@ flowchart TB
         M_evaluation__["(evaluation package root)"]:::node
     end
     subgraph PKG_M_document["document"]
-        M_document_Normalizer["document:Normalizer"]:::node
         M_document_Parser["document:Parser"]:::node
-        M_document_Resolver["document:Resolver"]:::node
         M_document_Validator["document:Validator"]:::node
         M_document__["(document package root)"]:::node
+    end
+    subgraph PKG_M_sources["sources"]
+        M_sources_Normalizer["sources:Normalizer"]:::node
+        M_sources_Resolver["sources:Resolver"]:::node
+        M_sources_Validator["sources:Validator"]:::node
+        M_sources__["(sources package root)"]:::node
     end
     subgraph PKG_M_runner["runner"]
         M_runner_Async["runner:Async"]:::node
@@ -86,9 +90,7 @@ flowchart TB
     M_cli_Console --> M_contracts_Spec
     M_cli_Console --> M_contracts_State
     M_cli_Console --> M_document_Parser
-    M_cli_Console --> M_document_Resolver
     M_cli_Console --> M_document_Validator
-    M_cli_Console --> M_document__
     M_cli_Console --> M_evaluation_Interfaces
     M_cli_Console --> M_evaluation__
     M_cli_Console --> M_expression__
@@ -98,6 +100,8 @@ flowchart TB
     M_cli_Console --> M_runner_State
     M_cli_Console --> M_runner_Telemetry
     M_cli_Console --> M_runner__
+    M_cli_Console --> M_sources_Resolver
+    M_cli_Console --> M_sources__
     M_cli_Generator --> M_contracts_Interfaces
     M_cli_Renderer --> M_contracts_Spec
     M_contracts_Dependency --> M_contracts_Spec
@@ -107,27 +111,19 @@ flowchart TB
     M_contracts_Interfaces --> M_contracts_State
     M_contracts_Spec --> M_contracts_Interfaces
     M_contracts_State --> M_contracts_Spec
-    M_document_Normalizer --> M_contracts_Spec
-    M_document_Normalizer --> M_contracts_Support
-    M_document_Normalizer --> M_document_Resolver
     M_document_Parser --> M_contracts_Spec
     M_document_Parser --> M_contracts_Support
-    M_document_Resolver --> M_contracts_Spec
-    M_document_Resolver --> M_document_Parser
     M_document_Validator --> M_contracts_Dependency
     M_document_Validator --> M_contracts_Spec
     M_document_Validator --> M_contracts_Support
-    M_document_Validator --> M_document_Normalizer
-    M_document_Validator --> M_document_Resolver
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression_Interfaces
     M_document__ --> M_contracts_Spec
-    M_document__ --> M_document_Normalizer
     M_document__ --> M_document_Parser
-    M_document__ --> M_document_Resolver
     M_document__ --> M_document_Validator
     M_document__ --> M_expression_Interfaces
-    M_document__ --> M_expression__
+    M_document__ -.->|violation| M_sources_Normalizer
+    M_document__ -.->|violation| M_sources_Validator
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
     M_evaluation_Condition --> M_evaluation_Data
@@ -170,10 +166,7 @@ flowchart TB
     M_laravel_Bindings --> M_cli_Generator
     M_laravel_Bindings --> M_contracts_Interfaces
     M_laravel_Bindings --> M_contracts_Support
-    M_laravel_Bindings --> M_document_Normalizer
     M_laravel_Bindings --> M_document_Parser
-    M_laravel_Bindings --> M_document_Resolver
-    M_laravel_Bindings --> M_document_Validator
     M_laravel_Bindings --> M_document__
     M_laravel_Bindings --> M_evaluation__
     M_laravel_Bindings --> M_expression_Interfaces
@@ -189,13 +182,17 @@ flowchart TB
     M_laravel_Bindings --> M_runner_Infrastructure
     M_laravel_Bindings --> M_runner_State
     M_laravel_Bindings --> M_runner__
+    M_laravel_Bindings --> M_sources_Normalizer
+    M_laravel_Bindings --> M_sources_Resolver
+    M_laravel_Bindings --> M_sources_Validator
+    M_laravel_Bindings --> M_sources__
     M_laravel_Http --> M_cli_Generator
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
-    M_laravel_Http --> M_document_Resolver
     M_laravel_Http --> M_runner_Infrastructure
     M_laravel_Http --> M_runner_Jobs
     M_laravel_Http --> M_runner_State
+    M_laravel_Http --> M_sources_Resolver
     M_laravel_Lock --> M_contracts_Interfaces
     M_laravel_Persistence --> M_contracts_Spec
     M_laravel_Persistence --> M_document_Parser
@@ -234,7 +231,6 @@ flowchart TB
     M_runner_Execution --> M_contracts_Spec
     M_runner_Execution --> M_contracts_State
     M_runner_Execution --> M_contracts_Support
-    M_runner_Execution --> M_document_Normalizer
     M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
@@ -249,6 +245,7 @@ flowchart TB
     M_runner_Execution --> M_runner_State
     M_runner_Execution --> M_runner_Telemetry
     M_runner_Execution --> M_runner__
+    M_runner_Execution --> M_sources_Normalizer
     M_runner_Infrastructure --> M_contracts_Interfaces
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
@@ -259,12 +256,12 @@ flowchart TB
     M_runner_Protocol --> M_contracts_Interfaces
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
-    M_runner_Protocol --> M_document__
     M_runner_Protocol --> M_evaluation_Interfaces
     M_runner_Protocol --> M_evaluation__
     M_runner_Protocol --> M_runner_Execution
     M_runner_Protocol --> M_runner_Infrastructure
     M_runner_Protocol --> M_runner_State
+    M_runner_Protocol --> M_sources_Normalizer
     M_runner_State --> M_contracts_Spec
     M_runner_State --> M_contracts_State
     M_runner__ --> M_contracts_Interfaces
@@ -278,6 +275,28 @@ flowchart TB
     M_runner__ --> M_runner_Execution
     M_runner__ --> M_runner_Infrastructure
     M_runner__ --> M_runner_State
+    M_runner__ --> M_sources_Normalizer
+    M_sources_Normalizer --> M_contracts_Interfaces
+    M_sources_Normalizer --> M_contracts_Spec
+    M_sources_Normalizer --> M_contracts_Support
+    M_sources_Normalizer --> M_document__
+    M_sources_Normalizer --> M_sources_Resolver
+    M_sources_Resolver --> M_contracts_Interfaces
+    M_sources_Resolver --> M_contracts_Spec
+    M_sources_Resolver --> M_document_Parser
+    M_sources_Validator --> M_contracts_Spec
+    M_sources_Validator --> M_document_Validator
+    M_sources_Validator --> M_sources_Normalizer
+    M_sources_Validator --> M_sources_Resolver
+    M_sources__ --> M_contracts_Interfaces
+    M_sources__ --> M_contracts_Spec
+    M_sources__ --> M_document_Parser
+    M_sources__ --> M_document_Validator
+    M_sources__ --> M_document__
+    M_sources__ --> M_expression__
+    M_sources__ --> M_sources_Normalizer
+    M_sources__ --> M_sources_Resolver
+    M_sources__ --> M_sources_Validator
     classDef node fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
     classDef rootNode fill:#f1f3f4,stroke:#9aa0a6,color:#1a1a1a;
@@ -285,33 +304,49 @@ flowchart TB
 
 ## Package boundaries
 
-**No package-level layering violations.** Every cross-package `use` points downward through `contracts -> expression -> document -> runner -> cli -> laravel`.
+**1 package boundary violation(s):**
+
+| Package | ↑ depends on package | Refs | Modules involved |
+|---|---|---:|---|
+| `document` | `sources` | 3 | `(document package root) -> sources:Normalizer`, `(document package root) -> sources:Validator` |
 
 ### All package edges (reference counts)
 
 | From package | To package | Refs |
 |---|---|---:|
-| `cli` | `contracts` | 20 |
-| `cli` | `document` | 12 |
+| `cli` | `contracts` | 22 |
+| `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
-| `document` | `contracts` | 155 |
-| `document` | `expression` | 18 |
+| `cli` | `sources` | 2 |
+| `document` | `contracts` | 152 |
+| `document` | `expression` | 17 |
+| `document` | `sources` | 3 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
 | `expression` | `contracts` | 1 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
-| `laravel` | `document` | 18 |
+| `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 3 |
 | `laravel` | `expression` | 2 |
-| `laravel` | `runner` | 44 |
+| `laravel` | `runner` | 45 |
+| `laravel` | `sources` | 16 |
 | `runner` | `contracts` | 191 |
-| `runner` | `document` | 22 |
+| `runner` | `document` | 13 |
 | `runner` | `evaluation` | 26 |
 | `runner` | `expression` | 7 |
+| `runner` | `sources` | 10 |
+| `sources` | `contracts` | 29 |
+| `sources` | `document` | 23 |
+| `sources` | `expression` | 1 |
 
 ## Module-level detail
 
-**No module-level layering violations.**
+**2 module-level violation(s) found:**
+
+| From | ↑ depends on | Weight |
+|---|---|---:|
+| `(document package root)` | `sources:Normalizer` | 2 |
+| `(document package root)` | `sources:Validator` | 1 |

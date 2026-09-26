@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Cli\Console;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Exceptions\LoaderException;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Parser\Loader;
@@ -24,7 +22,7 @@ final class DocumentLoader
      */
     public static function load(string $file): ArazzoDocument
     {
-        $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
+        $loader = Loader::new();
 
         return (new Parser())->parse($loader->load($file));
     }

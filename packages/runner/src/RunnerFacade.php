@@ -12,7 +12,9 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\ExecutionGraphFactory;
+use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Psr\Http\Client\ClientInterface;
 use RuntimeException;
 
@@ -22,11 +24,12 @@ final class RunnerFacade implements RunnerFacadeInterface
 
     public function __construct(
         DocumentInterface $documents,
+        OpenApiOperationResolver $operationResolver,
         EvaluationEngineInterface $engine,
         ?ClientInterface $httpClient = null,
         ?ExpressionEngineInterface $inspector = null,
     ) {
-        $this->executor = (new ExecutionGraphFactory($documents, $engine, $inspector ?? new ExpressionEngine(), $httpClient))->createWorkflowExecutor();
+        $this->executor = (new ExecutionGraphFactory(new OperationRuntime($documents, $operationResolver), $engine, $inspector ?? new ExpressionEngine(), $httpClient))->createWorkflowExecutor();
     }
 
     public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array

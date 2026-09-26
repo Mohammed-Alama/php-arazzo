@@ -19,9 +19,6 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Document\Document;
-use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
@@ -35,6 +32,9 @@ use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\State\FileStateStore;
+use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -71,7 +71,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
-    $documents = new Document(null, null, new SourceRegistry(new class() implements SourceResolver
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new class() implements SourceResolver
     {
         public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {
@@ -85,14 +85,14 @@ function parityFixtures(): array
     }));
     $resolver = new ExpressionResolver(
         $evaluator,
-        new StepOutputExtractor($documents, $engine, new ExpressionEngine()),
+        new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
         new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($documents),
+        new ResponseSchemaValidator($runtime->operations),
     );
     $stepExecutor = new StepExecutor(
         new DefaultOpenApiExecutor($httpClient, new HttpFactory()),
         $resolver,
-        $documents,
+        $runtime->operations,
         engine: $engine,
     );
 

@@ -8,7 +8,6 @@ use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
-use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -16,6 +15,7 @@ use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
@@ -23,6 +23,7 @@ use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
@@ -117,8 +118,10 @@ function seams(
 
 function internal(AsyncGraphSeams $s): AsyncExecutionGraphAssembler
 {
+    $runtime = SourceGraph::runtime();
+
     return new AsyncExecutionGraphAssembler(
-        new Document(),
+        new OperationRuntime($runtime->document, $runtime->operations),
         new EvaluationEngine(),
         new ExpressionEngine(),
     );

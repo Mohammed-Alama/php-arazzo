@@ -17,11 +17,15 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Enum\InteractionMode;
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
+use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
@@ -168,7 +172,7 @@ class Parser
         $type = $this->requireString($obj, 'type', $ctx);
         $enum = SourceType::tryFrom($type)
             ?? throw ParserException::invalidEnum(
-                $ctx->push('type'), 'openapi|arazzo', $type,
+                $ctx->push('type'), 'openapi|arazzo|asyncapi|wsdl|protobuf|graphql', $type,
             );
 
         return new SourceDescription(
@@ -301,13 +305,99 @@ class Parser
         $operationId = $this->optionalString($obj, 'operationId', $ctx);
         $operationPath = $this->optionalString($obj, 'operationPath', $ctx);
         $workflowId = $this->optionalString($obj, 'workflowId', $ctx);
+        $operationName = $this->optionalString($obj, 'operationName', $ctx);
+        $rpcMethod = $this->optionalString($obj, 'rpcMethod', $ctx);
+        $rpcProtocolRaw = $this->optionalString($obj, 'rpcProtocol', $ctx);
+        $rpcProtocol = $rpcProtocolRaw !== null ? RpcProtocol::tryFrom($rpcProtocolRaw) : null;
+        if ($rpcProtocolRaw !== null && $rpcProtocol === null) {
+            throw ParserException::invalidEnum($ctx->push('rpcProtocol'), 'grpc|grpc-web|twirp|connect', $rpcProtocolRaw);
+        }
+        $graphqlOperation = null;
+        if (array_key_exists('graphqlOperation', $obj) && $obj['graphqlOperation'] !== null) {
+            $graphqlOperation = $this->parseGraphQlOperation($obj['graphqlOperation'], $ctx->push('graphqlOperation'));
+        }
+        $interaction = null;
+        if (array_key_exists('interaction', $obj) && $obj['interaction'] !== null) {
+            $interaction = $this->parseInteraction($obj['interaction'], $ctx->push('interaction'));
+        }
 
         return match (true) {
             $workflowId !== null => StepTarget::workflow($workflowId),
             $action !== null && $channelPath !== null => StepTarget::async($action, $channelPath, $correlationId),
-            $operationId !== null || $operationPath !== null => new StepTarget(operationId: $operationId, operationPath: $operationPath),
-            default => new StepTarget(),
+            $operationId !== null || $operationPath !== null => new StepTarget(
+                operationId: $operationId,
+                operationPath: $operationPath,
+                workflowId: $workflowId,
+                action: $action,
+                channelPath: $channelPath,
+                correlationId: $correlationId,
+                operationName: $operationName,
+                rpcMethod: $rpcMethod,
+                rpcProtocol: $rpcProtocol,
+                graphqlOperation: $graphqlOperation,
+                interaction: $interaction,
+            ),
+            default => new StepTarget(
+                operationName: $operationName,
+                rpcMethod: $rpcMethod,
+                rpcProtocol: $rpcProtocol,
+                graphqlOperation: $graphqlOperation,
+                interaction: $interaction,
+            ),
         };
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     */
+    private function parseGraphQlOperation(mixed $node, ParseContext $ctx): GraphQlOperation
+    {
+        $obj = $this->requireObjectMap($node, $ctx);
+        $schema = $this->requireString($obj, 'schema', $ctx);
+        $operation = $this->requireString($obj, 'operation', $ctx);
+        $extensions = $this->optionalArray($obj, 'extensions', $ctx);
+        $extensionsSelector = null;
+        if (array_key_exists('extensionsSelector', $obj) && $obj['extensionsSelector'] !== null) {
+            $extensionsSelector = $this->parseSelector($obj['extensionsSelector'], $ctx->push('extensionsSelector'));
+        }
+
+        return new GraphQlOperation(
+            schema: $schema,
+            operation: $operation,
+            extensions: $extensions,
+            extensionsSelector: $extensionsSelector,
+        );
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     */
+    private function parseInteraction(mixed $node, ParseContext $ctx): Interaction
+    {
+        $obj = $this->requireObjectMap($node, $ctx);
+        $prompt = $this->optionalString($obj, 'prompt', $ctx);
+        $timeout = $this->optionalString($obj, 'timeout', $ctx);
+        $modeRaw = $this->optionalString($obj, 'mode', $ctx);
+        $mode = $modeRaw !== null ? InteractionMode::tryFrom($modeRaw) : null;
+        if ($modeRaw !== null && $mode === null) {
+            throw ParserException::invalidEnum($ctx->push('mode'), 'form|redirect|acknowledge', $modeRaw);
+        }
+        $context = $this->optionalArray($obj, 'context', $ctx);
+        $inputSchema = $this->optionalArray($obj, 'inputSchema', $ctx);
+        $redirect = null;
+        if (array_key_exists('redirect', $obj) && $obj['redirect'] !== null) {
+            $redirectObj = $this->requireObjectMap($obj['redirect'], $ctx->push('redirect'));
+            $redirect = $this->optionalString($redirectObj, 'operationId', $ctx->push('redirect'));
+        }
+
+        return new Interaction(
+            expectedPayload: $context,
+            timeout: $timeout,
+            mode: $mode,
+            prompt: $prompt,
+            redirectOperationId: $redirect,
+            inputSchema: $inputSchema,
+        );
     }
 
     /**
@@ -831,7 +921,19 @@ class Parser
             }
         }
 
-        return new Components($inputs, $parameters, $successActions, $failureActions);
+        $interactions = [];
+        if (($i = $this->optionalArray($obj, 'interactions', $ctx)) !== null) {
+            foreach ($i as $k => $v) {
+                if (!is_array($v)) {
+                    throw ParserException::wrongType(
+                        $ctx->push('interactions')->push((string) $k), 'object', $v,
+                    );
+                }
+                $interactions[(string) $k] = $this->parseInteraction($v, $ctx->push('interactions')->push((string) $k));
+            }
+        }
+
+        return new Components($inputs, $parameters, $successActions, $failureActions, $interactions);
     }
 
     /**

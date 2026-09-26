@@ -10,12 +10,12 @@ use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Parser;
-use Alama\Arazzo\Document\Resolver\DefaultSourceResolver;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 
 /**
  * Runs the vendored OFFICIAL OAI example corpus (see corpus/oai/README.md)

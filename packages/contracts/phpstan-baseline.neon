@@ -21,17 +21,44 @@ parameters:
 			path: src/Spec/ArazzoDocument.php
 
 		-
+			message: '#^Method Alama\\Arazzo\\Contracts\\Spec\\GraphQlOperation\:\:__construct\(\) has parameter \$extensions with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Spec/GraphQlOperation.php
+
+		-
+			message: '#^Method Alama\\Arazzo\\Contracts\\Spec\\Interaction\:\:__construct\(\) has parameter \$inputSchema with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Spec/Interaction.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/Interaction.php
+
+		-
 			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Spec/OpenApiPayload.php
 
 		-
-			message: '#^Method http has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepExecutionOutcome.php
+
+		-
+			message: '#^Method resolved has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Spec/StepExecutionOutcome.php
+
+		-
+			message: '#^Method async has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Spec/StepFactory.php
 
 		-
-			message: '#^Method async has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Method http has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Spec/StepFactory.php
 
@@ -49,16 +76,6 @@ parameters:
 			message: '#^Method __construct has too many parameters \(11\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Spec/StepTarget.php
-
-		-
-			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Spec/StepExecutionOutcome.php
-
-		-
-			message: '#^Method resolved has too many parameters \(9\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Spec/StepExecutionOutcome.php
 
 		-
 			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
@@ -316,3 +333,4 @@ parameters:
 			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/State/WorkflowContext.php
+

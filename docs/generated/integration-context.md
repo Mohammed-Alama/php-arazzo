@@ -46,18 +46,9 @@ flowchart LR
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver["SyncQueueDriver"]:::adapter
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- BRIDGE
         A_Alama_Arazzo_Runner_Execution_SyncQueueDriver --- queue
-        A_Alama_Arazzo_Cli_Console_Command_RunCommand["RunCommand"]:::adapter
-        A_Alama_Arazzo_Cli_Console_Command_RunCommand --- CORE
-        A_Alama_Arazzo_Cli_Console_Command_RunCommand --- net
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient["OpenAiClient"]:::adapter
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient --- CORE
         A_Alama_Arazzo_Cli_Generator_Clients_OpenAiClient --- openai
-        A_Alama_Arazzo_Document_Document["Document"]:::adapter
-        A_Alama_Arazzo_Document_Document --- CORE
-        A_Alama_Arazzo_Document_Document --- net
-        A_Alama_Arazzo_Document_Resolver_Fetchers_HttpFetcher["HttpFetcher"]:::adapter
-        A_Alama_Arazzo_Document_Resolver_Fetchers_HttpFetcher --- CORE
-        A_Alama_Arazzo_Document_Resolver_Fetchers_HttpFetcher --- net
         A_Alama_Arazzo_Laravel_Bindings_HttpBindings["HttpBindings"]:::adapter
         A_Alama_Arazzo_Laravel_Bindings_HttpBindings --- CORE
         A_Alama_Arazzo_Laravel_Bindings_HttpBindings --- net
@@ -70,6 +61,15 @@ flowchart LR
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory["ExecutionGraphFactory"]:::adapter
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --- CORE
         A_Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --- net
+        A_Alama_Arazzo_Sources_Resolver_DefaultSourceResolver["DefaultSourceResolver"]:::adapter
+        A_Alama_Arazzo_Sources_Resolver_DefaultSourceResolver --- CORE
+        A_Alama_Arazzo_Sources_Resolver_DefaultSourceResolver --- net
+        A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher["HttpFetcher"]:::adapter
+        A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher --- CORE
+        A_Alama_Arazzo_Sources_Resolver_Fetchers_HttpFetcher --- net
+        A_Alama_Arazzo_Sources_SourceGraph["SourceGraph"]:::adapter
+        A_Alama_Arazzo_Sources_SourceGraph --- CORE
+        A_Alama_Arazzo_Sources_SourceGraph --- net
     net["HTTP network"]:::system
     openai["OpenAI API"]:::system
     queue["Application queue backend"]:::system

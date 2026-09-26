@@ -12,15 +12,13 @@ use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\Reusable;
-use Alama\Arazzo\Document\Parser\Decoders\NativeJsonDecoder;
-use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Parser\Loader;
 use Alama\Arazzo\Document\Parser\Parser;
 
 function parseFixture(string $rel): ArazzoDocument
 {
-    $loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
+    $loader = Loader::new();
     $raw = $loader->load(__DIR__.'/../fixtures/parser/'.$rel);
 
     return (new Parser())->parse($raw);

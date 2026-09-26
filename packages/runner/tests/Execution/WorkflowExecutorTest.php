@@ -18,9 +18,6 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Document\Document;
-use Alama\Arazzo\Document\Resolver\Interfaces\SourceResolver;
-use Alama\Arazzo\Document\Resolver\SourceRegistry;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\ExpressionEvaluator;
@@ -32,6 +29,9 @@ use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -502,14 +502,14 @@ it('executes a workflow end-to-end', function () {
     };
     $engine = new EvaluationEngine();
     $evaluator = new ExpressionEvaluator();
-    $documents = new Document(null, null, new SourceRegistry($sourceResolver));
-    $outputExtractor = new StepOutputExtractor($documents, $engine, new ExpressionEngine());
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry($sourceResolver));
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $criteriaEvaluator = new CriteriaEvaluator($evaluator);
-    $schemaValidator = new ResponseSchemaValidator($documents);
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
     $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $documents, engine: $engine);
+    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $runtime->operations, engine: $engine);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver()));
 

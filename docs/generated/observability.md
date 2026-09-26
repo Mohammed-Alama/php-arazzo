@@ -40,7 +40,10 @@ _No catalog found (LedgerAppendingListener not found)._
 | `ExpressionUnresolvedStepRefRule` <small>core</small> | `warning` · `error` | 5 |
 | `ExpressionUnresolvedWorkflowRefRule` <small>core</small> | `error` | 3 |
 | `ExtensionsXPrefixRule` <small>core</small> | `warning` | 1 |
+| `GraphQlStepRule` <small>core</small> | `error` | 3 |
+| `InteractionStepRule` <small>core</small> | `error` | 4 |
 | `ParameterQuerystringOperationShapeRule` <small>core</small> | `warning` | 1 |
+| `RpcStepRule` <small>core</small> | `error` | 4 |
 | `SelectorTypeSupportedRule` <small>core</small> | `error` | 1 |
 | `SelfUriSyntaxRule` <small>core</small> | `error` | 1 |
 | `SourceUniqueNameRule` <small>core</small> | `error` | 1 |
@@ -68,10 +71,11 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowIdPatternRule` <small>core</small> | `error` | 1 |
 | `WorkflowInputsValidSchemaRule` <small>core</small> | `error` | 3 |
 | `WorkflowUniqueIdRule` <small>core</small> | `error` | 1 |
+| `WsdlStepRule` <small>core</small> | `error` | 2 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 | `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-72 logging calls total. PSR-14 events are dispatched independently (see events.md).
+85 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 
