@@ -58,9 +58,6 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
         new ResolvedOperation(
             new SourceDescription('src', 'http://api.example.com', SourceType::Openapi),
             new NormalizedOpenApiOperation('/charges', 'post', 'http://api.example.com', [], [], [], [], [], []),
-            new OpenApi([]),
-            [],
-            new Operation([]),
         ),
         new OpenApi([]),
         new Operation([]),

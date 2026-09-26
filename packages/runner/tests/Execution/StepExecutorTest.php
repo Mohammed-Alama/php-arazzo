@@ -45,9 +45,6 @@ function createMockDocumentResolver(): OpenApiOperationResolver
         new ResolvedOperation(
             source: new SourceDescription('test-src', 'http://example.com/openapi.json', SourceType::Openapi),
             normalized: new NormalizedOpenApiOperation('/rides', 'get', null, [], [], [], [], [], []),
-            openApi: new OpenApi([]),
-            rawDocument: [],
-            cebeOperation: new Operation([]),
             rpcProtocol: null,
             operationName: null,
             rpcMethod: null,

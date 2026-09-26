@@ -92,9 +92,6 @@ it('builds and sends an openapi request using the schema to route parameters', f
         new ResolvedOperation(
             source: $source,
             normalized: $normalized,
-            openApi: $openApi,
-            rawDocument: json_decode($openapiJson, true),
-            cebeOperation: clone $openApi->paths->getPath('/users/{userId}')->get,
             rpcProtocol: null,
             operationName: null,
             rpcMethod: null,

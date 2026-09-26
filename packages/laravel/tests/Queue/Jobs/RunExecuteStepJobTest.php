@@ -105,9 +105,6 @@ it('injects idempotency key natively during job execution independently of StepE
         new ResolvedOperation(
             new SourceDescription('src', 'http://api.example.com', SourceType::Openapi),
             new NormalizedOpenApiOperation('/charges', 'post', 'http://api.example.com', [], [], [], [], [], []),
-            new OpenApi([]),
-            [],
-            new Operation([]),
         ),
         new OpenApi([]),
         new Operation([]),
