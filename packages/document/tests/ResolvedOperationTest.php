@@ -6,14 +6,13 @@ namespace Alama\Arazzo\Tests\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Operation;
 
-function makeResolvedOperation(?RpcProtocol $rpcProtocol = null, ?string $operationName = null, ?string $rpcMethod = null, ?string $graphqlOperation = null, ?Interaction $interaction = null): ResolvedOperation
+function makeResolvedOperation(?RpcProtocol $rpcProtocol = null, ?string $operationName = null, ?string $rpcMethod = null, ?GraphQlOperation $graphqlOperation = null, ?Interaction $interaction = null): ResolvedOperation
 {
     $source = new SourceDescription('api', '/u', SourceType::Wsdl);
     $normalized = new NormalizedOpenApiOperation(
@@ -31,9 +30,6 @@ function makeResolvedOperation(?RpcProtocol $rpcProtocol = null, ?string $operat
     return new ResolvedOperation(
         source: $source,
         normalized: $normalized,
-        openApi: new OpenApi([]),
-        rawDocument: [],
-        cebeOperation: new Operation([]),
         rpcProtocol: $rpcProtocol,
         operationName: $operationName,
         rpcMethod: $rpcMethod,
@@ -42,14 +38,11 @@ function makeResolvedOperation(?RpcProtocol $rpcProtocol = null, ?string $operat
     );
 }
 
-it('keeps constructing with positional 5-arity for runner BC', function (): void {
+it('keeps constructing with 2-arity for runner BC', function (): void {
     $source = new SourceDescription('api', '/u', SourceType::Openapi);
     $op = new ResolvedOperation(
         $source,
         new NormalizedOpenApiOperation('/', 'get', 'https://example.test', [], [], [], [], [], []),
-        new OpenApi([]),
-        [],
-        new Operation([]),
     );
 
     expect($op->sourceType())->toBe(SourceType::Openapi);
@@ -74,12 +67,12 @@ it('carries the protocol-specific operation reference fields', function (): void
         rpcProtocol: RpcProtocol::Grpc,
         operationName: 'com.acme.PetService/GetPet',
         rpcMethod: '$sourceDescriptions.proto.com.acme.PetService/GetPet',
-        graphqlOperation: '$sourceDescriptions.gql.query GetPet',
+        graphqlOperation: new GraphQlOperation(schema: '$sourceDescriptions.gql', operation: 'query GetPet'),
         interaction: new Interaction(expectedPayload: 'Proceed'),
     );
 
     expect($op->operationName)->toBe('com.acme.PetService/GetPet');
     expect($op->rpcMethod)->toBe('$sourceDescriptions.proto.com.acme.PetService/GetPet');
-    expect($op->graphqlOperation)->toBe('$sourceDescriptions.gql.query GetPet');
+    expect($op->graphqlOperation)->toBeInstanceOf(GraphQlOperation::class);
     expect($op->interaction?->expectedPayload)->toBe('Proceed');
 });

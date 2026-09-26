@@ -6,10 +6,9 @@ namespace Alama\Arazzo\Document;
 
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use cebe\openapi\spec\OpenApi;
-use cebe\openapi\spec\Operation;
 
 /**
  * A fully resolved single-operation view over one described source.
@@ -21,19 +20,13 @@ use cebe\openapi\spec\Operation;
  */
 class ResolvedOperation
 {
-    /**
-     * @param  array<string, mixed>  $rawDocument
-     */
     public function __construct(
         public readonly SourceDescription $source,
         public readonly NormalizedOpenApiOperation $normalized,
-        public readonly OpenApi $openApi,
-        public readonly array $rawDocument,
-        public readonly Operation $cebeOperation,
         public readonly ?RpcProtocol $rpcProtocol = null,
         public readonly ?string $operationName = null,
         public readonly ?string $rpcMethod = null,
-        public readonly ?string $graphqlOperation = null,
+        public readonly ?GraphQlOperation $graphqlOperation = null,
         public readonly ?Interaction $interaction = null,
     ) {}
 

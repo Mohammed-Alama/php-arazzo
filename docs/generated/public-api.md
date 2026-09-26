@@ -384,7 +384,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolver $operationResolver = null)`
 
 #### `ResolvedOperation` class
-- `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly OpenApi $openApi, public readonly array $rawDocument, public readonly Operation $cebeOperation, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?string $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
+- `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?GraphQlOperation $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
 - `public function binding(): string`
 
 ### `Alama\Arazzo\Document\Parser\Exceptions`

@@ -91,7 +91,7 @@ parameters:
             path: src/Parser/Parser.php
 
         -
-            message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+            message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
             count: 1
             path: src/ResolvedOperation.php
 

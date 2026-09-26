@@ -24,7 +24,7 @@ when a boundary consciously moves.
 | `Psr` | 53 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 20 | 0 | **forbidden** ⚠ |
+| `cebe` | 18 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -37,7 +37,6 @@ when a boundary consciously moves.
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
-| document | `document:_` | `cebe` | 2 |
 | evaluation | `evaluation:_` | `Flow` | 1 |
 | runner | `runner:Async` | `Psr` | 2 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
@@ -72,12 +71,11 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**14 library boundary violation(s):**
+**13 library boundary violation(s):**
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
-- `document:_` imports `cebe\*` (2 refs)
 - `evaluation:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
