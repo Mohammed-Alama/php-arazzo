@@ -10,7 +10,7 @@ use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Runner\State\Exceptions\DefinitionHydrationException;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Str;
 use InvalidArgumentException;

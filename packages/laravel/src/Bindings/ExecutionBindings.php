@@ -11,8 +11,8 @@ use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\WorkflowEngine;
 use Illuminate\Contracts\Container\Container;
 
 /**
@@ -33,14 +33,6 @@ final class ExecutionBindings
         $app->singleton(StepOutcomeHandler::class, static fn (Container $app): StepOutcomeHandler => $app->make(AsyncExecutionGraph::class)->outcomeHandler());
         $app->singleton(CorrelationResumer::class, static fn (Container $app): CorrelationResumer => $app->make(AsyncExecutionGraph::class)->resumer());
         $app->singleton(StepExecutionWorker::class, static fn (Container $app): StepExecutionWorker => $app->make(AsyncExecutionGraph::class)->worker());
-
-        foreach ([
-            'Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor' => 0,
-            'Alama\Arazzo\Runner\Protocol\HttpStepExecutor' => 1,
-            'Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor' => 2,
-        ] as $abstract => $index) {
-            $app->singleton($abstract, static fn (Container $app): object => $app->make(AsyncExecutionGraph::class)->protocolExecutors()[$index]);
-        }
 
         // Config-live: retry knobs re-read whenever this node is re-resolved
         // after forgetInstance, matching the historical contract.

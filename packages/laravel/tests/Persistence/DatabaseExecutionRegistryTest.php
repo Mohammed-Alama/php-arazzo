@@ -6,10 +6,7 @@ namespace Tests\Laravel;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-
-uses(RefreshDatabase::class);
 
 function seedTestDefinitionRow(): void
 {
