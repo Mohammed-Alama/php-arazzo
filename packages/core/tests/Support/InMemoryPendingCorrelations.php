@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Support;
 
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 
 final class InMemoryPendingCorrelations implements PendingCorrelationRegistryInterface
 {

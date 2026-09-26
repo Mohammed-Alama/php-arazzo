@@ -9,8 +9,8 @@ use Alama\Arazzo\Evaluation\JsonPointer;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 /**
  * Deterministic property tests: every loop is seeded so failures are
