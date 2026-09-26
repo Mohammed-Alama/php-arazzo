@@ -7,12 +7,11 @@ namespace Alama\Arazzo\Tests\Validation;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
-use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Expression\SymbolTable;
 
 class RecordingRule implements Rule
 {
@@ -30,7 +29,7 @@ class RecordingRule implements Rule
 
 it('collects errors and warnings', function (): void {
     $doc = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [], new Components([], [], [], []), []);
-    $result = (new Validator(new ExpressionEngine(), new RuleSet([new RecordingRule()])))->validate($doc);
+    $result = (new Validator(new RuleSet([new RecordingRule()])))->validate($doc);
 
     expect($result->isValid())->toBeFalse()
         ->and($result->errors)->toHaveCount(1)

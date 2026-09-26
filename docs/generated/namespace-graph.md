@@ -67,11 +67,8 @@ flowchart LR
     expression_Ast --> expression_Enum
     expression_Data --> expression_Enum
     expression_Exceptions --> contracts_Support
-    expression_Interfaces --> contracts_Spec
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
-    expression_Interfaces --> expression__
-    expression__ --> contracts_Spec
     expression__ --> expression_Data
     expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
@@ -113,12 +110,10 @@ flowchart LR
     document_Resolver --> contracts_Spec
     document_Resolver --> document_Parser
     document_Validator --> contracts_Spec
-    document_Validator --> expression_Interfaces
     document_Validator --> document_Normalizer
     document_Validator --> document_Resolver
+    document_Validator --> expression_Interfaces
     document_Validator --> contracts_Support
-    document_Validator --> expression_Data
-    document_Validator --> expression__
     document_Validator --> expression_Enum
     document_Validator --> contracts_Dependency
     document__ --> contracts_Spec

@@ -15,7 +15,6 @@ use Alama\Arazzo\Document\Validator\Rules\StepParameterInValidRule;
 use Alama\Arazzo\Document\Validator\Rules\SubWorkflowInvokeTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Symfony\Component\Yaml\Yaml;
 
 function loadFixture(string $filename): RawDocument
@@ -46,7 +45,7 @@ it('validates the comprehensive fixture cleanly with the 1.1 ruleset', function 
         new ParameterQuerystringOperationShapeRule(),
     ]);
 
-    $result = (new Validator(new ExpressionEngine(), $ruleset))->validate($doc);
+    $result = (new Validator($ruleset))->validate($doc);
     expect($result->errors)->toBe([]);
 });
 

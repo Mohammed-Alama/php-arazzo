@@ -108,8 +108,6 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
-| `document` | `SymbolTable` | `expression` | 52 | `ExpressionWalker` |
-| `document` | `WorkflowSymbols` | `expression` | 4 | `ExpressionWalker` |
 | `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |

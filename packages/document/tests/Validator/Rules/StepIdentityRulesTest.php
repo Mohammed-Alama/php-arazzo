@@ -15,6 +15,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\StepAtLeastOneRule;
 use Alama\Arazzo\Document\Validator\Rules\StepIdPatternRule;
@@ -23,7 +24,6 @@ use Alama\Arazzo\Document\Validator\Rules\StepOperationIdSourceScopedRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationTargetPresentRule;
 use Alama\Arazzo\Document\Validator\Rules\StepUniqueIdRule;
-use Alama\Arazzo\Expression\SymbolTable;
 
 function stepIdMk(string $id, ?string $opId = 'op', ?string $opPath = null, ?string $wfId = null): Step
 {

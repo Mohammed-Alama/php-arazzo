@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression;
+namespace Alama\Arazzo\Document\Validator\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -10,8 +10,6 @@ use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Expression\Data\StepSymbols;
-use Alama\Arazzo\Expression\Data\WorkflowSymbols;
 
 final readonly class SymbolTable
 {

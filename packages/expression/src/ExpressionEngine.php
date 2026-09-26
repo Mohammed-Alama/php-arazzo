@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 /**
- * Concrete expression facade for static parsing, reference projection, and symbol table generation.
+ * Concrete expression facade for static parsing and reference projection.
  */
 final readonly class ExpressionEngine implements ExpressionEngineInterface
 {
@@ -34,10 +33,5 @@ final readonly class ExpressionEngine implements ExpressionEngineInterface
         return $this->parser->parseOrError($raw) instanceof ExpressionSyntaxException
             ? null
             : $this->parser->projectReferences($raw);
-    }
-
-    public function buildSymbolTable(ArazzoDocument $document): SymbolTable
-    {
-        return SymbolTable::build($document);
     }
 }

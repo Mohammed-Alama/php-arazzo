@@ -9,11 +9,11 @@ use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\OfficialSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\DocumentSourceDescriptionsPresentRule;
 use Alama\Arazzo\Document\Validator\Rules\DocUnknownFieldRule;
-use Alama\Arazzo\Expression\SymbolTable;
 use Alama\Arazzo\Tests\Support\Fx;
 
 function docWithRaw(array $raw, string $version = '1.1.0'): ArazzoDocument

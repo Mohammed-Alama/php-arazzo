@@ -119,10 +119,8 @@ flowchart TB
     M_document_Validator --> M_contracts_Support
     M_document_Validator --> M_document_Normalizer
     M_document_Validator --> M_document_Resolver
-    M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression_Interfaces
-    M_document_Validator --> M_expression__
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Normalizer
     M_document__ --> M_document_Parser
@@ -162,11 +160,8 @@ flowchart TB
     M_expression_Ast --> M_expression_Enum
     M_expression_Data --> M_expression_Enum
     M_expression_Exceptions --> M_contracts_Support
-    M_expression_Interfaces --> M_contracts_Spec
     M_expression_Interfaces --> M_expression_Data
     M_expression_Interfaces --> M_expression_Exceptions
-    M_expression_Interfaces --> M_expression__
-    M_expression__ --> M_contracts_Spec
     M_expression__ --> M_expression_Ast
     M_expression__ --> M_expression_Data
     M_expression__ --> M_expression_Enum
@@ -301,11 +296,11 @@ flowchart TB
 | `cli` | `evaluation` | 2 |
 | `cli` | `expression` | 1 |
 | `cli` | `runner` | 16 |
-| `document` | `contracts` | 149 |
-| `document` | `expression` | 75 |
+| `document` | `contracts` | 155 |
+| `document` | `expression` | 18 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
-| `expression` | `contracts` | 9 |
+| `expression` | `contracts` | 1 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 17 |
 | `laravel` | `document` | 18 |

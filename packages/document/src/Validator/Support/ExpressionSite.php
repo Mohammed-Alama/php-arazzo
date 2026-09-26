@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Validator\Support;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Expression\Data\WorkflowSymbols;
+use Alama\Arazzo\Document\Validator\Data\WorkflowSymbols;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

@@ -17,13 +17,13 @@ targets. Regenerated before every commit.
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 17 | 288 | 17 | 3 | 0.15 |  |
-| `contracts:Spec` | 47 | 1101 | 28 | 1 | 0.03 |  |
+| `contracts:Spec` | 47 | 1101 | 26 | 1 | 0.04 |  |
 | `contracts:State` | 2 | 665 | 10 | 1 | 0.09 |  |
 | `contracts:Support` | 5 | 180 | 10 | 0 | 0.00 |  |
 | `document:Normalizer` | 9 | 599 | 4 | 3 | 0.43 |  |
 | `document:Parser` | 11 | 1143 | 6 | 2 | 0.25 |  |
 | `document:Resolver` | 12 | 394 | 6 | 2 | 0.25 |  |
-| `document:Validator` | 62 | 3199 | 5 | 9 | 0.64 |  |
+| `document:Validator` | 65 | 3392 | 5 | 7 | 0.58 |  |
 | `(document root)` | 2 | 220 | 6 | 7 | 0.54 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
@@ -35,11 +35,11 @@ targets. Regenerated before every commit.
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
 | `(evaluation root)` | 11 | 1039 | 6 | 11 | 0.65 |  |
 | `expression:Ast` | 15 | 335 | 2 | 2 | 0.50 |  |
-| `expression:Data` | 4 | 105 | 4 | 1 | 0.20 |  |
+| `expression:Data` | 2 | 64 | 3 | 1 | 0.25 |  |
 | `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 1 | 22 | 2 | 1 | 0.33 |  |
-| `expression:Interfaces` | 1 | 31 | 6 | 4 | 0.40 |  |
-| `(expression root)` | 4 | 671 | 7 | 6 | 0.46 |  |
+| `expression:Interfaces` | 1 | 24 | 6 | 2 | 0.25 |  |
+| `(expression root)` | 3 | 510 | 5 | 5 | 0.50 |  |
 | `laravel:Bindings` | 7 | 354 | 1 | 22 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 7 | 0.78 |  |
@@ -60,15 +60,14 @@ targets. Regenerated before every commit.
 | `runner:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `(runner root)` | 6 | 287 | 4 | 11 | 0.73 |  |
 
-Total cross-module edges: **988**
+Total cross-module edges: **926**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `document:Validator` → `contracts:Spec` | 88 |
+| `document:Validator` → `contracts:Spec` | 94 |
 | `runner:Execution` → `contracts:Spec` | 75 |
-| `document:Validator` → `(expression root)` | 52 |
 | `(evaluation root)` → `contracts:Spec` | 35 |
 | `document:Parser` → `contracts:Spec` | 33 |
 | `contracts:Interfaces` → `contracts:Spec` | 21 |
@@ -78,3 +77,4 @@ Total cross-module edges: **988**
 | `(expression root)` → `expression:Ast` | 14 |
 | `runner:Execution` → `contracts:State` | 14 |
 | `runner:Protocol` → `runner:Execution` | 14 |
+| `(evaluation root)` → `expression:Ast` | 13 |

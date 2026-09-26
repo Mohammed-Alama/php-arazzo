@@ -8,8 +8,8 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Selector;
-use Alama\Arazzo\Expression\Data\WorkflowSymbols;
-use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
+use Alama\Arazzo\Document\Validator\Data\WorkflowSymbols;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

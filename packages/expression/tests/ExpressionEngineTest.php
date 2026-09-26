@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Components;
-use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\SymbolTable;
 
 it('implements ExpressionEngineInterface', function () {
     $engine = new ExpressionEngine();
@@ -35,19 +31,4 @@ it('projects expression references statically', function () {
         ->and($ref->kind)->toBe(ReferenceKind::Input)
         ->and($ref->target)->toBe('userId')
         ->and($engine->expressionReferences('bad'))->toBeNull();
-});
-
-it('builds symbol table from document', function () {
-    $engine = new ExpressionEngine();
-    $doc = new ArazzoDocument(
-        arazzo: '1.0.0',
-        info: new Info(title: 'Test', summary: null, description: null, version: '1.0.0'),
-        sourceDescriptions: [],
-        workflows: [],
-        components: new Components(inputs: [], parameters: [], successActions: [], failureActions: []),
-        specificationExtensions: [],
-    );
-
-    $table = $engine->buildSymbolTable($doc);
-    expect($table)->toBeInstanceOf(SymbolTable::class);
 });

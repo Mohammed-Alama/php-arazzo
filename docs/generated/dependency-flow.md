@@ -48,14 +48,12 @@ document-Parser,contracts-Support,2
 document-Resolver,contracts-Spec,6
 document-Resolver,document-Parser,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,88
+document-Validator,contracts-Spec,94
 document-Validator,contracts-Support,2
 document-Validator,document-Normalizer,2
 document-Validator,document-Resolver,1
-document-Validator,expression-Data,4
 document-Validator,expression-Enum,7
-document-Validator,expression-Interfaces,10
-document-Validator,expression-root,52
+document-Validator,expression-Interfaces,9
 document-root,contracts-Spec,10
 document-root,document-Normalizer,7
 document-root,document-Parser,6
@@ -94,15 +92,13 @@ expression-Ast,expression-Data,9
 expression-Ast,expression-Enum,9
 expression-Data,expression-Enum,2
 expression-Exceptions,contracts-Support,1
-expression-Interfaces,contracts-Spec,1
 expression-Interfaces,expression-Data,1
 expression-Interfaces,expression-Exceptions,1
-expression-Interfaces,expression-root,1
-expression-root,contracts-Spec,7
 expression-root,expression-Ast,14
-expression-root,expression-Data,6
+expression-root,expression-Data,4
 expression-root,expression-Enum,2
 expression-root,expression-Exceptions,3
+expression-root,expression-Interfaces,1
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,4
 laravel-Bindings,contracts-Support,1
@@ -222,6 +218,5 @@ These references exist in the code but are not drawn: drawing them would close a
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `evaluation-Registries` | `evaluation-Plugins` | 2 |
-| `expression-root` | `expression-Interfaces` | 1 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

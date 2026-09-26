@@ -70,7 +70,7 @@ final class Document implements DocumentInterface
         $this->loader = new Loader(new SymfonyYamlDecoder(), new NativeJsonDecoder());
         $this->parser = new Parser();
         $this->engine = new ExpressionEngine();
-        $this->validator = new Validator($this->engine, RuleSet::default($this->engine));
+        $this->validator = new Validator(RuleSet::default($this->engine));
         $this->versionDetector = new OpenApiVersionDetector();
 
         $this->sources = $sources ?? new SourceRegistry(new DefaultSourceResolver([

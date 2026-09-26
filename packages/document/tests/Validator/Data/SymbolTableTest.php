@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Expression;
+namespace Alama\Arazzo\Tests\Validator\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -14,7 +14,7 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Expression\SymbolTable;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 
 it('builds symbol table from document', function (): void {
     $step = StepFactory::http(

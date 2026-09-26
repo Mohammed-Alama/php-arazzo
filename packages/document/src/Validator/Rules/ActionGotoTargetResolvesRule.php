@@ -8,10 +8,10 @@ use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
 use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
 use Alama\Arazzo\Contracts\Spec\Action\SuccessGotoAction;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Document\Validator\Data\SymbolTable;
+use Alama\Arazzo\Document\Validator\Data\WorkflowSymbols;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
-use Alama\Arazzo\Expression\Data\WorkflowSymbols;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

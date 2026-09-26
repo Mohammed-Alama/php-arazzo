@@ -89,13 +89,12 @@ public contract between packages.
 - `ExpressionEngineInterface` (`interface`)
   - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
   - `public function expressionReferences(string $raw): ?ExpressionReference;`
-  - `public function buildSymbolTable(ArazzoDocument $document): SymbolTable;`
 
 ### Cross-boundary value types
 
-- `SymbolTable` — present
-- `WorkflowSymbols` — present
-- `StepSymbols` — present
+- `SymbolTable` — not found
+- `WorkflowSymbols` — not found
+- `StepSymbols` — not found
 - `ExpressionSyntaxException` — present
 - `ExpressionReference` — present
 - `ReferenceKind` — present

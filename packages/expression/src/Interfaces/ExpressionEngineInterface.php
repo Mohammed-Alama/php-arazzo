@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Interfaces;
 
-use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\SymbolTable;
 
 /**
  * Entry-point seam for static Arazzo expression parsing and analysis.
@@ -23,9 +21,4 @@ interface ExpressionEngineInterface
      * Statically inspect what an expression references. Returns null on syntax error.
      */
     public function expressionReferences(string $raw): ?ExpressionReference;
-
-    /**
-     * Build the symbol table describing a document's declared workflows, steps, and components.
-     */
-    public function buildSymbolTable(ArazzoDocument $document): SymbolTable;
 }
