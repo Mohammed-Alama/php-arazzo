@@ -1207,7 +1207,7 @@ Wraps the existing `StateStoreInterface` (runner port) with a versioned envelope
 - Consumes: `WorkflowStateRepositoryInterface` (Phase A5 — `Alama\Arazzo\Contracts\Interfaces\WorkflowStateRepositoryInterface`), `StateStoreInterface` (existing), `WorkflowContextInterface`, `StepState`.
 - Produces: `StoredWorkflowStateRepository implements WorkflowStateRepositoryInterface` honoring the A5 signature exactly (`save(string, WorkflowContextInterface)`, `load(string): ?WorkflowContextInterface`, `delete(string)`). `save()` wraps the context's `toArray()` payload in a versioned envelope with a derived `StepState`; `load()` unwraps with backward compat; `delete()` delegates to `StateStoreInterface::delete()`. Current `StepState` is derived from the context's step records (default `Pending`), and exposed via `::loadStepState(string): ?StepState` as an additive convenience (not on the interface).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runtime/tests/State/StoredWorkflowStateRepositoryTest.php`:
 
@@ -1308,13 +1308,13 @@ it('backward-compat loads raw WorkflowContext::toArray() payloads', function ():
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runtime/tests --filter "StoredWorkflowStateRepositoryTest"` (repo root)
 
 Expected: FAIL with "Class StoredWorkflowStateRepository not found".
 
-- [ ] **Step 3: Uncomment `delete()` in StateStoreInterface**
+- [x] **Step 3: Uncomment `delete()` in StateStoreInterface**
 
 Edit `packages/runtime/src/State/Interfaces/StateStoreInterface.php` — remove the commented-out line and uncomment the `delete` method:
 
@@ -1343,7 +1343,7 @@ interface StateStoreInterface
 
 Verify `InMemoryStateStore` already has `delete()` — it does (line 36 of the file). `FileStateStore` should also be checked.
 
-- [ ] **Step 4: Implement StoredWorkflowStateRepository**
+- [x] **Step 4: Implement StoredWorkflowStateRepository**
 
 Create `packages/runtime/src/State/StoredWorkflowStateRepository.php`:
 
@@ -1457,13 +1457,13 @@ final class StoredWorkflowStateRepository implements WorkflowStateRepositoryInte
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runtime/tests --filter "StoredWorkflowStateRepositoryTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 6: Verify FileStateStore has delete()**
+- [x] **Step 6: Verify FileStateStore has delete()**
 
 Check `packages/runtime/src/State/FileStateStore.php` for the `delete` method. If missing, add it. Run full test suite:
 
@@ -1471,7 +1471,7 @@ Run: `composer run test-runner` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/runtime/src/State/Interfaces/StateStoreInterface.php packages/runtime/src/State/StoredWorkflowStateRepository.php packages/runtime/tests/State/StoredWorkflowStateRepositoryTest.php
