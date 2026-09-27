@@ -1494,7 +1494,7 @@ Consolidates `WorkflowExecutor` (sync) + `StepExecutionWorker`/`StepOutcomeHandl
 - Consumes: `OperationExecutorPluginInterface` (Phase A1), `WorkflowEngine` (existing), `StateStoreInterface`, `LockManagerInterface`, `ExecutionRegistryInterface`, `EventLedgerInterface`, `PendingCorrelationRegistryInterface`.
 - Produces: `UnifiedStepCarrier::execute(string $executionId, Step $step, Workflow $workflow, ArazzoDocument $document, ExecutionState $state): void` — the canonical step execution path. Constructor: `(StateStoreInterface, WorkflowEngine, LockManagerInterface, ExecutionRegistryInterface, EventLedgerInterface, PendingCorrelationRegistryInterface, array $executorPlugins, int $stateTtlSeconds = 86400)`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runner/tests/UnifiedStepCarrierTest.php`:
 
@@ -1671,13 +1671,13 @@ it('throws when no plugin supports the step', function (): void {
 })->throws(\LogicException::class, 'No OperationExecutorPluginInterface supports');
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "UnifiedStepCarrierTest"` (repo root)
 
 Expected: FAIL with "Class UnifiedStepCarrier not found".
 
-- [ ] **Step 3: Implement UnifiedStepCarrier**
+- [x] **Step 3: Implement UnifiedStepCarrier**
 
 Create `packages/runner/src/UnifiedStepCarrier.php`:
 
@@ -1813,13 +1813,13 @@ final class UnifiedStepCarrier
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "UnifiedStepCarrierTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/runner/src/UnifiedStepCarrier.php packages/runner/tests/UnifiedStepCarrierTest.php
