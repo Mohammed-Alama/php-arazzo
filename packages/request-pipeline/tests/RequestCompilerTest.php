@@ -125,13 +125,16 @@ it('resolves payload replacements into the body through the callback it hands th
     expect($result['payload']->body)->toBe(['/amount' => '100']);
 });
 
-it('keeps the body null when the engine replaces nothing', function (): void {
+// `$bodyData === [] ? null : $bodyData` collapses an empty replacement result
+// to a null body. A document with `requestBody.payload: {}` and no replacements
+// reaches it for real: the engine is handed [] and hands [] straight back.
+it('keeps the body null when the engine returns an empty replacement result', function (): void {
     $engine = \Mockery::mock(EvaluationEngineInterface::class);
     $engine->shouldReceive('replacePayload')->once()->andReturn([]);
 
     $step = requestCompilerStep([], new RequestBody(
         contentType: 'application/json',
-        payload: ['amount' => 0],
+        payload: [],
         replacements: [],
     ));
 

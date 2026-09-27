@@ -15,13 +15,16 @@ use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
 
 /**
- * Runner-owned implementation of the expression resolver seam.
+ * Request-pipeline implementation of the expression resolver seam.
  *
  * Engine-level services type against {@see ExpressionResolverInterface} for
- * the capabilities that aggregate runner concerns (output extraction, schema
- * validation) with pure expression evaluation. Building that resolver here,
- * from the expression public face plus the runner's own extractor and
- * validator, keeps the runner free of expression internals.
+ * the capabilities that aggregate execution concerns (output extraction,
+ * schema validation) with pure expression evaluation. Composing that resolver
+ * from the injected contracts — the evaluation engine, an
+ * {@see OutputExtractorInterface} and a {@see ResponseValidatorInterface},
+ * whichever implementations the composition root supplies — keeps the
+ * evaluation internals out of every caller and lets the runner own no part of
+ * it beyond the wiring.
  *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
