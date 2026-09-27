@@ -13,6 +13,7 @@ classDiagram
     class E_ArazzoException["ArazzoException<br/><small>contracts:Support</small>"]:::domain
     class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>evaluation:Condition</small>"]:::domain
     class E_DecodeException["DecodeException<br/><small>document:Parser</small>"]:::domain
+    class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>runtime:State</small>"]:::domain
     class E_ExecutionException["ExecutionException<br/><small>runner:Execution</small>"]:::domain
     class E_ExpressionSyntaxException["ExpressionSyntaxException<br/><small>expression:Exceptions</small>"]:::domain
     class E_GotoTargetNotFoundException["GotoTargetNotFoundException<br/><small>runner:Execution</small>"]:::domain
@@ -34,6 +35,7 @@ classDiagram
     E_RuntimeException <|-- E_ArazzoException
     E_ArazzoException <|-- E_ConditionSyntaxException
     E_RuntimeException <|-- E_DecodeException
+    E_RuntimeException <|-- E_DefinitionHydrationException
     E_ArazzoException <|-- E_ExecutionException
     E_ArazzoException <|-- E_ExpressionSyntaxException
     E_RuntimeException <|-- E_GotoTargetNotFoundException
@@ -61,6 +63,7 @@ classDiagram
 | `ArazzoException` | `RuntimeException` | contracts:Support |
 | `ConditionSyntaxException` | `ArazzoException` | evaluation:Condition |
 | `DecodeException` | `RuntimeException` | document:Parser |
+| `DefinitionHydrationException` | `RuntimeException` | runtime:State |
 | `ExecutionException` | `ArazzoException` | runner:Execution |
 | `ExpressionSyntaxException` | `ArazzoException` | expression:Exceptions |
 | `GotoTargetNotFoundException` | `RuntimeException` | runner:Execution |

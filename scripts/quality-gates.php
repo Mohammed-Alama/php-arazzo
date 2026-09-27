@@ -18,8 +18,15 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__);
 $outFile = $root.'/storage/quality-gates.json';
-
 $withMutations = in_array('--with-mutations', $argv, true);
+
+// Single source of truth for which packages hold real source, so newly split
+// packages (runtime, engine, events) are analysed without editing this file.
+require __DIR__.'/generate-docs/Scanner.php';
+$sourcePaths = implode(',', array_map(
+    static fn (string $package): string => 'packages/'.$package.'/src',
+    [...\ArazzoDocs\CORE_SRC_PACKAGES, 'laravel'],
+));
 
 /** @return array{status: string, metrics: array<string, int|float|string>, notes: string} */
 function runGate(string $name, string $command, string $cwd, callable $parse): array
@@ -145,14 +152,17 @@ $gateDefs = [
     ['pint', 'Code Style (Pint)', 'vendor/bin/pint --test', $root, 'parsePint'],
     ['phpmd', 'Mess Detector (PHPMD)', implode(' ', [
         'vendor/bin/phpmd',
-        'packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src',
+        $sourcePaths,
         'text',
         'phpmd.xml',
         '--baseline-file phpmd.baseline.xml',
         '--ignore-violations-on-exit',
         '--ignore-errors-on-exit',
     ]), $root, 'parsePhpMd'],
-    ['phpstan-core', 'Static Analysis · core', 'composer run analyse-contracts && composer run analyse-expression && composer run analyse-document && composer run analyse-runner && composer run analyse-cli', $root, 'parsePhpStan'],
+    ['phpstan-core', 'Static Analysis · core', implode(' && ', array_map(
+        static fn (string $package): string => 'composer run analyse-'.$package,
+        \ArazzoDocs\CORE_SRC_PACKAGES,
+    )), $root, 'parsePhpStan'],
     ['phpstan-laravel', 'Static Analysis · laravel', 'composer run analyse-laravel', $root, 'parsePhpStan'],
     ['pest-core', 'Tests · core', 'vendor/bin/pest packages/core/tests --no-coverage', $root, 'parsePest'],
     ['pest-laravel', 'Tests · laravel', 'vendor/bin/pest packages/laravel/tests --no-coverage', $root, 'parsePest'],

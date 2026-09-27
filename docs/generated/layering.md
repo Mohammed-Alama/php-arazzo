@@ -34,6 +34,17 @@ flowchart TB
         M_expression_Interfaces["expression:Interfaces"]:::node
         M_expression__["(expression package root)"]:::node
     end
+    subgraph PKG_M_runtime["runtime"]
+        M_runtime_Infrastructure["runtime:Infrastructure"]:::node
+        M_runtime_Policy["runtime:Policy"]:::node
+        M_runtime_State["runtime:State"]:::node
+        M_runtime_Telemetry["runtime:Telemetry"]:::node
+    end
+    subgraph PKG_M_events["events"]
+        M_events_Interfaces["events:Interfaces"]:::node
+        M_events_Listener["events:Listener"]:::node
+        M_events__["(events package root)"]:::node
+    end
     subgraph PKG_M_evaluation["evaluation"]
         M_evaluation_Condition["evaluation:Condition"]:::node
         M_evaluation_Data["evaluation:Data"]:::node
@@ -50,6 +61,11 @@ flowchart TB
         M_document_Validator["document:Validator"]:::node
         M_document__["(document package root)"]:::node
     end
+    subgraph PKG_M_engine["engine"]
+        M_engine_Data["engine:Data"]:::node
+        M_engine_Enum["engine:Enum"]:::node
+        M_engine__["(engine package root)"]:::node
+    end
     subgraph PKG_M_sources["sources"]
         M_sources_Normalizer["sources:Normalizer"]:::node
         M_sources_Resolver["sources:Resolver"]:::node
@@ -57,7 +73,6 @@ flowchart TB
         M_sources__["(sources package root)"]:::node
     end
     subgraph PKG_M_runner["runner"]
-        M_runner_Events["runner:Events"]:::node
         M_runner_Execution["runner:Execution"]:::node
         M_runner_Jobs["runner:Jobs"]:::node
         M_runner_Protocol["runner:Protocol"]:::node
@@ -88,11 +103,13 @@ flowchart TB
     M_cli_Console --> M_document_Validator
     M_cli_Console --> M_evaluation_Interfaces
     M_cli_Console --> M_evaluation__
+    M_cli_Console --> M_events_Interfaces
     M_cli_Console --> M_expression__
-    M_cli_Console --> M_runner_Events
     M_cli_Console --> M_runner_Execution
     M_cli_Console --> M_runner_Jobs
     M_cli_Console --> M_runner__
+    M_cli_Console --> M_runtime_State
+    M_cli_Console --> M_runtime_Telemetry
     M_cli_Console --> M_sources_Resolver
     M_cli_Console --> M_sources__
     M_cli_Generator --> M_contracts_Interfaces
@@ -117,6 +134,12 @@ flowchart TB
     M_document__ --> M_expression_Interfaces
     M_document__ -.->|violation| M_sources_Normalizer
     M_document__ -.->|violation| M_sources_Validator
+    M_engine_Data --> M_contracts_Spec
+    M_engine_Data --> M_contracts_State
+    M_engine_Data --> M_engine_Enum
+    M_engine__ --> M_contracts_Spec
+    M_engine__ --> M_contracts_State
+    M_engine__ --> M_engine_Data
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
     M_evaluation_Condition --> M_evaluation_Data
@@ -145,6 +168,9 @@ flowchart TB
     M_evaluation__ --> M_evaluation_Xpath
     M_evaluation__ --> M_expression_Ast
     M_evaluation__ --> M_expression__
+    M_events_Listener --> M_contracts_Support
+    M_events_Listener --> M_events_Interfaces
+    M_events_Listener --> M_events__
     M_expression_Ast --> M_expression_Data
     M_expression_Ast --> M_expression_Enum
     M_expression_Data --> M_expression_Enum
@@ -162,6 +188,8 @@ flowchart TB
     M_laravel_Bindings --> M_document_Parser
     M_laravel_Bindings --> M_document__
     M_laravel_Bindings --> M_evaluation__
+    M_laravel_Bindings --> M_events_Interfaces
+    M_laravel_Bindings --> M_events_Listener
     M_laravel_Bindings --> M_expression_Interfaces
     M_laravel_Bindings --> M_expression__
     M_laravel_Bindings --> M_laravel_Http
@@ -170,9 +198,9 @@ flowchart TB
     M_laravel_Bindings --> M_laravel_Queue
     M_laravel_Bindings --> M_laravel_State
     M_laravel_Bindings --> M_laravel_Support
-    M_laravel_Bindings --> M_runner_Events
     M_laravel_Bindings --> M_runner_Execution
     M_laravel_Bindings --> M_runner__
+    M_laravel_Bindings --> M_runtime_State
     M_laravel_Bindings --> M_sources_Normalizer
     M_laravel_Bindings --> M_sources_Resolver
     M_laravel_Bindings --> M_sources_Validator
@@ -181,23 +209,26 @@ flowchart TB
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
     M_laravel_Http --> M_runner_Jobs
+    M_laravel_Http --> M_runtime_State
     M_laravel_Http --> M_sources_Resolver
     M_laravel_Lock --> M_contracts_Interfaces
     M_laravel_Persistence --> M_contracts_Spec
     M_laravel_Persistence --> M_document_Parser
-    M_laravel_Persistence --> M_runner_Events
+    M_laravel_Persistence --> M_events_Interfaces
+    M_laravel_Persistence --> M_runtime_State
     M_laravel_Queue --> M_contracts_Interfaces
     M_laravel_Queue --> M_runner_Execution
     M_laravel_Queue --> M_runner_Jobs
+    M_laravel_State --> M_runtime_State
     M_laravel_Support --> M_contracts_Interfaces
     M_laravel_Support --> M_evaluation_Interfaces
-    M_laravel_Support --> M_runner_Events
+    M_laravel_Support --> M_events_Interfaces
     M_laravel_Support --> M_runner_Execution
     M_laravel_Support --> M_runner__
+    M_laravel_Support --> M_runtime_State
     M_laravel__ --> M_laravel_Bindings
     M_laravel__ --> M_laravel_Http
     M_laravel__ --> M_laravel_Support
-    M_runner_Events --> M_contracts_Support
     M_runner_Execution --> M_contracts_Dependency
     M_runner_Execution --> M_contracts_Exceptions
     M_runner_Execution --> M_contracts_Interfaces
@@ -209,12 +240,16 @@ flowchart TB
     M_runner_Execution --> M_document__
     M_runner_Execution --> M_evaluation_Interfaces
     M_runner_Execution --> M_evaluation__
+    M_runner_Execution --> M_events_Interfaces
+    M_runner_Execution --> M_events__
     M_runner_Execution --> M_expression_Enum
     M_runner_Execution --> M_expression_Interfaces
-    M_runner_Execution --> M_runner_Events
     M_runner_Execution --> M_runner_Jobs
     M_runner_Execution --> M_runner_Protocol
     M_runner_Execution --> M_runner__
+    M_runner_Execution --> M_runtime_Policy
+    M_runner_Execution --> M_runtime_State
+    M_runner_Execution --> M_runtime_Telemetry
     M_runner_Execution --> M_sources_Normalizer
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
@@ -224,17 +259,26 @@ flowchart TB
     M_runner_Protocol --> M_evaluation_Interfaces
     M_runner_Protocol --> M_evaluation__
     M_runner_Protocol --> M_runner_Execution
+    M_runner_Protocol --> M_runtime_State
     M_runner_Protocol --> M_sources_Normalizer
     M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_document__
     M_runner__ --> M_evaluation_Interfaces
     M_runner__ --> M_evaluation__
+    M_runner__ --> M_events_Interfaces
     M_runner__ --> M_expression_Interfaces
     M_runner__ --> M_expression__
-    M_runner__ --> M_runner_Events
     M_runner__ --> M_runner_Execution
+    M_runner__ --> M_runtime_State
     M_runner__ --> M_sources_Normalizer
+    M_runtime_Infrastructure --> M_contracts_Interfaces
+    M_runtime_Policy --> M_contracts_Interfaces
+    M_runtime_Policy --> M_contracts_Spec
+    M_runtime_Policy --> M_contracts_State
+    M_runtime_State --> M_contracts_Interfaces
+    M_runtime_State --> M_contracts_Spec
+    M_runtime_State --> M_contracts_State
     M_sources_Normalizer --> M_contracts_Interfaces
     M_sources_Normalizer --> M_contracts_Spec
     M_sources_Normalizer --> M_contracts_Support
@@ -276,27 +320,36 @@ flowchart TB
 | `cli` | `contracts` | 22 |
 | `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
+| `cli` | `events` | 2 |
 | `cli` | `expression` | 1 |
-| `cli` | `runner` | 9 |
+| `cli` | `runner` | 7 |
+| `cli` | `runtime` | 7 |
 | `cli` | `sources` | 2 |
 | `document` | `contracts` | 152 |
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
+| `engine` | `contracts` | 10 |
 | `evaluation` | `contracts` | 73 |
 | `evaluation` | `expression` | 14 |
+| `events` | `contracts` | 1 |
 | `expression` | `contracts` | 1 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 20 |
 | `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 3 |
+| `laravel` | `events` | 5 |
 | `laravel` | `expression` | 2 |
-| `laravel` | `runner` | 25 |
+| `laravel` | `runner` | 23 |
+| `laravel` | `runtime` | 14 |
 | `laravel` | `sources` | 16 |
-| `runner` | `contracts` | 147 |
+| `runner` | `contracts` | 146 |
 | `runner` | `document` | 10 |
 | `runner` | `evaluation` | 24 |
+| `runner` | `events` | 22 |
 | `runner` | `expression` | 7 |
+| `runner` | `runtime` | 22 |
 | `runner` | `sources` | 10 |
+| `runtime` | `contracts` | 20 |
 | `sources` | `contracts` | 29 |
 | `sources` | `document` | 23 |
 | `sources` | `expression` | 1 |

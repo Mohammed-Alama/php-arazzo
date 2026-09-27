@@ -51,29 +51,37 @@ PEST_FILTER_ARG=""
 if [ -n "$FILTER" ]; then PEST_FILTER_ARG="--filter=\"$FILTER\""; fi
 
 if [[ "$PKGPATH" == *"packages/core"* ]]; then
-  PEST_DIR="$ROOT/packages/core"
+  PKG_NAME="core"
 elif [[ "$PKGPATH" == *"packages/laravel"* ]]; then
-  PEST_DIR="$ROOT/packages/laravel"
+  PKG_NAME="laravel"
 else
   # infer from filter path or default to core
-  PEST_DIR="$ROOT/packages/core"
+  PKG_NAME="core"
 fi
 
-if [ ! -x "$PEST_DIR/vendor/bin/pest" ]; then
-  echo "pest not found at $PEST_DIR/vendor/bin/pest" >&2
+PEST_DIR="$ROOT/packages/$PKG_NAME"
+# Monorepo layout: packages have no local vendor/, so fall back to the root
+# install. Tests are also invoked from $ROOT because package phpunit configs
+# bootstrap a package-local vendor/autoload.php that does not exist.
+PEST_BIN="$PEST_DIR/vendor/bin/pest"
+[ -x "$PEST_BIN" ] || PEST_BIN="$ROOT/vendor/bin/pest"
+PEST_TESTS="packages/$PKG_NAME/tests"
+
+if [ ! -x "$PEST_BIN" ]; then
+  echo "pest not found — looked in $PEST_DIR/vendor/bin/pest and $ROOT/vendor/bin/pest; run composer install" >&2
   [ "$STASHED" -eq 1 ] && [ "$KEEP_STASH" -eq 0 ] && git -C "$ROOT" stash pop 2>&1 | sed 's/^/    /'
   exit 2
 fi
 
 echo "==> running Pest WITHOUT the fix (should go RED if tests are real) ..."
-echo "    dir: $PEST_DIR  filter: ${FILTER:-<none>}"
+echo "    pkg: $PKG_NAME  filter: ${FILTER:-<none>}"
 
 set +e
 if [ -n "$FILTER" ]; then
-  (cd "$PEST_DIR" && vendor/bin/pest --filter="$FILTER" 2>&1 | tail -n 80)
+  (cd "$ROOT" && "$PEST_BIN" "$PEST_TESTS" --filter="$FILTER" 2>&1 | tail -n 80)
   EC=$?
 else
-  (cd "$PEST_DIR" && vendor/bin/pest 2>&1 | tail -n 80)
+  (cd "$ROOT" && "$PEST_BIN" "$PEST_TESTS" 2>&1 | tail -n 80)
   EC=$?
 fi
 set -e
@@ -95,10 +103,10 @@ if [ "$STASHED" -eq 1 ] && [ "$KEEP_STASH" -eq 0 ]; then
   echo "==> re-running WITH the fix (should go GREEN) ..."
   set +e
   if [ -n "$FILTER" ]; then
-    (cd "$PEST_DIR" && vendor/bin/pest --filter="$FILTER" 2>&1 | tail -n 30)
+    (cd "$ROOT" && "$PEST_BIN" "$PEST_TESTS" --filter="$FILTER" 2>&1 | tail -n 30)
     EC2=$?
   else
-    (cd "$PEST_DIR" && vendor/bin/pest 2>&1 | tail -n 30)
+    (cd "$ROOT" && "$PEST_BIN" "$PEST_TESTS" 2>&1 | tail -n 30)
     EC2=$?
   fi
   set -e

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests;
 
-uses(TestCase::class);
-
 use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Cli\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
@@ -27,7 +27,7 @@ use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -92,10 +92,24 @@ it('binds the queue/lock/http infra', function () {
 it('binds the async control flow classes', function () {
     expect(app(PendingCorrelationRegistryInterface::class))->toBeInstanceOf(DatabasePendingCorrelationRegistry::class);
     expect(app(StepOutcomeHandler::class))->toBeInstanceOf(StepOutcomeHandler::class);
-    expect(app(HttpStepExecutor::class))->toBeInstanceOf(HttpStepExecutor::class);
-    expect(app(AsyncApiStepExecutor::class))->toBeInstanceOf(AsyncApiStepExecutor::class);
     expect(app(CorrelationResumer::class))->toBeInstanceOf(CorrelationResumer::class);
     expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
+});
+
+it('assembles every protocol executor into the graph', function () {
+    // The protocol executors stay runner-internal: the seam rule forbids
+    // packages/laravel/src from naming Runner\Protocol\*, so they are reached
+    // through the graph's public handle rather than container bindings.
+    $executors = app(AsyncExecutionGraph::class)->protocolExecutors();
+
+    expect($executors)->toHaveCount(3);
+
+    foreach ($executors as $executor) {
+        expect($executor)->toBeInstanceOf(StepProtocolExecutorInterface::class);
+    }
+
+    expect(array_map(static fn (object $e): string => $e::class, $executors))
+        ->toContain(HttpStepExecutor::class, AsyncApiStepExecutor::class);
 });
 
 it('binds the entry-point facade interfaces to their self-contained facades', function () {

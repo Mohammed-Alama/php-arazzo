@@ -443,6 +443,19 @@ this file on a commit is a public API change — review it deliberately.
 - `public function preflightSource(ArazzoDocument $document): ValidationResult`
 - `public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle`
 
+## engine
+
+### `Alama\Arazzo\Engine\Data`
+
+#### `StepTransition` class
+- `public function __construct(public StepState $from, public StepState $to, public string $reason, public StepTransitionType $type = StepTransitionType::Enter)`
+- `public static function guardFailed(StepState $from, string $reason): self`
+
+### `Alama\Arazzo\Engine\Enum`
+
+#### `StepTransitionType` enum
+- Cases: `Enter`, `GuardFailed`
+
 ## runner
 
 ### `RunnerFacadeInterface` interface

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Laravel;
 
-uses(TestCase::class);
-
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -14,7 +12,6 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Runner\Jobs\ResumeCorrelationJob;
 use Illuminate\Support\Facades\Queue;

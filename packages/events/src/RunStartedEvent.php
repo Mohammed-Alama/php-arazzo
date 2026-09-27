@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Events;
+namespace Alama\Arazzo\Events;
 
 use DateTimeImmutable;
-use Throwable;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final readonly class StepFailedEvent
+final readonly class RunStartedEvent
 {
+    /**
+     * @param  array<string, mixed>  $inputs
+     */
     public function __construct(
         public string $executionId,
         public string $workflowId,
-        public string $stepId,
-        public Throwable $cause,
+        public string $definitionId,
+        public array $inputs,
         public DateTimeImmutable $at,
-        public string $category = 'execution',
     ) {}
 }

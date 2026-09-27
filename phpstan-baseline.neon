@@ -1,324 +1,97 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method analyze has too high cyclomatic complexity \(16\)\. Maximum allowed is 10\.$#'
+			message: '#^Anonymous function has invalid return type Alama\\Arazzo\\Runner\\WorkflowEngine\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Dependency/DependencyGraph.php
+			path: packages/laravel/src/Bindings/ExecutionBindings.php
 
 		-
-			message: '#^Method fromStep has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
+			message: '#^Class Alama\\Arazzo\\Runner\\WorkflowEngine not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Dependency/ImplicitDependencies.php
+			path: packages/laravel/src/Bindings/ExecutionBindings.php
 
 		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			message: '#^Instantiated class Alama\\Arazzo\\Runner\\WorkflowEngine not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/Action/RetryAction.php
+			path: packages/laravel/src/Bindings/ExecutionBindings.php
 
 		-
-			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			message: '#^Anonymous function has invalid return type Alama\\Arazzo\\Runtime\\RunnerFacade\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/ArazzoDocument.php
+			path: packages/laravel/src/Bindings/FacadeBindings.php
 
 		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\Spec\\GraphQlOperation\:\:__construct\(\) has parameter \$extensions with no value type specified in iterable type iterable\.$#'
-			identifier: missingType.iterableValue
+			message: '#^Class Alama\\Arazzo\\Runtime\\RunnerFacadeInterface not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/GraphQlOperation.php
+			path: packages/laravel/src/Bindings/FacadeBindings.php
 
 		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Instantiated class Alama\\Arazzo\\Runtime\\RunnerFacade not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/OpenApiPayload.php
+			path: packages/laravel/src/Bindings/FacadeBindings.php
 
 		-
-			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
+			message: '#^Class TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/StepExecutionOutcome.php
+			path: packages/laravel/tests/Bindings/EventBindingsTest.php
 
 		-
-			message: '#^Method resolved has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			message: '#^Class TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/StepExecutionOutcome.php
+			path: packages/laravel/tests/Bindings/HttpBindingsTest.php
 
 		-
-			message: '#^Method async has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Class Tests\\Feature\\TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/StepFactory.php
+			path: packages/laravel/tests/Feature/IdempotencyFeatureTest.php
 
 		-
-			message: '#^Method http has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			message: '#^Class Alama\\Arazzo\\Laravel\\Tests\\Persistence\\TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/Spec/StepFactory.php
+			path: packages/laravel/tests/Persistence/DatabaseDefinitionRegistryTest.php
 
 		-
-			message: '#^Method rpc has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/Spec/StepFactory.php
-
-		-
-			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/Spec/StepFlow.php
-
-		-
-			message: '#^Method __construct has too many parameters \(11\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/Spec/StepTarget.php
-
-		-
-			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/Spec/Workflow.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 3
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
+			message: '#^Call to method createMock\(\) on an unknown class Alama\\Arazzo\\Laravel\\Tests\\Persistence\\TestCase\.$#'
+			identifier: class.notFound
 			count: 5
-			path: packages/contracts/src/State/ExecutionState.php
+			path: packages/laravel/tests/Persistence/DatabaseEventLedgerTest.php
 
 		-
-			message: '#^Class ExecutionState has too many methods \(22\)\. Maximum allowed is 20\.$#'
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$components with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$dependencies with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$errors with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$inputs with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$outputs with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$stepAttempts with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$stepResults with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:copy\(\) has parameter \$workflowCallStack with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:start\(\) has parameter \$components with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:toArray\(\) should return array\<string, mixed\> but returns array\<mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method __construct has too many parameters \(16\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method copy has too many parameters \(16\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Method start has too many parameters \(9\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#10 \$errors of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects list\<mixed\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#10 \$errors of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects list\<mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#13 \$workflowCallStack of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects list\<string\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#13 \$workflowCallStack of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects list\<string\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#15 \$components of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
+			message: '#^Call to method once\(\) on an unknown class Alama\\Arazzo\\Laravel\\Tests\\Persistence\\TestCase\.$#'
+			identifier: class.notFound
 			count: 2
-			path: packages/contracts/src/State/ExecutionState.php
+			path: packages/laravel/tests/Persistence/DatabaseEventLedgerTest.php
 
 		-
-			message: '#^Parameter \#15 \$components of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
+			message: '#^Class Tests\\Laravel\\TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
+			path: packages/laravel/tests/Persistence/DatabaseExecutionRegistryTest.php
 
 		-
-			message: '#^Parameter \#4 \$currentStepId of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#5 \$inputs of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
+			message: '#^Class Tests\\Laravel\\TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
+			path: packages/laravel/tests/Queue/LaravelQueueDriverTest.php
 
 		-
-			message: '#^Parameter \#5 \$inputs of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
+			message: '#^Class Alama\\Arazzo\\Tests\\Resolution\\TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
+			path: packages/laravel/tests/Resolver/ResolutionServiceProviderBindingTest.php
 
 		-
-			message: '#^Parameter \#6 \$stepAttempts of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, int\>, array given\.$#'
-			identifier: argument.type
+			message: '#^Class Alama\\Arazzo\\Laravel\\Tests\\Unit\\TestCase not found\.$#'
+			identifier: class.notFound
 			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#6 \$stepAttempts of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, int\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#7 \$stepResults of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#7 \$stepResults of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#8 \$dependencies of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, list\<string\>\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#8 \$dependencies of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, list\<string\>\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#9 \$outputs of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Parameter \#9 \$outputs of class Alama\\Arazzo\\Contracts\\State\\ExecutionState constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/contracts/src/State/ExecutionState.php
-
-		-
-			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''request'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset ''status'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Class WorkflowContext has too many methods \(30\)\. Maximum allowed is 20\.$#'
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Contracts\\State\\WorkflowContext\:\:getStepAttempts\(\) should return int but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
-
-		-
-			message: '#^Method __construct has too many parameters \(10\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: packages/contracts/src/State/WorkflowContext.php
+			path: packages/laravel/tests/Unit/AdaptersTest.php

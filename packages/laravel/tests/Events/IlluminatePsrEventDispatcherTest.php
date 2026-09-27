@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Laravel\Events\IlluminatePsrEventDispatcher;
-use Alama\Arazzo\Laravel\Tests\TestCase;
-use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Illuminate\Contracts\Events\Dispatcher as IlluminateDispatcher;
-
-uses(TestCase::class);
 
 it('delegates dispatch to Illuminate dispatcher and returns event', function () {
     $captured = null;

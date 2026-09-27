@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Feature;
 
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-uses(TestCase::class, RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 it('creates the arazzo_definitions table with expected columns', function (): void {
     expect(Schema::hasTable('arazzo_definitions'))->toBeTrue();

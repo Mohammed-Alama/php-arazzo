@@ -2,21 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Events;
+namespace Alama\Arazzo\Events;
 
 use DateTimeImmutable;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final readonly class CorrelationPendingEvent
+final readonly class StepExecutedEvent
 {
+    /**
+     * @param  array<array-key, mixed>  $outputs
+     */
     public function __construct(
         public string $executionId,
         public string $workflowId,
         public string $stepId,
-        public string $correlationId,
-        public string $channelPath,
+        public int $statusCode,
+        public array $outputs,
+        public bool $criteriaMet,
         public DateTimeImmutable $at,
     ) {}
 }

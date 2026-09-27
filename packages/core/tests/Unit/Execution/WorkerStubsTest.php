@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Execution;
 
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Events\StepExecutedEvent;
+use Alama\Arazzo\Events\StepExecutedEvent;
 
 it('has interfaces and events', function (): void {
     expect(interface_exists(ExpressionResolverInterface::class))->toBeTrue()

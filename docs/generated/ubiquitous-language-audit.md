@@ -29,7 +29,7 @@ Evans' first question: does the code speak one language?
 
 ### document vs definition vs spec
 
-- **Definition**: `DatabaseDefinitionRegistry`, `InMemoryDefinitionRegistry` (2 types)
+- **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
 - **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 6 more (10 types)
 - **Spec**: `SpecVersion` (1 types)
 
@@ -40,20 +40,20 @@ Evans' first question: does the code speak one language?
 
 ### state vs status
 
-- **State**: `ExecutionState`, `RedisHotStateStore`, `StepState`, `WorkflowStateRepositoryInterface` (4 types)
+- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore` + 5 more (9 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 8 more (12 types)
-- **Repository**: `WorkflowStateRepositoryInterface` (1 types)
-- **Store**: `RedisHotStateStore` (1 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 12 more (16 types)
+- **Repository**: `StoredWorkflowStateRepository`, `WorkflowStateRepositoryInterface` (2 types)
+- **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` + 1 more (5 types)
 
 ### workflow vs process vs flow
 
 - **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry` (1 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 22 more (26 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 24 more (28 types)
 
 ### render vs generate
 
@@ -66,5 +66,7 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
+| `StepResult` | `Runtime\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | runtime, runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
 | `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |
+| `Transition` | `Engine\Data\Transition`<br/>`Runner\Execution\Data\Transition` | engine, runner |

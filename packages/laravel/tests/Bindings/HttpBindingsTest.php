@@ -1,12 +1,10 @@
 <?php
 
 declare(strict_types=1);
-uses(TestCase::class);
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Laravel\Bindings\HttpBindings;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;

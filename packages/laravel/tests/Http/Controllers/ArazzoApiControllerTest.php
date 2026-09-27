@@ -7,14 +7,11 @@ namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Mockery;
 
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
-
-uses(TestCase::class)->in(__DIR__);
 
 it('returns endpoints list from openapi spec', function () {
     $resolver = Mockery::mock(SourceResolver::class);

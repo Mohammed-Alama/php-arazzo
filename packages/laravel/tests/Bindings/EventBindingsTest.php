@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-uses(TestCase::class);
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Laravel\Bindings\EventBindings;
-use Alama\Arazzo\Laravel\Tests\TestCase;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**

@@ -42,6 +42,10 @@
         },
         {
             "type": "path",
+            "url": "packages/events"
+        },
+        {
+            "type": "path",
             "url": "packages/runner"
         },
         {
@@ -60,6 +64,7 @@
         "alama/arazzo-runner": "@dev",
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-engine": "@dev",
+        "alama/arazzo-events": "@dev",
         "alama/arazzo-sources": "@dev",
         "alama/laravel-arazzo": "@dev",
         "ext-dom": "*",
@@ -77,6 +82,7 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
+        "larastan/larastan": "^3.0",
         "symplify/monorepo-builder": "^12.0"
     },
     "autoload": {
@@ -89,6 +95,7 @@
             "Alama\\Arazzo\\Runner\\": "packages/runner/src/",
             "Alama\\Arazzo\\Runtime\\": "packages/runtime/src/",
             "Alama\\Arazzo\\Engine\\": "packages/engine/src/",
+            "Alama\\Arazzo\\Events\\": "packages/events/src/",
             "Alama\\Arazzo\\Sources\\": "packages/sources/src/",
             "Arazzo\\PHPStan\\Rules\\": "packages/core/phpstan/rules/"
         }
@@ -101,9 +108,10 @@
             "Alama\\Arazzo\\Tests\\Evaluation\\": "packages/evaluation/tests/",
             "Alama\\Arazzo\\Tests\\Runtime\\": "packages/runtime/tests/",
             "Alama\\Arazzo\\Tests\\Runner\\": "packages/runner/tests/",
-            "Alama\\Arazzo\\Tests\\Laravel\\": "packages/laravel/tests/",
+            "Alama\\Arazzo\\Laravel\\Tests\\": "packages/laravel/tests/",
             "Alama\\Arazzo\\Tests\\Sources\\": "packages/sources/tests/",
-            "Alama\\Arazzo\\Tests\\Engine\\": "packages/engine/tests/"
+            "Alama\\Arazzo\\Tests\\Engine\\": "packages/engine/tests/",
+            "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/"
         }
     },
     "scripts": {
@@ -116,7 +124,8 @@
             "@analyse-runner",
             "@analyse-cli",
             "@analyse-laravel",
-            "@analyse-engine"
+            "@analyse-engine",
+            "@analyse-events"
         ],
         "analyse-contracts": "vendor/bin/phpstan analyse -c packages/contracts/phpstan.neon.dist --memory-limit=1G",
         "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
@@ -125,9 +134,10 @@
         "analyse-runtime": "vendor/bin/phpstan analyse -c packages/runtime/phpstan.neon.dist --memory-limit=1G",
         "analyse-runner": "vendor/bin/phpstan analyse -c packages/runner/phpstan.neon.dist --memory-limit=1G",
         "analyse-cli": "vendor/bin/phpstan analyse -c packages/cli/phpstan.neon.dist --memory-limit=1G",
-        "analyse-laravel": "cd packages/laravel && vendor/bin/phpstan analyse --memory-limit=1G",
+        "analyse-laravel": "vendor/bin/phpstan analyse -c packages/laravel/phpstan.neon.dist --memory-limit=1G",
         "analyse-core": "vendor/bin/phpstan analyse -c packages/core/phpstan.neon.dist --memory-limit=1G",
         "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G",
+        "analyse-events": "vendor/bin/phpstan analyse -c packages/events/phpstan.neon.dist --memory-limit=1G",
         "analyse-engine": "vendor/bin/phpstan analyse -c packages/engine/phpstan.neon.dist --memory-limit=1G",
         "test-core": "vendor/bin/pest packages/core/tests",
         "test-contracts": "vendor/bin/pest packages/contracts/tests",
@@ -140,17 +150,20 @@
         "test-laravel": "vendor/bin/pest packages/laravel/tests",
         "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
         "test-engine": "vendor/bin/pest packages/engine/tests",
+        "test-events": "vendor/bin/pest packages/events/tests",
         "test": [
             "@test-contracts",
             "@test-expression",
+            "@test-evaluation",
             "@test-document",
             "@test-sources",
             "@test-runtime",
+            "@test-events",
+            "@test-engine",
             "@test-runner",
             "@test-cli",
             "@test-core",
-            "@test-laravel",
-            "@test-engine"
+            "@test-laravel"
         ],
         "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",

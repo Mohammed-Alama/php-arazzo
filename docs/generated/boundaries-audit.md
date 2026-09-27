@@ -20,7 +20,7 @@ when a boundary consciously moves.
 | `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
-| `OpenTelemetry` | 3 | 0 | _unclassified_ ⚠ |
+| `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
 | `Psr` | 51 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
@@ -45,6 +45,7 @@ when a boundary consciously moves.
 | runner | `runner:Execution` | `cebe` | 10 |
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:_` | `Psr` | 5 |
+| runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
@@ -69,7 +70,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 library boundary violation(s):**
+**13 library boundary violation(s):**
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
@@ -78,6 +79,7 @@ when a boundary consciously moves.
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
+- `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
@@ -124,10 +126,22 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `evaluation` | `SourceRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `StepRef` | `expression` | 1 | `ExpressionEvaluator` |
 | `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
+| `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
+| `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
+| `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
+| `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
+| `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
+| `runner` | `RunFailedEvent` | `events` | 3 | `StepExecutionWorker` |
+| `runner` | `RunStartedEvent` | `events` | 1 | `WorkflowExecutor` |
+| `runner` | `StepExecutedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepFailedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepRetriedEvent` | `events` | 2 | `StepOutcomeHandler` |
+| `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
 | `sources` | `Loader` | `document` | 1 | `SourceGraph` |

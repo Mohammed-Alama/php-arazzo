@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-
-uses(TestCase::class);
 
 it('has the binding registered', function (): void {
     $bindings = app()->getBindings();

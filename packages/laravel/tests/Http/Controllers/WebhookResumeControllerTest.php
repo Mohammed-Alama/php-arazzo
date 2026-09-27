@@ -99,6 +99,11 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         {
             return $this->store[$executionId] ?? null;
         }
+
+        public function delete(string $executionId): void
+        {
+            unset($this->store[$executionId]);
+        }
     });
 
     $this->app->forgetInstance(StepExecutionWorker::class);

@@ -3,8 +3,9 @@
 
 # Generated: Domain Events
 
-PSR-14 event classes under `Runner/Events` (core) and `Events/` (Laravel), with
-every dispatch site found in the live tree. Regenerated before every commit.
+PSR-14 event classes from the `alama/arazzo-events` package (`Alama\Arazzo\Events`)
+and `Events/` (Laravel), with every dispatch site found in the live tree.
+Regenerated before every commit.
 
 ```mermaid
 flowchart LR

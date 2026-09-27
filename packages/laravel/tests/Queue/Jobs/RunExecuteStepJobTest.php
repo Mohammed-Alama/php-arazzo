@@ -133,6 +133,11 @@ it('injects idempotency key natively during job execution independently of StepE
         {
             return $this->store[$executionId] ?? null;
         }
+
+        public function delete(string $executionId): void
+        {
+            unset($this->store[$executionId]);
+        }
     });
     app()->forgetInstance(StepExecutionWorker::class);
 

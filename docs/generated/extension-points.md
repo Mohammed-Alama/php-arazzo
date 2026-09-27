@@ -14,6 +14,8 @@ mindmap
   root((SPI contracts))
     AiClientInterface
       OpenAiClient
+    BackoffCalculatorInterface
+      ExponentialBackoffCalculator
     CriteriaEvaluatorInterface
       CriteriaEvaluator
     CriterionEvaluatorPluginInterface
@@ -21,6 +23,8 @@ mindmap
     DecoderInterface
       NativeJsonDecoder
       SymfonyYamlDecoder
+    DefinitionRegistryInterface
+      DatabaseDefinitionRegistry
     DocumentInterface
       Document
     EvaluationEngineInterface
@@ -31,6 +35,9 @@ mindmap
     EventLedgerInterface
       NullEventLedger
       DatabaseEventLedger
+    ExecutionRegistryInterface
+      InProcessExecutionRegistry
+      DatabaseExecutionRegistry
     ExpressionEngineInterface
       ExpressionEngine
     ExpressionEvaluatorInterface
@@ -46,6 +53,10 @@ mindmap
     LockManagerInterface
       CliRunner
       LaravelRedisLockManager
+    LockStrategyInterface
+      FileLockStrategy
+      NullLockStrategy
+      PessimisticLockStrategy
     OpenApiExecutorInterface
       DefaultOpenApiExecutor
     OpenApiNormalizerInterface
@@ -53,6 +64,8 @@ mindmap
       Swagger2Normalizer
     OutputExtractorInterface
       StepOutputExtractor
+    PendingCorrelationRegistryInterface
+      DatabasePendingCorrelationRegistry
     QueueDriverInterface
       SyncQueueDriver
       LaravelQueueDriver
@@ -68,33 +81,46 @@ mindmap
       OpenApiSourceNormalizer
     SourceNormalizerRegistryInterface
       SourceNormalizerRegistry
+    StateStoreInterface
+      FileStateStore
+      InMemoryStateStore
+      RedisHotStateStore
     StepProtocolExecutorInterface
       AsyncApiStepExecutor
       HttpStepExecutor
       SubWorkflowStepExecutor
     WorkflowContextInterface
       WorkflowContext
+    WorkflowStateRepositoryInterface
+      StoredWorkflowStateRepository
+    WritableDefinitionRegistryInterface
+      InMemoryDefinitionRegistry
 ```
 
 | Contract | SPI dir | Implementations |
 |---|---|---|
 | `AiClientInterface` | no | `OpenAiClient` <small>core</small> |
+| `BackoffCalculatorInterface` | no | `ExponentialBackoffCalculator` <small>core</small> |
 | `CriteriaEvaluatorInterface` | no | `CriteriaEvaluator` <small>core</small> |
 | `CriterionEvaluatorPluginInterface` | no | `JsonPathCriterionPlugin` <small>core</small> |
 | `DecoderInterface` | no | `NativeJsonDecoder` <small>core</small>, `SymfonyYamlDecoder` <small>core</small> |
+| `DefinitionRegistryInterface` | no | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `DocumentInterface` | no | `Document` <small>core</small> |
 | `EvaluationEngineInterface` | no | `EvaluationEngine` <small>core</small> |
 | `EvaluationInputInterface` | no | `EvaluationContext` <small>core</small>, `ExecutionEvaluationInput` <small>core</small> |
 | `EventLedgerInterface` | no | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
+| `ExecutionRegistryInterface` | no | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `ExpressionEngineInterface` | no | `ExpressionEngine` <small>core</small> |
 | `ExpressionEvaluatorInterface` | no | `ExpressionEvaluator` <small>core</small> |
 | `ExpressionEvaluatorPluginInterface` | no | `JsonPathExpressionPlugin` <small>core</small> |
 | `ExpressionResolverInterface` | no | `ExpressionResolver` <small>core</small>, `InterpolationResolver` <small>core</small>, `ExecutionExpressionResolver` <small>core</small> |
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
+| `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | no | `DefaultOpenApiExecutor` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `OutputExtractorInterface` | no | `StepOutputExtractor` <small>core</small> |
+| `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
@@ -102,17 +128,18 @@ mindmap
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
 | `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small> |
 | `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
+| `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
+| `WorkflowStateRepositoryInterface` | no | `StoredWorkflowStateRepository` <small>core</small> |
+| `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |
 
 ## Unimplemented contracts
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
-- `BackoffCalculatorInterface` <small>Interfaces</small>
-- `LockStrategyInterface` <small>Interfaces</small>
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
 - `ProtocolExecutorRegistryInterface` <small>Execution/Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
-- `WorkflowStateRepositoryInterface` <small>Interfaces</small>
+- `WorkflowEngineInterface` <small></small>

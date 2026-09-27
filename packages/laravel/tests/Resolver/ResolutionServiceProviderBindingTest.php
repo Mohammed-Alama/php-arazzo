@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Resolution;
 
-uses(TestCase::class);
-
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 

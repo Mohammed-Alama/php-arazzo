@@ -83,9 +83,14 @@ Runtime state survives process boundaries through these contracts:
 
 | Contract | Implementations |
 |---|---|
+| `DefinitionRegistryInterface` | `DatabaseDefinitionRegistry` <small>laravel</small> |
 | `EventLedgerInterface` | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
+| `ExecutionRegistryInterface` | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `LockManagerInterface` | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
+| `PendingCorrelationRegistryInterface` | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | `LaravelQueueDriver` <small>laravel</small>, `SyncQueueDriver` <small>core</small> |
+| `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small>, `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
+| `WritableDefinitionRegistryInterface` | `InMemoryDefinitionRegistry` <small>core</small> |
 
 ## Correlation touchpoints
 
@@ -95,6 +100,8 @@ Where async suspend/resume bookkeeping happens:
 |---|---|
 | `CliRunner` <small>core</small> | resumes from webhook |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
+| `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
+| `LedgerEventListener` <small>core</small> | resumes from webhook |
 | `ExecutionBindings` <small>laravel</small> | resumes from webhook |
 | `WebhookResumeController` <small>laravel</small> | resumes from webhook |
 | `LaravelArazzoServiceProvider` <small>laravel</small> | resumes from webhook |
@@ -102,10 +109,9 @@ Where async suspend/resume bookkeeping happens:
 | `RunResumeCorrelationJob` <small>laravel</small> | resumes from webhook |
 | `LaravelQueueDriver` <small>laravel</small> | resumes from webhook |
 | `AsyncExecutionGraph` <small>core</small> | resumes from webhook |
-| `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
-| `LedgerEventListener` <small>core</small> | resumes from webhook |
 | `AsyncExecutionGraphAssembler` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |
 | `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
+| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |

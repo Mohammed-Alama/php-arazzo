@@ -286,7 +286,7 @@ _None — the entry surface exchanges plain arrays._
 - `PendingCorrelationRegistryInterface` — _not found in scan_
 - `InMemoryStateStore` — _not found in scan_
 - `FileStateStore` — _not found in scan_
-- `EventLedgerInterface` — `@internal`: yes
+- `EventLedgerInterface` — _not found in scan_
 - `HttpClientInterface` — _not found in scan_
 - `ProtocolExecutorRegistryInterface` — `@internal`: yes
 - `OpenApiExecutorInterface` — `@internal`: yes

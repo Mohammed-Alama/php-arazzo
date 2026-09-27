@@ -2,35 +2,37 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Sources\SourceGraph;
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 function seams(
-    ?HttpClientInterface $httpClient = null,
+    ?ClientInterface $httpClient = null,
+    ?HttpClientInterface $httpClientInterface = null,
     ?LockManagerInterface $lockManager = null,
     ?QueueDriverInterface $queueDriver = null,
     ?ExpressionResolverInterface $expressionResolver = null,
@@ -39,6 +41,30 @@ function seams(
     int $stateTtlSeconds = 86400,
 ): AsyncGraphSeams {
     $stub = static fn (object $i): object => $i;
+
+    // Create the HttpClientInterface for the seams
+    $seamsHttpClient = $httpClientInterface ?? ($httpClient !== null
+        ? new class($httpClient) implements HttpClientInterface
+        {
+            private ClientInterface $client;
+
+            public function __construct(ClientInterface $client)
+            {
+                $this->client = $client;
+            }
+
+            public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
+            {
+                return $this->client->sendRequest($request, $timeoutSeconds);
+            }
+        }
+        : new class() implements HttpClientInterface
+        {
+            public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
+            {
+                return new Response(200);
+            }
+        });
 
     return new AsyncGraphSeams(
         stateStore: $stub(new class() implements StateStoreInterface
@@ -63,40 +89,75 @@ function seams(
         executionRegistry: $stub(new class() implements ExecutionRegistryInterface
         {
             public function start(string $executionId, string $definitionId, string $workflowId): void {}
+
             public function complete(string $executionId, ExecutionStatus $status): void {}
         }),
         pendingCorrelationRegistry: $stub(new class() implements PendingCorrelationRegistryInterface
         {
             public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
-            public function findByCorrelationId(string $correlationId): ?PendingCorrelation { return null; }
+
+            public function findByCorrelationId(string $correlationId): ?PendingCorrelation
+            {
+                return null;
+            }
+
             public function consume(string $correlationId): void {}
-            public function existsForExecution(string $executionId): bool { return false; }
+
+            public function existsForExecution(string $executionId): bool
+            {
+                return false;
+            }
         }),
         definitionRegistry: $stub(new class() implements DefinitionRegistryInterface
         {
-            public function register(ArazzoDocument $document): string { return 'test-def'; }
-            public function get(string $definitionId): ?ArazzoDocument { return null; }
+            public function register(ArazzoDocument $document): string
+            {
+                return 'test-def';
+            }
+
+            public function get(string $definitionId): ?ArazzoDocument
+            {
+                return null;
+            }
         }),
         lockManager: $lockManager ?? $stub(new class() implements LockManagerInterface
         {
-            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed { return $callback(); }
-            public function tryAcquire(string $key, int $ttlSeconds): bool { return true; }
+            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
+            {
+                return $callback();
+            }
+
+            public function tryAcquire(string $key, int $ttlSeconds): bool
+            {
+                return true;
+            }
+
             public function release(string $key): void {}
         }),
-        httpClient: $httpClient ?? $stub(new class() implements HttpClientInterface
-        {
-            public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
-            {
-                return new Response(200);
-            }
-        }),
+        httpClient: $seamsHttpClient,
         expressionResolver: $expressionResolver ?? $stub(new class() implements ExpressionResolverInterface
         {
-            public function evaluate(\Alama\Arazzo\Contracts\Spec\Expression $expression, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?string $currentStepId = null): mixed { return $expression->raw; }
-            public function validateResponseSchema(\Alama\Arazzo\Contracts\Spec\Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): void {}
-            public function extractOutputs(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): array { return []; }
-            public function evaluateSuccessCriteria(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
-            public function evaluateCriteria(array $criteria, \Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
+            public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
+            {
+                return $expression->raw;
+            }
+
+            public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
+
+            public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+            {
+                return [];
+            }
+
+            public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+            {
+                return true;
+            }
+
+            public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+            {
+                return true;
+            }
         }),
         requestFactory: $stub(new HttpFactory()),
         logger: null,
@@ -113,7 +174,10 @@ it('assembles graph with all core nodes', function () {
     $seams = seams();
     $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
-        $runtime->operations,
+        new OperationRuntime(
+            $runtime->document,
+            $runtime->operations,
+        ),
         new EvaluationEngine(),
         new ExpressionEngine(),
         null,
@@ -131,7 +195,7 @@ it('assembles graph with all core nodes', function () {
 });
 
 it('injects http client from seams into async executor', function () {
-    $client = new class() implements HttpClientInterface
+    $client = new class() implements ClientInterface
     {
         public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
         {
@@ -141,7 +205,10 @@ it('injects http client from seams into async executor', function () {
     $seams = seams(httpClient: $client);
     $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
-        $runtime->operations,
+        new OperationRuntime(
+            $runtime->document,
+            $runtime->operations,
+        ),
         new EvaluationEngine(),
         new ExpressionEngine(),
         $client,
@@ -150,5 +217,5 @@ it('injects http client from seams into async executor', function () {
     $graph = $assembler->assemble($seams);
 
     $asyncExecutor = $graph->protocolExecutors()[2];
-    expect($asyncExecutor)->toBeInstanceOf(\Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor::class);
+    expect($asyncExecutor)->toBeInstanceOf(AsyncApiStepExecutor::class);
 });

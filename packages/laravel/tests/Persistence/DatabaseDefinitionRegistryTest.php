@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Persistence;
 
-uses(TestCase::class);
-
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;
-use Alama\Arazzo\Laravel\Tests\TestCase;
 use Alama\Arazzo\Runtime\State\Exceptions\DefinitionHydrationException;
 use Illuminate\Support\Facades\DB;
 

@@ -79,19 +79,57 @@ pie showData
 | Module-scoped | 11 | 69% |
 | Root | 5 | 31% |
 
+## Runtime package
+
+```mermaid
+pie showData
+    title Runtime — 7 test files
+    "Module-scoped": 7
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 7 | 100% |
+
+## Engine package
+
+```mermaid
+pie showData
+    title Engine — 1 test files
+    "Root": 1
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Root | 1 | 100% |
+
+## Events package
+
+```mermaid
+pie showData
+    title Events — 5 test files
+    "Module-scoped": 3
+    "Root": 2
+```
+
+| Suite | Files | Share |
+|---|---:|---:|
+| Module-scoped | 3 | 60% |
+| Root | 2 | 40% |
+
 ## Runner package
 
 ```mermaid
 pie showData
-    title Runner — 49 test files
-    "Module-scoped": 45
+    title Runner — 45 test files
+    "Module-scoped": 41
     "Root": 4
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 45 | 92% |
-| Root | 4 | 8% |
+| Module-scoped | 41 | 91% |
+| Root | 4 | 9% |
 
 ## Cli package
 

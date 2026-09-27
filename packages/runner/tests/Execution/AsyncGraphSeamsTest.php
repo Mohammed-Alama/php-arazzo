@@ -7,13 +7,18 @@ use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -43,24 +48,49 @@ function dummySeams(): AsyncGraphSeams
         executionRegistry: new class() implements ExecutionRegistryInterface
         {
             public function start(string $executionId, string $definitionId, string $workflowId): void {}
+
             public function complete(string $executionId, ExecutionStatus $status): void {}
         },
         pendingCorrelationRegistry: new class() implements PendingCorrelationRegistryInterface
         {
             public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
-            public function findByCorrelationId(string $correlationId): ?\Alama\Arazzo\Contracts\Spec\PendingCorrelation { return null; }
+
+            public function findByCorrelationId(string $correlationId): ?PendingCorrelation
+            {
+                return null;
+            }
+
             public function consume(string $correlationId): void {}
-            public function existsForExecution(string $executionId): bool { return false; }
+
+            public function existsForExecution(string $executionId): bool
+            {
+                return false;
+            }
         },
         definitionRegistry: new class() implements DefinitionRegistryInterface
         {
-            public function register(ArazzoDocument $document): string { return 'test-def'; }
-            public function get(string $definitionId): ?ArazzoDocument { return null; }
+            public function register(ArazzoDocument $document): string
+            {
+                return 'test-def';
+            }
+
+            public function get(string $definitionId): ?ArazzoDocument
+            {
+                return null;
+            }
         },
         lockManager: new class() implements LockManagerInterface
         {
-            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed { return $callback(); }
-            public function tryAcquire(string $key, int $ttlSeconds): bool { return true; }
+            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
+            {
+                return $callback();
+            }
+
+            public function tryAcquire(string $key, int $ttlSeconds): bool
+            {
+                return true;
+            }
+
             public function release(string $key): void {}
         },
         httpClient: new class() implements HttpClientInterface
@@ -70,15 +100,31 @@ function dummySeams(): AsyncGraphSeams
                 return new Response(200);
             }
         },
-        expressionResolver: new class() implements \Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface
+        expressionResolver: new class() implements ExpressionResolverInterface
         {
-            public function evaluate(\Alama\Arazzo\Contracts\Spec\Expression $expression, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?string $currentStepId = null): mixed { return $expression->raw; }
-            public function validateResponseSchema(\Alama\Arazzo\Contracts\Spec\Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): void {}
-            public function extractOutputs(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): array { return []; }
-            public function evaluateSuccessCriteria(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
-            public function evaluateCriteria(array $criteria, \Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
+            public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
+            {
+                return $expression->raw;
+            }
+
+            public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
+
+            public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+            {
+                return [];
+            }
+
+            public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+            {
+                return true;
+            }
+
+            public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+            {
+                return true;
+            }
         },
-        requestFactory: new \GuzzleHttp\Psr7\HttpFactory(),
+        requestFactory: new HttpFactory(),
         logger: null,
         idempotencyEnabled: false,
         idempotencyHeader: 'Idempotency-Key',

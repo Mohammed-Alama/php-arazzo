@@ -80,7 +80,10 @@ final class StoredWorkflowStateRepository implements WorkflowStateRepositoryInte
             return StepState::Pending;
         }
 
-        return StepState::tryFrom((string) ($raw['stepState'] ?? 'pending'));
+        /** @var string $stepState */
+        $stepState = $raw['stepState'] ?? 'pending';
+
+        return StepState::tryFrom($stepState);
     }
 
     /**
