@@ -65,11 +65,6 @@ jobs:
       - name: Install composer dependencies
         run: |
           composer update --no-progress --prefer-dist --no-interaction
-          cd packages/core
-          composer update --no-progress --prefer-dist --no-interaction
-          cd ../laravel
-          composer update --no-progress --prefer-dist --no-interaction
-          cd ../..
       - name: Run PHPStan
         run: composer run analyse
 
@@ -149,9 +144,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
-          cd packages/core
-          composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
-          cd ../laravel
+          cd packages/laravel
           composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --no-progress --${{ matrix.stability }} --prefer-dist --no-interaction
           cd ../..
