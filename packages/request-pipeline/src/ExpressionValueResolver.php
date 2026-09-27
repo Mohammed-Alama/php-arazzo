@@ -42,19 +42,17 @@ final class ExpressionValueResolver
             $stepId = '';
         }
 
-        if (str_contains($value, '{$')) {
+        // Arazzo values may spell a runtime expression either `{$...}` or
+        // `${...}`, anywhere in the string; the interpolator understands both.
+        if (str_contains($value, '{$') || str_contains($value, '${')) {
             return $this->engine->interpolate($value, $context, $stepId);
         }
 
-        // Arazzo values may use the bare runtime-expression spellings
-        // (`$inputs.x`, `${inputs.x}`); normalize them into the
-        // interpolator's `{$...}` template form before evaluation.
-        if (preg_match('/^\$[{$]?[A-Za-z]/', $value) === 1 && !str_contains($value, ' ')) {
-            return $this->engine->interpolate(
-                $value[1] === '{' ? $value : '{'.$value.'}',
-                $context,
-                $stepId,
-            );
+        // A whole value may instead be a bare runtime expression (`$inputs.x`).
+        // A bare `$` carries no closing delimiter, so it is only meaningful
+        // when it is the entire value.
+        if (preg_match('/^\$[A-Za-z]/', $value) === 1 && !str_contains($value, ' ')) {
+            return $this->engine->interpolate('{'.$value.'}', $context, $stepId);
         }
 
         return $value;

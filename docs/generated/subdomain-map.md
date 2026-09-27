@@ -50,7 +50,7 @@ flowchart LR
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
         S_evaluation_Exceptions["evaluation:Exceptions<br/><small>32 LOC</small>"]:::unknownDomain
         S_evaluation_Interfaces["evaluation:Interfaces<br/><small>108 LOC</small>"]:::unknownDomain
-        S_evaluation_Plugins["evaluation:Plugins<br/><small>95 LOC</small>"]:::unknownDomain
+        S_evaluation_Plugins["evaluation:Plugins<br/><small>102 LOC</small>"]:::unknownDomain
         S_evaluation_Registries["evaluation:Registries<br/><small>121 LOC</small>"]:::unknownDomain
         S_evaluation_Xpath["evaluation:Xpath<br/><small>109 LOC</small>"]:::unknownDomain
         S_events_Interfaces["events:Interfaces<br/><small>19 LOC</small>"]:::unknownDomain
@@ -80,7 +80,7 @@ flowchart LR
 | Core domain | 1 | 1,202 | 0 | 7% |
 | Supporting | 7 | 6,736 | 0 | 36% |
 | Generic subdomain | 11 | 1,915 | 1,155 | 17% |
-| Unclassified | 28 | 7,451 | 0 | 40% |
+| Unclassified | 28 | 7,458 | 0 | 40% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

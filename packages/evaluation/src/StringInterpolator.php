@@ -17,7 +17,11 @@ class StringInterpolator
 
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
     {
-        return preg_replace_callback('/\{\$([^\}]+)\}/', function ($matches) use ($context, $stepId) {
+        // Arazzo spells a runtime expression either `{$token}` or `${token}`;
+        // both are captured here and handed to the evaluator in the canonical
+        // `{$token}` form. A bare `$token` has no closing delimiter, so it is
+        // only meaningful as a whole value and is never interpolated here.
+        return preg_replace_callback('/(?:\{\$|\$\{)([^\}]+)\}/', function ($matches) use ($context, $stepId) {
             $expr = new Expression('{$'.$matches[1].'}');
             $result = $this->resolver->evaluate($expr, $context, $stepId);
             if ($result === null) {

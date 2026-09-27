@@ -31,10 +31,10 @@ targets. Regenerated before every commit.
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Exceptions` | 1 | 31 | 2 | 1 | 0.33 |  |
 | `evaluation:Interfaces` | 5 | 103 | 10 | 1 | 0.09 |  |
-| `evaluation:Plugins` | 2 | 93 | 1 | 3 | 0.75 |  |
+| `evaluation:Plugins` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 3 | 0.75 |  |
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
-| `(evaluation root)` | 11 | 1039 | 8 | 11 | 0.58 |  |
+| `(evaluation root)` | 11 | 1043 | 8 | 11 | 0.58 |  |
 | `events:Interfaces` | 1 | 18 | 7 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 2 | 0 | 0.00 |  |
@@ -54,7 +54,7 @@ targets. Regenerated before every commit.
 | `laravel:Support` | 2 | 124 | 2 | 6 | 0.75 |  |
 | `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
 | `request-pipeline:Data` | 2 | 64 | 3 | 3 | 0.50 |  |
-| `(request-pipeline root)` | 8 | 798 | 2 | 7 | 0.78 |  |
+| `(request-pipeline root)` | 8 | 796 | 2 | 7 | 0.78 |  |
 | `runner:Execution` | 30 | 3014 | 6 | 23 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 3 | 363 | 1 | 10 | 0.91 |  |

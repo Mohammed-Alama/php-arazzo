@@ -58,3 +58,36 @@ it('leaves missing expressions blank', function () {
 
     expect($result)->toBe('Bearer ');
 });
+
+it('interpolates the ${...} spelling and mixes it with the {$...} spelling', function () {
+    $context = new WorkflowContext('wf1', ['token' => 'abc1234', 'userId' => 42]);
+    $evaluator = Mockery::mock(ExpressionEvaluatorInterface::class);
+    // Both spellings must reach the evaluator in the canonical {$...} form.
+    $evaluator->shouldReceive('evaluate')->andReturnUsing(function ($expr) {
+        expect($expr->raw)->toStartWith('{$')->not()->toContain('${');
+
+        return match ($expr->raw) {
+            '{$inputs.token}' => 'abc1234',
+            '{$inputs.userId}' => 42,
+            default => null,
+        };
+    });
+
+    $resolver = new InterpolationResolver($evaluator);
+    $interpolator = new StringInterpolator($resolver);
+
+    expect($interpolator->interpolate('Bearer ${inputs.token}', $context, 'step1'))->toBe('Bearer abc1234')
+        ->and($interpolator->interpolate('u-${inputs.userId}', $context, 'step1'))->toBe('u-42')
+        ->and($interpolator->interpolate('${inputs.token}/${inputs.userId}', $context, 'step1'))->toBe('abc1234/42');
+});
+
+it('leaves a bare dollar that is not a braced expression alone', function () {
+    $context = new WorkflowContext('wf1', ['token' => 'abc1234']);
+    $evaluator = Mockery::mock(ExpressionEvaluatorInterface::class);
+    $evaluator->shouldNotReceive('evaluate');
+
+    $resolver = new InterpolationResolver($evaluator);
+    $interpolator = new StringInterpolator($resolver);
+
+    expect($interpolator->interpolate('costs $5 and $token', $context, 'step1'))->toBe('costs $5 and $token');
+});

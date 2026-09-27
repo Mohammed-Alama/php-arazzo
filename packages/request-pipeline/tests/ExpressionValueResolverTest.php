@@ -9,6 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
@@ -63,12 +64,7 @@ it('normalises the bare $inputs.x spelling into the template form', function ():
     expect(valueResolverFor($engine)->resolve('$inputs.name', valueContext(), 'step-a'))->toBe('Ada');
 });
 
-it('hands the ${inputs.x} spelling to the interpolator without rewriting it', function (): void {
-    // Characterisation, not endorsement: `ExpressionValueResolver` only
-    // re-brackets a bare `$inputs.x`, because `$value[1] === '{'` short-circuits
-    // the rewrite (src/ExpressionValueResolver.php:54). `StringInterpolator`'s
-    // regex is `/\{\$([^\}]+)\}/`, which does not match `${...}`, so this
-    // spelling reaches the engine verbatim and is never evaluated.
+it('forwards the ${inputs.x} spelling to the interpolator', function (): void {
     $engine = \Mockery::mock(EvaluationEngineInterface::class);
     $engine->shouldReceive('interpolate')
         ->once()
@@ -76,6 +72,30 @@ it('hands the ${inputs.x} spelling to the interpolator without rewriting it', fu
         ->andReturn('Ada');
 
     expect(valueResolverFor($engine)->resolve('${inputs.name}', valueContext(), 'step-a'))->toBe('Ada');
+});
+
+it('forwards an embedded ${inputs.x} spelling to the interpolator', function (): void {
+    $engine = \Mockery::mock(EvaluationEngineInterface::class);
+    $engine->shouldReceive('interpolate')
+        ->once()
+        ->with('user-${inputs.name}', \Mockery::type(WorkflowContextInterface::class), 'step-a')
+        ->andReturn('user-Ada');
+
+    expect(valueResolverFor($engine)->resolve('user-${inputs.name}', valueContext(), 'step-a'))->toBe('user-Ada');
+});
+
+it('resolves every Arazzo runtime-expression spelling end to end', function (): void {
+    // Regression guard: the mocked tests above only prove the value is handed
+    // over, so a real engine is needed to prove it is actually evaluated.
+    $resolver = new ExpressionValueResolver(new EvaluationEngine());
+    $context = new WorkflowContext('def-1', ['name' => 'Ada'], [], [], 'wf-1', 'exec-1');
+
+    expect($resolver->resolve('{$inputs.name}', $context, 'step-a'))->toBe('Ada')
+        ->and($resolver->resolve('${inputs.name}', $context, 'step-a'))->toBe('Ada')
+        ->and($resolver->resolve('$inputs.name', $context, 'step-a'))->toBe('Ada')
+        ->and($resolver->resolve('user-{$inputs.name}', $context, 'step-a'))->toBe('user-Ada')
+        ->and($resolver->resolve('user-${inputs.name}', $context, 'step-a'))->toBe('user-Ada')
+        ->and($resolver->resolve('${inputs.name}', $context))->toBe('Ada');
 });
 
 it('leaves a dollar string alone when the character after it is not a letter', function (): void {

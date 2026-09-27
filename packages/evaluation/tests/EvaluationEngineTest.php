@@ -24,6 +24,32 @@ it('resolves an input expression from the context', function (): void {
     expect($engine->evaluate(new Expression('{$inputs.name}'), engineInput($context)))->toBe('Ada');
 });
 
+it('resolves the ${...} spelling of a runtime expression', function (): void {
+    $engine = new EvaluationEngine();
+    $context = (new WorkflowContext('def_1'))->withInput('name', 'Ada');
+
+    expect($engine->evaluate(new Expression('${inputs.name}'), engineInput($context)))->toBe('Ada')
+        ->and($engine->evaluate(new Expression('$inputs.name'), engineInput($context)))->toBe('Ada');
+});
+
+it('resolves ${...} against http metadata and step outputs', function (): void {
+    $engine = new EvaluationEngine();
+    $context = (new WorkflowContext('def_1'))
+        ->withStepResponse('s1', ['statusCode' => 201, 'body' => ['status' => 'OK']])
+        ->withStepOutput('s1', 'user', 'Ada');
+
+    expect($engine->evaluate(new Expression('${statusCode}'), engineInput($context, 's1')))->toBe(201)
+        ->and($engine->evaluate(new Expression('${response.body#/status}'), engineInput($context, 's1')))->toBe('OK')
+        ->and($engine->evaluate(new Expression('${steps.s1.outputs.user}'), engineInput($context, 's1')))->toBe('Ada');
+});
+
+it('returns null for a missing input in the ${...} spelling', function (): void {
+    $engine = new EvaluationEngine();
+    $context = new WorkflowContext('def_1');
+
+    expect($engine->evaluate(new Expression('${inputs.missing}'), engineInput($context)))->toBeNull();
+});
+
 it('resolves http metadata against the current step', function (): void {
     $engine = new EvaluationEngine();
     $context = (new WorkflowContext('def_1'))

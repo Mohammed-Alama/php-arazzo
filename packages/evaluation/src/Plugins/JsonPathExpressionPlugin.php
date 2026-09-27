@@ -27,6 +27,13 @@ final readonly class JsonPathExpressionPlugin implements ExpressionEvaluatorPlug
             return false;
         }
 
+        // `${...}` is the Arazzo runtime-expression wrapper, never JSONPath;
+        // without this the braced spelling is claimed here and blows up in the
+        // JSONPath lexer instead of reaching the Arazzo parser.
+        if (str_starts_with($raw, '${')) {
+            return false;
+        }
+
         // Exclude Arazzo-specific expression patterns that start with $
         // but are not valid JSONPath (e.g., $response.body#/path, $steps.x.outputs.y)
         if (preg_match('/^\$ (?:inputs|steps|response|request|workflows)\./x', $raw)) {
