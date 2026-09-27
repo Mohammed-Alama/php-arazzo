@@ -27,6 +27,9 @@ final class StepStateMachineEngine
         private WorkflowEngineInterface $workflowEngine,
     ) {}
 
+    /** @var list<StepState> */
+    private const TERMINAL_STATES = [StepState::Completed, StepState::Failed, StepState::Cancelled];
+
     /**
      * Fire a step-level state transition.
      *
@@ -48,8 +51,42 @@ final class StepStateMachineEngine
             StepState::EvaluatingCriteria => $this->fromEvaluatingCriteria($step, $document, $state, $criteriaMet),
             StepState::AwaitingActorInput => $this->fromAwaitingActorInput($step, $document, $state, $criteriaMet),
             StepState::ActorInputReceived => $this->fromActorInputReceived($step, $document, $state, $criteriaMet),
-            StepState::Completed, StepState::Failed => StepTransition::enter($current, $current, 'terminal state'),
+            StepState::Completed, StepState::Failed, StepState::Cancelled => StepTransition::enter($current, $current, 'terminal state'),
         };
+    }
+
+    /**
+     * Cancel a non-terminal step via its onCancel failure-action list.
+     *
+     * `Reusable` entries are passed through unresolved: the contracts define no
+     * reusable-action registry, so the carrier resolves them at execution time.
+     *
+     * @param  StepState  $current  The step's current StepState.
+     */
+    public function cancel(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition
+    {
+        if (in_array($current, self::TERMINAL_STATES, true)) {
+            return StepTransition::enter($current, $current, 'terminal state');
+        }
+
+        return StepTransition::cancelled($current, 'cancelled by onCancel', $step->flow->onCancel);
+    }
+
+    /**
+     * Fail a non-terminal step whose timeout elapsed, carrying its ordered onTimeout actions.
+     *
+     * A timeout still ends in Failed — distinct from cancellation, which ends in Cancelled —
+     * but the ordered onTimeout failure-action list travels with the transition.
+     *
+     * @param  StepState  $current  The step's current StepState.
+     */
+    public function timeout(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition
+    {
+        if (in_array($current, self::TERMINAL_STATES, true)) {
+            return StepTransition::enter($current, $current, 'terminal state');
+        }
+
+        return StepTransition::timedOut($current, 'step timeout elapsed', $step->flow->onTimeout);
     }
 
     /**

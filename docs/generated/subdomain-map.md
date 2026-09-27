@@ -15,7 +15,7 @@ the declaration honest.
 ```mermaid
 flowchart LR
     subgraph S_core["Core domain"]
-        S_contracts_Spec["contracts:Spec<br/><small>1202 LOC</small>"]:::coreDomain
+        S_contracts_Spec["contracts:Spec<br/><small>1203 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
         S_cli_Console["cli:Console<br/><small>793 LOC</small>"]:::supportingDomain
@@ -43,8 +43,8 @@ flowchart LR
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
         S_contracts_Exceptions["contracts:Exceptions<br/><small>31 LOC</small>"]:::unknownDomain
         S_contracts_Interfaces["contracts:Interfaces<br/><small>322 LOC</small>"]:::unknownDomain
-        S_engine_Data["engine:Data<br/><small>52 LOC</small>"]:::unknownDomain
-        S_engine_Enum["engine:Enum<br/><small>15 LOC</small>"]:::unknownDomain
+        S_engine_Data["engine:Data<br/><small>74 LOC</small>"]:::unknownDomain
+        S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>654 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>34 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
@@ -77,10 +77,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,202 | 0 | 7% |
+| Core domain | 1 | 1,203 | 0 | 7% |
 | Supporting | 7 | 6,736 | 0 | 36% |
 | Generic subdomain | 11 | 1,915 | 1,155 | 17% |
-| Unclassified | 28 | 7,458 | 0 | 40% |
+| Unclassified | 28 | 7,482 | 0 | 40% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

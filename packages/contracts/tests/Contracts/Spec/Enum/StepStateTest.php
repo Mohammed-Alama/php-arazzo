@@ -16,6 +16,7 @@ it('models the workflow state machine states')
             StepState::ActorInputReceived,
             StepState::Completed,
             StepState::Failed,
+            StepState::Cancelled,
         ],
     );
 
@@ -27,7 +28,8 @@ it('backed by spec-exact string values')
     ->and(StepState::AwaitingActorInput->value)->toBe('awaiting_actor_input')
     ->and(StepState::ActorInputReceived->value)->toBe('actor_input_received')
     ->and(StepState::Completed->value)->toBe('completed')
-    ->and(StepState::Failed->value)->toBe('failed');
+    ->and(StepState::Failed->value)->toBe('failed')
+    ->and(StepState::Cancelled->value)->toBe('cancelled');
 
 it('maps retrying to an edge, not a state')
 

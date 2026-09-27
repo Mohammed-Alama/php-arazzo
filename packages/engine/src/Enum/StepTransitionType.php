@@ -11,4 +11,6 @@ enum StepTransitionType: string
 {
     case Enter = 'enter';
     case GuardFailed = 'guard_failed';
+    case Timeout = 'timeout';
+    case Cancelled = 'cancelled';
 }

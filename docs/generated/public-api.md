@@ -184,7 +184,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function fromRaw(string $raw): self`
 
 #### `StepState` enum
-- Cases: `ActorInputReceived`, `AwaitingActorInput`, `Completed`, `EvaluatingCriteria`, `ExecutingRequest`, `Failed`, `Pending`
+- Cases: `ActorInputReceived`, `AwaitingActorInput`, `Cancelled`, `Completed`, `EvaluatingCriteria`, `ExecutingRequest`, `Failed`, `Pending`
 
 #### `StepStatus` enum
 - Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
@@ -448,13 +448,15 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Engine\Data`
 
 #### `StepTransition` class
-- `public function __construct(public StepState $from, public StepState $to, public string $reason, public StepTransitionType $type = StepTransitionType::Enter)`
+- `public function __construct(public StepState $from, public StepState $to, public string $reason, public StepTransitionType $type = StepTransitionType::Enter, public array $actions = [])`
+- `public static function cancelled(StepState $from, string $reason, array $actions): self`
 - `public static function guardFailed(StepState $from, string $reason): self`
+- `public static function timedOut(StepState $from, string $reason, array $actions): self`
 
 ### `Alama\Arazzo\Engine\Enum`
 
 #### `StepTransitionType` enum
-- Cases: `Enter`, `GuardFailed`
+- Cases: `Cancelled`, `Enter`, `GuardFailed`, `Timeout`
 
 ## runner
 

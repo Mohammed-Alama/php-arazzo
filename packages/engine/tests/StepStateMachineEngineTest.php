@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\StepState;
@@ -9,6 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interaction;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -277,4 +280,98 @@ it('returns null when no timeout specified', function (): void {
 it('throws on invalid ISO 8601 duration', function (): void {
     $step = new Step('s1', null, new StepTarget(), new StepFlow(timeoutDuration: 'INVALID'), new StepIo());
     expect(fn () => StepStateMachineEngine::resolveTimeoutSeconds($step))->toThrow(DateMalformedIntervalStringException::class);
+});
+
+it('cancels a pending step with the ordered onCancel actions', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $first = new FailureEndAction('stop', []);
+    $second = new RetryAction('retry', 1.0, 3, 's1', null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$first, $second]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::Pending);
+
+    expect($transition->from)->toBe(StepState::Pending)
+        ->and($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->type)->toBe(StepTransitionType::Cancelled)
+        ->and($transition->actions)->toBe([$first, $second]);
+});
+
+it('refuses to cancel a completed step', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::Completed);
+
+    expect($transition->to)->toBe(StepState::Completed)
+        ->and($transition->type)->toBe(StepTransitionType::Enter)
+        ->and($transition->actions)->toBe([]);
+});
+
+it('fails a timed out step with the ordered onTimeout actions', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $first = new FailureEndAction('abort', []);
+    $second = new RetryAction('retry', 2.0, 1, null, null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onTimeout: [$first, $second]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->timeout($step, $document, $state, StepState::ExecutingRequest);
+
+    expect($transition->from)->toBe(StepState::ExecutingRequest)
+        ->and($transition->to)->toBe(StepState::Failed)
+        ->and($transition->type)->toBe(StepTransitionType::Timeout)
+        ->and($transition->actions)->toBe([$first, $second]);
+});
+
+it('refuses to time out a cancelled step', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->timeout($step, $document, $state, StepState::Cancelled);
+
+    expect($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->type)->toBe(StepTransitionType::Enter);
+});
+
+it('passes Reusable entries through the cancel action list unresolved', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $reusable = new Reusable('$components.parameters.cancelStep');
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$reusable]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::AwaitingActorInput);
+
+    expect($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->actions)->toBe([$reusable]);
+});
+
+it('treats Cancelled as terminal in fire()', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->fire(StepState::Cancelled, $step, $document, $state);
+
+    expect($transition->from)->toBe(StepState::Cancelled)
+        ->and($transition->to)->toBe(StepState::Cancelled);
 });

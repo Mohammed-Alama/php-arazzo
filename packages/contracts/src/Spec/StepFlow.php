@@ -16,7 +16,7 @@ final readonly class StepFlow
      * @param  list<string>  $dependsOn
      * @param  list<SuccessAction|Reusable>  $onSuccess
      * @param  list<FailureAction|Reusable>  $onFailure
-     * @param  list<SuccessAction|Reusable>  $onTimeout
+     * @param  list<FailureAction|Reusable>  $onTimeout
      * @param  list<FailureAction|Reusable>  $onCancel
      */
     public function __construct(

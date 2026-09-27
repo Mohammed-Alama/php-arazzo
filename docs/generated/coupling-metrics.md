@@ -17,15 +17,15 @@ targets. Regenerated before every commit.
 | `contracts:Dependency` | 3 | 333 | 3 | 2 | 0.40 |  |
 | `contracts:Exceptions` | 1 | 30 | 2 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 18 | 304 | 21 | 3 | 0.13 |  |
-| `contracts:Spec` | 49 | 1153 | 31 | 1 | 0.03 |  |
+| `contracts:Spec` | 49 | 1154 | 31 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 12 | 1 | 0.08 |  |
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1305 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 68 | 3402 | 5 | 5 | 0.50 |  |
 | `(document root)` | 5 | 263 | 5 | 6 | 0.55 |  |
-| `engine:Data` | 2 | 50 | 1 | 3 | 0.75 |  |
-| `engine:Enum` | 1 | 14 | 1 | 0 | 0.00 |  |
-| `(engine root)` | 2 | 155 | 0 | 3 | 1.00 |  |
+| `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
+| `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
+| `(engine root)` | 2 | 192 | 0 | 3 | 1.00 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -68,7 +68,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **973**
+Total cross-module edges: **975**
 
 ## Most entangled module pairs
 

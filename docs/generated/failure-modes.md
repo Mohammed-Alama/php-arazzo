@@ -76,6 +76,7 @@ Regenerated before every commit.
 | throws **WorkflowDepthExceededException** | `WorkflowEngine` | — |
 | prop maxQueuedSteps | `CliRunner` | `10_000` |
 | const MAX_DEPTH | `InputSchemaResolver` | `16` |
+| const TERMINAL_STATES | `StepStateMachineEngine` | `[StepState::Completed, StepState::Failed, StepState::Cancelled]` |
 | prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
 | prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
