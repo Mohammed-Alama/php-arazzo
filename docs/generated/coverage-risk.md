@@ -56,7 +56,7 @@ quadrantChart
     laravel/Queue: [0.75, 1]
     laravel/State: [0.5, 1]
     laravel/Support: [0.75, 0.5]
-    request-pipeline/Data: [0.5, 0]
+    request-pipeline/Data: [0.5, 1]
     runner/Execution: [0.793, 1]
     runner/Jobs: [0.333, 1]
     runner/Protocol: [0.909, 1]
@@ -76,9 +76,9 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 27 | 18 | 100% |
-| `contracts/Spec` | 0.03 | 184 | 49 | 100% |
-| `contracts/State` | 0.08 | 44 | 2 | 100% |
+| `contracts/Interfaces` | 0.12 | 28 | 18 | 100% |
+| `contracts/Spec` | 0.03 | 188 | 49 | 100% |
+| `contracts/State` | 0.08 | 48 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.50 | 74 | 68 | 100% |
@@ -88,7 +88,7 @@ quadrantChart
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
-| `evaluation/Interfaces` | 0.09 | 23 | 5 | 100% |
+| `evaluation/Interfaces` | 0.09 | 26 | 5 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
@@ -107,7 +107,7 @@ quadrantChart
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.75 | 1 | 2 | 50% |
-| `request-pipeline/Data` | 0.50 | 0 | 2 | 0% |
+| `request-pipeline/Data` | 0.50 | 4 | 2 | 100% |
 | `runner/Execution` | 0.79 | 43 | 30 | 100% |
 | `runner/Jobs` | 0.33 | 5 | 2 | 100% |
 | `runner/Protocol` | 0.91 | 9 | 3 | 100% |
@@ -119,4 +119,4 @@ quadrantChart
 | `sources/Resolver` | 0.33 | 23 | 13 | 100% |
 | `sources/Validator` | 0.57 | 3 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`, `request-pipeline/Data`
+**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`

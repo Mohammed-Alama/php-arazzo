@@ -121,15 +121,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Request-pipeline — 6 test files
-    "Root": 5
+    title Request-pipeline — 11 test files
+    "Root": 10
     "Architecture": 1
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 5 | 83% |
-| Architecture | 1 | 17% |
+| Root | 10 | 91% |
+| Architecture | 1 | 9% |
 
 ## Runner package
 
