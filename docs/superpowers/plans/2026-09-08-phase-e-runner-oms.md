@@ -37,7 +37,7 @@
 ## Global Constraints
 
 - New package namespaces: `Alama\Arazzo\Runtime\...`, `Alama\Arazzo\Events\...`, `Alama\Arazzo\RequestPipeline\...`, `Alama\Arazzo\Engine\...` for extracted code; `Alama\Arazzo\Runner\...` for classes that stay in the runner. All classes `declare(strict_types=1)`, `@internal`.
-- `StepState` enum values: `Pending='pending'`, `ExecutingRequest='executing_request'`, `EvaluatingCriteria='evaluating_criteria'`, `AwaitingActorInput='awaiting_actor_input'`, `ActorInputReceived='actor_input_received'`, `Completed='completed'`, `Failed='failed'`. `Retrying` is an edge (`EVALUATING_CRITERIA → PENDING`), not a state.
+- `StepState` enum values: `Pending='pending'`, `ExecutingRequest='executing_request'`, `EvaluatingCriteria='evaluating_criteria'`, `AwaitingActorInput='awaiting_actor_input'`, `ActorInputReceived='actor_input_received'`, `Completed='completed'`, `Failed='failed'`, `Cancelled='cancelled'`. `Retrying` is an edge (`EVALUATING_CRITERIA → PENDING`), not a state. `Cancelled` is terminal and is deliberately distinct from `Failed`: cancellation is a first-class path triggered by `onCancel`, whereas `Failed` carries `onFailure` (D10, spec A7/E1). Added by E6b.
 - `WorkflowStateRepositoryInterface` signature: `save(string $executionId, WorkflowContextInterface $state): void`, `load(string $executionId): ?WorkflowContextInterface`, `delete(string $executionId): void` (Phase A task A5).
 - `OperationExecutorPluginInterface` signature: `supports(Step, ArazzoDocument): bool`, `execute(Step, WorkflowContext, ArazzoDocument, string): StepExecutionOutcome` + `PluginInterface::name(): string`, `priority(): int` (Phase A task A1).
 - `ResponseTransferInterface` seam + generic `ResponseTransfer` value type (Phase A task A6): `ResponseTransferInterface` exposes `status(): mixed`, `headers(): array`, `rawBody(): mixed`, `hasView(string): bool`, `view(string): mixed`, `meta(): array`; the generic `ResponseTransfer` (`Alama\Arazzo\Contracts\Spec`) is the protocol-agnostic implementation with a keyed `views` bag (JSON/XML/proto facets filled by the per-protocol DTOs in Phase F, not flat constructor props).
@@ -46,7 +46,7 @@
 - Every task's `--filter` runs `vendor/bin/pest packages/<pkg>/tests --filter "<name>"` from the repo root.
 - Static analysis per task: `composer run analyse-<pkg>` (PHPStan with that package's `phpstan.neon.dist`).
 - No code comments unless explaining a deprecation or an ISO-8601 duration.
-- E0–E5 (the split) may touch root `composer.json` and `packages/*/composer.json` for scaffolding. E6–E10 (the OMS) must not touch anything outside the package that owns the class being added. Only E11 (the gate) runs repo-wide commands.
+- E0–E5 (the split) may touch root `composer.json` and `packages/*/composer.json` for scaffolding. E6–E10 (the OMS) must not touch anything outside the package that owns the class being added. **E6b is the one exception**: it adds a `StepState` case in `contracts` and consumes it in `engine`, so it may touch `packages/contracts` and `packages/engine` only. Only E11 (the gate) runs repo-wide commands.
 - Commit order is strict: E0 → E1 → E2 → E3 → E4 → E5 (split, each one atomic) then E6 → E7 → E8 → E9 → E10 (OMS) then E11 (gate). The OMS tasks are not started until the E5 split gate is green.
 - This plan assumes Phase A contracts are landed. The Phase A types are referenced by FQCN throughout; if Phase A is not yet merged, create the minimal stubs first.
 
@@ -886,6 +886,293 @@ Expected: PASS.
 ```bash
 git add packages/engine/src/StepStateMachineEngine.php packages/engine/src/Data/StepTransition.php packages/engine/src/Enum/StepTransitionType.php packages/engine/tests/StepStateMachineEngineTest.php
 git commit -m "feat(runner): add StepStateMachineEngine with explicit transition table"
+```
+
+---
+
+## Task E6b: Cancellation path + ordered `onTimeout` failure actions
+
+Closes the two D10 items that E6's description promised but no task delivered: `onCancel` as a
+first-class cancellation path (spec: "distinct from `onFailure`") and `onTimeout` as an ordered
+failure-action list. Both are declared on `StepFlow` as `list<FailureAction|Reusable>` but were
+inert — nothing consumed them. The contract shape needs no change; this task makes the state
+machine read them.
+
+`Cancelled` is added to `StepState` as a **terminal state distinct from `Failed`**: cancellation
+is requested via `onCancel` and terminates the step, whereas `Failed` carries `onFailure` and, for
+timeouts, `onTimeout`. `Retrying` remains an edge, not a state.
+
+**Files:**
+- Modify: `packages/contracts/src/Spec/Enum/StepState.php` (add `Cancelled`)
+- Modify: `packages/engine/src/Enum/StepTransitionType.php` (add `Timeout`, `Cancelled`)
+- Modify: `packages/engine/src/Data/StepTransition.php` (carry `$actions`)
+- Modify: `packages/engine/src/StepStateMachineEngine.php` (`cancel()`, `timeout()`, terminal arm)
+- Modify: `packages/engine/tests/StepStateMachineEngineTest.php` (new cases)
+
+**Interfaces:**
+- Consumes: `StepFlow::$onCancel` and `StepFlow::$onTimeout` (both `list<FailureAction|Reusable>`).
+- Produces: `StepStateMachineEngine::cancel(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition`; `::timeout(...): StepTransition` (same signature); `StepTransition::$actions` (`list<FailureAction|Reusable>`, ordered, defaults `[]`).
+- Scope: `Reusable` entries are passed through **unresolved**. The only reuse mechanism the contracts define is `$components.parameters.*` (`Reusable::getParamterComponent()`); no reusable-*action* registry exists, and inventing one is out of scope. Resolving them is the carrier's job at E8.
+
+- [ ] **Step 1: Write the failing tests**
+
+Append to `packages/engine/tests/StepStateMachineEngineTest.php`. Add these imports:
+
+```php
+use Alama\Arazzo\Contracts\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+```
+
+```php
+it('cancels a pending step with the ordered onCancel actions', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $first = new FailureEndAction('stop', []);
+    $second = new RetryAction('retry', 1.0, 3, 's1', null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$first, $second]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::Pending);
+
+    expect($transition->from)->toBe(StepState::Pending)
+        ->and($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->type)->toBe(StepTransitionType::Cancelled)
+        ->and($transition->actions)->toBe([$first, $second]);
+});
+
+it('refuses to cancel a completed step', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::Completed);
+
+    expect($transition->to)->toBe(StepState::Completed)
+        ->and($transition->type)->toBe(StepTransitionType::Enter)
+        ->and($transition->actions)->toBe([]);
+});
+
+it('fails a timed out step with the ordered onTimeout actions', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $first = new FailureEndAction('abort', []);
+    $second = new RetryAction('retry', 2.0, 1, null, null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onTimeout: [$first, $second]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->timeout($step, $document, $state, StepState::ExecutingRequest);
+
+    expect($transition->from)->toBe(StepState::ExecutingRequest)
+        ->and($transition->to)->toBe(StepState::Failed)
+        ->and($transition->type)->toBe(StepTransitionType::Timeout)
+        ->and($transition->actions)->toBe([$first, $second]);
+});
+
+it('refuses to time out a cancelled step', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->timeout($step, $document, $state, StepState::Cancelled);
+
+    expect($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->type)->toBe(StepTransitionType::Enter);
+});
+
+it('passes Reusable entries through the cancel action list unresolved', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $reusable = new Reusable('$components.parameters.cancelStep');
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$reusable]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::AwaitingActorInput);
+
+    expect($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->actions)->toBe([$reusable]);
+});
+
+it('treats Cancelled as terminal in fire()', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->fire(StepState::Cancelled, $step, $document, $state);
+
+    expect($transition->from)->toBe(StepState::Cancelled)
+        ->and($transition->to)->toBe(StepState::Cancelled);
+});
+```
+
+- [ ] **Step 2: Run the tests to verify they fail**
+
+Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
+
+Expected: FAIL — `StepState::Cancelled` does not exist and `cancel()`/`timeout()` are undefined.
+
+- [ ] **Step 3: Add the `Cancelled` state to the contract**
+
+In `packages/contracts/src/Spec/Enum/StepState.php`, add the case after `Failed`:
+
+```php
+    case Cancelled = 'cancelled';
+```
+
+`packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php` asserts `StepState::cases()`
+equals exactly the previous seven, so it **will fail** until updated. Add `StepState::Cancelled`
+to both the `cases()` expectation and the backed-value chain:
+
+```php
+            StepState::Failed,
+            StepState::Cancelled,
+```
+
+```php
+    ->and(StepState::Failed->value)->toBe('failed')
+    ->and(StepState::Cancelled->value)->toBe('cancelled');
+```
+
+- [ ] **Step 4: Extend `StepTransitionType`**
+
+In `packages/engine/src/Enum/StepTransitionType.php`, add two cases:
+
+```php
+    case Timeout = 'timeout';
+    case Cancelled = 'cancelled';
+```
+
+- [ ] **Step 5: Carry the ordered action list on `StepTransition`**
+
+In `packages/engine/src/Data/StepTransition.php`, add the `$actions` promoted property to the
+constructor (after `$type`) and two factories.
+
+Constructor becomes:
+
+```php
+    /**
+     * @param  list<FailureAction|Reusable>  $actions
+     */
+    public function __construct(
+        public StepState $from,
+        public StepState $to,
+        public string $reason,
+        public StepTransitionType $type = StepTransitionType::Enter,
+        public array $actions = [],
+    ) {}
+```
+
+Add the imports `use Alama\Arazzo\Contracts\Spec\Action\FailureAction;` and
+`use Alama\Arazzo\Contracts\Spec\Reusable;`, then add:
+
+```php
+    /**
+     * @param  list<FailureAction|Reusable>  $actions
+     */
+    public static function cancelled(StepState $from, string $reason, array $actions): self
+    {
+        return new self($from, StepState::Cancelled, $reason, StepTransitionType::Cancelled, $actions);
+    }
+
+    /**
+     * @param  list<FailureAction|Reusable>  $actions
+     */
+    public static function timedOut(StepState $from, string $reason, array $actions): self
+    {
+        return new self($from, StepState::Failed, $reason, StepTransitionType::Timeout, $actions);
+    }
+```
+
+- [ ] **Step 6: Implement `cancel()` and `timeout()`**
+
+In `packages/engine/src/StepStateMachineEngine.php`, add `Cancelled` to the terminal arm of `fire()`:
+
+```php
+            StepState::Completed, StepState::Failed, StepState::Cancelled => StepTransition::enter($current, $current, 'terminal state'),
+```
+
+Add the two methods after `fire()`. Neither accepts `criteriaMet`: cancellation and timeout are
+outcomes, not criteria results. Both refuse to move a terminal step.
+
+```php
+    /**
+     * Cancel a non-terminal step via its onCancel failure-action list.
+     *
+     * `Reusable` entries are passed through unresolved: the contracts define no
+     * reusable-action registry, so the carrier resolves them at execution time.
+     *
+     * @param  StepState  $current  The step's current StepState.
+     */
+    public function cancel(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition
+    {
+        if (in_array($current, self::TERMINAL_STATES, true)) {
+            return StepTransition::enter($current, $current, 'terminal state');
+        }
+
+        return StepTransition::cancelled($current, 'cancelled by onCancel', $step->flow->onCancel);
+    }
+
+    /**
+     * Fail a non-terminal step whose timeout elapsed, carrying its ordered onTimeout actions.
+     *
+     * A timeout still ends in Failed — distinct from cancellation, which ends in Cancelled —
+     * but the ordered onTimeout failure-action list travels with the transition.
+     *
+     * @param  StepState  $current  The step's current StepState.
+     */
+    public function timeout(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition
+    {
+        if (in_array($current, self::TERMINAL_STATES, true)) {
+            return StepTransition::enter($current, $current, 'terminal state');
+        }
+
+        return StepTransition::timedOut($current, 'step timeout elapsed', $step->flow->onTimeout);
+    }
+```
+
+Add the terminal-state constant to the class, immediately after the constructor:
+
+```php
+    /** @var list<StepState> */
+    private const TERMINAL_STATES = [StepState::Completed, StepState::Failed, StepState::Cancelled];
+```
+
+- [ ] **Step 7: Run the tests to verify they pass**
+
+Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
+
+Expected: PASS (22 tests).
+
+- [ ] **Step 8: Verify the affected packages**
+
+Run: `composer run test-contracts && composer run test-engine && composer run analyse-contracts && composer run analyse-engine`
+
+Expected: all green. `Cancelled` is a new enum case, so confirm nothing else broke — the only
+exhaustive `match` over `StepState` in the codebase is `StepStateMachineEngine::fire()`, already
+amended in Step 6. Verify with `rg -n 'StepState::' packages/` that no other `match`/`switch`
+enumerates the states without a `default`; if one exists, add the `Cancelled` arm rather than
+loosening the match.
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add packages/contracts/src/Spec/Enum/StepState.php packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php packages/engine/src/Enum/StepTransitionType.php packages/engine/src/Data/StepTransition.php packages/engine/src/StepStateMachineEngine.php packages/engine/tests/StepStateMachineEngineTest.php
+git commit -m "feat(engine): add Cancelled state with onCancel path and ordered onTimeout actions"
 ```
 
 ---
