@@ -1844,7 +1844,7 @@ Replaces the direct `openApiExecutor` calls in `StepExecutor` and the `StepProto
 - Produces: `OperationExecutorRegistry::register(OperationExecutorPluginInterface): void`, `::resolve(Step, ArazzoDocument): ?OperationExecutorPluginInterface`, `::all(): list<OperationExecutorPluginInterface>`.
 - Becomes the canonical executor-resolution path injected into `AsyncExecutionGraphAssembler` (replacing the direct `Protocol/` imports in Phase F2) and the `UnifiedStepCarrier` (E8).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runner/tests/OperationExecutorRegistryTest.php`:
 
@@ -1922,13 +1922,13 @@ it('returns all registered plugins', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "OperationExecutorRegistryTest"` (repo root)
 
 Expected: FAIL with "Class OperationExecutorRegistry not found".
 
-- [ ] **Step 3: Implement OperationExecutorRegistry**
+- [x] **Step 3: Implement OperationExecutorRegistry**
 
 Create `packages/runner/src/OperationExecutorRegistry.php`:
 
@@ -1983,7 +1983,7 @@ final class OperationExecutorRegistry
 }
 ```
 
-- [ ] **Step 4: Deprecate the old ProtocolExecutorRegistryInterface**
+- [x] **Step 4: Deprecate the old ProtocolExecutorRegistryInterface**
 
 Edit `packages/runner/src/Interfaces/ProtocolExecutorRegistryInterface.php` — add a `@deprecated` docblock:
 
@@ -1994,7 +1994,7 @@ Edit `packages/runner/src/Interfaces/ProtocolExecutorRegistryInterface.php` — 
 interface ProtocolExecutorRegistryInterface
 ```
 
-- [ ] **Step 5: Register the built-in executors into the registry at the composition seam**
+- [x] **Step 5: Register the built-in executors into the registry at the composition seam**
 
 `AsyncExecutionGraphAssembler` keeps its direct `Protocol\*` imports for now — under the Phase E split that edge points *down* the layer stack and is legitimate. What this step does is make the registry the single resolution path the carrier uses, so there is exactly one place where a step turns into an executor call:
 
@@ -2006,13 +2006,13 @@ Run: `composer run test-runner` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 6: Run test to verify it passes**
+- [x] **Step 6: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "OperationExecutorRegistryTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/runner/src/OperationExecutorRegistry.php packages/runner/src/Interfaces/ProtocolExecutorRegistryInterface.php packages/runner/src/UnifiedStepCarrier.php packages/runner/src/Async/AsyncExecutionGraphAssembler.php packages/runner/src/AsyncGraphSeams.php packages/runner/tests/OperationExecutorRegistryTest.php
