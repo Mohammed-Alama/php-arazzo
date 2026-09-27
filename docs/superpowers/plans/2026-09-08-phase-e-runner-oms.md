@@ -518,7 +518,7 @@ The core of the OMS. An explicit transition table mapping `(StepState, outcome)`
 - Consumes: `StepState` (Phase A4 — `Alama\Arazzo\Contracts\Spec\Enum\StepState`), `WorkflowEngine` (existing), `ExpressionResolverInterface` (existing), `ArazzoDocument`, `Workflow`, `Step`, `ExecutionState`.
 - Produces: `StepStateMachineEngine::fire(StepState $current, Step $step, ArazzoDocument $document, ExecutionState $state, bool $criteriaMet, bool $suspended): StepTransition`; `StepTransition` readonly with `StepState $from`, `StepState $to`, `StepTransitionType $kind`, `?callable $enterHandler`.
 
-- [ ] **Step 1: Write the failing test — transition table coverage**
+- [x] **Step 1: Write the failing test — transition table coverage**
 
 Create `packages/engine/tests/StepStateMachineEngineTest.php`:
 
@@ -675,13 +675,13 @@ it('transitions ExecutingRequest → Failed on transport error (suspended = true
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
 
 Expected: FAIL with "Class StepStateMachineEngine not found".
 
-- [ ] **Step 3: Create the supporting value types**
+- [x] **Step 3: Create the supporting value types**
 
 Create `packages/engine/src/Enum/StepTransitionType.php`:
 
@@ -741,7 +741,7 @@ final readonly class StepTransition
 }
 ```
 
-- [ ] **Step 4: Implement the StepStateMachineEngine**
+- [x] **Step 4: Implement the StepStateMachineEngine**
 
 Create `packages/engine/src/StepStateMachineEngine.php`:
 
@@ -875,13 +875,13 @@ final class StepStateMachineEngine
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/engine/src/StepStateMachineEngine.php packages/engine/src/Data/StepTransition.php packages/engine/src/Enum/StepTransitionType.php packages/engine/tests/StepStateMachineEngineTest.php
