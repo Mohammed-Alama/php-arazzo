@@ -211,6 +211,7 @@ flowchart LR
     runner__ --> contracts_Spec
     runner__ --> events_Interfaces
     runner__ --> runtime_State
+    runner__ --> contracts_Exceptions
     runner__ --> evaluation__
     runner__ --> expression_Interfaces
     runner__ --> contracts_State

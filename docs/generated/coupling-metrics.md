@@ -15,7 +15,7 @@ targets. Regenerated before every commit.
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 3 | 2 | 0.40 |  |
-| `contracts:Exceptions` | 1 | 30 | 2 | 0 | 0.00 |  |
+| `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 18 | 304 | 21 | 3 | 0.13 |  |
 | `contracts:Spec` | 49 | 1154 | 31 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 13 | 1 | 0.07 |  |
@@ -58,7 +58,7 @@ targets. Regenerated before every commit.
 | `runner:Execution` | 30 | 3016 | 6 | 23 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 3 | 363 | 1 | 10 | 0.91 |  |
-| `(runner root)` | 8 | 462 | 4 | 13 | 0.76 |  |
+| `(runner root)` | 9 | 498 | 4 | 14 | 0.78 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 13 | 1050 | 9 | 3 | 0.25 |  |
@@ -68,7 +68,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **991**
+Total cross-module edges: **995**
 
 ## Most entangled module pairs
 

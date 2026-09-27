@@ -278,6 +278,7 @@ flowchart TB
     M_runner_Protocol --> M_runner_Execution
     M_runner_Protocol --> M_runtime_State
     M_runner_Protocol --> M_sources_Normalizer
+    M_runner__ --> M_contracts_Exceptions
     M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_contracts_State
@@ -364,7 +365,7 @@ flowchart TB
 | `request-pipeline` | `contracts` | 26 |
 | `request-pipeline` | `document` | 1 |
 | `request-pipeline` | `evaluation` | 6 |
-| `runner` | `contracts` | 131 |
+| `runner` | `contracts` | 135 |
 | `runner` | `document` | 9 |
 | `runner` | `engine` | 1 |
 | `runner` | `evaluation` | 18 |

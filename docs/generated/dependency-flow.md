@@ -188,8 +188,9 @@ runner-Protocol,request-pipeline-root,5
 runner-Protocol,runner-Execution,4
 runner-Protocol,runtime-State,1
 runner-Protocol,sources-Normalizer,1
-runner-root,contracts-Interfaces,7
-runner-root,contracts-Spec,10
+runner-root,contracts-Exceptions,1
+runner-root,contracts-Interfaces,8
+runner-root,contracts-Spec,12
 runner-root,contracts-State,1
 runner-root,document-root,1
 runner-root,engine-root,1
