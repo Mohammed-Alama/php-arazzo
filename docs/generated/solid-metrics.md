@@ -28,9 +28,9 @@ quadrantChart
     cli/Renderer: [0.5, 0]
     contracts/Dependency: [0.4, 0]
     contracts/Exceptions: [0, 0]
-    contracts/Interfaces: [0.13, 1]
-    contracts/Spec: [0.033, 0.02]
-    contracts/State: [0.083, 0]
+    contracts/Interfaces: [0.125, 1]
+    contracts/Spec: [0.031, 0.02]
+    contracts/State: [0.077, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.222, 0.091]
     document/Validator: [0.5, 0.015]
@@ -42,11 +42,11 @@ quadrantChart
     evaluation/Data: [0.5, 0]
     evaluation/Enum: [0, 0]
     evaluation/Exceptions: [0.333, 0]
-    evaluation/Interfaces: [0.111, 1]
+    evaluation/Interfaces: [0.091, 1]
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.75, 0]
     evaluation/Xpath: [0.667, 0.5]
-    evaluation/_: [0.647, 0.091]
+    evaluation/_: [0.579, 0.091]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 0]
     events/_: [0, 0]
@@ -64,9 +64,11 @@ quadrantChart
     laravel/State: [0.5, 0]
     laravel/Support: [0.75, 0]
     laravel/_: [1, 0]
-    runner/Execution: [0.786, 0.05]
+    request-pipeline/Data: [0.5, 0]
+    request-pipeline/_: [0.778, 0]
+    runner/Execution: [0.793, 0.067]
     runner/Jobs: [0.333, 0]
-    runner/Protocol: [0.889, 0]
+    runner/Protocol: [0.909, 0]
     runner/_: [0.733, 0.333]
     runtime/Infrastructure: [1, 0]
     runtime/Policy: [0.75, 0]
@@ -87,7 +89,7 @@ Concrete types over 300 LOC:
 | `Parser` | `document:Parser` | 956 |
 | `ExecutionContext` | `runtime:State` | 496 |
 | `StepOutcomeHandler` | `runner:Execution` | 393 |
-| `StepExecutionWorker` | `runner:Execution` | 379 |
+| `StepExecutionWorker` | `runner:Execution` | 380 |
 | `Parser` | `expression:_` | 365 |
 | `WorkflowContext` | `contracts:State` | 359 |
 | `ExecutionState` | `contracts:State` | 308 |

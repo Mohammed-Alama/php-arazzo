@@ -72,6 +72,10 @@ flowchart TB
         M_sources_Validator["sources:Validator"]:::node
         M_sources__["(sources package root)"]:::node
     end
+    subgraph PKG_M_request_pipeline["request-pipeline"]
+        M_request_pipeline_Data["request-pipeline:Data"]:::node
+        M_request_pipeline__["(request-pipeline package root)"]:::node
+    end
     subgraph PKG_M_runner["runner"]
         M_runner_Execution["runner:Execution"]:::node
         M_runner_Jobs["runner:Jobs"]:::node
@@ -229,13 +233,22 @@ flowchart TB
     M_laravel__ --> M_laravel_Bindings
     M_laravel__ --> M_laravel_Http
     M_laravel__ --> M_laravel_Support
+    M_request_pipeline_Data --> M_contracts_Spec
+    M_request_pipeline_Data --> M_evaluation_Interfaces
+    M_request_pipeline_Data --> M_evaluation__
+    M_request_pipeline__ --> M_contracts_Interfaces
+    M_request_pipeline__ --> M_contracts_Spec
+    M_request_pipeline__ --> M_contracts_State
+    M_request_pipeline__ --> M_document_Parser
+    M_request_pipeline__ --> M_evaluation_Interfaces
+    M_request_pipeline__ --> M_evaluation__
+    M_request_pipeline__ --> M_request_pipeline_Data
     M_runner_Execution --> M_contracts_Dependency
     M_runner_Execution --> M_contracts_Exceptions
     M_runner_Execution --> M_contracts_Interfaces
     M_runner_Execution --> M_contracts_Spec
     M_runner_Execution --> M_contracts_State
     M_runner_Execution --> M_contracts_Support
-    M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
     M_runner_Execution --> M_evaluation_Interfaces
@@ -244,6 +257,8 @@ flowchart TB
     M_runner_Execution --> M_events__
     M_runner_Execution --> M_expression_Enum
     M_runner_Execution --> M_expression_Interfaces
+    M_runner_Execution --> M_request_pipeline_Data
+    M_runner_Execution --> M_request_pipeline__
     M_runner_Execution --> M_runner_Jobs
     M_runner_Execution --> M_runner_Protocol
     M_runner_Execution --> M_runner__
@@ -258,6 +273,8 @@ flowchart TB
     M_runner_Protocol --> M_contracts_State
     M_runner_Protocol --> M_evaluation_Interfaces
     M_runner_Protocol --> M_evaluation__
+    M_runner_Protocol --> M_request_pipeline_Data
+    M_runner_Protocol --> M_request_pipeline__
     M_runner_Protocol --> M_runner_Execution
     M_runner_Protocol --> M_runtime_State
     M_runner_Protocol --> M_sources_Normalizer
@@ -342,11 +359,15 @@ flowchart TB
 | `laravel` | `runner` | 23 |
 | `laravel` | `runtime` | 14 |
 | `laravel` | `sources` | 16 |
-| `runner` | `contracts` | 146 |
-| `runner` | `document` | 10 |
-| `runner` | `evaluation` | 24 |
+| `request-pipeline` | `contracts` | 26 |
+| `request-pipeline` | `document` | 1 |
+| `request-pipeline` | `evaluation` | 6 |
+| `runner` | `contracts` | 120 |
+| `runner` | `document` | 9 |
+| `runner` | `evaluation` | 18 |
 | `runner` | `events` | 22 |
 | `runner` | `expression` | 7 |
+| `runner` | `request-pipeline` | 21 |
 | `runner` | `runtime` | 22 |
 | `runner` | `sources` | 10 |
 | `runtime` | `contracts` | 20 |

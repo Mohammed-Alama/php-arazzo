@@ -123,7 +123,7 @@ it('keeps generated dir markdown-only', function (): void {
 
 it('derives layer order from composer require', function (): void {
     expect(\ArazzoDocs\packageLayerOrder(dirname(__DIR__, 3)))->toBe(
-        ['contracts', 'expression', 'runtime', 'events', 'evaluation', 'document', 'engine', 'sources', 'runner', 'cli', 'laravel'],
+        ['contracts', 'expression', 'runtime', 'events', 'evaluation', 'document', 'engine', 'sources', 'request-pipeline', 'runner', 'cli', 'laravel'],
     );
 });
 

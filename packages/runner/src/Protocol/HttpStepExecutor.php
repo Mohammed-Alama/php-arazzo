@@ -11,10 +11,10 @@ use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
-use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\RequestPipeline\ExpressionValueResolver;
+use Alama\Arazzo\RequestPipeline\IdempotencyKeyInjector;
+use Alama\Arazzo\RequestPipeline\RequestCompiler;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\RequestCompiler;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 

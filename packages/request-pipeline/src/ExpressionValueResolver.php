@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\RequestPipeline;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
+use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
 
 /**
  * Single resolution path for step-level runtime values (parameters,

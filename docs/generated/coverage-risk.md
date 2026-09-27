@@ -25,9 +25,9 @@ quadrantChart
     cli/Renderer: [0.5, 1]
     contracts/Dependency: [0.4, 1]
     contracts/Exceptions: [0, 1]
-    contracts/Interfaces: [0.13, 1]
-    contracts/Spec: [0.033, 1]
-    contracts/State: [0.083, 1]
+    contracts/Interfaces: [0.125, 1]
+    contracts/Spec: [0.031, 1]
+    contracts/State: [0.077, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
     document/Validator: [0.5, 1]
@@ -37,7 +37,7 @@ quadrantChart
     evaluation/Data: [0.5, 1]
     evaluation/Enum: [0, 0.333]
     evaluation/Exceptions: [0.333, 1]
-    evaluation/Interfaces: [0.111, 1]
+    evaluation/Interfaces: [0.091, 1]
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.75, 0]
     evaluation/Xpath: [0.667, 1]
@@ -56,9 +56,10 @@ quadrantChart
     laravel/Queue: [0.75, 1]
     laravel/State: [0.5, 1]
     laravel/Support: [0.75, 0.5]
-    runner/Execution: [0.786, 1]
+    request-pipeline/Data: [0.5, 0]
+    runner/Execution: [0.793, 1]
     runner/Jobs: [0.333, 1]
-    runner/Protocol: [0.889, 1]
+    runner/Protocol: [0.909, 1]
     runtime/Infrastructure: [1, 0.333]
     runtime/Policy: [0.75, 1]
     runtime/State: [0.25, 1]
@@ -75,7 +76,7 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.13 | 27 | 18 | 100% |
+| `contracts/Interfaces` | 0.12 | 27 | 18 | 100% |
 | `contracts/Spec` | 0.03 | 184 | 49 | 100% |
 | `contracts/State` | 0.08 | 44 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
@@ -87,7 +88,7 @@ quadrantChart
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
-| `evaluation/Interfaces` | 0.11 | 23 | 5 | 100% |
+| `evaluation/Interfaces` | 0.09 | 23 | 5 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
@@ -106,9 +107,10 @@ quadrantChart
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.75 | 1 | 2 | 50% |
-| `runner/Execution` | 0.79 | 49 | 40 | 100% |
+| `request-pipeline/Data` | 0.50 | 0 | 2 | 0% |
+| `runner/Execution` | 0.79 | 43 | 30 | 100% |
 | `runner/Jobs` | 0.33 | 5 | 2 | 100% |
-| `runner/Protocol` | 0.89 | 9 | 3 | 100% |
+| `runner/Protocol` | 0.91 | 9 | 3 | 100% |
 | `runtime/Infrastructure` | 1.00 | 1 | 3 | 33% |
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 13 | 100% |
@@ -117,4 +119,4 @@ quadrantChart
 | `sources/Resolver` | 0.33 | 23 | 13 | 100% |
 | `sources/Validator` | 0.57 | 3 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`
+**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`, `request-pipeline/Data`

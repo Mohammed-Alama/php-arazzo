@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\RequestPipeline;
 
 use Alama\Arazzo\Document\Parser\Exceptions\UnsupportedSerializationStyleException;
 use Stringable;

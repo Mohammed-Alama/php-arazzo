@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Execution;
+namespace Alama\Arazzo\Tests\RequestPipeline;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -13,7 +13,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
+use Alama\Arazzo\RequestPipeline\ReusableParameterResolver;
 use RuntimeException;
 
 function resolverDocument(): ArazzoDocument

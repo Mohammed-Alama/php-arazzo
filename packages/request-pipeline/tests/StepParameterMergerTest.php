@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Execution;
+namespace Alama\Arazzo\Tests\RequestPipeline;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ParameterIn;
 use Alama\Arazzo\Contracts\Spec\Expression;
@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Runner\Execution\StepParameterMerger;
+use Alama\Arazzo\RequestPipeline\StepParameterMerger;
 use Alama\Arazzo\Tests\Support\Fx;
 
 function wfParam(string $name, ParameterIn $in, mixed $value): Parameter

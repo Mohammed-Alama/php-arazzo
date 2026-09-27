@@ -325,7 +325,7 @@ The shared request-compilation pipeline. It is extracted **before** the engine a
 - Produces package `alama/arazzo-request-pipeline`, PSR-4 `Alama\Arazzo\RequestPipeline\` → `src/`. Requires `contracts`, `document`, `expression`, `evaluation` — no engine, no runner, no protocol.
 - Arch guard: `Alama\Arazzo\RequestPipeline` uses nothing from `Alama\Arazzo\Engine`, `Alama\Arazzo\Runner`, or `Alama\Arazzo\Protocol\*`.
 
-- [ ] **Step 1: Scaffold + move + rewrite namespaces**
+- [x] **Step 1: Scaffold + move + rewrite namespaces**
 
 Mirror E1 Step 1 for `alama/arazzo-request-pipeline` / `Alama\Arazzo\RequestPipeline\`, requiring `contracts`, `document`, `expression`, `evaluation` and `psr/http-client`, `psr/http-factory`, `psr/http-message`. Then move the eleven classes (flattening `Execution/` into `src/`) and rewrite:
 
@@ -337,7 +337,7 @@ rg -l 'Alama\\Arazzo\\Runner\\Execution\\' packages/
 ```
 Each hit must be classified by hand into *moved* (rewrite to `Alama\Arazzo\RequestPipeline\...`) or *staying* (leave as `Alama\Arazzo\Runner\Execution\...`). Do not blanket-replace — the runner keeps its own `Execution/` namespace for now; Phase F2 splits it into `Sync\` and `Async\`.
 
-- [ ] **Step 2: Root plumbing, arch guard, verify**
+- [x] **Step 2: Root plumbing, arch guard, verify**
 
 Add the path repository, root `require`, `Alama\Arazzo\Tests\RequestPipeline\` autoload-dev, `analyse-pipeline` / `test-pipeline` scripts. `composer update alama/arazzo-request-pipeline --with-dependencies --no-interaction`.
 
@@ -350,7 +350,7 @@ arch('request-pipeline is protocol- and runner-agnostic')
 
 Verify it bites with a temporary forbidden import, then revert.
 
-- [ ] **Step 3: Confirm the two-consumer invariant**
+- [x] **Step 3: Confirm the two-consumer invariant**
 
 ```bash
 rg -n 'RequestCompiler' packages/ --glob '*.php' | rg -v 'packages/request-pipeline'
@@ -358,7 +358,7 @@ rg -n 'RequestCompiler' packages/ --glob '*.php' | rg -v 'packages/request-pipel
 
 Expected: only the sync `StepExecutor` and `Protocol/HttpStepExecutor` (both to be moved/rewired in Phase F) reference it, plus the Laravel bindings. If a third consumer appears, note it in the commit message — it is a signal the class belongs elsewhere.
 
-- [ ] **Step 4: Install, verify, commit**
+- [x] **Step 4: Install, verify, commit**
 
 ```bash
 composer run test-pipeline && composer run analyse-pipeline

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution\Data;
+namespace Alama\Arazzo\RequestPipeline\Data;
 
 use Psr\Http\Message\RequestInterface;
 

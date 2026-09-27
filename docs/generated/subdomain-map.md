@@ -60,7 +60,8 @@ flowchart LR
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
         S_expression_Exceptions["expression:Exceptions<br/><small>23 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>3902 LOC</small>"]:::unknownDomain
+        S_request_pipeline_Data["request-pipeline:Data<br/><small>66 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>3044 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
         S_runner_Protocol["runner:Protocol<br/><small>366 LOC</small>"]:::unknownDomain
         S_runtime_Infrastructure["runtime:Infrastructure<br/><small>155 LOC</small>"]:::unknownDomain
@@ -76,10 +77,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,202 | 0 | 6% |
-| Supporting | 7 | 6,736 | 0 | 35% |
-| Generic subdomain | 11 | 1,915 | 1,155 | 16% |
-| Unclassified | 27 | 8,243 | 0 | 43% |
+| Core domain | 1 | 1,202 | 0 | 7% |
+| Supporting | 7 | 6,736 | 0 | 36% |
+| Generic subdomain | 11 | 1,915 | 1,155 | 17% |
+| Unclassified | 28 | 7,451 | 0 | 40% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -102,6 +103,7 @@ flowchart LR
 - `expression:Enum`
 - `expression:Exceptions`
 - `expression:Interfaces`
+- `request-pipeline:Data`
 - `runner:Execution`
 - `runner:Jobs`
 - `runner:Protocol`

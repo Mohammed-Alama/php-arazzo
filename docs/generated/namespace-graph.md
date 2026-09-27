@@ -50,6 +50,8 @@ flowchart LR
     laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
     laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     laravel__["(laravel package root)"]:::laravelNode
+    request_pipeline_Data["Alama\Arazzo\RequestPipeline\Data"]:::coreNode
+    request_pipeline__["(request-pipeline package root)"]:::coreNode
     runner_Execution["Alama\Arazzo\Runner\Execution"]:::coreNode
     runner_Jobs["Alama\Arazzo\Runner\Jobs"]:::coreNode
     runner_Protocol["Alama\Arazzo\Runner\Protocol"]:::coreNode
@@ -158,12 +160,23 @@ flowchart LR
     events_Listener --> contracts_Support
     events_Listener --> events__
     events_Listener --> events_Interfaces
+    request_pipeline_Data --> contracts_Spec
+    request_pipeline_Data --> evaluation__
+    request_pipeline_Data --> evaluation_Interfaces
+    request_pipeline__ --> contracts_Spec
+    request_pipeline__ --> contracts_State
+    request_pipeline__ --> request_pipeline_Data
+    request_pipeline__ --> contracts_Interfaces
+    request_pipeline__ --> evaluation__
+    request_pipeline__ --> evaluation_Interfaces
+    request_pipeline__ --> document_Parser
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
     runner_Execution --> runtime_State
     runner_Execution --> contracts_State
     runner_Execution --> evaluation__
+    runner_Execution --> request_pipeline_Data
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
@@ -171,11 +184,11 @@ flowchart LR
     runner_Execution --> evaluation_Interfaces
     runner_Execution --> events__
     runner_Execution --> events_Interfaces
+    runner_Execution --> request_pipeline__
     runner_Execution --> runner_Jobs
     runner_Execution --> runtime_Telemetry
     runner_Execution --> contracts_Dependency
     runner_Execution --> runtime_Policy
-    runner_Execution --> document_Parser
     runner_Execution --> expression_Enum
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
@@ -187,8 +200,10 @@ flowchart LR
     runner_Protocol --> contracts_State
     runner_Protocol --> evaluation__
     runner_Protocol --> evaluation_Interfaces
+    runner_Protocol --> request_pipeline__
     runner_Protocol --> runner_Execution
     runner_Protocol --> sources_Normalizer
+    runner_Protocol --> request_pipeline_Data
     runner_Protocol --> runtime_State
     runner__ --> contracts_Interfaces
     runner__ --> evaluation_Interfaces

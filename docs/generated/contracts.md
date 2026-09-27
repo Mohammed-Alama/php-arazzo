@@ -72,8 +72,8 @@ flowchart LR
     C_evaluation_evaluation___CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_evaluation_evaluation_Data_EvaluationContext["EvaluationContext<br/><small>evaluation:Data</small>"]:::implCore
     C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
-    C_runner_runner_Execution_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
+    C_request_pipeline_request_pipeline_Data_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>request-pipeline:Data</small>"]:::implCore
+    C_request_pipeline_request_pipeline_Data_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
     C_evaluation_evaluation___EvaluationEngine["EvaluationEngine<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___EvaluationEngine -.->|implements| I_EvaluationEngineInterface
     C_evaluation_evaluation___ExpressionEvaluator["ExpressionEvaluator<br/><small>(evaluation root)</small>"]:::implCore
@@ -82,8 +82,8 @@ flowchart LR
     C_evaluation_evaluation___ExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_evaluation_evaluation___InterpolationResolver["InterpolationResolver<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___InterpolationResolver -.->|implements| I_ExpressionResolverInterface
-    C_runner_runner_Execution_ExecutionExpressionResolver["ExecutionExpressionResolver<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_ExecutionExpressionResolver -.->|implements| I_ExpressionResolverInterface
+    C_request_pipeline_request_pipeline___ExecutionExpressionResolver["ExecutionExpressionResolver<br/><small>(request-pipeline root)</small>"]:::implCore
+    C_request_pipeline_request_pipeline___ExecutionExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin["JsonPathCriterionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
     C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin -.->|implements| I_CriterionEvaluatorPluginInterface
     C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin["JsonPathExpressionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore

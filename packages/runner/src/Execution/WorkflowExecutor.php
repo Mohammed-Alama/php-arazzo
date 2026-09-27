@@ -21,6 +21,7 @@ use Alama\Arazzo\Events\StepExecutedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
+use Alama\Arazzo\RequestPipeline\StepParameterMerger;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\Data\StepResult;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution\Data;
+namespace Alama\Arazzo\RequestPipeline\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
@@ -10,13 +10,13 @@ use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 
 /**
- * Runner-owned evaluation input.
+ * Request-pipeline-owned evaluation input.
  *
- * The runner reaches the expression package through its public face
+ * The pipeline reaches the expression package through its public face
  * ({@see EvaluationEngineInterface}), whose
  * `evaluate` requires an {@see EvaluationInputInterface}. This value object
- * is the runner's own implementation of that cross-seam contract, so the
- * runner never touches the expression package's internal `EvaluationContext`.
+ * is the pipeline's own implementation of that cross-seam contract, so the
+ * pipeline never touches the expression package's internal `EvaluationContext`.
  *
  * @internal stays out of the advertised contract; not part of the public API surface
  */

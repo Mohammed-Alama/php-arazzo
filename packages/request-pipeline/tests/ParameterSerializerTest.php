@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Alama\Arazzo\Tests\RequestPipeline;
+
 use Alama\Arazzo\Document\Parser\Exceptions\UnsupportedSerializationStyleException;
-use Alama\Arazzo\Runner\Execution\ParameterSerializer;
+use Alama\Arazzo\RequestPipeline\ParameterSerializer;
 
 it('serializes simple style', function () {
     expect(ParameterSerializer::serializeValue('color', 'blue', 'simple', false, 'path'))->toBe('blue');

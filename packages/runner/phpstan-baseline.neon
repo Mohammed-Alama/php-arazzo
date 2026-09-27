@@ -255,7 +255,7 @@ parameters:
 			path: src/Execution/StepExecutor.php
 
 		-
-			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\Runner\\Execution\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\RequestPipeline\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Execution/StepExecutor.php

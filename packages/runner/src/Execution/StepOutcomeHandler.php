@@ -25,7 +25,7 @@ use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
-use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
+use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Data\Transition;

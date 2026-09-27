@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Execution;
+namespace Alama\Arazzo\Tests\RequestPipeline;
 
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\RequestPipeline\IdempotencyKeyInjector;
 use GuzzleHttp\Psr7\Request;
 
 function idempotencyStep(?bool $idempotencyKey = null, ?string $idempotencyHeader = null): Step

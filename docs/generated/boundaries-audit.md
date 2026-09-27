@@ -39,9 +39,11 @@ when a boundary consciously moves.
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
 | evaluation | `evaluation:_` | `Flow` | 1 |
+| request-pipeline | `request-pipeline:Data` | `Psr` | 1 |
+| request-pipeline | `request-pipeline:_` | `Psr` | 3 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 23 |
+| runner | `runner:Execution` | `Psr` | 19 |
 | runner | `runner:Execution` | `cebe` | 10 |
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:_` | `Psr` | 5 |
@@ -131,17 +133,26 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
 | `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
+| `runner` | `ExecutionEvaluationInput` | `request-pipeline` | 5 | `SubWorkflowInvoker` |
+| `runner` | `ExecutionExpressionResolver` | `request-pipeline` | 2 | `AsyncExecutionGraphAssembler` |
+| `runner` | `ExpressionValueResolver` | `request-pipeline` | 2 | `StepExecutor` |
+| `runner` | `IdempotencyKeyInjector` | `request-pipeline` | 3 | `StepExecutor` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
 | `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
+| `runner` | `ParameterSerializer` | `request-pipeline` | 1 | `DefaultOpenApiExecutor` |
+| `runner` | `RequestCompiler` | `request-pipeline` | 2 | `StepExecutor` |
 | `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
+| `runner` | `ReusableParameterResolver` | `request-pipeline` | 2 | `AsyncApiStepExecutor` |
 | `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
 | `runner` | `RunFailedEvent` | `events` | 3 | `StepExecutionWorker` |
 | `runner` | `RunStartedEvent` | `events` | 1 | `WorkflowExecutor` |
 | `runner` | `StepExecutedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `StepFailedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepParameterMerger` | `request-pipeline` | 2 | `StepExecutionWorker` |
 | `runner` | `StepRetriedEvent` | `events` | 2 | `StepOutcomeHandler` |
 | `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `TypeCaster` | `request-pipeline` | 2 | `StepOutputExtractor` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
 | `sources` | `Loader` | `document` | 1 | `SourceGraph` |
