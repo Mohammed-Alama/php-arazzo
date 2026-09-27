@@ -2033,7 +2033,7 @@ In-core JSON-schema/OpenAPI validator dispatch during Phase E. After Phase F1, t
 - Consumes: `ResponseValidatorInterface` (existing contracts), `Step`, `ArazzoDocument`.
 - Produces: `ResponseValidatorDispatcher::validate(Step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument): void` — iterates registered validators, dispatches to the first that matches.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runner/tests/ResponseValidatorDispatcherTest.php`:
 
@@ -2099,13 +2099,13 @@ it('does nothing with empty validator list', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "ResponseValidatorDispatcherTest"` (repo root)
 
 Expected: FAIL with "Class ResponseValidatorDispatcher not found".
 
-- [ ] **Step 3: Implement ResponseValidatorDispatcher**
+- [x] **Step 3: Implement ResponseValidatorDispatcher**
 
 Create `packages/runner/src/ResponseValidatorDispatcher.php`:
 
@@ -2147,13 +2147,13 @@ final class ResponseValidatorDispatcher
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "ResponseValidatorDispatcherTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/runner/src/ResponseValidatorDispatcher.php packages/runner/tests/ResponseValidatorDispatcherTest.php
