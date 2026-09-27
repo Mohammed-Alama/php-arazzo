@@ -2172,7 +2172,7 @@ Close out Phase E: the four-layer split plus the OMS additions, verified togethe
 **Interfaces:**
 - Consumes: all tasks E0–E10.
 
-- [ ] **Step 1: Run every package suite**
+- [x] **Step 1: Run every package suite**
 
 ```bash
 composer run test-runtime && composer run test-events
@@ -2182,7 +2182,7 @@ composer run test-runner && composer run test-laravel
 
 Expected: PASS. The four arch guards added in E1–E4 (runtime leaf, events leaf, pipeline agnostic, engine pure core) are all GREEN and were never allowed to go red.
 
-- [ ] **Step 2: Run static analysis across all packages**
+- [x] **Step 2: Run static analysis across all packages**
 
 ```bash
 composer run analyse-runtime && composer run analyse-events
@@ -2191,27 +2191,27 @@ composer run analyse-pipeline && composer run analyse-engine && composer run ana
 
 Expected: PASS (0 errors).
 
-- [ ] **Step 3: Run the formatter check**
+- [x] **Step 3: Run the formatter check**
 
 Run: `composer run format` or `vendor/bin/pint --test` (repo root)
 
 Expected: PASS (no style violations). If violations exist, run `vendor/bin/pint` and re-run Step 1.
 
-- [ ] **Step 4: Run the full repo gate**
+- [x] **Step 4: Run the full repo gate**
 
 Run: `make verify` (repo root)
 
 Expected: PASS — confirms the split plus the OMS do not break `core`/`cli`/`laravel`/`document`/`expression` consumers.
 
-- [ ] **Step 5: Re-run the E5 layer sweep**
+- [x] **Step 5: Re-run the E5 layer sweep**
 
 Re-run the four `rg` sweeps from E5 Step 3 verbatim. Expected: all four report clean. This is the phase's central claim — *the split landed, and the OMS was built on top of it* — so it is checked twice, once before the OMS and once after.
 
-- [ ] **Step 6: Mark this plan's steps complete**
+- [x] **Step 6: Mark this plan's steps complete**
 
-Flip every `- [ ]` in this document to `- [x]`.
+Flip every `- [x]` in this document to `- [x]`.
 
-- [ ] **Step 7: Record completion in the spec**
+- [x] **Step 7: Record completion in the spec**
 
 Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md`, find the Phase E heading, and add:
 
@@ -2219,7 +2219,7 @@ Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md
 Phase E status: ✅ Implemented — the four-layer split (`arazzo-runtime`, `arazzo-events`, `arazzo-request-pipeline`, `arazzo-engine`) landed in E0–E5, then the OMS in E6–E10. See `plans/2026-09-08-phase-e-runner-oms.md`.
 ```
 
-- [ ] **Step 8: Commit the doc update**
+- [x] **Step 8: Commit the doc update**
 
 ```bash
 git add docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md
