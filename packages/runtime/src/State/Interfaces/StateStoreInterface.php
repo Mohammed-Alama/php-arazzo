@@ -21,5 +21,5 @@ interface StateStoreInterface
      */
     public function load(string $executionId): ?array;
 
-    //    public function delete(string $executionId): void;
+    public function delete(string $executionId): void;
 }

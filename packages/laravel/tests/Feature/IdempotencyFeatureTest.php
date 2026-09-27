@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 namespace Tests\Feature;
-uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
+
+uses(TestCase::class);
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -19,6 +20,7 @@ use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Laravel\Tests\TestCase;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;

@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Unit;
-uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
+
+uses(TestCase::class);
 
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
+use Alama\Arazzo\Laravel\Tests\TestCase;
 use Illuminate\Support\Facades\Queue;
 
 it('dispatches to the queue', function (): void {

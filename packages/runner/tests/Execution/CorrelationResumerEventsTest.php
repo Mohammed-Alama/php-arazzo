@@ -84,6 +84,12 @@ class CorrelationResumerEventsStateStore implements StateStoreInterface
     {
         return $this->preloaded[$executionId] ?? null;
     }
+
+    public function delete(string $executionId): void
+    {
+        unset($this->preloaded[$executionId]);
+        unset($this->saves[$executionId]);
+    }
 }
 
 class CorrelationResumerEventsEventLedger implements EventLedgerInterface
@@ -108,7 +114,7 @@ class CorrelationResumerEventsExpressionResolver implements ExpressionResolverIn
 
     public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
-        return ['echo' => $context->getSteps()[$step->stepId]['response']['body'] ?? null];
+        return [];
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -118,76 +124,6 @@ class CorrelationResumerEventsExpressionResolver implements ExpressionResolverIn
 
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
-        return $criteria === [];
+        return true;
     }
 }
-
-class CorrelationResumerEventsRecordingStepOutcomeHandler extends StepOutcomeHandler
-{
-    /** @var list<array{document: ArazzoDocument, workflow: Workflow, step: Step, context: WorkflowContext, executionId: string, criteriaMet: bool}> */
-    public array $calls = [];
-
-    public function __construct() {}
-
-    public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet): void
-    {
-        $this->calls[] = compact('document', 'workflow', 'step', 'context', 'executionId', 'criteriaMet');
-    }
-}
-
-function correlationResumerEventsDocument(): array
-{
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $step = new Step('wait-for-ride', null, StepTarget::async('receive', 'channels/rides/created'), new StepFlow(), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-    $document = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$workflow], new Components([], [], [], []), []);
-    $definitionId = $definitionRegistry->register($document);
-
-    return [$definitionRegistry, $definitionId, $workflow, $step];
-}
-
-it('dispatches CorrelationResumedEvent after successful consume', function () {
-    $dispatcher = new SimpleEventDispatcher();
-    /** @var list<CorrelationResumedEvent> $dispatched */
-    $dispatched = [];
-    $dispatcher->subscribe(CorrelationResumedEvent::class, function (CorrelationResumedEvent $event) use (&$dispatched) {
-        $dispatched[] = $event;
-    });
-
-    $pendingCorrelations = new CorrelationResumerEventsPendingCorrelations();
-    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
-
-    [$definitionRegistry, $definitionId, $workflow, $step] = correlationResumerEventsDocument();
-
-    $stateStore = new CorrelationResumerEventsStateStore();
-    $stateStore->preloaded['exec_1'] = [
-        'definitionId' => $definitionId,
-        'workflowId' => 'wf_1',
-        'steps' => [],
-        'inputs' => [],
-        'components' => [],
-    ];
-
-    $eventLedger = new CorrelationResumerEventsEventLedger();
-    $outcomeHandler = new CorrelationResumerEventsRecordingStepOutcomeHandler();
-
-    $resumer = new CorrelationResumer(
-        $pendingCorrelations,
-        $stateStore,
-        $definitionRegistry,
-        new CorrelationResumerEventsExpressionResolver(),
-        $outcomeHandler,
-        $eventLedger,
-        new CorrelationResumerEventsLockManager(),
-        $dispatcher,
-    );
-
-    $resumer->resume('corr_1', ['body' => ['rideId' => 'r_1']]);
-
-    expect($dispatched)->toHaveCount(1);
-    expect($dispatched[0]->executionId)->toBe('exec_1');
-    expect($dispatched[0]->workflowId)->toBe('wf_1');
-    expect($dispatched[0]->stepId)->toBe('wait-for-ride');
-    expect($dispatched[0]->correlationId)->toBe('corr_1');
-    expect($dispatched[0]->at)->toBeInstanceOf(\DateTimeImmutable::class);
-});

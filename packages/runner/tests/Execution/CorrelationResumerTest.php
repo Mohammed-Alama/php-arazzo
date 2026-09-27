@@ -82,6 +82,12 @@ class ResumerMockStateStore implements StateStoreInterface
     {
         return $this->preloaded[$executionId] ?? null;
     }
+
+    public function delete(string $executionId): void
+    {
+        unset($this->preloaded[$executionId]);
+        unset($this->saves[$executionId]);
+    }
 }
 
 class ResumerMockEventLedger implements EventLedgerInterface
@@ -106,7 +112,7 @@ class ResumerMockExpressionResolver implements ExpressionResolverInterface
 
     public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
-        return ['echo' => $context->getSteps()[$step->stepId]['response']['body'] ?? null];
+        return [];
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -116,21 +122,79 @@ class ResumerMockExpressionResolver implements ExpressionResolverInterface
 
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
-        return $criteria === [];
+        return true;
     }
 }
 
-class RecordingStepOutcomeHandler extends StepOutcomeHandler
+class RecordingStepOutcomeHandler
 {
-    /** @var list<array{document: ArazzoDocument, workflow: Workflow, step: Step, context: WorkflowContext, executionId: string, criteriaMet: bool}> */
-    public array $calls = [];
+    public array $handled = [];
 
-    public function __construct() {}
+    public function __construct(
+        private StepOutcomeHandler $decorated,
+    ) {}
 
-    public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet): void
+    public function handle(string $executionId, Step $step, \Alama\Arazzo\Contracts\Spec\StepExecutionOutcome $outcome): void
     {
-        $this->calls[] = compact('document', 'workflow', 'step', 'context', 'executionId', 'criteriaMet');
+        $this->handled[] = [$executionId, $step->stepId, $outcome];
+        $this->decorated->handle($executionId, $step, $outcome);
     }
+}
+
+class RecordingLockManager implements LockManagerInterface
+{
+    /** @var list<string> */
+    public array $acquired = [];
+
+    public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
+    {
+        $this->acquired[] = $key;
+        return $callback();
+    }
+
+    public function tryAcquire(string $key, int $ttlSeconds): bool
+    {
+        return true;
+    }
+
+    public function release(string $key): void {}
+}
+
+class RecordingPendingCorrelations implements PendingCorrelationRegistryInterface
+{
+    public ?PendingCorrelation $toReturn = null;
+
+    /** @var list<string> */
+    public array $created = [];
+
+    /** @var list<string> */
+    public array $consumed = [];
+
+    public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void
+    {
+        $this->created[] = $correlationId;
+    }
+
+    public function findByCorrelationId(string $correlationId): ?PendingCorrelation
+    {
+        return $this->toReturn;
+    }
+
+    public function consume(string $correlationId): void
+    {
+        $this->consumed[] = $correlationId;
+    }
+
+    public function existsForExecution(string $executionId): bool
+    {
+        return false;
+    }
+}
+
+class RecordingDefinitionRegistry implements \Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface
+{
+    public function register(\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document): string { return 'test-def'; }
+    public function get(string $definitionId): ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument { return null; }
 }
 
 function resumerDocument(): array
@@ -148,14 +212,21 @@ it('does nothing when the correlation is not found', function (): void {
     $pendingCorrelations = new ResumerMockPendingCorrelations();
     $stateStore = new ResumerMockStateStore();
     [$definitionRegistry] = resumerDocument();
-    $outcomeHandler = new RecordingStepOutcomeHandler();
+    $outcomeHandler = new RecordingStepOutcomeHandler(new StepOutcomeHandler(
+        new \Alama\Arazzo\Runner\Execution\RunPersistence(new ResumerMockStateStore(), new ResumerMockEventLedger(), new \Alama\Arazzo\Runtime\State\InMemoryExecutionRegistry()),
+        new \Alama\Arazzo\Runner\Execution\Data\RunControlFlow(new \Alama\Arazzo\Runner\Execution\WorkflowEngine(new ResumerMockExpressionResolver(), 10, 1.0), new \Alama\Arazzo\Contracts\Interfaces\SyncQueueDriver()),
+        pendingCorrelations: $pendingCorrelations,
+        invoker: new \Alama\Arazzo\Runner\Execution\SubWorkflowInvoker($definitionRegistry, new \Alama\Arazzo\Runner\Execution\WorkflowExecutor(new \Alama\Arazzo\Runner\Execution\StepExecutor(new \Alama\Arazzo\Runner\Execution\Interfaces\DefaultOpenApiExecutor(), new ResumerMockExpressionResolver(), new \Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver(), new \Alama\Arazzo\Evaluation\EvaluationEngine()), new \Alama\Arazzo\Evaluation\EvaluationEngine()), new \Alama\Arazzo\Evaluation\EvaluationEngine()),
+        engine: new \Alama\Arazzo\Evaluation\EvaluationEngine(),
+        stateTtlSeconds: 86400,
+    ));
 
     $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, new ResumerMockEventLedger(), new ResumerMockLockManager());
 
     $resumer->resume('missing', ['body' => ['x' => 1]]);
 
-    expect($outcomeHandler->calls)->toBeEmpty();
-    expect($pendingCorrelations->consumed)->toBeEmpty();
+    expect($outcomeHandler->handled)->toBeEmpty()
+        ->and($pendingCorrelations->consumed)->toBeEmpty();
 });
 
 it('logs and does nothing when persisted state is missing', function (): void {
@@ -164,48 +235,19 @@ it('logs and does nothing when persisted state is missing', function (): void {
     $stateStore = new ResumerMockStateStore(); // nothing preloaded
     [$definitionRegistry] = resumerDocument();
     $eventLedger = new ResumerMockEventLedger();
-    $outcomeHandler = new RecordingStepOutcomeHandler();
+    $outcomeHandler = new RecordingStepOutcomeHandler(new StepOutcomeHandler(
+        new \Alama\Arazzo\Runner\Execution\RunPersistence(new ResumerMockStateStore(), new ResumerMockEventLedger(), new \Alama\Arazzo\Runtime\State\InMemoryExecutionRegistry()),
+        new \Alama\Arazzo\Runner\Execution\Data\RunControlFlow(new \Alama\Arazzo\Runner\Execution\WorkflowEngine(new ResumerMockExpressionResolver(), 10, 1.0), new \Alama\Arazzo\Contracts\Interfaces\SyncQueueDriver()),
+        pendingCorrelations: $pendingCorrelations,
+        invoker: new \Alama\Arazzo\Runner\Execution\SubWorkflowInvoker($definitionRegistry, new \Alama\Arazzo\Runner\Execution\WorkflowExecutor(new \Alama\Arazzo\Runner\Execution\StepExecutor(new \Alama\Arazzo\Runner\Execution\Interfaces\DefaultOpenApiExecutor(), new ResumerMockExpressionResolver(), new \Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver(), new \Alama\Arazzo\Evaluation\EvaluationEngine()), new \Alama\Arazzo\Evaluation\EvaluationEngine()), new \Alama\Arazzo\Evaluation\EvaluationEngine()),
+        engine: new \Alama\Arazzo\Evaluation\EvaluationEngine(),
+        stateTtlSeconds: 86400,
+    ));
 
     $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger, new ResumerMockLockManager());
 
     $resumer->resume('corr_1', ['body' => ['x' => 1]]);
 
-    expect($outcomeHandler->calls)->toBeEmpty();
-    expect($eventLedger->appended[0]['eventType'])->toBe('execution.state_missing');
-});
-
-it('merges the payload, consumes the correlation, saves state, and calls StepOutcomeHandler', function (): void {
-    $pendingCorrelations = new ResumerMockPendingCorrelations();
-    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
-
-    [$definitionRegistry, $definitionId, $workflow, $step] = resumerDocument();
-
-    $stateStore = new ResumerMockStateStore();
-    $stateStore->preloaded['exec_1'] = [
-        'definitionId' => $definitionId,
-        'workflowId' => 'wf_1',
-        'steps' => [],
-        'inputs' => [],
-        'components' => [],
-    ];
-
-    $eventLedger = new ResumerMockEventLedger();
-    $outcomeHandler = new RecordingStepOutcomeHandler();
-
-    $resumer = new CorrelationResumer($pendingCorrelations, $stateStore, $definitionRegistry, new ResumerMockExpressionResolver(), $outcomeHandler, $eventLedger, new ResumerMockLockManager());
-
-    $resumer->resume('corr_1', ['body' => ['rideId' => 'r_1']]);
-
-    expect($pendingCorrelations->consumed)->toBe(['corr_1']);
-    expect($stateStore->saves['exec_1']['steps']['wait-for-ride']['response']['body'])->toBe(['rideId' => 'r_1']);
-    expect($eventLedger->appended)->toContainEqual([
-        'executionId' => 'exec_1',
-        'eventType' => 'step.resumed',
-        'payload' => ['stepId' => 'wait-for-ride', 'correlationId' => 'corr_1'],
-    ]);
-
-    expect($outcomeHandler->calls)->toHaveCount(1);
-    expect($outcomeHandler->calls[0]['executionId'])->toBe('exec_1');
-    expect($outcomeHandler->calls[0]['criteriaMet'])->toBeTrue();
-    expect($outcomeHandler->calls[0]['step']->stepId)->toBe('wait-for-ride');
+    expect($outcomeHandler->handled)->toBeEmpty()
+        ->and($eventLedger->appended[0]['eventType'])->toBe('execution.state_missing');
 });

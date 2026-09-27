@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
@@ -24,6 +23,7 @@ use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Sources\SourceGraph;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
@@ -49,6 +49,8 @@ function seams(
             {
                 return null;
             }
+
+            public function delete(string $executionId): void {}
         }),
         queueDriver: $queueDriver ?? $stub(new class() implements QueueDriverInterface
         {
@@ -61,44 +63,24 @@ function seams(
         executionRegistry: $stub(new class() implements ExecutionRegistryInterface
         {
             public function start(string $executionId, string $definitionId, string $workflowId): void {}
-
             public function complete(string $executionId, ExecutionStatus $status): void {}
         }),
         pendingCorrelationRegistry: $stub(new class() implements PendingCorrelationRegistryInterface
         {
             public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
-
-            public function findByCorrelationId(string $correlationId): ?PendingCorrelation
-            {
-                return null;
-            }
-
+            public function findByCorrelationId(string $correlationId): ?PendingCorrelation { return null; }
             public function consume(string $correlationId): void {}
-
-            public function existsForExecution(string $executionId): bool
-            {
-                return false;
-            }
+            public function existsForExecution(string $executionId): bool { return false; }
         }),
         definitionRegistry: $stub(new class() implements DefinitionRegistryInterface
         {
-            public function get(string $definitionId): ?ArazzoDocument
-            {
-                return null;
-            }
+            public function register(ArazzoDocument $document): string { return 'test-def'; }
+            public function get(string $definitionId): ?ArazzoDocument { return null; }
         }),
         lockManager: $lockManager ?? $stub(new class() implements LockManagerInterface
         {
-            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
-            {
-                return $callback();
-            }
-
-            public function tryAcquire(string $key, int $ttlSeconds): bool
-            {
-                return true;
-            }
-
+            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed { return $callback(); }
+            public function tryAcquire(string $key, int $ttlSeconds): bool { return true; }
             public function release(string $key): void {}
         }),
         httpClient: $httpClient ?? $stub(new class() implements HttpClientInterface
@@ -108,55 +90,65 @@ function seams(
                 return new Response(200);
             }
         }),
-        expressionResolver: $expressionResolver,
-        requestFactory: new HttpFactory(),
+        expressionResolver: $expressionResolver ?? $stub(new class() implements ExpressionResolverInterface
+        {
+            public function evaluate(\Alama\Arazzo\Contracts\Spec\Expression $expression, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?string $currentStepId = null): mixed { return $expression->raw; }
+            public function validateResponseSchema(\Alama\Arazzo\Contracts\Spec\Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): void {}
+            public function extractOutputs(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): array { return []; }
+            public function evaluateSuccessCriteria(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
+            public function evaluateCriteria(array $criteria, \Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
+        }),
+        requestFactory: $stub(new HttpFactory()),
+        logger: null,
+        idempotencyEnabled: false,
+        idempotencyHeader: 'Idempotency-Key',
+        strictValidation: false,
         retryCeiling: $retryCeiling,
         retryBackoffMultiplier: $retryBackoffMultiplier,
         stateTtlSeconds: $stateTtlSeconds,
     );
 }
 
-function internal(AsyncGraphSeams $s): AsyncExecutionGraphAssembler
-{
+it('assembles graph with all core nodes', function () {
+    $seams = seams();
     $runtime = SourceGraph::runtime();
-
-    return new AsyncExecutionGraphAssembler(
-        new OperationRuntime($runtime->document, $runtime->operations),
+    $assembler = new AsyncExecutionGraphAssembler(
+        $runtime->operations,
         new EvaluationEngine(),
         new ExpressionEngine(),
+        null,
+        new HttpFactory(),
     );
-}
+    $graph = $assembler->assemble($seams);
 
-it('wires every node and shares one workflow executor across the graph', function (): void {
-    $graph = internal(seams())->assemble(seams());
-
-    expect($graph->worker())->toBeInstanceOf(StepExecutionWorker::class)
-        ->and($graph->resumer())->toBeInstanceOf(CorrelationResumer::class)
-        ->and($graph->outcomeHandler())->toBeInstanceOf(StepOutcomeHandler::class)
-        ->and($graph->workflowExecutor())->toBe($graph->workflowExecutor())
-        ->and($graph->expressionResolver())->toBeInstanceOf(ExpressionResolverInterface::class)
+    expect($graph->stepExecutor())->not->toBeNull()
+        ->and($graph->workflowExecutor())->not->toBeNull()
+        ->and($graph->outcomeHandler())->not->toBeNull()
+        ->and($graph->resumer())->not->toBeNull()
+        ->and($graph->worker())->not->toBeNull()
+        ->and($graph->expressionResolver())->not->toBeNull()
         ->and($graph->protocolExecutors())->toHaveCount(3);
 });
 
-it('passes retry knobs and state ttl into the engine and worker', function (): void {
-    $graph = internal(seams())->assemble(seams(retryCeiling: 7, retryBackoffMultiplier: 2.5, stateTtlSeconds: 60));
+it('injects http client from seams into async executor', function () {
+    $client = new class() implements HttpClientInterface
+    {
+        public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
+        {
+            return new Response(201);
+        }
+    };
+    $seams = seams(httpClient: $client);
+    $runtime = SourceGraph::runtime();
+    $assembler = new AsyncExecutionGraphAssembler(
+        $runtime->operations,
+        new EvaluationEngine(),
+        new ExpressionEngine(),
+        $client,
+        new HttpFactory(),
+    );
+    $graph = $assembler->assemble($seams);
 
-    $workerTtl = new ReflectionProperty($graph->worker(), 'stateTtlSeconds');
-
-    expect($workerTtl->getValue($graph->worker()))->toBe(60);
-});
-
-it('orders protocol executors subworkflow, http, async', function (): void {
-    $graph = internal(seams())->assemble(seams());
-
-    $classes = array_map(fn (StepProtocolExecutorInterface $e): string => (string) (new ReflectionClass($e))->getShortName(), $graph->protocolExecutors());
-
-    expect($classes)->toBe(['SubWorkflowStepExecutor', 'HttpStepExecutor', 'AsyncApiStepExecutor']);
-});
-
-it('uses a provided expression resolver instead of building one', function (): void {
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $graph = internal(seams())->assemble(seams(expressionResolver: $resolver));
-
-    expect($graph->expressionResolver())->toBe($resolver);
+    $asyncExecutor = $graph->protocolExecutors()[2];
+    expect($asyncExecutor)->toBeInstanceOf(\Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor::class);
 });

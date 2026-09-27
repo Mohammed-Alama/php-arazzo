@@ -29,6 +29,8 @@ function dummySeams(): AsyncGraphSeams
             {
                 return null;
             }
+
+            public function delete(string $executionId): void {}
         },
         queueDriver: new class() implements QueueDriverInterface
         {
@@ -41,44 +43,24 @@ function dummySeams(): AsyncGraphSeams
         executionRegistry: new class() implements ExecutionRegistryInterface
         {
             public function start(string $executionId, string $definitionId, string $workflowId): void {}
-
             public function complete(string $executionId, ExecutionStatus $status): void {}
         },
         pendingCorrelationRegistry: new class() implements PendingCorrelationRegistryInterface
         {
             public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
-
-            public function findByCorrelationId(string $correlationId): ?PendingCorrelation
-            {
-                return null;
-            }
-
+            public function findByCorrelationId(string $correlationId): ?\Alama\Arazzo\Contracts\Spec\PendingCorrelation { return null; }
             public function consume(string $correlationId): void {}
-
-            public function existsForExecution(string $executionId): bool
-            {
-                return false;
-            }
+            public function existsForExecution(string $executionId): bool { return false; }
         },
         definitionRegistry: new class() implements DefinitionRegistryInterface
         {
-            public function get(string $definitionId): ?ArazzoDocument
-            {
-                return null;
-            }
+            public function register(ArazzoDocument $document): string { return 'test-def'; }
+            public function get(string $definitionId): ?ArazzoDocument { return null; }
         },
         lockManager: new class() implements LockManagerInterface
         {
-            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed
-            {
-                return $callback();
-            }
-
-            public function tryAcquire(string $key, int $ttlSeconds): bool
-            {
-                return true;
-            }
-
+            public function acquire(string $key, int $ttlSeconds, callable $callback): mixed { return $callback(); }
+            public function tryAcquire(string $key, int $ttlSeconds): bool { return true; }
             public function release(string $key): void {}
         },
         httpClient: new class() implements HttpClientInterface
@@ -88,10 +70,41 @@ function dummySeams(): AsyncGraphSeams
                 return new Response(200);
             }
         },
+        expressionResolver: new class() implements \Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface
+        {
+            public function evaluate(\Alama\Arazzo\Contracts\Spec\Expression $expression, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?string $currentStepId = null): mixed { return $expression->raw; }
+            public function validateResponseSchema(\Alama\Arazzo\Contracts\Spec\Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): void {}
+            public function extractOutputs(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): array { return []; }
+            public function evaluateSuccessCriteria(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
+            public function evaluateCriteria(array $criteria, \Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool { return true; }
+        },
+        requestFactory: new \GuzzleHttp\Psr7\HttpFactory(),
+        logger: null,
+        idempotencyEnabled: false,
+        idempotencyHeader: 'Idempotency-Key',
+        strictValidation: false,
+        retryCeiling: 10,
+        retryBackoffMultiplier: 1.0,
+        stateTtlSeconds: 86400,
     );
 }
 
-it('defaults config knobs for an empty seams bag', function (): void {
+it('constructs seams with all required ports', function () {
+    $seams = dummySeams();
+
+    expect($seams->stateStore)->not->toBeNull()
+        ->and($seams->queueDriver)->not->toBeNull()
+        ->and($seams->eventLedger)->not->toBeNull()
+        ->and($seams->executionRegistry)->not->toBeNull()
+        ->and($seams->pendingCorrelationRegistry)->not->toBeNull()
+        ->and($seams->definitionRegistry)->not->toBeNull()
+        ->and($seams->lockManager)->not->toBeNull()
+        ->and($seams->httpClient)->not->toBeNull()
+        ->and($seams->expressionResolver)->not->toBeNull()
+        ->and($seams->requestFactory)->not->toBeNull();
+});
+
+it('retains config knobs', function () {
     $seams = dummySeams();
 
     expect($seams->idempotencyEnabled)->toBeFalse()

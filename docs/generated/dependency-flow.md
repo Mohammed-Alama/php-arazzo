@@ -101,7 +101,7 @@ laravel-Bindings,laravel-Persistence,4
 laravel-Bindings,laravel-Queue,1
 laravel-Bindings,laravel-State,1
 laravel-Bindings,laravel-Support,4
-laravel-Bindings,runner-Events,1
+laravel-Bindings,runner-Events,3
 laravel-Bindings,runner-Execution,6
 laravel-Bindings,runner-root,3
 laravel-Bindings,sources-Normalizer,6

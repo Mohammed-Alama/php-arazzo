@@ -37,4 +37,9 @@ class RedisHotStateStore implements StateStoreInterface
 
         return $data ? json_decode($data, true) : null;
     }
+
+    public function delete(string $executionId): void
+    {
+        $this->redis->connection()->del($this->prefix.$executionId);
+    }
 }

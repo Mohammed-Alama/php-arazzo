@@ -167,6 +167,8 @@ class StepOutcomeMockStateStore implements StateStoreInterface
     {
         return null;
     }
+
+    public function delete(string $executionId): void {}
 }
 
 /**

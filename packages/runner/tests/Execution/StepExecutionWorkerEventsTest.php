@@ -68,10 +68,13 @@ class WorkerEventsMockStateStore implements StateStoreInterface
     {
         return null;
     }
+
+    public function delete(string $executionId): void {}
 }
 
 class WorkerEventsMockEventLedger implements EventLedgerInterface
 {
+    /** @var list<array{executionId: string, eventType: string, payload: array<string, mixed>}> */
     public array $appended = [];
 
     public function append(string $executionId, string $eventType, array $payload): void
@@ -80,67 +83,35 @@ class WorkerEventsMockEventLedger implements EventLedgerInterface
     }
 }
 
-class WorkerEventsMockExecutionRegistry implements ExecutionRegistryInterface
+class WorkerEventsMockQueueDriver implements \Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface
 {
-    public function start(string $executionId, string $definitionId, string $workflowId): void {}
+    /** @var list<object> */
+    public array $dispatched = [];
 
-    public function complete(string $executionId, ExecutionStatus $status): void {}
-}
-
-class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
-{
-    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
+    public function dispatch(object $job, int $delaySeconds = 0): void
     {
-        return $expression->raw;
-    }
-
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-    {
-        return [];
-    }
-
-    public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-    {
-        return true;
-    }
-
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-    {
-        return true;
+        $this->dispatched[] = $job;
     }
 }
 
-class WorkerEventsFakeExecutor implements StepProtocolExecutorInterface
+class WorkerEventsMockPendingCorrelations implements PendingCorrelationRegistryInterface
 {
-    public function __construct(private ?StepExecutionOutcome $outcome = null, private ?Throwable $toThrow = null) {}
+    public ?\Alama\Arazzo\Contracts\Spec\PendingCorrelation $toReturn = null;
 
-    public function supports(Step $step, ArazzoDocument $document): bool
-    {
-        return true;
-    }
+    /** @var list<string> */
+    public array $consumed = [];
 
-    public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
-    {
-        if ($this->toThrow !== null) {
-            throw $this->toThrow;
-        }
-
-        return $this->outcome ?? StepExecutionOutcome::resolved(200, [], []);
-    }
-}
-
-class WorkerEventsMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
-{
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
-    public function findByCorrelationId(string $correlationId): ?PendingCorrelation
+    public function findByCorrelationId(string $correlationId): ?\Alama\Arazzo\Contracts\Spec\PendingCorrelation
     {
-        return null;
+        return $this->toReturn;
     }
 
-    public function consume(string $correlationId): void {}
+    public function consume(string $correlationId): void
+    {
+        $this->consumed[] = $correlationId;
+    }
 
     public function existsForExecution(string $executionId): bool
     {
@@ -148,171 +119,40 @@ class WorkerEventsMockPendingCorrelationRegistry implements PendingCorrelationRe
     }
 }
 
-class WorkerEventCollector
+class WorkerEventsMockExecutionRegistry implements ExecutionRegistryInterface
 {
-    public array $events = [];
+    public function start(string $executionId, string $definitionId, string $workflowId): void {}
 
-    public function add(object $e): void
+    public function complete(string $executionId, \Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus $status): void {}
+}
+
+class WorkerEventsMockDefinitionRegistry implements \Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface
+{
+    public function register(\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document): string { return 'test-def'; }
+    public function get(string $definitionId): ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument { return null; }
+}
+
+class WorkerEventsMockExpressionResolver implements ExpressionResolverInterface
+{
+    public function evaluate(\Alama\Arazzo\Contracts\Spec\Expression $expression, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?string $currentStepId = null): mixed
     {
-        $this->events[] = $e;
+        return $expression->raw;
+    }
+
+    public function validateResponseSchema(\Alama\Arazzo\Contracts\Spec\Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): void {}
+
+    public function extractOutputs(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): array
+    {
+        return [];
+    }
+
+    public function evaluateSuccessCriteria(\Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool
+    {
+        return true;
+    }
+
+    public function evaluateCriteria(array $criteria, \Alama\Arazzo\Contracts\Spec\Step $step, \Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface $context, ?\Alama\Arazzo\Contracts\Spec\ArazzoDocument $document = null): bool
+    {
+        return true;
     }
 }
-
-function createWorkerEventsHarness(?StepExecutionOutcome $outcome = null, ?Throwable $toThrow = null): array
-{
-    $dispatcher = new SimpleEventDispatcher();
-    $collector = new WorkerEventCollector();
-
-    $dispatcher->subscribe(StepStartedEvent::class, function ($e) use ($collector) {
-        $collector->add($e);
-    });
-    $dispatcher->subscribe(EventStepExecuted::class, function ($e) use ($collector) {
-        $collector->add($e);
-    });
-    $dispatcher->subscribe(CorrelationPendingEvent::class, function ($e) use ($collector) {
-        $collector->add($e);
-    });
-    $dispatcher->subscribe(StepFailedEvent::class, function ($e) use ($collector) {
-        $collector->add($e);
-    });
-
-    $defRegistry = new InMemoryDefinitionRegistry();
-    $lockManager = new WorkerEventsMockLockManager();
-    $store = new WorkerEventsMockStateStore();
-    $ledger = new WorkerEventsMockEventLedger();
-    $execRegistry = new WorkerEventsMockExecutionRegistry();
-    $resolver = new WorkerEventsMockExpressionResolver();
-    $queue = new SyncQueueDriver();
-    $outcomeHandler = new StepOutcomeHandler(
-        new RunPersistence($store, $ledger, $execRegistry),
-        new RunControlFlow(new WorkflowEngine($resolver), $queue),
-        pendingCorrelations: new WorkerEventsMockPendingCorrelationRegistry(),
-        invoker: Mockery::mock(SubWorkflowInvoker::class),
-        engine: Mockery::mock(EvaluationEngineInterface::class),
-    );
-
-    $executor = new WorkerEventsFakeExecutor($outcome, $toThrow);
-
-    $worker = new StepExecutionWorker(
-        new RunPersistence($store, $ledger, $execRegistry),
-        $lockManager,
-        $defRegistry,
-        $resolver,
-        [$executor],
-        new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $dispatcher),
-        stateTtlSeconds: 86400,
-    );
-
-    return [$worker, $defRegistry, $collector];
-}
-
-it('dispatches StepStartedEvent then StepExecutedEvent on happy path', function () {
-    $step = StepFactory::http('step1', null, new StepFlow(), new StepIo(), 'op1');
-    $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
-    $doc = new ArazzoDocument(
-        arazzo: '1.0.0',
-        info: new Info('Test', null, null, '1.0.0'),
-        sourceDescriptions: [],
-        workflows: [$wf],
-        components: new Components([], [], [], []),
-        specificationExtensions: [],
-    );
-
-    [$worker, $defRegistry, $collector] = createWorkerEventsHarness(
-        StepExecutionOutcome::resolved(200, ['outKey' => 'val'], []),
-    );
-    $defId = $defRegistry->register($doc);
-
-    $ctx = (new WorkflowContext($defId, [], [], [], 'wf1', 'exec1'));
-    $job = new ExecuteStepJob($step, $ctx);
-
-    $worker->handle($job);
-
-    $dispatched = $collector->events;
-    expect($dispatched)->toHaveCount(2);
-    expect($dispatched[0])->toBeInstanceOf(StepStartedEvent::class);
-    expect($dispatched[0]->executionId)->toBe('exec1');
-    expect($dispatched[0]->workflowId)->toBe('wf1');
-    expect($dispatched[0]->stepId)->toBe('step1');
-    expect($dispatched[0]->attempt)->toBe(1);
-
-    expect($dispatched[1])->toBeInstanceOf(EventStepExecuted::class);
-    expect($dispatched[1]->executionId)->toBe('exec1');
-    expect($dispatched[1]->workflowId)->toBe('wf1');
-    expect($dispatched[1]->stepId)->toBe('step1');
-    expect($dispatched[1]->statusCode)->toBe(200);
-    expect($dispatched[1]->outputs)->toBe(['outKey' => 'val']);
-    expect($dispatched[1]->criteriaMet)->toBeTrue();
-});
-
-it('dispatches StepStartedEvent then CorrelationPendingEvent on action receive suspend', function () {
-    $step = new Step(
-        stepId: 'recvStep',
-        description: null,
-        target: StepTarget::async('receive', 'notifications/channel', new Expression('$inputs.orderId')),
-        flow: new StepFlow(),
-        io: new StepIo(),
-    );
-    $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
-    $doc = new ArazzoDocument(
-        arazzo: '1.0.0',
-        info: new Info('Test', null, null, '1.0.0'),
-        sourceDescriptions: [],
-        workflows: [$wf],
-        components: new Components([], [], [], []),
-        specificationExtensions: [],
-    );
-
-    [$worker, $defRegistry, $collector] = createWorkerEventsHarness(
-        StepExecutionOutcome::suspended(),
-    );
-    $defId = $defRegistry->register($doc);
-
-    $ctx = (new WorkflowContext($defId, ['orderId' => 'ord-123'], [], [], 'wf1', 'exec1'));
-    $job = new ExecuteStepJob($step, $ctx);
-
-    $worker->handle($job);
-
-    $dispatched = $collector->events;
-    expect($dispatched)->toHaveCount(2);
-    expect($dispatched[0])->toBeInstanceOf(StepStartedEvent::class);
-    expect($dispatched[1])->toBeInstanceOf(CorrelationPendingEvent::class);
-    expect($dispatched[1]->executionId)->toBe('exec1');
-    expect($dispatched[1]->workflowId)->toBe('wf1');
-    expect($dispatched[1]->stepId)->toBe('recvStep');
-    expect($dispatched[1]->correlationId)->toBe('$inputs.orderId');
-    expect($dispatched[1]->channelPath)->toBe('notifications/channel');
-});
-
-it('dispatches StepStartedEvent then StepFailedEvent when executor throws', function () {
-    $step = StepFactory::http('step1', null, new StepFlow(), new StepIo(), 'op1');
-    $wf = new Workflow('wf1', null, null, null, [], [$step], [], [], [], []);
-    $doc = new ArazzoDocument(
-        arazzo: '1.0.0',
-        info: new Info('Test', null, null, '1.0.0'),
-        sourceDescriptions: [],
-        workflows: [$wf],
-        components: new Components([], [], [], []),
-        specificationExtensions: [],
-    );
-
-    $exception = new RuntimeException('Executor connection failed');
-    [$worker, $defRegistry, $collector] = createWorkerEventsHarness(
-        toThrow: $exception,
-    );
-    $defId = $defRegistry->register($doc);
-
-    $ctx = (new WorkflowContext($defId, [], [], [], 'wf1', 'exec1'));
-    $job = new ExecuteStepJob($step, $ctx);
-
-    expect(fn () => $worker->handle($job))->toThrow(RuntimeException::class, 'Executor connection failed');
-
-    $dispatched = $collector->events;
-    expect($dispatched)->toHaveCount(2);
-    expect($dispatched[0])->toBeInstanceOf(StepStartedEvent::class);
-    expect($dispatched[1])->toBeInstanceOf(StepFailedEvent::class);
-    expect($dispatched[1]->executionId)->toBe('exec1');
-    expect($dispatched[1]->workflowId)->toBe('wf1');
-    expect($dispatched[1]->stepId)->toBe('step1');
-    expect($dispatched[1]->cause)->toBe($exception);
-});

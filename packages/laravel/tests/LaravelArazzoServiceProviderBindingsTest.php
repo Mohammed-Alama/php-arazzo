@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests;
-uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
+
+uses(TestCase::class);
 
 use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Cli\Generator\Clients\OpenAiClient;

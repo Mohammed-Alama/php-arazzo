@@ -7,7 +7,6 @@ namespace Alama\Arazzo\Laravel\Tests;
 use Alama\Arazzo\Laravel\LaravelArazzoServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Events\Dispatcher as LaravelDispatcher;
-use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

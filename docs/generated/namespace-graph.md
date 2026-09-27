@@ -195,12 +195,12 @@ flowchart LR
     laravel_Bindings --> contracts_Interfaces
     laravel_Bindings --> laravel_Http
     laravel_Bindings --> contracts_Support
+    laravel_Bindings --> runner_Events
     laravel_Bindings --> document_Parser
     laravel_Bindings --> laravel_Lock
     laravel_Bindings --> laravel_Persistence
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
-    laravel_Bindings --> runner_Events
     laravel_Bindings --> sources_Normalizer
     laravel_Bindings --> sources_Resolver
     laravel_Bindings --> sources_Validator

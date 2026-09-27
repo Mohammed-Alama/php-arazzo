@@ -57,7 +57,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **865**
+Total cross-module edges: **867**
 
 ## Most entangled module pairs
 

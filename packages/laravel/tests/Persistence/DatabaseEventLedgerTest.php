@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Tests\Persistence;
+
 uses(\Alama\Arazzo\Laravel\Tests\TestCase::class);
 
 use Alama\Arazzo\Laravel\Persistence\DatabaseEventLedger;

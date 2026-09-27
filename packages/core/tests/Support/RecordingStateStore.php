@@ -28,4 +28,10 @@ final class RecordingStateStore implements StateStoreInterface
     {
         return $this->preloaded[$executionId] ?? $this->saved[$executionId] ?? null;
     }
+
+    public function delete(string $executionId): void
+    {
+        unset($this->preloaded[$executionId]);
+        unset($this->saved[$executionId]);
+    }
 }
