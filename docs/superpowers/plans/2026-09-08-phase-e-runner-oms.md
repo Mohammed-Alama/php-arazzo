@@ -66,7 +66,7 @@ Pre-work from the package-split validation (`docs/research/2026-09-26-runner-pac
 **Interfaces:**
 - Delivers: ~600 lines of dead code removed; `HttpClientInterface` promoted to the contracts seam. No behavioural change.
 
-- [ ] **Step 1: Delete the dead `Async/` directory**
+- [x] **Step 1: Delete the dead `Async/` directory**
 
 Run:
 ```bash
@@ -80,7 +80,7 @@ Run: `composer run test-runner && composer run analyse-runner`
 
 Expected: PASS.
 
-- [ ] **Step 2: Delete the dead `Protocol/` classes**
+- [x] **Step 2: Delete the dead `Protocol/` classes**
 
 Run:
 ```bash
@@ -91,14 +91,14 @@ composer run test-runner
 
 Expected: PASS.
 
-- [ ] **Step 3: Commit the deletions**
+- [x] **Step 3: Commit the deletions**
 
 ```bash
 git add -A packages/runner
 git commit -m "refactor(runner): delete dead Async/ + Protocol classes"
 ```
 
-- [ ] **Step 4: Relocate `HttpClientInterface` to contracts**
+- [x] **Step 4: Relocate `HttpClientInterface` to contracts**
 
 ```bash
 git mv packages/runner/src/Infrastructure/Interfaces/HttpClientInterface.php packages/contracts/src/Interfaces/HttpClientInterface.php
@@ -112,7 +112,7 @@ Run: `composer run test-runner && composer run analyse-runner && composer run te
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add -A packages/contracts packages/runner packages/laravel
@@ -143,7 +143,7 @@ Scaffold the first new package and move the small swappable runtime services int
 - Produces package `alama/arazzo-runtime`, PSR-4 `Alama\Arazzo\Runtime\` → `src/`. Requires `alama/arazzo-contracts` only.
 - Arch guard: `Alama\Arazzo\Runtime` uses nothing from `Alama\Arazzo\Engine`, `Alama\Arazzo\Runner`, or `Alama\Arazzo\Protocol\*`.
 
-- [ ] **Step 1: Scaffold the package**
+- [x] **Step 1: Scaffold the package**
 
 `packages/runtime/composer.json`:
 
@@ -176,7 +176,7 @@ Scaffold the first new package and move the small swappable runtime services int
 
 Copy `packages/document/phpstan.neon.dist` as the template for `packages/runtime/phpstan.neon.dist` (adjust `scanDirectories` to `../contracts/src`). Copy `packages/runner/tests/Pest.php` for `packages/runtime/tests/Pest.php`.
 
-- [ ] **Step 2: Move the classes and rewrite namespaces**
+- [x] **Step 2: Move the classes and rewrite namespaces**
 
 ```bash
 mkdir -p packages/runtime/src/{Policy,Telemetry,Infrastructure,State}
@@ -217,7 +217,7 @@ git mv packages/runner/tests/State packages/runtime/tests/State
 # `git mv` for it; if a later branch adds one, move it here.
 ```
 
-- [ ] **Step 3: Root plumbing**
+- [x] **Step 3: Root plumbing**
 
 Add to root `composer.json`:
 - `repositories`: `{"type": "path", "url": "packages/runtime"}`
@@ -230,7 +230,7 @@ Then:
 composer update alama/arazzo-runtime --with-dependencies --no-interaction
 ```
 
-- [ ] **Step 4: Add the arch guard and verify it bites**
+- [x] **Step 4: Add the arch guard and verify it bites**
 
 `packages/runtime/tests/Architecture/ArchTest.php`:
 
@@ -242,7 +242,7 @@ arch('runtime is a leaf: no engine, runner, or protocol dependencies')
 
 Verify the guard bites: temporarily add `use Alama\Arazzo\Runner\RunnerFacade;` to `packages/runtime/src/State/InMemoryStateStore.php`, run the test, confirm RED, then revert. Commit only after it is GREEN.
 
-- [ ] **Step 5: Install, verify, commit**
+- [x] **Step 5: Install, verify, commit**
 
 ```bash
 composer run test-runtime && composer run analyse-runtime
@@ -266,7 +266,7 @@ Kept separate from `arazzo-runtime` because it is a distinct seam that grows ind
 - Produces package `alama/arazzo-events`, PSR-4 `Alama\Arazzo\Events\` → `src/`. Requires `alama/arazzo-contracts` only.
 - Arch guard: `Alama\Arazzo\Events` uses nothing from `Alama\Arazzo\Engine`, `Alama\Arazzo\Runner`, or `Alama\Arazzo\Runtime`.
 
-- [ ] **Step 1: Scaffold + move + rewrite namespaces**
+- [x] **Step 1: Scaffold + move + rewrite namespaces**
 
 Mirror E1 Step 1 for the name `arazzo-events` / `Alama\Arazzo\Events\`, then:
 
@@ -279,7 +279,7 @@ Namespace rewrites: `namespace Alama\Arazzo\Runner\Events;` → `namespace Alama
 
 Move tests: `git mv packages/runner/tests/Events packages/events/tests`.
 
-- [ ] **Step 2: Root plumbing, arch guard, verify**
+- [x] **Step 2: Root plumbing, arch guard, verify**
 
 Add the `packages/events` path repository, `alama/arazzo-events` to root `require`, the `Alama\Arazzo\Tests\Events\` autoload-dev entry, and `analyse-events` / `test-events` scripts. `composer update alama/arazzo-events --with-dependencies --no-interaction`.
 
@@ -293,7 +293,7 @@ arch('events is a leaf: no engine, runtime, or runner dependencies')
 
 Verify it bites with a temporary forbidden import, then revert.
 
-- [ ] **Step 3: Install, verify, commit**
+- [x] **Step 3: Install, verify, commit**
 
 ```bash
 composer run test-events && composer run analyse-events
@@ -390,7 +390,7 @@ Deliberately **not** moved: `StepStateMachineEngine` and `StepTransition`/`StepT
 - Produces package `alama/arazzo-engine`, PSR-4 `Alama\Arazzo\Engine\` → `src/`. Requires `contracts`, `evaluation`, `arazzo-runtime` (policy only).
 - Arch guard: `Alama\Arazzo\Engine` uses nothing from `Alama\Arazzo\Runner` or `Alama\Arazzo\Protocol\*`. This is the boundary that makes the engine a real core and that Phase F's protocol packages depend on.
 
-- [ ] **Step 1: Scaffold + move + rewrite namespaces**
+- [x] **Step 1: Scaffold + move + rewrite namespaces**
 
 Mirror E1 Step 1 for `alama/arazzo-engine` / `Alama\Arazzo\Engine\`, requiring `contracts`, `evaluation`, `arazzo-runtime`. Then:
 
@@ -412,7 +412,7 @@ rg -l 'Alama\\Arazzo\\Runner\\Execution\\\(WorkflowEngine|Data\\Transition\|Data
 ```
 Rewrite each to the `Alama\Arazzo\Engine\...` equivalent. Known importers: `Execution/WorkflowExecutor.php`, `Execution/ExecutionGraphFactory.php`, `Execution/StepOutcomeHandler.php`, `Execution/AsyncExecutionGraphAssembler.php`, `Execution/StepExecutionWorker.php`, `Execution/Data/RunControlFlow.php` (self-reference), and `packages/laravel/src/...`.
 
-- [ ] **Step 2: Root plumbing, arch guard, verify**
+- [x] **Step 2: Root plumbing, arch guard, verify**
 
 Add the path repository, root `require`, `Alama\Arazzo\Tests\Engine\` autoload-dev, `analyse-engine` / `test-engine` scripts. `composer update alama/arazzo-engine --with-dependencies --no-interaction`.
 
@@ -426,7 +426,7 @@ arch('engine is a pure core: no runner or protocol dependencies')
 
 Verify it bites: temporarily add `use Alama\Arazzo\Runner\Execution\StepExecutor;` to `packages/engine/src/WorkflowEngine.php`, confirm RED, revert.
 
-- [ ] **Step 3: Confirm the engine's real dependency set**
+- [x] **Step 3: Confirm the engine's real dependency set**
 
 ```bash
 rg -o 'use Alama\\Arazzo\\[A-Za-z\\]*' packages/engine/src --glob '*.php' | sed 's/.*://' | sort -u
@@ -434,7 +434,7 @@ rg -o 'use Alama\\Arazzo\\[A-Za-z\\]*' packages/engine/src --glob '*.php' | sed 
 
 Expected: only `Contracts\...`, `Evaluation\...`, and `Runtime\Policy\RetryPolicy`. Anything from `Runner`, `Protocol`, `RequestPipeline` or `Events` is a finding — fix it or record why in the commit message.
 
-- [ ] **Step 4: Install, verify, commit**
+- [x] **Step 4: Install, verify, commit**
 
 ```bash
 composer run test-engine && composer run analyse-engine
@@ -453,7 +453,7 @@ git commit -m "refactor(engine): extract WorkflowEngine, Transition and executio
 **Interfaces:**
 - Consumes: E0–E4.
 
-- [ ] **Step 1: Run every package suite**
+- [x] **Step 1: Run every package suite**
 
 ```bash
 composer run test-runtime && composer run test-events
@@ -463,7 +463,7 @@ composer run test-runner && composer run test-laravel
 
 Expected: PASS.
 
-- [ ] **Step 2: Run static analysis across all packages**
+- [x] **Step 2: Run static analysis across all packages**
 
 ```bash
 composer run analyse-runtime && composer run analyse-events
@@ -472,7 +472,7 @@ composer run analyse-pipeline && composer run analyse-engine && composer run ana
 
 Expected: PASS (0 errors). Relocate any PHPStan baseline entries that moved with the classes — the baseline is per-package, so entries for moved files move to the destination package's baseline.
 
-- [ ] **Step 3: Verify the layer boundaries by sweep**
+- [x] **Step 3: Verify the layer boundaries by sweep**
 
 ```bash
 # L1 runtime is a leaf
@@ -487,13 +487,13 @@ rg -n 'Alama\\Arazzo\\(Runner|Protocol)\\' packages/engine/src || echo "engine c
 
 Expected: all four lines report clean. This is the machine-checkable statement of "the split happened before the OMS" that the phase goal depends on.
 
-- [ ] **Step 4: Run the repo gate**
+- [x] **Step 4: Run the repo gate**
 
 Run: `make verify` (repo root)
 
 Expected: PASS — confirms no consumer outside `packages/runner` broke.
 
-- [ ] **Step 5: Commit any baseline/formatting fixes**
+- [x] **Step 5: Commit any baseline/formatting fixes**
 
 ```bash
 git add -A
