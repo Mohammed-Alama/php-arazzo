@@ -23,7 +23,7 @@ Regenerated before every commit.
 | **ExpressionSyntaxException** | `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>(request-pipeline root)</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
-| **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small> |
+| **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
 | **NotImplementedException** | `Swagger2Normalizer` <small>sources:Normalizer</small> |
 | **PreflightFailureException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
 | **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>(request-pipeline root)</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
@@ -80,5 +80,6 @@ Regenerated before every commit.
 | prop defaultTtlSeconds | `RedisHotStateStore` | `86400` |
 | prop stateTtlSeconds | `StepExecutionWorker` | `86400` |
 | prop stateTtlSeconds | `StepOutcomeHandler` | `86400` |
+| prop stateTtlSeconds | `UnifiedStepCarrier` | `86400` |
 | prop stateTtlSeconds | `StoredWorkflowStateRepository` | `86400` |
 | prop ttlSeconds | `CachedFetcher` | `3600` |

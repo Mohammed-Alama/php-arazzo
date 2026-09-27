@@ -18,14 +18,14 @@ targets. Regenerated before every commit.
 | `contracts:Exceptions` | 1 | 30 | 2 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 18 | 304 | 21 | 3 | 0.13 |  |
 | `contracts:Spec` | 49 | 1154 | 31 | 1 | 0.03 |  |
-| `contracts:State` | 2 | 665 | 12 | 1 | 0.08 |  |
+| `contracts:State` | 2 | 665 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1305 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 68 | 3402 | 5 | 5 | 0.50 |  |
 | `(document root)` | 5 | 263 | 5 | 6 | 0.55 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
-| `(engine root)` | 2 | 192 | 0 | 3 | 1.00 |  |
+| `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 5 | 0.83 |  |
 | `evaluation:Data` | 1 | 33 | 2 | 2 | 0.50 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -58,7 +58,7 @@ targets. Regenerated before every commit.
 | `runner:Execution` | 30 | 3014 | 6 | 23 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 3 | 363 | 1 | 10 | 0.91 |  |
-| `(runner root)` | 6 | 290 | 4 | 11 | 0.73 |  |
+| `(runner root)` | 7 | 428 | 4 | 13 | 0.76 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 13 | 1050 | 9 | 3 | 0.25 |  |
@@ -68,7 +68,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **975**
+Total cross-module edges: **988**
 
 ## Most entangled module pairs
 

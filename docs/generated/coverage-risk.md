@@ -27,7 +27,7 @@ quadrantChart
     contracts/Exceptions: [0, 1]
     contracts/Interfaces: [0.125, 1]
     contracts/Spec: [0.031, 1]
-    contracts/State: [0.077, 1]
+    contracts/State: [0.071, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
     document/Validator: [0.5, 1]
@@ -60,7 +60,7 @@ quadrantChart
     runner/Execution: [0.793, 1]
     runner/Jobs: [0.333, 1]
     runner/Protocol: [0.909, 1]
-    runtime/Infrastructure: [1, 0.333]
+    runtime/Infrastructure: [1, 0.667]
     runtime/Policy: [0.75, 1]
     runtime/State: [0.25, 1]
     runtime/Telemetry: [0, 1]
@@ -76,23 +76,23 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 28 | 18 | 100% |
-| `contracts/Spec` | 0.03 | 188 | 49 | 100% |
-| `contracts/State` | 0.08 | 48 | 2 | 100% |
+| `contracts/Interfaces` | 0.12 | 29 | 18 | 100% |
+| `contracts/Spec` | 0.03 | 189 | 49 | 100% |
+| `contracts/State` | 0.07 | 49 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.50 | 74 | 68 | 100% |
-| `engine/Data` | 0.75 | 2 | 2 | 100% |
+| `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `evaluation/Condition` | 0.83 | 43 | 10 | 100% |
 | `evaluation/Data` | 0.50 | 2 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
-| `evaluation/Interfaces` | 0.09 | 26 | 5 | 100% |
+| `evaluation/Interfaces` | 0.09 | 27 | 5 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
-| `events/Interfaces` | 0.00 | 18 | 1 | 100% |
+| `events/Interfaces` | 0.00 | 19 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
 | `expression/Ast` | 0.50 | 5 | 15 | 33% |
 | `expression/Data` | 0.25 | 3 | 2 | 100% |
@@ -108,12 +108,12 @@ quadrantChart
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.75 | 1 | 2 | 50% |
 | `request-pipeline/Data` | 0.50 | 4 | 2 | 100% |
-| `runner/Execution` | 0.79 | 43 | 30 | 100% |
+| `runner/Execution` | 0.79 | 44 | 30 | 100% |
 | `runner/Jobs` | 0.33 | 5 | 2 | 100% |
 | `runner/Protocol` | 0.91 | 9 | 3 | 100% |
-| `runtime/Infrastructure` | 1.00 | 1 | 3 | 33% |
+| `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
-| `runtime/State` | 0.25 | 27 | 13 | 100% |
+| `runtime/State` | 0.25 | 28 | 13 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
 | `sources/Normalizer` | 0.42 | 16 | 9 | 100% |
 | `sources/Resolver` | 0.33 | 23 | 13 | 100% |
