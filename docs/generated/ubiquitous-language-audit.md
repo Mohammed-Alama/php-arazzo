@@ -16,7 +16,7 @@ Evans' first question: does the code speak one language?
 ### run vs execute vs invoke
 
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
-- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 6 more (10 types)
+- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
 - **Run**: `CliRunResult`, `CliRunner`, `OperationRuntime`, `RunCommand` + 13 more (17 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
@@ -45,7 +45,7 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 12 more (16 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 13 more (17 types)
 - **Repository**: `StoredWorkflowStateRepository`, `WorkflowStateRepositoryInterface` (2 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` + 1 more (5 types)
 

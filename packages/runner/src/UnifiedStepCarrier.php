@@ -30,12 +30,6 @@ use LogicException;
  */
 final class UnifiedStepCarrier
 {
-    /** @var list<OperationExecutorPluginInterface> */
-    private array $executorPlugins;
-
-    /**
-     * @param  list<OperationExecutorPluginInterface>  $executorPlugins
-     */
     public function __construct(
         private StateStoreInterface $stateStore,
         private WorkflowEngineInterface $workflowEngine,
@@ -43,13 +37,9 @@ final class UnifiedStepCarrier
         private ExecutionRegistryInterface $executionRegistry,
         private EventLedgerInterface $eventLedger,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
-        array $executorPlugins,
+        private OperationExecutorRegistry $registry,
         private int $stateTtlSeconds = 86400,
-    ) {
-        // Sort by priority (lower = higher priority, first-match wins)
-        $this->executorPlugins = $executorPlugins;
-        usort($this->executorPlugins, static fn (OperationExecutorPluginInterface $a, OperationExecutorPluginInterface $b): int => $a->priority() <=> $b->priority());
-    }
+    ) {}
 
     public function execute(
         string $executionId,
@@ -75,9 +65,6 @@ final class UnifiedStepCarrier
         $attempt = $context->getStepAttempts($step->stepId);
 
         $executor = $this->findExecutor($step, $document);
-        if ($executor === null) {
-            throw new LogicException("No OperationExecutorPluginInterface supports step '{$step->stepId}'.");
-        }
 
         $outcome = $executor->execute($step, $context, $document, $executionId);
 
@@ -125,14 +112,13 @@ final class UnifiedStepCarrier
         }
     }
 
-    private function findExecutor(Step $step, ArazzoDocument $document): ?OperationExecutorPluginInterface
+    private function findExecutor(Step $step, ArazzoDocument $document): OperationExecutorPluginInterface
     {
-        foreach ($this->executorPlugins as $plugin) {
-            if ($plugin->supports($step, $document)) {
-                return $plugin;
-            }
+        $executor = $this->registry->resolve($step, $document);
+        if ($executor === null) {
+            throw new LogicException("No OperationExecutorPluginInterface supports step '{$step->stepId}'.");
         }
 
-        return null;
+        return $executor;
     }
 }

@@ -55,10 +55,10 @@ targets. Regenerated before every commit.
 | `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
 | `request-pipeline:Data` | 2 | 64 | 3 | 3 | 0.50 |  |
 | `(request-pipeline root)` | 8 | 796 | 2 | 7 | 0.78 |  |
-| `runner:Execution` | 30 | 3014 | 6 | 23 | 0.79 |  |
+| `runner:Execution` | 30 | 3016 | 6 | 23 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 3 | 363 | 1 | 10 | 0.91 |  |
-| `(runner root)` | 7 | 428 | 4 | 13 | 0.76 |  |
+| `(runner root)` | 8 | 462 | 4 | 13 | 0.76 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 13 | 1050 | 9 | 3 | 0.25 |  |
@@ -68,7 +68,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **988**
+Total cross-module edges: **991**
 
 ## Most entangled module pairs
 

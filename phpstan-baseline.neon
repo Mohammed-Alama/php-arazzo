@@ -1,97 +1,337 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Anonymous function has invalid return type Alama\\Arazzo\\Runner\\WorkflowEngine\.$#'
-			identifier: class.notFound
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: packages/laravel/src/Bindings/ExecutionBindings.php
+			path: packages/runner/src/Execution/CorrelationResumer.php
 
 		-
-			message: '#^Class Alama\\Arazzo\\Runner\\WorkflowEngine not found\.$#'
-			identifier: class.notFound
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: packages/laravel/src/Bindings/ExecutionBindings.php
+			path: packages/runner/src/Execution/Data/ExecutionResult.php
 
 		-
-			message: '#^Instantiated class Alama\\Arazzo\\Runner\\WorkflowEngine not found\.$#'
-			identifier: class.notFound
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: packages/laravel/src/Bindings/ExecutionBindings.php
+			path: packages/runner/src/Execution/Data/SubWorkflowResult.php
 
 		-
-			message: '#^Anonymous function has invalid return type Alama\\Arazzo\\Runtime\\RunnerFacade\.$#'
-			identifier: class.notFound
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: packages/laravel/src/Bindings/FacadeBindings.php
+			path: packages/runner/src/Execution/Data/Transition.php
 
 		-
-			message: '#^Class Alama\\Arazzo\\Runtime\\RunnerFacadeInterface not found\.$#'
-			identifier: class.notFound
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
 			count: 1
-			path: packages/laravel/src/Bindings/FacadeBindings.php
+			path: packages/runner/src/Execution/DefaultOpenApiExecutor.php
 
 		-
-			message: '#^Instantiated class Alama\\Arazzo\\Runtime\\RunnerFacade not found\.$#'
-			identifier: class.notFound
+			message: '#^Method execute has too high cyclomatic complexity \(20\)\. Maximum allowed is 10\.$#'
 			count: 1
-			path: packages/laravel/src/Bindings/FacadeBindings.php
+			path: packages/runner/src/Execution/DefaultOpenApiExecutor.php
 
 		-
-			message: '#^Class TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Property Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor\:\:\$logger is never read, only written\.$#'
+			identifier: property.onlyWritten
 			count: 1
-			path: packages/laravel/tests/Bindings/EventBindingsTest.php
+			path: packages/runner/src/Execution/DefaultOpenApiExecutor.php
 
 		-
-			message: '#^Class TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Method findResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
 			count: 1
-			path: packages/laravel/tests/Bindings/HttpBindingsTest.php
+			path: packages/runner/src/Execution/ResponseSchemaValidator.php
 
 		-
-			message: '#^Class Tests\\Feature\\TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Strict comparison using \=\=\= between array\<cebe\\openapi\\spec\\MediaType\> and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
 			count: 1
-			path: packages/laravel/tests/Feature/IdempotencyFeatureTest.php
+			path: packages/runner/src/Execution/ResponseSchemaValidator.php
 
 		-
-			message: '#^Class Alama\\Arazzo\\Laravel\\Tests\\Persistence\\TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Method validate has too high cyclomatic complexity \(35\)\. Maximum allowed is 10\.$#'
 			count: 1
-			path: packages/laravel/tests/Persistence/DatabaseDefinitionRegistryTest.php
+			path: packages/runner/src/Execution/SchemaValidator.php
 
 		-
-			message: '#^Call to method createMock\(\) on an unknown class Alama\\Arazzo\\Laravel\\Tests\\Persistence\\TestCase\.$#'
-			identifier: class.notFound
-			count: 5
-			path: packages/laravel/tests/Persistence/DatabaseEventLedgerTest.php
+			message: '#^Method validateNumber has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: packages/runner/src/Execution/SchemaValidator.php
 
 		-
-			message: '#^Call to method once\(\) on an unknown class Alama\\Arazzo\\Laravel\\Tests\\Persistence\\TestCase\.$#'
-			identifier: class.notFound
+			message: '#^Method validateObject has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Parameter \#2 \$value of static method Alama\\Arazzo\\Runner\\Execution\\SchemaValidator\:\:validateObject\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array\<cebe\\openapi\\spec\\Reference\|cebe\\openapi\\spec\\Schema\> and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between float\|int and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 6
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: packages/runner/src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/runner/src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: packages/runner/src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: packages/runner/src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(24\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepExecutionWorker.php
+
+		-
+			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
 			count: 2
-			path: packages/laravel/tests/Persistence/DatabaseEventLedgerTest.php
+			path: packages/runner/src/Execution/StepExecutionWorker.php
 
 		-
-			message: '#^Class Tests\\Laravel\\TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
 			count: 1
-			path: packages/laravel/tests/Persistence/DatabaseExecutionRegistryTest.php
+			path: packages/runner/src/Execution/StepExecutor.php
 
 		-
-			message: '#^Class Tests\\Laravel\\TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Cannot call method getBody\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
-			path: packages/laravel/tests/Queue/LaravelQueueDriverTest.php
+			path: packages/runner/src/Execution/StepExecutor.php
 
 		-
-			message: '#^Class Alama\\Arazzo\\Tests\\Resolution\\TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Cannot call method getContents\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
-			path: packages/laravel/tests/Resolver/ResolutionServiceProviderBindingTest.php
+			path: packages/runner/src/Execution/StepExecutor.php
 
 		-
-			message: '#^Class Alama\\Arazzo\\Laravel\\Tests\\Unit\\TestCase not found\.$#'
-			identifier: class.notFound
+			message: '#^Cannot call method getHeaders\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
-			path: packages/laravel/tests/Unit/AdaptersTest.php
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Cannot call method getQuery\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Cannot call method getUri\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Cannot call method rewind\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\RequestPipeline\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Parameter \#1 \$string of function parse_str expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: packages/runner/src/Execution/StepExecutor.php
+
+		-
+			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/runner/src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method applyGoto has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method applyRetry has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Method handle has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepOutcomeHandler.php
+
+		-
+			message: '#^Cannot access offset ''body'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Cannot access offset ''response'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Method castOutputAgainstResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Method name ''castOutputAgainstResponseSchema'' length \(31\) is outside allowed range \(3\-30\)\.$#'
+			count: 1
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: packages/runner/src/Execution/StepOutputExtractor.php
+
+		-
+			message: '#^Cannot access offset ''status'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: packages/runner/src/Execution/WorkflowEngine.php
+
+		-
+			message: '#^Method transition has too high cyclomatic complexity \(23\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: packages/runner/src/Execution/WorkflowEngine.php
+
+		-
+			message: '#^Method transition has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Execution/WorkflowEngine.php
+
+		-
+			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: packages/runner/src/Execution/WorkflowEngine.php
+
+		-
+			message: '#^Method executeCanonically has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: packages/runner/src/Execution/WorkflowExecutor.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: packages/runner/src/Protocol/AsyncApiStepExecutor.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Protocol/AsyncApiStepExecutor.php
+
+		-
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/Protocol/HttpStepExecutor.php
+
+		-
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: packages/runner/src/UnifiedStepCarrier.php

@@ -76,9 +76,9 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 29 | 18 | 100% |
-| `contracts/Spec` | 0.03 | 189 | 49 | 100% |
-| `contracts/State` | 0.07 | 49 | 2 | 100% |
+| `contracts/Interfaces` | 0.12 | 30 | 18 | 100% |
+| `contracts/Spec` | 0.03 | 190 | 49 | 100% |
+| `contracts/State` | 0.07 | 50 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.50 | 74 | 68 | 100% |

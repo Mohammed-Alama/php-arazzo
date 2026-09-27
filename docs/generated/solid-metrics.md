@@ -69,7 +69,7 @@ quadrantChart
     runner/Execution: [0.793, 0.067]
     runner/Jobs: [0.333, 0]
     runner/Protocol: [0.909, 0]
-    runner/_: [0.765, 0.286]
+    runner/_: [0.765, 0.25]
     runtime/Infrastructure: [1, 0]
     runtime/Policy: [0.75, 0]
     runtime/State: [0.25, 0.385]

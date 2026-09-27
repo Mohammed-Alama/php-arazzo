@@ -10,6 +10,8 @@ use Alama\Arazzo\Contracts\Spec\Step;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
+ *
+ * @deprecated Use OperationExecutorRegistry with OperationExecutorPluginInterface instead.
  */
 interface ProtocolExecutorRegistryInterface
 {

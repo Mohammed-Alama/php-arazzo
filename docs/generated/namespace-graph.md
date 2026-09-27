@@ -208,11 +208,11 @@ flowchart LR
     runner__ --> contracts_Interfaces
     runner__ --> evaluation_Interfaces
     runner__ --> runner_Execution
+    runner__ --> contracts_Spec
     runner__ --> events_Interfaces
     runner__ --> runtime_State
     runner__ --> evaluation__
     runner__ --> expression_Interfaces
-    runner__ --> contracts_Spec
     runner__ --> contracts_State
     runner__ --> engine__
     runner__ --> document__

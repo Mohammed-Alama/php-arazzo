@@ -23,6 +23,7 @@ use Alama\Arazzo\Engine\Data\Transition;
 use Alama\Arazzo\Engine\WorkflowEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
 use Alama\Arazzo\Runner\UnifiedStepCarrier;
 use Alama\Arazzo\Runtime\Infrastructure\NullLockStrategy;
 use Alama\Arazzo\Runtime\State\InMemoryStateStore;
@@ -156,6 +157,9 @@ it('executes a step through the plugin and persists the outcome', function (): v
     $resolver = unifiedTestResolver();
     $workflowEngine = unifiedTestWorkflowEngine();
 
+    $registry = new OperationExecutorRegistry();
+    $registry->register(new SuccessfulPlugin());
+
     $carrier = new UnifiedStepCarrier(
         stateStore: $store,
         workflowEngine: $workflowEngine,
@@ -163,7 +167,7 @@ it('executes a step through the plugin and persists the outcome', function (): v
         executionRegistry: $executionRegistry,
         eventLedger: $ledger,
         pendingCorrelations: $pendingCorrelations,
-        executorPlugins: [new SuccessfulPlugin()],
+        registry: $registry,
     );
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
@@ -185,6 +189,8 @@ it('throws when no plugin supports the step', function (): void {
     $resolver = unifiedTestResolver();
     $workflowEngine = unifiedTestWorkflowEngine();
 
+    $registry = new OperationExecutorRegistry();
+
     $carrier = new UnifiedStepCarrier(
         stateStore: $store,
         workflowEngine: $workflowEngine,
@@ -192,7 +198,7 @@ it('throws when no plugin supports the step', function (): void {
         executionRegistry: $executionRegistry,
         eventLedger: $ledger,
         pendingCorrelations: $pendingCorrelations,
-        executorPlugins: [],
+        registry: $registry,
     );
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
