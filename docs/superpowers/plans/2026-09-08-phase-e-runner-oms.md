@@ -904,6 +904,7 @@ timeouts, `onTimeout`. `Retrying` remains an edge, not a state.
 
 **Files:**
 - Modify: `packages/contracts/src/Spec/Enum/StepState.php` (add `Cancelled`)
+- Modify: `packages/contracts/src/Spec/StepFlow.php` (correct the `onTimeout` annotation — pre-existing typo, see Step 3)
 - Modify: `packages/engine/src/Enum/StepTransitionType.php` (add `Timeout`, `Cancelled`)
 - Modify: `packages/engine/src/Data/StepTransition.php` (carry `$actions`)
 - Modify: `packages/engine/src/StepStateMachineEngine.php` (`cancel()`, `timeout()`, terminal arm)
@@ -914,7 +915,7 @@ timeouts, `onTimeout`. `Retrying` remains an edge, not a state.
 - Produces: `StepStateMachineEngine::cancel(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition`; `::timeout(...): StepTransition` (same signature); `StepTransition::$actions` (`list<FailureAction|Reusable>`, ordered, defaults `[]`).
 - Scope: `Reusable` entries are passed through **unresolved**. The only reuse mechanism the contracts define is `$components.parameters.*` (`Reusable::getParamterComponent()`); no reusable-*action* registry exists, and inventing one is out of scope. Resolving them is the carrier's job at E8.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `packages/engine/tests/StepStateMachineEngineTest.php`. Add these imports:
 
@@ -1020,13 +1021,13 @@ it('treats Cancelled as terminal in fire()', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
 
 Expected: FAIL — `StepState::Cancelled` does not exist and `cancel()`/`timeout()` are undefined.
 
-- [ ] **Step 3: Add the `Cancelled` state to the contract**
+- [x] **Step 3: Add the `Cancelled` state and fix the `onTimeout` annotation**
 
 In `packages/contracts/src/Spec/Enum/StepState.php`, add the case after `Failed`:
 
@@ -1048,7 +1049,23 @@ to both the `cases()` expectation and the backed-value chain:
     ->and(StepState::Cancelled->value)->toBe('cancelled');
 ```
 
-- [ ] **Step 4: Extend `StepTransitionType`**
+Also correct a **pre-existing typo** in `packages/contracts/src/Spec/StepFlow.php:19`. It
+annotates `$onTimeout` as `list<SuccessAction|Reusable>`, copy-pasted from `$onSuccess` three
+lines above. The Arazzo 1.2 schema defines `onTimeout` items as
+`oneOf: [failure-action-object, reusable-object]`
+(`docs/research/2026-09-08-arazzo-protocol-spec-prs-impact.md:334-341`), and the same research doc
+records it as an "ordered list of failure actions" (line 440). Change `SuccessAction` to
+`FailureAction` on that line only:
+
+```php
+     * @param  list<FailureAction|Reusable>  $onTimeout
+```
+
+Do **not** widen `StepTransition::$actions` to accept `SuccessAction` to make this go away — that
+would enshrine the typo in the contract. This is a tightening annotation fix; no runtime
+behaviour changes, and `StepFlow` has no other consumer.
+
+- [x] **Step 4: Extend `StepTransitionType`**
 
 In `packages/engine/src/Enum/StepTransitionType.php`, add two cases:
 
@@ -1057,7 +1074,7 @@ In `packages/engine/src/Enum/StepTransitionType.php`, add two cases:
     case Cancelled = 'cancelled';
 ```
 
-- [ ] **Step 5: Carry the ordered action list on `StepTransition`**
+- [x] **Step 5: Carry the ordered action list on `StepTransition`**
 
 In `packages/engine/src/Data/StepTransition.php`, add the `$actions` promoted property to the
 constructor (after `$type`) and two factories.
@@ -1098,7 +1115,7 @@ Add the imports `use Alama\Arazzo\Contracts\Spec\Action\FailureAction;` and
     }
 ```
 
-- [ ] **Step 6: Implement `cancel()` and `timeout()`**
+- [x] **Step 6: Implement `cancel()` and `timeout()`**
 
 In `packages/engine/src/StepStateMachineEngine.php`, add `Cancelled` to the terminal arm of `fire()`:
 
@@ -1152,13 +1169,13 @@ Add the terminal-state constant to the class, immediately after the constructor:
     private const TERMINAL_STATES = [StepState::Completed, StepState::Failed, StepState::Cancelled];
 ```
 
-- [ ] **Step 7: Run the tests to verify they pass**
+- [x] **Step 7: Run the tests to verify they pass**
 
 Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
 
 Expected: PASS (22 tests).
 
-- [ ] **Step 8: Verify the affected packages**
+- [x] **Step 8: Verify the affected packages**
 
 Run: `composer run test-contracts && composer run test-engine && composer run analyse-contracts && composer run analyse-engine`
 
@@ -1168,10 +1185,10 @@ amended in Step 6. Verify with `rg -n 'StepState::' packages/` that no other `ma
 enumerates the states without a `default`; if one exists, add the `Cancelled` arm rather than
 loosening the match.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
-git add packages/contracts/src/Spec/Enum/StepState.php packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php packages/engine/src/Enum/StepTransitionType.php packages/engine/src/Data/StepTransition.php packages/engine/src/StepStateMachineEngine.php packages/engine/tests/StepStateMachineEngineTest.php
+git add packages/contracts/src/Spec/Enum/StepState.php packages/contracts/src/Spec/StepFlow.php packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php packages/engine/src/Enum/StepTransitionType.php packages/engine/src/Data/StepTransition.php packages/engine/src/StepStateMachineEngine.php packages/engine/tests/StepStateMachineEngineTest.php
 git commit -m "feat(engine): add Cancelled state with onCancel path and ordered onTimeout actions"
 ```
 
