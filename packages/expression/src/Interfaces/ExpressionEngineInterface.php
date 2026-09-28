@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Interfaces;
 
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 
 /**
- * Entry-point seam for static Arazzo expression parsing and analysis.
+ * Entry-point seam for Arazzo expression parsing, analysis, and evaluation.
  */
 interface ExpressionEngineInterface
 {
@@ -21,4 +24,33 @@ interface ExpressionEngineInterface
      * Statically inspect what an expression references. Returns null on syntax error.
      */
     public function expressionReferences(string $raw): ?ExpressionReference;
+
+    /**
+     * Evaluate an Arazzo expression against a run context.
+     */
+    public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;
+
+    /**
+     * Evaluate a selector (JSONPath, JSON-pointer or XPath) against the workflow context.
+     */
+    public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;
+
+    /**
+     * Evaluate a raw JSONPath expression against data.
+     *
+     * @param  array<array-key, mixed>|object  $data
+     */
+    public function jsonPath(string $expression, array|object $data): mixed;
+
+    /**
+     * Run an XPath query against a root value with an explicit spec version.
+     */
+    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;
+
+    /**
+     * The XPath spec versions this engine can evaluate.
+     *
+     * @return list<string>
+     */
+    public function supportedXPathVersions(): array;
 }

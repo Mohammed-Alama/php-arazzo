@@ -17,7 +17,7 @@ xychart-beta
     bar [35, 20, 20, 19, 18, 16, 15, 12, 11, 10, 10, 9]
 ```
 
-Analyzed 287 total file-touches across 44 modules.
+Analyzed 291 total file-touches across 44 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -26,7 +26,7 @@ Analyzed 287 total file-touches across 44 modules.
 | `runner:Execution` | 20 | 7% | 3,743 | 5.3 |
 | `laravel:Http` | 19 | 7% | 170 | 111.8 |
 | `laravel:Persistence` | 18 | 6% | 264 | 68.2 |
-| `runner:Protocol` | 16 | 6% | 367 | 43.6 |
+| `runner:Protocol` | 16 | 5% | 367 | 43.6 |
 | `document:Validator` | 15 | 5% | 3,470 | 4.3 |
 | `laravel:Queue` | 12 | 4% | 109 | 110.1 |
 | `laravel:State` | 11 | 4% | 46 | 239.1 |
@@ -36,16 +36,17 @@ Analyzed 287 total file-touches across 44 modules.
 | `contracts:Interfaces` | 8 | 3% | 304 | 26.3 |
 | `document:Parser` | 8 | 3% | 1,316 | 6.1 |
 | `sources:Normalizer` | 7 | 2% | 782 | 9 |
-| `expression:Interfaces` | 5 | 2% | 75 | 66.7 |
+| `expression:Interfaces` | 6 | 2% | 75 | 80 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
 | `evaluation:Registries` | 4 | 1% | 123 | 32.5 |
 | `expression:Ast` | 4 | 1% | 350 | 11.4 |
+| `expression:Data` | 4 | 1% | 100 | 40 |
 | `cli:Generator` | 3 | 1% | 111 | 27 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
 | `evaluation:Plugins` | 3 | 1% | 110 | 27.3 |
-| `expression:Data` | 3 | 1% | 100 | 30 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
+| `expression:Xpath` | 3 | 1% | 110 | 27.3 |
 | `laravel:Events` | 3 | 1% | 24 | 125 |
 | `runner:Jobs` | 3 | 1% | 40 | 75 |
 | `runtime:State` | 3 | 1% | 1,063 | 2.8 |
@@ -55,12 +56,11 @@ Analyzed 287 total file-touches across 44 modules.
 | `engine:Enum` | 2 | 1% | 17 | 117.6 |
 | `evaluation:Condition` | 2 | 1% | 654 | 3.1 |
 | `evaluation:Interfaces` | 2 | 1% | 35 | 57.1 |
-| `expression:Xpath` | 2 | 1% | 110 | 18.2 |
+| `expression:Exceptions` | 2 | 1% | 55 | 36.4 |
 | `contracts:State` | 1 | 0% | 667 | 1.5 |
 | `evaluation:Enum` | 1 | 0% | 82 | 12.2 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |
-| `expression:Exceptions` | 1 | 0% | 55 | 18.2 |
 | `runtime:Infrastructure` | 1 | 0% | 155 | 6.5 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
