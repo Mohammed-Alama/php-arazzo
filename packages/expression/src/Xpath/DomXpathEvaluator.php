@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Xpath;
+namespace Alama\Arazzo\Expression\Xpath;
 
-use Alama\Arazzo\Evaluation\Exceptions\SelectorEvaluationException;
+use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
 use DOMDocument;
 use DOMNode;
 use DOMNodeList;

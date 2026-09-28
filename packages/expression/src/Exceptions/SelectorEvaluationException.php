@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Exceptions;
+namespace Alama\Arazzo\Expression\Exceptions;
 
 use Alama\Arazzo\Contracts\Support\Exceptions\ArazzoException;
 

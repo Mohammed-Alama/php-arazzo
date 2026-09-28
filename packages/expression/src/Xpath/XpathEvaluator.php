@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Xpath;
+namespace Alama\Arazzo\Expression\Xpath;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 
 /**
- * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ * XPath evaluation strategy; consumed by the ExpressionEngine facade and exposed
+ * through its public queryXPath() and supportedXPathVersions() methods.
  */
 interface XpathEvaluator
 {

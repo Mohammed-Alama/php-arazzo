@@ -27,29 +27,27 @@ pie showData
 
 ```mermaid
 pie showData
-    title Expression — 5 test files
-    "Module-scoped": 3
+    title Expression — 9 test files
+    "Module-scoped": 7
     "Root": 2
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 3 | 60% |
-| Root | 2 | 40% |
+| Module-scoped | 7 | 78% |
+| Root | 2 | 22% |
 
 ## Evaluation package
 
 ```mermaid
 pie showData
-    title Evaluation — 10 test files
-    "Root": 9
-    "Module-scoped": 1
+    title Evaluation — 7 test files
+    "Root": 7
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 9 | 90% |
-| Module-scoped | 1 | 10% |
+| Root | 7 | 100% |
 
 ## Document package
 
@@ -121,14 +119,14 @@ pie showData
 
 ```mermaid
 pie showData
-    title Runner — 50 test files
-    "Module-scoped": 43
+    title Runner — 49 test files
+    "Module-scoped": 42
     "Root": 7
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 43 | 86% |
+| Module-scoped | 42 | 86% |
 | Root | 7 | 14% |
 
 ## Cli package

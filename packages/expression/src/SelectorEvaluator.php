@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Evaluation\Exceptions\SelectorEvaluationException;
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
+use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.

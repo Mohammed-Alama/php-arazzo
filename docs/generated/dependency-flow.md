@@ -23,7 +23,7 @@ cli-Console,document-Parser,6
 cli-Console,document-Validator,2
 cli-Console,evaluation-root,2
 cli-Console,events-Interfaces,2
-cli-Console,expression-root,1
+cli-Console,expression-root,2
 cli-Console,runner-Execution,5
 cli-Console,runner-Jobs,1
 cli-Console,runner-root,1
@@ -58,44 +58,46 @@ engine-root,contracts-State,2
 engine-root,engine-Data,2
 evaluation-Condition,contracts-Spec,4
 evaluation-Condition,contracts-Support,1
-evaluation-Condition,evaluation-Data,1
 evaluation-Condition,evaluation-Enum,9
 evaluation-Condition,evaluation-Interfaces,7
-evaluation-Data,contracts-Spec,2
-evaluation-Data,evaluation-Interfaces,1
-evaluation-Exceptions,contracts-Support,1
-evaluation-Interfaces,contracts-Spec,6
+evaluation-Condition,expression-Data,1
+evaluation-Condition,expression-Interfaces,1
+evaluation-Interfaces,contracts-Spec,4
 evaluation-Plugins,contracts-Interfaces,2
 evaluation-Plugins,contracts-Spec,5
-evaluation-Plugins,evaluation-root,2
+evaluation-Plugins,expression-Interfaces,2
 evaluation-Registries,contracts-Interfaces,2
 evaluation-Registries,contracts-Spec,3
-evaluation-Xpath,contracts-Spec,1
-evaluation-Xpath,evaluation-Exceptions,1
-evaluation-root,contracts-Spec,27
+evaluation-Registries,evaluation-Plugins,2
+evaluation-Registries,expression-Interfaces,2
+evaluation-root,contracts-Spec,22
 evaluation-root,contracts-State,3
 evaluation-root,evaluation-Condition,2
-evaluation-root,evaluation-Data,4
-evaluation-root,evaluation-Exceptions,1
-evaluation-root,evaluation-Interfaces,4
+evaluation-root,evaluation-Interfaces,1
 evaluation-root,evaluation-Registries,3
-evaluation-root,evaluation-Xpath,5
-evaluation-root,expression-Ast,13
+evaluation-root,expression-Data,3
+evaluation-root,expression-Interfaces,6
 evaluation-root,expression-root,1
 events-Listener,contracts-Support,1
 events-Listener,events-Interfaces,1
 events-Listener,events-root,9
 expression-Ast,expression-Data,9
 expression-Ast,expression-Enum,9
+expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
-expression-Exceptions,contracts-Support,1
-expression-Interfaces,expression-Data,1
+expression-Data,expression-Interfaces,1
+expression-Exceptions,contracts-Support,2
+expression-Interfaces,contracts-Spec,5
 expression-Interfaces,expression-Exceptions,1
-expression-root,expression-Ast,14
-expression-root,expression-Data,4
+expression-Xpath,contracts-Spec,1
+expression-Xpath,expression-Exceptions,1
+expression-root,contracts-Spec,8
+expression-root,expression-Ast,27
+expression-root,expression-Data,5
 expression-root,expression-Enum,2
-expression-root,expression-Exceptions,3
-expression-root,expression-Interfaces,1
+expression-root,expression-Exceptions,4
+expression-root,expression-Interfaces,3
+expression-root,expression-Xpath,3
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,5
 laravel-Bindings,contracts-Support,1
@@ -151,10 +153,10 @@ runner-Execution,contracts-Support,9
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
 runner-Execution,document-root,5
-runner-Execution,evaluation-Data,5
 runner-Execution,evaluation-root,10
 runner-Execution,events-Interfaces,4
 runner-Execution,events-root,17
+runner-Execution,expression-Data,5
 runner-Execution,expression-Enum,1
 runner-Execution,expression-Interfaces,3
 runner-Execution,runner-Jobs,2
@@ -167,8 +169,8 @@ runner-Jobs,contracts-State,1
 runner-Protocol,contracts-Interfaces,5
 runner-Protocol,contracts-Spec,13
 runner-Protocol,contracts-State,3
-runner-Protocol,evaluation-Data,2
 runner-Protocol,evaluation-root,3
+runner-Protocol,expression-Data,2
 runner-Protocol,runner-Execution,9
 runner-Protocol,runtime-State,1
 runner-Protocol,sources-Normalizer,1
@@ -224,7 +226,6 @@ These references exist in the code but are not drawn: drawing them would close a
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
-| `evaluation-Condition` | `evaluation-root` | 1 |
-| `evaluation-Registries` | `evaluation-Plugins` | 2 |
+| `expression-Interfaces` | `expression-Data` | 1 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

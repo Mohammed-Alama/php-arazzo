@@ -26,7 +26,7 @@ quadrantChart
     contracts/Dependency: [0.4, 1]
     contracts/Exceptions: [0, 1]
     contracts/Interfaces: [0.136, 1]
-    contracts/Spec: [0.033, 1]
+    contracts/Spec: [0.031, 1]
     contracts/State: [0.077, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
@@ -34,20 +34,18 @@ quadrantChart
     engine/Data: [0.75, 1]
     engine/Enum: [0, 1]
     evaluation/Condition: [0.857, 1]
-    evaluation/Data: [0.333, 1]
     evaluation/Enum: [0, 0.333]
-    evaluation/Exceptions: [0.333, 1]
-    evaluation/Interfaces: [0.25, 1]
+    evaluation/Interfaces: [0.333, 0]
     evaluation/Plugins: [0.75, 0]
-    evaluation/Registries: [0.75, 0]
-    evaluation/Xpath: [0.667, 1]
+    evaluation/Registries: [0.8, 0]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 1]
-    expression/Ast: [0.5, 0.333]
-    expression/Data: [0.25, 1]
+    expression/Ast: [0.667, 0.333]
+    expression/Data: [0.3, 1]
     expression/Enum: [0, 1]
-    expression/Exceptions: [0.333, 1]
-    expression/Interfaces: [0.25, 1]
+    expression/Exceptions: [0.25, 1]
+    expression/Interfaces: [0.214, 1]
+    expression/Xpath: [0.667, 1]
     laravel/Bindings: [0.958, 0.857]
     laravel/Events: [0, 1]
     laravel/Http: [0.75, 1]
@@ -76,28 +74,26 @@ quadrantChart
 | `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 4 | 1 | 100% |
 | `contracts/Interfaces` | 0.14 | 32 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 189 | 49 | 100% |
-| `contracts/State` | 0.08 | 54 | 2 | 100% |
+| `contracts/Spec` | 0.03 | 194 | 49 | 100% |
+| `contracts/State` | 0.08 | 55 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.50 | 74 | 68 | 100% |
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
-| `evaluation/Data` | 0.33 | 10 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
-| `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
-| `evaluation/Interfaces` | 0.25 | 8 | 3 | 100% |
+| `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
-| `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
-| `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
+| `evaluation/Registries` | 0.80 | 0 | 2 | 0% |
 | `events/Interfaces` | 0.00 | 19 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
-| `expression/Ast` | 0.50 | 5 | 15 | 33% |
-| `expression/Data` | 0.25 | 3 | 2 | 100% |
+| `expression/Ast` | 0.67 | 5 | 15 | 33% |
+| `expression/Data` | 0.30 | 13 | 3 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
-| `expression/Exceptions` | 0.33 | 5 | 1 | 100% |
-| `expression/Interfaces` | 0.25 | 5 | 1 | 100% |
+| `expression/Exceptions` | 0.25 | 6 | 2 | 100% |
+| `expression/Interfaces` | 0.21 | 14 | 2 | 100% |
+| `expression/Xpath` | 0.67 | 2 | 2 | 100% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `laravel/Http` | 0.75 | 4 | 3 | 100% |
@@ -117,4 +113,4 @@ quadrantChart
 | `sources/Resolver` | 0.33 | 23 | 13 | 100% |
 | `sources/Validator` | 0.57 | 3 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`
+**Refactor-now list** (untested churn): `evaluation/Registries`, `evaluation/Plugins`

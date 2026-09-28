@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression;
 
 use Flow\JSONPath\JSONPath;
 
 /**
- * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ * Standalone JSONPath evaluation; consumed by the ExpressionEngine facade and exposed
+ * through its public jsonPath() method.
  */
 class JsonPathEvaluator
 {

@@ -87,6 +87,11 @@ public contract between packages.
 - `ExpressionEngineInterface` (`interface`)
   - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
   - `public function expressionReferences(string $raw): ?ExpressionReference;`
+  - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+  - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
+  - `public function jsonPath(string $expression, array|object $data): mixed;`
+  - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+  - `public function supportedXPathVersions(): array;`
 
 ### Cross-boundary value types
 
@@ -134,21 +139,21 @@ public contract between packages.
 
 - `WorkflowSymbols` — not found
 - `StepSymbols` — not found
-- `EvaluationInputInterface` — present
+- `EvaluationInputInterface` — not found
 - `EvaluationInput` — not found
-- `SelectorEvaluationException` — present
+- `SelectorEvaluationException` — not found
 - `ExpressionReference` — not found
 - `ReferenceKind` — not found
 
 ### Deliberately internal
 
-- `ExpressionEvaluator` — `@internal`: yes
-- `SelectorEvaluator` — `@internal`: yes
+- `ExpressionEvaluator` — _not found in scan_
+- `SelectorEvaluator` — _not found in scan_
 - `StringInterpolator` — `@internal`: yes
-- `JsonPathEvaluator` — `@internal`: yes
-- `JsonPointer` — `@internal`: yes
-- `DomXpathEvaluator` — `@internal`: yes
-- `XpathEvaluator` — `@internal`: yes
+- `JsonPathEvaluator` — _not found in scan_
+- `JsonPointer` — _not found in scan_
+- `DomXpathEvaluator` — _not found in scan_
+- `XpathEvaluator` — _not found in scan_
 - `Evaluation\*` — whole namespace (declared target)
 
 ## document

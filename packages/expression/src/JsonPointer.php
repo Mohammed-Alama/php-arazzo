@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation;
+namespace Alama\Arazzo\Expression;
 
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.

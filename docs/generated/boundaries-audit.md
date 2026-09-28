@@ -38,7 +38,7 @@ when a boundary consciously moves.
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
-| evaluation | `evaluation:_` | `Flow` | 1 |
+| expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
 | runner | `runner:Execution` | `Psr` | 23 |
@@ -75,7 +75,7 @@ when a boundary consciously moves.
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
-- `evaluation:_` imports `Flow\*` (1 refs)
+- `expression:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
@@ -112,25 +112,13 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
-| `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `InputPart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `InputRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `MessageRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `OutputPart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `Parser` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `RequestPart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `ResponsePart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `SelfRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `SourceRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `StepRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
+| `evaluation` | `JsonPointer` | `expression` | 1 | `EvaluationEngine` |
 | `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
-| `runner` | `EvaluationContext` | `evaluation` | 7 | `SubWorkflowInvoker` |
+| `runner` | `EvaluationContext` | `expression` | 7 | `SubWorkflowInvoker` |
 | `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |

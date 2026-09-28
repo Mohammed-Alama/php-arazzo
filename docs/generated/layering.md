@@ -32,6 +32,7 @@ flowchart TB
         M_expression_Enum["expression:Enum"]:::node
         M_expression_Exceptions["expression:Exceptions"]:::node
         M_expression_Interfaces["expression:Interfaces"]:::node
+        M_expression_Xpath["expression:Xpath"]:::node
         M_expression__["(expression package root)"]:::node
     end
     subgraph PKG_M_runtime["runtime"]
@@ -47,13 +48,10 @@ flowchart TB
     end
     subgraph PKG_M_evaluation["evaluation"]
         M_evaluation_Condition["evaluation:Condition"]:::node
-        M_evaluation_Data["evaluation:Data"]:::node
         M_evaluation_Enum["evaluation:Enum"]:::node
-        M_evaluation_Exceptions["evaluation:Exceptions"]:::node
         M_evaluation_Interfaces["evaluation:Interfaces"]:::node
         M_evaluation_Plugins["evaluation:Plugins"]:::node
         M_evaluation_Registries["evaluation:Registries"]:::node
-        M_evaluation_Xpath["evaluation:Xpath"]:::node
         M_evaluation__["(evaluation package root)"]:::node
     end
     subgraph PKG_M_document["document"]
@@ -141,46 +139,47 @@ flowchart TB
     M_engine__ --> M_engine_Data
     M_evaluation_Condition --> M_contracts_Spec
     M_evaluation_Condition --> M_contracts_Support
-    M_evaluation_Condition --> M_evaluation_Data
     M_evaluation_Condition --> M_evaluation_Enum
     M_evaluation_Condition --> M_evaluation_Interfaces
-    M_evaluation_Condition --> M_evaluation__
-    M_evaluation_Data --> M_contracts_Spec
-    M_evaluation_Data --> M_evaluation_Interfaces
-    M_evaluation_Exceptions --> M_contracts_Support
+    M_evaluation_Condition --> M_expression_Data
+    M_evaluation_Condition --> M_expression_Interfaces
     M_evaluation_Interfaces --> M_contracts_Spec
     M_evaluation_Plugins --> M_contracts_Interfaces
     M_evaluation_Plugins --> M_contracts_Spec
-    M_evaluation_Plugins --> M_evaluation__
+    M_evaluation_Plugins --> M_expression_Interfaces
     M_evaluation_Registries --> M_contracts_Interfaces
     M_evaluation_Registries --> M_contracts_Spec
     M_evaluation_Registries --> M_evaluation_Plugins
-    M_evaluation_Xpath --> M_contracts_Spec
-    M_evaluation_Xpath --> M_evaluation_Exceptions
+    M_evaluation_Registries --> M_expression_Interfaces
     M_evaluation__ --> M_contracts_Spec
     M_evaluation__ --> M_contracts_State
     M_evaluation__ --> M_evaluation_Condition
-    M_evaluation__ --> M_evaluation_Data
-    M_evaluation__ --> M_evaluation_Exceptions
     M_evaluation__ --> M_evaluation_Interfaces
     M_evaluation__ --> M_evaluation_Registries
-    M_evaluation__ --> M_evaluation_Xpath
-    M_evaluation__ --> M_expression_Ast
+    M_evaluation__ --> M_expression_Data
+    M_evaluation__ --> M_expression_Interfaces
     M_evaluation__ --> M_expression__
     M_events_Listener --> M_contracts_Support
     M_events_Listener --> M_events_Interfaces
     M_events_Listener --> M_events__
     M_expression_Ast --> M_expression_Data
     M_expression_Ast --> M_expression_Enum
+    M_expression_Data --> M_contracts_Spec
     M_expression_Data --> M_expression_Enum
+    M_expression_Data --> M_expression_Interfaces
     M_expression_Exceptions --> M_contracts_Support
+    M_expression_Interfaces --> M_contracts_Spec
     M_expression_Interfaces --> M_expression_Data
     M_expression_Interfaces --> M_expression_Exceptions
+    M_expression_Xpath --> M_contracts_Spec
+    M_expression_Xpath --> M_expression_Exceptions
+    M_expression__ --> M_contracts_Spec
     M_expression__ --> M_expression_Ast
     M_expression__ --> M_expression_Data
     M_expression__ --> M_expression_Enum
     M_expression__ --> M_expression_Exceptions
     M_expression__ --> M_expression_Interfaces
+    M_expression__ --> M_expression_Xpath
     M_laravel_Bindings --> M_cli_Generator
     M_laravel_Bindings --> M_contracts_Interfaces
     M_laravel_Bindings --> M_contracts_Support
@@ -236,10 +235,10 @@ flowchart TB
     M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
-    M_runner_Execution --> M_evaluation_Data
     M_runner_Execution --> M_evaluation__
     M_runner_Execution --> M_events_Interfaces
     M_runner_Execution --> M_events__
+    M_runner_Execution --> M_expression_Data
     M_runner_Execution --> M_expression_Enum
     M_runner_Execution --> M_expression_Interfaces
     M_runner_Execution --> M_runner_Jobs
@@ -254,8 +253,8 @@ flowchart TB
     M_runner_Protocol --> M_contracts_Interfaces
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
-    M_runner_Protocol --> M_evaluation_Data
     M_runner_Protocol --> M_evaluation__
+    M_runner_Protocol --> M_expression_Data
     M_runner_Protocol --> M_runner_Execution
     M_runner_Protocol --> M_runtime_State
     M_runner_Protocol --> M_sources_Normalizer
@@ -321,7 +320,7 @@ flowchart TB
 | `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `events` | 2 |
-| `cli` | `expression` | 1 |
+| `cli` | `expression` | 2 |
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 2 |
@@ -329,10 +328,10 @@ flowchart TB
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 12 |
-| `evaluation` | `contracts` | 57 |
-| `evaluation` | `expression` | 14 |
+| `evaluation` | `contracts` | 46 |
+| `evaluation` | `expression` | 16 |
 | `events` | `contracts` | 1 |
-| `expression` | `contracts` | 1 |
+| `expression` | `contracts` | 18 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 21 |
 | `laravel` | `document` | 4 |
@@ -345,9 +344,9 @@ flowchart TB
 | `runner` | `contracts` | 152 |
 | `runner` | `document` | 10 |
 | `runner` | `engine` | 1 |
-| `runner` | `evaluation` | 22 |
+| `runner` | `evaluation` | 15 |
 | `runner` | `events` | 23 |
-| `runner` | `expression` | 7 |
+| `runner` | `expression` | 14 |
 | `runner` | `runtime` | 25 |
 | `runner` | `sources` | 10 |
 | `runtime` | `contracts` | 20 |

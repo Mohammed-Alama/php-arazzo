@@ -17,7 +17,7 @@ flowchart LR
     I_DefinitionRegistryInterface["DefinitionRegistryInterface<br/><small>runtime:State</small>"]:::contract
     I_DocumentInterface["DocumentInterface<br/><small>(document root)</small>"]:::contract
     I_EvaluationEngineInterface["EvaluationEngineInterface<br/><small>(evaluation root)</small>"]:::contract
-    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>evaluation:Interfaces</small>"]:::contract
+    I_EvaluationInputInterface["EvaluationInputInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_EventLedgerInterface["EventLedgerInterface<br/><small>events:Interfaces</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runtime:State</small>"]:::contract
     I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>expression:Interfaces</small>"]:::contract
@@ -48,13 +48,17 @@ flowchart LR
     I_WorkflowEngineInterface["WorkflowEngineInterface<br/><small>(engine root)</small>"]:::contract
     I_WorkflowStateRepositoryInterface["WorkflowStateRepositoryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_WritableDefinitionRegistryInterface["WritableDefinitionRegistryInterface<br/><small>runtime:State</small>"]:::contract
-    I_XpathEvaluator["XpathEvaluator<br/><small>evaluation:Xpath</small>"]:::contract
+    I_XpathEvaluator["XpathEvaluator<br/><small>expression:Xpath</small>"]:::contract
     C_contracts_contracts_Spec_ResponseTransfer["ResponseTransfer<br/><small>contracts:Spec</small>"]:::implCore
     C_contracts_contracts_Spec_ResponseTransfer -.->|implements| I_ResponseTransferInterface
     C_contracts_contracts_State_WorkflowContext["WorkflowContext<br/><small>contracts:State</small>"]:::implCore
     C_contracts_contracts_State_WorkflowContext -.->|implements| I_WorkflowContextInterface
+    C_expression_expression_Data_EvaluationContext["EvaluationContext<br/><small>expression:Data</small>"]:::implCore
+    C_expression_expression_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_expression_expression_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>expression:Xpath</small>"]:::implCore
+    C_expression_expression_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore
     C_evaluation_evaluation_Condition_Comparison -.->|implements| I_ConditionNode
     C_evaluation_evaluation_Condition_Literal["Literal<br/><small>evaluation:Condition</small>"]:::implCore
@@ -67,16 +71,12 @@ flowchart LR
     C_evaluation_evaluation_Condition_UnaryNot -.->|implements| I_ConditionNode
     C_evaluation_evaluation___CriteriaEvaluator["CriteriaEvaluator<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
-    C_evaluation_evaluation_Data_EvaluationContext["EvaluationContext<br/><small>evaluation:Data</small>"]:::implCore
-    C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_evaluation_evaluation___EvaluationEngine["EvaluationEngine<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___EvaluationEngine -.->|implements| I_EvaluationEngineInterface
     C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin["JsonPathCriterionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
     C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin -.->|implements| I_CriterionEvaluatorPluginInterface
     C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin["JsonPathExpressionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
     C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin -.->|implements| I_ExpressionEvaluatorPluginInterface
-    C_evaluation_evaluation_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>evaluation:Xpath</small>"]:::implCore
-    C_evaluation_evaluation_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_document_document___Document["Document<br/><small>(document root)</small>"]:::implCore
     C_document_document___Document -.->|implements| I_DocumentInterface
     C_document_document_Parser_NativeJsonDecoder["NativeJsonDecoder<br/><small>document:Parser</small>"]:::implCore

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Evaluation;
+namespace Alama\Arazzo\Tests\Expression;
 
-use Alama\Arazzo\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Expression\JsonPathEvaluator;
 
 it('evaluates simple jsonpath expression', function () {
     $data = [

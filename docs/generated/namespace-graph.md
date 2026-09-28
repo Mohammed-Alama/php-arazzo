@@ -25,13 +25,10 @@ flowchart LR
     engine_Enum["Alama\Arazzo\Engine\Enum"]:::coreNode
     engine__["(engine package root)"]:::coreNode
     evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
-    evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
     evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
-    evaluation_Exceptions["Alama\Arazzo\Evaluation\Exceptions"]:::coreNode
     evaluation_Interfaces["Alama\Arazzo\Evaluation\Interfaces"]:::coreNode
     evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
     evaluation_Registries["Alama\Arazzo\Evaluation\Registries"]:::coreNode
-    evaluation_Xpath["Alama\Arazzo\Evaluation\Xpath"]:::coreNode
     evaluation__["(evaluation package root)"]:::coreNode
     events_Interfaces["Alama\Arazzo\Events\Interfaces"]:::coreNode
     events_Listener["Alama\Arazzo\Events\Listener"]:::coreNode
@@ -41,6 +38,7 @@ flowchart LR
     expression_Enum["Alama\Arazzo\Expression\Enum"]:::coreNode
     expression_Exceptions["Alama\Arazzo\Expression\Exceptions"]:::coreNode
     expression_Interfaces["Alama\Arazzo\Expression\Interfaces"]:::coreNode
+    expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
     laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
     laravel_Http["Alama\Arazzo\Laravel\Http\Controllers"]:::laravelNode
@@ -72,42 +70,43 @@ flowchart LR
     expression_Ast --> expression_Data
     expression_Ast --> expression_Enum
     expression_Data --> expression_Enum
+    expression_Data --> contracts_Spec
+    expression_Data --> expression_Interfaces
     expression_Exceptions --> contracts_Support
+    expression_Interfaces --> contracts_Spec
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
+    expression_Xpath --> contracts_Spec
+    expression_Xpath --> expression_Exceptions
+    expression__ --> contracts_Spec
     expression__ --> expression_Data
     expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
+    expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
     evaluation_Condition --> evaluation_Enum
     evaluation_Condition --> contracts_Spec
     evaluation_Condition --> evaluation_Interfaces
     evaluation_Condition --> contracts_Support
-    evaluation_Condition --> evaluation_Data
-    evaluation_Condition --> evaluation__
-    evaluation_Data --> contracts_Spec
-    evaluation_Data --> evaluation_Interfaces
-    evaluation_Exceptions --> contracts_Support
+    evaluation_Condition --> expression_Data
+    evaluation_Condition --> expression_Interfaces
     evaluation_Interfaces --> contracts_Spec
     evaluation_Plugins --> contracts_Interfaces
     evaluation_Plugins --> contracts_Spec
-    evaluation_Plugins --> evaluation__
+    evaluation_Plugins --> expression_Interfaces
     evaluation_Registries --> contracts_Interfaces
     evaluation_Registries --> contracts_Spec
     evaluation_Registries --> evaluation_Plugins
-    evaluation_Xpath --> contracts_Spec
-    evaluation_Xpath --> evaluation_Exceptions
+    evaluation_Registries --> expression_Interfaces
     evaluation__ --> contracts_Spec
     evaluation__ --> contracts_State
-    evaluation__ --> evaluation_Xpath
-    evaluation__ --> evaluation_Interfaces
-    evaluation__ --> expression_Ast
-    evaluation__ --> expression__
+    evaluation__ --> expression_Interfaces
     evaluation__ --> evaluation_Condition
-    evaluation__ --> evaluation_Data
+    evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
-    evaluation__ --> evaluation_Exceptions
+    evaluation__ --> expression_Data
+    evaluation__ --> expression__
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec
@@ -163,8 +162,8 @@ flowchart LR
     runner_Execution --> contracts_Spec
     runner_Execution --> runtime_State
     runner_Execution --> contracts_State
-    runner_Execution --> evaluation_Data
     runner_Execution --> evaluation__
+    runner_Execution --> expression_Data
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
@@ -188,7 +187,7 @@ flowchart LR
     runner_Protocol --> evaluation__
     runner_Protocol --> runner_Execution
     runner_Protocol --> sources_Normalizer
-    runner_Protocol --> evaluation_Data
+    runner_Protocol --> expression_Data
     runner_Protocol --> runtime_State
     runner__ --> contracts_Interfaces
     runner__ --> runner_Execution

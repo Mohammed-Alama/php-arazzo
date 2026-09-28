@@ -22,7 +22,7 @@ classDiagram
     class E_ParserException["ParserException<br/><small>document:Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>document:Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>contracts:Exceptions</small>"]:::domain
-    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>evaluation:Exceptions</small>"]:::domain
+    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>expression:Exceptions</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>sources:Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>sources:Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>sources:Resolver</small>"]:::domain
@@ -72,7 +72,7 @@ classDiagram
 | `ParserException` | `ArazzoException` | document:Parser |
 | `PreflightFailureException` | `ArazzoException` | document:Validator |
 | `SchemaValidationException` | `RuntimeException` | contracts:Exceptions |
-| `SelectorEvaluationException` | `ArazzoException` | evaluation:Exceptions |
+| `SelectorEvaluationException` | `ArazzoException` | expression:Exceptions |
 | `SourceFetchException` | `SourceResolutionException` | sources:Resolver |
 | `SourceParseException` | `SourceResolutionException` | sources:Resolver |
 | `SourceResolutionException` | `RuntimeException` | sources:Resolver |

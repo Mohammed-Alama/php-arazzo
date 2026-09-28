@@ -18,7 +18,7 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>1203 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>793 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>794 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1316 LOC</small>"]:::supportingDomain
@@ -46,20 +46,18 @@ flowchart LR
         S_engine_Data["engine:Data<br/><small>74 LOC</small>"]:::unknownDomain
         S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>654 LOC</small>"]:::unknownDomain
-        S_evaluation_Data["evaluation:Data<br/><small>34 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
-        S_evaluation_Exceptions["evaluation:Exceptions<br/><small>32 LOC</small>"]:::unknownDomain
-        S_evaluation_Interfaces["evaluation:Interfaces<br/><small>53 LOC</small>"]:::unknownDomain
-        S_evaluation_Plugins["evaluation:Plugins<br/><small>102 LOC</small>"]:::unknownDomain
-        S_evaluation_Registries["evaluation:Registries<br/><small>121 LOC</small>"]:::unknownDomain
-        S_evaluation_Xpath["evaluation:Xpath<br/><small>109 LOC</small>"]:::unknownDomain
+        S_evaluation_Interfaces["evaluation:Interfaces<br/><small>35 LOC</small>"]:::unknownDomain
+        S_evaluation_Plugins["evaluation:Plugins<br/><small>110 LOC</small>"]:::unknownDomain
+        S_evaluation_Registries["evaluation:Registries<br/><small>123 LOC</small>"]:::unknownDomain
         S_events_Interfaces["events:Interfaces<br/><small>19 LOC</small>"]:::unknownDomain
         S_events_Listener["events:Listener<br/><small>95 LOC</small>"]:::unknownDomain
         S_expression_Ast["expression:Ast<br/><small>350 LOC</small>"]:::unknownDomain
-        S_expression_Data["expression:Data<br/><small>66 LOC</small>"]:::unknownDomain
+        S_expression_Data["expression:Data<br/><small>100 LOC</small>"]:::unknownDomain
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
-        S_expression_Exceptions["expression:Exceptions<br/><small>23 LOC</small>"]:::unknownDomain
-        S_expression_Interfaces["expression:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
+        S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
+        S_expression_Interfaces["expression:Interfaces<br/><small>75 LOC</small>"]:::unknownDomain
+        S_expression_Xpath["expression:Xpath<br/><small>110 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>3743 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
         S_runner_Protocol["runner:Protocol<br/><small>367 LOC</small>"]:::unknownDomain
@@ -77,9 +75,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
-| Supporting | 7 | 6,736 | 0 | 35% |
+| Supporting | 7 | 6,737 | 0 | 35% |
 | Generic subdomain | 11 | 1,915 | 1,156 | 16% |
-| Unclassified | 27 | 8,043 | 0 | 42% |
+| Unclassified | 25 | 8,086 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -88,13 +86,10 @@ flowchart LR
 - `engine:Data`
 - `engine:Enum`
 - `evaluation:Condition`
-- `evaluation:Data`
 - `evaluation:Enum`
-- `evaluation:Exceptions`
 - `evaluation:Interfaces`
 - `evaluation:Plugins`
 - `evaluation:Registries`
-- `evaluation:Xpath`
 - `events:Interfaces`
 - `events:Listener`
 - `expression:Ast`
@@ -102,6 +97,7 @@ flowchart LR
 - `expression:Enum`
 - `expression:Exceptions`
 - `expression:Interfaces`
+- `expression:Xpath`
 - `runner:Execution`
 - `runner:Jobs`
 - `runner:Protocol`

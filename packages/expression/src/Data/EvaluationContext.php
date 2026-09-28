@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Evaluation\Data;
+namespace Alama\Arazzo\Expression\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 
 final readonly class EvaluationContext implements EvaluationInputInterface
 {
