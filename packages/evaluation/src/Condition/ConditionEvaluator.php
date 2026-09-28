@@ -9,8 +9,8 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
 use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
+use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -22,7 +22,7 @@ final class ConditionEvaluator
     private Parser $parser;
 
     public function __construct(
-        private ExpressionEvaluatorInterface $evaluator,
+        private ExpressionEvaluator $evaluator,
     ) {
         $this->lexer = new Lexer();
         $this->parser = new Parser($this->lexer);

@@ -10,7 +10,6 @@
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-events": "@dev",
-        "alama/arazzo-request-pipeline": "@dev",
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",
         "guzzlehttp/guzzle": "^7.9",

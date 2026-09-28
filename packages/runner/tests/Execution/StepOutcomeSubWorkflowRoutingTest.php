@@ -14,7 +14,6 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
@@ -43,7 +42,7 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
     $ledger = Mockery::mock(EventLedgerInterface::class);
     $ledger->shouldReceive('append')->once();
 
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
+    $resolver = Mockery::mock(EvaluationEngineInterface::class);
     $resolver->shouldReceive('evaluateCriteria')->andReturn(true);
 
     $handler = new StepOutcomeHandler(

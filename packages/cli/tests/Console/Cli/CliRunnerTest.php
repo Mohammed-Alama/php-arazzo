@@ -16,7 +16,7 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runtime\State\FileStateStore;
-use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 
 class CliFakeExecutor implements StepProtocolExecutorInterface
 {
@@ -59,7 +59,7 @@ function cliRunner(FileStateStore $store): array
     $definitions->register(cliDocument());
 
     $runner = new CliRunner(
-        expressions: new TestExpressionResolver(),
+        engine: new TestEvaluationEngine(),
         stateStore: $store,
         definitions: $definitions,
         protocolExecutors: [new CliFakeExecutor()],

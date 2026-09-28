@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Runner;
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
@@ -36,7 +36,7 @@ final readonly class AsyncGraphSeams
         public LockManagerInterface $lockManager,
         public HttpClientInterface $httpClient,
         public ?OpenApiExecutorInterface $openApiExecutor = null,
-        public ?ExpressionResolverInterface $expressionResolver = null,
+        public ?ResponseValidatorInterface $schemaValidator = null,
         public ?RequestFactoryInterface $requestFactory = null,
         public ?LoggerInterface $logger = null,
         public bool $idempotencyEnabled = false,

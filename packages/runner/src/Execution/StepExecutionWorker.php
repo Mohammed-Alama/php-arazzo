@@ -18,7 +18,8 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunCompletedEvent;
@@ -26,7 +27,6 @@ use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepExecutedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
-use Alama\Arazzo\RequestPipeline\StepParameterMerger;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
@@ -69,7 +69,7 @@ class StepExecutionWorker
         RunPersistence $persistence,
         private LockManagerInterface $lockManager,
         private DefinitionRegistryInterface $definitionRegistry,
-        private ExpressionResolverInterface $expressionResolver,
+        private EvaluationEngineInterface $engine,
         private array $protocolExecutors,
         RunControlFlow $controlFlow,
         private int $stateTtlSeconds = 86400,
@@ -167,7 +167,7 @@ class StepExecutionWorker
                     $this->eventLedger->append($executionId, 'step.suspended', ['stepId' => $step->stepId]);
 
                     if ($step->target->action === 'receive' && $step->target->correlationId !== null && $step->target->channelPath !== null) {
-                        $correlationIdValue = (string) $this->expressionResolver->evaluate($step->target->correlationId, $context, $step->stepId);
+                        $correlationIdValue = (string) $this->engine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId));
                         $this->events->dispatch(new CorrelationPendingEvent(
                             $executionId,
                             $context->getWorkflowId() ?? '',
@@ -193,7 +193,7 @@ class StepExecutionWorker
                     'attempts' => $attempt,
                 ]);
 
-                $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
+                $criteriaMet = $this->engine->evaluateSuccessCriteria($step, $contextWithResult, $document);
 
                 $this->executionRegistry->start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId);
 

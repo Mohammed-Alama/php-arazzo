@@ -21,7 +21,7 @@ use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 
 function createRecordingStepExec(bool $succeed = true, ?Throwable $throw = null): StepExecutor
 {
@@ -68,7 +68,7 @@ it('dispatches happy-path sequence RunStartedEvent -> StepStartedEvent -> StepEx
     $log = [];
     captureEvents($d, $log);
 
-    (new WorkflowExecutor(createRecordingStepExec(), new WorkflowEngine(new TestExpressionResolver()), events: $d))->execute($wf, docWithWorkflow($wf), []);
+    (new WorkflowExecutor(createRecordingStepExec(), new WorkflowEngine(new TestEvaluationEngine()), events: $d))->execute($wf, docWithWorkflow($wf), []);
 
     expect($log)->toBe(['RunStartedEvent', 'StepStartedEvent', 'StepExecutedEvent', 'RunCompletedEvent']);
 });
@@ -81,7 +81,7 @@ it('dispatches StepFailedEvent + RunFailedEvent on step failure', function () {
     $log = [];
     captureEvents($d, $log);
 
-    (new WorkflowExecutor(createRecordingStepExec(succeed: false), new WorkflowEngine(new TestExpressionResolver()), events: $d))->execute($wf, docWithWorkflow($wf), []);
+    (new WorkflowExecutor(createRecordingStepExec(succeed: false), new WorkflowEngine(new TestEvaluationEngine()), events: $d))->execute($wf, docWithWorkflow($wf), []);
 
     expect($log)->toBe(['RunStartedEvent', 'StepStartedEvent', 'StepFailedEvent', 'RunFailedEvent']);
 });
@@ -94,7 +94,7 @@ it('dispatches RunFailedEvent and rethrows on caught exception', function () {
     $log = [];
     captureEvents($d, $log);
 
-    $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), new WorkflowEngine(new TestExpressionResolver()), events: $d);
+    $executor = new WorkflowExecutor(createRecordingStepExec(throw: new RuntimeException('crash')), new WorkflowEngine(new TestEvaluationEngine()), events: $d);
 
     expect(fn () => $executor->execute($wf, docWithWorkflow($wf), []))
         ->toThrow(RuntimeException::class, 'crash');

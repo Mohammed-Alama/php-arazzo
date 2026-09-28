@@ -10,10 +10,10 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
-use Alama\Arazzo\RequestPipeline\ReusableParameterResolver;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
+use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 
 /**
@@ -49,7 +49,7 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
             throw ExecutionException::subWorkflowNotFound((string) $step->target->workflowId);
         }
 
-        $evaluationContext = new ExecutionEvaluationInput($context, $step->stepId, $document);
+        $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
 
         $bound = [];
         $parameters = (new ReusableParameterResolver())->resolve($step->io->parameters, $document);

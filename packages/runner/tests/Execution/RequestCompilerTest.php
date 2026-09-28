@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\RequestPipeline;
+namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -18,8 +18,8 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\RequestPipeline\ExpressionValueResolver;
-use Alama\Arazzo\RequestPipeline\RequestCompiler;
+use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
+use Alama\Arazzo\Runner\Execution\RequestCompiler;
 use Closure;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -39,6 +39,11 @@ function requestCompilerDocument(): ArazzoDocument
 function requestCompilerFor(EvaluationEngineInterface $engine): RequestCompiler
 {
     return new RequestCompiler(new ExpressionValueResolver($engine), $engine);
+}
+
+function requestCompilerStub(): RequestCompiler
+{
+    return requestCompilerFor(\Mockery::mock(EvaluationEngineInterface::class));
 }
 
 function requestCompilerStep(array $parameters, ?RequestBody $requestBody = null): Step
@@ -146,7 +151,7 @@ it('keeps the body null when the engine returns an empty replacement result', fu
 it('builds the canonical request record from the request and the payload', function (): void {
     $request = new Request('POST', 'https://api.example.com/charges?expand=true', ['X-Trace' => 'abc'], '{"amount":100}');
 
-    $record = RequestCompiler::requestRecord($request, new OpenApiPayload(
+    $record = requestCompilerStub()->requestRecord($request, new OpenApiPayload(
         path: ['id' => 'ch_1'],
         body: ['amount' => 100],
     ));
@@ -161,7 +166,7 @@ it('builds the canonical request record from the request and the payload', funct
 });
 
 it('tolerates a null captured request in the canonical record', function (): void {
-    $record = RequestCompiler::requestRecord(null, new OpenApiPayload());
+    $record = requestCompilerStub()->requestRecord(null, new OpenApiPayload());
 
     expect($record['method'])->toBeNull()
         ->and($record['url'])->toBe('')
@@ -172,7 +177,7 @@ it('tolerates a null captured request in the canonical record', function (): voi
 });
 
 it('falls back to an empty body when the payload is not an array', function (): void {
-    $record = RequestCompiler::requestRecord(null, new OpenApiPayload(body: 'raw text'));
+    $record = requestCompilerStub()->requestRecord(null, new OpenApiPayload(body: 'raw text'));
 
     expect($record['body'])->toBe([]);
 });
@@ -180,7 +185,7 @@ it('falls back to an empty body when the payload is not an array', function (): 
 it('decodes a JSON response and reports its canonical fields', function (): void {
     $response = new Response(201, ['Content-Type' => 'application/json'], '{"id":"ch_1"}');
 
-    $decoded = RequestCompiler::decodeResponse($response);
+    $decoded = requestCompilerStub()->decodeResponse($response);
 
     expect($decoded['statusCode'])->toBe(201)
         ->and($decoded['contentType'])->toBe('application/json')
@@ -190,7 +195,7 @@ it('decodes a JSON response and reports its canonical fields', function (): void
 });
 
 it('falls back to an empty body when the response is not JSON', function (): void {
-    $decoded = RequestCompiler::decodeResponse(new Response(500, [], 'upstream exploded'));
+    $decoded = requestCompilerStub()->decodeResponse(new Response(500, [], 'upstream exploded'));
 
     expect($decoded['statusCode'])->toBe(500)
         ->and($decoded['body'])->toBe([])

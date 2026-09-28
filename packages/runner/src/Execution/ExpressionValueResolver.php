@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\RequestPipeline;
+namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
 
 /**
  * Single resolution path for step-level runtime values (parameters,
@@ -31,7 +31,7 @@ final class ExpressionValueResolver
         }
 
         if ($value instanceof Expression) {
-            return $this->engine->evaluate($value, new ExecutionEvaluationInput($context, $stepId));
+            return $this->engine->evaluate($value, new EvaluationContext($context, $stepId));
         }
 
         if (!is_string($value)) {

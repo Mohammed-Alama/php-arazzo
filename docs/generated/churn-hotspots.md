@@ -17,25 +17,25 @@ xychart-beta
     bar [34, 19, 18, 18, 18, 15, 14, 12, 11, 10, 9, 9]
 ```
 
-Analyzed 280 total file-touches across 47 modules.
+Analyzed 279 total file-touches across 46 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 34 | 12% | 364 | 93.4 |
+| `laravel:Bindings` | 34 | 12% | 365 | 93.2 |
 | `laravel:Http` | 19 | 7% | 170 | 111.8 |
 | `cli:Console` | 18 | 6% | 793 | 22.7 |
 | `laravel:Persistence` | 18 | 6% | 264 | 68.2 |
-| `runner:Execution` | 18 | 6% | 3,046 | 5.9 |
+| `runner:Execution` | 18 | 6% | 3,805 | 4.7 |
 | `document:Validator` | 15 | 5% | 3,470 | 4.3 |
-| `runner:Protocol` | 14 | 5% | 366 | 38.3 |
+| `runner:Protocol` | 14 | 5% | 368 | 38 |
 | `laravel:Queue` | 12 | 4% | 109 | 110.1 |
 | `laravel:State` | 11 | 4% | 46 | 239.1 |
 | `contracts:Spec` | 10 | 4% | 1,203 | 8.3 |
 | `laravel:Lock` | 9 | 3% | 52 | 173.1 |
 | `laravel:Support` | 9 | 3% | 126 | 71.4 |
 | `document:Parser` | 8 | 3% | 1,316 | 6.1 |
-| `contracts:Interfaces` | 7 | 2% | 322 | 21.7 |
-| `sources:Normalizer` | 7 | 2% | 782 | 9 |
+| `contracts:Interfaces` | 7 | 3% | 304 | 23 |
+| `sources:Normalizer` | 7 | 3% | 782 | 9 |
 | `expression:Interfaces` | 5 | 2% | 25 | 200 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
@@ -58,15 +58,14 @@ Analyzed 280 total file-touches across 47 modules.
 | `evaluation:Condition` | 1 | 0% | 654 | 1.5 |
 | `evaluation:Enum` | 1 | 0% | 82 | 12.2 |
 | `evaluation:Exceptions` | 1 | 0% | 32 | 31.3 |
-| `evaluation:Interfaces` | 1 | 0% | 108 | 9.3 |
+| `evaluation:Interfaces` | 1 | 0% | 53 | 18.9 |
 | `evaluation:Xpath` | 1 | 0% | 109 | 9.2 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |
 | `expression:Exceptions` | 1 | 0% | 23 | 43.5 |
-| `request-pipeline:Data` | 1 | 0% | 66 | 15.2 |
 | `runtime:Infrastructure` | 1 | 0% | 155 | 6.5 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
 | `sources:Validator` | 1 | 0% | 303 | 3.3 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (111.8), `laravel:Queue` (110.1), `laravel:Bindings` (93.4)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (111.8), `laravel:Queue` (110.1), `laravel:Bindings` (93.2)

@@ -11,10 +11,7 @@ use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\Enum\Severity;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
@@ -156,21 +153,19 @@ it('guards the synchronous adapter before any side effect or event fires', funct
     ]);
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $documents = $runtime->document;
-    $resolver = new ExpressionResolver(
-        new ExpressionEvaluator(),
-        new StepOutputExtractor($runtime->operations, new EvaluationEngine(), new ExpressionEngine()),
-        new CriteriaEvaluator(new ExpressionEvaluator()),
-        new ResponseSchemaValidator($runtime->operations),
-    );
+    $engine = new EvaluationEngine();
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
-            $resolver,
             $runtime->operations,
-            engine: new EvaluationEngine(),
+            $engine,
+            $outputExtractor,
+            $schemaValidator,
         ),
-        new WorkflowEngine($resolver),
+        new WorkflowEngine($engine),
         events: $events,
         preflight: $documents,
     );

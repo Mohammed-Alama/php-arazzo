@@ -13,7 +13,7 @@ const BANNER = <<<'MD'
 # Generated: Pipeline Flow
 
 Execution topology of the execution path: every concrete service under
-`RequestPipeline/` and `Runner/` (plus Laravel queue jobs) with the edges
+`Runner/` (plus Laravel queue jobs) with the edges
 introduced by constructor injection or direct instantiation. Entry points
 (nothing injects them) are green. Isolated value objects, enums and
 exceptions are omitted. Regenerated before every commit.
@@ -165,11 +165,6 @@ function isPipelineClass(ScannedFile $file): bool
 
     if (str_starts_with($ns, 'Alama\\Arazzo\\Runner\\')) {
         return !str_contains($ns, '\\Exceptions') && !str_ends_with($dir, '/Events');
-    }
-    // Classes sitting directly under the package's src/ carry the bare
-    // namespace, so the prefixed match alone would skip every one of them.
-    if ($ns === 'Alama\\Arazzo\\RequestPipeline' || str_starts_with($ns, 'Alama\\Arazzo\\RequestPipeline\\')) {
-        return true;
     }
     if (str_starts_with($ns, 'Alama\\Arazzo\\Laravel\\')) {
         return str_starts_with($dir, 'Queue/Jobs');

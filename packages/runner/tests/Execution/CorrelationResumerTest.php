@@ -10,10 +10,11 @@ use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
@@ -163,7 +164,8 @@ it('does nothing when the correlation is not found', function (): void {
         $pendingCorrelations,
         new ResumerMockStateStore(),
         new RecordingDefinitionRegistry(),
-        \Mockery::mock(ExpressionResolverInterface::class),
+        \Mockery::mock(StepOutputExtractor::class),
+        \Mockery::mock(EvaluationEngineInterface::class),
         $outcomeHandler,
         $eventLedger,
         new ResumerMockLockManager(),
@@ -188,7 +190,8 @@ it('logs and does nothing when persisted state is missing', function (): void {
         $pendingCorrelations,
         new ResumerMockStateStore(),
         new RecordingDefinitionRegistry(),
-        \Mockery::mock(ExpressionResolverInterface::class),
+        \Mockery::mock(StepOutputExtractor::class),
+        \Mockery::mock(EvaluationEngineInterface::class),
         $outcomeHandler,
         $eventLedger,
         new ResumerMockLockManager(),

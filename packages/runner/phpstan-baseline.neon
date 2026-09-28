@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/AsyncExecutionGraph.php
 
@@ -17,7 +17,7 @@ parameters:
 			path: src/Execution/CorrelationResumer.php
 
 		-
-			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Execution/CorrelationResumer.php
 
@@ -204,7 +204,7 @@ parameters:
 			path: src/Execution/StepExecutor.php
 
 		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Execution/StepExecutor.php
 
@@ -215,7 +215,7 @@ parameters:
 			path: src/Execution/StepExecutor.php
 
 		-
-			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\RequestPipeline\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
+			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\Runner\\Execution\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Execution/StepExecutor.php
@@ -343,7 +343,7 @@ parameters:
 			path: src/Protocol/AsyncApiStepExecutor.php
 
 		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Protocol/HttpStepExecutor.php
 

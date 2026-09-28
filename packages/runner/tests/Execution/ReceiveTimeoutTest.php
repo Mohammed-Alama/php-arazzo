@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use DateTimeImmutable;
 
 require_once __DIR__.'/CorrelationResumerTest.php';
@@ -42,15 +43,17 @@ function expiryResumer(bool $expired): array
     $outcomeHandler = new RecordingStepOutcomeHandler();
     $pendingCorrelations = expiryRegistry($expired);
 
-    $resolver = \Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+    $outputExtractor = \Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
+    $engine = \Mockery::mock(EvaluationEngineInterface::class);
+    $engine->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
 
     $resumer = new CorrelationResumer(
         $pendingCorrelations,
         $stateStore,
         $definitionRegistry,
-        $resolver,
+        $outputExtractor,
+        $engine,
         $outcomeHandler,
         $ledger,
         new ResumerMockLockManager(),

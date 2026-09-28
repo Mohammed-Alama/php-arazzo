@@ -13,10 +13,10 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
-use Alama\Arazzo\RequestPipeline\ReusableParameterResolver;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
+use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use JsonException;
 use LogicException;
@@ -71,7 +71,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no channelPath.");
         }
 
-        $correlationId = (string) $this->engine->evaluate($step->target->correlationId, new ExecutionEvaluationInput($context, $step->stepId, $document));
+        $correlationId = (string) $this->engine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId, $document));
 
         $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->target->channelPath, $step->flow->timeout !== null ? $step->flow->timeout : null);
 
@@ -95,7 +95,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $uri = $this->resolveChannelUri($step);
 
-        $evaluationContext = new ExecutionEvaluationInput($context, $step->stepId, $document);
+        $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
 
         $query = [];
         $headers = [];
@@ -155,7 +155,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
     /**
      * @return array<array-key, mixed>
      */
-    private function buildPayload(Step $step, ExecutionEvaluationInput $context): array
+    private function buildPayload(Step $step, EvaluationContext $context): array
     {
         $requestBody = $step->io->requestBody;
 

@@ -19,6 +19,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Reusable;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -27,7 +28,7 @@ use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
@@ -87,18 +88,11 @@ class StepOutcomeMockPendingCorrelationRegistry implements PendingCorrelationReg
     }
 }
 
-class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
+class StepOutcomeMockExpressionResolver implements EvaluationEngineInterface
 {
-    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
         return $expression->raw;
-    }
-
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-    {
-        return [];
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -116,6 +110,41 @@ class StepOutcomeMockExpressionResolver implements ExpressionResolverInterface
         }
 
         return $criteria[0]->condition === 'MATCH';
+    }
+
+    public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
+    {
+        return null;
+    }
+
+    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
+    {
+        return null;
+    }
+
+    public function supportedXPathVersions(): array
+    {
+        return [];
+    }
+
+    public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
+    {
+        return $value;
+    }
+
+    public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
+    {
+        return $body;
+    }
+
+    public function jsonPath(string $expression, array|object $data): mixed
+    {
+        return null;
+    }
+
+    public function jsonPointer(array $data, ?string $pointer): mixed
+    {
+        return null;
     }
 }
 

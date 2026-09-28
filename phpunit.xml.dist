@@ -30,9 +30,6 @@
         <testsuite name="Arazzo Runner Test Suite">
             <directory>packages/runner/tests</directory>
         </testsuite>
-        <testsuite name="Arazzo Request Pipeline Test Suite">
-            <directory>packages/request-pipeline/tests</directory>
-        </testsuite>
         <testsuite name="Arazzo CLI Test Suite">
             <directory>packages/cli/tests</directory>
         </testsuite>
@@ -65,7 +62,6 @@
             <directory suffix=".php">packages/runtime/src</directory>
             <directory suffix=".php">packages/events/src</directory>
             <directory suffix=".php">packages/engine/src</directory>
-            <directory suffix=".php">packages/request-pipeline/src</directory>
             <directory suffix=".php">packages/runner/src</directory>
             <directory suffix=".php">packages/cli/src</directory>
             <directory suffix=".php">packages/core/src</directory>

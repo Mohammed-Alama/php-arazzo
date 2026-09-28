@@ -19,10 +19,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
@@ -35,7 +32,7 @@ use Alama\Arazzo\Runtime\State\FileStateStore;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
-use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
@@ -69,7 +66,6 @@ function parityFixtures(): array
     $httpClient = new FakePsr18Client();
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 99])));
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
-    $evaluator = new ExpressionEvaluator();
     $engine = new EvaluationEngine();
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new class() implements SourceResolver
     {
@@ -83,17 +79,14 @@ function parityFixtures(): array
             );
         }
     }));
-    $resolver = new ExpressionResolver(
-        $evaluator,
-        new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
-        new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($runtime->operations),
-    );
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
     $stepExecutor = new StepExecutor(
         new DefaultOpenApiExecutor($httpClient, new HttpFactory()),
-        $resolver,
         $runtime->operations,
-        engine: $engine,
+        $engine,
+        $outputExtractor,
+        $schemaValidator,
     );
 
     // Both adapters execute steps through THIS object.
@@ -130,14 +123,14 @@ it('sync and queue-driven adapters agree on terminal status and step spend', fun
     [$document, $workflow, $stepExecutor, $protocol] = parityFixtures();
 
     // --- synchronous adapter ---
-    $syncResult = (new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver())))
+    $syncResult = (new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestEvaluationEngine())))
         ->execute($workflow, $document, []);
 
     // --- queue-driven adapter (in-process drain) ---
     $definitions = new InMemoryDefinitionRegistry();
     $definitions->register($document);
     $cli = new CliRunner(
-        expressions: new TestExpressionResolver(),
+        engine: new TestEvaluationEngine(),
         stateStore: new FileStateStore(sys_get_temp_dir().'/arazzo-parity-'.bin2hex(random_bytes(4))),
         definitions: $definitions,
         protocolExecutors: [$protocol],

@@ -39,8 +39,6 @@ public contract between packages.
   - `public function release(string $key): void;`
 - `BackoffCalculatorInterface` (`interface`)
   - `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
-- `OutputExtractorInterface` (`interface`)
-  - `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
 - `ResponseValidatorInterface` (`interface`)
   - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 - `WorkflowContextInterface` (`interface`)
@@ -143,8 +141,6 @@ public contract between packages.
 
 ### Deliberately internal
 
-- `ExpressionEvaluatorInterface` — `@internal`: yes
-- `ExpressionResolverInterface` — `@internal`: yes
 - `ExpressionEvaluator` — `@internal`: yes
 - `SelectorEvaluator` — `@internal`: yes
 - `StringInterpolator` — `@internal`: yes

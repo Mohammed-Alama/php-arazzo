@@ -20,7 +20,6 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
@@ -109,11 +108,6 @@ it('injects idempotency key natively during job execution independently of StepE
     $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     app()->instance(DocumentInterface::class, $documents);
-
-    $resolver = \Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
-    app()->instance(ExpressionResolverInterface::class, $resolver);
 
     $registry = \Mockery::mock(DefinitionRegistryInterface::class);
     $registry->shouldReceive('get')->with('def-1')->andReturn($document);

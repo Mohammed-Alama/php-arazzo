@@ -21,16 +21,13 @@ flowchart LR
     I_EventLedgerInterface["EventLedgerInterface<br/><small>events:Interfaces</small>"]:::contract
     I_ExecutionRegistryInterface["ExecutionRegistryInterface<br/><small>runtime:State</small>"]:::contract
     I_ExpressionEngineInterface["ExpressionEngineInterface<br/><small>expression:Interfaces</small>"]:::contract
-    I_ExpressionEvaluatorInterface["ExpressionEvaluatorInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_ExpressionEvaluatorPluginInterface["ExpressionEvaluatorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_ExpressionResolverInterface["ExpressionResolverInterface<br/><small>evaluation:Interfaces</small>"]:::contract
     I_HttpClientInterface["HttpClientInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_LockManagerInterface["LockManagerInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>sources:Normalizer</small>"]:::contract
     I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>runtime:State</small>"]:::contract
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
@@ -72,18 +69,8 @@ flowchart LR
     C_evaluation_evaluation___CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_evaluation_evaluation_Data_EvaluationContext["EvaluationContext<br/><small>evaluation:Data</small>"]:::implCore
     C_evaluation_evaluation_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
-    C_request_pipeline_request_pipeline_Data_ExecutionEvaluationInput["ExecutionEvaluationInput<br/><small>request-pipeline:Data</small>"]:::implCore
-    C_request_pipeline_request_pipeline_Data_ExecutionEvaluationInput -.->|implements| I_EvaluationInputInterface
     C_evaluation_evaluation___EvaluationEngine["EvaluationEngine<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___EvaluationEngine -.->|implements| I_EvaluationEngineInterface
-    C_evaluation_evaluation___ExpressionEvaluator["ExpressionEvaluator<br/><small>(evaluation root)</small>"]:::implCore
-    C_evaluation_evaluation___ExpressionEvaluator -.->|implements| I_ExpressionEvaluatorInterface
-    C_evaluation_evaluation___ExpressionResolver["ExpressionResolver<br/><small>(evaluation root)</small>"]:::implCore
-    C_evaluation_evaluation___ExpressionResolver -.->|implements| I_ExpressionResolverInterface
-    C_evaluation_evaluation___InterpolationResolver["InterpolationResolver<br/><small>(evaluation root)</small>"]:::implCore
-    C_evaluation_evaluation___InterpolationResolver -.->|implements| I_ExpressionResolverInterface
-    C_request_pipeline_request_pipeline___ExecutionExpressionResolver["ExecutionExpressionResolver<br/><small>(request-pipeline root)</small>"]:::implCore
-    C_request_pipeline_request_pipeline___ExecutionExpressionResolver -.->|implements| I_ExpressionResolverInterface
     C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin["JsonPathCriterionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
     C_evaluation_evaluation_Plugins_JsonPathCriterionPlugin -.->|implements| I_CriterionEvaluatorPluginInterface
     C_evaluation_evaluation_Plugins_JsonPathExpressionPlugin["JsonPathExpressionPlugin<br/><small>evaluation:Plugins</small>"]:::implCore
@@ -244,8 +231,6 @@ flowchart LR
     C_runner_runner_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
     C_runner_runner_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
-    C_runner_runner_Execution_StepOutputExtractor["StepOutputExtractor<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_StepOutputExtractor -.->|implements| I_OutputExtractorInterface
     C_runner_runner_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
     C_laravel_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>laravel:Queue</small>"]:::implLaravel

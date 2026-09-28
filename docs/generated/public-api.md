@@ -37,9 +37,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`
 
-#### `OutputExtractorInterface` interface
-- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
-
 #### `PluginInterface` interface
 - `public function name(): string;`
 - `public function priority(): int;`

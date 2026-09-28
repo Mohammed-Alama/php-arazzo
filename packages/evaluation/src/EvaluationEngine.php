@@ -103,6 +103,6 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     private function interpolator(): StringInterpolator
     {
-        return $this->interpolator ??= new StringInterpolator(new InterpolationResolver($this->evaluator));
+        return $this->interpolator ??= new StringInterpolator($this->evaluator);
     }
 }

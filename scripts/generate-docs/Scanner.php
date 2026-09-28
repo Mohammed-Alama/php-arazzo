@@ -6,7 +6,7 @@ namespace ArazzoDocs;
 
 /**
  * Composer packages that hold the split-out core source (contracts, expression,
- * document, runtime, events, request-pipeline, runner, cli). `packages/core`
+ * document, runtime, events, runner, cli). `packages/core`
  * itself is now an empty aggregator package: its src/ is a placeholder (see
  * .gitkeep) and its tests/ holds only cross-cutting
  * integration/architecture/conformance suites, so callers that need real source
@@ -14,13 +14,13 @@ namespace ArazzoDocs;
  *
  * @var list<string>
  */
-const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runtime', 'engine', 'events', 'request-pipeline', 'runner', 'cli'];
+const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runtime', 'engine', 'events', 'runner', 'cli'];
 
 /**
  * Real cross-package dependency direction, bottom (most depended-upon) to top
  * (most dependent), read directly from each package's composer.json `require`:
  * contracts <- expression <- {evaluation, document} <- sources <- runtime <-
- * engine/events <- request-pipeline <- runner <- cli <- laravel. A package may
+ * engine/events <- runner <- cli <- laravel. A package may
  * only import from packages strictly below it in this list; an import pointing
  * the other way is a layering violation. `engine` and `events` are siblings
  * (both depend only on contracts, and events additionally nothing from
@@ -28,7 +28,7 @@ const CORE_SRC_PACKAGES = ['contracts', 'expression', 'evaluation', 'document', 
  *
  * @var list<string>
  */
-const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runtime', 'engine', 'events', 'request-pipeline', 'runner', 'cli', 'laravel'];
+const PACKAGE_LAYER_ORDER = ['contracts', 'expression', 'evaluation', 'document', 'sources', 'runtime', 'engine', 'events', 'runner', 'cli', 'laravel'];
 
 /**
  * Namespace segment each package claims, used to render package-qualified
@@ -45,7 +45,6 @@ const PACKAGE_NAMESPACE = [
     'runtime' => 'Runtime',
     'engine' => 'Engine',
     'events' => 'Events',
-    'request-pipeline' => 'RequestPipeline',
     'runner' => 'Runner',
     'cli' => 'Cli',
     'laravel' => 'Laravel',

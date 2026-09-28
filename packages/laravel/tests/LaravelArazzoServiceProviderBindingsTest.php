@@ -15,7 +15,6 @@ use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
@@ -77,7 +76,6 @@ it('binds the persistence interfaces to their Laravel implementations', function
 it('binds StepExecutionWorker', function () {
     app()->bind(LockManagerInterface::class, fn () => \Mockery::mock(LockManagerInterface::class));
     app()->bind(HttpClientInterface::class, fn () => \Mockery::mock(HttpClientInterface::class));
-    app()->bind(ExpressionResolverInterface::class, fn () => \Mockery::mock(ExpressionResolverInterface::class));
 
     expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
 });

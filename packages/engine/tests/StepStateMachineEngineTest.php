@@ -7,10 +7,8 @@ use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\StepState;
-use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interaction;
-use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
@@ -22,39 +20,10 @@ use Alama\Arazzo\Engine\Data\Transition;
 use Alama\Arazzo\Engine\Enum\StepTransitionType;
 use Alama\Arazzo\Engine\StepStateMachineEngine;
 use Alama\Arazzo\Engine\WorkflowEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 
 function engineTestDocument(Workflow $workflow): ArazzoDocument
 {
     return new ArazzoDocument('1.0.0', new Info('Test', null, null, '1.0.0'), [], [$workflow], new Components([], [], [], []), []);
-}
-
-function engineTestResolver(): ExpressionResolverInterface
-{
-    return new class() implements ExpressionResolverInterface
-    {
-        public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
-        {
-            return $expression->raw;
-        }
-
-        public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-        public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-        {
-            return [];
-        }
-
-        public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-        {
-            return true;
-        }
-
-        public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-        {
-            return true;
-        }
-    };
 }
 
 function engineTestWorkflowEngine(): WorkflowEngineInterface

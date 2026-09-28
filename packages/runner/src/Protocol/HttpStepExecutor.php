@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Protocol;
 
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\RequestPipeline\ExpressionValueResolver;
-use Alama\Arazzo\RequestPipeline\IdempotencyKeyInjector;
-use Alama\Arazzo\RequestPipeline\RequestCompiler;
+use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Execution\RequestCompiler;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
@@ -25,9 +26,10 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
-        private ExpressionResolverInterface $expressionResolver,
         private OpenApiOperationResolver $operationResolver,
         private EvaluationEngineInterface $engine,
+        private StepOutputExtractor $outputExtractor,
+        private ResponseValidatorInterface $schemaValidator,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
     ) {}
@@ -39,8 +41,8 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
-        ['payload' => $payload, 'resolvedInputs' => $resolvedInputs] =
-            (new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine))->compile($step, $document, $context);
+        $compiler = new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine);
+        ['payload' => $payload, 'resolvedInputs' => $resolvedInputs] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->operationResolver->resolve($step, $document);
 
@@ -67,10 +69,10 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
             return StepExecutionOutcome::resolved(500, [], ['error' => $e->getMessage()], failureCategory: 'transport');
         }
 
-        $decoded = RequestCompiler::decodeResponse($response);
+        $decoded = $compiler->decodeResponse($response);
 
         if ($this->shouldValidateSchema($step)) {
-            $this->expressionResolver->validateResponseSchema(
+            $this->schemaValidator->validateResponseSchema(
                 $step,
                 $decoded['statusCode'],
                 $decoded['contentType'],
@@ -79,7 +81,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
             );
         }
 
-        $requestRecord = RequestCompiler::requestRecord($capturedRequest, $payload);
+        $requestRecord = $compiler->requestRecord($capturedRequest, $payload);
 
         $contextWithResponse = $context
             ->withStepRequest($step->stepId, $requestRecord)
@@ -89,7 +91,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
                 'body' => $decoded['body'],
             ]);
 
-        $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
+        $outputs = $this->outputExtractor->extractOutputs($step, $contextWithResponse, $document);
 
         return StepExecutionOutcome::resolved(
             $decoded['statusCode'],

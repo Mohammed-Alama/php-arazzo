@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Laravel\Support\AsyncGraphResolver;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
@@ -38,7 +39,7 @@ final class ExecutionBindings
         // after forgetInstance, matching the historical contract.
         $app->singleton(WorkflowEngine::class, static function (Container $app): WorkflowEngine {
             return new WorkflowEngine(
-                $app->make(AsyncExecutionGraph::class)->expressionResolver(),
+                $app->make(EvaluationEngineInterface::class),
                 maxRetryAttempts: ConfigValue::int(config('arazzo.retry_ceiling', 10), 10),
                 retryBackoffMultiplier: ConfigValue::float(config('arazzo.retry_backoff_multiplier', 1.0), 1.0),
             );

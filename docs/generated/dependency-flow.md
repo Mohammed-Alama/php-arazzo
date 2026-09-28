@@ -21,8 +21,7 @@ cli-Console,contracts-Spec,8
 cli-Console,contracts-State,1
 cli-Console,document-Parser,6
 cli-Console,document-Validator,2
-cli-Console,evaluation-Interfaces,1
-cli-Console,evaluation-root,1
+cli-Console,evaluation-root,2
 cli-Console,events-Interfaces,2
 cli-Console,expression-root,1
 cli-Console,runner-Execution,5
@@ -37,7 +36,7 @@ cli-Renderer,contracts-Spec,8
 contracts-Dependency,contracts-Spec,6
 contracts-Dependency,contracts-State,1
 contracts-Interfaces,contracts-Exceptions,1
-contracts-Interfaces,contracts-Spec,21
+contracts-Interfaces,contracts-Spec,18
 contracts-Interfaces,contracts-State,2
 contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
@@ -61,11 +60,11 @@ evaluation-Condition,contracts-Spec,4
 evaluation-Condition,contracts-Support,1
 evaluation-Condition,evaluation-Data,1
 evaluation-Condition,evaluation-Enum,9
-evaluation-Condition,evaluation-Interfaces,8
+evaluation-Condition,evaluation-Interfaces,7
 evaluation-Data,contracts-Spec,2
 evaluation-Data,evaluation-Interfaces,1
 evaluation-Exceptions,contracts-Support,1
-evaluation-Interfaces,contracts-Spec,12
+evaluation-Interfaces,contracts-Spec,6
 evaluation-Plugins,contracts-Interfaces,2
 evaluation-Plugins,contracts-Spec,5
 evaluation-Plugins,evaluation-root,2
@@ -73,13 +72,12 @@ evaluation-Registries,contracts-Interfaces,2
 evaluation-Registries,contracts-Spec,3
 evaluation-Xpath,contracts-Spec,1
 evaluation-Xpath,evaluation-Exceptions,1
-evaluation-root,contracts-Interfaces,2
-evaluation-root,contracts-Spec,35
+evaluation-root,contracts-Spec,27
 evaluation-root,contracts-State,3
 evaluation-root,evaluation-Condition,2
-evaluation-root,evaluation-Data,4
+evaluation-root,evaluation-Data,3
 evaluation-root,evaluation-Exceptions,1
-evaluation-root,evaluation-Interfaces,12
+evaluation-root,evaluation-Interfaces,4
 evaluation-root,evaluation-Registries,3
 evaluation-root,evaluation-Xpath,5
 evaluation-root,expression-Ast,13
@@ -103,7 +101,7 @@ laravel-Bindings,contracts-Interfaces,5
 laravel-Bindings,contracts-Support,1
 laravel-Bindings,document-Parser,1
 laravel-Bindings,document-root,1
-laravel-Bindings,evaluation-root,2
+laravel-Bindings,evaluation-root,3
 laravel-Bindings,events-Interfaces,2
 laravel-Bindings,events-Listener,1
 laravel-Bindings,expression-Interfaces,1
@@ -136,8 +134,7 @@ laravel-Queue,contracts-Interfaces,1
 laravel-Queue,runner-Execution,2
 laravel-Queue,runner-Jobs,4
 laravel-State,runtime-State,1
-laravel-Support,contracts-Interfaces,3
-laravel-Support,evaluation-Interfaces,1
+laravel-Support,contracts-Interfaces,4
 laravel-Support,events-Interfaces,1
 laravel-Support,runner-Execution,1
 laravel-Support,runner-root,3
@@ -145,32 +142,21 @@ laravel-Support,runtime-State,4
 laravel-root,laravel-Bindings,7
 laravel-root,laravel-Http,2
 laravel-root,laravel-Support,1
-request-pipeline-Data,contracts-Spec,2
-request-pipeline-Data,evaluation-Interfaces,1
-request-pipeline-Data,evaluation-root,1
-request-pipeline-root,contracts-Interfaces,2
-request-pipeline-root,contracts-Spec,19
-request-pipeline-root,contracts-State,3
-request-pipeline-root,document-Parser,1
-request-pipeline-root,evaluation-Interfaces,1
-request-pipeline-root,evaluation-root,3
-request-pipeline-root,request-pipeline-Data,3
 runner-Execution,contracts-Dependency,3
 runner-Execution,contracts-Exceptions,4
 runner-Execution,contracts-Interfaces,10
-runner-Execution,contracts-Spec,54
-runner-Execution,contracts-State,11
+runner-Execution,contracts-Spec,69
+runner-Execution,contracts-State,14
 runner-Execution,contracts-Support,9
+runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
 runner-Execution,document-root,5
-runner-Execution,evaluation-Interfaces,4
-runner-Execution,evaluation-root,6
+runner-Execution,evaluation-Data,6
+runner-Execution,evaluation-root,11
 runner-Execution,events-Interfaces,4
 runner-Execution,events-root,17
 runner-Execution,expression-Enum,1
 runner-Execution,expression-Interfaces,3
-runner-Execution,request-pipeline-Data,3
-runner-Execution,request-pipeline-root,11
 runner-Execution,runner-Jobs,2
 runner-Execution,runtime-Policy,1
 runner-Execution,runtime-State,15
@@ -178,23 +164,20 @@ runner-Execution,runtime-Telemetry,1
 runner-Execution,sources-Normalizer,8
 runner-Jobs,contracts-Spec,1
 runner-Jobs,contracts-State,1
-runner-Protocol,contracts-Interfaces,4
+runner-Protocol,contracts-Interfaces,5
 runner-Protocol,contracts-Spec,13
 runner-Protocol,contracts-State,3
-runner-Protocol,evaluation-Interfaces,1
+runner-Protocol,evaluation-Data,2
 runner-Protocol,evaluation-root,3
-runner-Protocol,request-pipeline-Data,2
-runner-Protocol,request-pipeline-root,5
-runner-Protocol,runner-Execution,4
+runner-Protocol,runner-Execution,10
 runner-Protocol,runtime-State,1
 runner-Protocol,sources-Normalizer,1
 runner-root,contracts-Exceptions,1
-runner-root,contracts-Interfaces,8
+runner-root,contracts-Interfaces,9
 runner-root,contracts-Spec,12
 runner-root,contracts-State,1
 runner-root,document-root,1
 runner-root,engine-root,1
-runner-root,evaluation-Interfaces,2
 runner-root,evaluation-root,2
 runner-root,events-Interfaces,2
 runner-root,expression-Interfaces,2
@@ -241,6 +224,7 @@ These references exist in the code but are not drawn: drawing them would close a
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
+| `evaluation-Condition` | `evaluation-root` | 1 |
 | `evaluation-Registries` | `evaluation-Plugins` | 2 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |

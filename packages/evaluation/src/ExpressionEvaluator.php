@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 use Alama\Arazzo\Expression\Ast\HttpMetaRef;
@@ -25,7 +24,7 @@ use Alama\Arazzo\Expression\Parser as ExpressionParser;
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
  */
-class ExpressionEvaluator implements ExpressionEvaluatorInterface
+class ExpressionEvaluator
 {
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {

@@ -10,7 +10,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
@@ -50,7 +50,7 @@ final class CliRunner
      * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
      */
     public function __construct(
-        private readonly ExpressionResolverInterface $expressions,
+        private readonly EvaluationEngineInterface $engine,
         private readonly StateStoreInterface $stateStore,
         private readonly DefinitionRegistryInterface $definitions,
         private readonly ExecutionRegistryInterface $registry = new InProcessExecutionRegistry(),
@@ -176,9 +176,9 @@ final class CliRunner
             new RunPersistence($this->stateStore, $this->eventLedger, $this->registry),
             $this->locks,
             $this->definitions,
-            $this->expressions,
+            $this->engine,
             $this->protocolExecutors,
-            new RunControlFlow(new WorkflowEngine($this->expressions), $this->queue),
+            new RunControlFlow(new WorkflowEngine($this->engine), $this->queue),
         );
 
         $processed = 0;

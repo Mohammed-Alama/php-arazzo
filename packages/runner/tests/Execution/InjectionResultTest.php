@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\RequestPipeline;
+namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\RequestPipeline\Data\InjectionResult;
+use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
 use GuzzleHttp\Psr7\Request;
 
 it('carries only the request when no key was injected', function (): void {

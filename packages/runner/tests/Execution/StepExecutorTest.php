@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
@@ -15,10 +16,10 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\RequestPipeline\IdempotencyKeyInjector;
+use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
@@ -59,12 +60,12 @@ function createMockDocumentResolver(): OpenApiOperationResolver
 }
 
 it('validates response schema if configured globally or locally', function (): void {
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('validateResponseSchema')->once()->andThrow(
+    $validator = Mockery::mock(ResponseValidatorInterface::class);
+    $validator->shouldReceive('validateResponseSchema')->once()->andThrow(
         new SchemaValidationException('test-step', [['path' => '/', 'message' => 'bad schema']]),
     );
-    $resolver->shouldReceive('extractOutputs')->never();
-    $resolver->shouldReceive('evaluateSuccessCriteria')->never();
+    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor->shouldReceive('extractOutputs')->never();
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
     $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
@@ -75,7 +76,7 @@ it('validates response schema if configured globally or locally', function (): v
         return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new EvaluationEngine());
+    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(), $outputExtractor, $validator);
     $step = StepFactory::http('test-step', null, new StepFlow(strictValidation: true), new StepIo(), 'op');
 
     try {
@@ -87,10 +88,10 @@ it('validates response schema if configured globally or locally', function (): v
 });
 
 it('skips validation if configured off globally and locally', function (): void {
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('validateResponseSchema')->never();
-    $resolver->shouldReceive('extractOutputs')->once()->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->once()->andReturn(true);
+    $validator = Mockery::mock(ResponseValidatorInterface::class);
+    $validator->shouldReceive('validateResponseSchema')->never();
+    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor->shouldReceive('extractOutputs')->once()->andReturn([]);
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
     $openApiExecutor->shouldReceive('execute')->andReturnUsing(function ($resolved, $payload, $interceptor) {
@@ -101,7 +102,7 @@ it('skips validation if configured off globally and locally', function (): void 
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new EvaluationEngine());
+    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(), $outputExtractor, $validator);
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
@@ -109,9 +110,8 @@ it('skips validation if configured off globally and locally', function (): void 
 });
 
 it('injects the Idempotency-Key header into the request when the injector is enabled', function (): void {
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
 
     $capturedRequest = null;
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
@@ -126,11 +126,12 @@ it('injects the Idempotency-Key header into the request when the injector is ena
 
     $executor = new StepExecutor(
         openApiExecutor: $openApiExecutor,
-        expressionResolver: $resolver,
         operationResolver: createMockDocumentResolver(),
+        engine: new EvaluationEngine(),
+        outputExtractor: $outputExtractor,
+        schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
-        engine: new EvaluationEngine(),
     );
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
@@ -142,9 +143,8 @@ it('injects the Idempotency-Key header into the request when the injector is ena
 });
 
 it('does not inject a header when no injector is passed', function (): void {
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
 
     $capturedRequest = null;
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
@@ -157,7 +157,7 @@ it('does not inject a header when no injector is passed', function (): void {
         return new Response(200, [], '{}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, $resolver, createMockDocumentResolver(), engine: new EvaluationEngine());
+    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(), $outputExtractor, Mockery::mock(ResponseValidatorInterface::class));
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
     $executor->execute($step, new WorkflowContext('def-1'), createTestDocument());
@@ -166,9 +166,8 @@ it('does not inject a header when no injector is passed', function (): void {
 });
 
 it('does not inject a header on non-mutating verbs even when the injector is enabled', function (): void {
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
+    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
 
     $capturedRequest = null;
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
@@ -183,11 +182,12 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
 
     $executor = new StepExecutor(
         openApiExecutor: $openApiExecutor,
-        expressionResolver: $resolver,
         operationResolver: createMockDocumentResolver(),
+        engine: new EvaluationEngine(),
+        outputExtractor: $outputExtractor,
+        schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
-        engine: new EvaluationEngine(),
     );
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 

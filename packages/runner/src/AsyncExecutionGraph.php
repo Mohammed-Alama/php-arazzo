@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -29,7 +28,6 @@ final readonly class AsyncExecutionGraph
         private StepOutcomeHandler $outcomeHandler,
         private CorrelationResumer $resumer,
         private StepExecutionWorker $worker,
-        private ExpressionResolverInterface $expressionResolver,
         private array $protocolExecutors,
     ) {}
 
@@ -56,11 +54,6 @@ final readonly class AsyncExecutionGraph
     public function worker(): StepExecutionWorker
     {
         return $this->worker;
-    }
-
-    public function expressionResolver(): ExpressionResolverInterface
-    {
-        return $this->expressionResolver;
     }
 
     /**

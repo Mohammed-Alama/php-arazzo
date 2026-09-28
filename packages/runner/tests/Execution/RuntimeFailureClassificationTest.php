@@ -5,13 +5,15 @@ declare(strict_types=1);
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
@@ -46,11 +48,6 @@ $classificationHarness = new class() extends ConformanceHarness
     public function sourceRuntime(): SourceRuntime
     {
         return $this->runtime($this->sourceRegistry);
-    }
-
-    public function res(SourceRuntime $r): ExpressionResolver
-    {
-        return $this->resolver($r);
     }
 
     public function ev(): RecordingEventDispatcher
@@ -93,13 +90,16 @@ it('preserves raw body, content type, and transport category on synthetic failur
     $document = $classificationHarness->boot($fixture);
     $runtime = $classificationHarness->sourceRuntime();
     $documents = $runtime->document;
-    $resolver = $classificationHarness->res($runtime);
+    $engine = new EvaluationEngine();
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
     $executor = new HttpStepExecutor(
         new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
-        $resolver,
         $runtime->operations,
-        engine: new EvaluationEngine(),
+        $engine,
+        $outputExtractor,
+        $schemaValidator,
     );
 
     $step = $document->workflows[0]->steps[0];
@@ -117,9 +117,10 @@ it('preserves raw body, content type, and transport category on synthetic failur
 
     $executor = new HttpStepExecutor(
         new DefaultOpenApiExecutor($failingHttp, new HttpFactory()),
-        $resolver,
         $runtime->operations,
-        engine: new EvaluationEngine(),
+        $engine,
+        $outputExtractor,
+        $schemaValidator,
     );
 
     $outcome = $executor->execute($step, $context, $document, 'exec_classification');
@@ -137,9 +138,10 @@ it('preserves raw body, content type, and transport category on synthetic failur
 
     $executor2 = new HttpStepExecutor(
         new DefaultOpenApiExecutor($http2, new HttpFactory()),
-        $resolver,
         $runtime->operations,
-        engine: new EvaluationEngine(),
+        $engine,
+        $outputExtractor,
+        $schemaValidator,
     );
 
     $outcome2 = $executor2->execute($step, $context, $document, 'exec_classification');
@@ -153,7 +155,9 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
     $document = $classificationHarness->boot($fixture);
     $runtime = $classificationHarness->sourceRuntime();
     $documents = $runtime->document;
-    $resolver = $classificationHarness->res($runtime);
+    $engine = new EvaluationEngine();
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
     foreach ($fixture['responses'] as $response) {
         $classificationHarness->client()->enqueue(new Response((int) $response['status'], [], json_encode($response['body'] ?? new stdClass())));
@@ -162,11 +166,12 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
-            $resolver,
             $runtime->operations,
-            engine: new EvaluationEngine(),
+            $engine,
+            $outputExtractor,
+            $schemaValidator,
         ),
-        new WorkflowEngine($resolver),
+        new WorkflowEngine($engine),
         events: $classificationHarness->ev(),
     );
 

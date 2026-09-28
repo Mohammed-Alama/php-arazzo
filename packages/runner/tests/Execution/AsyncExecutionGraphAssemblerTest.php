@@ -5,14 +5,11 @@ declare(strict_types=1);
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
-use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
@@ -35,7 +32,7 @@ function seams(
     ?HttpClientInterface $httpClientInterface = null,
     ?LockManagerInterface $lockManager = null,
     ?QueueDriverInterface $queueDriver = null,
-    ?ExpressionResolverInterface $expressionResolver = null,
+    ?ResponseValidatorInterface $schemaValidator = null,
     int $retryCeiling = 10,
     float $retryBackoffMultiplier = 1.0,
     int $stateTtlSeconds = 86400,
@@ -135,30 +132,7 @@ function seams(
             public function release(string $key): void {}
         }),
         httpClient: $seamsHttpClient,
-        expressionResolver: $expressionResolver ?? $stub(new class() implements ExpressionResolverInterface
-        {
-            public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
-            {
-                return $expression->raw;
-            }
-
-            public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-            public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-            {
-                return [];
-            }
-
-            public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-            {
-                return true;
-            }
-
-            public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-            {
-                return true;
-            }
-        }),
+        schemaValidator: $schemaValidator,
         requestFactory: $stub(new HttpFactory()),
         logger: null,
         idempotencyEnabled: false,
@@ -190,7 +164,6 @@ it('assembles graph with all core nodes', function () {
         ->and($graph->outcomeHandler())->not->toBeNull()
         ->and($graph->resumer())->not->toBeNull()
         ->and($graph->worker())->not->toBeNull()
-        ->and($graph->expressionResolver())->not->toBeNull()
         ->and($graph->protocolExecutors())->toHaveCount(3);
 });
 

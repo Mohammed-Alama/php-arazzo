@@ -20,12 +20,12 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
 use Alama\Arazzo\Events\StepRetriedEvent;
-use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
@@ -89,7 +89,7 @@ class StepOutcomeHandler
         foreach ($step->io->outputs as $name => $value) {
             $resolved = match (true) {
                 $value instanceof Selector => $this->engine->evaluateSelector($value, $context, $step->stepId),
-                $value instanceof Expression => $this->engine->evaluate($value, new ExecutionEvaluationInput($context, $step->stepId)),
+                $value instanceof Expression => $this->engine->evaluate($value, new EvaluationContext($context, $step->stepId)),
                 default => $value,
             };
             $context = $context->withStepOutput($step->stepId, $name, $resolved);

@@ -50,10 +50,6 @@
         },
         {
             "type": "path",
-            "url": "packages/request-pipeline"
-        },
-        {
-            "type": "path",
             "url": "packages/sources"
         }
     ],
@@ -69,7 +65,6 @@
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-engine": "@dev",
         "alama/arazzo-events": "@dev",
-        "alama/arazzo-request-pipeline": "@dev",
         "alama/arazzo-sources": "@dev",
         "alama/laravel-arazzo": "@dev",
         "ext-dom": "*",
@@ -116,8 +111,7 @@
             "Alama\\Arazzo\\Laravel\\Tests\\": "packages/laravel/tests/",
             "Alama\\Arazzo\\Tests\\Sources\\": "packages/sources/tests/",
             "Alama\\Arazzo\\Tests\\Engine\\": "packages/engine/tests/",
-            "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/",
-            "Alama\\Arazzo\\Tests\\RequestPipeline\\": "packages/request-pipeline/tests/"
+            "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/"
         }
     },
     "scripts": {
@@ -131,8 +125,7 @@
             "@analyse-cli",
             "@analyse-laravel",
             "@analyse-engine",
-            "@analyse-events",
-            "@analyse-pipeline"
+            "@analyse-events"
         ],
         "analyse-contracts": "vendor/bin/phpstan analyse -c packages/contracts/phpstan.neon.dist --memory-limit=1G",
         "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
@@ -145,7 +138,6 @@
         "analyse-core": "vendor/bin/phpstan analyse -c packages/core/phpstan.neon.dist --memory-limit=1G",
         "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G",
         "analyse-events": "vendor/bin/phpstan analyse -c packages/events/phpstan.neon.dist --memory-limit=1G",
-        "analyse-pipeline": "vendor/bin/phpstan analyse -c packages/request-pipeline/phpstan.neon.dist --memory-limit=1G",
         "analyse-engine": "vendor/bin/phpstan analyse -c packages/engine/phpstan.neon.dist --memory-limit=1G",
         "test-core": "vendor/bin/pest packages/core/tests",
         "test-contracts": "vendor/bin/pest packages/contracts/tests",
@@ -153,7 +145,6 @@
         "test-sources": "vendor/bin/pest packages/sources/tests",
         "test-expression": "vendor/bin/pest packages/expression/tests",
         "test-runtime": "vendor/bin/pest packages/runtime/tests",
-        "test-pipeline": "vendor/bin/pest packages/request-pipeline/tests",
         "test-runner": "vendor/bin/pest packages/runner/tests",
         "test-cli": "vendor/bin/pest packages/cli/tests",
         "test-laravel": "vendor/bin/pest packages/laravel/tests",
@@ -167,7 +158,6 @@
             "@test-document",
             "@test-sources",
             "@test-runtime",
-            "@test-pipeline",
             "@test-events",
             "@test-engine",
             "@test-runner",

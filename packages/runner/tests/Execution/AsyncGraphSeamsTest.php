@@ -7,11 +7,7 @@ use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
-use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
@@ -100,30 +96,6 @@ function dummySeams(): AsyncGraphSeams
                 return new Response(200);
             }
         },
-        expressionResolver: new class() implements ExpressionResolverInterface
-        {
-            public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
-            {
-                return $expression->raw;
-            }
-
-            public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-            public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-            {
-                return [];
-            }
-
-            public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-            {
-                return true;
-            }
-
-            public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-            {
-                return true;
-            }
-        },
         requestFactory: new HttpFactory(),
         logger: null,
         idempotencyEnabled: false,
@@ -146,7 +118,7 @@ it('constructs seams with all required ports', function () {
         ->and($seams->definitionRegistry)->not->toBeNull()
         ->and($seams->lockManager)->not->toBeNull()
         ->and($seams->httpClient)->not->toBeNull()
-        ->and($seams->expressionResolver)->not->toBeNull()
+        ->and($seams->schemaValidator)->toBeNull()
         ->and($seams->requestFactory)->not->toBeNull();
 });
 

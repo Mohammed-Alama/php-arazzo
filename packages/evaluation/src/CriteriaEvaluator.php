@@ -14,7 +14,6 @@ use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
 use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
 use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
@@ -31,7 +30,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
     private ?CriterionEvaluatorRegistry $criterionRegistry;
 
     public function __construct(
-        private ExpressionEvaluatorInterface $evaluator,
+        private ExpressionEvaluator $evaluator,
         ?ConditionEvaluator $conditionEvaluator = null,
         ?XpathEvaluator $xpathEvaluator = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,

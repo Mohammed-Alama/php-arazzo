@@ -50,8 +50,6 @@ flowchart LR
     laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
     laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     laravel__["(laravel package root)"]:::laravelNode
-    request_pipeline_Data["Alama\Arazzo\RequestPipeline\Data"]:::coreNode
-    request_pipeline__["(request-pipeline package root)"]:::coreNode
     runner_Execution["Alama\Arazzo\Runner\Execution"]:::coreNode
     runner_Jobs["Alama\Arazzo\Runner\Jobs"]:::coreNode
     runner_Protocol["Alama\Arazzo\Runner\Protocol"]:::coreNode
@@ -87,6 +85,7 @@ flowchart LR
     evaluation_Condition --> evaluation_Interfaces
     evaluation_Condition --> contracts_Support
     evaluation_Condition --> evaluation_Data
+    evaluation_Condition --> evaluation__
     evaluation_Data --> contracts_Spec
     evaluation_Data --> evaluation_Interfaces
     evaluation_Exceptions --> contracts_Support
@@ -105,9 +104,8 @@ flowchart LR
     evaluation__ --> evaluation_Interfaces
     evaluation__ --> expression_Ast
     evaluation__ --> expression__
-    evaluation__ --> contracts_Interfaces
-    evaluation__ --> evaluation_Data
     evaluation__ --> evaluation_Condition
+    evaluation__ --> evaluation_Data
     evaluation__ --> evaluation_Registries
     evaluation__ --> evaluation_Exceptions
     document_Parser --> contracts_Spec
@@ -160,35 +158,24 @@ flowchart LR
     events_Listener --> contracts_Support
     events_Listener --> events__
     events_Listener --> events_Interfaces
-    request_pipeline_Data --> contracts_Spec
-    request_pipeline_Data --> evaluation__
-    request_pipeline_Data --> evaluation_Interfaces
-    request_pipeline__ --> contracts_Spec
-    request_pipeline__ --> contracts_State
-    request_pipeline__ --> request_pipeline_Data
-    request_pipeline__ --> contracts_Interfaces
-    request_pipeline__ --> evaluation__
-    request_pipeline__ --> evaluation_Interfaces
-    request_pipeline__ --> document_Parser
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
     runner_Execution --> runtime_State
     runner_Execution --> contracts_State
+    runner_Execution --> evaluation_Data
     runner_Execution --> evaluation__
-    runner_Execution --> request_pipeline_Data
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
     runner_Execution --> document_Validator
-    runner_Execution --> evaluation_Interfaces
     runner_Execution --> events__
     runner_Execution --> events_Interfaces
-    runner_Execution --> request_pipeline__
     runner_Execution --> runner_Jobs
     runner_Execution --> runtime_Telemetry
     runner_Execution --> contracts_Dependency
     runner_Execution --> runtime_Policy
+    runner_Execution --> document_Parser
     runner_Execution --> expression_Enum
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
@@ -199,14 +186,11 @@ flowchart LR
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
     runner_Protocol --> evaluation__
-    runner_Protocol --> evaluation_Interfaces
-    runner_Protocol --> request_pipeline__
     runner_Protocol --> runner_Execution
     runner_Protocol --> sources_Normalizer
-    runner_Protocol --> request_pipeline_Data
+    runner_Protocol --> evaluation_Data
     runner_Protocol --> runtime_State
     runner__ --> contracts_Interfaces
-    runner__ --> evaluation_Interfaces
     runner__ --> runner_Execution
     runner__ --> contracts_Spec
     runner__ --> events_Interfaces
@@ -222,7 +206,7 @@ flowchart LR
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
-    cli_Console --> evaluation_Interfaces
+    cli_Console --> evaluation__
     cli_Console --> events_Interfaces
     cli_Console --> runner_Execution
     cli_Console --> runner_Jobs
@@ -233,12 +217,12 @@ flowchart LR
     cli_Console --> expression__
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
-    cli_Console --> evaluation__
     cli_Console --> runner__
     cli_Console --> sources_Resolver
     cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
+    laravel_Bindings --> evaluation__
     laravel_Bindings --> laravel_Support
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Execution
@@ -258,7 +242,6 @@ flowchart LR
     laravel_Bindings --> sources_Validator
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
-    laravel_Bindings --> evaluation__
     laravel_Bindings --> expression__
     laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> sources__
@@ -278,7 +261,6 @@ flowchart LR
     laravel_Queue --> runner_Execution
     laravel_State --> runtime_State
     laravel_Support --> contracts_Interfaces
-    laravel_Support --> evaluation_Interfaces
     laravel_Support --> events_Interfaces
     laravel_Support --> runner__
     laravel_Support --> runner_Execution

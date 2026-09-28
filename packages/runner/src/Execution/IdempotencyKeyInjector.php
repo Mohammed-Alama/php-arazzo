@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\RequestPipeline;
+namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\RequestPipeline\Data\InjectionResult;
+use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
 use Psr\Http\Message\RequestInterface;
 
 /**

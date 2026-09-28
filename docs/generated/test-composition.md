@@ -117,33 +117,19 @@ pie showData
 | Module-scoped | 3 | 60% |
 | Root | 2 | 40% |
 
-## Request-pipeline package
-
-```mermaid
-pie showData
-    title Request-pipeline — 11 test files
-    "Root": 10
-    "Architecture": 1
-```
-
-| Suite | Files | Share |
-|---|---:|---:|
-| Root | 10 | 91% |
-| Architecture | 1 | 9% |
-
 ## Runner package
 
 ```mermaid
 pie showData
-    title Runner — 43 test files
-    "Module-scoped": 36
+    title Runner — 51 test files
+    "Module-scoped": 44
     "Root": 7
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 36 | 84% |
-| Root | 7 | 16% |
+| Module-scoped | 44 | 86% |
+| Root | 7 | 14% |
 
 ## Cli package
 

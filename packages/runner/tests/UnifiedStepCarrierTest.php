@@ -7,9 +7,7 @@ use Alama\Arazzo\Contracts\Interfaces\PluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Info;
-use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
@@ -21,7 +19,6 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Engine\Data\Transition;
 use Alama\Arazzo\Engine\WorkflowEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\OperationExecutorRegistry;
 use Alama\Arazzo\Runner\UnifiedStepCarrier;
@@ -99,34 +96,6 @@ class SuccessfulPlugin implements OperationExecutorPluginInterface, PluginInterf
     }
 }
 
-function unifiedTestResolver(): ExpressionResolverInterface
-{
-    return new class() implements ExpressionResolverInterface
-    {
-        public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
-        {
-            return $expression->raw;
-        }
-
-        public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-        public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-        {
-            return [];
-        }
-
-        public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-        {
-            return true;
-        }
-
-        public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
-        {
-            return true;
-        }
-    };
-}
-
 function unifiedTestWorkflowEngine(): WorkflowEngineInterface
 {
     return new class() implements WorkflowEngineInterface
@@ -154,7 +123,6 @@ it('executes a step through the plugin and persists the outcome', function (): v
     $executionRegistry = new UnifiedTestExecutionRegistry();
     $pendingCorrelations = new UnifiedTestPendingCorrelationRegistry();
     $lockManager = new NullLockStrategy();
-    $resolver = unifiedTestResolver();
     $workflowEngine = unifiedTestWorkflowEngine();
 
     $registry = new OperationExecutorRegistry();
@@ -186,7 +154,6 @@ it('throws when no plugin supports the step', function (): void {
     $executionRegistry = new UnifiedTestExecutionRegistry();
     $pendingCorrelations = new UnifiedTestPendingCorrelationRegistry();
     $lockManager = new NullLockStrategy();
-    $resolver = unifiedTestResolver();
     $workflowEngine = unifiedTestWorkflowEngine();
 
     $registry = new OperationExecutorRegistry();

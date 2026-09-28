@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Tests\Expression\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('persists and restores the shared budget across queue job boundaries', function (): void {
@@ -55,7 +55,7 @@ it('persists and restores the shared budget across queue job boundaries', functi
 });
 
 it('shares one step budget between parent and nested sub-workflow invocation', function (): void {
-    $resolver = new TestExpressionResolver();
+    $resolver = new TestEvaluationEngine();
 
     $childWf = Fx::wf('child', [Fx::step('c1'), Fx::step('c2')]);
     $parentStep = Fx::step('hop', null, null, null, onSuccess: [

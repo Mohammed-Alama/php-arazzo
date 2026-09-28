@@ -7,7 +7,6 @@ namespace Alama\Arazzo\Runner\Execution;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\RequestPipeline\ExecutionExpressionResolver;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -39,20 +38,18 @@ final class ExecutionGraphFactory
         $client = $this->httpClient ?? new Client();
         $factory = $this->requestFactory ?? new HttpFactory();
 
-        $expressionResolver = new ExecutionExpressionResolver(
-            $this->engine,
-            new StepOutputExtractor($this->operations->resolver, $this->engine, $this->inspector),
-            new ResponseSchemaValidator($this->operations->resolver),
-        );
+        $outputExtractor = new StepOutputExtractor($this->operations->resolver, $this->engine, $this->inspector);
+        $schemaValidator = new ResponseSchemaValidator($this->operations->resolver);
 
         return new WorkflowExecutor(
             new StepExecutor(
                 new DefaultOpenApiExecutor($client, $factory),
-                $expressionResolver,
                 $this->operations->resolver,
-                engine: $this->engine,
+                $this->engine,
+                $outputExtractor,
+                $schemaValidator,
             ),
-            workflowEngine: new WorkflowEngine($expressionResolver),
+            workflowEngine: new WorkflowEngine($this->engine),
             preflight: $this->operations->document,
         );
     }

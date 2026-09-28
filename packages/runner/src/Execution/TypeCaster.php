@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\RequestPipeline;
+namespace Alama\Arazzo\Runner\Execution;
 
 use InvalidArgumentException;
 
@@ -11,7 +11,7 @@ use InvalidArgumentException;
  */
 class TypeCaster
 {
-    public static function asInteger(mixed $value): int
+    public function asInteger(mixed $value): int
     {
         if (is_numeric($value)) {
             return (int) $value;
@@ -19,7 +19,7 @@ class TypeCaster
         throw new InvalidArgumentException('Cannot cast to integer.');
     }
 
-    public static function asFloat(mixed $value): float
+    public function asFloat(mixed $value): float
     {
         if (is_numeric($value)) {
             return (float) $value;
@@ -27,7 +27,7 @@ class TypeCaster
         throw new InvalidArgumentException('Cannot cast to float.');
     }
 
-    public static function asBoolean(mixed $value): bool
+    public function asBoolean(mixed $value): bool
     {
         if (is_bool($value)) {
             return $value;
@@ -41,7 +41,7 @@ class TypeCaster
         throw new InvalidArgumentException('Cannot cast to boolean.');
     }
 
-    public static function asString(mixed $value): string
+    public function asString(mixed $value): string
     {
         if (is_scalar($value)) {
             return is_bool($value) ? ($value ? 'true' : 'false') : (string) $value;
@@ -52,7 +52,7 @@ class TypeCaster
     /**
      * @return array<int|string, mixed>
      */
-    public static function asArray(mixed $value): array
+    public function asArray(mixed $value): array
     {
         if (is_array($value)) {
             return $value;

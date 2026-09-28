@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\RequestPipeline;
+namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
-use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
-use Alama\Arazzo\RequestPipeline\ExpressionValueResolver;
+use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
 
 function valueResolverFor(EvaluationEngineInterface $engine): ExpressionValueResolver
 {
@@ -142,7 +142,7 @@ it('routes an Expression to evaluate, carrying the step id in the evaluation inp
     $context = valueContext();
 
     expect(valueResolverFor($engine)->resolve($expression, $context, 'step-a'))->toBe(7)
-        ->and($seen)->toBeInstanceOf(ExecutionEvaluationInput::class)
+        ->and($seen)->toBeInstanceOf(EvaluationContext::class)
         ->and($seen->getCurrentStepId())->toBe('step-a')
         ->and($seen->getWorkflowContext())->toBe($context);
 });

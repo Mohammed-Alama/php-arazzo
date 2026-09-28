@@ -9,8 +9,8 @@ use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\RequestPipeline\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
@@ -50,7 +50,7 @@ class SubWorkflowInvoker
 
         $bound = array_map(function ($spec) use ($parent) {
             return match (true) {
-                $spec instanceof Expression => $this->engine->evaluate($spec, new ExecutionEvaluationInput($parent, '__invoke__')),
+                $spec instanceof Expression => $this->engine->evaluate($spec, new EvaluationContext($parent, '__invoke__')),
                 $spec instanceof Selector => $this->engine->evaluateSelector($spec, $parent, '__invoke__'),
                 default => $spec,
             };
