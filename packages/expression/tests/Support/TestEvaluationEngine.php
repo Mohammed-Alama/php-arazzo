@@ -11,9 +11,9 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 
 final class TestEvaluationEngine implements EvaluationEngineInterface
 {

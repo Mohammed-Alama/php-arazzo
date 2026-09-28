@@ -6,10 +6,14 @@ namespace Alama\Arazzo\Evaluation\Plugins;
 
 use Alama\Arazzo\Contracts\Interfaces\ExpressionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 final readonly class JsonPathExpressionPlugin implements ExpressionEvaluatorPluginInterface
 {
+    public function __construct(
+        private ExpressionEngineInterface $expression,
+    ) {}
+
     public function name(): string
     {
         return 'jsonpath-expression';
@@ -48,6 +52,6 @@ final readonly class JsonPathExpressionPlugin implements ExpressionEvaluatorPlug
      */
     public function evaluate(Expression $expression, mixed $context): mixed
     {
-        return JsonPathEvaluator::evaluate($expression->raw, $context);
+        return $this->expression->jsonPath($expression->raw, $context);
     }
 }

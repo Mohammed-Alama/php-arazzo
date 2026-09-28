@@ -12,6 +12,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -23,7 +24,7 @@ function runtimeRunner(?ClientInterface $client = null): RunnerFacade
 {
     $runtime = SourceGraph::runtime();
 
-    return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(), $client);
+    return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()), $client);
 }
 
 function runnerFixtureDocument(): ArazzoDocument
@@ -56,7 +57,7 @@ it('exposes the enriched runner facade entry point', function () {
 
 it('accepts the document public face as the required seam dependency', function () {
     $runtime = SourceGraph::runtime();
-    $runner = new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine());
+    $runner = new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()));
 
     expect($runner)->toBeInstanceOf(RunnerFacadeInterface::class);
 });

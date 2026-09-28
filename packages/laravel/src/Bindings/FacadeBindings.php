@@ -29,7 +29,7 @@ final class FacadeBindings
     public static function register(Container $app): void
     {
         $app->singleton(ExpressionEngineInterface::class, fn (): ExpressionEngine => new ExpressionEngine());
-        $app->singleton(EvaluationEngineInterface::class, fn (): EvaluationEngine => new EvaluationEngine());
+        $app->singleton(EvaluationEngineInterface::class, fn (): EvaluationEngine => new EvaluationEngine(expression: new ExpressionEngine()));
         // One runtime, so the document and the resolver behind it share a
         // single transport instead of each building a fetcher map.
         $app->singleton(SourceRuntime::class, fn (): SourceRuntime => SourceGraph::runtime());

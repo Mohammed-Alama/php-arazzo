@@ -90,7 +90,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
     $document = $classificationHarness->boot($fixture);
     $runtime = $classificationHarness->sourceRuntime();
     $documents = $runtime->document;
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
@@ -155,7 +155,7 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
     $document = $classificationHarness->boot($fixture);
     $runtime = $classificationHarness->sourceRuntime();
     $documents = $runtime->document;
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 

@@ -6,14 +6,15 @@ namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
  */
 class StringInterpolator
 {
-    public function __construct(private ExpressionEvaluator $evaluator) {}
+    public function __construct(private ExpressionEngineInterface $expression) {}
 
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
     {
@@ -24,7 +25,7 @@ class StringInterpolator
         return preg_replace_callback('/(?:\{\$|\$\{)([^\}]+)\}/', function ($matches) use ($context, $stepId) {
             $expr = new Expression('{$'.$matches[1].'}');
             $ctx = new EvaluationContext($context, $stepId);
-            $result = $this->evaluator->evaluate($expr, $ctx);
+            $result = $this->expression->evaluate($expr, $ctx);
             if ($result === null) {
                 return '';
             }

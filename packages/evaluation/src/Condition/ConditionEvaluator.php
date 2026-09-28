@@ -6,11 +6,11 @@ namespace Alama\Arazzo\Evaluation\Condition;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Enum\ComparisonOperator;
 use Alama\Arazzo\Evaluation\Enum\LogicalOperator;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -22,7 +22,7 @@ final class ConditionEvaluator
     private Parser $parser;
 
     public function __construct(
-        private ExpressionEvaluator $evaluator,
+        private ExpressionEngineInterface $expression,
     ) {
         $this->lexer = new Lexer();
         $this->parser = new Parser($this->lexer);
@@ -64,7 +64,7 @@ final class ConditionEvaluator
         }
 
         if ($node instanceof Ast\RuntimeExpr) {
-            return self::truthy($this->evaluator->evaluate($node->expression, $context));
+            return self::truthy($this->expression->evaluate($node->expression, $context));
         }
 
         throw new ConditionSyntaxException('Unsupported condition node.');
@@ -81,7 +81,7 @@ final class ConditionEvaluator
         }
 
         if ($operand instanceof Ast\RuntimeExpr) {
-            return $this->evaluator->evaluate($operand->expression, $context);
+            return $this->expression->evaluate($operand->expression, $context);
         }
 
         return $this->resolve($operand, $context);

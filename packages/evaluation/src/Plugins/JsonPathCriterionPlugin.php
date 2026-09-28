@@ -9,10 +9,14 @@ use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
-use Alama\Arazzo\Evaluation\JsonPathEvaluator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 final readonly class JsonPathCriterionPlugin implements CriterionEvaluatorPluginInterface
 {
+    public function __construct(
+        private ExpressionEngineInterface $expression,
+    ) {}
+
     public function name(): string
     {
         return 'jsonpath-criterion';
@@ -34,8 +38,8 @@ final readonly class JsonPathCriterionPlugin implements CriterionEvaluatorPlugin
 
     public function evaluate(SuccessCriterion $criterion, mixed $context, Step $step, WorkflowContextInterface $workflowContext): bool
     {
-        // $context is the response body (mixed). Delegate to existing evaluator logic.
-        $result = JsonPathEvaluator::evaluate($criterion->condition, $context);
+        // $context is the response body (mixed). Delegate to the public expression API.
+        $result = $this->expression->jsonPath($criterion->condition, $context);
 
         // Truthiness: non-empty array or non-false/non-null scalar
         if (is_array($result)) {

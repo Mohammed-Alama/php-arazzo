@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Evaluation\Registries;
 use Alama\Arazzo\Contracts\Interfaces\ExpressionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Evaluation\Plugins\JsonPathExpressionPlugin;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * Registry for expression evaluator plugins.
@@ -20,10 +21,10 @@ final class ExpressionEvaluatorRegistry
     /** @var array<int, ExpressionEvaluatorPluginInterface> */
     private array $plugins = [];
 
-    public function __construct()
+    public function __construct(ExpressionEngineInterface $expression)
     {
         // Built‑in default plugin (lowest priority)
-        $this->register(new JsonPathExpressionPlugin(), 0);
+        $this->register(new JsonPathExpressionPlugin($expression), 0);
     }
 
     public function register(ExpressionEvaluatorPluginInterface $plugin, int $priority = 0): void

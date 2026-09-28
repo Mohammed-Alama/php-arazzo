@@ -12,7 +12,7 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 
 /**
  * Entry-point seam for the runtime evaluation package.

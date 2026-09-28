@@ -24,6 +24,7 @@ use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 function capabilityStep(?RequestBody $body = null, array $criteria = [], array $outputs = []): Step
 {
@@ -69,7 +70,7 @@ function capabilityDocument(): ArazzoDocument
 }
 
 it('evaluates success criteria and criteria lists against the context', function (): void {
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $step = capabilityStep(criteria: [new SuccessCriterion(null, '{$statusCode} == 200', CriterionType::Simple)]);
     $context = (new WorkflowContext('def_1'))
         ->withStepRequest('s1', [])
@@ -80,7 +81,7 @@ it('evaluates success criteria and criteria lists against the context', function
 });
 
 it('evaluates selectors rooted at the current step', function (): void {
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $context = (new WorkflowContext('def_1'))
         ->withStepRequest('s1', [])
         ->withStepResponse('s1', ['statusCode' => 200, 'headers' => [], 'body' => ['users' => [['id' => 1], ['id' => 2]]]]);
@@ -91,21 +92,21 @@ it('evaluates selectors rooted at the current step', function (): void {
 });
 
 it('queries xpath and reports the supported versions', function (): void {
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
 
     expect($engine->supportedXPathVersions())->toBe(['xpath-10']);
     expect($engine->queryXPath('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
 });
 
 it('interpolates expression references into strings', function (): void {
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $context = (new WorkflowContext('def_1'))->withInput('name', 'Ada');
 
     expect($engine->interpolate('Hello {$inputs.name}!', $context, 's1'))->toBe('Hello Ada!');
 });
 
 it('applies pointer payload replacements and delegates selector targets', function (): void {
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $pointerStep = capabilityStep(body: new RequestBody(null, null, [new PayloadReplacement('/a/b', 'set')]));
     $selectorStep = capabilityStep(body: new RequestBody(null, null, [new PayloadReplacement('$.user.name', 'Ada', 'jsonpath')]));
 
@@ -118,7 +119,7 @@ it('applies pointer payload replacements and delegates selector targets', functi
 });
 
 it('evaluates jsonpath and json pointer directly', function (): void {
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
 
     expect($engine->jsonPath('$.users[*].id', ['users' => [['id' => 1], ['id' => 2]]]))->toBe([1, 2]);
     expect($engine->jsonPointer(['a' => ['b' => 5]], '/a/b'))->toBe(5);

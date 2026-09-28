@@ -62,7 +62,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
 
     $document = DocumentLoader::load(INPUTS_SCHEMA_DOC);
 
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $documents = $runtime->document;
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());

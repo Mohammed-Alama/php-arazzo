@@ -23,10 +23,11 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
@@ -242,7 +243,7 @@ it('validates response schema and fails fast on failure', function (): void {
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new HttpStepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(), $outputExtractor, $validator, true); // strict default
+    $executor = new HttpStepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator, true); // strict default
     $step = StepFactory::http(
         stepId: 'sync-step',
         description: null,

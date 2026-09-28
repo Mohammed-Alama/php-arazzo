@@ -100,7 +100,7 @@ abstract class ConformanceHarness
 
     protected function engine(): EvaluationEngineInterface
     {
-        return new EvaluationEngine();
+        return new EvaluationEngine(expression: new ExpressionEngine());
     }
 
     protected function runtime(SourceRegistry $registry): SourceRuntime

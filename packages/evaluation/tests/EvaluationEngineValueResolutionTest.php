@@ -9,6 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 function valueContext(): WorkflowContext
 {
@@ -17,7 +18,7 @@ function valueContext(): WorkflowContext
 
 function valueEngine(): EvaluationEngine
 {
-    return new EvaluationEngine();
+    return new EvaluationEngine(expression: new ExpressionEngine());
 }
 
 it('passes non-string, non-expression values straight through', function (): void {

@@ -497,7 +497,7 @@ it('executes a workflow end-to-end', function () {
             return new SourceDocument($description->name, $description->type, $description->url, $json);
         }
     };
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry($sourceResolver));
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);

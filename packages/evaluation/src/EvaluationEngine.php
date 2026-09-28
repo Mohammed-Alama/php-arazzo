@@ -10,30 +10,35 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
-use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\JsonPointer;
 
 /**
  * Concrete evaluation facade.
  *
- * Hides runtime evaluation collaborators (expression evaluator, criteria evaluator,
- * selector evaluator, string interpolator, payload replacer) behind a single entry point.
+ * Hides runtime evaluation collaborators (criteria evaluator, string interpolator,
+ * payload replacer, expression engine) behind a single entry point.
  */
 final class EvaluationEngine implements EvaluationEngineInterface
 {
+    private readonly ExpressionEvaluatorRegistry $expressionRegistry;
+
+    private readonly CriterionEvaluatorRegistry $criterionRegistry;
+
     public function __construct(
-        private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(),
-        private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(),
-        private readonly ExpressionEvaluatorRegistry $expressionRegistry = new ExpressionEvaluatorRegistry(),
-        private readonly CriterionEvaluatorRegistry $criterionRegistry = new CriterionEvaluatorRegistry(),
-    ) {}
+        private readonly ExpressionEngineInterface $expression,
+        ?ExpressionEvaluatorRegistry $expressionRegistry = null,
+        ?CriterionEvaluatorRegistry $criterionRegistry = null,
+    ) {
+        $this->expressionRegistry = $expressionRegistry ?? new ExpressionEvaluatorRegistry($this->expression);
+        $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry($this->expression);
+    }
 
     private ?CriteriaEvaluator $criteriaEvaluator = null;
-
-    private ?SelectorEvaluator $selectorEvaluator = null;
 
     private ?StringInterpolator $interpolator = null;
 
@@ -44,7 +49,7 @@ final class EvaluationEngine implements EvaluationEngineInterface
             return $plugin->evaluate($expression, $context);
         }
 
-        return $this->evaluator->evaluate($expression, $context);
+        return $this->expression->evaluate($expression, $context);
     }
 
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -59,17 +64,17 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
     {
-        return $this->selectors()->evaluate($selector, $context, $stepId);
+        return $this->expression->evaluateSelector($selector, $context, $stepId);
     }
 
     public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
     {
-        return $this->xpath->query($rootValue, $selector, $version);
+        return $this->expression->queryXPath($rootValue, $selector, $version);
     }
 
     public function supportedXPathVersions(): array
     {
-        return $this->xpath->supportedVersions();
+        return $this->expression->supportedXPathVersions();
     }
 
     public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
@@ -113,12 +118,12 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
     {
-        return PayloadReplacer::apply($step, $body, $resolveValue, $context);
+        return PayloadReplacer::apply($this->expression, $step, $body, $resolveValue, $context);
     }
 
     public function jsonPath(string $expression, array|object $data): mixed
     {
-        return JsonPathEvaluator::evaluate($expression, $data);
+        return $this->expression->jsonPath($expression, $data);
     }
 
     public function jsonPointer(array $data, ?string $pointer): mixed
@@ -128,16 +133,11 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     private function criteria(): CriteriaEvaluator
     {
-        return $this->criteriaEvaluator ??= new CriteriaEvaluator($this->evaluator, null, null, $this->criterionRegistry);
-    }
-
-    private function selectors(): SelectorEvaluator
-    {
-        return $this->selectorEvaluator ??= new SelectorEvaluator($this->xpath, $this->evaluator);
+        return $this->criteriaEvaluator ??= new CriteriaEvaluator($this->expression, null, $this->criterionRegistry);
     }
 
     private function interpolator(): StringInterpolator
     {
-        return $this->interpolator ??= new StringInterpolator($this->evaluator);
+        return $this->interpolator ??= new StringInterpolator($this->expression);
     }
 }

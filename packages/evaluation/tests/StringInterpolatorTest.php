@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Evaluation;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
 use Alama\Arazzo\Evaluation\StringInterpolator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Mockery;
 
 it('interpolates multiple expressions in a string', function () {
     $context = new WorkflowContext('wf1', ['token' => 'abc1234', 'userId' => 42]);
-    $evaluator = Mockery::mock(ExpressionEvaluator::class);
+    $evaluator = Mockery::mock(ExpressionEngineInterface::class);
     $evaluator->shouldReceive('evaluate')->andReturnUsing(function ($expr, $ctx) {
         $raw = $expr->raw;
         if ($raw === '{$inputs.token}') {
@@ -33,7 +33,7 @@ it('interpolates multiple expressions in a string', function () {
 
 it('json encodes complex values', function () {
     $context = new WorkflowContext('wf1', ['user' => ['id' => 42, 'name' => 'Alice']]);
-    $evaluator = Mockery::mock(ExpressionEvaluator::class);
+    $evaluator = Mockery::mock(ExpressionEngineInterface::class);
     $evaluator->shouldReceive('evaluate')->andReturn(['id' => 42, 'name' => 'Alice']);
 
     $interpolator = new StringInterpolator($evaluator);
@@ -45,7 +45,7 @@ it('json encodes complex values', function () {
 
 it('leaves missing expressions blank', function () {
     $context = new WorkflowContext('wf1', []);
-    $evaluator = Mockery::mock(ExpressionEvaluator::class);
+    $evaluator = Mockery::mock(ExpressionEngineInterface::class);
     $evaluator->shouldReceive('evaluate')->andReturn(null);
 
     $interpolator = new StringInterpolator($evaluator);
@@ -57,7 +57,7 @@ it('leaves missing expressions blank', function () {
 
 it('interpolates the ${...} spelling and mixes it with the {$...} spelling', function () {
     $context = new WorkflowContext('wf1', ['token' => 'abc1234', 'userId' => 42]);
-    $evaluator = Mockery::mock(ExpressionEvaluator::class);
+    $evaluator = Mockery::mock(ExpressionEngineInterface::class);
     // Both spellings must reach the evaluator in the canonical {$...} form.
     $evaluator->shouldReceive('evaluate')->andReturnUsing(function ($expr) {
         expect($expr->raw)->toStartWith('{$')->not()->toContain('${');
@@ -78,7 +78,7 @@ it('interpolates the ${...} spelling and mixes it with the {$...} spelling', fun
 
 it('leaves a bare dollar that is not a braced expression alone', function () {
     $context = new WorkflowContext('wf1', ['token' => 'abc1234']);
-    $evaluator = Mockery::mock(ExpressionEvaluator::class);
+    $evaluator = Mockery::mock(ExpressionEngineInterface::class);
     $evaluator->shouldNotReceive('evaluate');
 
     $interpolator = new StringInterpolator($evaluator);

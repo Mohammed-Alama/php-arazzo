@@ -153,7 +153,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
     ]);
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $documents = $runtime->document;
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
