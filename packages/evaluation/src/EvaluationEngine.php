@@ -10,6 +10,7 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
@@ -69,6 +70,40 @@ final class EvaluationEngine implements EvaluationEngineInterface
     public function supportedXPathVersions(): array
     {
         return $this->xpath->supportedVersions();
+    }
+
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
+    {
+        if ($value instanceof Selector) {
+            return $this->evaluateSelector($value, $context, $stepId ?? '');
+        }
+
+        if ($value instanceof Expression) {
+            return $this->evaluate($value, new EvaluationContext($context, $stepId));
+        }
+
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        if ($stepId === null) {
+            $stepId = '';
+        }
+
+        // Arazzo values may spell a runtime expression either `{$...}` or
+        // `${...}`, anywhere in the string; the interpolator understands both.
+        if (str_contains($value, '{$') || str_contains($value, '${')) {
+            return $this->interpolate($value, $context, $stepId);
+        }
+
+        // A whole value may instead be a bare runtime expression (`$inputs.x`).
+        // A bare `$` carries no closing delimiter, so it is only meaningful
+        // when it is the entire value.
+        if (preg_match('/^\$[A-Za-z]/', $value) === 1 && !str_contains($value, ' ')) {
+            return $this->interpolate('{'.$value.'}', $context, $stepId);
+        }
+
+        return $value;
     }
 
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string

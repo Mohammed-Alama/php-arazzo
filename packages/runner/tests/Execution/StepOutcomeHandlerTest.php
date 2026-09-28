@@ -27,6 +27,7 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
@@ -132,6 +133,23 @@ class StepOutcomeMockExpressionResolver implements EvaluationEngineInterface
         return $value;
     }
 
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
+    {
+        if (is_string($value)) {
+            return $this->interpolate($value, $context, $stepId ?? '');
+        }
+
+        if ($value instanceof Expression) {
+            return $this->evaluate($value, new EvaluationContext($context, $stepId));
+        }
+
+        if ($value instanceof Selector) {
+            return $this->evaluateSelector($value, $context, $stepId ?? '');
+        }
+
+        return $value;
+    }
+
     public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
     {
         return $body;
@@ -221,7 +239,7 @@ function makeStepOutcomeHandler(int $maxRetryAttempts = 10, bool $pendingCorrela
         new RunControlFlow($workflowEngine, $queue),
         pendingCorrelations: $pendingCorrelations,
         invoker: \Mockery::mock(SubWorkflowInvoker::class),
-        engine: \Mockery::mock(EvaluationEngineInterface::class),
+        evaluationEngine: \Mockery::mock(EvaluationEngineInterface::class),
         stateTtlSeconds: 86400,
     );
 

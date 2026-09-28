@@ -67,7 +67,7 @@ class StepOutcomeHandler
         RunControlFlow $controlFlow,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private SubWorkflowInvoker $invoker,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private int $stateTtlSeconds = 86400,
     ) {
         $this->queueDriver = $controlFlow->queueDriver;
@@ -88,8 +88,8 @@ class StepOutcomeHandler
     ): void {
         foreach ($step->io->outputs as $name => $value) {
             $resolved = match (true) {
-                $value instanceof Selector => $this->engine->evaluateSelector($value, $context, $step->stepId),
-                $value instanceof Expression => $this->engine->evaluate($value, new EvaluationContext($context, $step->stepId)),
+                $value instanceof Selector => $this->evaluationEngine->evaluateSelector($value, $context, $step->stepId),
+                $value instanceof Expression => $this->evaluationEngine->evaluate($value, new EvaluationContext($context, $step->stepId)),
                 default => $value,
             };
             $context = $context->withStepOutput($step->stepId, $name, $resolved);

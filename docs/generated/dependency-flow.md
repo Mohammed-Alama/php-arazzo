@@ -75,7 +75,7 @@ evaluation-Xpath,evaluation-Exceptions,1
 evaluation-root,contracts-Spec,27
 evaluation-root,contracts-State,3
 evaluation-root,evaluation-Condition,2
-evaluation-root,evaluation-Data,3
+evaluation-root,evaluation-Data,4
 evaluation-root,evaluation-Exceptions,1
 evaluation-root,evaluation-Interfaces,4
 evaluation-root,evaluation-Registries,3
@@ -145,14 +145,14 @@ laravel-root,laravel-Support,1
 runner-Execution,contracts-Dependency,3
 runner-Execution,contracts-Exceptions,4
 runner-Execution,contracts-Interfaces,10
-runner-Execution,contracts-Spec,69
-runner-Execution,contracts-State,14
+runner-Execution,contracts-Spec,67
+runner-Execution,contracts-State,13
 runner-Execution,contracts-Support,9
 runner-Execution,document-Parser,1
 runner-Execution,document-Validator,3
 runner-Execution,document-root,5
-runner-Execution,evaluation-Data,6
-runner-Execution,evaluation-root,11
+runner-Execution,evaluation-Data,5
+runner-Execution,evaluation-root,10
 runner-Execution,events-Interfaces,4
 runner-Execution,events-root,17
 runner-Execution,expression-Enum,1
@@ -169,7 +169,7 @@ runner-Protocol,contracts-Spec,13
 runner-Protocol,contracts-State,3
 runner-Protocol,evaluation-Data,2
 runner-Protocol,evaluation-root,3
-runner-Protocol,runner-Execution,10
+runner-Protocol,runner-Execution,9
 runner-Protocol,runtime-State,1
 runner-Protocol,sources-Normalizer,1
 runner-root,contracts-Exceptions,1

@@ -119,6 +119,7 @@ public contract between packages.
 
 - `EvaluationEngineInterface` (`interface`)
   - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+  - `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;`
   - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`

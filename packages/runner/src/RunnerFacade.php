@@ -25,11 +25,11 @@ final class RunnerFacade implements RunnerFacadeInterface
     public function __construct(
         DocumentInterface $documents,
         OpenApiOperationResolver $operationResolver,
-        EvaluationEngineInterface $engine,
+        EvaluationEngineInterface $evaluationEngine,
         ?ClientInterface $httpClient = null,
         ?ExpressionEngineInterface $inspector = null,
     ) {
-        $this->executor = (new ExecutionGraphFactory(new OperationRuntime($documents, $operationResolver), $engine, $inspector ?? new ExpressionEngine(), $httpClient))->createWorkflowExecutor();
+        $this->executor = (new ExecutionGraphFactory(new OperationRuntime($documents, $operationResolver), $evaluationEngine, $inspector ?? new ExpressionEngine(), $httpClient))->createWorkflowExecutor();
     }
 
     public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array

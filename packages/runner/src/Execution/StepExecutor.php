@@ -29,7 +29,7 @@ class StepExecutor
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private OpenApiOperationResolver $operationResolver,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private StepOutputExtractor $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
         private bool $strictValidationDefault = false,
@@ -46,7 +46,7 @@ class StepExecutor
      */
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
     {
-        $compiler = new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine);
+        $compiler = new RequestCompiler($this->evaluationEngine);
         ['payload' => $payload] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->resolveOperation($step, $document);
@@ -120,7 +120,7 @@ class StepExecutor
             $context = $context->withStepOutput($step->stepId, $key, $val);
         }
 
-        $success = $this->engine->evaluateSuccessCriteria($step, $context, $document);
+        $success = $this->evaluationEngine->evaluateSuccessCriteria($step, $context, $document);
 
         return [$context, $success];
     }

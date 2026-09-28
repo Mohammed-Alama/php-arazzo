@@ -127,7 +127,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
     $executor = new StepExecutor(
         openApiExecutor: $openApiExecutor,
         operationResolver: createMockDocumentResolver(),
-        engine: new EvaluationEngine(),
+        evaluationEngine: new EvaluationEngine(),
         outputExtractor: $outputExtractor,
         schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
         strictValidationDefault: false,
@@ -183,7 +183,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
     $executor = new StepExecutor(
         openApiExecutor: $openApiExecutor,
         operationResolver: createMockDocumentResolver(),
-        engine: new EvaluationEngine(),
+        evaluationEngine: new EvaluationEngine(),
         outputExtractor: $outputExtractor,
         schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
         strictValidationDefault: false,

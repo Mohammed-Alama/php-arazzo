@@ -34,7 +34,7 @@ targets. Regenerated before every commit.
 | `evaluation:Plugins` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 3 | 0.75 |  |
 | `evaluation:Xpath` | 2 | 107 | 1 | 2 | 0.67 |  |
-| `(evaluation root)` | 9 | 937 | 7 | 10 | 0.59 |  |
+| `(evaluation root)` | 9 | 978 | 7 | 10 | 0.59 |  |
 | `events:Interfaces` | 1 | 18 | 7 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 2 | 0 | 0.00 |  |
@@ -53,9 +53,9 @@ targets. Regenerated before every commit.
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 2 | 124 | 2 | 5 | 0.71 |  |
 | `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
-| `runner:Execution` | 38 | 3767 | 6 | 22 | 0.79 |  |
+| `runner:Execution` | 37 | 3706 | 6 | 22 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
-| `runner:Protocol` | 3 | 365 | 1 | 8 | 0.89 |  |
+| `runner:Protocol` | 3 | 364 | 1 | 8 | 0.89 |  |
 | `(runner root)` | 9 | 491 | 4 | 13 | 0.76 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
@@ -66,21 +66,21 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **944**
+Total cross-module edges: **939**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 98 |
-| `runner:Execution` → `contracts:Spec` | 69 |
+| `runner:Execution` → `contracts:Spec` | 67 |
 | `document:Parser` → `contracts:Spec` | 38 |
 | `(evaluation root)` → `contracts:Spec` | 27 |
 | `contracts:Interfaces` → `contracts:Spec` | 18 |
 | `runner:Execution` → `(events root)` | 17 |
 | `runner:Execution` → `runtime:State` | 15 |
 | `(expression root)` → `expression:Ast` | 14 |
-| `runner:Execution` → `contracts:State` | 14 |
 | `(evaluation root)` → `expression:Ast` | 13 |
+| `runner:Execution` → `contracts:State` | 13 |
 | `runner:Protocol` → `contracts:Spec` | 13 |
 | `(runner root)` → `contracts:Spec` | 12 |

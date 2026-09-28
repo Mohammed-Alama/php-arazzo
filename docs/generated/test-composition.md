@@ -41,15 +41,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Evaluation — 9 test files
-    "Root": 8
+    title Evaluation — 10 test files
+    "Root": 9
     "Module-scoped": 1
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 8 | 89% |
-| Module-scoped | 1 | 11% |
+| Root | 9 | 90% |
+| Module-scoped | 1 | 10% |
 
 ## Document package
 
@@ -121,14 +121,14 @@ pie showData
 
 ```mermaid
 pie showData
-    title Runner — 51 test files
-    "Module-scoped": 44
+    title Runner — 50 test files
+    "Module-scoped": 43
     "Root": 7
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 44 | 86% |
+| Module-scoped | 43 | 86% |
 | Root | 7 | 14% |
 
 ## Cli package

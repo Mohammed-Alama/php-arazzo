@@ -33,7 +33,7 @@ class StepOutputExtractor
 
     public function __construct(
         private OpenApiOperationResolver $operationResolver,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         ExpressionEngineInterface $inspector,
         private ?LoggerInterface $logger = null,
     ) {
@@ -51,7 +51,7 @@ class StepOutputExtractor
         $outputs = [];
         foreach ($step->io->outputs as $outputName => $expression) {
             if ($expression instanceof Selector) {
-                $outputs[$outputName] = $this->engine->evaluateSelector($expression, $context, $step->stepId);
+                $outputs[$outputName] = $this->evaluationEngine->evaluateSelector($expression, $context, $step->stepId);
 
                 continue;
             }
@@ -60,12 +60,12 @@ class StepOutputExtractor
                 $raw = trim($expression->raw);
 
                 if (str_starts_with($raw, '$.')) {
-                    $outputs[$outputName] = $this->engine->jsonPath($raw, is_array($responseBody) ? $responseBody : []);
+                    $outputs[$outputName] = $this->evaluationEngine->jsonPath($raw, is_array($responseBody) ? $responseBody : []);
 
                     continue;
                 }
 
-                $value = $this->engine->evaluate($expression, new EvaluationContext($context, $step->stepId, $document));
+                $value = $this->evaluationEngine->evaluate($expression, new EvaluationContext($context, $step->stepId, $document));
                 $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
             } else {
                 $outputs[$outputName] = $expression;

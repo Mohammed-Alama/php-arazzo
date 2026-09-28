@@ -50,7 +50,7 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
         new RunControlFlow(new WorkflowEngine($resolver), Mockery::mock(QueueDriverInterface::class)),
         pendingCorrelations: $pending,
         invoker: $invoker,
-        engine: Mockery::mock(EvaluationEngineInterface::class),
+        evaluationEngine: Mockery::mock(EvaluationEngineInterface::class),
     );
 
     $step = StepFactory::http(

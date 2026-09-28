@@ -47,7 +47,7 @@ final class WorkflowEngine
      *                                         explicit RetryPolicy is supplied.
      */
     public function __construct(
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         int|null|RetryPolicy $maxRetryAttempts = null,
         private float $retryBackoffMultiplier = 1.0,
     ) {
@@ -79,7 +79,7 @@ final class WorkflowEngine
         $state = $state->withStepResult($step->stepId, $record);
         $actions = $this->actions($document, $workflow, $step, $criteriaMet);
         foreach ($actions as $position => $action) {
-            if (!$this->engine->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
+            if (!$this->evaluationEngine->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
                 continue;
             }
             if ($action instanceof RetryAction) {
@@ -119,7 +119,7 @@ final class WorkflowEngine
                     }
 
                     $value = $parameter->value instanceof Expression
-                        ? $this->engine->evaluate($parameter->value, new EvaluationContext($gotoState->toContext(), $step->stepId))
+                        ? $this->evaluationEngine->evaluate($parameter->value, new EvaluationContext($gotoState->toContext(), $step->stepId))
                         : $parameter->value;
 
                     $inputs = $gotoState->inputs;
@@ -254,7 +254,7 @@ final class WorkflowEngine
         foreach ($workflow->outputs as $name => $expression) {
             try {
                 $outputs[$name] = $expression instanceof Expression
-                    ? $this->engine->evaluate($expression, new EvaluationContext($context))
+                    ? $this->evaluationEngine->evaluate($expression, new EvaluationContext($context))
                     : $expression;
             } catch (\Throwable) {
                 $outputs[$name] = null;

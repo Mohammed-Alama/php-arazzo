@@ -130,7 +130,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
-| `runner` | `EvaluationContext` | `evaluation` | 8 | `SubWorkflowInvoker` |
+| `runner` | `EvaluationContext` | `evaluation` | 7 | `SubWorkflowInvoker` |
 | `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |

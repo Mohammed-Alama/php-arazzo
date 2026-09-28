@@ -16,7 +16,6 @@ flowchart TD
         Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer"]:::service
         Alama_Arazzo_Runner_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor"]:::service
         Alama_Arazzo_Runner_Execution_ExecutionGraphFactory["ExecutionGraphFactory"]:::entry
-        Alama_Arazzo_Runner_Execution_ExpressionValueResolver["ExpressionValueResolver"]:::service
         Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector["IdempotencyKeyInjector"]:::service
         Alama_Arazzo_Runner_Execution_OperationRuntime["OperationRuntime"]:::service
         Alama_Arazzo_Runner_Execution_ParameterSerializer["ParameterSerializer"]:::service
@@ -85,11 +84,9 @@ flowchart TD
     Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Execution_ExecutionGraphFactory --> Alama_Arazzo_Runner_Execution_WorkflowExecutor
     Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector --> Alama_Arazzo_Runner_Execution_Data_InjectionResult
-    Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
     Alama_Arazzo_Runner_Execution_RequestCompiler --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
     Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Execution_StepExecutionWorker --> Alama_Arazzo_Runner_Jobs_ExecuteStepJob
-    Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
     Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector
     Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_RequestCompiler
     Alama_Arazzo_Runner_Execution_StepExecutor --> Alama_Arazzo_Runner_Execution_StepOutputExtractor
@@ -104,7 +101,6 @@ flowchart TD
     Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_StepExecutor
     Alama_Arazzo_Runner_Execution_WorkflowExecutor --> Alama_Arazzo_Runner_Execution_WorkflowEngine
     Alama_Arazzo_Runner_Protocol_AsyncApiStepExecutor --> Alama_Arazzo_Runner_Execution_ReusableParameterResolver
-    Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_ExpressionValueResolver
     Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_IdempotencyKeyInjector
     Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_RequestCompiler
     Alama_Arazzo_Runner_Protocol_HttpStepExecutor --> Alama_Arazzo_Runner_Execution_StepOutputExtractor
@@ -129,15 +125,14 @@ flowchart TD
 | **SubWorkflowResult** | runner | — | `SubWorkflowInvoker` | — |
 | **DefaultOpenApiExecutor** | runner | `ParameterSerializer`, `TypeCaster` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
 | **ExecutionGraphFactory** | runner | `DefaultOpenApiExecutor`, `OperationRuntime`, `ResponseSchemaValidator`, `StepExecutor`, `StepOutputExtractor`, `WorkflowEngine`, `WorkflowExecutor` | — | — |
-| **ExpressionValueResolver** | runner | — | `RequestCompiler`, `StepExecutor`, `HttpStepExecutor` | — |
 | **IdempotencyKeyInjector** | runner | `InjectionResult` | `AsyncExecutionGraphAssembler`, `StepExecutor`, `HttpStepExecutor` | — |
 | **OperationRuntime** | runner | — | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
 | **ParameterSerializer** | runner | — | `DefaultOpenApiExecutor` | — |
-| **RequestCompiler** | runner | `ExpressionValueResolver`, `ReusableParameterResolver` | `StepExecutor`, `HttpStepExecutor` | — |
+| **RequestCompiler** | runner | `ReusableParameterResolver` | `StepExecutor`, `HttpStepExecutor` | — |
 | **ResponseSchemaValidator** | runner | — | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
 | **ReusableParameterResolver** | runner | — | `RequestCompiler`, `AsyncApiStepExecutor`, `SubWorkflowStepExecutor` | — |
 | **StepExecutionWorker** | runner | `WorkflowEngine`, `ExecuteStepJob` | `AsyncExecutionGraphAssembler` | — |
-| **StepExecutor** | runner | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler`, `StepOutputExtractor` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory`, `WorkflowExecutor` | — |
+| **StepExecutor** | runner | `IdempotencyKeyInjector`, `RequestCompiler`, `StepOutputExtractor` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory`, `WorkflowExecutor` | — |
 | **StepOutcomeHandler** | runner | `SubWorkflowInvoker`, `WorkflowEngine`, `ExecuteStepJob` | `AsyncExecutionGraphAssembler`, `CorrelationResumer` | — |
 | **StepOutputExtractor** | runner | `TypeCaster` | `AsyncExecutionGraphAssembler`, `CorrelationResumer`, `ExecutionGraphFactory`, `StepExecutor`, `HttpStepExecutor` | — |
 | **SubWorkflowInvoker** | runner | `SubWorkflowResult`, `WorkflowExecutor` | `AsyncExecutionGraphAssembler`, `StepOutcomeHandler` | — |
@@ -147,5 +142,5 @@ flowchart TD
 | **ExecuteStepJob** | runner | — | `RunExecuteStepJob`, `StepExecutionWorker`, `StepOutcomeHandler` | — |
 | **ResumeCorrelationJob** | runner | — | `RunResumeCorrelationJob` | — |
 | **AsyncApiStepExecutor** | runner | `ReusableParameterResolver` | `AsyncExecutionGraphAssembler` | — |
-| **HttpStepExecutor** | runner | `ExpressionValueResolver`, `IdempotencyKeyInjector`, `RequestCompiler`, `StepOutputExtractor` | `AsyncExecutionGraphAssembler` | — |
+| **HttpStepExecutor** | runner | `IdempotencyKeyInjector`, `RequestCompiler`, `StepOutputExtractor` | `AsyncExecutionGraphAssembler` | — |
 | **SubWorkflowStepExecutor** | runner | `ReusableParameterResolver`, `WorkflowExecutor` | `AsyncExecutionGraphAssembler` | — |

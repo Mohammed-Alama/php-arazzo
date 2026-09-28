@@ -69,7 +69,7 @@ class StepExecutionWorker
         RunPersistence $persistence,
         private LockManagerInterface $lockManager,
         private DefinitionRegistryInterface $definitionRegistry,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private array $protocolExecutors,
         RunControlFlow $controlFlow,
         private int $stateTtlSeconds = 86400,
@@ -167,7 +167,7 @@ class StepExecutionWorker
                     $this->eventLedger->append($executionId, 'step.suspended', ['stepId' => $step->stepId]);
 
                     if ($step->target->action === 'receive' && $step->target->correlationId !== null && $step->target->channelPath !== null) {
-                        $correlationIdValue = (string) $this->engine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId));
+                        $correlationIdValue = (string) $this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId));
                         $this->events->dispatch(new CorrelationPendingEvent(
                             $executionId,
                             $context->getWorkflowId() ?? '',
@@ -193,7 +193,7 @@ class StepExecutionWorker
                     'attempts' => $attempt,
                 ]);
 
-                $criteriaMet = $this->engine->evaluateSuccessCriteria($step, $contextWithResult, $document);
+                $criteriaMet = $this->evaluationEngine->evaluateSuccessCriteria($step, $contextWithResult, $document);
 
                 $this->executionRegistry->start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId);
 

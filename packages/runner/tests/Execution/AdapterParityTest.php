@@ -130,7 +130,7 @@ it('sync and queue-driven adapters agree on terminal status and step spend', fun
     $definitions = new InMemoryDefinitionRegistry();
     $definitions->register($document);
     $cli = new CliRunner(
-        engine: new TestEvaluationEngine(),
+        evaluationEngine: new TestEvaluationEngine(),
         stateStore: new FileStateStore(sys_get_temp_dir().'/arazzo-parity-'.bin2hex(random_bytes(4))),
         definitions: $definitions,
         protocolExecutors: [$protocol],

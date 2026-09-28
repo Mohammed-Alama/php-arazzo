@@ -50,7 +50,7 @@ final class CliRunner
      * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
      */
     public function __construct(
-        private readonly EvaluationEngineInterface $engine,
+        private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly StateStoreInterface $stateStore,
         private readonly DefinitionRegistryInterface $definitions,
         private readonly ExecutionRegistryInterface $registry = new InProcessExecutionRegistry(),
@@ -176,9 +176,9 @@ final class CliRunner
             new RunPersistence($this->stateStore, $this->eventLedger, $this->registry),
             $this->locks,
             $this->definitions,
-            $this->engine,
+            $this->evaluationEngine,
             $this->protocolExecutors,
-            new RunControlFlow(new WorkflowEngine($this->engine), $this->queue),
+            new RunControlFlow(new WorkflowEngine($this->evaluationEngine), $this->queue),
         );
 
         $processed = 0;

@@ -84,10 +84,10 @@ quadrantChart
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
-| `evaluation/Data` | 0.33 | 3 | 1 | 100% |
+| `evaluation/Data` | 0.33 | 10 | 1 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
-| `evaluation/Interfaces` | 0.25 | 9 | 3 | 100% |
+| `evaluation/Interfaces` | 0.25 | 8 | 3 | 100% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
@@ -106,7 +106,7 @@ quadrantChart
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.71 | 1 | 2 | 50% |
-| `runner/Execution` | 0.79 | 53 | 38 | 100% |
+| `runner/Execution` | 0.79 | 52 | 37 | 100% |
 | `runner/Jobs` | 0.33 | 5 | 2 | 100% |
 | `runner/Protocol` | 0.89 | 9 | 3 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |

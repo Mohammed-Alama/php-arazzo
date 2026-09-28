@@ -29,6 +29,12 @@ interface EvaluationEngineInterface
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;
 
     /**
+     * Resolve a step-level runtime value: an {@see Expression}, a {@see Selector},
+     * a string carrying Arazzo expression templates, or a plain value passed through.
+     */
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;
+
+    /**
      * Evaluate a list of success criteria against the current workflow step.
      *
      * @param  list<SuccessCriterion>  $criteria

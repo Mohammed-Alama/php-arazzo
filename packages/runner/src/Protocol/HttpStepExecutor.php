@@ -11,7 +11,6 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\RequestCompiler;
@@ -27,7 +26,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private OpenApiOperationResolver $operationResolver,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private StepOutputExtractor $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
         private bool $strictValidationDefault = false,
@@ -41,7 +40,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
-        $compiler = new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine);
+        $compiler = new RequestCompiler($this->evaluationEngine);
         ['payload' => $payload, 'resolvedInputs' => $resolvedInputs] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->operationResolver->resolve($step, $document);

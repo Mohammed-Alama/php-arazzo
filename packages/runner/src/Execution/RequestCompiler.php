@@ -25,8 +25,7 @@ use Psr\Http\Message\ResponseInterface;
 final readonly class RequestCompiler
 {
     public function __construct(
-        private ExpressionValueResolver $values,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
     ) {}
 
     /**
@@ -46,7 +45,7 @@ final readonly class RequestCompiler
         $auto = [];
 
         foreach ($parameters as $param) {
-            $val = $this->values->resolve($param->value, $context, $step->stepId);
+            $val = $this->evaluationEngine->resolveValue($param->value, $context, $step->stepId);
 
             $resolvedInputs[$param->name] = $val;
 
@@ -61,10 +60,10 @@ final readonly class RequestCompiler
         $bodyData = [];
 
         if ($step->io->requestBody && $step->io->requestBody->payload !== null) {
-            $bodyData = $this->engine->replacePayload(
+            $bodyData = $this->evaluationEngine->replacePayload(
                 $step,
                 is_array($step->io->requestBody->payload) ? $step->io->requestBody->payload : [],
-                fn (PayloadReplacement $replacement) => $this->values->resolve($replacement->value, $context, $step->stepId),
+                fn (PayloadReplacement $replacement) => $this->evaluationEngine->resolveValue($replacement->value, $context, $step->stepId),
                 $context,
             );
         }

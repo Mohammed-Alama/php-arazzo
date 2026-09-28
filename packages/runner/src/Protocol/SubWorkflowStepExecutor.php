@@ -27,7 +27,7 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private WorkflowExecutor $executor,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
     ) {}
 
     public function supports(Step $step, ArazzoDocument $document): bool
@@ -56,7 +56,7 @@ final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
 
         foreach ($parameters as $parameter) {
             $bound[$parameter->name] = $parameter->value instanceof Expression
-                ? $this->engine->evaluate($parameter->value, $evaluationContext)
+                ? $this->evaluationEngine->evaluate($parameter->value, $evaluationContext)
                 : $parameter->value;
         }
 

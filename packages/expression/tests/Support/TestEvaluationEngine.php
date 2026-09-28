@@ -11,6 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
 
@@ -61,6 +62,23 @@ final class TestEvaluationEngine implements EvaluationEngineInterface
      * @param  array<array-key, mixed>  $body
      * @return array<array-key, mixed>
      */
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
+    {
+        if (is_string($value)) {
+            return $this->interpolate($value, $context, $stepId ?? '');
+        }
+
+        if ($value instanceof Expression) {
+            return $this->evaluate($value, new EvaluationContext($context, $stepId));
+        }
+
+        if ($value instanceof Selector) {
+            return $this->evaluateSelector($value, $context, $stepId ?? '');
+        }
+
+        return $value;
+    }
+
     public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
     {
         return $body;

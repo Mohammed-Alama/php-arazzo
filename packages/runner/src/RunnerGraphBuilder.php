@@ -18,7 +18,7 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
 {
     public function __construct(
         private readonly OperationRuntime $operations,
-        private readonly EvaluationEngineInterface $engine,
+        private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
         private readonly ?RequestFactoryInterface $requestFactory = null,
@@ -28,7 +28,7 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
     {
         $assembler = new AsyncExecutionGraphAssembler(
             $this->operations,
-            $this->engine,
+            $this->evaluationEngine,
             $this->inspector,
             $this->httpClient,
             $this->requestFactory,

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
-use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Runner\Execution\ParameterSerializer;
 use Alama\Arazzo\Runner\Execution\RequestCompiler;
@@ -37,7 +36,6 @@ arch('runner does not depend on cebe directly')
 arch('folded request pipeline stays transport-agnostic')
     ->expect([
         RequestCompiler::class,
-        ExpressionValueResolver::class,
         IdempotencyKeyInjector::class,
         ReusableParameterResolver::class,
         StepParameterMerger::class,

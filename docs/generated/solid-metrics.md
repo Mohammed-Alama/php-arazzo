@@ -64,7 +64,7 @@ quadrantChart
     laravel/State: [0.5, 0]
     laravel/Support: [0.714, 0]
     laravel/_: [1, 0]
-    runner/Execution: [0.786, 0.053]
+    runner/Execution: [0.786, 0.054]
     runner/Jobs: [0.333, 0]
     runner/Protocol: [0.889, 0]
     runner/_: [0.765, 0.222]
@@ -99,7 +99,7 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| `EvaluationEngineInterface` <small>evaluation</small> | 10 |
+| `EvaluationEngineInterface` <small>evaluation</small> | 11 |
 
 ## Concrete hubs (DIP)
 

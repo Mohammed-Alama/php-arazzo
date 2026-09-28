@@ -59,7 +59,7 @@ function cliRunner(FileStateStore $store): array
     $definitions->register(cliDocument());
 
     $runner = new CliRunner(
-        engine: new TestEvaluationEngine(),
+        evaluationEngine: new TestEvaluationEngine(),
         stateStore: $store,
         definitions: $definitions,
         protocolExecutors: [new CliFakeExecutor()],

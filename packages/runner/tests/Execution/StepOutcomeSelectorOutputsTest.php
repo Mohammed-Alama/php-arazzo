@@ -47,7 +47,7 @@ it('resolves a Selector output through SelectorEvaluator', function () {
         new RunControlFlow(new WorkflowEngine(Mockery::mock(EvaluationEngineInterface::class)), Mockery::mock(QueueDriverInterface::class)),
         pendingCorrelations: $pending,
         invoker: Mockery::mock(SubWorkflowInvoker::class),
-        engine: $exprEngine,
+        evaluationEngine: $exprEngine,
     );
 
     $step = StepFactory::http(

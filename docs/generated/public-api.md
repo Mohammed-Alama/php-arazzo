@@ -295,6 +295,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function jsonPointer(array $data, ?string $pointer): mixed`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
+- `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed`
 - `public function supportedXPathVersions(): array`
 
 #### `EvaluationEngineInterface` interface
@@ -307,6 +308,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
+- `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;`
 - `public function supportedXPathVersions(): array;`
 
 ### `Alama\Arazzo\Evaluation\Data`
@@ -462,7 +464,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
+- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $evaluationEngine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 

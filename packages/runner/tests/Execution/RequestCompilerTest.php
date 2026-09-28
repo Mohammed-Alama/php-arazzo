@@ -18,7 +18,6 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Execution\ExpressionValueResolver;
 use Alama\Arazzo\Runner\Execution\RequestCompiler;
 use Closure;
 use GuzzleHttp\Psr7\Request;
@@ -36,9 +35,9 @@ function requestCompilerDocument(): ArazzoDocument
     );
 }
 
-function requestCompilerFor(EvaluationEngineInterface $engine): RequestCompiler
+function requestCompilerFor(EvaluationEngineInterface $evaluationEngine): RequestCompiler
 {
-    return new RequestCompiler(new ExpressionValueResolver($engine), $engine);
+    return new RequestCompiler($evaluationEngine);
 }
 
 function requestCompilerStub(): RequestCompiler
@@ -59,7 +58,7 @@ function requestCompilerStep(array $parameters, ?RequestBody $requestBody = null
 
 it('routes each parameter into the payload bucket its location names', function (): void {
     $engine = \Mockery::mock(EvaluationEngineInterface::class);
-    $engine->shouldReceive('interpolate')->andReturnUsing(
+    $engine->shouldReceive('resolveValue')->andReturnUsing(
         static fn (string $value): string => match ($value) {
             '{$inputs.p}' => 'path-value',
             '{$inputs.q}' => 'query-value',
@@ -87,7 +86,7 @@ it('routes each parameter into the payload bucket its location names', function 
 
 it('records every resolved value under its parameter name', function (): void {
     $engine = \Mockery::mock(EvaluationEngineInterface::class);
-    $engine->shouldReceive('interpolate')->andReturnUsing(
+    $engine->shouldReceive('resolveValue')->andReturnUsing(
         static fn (string $value): string => str_replace(['{$inputs.', '}'], '', $value),
     );
 
@@ -103,7 +102,7 @@ it('records every resolved value under its parameter name', function (): void {
 
 it('resolves payload replacements into the body through the callback it hands the engine', function (): void {
     $engine = \Mockery::mock(EvaluationEngineInterface::class);
-    $engine->shouldReceive('interpolate')
+    $engine->shouldReceive('resolveValue')
         ->once()
         ->with('{$inputs.amount}', \Mockery::type(WorkflowContext::class), 'step-a')
         ->andReturn('100');

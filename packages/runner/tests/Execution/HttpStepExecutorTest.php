@@ -23,6 +23,7 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
+use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
@@ -72,6 +73,23 @@ class HttpStepExecutorMockEngine implements EvaluationEngineInterface
 
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
     {
+        return $value;
+    }
+
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
+    {
+        if (is_string($value)) {
+            return $this->interpolate($value, $context, $stepId ?? '');
+        }
+
+        if ($value instanceof Expression) {
+            return $this->evaluate($value, new EvaluationContext($context, $stepId));
+        }
+
+        if ($value instanceof Selector) {
+            return $this->evaluateSelector($value, $context, $stepId ?? '');
+        }
+
         return $value;
     }
 

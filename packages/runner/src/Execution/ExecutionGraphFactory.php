@@ -27,7 +27,7 @@ final class ExecutionGraphFactory
 {
     public function __construct(
         private readonly OperationRuntime $operations,
-        private readonly EvaluationEngineInterface $engine,
+        private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
         private readonly ?RequestFactoryInterface $requestFactory = null,
@@ -38,18 +38,18 @@ final class ExecutionGraphFactory
         $client = $this->httpClient ?? new Client();
         $factory = $this->requestFactory ?? new HttpFactory();
 
-        $outputExtractor = new StepOutputExtractor($this->operations->resolver, $this->engine, $this->inspector);
+        $outputExtractor = new StepOutputExtractor($this->operations->resolver, $this->evaluationEngine, $this->inspector);
         $schemaValidator = new ResponseSchemaValidator($this->operations->resolver);
 
         return new WorkflowExecutor(
             new StepExecutor(
                 new DefaultOpenApiExecutor($client, $factory),
                 $this->operations->resolver,
-                $this->engine,
+                $this->evaluationEngine,
                 $outputExtractor,
                 $schemaValidator,
             ),
-            workflowEngine: new WorkflowEngine($this->engine),
+            workflowEngine: new WorkflowEngine($this->evaluationEngine),
             preflight: $this->operations->document,
         );
     }

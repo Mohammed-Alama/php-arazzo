@@ -31,7 +31,7 @@ class CorrelationResumer
         private StateStoreInterface $stateStore,
         private DefinitionRegistryInterface $definitionRegistry,
         private StepOutputExtractor $outputExtractor,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private StepOutcomeHandler $outcomeHandler,
         private EventLedgerInterface $eventLedger,
         private LockManagerInterface $lockManager,
@@ -128,7 +128,7 @@ class CorrelationResumer
                 $executionId, $workflow->workflowId, $step->stepId, $correlationId, new DateTimeImmutable(),
             ));
 
-            $criteriaMet = $this->engine->evaluateSuccessCriteria($step, $contextWithResult, $document);
+            $criteriaMet = $this->evaluationEngine->evaluateSuccessCriteria($step, $contextWithResult, $document);
 
             $this->stateStore->save($executionId, [
                 'definitionId' => $contextWithResult->getDefinitionId(),
