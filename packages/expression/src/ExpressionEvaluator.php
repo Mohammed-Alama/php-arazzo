@@ -24,8 +24,12 @@ use Alama\Arazzo\Expression\Parser as ExpressionParser;
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
  */
-class ExpressionEvaluator
+final class ExpressionEvaluator
 {
+    public function __construct(
+        private JsonPointer $jsonPointer,
+    ) {}
+
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
         $ast = new ExpressionParser()->parse($expression->raw);
@@ -39,7 +43,7 @@ class ExpressionEvaluator
             $value = $context->getWorkflowContext()->getInputs()[$ast->name] ?? null;
 
             return $ast->jsonPointer !== null && (is_array($value) || $value === null)
-                ? JsonPointer::resolve(is_array($value) ? $value : [], $ast->jsonPointer)
+                ? $this->jsonPointer->resolve(is_array($value) ? $value : [], $ast->jsonPointer)
                 : $value;
         }
 
@@ -80,7 +84,7 @@ class ExpressionEvaluator
                     'header' => $this->mapOrEmpty($req, 'headers')[$part->headerName] ?? null,
                     'query' => $this->mapOrEmpty($req, 'query')[$part->headerName] ?? null,
                     'path' => $this->mapOrEmpty($req, 'path')[$part->headerName] ?? null,
-                    'body' => JsonPointer::resolve(is_array($req['body'] ?? null) ? $req['body'] : [], $part->jsonPointer),
+                    'body' => $this->jsonPointer->resolve(is_array($req['body'] ?? null) ? $req['body'] : [], $part->jsonPointer),
                     default => null,
                 };
             }
@@ -93,7 +97,7 @@ class ExpressionEvaluator
 
                 return match ($part->httpPart) {
                     'header' => $this->mapOrEmpty($res, 'headers')[$part->headerName] ?? null,
-                    'body' => JsonPointer::resolve(is_array($res['body'] ?? null) ? $res['body'] : [], $part->jsonPointer),
+                    'body' => $this->jsonPointer->resolve(is_array($res['body'] ?? null) ? $res['body'] : [], $part->jsonPointer),
                     default => null,
                 };
             }
@@ -102,7 +106,7 @@ class ExpressionEvaluator
                 $output = $this->mapOrEmpty($stepData, 'outputs')[$part->name] ?? null;
 
                 return $part->jsonPointer !== null && (is_array($output) || $output === null)
-                    ? JsonPointer::resolve(is_array($output) ? $output : [], $part->jsonPointer)
+                    ? $this->jsonPointer->resolve(is_array($output) ? $output : [], $part->jsonPointer)
                     : $output;
             }
 
@@ -144,7 +148,7 @@ class ExpressionEvaluator
             $body = is_array($response) ? ($response['body'] ?? []) : [];
 
             return $ast->jsonPointer !== null
-                ? JsonPointer::resolve(is_array($body) ? $body : [], $ast->jsonPointer)
+                ? $this->jsonPointer->resolve(is_array($body) ? $body : [], $ast->jsonPointer)
                 : $body;
         }
 
@@ -186,5 +190,13 @@ class ExpressionEvaluator
         $value = $data[$key] ?? [];
 
         return is_array($value) ? $value : [];
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $data
+     */
+    public function jsonPointer(array $data, ?string $pointer): mixed
+    {
+        return $this->jsonPointer->resolve($data, $pointer);
     }
 }

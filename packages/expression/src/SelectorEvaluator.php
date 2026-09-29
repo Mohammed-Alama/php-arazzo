@@ -15,7 +15,7 @@ use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
  */
-class SelectorEvaluator
+final class SelectorEvaluator
 {
     public function __construct(
         private XpathEvaluator $xpath,
@@ -41,7 +41,7 @@ class SelectorEvaluator
                 ? JsonPathEvaluator::evaluate($sel->selector, $root)
                 : null,
             ExpressionType::JsonPointer => is_array($root)
-                ? JsonPointer::resolve($root, $sel->selector)
+                ? $this->expressions->jsonPointer($root, $sel->selector)
                 : null,
             ExpressionType::XPath => (function () use ($root, $sel, $wf, $stepId) {
                 try {

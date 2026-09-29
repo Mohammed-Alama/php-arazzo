@@ -10,11 +10,17 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+
+function evaluator(): ExpressionEvaluator
+{
+    return (new ExpressionDependencyProvider())->getExpressionEvaluator();
+}
 
 it('evaluates input references', function () {
     $context = new WorkflowContext('def_1', ['userId' => 123]);
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     $expr = new Expression('{$inputs.userId}');
     expect($evaluator->evaluate($expr, new EvaluationContext($context)))->toBe(123);
@@ -25,7 +31,7 @@ it('evaluates input references', function () {
 
 it('evaluates step output references', function () {
     $context = (new WorkflowContext('def_1'))->withStepOutput('create-user', 'id', 456);
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     $expr = new Expression('{$steps.create-user.outputs.id}');
     expect($evaluator->evaluate($expr, new EvaluationContext($context)))->toBe(456);
@@ -39,7 +45,7 @@ it('evaluates request parts using json pointer', function () {
         'body' => ['user' => ['name' => 'Alice']],
     ]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$steps.step1.request.header.Authorization}'), new EvaluationContext($context)))->toBe('Bearer token');
     expect($evaluator->evaluate(new Expression('{$steps.step1.request.body#/user/name}'), new EvaluationContext($context)))->toBe('Alice');
@@ -52,7 +58,7 @@ it('evaluates response parts using json pointer', function () {
         'body' => ['data' => ['items' => [1, 2, 3]]],
     ]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$steps.step1.response.statusCode}'), new EvaluationContext($context)))->toBe(201);
     expect($evaluator->evaluate(new Expression('{$steps.step1.response.header.X-RateLimit}'), new EvaluationContext($context)))->toBe('100');
@@ -68,7 +74,7 @@ it('evaluates json pointer with escaped characters', function () {
         ],
     ]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$steps.step1.response.body#/foo~0bar}'), new EvaluationContext($context)))->toBe('tilde');
     expect($evaluator->evaluate(new Expression('{$steps.step1.response.body#/foo~1bar}'), new EvaluationContext($context)))->toBe('slash');
@@ -79,7 +85,7 @@ it('evaluates bare HttpMetaRef against the current step when stepId is given', f
         ->withStepRequest('step1', ['method' => 'POST', 'url' => 'http://x/y'])
         ->withStepResponse('step1', ['statusCode' => 201]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$statusCode}'), new EvaluationContext($context, 'step1')))->toBe(201);
     expect($evaluator->evaluate(new Expression('{$method}'), new EvaluationContext($context, 'step1')))->toBe('POST');
@@ -88,7 +94,7 @@ it('evaluates bare HttpMetaRef against the current step when stepId is given', f
 
 it('returns null for HttpMetaRef when no current step is given', function () {
     $context = new WorkflowContext('def_1');
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$statusCode}'), new EvaluationContext($context)))->toBeNull();
 });
@@ -100,7 +106,7 @@ it('evaluates component parameters', function () {
         ],
     ]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$components.parameters.api-key}'), new EvaluationContext($context)))->toBe('secret-123');
     expect($evaluator->evaluate(new Expression('{$components.parameters.missing}'), new EvaluationContext($context)))->toBeNull();
@@ -108,7 +114,7 @@ it('evaluates component parameters', function () {
 
 it('evaluates step input references', function () {
     $context = (new WorkflowContext('def_1'))->withStepInputs('create-user', ['name' => 'Alice', 'age' => 30]);
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$steps.create-user.inputs.name}'), new EvaluationContext($context)))->toBe('Alice');
     expect($evaluator->evaluate(new Expression('{$steps.create-user.inputs.age}'), new EvaluationContext($context)))->toBe(30);
@@ -117,7 +123,7 @@ it('evaluates step input references', function () {
 
 it('returns null for step inputs when the step has not run', function () {
     $context = new WorkflowContext('def_1');
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$steps.ghost.inputs.name}'), new EvaluationContext($context)))->toBeNull();
 });
@@ -126,7 +132,7 @@ it('evaluates workflow inputs and outputs references', function () {
     $context = (new WorkflowContext('def_1'))
         ->withWorkflowData('login', ['inputs' => ['user' => 'amy'], 'outputs' => ['token' => 'jwt-123']]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$workflows.login.outputs.token}'), new EvaluationContext($context)))->toBe('jwt-123');
     expect($evaluator->evaluate(new Expression('{$workflows.login.inputs.user}'), new EvaluationContext($context)))->toBe('amy');
@@ -134,14 +140,14 @@ it('evaluates workflow inputs and outputs references', function () {
 
 it('returns null for unknown workflow references', function () {
     $context = new WorkflowContext('def_1');
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$workflows.login.outputs.token}'), new EvaluationContext($context)))->toBeNull();
 });
 
 it('evaluates source descriptions', function () {
     $context = new WorkflowContext('def_1');
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     $doc = (new \ReflectionClass(ArazzoDocument::class))->newInstanceWithoutConstructor();
     $prop = new \ReflectionProperty(ArazzoDocument::class, 'sourceDescriptions');
@@ -162,7 +168,7 @@ it('evaluates request query and path parts', function () {
         'path' => ['petId' => 42],
     ]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$request.query.page}'), new EvaluationContext($context, 'step1')))->toBe('2');
     expect($evaluator->evaluate(new Expression('{$request.path.petId}'), new EvaluationContext($context, 'step1')))->toBe(42);
@@ -174,7 +180,7 @@ it('resolves json pointer suffixes on inputs and outputs (1.1)', function () {
     $context = (new WorkflowContext('def_1'))
         ->withStepOutput('fetch', 'user', ['profile' => ['email' => 'a@b.c']]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     // inputs pointer
     $inputsCtx = new WorkflowContext('def_1', ['user' => ['address' => ['city' => 'Berlin']]]);
@@ -192,7 +198,7 @@ it('resolves $message.header and $message.payload against the current step respo
         'body' => ['order' => ['id' => 'ord_7']],
     ]);
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
     $ctx = new EvaluationContext($context, 'consume');
 
     expect($evaluator->evaluate(new Expression('{$message.header.X-Trace}'), $ctx))->toBe('tr-9')
@@ -204,7 +210,7 @@ it('resolves $self to the document self URI (1.1)', function () {
     $prop = new \ReflectionProperty(ArazzoDocument::class, 'self');
     $prop->setValue($doc, 'https://api.example.com/workflows.arazzo.yaml');
 
-    $evaluator = new ExpressionEvaluator();
+    $evaluator = evaluator();
 
     expect($evaluator->evaluate(new Expression('{$self}'), new EvaluationContext(new WorkflowContext('d'), null, $doc)))
         ->toBe('https://api.example.com/workflows.arazzo.yaml');

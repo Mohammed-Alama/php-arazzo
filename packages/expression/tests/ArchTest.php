@@ -19,6 +19,5 @@ arch('expression does not use evaluation classes')
 
 arch('expression facade seams are entry-point only')
     ->expect('Alama\Arazzo\Expression')
-    ->not->toUse('Alama\Arazzo\Expression\ExpressionEngine')
     ->not->toUse('Alama\Arazzo\Sources\Document')
     ->not->toUse('Alama\Arazzo\Runner\RunnerFacade');

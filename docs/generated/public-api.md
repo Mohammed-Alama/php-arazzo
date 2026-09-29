@@ -260,18 +260,20 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Expression`
 
 #### `ExpressionEngine` class
-- `public function __construct(?ExpressionParser $parser = null, ?ExpressionEvaluator $evaluator = null, ?SelectorEvaluator $selectors = null, ?XpathEvaluator $xpath = null)`
+- `public function __construct(private ExpressionDependencyProvider $provider = new ExpressionDependencyProvider())`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function expressionReferences(string $raw): ?ExpressionReference`
 - `public function jsonPath(string $expression, array|object $data): mixed`
-- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function supportedXPathVersions(): array`
 
 #### `JsonPathEvaluator` class
 - `public static function evaluate(string $expression, array|object $data): mixed`
 - `public static function normalizeFilters(string $expression): string`
+
+#### `JsonPointer` class
+- `public static function resolve(array $data, ?string $pointer): mixed`
 
 ### `Alama\Arazzo\Expression\Data`
 

@@ -96,7 +96,7 @@ expression-root,expression-Ast,27
 expression-root,expression-Data,5
 expression-root,expression-Enum,2
 expression-root,expression-Exceptions,4
-expression-root,expression-Interfaces,3
+expression-root,expression-Interfaces,4
 expression-root,expression-Xpath,3
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,5

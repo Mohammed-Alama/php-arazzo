@@ -7,14 +7,16 @@ namespace Alama\Arazzo\Tests\Expression;
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\SelectorEvaluator;
-use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+
+function selectorEvaluator(): SelectorEvaluator
+{
+    return (new ExpressionDependencyProvider())->getSelectorEvaluator();
+}
 
 it('evaluates JSONPath selector against the default response body context', function () {
-    $xpath = new DomXpathEvaluator();
-    $expressions = new ExpressionEvaluator();
-    $evaluator = new SelectorEvaluator($xpath, $expressions);
+    $evaluator = selectorEvaluator();
 
     $selector = new Selector(
         type: ExpressionType::JsonPath,
@@ -34,9 +36,7 @@ it('evaluates JSONPath selector against the default response body context', func
 });
 
 it('evaluates JSONPointer selector against the default response body context', function () {
-    $xpath = new DomXpathEvaluator();
-    $expressions = new ExpressionEvaluator();
-    $evaluator = new SelectorEvaluator($xpath, $expressions);
+    $evaluator = selectorEvaluator();
 
     $selector = new Selector(
         type: ExpressionType::JsonPointer,
@@ -56,9 +56,7 @@ it('evaluates JSONPointer selector against the default response body context', f
 });
 
 it('evaluates XPath selector', function () {
-    $xpath = new DomXpathEvaluator();
-    $expressions = new ExpressionEvaluator();
-    $evaluator = new SelectorEvaluator($xpath, $expressions);
+    $evaluator = selectorEvaluator();
 
     $xml = '<root><inputs><userId>user-123</userId></inputs></root>';
 
@@ -79,9 +77,7 @@ it('evaluates XPath selector', function () {
 });
 
 it('evaluates selector with context expression', function () {
-    $xpath = new DomXpathEvaluator();
-    $expressions = new ExpressionEvaluator();
-    $evaluator = new SelectorEvaluator($xpath, $expressions);
+    $evaluator = selectorEvaluator();
 
     $selector = new Selector(
         type: ExpressionType::JsonPointer,
