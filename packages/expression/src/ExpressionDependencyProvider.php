@@ -51,6 +51,11 @@ final class ExpressionDependencyProvider
         return new JsonPointer();
     }
 
+    public function getInterpolator(): Interpolator
+    {
+        return new Interpolator();
+    }
+
     /** @internal For testing only */
     public function setXpathEvaluator(XpathEvaluator $xpathEvaluator): self
     {

@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
+use Alama\Arazzo\Expression\Data\InterpolationOptions;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 
 /**
@@ -24,6 +25,33 @@ interface ExpressionEngineInterface
      * Statically inspect what an expression references. Returns null on syntax error.
      */
     public function expressionReferences(string $raw): ?ExpressionReference;
+
+    /**
+     * Extract all runtime expressions embedded in a template string.
+     *
+     * Returns an array of bare expression strings (e.g., '$inputs.clientId').
+     *
+     * @return list<string>
+     */
+    public function extract(string $template): array;
+
+    /**
+     * Interpolate a template string by replacing embedded expressions with resolved values.
+     *
+     * @param  callable(string): mixed  $resolver  Receives bare expression (e.g., '$inputs.foo'), returns resolved value
+     * @param  array{stringify?: (callable(mixed): string)|null}  $options
+     */
+    public function interpolate(string $template, callable $resolver, array $options = []): string;
+
+    /**
+     * Interpolate a template string by replacing embedded expressions with resolved values.
+     */
+    public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string;
+
+    /**
+     * Test if a string is a valid runtime expression.
+     */
+    public function test(string $raw): bool;
 
     /**
      * Evaluate an Arazzo expression against a run context.

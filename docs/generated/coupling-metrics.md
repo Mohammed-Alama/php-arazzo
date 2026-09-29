@@ -36,12 +36,12 @@ targets. Regenerated before every commit.
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 2 | 0 | 0.00 |  |
 | `expression:Ast` | 15 | 335 | 1 | 2 | 0.67 |  |
-| `expression:Data` | 3 | 97 | 7 | 3 | 0.30 |  |
+| `expression:Data` | 4 | 124 | 7 | 3 | 0.30 |  |
 | `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
-| `expression:Interfaces` | 2 | 80 | 11 | 3 | 0.21 |  |
+| `expression:Interfaces` | 2 | 108 | 11 | 3 | 0.21 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 8 | 960 | 4 | 7 | 0.64 |  |
+| `(expression root)` | 9 | 1143 | 4 | 7 | 0.64 |  |
 | `laravel:Bindings` | 7 | 358 | 1 | 23 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 6 | 0.75 |  |
@@ -64,7 +64,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **951**
+Total cross-module edges: **955**
 
 ## Most entangled module pairs
 

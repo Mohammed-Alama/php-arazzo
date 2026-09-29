@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
+use Alama\Arazzo\Expression\Data\InterpolationOptions;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
@@ -34,6 +35,26 @@ final readonly class ExpressionEngine implements ExpressionEngineInterface
         $result = $this->provider->getParser()->parseOrError($raw);
 
         return $result instanceof ExpressionSyntaxException ? null : $this->provider->getParser()->projectReferences($raw);
+    }
+
+    public function extract(string $template): array
+    {
+        return $this->getInterpolator()->extract($template);
+    }
+
+    public function interpolate(string $template, callable $resolver, array $options = []): string
+    {
+        return $this->getInterpolator()->interpolate($template, $resolver, $options);
+    }
+
+    public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string
+    {
+        return $this->getInterpolator()->interpolateWithOptions($template, $resolver, $options);
+    }
+
+    public function test(string $raw): bool
+    {
+        return $this->getInterpolator()->test($raw);
     }
 
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
@@ -64,5 +85,10 @@ final readonly class ExpressionEngine implements ExpressionEngineInterface
     public function supportedXPathVersions(): array
     {
         return $this->provider->getXpathEvaluator()->supportedVersions();
+    }
+
+    private function getInterpolator(): Interpolator
+    {
+        return $this->provider->getInterpolator();
     }
 }

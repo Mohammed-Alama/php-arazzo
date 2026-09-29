@@ -264,10 +264,14 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function expressionReferences(string $raw): ?ExpressionReference`
+- `public function extract(string $template): array`
+- `public function interpolate(string $template, callable $resolver, array $options = []): string`
+- `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
 - `public function jsonPointer(array $data, ?string $pointer): mixed`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function supportedXPathVersions(): array`
+- `public function test(string $raw): bool`
 
 #### `JsonPathEvaluator` class
 - `public static function evaluate(string $expression, array|object $data): mixed`
@@ -308,11 +312,15 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
 - `public function expressionReferences(string $raw): ?ExpressionReference;`
+- `public function extract(string $template): array;`
+- `public function interpolate(string $template, callable $resolver, array $options = []): string;`
+- `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string;`
 - `public function jsonPath(string $expression, array|object $data): mixed;`
 - `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function supportedXPathVersions(): array;`
+- `public function test(string $raw): bool;`
 
 ### `Alama\Arazzo\Expression\Xpath`
 

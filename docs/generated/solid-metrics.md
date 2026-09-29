@@ -97,8 +97,8 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
+| `ExpressionEngineInterface` <small>expression</small> | 12 |
 | `EvaluationEngineInterface` <small>evaluation</small> | 10 |
-| `ExpressionEngineInterface` <small>expression</small> | 8 |
 
 ## Concrete hubs (DIP)
 

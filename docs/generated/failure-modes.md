@@ -19,7 +19,7 @@ Regenerated before every commit.
 | **ConditionSyntaxException** | `ConditionEvaluator` <small>evaluation:Condition</small>, `Lexer` <small>evaluation:Condition</small>, `Parser` <small>evaluation:Condition</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
-| **ExpressionSyntaxException** | `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
+| **ExpressionSyntaxException** | `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>runner:Execution</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
 | **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small>, `UnifiedStepCarrier` <small>(runner root)</small> |

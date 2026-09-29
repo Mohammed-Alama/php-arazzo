@@ -87,6 +87,10 @@ public contract between packages.
 - `ExpressionEngineInterface` (`interface`)
   - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
   - `public function expressionReferences(string $raw): ?ExpressionReference;`
+  - `public function extract(string $template): array;`
+  - `public function interpolate(string $template, callable $resolver, array $options = []): string;`
+  - `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string;`
+  - `public function test(string $raw): bool;`
   - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
   - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
   - `public function jsonPath(string $expression, array|object $data): mixed;`
