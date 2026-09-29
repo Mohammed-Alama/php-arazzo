@@ -158,7 +158,6 @@ flowchart TB
     M_evaluation__ --> M_evaluation_Registries
     M_evaluation__ --> M_expression_Data
     M_evaluation__ --> M_expression_Interfaces
-    M_evaluation__ --> M_expression__
     M_events_Listener --> M_contracts_Support
     M_events_Listener --> M_events_Interfaces
     M_events_Listener --> M_events__
@@ -329,7 +328,7 @@ flowchart TB
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 12 |
 | `evaluation` | `contracts` | 46 |
-| `evaluation` | `expression` | 16 |
+| `evaluation` | `expression` | 15 |
 | `events` | `contracts` | 1 |
 | `expression` | `contracts` | 18 |
 | `laravel` | `cli` | 3 |

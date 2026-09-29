@@ -15,7 +15,6 @@ use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\JsonPointer;
 
 /**
  * Concrete evaluation facade.
@@ -124,11 +123,6 @@ final class EvaluationEngine implements EvaluationEngineInterface
     public function jsonPath(string $expression, array|object $data): mixed
     {
         return $this->expression->jsonPath($expression, $data);
-    }
-
-    public function jsonPointer(array $data, ?string $pointer): mixed
-    {
-        return JsonPointer::resolve($data, $pointer);
     }
 
     private function criteria(): CriteriaEvaluator

@@ -43,6 +43,13 @@ interface ExpressionEngineInterface
     public function jsonPath(string $expression, array|object $data): mixed;
 
     /**
+     * Resolve a JSON Pointer against an array-shaped document.
+     *
+     * @param  array<array-key, mixed>  $data
+     */
+    public function jsonPointer(array $data, ?string $pointer): mixed;
+
+    /**
      * Run an XPath query against a root value with an explicit spec version.
      */
     public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;

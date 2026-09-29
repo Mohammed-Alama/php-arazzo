@@ -77,7 +77,6 @@ evaluation-root,evaluation-Interfaces,1
 evaluation-root,evaluation-Registries,3
 evaluation-root,expression-Data,3
 evaluation-root,expression-Interfaces,6
-evaluation-root,expression-root,1
 events-Listener,contracts-Support,1
 events-Listener,events-Interfaces,1
 events-Listener,events-root,9

@@ -43,7 +43,7 @@ quadrantChart
     evaluation/Interfaces: [0.333, 1]
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.8, 0]
-    evaluation/_: [0.615, 0.2]
+    evaluation/_: [0.583, 0.2]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 0]
     events/_: [0, 0]
@@ -53,7 +53,7 @@ quadrantChart
     expression/Exceptions: [0.25, 0]
     expression/Interfaces: [0.214, 1]
     expression/Xpath: [0.667, 0.5]
-    expression/_: [0.583, 0]
+    expression/_: [0.636, 0]
     laravel/Bindings: [0.958, 0]
     laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
@@ -97,7 +97,8 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| `EvaluationEngineInterface` <small>evaluation</small> | 11 |
+| `EvaluationEngineInterface` <small>evaluation</small> | 10 |
+| `ExpressionEngineInterface` <small>expression</small> | 8 |
 
 ## Concrete hubs (DIP)
 

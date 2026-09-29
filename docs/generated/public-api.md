@@ -265,6 +265,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function expressionReferences(string $raw): ?ExpressionReference`
 - `public function jsonPath(string $expression, array|object $data): mixed`
+- `public function jsonPointer(array $data, ?string $pointer): mixed`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function supportedXPathVersions(): array`
 
@@ -308,6 +309,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
 - `public function expressionReferences(string $raw): ?ExpressionReference;`
 - `public function jsonPath(string $expression, array|object $data): mixed;`
+- `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function supportedXPathVersions(): array;`
@@ -330,7 +332,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
-- `public function jsonPointer(array $data, ?string $pointer): mixed`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
 - `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed`
@@ -343,7 +344,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
 - `public function jsonPath(string $expression, array|object $data): mixed;`
-- `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
 - `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;`

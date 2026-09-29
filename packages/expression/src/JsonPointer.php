@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Expression;
 
 /**
- * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
+ * JSON Pointer resolver (RFC 6901); consumed by the ExpressionEngine facade and
+ * exposed through its public jsonPointer() method.
  */
 class JsonPointer
 {

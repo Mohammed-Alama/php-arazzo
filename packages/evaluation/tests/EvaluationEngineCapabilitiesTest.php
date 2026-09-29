@@ -119,7 +119,7 @@ it('applies pointer payload replacements and delegates selector targets', functi
 });
 
 it('evaluates jsonpath and json pointer directly', function (): void {
-    $engine = new EvaluationEngine(expression: new ExpressionEngine());
+    $engine = new ExpressionEngine();
 
     expect($engine->jsonPath('$.users[*].id', ['users' => [['id' => 1], ['id' => 2]]]))->toBe([1, 2]);
     expect($engine->jsonPointer(['a' => ['b' => 5]], '/a/b'))->toBe(5);

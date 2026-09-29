@@ -106,7 +106,6 @@ flowchart LR
     evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
     evaluation__ --> expression_Data
-    evaluation__ --> expression__
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec

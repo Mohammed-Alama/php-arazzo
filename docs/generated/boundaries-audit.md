@@ -113,7 +113,6 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
-| `evaluation` | `JsonPointer` | `expression` | 1 | `EvaluationEngine` |
 | `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
