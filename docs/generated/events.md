@@ -3,8 +3,9 @@
 
 # Generated: Domain Events
 
-PSR-14 event classes under `Runner/Events` (core) and `Events/` (Laravel), with
-every dispatch site found in the live tree. Regenerated before every commit.
+PSR-14 event classes from the `alama/arazzo-events` package (`Alama\Arazzo\Events`)
+and `Events/` (Laravel), with every dispatch site found in the live tree.
+Regenerated before every commit.
 
 ```mermaid
 flowchart LR
@@ -17,27 +18,20 @@ flowchart LR
     E_StepFailedEvent(["StepFailedEvent"]):::event
     E_StepRetriedEvent(["StepRetriedEvent"]):::event
     E_StepStartedEvent(["StepStartedEvent"]):::event
-    S_Alama_Arazzo_Runner_Async_SuspensionHandler["SuspensionHandler<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationPendingEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationPendingEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_CorrelationPendingEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_StepStartedEvent
+    S_Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer<br/><small>runner:Execution</small>"] -->|dispatches| E_CorrelationResumedEvent
     S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepStartedEvent
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepStartedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_StepExecutedEvent
-    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepExecutedEvent
-    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepExecutedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_RunCompletedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_CorrelationPendingEvent
     S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_RunCompletedEvent
     S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Execution</small>"] -->|dispatches| E_RunCompletedEvent
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_RunCompletedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_RunFailedEvent
     S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_RunFailedEvent
     S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Execution</small>"] -->|dispatches| E_RunFailedEvent
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_RunFailedEvent
-    S_Alama_Arazzo_Runner_Async_WorkerEvents["WorkerEvents<br/><small>runner:Async</small>"] -->|dispatches| E_StepFailedEvent
+    S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepExecutedEvent
+    S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepExecutedEvent
     S_Alama_Arazzo_Runner_Execution_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Execution</small>"] -->|dispatches| E_StepFailedEvent
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepFailedEvent
-    S_Alama_Arazzo_Runner_Execution_CorrelationResumer["CorrelationResumer<br/><small>runner:Execution</small>"] -->|dispatches| E_CorrelationResumedEvent
     S_Alama_Arazzo_Runner_Execution_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Execution</small>"] -->|dispatches| E_StepRetriedEvent
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_StepRetriedEvent
     S_Alama_Arazzo_Runner_Execution_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Execution</small>"] -->|dispatches| E_RunStartedEvent
@@ -47,12 +41,12 @@ flowchart LR
 
 | Event | Dispatched from |
 |---|---|
-| **CorrelationPendingEvent** | `SuspensionHandler`, `WorkerEvents`, `StepExecutionWorker` |
+| **CorrelationPendingEvent** | `StepExecutionWorker` |
 | **CorrelationResumedEvent** | `CorrelationResumer` |
-| **RunCompletedEvent** | `WorkerEvents`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
-| **RunFailedEvent** | `WorkerEvents`, `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
+| **RunCompletedEvent** | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
+| **RunFailedEvent** | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
 | **RunStartedEvent** | `WorkflowExecutor` |
-| **StepExecutedEvent** | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` |
-| **StepFailedEvent** | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` |
+| **StepExecutedEvent** | `StepExecutionWorker`, `WorkflowExecutor` |
+| **StepFailedEvent** | `StepExecutionWorker`, `WorkflowExecutor` |
 | **StepRetriedEvent** | `StepOutcomeHandler`, `WorkflowExecutor` |
-| **StepStartedEvent** | `WorkerEvents`, `StepExecutionWorker`, `WorkflowExecutor` |
+| **StepStartedEvent** | `StepExecutionWorker`, `WorkflowExecutor` |

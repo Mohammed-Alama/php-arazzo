@@ -10,12 +10,12 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Events\CorrelationResumedEvent;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Events\CorrelationResumedEvent;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -30,7 +30,8 @@ class CorrelationResumer
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private StateStoreInterface $stateStore,
         private DefinitionRegistryInterface $definitionRegistry,
-        private ExpressionResolverInterface $expressionResolver,
+        private StepOutputExtractor $outputExtractor,
+        private EvaluationEngineInterface $evaluationEngine,
         private StepOutcomeHandler $outcomeHandler,
         private EventLedgerInterface $eventLedger,
         private LockManagerInterface $lockManager,
@@ -113,7 +114,7 @@ class CorrelationResumer
                 'statusCode' => $statusCode,
                 'body' => $body,
             ]);
-            $outputs = $this->expressionResolver->extractOutputs($step, $contextWithResponse, $document);
+            $outputs = $this->outputExtractor->extractOutputs($step, $contextWithResponse, $document);
 
             $contextWithResult = $context->withStepResult($step->stepId, [
                 'statusCode' => $statusCode,
@@ -127,7 +128,7 @@ class CorrelationResumer
                 $executionId, $workflow->workflowId, $step->stepId, $correlationId, new DateTimeImmutable(),
             ));
 
-            $criteriaMet = $this->expressionResolver->evaluateSuccessCriteria($step, $contextWithResult, $document);
+            $criteriaMet = $this->evaluationEngine->evaluateSuccessCriteria($step, $contextWithResult, $document);
 
             $this->stateStore->save($executionId, [
                 'definitionId' => $contextWithResult->getDefinitionId(),

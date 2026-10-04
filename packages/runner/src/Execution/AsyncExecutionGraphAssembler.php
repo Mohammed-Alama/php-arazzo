@@ -28,7 +28,7 @@ final class AsyncExecutionGraphAssembler
 {
     public function __construct(
         private readonly OperationRuntime $operations,
-        private readonly EvaluationEngineInterface $engine,
+        private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ExpressionEngineInterface $inspector,
         private readonly ?ClientInterface $httpClient = null,
         private readonly ?RequestFactoryInterface $requestFactory = null,
@@ -40,14 +40,11 @@ final class AsyncExecutionGraphAssembler
         $factory = $this->requestFactory ?? new HttpFactory();
 
         $openApiExecutor = $seams->openApiExecutor ?? new DefaultOpenApiExecutor($client, $factory, $seams->logger);
-        $expressionResolver = $seams->expressionResolver ?? new ExecutionExpressionResolver(
-            $this->engine,
-            new StepOutputExtractor($this->operations->resolver, $this->engine, $this->inspector),
-            new ResponseSchemaValidator($this->operations->resolver),
-        );
+        $outputExtractor = new StepOutputExtractor($this->operations->resolver, $this->evaluationEngine, $this->inspector);
+        $schemaValidator = $seams->schemaValidator ?? new ResponseSchemaValidator($this->operations->resolver);
 
         $workflowEngine = new WorkflowEngine(
-            $expressionResolver,
+            $this->evaluationEngine,
             maxRetryAttempts: $seams->retryCeiling,
             retryBackoffMultiplier: $seams->retryBackoffMultiplier,
         );
@@ -59,18 +56,20 @@ final class AsyncExecutionGraphAssembler
 
         $stepExecutor = new StepExecutor(
             $openApiExecutor,
-            $expressionResolver,
             $this->operations->resolver,
-            engine: $this->engine,
+            $this->evaluationEngine,
+            $outputExtractor,
+            $schemaValidator,
             strictValidationDefault: $seams->strictValidation,
             injector: $injector,
         );
 
         $httpStepExecutor = new HttpStepExecutor(
             $openApiExecutor,
-            $expressionResolver,
             $this->operations->resolver,
-            engine: $this->engine,
+            $this->evaluationEngine,
+            $outputExtractor,
+            $schemaValidator,
             strictValidationDefault: $seams->strictValidation,
             injector: $injector,
         );
@@ -81,8 +80,8 @@ final class AsyncExecutionGraphAssembler
             preflight: $this->operations->document,
         );
 
-        $subWorkflowExecutor = new SubWorkflowStepExecutor($workflowExecutor, $this->engine);
-        $invoker = new SubWorkflowInvoker($seams->definitionRegistry, $workflowExecutor, $this->engine);
+        $subWorkflowExecutor = new SubWorkflowStepExecutor($workflowExecutor, $this->evaluationEngine);
+        $invoker = new SubWorkflowInvoker($seams->definitionRegistry, $workflowExecutor, $this->evaluationEngine);
 
         $persistence = new RunPersistence(
             $seams->stateStore,
@@ -101,14 +100,14 @@ final class AsyncExecutionGraphAssembler
             $controlFlow,
             $seams->pendingCorrelationRegistry,
             $invoker,
-            $this->engine,
+            $this->evaluationEngine,
             $seams->stateTtlSeconds,
         );
 
         $asyncRequestFactory = $seams->requestFactory ?? new HttpFactory();
         $asyncExecutor = new AsyncApiStepExecutor(
             $seams->pendingCorrelationRegistry,
-            $this->engine,
+            $this->evaluationEngine,
             $seams->httpClient,
             $asyncRequestFactory,
             new HttpFactory(),
@@ -119,7 +118,8 @@ final class AsyncExecutionGraphAssembler
             $seams->pendingCorrelationRegistry,
             $seams->stateStore,
             $seams->definitionRegistry,
-            $expressionResolver,
+            $outputExtractor,
+            $this->evaluationEngine,
             $outcomeHandler,
             $seams->eventLedger,
             $seams->lockManager,
@@ -131,7 +131,7 @@ final class AsyncExecutionGraphAssembler
             $persistence,
             $seams->lockManager,
             $seams->definitionRegistry,
-            $expressionResolver,
+            $this->evaluationEngine,
             $protocolExecutors,
             $controlFlow,
             $seams->stateTtlSeconds,
@@ -143,7 +143,6 @@ final class AsyncExecutionGraphAssembler
             outcomeHandler: $outcomeHandler,
             resumer: $resumer,
             worker: $worker,
-            expressionResolver: $expressionResolver,
             protocolExecutors: $protocolExecutors,
         );
     }

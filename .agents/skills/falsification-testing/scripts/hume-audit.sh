@@ -38,20 +38,26 @@ if ! [[ "$THRESHOLD" =~ ^[0-9]+$ ]]; then echo "threshold must be integer" >&2; 
 run_one() {
   local pkg="$1" # core|laravel
   local dir="$ROOT/packages/$pkg"
-  if [ ! -f "$dir/vendor/bin/pest" ]; then
-    echo "[$pkg] vendor/bin/pest not found — run composer install in $dir" >&2
+  # Monorepo layout: packages have no local vendor/, so fall back to the root
+  # install. Tests are also invoked from $ROOT because package phpunit configs
+  # bootstrap a package-local vendor/autoload.php that does not exist.
+  local pest="$dir/vendor/bin/pest"
+  [ -x "$pest" ] || pest="$ROOT/vendor/bin/pest"
+  if [ ! -x "$pest" ]; then
+    echo "[$pkg] pest not found — looked in $dir/vendor/bin/pest and $ROOT/vendor/bin/pest; run composer install" >&2
     return 2
   fi
+  local tests="packages/$pkg/tests"
   echo "=== [$pkg] pest --mutate $COVERED_ONLY ${FILTER:+--filter=$FILTER} ==="
   if [ "$DRY_RUN" -eq 1 ]; then
-    echo "(dry-run) would run: cd $dir && vendor/bin/pest --mutate $COVERED_ONLY ${FILTER:+--filter=\"$FILTER\"}"
+    echo "(dry-run) would run: $pest --mutate $COVERED_ONLY $tests ${FILTER:+--filter=\"$FILTER\"}"
     return 0
   fi
   local log="$dir/infection.log"
   local summary="$dir/infection-summary.log"
   # pest --mutate delegates to infection; capture text + summary
   set +e
-  (cd "$dir" && vendor/bin/pest --mutate $COVERED_ONLY ${FILTER:+--filter="$FILTER"} 2>&1 | tee "$log")
+  (cd "$ROOT" && "$pest" --mutate $COVERED_ONLY "$tests" ${FILTER:+--filter="$FILTER"} 2>&1 | tee "$log")
   local ec=$?
   set -e
   # pest returns non-zero when mutants survive — we still want to parse

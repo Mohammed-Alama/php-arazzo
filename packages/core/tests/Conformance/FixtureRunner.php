@@ -41,11 +41,12 @@ final class FixtureRunner extends ConformanceHarness
         $executor = new WorkflowExecutor(
             new StepExecutor(
                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
-                $this->resolver($runtime),
                 $runtime->operations,
-                engine: $this->engine(),
+                $this->engine(),
+                $this->outputExtractor($runtime),
+                $this->schemaValidator($runtime),
             ),
-            new WorkflowEngine($this->resolver($runtime)),
+            new WorkflowEngine($this->engine()),
             events: $this->events,
         );
 

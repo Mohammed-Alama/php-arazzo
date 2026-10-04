@@ -39,8 +39,6 @@ public contract between packages.
   - `public function release(string $key): void;`
 - `BackoffCalculatorInterface` (`interface`)
   - `public function calculate(float $baseDelay, int $attempt, float $multiplier): int;`
-- `OutputExtractorInterface` (`interface`)
-  - `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
 - `ResponseValidatorInterface` (`interface`)
   - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void;`
 - `WorkflowContextInterface` (`interface`)
@@ -89,6 +87,12 @@ public contract between packages.
 - `ExpressionEngineInterface` (`interface`)
   - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
   - `public function expressionReferences(string $raw): ?ExpressionReference;`
+  - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+  - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
+  - `public function jsonPath(string $expression, array|object $data): mixed;`
+  - `public function jsonPointer(array $data, ?string $pointer): mixed;`
+  - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+  - `public function supportedXPathVersions(): array;`
 
 ### Cross-boundary value types
 
@@ -121,6 +125,7 @@ public contract between packages.
 
 - `EvaluationEngineInterface` (`interface`)
   - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+  - `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;`
   - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
@@ -129,29 +134,26 @@ public contract between packages.
   - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
   - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
   - `public function jsonPath(string $expression, array|object $data): mixed;`
-  - `public function jsonPointer(array $data, ?string $pointer): mixed;`
 
 ### Cross-boundary value types
 
 - `WorkflowSymbols` — not found
 - `StepSymbols` — not found
-- `EvaluationInputInterface` — present
+- `EvaluationInputInterface` — not found
 - `EvaluationInput` — not found
-- `SelectorEvaluationException` — present
+- `SelectorEvaluationException` — not found
 - `ExpressionReference` — not found
 - `ReferenceKind` — not found
 
 ### Deliberately internal
 
-- `ExpressionEvaluatorInterface` — `@internal`: yes
-- `ExpressionResolverInterface` — `@internal`: yes
-- `ExpressionEvaluator` — `@internal`: yes
-- `SelectorEvaluator` — `@internal`: yes
+- `ExpressionEvaluator` — _not found in scan_
+- `SelectorEvaluator` — _not found in scan_
 - `StringInterpolator` — `@internal`: yes
-- `JsonPathEvaluator` — `@internal`: yes
-- `JsonPointer` — `@internal`: yes
-- `DomXpathEvaluator` — `@internal`: yes
-- `XpathEvaluator` — `@internal`: yes
+- `JsonPathEvaluator` — _not found in scan_
+- `JsonPointer` — _not found in scan_
+- `DomXpathEvaluator` — _not found in scan_
+- `XpathEvaluator` — _not found in scan_
 - `Evaluation\*` — whole namespace (declared target)
 
 ## document
@@ -279,22 +281,22 @@ _None — the entry surface exchanges plain arrays._
 
 ### Deliberately internal
 
-- `StateStoreInterface` — `@internal`: yes
-- `DefinitionRegistryInterface` — `@internal`: yes
-- `WritableDefinitionRegistryInterface` — `@internal`: yes
-- `ExecutionRegistryInterface` — `@internal`: yes
-- `PendingCorrelationRegistryInterface` — `@internal`: yes
-- `InMemoryStateStore` — `@internal`: yes
-- `FileStateStore` — `@internal`: yes
-- `EventLedgerInterface` — `@internal`: yes
-- `HttpClientInterface` — `@internal`: yes
+- `StateStoreInterface` — _not found in scan_
+- `DefinitionRegistryInterface` — _not found in scan_
+- `WritableDefinitionRegistryInterface` — _not found in scan_
+- `ExecutionRegistryInterface` — _not found in scan_
+- `PendingCorrelationRegistryInterface` — _not found in scan_
+- `InMemoryStateStore` — _not found in scan_
+- `FileStateStore` — _not found in scan_
+- `EventLedgerInterface` — _not found in scan_
+- `HttpClientInterface` — _not found in scan_
 - `ProtocolExecutorRegistryInterface` — `@internal`: yes
 - `OpenApiExecutorInterface` — `@internal`: yes
-- `PessimisticLockStrategy` — `@internal`: yes
-- `NullLockStrategy` — `@internal`: yes
-- `FileLockStrategy` — `@internal`: yes
-- `RetryPolicy` — `@internal`: yes
-- `ExponentialBackoffCalculator` — `@internal`: yes
+- `PessimisticLockStrategy` — _not found in scan_
+- `NullLockStrategy` — _not found in scan_
+- `FileLockStrategy` — _not found in scan_
+- `RetryPolicy` — _not found in scan_
+- `ExponentialBackoffCalculator` — _not found in scan_
 - `Execution\*` — whole namespace (declared target)
 - `Async\*` — whole namespace (declared target)
 - `Jobs\*` — whole namespace (declared target)

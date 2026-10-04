@@ -1,0 +1,14 @@
+includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+    scanDirectories:
+        - ../contracts/src
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Method __construct has too many parameters#'

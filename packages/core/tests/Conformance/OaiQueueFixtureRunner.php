@@ -72,7 +72,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
         $workflow = $document->workflows[0];
         $runtime = $this->runtime($this->sourceRegistry);
         $documents = $runtime->document;
-        $resolver = $this->resolver($runtime);
+        $engine = $this->engine();
 
         $definitionRegistry = new InMemoryDefinitionRegistry();
         $definitionId = $definitionRegistry->register($document);
@@ -86,7 +86,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
             ),
             new FakeLockManager(),
             $definitionRegistry,
-            $resolver,
+            $engine,
             [
                 new SubWorkflowStepExecutor(
                     new WorkflowExecutor(
@@ -95,25 +95,27 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                                 new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                                 FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
                             ),
-                            $resolver,
                             $runtime->operations,
-                            engine: $this->engine(),
+                            $engine,
+                            $this->outputExtractor($runtime),
+                            $this->schemaValidator($runtime),
                         ),
-                        new WorkflowEngine($resolver),
+                        new WorkflowEngine($engine),
                     ),
-                    $this->engine(),
+                    $engine,
                 ),
                 new HttpStepExecutor(
                     new FakerOpenApiExecutor(
                         new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                         FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
                     ),
-                    $resolver,
                     $runtime->operations,
-                    engine: $this->engine(),
+                    $engine,
+                    $this->outputExtractor($runtime),
+                    $this->schemaValidator($runtime),
                 ),
             ],
-            new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $this->events),
+            new RunControlFlow(new WorkflowEngine($engine), $queue, events: $this->events),
         );
 
         $executionId = 'oai_'.bin2hex(random_bytes(4));

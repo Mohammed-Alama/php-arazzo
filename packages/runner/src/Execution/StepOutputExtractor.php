@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
-use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\Reference;
@@ -26,17 +25,20 @@ use Psr\Log\LoggerInterface;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-class StepOutputExtractor implements OutputExtractorInterface
+class StepOutputExtractor
 {
     private readonly ExpressionEngineInterface $inspector;
 
+    private readonly TypeCaster $typeCaster;
+
     public function __construct(
         private OpenApiOperationResolver $operationResolver,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         ExpressionEngineInterface $inspector,
         private ?LoggerInterface $logger = null,
     ) {
         $this->inspector = $inspector;
+        $this->typeCaster = new TypeCaster();
     }
 
     /**
@@ -49,7 +51,7 @@ class StepOutputExtractor implements OutputExtractorInterface
         $outputs = [];
         foreach ($step->io->outputs as $outputName => $expression) {
             if ($expression instanceof Selector) {
-                $outputs[$outputName] = $this->engine->evaluateSelector($expression, $context, $step->stepId);
+                $outputs[$outputName] = $this->evaluationEngine->evaluateSelector($expression, $context, $step->stepId);
 
                 continue;
             }
@@ -58,12 +60,12 @@ class StepOutputExtractor implements OutputExtractorInterface
                 $raw = trim($expression->raw);
 
                 if (str_starts_with($raw, '$.')) {
-                    $outputs[$outputName] = $this->engine->jsonPath($raw, is_array($responseBody) ? $responseBody : []);
+                    $outputs[$outputName] = $this->evaluationEngine->jsonPath($raw, is_array($responseBody) ? $responseBody : []);
 
                     continue;
                 }
 
-                $value = $this->engine->evaluate($expression, new ExecutionEvaluationInput($context, $step->stepId, $document));
+                $value = $this->evaluationEngine->evaluate($expression, new EvaluationContext($context, $step->stepId, $document));
                 $outputs[$outputName] = $this->castOutputAgainstResponseSchema($step, $context, $document, $expression, $value);
             } else {
                 $outputs[$outputName] = $expression;
@@ -161,11 +163,11 @@ class StepOutputExtractor implements OutputExtractorInterface
 
         try {
             return match ($schema->type) {
-                'integer' => TypeCaster::asInteger($value),
-                'number' => TypeCaster::asFloat($value),
-                'string' => TypeCaster::asString($value),
-                'boolean' => TypeCaster::asBoolean($value),
-                'array' => TypeCaster::asArray($value),
+                'integer' => $this->typeCaster->asInteger($value),
+                'number' => $this->typeCaster->asFloat($value),
+                'string' => $this->typeCaster->asString($value),
+                'boolean' => $this->typeCaster->asBoolean($value),
+                'array' => $this->typeCaster->asArray($value),
                 default => $value,
             };
         } catch (InvalidArgumentException $e) {

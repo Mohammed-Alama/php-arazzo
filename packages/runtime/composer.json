@@ -1,0 +1,24 @@
+{
+    "name": "alama/arazzo-runtime",
+    "description": "Runtime support services for alama/arazzo-core: retry policy, telemetry, lock strategies, state stores.",
+    "keywords": ["alama", "arazzo", "runtime", "telemetry", "state"],
+    "license": "MIT",
+    "repositories": [
+        {"type": "path", "url": "../contracts"}
+    ],
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "psr/log": "^3.0",
+        "open-telemetry/api": "^1.1"
+    },
+    "require-dev": {
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0"
+    },
+    "autoload": {"psr-4": {"Alama\\Arazzo\\Runtime\\": "src/"}},
+    "autoload-dev": {"psr-4": {"Alama\\Arazzo\\Tests\\Runtime\\": "tests/"}},
+    "config": {"sort-packages": true, "allow-plugins": {"pestphp/pest-plugin": true, "phpstan/extension-installer": true}},
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

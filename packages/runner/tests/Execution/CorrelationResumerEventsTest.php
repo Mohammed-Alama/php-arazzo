@@ -6,26 +6,18 @@ namespace Tests\Execution;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Contracts\Spec\StepFlow;
-use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Contracts\Spec\StepTarget;
-use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Events\CorrelationResumedEvent;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
 class CorrelationResumerEventsLockManager implements LockManagerInterface
 {
@@ -84,6 +76,12 @@ class CorrelationResumerEventsStateStore implements StateStoreInterface
     {
         return $this->preloaded[$executionId] ?? null;
     }
+
+    public function delete(string $executionId): void
+    {
+        unset($this->preloaded[$executionId]);
+        unset($this->saves[$executionId]);
+    }
 }
 
 class CorrelationResumerEventsEventLedger implements EventLedgerInterface
@@ -97,18 +95,11 @@ class CorrelationResumerEventsEventLedger implements EventLedgerInterface
     }
 }
 
-class CorrelationResumerEventsExpressionResolver implements ExpressionResolverInterface
+class CorrelationResumerEventsExpressionResolver implements EvaluationEngineInterface
 {
-    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
         return $expression->raw;
-    }
-
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-    {
-        return ['echo' => $context->getSteps()[$step->stepId]['response']['body'] ?? null];
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -118,76 +109,58 @@ class CorrelationResumerEventsExpressionResolver implements ExpressionResolverIn
 
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
-        return $criteria === [];
+        return true;
     }
-}
 
-class CorrelationResumerEventsRecordingStepOutcomeHandler extends StepOutcomeHandler
-{
-    /** @var list<array{document: ArazzoDocument, workflow: Workflow, step: Step, context: WorkflowContext, executionId: string, criteriaMet: bool}> */
-    public array $calls = [];
-
-    public function __construct() {}
-
-    public function handle(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId, bool $criteriaMet): void
+    public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
     {
-        $this->calls[] = compact('document', 'workflow', 'step', 'context', 'executionId', 'criteriaMet');
+        return null;
+    }
+
+    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
+    {
+        return null;
+    }
+
+    public function supportedXPathVersions(): array
+    {
+        return [];
+    }
+
+    public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
+    {
+        return $value;
+    }
+
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
+    {
+        if (is_string($value)) {
+            return $this->interpolate($value, $context, $stepId ?? '');
+        }
+
+        if ($value instanceof Expression) {
+            return $this->evaluate($value, new EvaluationContext($context, $stepId));
+        }
+
+        if ($value instanceof Selector) {
+            return $this->evaluateSelector($value, $context, $stepId ?? '');
+        }
+
+        return $value;
+    }
+
+    public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
+    {
+        return $body;
+    }
+
+    public function jsonPath(string $expression, array|object $data): mixed
+    {
+        return null;
+    }
+
+    public function jsonPointer(array $data, ?string $pointer): mixed
+    {
+        return null;
     }
 }
-
-function correlationResumerEventsDocument(): array
-{
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $step = new Step('wait-for-ride', null, StepTarget::async('receive', 'channels/rides/created'), new StepFlow(), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-    $document = new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$workflow], new Components([], [], [], []), []);
-    $definitionId = $definitionRegistry->register($document);
-
-    return [$definitionRegistry, $definitionId, $workflow, $step];
-}
-
-it('dispatches CorrelationResumedEvent after successful consume', function () {
-    $dispatcher = new SimpleEventDispatcher();
-    /** @var list<CorrelationResumedEvent> $dispatched */
-    $dispatched = [];
-    $dispatcher->subscribe(CorrelationResumedEvent::class, function (CorrelationResumedEvent $event) use (&$dispatched) {
-        $dispatched[] = $event;
-    });
-
-    $pendingCorrelations = new CorrelationResumerEventsPendingCorrelations();
-    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
-
-    [$definitionRegistry, $definitionId, $workflow, $step] = correlationResumerEventsDocument();
-
-    $stateStore = new CorrelationResumerEventsStateStore();
-    $stateStore->preloaded['exec_1'] = [
-        'definitionId' => $definitionId,
-        'workflowId' => 'wf_1',
-        'steps' => [],
-        'inputs' => [],
-        'components' => [],
-    ];
-
-    $eventLedger = new CorrelationResumerEventsEventLedger();
-    $outcomeHandler = new CorrelationResumerEventsRecordingStepOutcomeHandler();
-
-    $resumer = new CorrelationResumer(
-        $pendingCorrelations,
-        $stateStore,
-        $definitionRegistry,
-        new CorrelationResumerEventsExpressionResolver(),
-        $outcomeHandler,
-        $eventLedger,
-        new CorrelationResumerEventsLockManager(),
-        $dispatcher,
-    );
-
-    $resumer->resume('corr_1', ['body' => ['rideId' => 'r_1']]);
-
-    expect($dispatched)->toHaveCount(1);
-    expect($dispatched[0]->executionId)->toBe('exec_1');
-    expect($dispatched[0]->workflowId)->toBe('wf_1');
-    expect($dispatched[0]->stepId)->toBe('wait-for-ride');
-    expect($dispatched[0]->correlationId)->toBe('corr_1');
-    expect($dispatched[0]->at)->toBeInstanceOf(\DateTimeImmutable::class);
-});

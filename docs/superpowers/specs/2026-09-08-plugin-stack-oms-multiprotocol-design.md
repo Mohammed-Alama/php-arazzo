@@ -484,6 +484,8 @@ Phase C status: ✅ Implemented 2026-09-22 — see `plans/2026-09-08-phase-c-eva
   E; after F1 the HTTP default lives in `arazzo-protocol-http` and is
   registry-fed like every other protocol.
 
+
+Phase E status: ✅ Implemented — the four-layer split (`arazzo-runtime`, `arazzo-events`, `arazzo-request-pipeline`, `arazzo-engine`) landed in E0–E5, then the OMS in E6–E10. See `plans/2026-09-08-phase-e-runner-oms.md`.
 ### Phase F — Protocol packages (vertical slices; core untouched)
 - **F1** `alama/arazzo-protocol-http` **(reference slice; D4/D9)** —
   relocate the embedded defaults out of core into the first vertical package:

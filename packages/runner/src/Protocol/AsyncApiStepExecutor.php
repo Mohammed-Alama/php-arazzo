@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Protocol;
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
@@ -13,11 +14,10 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
 use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
-use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use JsonException;
 use LogicException;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -33,7 +33,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 {
     public function __construct(
         private PendingCorrelationRegistryInterface $pendingCorrelations,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private HttpClientInterface $httpClient,
         private ?RequestFactoryInterface $requestFactory = null,
         private ?StreamFactoryInterface $streamFactory = null,
@@ -71,7 +71,7 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no channelPath.");
         }
 
-        $correlationId = (string) $this->engine->evaluate($step->target->correlationId, new ExecutionEvaluationInput($context, $step->stepId, $document));
+        $correlationId = (string) $this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId, $document));
 
         $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->target->channelPath, $step->flow->timeout !== null ? $step->flow->timeout : null);
 
@@ -95,14 +95,14 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
 
         $uri = $this->resolveChannelUri($step);
 
-        $evaluationContext = new ExecutionEvaluationInput($context, $step->stepId, $document);
+        $evaluationContext = new EvaluationContext($context, $step->stepId, $document);
 
         $query = [];
         $headers = [];
         $parameters = new ReusableParameterResolver()->resolve($step->io->parameters, $document);
         foreach ($parameters as $parameter) {
             $value = $parameter->value instanceof Expression
-                ? $this->engine->evaluate($parameter->value, $evaluationContext)
+                ? $this->evaluationEngine->evaluate($parameter->value, $evaluationContext)
                 : $parameter->value;
 
             if ($parameter->in?->value === 'header') {
@@ -155,16 +155,16 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
     /**
      * @return array<array-key, mixed>
      */
-    private function buildPayload(Step $step, ExecutionEvaluationInput $context): array
+    private function buildPayload(Step $step, EvaluationContext $context): array
     {
         $requestBody = $step->io->requestBody;
 
         return $requestBody !== null && is_array($requestBody->payload)
-            ? $this->engine->replacePayload(
+            ? $this->evaluationEngine->replacePayload(
                 $step,
                 $requestBody->payload,
                 fn (PayloadReplacement $replacement) => $replacement->value instanceof Expression
-                    ? $this->engine->evaluate($replacement->value, $context)
+                    ? $this->evaluationEngine->evaluate($replacement->value, $context)
                     : $replacement->value,
             )
             : [];

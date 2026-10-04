@@ -17,7 +17,6 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
@@ -45,11 +44,6 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
     });
 
     app()->instance(OpenApiExecutorInterface::class, $openApiMock);
-
-    $resolver = \Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
-    app()->instance(ExpressionResolverInterface::class, $resolver);
 
     $documents = \Mockery::mock(DocumentInterface::class);
     $operations = \Mockery::mock(OpenApiOperationResolver::class);

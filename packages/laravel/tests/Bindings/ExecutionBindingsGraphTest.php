@@ -7,6 +7,12 @@ use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 
+it('has the binding registered', function (): void {
+    $bindings = app()->getBindings();
+    expect(array_key_exists(AsyncExecutionGraph::class, $bindings))->toBeTrue();
+    expect(array_key_exists(StepExecutionWorker::class, $bindings))->toBeTrue();
+});
+
 it('builds one graph and aliases every node from it', function (): void {
     $graph = app(AsyncExecutionGraph::class);
 

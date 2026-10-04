@@ -63,7 +63,7 @@ beforeEach(function () {
             new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
         ));
 
-        return new StepOutputExtractor($runtime->operations, new EvaluationEngine(), new ExpressionEngine());
+        return new StepOutputExtractor($runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()), new ExpressionEngine());
     };
 
     $this->makeDocument = function (): ArazzoDocument {

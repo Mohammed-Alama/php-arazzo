@@ -6,12 +6,9 @@ use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
-use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionResolver;
+use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Runner\Events\RunStartedEvent;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -65,25 +62,21 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
 
     $document = DocumentLoader::load(INPUTS_SCHEMA_DOC);
 
-    $evaluator = new ExpressionEvaluator();
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
     $documents = $runtime->document;
-    $resolver = new ExpressionResolver(
-        $evaluator,
-        new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
-        new CriteriaEvaluator($evaluator),
-        new ResponseSchemaValidator($runtime->operations),
-    );
+    $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
+    $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
     $executor = new WorkflowExecutor(
         new StepExecutor(
             new DefaultOpenApiExecutor(new FakePsr18Client(), new HttpFactory()),
-            $resolver,
             $runtime->operations,
-            engine: $engine,
+            $engine,
+            $outputExtractor,
+            $schemaValidator,
         ),
-        workflowEngine: new WorkflowEngine($resolver),
+        workflowEngine: new WorkflowEngine($engine),
         events: $events,
         preflight: $documents,
     );

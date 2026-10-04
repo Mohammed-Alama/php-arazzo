@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Tests\Evaluation;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 function conditionContext(): WorkflowContext
 {
@@ -22,7 +22,7 @@ function conditionContext(): WorkflowContext
 
 function evalCondition(string $condition): mixed
 {
-    $evaluator = new ConditionEvaluator(new ExpressionEvaluator());
+    $evaluator = new ConditionEvaluator(new ExpressionEngine());
 
     return $evaluator->evaluate($condition, conditionContext(), 's1');
 }

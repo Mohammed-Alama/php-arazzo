@@ -7,6 +7,7 @@ use Alama\Arazzo\Cli\Console\DocumentLoader;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -135,7 +136,7 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
     $runner = new RunnerFacade(
         $runtime->document,
         $runtime->operations,
-        new EvaluationEngine(),
+        new EvaluationEngine(expression: new ExpressionEngine()),
         $client,
     );
 

@@ -12,12 +12,10 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
-use Alama\Arazzo\Evaluation\Data\EvaluationContext;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
-use Alama\Arazzo\Evaluation\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -26,18 +24,14 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
 {
     private ConditionEvaluator $conditionEvaluator;
 
-    private ?XpathEvaluator $xpathEvaluator;
-
     private ?CriterionEvaluatorRegistry $criterionRegistry;
 
     public function __construct(
-        private ExpressionEvaluatorInterface $evaluator,
+        private ExpressionEngineInterface $expression,
         ?ConditionEvaluator $conditionEvaluator = null,
-        ?XpathEvaluator $xpathEvaluator = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,
     ) {
-        $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($evaluator);
-        $this->xpathEvaluator = $xpathEvaluator;
+        $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($expression);
         $this->criterionRegistry = $criterionRegistry;
     }
 
@@ -120,7 +114,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         }
 
         try {
-            $target = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
+            $target = $this->expression->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
         } catch (\Throwable) {
             return false;
         }
@@ -136,7 +130,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
     {
         if ($criterion->context !== null) {
             try {
-                $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
+                $root = $this->expression->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
             } catch (\Throwable) {
                 // Evaluation errors fail the criterion deterministically.
                 return false;
@@ -145,7 +139,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
             $root = $responseBody;
         }
 
-        $result = JsonPathEvaluator::evaluate($criterion->condition, is_array($root) ? $root : []);
+        $result = $this->expression->jsonPath($criterion->condition, is_array($root) ? $root : []);
 
         return !empty($result);
     }
@@ -171,7 +165,7 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
     {
         if ($criterion->context !== null) {
             try {
-                $root = $this->evaluator->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
+                $root = $this->expression->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
             } catch (\Throwable) {
                 return false;
             }
@@ -185,18 +179,13 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         $version = $criterion->version ?? 'xpath-10';
 
         try {
-            $result = $this->xpath()->query($root, $criterion->condition, $version);
+            $result = $this->expression->queryXPath($root, $criterion->condition, $version);
         } catch (\Throwable) {
             // Evaluation errors fail the criterion deterministically.
             return false;
         }
 
         return ConditionEvaluator::truthy($result);
-    }
-
-    private function xpath(): XpathEvaluator
-    {
-        return $this->xpathEvaluator ??= new DomXpathEvaluator();
     }
 
     private static function stringify(mixed $value): string

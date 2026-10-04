@@ -1,0 +1,18 @@
+includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+    scanDirectories:
+        - ../contracts/src
+        - ../runtime/src
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#Method .* has too many parameters#'
+        - '#Property DateInterval::\$f .* not nullable#'
+        - '#has InvalidArgumentException in PHPDoc @throws tag but it is not thrown#'
+        - '#Property .* is never read, only written#'

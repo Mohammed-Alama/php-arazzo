@@ -13,7 +13,7 @@ classDiagram
     class E_ArazzoException["ArazzoException<br/><small>contracts:Support</small>"]:::domain
     class E_ConditionSyntaxException["ConditionSyntaxException<br/><small>evaluation:Condition</small>"]:::domain
     class E_DecodeException["DecodeException<br/><small>document:Parser</small>"]:::domain
-    class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>runner:State</small>"]:::domain
+    class E_DefinitionHydrationException["DefinitionHydrationException<br/><small>runtime:State</small>"]:::domain
     class E_ExecutionException["ExecutionException<br/><small>runner:Execution</small>"]:::domain
     class E_ExpressionSyntaxException["ExpressionSyntaxException<br/><small>expression:Exceptions</small>"]:::domain
     class E_GotoTargetNotFoundException["GotoTargetNotFoundException<br/><small>runner:Execution</small>"]:::domain
@@ -22,7 +22,7 @@ classDiagram
     class E_ParserException["ParserException<br/><small>document:Parser</small>"]:::domain
     class E_PreflightFailureException["PreflightFailureException<br/><small>document:Validator</small>"]:::domain
     class E_SchemaValidationException["SchemaValidationException<br/><small>contracts:Exceptions</small>"]:::domain
-    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>evaluation:Exceptions</small>"]:::domain
+    class E_SelectorEvaluationException["SelectorEvaluationException<br/><small>expression:Exceptions</small>"]:::domain
     class E_SourceFetchException["SourceFetchException<br/><small>sources:Resolver</small>"]:::domain
     class E_SourceParseException["SourceParseException<br/><small>sources:Resolver</small>"]:::domain
     class E_SourceResolutionException["SourceResolutionException<br/><small>sources:Resolver</small>"]:::domain
@@ -63,7 +63,7 @@ classDiagram
 | `ArazzoException` | `RuntimeException` | contracts:Support |
 | `ConditionSyntaxException` | `ArazzoException` | evaluation:Condition |
 | `DecodeException` | `RuntimeException` | document:Parser |
-| `DefinitionHydrationException` | `RuntimeException` | runner:State |
+| `DefinitionHydrationException` | `RuntimeException` | runtime:State |
 | `ExecutionException` | `ArazzoException` | runner:Execution |
 | `ExpressionSyntaxException` | `ArazzoException` | expression:Exceptions |
 | `GotoTargetNotFoundException` | `RuntimeException` | runner:Execution |
@@ -72,7 +72,7 @@ classDiagram
 | `ParserException` | `ArazzoException` | document:Parser |
 | `PreflightFailureException` | `ArazzoException` | document:Validator |
 | `SchemaValidationException` | `RuntimeException` | contracts:Exceptions |
-| `SelectorEvaluationException` | `ArazzoException` | evaluation:Exceptions |
+| `SelectorEvaluationException` | `ArazzoException` | expression:Exceptions |
 | `SourceFetchException` | `SourceResolutionException` | sources:Resolver |
 | `SourceParseException` | `SourceResolutionException` | sources:Resolver |
 | `SourceResolutionException` | `RuntimeException` | sources:Resolver |

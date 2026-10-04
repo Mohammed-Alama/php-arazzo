@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Laravel\Support\AsyncGraphResolver;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
@@ -34,19 +35,11 @@ final class ExecutionBindings
         $app->singleton(CorrelationResumer::class, static fn (Container $app): CorrelationResumer => $app->make(AsyncExecutionGraph::class)->resumer());
         $app->singleton(StepExecutionWorker::class, static fn (Container $app): StepExecutionWorker => $app->make(AsyncExecutionGraph::class)->worker());
 
-        foreach ([
-            'Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor' => 0,
-            'Alama\Arazzo\Runner\Protocol\HttpStepExecutor' => 1,
-            'Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor' => 2,
-        ] as $abstract => $index) {
-            $app->singleton($abstract, static fn (Container $app): object => $app->make(AsyncExecutionGraph::class)->protocolExecutors()[$index]);
-        }
-
         // Config-live: retry knobs re-read whenever this node is re-resolved
         // after forgetInstance, matching the historical contract.
         $app->singleton(WorkflowEngine::class, static function (Container $app): WorkflowEngine {
             return new WorkflowEngine(
-                $app->make(AsyncExecutionGraph::class)->expressionResolver(),
+                $app->make(EvaluationEngineInterface::class),
                 maxRetryAttempts: ConfigValue::int(config('arazzo.retry_ceiling', 10), 10),
                 retryBackoffMultiplier: ConfigValue::float(config('arazzo.retry_backoff_multiplier', 1.0), 1.0),
             );

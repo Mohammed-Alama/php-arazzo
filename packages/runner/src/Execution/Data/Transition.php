@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
-use Alama\Arazzo\Runner\State\Data\ExecutionContext;
+use Alama\Arazzo\Runtime\State\Data\ExecutionContext;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface

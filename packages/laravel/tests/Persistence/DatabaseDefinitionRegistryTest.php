@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Laravel\Persistence\DatabaseDefinitionRegistry;
-use Alama\Arazzo\Runner\State\Exceptions\DefinitionHydrationException;
+use Alama\Arazzo\Runtime\State\Exceptions\DefinitionHydrationException;
 use Illuminate\Support\Facades\DB;
 
 function definitionRawRoot(string $title = 'Test Doc'): array

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Alama\Arazzo\Runner\Infrastructure\FileLockStrategy;
-use Alama\Arazzo\Runner\Infrastructure\NullLockStrategy;
+use Alama\Arazzo\Runtime\Infrastructure\FileLockStrategy;
+use Alama\Arazzo\Runtime\Infrastructure\NullLockStrategy;
 
 it('runs the callback under a file lock and releases afterwards', function (): void {
     $lock = new FileLockStrategy(tempStateDir());

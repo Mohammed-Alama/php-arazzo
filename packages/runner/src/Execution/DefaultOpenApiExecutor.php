@@ -22,11 +22,18 @@ use Psr\Log\LoggerInterface;
  */
 class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 {
+    private readonly ParameterSerializer $parameterSerializer;
+
+    private readonly TypeCaster $typeCaster;
+
     public function __construct(
         private ClientInterface $httpClient,
         private RequestFactoryInterface $requestFactory,
         private ?LoggerInterface $logger = null,
-    ) {}
+    ) {
+        $this->parameterSerializer = new ParameterSerializer();
+        $this->typeCaster = new TypeCaster();
+    }
 
     /**
      * @throws GuzzleException
@@ -72,7 +79,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         $header = $this->castParameters($normalized->headerParameters, $header);
         $cookie = $this->castParameters($normalized->cookieParameters, $cookie);
 
-        $serializedPath = ParameterSerializer::serialize('path', $normalized->pathParameters, $path);
+        $serializedPath = $this->parameterSerializer->serialize('path', $normalized->pathParameters, $path);
         foreach ($serializedPath as $name => $value) {
             $style = $normalized->pathParameters[$name]['style'] ?? 'simple';
             $replacement = $style === 'simple' ? urlencode($value) : $value;
@@ -83,7 +90,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $url = $baseUrl.$urlPath;
 
-        $serializedQuery = ParameterSerializer::serialize('query', $normalized->queryParameters, $query);
+        $serializedQuery = $this->parameterSerializer->serialize('query', $normalized->queryParameters, $query);
         $filteredQuery = array_filter($serializedQuery, fn ($val) => $val !== '');
         if (!empty($filteredQuery)) {
             $url .= '?'.implode('&', array_values($filteredQuery));
@@ -91,12 +98,12 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         $request = $this->requestFactory->createRequest($method, $url);
 
-        $serializedHeader = ParameterSerializer::serialize('header', $normalized->headerParameters, $header);
+        $serializedHeader = $this->parameterSerializer->serialize('header', $normalized->headerParameters, $header);
         foreach ($serializedHeader as $k => $v) {
             $request = $request->withHeader($k, (string) $v);
         }
 
-        $serializedCookie = ParameterSerializer::serialize('cookie', $normalized->cookieParameters, $cookie);
+        $serializedCookie = $this->parameterSerializer->serialize('cookie', $normalized->cookieParameters, $cookie);
         if (!empty($serializedCookie)) {
             $cookieString = implode('; ', array_values($serializedCookie));
             $request = $request->withHeader('Cookie', $cookieString);
@@ -168,11 +175,11 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
 
         try {
             return match ($schema['type']) {
-                'integer' => TypeCaster::asInteger($value),
-                'number' => TypeCaster::asFloat($value),
-                'string' => TypeCaster::asString($value),
-                'boolean' => TypeCaster::asBoolean($value),
-                'array' => TypeCaster::asArray($value),
+                'integer' => $this->typeCaster->asInteger($value),
+                'number' => $this->typeCaster->asFloat($value),
+                'string' => $this->typeCaster->asString($value),
+                'boolean' => $this->typeCaster->asBoolean($value),
+                'array' => $this->typeCaster->asArray($value),
                 default => $value,
             };
         } catch (Exception) {

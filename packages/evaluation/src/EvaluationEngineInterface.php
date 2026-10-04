@@ -12,7 +12,7 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 
 /**
  * Entry-point seam for the runtime evaluation package.
@@ -27,6 +27,12 @@ interface EvaluationEngineInterface
      * Evaluate an Arazzo expression against a run context.
      */
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;
+
+    /**
+     * Resolve a step-level runtime value: an {@see Expression}, a {@see Selector},
+     * a string carrying Arazzo expression templates, or a plain value passed through.
+     */
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;
 
     /**
      * Evaluate a list of success criteria against the current workflow step.
@@ -75,11 +81,4 @@ interface EvaluationEngineInterface
      * @param  array<array-key, mixed>|object  $data
      */
     public function jsonPath(string $expression, array|object $data): mixed;
-
-    /**
-     * Resolve a JSON Pointer against an array-shaped document.
-     *
-     * @param  array<array-key, mixed>  $data
-     */
-    public function jsonPointer(array $data, ?string $pointer): mixed;
 }

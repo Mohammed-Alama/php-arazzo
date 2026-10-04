@@ -12,24 +12,24 @@ it('maps the sources namespace onto the package src directory', function (): voi
         flags: JSON_THROW_ON_ERROR,
     );
 
-    expect($root['autoload']['psr-4'])->toHaveKey('Alama\\Arazzo\\Sources\\')
-        ->and($root['autoload']['psr-4']['Alama\\Arazzo\\Sources\\'])->toBe('packages/sources/src/')
-        ->and($root['autoload-dev']['psr-4']['Alama\\Arazzo\\Tests\\'])->toContain('packages/sources/tests')
+    expect($root['autoload']['psr-4'])->toHaveKey("Alama\\Arazzo\Sources\\")
+        ->and($root['autoload']['psr-4']["Alama\\Arazzo\Sources\\"])->toBe('packages/sources/src/')
+        ->and($root['autoload-dev']['psr-4']["Alama\\Arazzo\Tests\Sources\\"])->toContain('packages/sources/tests')
         ->and(is_dir(__DIR__.'/../src'))->toBeTrue();
 });
 
 arch('sources does not depend on outer layers')
-    ->expect('Alama\Arazzo\Sources')
-    ->not->toUse('Alama\Arazzo\Runner')
-    ->not->toUse('Alama\Arazzo\Cli')
-    ->not->toUse('Alama\Arazzo\Protocol')
-    ->not->toUse('Alama\Arazzo\Runtime')
+    ->expect("Alama\\Arazzo\Sources")
+    ->not->toUse("Alama\\Arazzo\Runner")
+    ->not->toUse("Alama\\Arazzo\Cli")
+    ->not->toUse("Alama\\Arazzo\Protocol")
+    ->not->toUse("Alama\\Arazzo\Runtime")
     ->not->toUse('Illuminate');
 
 arch('sources may reach the model package and the transport')
-    ->expect('Alama\Arazzo\Sources')
-    ->toUse('Alama\Arazzo\Document');
+    ->expect("Alama\\Arazzo\Sources")
+    ->toUse("Alama\\Arazzo\Document");
 
 arch('only the sources composition root constructs http clients')
-    ->expect('Alama\Arazzo\Sources\SourceLoader')
+    ->expect("Alama\\Arazzo\Sources\SourceLoader")
     ->not->toUse('GuzzleHttp');

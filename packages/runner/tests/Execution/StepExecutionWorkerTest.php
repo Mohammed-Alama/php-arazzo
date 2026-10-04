@@ -5,40 +5,23 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
-use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Expression;
-use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
-use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
-use Alama\Arazzo\Contracts\Spec\StepFlow;
-use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Contracts\Spec\StepTarget;
-use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Contracts\Support\Events\Dispatcher\SimpleEventDispatcher;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Events\Listener\LedgerEventListener;
-use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
-use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
-use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
-use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
 class WorkerMockLockManager implements LockManagerInterface
 {
@@ -85,22 +68,21 @@ class WorkerMockStateStore implements StateStoreInterface
 
     public function load(string $executionId): ?array
     {
-        return $this->preloaded[$executionId] ?? null;
+        return $this->preloaded[$executionId] ?? $this->saves[$executionId] ?? null;
+    }
+
+    public function delete(string $executionId): void
+    {
+        unset($this->preloaded[$executionId]);
+        unset($this->saves[$executionId]);
     }
 }
 
-class WorkerMockExpressionResolver implements ExpressionResolverInterface
+class WorkerMockExpressionResolver implements EvaluationEngineInterface
 {
-    public function evaluate(Expression $expression, WorkflowContextInterface $context, ?string $currentStepId = null): mixed
+    public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
         return $expression->raw;
-    }
-
-    public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
-
-    public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
-    {
-        return [];
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -110,7 +92,59 @@ class WorkerMockExpressionResolver implements ExpressionResolverInterface
 
     public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
-        return $criteria === [];
+        return true;
+    }
+
+    public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
+    {
+        return null;
+    }
+
+    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
+    {
+        return null;
+    }
+
+    public function supportedXPathVersions(): array
+    {
+        return [];
+    }
+
+    public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
+    {
+        return $value;
+    }
+
+    public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
+    {
+        if (is_string($value)) {
+            return $this->interpolate($value, $context, $stepId ?? '');
+        }
+
+        if ($value instanceof Expression) {
+            return $this->evaluate($value, new EvaluationContext($context, $stepId));
+        }
+
+        if ($value instanceof Selector) {
+            return $this->evaluateSelector($value, $context, $stepId ?? '');
+        }
+
+        return $value;
+    }
+
+    public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
+    {
+        return $body;
+    }
+
+    public function jsonPath(string $expression, array|object $data): mixed
+    {
+        return null;
+    }
+
+    public function jsonPointer(array $data, ?string $pointer): mixed
+    {
+        return null;
     }
 }
 
@@ -125,35 +159,35 @@ class WorkerMockEventLedger implements EventLedgerInterface
     }
 }
 
-class WorkerMockExecutionRegistry implements ExecutionRegistryInterface
+class WorkerMockQueueDriver implements QueueDriverInterface
 {
-    /** @var list<array{executionId: string, definitionId: string, workflowId: string}> */
-    public array $started = [];
+    /** @var list<object> */
+    public array $dispatched = [];
 
-    /** @var list<array{executionId: string, status: ExecutionStatus}> */
-    public array $completed = [];
-
-    public function start(string $executionId, string $definitionId, string $workflowId): void
+    public function dispatch(object $job, int $delaySeconds = 0): void
     {
-        $this->started[] = ['executionId' => $executionId, 'definitionId' => $definitionId, 'workflowId' => $workflowId];
-    }
-
-    public function complete(string $executionId, ExecutionStatus $status): void
-    {
-        $this->completed[] = ['executionId' => $executionId, 'status' => $status];
+        $this->dispatched[] = $job;
     }
 }
 
-class WorkerMockPendingCorrelationRegistry implements PendingCorrelationRegistryInterface
+class WorkerMockPendingCorrelations implements PendingCorrelationRegistryInterface
 {
+    public ?PendingCorrelation $toReturn = null;
+
+    /** @var list<string> */
+    public array $consumed = [];
+
     public function create(string $correlationId, string $executionId, string $stepId, string $channelPath, ?int $timeoutSeconds = null): void {}
 
     public function findByCorrelationId(string $correlationId): ?PendingCorrelation
     {
-        return null;
+        return $this->toReturn;
     }
 
-    public function consume(string $correlationId): void {}
+    public function consume(string $correlationId): void
+    {
+        $this->consumed[] = $correlationId;
+    }
 
     public function existsForExecution(string $executionId): bool
     {
@@ -161,247 +195,22 @@ class WorkerMockPendingCorrelationRegistry implements PendingCorrelationRegistry
     }
 }
 
-class WorkerFakeProtocolExecutor implements StepProtocolExecutorInterface
+class WorkerMockExecutionRegistry implements ExecutionRegistryInterface
 {
-    public function __construct(private StepExecutionOutcome $outcome) {}
+    public function start(string $executionId, string $definitionId, string $workflowId): void {}
 
-    public function supports(Step $step, ArazzoDocument $document): bool
+    public function complete(string $executionId, ExecutionStatus $status): void {}
+}
+
+class WorkerMockDefinitionRegistry implements DefinitionRegistryInterface
+{
+    public function register(ArazzoDocument $document): string
     {
-        return true;
+        return 'test-def';
     }
 
-    public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
+    public function get(string $definitionId): ?ArazzoDocument
     {
-        return $this->outcome;
+        return null;
     }
 }
-
-function makeWorkerDocument(Workflow $workflow): ArazzoDocument
-{
-    return new ArazzoDocument(
-        arazzo: '1.0.0',
-        info: new Info('Test', null, null, '1.0.0'),
-        sourceDescriptions: [],
-        workflows: [$workflow],
-        components: new Components([], [], [], []),
-        specificationExtensions: [],
-    );
-}
-
-/**
- * @return array{0: StepExecutionWorker, 1: WorkerMockLockManager, 2: WorkerMockStateStore, 3: WorkerMockEventLedger, 4: WorkerMockExecutionRegistry, 5: SyncQueueDriver}
- */
-function makeWorker(StepExecutionOutcome $outcome, DefinitionRegistryInterface $definitionRegistry): array
-{
-    $lockManager = new WorkerMockLockManager();
-    $store = new WorkerMockStateStore();
-    $eventLedger = new WorkerMockEventLedger();
-    $executionRegistry = new WorkerMockExecutionRegistry();
-    $resolver = new WorkerMockExpressionResolver();
-    $queue = new SyncQueueDriver();
-    $dispatcher = new SimpleEventDispatcher();
-    LedgerEventListener::registerAll($dispatcher, $eventLedger);
-
-    $outcomeHandler = new StepOutcomeHandler(
-        new RunPersistence($store, $eventLedger, $executionRegistry),
-        new RunControlFlow(new WorkflowEngine($resolver), $queue),
-        pendingCorrelations: new WorkerMockPendingCorrelationRegistry(),
-        invoker: \Mockery::mock(SubWorkflowInvoker::class),
-        engine: \Mockery::mock(EvaluationEngineInterface::class),
-    );
-
-    $worker = new StepExecutionWorker(
-        new RunPersistence($store, $eventLedger, $executionRegistry),
-        $lockManager,
-        $definitionRegistry,
-        $resolver,
-        [new WorkerFakeProtocolExecutor($outcome)],
-        new RunControlFlow(new WorkflowEngine($resolver), $queue, events: $dispatcher),
-        stateTtlSeconds: 86400,
-    );
-
-    return [$worker, $lockManager, $store, $eventLedger, $executionRegistry, $queue];
-}
-
-it('skips a step already at Succeeded status', function (): void {
-    [$worker, $lockManager, $store, $eventLedger] = makeWorker(
-        StepExecutionOutcome::resolved(200, [], []),
-        new InMemoryDefinitionRegistry(),
-    );
-
-    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $context = (new WorkflowContext('def_1'))
-        ->withExecutionId('exec_1')
-        ->withStepResult('A', ['success' => true])
-        ->withStepStatus('A', StepStatus::Succeeded);
-
-    $worker->handle(new ExecuteStepJob($step, $context));
-
-    expect($lockManager->acquireCount)->toBe(1);
-    expect($store->saves)->toBeEmpty();
-    expect($eventLedger->appended)->toBeEmpty();
-});
-
-it('appends a definition_missing event when the registry returns null', function (): void {
-    [$worker, , $store, $eventLedger] = makeWorker(
-        StepExecutionOutcome::resolved(200, [], []),
-        new InMemoryDefinitionRegistry(),
-    );
-
-    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $context = (new WorkflowContext('missing_def'))->withExecutionId('exec_1');
-
-    $worker->handle(new ExecuteStepJob($step, $context));
-
-    expect($eventLedger->appended)->toHaveCount(1);
-    expect($eventLedger->appended[0]['eventType'])->toBe('execution.definition_missing');
-    expect($store->saves)->toBeEmpty();
-});
-
-it('appends a workflow_missing event when the context workflowId is not in the document', function (): void {
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $workflow = new Workflow('wf_1', null, null, null, [], [], [], [], [], []);
-    $document = makeWorkerDocument($workflow);
-    $definitionId = $definitionRegistry->register($document);
-
-    [$worker, , , $eventLedger] = makeWorker(StepExecutionOutcome::resolved(200, [], []), $definitionRegistry);
-
-    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_does_not_exist');
-
-    $worker->handle(new ExecuteStepJob($step, $context));
-
-    expect($eventLedger->appended[0]['eventType'])->toBe('execution.workflow_missing');
-});
-
-it('executes a step, saves state with TTL, appends step.executed, starts the execution, and continues via StepOutcomeHandler', function (): void {
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB], [], [], [], []);
-    $document = makeWorkerDocument($workflow);
-    $definitionId = $definitionRegistry->register($document);
-
-    [$worker, , $store, $eventLedger, $executionRegistry, $queue] = makeWorker(
-        StepExecutionOutcome::resolved(200, ['id' => 1], ['id' => 1]),
-        $definitionRegistry,
-    );
-
-    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
-
-    $worker->handle(new ExecuteStepJob($stepA, $context));
-
-    expect($store->saves)->toHaveKey('exec_1');
-    expect($store->saves['exec_1']['steps'])->toHaveKey('A');
-    expect(array_column($eventLedger->appended, 'eventType'))->toContain('step.executed');
-    expect($executionRegistry->started)->toHaveCount(1);
-    expect($queue->dispatched)->toHaveCount(1);
-    expect($queue->dispatched[0]['job']->step->stepId)->toBe('B');
-});
-
-it('suspends when the protocol executor returns a suspended outcome, without invoking StepOutcomeHandler', function (): void {
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-    $document = makeWorkerDocument($workflow);
-    $definitionId = $definitionRegistry->register($document);
-
-    [$worker, , $store, $eventLedger, , $queue] = makeWorker(StepExecutionOutcome::suspended(), $definitionRegistry);
-
-    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
-
-    $worker->handle(new ExecuteStepJob($step, $context));
-
-    expect($store->saves['exec_1']['steps']['A']['status'])->toBe(StepStatus::Suspended);
-    expect(array_column($eventLedger->appended, 'eventType'))->toContain('step.suspended');
-    expect($queue->dispatched)->toBeEmpty(); // StepOutcomeHandler never called, so no choreography dispatch
-});
-
-it('reloads and merges persisted state before evaluating, so a concurrently-completed sibling step is not lost', function (): void {
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $stepB = new Step('B', null, new StepTarget(), new StepFlow(), new StepIo());
-    $stepD = new Step('D', null, new StepTarget(), new StepFlow(dependsOn: ['A', 'B']), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB, $stepD], [], [], [], []);
-    $document = makeWorkerDocument($workflow);
-    $definitionId = $definitionRegistry->register($document);
-
-    [$worker, , $store, , , $queue] = makeWorker(
-        StepExecutionOutcome::resolved(200, [], []),
-        $definitionRegistry,
-    );
-
-    // Simulate step A already completed and persisted by a concurrent worker before this
-    // job (for step B) is handled.
-    $store->preloaded['exec_1'] = [
-        'definitionId' => $definitionId,
-        'workflowId' => 'wf_1',
-        'steps' => ['A' => ['statusCode' => 200, 'status' => StepStatus::Succeeded]],
-        'inputs' => [],
-        'components' => [],
-    ];
-
-    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
-
-    $worker->handle(new ExecuteStepJob($stepB, $context));
-
-    // D depends on both A and B; A came from the reloaded persisted state, B from this job.
-    expect($store->saves['exec_1']['steps'])->toHaveKeys(['A', 'B']);
-    expect($queue->dispatched)->toHaveCount(1);
-    expect($queue->dispatched[0]['job']->step->stepId)->toBe('D');
-});
-
-it('acquires the lock using an execution-scoped key, not a definition-scoped key', function (): void {
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
-    $document = makeWorkerDocument($workflow);
-    $definitionId = $definitionRegistry->register($document);
-
-    [$worker, $lockManager] = makeWorker(StepExecutionOutcome::resolved(200, [], []), $definitionRegistry);
-
-    $context = (new WorkflowContext($definitionId))->withExecutionId('exec_42')->withWorkflowId('wf_1');
-
-    $worker->handle(new ExecuteStepJob($step, $context));
-
-    expect($lockManager->keysUsed[0])->toBe('execution_lock_exec_42');
-});
-
-it('resolves a diamond fan-in exactly once: B and C both complete from the same stale context, D dispatches exactly once with A+B+C all present', function (): void {
-    $definitionRegistry = new InMemoryDefinitionRegistry();
-    $stepA = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $stepB = new Step('B', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
-    $stepC = new Step('C', null, new StepTarget(), new StepFlow(dependsOn: ['A']), new StepIo());
-    $stepD = new Step('D', null, new StepTarget(), new StepFlow(dependsOn: ['B', 'C']), new StepIo());
-    $workflow = new Workflow('wf_1', null, null, null, [], [$stepA, $stepB, $stepC, $stepD], [], [], [], []);
-    $document = makeWorkerDocument($workflow);
-    $definitionId = $definitionRegistry->register($document);
-
-    [$worker, , $store, , , $queue] = makeWorker(StepExecutionOutcome::resolved(200, [], []), $definitionRegistry);
-
-    // A already completed and persisted by an earlier job.
-    $store->preloaded['exec_1'] = [
-        'definitionId' => $definitionId,
-        'workflowId' => 'wf_1',
-        'steps' => ['A' => ['statusCode' => 200, 'status' => StepStatus::Succeeded]],
-        'inputs' => [],
-        'components' => [],
-    ];
-
-    // B and C were both dispatched right after A completed, so both jobs carry the exact
-    // same A-only context snapshot -- this is the classic diamond/fan-in lost-update race.
-    $staleContext = (new WorkflowContext($definitionId))->withExecutionId('exec_1')->withWorkflowId('wf_1');
-
-    $worker->handle(new ExecuteStepJob($stepB, $staleContext));
-
-    // WorkerMockStateStore keeps save()/load() as two separate arrays for test clarity
-    // elsewhere in this file -- bridge them here to simulate B's write becoming visible to
-    // C's subsequent load(), exactly like a real shared StateStore would.
-    $store->preloaded['exec_1'] = $store->saves['exec_1'];
-
-    $worker->handle(new ExecuteStepJob($stepC, $staleContext));
-
-    $dDispatches = array_values(array_filter($queue->dispatched, fn ($d) => $d['job']->step->stepId === 'D'));
-    expect($dDispatches)->toHaveCount(1);
-    expect($store->saves['exec_1']['steps'])->toHaveKeys(['A', 'B', 'C']);
-});

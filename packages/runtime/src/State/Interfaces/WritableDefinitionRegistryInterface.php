@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Runtime\State\Interfaces;
+
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+
+/**
+ * A definition registry that can also ingest documents at runtime.
+ * Orchestrators that receive raw documents (CLI, tests) depend on this
+ * narrower capability; long-lived workers only ever need the base seam.
+ *
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
+interface WritableDefinitionRegistryInterface extends DefinitionRegistryInterface
+{
+    public function register(ArazzoDocument $document): string;
+}

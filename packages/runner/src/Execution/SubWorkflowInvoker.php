@@ -10,10 +10,10 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -23,7 +23,7 @@ class SubWorkflowInvoker
     public function __construct(
         private DefinitionRegistryInterface $registry,
         private WorkflowExecutor $executor,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
     ) {}
 
     public function invoke(
@@ -50,8 +50,8 @@ class SubWorkflowInvoker
 
         $bound = array_map(function ($spec) use ($parent) {
             return match (true) {
-                $spec instanceof Expression => $this->engine->evaluate($spec, new ExecutionEvaluationInput($parent, '__invoke__')),
-                $spec instanceof Selector => $this->engine->evaluateSelector($spec, $parent, '__invoke__'),
+                $spec instanceof Expression => $this->evaluationEngine->evaluate($spec, new EvaluationContext($parent, '__invoke__')),
+                $spec instanceof Selector => $this->evaluationEngine->evaluateSelector($spec, $parent, '__invoke__'),
                 default => $spec,
             };
         }, $action->parameters);

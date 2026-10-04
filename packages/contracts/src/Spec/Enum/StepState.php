@@ -19,4 +19,5 @@ enum StepState: string
     case ActorInputReceived = 'actor_input_received';
     case Completed = 'completed';
     case Failed = 'failed';
+    case Cancelled = 'cancelled';
 }

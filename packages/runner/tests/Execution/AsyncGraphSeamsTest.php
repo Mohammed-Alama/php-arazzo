@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,6 +30,8 @@ function dummySeams(): AsyncGraphSeams
             {
                 return null;
             }
+
+            public function delete(string $executionId): void {}
         },
         queueDriver: new class() implements QueueDriverInterface
         {
@@ -62,6 +65,11 @@ function dummySeams(): AsyncGraphSeams
         },
         definitionRegistry: new class() implements DefinitionRegistryInterface
         {
+            public function register(ArazzoDocument $document): string
+            {
+                return 'test-def';
+            }
+
             public function get(string $definitionId): ?ArazzoDocument
             {
                 return null;
@@ -88,10 +96,33 @@ function dummySeams(): AsyncGraphSeams
                 return new Response(200);
             }
         },
+        requestFactory: new HttpFactory(),
+        logger: null,
+        idempotencyEnabled: false,
+        idempotencyHeader: 'Idempotency-Key',
+        strictValidation: false,
+        retryCeiling: 10,
+        retryBackoffMultiplier: 1.0,
+        stateTtlSeconds: 86400,
     );
 }
 
-it('defaults config knobs for an empty seams bag', function (): void {
+it('constructs seams with all required ports', function () {
+    $seams = dummySeams();
+
+    expect($seams->stateStore)->not->toBeNull()
+        ->and($seams->queueDriver)->not->toBeNull()
+        ->and($seams->eventLedger)->not->toBeNull()
+        ->and($seams->executionRegistry)->not->toBeNull()
+        ->and($seams->pendingCorrelationRegistry)->not->toBeNull()
+        ->and($seams->definitionRegistry)->not->toBeNull()
+        ->and($seams->lockManager)->not->toBeNull()
+        ->and($seams->httpClient)->not->toBeNull()
+        ->and($seams->schemaValidator)->toBeNull()
+        ->and($seams->requestFactory)->not->toBeNull();
+});
+
+it('retains config knobs', function () {
     $seams = dummySeams();
 
     expect($seams->idempotencyEnabled)->toBeFalse()

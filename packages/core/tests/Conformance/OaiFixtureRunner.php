@@ -66,11 +66,12 @@ final class OaiFixtureRunner extends ConformanceHarness
                     new DefaultOpenApiExecutor($this->http, new HttpFactory()),
                     FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
                 ),
-                $this->resolver($runtime),
                 $runtime->operations,
-                engine: $this->engine(),
+                $this->engine(),
+                $this->outputExtractor($runtime),
+                $this->schemaValidator($runtime),
             ),
-            new WorkflowEngine($this->resolver($runtime)),
+            new WorkflowEngine($this->engine()),
             events: $this->events,
         );
 
