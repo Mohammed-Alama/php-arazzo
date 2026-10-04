@@ -3,7 +3,24 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-WORKTREE_DIR="$PROJECT_ROOT/.worktrees/feat"
+
+# Resolve the main checkout. When this script runs from inside a linked worktree,
+# SCRIPT_DIR/.. is the worktree, not the repo root, so ".worktrees" would not
+# resolve and list/down would silently report nothing. --git-common-dir points at
+# the main checkout's .git in that case.
+COMMON_DIR="$(git -C "$PROJECT_ROOT" rev-parse --git-common-dir)"
+case "$COMMON_DIR" in
+    /*) ;;
+    *) COMMON_DIR="$(cd "$PROJECT_ROOT/$(dirname "$COMMON_DIR")" && pwd)/$(basename "$COMMON_DIR")" ;;
+esac
+REPO_ROOT="$(dirname "$COMMON_DIR")"
+WORKTREE_DIR="$REPO_ROOT/.worktrees"
+
+# One shared image for every worktree. The Dockerfile carries no application code
+# (the worktree is bind-mounted at /app), so a single build serves them all. Without
+# an explicit image name, compose tags the build "<project>-php", i.e. one 198MB
+# image per worktree.
+IMAGE_NAME="arazzo-php:latest"
 
 usage() {
     cat <<EOF
@@ -15,6 +32,8 @@ Commands:
   test <branch>     Run Pest tests in container
   down <branch>     Stop and remove containers
   list              List all active apptree instances
+
+All worktrees share one image ($IMAGE_NAME), built on first use. The 'down' command keeps it.
 
 Examples:
   $(basename "$0") create my-feature
@@ -43,20 +62,21 @@ cmd_create() {
     # Copy docker files to worktree if not present
     for f in Dockerfile .dockerignore; do
         if [ ! -f "$worktree_path/$f" ]; then
-            cp "$PROJECT_ROOT/$f" "$worktree_path/$f"
+            cp "$REPO_ROOT/$f" "$worktree_path/$f"
         fi
     done
 
-    # Generate docker-compose.yml with correct git mount
-    # Mount main .git at host path so worktree .git file resolves in container
-    if [ ! -f "$worktree_path/docker-compose.yml" ]; then
-        cat > "$worktree_path/docker-compose.yml" <<COMPOSE
+    # Generate docker-compose.yml with correct git mount.
+    # Mount main .git at host path so the worktree .git file resolves in container.
+    # `image:` pins the shared tag; without it compose names the build "<branch>-php".
+    cat > "$worktree_path/docker-compose.yml" <<COMPOSE
 services:
   php:
+    image: ${IMAGE_NAME}
     build: .
     volumes:
       - .:/app
-      - ${PROJECT_ROOT}/.git:${PROJECT_ROOT}/.git:ro
+      - ${REPO_ROOT}/.git:${REPO_ROOT}/.git:ro
     working_dir: /app
     depends_on:
       - redis
@@ -72,12 +92,19 @@ services:
     ports:
       - "\${REDIS_PORT:-6379}"
 COMPOSE
+
+    # Build only when the shared image is missing, so a second worktree reuses it
+    # instead of producing another ~198MB image.
+    cd "$worktree_path"
+    if docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
+        echo "==> Reusing shared image: $IMAGE_NAME"
+    else
+        echo "==> Building shared image: $IMAGE_NAME"
+        docker compose build php
     fi
 
-    # Start Docker containers
     echo "==> Starting Docker containers..."
-    cd "$worktree_path"
-    docker compose up -d --build
+    docker compose up -d
 
     # Install dependencies if needed
     if [ ! -d "$worktree_path/vendor" ]; then
@@ -133,10 +160,11 @@ cmd_down() {
     docker compose down -v
 
     echo "==> Removing worktree..."
-    cd "$PROJECT_ROOT"
+    cd "$REPO_ROOT"
     git worktree remove --force "$worktree_path"
 
     echo "==> apptree '$branch' removed"
+    echo "    Shared image kept: $IMAGE_NAME"
 }
 
 cmd_list() {
@@ -157,7 +185,7 @@ cmd_list() {
         if docker compose ps --status running 2>/dev/null | grep -q "php"; then
             status="running"
         fi
-        cd "$PROJECT_ROOT"
+        cd "$REPO_ROOT"
 
         printf "    %-30s [%s]\n" "$branch" "$status"
     done
