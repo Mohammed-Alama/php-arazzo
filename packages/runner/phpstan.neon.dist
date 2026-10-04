@@ -12,4 +12,6 @@ parameters:
         - ../contracts/src
         - ../expression/src
         - ../document/src
+        - ../engine/src
+        - ../protocol-http/src
     reportUnmatchedIgnoredErrors: false

@@ -22,9 +22,9 @@ Where mutable state lives, and which of it crosses process boundaries:
 | document | 11 | 69 | 14% |
 | sources | 2 | 14 | 12% |
 | runtime | 3 | 12 | 20% |
-| engine | 2 | 1 | 67% |
+| engine | 3 | 8 | 27% |
 | events | 9 | 1 | 90% |
-| runner | 8 | 38 | 17% |
+| runner | 7 | 26 | 21% |
 | cli | 0 | 14 | 0% |
 | laravel | 0 | 23 | 0% |
 
@@ -35,7 +35,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | `ImplicitDependencies` | contracts | `Dependency` | `hydrate` |
 | `DecoderRegistry` | document | `Parser` | `hydrate` |
 | `ExecutionContext` | runtime | `State/Data` | `toArray`, `hydrate` |
-| `ParameterSerializer` | runner | `Execution` | `serialize` |
+| `ParameterSerializer` | engine | `Execution` | `serialize` |
 | `CliRunResult` | cli | `Console/Cli` | `hydrate` |
 
 ## Cross-process aggregates
@@ -45,5 +45,5 @@ Mutable types that serialize themselves or are carried by queue jobs — each ne
 - `CliRunResult` <small>cli · `hydrate`</small>
 - `ImplicitDependencies` <small>contracts · `hydrate`</small>
 - `DecoderRegistry` <small>document · `hydrate`</small>
-- `ParameterSerializer` <small>runner · `serialize`</small>
+- `ParameterSerializer` <small>engine · `serialize`</small>
 - `ExecutionContext` <small>runtime · `toArray`, `hydrate`</small>

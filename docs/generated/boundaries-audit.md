@@ -17,34 +17,34 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
+| `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 51 | 17 | allowed |
+| `Psr` | 32 | 16 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 10 | 0 | **forbidden** ⚠ |
+| `cebe` | 2 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
+| cli | `cli:Console` | `GuzzleHttp` | 1 |
 | cli | `cli:Console` | `OpenTelemetry` | 1 |
-| cli | `cli:Console` | `Psr` | 2 |
+| cli | `cli:Console` | `Psr` | 3 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Interfaces` | `Psr` | 2 |
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
+| engine | `engine:Execution` | `Psr` | 3 |
+| engine | `engine:Execution` | `cebe` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
-| runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 23 |
-| runner | `runner:Execution` | `cebe` | 10 |
-| runner | `runner:Protocol` | `Psr` | 6 |
-| runner | `runner:_` | `Psr` | 5 |
+| runner | `runner:Execution` | `Psr` | 9 |
+| runner | `runner:_` | `Psr` | 2 |
 | runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
@@ -53,7 +53,7 @@ when a boundary consciously moves.
 | sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
-| laravel | `laravel:Bindings` | `Psr` | 11 |
+| laravel | `laravel:Bindings` | `Psr` | 10 |
 | laravel | `laravel:Events` | `Illuminate` | 1 |
 | laravel | `laravel:Events` | `Psr` | 1 |
 | laravel | `laravel:Http` | `GuzzleHttp` | 1 |
@@ -70,14 +70,14 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **12 library boundary violation(s):**
+- `cli:Console` imports `GuzzleHttp\*` (1 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
+- `engine:Execution` imports `cebe\*` (2 refs)
 - `expression:_` imports `Flow\*` (1 refs)
-- `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
-- `runner:Execution` imports `cebe\*` (10 refs)
 - `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
@@ -91,7 +91,11 @@ when a boundary consciously moves.
 
 Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
 
-**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `SourceGraph`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
+**1 facade-seam violation(s):**
+
+| From package | To package | From | References concrete facade |
+|---|---|---|---|
+| `runner` | `expression` | `StepExecutor` | `ExpressionEngine` |
 
 ### Facade-to-facade transitions (allowed by seam policy)
 
@@ -107,20 +111,25 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
+| `engine` | `InjectionResult` | `runner` | 1 | `IdempotencyKeyInjector` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
 | `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
-| `runner` | `EvaluationContext` | `expression` | 7 | `SubWorkflowInvoker` |
+| `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
 | `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
+| `runner` | `IdempotencyKeyInjector` | `engine` | 2 | `StepExecutor` |
 | `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
+| `runner` | `RequestCompiler` | `engine` | 1 | `StepExecutor` |
 | `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
+| `runner` | `ReusableParameterResolver` | `engine` | 1 | `SubWorkflowStepExecutor` |
 | `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
 | `runner` | `RunFailedEvent` | `events` | 3 | `StepExecutionWorker` |
 | `runner` | `RunStartedEvent` | `events` | 1 | `WorkflowExecutor` |
 | `runner` | `StepExecutedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `StepFailedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepParameterMerger` | `engine` | 2 | `StepExecutionWorker` |
 | `runner` | `StepRetriedEvent` | `events` | 2 | `StepOutcomeHandler` |
 | `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |

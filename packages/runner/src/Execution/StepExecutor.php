@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Http\Message\RequestInterface as Psr7Request;
+use Psr\Http\Message\RequestInterface;
 use Throwable;
 
 /**
@@ -26,17 +31,22 @@ class StepExecutor
     /** @phpstan-ignore property.onlyWritten */
     private EventDispatcherInterface $events;
 
+    private ExpressionEngineInterface $inspector;
+
+    /** @phpstan-ignore-next-line */
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private OpenApiOperationResolver $operationResolver,
         private EvaluationEngineInterface $evaluationEngine,
-        private StepOutputExtractor $outputExtractor,
+        private OutputExtractorInterface $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
+        ?ExpressionEngineInterface $inspector = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
+        $this->inspector = $inspector ?? new ExpressionEngine();
     }
 
     /**
@@ -46,7 +56,7 @@ class StepExecutor
      */
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
     {
-        $compiler = new RequestCompiler($this->evaluationEngine);
+        $compiler = new RequestCompiler($this->evaluationEngine, $this->inspector);
         ['payload' => $payload] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->resolveOperation($step, $document);
@@ -55,7 +65,7 @@ class StepExecutor
             $response = $this->openApiExecutor->execute(
                 $resolved,
                 $payload,
-                function ($request) use (&$context, $compiler, $step, $payload) {
+                function (RequestInterface $request) use (&$context, $compiler, $step, $payload) {
                     if ($this->injector !== null) {
                         $request = $this->injector->inject($request, $step, $context)->request;
                     }
@@ -73,7 +83,7 @@ class StepExecutor
                         $headers[$name] = implode(', ', $values);
                     }
 
-                    $captured = $request instanceof Psr7Request ? $request : null;
+                    $captured = $request;
                     $context = $context->withStepRequest($step->stepId, $compiler->requestRecord($captured, $payload));
 
                     return $request;

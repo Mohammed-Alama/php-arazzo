@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
@@ -12,20 +14,25 @@ use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
+use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
-use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Tests\Support\FakeOpenApiExecutor;
+use Alama\Arazzo\Tests\Support\FakeOutputExtractor;
+use Alama\Arazzo\Tests\Support\FakeResponseValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+
+require_once __DIR__.'/../Support/FakeSeams.php';
 
 function seams(
     ?ClientInterface $httpClient = null,
@@ -33,6 +40,8 @@ function seams(
     ?LockManagerInterface $lockManager = null,
     ?QueueDriverInterface $queueDriver = null,
     ?ResponseValidatorInterface $schemaValidator = null,
+    ?OutputExtractorInterface $outputExtractor = null,
+    ?OpenApiExecutorInterface $openApiExecutor = null,
     int $retryCeiling = 10,
     float $retryBackoffMultiplier = 1.0,
     int $stateTtlSeconds = 86400,
@@ -132,7 +141,9 @@ function seams(
             public function release(string $key): void {}
         }),
         httpClient: $seamsHttpClient,
-        schemaValidator: $schemaValidator,
+        schemaValidator: $schemaValidator ?? new FakeResponseValidator(),
+        outputExtractor: $outputExtractor ?? new FakeOutputExtractor(),
+        openApiExecutor: $openApiExecutor ?? new FakeOpenApiExecutor(),
         requestFactory: $stub(new HttpFactory()),
         logger: null,
         idempotencyEnabled: false,

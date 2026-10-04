@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Protocol;
+namespace Alama\Arazzo\Protocol\Http\Protocol;
 
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\RequestCompiler;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 
 /**
@@ -27,7 +28,8 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         private OpenApiExecutorInterface $openApiExecutor,
         private OpenApiOperationResolver $operationResolver,
         private EvaluationEngineInterface $evaluationEngine,
-        private StepOutputExtractor $outputExtractor,
+        private ExpressionEngineInterface $inspector,
+        private OutputExtractorInterface $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
@@ -40,7 +42,7 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
 
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
     {
-        $compiler = new RequestCompiler($this->evaluationEngine);
+        $compiler = new RequestCompiler($this->evaluationEngine, $this->inspector);
         ['payload' => $payload, 'resolvedInputs' => $resolvedInputs] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->operationResolver->resolve($step, $document);

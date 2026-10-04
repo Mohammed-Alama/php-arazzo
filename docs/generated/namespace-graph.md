@@ -23,6 +23,8 @@ flowchart LR
     document__["(document package root)"]:::coreNode
     engine_Data["Alama\Arazzo\Engine\Data"]:::coreNode
     engine_Enum["Alama\Arazzo\Engine\Enum"]:::coreNode
+    engine_Exceptions["Alama\Arazzo\Engine\Exceptions"]:::coreNode
+    engine_Execution["Alama\Arazzo\Engine\Execution"]:::coreNode
     engine__["(engine package root)"]:::coreNode
     evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
     evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
@@ -54,7 +56,7 @@ flowchart LR
     runner__["(runner package root)"]:::coreNode
     runtime_Infrastructure["Alama\Arazzo\Runtime\Infrastructure"]:::coreNode
     runtime_Policy["Alama\Arazzo\Runtime\Policy"]:::coreNode
-    runtime_State["Alama\Arazzo\Runtime\State\Interfaces"]:::coreNode
+    runtime_State["Alama\Arazzo\Runtime\State\Data"]:::coreNode
     runtime_Telemetry["Alama\Arazzo\Runtime\Telemetry"]:::coreNode
     sources_Normalizer["Alama\Arazzo\Sources\Normalizer"]:::coreNode
     sources_Resolver["Alama\Arazzo\Sources\Resolver\Exceptions"]:::coreNode
@@ -145,6 +147,13 @@ flowchart LR
     engine_Data --> contracts_Spec
     engine_Data --> engine_Enum
     engine_Data --> contracts_State
+    engine_Exceptions --> contracts_Support
+    engine_Execution --> contracts_Spec
+    engine_Execution --> contracts_State
+    engine_Execution --> runner_Execution
+    engine_Execution --> document_Parser
+    engine_Execution --> evaluation__
+    engine_Execution --> expression_Interfaces
     engine__ --> contracts_Spec
     engine__ --> contracts_State
     engine__ --> engine_Data
@@ -155,20 +164,21 @@ flowchart LR
     runner_Execution --> contracts_Spec
     runner_Execution --> runtime_State
     runner_Execution --> contracts_State
+    runner_Execution --> engine_Exceptions
     runner_Execution --> evaluation__
     runner_Execution --> expression_Data
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
     runner_Execution --> document_Validator
+    runner_Execution --> engine_Execution
     runner_Execution --> events__
     runner_Execution --> events_Interfaces
     runner_Execution --> runner_Jobs
     runner_Execution --> runtime_Telemetry
     runner_Execution --> contracts_Dependency
     runner_Execution --> runtime_Policy
-    runner_Execution --> document_Parser
-    runner_Execution --> expression_Enum
+    runner_Execution --> expression__
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
     runner_Execution --> runner_Protocol
@@ -177,10 +187,11 @@ flowchart LR
     runner_Protocol --> contracts_Interfaces
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
+    runner_Protocol --> engine_Exceptions
+    runner_Protocol --> engine_Execution
     runner_Protocol --> evaluation__
-    runner_Protocol --> runner_Execution
     runner_Protocol --> expression_Data
-    runner_Protocol --> runtime_State
+    runner_Protocol --> runner_Execution
     runner__ --> contracts_Interfaces
     runner__ --> runner_Execution
     runner__ --> contracts_Spec
@@ -240,11 +251,11 @@ flowchart LR
     laravel_Http --> contracts_Spec
     laravel_Http --> sources_Resolver
     laravel_Http --> runner_Jobs
-    laravel_Http --> runtime_State
     laravel_Lock --> contracts_Interfaces
+    laravel_Persistence --> contracts_Interfaces
     laravel_Persistence --> contracts_Spec
-    laravel_Persistence --> runtime_State
     laravel_Persistence --> events_Interfaces
+    laravel_Persistence --> runtime_State
     laravel_Persistence --> document_Parser
     laravel_Queue --> contracts_Interfaces
     laravel_Queue --> runner_Jobs
@@ -253,7 +264,6 @@ flowchart LR
     laravel_Support --> contracts_Interfaces
     laravel_Support --> events_Interfaces
     laravel_Support --> runner__
-    laravel_Support --> runner_Execution
     laravel_Support --> runtime_State
     laravel__ --> laravel_Bindings
     laravel__ --> laravel_Http

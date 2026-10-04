@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Document\DocumentInterface;
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\HttpFactory;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 
 /**
  * Assembles the runner execution graph.
@@ -25,29 +25,33 @@ use Psr\Http\Message\RequestFactoryInterface;
  */
 final class ExecutionGraphFactory
 {
+    /** @phpstan-ignore-next-line constructor has 6 parameters, max 5 allowed by config */
     public function __construct(
         private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ExpressionEngineInterface $inspector,
-        private readonly ?ClientInterface $httpClient = null,
-        private readonly ?RequestFactoryInterface $requestFactory = null,
+        private readonly ?OpenApiExecutorInterface $openApiExecutor = null,
+        private readonly ?OutputExtractorInterface $outputExtractor = null,
+        private readonly ?ResponseValidatorInterface $schemaValidator = null,
     ) {}
 
     public function createWorkflowExecutor(): WorkflowExecutor
     {
-        $client = $this->httpClient ?? new Client();
-        $factory = $this->requestFactory ?? new HttpFactory();
-
-        $outputExtractor = new StepOutputExtractor($this->operations->resolver, $this->evaluationEngine, $this->inspector);
-        $schemaValidator = new ResponseSchemaValidator($this->operations->resolver);
+        $openApiExecutor = $this->openApiExecutor
+            ?? throw new ExecutionException('No HTTP/OpenAPI executor configured; register alama/arazzo-protocol-http (Phase F1).');
+        $outputExtractor = $this->outputExtractor
+            ?? throw new ExecutionException('No output extractor configured; register alama/arazzo-protocol-http (Phase F1).');
+        $schemaValidator = $this->schemaValidator
+            ?? throw new ExecutionException('No response validator configured; register alama/arazzo-protocol-http (Phase F1).');
 
         return new WorkflowExecutor(
             new StepExecutor(
-                new DefaultOpenApiExecutor($client, $factory),
+                $openApiExecutor,
                 $this->operations->resolver,
                 $this->evaluationEngine,
                 $outputExtractor,
                 $schemaValidator,
+                inspector: $this->inspector,
             ),
             workflowEngine: new WorkflowEngine($this->evaluationEngine),
             preflight: $this->operations->document,

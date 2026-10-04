@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Alama\Arazzo\Tests\Protocol\Http\Execution;
+
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;

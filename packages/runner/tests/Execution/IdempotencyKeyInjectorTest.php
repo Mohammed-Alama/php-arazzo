@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use GuzzleHttp\Psr7\Request;
 
 function idempotencyStep(?bool $idempotencyKey = null, ?string $idempotencyHeader = null): Step

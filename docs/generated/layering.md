@@ -62,6 +62,8 @@ flowchart TB
     subgraph PKG_M_engine["engine"]
         M_engine_Data["engine:Data"]:::node
         M_engine_Enum["engine:Enum"]:::node
+        M_engine_Exceptions["engine:Exceptions"]:::node
+        M_engine_Execution["engine:Execution"]:::node
         M_engine__["(engine package root)"]:::node
     end
     subgraph PKG_M_sources["sources"]
@@ -134,6 +136,13 @@ flowchart TB
     M_engine_Data --> M_contracts_Spec
     M_engine_Data --> M_contracts_State
     M_engine_Data --> M_engine_Enum
+    M_engine_Exceptions --> M_contracts_Support
+    M_engine_Execution --> M_contracts_Spec
+    M_engine_Execution --> M_contracts_State
+    M_engine_Execution --> M_document_Parser
+    M_engine_Execution --> M_evaluation__
+    M_engine_Execution --> M_expression_Interfaces
+    M_engine_Execution -.->|violation| M_runner_Execution
     M_engine__ --> M_contracts_Spec
     M_engine__ --> M_contracts_State
     M_engine__ --> M_engine_Data
@@ -206,9 +215,9 @@ flowchart TB
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
     M_laravel_Http --> M_runner_Jobs
-    M_laravel_Http --> M_runtime_State
     M_laravel_Http --> M_sources_Resolver
     M_laravel_Lock --> M_contracts_Interfaces
+    M_laravel_Persistence --> M_contracts_Interfaces
     M_laravel_Persistence --> M_contracts_Spec
     M_laravel_Persistence --> M_document_Parser
     M_laravel_Persistence --> M_events_Interfaces
@@ -219,7 +228,6 @@ flowchart TB
     M_laravel_State --> M_runtime_State
     M_laravel_Support --> M_contracts_Interfaces
     M_laravel_Support --> M_events_Interfaces
-    M_laravel_Support --> M_runner_Execution
     M_laravel_Support --> M_runner__
     M_laravel_Support --> M_runtime_State
     M_laravel__ --> M_laravel_Bindings
@@ -231,15 +239,16 @@ flowchart TB
     M_runner_Execution --> M_contracts_Spec
     M_runner_Execution --> M_contracts_State
     M_runner_Execution --> M_contracts_Support
-    M_runner_Execution --> M_document_Parser
     M_runner_Execution --> M_document_Validator
     M_runner_Execution --> M_document__
+    M_runner_Execution --> M_engine_Exceptions
+    M_runner_Execution --> M_engine_Execution
     M_runner_Execution --> M_evaluation__
     M_runner_Execution --> M_events_Interfaces
     M_runner_Execution --> M_events__
     M_runner_Execution --> M_expression_Data
-    M_runner_Execution --> M_expression_Enum
     M_runner_Execution --> M_expression_Interfaces
+    M_runner_Execution --> M_expression__
     M_runner_Execution --> M_runner_Jobs
     M_runner_Execution --> M_runner_Protocol
     M_runner_Execution --> M_runner__
@@ -251,10 +260,11 @@ flowchart TB
     M_runner_Protocol --> M_contracts_Interfaces
     M_runner_Protocol --> M_contracts_Spec
     M_runner_Protocol --> M_contracts_State
+    M_runner_Protocol --> M_engine_Exceptions
+    M_runner_Protocol --> M_engine_Execution
     M_runner_Protocol --> M_evaluation__
     M_runner_Protocol --> M_expression_Data
     M_runner_Protocol --> M_runner_Execution
-    M_runner_Protocol --> M_runtime_State
     M_runner__ --> M_contracts_Exceptions
     M_runner__ --> M_contracts_Interfaces
     M_runner__ --> M_contracts_Spec
@@ -297,17 +307,18 @@ flowchart TB
 
 ## Package boundaries
 
-**1 package boundary violation(s):**
+**2 package boundary violation(s):**
 
 | Package | ↑ depends on package | Refs | Modules involved |
 |---|---|---:|---|
 | `document` | `sources` | 3 | `(document package root) -> sources:Normalizer`, `(document package root) -> sources:Validator` |
+| `engine` | `runner` | 1 | `engine:Execution -> runner:Execution` |
 
 ### All package edges (reference counts)
 
 | From package | To package | Refs |
 |---|---|---:|
-| `cli` | `contracts` | 22 |
+| `cli` | `contracts` | 27 |
 | `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `events` | 2 |
@@ -318,36 +329,41 @@ flowchart TB
 | `document` | `contracts` | 152 |
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
-| `engine` | `contracts` | 12 |
+| `engine` | `contracts` | 28 |
+| `engine` | `document` | 1 |
+| `engine` | `evaluation` | 1 |
+| `engine` | `expression` | 1 |
+| `engine` | `runner` | 1 |
 | `evaluation` | `contracts` | 46 |
 | `evaluation` | `expression` | 15 |
 | `events` | `contracts` | 1 |
 | `expression` | `contracts` | 18 |
 | `laravel` | `cli` | 3 |
-| `laravel` | `contracts` | 21 |
+| `laravel` | `contracts` | 27 |
 | `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 3 |
 | `laravel` | `events` | 5 |
 | `laravel` | `expression` | 2 |
-| `laravel` | `runner` | 23 |
-| `laravel` | `runtime` | 14 |
+| `laravel` | `runner` | 22 |
+| `laravel` | `runtime` | 10 |
 | `laravel` | `sources` | 10 |
-| `runner` | `contracts` | 152 |
-| `runner` | `document` | 10 |
-| `runner` | `engine` | 1 |
-| `runner` | `evaluation` | 15 |
+| `runner` | `contracts` | 124 |
+| `runner` | `document` | 9 |
+| `runner` | `engine` | 11 |
+| `runner` | `evaluation` | 11 |
 | `runner` | `events` | 23 |
-| `runner` | `expression` | 14 |
-| `runner` | `runtime` | 25 |
-| `runtime` | `contracts` | 20 |
+| `runner` | `expression` | 12 |
+| `runner` | `runtime` | 20 |
+| `runtime` | `contracts` | 19 |
 | `sources` | `contracts` | 20 |
 | `sources` | `document` | 12 |
 
 ## Module-level detail
 
-**2 module-level violation(s) found:**
+**3 module-level violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
 | `(document package root)` | `sources:Normalizer` | 2 |
 | `(document package root)` | `sources:Validator` | 1 |
+| `engine:Execution` | `runner:Execution` | 1 |

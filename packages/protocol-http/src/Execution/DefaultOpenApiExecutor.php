@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Protocol\Http\Execution;
 
 use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
+use Alama\Arazzo\Engine\Execution\ParameterSerializer;
+use Alama\Arazzo\Engine\Execution\TypeCaster;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Utils;

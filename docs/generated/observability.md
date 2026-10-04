@@ -73,9 +73,8 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowUniqueIdRule` <small>core</small> | `error` | 1 |
 | `WsdlStepRule` <small>core</small> | `error` | 2 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
-| `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
-85 logging calls total. PSR-14 events are dispatched independently (see events.md).
+84 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 
@@ -99,6 +98,7 @@ Where async suspend/resume bookkeeping happens:
 | Class | Role signals |
 |---|---|
 | `CliRunner` <small>core</small> | resumes from webhook |
+| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
@@ -114,4 +114,3 @@ Where async suspend/resume bookkeeping happens:
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |
 | `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
-| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |

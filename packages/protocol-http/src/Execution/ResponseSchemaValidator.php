@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Protocol\Http\Execution;
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Engine\Execution\SchemaValidator;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Reference;

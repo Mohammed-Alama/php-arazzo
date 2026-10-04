@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\Action\FailureAction;
 use Alama\Arazzo\Contracts\Spec\Action\FailureEndAction;
 use Alama\Arazzo\Contracts\Spec\Action\FailureGotoAction;
@@ -39,7 +40,6 @@ use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
 class StepOutcomeMockExecutionRegistry implements ExecutionRegistryInterface

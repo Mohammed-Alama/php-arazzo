@@ -18,6 +18,7 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Engine\Execution\StepParameterMerger;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;

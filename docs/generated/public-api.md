@@ -485,7 +485,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $evaluationEngine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
+- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $evaluationEngine, ?ExpressionEngineInterface $inspector = null, ?OpenApiExecutorInterface $openApiExecutor = null, ?OutputExtractorInterface $outputExtractor = null, ?ResponseValidatorInterface $schemaValidator = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 
@@ -499,7 +499,10 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Cli\Console\Command`
 
 #### `RunCommand` class
+- `public function __construct(private ClientInterface $client, private RequestFactoryInterface $factory)`
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
 
 ## laravel
 

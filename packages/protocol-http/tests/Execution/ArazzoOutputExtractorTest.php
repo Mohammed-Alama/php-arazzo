@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Execution;
+namespace Alama\Arazzo\Tests\Protocol\Http\Execution;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -20,8 +20,8 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runtime\State\Interfaces;
+namespace Alama\Arazzo\Contracts\Interfaces;
 
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 

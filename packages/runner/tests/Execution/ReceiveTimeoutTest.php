@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Execution;
 
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use DateTimeImmutable;
 
 require_once __DIR__.'/CorrelationResumerTest.php';
@@ -43,7 +43,7 @@ function expiryResumer(bool $expired): array
     $outcomeHandler = new RecordingStepOutcomeHandler();
     $pendingCorrelations = expiryRegistry($expired);
 
-    $outputExtractor = \Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = \Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
     $engine = \Mockery::mock(EvaluationEngineInterface::class);
     $engine->shouldReceive('evaluateSuccessCriteria')->andReturn(true);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Engine\Execution;
 
 use cebe\openapi\spec\Reference;
 use cebe\openapi\spec\Schema;

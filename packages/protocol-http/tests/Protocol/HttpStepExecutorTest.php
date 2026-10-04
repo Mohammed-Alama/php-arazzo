@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Execution;
+namespace Alama\Arazzo\Tests\Protocol\Http\Protocol;
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -28,11 +29,10 @@ use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
@@ -173,14 +173,28 @@ function httpStepExecutorDocument(): ArazzoDocument
 }
 
 it('supports a step with no action set', function (): void {
-    $executor = new HttpStepExecutor(new HttpStepExecutorMockOpenApiExecutor(new Response(200)), createMockDocumentResolver(), new HttpStepExecutorMockEngine(), Mockery::mock(StepOutputExtractor::class), Mockery::mock(ResponseValidatorInterface::class));
+    $executor = new HttpStepExecutor(
+        new HttpStepExecutorMockOpenApiExecutor(new Response(200)),
+        createMockDocumentResolver(),
+        new HttpStepExecutorMockEngine(),
+        new ExpressionEngine(), // inspector
+        Mockery::mock(OutputExtractorInterface::class),
+        Mockery::mock(ResponseValidatorInterface::class),
+    );
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
 
     expect($executor->supports($step, httpStepExecutorDocument()))->toBeTrue();
 });
 
 it('does not support a step with an action set', function (): void {
-    $executor = new HttpStepExecutor(new HttpStepExecutorMockOpenApiExecutor(new Response(200)), createMockDocumentResolver(), new HttpStepExecutorMockEngine(), Mockery::mock(StepOutputExtractor::class), Mockery::mock(ResponseValidatorInterface::class));
+    $executor = new HttpStepExecutor(
+        new HttpStepExecutorMockOpenApiExecutor(new Response(200)),
+        createMockDocumentResolver(),
+        new HttpStepExecutorMockEngine(),
+        new ExpressionEngine(), // inspector
+        Mockery::mock(OutputExtractorInterface::class),
+        Mockery::mock(ResponseValidatorInterface::class),
+    );
     $step = new Step('s1', null, new StepTarget(action: 'send'), new StepFlow(), new StepIo());
 
     expect($executor->supports($step, httpStepExecutorDocument()))->toBeFalse();
@@ -189,11 +203,18 @@ it('does not support a step with an action set', function (): void {
 it('executes the request and returns a resolved outcome with statusCode/outputs/body', function (): void {
     $response = new Response(201, [], json_encode(['id' => 42]));
     $openApiExecutor = new HttpStepExecutorMockOpenApiExecutor($response);
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->andReturnUsing(function (Step $step, WorkflowContextInterface $context): array {
         return ['echoedBody' => $context->getSteps()[$step->stepId]['response']['body'] ?? null];
     });
-    $executor = new HttpStepExecutor($openApiExecutor, createMockDocumentResolver(), new HttpStepExecutorMockEngine(), $outputExtractor, Mockery::mock(ResponseValidatorInterface::class));
+    $executor = new HttpStepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new HttpStepExecutorMockEngine(),
+        new ExpressionEngine(), // inspector
+        $outputExtractor,
+        Mockery::mock(ResponseValidatorInterface::class),
+    );
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $context = new WorkflowContext('def_1', [], [], [], 'wf_1', 'exec_1');
@@ -210,13 +231,20 @@ it('stores the response on the context before calling extractOutputs, fixing the
     $response = new Response(200, [], json_encode(['x' => 1]));
     $openApiExecutor = new HttpStepExecutorMockOpenApiExecutor($response);
     $lastContext = null;
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->andReturnUsing(function (Step $step, WorkflowContextInterface $context) use (&$lastContext): array {
         $lastContext = $context;
 
         return [];
     });
-    $executor = new HttpStepExecutor($openApiExecutor, createMockDocumentResolver(), new HttpStepExecutorMockEngine(), $outputExtractor, Mockery::mock(ResponseValidatorInterface::class));
+    $executor = new HttpStepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new HttpStepExecutorMockEngine(),
+        new ExpressionEngine(), // inspector
+        $outputExtractor,
+        Mockery::mock(ResponseValidatorInterface::class),
+    );
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $context = new WorkflowContext('def_1');
@@ -231,7 +259,7 @@ it('validates response schema and fails fast on failure', function (): void {
     $validator->shouldReceive('validateResponseSchema')->once()->andThrow(
         new SchemaValidationException('sync-step', [['path' => '/', 'message' => 'bad schema']]),
     );
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->never();
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
@@ -243,7 +271,15 @@ it('validates response schema and fails fast on failure', function (): void {
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new HttpStepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator, true); // strict default
+    $executor = new HttpStepExecutor(
+        $openApiExecutor,
+        createMockDocumentResolver(),
+        new EvaluationEngine(expression: new ExpressionEngine()),
+        new ExpressionEngine(), // inspector
+        $outputExtractor,
+        $validator,
+        true, // strict default
+    );
     $step = StepFactory::http(
         stepId: 'sync-step',
         description: null,

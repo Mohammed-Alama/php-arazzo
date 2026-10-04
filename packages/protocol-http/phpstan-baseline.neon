@@ -14,3 +14,9 @@ parameters:
 			message: '#^Method resolve has too high cyclomatic complexity \(37\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Normalizer/OpenApiOperationResolver.php
+
+		-
+			message: '#^Property Alama\\Arazzo\\Protocol\\Http\\Execution\\DefaultOpenApiExecutor::\$logger is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Execution/DefaultOpenApiExecutor.php

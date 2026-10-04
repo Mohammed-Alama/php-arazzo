@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Laravel\Bindings;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
@@ -19,7 +20,6 @@ use Alama\Arazzo\Laravel\State\RedisHotStateStore;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;

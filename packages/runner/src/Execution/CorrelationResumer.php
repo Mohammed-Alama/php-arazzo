@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
@@ -14,7 +16,6 @@ use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\CorrelationResumedEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -30,7 +31,7 @@ class CorrelationResumer
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private StateStoreInterface $stateStore,
         private DefinitionRegistryInterface $definitionRegistry,
-        private StepOutputExtractor $outputExtractor,
+        private OutputExtractorInterface $outputExtractor,
         private EvaluationEngineInterface $evaluationEngine,
         private StepOutcomeHandler $outcomeHandler,
         private EventLedgerInterface $eventLedger,

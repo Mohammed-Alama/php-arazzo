@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Protocol\Http\Execution;
 
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Engine\Execution\TypeCaster;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
@@ -25,7 +27,7 @@ use Psr\Log\LoggerInterface;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-class StepOutputExtractor
+class StepOutputExtractor implements OutputExtractorInterface
 {
     private readonly ExpressionEngineInterface $inspector;
 

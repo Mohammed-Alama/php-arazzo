@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Protocol;
+namespace Alama\Arazzo\Protocol\Http\Protocol;
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
@@ -13,11 +14,10 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
+use Alama\Arazzo\Engine\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
-use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use JsonException;
 use LogicException;
 use Psr\Http\Message\RequestFactoryInterface;

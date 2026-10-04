@@ -6,13 +6,14 @@ namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -26,6 +27,7 @@ use Psr\Log\LoggerInterface;
  */
 final readonly class AsyncGraphSeams
 {
+    /** @phpstan-ignore-next-line */
     public function __construct(
         public StateStoreInterface $stateStore,
         public QueueDriverInterface $queueDriver,
@@ -36,6 +38,7 @@ final readonly class AsyncGraphSeams
         public LockManagerInterface $lockManager,
         public HttpClientInterface $httpClient,
         public ?OpenApiExecutorInterface $openApiExecutor = null,
+        public ?OutputExtractorInterface $outputExtractor = null,
         public ?ResponseValidatorInterface $schemaValidator = null,
         public ?RequestFactoryInterface $requestFactory = null,
         public ?LoggerInterface $logger = null,

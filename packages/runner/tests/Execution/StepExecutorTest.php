@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -15,14 +16,13 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
+use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Execution\IdempotencyKeyInjector;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
@@ -65,7 +65,7 @@ it('validates response schema if configured globally or locally', function (): v
     $validator->shouldReceive('validateResponseSchema')->once()->andThrow(
         new SchemaValidationException('test-step', [['path' => '/', 'message' => 'bad schema']]),
     );
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->never();
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
@@ -91,7 +91,7 @@ it('validates response schema if configured globally or locally', function (): v
 it('skips validation if configured off globally and locally', function (): void {
     $validator = Mockery::mock(ResponseValidatorInterface::class);
     $validator->shouldReceive('validateResponseSchema')->never();
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->once()->andReturn([]);
 
     $openApiExecutor = Mockery::mock(OpenApiExecutorInterface::class);
@@ -111,7 +111,7 @@ it('skips validation if configured off globally and locally', function (): void 
 });
 
 it('injects the Idempotency-Key header into the request when the injector is enabled', function (): void {
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
 
     $capturedRequest = null;
@@ -144,7 +144,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
 });
 
 it('does not inject a header when no injector is passed', function (): void {
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
 
     $capturedRequest = null;
@@ -167,7 +167,7 @@ it('does not inject a header when no injector is passed', function (): void {
 });
 
 it('does not inject a header on non-mutating verbs even when the injector is enabled', function (): void {
-    $outputExtractor = Mockery::mock(StepOutputExtractor::class);
+    $outputExtractor = Mockery::mock(OutputExtractorInterface::class);
     $outputExtractor->shouldReceive('extractOutputs')->andReturn([]);
 
     $capturedRequest = null;

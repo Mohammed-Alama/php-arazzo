@@ -19,26 +19,26 @@ Regenerated before every commit.
 | **ConditionSyntaxException** | `ConditionEvaluator` <small>evaluation:Condition</small>, `Lexer` <small>evaluation:Condition</small>, `Parser` <small>evaluation:Condition</small> |
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
+| **ExecutionException** | `AsyncExecutionGraphAssembler` <small>runner:Execution</small>, `ExecutionGraphFactory` <small>runner:Execution</small> |
 | **ExpressionSyntaxException** | `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Execution</small> |
-| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `TypeCaster` <small>runner:Execution</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
-| **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `AsyncApiStepExecutor` <small>runner:Protocol</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
+| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `TypeCaster` <small>engine:Execution</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
+| **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
 | **PreflightFailureException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
-| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>runner:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small> |
-| **SchemaValidationException** | `ResponseSchemaValidator` <small>runner:Execution</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>engine:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>sources:Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **UnresolvableReferenceException** | `SourceRegistry` <small>sources:Resolver</small> |
-| **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>runner:Execution</small> |
+| **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>engine:Execution</small> |
 | **WorkflowCycleException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **WorkflowDepthExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **ArazzoException** | _(never raised in src)_ |
-| **ExecutionException** | _(never raised in src)_ |
 | **LoaderException** | _(never raised in src)_ |
 | **NotImplementedException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
+| **SchemaValidationException** | _(never raised in src)_ |
 | **SourceResolutionException** | _(never raised in src)_ |
 | **UnsupportedSourceVersionException** | _(never raised in src)_ |
 
@@ -49,9 +49,7 @@ Regenerated before every commit.
 | `ClientExceptionInterface` | `HttpFetcher` |  |
 | `DecodeException` | `Loader` |  |
 | `ExpressionSyntaxException` | `Parser` |  |
-| `InvalidArgumentException` | `StepOutputExtractor` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
-| `JsonException` | `AsyncApiStepExecutor` |  |
 | `LoaderException` | `ValidateCommand` |  |
 | `ParseException` | `SymfonyYamlDecoder` |  |
 | `ParserException` | `ValidateCommand` |  |
@@ -62,7 +60,6 @@ Regenerated before every commit.
 | `Throwable` | `StepExecutionWorker` |  |
 | `Throwable` | `StepExecutor` |  |
 | `Throwable` | `WorkflowExecutor` |  |
-| `Throwable` | `HttpStepExecutor` |  |
 | `Throwable` | `DefaultSourceResolver` |  |
 | `Throwable` | `PreflightValidator` |  |
 

@@ -9,7 +9,11 @@ use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @internal stays out of the advertised contract; not part of the public API surface
+ * @deprecated relocated to
+ * Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface
+ * in arazzo-protocol-http (Phase F1). Keep this FQCN as a BC alias.
+ *
+ * @internal BC alias; register arazzo-protocol-http to obtain the canonical type.
  */
 interface OpenApiExecutorInterface
 {

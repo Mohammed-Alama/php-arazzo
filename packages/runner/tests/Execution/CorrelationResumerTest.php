@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Step;
@@ -14,9 +16,7 @@ use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
 require_once __DIR__.'/ResumerTestHelpers.php';
@@ -164,7 +164,7 @@ it('does nothing when the correlation is not found', function (): void {
         $pendingCorrelations,
         new ResumerMockStateStore(),
         new RecordingDefinitionRegistry(),
-        \Mockery::mock(StepOutputExtractor::class),
+        \Mockery::mock(OutputExtractorInterface::class),
         \Mockery::mock(EvaluationEngineInterface::class),
         $outcomeHandler,
         $eventLedger,
@@ -190,7 +190,7 @@ it('logs and does nothing when persisted state is missing', function (): void {
         $pendingCorrelations,
         new ResumerMockStateStore(),
         new RecordingDefinitionRegistry(),
-        \Mockery::mock(StepOutputExtractor::class),
+        \Mockery::mock(OutputExtractorInterface::class),
         \Mockery::mock(EvaluationEngineInterface::class),
         $outcomeHandler,
         $eventLedger,

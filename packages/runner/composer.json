@@ -12,6 +12,7 @@
         "alama/arazzo-events": "@dev",
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",
+        "alama/arazzo-engine": "@dev",
         "guzzlehttp/guzzle": "^7.9",
         "open-telemetry/api": "^1.0",
         "open-telemetry/sdk": "^1.0",

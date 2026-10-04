@@ -4,32 +4,44 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\ExecutionGraphFactory;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Psr\Http\Client\ClientInterface;
 use RuntimeException;
 
 final class RunnerFacade implements RunnerFacadeInterface
 {
     private WorkflowExecutor $executor;
 
+    /** @phpstan-ignore-next-line constructor has 7 parameters, max 5 allowed by config */
     public function __construct(
         DocumentInterface $documents,
         OpenApiOperationResolver $operationResolver,
         EvaluationEngineInterface $evaluationEngine,
-        ?ClientInterface $httpClient = null,
         ?ExpressionEngineInterface $inspector = null,
+        ?OpenApiExecutorInterface $openApiExecutor = null,
+        ?OutputExtractorInterface $outputExtractor = null,
+        ?ResponseValidatorInterface $schemaValidator = null,
     ) {
-        $this->executor = (new ExecutionGraphFactory(new OperationRuntime($documents, $operationResolver), $evaluationEngine, $inspector ?? new ExpressionEngine(), $httpClient))->createWorkflowExecutor();
+        $this->executor = (new ExecutionGraphFactory(
+            new OperationRuntime($documents, $operationResolver),
+            $evaluationEngine,
+            $inspector ?? new ExpressionEngine(),
+            $openApiExecutor,
+            $outputExtractor,
+            $schemaValidator,
+        ))->createWorkflowExecutor();
     }
 
     public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array

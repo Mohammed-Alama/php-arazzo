@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Execution;
 
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
+use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
+use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
-use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
-use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\HttpFactory;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
 
 /**
  * Assembles the async/queue execution graph. Every node is constructed
@@ -29,19 +27,18 @@ final class AsyncExecutionGraphAssembler
     public function __construct(
         private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $evaluationEngine,
+        /** @phpstan-ignore property.onlyWritten */
         private readonly ExpressionEngineInterface $inspector,
-        private readonly ?ClientInterface $httpClient = null,
-        private readonly ?RequestFactoryInterface $requestFactory = null,
     ) {}
 
     public function assemble(AsyncGraphSeams $seams): AsyncExecutionGraph
     {
-        $client = $this->httpClient ?? new Client();
-        $factory = $this->requestFactory ?? new HttpFactory();
-
-        $openApiExecutor = $seams->openApiExecutor ?? new DefaultOpenApiExecutor($client, $factory, $seams->logger);
-        $outputExtractor = new StepOutputExtractor($this->operations->resolver, $this->evaluationEngine, $this->inspector);
-        $schemaValidator = $seams->schemaValidator ?? new ResponseSchemaValidator($this->operations->resolver);
+        $openApiExecutor = $seams->openApiExecutor
+            ?? throw new ExecutionException('No HTTP/OpenAPI executor configured; register alama/arazzo-protocol-http (Phase F1).');
+        $outputExtractor = $seams->outputExtractor
+            ?? throw new ExecutionException('No output extractor configured; register alama/arazzo-protocol-http (Phase F1).');
+        $schemaValidator = $seams->schemaValidator
+            ?? throw new ExecutionException('No response validator configured; register alama/arazzo-protocol-http (Phase F1).');
 
         $workflowEngine = new WorkflowEngine(
             $this->evaluationEngine,
@@ -68,6 +65,7 @@ final class AsyncExecutionGraphAssembler
             $openApiExecutor,
             $this->operations->resolver,
             $this->evaluationEngine,
+            $this->inspector,
             $outputExtractor,
             $schemaValidator,
             strictValidationDefault: $seams->strictValidation,
@@ -104,14 +102,12 @@ final class AsyncExecutionGraphAssembler
             $seams->stateTtlSeconds,
         );
 
-        $asyncRequestFactory = $seams->requestFactory ?? new HttpFactory();
+        $asyncRequestFactory = $seams->requestFactory ?? throw new ExecutionException('No PSR-17 request factory configured; register alama/arazzo-protocol-http (Phase F1).');
         $asyncExecutor = new AsyncApiStepExecutor(
             $seams->pendingCorrelationRegistry,
             $this->evaluationEngine,
             $seams->httpClient,
             $asyncRequestFactory,
-            new HttpFactory(),
-            new HttpFactory(),
         );
 
         $resumer = new CorrelationResumer(

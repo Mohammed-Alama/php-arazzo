@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Dependency\DependencyAnalyzer;
 use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
@@ -32,7 +33,6 @@ use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
