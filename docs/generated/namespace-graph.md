@@ -21,20 +21,24 @@ flowchart LR
     document_Parser["Alama\Arazzo\Document\Parser"]:::coreNode
     document_Validator["Alama\Arazzo\Document\Validator\Rules"]:::coreNode
     document__["(document package root)"]:::coreNode
+    engine_Data["Alama\Arazzo\Engine\Data"]:::coreNode
+    engine_Enum["Alama\Arazzo\Engine\Enum"]:::coreNode
+    engine__["(engine package root)"]:::coreNode
     evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
-    evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
     evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
-    evaluation_Exceptions["Alama\Arazzo\Evaluation\Exceptions"]:::coreNode
     evaluation_Interfaces["Alama\Arazzo\Evaluation\Interfaces"]:::coreNode
     evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
     evaluation_Registries["Alama\Arazzo\Evaluation\Registries"]:::coreNode
-    evaluation_Xpath["Alama\Arazzo\Evaluation\Xpath"]:::coreNode
     evaluation__["(evaluation package root)"]:::coreNode
+    events_Interfaces["Alama\Arazzo\Events\Interfaces"]:::coreNode
+    events_Listener["Alama\Arazzo\Events\Listener"]:::coreNode
+    events__["(events package root)"]:::coreNode
     expression_Ast["Alama\Arazzo\Expression\Ast"]:::coreNode
     expression_Data["Alama\Arazzo\Expression\Data"]:::coreNode
     expression_Enum["Alama\Arazzo\Expression\Enum"]:::coreNode
     expression_Exceptions["Alama\Arazzo\Expression\Exceptions"]:::coreNode
     expression_Interfaces["Alama\Arazzo\Expression\Interfaces"]:::coreNode
+    expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
     laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
     laravel_Http["Alama\Arazzo\Laravel\Http\Controllers"]:::laravelNode
@@ -44,16 +48,14 @@ flowchart LR
     laravel_State["Alama\Arazzo\Laravel\State"]:::laravelNode
     laravel_Support["Alama\Arazzo\Laravel\Support"]:::laravelNode
     laravel__["(laravel package root)"]:::laravelNode
-    runner_Async["Alama\Arazzo\Runner\Async"]:::coreNode
-    runner_Events["Alama\Arazzo\Runner\Events"]:::coreNode
     runner_Execution["Alama\Arazzo\Runner\Execution"]:::coreNode
-    runner_Infrastructure["Alama\Arazzo\Runner\Infrastructure"]:::coreNode
     runner_Jobs["Alama\Arazzo\Runner\Jobs"]:::coreNode
-    runner_Policy["Alama\Arazzo\Runner\Policy"]:::coreNode
     runner_Protocol["Alama\Arazzo\Runner\Protocol"]:::coreNode
-    runner_State["Alama\Arazzo\Runner\State\Interfaces"]:::coreNode
-    runner_Telemetry["Alama\Arazzo\Runner\Telemetry"]:::coreNode
     runner__["(runner package root)"]:::coreNode
+    runtime_Infrastructure["Alama\Arazzo\Runtime\Infrastructure"]:::coreNode
+    runtime_Policy["Alama\Arazzo\Runtime\Policy"]:::coreNode
+    runtime_State["Alama\Arazzo\Runtime\State\Interfaces"]:::coreNode
+    runtime_Telemetry["Alama\Arazzo\Runtime\Telemetry"]:::coreNode
     sources_Normalizer["Alama\Arazzo\Sources\Normalizer"]:::coreNode
     sources_Resolver["Alama\Arazzo\Sources\Resolver\Exceptions"]:::coreNode
     sources_Validator["Alama\Arazzo\Sources\Validator"]:::coreNode
@@ -68,42 +70,42 @@ flowchart LR
     expression_Ast --> expression_Data
     expression_Ast --> expression_Enum
     expression_Data --> expression_Enum
+    expression_Data --> contracts_Spec
+    expression_Data --> expression_Interfaces
     expression_Exceptions --> contracts_Support
+    expression_Interfaces --> contracts_Spec
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
+    expression_Xpath --> contracts_Spec
+    expression_Xpath --> expression_Exceptions
+    expression__ --> contracts_Spec
     expression__ --> expression_Data
     expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
+    expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
     evaluation_Condition --> evaluation_Enum
     evaluation_Condition --> contracts_Spec
     evaluation_Condition --> evaluation_Interfaces
     evaluation_Condition --> contracts_Support
-    evaluation_Condition --> evaluation_Data
-    evaluation_Data --> contracts_Spec
-    evaluation_Data --> evaluation_Interfaces
-    evaluation_Exceptions --> contracts_Support
+    evaluation_Condition --> expression_Data
+    evaluation_Condition --> expression_Interfaces
     evaluation_Interfaces --> contracts_Spec
     evaluation_Plugins --> contracts_Interfaces
     evaluation_Plugins --> contracts_Spec
-    evaluation_Plugins --> evaluation__
+    evaluation_Plugins --> expression_Interfaces
     evaluation_Registries --> contracts_Interfaces
     evaluation_Registries --> contracts_Spec
     evaluation_Registries --> evaluation_Plugins
-    evaluation_Xpath --> contracts_Spec
-    evaluation_Xpath --> evaluation_Exceptions
+    evaluation_Registries --> expression_Interfaces
     evaluation__ --> contracts_Spec
     evaluation__ --> contracts_State
-    evaluation__ --> evaluation_Xpath
-    evaluation__ --> evaluation_Interfaces
-    evaluation__ --> expression_Ast
-    evaluation__ --> expression__
-    evaluation__ --> contracts_Interfaces
-    evaluation__ --> evaluation_Data
+    evaluation__ --> expression_Interfaces
     evaluation__ --> evaluation_Condition
+    evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
-    evaluation__ --> evaluation_Exceptions
+    evaluation__ --> expression_Data
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec
@@ -138,136 +140,129 @@ flowchart LR
     sources__ --> sources_Validator
     sources__ --> document_Parser
     sources__ --> expression__
-    runner_Async --> contracts_Spec
-    runner_Async --> contracts_State
-    runner_Async --> evaluation_Interfaces
-    runner_Async --> runner_Events
-    runner_Async --> runner_State
-    runner_Async --> contracts_Exceptions
-    runner_Async --> contracts_Support
-    runner_Async --> document_Validator
-    runner_Async --> document__
-    runner_Async --> contracts_Interfaces
-    runner_Async --> runner_Execution
-    runner_Async --> runner_Jobs
-    runner_Events --> contracts_Support
+    runtime_Infrastructure --> contracts_Interfaces
+    runtime_Policy --> contracts_Interfaces
+    runtime_Policy --> contracts_Spec
+    runtime_Policy --> contracts_State
+    runtime_State --> contracts_Interfaces
+    runtime_State --> contracts_Spec
+    runtime_State --> contracts_State
+    engine_Data --> contracts_Spec
+    engine_Data --> engine_Enum
+    engine_Data --> contracts_State
+    engine__ --> contracts_Spec
+    engine__ --> contracts_State
+    engine__ --> engine_Data
+    events_Listener --> contracts_Support
+    events_Listener --> events__
+    events_Listener --> events_Interfaces
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
-    runner_Execution --> runner_State
+    runner_Execution --> runtime_State
     runner_Execution --> contracts_State
     runner_Execution --> evaluation__
+    runner_Execution --> expression_Data
     runner_Execution --> contracts_Exceptions
     runner_Execution --> contracts_Interfaces
     runner_Execution --> contracts_Support
     runner_Execution --> document_Validator
-    runner_Execution --> evaluation_Interfaces
-    runner_Execution --> runner_Events
+    runner_Execution --> events__
+    runner_Execution --> events_Interfaces
     runner_Execution --> runner_Jobs
-    runner_Execution --> runner_Telemetry
+    runner_Execution --> runtime_Telemetry
     runner_Execution --> contracts_Dependency
-    runner_Execution --> runner_Policy
+    runner_Execution --> runtime_Policy
     runner_Execution --> document_Parser
     runner_Execution --> expression_Enum
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
     runner_Execution --> runner_Protocol
-    runner_Infrastructure --> contracts_Interfaces
     runner_Jobs --> contracts_Spec
     runner_Jobs --> contracts_State
-    runner_Policy --> contracts_Interfaces
-    runner_Policy --> contracts_Spec
-    runner_Policy --> contracts_State
     runner_Protocol --> contracts_Interfaces
     runner_Protocol --> contracts_Spec
     runner_Protocol --> contracts_State
     runner_Protocol --> evaluation__
-    runner_Protocol --> evaluation_Interfaces
     runner_Protocol --> runner_Execution
     runner_Protocol --> sources_Normalizer
-    runner_Protocol --> contracts_Dependency
-    runner_Protocol --> runner_Infrastructure
-    runner_Protocol --> runner_State
-    runner_State --> contracts_Spec
-    runner_State --> contracts_State
+    runner_Protocol --> expression_Data
+    runner_Protocol --> runtime_State
     runner__ --> contracts_Interfaces
-    runner__ --> evaluation_Interfaces
     runner__ --> runner_Execution
-    runner__ --> runner_Events
-    runner__ --> runner_Infrastructure
-    runner__ --> runner_State
+    runner__ --> contracts_Spec
+    runner__ --> events_Interfaces
+    runner__ --> runtime_State
+    runner__ --> contracts_Exceptions
     runner__ --> evaluation__
     runner__ --> expression_Interfaces
-    runner__ --> contracts_Spec
+    runner__ --> contracts_State
+    runner__ --> engine__
     runner__ --> document__
     runner__ --> expression__
     runner__ --> sources_Normalizer
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
-    cli_Console --> evaluation_Interfaces
-    cli_Console --> runner_Events
+    cli_Console --> evaluation__
+    cli_Console --> events_Interfaces
     cli_Console --> runner_Execution
     cli_Console --> runner_Jobs
-    cli_Console --> runner_State
-    cli_Console --> runner_Telemetry
+    cli_Console --> runtime_State
+    cli_Console --> runtime_Telemetry
     cli_Console --> document_Parser
     cli_Console --> document_Validator
     cli_Console --> expression__
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
-    cli_Console --> evaluation__
     cli_Console --> runner__
     cli_Console --> sources_Resolver
     cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
+    laravel_Bindings --> evaluation__
     laravel_Bindings --> laravel_Support
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Execution
-    laravel_Bindings --> laravel_Http
-    laravel_Bindings --> runner_Infrastructure
-    laravel_Bindings --> contracts_Support
-    laravel_Bindings --> runner_Events
     laravel_Bindings --> contracts_Interfaces
+    laravel_Bindings --> laravel_Http
+    laravel_Bindings --> contracts_Support
+    laravel_Bindings --> events_Interfaces
+    laravel_Bindings --> events_Listener
     laravel_Bindings --> document_Parser
     laravel_Bindings --> laravel_Lock
     laravel_Bindings --> laravel_Persistence
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
-    laravel_Bindings --> runner_State
+    laravel_Bindings --> runtime_State
     laravel_Bindings --> sources_Normalizer
     laravel_Bindings --> sources_Resolver
     laravel_Bindings --> sources_Validator
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
-    laravel_Bindings --> evaluation__
     laravel_Bindings --> expression__
     laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> sources__
-    laravel_Http --> runner_Infrastructure
+    laravel_Http --> contracts_Interfaces
     laravel_Http --> cli_Generator
     laravel_Http --> contracts_Spec
     laravel_Http --> sources_Resolver
-    laravel_Http --> contracts_Interfaces
     laravel_Http --> runner_Jobs
-    laravel_Http --> runner_State
+    laravel_Http --> runtime_State
     laravel_Lock --> contracts_Interfaces
     laravel_Persistence --> contracts_Spec
-    laravel_Persistence --> runner_State
-    laravel_Persistence --> runner_Events
+    laravel_Persistence --> runtime_State
+    laravel_Persistence --> events_Interfaces
     laravel_Persistence --> document_Parser
     laravel_Queue --> contracts_Interfaces
     laravel_Queue --> runner_Jobs
     laravel_Queue --> runner_Execution
-    laravel_State --> runner_State
+    laravel_State --> runtime_State
     laravel_Support --> contracts_Interfaces
-    laravel_Support --> evaluation_Interfaces
+    laravel_Support --> events_Interfaces
     laravel_Support --> runner__
-    laravel_Support --> runner_Events
     laravel_Support --> runner_Execution
-    laravel_Support --> runner_Infrastructure
-    laravel_Support --> runner_State
+    laravel_Support --> runtime_State
     laravel__ --> laravel_Bindings
     laravel__ --> laravel_Http
     laravel__ --> laravel_Support

@@ -10,19 +10,19 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
-use Alama\Arazzo\Runner\State\Interfaces\WritableDefinitionRegistryInterface;
-use Alama\Arazzo\Runner\Telemetry\OtelSetup;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\WritableDefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\Telemetry\OtelSetup;
 use OpenTelemetry\API\Trace\SpanInterface;
 use RuntimeException;
 
@@ -50,7 +50,7 @@ final class CliRunner
      * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
      */
     public function __construct(
-        private readonly ExpressionResolverInterface $expressions,
+        private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly StateStoreInterface $stateStore,
         private readonly DefinitionRegistryInterface $definitions,
         private readonly ExecutionRegistryInterface $registry = new InProcessExecutionRegistry(),
@@ -176,9 +176,9 @@ final class CliRunner
             new RunPersistence($this->stateStore, $this->eventLedger, $this->registry),
             $this->locks,
             $this->definitions,
-            $this->expressions,
+            $this->evaluationEngine,
             $this->protocolExecutors,
-            new RunControlFlow(new WorkflowEngine($this->expressions), $this->queue),
+            new RunControlFlow(new WorkflowEngine($this->evaluationEngine), $this->queue),
         );
 
         $processed = 0;

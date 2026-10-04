@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\State;
 
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 
 /**
@@ -36,5 +36,10 @@ class RedisHotStateStore implements StateStoreInterface
         $data = $this->redis->connection()->get($this->prefix.$executionId);
 
         return $data ? json_decode($data, true) : null;
+    }
+
+    public function delete(string $executionId): void
+    {
+        $this->redis->connection()->del($this->prefix.$executionId);
     }
 }

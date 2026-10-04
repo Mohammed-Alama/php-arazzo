@@ -16,7 +16,7 @@ Evans' first question: does the code speak one language?
 ### run vs execute vs invoke
 
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
-- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 8 more (12 types)
+- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
 - **Run**: `CliRunResult`, `CliRunner`, `OperationRuntime`, `RunCommand` + 13 more (17 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
@@ -36,24 +36,24 @@ Evans' first question: does the code speak one language?
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `ExecutionExpressionResolver`, `ExpressionResolver` + 9 more (13 types)
+- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolver` + 4 more (8 types)
 
 ### state vs status
 
-- **State**: `ExecutionState`, `ExecutionStateBuilder`, `FileStateStore`, `InMemoryStateStore` + 5 more (9 types)
+- **State**: `ExecutionState`, `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore` + 5 more (9 types)
 - **Status**: `ExecutionStatus`, `StepStatus` (2 types)
 
 ### registry vs store vs repository
 
 - **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 13 more (17 types)
-- **Repository**: `WorkflowStateRepositoryInterface` (1 types)
-- **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` (4 types)
+- **Repository**: `StoredWorkflowStateRepository`, `WorkflowStateRepositoryInterface` (2 types)
+- **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` + 1 more (5 types)
 
 ### workflow vs process vs flow
 
 - **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry` (1 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 23 more (27 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 24 more (28 types)
 
 ### render vs generate
 
@@ -66,6 +66,7 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
-| `StepResult` | `Runner\Execution\Data\StepResult`<br/>`Runner\State\Data\StepResult` | runner |
+| `StepResult` | `Runtime\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | runtime, runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
 | `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |
+| `Transition` | `Engine\Data\Transition`<br/>`Runner\Execution\Data\Transition` | engine, runner |

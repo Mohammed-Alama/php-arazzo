@@ -12,8 +12,9 @@ const BANNER = <<<'MD'
 
 # Generated: Domain Events
 
-PSR-14 event classes under `Runner/Events` (core) and `Events/` (Laravel), with
-every dispatch site found in the live tree. Regenerated before every commit.
+PSR-14 event classes from the `alama/arazzo-events` package (`Alama\Arazzo\Events`)
+and `Events/` (Laravel), with every dispatch site found in the live tree.
+Regenerated before every commit.
 
 MD;
 
@@ -22,14 +23,19 @@ MD;
  */
 function render(array $scans): string
 {
-    // collect event classes: concrete classes living in an Events/ directory
+    // collect event classes: concrete event DTOs. Since the events package was
+    // split out, the DTOs live flat in `packages/events/src` (module `_`),
+    // while its Listener/ and Interfaces/ subdirs are plumbing, not events.
+    // Laravel keeps its own `Events/` directory, so both shapes are collected.
     $events = [];   // shortName => [fqcn, package]
     foreach (\ArazzoDocs\flattenScans($scans) as $file) {
         if ($file->isInterface) {
             continue;
         }
         $dir = $file->relativeDir;
-        if ($dir !== 'Events' && !str_ends_with($dir, '/Events')) {
+        $inEventsDir = $dir === 'Events' || str_ends_with($dir, '/Events');
+        $isEventDto = $file->package === 'events' && $dir === '';
+        if (!$inEventsDir && !$isEventDto) {
             continue;
         }
         if (str_contains($dir, 'Dispatcher') || str_contains($file->className, 'Dispatcher')) {

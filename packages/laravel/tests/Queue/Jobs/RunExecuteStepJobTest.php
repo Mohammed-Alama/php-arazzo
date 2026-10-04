@@ -20,23 +20,19 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
-
-uses(RefreshDatabase::class);
 
 class RecordingStepExecutionWorker extends StepExecutionWorker
 {
@@ -113,11 +109,6 @@ it('injects idempotency key natively during job execution independently of StepE
     $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     app()->instance(DocumentInterface::class, $documents);
 
-    $resolver = \Mockery::mock(ExpressionResolverInterface::class);
-    $resolver->shouldReceive('extractOutputs')->andReturn([]);
-    $resolver->shouldReceive('evaluateSuccessCriteria')->andReturn(true);
-    app()->instance(ExpressionResolverInterface::class, $resolver);
-
     $registry = \Mockery::mock(DefinitionRegistryInterface::class);
     $registry->shouldReceive('get')->with('def-1')->andReturn($document);
     app()->instance(DefinitionRegistryInterface::class, $registry);
@@ -135,6 +126,11 @@ it('injects idempotency key natively during job execution independently of StepE
         public function load(string $executionId): ?array
         {
             return $this->store[$executionId] ?? null;
+        }
+
+        public function delete(string $executionId): void
+        {
+            unset($this->store[$executionId]);
         }
     });
     app()->forgetInstance(StepExecutionWorker::class);

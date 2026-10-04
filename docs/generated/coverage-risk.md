@@ -23,44 +23,44 @@ quadrantChart
     cli/Console: [1, 1]
     cli/Generator: [0.333, 1]
     cli/Renderer: [0.5, 1]
-    contracts/Dependency: [0.333, 1]
+    contracts/Dependency: [0.4, 1]
     contracts/Exceptions: [0, 1]
-    contracts/Interfaces: [0.13, 1]
-    contracts/Spec: [0.034, 1]
-    contracts/State: [0.091, 1]
+    contracts/Interfaces: [0.136, 1]
+    contracts/Spec: [0.031, 1]
+    contracts/State: [0.077, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
-    document/Validator: [0.455, 1]
-    evaluation/Condition: [0.833, 1]
-    evaluation/Data: [0.5, 1]
+    document/Validator: [0.5, 1]
+    engine/Data: [0.75, 1]
+    engine/Enum: [0, 1]
+    evaluation/Condition: [0.857, 1]
     evaluation/Enum: [0, 0.333]
-    evaluation/Exceptions: [0.333, 1]
-    evaluation/Interfaces: [0.1, 1]
+    evaluation/Interfaces: [0.333, 0]
     evaluation/Plugins: [0.75, 0]
-    evaluation/Registries: [0.75, 0]
-    evaluation/Xpath: [0.667, 1]
-    expression/Ast: [0.5, 0.333]
-    expression/Data: [0.25, 1]
+    evaluation/Registries: [0.8, 0]
+    events/Interfaces: [0, 1]
+    events/Listener: [0.75, 1]
+    expression/Ast: [0.667, 0.333]
+    expression/Data: [0.3, 1]
     expression/Enum: [0, 1]
-    expression/Exceptions: [0.333, 1]
-    expression/Interfaces: [0.25, 1]
+    expression/Exceptions: [0.25, 1]
+    expression/Interfaces: [0.214, 1]
+    expression/Xpath: [0.667, 0.5]
     laravel/Bindings: [0.958, 0.857]
     laravel/Events: [0, 1]
-    laravel/Http: [0.778, 1]
+    laravel/Http: [0.75, 1]
     laravel/Lock: [0.5, 1]
     laravel/Persistence: [0.8, 1]
     laravel/Queue: [0.75, 1]
     laravel/State: [0.5, 1]
-    laravel/Support: [0.778, 0.5]
-    runner/Async: [1, 1]
-    runner/Events: [0.125, 1]
-    runner/Execution: [0.75, 1]
-    runner/Infrastructure: [0.167, 1]
-    runner/Jobs: [0.286, 1]
-    runner/Policy: [0.75, 1]
-    runner/Protocol: [0.909, 1]
-    runner/State: [0.167, 1]
-    runner/Telemetry: [0, 1]
+    laravel/Support: [0.714, 0.5]
+    runner/Execution: [0.786, 1]
+    runner/Jobs: [0.333, 1]
+    runner/Protocol: [0.889, 1]
+    runtime/Infrastructure: [1, 0.667]
+    runtime/Policy: [0.75, 1]
+    runtime/State: [0.25, 1]
+    runtime/Telemetry: [0, 1]
     sources/Normalizer: [0.417, 1]
     sources/Resolver: [0.333, 1]
     sources/Validator: [0.571, 1]
@@ -71,46 +71,46 @@ quadrantChart
 | `cli/Console` | 1.00 | 11 | 11 | 100% |
 | `cli/Generator` | 0.33 | 5 | 2 | 100% |
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
-| `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
-| `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.13 | 22 | 17 | 100% |
-| `contracts/Spec` | 0.03 | 188 | 49 | 100% |
-| `contracts/State` | 0.09 | 53 | 2 | 100% |
-| `contracts/Support` | 0.00 | 18 | 5 | 100% |
-| `document/Parser` | 0.22 | 36 | 11 | 100% |
-| `document/Validator` | 0.46 | 76 | 68 | 100% |
-| `evaluation/Condition` | 0.83 | 44 | 10 | 100% |
-| `evaluation/Data` | 0.50 | 2 | 1 | 100% |
+| `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
+| `contracts/Exceptions` | 0.00 | 4 | 1 | 100% |
+| `contracts/Interfaces` | 0.14 | 32 | 17 | 100% |
+| `contracts/Spec` | 0.03 | 197 | 49 | 100% |
+| `contracts/State` | 0.08 | 55 | 2 | 100% |
+| `contracts/Support` | 0.00 | 11 | 5 | 100% |
+| `document/Parser` | 0.22 | 35 | 11 | 100% |
+| `document/Validator` | 0.50 | 74 | 68 | 100% |
+| `engine/Data` | 0.75 | 3 | 2 | 100% |
+| `engine/Enum` | 0.00 | 1 | 1 | 100% |
+| `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
-| `evaluation/Exceptions` | 0.33 | 1 | 1 | 100% |
-| `evaluation/Interfaces` | 0.10 | 23 | 5 | 100% |
+| `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
-| `evaluation/Registries` | 0.75 | 0 | 2 | 0% |
-| `evaluation/Xpath` | 0.67 | 2 | 2 | 100% |
-| `expression/Ast` | 0.50 | 5 | 15 | 33% |
-| `expression/Data` | 0.25 | 3 | 2 | 100% |
+| `evaluation/Registries` | 0.80 | 0 | 2 | 0% |
+| `events/Interfaces` | 0.00 | 19 | 1 | 100% |
+| `events/Listener` | 0.75 | 3 | 1 | 100% |
+| `expression/Ast` | 0.67 | 5 | 15 | 33% |
+| `expression/Data` | 0.30 | 14 | 4 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
-| `expression/Exceptions` | 0.33 | 5 | 1 | 100% |
-| `expression/Interfaces` | 0.25 | 5 | 1 | 100% |
+| `expression/Exceptions` | 0.25 | 6 | 2 | 100% |
+| `expression/Interfaces` | 0.21 | 14 | 2 | 100% |
+| `expression/Xpath` | 0.67 | 1 | 2 | 50% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
-| `laravel/Http` | 0.78 | 4 | 3 | 100% |
+| `laravel/Http` | 0.75 | 4 | 3 | 100% |
 | `laravel/Lock` | 0.50 | 3 | 1 | 100% |
 | `laravel/Persistence` | 0.80 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
-| `laravel/Support` | 0.78 | 1 | 2 | 50% |
-| `runner/Async` | 1.00 | 6 | 6 | 100% |
-| `runner/Events` | 0.12 | 31 | 11 | 100% |
-| `runner/Execution` | 0.75 | 54 | 40 | 100% |
-| `runner/Infrastructure` | 0.17 | 9 | 4 | 100% |
-| `runner/Jobs` | 0.29 | 7 | 2 | 100% |
-| `runner/Policy` | 0.75 | 2 | 2 | 100% |
-| `runner/Protocol` | 0.91 | 11 | 5 | 100% |
-| `runner/State` | 0.17 | 27 | 12 | 100% |
-| `runner/Telemetry` | 0.00 | 2 | 2 | 100% |
+| `laravel/Support` | 0.71 | 1 | 2 | 50% |
+| `runner/Execution` | 0.79 | 52 | 37 | 100% |
+| `runner/Jobs` | 0.33 | 5 | 2 | 100% |
+| `runner/Protocol` | 0.89 | 9 | 3 | 100% |
+| `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |
+| `runtime/Policy` | 0.75 | 2 | 2 | 100% |
+| `runtime/State` | 0.25 | 28 | 13 | 100% |
+| `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
 | `sources/Normalizer` | 0.42 | 16 | 9 | 100% |
-| `sources/Resolver` | 0.33 | 24 | 13 | 100% |
+| `sources/Resolver` | 0.33 | 23 | 13 | 100% |
 | `sources/Validator` | 0.57 | 3 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `evaluation/Plugins`, `evaluation/Registries`
+**Refactor-now list** (untested churn): `evaluation/Registries`, `evaluation/Plugins`

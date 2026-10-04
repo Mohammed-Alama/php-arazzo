@@ -5,12 +5,12 @@ declare(strict_types=1);
 use Alama\Arazzo\Contracts\Dependency\DependencyGraph;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Evaluation\JsonPointer;
+use Alama\Arazzo\Expression\JsonPointer;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Alama\Arazzo\Tests\Support\Fx;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
 
 /**
  * Deterministic property tests: every loop is seeded so failures are
@@ -130,7 +130,7 @@ it('returns acyclic-consistent topological orders for random DAGs and finds cycl
 it('never retries beyond the configured ceiling', function (): void {
     mt_srand(20260827);
 
-    $resolver = new TestExpressionResolver();
+    $resolver = new TestEvaluationEngine();
     $document = Fx::doc([
         Fx::wf('wf', [
             Fx::step('flaky'),

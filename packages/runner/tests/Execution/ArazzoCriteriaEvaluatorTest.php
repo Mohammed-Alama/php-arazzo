@@ -12,10 +12,10 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 beforeEach(function () {
-    $this->evaluator = new CriteriaEvaluator(new ExpressionEvaluator());
+    $this->evaluator = new CriteriaEvaluator(expression: new ExpressionEngine());
 });
 
 it('evaluates success criteria simple regex jsonpath', function () {

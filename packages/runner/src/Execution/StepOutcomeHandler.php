@@ -21,19 +21,19 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Events\RunCompletedEvent;
-use Alama\Arazzo\Runner\Events\RunFailedEvent;
-use Alama\Arazzo\Runner\Events\StepRetriedEvent;
-use Alama\Arazzo\Runner\Execution\Data\ExecutionEvaluationInput;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Events\RunCompletedEvent;
+use Alama\Arazzo\Events\RunFailedEvent;
+use Alama\Arazzo\Events\StepRetriedEvent;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use DateTimeImmutable;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use RuntimeException;
@@ -67,7 +67,7 @@ class StepOutcomeHandler
         RunControlFlow $controlFlow,
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private SubWorkflowInvoker $invoker,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
         private int $stateTtlSeconds = 86400,
     ) {
         $this->queueDriver = $controlFlow->queueDriver;
@@ -88,8 +88,8 @@ class StepOutcomeHandler
     ): void {
         foreach ($step->io->outputs as $name => $value) {
             $resolved = match (true) {
-                $value instanceof Selector => $this->engine->evaluateSelector($value, $context, $step->stepId),
-                $value instanceof Expression => $this->engine->evaluate($value, new ExecutionEvaluationInput($context, $step->stepId)),
+                $value instanceof Selector => $this->evaluationEngine->evaluateSelector($value, $context, $step->stepId),
+                $value instanceof Expression => $this->evaluationEngine->evaluate($value, new EvaluationContext($context, $step->stepId)),
                 default => $value,
             };
             $context = $context->withStepOutput($step->stepId, $name, $resolved);
@@ -280,7 +280,7 @@ class StepOutcomeHandler
             $this->events->dispatch(new RunCompletedEvent(
                 $executionId,
                 $workflow->workflowId,
-                $context->getSteps()[$step->stepId]['outputs'] ?? [],
+                $this->stepOutputs($context, $step->stepId),
                 new DateTimeImmutable(),
             ));
         } else {
@@ -371,5 +371,22 @@ class StepOutcomeHandler
     private function findStep(Workflow $workflow, string $stepId): ?Step
     {
         return array_find($workflow->steps, fn ($step) => $step->stepId === $stepId);
+    }
+
+    /**
+     * Step outputs are a name-to-value map, so the keys are narrowed to
+     * strings before the value reaches the event's typed constructor.
+     *
+     * @return array<string, mixed>
+     */
+    private function stepOutputs(WorkflowContext $context, string $stepId): array
+    {
+        $outputs = $context->getSteps()[$stepId]['outputs'] ?? [];
+
+        if (!is_array($outputs)) {
+            return [];
+        }
+
+        return array_filter($outputs, static fn (mixed $key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
     }
 }

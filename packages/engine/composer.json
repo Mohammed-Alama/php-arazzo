@@ -1,0 +1,35 @@
+{
+    "name": "alama/arazzo-engine",
+    "description": "Arazzo workflow engine - step state machine and workflow transition logic",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-runtime": "@dev"
+    },
+    "require-dev": {
+        "pestphp/pest": "^5.0",
+        "phpstan/phpstan": "^2.0",
+        "alama/arazzo-runner": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alama\\Arazzo\\Engine\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\Engine\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

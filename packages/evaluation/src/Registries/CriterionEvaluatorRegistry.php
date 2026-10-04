@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Interfaces\CriterionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Evaluation\Plugins\JsonPathCriterionPlugin;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * Registry for criterion evaluator plugins.
@@ -21,10 +22,10 @@ final class CriterionEvaluatorRegistry
     /** @var array<int, CriterionEvaluatorPluginInterface> */
     private array $plugins = [];
 
-    public function __construct()
+    public function __construct(ExpressionEngineInterface $expression)
     {
         // Built‑in default plugin (lowest priority)
-        $this->register(new JsonPathCriterionPlugin(), 0);
+        $this->register(new JsonPathCriterionPlugin($expression), 0);
     }
 
     public function register(CriterionEvaluatorPluginInterface $plugin, int $priority = 0): void

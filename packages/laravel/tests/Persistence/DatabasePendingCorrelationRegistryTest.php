@@ -3,10 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function () {
     $this->registry = new DatabasePendingCorrelationRegistry(DB::connection());

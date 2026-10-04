@@ -23,16 +23,21 @@ final class LaravelArazzoServiceProvider extends PackageServiceProvider
 {
     public function register(): void
     {
-        if (class_exists(AliasLoader::class)) {
-            $loader = AliasLoader::getInstance();
-            $loader->alias('Alama\LaravelArazzo\LaravelArazzoServiceProvider', self::class);
-            $loader->alias('Alama\LaravelArazzo\Http\Controllers\ArazzoApiController', ArazzoApiController::class);
-            $loader->alias('Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController', WebhookResumeController::class);
-        } else {
-            // Fallback for non-facade environments (e.g. testing)
+        static $aliasesRegistered = false;
+        if (!$aliasesRegistered) {
+            // Always use class_alias for backward compatibility
             class_alias(self::class, 'Alama\LaravelArazzo\LaravelArazzoServiceProvider');
             class_alias(ArazzoApiController::class, 'Alama\LaravelArazzo\Http\Controllers\ArazzoApiController');
             class_alias(WebhookResumeController::class, 'Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController');
+
+            // Also register with AliasLoader if available
+            if (class_exists(AliasLoader::class)) {
+                $loader = AliasLoader::getInstance();
+                $loader->alias('Alama\LaravelArazzo\LaravelArazzoServiceProvider', self::class);
+                $loader->alias('Alama\LaravelArazzo\Http\Controllers\ArazzoApiController', ArazzoApiController::class);
+                $loader->alias('Alama\LaravelArazzo\Laravel\Http\Controllers\WebhookResumeController', WebhookResumeController::class);
+            }
+            $aliasesRegistered = true;
         }
 
         parent::register();

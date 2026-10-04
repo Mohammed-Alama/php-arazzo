@@ -37,7 +37,7 @@
 ## Global Constraints
 
 - New package namespaces: `Alama\Arazzo\Runtime\...`, `Alama\Arazzo\Events\...`, `Alama\Arazzo\RequestPipeline\...`, `Alama\Arazzo\Engine\...` for extracted code; `Alama\Arazzo\Runner\...` for classes that stay in the runner. All classes `declare(strict_types=1)`, `@internal`.
-- `StepState` enum values: `Pending='pending'`, `ExecutingRequest='executing_request'`, `EvaluatingCriteria='evaluating_criteria'`, `AwaitingActorInput='awaiting_actor_input'`, `ActorInputReceived='actor_input_received'`, `Completed='completed'`, `Failed='failed'`. `Retrying` is an edge (`EVALUATING_CRITERIA → PENDING`), not a state.
+- `StepState` enum values: `Pending='pending'`, `ExecutingRequest='executing_request'`, `EvaluatingCriteria='evaluating_criteria'`, `AwaitingActorInput='awaiting_actor_input'`, `ActorInputReceived='actor_input_received'`, `Completed='completed'`, `Failed='failed'`, `Cancelled='cancelled'`. `Retrying` is an edge (`EVALUATING_CRITERIA → PENDING`), not a state. `Cancelled` is terminal and is deliberately distinct from `Failed`: cancellation is a first-class path triggered by `onCancel`, whereas `Failed` carries `onFailure` (D10, spec A7/E1). Added by E6b.
 - `WorkflowStateRepositoryInterface` signature: `save(string $executionId, WorkflowContextInterface $state): void`, `load(string $executionId): ?WorkflowContextInterface`, `delete(string $executionId): void` (Phase A task A5).
 - `OperationExecutorPluginInterface` signature: `supports(Step, ArazzoDocument): bool`, `execute(Step, WorkflowContext, ArazzoDocument, string): StepExecutionOutcome` + `PluginInterface::name(): string`, `priority(): int` (Phase A task A1).
 - `ResponseTransferInterface` seam + generic `ResponseTransfer` value type (Phase A task A6): `ResponseTransferInterface` exposes `status(): mixed`, `headers(): array`, `rawBody(): mixed`, `hasView(string): bool`, `view(string): mixed`, `meta(): array`; the generic `ResponseTransfer` (`Alama\Arazzo\Contracts\Spec`) is the protocol-agnostic implementation with a keyed `views` bag (JSON/XML/proto facets filled by the per-protocol DTOs in Phase F, not flat constructor props).
@@ -46,7 +46,7 @@
 - Every task's `--filter` runs `vendor/bin/pest packages/<pkg>/tests --filter "<name>"` from the repo root.
 - Static analysis per task: `composer run analyse-<pkg>` (PHPStan with that package's `phpstan.neon.dist`).
 - No code comments unless explaining a deprecation or an ISO-8601 duration.
-- E0–E5 (the split) may touch root `composer.json` and `packages/*/composer.json` for scaffolding. E6–E10 (the OMS) must not touch anything outside the package that owns the class being added. Only E11 (the gate) runs repo-wide commands.
+- E0–E5 (the split) may touch root `composer.json` and `packages/*/composer.json` for scaffolding. E6–E10 (the OMS) must not touch anything outside the package that owns the class being added. **E6b is the one exception**: it adds a `StepState` case in `contracts` and consumes it in `engine`, so it may touch `packages/contracts` and `packages/engine` only. Only E11 (the gate) runs repo-wide commands.
 - Commit order is strict: E0 → E1 → E2 → E3 → E4 → E5 (split, each one atomic) then E6 → E7 → E8 → E9 → E10 (OMS) then E11 (gate). The OMS tasks are not started until the E5 split gate is green.
 - This plan assumes Phase A contracts are landed. The Phase A types are referenced by FQCN throughout; if Phase A is not yet merged, create the minimal stubs first.
 
@@ -66,7 +66,7 @@ Pre-work from the package-split validation (`docs/research/2026-09-26-runner-pac
 **Interfaces:**
 - Delivers: ~600 lines of dead code removed; `HttpClientInterface` promoted to the contracts seam. No behavioural change.
 
-- [ ] **Step 1: Delete the dead `Async/` directory**
+- [x] **Step 1: Delete the dead `Async/` directory**
 
 Run:
 ```bash
@@ -80,7 +80,7 @@ Run: `composer run test-runner && composer run analyse-runner`
 
 Expected: PASS.
 
-- [ ] **Step 2: Delete the dead `Protocol/` classes**
+- [x] **Step 2: Delete the dead `Protocol/` classes**
 
 Run:
 ```bash
@@ -91,14 +91,14 @@ composer run test-runner
 
 Expected: PASS.
 
-- [ ] **Step 3: Commit the deletions**
+- [x] **Step 3: Commit the deletions**
 
 ```bash
 git add -A packages/runner
 git commit -m "refactor(runner): delete dead Async/ + Protocol classes"
 ```
 
-- [ ] **Step 4: Relocate `HttpClientInterface` to contracts**
+- [x] **Step 4: Relocate `HttpClientInterface` to contracts**
 
 ```bash
 git mv packages/runner/src/Infrastructure/Interfaces/HttpClientInterface.php packages/contracts/src/Interfaces/HttpClientInterface.php
@@ -112,7 +112,7 @@ Run: `composer run test-runner && composer run analyse-runner && composer run te
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add -A packages/contracts packages/runner packages/laravel
@@ -143,7 +143,7 @@ Scaffold the first new package and move the small swappable runtime services int
 - Produces package `alama/arazzo-runtime`, PSR-4 `Alama\Arazzo\Runtime\` → `src/`. Requires `alama/arazzo-contracts` only.
 - Arch guard: `Alama\Arazzo\Runtime` uses nothing from `Alama\Arazzo\Engine`, `Alama\Arazzo\Runner`, or `Alama\Arazzo\Protocol\*`.
 
-- [ ] **Step 1: Scaffold the package**
+- [x] **Step 1: Scaffold the package**
 
 `packages/runtime/composer.json`:
 
@@ -176,7 +176,7 @@ Scaffold the first new package and move the small swappable runtime services int
 
 Copy `packages/document/phpstan.neon.dist` as the template for `packages/runtime/phpstan.neon.dist` (adjust `scanDirectories` to `../contracts/src`). Copy `packages/runner/tests/Pest.php` for `packages/runtime/tests/Pest.php`.
 
-- [ ] **Step 2: Move the classes and rewrite namespaces**
+- [x] **Step 2: Move the classes and rewrite namespaces**
 
 ```bash
 mkdir -p packages/runtime/src/{Policy,Telemetry,Infrastructure,State}
@@ -217,7 +217,7 @@ git mv packages/runner/tests/State packages/runtime/tests/State
 # `git mv` for it; if a later branch adds one, move it here.
 ```
 
-- [ ] **Step 3: Root plumbing**
+- [x] **Step 3: Root plumbing**
 
 Add to root `composer.json`:
 - `repositories`: `{"type": "path", "url": "packages/runtime"}`
@@ -230,7 +230,7 @@ Then:
 composer update alama/arazzo-runtime --with-dependencies --no-interaction
 ```
 
-- [ ] **Step 4: Add the arch guard and verify it bites**
+- [x] **Step 4: Add the arch guard and verify it bites**
 
 `packages/runtime/tests/Architecture/ArchTest.php`:
 
@@ -242,7 +242,7 @@ arch('runtime is a leaf: no engine, runner, or protocol dependencies')
 
 Verify the guard bites: temporarily add `use Alama\Arazzo\Runner\RunnerFacade;` to `packages/runtime/src/State/InMemoryStateStore.php`, run the test, confirm RED, then revert. Commit only after it is GREEN.
 
-- [ ] **Step 5: Install, verify, commit**
+- [x] **Step 5: Install, verify, commit**
 
 ```bash
 composer run test-runtime && composer run analyse-runtime
@@ -266,7 +266,7 @@ Kept separate from `arazzo-runtime` because it is a distinct seam that grows ind
 - Produces package `alama/arazzo-events`, PSR-4 `Alama\Arazzo\Events\` → `src/`. Requires `alama/arazzo-contracts` only.
 - Arch guard: `Alama\Arazzo\Events` uses nothing from `Alama\Arazzo\Engine`, `Alama\Arazzo\Runner`, or `Alama\Arazzo\Runtime`.
 
-- [ ] **Step 1: Scaffold + move + rewrite namespaces**
+- [x] **Step 1: Scaffold + move + rewrite namespaces**
 
 Mirror E1 Step 1 for the name `arazzo-events` / `Alama\Arazzo\Events\`, then:
 
@@ -279,7 +279,7 @@ Namespace rewrites: `namespace Alama\Arazzo\Runner\Events;` → `namespace Alama
 
 Move tests: `git mv packages/runner/tests/Events packages/events/tests`.
 
-- [ ] **Step 2: Root plumbing, arch guard, verify**
+- [x] **Step 2: Root plumbing, arch guard, verify**
 
 Add the `packages/events` path repository, `alama/arazzo-events` to root `require`, the `Alama\Arazzo\Tests\Events\` autoload-dev entry, and `analyse-events` / `test-events` scripts. `composer update alama/arazzo-events --with-dependencies --no-interaction`.
 
@@ -293,7 +293,7 @@ arch('events is a leaf: no engine, runtime, or runner dependencies')
 
 Verify it bites with a temporary forbidden import, then revert.
 
-- [ ] **Step 3: Install, verify, commit**
+- [x] **Step 3: Install, verify, commit**
 
 ```bash
 composer run test-events && composer run analyse-events
@@ -325,7 +325,7 @@ The shared request-compilation pipeline. It is extracted **before** the engine a
 - Produces package `alama/arazzo-request-pipeline`, PSR-4 `Alama\Arazzo\RequestPipeline\` → `src/`. Requires `contracts`, `document`, `expression`, `evaluation` — no engine, no runner, no protocol.
 - Arch guard: `Alama\Arazzo\RequestPipeline` uses nothing from `Alama\Arazzo\Engine`, `Alama\Arazzo\Runner`, or `Alama\Arazzo\Protocol\*`.
 
-- [ ] **Step 1: Scaffold + move + rewrite namespaces**
+- [x] **Step 1: Scaffold + move + rewrite namespaces**
 
 Mirror E1 Step 1 for `alama/arazzo-request-pipeline` / `Alama\Arazzo\RequestPipeline\`, requiring `contracts`, `document`, `expression`, `evaluation` and `psr/http-client`, `psr/http-factory`, `psr/http-message`. Then move the eleven classes (flattening `Execution/` into `src/`) and rewrite:
 
@@ -337,7 +337,7 @@ rg -l 'Alama\\Arazzo\\Runner\\Execution\\' packages/
 ```
 Each hit must be classified by hand into *moved* (rewrite to `Alama\Arazzo\RequestPipeline\...`) or *staying* (leave as `Alama\Arazzo\Runner\Execution\...`). Do not blanket-replace — the runner keeps its own `Execution/` namespace for now; Phase F2 splits it into `Sync\` and `Async\`.
 
-- [ ] **Step 2: Root plumbing, arch guard, verify**
+- [x] **Step 2: Root plumbing, arch guard, verify**
 
 Add the path repository, root `require`, `Alama\Arazzo\Tests\RequestPipeline\` autoload-dev, `analyse-pipeline` / `test-pipeline` scripts. `composer update alama/arazzo-request-pipeline --with-dependencies --no-interaction`.
 
@@ -350,7 +350,7 @@ arch('request-pipeline is protocol- and runner-agnostic')
 
 Verify it bites with a temporary forbidden import, then revert.
 
-- [ ] **Step 3: Confirm the two-consumer invariant**
+- [x] **Step 3: Confirm the two-consumer invariant**
 
 ```bash
 rg -n 'RequestCompiler' packages/ --glob '*.php' | rg -v 'packages/request-pipeline'
@@ -358,7 +358,7 @@ rg -n 'RequestCompiler' packages/ --glob '*.php' | rg -v 'packages/request-pipel
 
 Expected: only the sync `StepExecutor` and `Protocol/HttpStepExecutor` (both to be moved/rewired in Phase F) reference it, plus the Laravel bindings. If a third consumer appears, note it in the commit message — it is a signal the class belongs elsewhere.
 
-- [ ] **Step 4: Install, verify, commit**
+- [x] **Step 4: Install, verify, commit**
 
 ```bash
 composer run test-pipeline && composer run analyse-pipeline
@@ -390,7 +390,7 @@ Deliberately **not** moved: `StepStateMachineEngine` and `StepTransition`/`StepT
 - Produces package `alama/arazzo-engine`, PSR-4 `Alama\Arazzo\Engine\` → `src/`. Requires `contracts`, `evaluation`, `arazzo-runtime` (policy only).
 - Arch guard: `Alama\Arazzo\Engine` uses nothing from `Alama\Arazzo\Runner` or `Alama\Arazzo\Protocol\*`. This is the boundary that makes the engine a real core and that Phase F's protocol packages depend on.
 
-- [ ] **Step 1: Scaffold + move + rewrite namespaces**
+- [x] **Step 1: Scaffold + move + rewrite namespaces**
 
 Mirror E1 Step 1 for `alama/arazzo-engine` / `Alama\Arazzo\Engine\`, requiring `contracts`, `evaluation`, `arazzo-runtime`. Then:
 
@@ -412,7 +412,7 @@ rg -l 'Alama\\Arazzo\\Runner\\Execution\\\(WorkflowEngine|Data\\Transition\|Data
 ```
 Rewrite each to the `Alama\Arazzo\Engine\...` equivalent. Known importers: `Execution/WorkflowExecutor.php`, `Execution/ExecutionGraphFactory.php`, `Execution/StepOutcomeHandler.php`, `Execution/AsyncExecutionGraphAssembler.php`, `Execution/StepExecutionWorker.php`, `Execution/Data/RunControlFlow.php` (self-reference), and `packages/laravel/src/...`.
 
-- [ ] **Step 2: Root plumbing, arch guard, verify**
+- [x] **Step 2: Root plumbing, arch guard, verify**
 
 Add the path repository, root `require`, `Alama\Arazzo\Tests\Engine\` autoload-dev, `analyse-engine` / `test-engine` scripts. `composer update alama/arazzo-engine --with-dependencies --no-interaction`.
 
@@ -426,7 +426,7 @@ arch('engine is a pure core: no runner or protocol dependencies')
 
 Verify it bites: temporarily add `use Alama\Arazzo\Runner\Execution\StepExecutor;` to `packages/engine/src/WorkflowEngine.php`, confirm RED, revert.
 
-- [ ] **Step 3: Confirm the engine's real dependency set**
+- [x] **Step 3: Confirm the engine's real dependency set**
 
 ```bash
 rg -o 'use Alama\\Arazzo\\[A-Za-z\\]*' packages/engine/src --glob '*.php' | sed 's/.*://' | sort -u
@@ -434,7 +434,7 @@ rg -o 'use Alama\\Arazzo\\[A-Za-z\\]*' packages/engine/src --glob '*.php' | sed 
 
 Expected: only `Contracts\...`, `Evaluation\...`, and `Runtime\Policy\RetryPolicy`. Anything from `Runner`, `Protocol`, `RequestPipeline` or `Events` is a finding — fix it or record why in the commit message.
 
-- [ ] **Step 4: Install, verify, commit**
+- [x] **Step 4: Install, verify, commit**
 
 ```bash
 composer run test-engine && composer run analyse-engine
@@ -453,7 +453,7 @@ git commit -m "refactor(engine): extract WorkflowEngine, Transition and executio
 **Interfaces:**
 - Consumes: E0–E4.
 
-- [ ] **Step 1: Run every package suite**
+- [x] **Step 1: Run every package suite**
 
 ```bash
 composer run test-runtime && composer run test-events
@@ -463,7 +463,7 @@ composer run test-runner && composer run test-laravel
 
 Expected: PASS.
 
-- [ ] **Step 2: Run static analysis across all packages**
+- [x] **Step 2: Run static analysis across all packages**
 
 ```bash
 composer run analyse-runtime && composer run analyse-events
@@ -472,7 +472,7 @@ composer run analyse-pipeline && composer run analyse-engine && composer run ana
 
 Expected: PASS (0 errors). Relocate any PHPStan baseline entries that moved with the classes — the baseline is per-package, so entries for moved files move to the destination package's baseline.
 
-- [ ] **Step 3: Verify the layer boundaries by sweep**
+- [x] **Step 3: Verify the layer boundaries by sweep**
 
 ```bash
 # L1 runtime is a leaf
@@ -487,13 +487,13 @@ rg -n 'Alama\\Arazzo\\(Runner|Protocol)\\' packages/engine/src || echo "engine c
 
 Expected: all four lines report clean. This is the machine-checkable statement of "the split happened before the OMS" that the phase goal depends on.
 
-- [ ] **Step 4: Run the repo gate**
+- [x] **Step 4: Run the repo gate**
 
 Run: `make verify` (repo root)
 
 Expected: PASS — confirms no consumer outside `packages/runner` broke.
 
-- [ ] **Step 5: Commit any baseline/formatting fixes**
+- [x] **Step 5: Commit any baseline/formatting fixes**
 
 ```bash
 git add -A
@@ -518,7 +518,7 @@ The core of the OMS. An explicit transition table mapping `(StepState, outcome)`
 - Consumes: `StepState` (Phase A4 — `Alama\Arazzo\Contracts\Spec\Enum\StepState`), `WorkflowEngine` (existing), `ExpressionResolverInterface` (existing), `ArazzoDocument`, `Workflow`, `Step`, `ExecutionState`.
 - Produces: `StepStateMachineEngine::fire(StepState $current, Step $step, ArazzoDocument $document, ExecutionState $state, bool $criteriaMet, bool $suspended): StepTransition`; `StepTransition` readonly with `StepState $from`, `StepState $to`, `StepTransitionType $kind`, `?callable $enterHandler`.
 
-- [ ] **Step 1: Write the failing test — transition table coverage**
+- [x] **Step 1: Write the failing test — transition table coverage**
 
 Create `packages/engine/tests/StepStateMachineEngineTest.php`:
 
@@ -675,13 +675,13 @@ it('transitions ExecutingRequest → Failed on transport error (suspended = true
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
 
 Expected: FAIL with "Class StepStateMachineEngine not found".
 
-- [ ] **Step 3: Create the supporting value types**
+- [x] **Step 3: Create the supporting value types**
 
 Create `packages/engine/src/Enum/StepTransitionType.php`:
 
@@ -741,7 +741,7 @@ final readonly class StepTransition
 }
 ```
 
-- [ ] **Step 4: Implement the StepStateMachineEngine**
+- [x] **Step 4: Implement the StepStateMachineEngine**
 
 Create `packages/engine/src/StepStateMachineEngine.php`:
 
@@ -875,17 +875,321 @@ final class StepStateMachineEngine
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/engine/src/StepStateMachineEngine.php packages/engine/src/Data/StepTransition.php packages/engine/src/Enum/StepTransitionType.php packages/engine/tests/StepStateMachineEngineTest.php
 git commit -m "feat(runner): add StepStateMachineEngine with explicit transition table"
+```
+
+---
+
+## Task E6b: Cancellation path + ordered `onTimeout` failure actions
+
+Closes the two D10 items that E6's description promised but no task delivered: `onCancel` as a
+first-class cancellation path (spec: "distinct from `onFailure`") and `onTimeout` as an ordered
+failure-action list. Both are declared on `StepFlow` as `list<FailureAction|Reusable>` but were
+inert — nothing consumed them. The contract shape needs no change; this task makes the state
+machine read them.
+
+`Cancelled` is added to `StepState` as a **terminal state distinct from `Failed`**: cancellation
+is requested via `onCancel` and terminates the step, whereas `Failed` carries `onFailure` and, for
+timeouts, `onTimeout`. `Retrying` remains an edge, not a state.
+
+**Files:**
+- Modify: `packages/contracts/src/Spec/Enum/StepState.php` (add `Cancelled`)
+- Modify: `packages/contracts/src/Spec/StepFlow.php` (correct the `onTimeout` annotation — pre-existing typo, see Step 3)
+- Modify: `packages/engine/src/Enum/StepTransitionType.php` (add `Timeout`, `Cancelled`)
+- Modify: `packages/engine/src/Data/StepTransition.php` (carry `$actions`)
+- Modify: `packages/engine/src/StepStateMachineEngine.php` (`cancel()`, `timeout()`, terminal arm)
+- Modify: `packages/engine/tests/StepStateMachineEngineTest.php` (new cases)
+
+**Interfaces:**
+- Consumes: `StepFlow::$onCancel` and `StepFlow::$onTimeout` (both `list<FailureAction|Reusable>`).
+- Produces: `StepStateMachineEngine::cancel(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition`; `::timeout(...): StepTransition` (same signature); `StepTransition::$actions` (`list<FailureAction|Reusable>`, ordered, defaults `[]`).
+- Scope: `Reusable` entries are passed through **unresolved**. The only reuse mechanism the contracts define is `$components.parameters.*` (`Reusable::getParamterComponent()`); no reusable-*action* registry exists, and inventing one is out of scope. Resolving them is the carrier's job at E8.
+
+- [x] **Step 1: Write the failing tests**
+
+Append to `packages/engine/tests/StepStateMachineEngineTest.php`. Add these imports:
+
+```php
+use Alama\Arazzo\Contracts\Spec\Action\FailureEndAction;
+use Alama\Arazzo\Contracts\Spec\Action\RetryAction;
+use Alama\Arazzo\Contracts\Spec\Reusable;
+```
+
+```php
+it('cancels a pending step with the ordered onCancel actions', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $first = new FailureEndAction('stop', []);
+    $second = new RetryAction('retry', 1.0, 3, 's1', null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$first, $second]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::Pending);
+
+    expect($transition->from)->toBe(StepState::Pending)
+        ->and($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->type)->toBe(StepTransitionType::Cancelled)
+        ->and($transition->actions)->toBe([$first, $second]);
+});
+
+it('refuses to cancel a completed step', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::Completed);
+
+    expect($transition->to)->toBe(StepState::Completed)
+        ->and($transition->type)->toBe(StepTransitionType::Enter)
+        ->and($transition->actions)->toBe([]);
+});
+
+it('fails a timed out step with the ordered onTimeout actions', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $first = new FailureEndAction('abort', []);
+    $second = new RetryAction('retry', 2.0, 1, null, null, []);
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onTimeout: [$first, $second]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->timeout($step, $document, $state, StepState::ExecutingRequest);
+
+    expect($transition->from)->toBe(StepState::ExecutingRequest)
+        ->and($transition->to)->toBe(StepState::Failed)
+        ->and($transition->type)->toBe(StepTransitionType::Timeout)
+        ->and($transition->actions)->toBe([$first, $second]);
+});
+
+it('refuses to time out a cancelled step', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->timeout($step, $document, $state, StepState::Cancelled);
+
+    expect($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->type)->toBe(StepTransitionType::Enter);
+});
+
+it('passes Reusable entries through the cancel action list unresolved', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $reusable = new Reusable('$components.parameters.cancelStep');
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$reusable]), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->cancel($step, $document, $state, StepState::AwaitingActorInput);
+
+    expect($transition->to)->toBe(StepState::Cancelled)
+        ->and($transition->actions)->toBe([$reusable]);
+});
+
+it('treats Cancelled as terminal in fire()', function (): void {
+    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+
+    $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
+    $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
+    $document = engineTestDocument($workflow);
+    $state = ExecutionState::start('exec-1', 'test', 'wf_1');
+
+    $transition = $engine->fire(StepState::Cancelled, $step, $document, $state);
+
+    expect($transition->from)->toBe(StepState::Cancelled)
+        ->and($transition->to)->toBe(StepState::Cancelled);
+});
+```
+
+- [x] **Step 2: Run the tests to verify they fail**
+
+Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
+
+Expected: FAIL — `StepState::Cancelled` does not exist and `cancel()`/`timeout()` are undefined.
+
+- [x] **Step 3: Add the `Cancelled` state and fix the `onTimeout` annotation**
+
+In `packages/contracts/src/Spec/Enum/StepState.php`, add the case after `Failed`:
+
+```php
+    case Cancelled = 'cancelled';
+```
+
+`packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php` asserts `StepState::cases()`
+equals exactly the previous seven, so it **will fail** until updated. Add `StepState::Cancelled`
+to both the `cases()` expectation and the backed-value chain:
+
+```php
+            StepState::Failed,
+            StepState::Cancelled,
+```
+
+```php
+    ->and(StepState::Failed->value)->toBe('failed')
+    ->and(StepState::Cancelled->value)->toBe('cancelled');
+```
+
+Also correct a **pre-existing typo** in `packages/contracts/src/Spec/StepFlow.php:19`. It
+annotates `$onTimeout` as `list<SuccessAction|Reusable>`, copy-pasted from `$onSuccess` three
+lines above. The Arazzo 1.2 schema defines `onTimeout` items as
+`oneOf: [failure-action-object, reusable-object]`
+(`docs/research/2026-09-08-arazzo-protocol-spec-prs-impact.md:334-341`), and the same research doc
+records it as an "ordered list of failure actions" (line 440). Change `SuccessAction` to
+`FailureAction` on that line only:
+
+```php
+     * @param  list<FailureAction|Reusable>  $onTimeout
+```
+
+Do **not** widen `StepTransition::$actions` to accept `SuccessAction` to make this go away — that
+would enshrine the typo in the contract. This is a tightening annotation fix; no runtime
+behaviour changes, and `StepFlow` has no other consumer.
+
+- [x] **Step 4: Extend `StepTransitionType`**
+
+In `packages/engine/src/Enum/StepTransitionType.php`, add two cases:
+
+```php
+    case Timeout = 'timeout';
+    case Cancelled = 'cancelled';
+```
+
+- [x] **Step 5: Carry the ordered action list on `StepTransition`**
+
+In `packages/engine/src/Data/StepTransition.php`, add the `$actions` promoted property to the
+constructor (after `$type`) and two factories.
+
+Constructor becomes:
+
+```php
+    /**
+     * @param  list<FailureAction|Reusable>  $actions
+     */
+    public function __construct(
+        public StepState $from,
+        public StepState $to,
+        public string $reason,
+        public StepTransitionType $type = StepTransitionType::Enter,
+        public array $actions = [],
+    ) {}
+```
+
+Add the imports `use Alama\Arazzo\Contracts\Spec\Action\FailureAction;` and
+`use Alama\Arazzo\Contracts\Spec\Reusable;`, then add:
+
+```php
+    /**
+     * @param  list<FailureAction|Reusable>  $actions
+     */
+    public static function cancelled(StepState $from, string $reason, array $actions): self
+    {
+        return new self($from, StepState::Cancelled, $reason, StepTransitionType::Cancelled, $actions);
+    }
+
+    /**
+     * @param  list<FailureAction|Reusable>  $actions
+     */
+    public static function timedOut(StepState $from, string $reason, array $actions): self
+    {
+        return new self($from, StepState::Failed, $reason, StepTransitionType::Timeout, $actions);
+    }
+```
+
+- [x] **Step 6: Implement `cancel()` and `timeout()`**
+
+In `packages/engine/src/StepStateMachineEngine.php`, add `Cancelled` to the terminal arm of `fire()`:
+
+```php
+            StepState::Completed, StepState::Failed, StepState::Cancelled => StepTransition::enter($current, $current, 'terminal state'),
+```
+
+Add the two methods after `fire()`. Neither accepts `criteriaMet`: cancellation and timeout are
+outcomes, not criteria results. Both refuse to move a terminal step.
+
+```php
+    /**
+     * Cancel a non-terminal step via its onCancel failure-action list.
+     *
+     * `Reusable` entries are passed through unresolved: the contracts define no
+     * reusable-action registry, so the carrier resolves them at execution time.
+     *
+     * @param  StepState  $current  The step's current StepState.
+     */
+    public function cancel(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition
+    {
+        if (in_array($current, self::TERMINAL_STATES, true)) {
+            return StepTransition::enter($current, $current, 'terminal state');
+        }
+
+        return StepTransition::cancelled($current, 'cancelled by onCancel', $step->flow->onCancel);
+    }
+
+    /**
+     * Fail a non-terminal step whose timeout elapsed, carrying its ordered onTimeout actions.
+     *
+     * A timeout still ends in Failed — distinct from cancellation, which ends in Cancelled —
+     * but the ordered onTimeout failure-action list travels with the transition.
+     *
+     * @param  StepState  $current  The step's current StepState.
+     */
+    public function timeout(Step $step, ArazzoDocument $document, ExecutionState $state, StepState $current): StepTransition
+    {
+        if (in_array($current, self::TERMINAL_STATES, true)) {
+            return StepTransition::enter($current, $current, 'terminal state');
+        }
+
+        return StepTransition::timedOut($current, 'step timeout elapsed', $step->flow->onTimeout);
+    }
+```
+
+Add the terminal-state constant to the class, immediately after the constructor:
+
+```php
+    /** @var list<StepState> */
+    private const TERMINAL_STATES = [StepState::Completed, StepState::Failed, StepState::Cancelled];
+```
+
+- [x] **Step 7: Run the tests to verify they pass**
+
+Run: `vendor/bin/pest packages/engine/tests --filter "StepStateMachineEngineTest"` (repo root)
+
+Expected: PASS (22 tests).
+
+- [x] **Step 8: Verify the affected packages**
+
+Run: `composer run test-contracts && composer run test-engine && composer run analyse-contracts && composer run analyse-engine`
+
+Expected: all green. `Cancelled` is a new enum case, so confirm nothing else broke — the only
+exhaustive `match` over `StepState` in the codebase is `StepStateMachineEngine::fire()`, already
+amended in Step 6. Verify with `rg -n 'StepState::' packages/` that no other `match`/`switch`
+enumerates the states without a `default`; if one exists, add the `Cancelled` arm rather than
+loosening the match.
+
+- [x] **Step 9: Commit**
+
+```bash
+git add packages/contracts/src/Spec/Enum/StepState.php packages/contracts/src/Spec/StepFlow.php packages/contracts/tests/Contracts/Spec/Enum/StepStateTest.php packages/engine/src/Enum/StepTransitionType.php packages/engine/src/Data/StepTransition.php packages/engine/src/StepStateMachineEngine.php packages/engine/tests/StepStateMachineEngineTest.php
+git commit -m "feat(engine): add Cancelled state with onCancel path and ordered onTimeout actions"
 ```
 
 ---
@@ -903,7 +1207,7 @@ Wraps the existing `StateStoreInterface` (runner port) with a versioned envelope
 - Consumes: `WorkflowStateRepositoryInterface` (Phase A5 — `Alama\Arazzo\Contracts\Interfaces\WorkflowStateRepositoryInterface`), `StateStoreInterface` (existing), `WorkflowContextInterface`, `StepState`.
 - Produces: `StoredWorkflowStateRepository implements WorkflowStateRepositoryInterface` honoring the A5 signature exactly (`save(string, WorkflowContextInterface)`, `load(string): ?WorkflowContextInterface`, `delete(string)`). `save()` wraps the context's `toArray()` payload in a versioned envelope with a derived `StepState`; `load()` unwraps with backward compat; `delete()` delegates to `StateStoreInterface::delete()`. Current `StepState` is derived from the context's step records (default `Pending`), and exposed via `::loadStepState(string): ?StepState` as an additive convenience (not on the interface).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runtime/tests/State/StoredWorkflowStateRepositoryTest.php`:
 
@@ -1004,13 +1308,13 @@ it('backward-compat loads raw WorkflowContext::toArray() payloads', function ():
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runtime/tests --filter "StoredWorkflowStateRepositoryTest"` (repo root)
 
 Expected: FAIL with "Class StoredWorkflowStateRepository not found".
 
-- [ ] **Step 3: Uncomment `delete()` in StateStoreInterface**
+- [x] **Step 3: Uncomment `delete()` in StateStoreInterface**
 
 Edit `packages/runtime/src/State/Interfaces/StateStoreInterface.php` — remove the commented-out line and uncomment the `delete` method:
 
@@ -1039,7 +1343,7 @@ interface StateStoreInterface
 
 Verify `InMemoryStateStore` already has `delete()` — it does (line 36 of the file). `FileStateStore` should also be checked.
 
-- [ ] **Step 4: Implement StoredWorkflowStateRepository**
+- [x] **Step 4: Implement StoredWorkflowStateRepository**
 
 Create `packages/runtime/src/State/StoredWorkflowStateRepository.php`:
 
@@ -1153,13 +1457,13 @@ final class StoredWorkflowStateRepository implements WorkflowStateRepositoryInte
 }
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runtime/tests --filter "StoredWorkflowStateRepositoryTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 6: Verify FileStateStore has delete()**
+- [x] **Step 6: Verify FileStateStore has delete()**
 
 Check `packages/runtime/src/State/FileStateStore.php` for the `delete` method. If missing, add it. Run full test suite:
 
@@ -1167,7 +1471,7 @@ Run: `composer run test-runner` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/runtime/src/State/Interfaces/StateStoreInterface.php packages/runtime/src/State/StoredWorkflowStateRepository.php packages/runtime/tests/State/StoredWorkflowStateRepositoryTest.php
@@ -1190,7 +1494,7 @@ Consolidates `WorkflowExecutor` (sync) + `StepExecutionWorker`/`StepOutcomeHandl
 - Consumes: `OperationExecutorPluginInterface` (Phase A1), `WorkflowEngine` (existing), `StateStoreInterface`, `LockManagerInterface`, `ExecutionRegistryInterface`, `EventLedgerInterface`, `PendingCorrelationRegistryInterface`.
 - Produces: `UnifiedStepCarrier::execute(string $executionId, Step $step, Workflow $workflow, ArazzoDocument $document, ExecutionState $state): void` — the canonical step execution path. Constructor: `(StateStoreInterface, WorkflowEngine, LockManagerInterface, ExecutionRegistryInterface, EventLedgerInterface, PendingCorrelationRegistryInterface, array $executorPlugins, int $stateTtlSeconds = 86400)`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runner/tests/UnifiedStepCarrierTest.php`:
 
@@ -1367,13 +1671,13 @@ it('throws when no plugin supports the step', function (): void {
 })->throws(\LogicException::class, 'No OperationExecutorPluginInterface supports');
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "UnifiedStepCarrierTest"` (repo root)
 
 Expected: FAIL with "Class UnifiedStepCarrier not found".
 
-- [ ] **Step 3: Implement UnifiedStepCarrier**
+- [x] **Step 3: Implement UnifiedStepCarrier**
 
 Create `packages/runner/src/UnifiedStepCarrier.php`:
 
@@ -1509,13 +1813,13 @@ final class UnifiedStepCarrier
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "UnifiedStepCarrierTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/runner/src/UnifiedStepCarrier.php packages/runner/tests/UnifiedStepCarrierTest.php
@@ -1540,7 +1844,7 @@ Replaces the direct `openApiExecutor` calls in `StepExecutor` and the `StepProto
 - Produces: `OperationExecutorRegistry::register(OperationExecutorPluginInterface): void`, `::resolve(Step, ArazzoDocument): ?OperationExecutorPluginInterface`, `::all(): list<OperationExecutorPluginInterface>`.
 - Becomes the canonical executor-resolution path injected into `AsyncExecutionGraphAssembler` (replacing the direct `Protocol/` imports in Phase F2) and the `UnifiedStepCarrier` (E8).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runner/tests/OperationExecutorRegistryTest.php`:
 
@@ -1618,13 +1922,13 @@ it('returns all registered plugins', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "OperationExecutorRegistryTest"` (repo root)
 
 Expected: FAIL with "Class OperationExecutorRegistry not found".
 
-- [ ] **Step 3: Implement OperationExecutorRegistry**
+- [x] **Step 3: Implement OperationExecutorRegistry**
 
 Create `packages/runner/src/OperationExecutorRegistry.php`:
 
@@ -1679,7 +1983,7 @@ final class OperationExecutorRegistry
 }
 ```
 
-- [ ] **Step 4: Deprecate the old ProtocolExecutorRegistryInterface**
+- [x] **Step 4: Deprecate the old ProtocolExecutorRegistryInterface**
 
 Edit `packages/runner/src/Interfaces/ProtocolExecutorRegistryInterface.php` — add a `@deprecated` docblock:
 
@@ -1690,7 +1994,7 @@ Edit `packages/runner/src/Interfaces/ProtocolExecutorRegistryInterface.php` — 
 interface ProtocolExecutorRegistryInterface
 ```
 
-- [ ] **Step 5: Register the built-in executors into the registry at the composition seam**
+- [x] **Step 5: Register the built-in executors into the registry at the composition seam**
 
 `AsyncExecutionGraphAssembler` keeps its direct `Protocol\*` imports for now — under the Phase E split that edge points *down* the layer stack and is legitimate. What this step does is make the registry the single resolution path the carrier uses, so there is exactly one place where a step turns into an executor call:
 
@@ -1702,13 +2006,13 @@ Run: `composer run test-runner` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 6: Run test to verify it passes**
+- [x] **Step 6: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "OperationExecutorRegistryTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/runner/src/OperationExecutorRegistry.php packages/runner/src/Interfaces/ProtocolExecutorRegistryInterface.php packages/runner/src/UnifiedStepCarrier.php packages/runner/src/Async/AsyncExecutionGraphAssembler.php packages/runner/src/AsyncGraphSeams.php packages/runner/tests/OperationExecutorRegistryTest.php
@@ -1729,7 +2033,7 @@ In-core JSON-schema/OpenAPI validator dispatch during Phase E. After Phase F1, t
 - Consumes: `ResponseValidatorInterface` (existing contracts), `Step`, `ArazzoDocument`.
 - Produces: `ResponseValidatorDispatcher::validate(Step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument): void` — iterates registered validators, dispatches to the first that matches.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `packages/runner/tests/ResponseValidatorDispatcherTest.php`:
 
@@ -1795,13 +2099,13 @@ it('does nothing with empty validator list', function (): void {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "ResponseValidatorDispatcherTest"` (repo root)
 
 Expected: FAIL with "Class ResponseValidatorDispatcher not found".
 
-- [ ] **Step 3: Implement ResponseValidatorDispatcher**
+- [x] **Step 3: Implement ResponseValidatorDispatcher**
 
 Create `packages/runner/src/ResponseValidatorDispatcher.php`:
 
@@ -1843,13 +2147,13 @@ final class ResponseValidatorDispatcher
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `vendor/bin/pest packages/runner/tests --filter "ResponseValidatorDispatcherTest"` (repo root)
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/runner/src/ResponseValidatorDispatcher.php packages/runner/tests/ResponseValidatorDispatcherTest.php
@@ -1868,7 +2172,7 @@ Close out Phase E: the four-layer split plus the OMS additions, verified togethe
 **Interfaces:**
 - Consumes: all tasks E0–E10.
 
-- [ ] **Step 1: Run every package suite**
+- [x] **Step 1: Run every package suite**
 
 ```bash
 composer run test-runtime && composer run test-events
@@ -1878,7 +2182,7 @@ composer run test-runner && composer run test-laravel
 
 Expected: PASS. The four arch guards added in E1–E4 (runtime leaf, events leaf, pipeline agnostic, engine pure core) are all GREEN and were never allowed to go red.
 
-- [ ] **Step 2: Run static analysis across all packages**
+- [x] **Step 2: Run static analysis across all packages**
 
 ```bash
 composer run analyse-runtime && composer run analyse-events
@@ -1887,27 +2191,27 @@ composer run analyse-pipeline && composer run analyse-engine && composer run ana
 
 Expected: PASS (0 errors).
 
-- [ ] **Step 3: Run the formatter check**
+- [x] **Step 3: Run the formatter check**
 
 Run: `composer run format` or `vendor/bin/pint --test` (repo root)
 
 Expected: PASS (no style violations). If violations exist, run `vendor/bin/pint` and re-run Step 1.
 
-- [ ] **Step 4: Run the full repo gate**
+- [x] **Step 4: Run the full repo gate**
 
 Run: `make verify` (repo root)
 
 Expected: PASS — confirms the split plus the OMS do not break `core`/`cli`/`laravel`/`document`/`expression` consumers.
 
-- [ ] **Step 5: Re-run the E5 layer sweep**
+- [x] **Step 5: Re-run the E5 layer sweep**
 
 Re-run the four `rg` sweeps from E5 Step 3 verbatim. Expected: all four report clean. This is the phase's central claim — *the split landed, and the OMS was built on top of it* — so it is checked twice, once before the OMS and once after.
 
-- [ ] **Step 6: Mark this plan's steps complete**
+- [x] **Step 6: Mark this plan's steps complete**
 
-Flip every `- [ ]` in this document to `- [x]`.
+Flip every `- [x]` in this document to `- [x]`.
 
-- [ ] **Step 7: Record completion in the spec**
+- [x] **Step 7: Record completion in the spec**
 
 Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md`, find the Phase E heading, and add:
 
@@ -1915,7 +2219,7 @@ Open `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md
 Phase E status: ✅ Implemented — the four-layer split (`arazzo-runtime`, `arazzo-events`, `arazzo-request-pipeline`, `arazzo-engine`) landed in E0–E5, then the OMS in E6–E10. See `plans/2026-09-08-phase-e-runner-oms.md`.
 ```
 
-- [ ] **Step 8: Commit the doc update**
+- [x] **Step 8: Commit the doc update**
 
 ```bash
 git add docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md

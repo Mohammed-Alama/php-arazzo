@@ -26,48 +26,50 @@ quadrantChart
     cli/Console: [1, 0]
     cli/Generator: [0.333, 0]
     cli/Renderer: [0.5, 0]
-    contracts/Dependency: [0.333, 0]
+    contracts/Dependency: [0.4, 0]
     contracts/Exceptions: [0, 0]
-    contracts/Interfaces: [0.13, 1]
-    contracts/Spec: [0.034, 0.02]
-    contracts/State: [0.091, 0]
+    contracts/Interfaces: [0.136, 1]
+    contracts/Spec: [0.031, 0.02]
+    contracts/State: [0.077, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.222, 0.091]
-    document/Validator: [0.455, 0.015]
-    document/_: [0.5, 0.2]
-    evaluation/Condition: [0.833, 0]
-    evaluation/Data: [0.5, 0]
+    document/Validator: [0.5, 0.015]
+    document/_: [0.545, 0.2]
+    engine/Data: [0.75, 0]
+    engine/Enum: [0, 0]
+    engine/_: [0.75, 0.5]
+    evaluation/Condition: [0.857, 0]
     evaluation/Enum: [0, 0]
-    evaluation/Exceptions: [0.333, 0]
-    evaluation/Interfaces: [0.1, 1]
+    evaluation/Interfaces: [0.333, 1]
     evaluation/Plugins: [0.75, 0]
-    evaluation/Registries: [0.75, 0]
-    evaluation/Xpath: [0.667, 0.5]
-    evaluation/_: [0.647, 0.091]
-    expression/Ast: [0.5, 0]
-    expression/Data: [0.25, 0]
+    evaluation/Registries: [0.8, 0]
+    evaluation/_: [0.583, 0.2]
+    events/Interfaces: [0, 1]
+    events/Listener: [0.75, 0]
+    events/_: [0, 0]
+    expression/Ast: [0.667, 0]
+    expression/Data: [0.3, 0]
     expression/Enum: [0, 0]
-    expression/Exceptions: [0.333, 0]
-    expression/Interfaces: [0.25, 1]
-    expression/_: [0.5, 0]
+    expression/Exceptions: [0.25, 0]
+    expression/Interfaces: [0.214, 1]
+    expression/Xpath: [0.667, 0.5]
+    expression/_: [0.636, 0]
     laravel/Bindings: [0.958, 0]
-    laravel/Http: [0.778, 0]
+    laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
     laravel/Persistence: [0.8, 0]
     laravel/Queue: [0.75, 0]
     laravel/State: [0.5, 0]
-    laravel/Support: [0.778, 0]
+    laravel/Support: [0.714, 0]
     laravel/_: [1, 0]
-    runner/Async: [1, 0]
-    runner/Events: [0.125, 0.091]
-    runner/Execution: [0.75, 0.05]
-    runner/Infrastructure: [0.167, 0.25]
-    runner/Jobs: [0.286, 0]
-    runner/Policy: [0.75, 0]
-    runner/Protocol: [0.909, 0]
-    runner/State: [0.167, 0.417]
-    runner/Telemetry: [0, 0]
-    runner/_: [0.75, 0.333]
+    runner/Execution: [0.786, 0.054]
+    runner/Jobs: [0.333, 0]
+    runner/Protocol: [0.889, 0]
+    runner/_: [0.765, 0.222]
+    runtime/Infrastructure: [1, 0]
+    runtime/Policy: [0.75, 0]
+    runtime/State: [0.25, 0.385]
+    runtime/Telemetry: [0, 0]
     sources/Normalizer: [0.417, 0.111]
     sources/Resolver: [0.333, 0.231]
     sources/Validator: [0.571, 0]
@@ -81,9 +83,9 @@ Concrete types over 300 LOC:
 | Class | Module | LOC |
 |---|---|---:|
 | `Parser` | `document:Parser` | 956 |
-| `ExecutionContext` | `runner:State` | 496 |
-| `StepExecutionWorker` | `runner:Execution` | 379 |
-| `StepOutcomeHandler` | `runner:Execution` | 376 |
+| `ExecutionContext` | `runtime:State` | 496 |
+| `StepOutcomeHandler` | `runner:Execution` | 393 |
+| `StepExecutionWorker` | `runner:Execution` | 380 |
 | `Parser` | `expression:_` | 365 |
 | `WorkflowContext` | `contracts:State` | 359 |
 | `ExecutionState` | `contracts:State` | 308 |
@@ -95,6 +97,7 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
+| `ExpressionEngineInterface` <small>expression</small> | 12 |
 | `EvaluationEngineInterface` <small>evaluation</small> | 10 |
 
 ## Concrete hubs (DIP)

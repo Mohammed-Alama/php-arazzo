@@ -12,10 +12,11 @@ const BANNER = <<<'MD'
 
 # Generated: Pipeline Flow
 
-Execution topology of the Runner: every concrete service under `Runner/` (plus
-Laravel queue jobs) with the edges introduced by constructor injection or direct
-instantiation. Entry points (nothing injects them) are green. Isolated value
-objects, enums and exceptions are omitted. Regenerated before every commit.
+Execution topology of the execution path: every concrete service under
+`Runner/` (plus Laravel queue jobs) with the edges
+introduced by constructor injection or direct instantiation. Entry points
+(nothing injects them) are green. Isolated value objects, enums and
+exceptions are omitted. Regenerated before every commit.
 
 MD;
 

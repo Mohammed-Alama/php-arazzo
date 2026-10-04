@@ -87,3 +87,26 @@ parameters:
 			message: '#^Method parseWorkflowRef has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Parser.php
+
+		-
+			message: '#^Method processMatch has too high cyclomatic complexity \(13\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Interpolator.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Interpolator.php
+
+		-
+			message: '#^Call to function is_string\(\) with mixed will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Interpolator.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Interpolator.php

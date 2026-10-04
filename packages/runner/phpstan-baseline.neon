@@ -1,27 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method build has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Async/ExecutionStateBuilder.php
-
-		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Async/SuspensionHandler.php
-
-		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Async/TransitionApplier.php
-
-		-
-			message: '#^Method stepExecuted has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Async/WorkerEvents.php
-
-		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/AsyncExecutionGraph.php
 
@@ -31,33 +11,13 @@ parameters:
 			path: src/AsyncGraphSeams.php
 
 		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Events/CorrelationPendingEvent.php
-
-		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Events/StepExecutedEvent.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Events/StepFailedEvent.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Events/StepRetriedEvent.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 2
 			path: src/Execution/CorrelationResumer.php
 
 		-
-			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Execution/CorrelationResumer.php
 
@@ -244,7 +204,7 @@ parameters:
 			path: src/Execution/StepExecutor.php
 
 		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Execution/StepExecutor.php
 
@@ -305,17 +265,6 @@ parameters:
 			path: src/Execution/StepOutcomeHandler.php
 
 		-
-			message: '#^Parameter \#3 \$outputs of class Alama\\Arazzo\\Runner\\Events\\RunCompletedEvent constructor expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Execution/StepOutcomeHandler.php
-
-		-
-			message: '#^Method castOutputAgainstResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/StepOutputExtractor.php
-
-		-
 			message: '#^Cannot access offset ''body'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -340,6 +289,11 @@ parameters:
 			path: src/Execution/StepOutputExtractor.php
 
 		-
+			message: '#^Method castOutputAgainstResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			count: 1
+			path: src/Execution/StepOutputExtractor.php
+
+		-
 			message: '#^Method name ''castOutputAgainstResponseSchema'' length \(31\) is outside allowed range \(3\-30\)\.$#'
 			count: 1
 			path: src/Execution/StepOutputExtractor.php
@@ -349,11 +303,6 @@ parameters:
 			identifier: identical.alwaysFalse
 			count: 1
 			path: src/Execution/StepOutputExtractor.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Protocol/HttpStepExecutor.php
 
 		-
 			message: '#^Cannot access offset ''status'' on mixed\.$#'
@@ -394,31 +343,11 @@ parameters:
 			path: src/Protocol/AsyncApiStepExecutor.php
 
 		-
-			message: '#^Class ExecutionContext has too many methods \(31\)\. Maximum allowed is 20\.$#'
+			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/State/Data/ExecutionContext.php
+			path: src/Protocol/HttpStepExecutor.php
 
 		-
-			message: '#^Method __construct has too many parameters \(13\)\. Maximum allowed is 5\.$#'
+			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/State/Data/ExecutionContext.php
-
-		-
-			message: '#^Method start has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/State/Data/ExecutionContext.php
-
-		-
-			message: '#^Method __construct has too many parameters \(12\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/State/Data/StepResult.php
-
-		-
-			message: '#^Method failure has too many parameters \(10\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/State/Data/StepResult.php
-
-		-
-			message: '#^Method success has too many parameters \(9\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/State/Data/StepResult.php
+			path: src/UnifiedStepCarrier.php

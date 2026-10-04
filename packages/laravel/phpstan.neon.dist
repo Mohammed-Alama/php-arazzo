@@ -1,7 +1,7 @@
 includes:
-    - vendor/larastan/larastan/extension.neon
-    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
-    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - ../../vendor/larastan/larastan/extension.neon
+    - ../../vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - ../../vendor/phpstan/phpstan-phpunit/extension.neon
     - phpstan-baseline.neon
 parameters:
     level: max
@@ -10,10 +10,14 @@ parameters:
     excludePaths:
         - tests
     scanDirectories:
-        - vendor/alama/arazzo-core/src
-        - vendor/alama/arazzo-contracts/src
-        - vendor/alama/arazzo-expression/src
-        - vendor/alama/arazzo-document/src
-        - vendor/alama/arazzo-runner/src
-        - vendor/alama/arazzo-cli/src
-        - vendor/alama/arazzo-sources/src
+        - ../../packages/core/src
+        - ../../packages/contracts/src
+        - ../../packages/expression/src
+        - ../../packages/document/src
+        - ../../packages/evaluation/src
+        - ../../packages/runner/src
+        - ../../packages/runtime/src
+        - ../../packages/engine/src
+        - ../../packages/events/src
+        - ../../packages/cli/src
+        - ../../packages/sources/src

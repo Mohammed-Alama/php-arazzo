@@ -52,7 +52,7 @@ vendor/bin/infection \
   --coverage=build/coverage \
   --only-covered \
   --mutators="TrueValue,FalseValue,IdenticalEqual,LessThan,DecrementInteger,IncrementInteger" \
-  --filter="(WorkflowEngine|WorkflowExecutor|StepExecutionWorker|StepOutcomeHandler|ExpressionValueResolver|DependencyGraph)"
+  --filter="(WorkflowEngine|WorkflowExecutor|StepExecutionWorker|StepOutcomeHandler|DependencyGraph)"
 ```
 
 Record the MSI result alongside release notes when touching runner code.

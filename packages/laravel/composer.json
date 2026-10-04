@@ -11,8 +11,10 @@
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
         {"type": "path", "url": "../evaluation"},
+        {"type": "path", "url": "../events"},
         {"type": "path", "url": "../expression"},
         {"type": "path", "url": "../runner"},
+        {"type": "path", "url": "../runtime"},
         {"type": "path", "url": "../sources"}
     ],
     "authors": [
@@ -21,12 +23,14 @@
     "require": {
         "php": "^8.4",
         "alama/arazzo-cli": "@dev",
-        "alama/arazzo-core": "^1.0@alpha",
+        "alama/arazzo-core": "@dev",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-evaluation": "@dev",
+        "alama/arazzo-events": "@dev",
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-runner": "@dev",
+        "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",
         "guzzlehttp/guzzle": "^7.8||^8.0",
         "illuminate/contracts": "^11.0||^12.0||^13.0",

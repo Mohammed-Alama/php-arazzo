@@ -44,7 +44,7 @@ const PACKAGE_CONTRACTS = [
             'Own the parsed document model (`Spec`) and shared state/value types',
             'Support services: event dispatch, input-schema resolution, dependency analysis',
         ],
-        'faces' => ['AiClientInterface', 'StepProtocolExecutorInterface', 'QueueDriverInterface', 'LockManagerInterface', 'LockStrategyInterface', 'BackoffCalculatorInterface', 'OutputExtractorInterface', 'ResponseValidatorInterface', 'WorkflowContextInterface'],
+        'faces' => ['AiClientInterface', 'StepProtocolExecutorInterface', 'QueueDriverInterface', 'LockManagerInterface', 'LockStrategyInterface', 'BackoffCalculatorInterface', 'ResponseValidatorInterface', 'WorkflowContextInterface'],
         'value_types' => ['ArazzoDocument', 'Step', 'Workflow', 'Expression', 'RawDocument', 'SourceDescription', 'SuccessCriterion', 'Selector', 'PayloadReplacement', 'WorkflowContext', 'ExecutionState'],
         'internal' => ['InputSchemaResolver', 'NullEventDispatcher', 'SimpleEventDispatcher', 'DependencyAnalyzer', 'ImplicitDependencies', 'DependencyGraph'],
     ],
@@ -69,7 +69,7 @@ const PACKAGE_CONTRACTS = [
         ],
         'faces' => ['EvaluationEngineInterface'],
         'value_types' => ['WorkflowSymbols', 'StepSymbols', 'EvaluationInputInterface', 'EvaluationInput', 'SelectorEvaluationException', 'ExpressionReference', 'ReferenceKind'],
-        'internal' => ['ExpressionEvaluatorInterface', 'ExpressionResolverInterface', 'ExpressionEvaluator', 'SelectorEvaluator', 'StringInterpolator', 'JsonPathEvaluator', 'JsonPointer', 'DomXpathEvaluator', 'XpathEvaluator', 'Evaluation\\*'],
+        'internal' => ['ExpressionEvaluator', 'SelectorEvaluator', 'StringInterpolator', 'JsonPathEvaluator', 'JsonPointer', 'DomXpathEvaluator', 'XpathEvaluator', 'Evaluation\\*'],
     ],
     'document' => [
         'provides' => 'Loads, parses and validates Arazzo documents, and holds the vendor-free model types steps resolve to.',

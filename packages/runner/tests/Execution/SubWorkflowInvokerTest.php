@@ -10,6 +10,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\Exceptions\ExecutionException;
@@ -54,7 +55,7 @@ it('binds parameters, executes child workflow, returns SubWorkflowResult', funct
         })
         ->andReturn(new ExecutionResult('reconcile', 'completed', ['some_output' => 'val'], []));
 
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
 
     $parent = new WorkflowContext($definitionId, ['rideId' => 'r-42']);
     $action = new SubWorkflowSuccessAction(
@@ -86,7 +87,7 @@ it('throws ExecutionException when sub workflow cannot be found', function () {
     $definitionId = $registry->register($document);
 
     $executor = Mockery::mock(WorkflowExecutor::class);
-    $engine = new EvaluationEngine();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
 
     $parent = new WorkflowContext($definitionId, []);
     $action = new SubWorkflowSuccessAction(

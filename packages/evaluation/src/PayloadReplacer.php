@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Evaluation;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Evaluation\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * Applies a step's payload replacements to an array-shaped body.
@@ -29,8 +29,13 @@ final class PayloadReplacer
      * @param  callable(PayloadReplacement): mixed|null  $resolveValue  invoked for each replacement (Expression evaluation etc.)
      * @return array<array-key, mixed>
      */
-    public static function apply(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
-    {
+    public static function apply(
+        ExpressionEngineInterface $expression,
+        Step $step,
+        array $body,
+        ?callable $resolveValue = null,
+        ?WorkflowContext $context = null,
+    ): array {
         $requestBody = $step->io->requestBody;
         if ($requestBody === null || $requestBody->replacements === []) {
             return $body;
@@ -45,7 +50,7 @@ final class PayloadReplacer
             }
 
             if ($context !== null && self::isSelectorTarget($replacement)) {
-                self::applySelectorTarget($body, $replacement, $context, $resolveValue);
+                self::applySelectorTarget($body, $replacement, $context, $resolveValue, $expression);
             }
         }
 
@@ -85,14 +90,14 @@ final class PayloadReplacer
         PayloadReplacement $replacement,
         WorkflowContext $context,
         ?callable $resolveValue,
+        ExpressionEngineInterface $expression,
     ): void {
         $value = $resolveValue !== null ? $resolveValue($replacement) : $replacement->value;
         $type = (string) self::selectorType($replacement);
 
-        $evaluator = new DomXpathEvaluator();
         $found = match ($type) {
-            'xpath' => $evaluator->query($body, $replacement->target, 'xpath-10'),
-            default => JsonPathEvaluator::evaluate($replacement->target, $body),
+            'xpath' => $expression->queryXPath($body, $replacement->target, 'xpath-10'),
+            default => $expression->jsonPath($replacement->target, $body),
         };
 
         if ($found === null || is_array($found)) {

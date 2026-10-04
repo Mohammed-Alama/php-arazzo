@@ -21,14 +21,15 @@ use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Exceptions\GotoTargetNotFoundException;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
 use Alama\Arazzo\Runner\Execution\Exceptions\WorkflowCycleException;
 use Alama\Arazzo\Runner\Execution\Exceptions\WorkflowDepthExceededException;
-use Alama\Arazzo\Runner\Policy\RetryPolicy;
-use Alama\Arazzo\Runner\State\Data\ExecutionContext;
+use Alama\Arazzo\Runtime\Policy\RetryPolicy;
+use Alama\Arazzo\Runtime\State\Data\ExecutionContext;
 
 /** Chooses the next execution state. It intentionally knows nothing about queues, locks, storage, or events.
  *
@@ -46,7 +47,7 @@ final class WorkflowEngine
      *                                         explicit RetryPolicy is supplied.
      */
     public function __construct(
-        private ExpressionResolverInterface $expressions,
+        private EvaluationEngineInterface $evaluationEngine,
         int|null|RetryPolicy $maxRetryAttempts = null,
         private float $retryBackoffMultiplier = 1.0,
     ) {
@@ -78,7 +79,7 @@ final class WorkflowEngine
         $state = $state->withStepResult($step->stepId, $record);
         $actions = $this->actions($document, $workflow, $step, $criteriaMet);
         foreach ($actions as $position => $action) {
-            if (!$this->expressions->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
+            if (!$this->evaluationEngine->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
                 continue;
             }
             if ($action instanceof RetryAction) {
@@ -118,7 +119,7 @@ final class WorkflowEngine
                     }
 
                     $value = $parameter->value instanceof Expression
-                        ? $this->expressions->evaluate($parameter->value, $gotoState->toContext(), $step->stepId)
+                        ? $this->evaluationEngine->evaluate($parameter->value, new EvaluationContext($gotoState->toContext(), $step->stepId))
                         : $parameter->value;
 
                     $inputs = $gotoState->inputs;
@@ -237,7 +238,6 @@ final class WorkflowEngine
      * Evaluates the workflow-level `outputs` expressions against the final
      * step results. Unresolvable expressions evaluate to null instead of
      * failing the run.
-
      *
      * @return array<string, mixed>
      */
@@ -254,7 +254,7 @@ final class WorkflowEngine
         foreach ($workflow->outputs as $name => $expression) {
             try {
                 $outputs[$name] = $expression instanceof Expression
-                    ? $this->expressions->evaluate($expression, $context)
+                    ? $this->evaluationEngine->evaluate($expression, new EvaluationContext($context))
                     : $expression;
             } catch (\Throwable) {
                 $outputs[$name] = null;

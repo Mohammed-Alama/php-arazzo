@@ -37,9 +37,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome;`
 - `public function supports(Step $step, ArazzoDocument $document): bool;`
 
-#### `OutputExtractorInterface` interface
-- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array;`
-
 #### `PluginInterface` interface
 - `public function name(): string;`
 - `public function priority(): int;`
@@ -184,7 +181,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function fromRaw(string $raw): self`
 
 #### `StepState` enum
-- Cases: `ActorInputReceived`, `AwaitingActorInput`, `Completed`, `EvaluatingCriteria`, `ExecutingRequest`, `Failed`, `Pending`
+- Cases: `ActorInputReceived`, `AwaitingActorInput`, `Cancelled`, `Completed`, `EvaluatingCriteria`, `ExecutingRequest`, `Failed`, `Pending`
 
 #### `StepStatus` enum
 - Cases: `Failed`, `Pending`, `Retrying`, `Succeeded`, `Suspended`
@@ -263,9 +260,32 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Expression`
 
 #### `ExpressionEngine` class
-- `public function __construct(?ExpressionParser $parser = null)`
+- `public function __construct(private ExpressionDependencyProvider $provider = new ExpressionDependencyProvider())`
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
+- `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function expressionReferences(string $raw): ?ExpressionReference`
-- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
+- `public function extract(string $template): array`
+- `public function interpolate(string $template, callable $resolver, array $options = []): string`
+- `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string`
+- `public function jsonPath(string $expression, array|object $data): mixed`
+- `public function jsonPointer(array $data, ?string $pointer): mixed`
+- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
+- `public function supportedXPathVersions(): array`
+- `public function test(string $raw): bool`
+
+#### `JsonPathEvaluator` class
+- `public static function evaluate(string $expression, array|object $data): mixed`
+- `public static function normalizeFilters(string $expression): string`
+
+#### `JsonPointer` class
+- `public static function resolve(array $data, ?string $pointer): mixed`
+
+### `Alama\Arazzo\Expression\Data`
+
+#### `EvaluationContext` class
+- `public function __construct(public WorkflowContextInterface $workflowContext, public ?string $currentStepId = null, public ?ArazzoDocument $document = null)`
+- `public function getCurrentStepId(): ?string`
+- `public function getDocument(): ?ArazzoDocument`
 
 ### `Alama\Arazzo\Expression\Enum`
 
@@ -277,27 +297,52 @@ this file on a commit is a public API change — review it deliberately.
 #### `ExpressionSyntaxException` class
 - `public function __construct(string $message, public readonly string $expression = '', public readonly int $offset = -1, string $path = '', string $codeId = '', ?Throwable $previous = null)`
 
+#### `SelectorEvaluationException` class
+- `public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self`
+- `public static function xpathRequiresXml(string $pointer): self`
+
 ### `Alama\Arazzo\Expression\Interfaces`
 
+#### `EvaluationInputInterface` interface
+- `public function getCurrentStepId(): ?string;`
+- `public function getDocument(): ?ArazzoDocument;`
+- `public function getWorkflowContext(): WorkflowContextInterface;`
+
 #### `ExpressionEngineInterface` interface
+- `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
+- `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
 - `public function expressionReferences(string $raw): ?ExpressionReference;`
+- `public function extract(string $template): array;`
+- `public function interpolate(string $template, callable $resolver, array $options = []): string;`
+- `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string;`
+- `public function jsonPath(string $expression, array|object $data): mixed;`
+- `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
+- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
+- `public function supportedXPathVersions(): array;`
+- `public function test(string $raw): bool;`
+
+### `Alama\Arazzo\Expression\Xpath`
+
+#### `XpathEvaluator` interface
+- `public function query(mixed $rootValue, string $selector, string $version): mixed;`
+- `public function supportedVersions(): array;`
 
 ## evaluation
 
 ### `Alama\Arazzo\Evaluation`
 
 #### `EvaluationEngine` class
-- `public function __construct(private readonly ExpressionEvaluator $evaluator = new ExpressionEvaluator(), private readonly DomXpathEvaluator $xpath = new DomXpathEvaluator(), private readonly ExpressionEvaluatorRegistry $expressionRegistry = new ExpressionEvaluatorRegistry(), private readonly CriterionEvaluatorRegistry $criterionRegistry = new CriterionEvaluatorRegistry())`
+- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null)`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
-- `public function jsonPointer(array $data, ?string $pointer): mixed`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
+- `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed`
 - `public function supportedXPathVersions(): array`
 
 #### `EvaluationEngineInterface` interface
@@ -307,55 +352,35 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
 - `public function jsonPath(string $expression, array|object $data): mixed;`
-- `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
+- `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;`
 - `public function supportedXPathVersions(): array;`
-
-### `Alama\Arazzo\Evaluation\Data`
-
-#### `EvaluationContext` class
-- `public function __construct(public WorkflowContextInterface $workflowContext, public ?string $currentStepId = null, public ?ArazzoDocument $document = null)`
-- `public function getCurrentStepId(): ?string`
-- `public function getDocument(): ?ArazzoDocument`
-
-### `Alama\Arazzo\Evaluation\Exceptions`
-
-#### `SelectorEvaluationException` class
-- `public static function unsupportedXpathVersion(string $requested, array $supported, string $location = '/'): self`
-- `public static function xpathRequiresXml(string $pointer): self`
-
-### `Alama\Arazzo\Evaluation\Interfaces`
-
-#### `EvaluationInputInterface` interface
-- `public function getCurrentStepId(): ?string;`
-- `public function getDocument(): ?ArazzoDocument;`
-- `public function getWorkflowContext(): WorkflowContextInterface;`
 
 ### `Alama\Arazzo\Evaluation\Plugins`
 
 #### `JsonPathCriterionPlugin` class
+- `public function __construct(private ExpressionEngineInterface $expression)`
 - `public function evaluate(SuccessCriterion $criterion, mixed $context, Step $step, WorkflowContextInterface $workflowContext): bool`
-- `public function name(): string`
 - `public function priority(): int`
 - `public function supports(CriterionType|SuccessCriterion $criterion): bool`
 
 #### `JsonPathExpressionPlugin` class
+- `public function __construct(private ExpressionEngineInterface $expression)`
 - `public function evaluate(Expression $expression, mixed $context): mixed`
-- `public function name(): string`
 - `public function priority(): int`
 - `public function supports(Expression $expression): bool`
 
 ### `Alama\Arazzo\Evaluation\Registries`
 
 #### `CriterionEvaluatorRegistry` class
-- `public function __construct()`
+- `public function __construct(ExpressionEngineInterface $expression)`
 - `public function all(): array`
 - `public function register(CriterionEvaluatorPluginInterface $plugin, int $priority = 0): void`
 - `public function resolve(CriterionType|SuccessCriterion $criterion): ?CriterionEvaluatorPluginInterface`
 
 #### `ExpressionEvaluatorRegistry` class
-- `public function __construct()`
+- `public function __construct(ExpressionEngineInterface $expression)`
 - `public function all(): array`
 - `public function register(ExpressionEvaluatorPluginInterface $plugin, int $priority = 0): void`
 - `public function resolve(Expression $expression): ?ExpressionEvaluatorPluginInterface`
@@ -443,6 +468,21 @@ this file on a commit is a public API change — review it deliberately.
 - `public function preflightSource(ArazzoDocument $document): ValidationResult`
 - `public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle`
 
+## engine
+
+### `Alama\Arazzo\Engine\Data`
+
+#### `StepTransition` class
+- `public function __construct(public StepState $from, public StepState $to, public string $reason, public StepTransitionType $type = StepTransitionType::Enter, public array $actions = [])`
+- `public static function cancelled(StepState $from, string $reason, array $actions): self`
+- `public static function guardFailed(StepState $from, string $reason): self`
+- `public static function timedOut(StepState $from, string $reason, array $actions): self`
+
+### `Alama\Arazzo\Engine\Enum`
+
+#### `StepTransitionType` enum
+- Cases: `Cancelled`, `Enter`, `GuardFailed`, `Timeout`
+
 ## runner
 
 ### `RunnerFacadeInterface` interface
@@ -450,7 +490,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $engine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
+- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $evaluationEngine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 

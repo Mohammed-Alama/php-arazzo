@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 53 | 17 | allowed |
+| `Psr` | 51 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 18 | 0 | **forbidden** ⚠ |
@@ -34,19 +34,18 @@ when a boundary consciously moves.
 | cli | `cli:Console` | `Psr` | 2 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
+| contracts | `contracts:Interfaces` | `Psr` | 2 |
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
-| evaluation | `evaluation:_` | `Flow` | 1 |
-| runner | `runner:Async` | `Psr` | 2 |
+| expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Execution` | `GuzzleHttp` | 6 |
 | runner | `runner:Execution` | `OpenTelemetry` | 2 |
 | runner | `runner:Execution` | `Psr` | 23 |
 | runner | `runner:Execution` | `cebe` | 10 |
-| runner | `runner:Infrastructure` | `Psr` | 2 |
 | runner | `runner:Protocol` | `Psr` | 6 |
-| runner | `runner:Telemetry` | `OpenTelemetry` | 23 |
 | runner | `runner:_` | `Psr` | 5 |
+| runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
@@ -76,11 +75,11 @@ when a boundary consciously moves.
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
-- `evaluation:_` imports `Flow\*` (1 refs)
+- `expression:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `GuzzleHttp\*` (6 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
-- `runner:Telemetry` imports `OpenTelemetry\*` (23 refs)
+- `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
@@ -113,24 +112,24 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
-| `evaluation` | `ComponentRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `ExpressionAst` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `HttpMetaRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `InputPart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `InputRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `MessageRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `OutputPart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `Parser` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `RequestPart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `ResponsePart` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `SelfRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `SourceRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `StepRef` | `expression` | 1 | `ExpressionEvaluator` |
-| `evaluation` | `WorkflowRef` | `expression` | 1 | `ExpressionEvaluator` |
+| `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
+| `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
+| `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
-| `runner` | `DependencyGraph` | `contracts` | 3 | `WorkflowEngine` |
+| `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
+| `runner` | `EvaluationContext` | `expression` | 7 | `SubWorkflowInvoker` |
+| `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
 | `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
+| `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
+| `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
+| `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
+| `runner` | `RunFailedEvent` | `events` | 3 | `StepExecutionWorker` |
+| `runner` | `RunStartedEvent` | `events` | 1 | `WorkflowExecutor` |
+| `runner` | `StepExecutedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepFailedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepRetriedEvent` | `events` | 2 | `StepOutcomeHandler` |
+| `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
 | `sources` | `Loader` | `document` | 1 | `SourceGraph` |

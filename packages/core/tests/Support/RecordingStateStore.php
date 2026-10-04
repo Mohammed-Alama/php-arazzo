@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Support;
 
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
 final class RecordingStateStore implements StateStoreInterface
 {
@@ -27,5 +27,11 @@ final class RecordingStateStore implements StateStoreInterface
     public function load(string $executionId): ?array
     {
         return $this->preloaded[$executionId] ?? $this->saved[$executionId] ?? null;
+    }
+
+    public function delete(string $executionId): void
+    {
+        unset($this->preloaded[$executionId]);
+        unset($this->saved[$executionId]);
     }
 }

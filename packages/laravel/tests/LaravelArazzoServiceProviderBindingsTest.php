@@ -7,13 +7,15 @@ namespace Alama\Arazzo\Laravel\Tests;
 use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Cli\Generator\Clients\OpenAiClient;
 use Alama\Arazzo\Contracts\Interfaces\AiClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Document\Document;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Http\Psr18HttpClient;
@@ -24,22 +26,21 @@ use Alama\Arazzo\Laravel\Persistence\DatabaseExecutionRegistry;
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
 use Alama\Arazzo\Laravel\Queue\LaravelQueueDriver;
 use Alama\Arazzo\Laravel\State\RedisHotStateStore;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Infrastructure\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Runner\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
-use Alama\Arazzo\Runner\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
@@ -75,7 +76,6 @@ it('binds the persistence interfaces to their Laravel implementations', function
 it('binds StepExecutionWorker', function () {
     app()->bind(LockManagerInterface::class, fn () => \Mockery::mock(LockManagerInterface::class));
     app()->bind(HttpClientInterface::class, fn () => \Mockery::mock(HttpClientInterface::class));
-    app()->bind(ExpressionResolverInterface::class, fn () => \Mockery::mock(ExpressionResolverInterface::class));
 
     expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
 });
@@ -90,10 +90,24 @@ it('binds the queue/lock/http infra', function () {
 it('binds the async control flow classes', function () {
     expect(app(PendingCorrelationRegistryInterface::class))->toBeInstanceOf(DatabasePendingCorrelationRegistry::class);
     expect(app(StepOutcomeHandler::class))->toBeInstanceOf(StepOutcomeHandler::class);
-    expect(app(HttpStepExecutor::class))->toBeInstanceOf(HttpStepExecutor::class);
-    expect(app(AsyncApiStepExecutor::class))->toBeInstanceOf(AsyncApiStepExecutor::class);
     expect(app(CorrelationResumer::class))->toBeInstanceOf(CorrelationResumer::class);
     expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
+});
+
+it('assembles every protocol executor into the graph', function () {
+    // The protocol executors stay runner-internal: the seam rule forbids
+    // packages/laravel/src from naming Runner\Protocol\*, so they are reached
+    // through the graph's public handle rather than container bindings.
+    $executors = app(AsyncExecutionGraph::class)->protocolExecutors();
+
+    expect($executors)->toHaveCount(3);
+
+    foreach ($executors as $executor) {
+        expect($executor)->toBeInstanceOf(StepProtocolExecutorInterface::class);
+    }
+
+    expect(array_map(static fn (object $e): string => $e::class, $executors))
+        ->toContain(HttpStepExecutor::class, AsyncApiStepExecutor::class);
 });
 
 it('binds the entry-point facade interfaces to their self-contained facades', function () {

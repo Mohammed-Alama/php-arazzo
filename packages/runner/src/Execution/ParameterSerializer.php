@@ -17,7 +17,7 @@ class ParameterSerializer
      * @param  array<string, mixed>  $payload
      * @return array<string, string>
      */
-    public static function serialize(string $location, array $normalizedParams, array $payload): array
+    public function serialize(string $location, array $normalizedParams, array $payload): array
     {
         $serialized = [];
         foreach ($payload as $name => $value) {
@@ -33,7 +33,7 @@ class ParameterSerializer
         return $serialized;
     }
 
-    private static function getDefaultStyle(string $location): string
+    private function getDefaultStyle(string $location): string
     {
         return match ($location) {
             'query', 'cookie' => 'form',
@@ -42,12 +42,12 @@ class ParameterSerializer
         };
     }
 
-    private static function getDefaultExplode(string $style): bool
+    private function getDefaultExplode(string $style): bool
     {
         return $style === 'form';
     }
 
-    public static function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string
+    public function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string
     {
         return match ($style) {
             'simple' => self::serializeSimple($name, $value, $explode),
@@ -61,7 +61,7 @@ class ParameterSerializer
         };
     }
 
-    private static function serializeSimple(string $name, mixed $value, bool $explode): string
+    private function serializeSimple(string $name, mixed $value, bool $explode): string
     {
         if (is_array($value)) {
             // associative vs sequential
@@ -85,7 +85,7 @@ class ParameterSerializer
         return self::asString($value);
     }
 
-    private static function asString(mixed $val): string
+    private function asString(mixed $val): string
     {
         if (is_scalar($val)) {
             return (string) $val;
@@ -98,7 +98,7 @@ class ParameterSerializer
         return is_array($val) || is_object($val) ? json_encode($val) ?: '' : '';
     }
 
-    private static function serializeForm(string $name, mixed $value, bool $explode): string
+    private function serializeForm(string $name, mixed $value, bool $explode): string
     {
         if (is_array($value)) {
             if (array_is_list($value)) {
@@ -132,7 +132,7 @@ class ParameterSerializer
         return urlencode($name).'='.urlencode(self::asString($value));
     }
 
-    private static function serializeMatrix(string $name, mixed $value, bool $explode): string
+    private function serializeMatrix(string $name, mixed $value, bool $explode): string
     {
         if (is_array($value)) {
             if (array_is_list($value)) {
@@ -164,7 +164,7 @@ class ParameterSerializer
         return ';'.urlencode($name).'='.urlencode(self::asString($value));
     }
 
-    private static function serializeLabel(string $name, mixed $value, bool $explode): string
+    private function serializeLabel(string $name, mixed $value, bool $explode): string
     {
         if (is_array($value)) {
             if (array_is_list($value)) {
@@ -189,7 +189,7 @@ class ParameterSerializer
      * deepObject (query only): ?param[prop]=value&param[prop2]=value2 —
      * nested objects recurse as param[a][b]=v.
      */
-    private static function serializeDeepObject(string $name, mixed $value): string
+    private function serializeDeepObject(string $name, mixed $value): string
     {
         if (!is_array($value) || array_is_list($value)) {
             // Non-object values degrade to a plain form pair.
@@ -209,7 +209,7 @@ class ParameterSerializer
     /**
      * @return list<string>
      */
-    private static function deepObjectPairs(string $prefix, mixed $value): array
+    private function deepObjectPairs(string $prefix, mixed $value): array
     {
         if (is_array($value) && !array_is_list($value)) {
             /** @var list<string> $pairs */
@@ -226,7 +226,7 @@ class ParameterSerializer
         return [$prefix.'='.urlencode(self::asString($value))];
     }
 
-    private static function serializeDelimited(string $name, mixed $value, bool $explode, string $delimiter): string
+    private function serializeDelimited(string $name, mixed $value, bool $explode, string $delimiter): string
     {
         $encodedDelimiter = urlencode($delimiter);
         if (is_array($value)) {

@@ -10,12 +10,12 @@ arch('document does not leak runner internals')
     ->expect('Alama\Arazzo\Document\Parser')
     ->not->toUse('Alama\Arazzo\Runner\Execution')
     ->not->toUse('Alama\Arazzo\Cli\Console')
-    ->not->toUse('Alama\Arazzo\Runner\Events')
+    ->not->toUse('Alama\Arazzo\Events')
     ->not->toUse('Alama\Arazzo\Runner\Protocol')
     ->expect('Alama\Arazzo\Document\Validator')
     ->not->toUse('Alama\Arazzo\Runner\Execution')
     ->not->toUse('Alama\Arazzo\Cli\Console')
-    ->not->toUse('Alama\Arazzo\Runner\Events');
+    ->not->toUse('Alama\Arazzo\Events');
 
 arch('document does not depend on evaluation package')
     ->expect('Alama\Arazzo\Document')

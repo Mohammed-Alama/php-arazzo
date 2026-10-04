@@ -14,17 +14,16 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
-use Alama\Arazzo\Runner\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\PendingCorrelationRegistryInterface;
-use Alama\Arazzo\Runner\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
 it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
     $invoker = Mockery::mock(SubWorkflowInvoker::class);
@@ -43,7 +42,7 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
     $ledger = Mockery::mock(EventLedgerInterface::class);
     $ledger->shouldReceive('append')->once();
 
-    $resolver = Mockery::mock(ExpressionResolverInterface::class);
+    $resolver = Mockery::mock(EvaluationEngineInterface::class);
     $resolver->shouldReceive('evaluateCriteria')->andReturn(true);
 
     $handler = new StepOutcomeHandler(
@@ -51,7 +50,7 @@ it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
         new RunControlFlow(new WorkflowEngine($resolver), Mockery::mock(QueueDriverInterface::class)),
         pendingCorrelations: $pending,
         invoker: $invoker,
-        engine: Mockery::mock(EvaluationEngineInterface::class),
+        evaluationEngine: Mockery::mock(EvaluationEngineInterface::class),
     );
 
     $step = StepFactory::http(

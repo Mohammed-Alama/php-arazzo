@@ -18,10 +18,7 @@ use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
-use Alama\Arazzo\Evaluation\CriteriaEvaluator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Evaluation\ExpressionEvaluator;
-use Alama\Arazzo\Evaluation\ExpressionResolver;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
@@ -32,7 +29,7 @@ use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
-use Alama\Arazzo\Tests\Support\TestExpressionResolver;
+use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
@@ -500,18 +497,15 @@ it('executes a workflow end-to-end', function () {
             return new SourceDocument($description->name, $description->type, $description->url, $json);
         }
     };
-    $engine = new EvaluationEngine();
-    $evaluator = new ExpressionEvaluator();
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $runtime = SourceGraph::runtime(null, null, new SourceRegistry($sourceResolver));
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
-    $criteriaEvaluator = new CriteriaEvaluator($evaluator);
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);
-    $resolver = new ExpressionResolver($evaluator, $outputExtractor, $criteriaEvaluator, $schemaValidator);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $resolver, $runtime->operations, engine: $engine);
+    $stepExecutor = new StepExecutor($openApiExecutor, $runtime->operations, $engine, $outputExtractor, $schemaValidator);
 
-    $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestExpressionResolver()));
+    $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestEvaluationEngine()));
 
     $result = $workflowExecutor->execute($workflow, $doc, ['customerId' => 12345]);
 

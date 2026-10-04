@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Execution;
+namespace Alama\Arazzo\Tests\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;

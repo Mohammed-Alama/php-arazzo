@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Evaluation\Interfaces\ExpressionResolverInterface;
 use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
@@ -28,9 +28,10 @@ class StepExecutor
 
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
-        private ExpressionResolverInterface $expressionResolver,
         private OpenApiOperationResolver $operationResolver,
-        private EvaluationEngineInterface $engine,
+        private EvaluationEngineInterface $evaluationEngine,
+        private StepOutputExtractor $outputExtractor,
+        private ResponseValidatorInterface $schemaValidator,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
@@ -45,8 +46,8 @@ class StepExecutor
      */
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
     {
-        ['payload' => $payload] =
-            (new RequestCompiler(new ExpressionValueResolver($this->engine), $this->engine))->compile($step, $document, $context);
+        $compiler = new RequestCompiler($this->evaluationEngine);
+        ['payload' => $payload] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->resolveOperation($step, $document);
 
@@ -54,7 +55,7 @@ class StepExecutor
             $response = $this->openApiExecutor->execute(
                 $resolved,
                 $payload,
-                function ($request) use (&$context, $step, $payload) {
+                function ($request) use (&$context, $compiler, $step, $payload) {
                     if ($this->injector !== null) {
                         $request = $this->injector->inject($request, $step, $context)->request;
                     }
@@ -73,21 +74,21 @@ class StepExecutor
                     }
 
                     $captured = $request instanceof Psr7Request ? $request : null;
-                    $context = $context->withStepRequest($step->stepId, RequestCompiler::requestRecord($captured, $payload));
+                    $context = $context->withStepRequest($step->stepId, $compiler->requestRecord($captured, $payload));
 
                     return $request;
                 },
                 $step->flow->timeout !== null ? $step->flow->timeout / 1000 : null,
             );
 
-            $decoded = RequestCompiler::decodeResponse($response);
+            $decoded = $compiler->decodeResponse($response);
             $statusCode = $decoded['statusCode'];
             $respHeaders = $decoded['headers'];
             $respBody = $decoded['body'];
             $respBodyString = $decoded['rawBody'];
 
             if ($this->shouldValidateSchema($step)) {
-                $this->expressionResolver->validateResponseSchema(
+                $this->schemaValidator->validateResponseSchema(
                     $step,
                     $statusCode,
                     $response->getHeaderLine('Content-Type'),
@@ -114,12 +115,12 @@ class StepExecutor
             ]);
         }
 
-        $outputs = $this->expressionResolver->extractOutputs($step, $context, $document);
+        $outputs = $this->outputExtractor->extractOutputs($step, $context, $document);
         foreach ($outputs as $key => $val) {
             $context = $context->withStepOutput($step->stepId, $key, $val);
         }
 
-        $success = $this->expressionResolver->evaluateSuccessCriteria($step, $context, $document);
+        $success = $this->evaluationEngine->evaluateSuccessCriteria($step, $context, $document);
 
         return [$context, $success];
     }
