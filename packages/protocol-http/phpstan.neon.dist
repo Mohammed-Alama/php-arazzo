@@ -1,0 +1,17 @@
+includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+    scanDirectories:
+        - ../contracts/src
+        - ../expression/src
+        - ../evaluation/src
+        - ../document/src
+        - ../engine/src
+        - ../sources/src
+    reportUnmatchedIgnoredErrors: false

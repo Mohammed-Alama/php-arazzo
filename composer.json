@@ -51,6 +51,10 @@
         {
             "type": "path",
             "url": "packages/sources"
+        },
+        {
+            "type": "path",
+            "url": "packages/protocol-http"
         }
     ],
     "require": {
@@ -66,6 +70,7 @@
         "alama/arazzo-engine": "@dev",
         "alama/arazzo-events": "@dev",
         "alama/arazzo-sources": "@dev",
+        "alama/arazzo-protocol-http": "@dev",
         "alama/laravel-arazzo": "@dev",
         "ext-dom": "*",
         "ext-libxml": "*"
@@ -111,7 +116,8 @@
             "Alama\\Arazzo\\Laravel\\Tests\\": "packages/laravel/tests/",
             "Alama\\Arazzo\\Tests\\Sources\\": "packages/sources/tests/",
             "Alama\\Arazzo\\Tests\\Engine\\": "packages/engine/tests/",
-            "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/"
+            "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/",
+            "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "packages/protocol-http/tests"
         }
     },
     "scripts": {
@@ -125,7 +131,8 @@
             "@analyse-cli",
             "@analyse-laravel",
             "@analyse-engine",
-            "@analyse-events"
+            "@analyse-events",
+            "@analyse-http"
         ],
         "analyse-contracts": "vendor/bin/phpstan analyse -c packages/contracts/phpstan.neon.dist --memory-limit=1G",
         "analyse-expression": "vendor/bin/phpstan analyse -c packages/expression/phpstan.neon.dist --memory-limit=1G",
@@ -139,6 +146,7 @@
         "analyse-evaluation": "vendor/bin/phpstan analyse -c packages/evaluation/phpstan.neon.dist --memory-limit=1G",
         "analyse-events": "vendor/bin/phpstan analyse -c packages/events/phpstan.neon.dist --memory-limit=1G",
         "analyse-engine": "vendor/bin/phpstan analyse -c packages/engine/phpstan.neon.dist --memory-limit=1G",
+        "analyse-http": "vendor/bin/phpstan analyse -c packages/protocol-http/phpstan.neon.dist --memory-limit=1G",
         "test-core": "vendor/bin/pest packages/core/tests",
         "test-contracts": "vendor/bin/pest packages/contracts/tests",
         "test-document": "vendor/bin/pest packages/document/tests",
@@ -151,6 +159,7 @@
         "test-evaluation": "vendor/bin/pest packages/evaluation/tests",
         "test-engine": "vendor/bin/pest packages/engine/tests",
         "test-events": "vendor/bin/pest packages/events/tests",
+        "test-http": "vendor/bin/pest packages/protocol-http/tests",
         "test": [
             "@test-contracts",
             "@test-expression",
@@ -163,7 +172,8 @@
             "@test-runner",
             "@test-cli",
             "@test-core",
-            "@test-laravel"
+            "@test-laravel",
+            "@test-http"
         ],
         "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",
