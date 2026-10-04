@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Sources\Normalizer;
+namespace Alama\Arazzo\Protocol\Http\Normalizer;
 
 use Alama\Arazzo\Contracts\Support\Exceptions\NotImplementedException;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Sources\Normalizer;
+namespace Alama\Arazzo\Protocol\Http\Normalizer;
 
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
@@ -10,6 +10,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Sources\Normalizer\Interfaces\OpenApiNormalizerInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
 use cebe\openapi\spec\OpenApi;
 use cebe\openapi\spec\Operation;

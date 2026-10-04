@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Sources\Normalizer;
+namespace Alama\Arazzo\Protocol\Http\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;

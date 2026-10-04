@@ -52,9 +52,6 @@ mindmap
       PessimisticLockStrategy
     OpenApiExecutorInterface
       DefaultOpenApiExecutor
-    OpenApiNormalizerInterface
-      OpenApi30Normalizer
-      Swagger2Normalizer
     PendingCorrelationRegistryInterface
       DatabasePendingCorrelationRegistry
     QueueDriverInterface
@@ -68,8 +65,6 @@ mindmap
       RunnerFacade
     RunnerGraphBuilderInterface
       RunnerGraphBuilder
-    SourceNormalizerInterface
-      OpenApiSourceNormalizer
     SourceNormalizerRegistryInterface
       SourceNormalizerRegistry
     StateStoreInterface
@@ -107,14 +102,12 @@ mindmap
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
 | `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
 | `OpenApiExecutorInterface` | no | `DefaultOpenApiExecutor` <small>core</small> |
-| `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
-| `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small> |
 | `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
 | `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
@@ -126,8 +119,11 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
+- `OpenApiNormalizerInterface` <small>Normalizer/Interfaces</small>
+- `OpenApiOperationResolverInterface` <small>Normalizer</small>
 - `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
 - `ProtocolExecutorRegistryInterface` <small>Execution/Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
+- `SourceNormalizerInterface` <small>Interfaces</small>
 - `WorkflowEngineInterface` <small></small>

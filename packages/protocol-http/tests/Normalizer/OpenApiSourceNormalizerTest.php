@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Normalizer;
+namespace Alama\Arazzo\Tests\Protocol\Http\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Document\ResolvedOperation;
-use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Sources\Normalizer\OpenApiSourceNormalizer;
+use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiSourceNormalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;

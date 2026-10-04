@@ -398,7 +398,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Document`
 
 #### `Document` class
-- `public function __construct(private readonly ModelStack $model, private readonly ?OpenApiOperationResolver $operationResolver = null)`
+- `public function __construct(private readonly ModelStack $model, private readonly ?OpenApiOperationResolverInterface $operationResolver = null)`
 - `public function parse(RawDocument $raw): ArazzoDocument`
 - `public function preflight(ArazzoDocument $document): ValidationResult`
 - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
@@ -406,7 +406,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function validate(ArazzoDocument $document): ValidationResult`
 
 #### `ModelStack` class
-- `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolver $operationResolver = null)`
+- `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolverInterface $operationResolver = null)`
 
 #### `ResolvedOperation` class
 - `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?GraphQlOperation $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
@@ -454,19 +454,14 @@ this file on a commit is a public API change — review it deliberately.
 
 ### `SourceGraph` class
 - `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
-- `public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface`
-- `public static function loader(?SourceRegistry $registry = null): SourceLoader`
-- `public static function runtime(?SourceRegistry $registry = null): SourceRuntime`
-- `public static function using(?SourceRegistry $registry = null): DocumentInterface`
 
 ### `Alama\Arazzo\Sources`
 
 #### `SourceLoader` class
-- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
+- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
 - `public function detectOpenApiVersion(array $document): string`
 - `public function normalizeSources(ArazzoDocument $document, string $basePath = ''): array`
 - `public function preflightSource(ArazzoDocument $document): ValidationResult`
-- `public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle`
 
 ## engine
 

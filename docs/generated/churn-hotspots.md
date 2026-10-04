@@ -21,8 +21,8 @@ Analyzed 302 total file-touches across 44 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 36 | 12% | 365 | 98.6 |
-| `cli:Console` | 21 | 7% | 794 | 26.4 |
+| `laravel:Bindings` | 36 | 12% | 369 | 97.6 |
+| `cli:Console` | 21 | 7% | 795 | 26.4 |
 | `runner:Execution` | 21 | 7% | 3,743 | 5.6 |
 | `laravel:Http` | 19 | 6% | 170 | 111.8 |
 | `laravel:Persistence` | 18 | 6% | 264 | 68.2 |
@@ -36,7 +36,7 @@ Analyzed 302 total file-touches across 44 modules.
 | `laravel:Lock` | 9 | 3% | 52 | 173.1 |
 | `contracts:Interfaces` | 8 | 3% | 304 | 26.3 |
 | `document:Parser` | 8 | 3% | 1,316 | 6.1 |
-| `sources:Normalizer` | 7 | 2% | 782 | 9 |
+| `sources:Normalizer` | 7 | 2% | 84 | 83.3 |
 | `evaluation:Registries` | 5 | 2% | 123 | 40.7 |
 | `expression:Data` | 5 | 2% | 128 | 39.1 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
@@ -66,4 +66,4 @@ Analyzed 302 total file-touches across 44 modules.
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
 | `sources:Validator` | 1 | 0% | 303 | 3.3 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (111.8), `laravel:Queue` (110.1), `laravel:Bindings` (98.6)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (111.8), `laravel:Queue` (110.1), `laravel:Bindings` (97.6)

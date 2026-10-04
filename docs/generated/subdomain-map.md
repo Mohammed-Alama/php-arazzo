@@ -18,7 +18,7 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>1203 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>794 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>795 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>111 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1316 LOC</small>"]:::supportingDomain
@@ -29,7 +29,7 @@ flowchart LR
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>365 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>369 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>170 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
@@ -64,7 +64,7 @@ flowchart LR
         S_runtime_Infrastructure["runtime:Infrastructure<br/><small>155 LOC</small>"]:::unknownDomain
         S_runtime_Policy["runtime:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runtime_Telemetry["runtime:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
-        S_sources_Normalizer["sources:Normalizer<br/><small>782 LOC</small>"]:::unknownDomain
+        S_sources_Normalizer["sources:Normalizer<br/><small>84 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -74,10 +74,10 @@ flowchart LR
 
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
-| Core domain | 1 | 1,203 | 0 | 6% |
-| Supporting | 7 | 6,737 | 0 | 35% |
-| Generic subdomain | 11 | 1,915 | 1,156 | 16% |
-| Unclassified | 25 | 8,149 | 0 | 43% |
+| Core domain | 1 | 1,203 | 0 | 7% |
+| Supporting | 7 | 6,738 | 0 | 36% |
+| Generic subdomain | 11 | 1,915 | 1,160 | 17% |
+| Unclassified | 25 | 7,451 | 0 | 40% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

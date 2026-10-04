@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Normalizer;
+namespace Alama\Arazzo\Tests\Protocol\Http\Normalizer;
 
 use Alama\Arazzo\Contracts\Support\Exceptions\NotImplementedException;
-use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Sources\Normalizer\Swagger2Normalizer;
+use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Protocol\Http\Normalizer\Swagger2Normalizer;
 
 it('swagger 2 normalizer throws', function (): void {
     $normalizer = new Swagger2Normalizer();

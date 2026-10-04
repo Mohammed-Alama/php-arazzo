@@ -24,19 +24,19 @@ Evans' first question: does the code speak one language?
 ### parse vs load vs decode
 
 - **Decoder**: `DecoderInterface`, `DecoderRegistry`, `NativeJsonDecoder`, `SymfonyYamlDecoder` (4 types)
-- **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` + 1 more (5 types)
+- **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `SourceLoader` (4 types)
 - **Parser**: `Parser`, `ParserException` (2 types)
 
 ### document vs definition vs spec
 
 - **Definition**: `DatabaseDefinitionRegistry`, `DefinitionHydrationException`, `DefinitionRegistryInterface`, `InMemoryDefinitionRegistry` + 1 more (5 types)
-- **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 6 more (10 types)
+- **Document**: `ArazzoDocument`, `Document`, `DocumentArazzoVersionRule`, `DocumentInfoRequiredRule` + 5 more (9 types)
 - **Spec**: `SpecVersion` (1 types)
 
 ### fetch vs resolve vs retrieve
 
 - **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolver` + 4 more (8 types)
+- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolverInterface` + 4 more (8 types)
 
 ### state vs status
 

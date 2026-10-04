@@ -11,9 +11,9 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
-use Alama\Arazzo\Sources\SourceGraph;
 
 function runnerDocument(): ArazzoDocument
 {
@@ -27,7 +27,7 @@ function runnerDocument(): ArazzoDocument
 
 function runnerFacade(): RunnerFacade
 {
-    $runtime = SourceGraph::runtime();
+    $runtime = HttpSourceGraph::runtime();
 
     return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()));
 }

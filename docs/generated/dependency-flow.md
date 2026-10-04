@@ -50,6 +50,8 @@ document-root,contracts-Spec,11
 document-root,document-Parser,4
 document-root,document-Validator,4
 document-root,expression-Interfaces,1
+document-root,sources-Normalizer,2
+document-root,sources-Validator,1
 engine-Data,contracts-Spec,3
 engine-Data,contracts-State,1
 engine-Data,engine-Enum,1
@@ -116,10 +118,10 @@ laravel-Bindings,laravel-Support,4
 laravel-Bindings,runner-Execution,7
 laravel-Bindings,runner-root,5
 laravel-Bindings,runtime-State,4
-laravel-Bindings,sources-Normalizer,6
+laravel-Bindings,sources-Normalizer,1
 laravel-Bindings,sources-Resolver,6
 laravel-Bindings,sources-Validator,1
-laravel-Bindings,sources-root,2
+laravel-Bindings,sources-root,1
 laravel-Http,cli-Generator,1
 laravel-Http,contracts-Interfaces,2
 laravel-Http,contracts-Spec,2
@@ -162,7 +164,6 @@ runner-Execution,runner-Jobs,2
 runner-Execution,runtime-Policy,1
 runner-Execution,runtime-State,15
 runner-Execution,runtime-Telemetry,1
-runner-Execution,sources-Normalizer,8
 runner-Jobs,contracts-Spec,1
 runner-Jobs,contracts-State,1
 runner-Protocol,contracts-Interfaces,5
@@ -172,7 +173,6 @@ runner-Protocol,evaluation-root,3
 runner-Protocol,expression-Data,2
 runner-Protocol,runner-Execution,9
 runner-Protocol,runtime-State,1
-runner-Protocol,sources-Normalizer,1
 runner-root,contracts-Exceptions,1
 runner-root,contracts-Interfaces,9
 runner-root,contracts-Spec,12
@@ -185,7 +185,6 @@ runner-root,expression-Interfaces,2
 runner-root,expression-root,1
 runner-root,runner-Execution,12
 runner-root,runtime-State,7
-runner-root,sources-Normalizer,1
 runtime-Infrastructure,contracts-Interfaces,4
 runtime-Policy,contracts-Interfaces,2
 runtime-Policy,contracts-Spec,2
@@ -193,11 +192,7 @@ runtime-Policy,contracts-State,1
 runtime-State,contracts-Interfaces,1
 runtime-State,contracts-Spec,7
 runtime-State,contracts-State,3
-sources-Normalizer,contracts-Interfaces,1
-sources-Normalizer,contracts-Spec,8
-sources-Normalizer,contracts-Support,1
-sources-Normalizer,document-root,6
-sources-Normalizer,sources-Resolver,3
+sources-Normalizer,contracts-Spec,2
 sources-Resolver,contracts-Interfaces,2
 sources-Resolver,contracts-Spec,7
 sources-Resolver,document-Parser,2
@@ -206,14 +201,12 @@ sources-Validator,document-Validator,5
 sources-Validator,sources-Normalizer,2
 sources-Validator,sources-Resolver,1
 sources-root,contracts-Interfaces,1
-sources-root,contracts-Spec,4
-sources-root,document-Parser,2
-sources-root,document-Validator,3
-sources-root,document-root,5
-sources-root,expression-root,1
-sources-root,sources-Normalizer,10
-sources-root,sources-Resolver,6
-sources-root,sources-Validator,2
+sources-root,contracts-Spec,3
+sources-root,document-Validator,1
+sources-root,document-root,2
+sources-root,sources-Normalizer,2
+sources-root,sources-Resolver,5
+sources-root,sources-Validator,1
 ```
 
 ## Folded flows
@@ -223,8 +216,7 @@ These references exist in the code but are not drawn: drawing them would close a
 | From | To | References |
 |---|---|---:|
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
-| `document-root` | `sources-Normalizer` | 2 |
-| `document-root` | `sources-Validator` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
 | `runner-Execution` | `runner-Protocol` | 3 |
 | `runner-Execution` | `runner-root` | 2 |
+| `sources-Normalizer` | `document-root` | 2 |

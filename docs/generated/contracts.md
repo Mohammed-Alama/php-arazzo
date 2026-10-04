@@ -27,6 +27,7 @@ flowchart LR
     I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>sources:Normalizer</small>"]:::contract
+    I_OpenApiOperationResolverInterface["OpenApiOperationResolverInterface<br/><small>sources:Normalizer</small>"]:::contract
     I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>runtime:State</small>"]:::contract
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -191,12 +192,6 @@ flowchart LR
     C_document_document_Validator_WorkflowUniqueIdRule -.->|implements| I_Rule
     C_document_document_Validator_WsdlStepRule["WsdlStepRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_WsdlStepRule -.->|implements| I_Rule
-    C_sources_sources_Normalizer_OpenApi30Normalizer["OpenApi30Normalizer<br/><small>sources:Normalizer</small>"]:::implCore
-    C_sources_sources_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_sources_sources_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>sources:Normalizer</small>"]:::implCore
-    C_sources_sources_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
-    C_sources_sources_Normalizer_OpenApiSourceNormalizer["OpenApiSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
-    C_sources_sources_Normalizer_OpenApiSourceNormalizer -.->|implements| I_SourceNormalizerInterface
     C_sources_sources_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_sources_sources_Resolver_SourceRegistry["SourceRegistry<br/><small>sources:Resolver</small>"]:::implCore
@@ -265,10 +260,13 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
+    N_OpenApiNormalizerInterface["no implementation found"]:::orphan --> I_OpenApiNormalizerInterface
+    N_OpenApiOperationResolverInterface["no implementation found"]:::orphan --> I_OpenApiOperationResolverInterface
     N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ProtocolExecutorRegistryInterface["no implementation found"]:::orphan --> I_ProtocolExecutorRegistryInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
+    N_SourceNormalizerInterface["no implementation found"]:::orphan --> I_SourceNormalizerInterface
     N_WorkflowEngineInterface["no implementation found"]:::orphan --> I_WorkflowEngineInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

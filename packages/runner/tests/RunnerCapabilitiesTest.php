@@ -13,16 +13,16 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
-use Alama\Arazzo\Sources\SourceGraph;
 use GuzzleHttp\Psr7\Response;
 use Mockery\MockInterface;
 use Psr\Http\Client\ClientInterface;
 
 function runtimeRunner(?ClientInterface $client = null): RunnerFacade
 {
-    $runtime = SourceGraph::runtime();
+    $runtime = HttpSourceGraph::runtime();
 
     return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()), $client);
 }
@@ -56,7 +56,7 @@ it('exposes the enriched runner facade entry point', function () {
 });
 
 it('accepts the document public face as the required seam dependency', function () {
-    $runtime = SourceGraph::runtime();
+    $runtime = HttpSourceGraph::runtime();
     $runner = new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()));
 
     expect($runner)->toBeInstanceOf(RunnerFacadeInterface::class);

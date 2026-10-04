@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -132,7 +133,7 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
     arazzoDoc($doc);
 
     $document = DocumentLoader::load($doc);
-    $runtime = SourceGraph::runtime(registry: $registry);
+    $runtime = HttpSourceGraph::runtime(registry: $registry);
     $runner = new RunnerFacade(
         $runtime->document,
         $runtime->operations,

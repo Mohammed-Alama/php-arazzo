@@ -119,11 +119,8 @@ flowchart LR
     document__ --> document_Parser
     document__ --> expression_Interfaces
     document__ --> sources_Validator
-    sources_Normalizer --> contracts_Support
-    sources_Normalizer --> document__
     sources_Normalizer --> contracts_Spec
-    sources_Normalizer --> sources_Resolver
-    sources_Normalizer --> contracts_Interfaces
+    sources_Normalizer --> document__
     sources_Resolver --> contracts_Spec
     sources_Resolver --> document_Parser
     sources_Resolver --> contracts_Interfaces
@@ -138,8 +135,6 @@ flowchart LR
     sources__ --> sources_Normalizer
     sources__ --> sources_Resolver
     sources__ --> sources_Validator
-    sources__ --> document_Parser
-    sources__ --> expression__
     runtime_Infrastructure --> contracts_Interfaces
     runtime_Policy --> contracts_Interfaces
     runtime_Policy --> contracts_Spec
@@ -157,7 +152,6 @@ flowchart LR
     events_Listener --> events__
     events_Listener --> events_Interfaces
     runner_Execution --> document__
-    runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
     runner_Execution --> runtime_State
     runner_Execution --> contracts_State
@@ -185,7 +179,6 @@ flowchart LR
     runner_Protocol --> contracts_State
     runner_Protocol --> evaluation__
     runner_Protocol --> runner_Execution
-    runner_Protocol --> sources_Normalizer
     runner_Protocol --> expression_Data
     runner_Protocol --> runtime_State
     runner__ --> contracts_Interfaces
@@ -200,7 +193,6 @@ flowchart LR
     runner__ --> engine__
     runner__ --> document__
     runner__ --> expression__
-    runner__ --> sources_Normalizer
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State

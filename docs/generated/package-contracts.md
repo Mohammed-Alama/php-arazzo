@@ -230,7 +230,7 @@ public contract between packages.
 
 ### Cross-boundary value types
 
-- `OpenApiOperationHandle` — present
+- `OpenApiOperationHandle` — not found
 - `SourceRuntime` — present
 - `SourceFetchException` — present
 - `SourceParseException` — present
@@ -248,12 +248,12 @@ public contract between packages.
 - `LocalFetcher` — `@internal`: yes
 - `CachedFetcher` — `@internal`: yes
 - `OpenApiNormalizerInterface` — `@internal`: yes
-- `OpenApi30Normalizer` — `@internal`: yes
-- `OpenApi31Normalizer` — `@internal`: yes
-- `Swagger2Normalizer` — `@internal`: yes
+- `OpenApi30Normalizer` — _not found in scan_
+- `OpenApi31Normalizer` — _not found in scan_
+- `Swagger2Normalizer` — _not found in scan_
 - `OpenApiVersionDetector` — `@internal`: yes
-- `OpenApiDocumentLoader` — `@internal`: yes
-- `OpenApiOperationResolver` — `@internal`: yes
+- `OpenApiDocumentLoader` — _not found in scan_
+- `OpenApiOperationResolver` — _not found in scan_
 - `PreflightValidator` — `@internal`: yes
 - `SourceGraph` — `@internal`: no (target for the sweep)
 - `Normalizer\*` — whole namespace (declared target)

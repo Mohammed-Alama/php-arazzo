@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Sources\Normalizer;
+namespace Alama\Arazzo\Protocol\Http\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\ResolvedOperation;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
 use cebe\openapi\spec\Operation;
 use RuntimeException;
@@ -16,7 +18,7 @@ use RuntimeException;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-class OpenApiOperationResolver
+class OpenApiOperationResolver implements OpenApiOperationResolverInterface
 {
     public function __construct(
         private OpenApiDocumentLoader $loader,

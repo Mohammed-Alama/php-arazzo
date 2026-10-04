@@ -7,7 +7,7 @@ namespace Alama\Arazzo\Tests;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Document\ResolvedOperation;
-use Alama\Arazzo\Sources\SourceGraph;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Tests\Support\Fx;
 
 it('normalizes document sources through the registry', function (): void {
@@ -20,7 +20,7 @@ it('normalizes document sources through the registry', function (): void {
     ]));
 
     try {
-        $loader = SourceGraph::loader();
+        $loader = HttpSourceGraph::loader();
         $index = $loader->normalizeSources(Fx::doc(
             sources: [new SourceDescription('pets-api', $file, SourceType::Openapi)],
         ));

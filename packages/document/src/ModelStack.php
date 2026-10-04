@@ -9,7 +9,7 @@ use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
 use Alama\Arazzo\Sources\Validator\PreflightValidator;
 
 /**
@@ -28,13 +28,13 @@ final readonly class ModelStack
         public Validator $validator,
         public ExpressionEngineInterface $engine,
         public ?PreflightValidator $preflight = null,
-        public ?OpenApiOperationResolver $operationResolver = null,
+        public ?OpenApiOperationResolverInterface $operationResolver = null,
     ) {}
 
     public static function default(
         ExpressionEngineInterface $engine,
         ?PreflightValidator $preflight = null,
-        ?OpenApiOperationResolver $operationResolver = null,
+        ?OpenApiOperationResolverInterface $operationResolver = null,
     ): self {
         return new self(
             loader: Loader::new(),

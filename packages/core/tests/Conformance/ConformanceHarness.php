@@ -20,11 +20,11 @@ use Alama\Arazzo\Events\StepExecutedEvent;
 use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Events\StepStartedEvent;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
-use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Sources\SourceRuntime;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
@@ -105,7 +105,7 @@ abstract class ConformanceHarness
 
     protected function runtime(SourceRegistry $registry): SourceRuntime
     {
-        return SourceGraph::runtime($registry);
+        return HttpSourceGraph::runtime($registry);
     }
 
     protected function documents(SourceRegistry $registry): DocumentInterface

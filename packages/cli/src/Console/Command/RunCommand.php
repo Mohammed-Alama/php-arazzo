@@ -9,6 +9,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -64,7 +65,7 @@ final class RunCommand extends Command
 
         $registry = $this->resolveRegistry();
         $engine = new EvaluationEngine(expression: new ExpressionEngine());
-        $runtime = SourceGraph::runtime(registry: $registry);
+        $runtime = HttpSourceGraph::runtime(registry: $registry);
         $runner = new RunnerFacade($runtime->document, $runtime->operations, $engine, $this->httpClient);
 
         /** @var array<string, mixed> $inputs */

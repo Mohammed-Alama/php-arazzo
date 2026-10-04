@@ -24,7 +24,7 @@ when a boundary consciously moves.
 | `Psr` | 51 | 17 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 18 | 0 | **forbidden** ⚠ |
+| `cebe` | 10 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -46,7 +46,6 @@ when a boundary consciously moves.
 | runner | `runner:Protocol` | `Psr` | 6 |
 | runner | `runner:_` | `Psr` | 5 |
 | runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
-| sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
@@ -70,7 +69,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**13 library boundary violation(s):**
+**12 library boundary violation(s):**
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
@@ -80,7 +79,6 @@ when a boundary consciously moves.
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runner:Execution` imports `cebe\*` (10 refs)
 - `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
-- `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
 - `sources:_` imports `GuzzleHttp\*` (2 refs)
@@ -100,8 +98,6 @@ Cross-package references from library code must target `*Interface` facades, val
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
 | `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
-| `sources` | `document` | `SourceGraph` | `Document` |
-| `sources` | `expression` | `SourceGraph` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -110,7 +106,6 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
-| `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
 | `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
@@ -119,8 +114,6 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
 | `runner` | `EvaluationContext` | `expression` | 7 | `SubWorkflowInvoker` |
 | `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
-| `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
-| `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
 | `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
 | `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
 | `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
@@ -132,14 +125,9 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
-| `sources` | `Loader` | `document` | 1 | `SourceGraph` |
-| `sources` | `ModelStack` | `document` | 1 | `SourceGraph` |
 | `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
-| `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
-| `sources` | `Parser` | `document` | 1 | `SourceGraph` |
-| `sources` | `ResolvedOperation` | `document` | 4 | `OpenApiOperationHandle` |
-| `sources` | `RuleSet` | `document` | 1 | `SourceGraph` |
+| `sources` | `NormalizedOpenApiOperation` | `document` | 1 | `OpenApiNormalizerInterface` |
+| `sources` | `ResolvedOperation` | `document` | 2 | `OpenApiOperationResolverInterface` |
 | `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
-| `sources` | `Validator` | `document` | 1 | `SourceGraph` |
 | `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

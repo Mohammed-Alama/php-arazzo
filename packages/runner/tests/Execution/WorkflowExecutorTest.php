@@ -20,6 +20,7 @@ use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -28,7 +29,6 @@ use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
-use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -498,7 +498,7 @@ it('executes a workflow end-to-end', function () {
         }
     };
     $engine = new EvaluationEngine(expression: new ExpressionEngine());
-    $runtime = SourceGraph::runtime(null, null, new SourceRegistry($sourceResolver));
+    $runtime = HttpSourceGraph::runtime(null, null, new SourceRegistry($sourceResolver));
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 

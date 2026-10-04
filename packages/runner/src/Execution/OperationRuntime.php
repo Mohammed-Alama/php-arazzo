@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner\Execution;
 
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
 
 /**
  * The pair the runner needs to reach an operation: the document supplies the
