@@ -24,7 +24,7 @@ when a boundary consciously moves.
 | `Psr` | 32 | 19 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 2 | 0 | **forbidden** ⚠ |
+| `cebe` | 10 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
@@ -46,6 +46,7 @@ when a boundary consciously moves.
 | runner | `runner:Execution` | `Psr` | 9 |
 | runner | `runner:_` | `Psr` | 2 |
 | runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
+| sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
 | sources | `sources:Resolver` | `Psr` | 4 |
 | sources | `sources:Validator` | `JsonSchema` | 3 |
@@ -69,7 +70,7 @@ when a boundary consciously moves.
 | laravel | `laravel:_` | `Illuminate` | 2 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
-**12 library boundary violation(s):**
+**13 library boundary violation(s):**
 - `cli:Console` imports `GuzzleHttp\*` (1 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
@@ -79,6 +80,7 @@ when a boundary consciously moves.
 - `expression:_` imports `Flow\*` (1 refs)
 - `runner:Execution` imports `OpenTelemetry\*` (2 refs)
 - `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
+- `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
 - `sources:Validator` imports `JsonSchema\*` (3 refs)
 - `sources:_` imports `GuzzleHttp\*` (2 refs)
@@ -116,6 +118,8 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
 | `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
 | `runner` | `IdempotencyKeyInjector` | `engine` | 2 | `StepExecutor` |
+| `runner` | `OpenApiOperationHandle` | `sources` | 2 | `StepExecutor` |
+| `runner` | `OpenApiOperationResolver` | `sources` | 3 | `OperationRuntime` |
 | `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
 | `runner` | `RequestCompiler` | `engine` | 1 | `StepExecutor` |
 | `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
@@ -131,8 +135,8 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
 | `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
-| `sources` | `NormalizedOpenApiOperation` | `document` | 1 | `OpenApiNormalizerInterface` |
-| `sources` | `ResolvedOperation` | `document` | 2 | `OpenApiOperationResolverInterface` |
+| `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
+| `sources` | `ResolvedOperation` | `document` | 5 | `OpenApiOperationHandle` |
 | `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
 | `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

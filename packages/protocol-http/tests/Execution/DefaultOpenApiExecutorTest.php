@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use cebe\openapi\Reader;
 use GuzzleHttp\Psr7\Request;

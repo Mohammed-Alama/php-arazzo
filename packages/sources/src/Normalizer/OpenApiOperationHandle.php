@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol\Http\Normalizer;
+namespace Alama\Arazzo\Sources\Normalizer;
 
 use Alama\Arazzo\Document\ResolvedOperation;
 use cebe\openapi\spec\OpenApi;

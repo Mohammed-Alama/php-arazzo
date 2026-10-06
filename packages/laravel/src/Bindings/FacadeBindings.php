@@ -13,12 +13,12 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Runner\RunnerGraphBuilder;
 use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\SourceRuntime;
 use Illuminate\Contracts\Container\Container;
 

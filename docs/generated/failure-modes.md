@@ -22,10 +22,11 @@ Regenerated before every commit.
 | **ExecutionException** | `AsyncExecutionGraphAssembler` <small>runner:Execution</small>, `ExecutionGraphFactory` <small>runner:Execution</small> |
 | **ExpressionSyntaxException** | `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Execution</small> |
-| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `TypeCaster` <small>engine:Execution</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
+| **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `TypeCaster` <small>engine:Execution</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small> |
 | **LogicException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
+| **NotImplementedException** | `Swagger2Normalizer` <small>sources:Normalizer</small> |
 | **PreflightFailureException** | `StepExecutionWorker` <small>runner:Execution</small>, `WorkflowExecutor` <small>runner:Execution</small> |
-| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>engine:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small> |
+| **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>engine:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
 | **SourceFetchException** | `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>sources:Resolver</small> |
@@ -36,7 +37,6 @@ Regenerated before every commit.
 | **WorkflowDepthExceededException** | `WorkflowEngine` <small>runner:Execution</small> |
 | **ArazzoException** | _(never raised in src)_ |
 | **LoaderException** | _(never raised in src)_ |
-| **NotImplementedException** | _(never raised in src)_ |
 | **ParserException** | _(never raised in src)_ |
 | **SchemaValidationException** | _(never raised in src)_ |
 | **SourceResolutionException** | _(never raised in src)_ |

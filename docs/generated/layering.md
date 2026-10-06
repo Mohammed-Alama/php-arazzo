@@ -109,6 +109,7 @@ flowchart TB
     M_cli_Console --> M_runner__
     M_cli_Console --> M_runtime_State
     M_cli_Console --> M_runtime_Telemetry
+    M_cli_Console --> M_sources_Normalizer
     M_cli_Console --> M_sources_Resolver
     M_cli_Console --> M_sources__
     M_cli_Generator --> M_contracts_Interfaces
@@ -254,6 +255,7 @@ flowchart TB
     M_runner_Execution --> M_runtime_Policy
     M_runner_Execution --> M_runtime_State
     M_runner_Execution --> M_runtime_Telemetry
+    M_runner_Execution --> M_sources_Normalizer
     M_runner_Jobs --> M_contracts_Spec
     M_runner_Jobs --> M_contracts_State
     M_runner_Protocol --> M_contracts_Interfaces
@@ -276,6 +278,7 @@ flowchart TB
     M_runner__ --> M_expression__
     M_runner__ --> M_runner_Execution
     M_runner__ --> M_runtime_State
+    M_runner__ --> M_sources_Normalizer
     M_runtime_Infrastructure --> M_contracts_Interfaces
     M_runtime_Policy --> M_contracts_Interfaces
     M_runtime_Policy --> M_contracts_Spec
@@ -283,8 +286,11 @@ flowchart TB
     M_runtime_State --> M_contracts_Interfaces
     M_runtime_State --> M_contracts_Spec
     M_runtime_State --> M_contracts_State
+    M_sources_Normalizer --> M_contracts_Interfaces
     M_sources_Normalizer --> M_contracts_Spec
+    M_sources_Normalizer --> M_contracts_Support
     M_sources_Normalizer --> M_document__
+    M_sources_Normalizer --> M_sources_Resolver
     M_sources_Resolver --> M_contracts_Interfaces
     M_sources_Resolver --> M_contracts_Spec
     M_sources_Resolver --> M_document_Parser
@@ -324,7 +330,7 @@ flowchart TB
 | `cli` | `expression` | 2 |
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
-| `cli` | `sources` | 2 |
+| `cli` | `sources` | 3 |
 | `document` | `contracts` | 152 |
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
@@ -345,7 +351,7 @@ flowchart TB
 | `laravel` | `expression` | 3 |
 | `laravel` | `runner` | 22 |
 | `laravel` | `runtime` | 10 |
-| `laravel` | `sources` | 10 |
+| `laravel` | `sources` | 16 |
 | `runner` | `contracts` | 124 |
 | `runner` | `document` | 9 |
 | `runner` | `engine` | 11 |
@@ -353,9 +359,10 @@ flowchart TB
 | `runner` | `events` | 23 |
 | `runner` | `expression` | 11 |
 | `runner` | `runtime` | 20 |
+| `runner` | `sources` | 5 |
 | `runtime` | `contracts` | 19 |
-| `sources` | `contracts` | 20 |
-| `sources` | `document` | 12 |
+| `sources` | `contracts` | 30 |
+| `sources` | `document` | 17 |
 
 ## Module-level detail
 

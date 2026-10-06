@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Protocol\Http\Normalizer;
+namespace Alama\Arazzo\Sources\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\ResolvedOperation;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
-use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
 use cebe\openapi\spec\Operation;
 use RuntimeException;

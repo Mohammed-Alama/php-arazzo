@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
 use Alama\Arazzo\Engine\Execution\ParameterSerializer;
 use Alama\Arazzo\Engine\Execution\TypeCaster;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Utils;

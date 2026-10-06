@@ -121,8 +121,11 @@ flowchart LR
     document__ --> document_Parser
     document__ --> expression_Interfaces
     document__ --> sources_Validator
-    sources_Normalizer --> contracts_Spec
+    sources_Normalizer --> contracts_Support
     sources_Normalizer --> document__
+    sources_Normalizer --> contracts_Spec
+    sources_Normalizer --> sources_Resolver
+    sources_Normalizer --> contracts_Interfaces
     sources_Resolver --> contracts_Spec
     sources_Resolver --> document_Parser
     sources_Resolver --> contracts_Interfaces
@@ -161,6 +164,7 @@ flowchart LR
     events_Listener --> events__
     events_Listener --> events_Interfaces
     runner_Execution --> document__
+    runner_Execution --> sources_Normalizer
     runner_Execution --> contracts_Spec
     runner_Execution --> runtime_State
     runner_Execution --> contracts_State
@@ -203,6 +207,7 @@ flowchart LR
     runner__ --> engine__
     runner__ --> document__
     runner__ --> expression__
+    runner__ --> sources_Normalizer
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec
     cli_Console --> contracts_State
@@ -218,6 +223,7 @@ flowchart LR
     cli_Console --> contracts_Dependency
     cli_Console --> cli_Renderer
     cli_Console --> runner__
+    cli_Console --> sources_Normalizer
     cli_Console --> sources_Resolver
     cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
@@ -228,6 +234,7 @@ flowchart LR
     laravel_Bindings --> laravel_Support
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Execution
+    laravel_Bindings --> sources_Normalizer
     laravel_Bindings --> laravel_Http
     laravel_Bindings --> contracts_Support
     laravel_Bindings --> events_Interfaces
@@ -238,7 +245,6 @@ flowchart LR
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
     laravel_Bindings --> runtime_State
-    laravel_Bindings --> sources_Normalizer
     laravel_Bindings --> sources_Resolver
     laravel_Bindings --> sources_Validator
     laravel_Bindings --> cli_Generator

@@ -11,15 +11,15 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 834 | 0 | 17 | 1.00 |  |
+| `cli:Console` | 11 | 834 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 3 | 2 | 0.40 |  |
 | `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 19 | 340 | 19 | 3 | 0.14 |  |
+| `contracts:Interfaces` | 19 | 340 | 20 | 3 | 0.13 |  |
 | `contracts:Spec` | 49 | 1154 | 32 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 13 | 1 | 0.07 |  |
-| `contracts:Support` | 5 | 180 | 8 | 0 | 0.00 |  |
+| `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1305 | 6 | 2 | 0.25 |  |
 | `document:Validator` | 68 | 3402 | 5 | 5 | 0.50 |  |
 | `(document root)` | 5 | 263 | 5 | 6 | 0.55 |  |
@@ -53,20 +53,20 @@ targets. Regenerated before every commit.
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 2 | 126 | 2 | 4 | 0.67 |  |
 | `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
-| `runner:Execution` | 26 | 2262 | 6 | 21 | 0.78 |  |
+| `runner:Execution` | 26 | 2262 | 6 | 22 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 1 | 72 | 1 | 8 | 0.89 |  |
-| `(runner root)` | 9 | 511 | 4 | 12 | 0.75 |  |
+| `(runner root)` | 9 | 511 | 4 | 13 | 0.76 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 12 | 1027 | 7 | 3 | 0.30 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 3 | 81 | 4 | 2 | 0.33 |  |
-| `sources:Resolver` | 13 | 475 | 5 | 3 | 0.38 |  |
+| `sources:Normalizer` | 10 | 799 | 7 | 5 | 0.42 |  |
+| `sources:Resolver` | 13 | 475 | 6 | 3 | 0.33 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 169 | 2 | 7 | 0.78 |  |
 
-Total cross-module edges: **896**
+Total cross-module edges: **926**
 
 ## Most entangled module pairs
 

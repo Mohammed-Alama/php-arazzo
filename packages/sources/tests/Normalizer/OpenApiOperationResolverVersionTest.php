@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Protocol\Http\Normalizer;
+namespace Alama\Arazzo\Tests\Normalizer;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -12,10 +12,10 @@ use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;

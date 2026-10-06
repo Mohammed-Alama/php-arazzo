@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi30Normalizer;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi31Normalizer;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiDocumentLoader;
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Fetchers\CachedFetcher;

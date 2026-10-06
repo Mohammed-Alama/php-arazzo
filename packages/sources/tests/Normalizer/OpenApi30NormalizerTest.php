@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Protocol\Http\Normalizer;
+namespace Alama\Arazzo\Tests\Normalizer;
 
-use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi30Normalizer;
+use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
 use InvalidArgumentException;
 
 beforeEach(function (): void {
