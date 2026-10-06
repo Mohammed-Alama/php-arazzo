@@ -52,7 +52,7 @@ targets. Regenerated before every commit.
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 2 | 126 | 2 | 4 | 0.67 |  |
-| `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
+| `(laravel root)` | 2 | 108 | 0 | 3 | 1.00 |  |
 | `runner:Execution` | 26 | 2262 | 6 | 22 | 0.79 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 1 | 72 | 1 | 8 | 0.89 |  |

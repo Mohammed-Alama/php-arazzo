@@ -519,3 +519,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function packageRegistered(): void`
 - `public function register(): void`
 
+#### `ProtocolHttpServiceProvider` class
+- `public function register(): void`
+

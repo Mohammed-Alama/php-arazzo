@@ -41,15 +41,12 @@
         "alama/arazzo-sources": "@dev",
         "cebe/php-openapi": "^1.7",
         "guzzlehttp/guzzle": "^7.8||^8.0",
-        "illuminate/contracts": "^11.0||^12.0||^13.0",
-        "illuminate/support": "^11.0||^12.0||^13.0",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.1",
         "psr/http-message": "^2.0",
         "psr/log": "^3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^9.0||^10.0||^11.0",
         "pestphp/pest": "^5.0",
         "pestphp/pest-plugin-arch": "^5.0"
     },
@@ -61,13 +58,6 @@
     "autoload-dev": {
         "psr-4": {
             "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Alama\\Arazzo\\Protocol\\Http\\Laravel\\ProtocolHttpServiceProvider"
-            ]
         }
     },
     "config": {
