@@ -57,6 +57,8 @@ mindmap
       Swagger2Normalizer
     OpenApiOperationResolverInterface
       OpenApiOperationResolver
+    OperationExecutorPluginInterface
+      SubWorkflowStepExecutor
     PendingCorrelationRegistryInterface
       DatabasePendingCorrelationRegistry
     QueueDriverInterface
@@ -107,6 +109,7 @@ mindmap
 | `OpenApiExecutorInterface` | no | `RunCommand` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `OpenApiOperationResolverInterface` | no | `OpenApiOperationResolver` <small>core</small> |
+| `OperationExecutorPluginInterface` | no | `SubWorkflowStepExecutor` <small>core</small> |
 | `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
@@ -124,10 +127,9 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
-- `OperationExecutorPluginInterface` <small>Interfaces</small>
 - `OutputExtractorInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
-- `ProtocolExecutorRegistryInterface` <small>Execution/Interfaces</small>
+- `ProtocolExecutorRegistryInterface` <small>Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
 - `ResponseValidatorInterface` <small>Interfaces</small>
 - `WorkflowEngineInterface` <small></small>

@@ -4,27 +4,32 @@ declare(strict_types=1);
 
 /**
  * The laravel package's composition resistors must consume the runner through
- * its public face + value types. Runner execution/protocol internals are
- * forbidden in packages/laravel/src; the OpenApiExecutorInterface SPI (swapped
- * by tests via app()->instance()) and the AsyncExecutionGraph node handles the
- * container re-exports as aliases are the only exempt runner-execution types.
- * Document-parser/normalizer carve-outs (Resolver/Persistence/API) are owned
- * by the later @internal sweep (#63).
+ * its public face + value types. Runner execution internals — including the
+ * Sync\ and Async\ node handles F2.0 carved out of Execution/ — are forbidden
+ * in packages/laravel/src; the OpenApiExecutorInterface SPI (swapped by tests
+ * via app()->instance()), the shared OperationRuntime value, and the
+ * graph/queue node handles the container re-exports as aliases are the only
+ * exempt runner-internal types. Document-parser/normalizer carve-outs
+ * (Resolver/Persistence/API) are owned by the later @internal sweep (#63).
  */
 const LARAVEL_FORBIDDEN_SEAM_PREFIXES = [
     'Alama\\Arazzo\\Runner\\Execution\\',
     'Alama\\Arazzo\\Runner\\Protocol\\',
+    'Alama\\Arazzo\\Runner\\Sync\\',
+    'Alama\\Arazzo\\Runner\\Async\\',
 ];
 
 const LARAVEL_SEAM_SPI_ALLOWLIST = [
     'Alama\\Arazzo\\Runner\\Execution\\Interfaces\\OpenApiExecutorInterface',
-    'Alama\\Arazzo\\Runner\\Execution\\StepExecutor',
-    'Alama\\Arazzo\\Runner\\Execution\\WorkflowExecutor',
-    'Alama\\Arazzo\\Runner\\Execution\\StepOutcomeHandler',
-    'Alama\\Arazzo\\Runner\\Execution\\CorrelationResumer',
-    'Alama\\Arazzo\\Runner\\Execution\\StepExecutionWorker',
-    'Alama\\Arazzo\\Runner\\Execution\\WorkflowEngine',
     'Alama\\Arazzo\\Runner\\Execution\\OperationRuntime',
+    'Alama\\Arazzo\\Runner\\Sync\\StepExecutor',
+    'Alama\\Arazzo\\Runner\\Sync\\WorkflowExecutor',
+    'Alama\\Arazzo\\Runner\\Sync\\WorkflowEngine',
+    'Alama\\Arazzo\\Runner\\Async\\StepOutcomeHandler',
+    'Alama\\Arazzo\\Runner\\Async\\CorrelationResumer',
+    'Alama\\Arazzo\\Runner\\Async\\StepExecutionWorker',
+    'Alama\\Arazzo\\Runner\\Async\\ExecuteStepJob',
+    'Alama\\Arazzo\\Runner\\Async\\ResumeCorrelationJob',
 ];
 
 function laravelSourceFiles(): array

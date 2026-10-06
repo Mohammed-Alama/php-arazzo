@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Async\CorrelationResumer;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
+use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 
 /**
  * The assembled async execution graph. Accessors return the concrete runtime

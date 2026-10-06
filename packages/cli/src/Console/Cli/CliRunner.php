@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Cli\Console\Cli;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Async\ExecuteStepJob;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
@@ -47,7 +48,7 @@ final class CliRunner
     private readonly LockManagerInterface $locks;
 
     /**
-     * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
+     * @param  list<OperationExecutorPluginInterface>  $protocolExecutors
      */
     public function __construct(
         private readonly EvaluationEngineInterface $evaluationEngine,
@@ -172,12 +173,17 @@ final class CliRunner
 
     private function drainUnderSpan(string $executionId, SpanInterface $runSpan): CliRunResult
     {
+        $executors = new OperationExecutorRegistry();
+        foreach ($this->protocolExecutors as $plugin) {
+            $executors->register($plugin);
+        }
+
         $worker = new StepExecutionWorker(
             new RunPersistence($this->stateStore, $this->eventLedger, $this->registry),
             $this->locks,
             $this->definitions,
             $this->evaluationEngine,
-            $this->protocolExecutors,
+            $executors,
             new RunControlFlow(new WorkflowEngine($this->evaluationEngine), $this->queue),
         );
 

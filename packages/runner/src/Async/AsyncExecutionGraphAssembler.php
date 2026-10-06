@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
-use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
-use Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor;
+use Alama\Arazzo\Runner\Execution\OperationRuntime;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\SubWorkflowStepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 
 /**
  * Assembles the async/queue execution graph. Every node is constructed
@@ -62,24 +65,31 @@ final class AsyncExecutionGraphAssembler
             injector: $injector,
         );
 
-        $httpStepExecutor = new HttpStepExecutor(
-            $openApiExecutor,
-            $this->operations->resolver,
-            $this->evaluationEngine,
-            $this->inspector,
-            $outputExtractor,
-            $schemaValidator,
-            strictValidationDefault: $seams->strictValidation,
-            injector: $injector,
-        );
-
         $workflowExecutor = new WorkflowExecutor(
             $stepExecutor,
             workflowEngine: $workflowEngine,
             preflight: $this->operations->document,
         );
 
-        $subWorkflowExecutor = new SubWorkflowStepExecutor($workflowExecutor, $this->evaluationEngine);
+        // Protocol executors are no longer constructed here: the host
+        // registers them (F1.3's registrar for HTTP/AsyncAPI) into the
+        // OperationExecutorRegistry it injects through the seams. The one
+        // graph-scoped plugin this composes is the sub-workflow executor —
+        // it wraps THIS graph's WorkflowExecutor, so it is registered at
+        // assemble time. Seams builders must therefore hand over a fresh
+        // registry (AsyncGraphResolver copies the container's) so repeated
+        // assembly never duplicates it.
+        $registry = $seams->executorRegistry;
+        if ($registry !== null) {
+            $registry->register(new SubWorkflowStepExecutor($workflowExecutor, $this->evaluationEngine));
+            $protocolExecutors = $registry->all();
+        } else {
+            // No registry injected: the worker throws the F1.2-shaped
+            // ExecutionException naming arazzo-protocol-http when a step
+            // actually needs a protocol executor.
+            $protocolExecutors = [];
+        }
+
         $invoker = new SubWorkflowInvoker($seams->definitionRegistry, $workflowExecutor, $this->evaluationEngine);
 
         $persistence = new RunPersistence(
@@ -103,14 +113,6 @@ final class AsyncExecutionGraphAssembler
             $seams->stateTtlSeconds,
         );
 
-        $asyncRequestFactory = $seams->requestFactory ?? throw new ExecutionException('No PSR-17 request factory configured; register alama/arazzo-protocol-http (Phase F1).');
-        $asyncExecutor = new AsyncApiStepExecutor(
-            $seams->pendingCorrelationRegistry,
-            $this->evaluationEngine,
-            $seams->httpClient,
-            $asyncRequestFactory,
-        );
-
         $resumer = new CorrelationResumer(
             $seams->pendingCorrelationRegistry,
             $seams->stateStore,
@@ -122,14 +124,12 @@ final class AsyncExecutionGraphAssembler
             $seams->lockManager,
         );
 
-        $protocolExecutors = [$subWorkflowExecutor, $httpStepExecutor, $asyncExecutor];
-
         $worker = new StepExecutionWorker(
             $persistence,
             $seams->lockManager,
             $seams->definitionRegistry,
             $this->evaluationEngine,
-            $protocolExecutors,
+            $registry,
             $controlFlow,
             $seams->stateTtlSeconds,
         );

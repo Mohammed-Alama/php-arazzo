@@ -48,5 +48,6 @@ final readonly class AsyncGraphSeams
         public int $retryCeiling = 10,
         public float $retryBackoffMultiplier = 1.0,
         public int $stateTtlSeconds = 86400,
+        public ?OperationExecutorRegistry $executorRegistry = null,
     ) {}
 }

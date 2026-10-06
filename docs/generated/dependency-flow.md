@@ -24,9 +24,10 @@ cli-Console,document-Validator,2
 cli-Console,evaluation-root,2
 cli-Console,events-Interfaces,2
 cli-Console,expression-root,2
-cli-Console,runner-Execution,5
-cli-Console,runner-Jobs,1
-cli-Console,runner-root,1
+cli-Console,runner-Async,2
+cli-Console,runner-Execution,3
+cli-Console,runner-Sync,1
+cli-Console,runner-root,2
 cli-Console,runtime-State,6
 cli-Console,runtime-Telemetry,1
 cli-Console,sources-Normalizer,1
@@ -60,6 +61,7 @@ engine-Execution,contracts-State,2
 engine-Execution,document-Parser,1
 engine-Execution,evaluation-root,1
 engine-Execution,expression-Interfaces,1
+engine-Execution,runner-Execution,1
 engine-root,contracts-Spec,6
 engine-root,contracts-State,2
 engine-root,engine-Data,2
@@ -120,7 +122,9 @@ laravel-Bindings,laravel-Persistence,4
 laravel-Bindings,laravel-Queue,1
 laravel-Bindings,laravel-State,1
 laravel-Bindings,laravel-Support,4
-laravel-Bindings,runner-Execution,7
+laravel-Bindings,runner-Async,3
+laravel-Bindings,runner-Execution,1
+laravel-Bindings,runner-Sync,3
 laravel-Bindings,runner-root,5
 laravel-Bindings,runtime-State,3
 laravel-Bindings,sources-Normalizer,7
@@ -130,7 +134,7 @@ laravel-Bindings,sources-root,2
 laravel-Http,cli-Generator,1
 laravel-Http,contracts-Interfaces,3
 laravel-Http,contracts-Spec,2
-laravel-Http,runner-Jobs,1
+laravel-Http,runner-Async,1
 laravel-Http,sources-Resolver,1
 laravel-Lock,contracts-Interfaces,1
 laravel-Persistence,contracts-Interfaces,1
@@ -139,12 +143,11 @@ laravel-Persistence,document-Parser,2
 laravel-Persistence,events-Interfaces,1
 laravel-Persistence,runtime-State,3
 laravel-Queue,contracts-Interfaces,1
-laravel-Queue,runner-Execution,2
-laravel-Queue,runner-Jobs,4
+laravel-Queue,runner-Async,6
 laravel-State,runtime-State,1
 laravel-Support,contracts-Interfaces,6
 laravel-Support,events-Interfaces,1
-laravel-Support,runner-root,3
+laravel-Support,runner-root,4
 laravel-Support,runtime-State,3
 laravel-root,contracts-Interfaces,5
 laravel-root,evaluation-root,1
@@ -155,36 +158,54 @@ laravel-root,laravel-Support,2
 laravel-root,runner-root,2
 laravel-root,sources-Normalizer,3
 laravel-root,sources-Resolver,1
-runner-Execution,contracts-Dependency,3
-runner-Execution,contracts-Exceptions,3
-runner-Execution,contracts-Interfaces,15
-runner-Execution,contracts-Spec,46
-runner-Execution,contracts-State,11
-runner-Execution,contracts-Support,8
-runner-Execution,document-Validator,3
-runner-Execution,document-root,5
-runner-Execution,engine-Exceptions,3
-runner-Execution,engine-Execution,5
-runner-Execution,evaluation-root,8
-runner-Execution,events-Interfaces,4
-runner-Execution,events-root,17
-runner-Execution,expression-Data,4
-runner-Execution,expression-Interfaces,3
-runner-Execution,runner-Jobs,2
-runner-Execution,runner-Protocol,1
-runner-Execution,runtime-Policy,1
-runner-Execution,runtime-State,13
-runner-Execution,runtime-Telemetry,1
-runner-Execution,sources-Normalizer,4
-runner-Jobs,contracts-Spec,1
-runner-Jobs,contracts-State,1
-runner-Protocol,contracts-Interfaces,1
-runner-Protocol,contracts-Spec,4
-runner-Protocol,contracts-State,1
-runner-Protocol,engine-Exceptions,1
-runner-Protocol,engine-Execution,1
-runner-Protocol,evaluation-root,1
-runner-Protocol,expression-Data,1
+runner-Async,contracts-Dependency,2
+runner-Async,contracts-Exceptions,1
+runner-Async,contracts-Interfaces,8
+runner-Async,contracts-Spec,23
+runner-Async,contracts-State,7
+runner-Async,contracts-Support,3
+runner-Async,document-Validator,1
+runner-Async,document-root,1
+runner-Async,engine-Exceptions,3
+runner-Async,engine-Execution,2
+runner-Async,evaluation-root,5
+runner-Async,events-Interfaces,3
+runner-Async,events-root,10
+runner-Async,expression-Data,3
+runner-Async,expression-Interfaces,1
+runner-Async,runner-Execution,11
+runner-Async,runner-Sync,7
+runner-Async,runner-root,4
+runner-Async,runtime-State,8
+runner-Async,runtime-Telemetry,1
+runner-Execution,contracts-Interfaces,2
+runner-Execution,contracts-Spec,2
+runner-Execution,contracts-State,1
+runner-Execution,contracts-Support,3
+runner-Execution,document-root,2
+runner-Execution,events-Interfaces,1
+runner-Execution,runtime-State,4
+runner-Execution,sources-Normalizer,2
+runner-Interfaces,contracts-Interfaces,1
+runner-Interfaces,contracts-Spec,2
+runner-Sync,contracts-Dependency,1
+runner-Sync,contracts-Exceptions,2
+runner-Sync,contracts-Interfaces,6
+runner-Sync,contracts-Spec,24
+runner-Sync,contracts-State,5
+runner-Sync,contracts-Support,2
+runner-Sync,document-Validator,2
+runner-Sync,document-root,2
+runner-Sync,engine-Exceptions,2
+runner-Sync,engine-Execution,4
+runner-Sync,evaluation-root,4
+runner-Sync,events-root,7
+runner-Sync,expression-Data,2
+runner-Sync,expression-Interfaces,2
+runner-Sync,runner-Execution,9
+runner-Sync,runtime-Policy,1
+runner-Sync,runtime-State,1
+runner-Sync,sources-Normalizer,2
 runner-root,contracts-Exceptions,1
 runner-root,contracts-Interfaces,16
 runner-root,contracts-Spec,12
@@ -195,7 +216,8 @@ runner-root,evaluation-root,2
 runner-root,events-Interfaces,2
 runner-root,expression-Interfaces,2
 runner-root,expression-root,1
-runner-root,runner-Execution,11
+runner-root,runner-Execution,3
+runner-root,runner-Sync,4
 runner-root,runtime-State,5
 runner-root,sources-Normalizer,1
 runtime-Infrastructure,contracts-Interfaces,4
@@ -237,7 +259,6 @@ These references exist in the code but are not drawn: drawing them would close a
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
-| `engine-Execution` | `runner-Execution` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
-| `runner-Execution` | `runner-root` | 2 |
-| `runner-Protocol` | `runner-Execution` | 1 |
+| `runner-Execution` | `runner-Sync` | 1 |
+| `runner-root` | `runner-Async` | 4 |

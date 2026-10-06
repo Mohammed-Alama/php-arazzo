@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
 use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
@@ -13,6 +13,7 @@ use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 
 /**

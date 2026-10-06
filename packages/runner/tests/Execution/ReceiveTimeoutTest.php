@@ -7,10 +7,10 @@ namespace Tests\Execution;
 use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
+use Alama\Arazzo\Runner\Async\CorrelationResumer;
 use DateTimeImmutable;
 
-require_once __DIR__.'/CorrelationResumerTest.php';
+require_once __DIR__.'/../Async/CorrelationResumerTest.php';
 
 function expiryRegistry(bool $expired): ResumerMockPendingCorrelations
 {

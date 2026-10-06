@@ -9,16 +9,17 @@ use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Runner\Async\ExecuteStepJob;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\SubWorkflowStepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Alama\Arazzo\Tests\Support\FakeLockManager;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
 use Alama\Arazzo\Tests\Support\RecordingExecutionRegistry;
@@ -79,6 +80,36 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
         $definitionId = $definitionRegistry->register($document);
         $queue = new SyncQueueDriver();
 
+        $executors = new OperationExecutorRegistry();
+        $executors->register(new SubWorkflowStepExecutor(
+            new WorkflowExecutor(
+                new StepExecutor(
+                    new FakerOpenApiExecutor(
+                        new DefaultOpenApiExecutor($this->http, new HttpFactory()),
+                        FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
+                    ),
+                    $runtime->operations,
+                    $engine,
+                    $this->outputExtractor($runtime),
+                    $this->schemaValidator($runtime),
+                    inspector: new ExpressionEngine(),
+                ),
+                new WorkflowEngine($engine),
+            ),
+            $engine,
+        ));
+        $executors->register(new HttpStepExecutor(
+            new FakerOpenApiExecutor(
+                new DefaultOpenApiExecutor($this->http, new HttpFactory()),
+                FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
+            ),
+            $runtime->operations,
+            $engine,
+            new ExpressionEngine(), // inspector
+            $this->outputExtractor($runtime),
+            $this->schemaValidator($runtime),
+        ));
+
         $worker = new StepExecutionWorker(
             new RunPersistence(
                 new RecordingStateStore(),
@@ -88,36 +119,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
             new FakeLockManager(),
             $definitionRegistry,
             $engine,
-            [
-                new SubWorkflowStepExecutor(
-                    new WorkflowExecutor(
-                        new StepExecutor(
-                            new FakerOpenApiExecutor(
-                                new DefaultOpenApiExecutor($this->http, new HttpFactory()),
-                                FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
-                            ),
-                            $runtime->operations,
-                            $engine,
-                            $this->outputExtractor($runtime),
-                            $this->schemaValidator($runtime),
-                            inspector: new ExpressionEngine(),
-                        ),
-                        new WorkflowEngine($engine),
-                    ),
-                    $engine,
-                ),
-                new HttpStepExecutor(
-                    new FakerOpenApiExecutor(
-                        new DefaultOpenApiExecutor($this->http, new HttpFactory()),
-                        FakerOpenApiExecutor::referencedBodyFields((string) file_get_contents($path)),
-                    ),
-                    $runtime->operations,
-                    $engine,
-                    new ExpressionEngine(), // inspector
-                    $this->outputExtractor($runtime),
-                    $this->schemaValidator($runtime),
-                ),
-            ],
+            $executors,
             new RunControlFlow(new WorkflowEngine($engine), $queue, events: $this->events),
         );
 

@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Runner\Execution\Data;
 
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**

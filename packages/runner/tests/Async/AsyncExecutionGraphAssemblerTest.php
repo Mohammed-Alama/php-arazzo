@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
@@ -11,14 +12,18 @@ use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
+use Alama\Arazzo\Runner\Async\AsyncExecutionGraphAssembler;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
-use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
+use Alama\Arazzo\Runner\Sync\SubWorkflowStepExecutor;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
@@ -42,6 +47,7 @@ function seams(
     ?ResponseValidatorInterface $schemaValidator = null,
     ?OutputExtractorInterface $outputExtractor = null,
     ?OpenApiExecutorInterface $openApiExecutor = null,
+    ?OperationExecutorRegistry $executorRegistry = null,
     int $retryCeiling = 10,
     float $retryBackoffMultiplier = 1.0,
     int $stateTtlSeconds = 86400,
@@ -152,11 +158,61 @@ function seams(
         retryCeiling: $retryCeiling,
         retryBackoffMultiplier: $retryBackoffMultiplier,
         stateTtlSeconds: $stateTtlSeconds,
+        executorRegistry: $executorRegistry,
     );
 }
 
+/**
+ * A registry plugin stand-in for the host-registered HTTP/AsyncAPI executors:
+ * the assembler no longer constructs protocol executors itself — hosts
+ * register them (F1.3's registrar does so in Laravel).
+ */
+function stubProtocolPlugin(string $pluginName, int $pluginPriority = 100): OperationExecutorPluginInterface
+{
+    return new class($pluginName, $pluginPriority) implements OperationExecutorPluginInterface
+    {
+        public function __construct(
+            private readonly string $pluginName,
+            private readonly int $pluginPriority,
+        ) {}
+
+        public function name(): string
+        {
+            return $this->pluginName;
+        }
+
+        public function priority(): int
+        {
+            return $this->pluginPriority;
+        }
+
+        public function supports(Step $step, ArazzoDocument $document): bool
+        {
+            return true;
+        }
+
+        public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
+        {
+            throw new LogicException('stub protocol plugin is never executed');
+        }
+    };
+}
+
+function hostRegistry(OperationExecutorPluginInterface ...$plugins): OperationExecutorRegistry
+{
+    $registry = new OperationExecutorRegistry();
+    foreach ($plugins as $plugin) {
+        $registry->register($plugin);
+    }
+
+    return $registry;
+}
+
 it('assembles graph with all core nodes', function () {
-    $seams = seams();
+    $seams = seams(executorRegistry: hostRegistry(
+        stubProtocolPlugin('http', 100),
+        stubProtocolPlugin('asyncapi', 200),
+    ));
     $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
         new OperationRuntime(
@@ -178,15 +234,10 @@ it('assembles graph with all core nodes', function () {
         ->and($graph->protocolExecutors())->toHaveCount(3);
 });
 
-it('injects http client from seams into async executor', function () {
-    $client = new class() implements ClientInterface
-    {
-        public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
-        {
-            return new Response(201);
-        }
-    };
-    $seams = seams(httpClient: $client);
+it('flows host-registered protocol executors into the graph alongside the composed sub-workflow executor', function () {
+    $httpPlugin = stubProtocolPlugin('http', 100);
+    $asyncPlugin = stubProtocolPlugin('asyncapi', 200);
+    $seams = seams(executorRegistry: hostRegistry($httpPlugin, $asyncPlugin));
     $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
         new OperationRuntime(
@@ -195,11 +246,15 @@ it('injects http client from seams into async executor', function () {
         ),
         new EvaluationEngine(expression: new ExpressionEngine()),
         new ExpressionEngine(),
-        $client,
+        null,
         new HttpFactory(),
     );
     $graph = $assembler->assemble($seams);
 
-    $asyncExecutor = $graph->protocolExecutors()[2];
-    expect($asyncExecutor)->toBeInstanceOf(AsyncApiStepExecutor::class);
+    $executors = $graph->protocolExecutors();
+    expect($executors)->toHaveCount(3)
+        ->toContain($httpPlugin)
+        ->toContain($asyncPlugin);
+    expect(array_find($executors, fn ($executor): bool => $executor instanceof SubWorkflowStepExecutor))
+        ->not->toBeNull();
 });

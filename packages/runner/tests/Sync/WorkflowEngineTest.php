@@ -22,7 +22,7 @@ use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Runner\Execution\Data\Transition;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Alama\Arazzo\Runtime\Policy\RetryPolicy;
 use Alama\Arazzo\Runtime\State\Data\ExecutionContext;
 use Alama\Arazzo\Runtime\State\Data\StepResult;

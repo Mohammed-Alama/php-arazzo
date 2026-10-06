@@ -14,12 +14,12 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Async\CorrelationResumer;
+use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 
-require_once __DIR__.'/ResumerTestHelpers.php';
+require_once __DIR__.'/../Execution/ResumerTestHelpers.php';
 
 /**
  * CorrelationResumer type-hints the concrete StepOutcomeHandler, so the spy has

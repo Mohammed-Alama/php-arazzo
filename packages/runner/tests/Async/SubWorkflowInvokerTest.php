@@ -12,11 +12,11 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Runner\Async\SubWorkflowInvoker;
 use Alama\Arazzo\Runner\Execution\Data\ExecutionResult;
 use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\SubWorkflowInvoker;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 
 it('binds parameters, executes child workflow, returns SubWorkflowResult', function () {
     $document = new ArazzoDocument(

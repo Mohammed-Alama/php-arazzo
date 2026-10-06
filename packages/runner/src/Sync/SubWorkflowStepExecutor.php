@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Protocol;
+namespace Alama\Arazzo\Runner\Sync;
 
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Expression;
@@ -14,7 +15,6 @@ use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 
 /**
  * Executes steps that target a nested workflow via workflowId. The child
@@ -23,12 +23,30 @@ use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
  *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final class SubWorkflowStepExecutor implements StepProtocolExecutorInterface
+final class SubWorkflowStepExecutor implements OperationExecutorPluginInterface, StepProtocolExecutorInterface
 {
+    /**
+     * Registry ordering (ascending, first supports() wins). Unlike the HTTP
+     * pair, this is NOT a disjoint claim: a workflowId target with a null
+     * action also satisfies HttpStepExecutor::supports(), so the runner-native
+     * plugin must sort before HttpStepExecutor::PLUGIN_PRIORITY (100).
+     */
+    public const PLUGIN_PRIORITY = 0;
+
     public function __construct(
         private WorkflowExecutor $executor,
         private EvaluationEngineInterface $evaluationEngine,
     ) {}
+
+    public function name(): string
+    {
+        return 'subworkflow';
+    }
+
+    public function priority(): int
+    {
+        return self::PLUGIN_PRIORITY;
+    }
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

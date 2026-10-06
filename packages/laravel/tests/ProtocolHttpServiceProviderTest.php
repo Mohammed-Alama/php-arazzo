@@ -29,9 +29,9 @@ use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Protocol\Http\Registrar\ProtocolHttpRegistrar;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\OperationExecutorRegistry;
 use Alama\Arazzo\Runner\ResponseValidatorDispatcher;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\Normalizer\OpenApiSourceNormalizer;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
@@ -152,7 +152,7 @@ it('tags the protocol services under the configured plugin vocabulary', function
         ->and($executors[1])->toBeInstanceOf(AsyncApiStepExecutor::class);
 });
 
-it('fills the protocol registries during provider boot', function (): void {
+it('fills the protocol registries on first resolve (lazy, post-boot seam re-points are honoured)', function (): void {
     $plugins = app(OperationExecutorRegistry::class)->all();
 
     expect($plugins)->toHaveCount(2)

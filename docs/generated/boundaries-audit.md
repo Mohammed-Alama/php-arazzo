@@ -42,8 +42,10 @@ when a boundary consciously moves.
 | engine | `engine:Execution` | `Psr` | 3 |
 | engine | `engine:Execution` | `cebe` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
-| runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 9 |
+| runner | `runner:Async` | `OpenTelemetry` | 2 |
+| runner | `runner:Async` | `Psr` | 3 |
+| runner | `runner:Execution` | `Psr` | 3 |
+| runner | `runner:Sync` | `Psr` | 3 |
 | runner | `runner:_` | `Psr` | 2 |
 | runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
@@ -79,7 +81,7 @@ when a boundary consciously moves.
 - `document:Validator` imports `JsonSchema\*` (4 refs)
 - `engine:Execution` imports `cebe\*` (2 refs)
 - `expression:_` imports `Flow\*` (1 refs)
-- `runner:Execution` imports `OpenTelemetry\*` (2 refs)
+- `runner:Async` imports `OpenTelemetry\*` (2 refs)
 - `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
@@ -117,11 +119,11 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
-| `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
+| `runner` | `DependencyGraph` | `contracts` | 2 | `StepOutcomeHandler` |
 | `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
-| `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
-| `runner` | `IdempotencyKeyInjector` | `engine` | 2 | `StepExecutor` |
-| `runner` | `OpenApiOperationHandle` | `sources` | 2 | `StepExecutor` |
+| `runner` | `ExecutionContext` | `runtime` | 2 | `Transition` |
+| `runner` | `IdempotencyKeyInjector` | `engine` | 2 | `AsyncExecutionGraphAssembler` |
+| `runner` | `OpenApiOperationHandle` | `sources` | 2 | `OpenApiExecutorInterface` |
 | `runner` | `OpenApiOperationResolver` | `sources` | 3 | `OperationRuntime` |
 | `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
 | `runner` | `RequestCompiler` | `engine` | 1 | `StepExecutor` |

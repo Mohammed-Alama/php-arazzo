@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use Alama\Arazzo\Runner\Async\CorrelationResumer;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 
 it('has the binding registered', function (): void {
     $bindings = app()->getBindings();

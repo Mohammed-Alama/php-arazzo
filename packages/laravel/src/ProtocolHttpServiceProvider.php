@@ -82,14 +82,30 @@ final class ProtocolHttpServiceProvider extends ServiceProvider
             static fn (Container $app): ResponseValidatorInterface => $app->make(ResponseSchemaValidator::class),
         );
 
-        // The D/E registries, filled in boot() through the registrar.
+        // The D/E registries, filled lazily through the registrar on first
+        // resolve. F2.0 made the async worker consume the executor registry,
+        // and boot()-time fill would freeze whatever instances were bound at
+        // app boot — before tests re-point the seams. First resolve happens
+        // at graph composition instead, so seam re-points are honoured.
         $this->app->singleton(
             SourceNormalizerRegistryInterface::class,
-            static fn (): SourceNormalizerRegistry => new SourceNormalizerRegistry(),
+            static function (Container $app): SourceNormalizerRegistry {
+                $registry = new SourceNormalizerRegistry();
+                $app->make(ProtocolHttpRegistrar::class)->registerInto($registry);
+
+                return $registry;
+            },
         );
         $this->app->singleton(
             OperationExecutorRegistry::class,
-            static fn (): OperationExecutorRegistry => new OperationExecutorRegistry(),
+            static function (Container $app): OperationExecutorRegistry {
+                $registry = new OperationExecutorRegistry();
+                foreach ($app->make(ProtocolHttpRegistrar::class)->executors() as $plugin) {
+                    $registry->register($plugin);
+                }
+
+                return $registry;
+            },
         );
         // ResponseValidatorDispatcher is immutable on main (ctor list, no
         // register()), so the container callback builds it from the
@@ -136,17 +152,5 @@ final class ProtocolHttpServiceProvider extends ServiceProvider
             [HttpStepExecutor::class, AsyncApiStepExecutor::class],
             ConfigValue::string(config('arazzo.plugins.operation_executor'), 'arazzo.plugins.operation-executor'),
         );
-    }
-
-    public function boot(): void
-    {
-        $registrar = $this->app->make(ProtocolHttpRegistrar::class);
-
-        $registrar->registerInto($this->app->make(SourceNormalizerRegistryInterface::class));
-
-        $executorRegistry = $this->app->make(OperationExecutorRegistry::class);
-        foreach ($registrar->executors() as $plugin) {
-            $executorRegistry->register($plugin);
-        }
     }
 }

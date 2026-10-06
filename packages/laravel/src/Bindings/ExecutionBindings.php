@@ -7,13 +7,13 @@ namespace Alama\Arazzo\Laravel\Bindings;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Laravel\Support\AsyncGraphResolver;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
+use Alama\Arazzo\Runner\Async\CorrelationResumer;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
+use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Illuminate\Contracts\Container\Container;
 
 /**

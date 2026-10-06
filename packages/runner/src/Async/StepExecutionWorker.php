@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Runner\Execution;
+namespace Alama\Arazzo\Runner\Async;
 
 use Alama\Arazzo\Contracts\Exceptions\SchemaValidationException;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
@@ -18,6 +18,7 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\StepParameterMerger;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\CorrelationPendingEvent;
@@ -31,7 +32,8 @@ use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
@@ -63,15 +65,12 @@ class StepExecutionWorker
 
     private QueueDriverInterface $queueDriver;
 
-    /**
-     * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
-     */
     public function __construct(
         RunPersistence $persistence,
         private LockManagerInterface $lockManager,
         private DefinitionRegistryInterface $definitionRegistry,
         private EvaluationEngineInterface $evaluationEngine,
-        private array $protocolExecutors,
+        private ?OperationExecutorRegistry $executors,
         RunControlFlow $controlFlow,
         private int $stateTtlSeconds = 86400,
     ) {
@@ -156,7 +155,7 @@ class StepExecutionWorker
 
                 $executor = $this->findExecutor($step, $document);
                 if ($executor === null) {
-                    throw new LogicException("No StepProtocolExecutorInterface supports step '{$step->stepId}'.");
+                    $this->failUnresolvedExecutor($step);
                 }
 
                 $outcome = $executor->execute($step, $context, $document, $executionId);
@@ -329,7 +328,22 @@ class StepExecutionWorker
 
     private function findExecutor(Step $step, ArazzoDocument $document): ?StepProtocolExecutorInterface
     {
-        return array_find($this->protocolExecutors, fn ($executor) => $executor->supports($step, $document));
+        return $this->executors?->resolve($step, $document);
+    }
+
+    /**
+     * A step with no matching executor: an uninjected registry surfaces as the
+     * F1.2-shaped ExecutionException naming arazzo-protocol-http (the package
+     * that provides HTTP/AsyncAPI executors); an injected-but-unfilled registry
+     * keeps the historic LogicException.
+     */
+    private function failUnresolvedExecutor(Step $step): never
+    {
+        if ($this->executors === null) {
+            throw new ExecutionException('No operation executor registry configured; register alama/arazzo-protocol-http (Phase F1).');
+        }
+
+        throw new LogicException("No StepProtocolExecutorInterface supports step '{$step->stepId}'.");
     }
 
     /**

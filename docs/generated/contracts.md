@@ -32,7 +32,7 @@ flowchart LR
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
+    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Interfaces</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ReplacementTargetResolverInterface["ReplacementTargetResolverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ResponseTransferInterface["ResponseTransferInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -235,12 +235,14 @@ flowchart LR
     C_runner_runner_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
     C_laravel_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>laravel:Queue</small>"]:::implLaravel
     C_laravel_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
-    C_runner_runner_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
-    C_runner_runner_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_runner_runner___RunnerFacade["RunnerFacade<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerFacade -.->|implements| I_RunnerFacadeInterface
     C_runner_runner___RunnerGraphBuilder["RunnerGraphBuilder<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerGraphBuilder -.->|implements| I_RunnerGraphBuilderInterface
+    C_runner_runner_Sync_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Sync</small>"]:::implCore
+    C_runner_runner_Sync_SubWorkflowStepExecutor -.->|implements| I_OperationExecutorPluginInterface
+    C_runner_runner_Sync_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Sync</small>"]:::implCore
+    C_runner_runner_Sync_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_cli_cli_Console_CliRunner["CliRunner<br/><small>cli:Console</small>"]:::implCore
     C_cli_cli_Console_CliRunner -.->|implements| I_LockManagerInterface
     C_laravel_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>laravel:Lock</small>"]:::implLaravel
@@ -263,7 +265,6 @@ flowchart LR
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
-    N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
     N_OutputExtractorInterface["no implementation found"]:::orphan --> I_OutputExtractorInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ProtocolExecutorRegistryInterface["no implementation found"]:::orphan --> I_ProtocolExecutorRegistryInterface

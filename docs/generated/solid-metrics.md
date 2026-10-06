@@ -26,15 +26,15 @@ quadrantChart
     cli/Console: [1, 0]
     cli/Generator: [0.333, 0]
     cli/Renderer: [0.5, 0]
-    contracts/Dependency: [0.4, 0]
+    contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
-    contracts/Interfaces: [0.125, 1]
-    contracts/Spec: [0.03, 0.02]
+    contracts/Interfaces: [0.115, 1]
+    contracts/Spec: [0.029, 0.02]
     contracts/State: [0.071, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.222, 0.091]
-    document/Validator: [0.5, 0.015]
-    document/_: [0.545, 0.2]
+    document/Validator: [0.455, 0.015]
+    document/_: [0.462, 0.2]
     engine/Data: [0.75, 0]
     engine/Enum: [0, 0]
     engine/Exceptions: [0.333, 0]
@@ -53,26 +53,27 @@ quadrantChart
     expression/Data: [0.3, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.25, 0]
-    expression/Interfaces: [0.188, 1]
+    expression/Interfaces: [0.176, 1]
     expression/Xpath: [0.667, 0.5]
     expression/_: [0.636, 0]
-    laravel/Bindings: [0.958, 0]
+    laravel/Bindings: [0.962, 0]
     laravel/Http: [0.714, 0]
     laravel/Lock: [0.5, 0]
     laravel/Persistence: [0.833, 0]
-    laravel/Queue: [0.75, 0]
+    laravel/Queue: [0.667, 0]
     laravel/State: [0.5, 0]
     laravel/Support: [0.667, 0]
     laravel/_: [1, 0]
-    runner/Execution: [0.786, 0.077]
-    runner/Jobs: [0.333, 0]
-    runner/Protocol: [0.889, 0]
-    runner/_: [0.722, 0.222]
+    runner/Async: [0.8, 0]
+    runner/Execution: [0.6, 0.063]
+    runner/Interfaces: [1, 1]
+    runner/Sync: [0.783, 0]
+    runner/_: [0.75, 0.222]
     runtime/Infrastructure: [1, 0]
     runtime/Policy: [0.75, 0]
-    runtime/State: [0.3, 0.333]
+    runtime/State: [0.25, 0.333]
     runtime/Telemetry: [0, 0]
-    sources/Normalizer: [0.385, 0.2]
+    sources/Normalizer: [0.357, 0.2]
     sources/Resolver: [0.3, 0.231]
     sources/Validator: [0.571, 0]
     sources/_: [0.818, 0]
@@ -86,8 +87,8 @@ Concrete types over 300 LOC:
 |---|---|---:|
 | `Parser` | `document:Parser` | 956 |
 | `ExecutionContext` | `runtime:State` | 496 |
-| `StepOutcomeHandler` | `runner:Execution` | 393 |
-| `StepExecutionWorker` | `runner:Execution` | 381 |
+| `StepExecutionWorker` | `runner:Async` | 395 |
+| `StepOutcomeHandler` | `runner:Async` | 393 |
 | `Parser` | `expression:_` | 365 |
 | `WorkflowContext` | `contracts:State` | 359 |
 | `ExecutionState` | `contracts:State` | 308 |
