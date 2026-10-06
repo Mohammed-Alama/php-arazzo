@@ -167,7 +167,8 @@ class StepExecutionWorker
                     $this->eventLedger->append($executionId, 'step.suspended', ['stepId' => $step->stepId]);
 
                     if ($step->target->action === 'receive' && $step->target->correlationId !== null && $step->target->channelPath !== null) {
-                        $correlationIdValue = (string) $this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId));
+                        $evaluated = $this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId));
+                        $correlationIdValue = is_scalar($evaluated) ? (string) $evaluated : '';
                         $this->events->dispatch(new CorrelationPendingEvent(
                             $executionId,
                             $context->getWorkflowId() ?? '',

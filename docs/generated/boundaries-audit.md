@@ -116,7 +116,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `engine` | `InjectionResult` | `runner` | 1 | `IdempotencyKeyInjector` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
-| `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
+| `runner` | `CorrelationPendingEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
 | `runner` | `DependencyGraph` | `contracts` | 2 | `StepOutcomeHandler` |

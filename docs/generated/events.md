@@ -22,6 +22,7 @@ flowchart LR
     S_Alama_Arazzo_Runner_Async_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Async</small>"] -->|dispatches| E_StepStartedEvent
     S_Alama_Arazzo_Runner_Sync_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Sync</small>"] -->|dispatches| E_StepStartedEvent
     S_Alama_Arazzo_Runner_Async_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationPendingEvent
+    S_Alama_Arazzo_Runner_Async_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationPendingEvent
     S_Alama_Arazzo_Runner_Async_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Async</small>"] -->|dispatches| E_RunCompletedEvent
     S_Alama_Arazzo_Runner_Async_StepOutcomeHandler["StepOutcomeHandler<br/><small>runner:Async</small>"] -->|dispatches| E_RunCompletedEvent
     S_Alama_Arazzo_Runner_Sync_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Sync</small>"] -->|dispatches| E_RunCompletedEvent
@@ -41,7 +42,7 @@ flowchart LR
 
 | Event | Dispatched from |
 |---|---|
-| **CorrelationPendingEvent** | `StepExecutionWorker` |
+| **CorrelationPendingEvent** | `StepExecutionWorker`, `StepOutcomeHandler` |
 | **CorrelationResumedEvent** | `CorrelationResumer` |
 | **RunCompletedEvent** | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
 | **RunFailedEvent** | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |

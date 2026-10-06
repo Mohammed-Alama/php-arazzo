@@ -45,11 +45,13 @@ class RecordingStepOutcomeHandler extends StepOutcomeHandler
         WorkflowContext $context,
         string $executionId,
         bool $criteriaMet,
+        bool $suspended = false,
     ): void {
         $this->handled[] = [
             'executionId' => $executionId,
             'stepId' => $step->stepId,
             'criteriaMet' => $criteriaMet,
+            'suspended' => $suspended,
             'context' => $context,
         ];
     }

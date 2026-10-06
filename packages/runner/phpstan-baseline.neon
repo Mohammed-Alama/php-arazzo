@@ -151,7 +151,7 @@ parameters:
 			path: src/Async/StepExecutionWorker.php
 
 		-
-			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(24\)\. Maximum allowed is 10\.$#'
+			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(25\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Async/StepExecutionWorker.php
 
@@ -260,7 +260,7 @@ parameters:
 			path: src/Async/StepOutcomeHandler.php
 
 		-
-			message: '#^Method handle has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			message: '#^Method handle has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Async/StepOutcomeHandler.php
 

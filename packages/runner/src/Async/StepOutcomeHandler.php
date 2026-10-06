@@ -22,6 +22,7 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Events\RunCompletedEvent;
 use Alama\Arazzo\Events\RunFailedEvent;
@@ -85,6 +86,7 @@ class StepOutcomeHandler
         WorkflowContext $context,
         string $executionId,
         bool $criteriaMet,
+        bool $suspended = false,
     ): void {
         foreach ($step->io->outputs as $name => $value) {
             $resolved = match (true) {
@@ -96,7 +98,7 @@ class StepOutcomeHandler
         }
 
         $state = $this->stateFrom($context);
-        $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
+        $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet, $suspended);
 
         /** @var array<string, mixed> $error */
         foreach ($transition->state->errors as $error) {
@@ -114,8 +116,67 @@ class StepOutcomeHandler
             TransitionType::Goto => $this->applyGoto($transition, $document, $workflow, $step, $context, $executionId, $criteriaMet),
             TransitionType::Invoke => $this->applyInvoke($document, $workflow, $step, $context, $executionId),
             TransitionType::End => $this->applyEnd($transition, $workflow, $step, $context, $executionId),
-            TransitionType::Suspend => null, // suspension handled by the executor layer
+            TransitionType::Suspend => $this->applySuspend($step, $context, $executionId),
         };
+    }
+
+    /**
+     * Route a suspended outcome for an actor-in-the-loop step to the handoff
+     * path instead of scheduling a retry: re-register the pending correlation
+     * and re-emit the {@see CorrelationPendingEvent} so the actor is asked
+     * again. Steps without a handoff signature (transport or engine interaction)
+     * keep executor-layer suspension semantics and no-op here.
+     */
+    private function applySuspend(
+        Step $step,
+        WorkflowContext $context,
+        string $executionId,
+    ): void {
+        if (!$this->isHandoffCandidate($step)) {
+            return;
+        }
+
+        $correlationIdValue = $this->resolveCorrelationId($step, $context);
+        $channelPath = $step->target->channelPath ?? '';
+
+        $this->pendingCorrelations->create(
+            $correlationIdValue,
+            $executionId,
+            $step->stepId,
+            $channelPath,
+            $this->stateTtlSeconds,
+        );
+
+        $this->events->dispatch(new CorrelationPendingEvent(
+            $executionId,
+            $context->getWorkflowId() ?? '',
+            $step->stepId,
+            $correlationIdValue,
+            $channelPath,
+            new DateTimeImmutable(),
+        ));
+    }
+
+    private function isHandoffCandidate(Step $step): bool
+    {
+        return $step->target->interaction !== null
+            || ($step->target->action === 'receive' && $step->target->channelPath !== null);
+    }
+
+    /**
+     * Mirror UnifiedStepCarrier's empty-id record for interaction handoffs
+     * without a correlation expression, and never cast structure to string
+     * (DF6): an evaluated non-scalar yields an empty correlation id.
+     */
+    private function resolveCorrelationId(Step $step, WorkflowContext $context): string
+    {
+        if ($step->target->correlationId === null) {
+            return '';
+        }
+
+        $evaluated = $this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId));
+
+        return is_scalar($evaluated) ? (string) $evaluated : '';
     }
 
     private function applyNext(
