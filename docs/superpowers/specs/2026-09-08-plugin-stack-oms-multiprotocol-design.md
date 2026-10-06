@@ -503,6 +503,8 @@ Phase C status: ✅ Implemented 2026-09-22 — see `plans/2026-09-08-phase-c-eva
 
 Phase E status: ✅ Implemented — the four-layer split (`arazzo-runtime`, `arazzo-events`, `arazzo-request-pipeline`, `arazzo-engine`) landed in E0–E5, then the OMS in E6–E10. See `plans/2026-09-08-phase-e-runner-oms.md`.
 ### Phase F — Protocol packages (vertical slices; core untouched)
+Phase F status (F1–F3): ✅ Implemented — `arazzo-protocol-http` extracted, `arazzo-runner` split into `Sync\`/`Async\`, `laravel`/`cli` facade leak closed. See `plans/2026-09-08-phase-f-protocol-packages.md`.
+
 - **F1** `alama/arazzo-protocol-http` **(reference slice; D4/D9)** —
   relocate the embedded defaults out of core into the first vertical package:
   document OpenAPI/AsyncAPI normalizers (`OpenApi30Normalizer`,

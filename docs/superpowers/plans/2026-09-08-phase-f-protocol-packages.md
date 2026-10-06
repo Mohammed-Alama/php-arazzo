@@ -165,7 +165,7 @@ Create the package directory, composer manifest, Pest/PHPStan scaffolding, and r
 **Interfaces:**
 - Produces: package `alama/arazzo-protocol-http` installable as a path repository, analysable via `composer run analyse-http`, testable via `composer run test-http`.
 
-- [ ] **Step 1: Create the composer manifest**
+- [x] **Step 1: Create the composer manifest**
 
 `packages/protocol-http/composer.json`:
 
@@ -216,7 +216,7 @@ Create the package directory, composer manifest, Pest/PHPStan scaffolding, and r
 
 Note what is **absent**: `alama/arazzo-runner`, `alama/arazzo-request-pipeline`, and `softcreatr/jsonpath` (moved under `expression` by `429a743`; it is no longer a protocol-http concern). That omission is the DIP boundary written as a manifest — the package cannot reach runner internals because it cannot resolve them. No dual PSR-4 map is needed: D0 left the two DTOs in `alama/arazzo-document`, which this package already requires, so their FQCNs are unchanged by construction. `illuminate/contracts` + `illuminate/support` are required so the provider can extend `Illuminate\Support\ServiceProvider` (the provider ships in F1.3; until then the `extra.laravel.providers` entry is inert). **(R2 supersedes the last sentence: F1.5 removes `illuminate/*`, `orchestra/testbench`, `extra.laravel.providers` and `config/arazzo.php` from this manifest; the provider ships from `packages/laravel` in F1.3, per DF10.)**
 
-- [ ] **Step 2: Create the PHPStan config**
+- [x] **Step 2: Create the PHPStan config**
 
 `packages/protocol-http/phpstan.neon.dist` — mirror `packages/document/phpstan.neon.dist` exactly, including the shared core rules and scan directories (the relocated types import document/engine/sources code, so the same scan list those packages use must resolve them):
 
@@ -243,7 +243,7 @@ parameters:
 
 If the two `rules/*.neon` files do not both exist under `packages/core/phpstan/rules/` at implementation time, copy the `includes` block verbatim from `packages/document/phpstan.neon.dist` — that is the source of truth.
 
-- [ ] **Step 3: Create the Pest bootstrap + a smoke test**
+- [x] **Step 3: Create the Pest bootstrap + a smoke test**
 
 `packages/protocol-http/tests/Pest.php` — copy `packages/document/tests/Pest.php` verbatim (the same cebe PHP 8.4 deprecation silencing is needed here, since cebe lands in this package):
 
@@ -274,7 +274,7 @@ arch('protocol-http does not depend on Laravel runtime types in the slice core')
 
 The first rule is the DIP guard, asserted from the very first commit so F1.2 cannot regress it silently. Both rules pass vacuously on the empty `src`; F1.2 verifies the first one bites before committing the move.
 
-- [ ] **Step 4: Wire the root monorepo**
+- [x] **Step 4: Wire the root monorepo**
 
 Edit root `composer.json`:
 - `repositories`: append `{"type": "path", "url": "packages/protocol-http"}`.
@@ -282,7 +282,7 @@ Edit root `composer.json`:
 - `autoload-dev.psr-4`: append `"Alama\\Arazzo\\Tests\\Protocol\\Http\\": "packages/protocol-http/tests"` (alongside the existing `Alama\Arazzo\Tests\` map — protocol-http uses its *own* test namespace, mirroring `packages/evaluation`).
 - `scripts`: append `"analyse-http": "vendor/bin/phpstan analyse -c packages/protocol-http/phpstan.neon.dist --memory-limit=1G"`, add `"@analyse-http"` to the `"analyse"` array (after `"@analyse-events"`), add `"test-http": "vendor/bin/pest packages/protocol-http/tests"`, add `"@test-http"` to the `"test"` array.
 
-- [ ] **Step 5: Install and verify**
+- [x] **Step 5: Install and verify**
 
 ```bash
 composer update alama/arazzo-protocol-http --with-dependencies --no-interaction
@@ -292,7 +292,7 @@ composer run test-http
 
 Expected: package symlinked into the root vendor from `packages/protocol-http`; analyse passes (0 errors on the empty `src`); Pest passes the arch smoke test.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add composer.json composer.lock packages/protocol-http
@@ -325,7 +325,7 @@ Move the normalizer classes out of `arazzo-sources` into protocol-http. Verified
 - Consumes (protocol-http): `SourceResolver` + `UnsupportedSourceVersionException` (`Alama\Arazzo\Sources\Resolver\…`, per DF4), the two document DTOs, `SourceNormalizerInterface` (contracts).
 - Produces: `Alama\Arazzo\Protocol\Http\Normalizer\{OpenApi30Normalizer, OpenApi31Normalizer, Swagger2Normalizer, OpenApiDocumentLoader, OpenApiOperationResolver, OpenApiOperationHandle, OpenApiSourceNormalizer}`.
 
-- [ ] **Step 1: `git mv` the seven files**
+- [x] **Step 1: `git mv` the seven files**
 
 ```bash
 mkdir -p packages/protocol-http/src/Normalizer
@@ -334,7 +334,7 @@ for f in OpenApi30Normalizer OpenApi31Normalizer Swagger2Normalizer OpenApiDocum
 done
 ```
 
-- [ ] **Step 2: Rewrite namespaces; keep the detector and the interface behind**
+- [x] **Step 2: Rewrite namespaces; keep the detector and the interface behind**
 
 Namespace `Alama\Arazzo\Sources\Normalizer` → `Alama\Arazzo\Protocol\Http\Normalizer` for the seven moved classes, updating their internal imports:
 - The two DTOs resolve from document with no `Normalizer` segment — `use Alama\Arazzo\Document\ResolvedOperation;` / `use Alama\Arazzo\Document\NormalizedOpenApiOperation;`.
@@ -344,11 +344,11 @@ Namespace `Alama\Arazzo\Sources\Normalizer` → `Alama\Arazzo\Protocol\Http\Norm
 
 **Why `OpenApiVersionDetector` and `OpenApiNormalizerInterface` stay:** both are referenced from `sources`-side code that this task does not otherwise touch, and the detector is constructible without cebe (`PreflightValidator` news it up directly at `packages/sources/src/Validator/PreflightValidator.php:45`). Moving either would drag `PreflightValidator` and the sources registry into F1.1's blast radius for no DIP gain. If at implementation time the detector turns out to be unreferenced outside the moved set, move it too and note it.
 
-- [ ] **Step 3: Move cebe out of `alazzo-sources`**
+- [x] **Step 3: Move cebe out of `alazzo-sources`**
 
 `packages/sources/composer.json`: drop `"cebe/php-openapi": "^1.7"` from `require`. After this step nothing under `packages/sources/src` touches a cebe type — verify with `rg -n "cebe\\\\openapi" packages/sources/src || echo "sources cebe-free"`. Then `composer update cebe/php-openapi --no-interaction` and `composer run analyse-sources && composer run test-sources`.
 
-- [ ] **Step 4: Repoint `PreflightValidator`'s operation-resolver seam (sources side)**
+- [x] **Step 4: Repoint `PreflightValidator`'s operation-resolver seam (sources side)**
 
 Today `PreflightValidator::__construct` types the **concrete** `Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver` (line 42), which this task just moved — so without a seam, `sources` would import protocol-http (an H2 violation). Create `packages/sources/src/Normalizer/OpenApiOperationResolverInterface.php`:
 
@@ -382,7 +382,7 @@ Then in `packages/sources/src/Validator/PreflightValidator.php`: constructor par
 
 `packages/protocol-http/src/Normalizer/OpenApiOperationResolver.php` declares `implements OpenApiOperationResolverInterface` (importing `Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface` — legal, sources is below protocol-http).
 
-- [ ] **Step 5: Relocate the normalizer-focused tests**
+- [x] **Step 5: Relocate the normalizer-focused tests**
 
 ```bash
 git mv packages/sources/tests/Normalizer/OpenApi30NormalizerTest.php      packages/protocol-http/tests/Normalizer/OpenApi30NormalizerTest.php
@@ -396,7 +396,7 @@ Adjust namespaces to `Alama\Arazzo\Tests\Protocol\Http\Normalizer`. Two caveats 
 - **Tests covering resolution through `DocumentInterface`** stay in sources (`DocumentCapabilitiesTest` and friends) and are re-pointed in F1.3. **(R2: their F1.1 re-pointing onto `HttpSourceGraph` is undone by F1.5 — they resolve through `Sources\SourceGraph` again, and sources' `require-dev: alama/arazzo-protocol-http` goes away with it.)**
 - The stale tracked snapshot `phpstan-report.txt` is a known dead artifact — leave it unchanged.
 
-- [ ] **Step 6: Run the gates**
+- [x] **Step 6: Run the gates**
 
 ```bash
 composer update cebe/php-openapi --no-interaction
@@ -408,7 +408,7 @@ composer run test-document && composer run analyse-document
 
 Expected: `test-http` green on the relocated suites; `test-sources`/`analyse-sources` still green **without** cebe; `test-document`/`analyse-document` still green. `analyse-document` must NOT error on resolving `ResolvedOperation` — it resolves inside document's own tree. If it does error, you have wrongly moved a DTO; move it back rather than adding a `scanDirectories` entry.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A packages/document packages/sources packages/protocol-http composer.json composer.lock
@@ -478,7 +478,7 @@ arch('document does not depend on protocol-http')
 - Produces (contracts): `OutputExtractorInterface`, `PendingCorrelationRegistryInterface`.
 - Produces (engine): `Alama\Arazzo\Engine\Exceptions\ExecutionException`.
 
-- [ ] **Step 1: Promote the two seam types**
+- [x] **Step 1: Promote the two seam types**
 
 ```bash
 mkdir -p packages/contracts/src/Execution packages/engine/src/Exceptions
@@ -498,7 +498,7 @@ Also create `packages/contracts/src/Interfaces/OutputExtractorInterface.php` (DF
 
 Run: `composer run test-contracts && composer run test-runtime && composer run test-runner && composer run test-laravel && composer run test-engine`. Expected: PASS — behaviour-preserving, only namespaces change.
 
-- [ ] **Step 2: `git mv` the executors and rewrite namespaces**
+- [x] **Step 2: `git mv` the executors and rewrite namespaces**
 
 ```bash
 mkdir -p packages/protocol-http/src/Execution/Interfaces packages/protocol-http/src/Protocol
@@ -523,7 +523,7 @@ rg -n 'Alama\\Arazzo\\Runner' packages/protocol-http/src || echo "DIP clean"
 ```
 Expected: `DIP clean`. If anything remains, it is a runner type this task missed — move it to contracts/engine rather than adding a `scanDirectories` entry.
 
-- [ ] **Step 3: Split `OpenApiExecutorInterface` into canonical (protocol-http) + BC alias (runner)**
+- [x] **Step 3: Split `OpenApiExecutorInterface` into canonical (protocol-http) + BC alias (runner)**
 
 `packages/protocol-http/src/Execution/Interfaces/OpenApiExecutorInterface.php` — canonical. Copy the exact current method set/signatures from `packages/runner/src/Execution/Interfaces/OpenApiExecutorInterface.php` verbatim, namespace `Alama\Arazzo\Protocol\Http\Execution\Interfaces`.
 
@@ -547,7 +547,7 @@ composer run test-http   # expect RED on arch('protocol-http does not depend on 
 # revert the import, re-run, expect GREEN
 ```
 
-- [ ] **Step 4: Remove protocol-http defaults from the runner's sync path**
+- [x] **Step 4: Remove protocol-http defaults from the runner's sync path**
 
 `ExecutionGraphFactory` today takes `(OperationRuntime $operations, Evaluation\EvaluationEngineInterface $evaluationEngine, Expression\Interfaces\ExpressionEngineInterface $inspector, ?ClientInterface $httpClient = null, ?RequestFactoryInterface $requestFactory = null)` and, in `createWorkflowExecutor()`, news a `Client`/`HttpFactory` (lines 38-39), a `StepOutputExtractor` (41), a `ResponseSchemaValidator` (42) and a `DefaultOpenApiExecutor` (46). All four constructions go. New shape — keep `$operations` and `$inspector` as they are, drop the two transport params, add the three value seams:
 
@@ -579,7 +579,7 @@ public function createWorkflowExecutor(): WorkflowExecutor
 - `RunnerFacade`: forward the seams — `__construct` gains the three nullable params, passed to `ExecutionGraphFactory`. Callers who omit them get the throw *at execution time* (accepted: standalone document/runner consumers must register `arazzo-protocol-http`).
 - `RunnerGraphBuilder`: the factory receives `$this->openApiExecutor` / `$this->outputExtractor` / `$this->schemaValidator` (nullable) in place of today's `?ClientInterface` / `?RequestFactoryInterface` (lines 21-22) — it currently forwards `$this->httpClient, $this->requestFactory` into `AsyncExecutionGraphAssembler`, so the same substitution applies on the async path. F1.3 feeds the real objects from Laravel.
 
-- [ ] **Step 5: Remove protocol-http defaults from the async path**
+- [x] **Step 5: Remove protocol-http defaults from the async path**
 
 `packages/runner/src/Execution/AsyncExecutionGraphAssembler.php::assemble()` currently does `new Client()`, `new HttpFactory()`, `new DefaultOpenApiExecutor(...)` and default-constructs `StepOutputExtractor`/`ResponseSchemaValidator`. After this task, `assemble()` must not construct any `Alama\Arazzo\Protocol\...` type:
 
@@ -600,13 +600,13 @@ rg -n "Protocol\\\\Http" packages/runner/src packages/document/src packages/sour
 ```
 Any hit in the first = a core→protocol construction; eliminate it. The second must be empty for `document` and `sources`; `runner` may still name `Alama\Arazzo\Protocol\Http` until F2.0 resolves the assembler, so note any hit and carry it into F2.0's checklist.
 
-- [ ] **Step 6: PHPStan scan directories**
+- [x] **Step 6: PHPStan scan directories**
 
 In `packages/runner/phpstan.neon.dist` add `../protocol-http/src` to `scanDirectories` (and keep `../engine/src` added in Step 1). Rationale: `runner` reads `OpenApiOperationHandle` and the relocated executor interface, so it must resolve them without a composer dependency. Analyse runs from repo root so `cebe/php-openapi` resolves via protocol-http's `require`.
 
 Do **not** add `../protocol-http/src` to `packages/document/phpstan.neon.dist` or `packages/sources/phpstan.neon.dist` — scanning protocol-http from either would paper over exactly the layer-0→protocol import the guards forbid; assert the absence with the `arch('document does not depend on protocol-http')` rule above plus a sibling one for `Alama\Arazzo\Sources`.
 
-- [ ] **Step 7: Move the tests that exercise relocated classes**
+- [x] **Step 7: Move the tests that exercise relocated classes**
 
 ```bash
 git mv packages/runner/tests/Execution/DefaultOpenApiExecutorTest.php packages/protocol-http/tests/Execution/DefaultOpenApiExecutorTest.php
@@ -617,7 +617,7 @@ git mv packages/runner/tests/Execution/AsyncApiSpecVersionBranchTest.php package
 
 Update namespaces in the moved tests to `Alama\Arazzo\Tests\Protocol\Http\Execution|Protocol`. The `Mockery::mock(StepOutputExtractor::class)` doubles from `c2b03fb` Task 2.2 now target a protocol-http class — switch them to `Mockery::mock(OutputExtractorInterface::class)` (this is exactly why DF1 re-introduces the interface). Test fixtures/HTTP mocks move with them. **Do not move** `RunnerFacadeTest`/`ExecutionGraphFactoryTest`/`AsyncExecutionGraphAssemblerTest` — rewrite those in place to inject small in-repo fakes of the three seams (runner tests may not require protocol-http; the real vertical slice is asserted under `test-laravel` + the final gate).
 
-- [ ] **Step 8: Gates**
+- [x] **Step 8: Gates**
 
 ```bash
 composer run test-http && composer run analyse-http
@@ -629,7 +629,7 @@ composer run test-contracts && composer run test-runtime && composer run test-en
 
 Expected: runner tests green using the fakes; the two protocol sweeps empty for `document`/`sources`; `rg -n 'Alama\\Arazzo\\Runner' packages/protocol-http/src` empty.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -693,21 +693,21 @@ updated in place, never committed.
 - Produces: `Alama\Arazzo\Sources\SourceGraph::{document,loader,runtime,using,operations}()`; `Alama\Arazzo\Laravel\ProtocolHttpServiceProvider` (stub completed by F1.3); guards asserting the R2 boundaries.
 - Ordering: must land before F1.3 (provider/resolver paths below assume it), before F4.1 (`WsdlSourceNormalizer`'s home), and before F3's consume list.
 
-- [ ] **Step 1 (commit C1): finish the normalizer return.** Complete the staged namespace rewrites; `git mv` the 4 normalizer tests back + namespace rewrite; rewrite every importer per the `rg` list; cebe → `require` in sources; drop any `../protocol-http` scan entry. Gate: `composer dump-autoload && composer run test-sources && composer run test-http && composer run test-runner && composer run test-cli && composer run test-laravel && composer run test-core && composer run analyse && composer run format` (zero diff), sweeps empty. Then `git add packages/sources packages/protocol-http packages/runner packages/cli packages/laravel packages/core` (+ the two runner test tweaks **iff** proven needed) and commit:
+- [x] **Step 1 (commit C1): finish the normalizer return.** Complete the staged namespace rewrites; `git mv` the 4 normalizer tests back + namespace rewrite; rewrite every importer per the `rg` list; cebe → `require` in sources; drop any `../protocol-http` scan entry. Gate: `composer dump-autoload && composer run test-sources && composer run test-http && composer run test-runner && composer run test-cli && composer run test-laravel && composer run test-core && composer run analyse && composer run format` (zero diff), sweeps empty. Then `git add packages/sources packages/protocol-http packages/runner packages/cli packages/laravel packages/core` (+ the two runner test tweaks **iff** proven needed) and commit:
   ```bash
   git commit -m "refactor(sources): return OpenAPI normalizers to arazzo-sources (F1.5)"
   ```
-- [ ] **Step 2 (commit C2): re-merge `HttpSourceGraph` into `SourceGraph`.** Move the five statics + cache verbatim — **no behaviour change in this commit**: if `defaultRegistry()` (`DefaultSourceResolver::withDefaults()`) differs from the existing `createRegistry()` (fetcher map), keep both rather than dedupe across a move. Delete the class; rewrite the ~17 consumers; drop sources' `require-dev`; conditional `document` drop with escape hatch. Gate: `composer run test && composer run analyse && composer run format && make verify`, `rg -l 'HttpSourceGraph' packages --glob '!vendor'` empty. Commit:
+- [x] **Step 2 (commit C2): re-merge `HttpSourceGraph` into `SourceGraph`.** Move the five statics + cache verbatim — **no behaviour change in this commit**: if `defaultRegistry()` (`DefaultSourceResolver::withDefaults()`) differs from the existing `createRegistry()` (fetcher map), keep both rather than dedupe across a move. Delete the class; rewrite the ~17 consumers; drop sources' `require-dev`; conditional `document` drop with escape hatch. Gate: `composer run test && composer run analyse && composer run format && make verify`, `rg -l 'HttpSourceGraph' packages --glob '!vendor'` empty. Commit:
   ```bash
   git add packages/sources packages/protocol-http packages/runner packages/cli packages/laravel packages/core
   git commit -m "refactor(sources): re-merge HttpSourceGraph into SourceGraph (F1.5)"
   ```
-- [ ] **Step 3 (commit C3): provider out of protocol-http + guards.** Move/rewrite the stub, fold config, drop `illuminate/*` + testbench + `extra.laravel.providers`, strengthen the arch rule, add the sources file-sweep rule, run the three bite probes. Gate: `composer run test-http && composer run test-laravel && composer run test-sources && composer run analyse && make verify`. Commit:
+- [x] **Step 3 (commit C3): provider out of protocol-http + guards.** Move/rewrite the stub, fold config, drop `illuminate/*` + testbench + `extra.laravel.providers`, strengthen the arch rule, add the sources file-sweep rule, run the three bite probes. Gate: `composer run test-http && composer run test-laravel && composer run test-sources && composer run analyse && make verify`. Commit:
   ```bash
   git add packages/sources packages/protocol-http packages/laravel
   git commit -m "refactor(protocol-http): framework-free package — provider ships from packages/laravel (F1.5)"
   ```
-- [ ] **Step 4 (commit C4): docs + ledger.** Re-run `make verify`; `git add docs/generated` (only regenerated files — keep `docker-compose.yml` out: it is apptree scaffolding, not this task) and commit:
+- [x] **Step 4 (commit C4): docs + ledger.** Re-run `make verify`; `git add docs/generated` (only regenerated files — keep `docker-compose.yml` out: it is apptree scaffolding, not this task) and commit:
   ```bash
   git commit -m "docs(phase-f): regenerate after Option 2 re-merge; record R2 ruling (F1.5)"
   ```
@@ -735,7 +735,7 @@ Make the composed app (laravel + umbrella) work with zero config: bind the proto
 - Consumes: `SourceNormalizerRegistryInterface`, `OperationExecutorRegistry`, `ResponseValidatorDispatcher`, `PluginRegistry` (G1) — via the G3-located tag names, resolving whatever is on `main` today and noting the hand-off.
 - Produces: `Alama\Arazzo\Laravel\ProtocolHttpServiceProvider` (namespace per `packages/laravel` convention), `Alama\Arazzo\Protocol\Http\Registrar\ProtocolHttpRegistrar`.
 
-- [ ] **Step 1: Registrar (framework-agnostic)**
+- [x] **Step 1: Registrar (framework-agnostic)**
 
 `packages/protocol-http/src/Registrar/ProtocolHttpRegistrar.php`:
 
@@ -775,7 +775,7 @@ final class ProtocolHttpRegistrar
 
 Construct the exact concrete wiring from the D/E/G implementations on `main`; `priority` via class constants + descending sort per Global Constraints. If PHPStan complains the `?Type`s clash, annotate `@phpstan-ignore` + a `// TODO(G)` and wire to container callbacks.
 
-- [ ] **Step 2: `ProtocolHttpServiceProvider`**
+- [x] **Step 2: `ProtocolHttpServiceProvider`**
 
 `packages/laravel/src/ProtocolHttpServiceProvider.php` (the F1.5 stub), extends `Illuminate\Support\ServiceProvider`:
 
@@ -812,7 +812,7 @@ final class ProtocolHttpServiceProvider extends ServiceProvider
 
 Exact service names finalised against the G-plan's tag + `ProtocolDiscovery::tags()`/`operationExecutorTag()` (G3) once G lands; until then the provider registers under `arazzo.plugins.*` and `arazzo.plugins.operation-executor` as the default config, and the provider test asserts the tag keys exist. Keep the provider's `use Illuminate\...` limited to `ServiceProvider` + the tagged container — the file lives in `packages/laravel`, so protocol-http's DF10 `Illuminate` ban (F1.5) does not apply to it.
 
-- [ ] **Step 3: Update Laravel resolver bindings**
+- [x] **Step 3: Update Laravel resolver bindings**
 
 `packages/laravel/src/Bindings/ResolverBindings.php` — the `OpenApiDocumentLoader` / `OpenApiOperationResolver` / `PreflightValidator` singletons now point at:
 - `Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader`
@@ -821,13 +821,13 @@ Exact service names finalised against the G-plan's tag + `ProtocolDiscovery::tag
 
 Edit `packages/laravel/tests/Bindings/ResolverBindingsTest.php` accordingly (assert the resolver binding returns the sources resolver class, preflight still passes the existing fixture documents).
 
-- [ ] **Step 4: Feed the seams into the async + sync graphs**
+- [x] **Step 4: Feed the seams into the async + sync graphs**
 
 - `ExecutionBindings` / `AsyncGraphResolver`: `self::seams($app)` gains `$seams->openApiExecutor = $app->make(OpenApiExecutorInterface::class);` **and** `$seams->outputExtractor = $app->make(OutputExtractorInterface::class);`. The existing `$seams->schemaValidator` handling is unchanged.
 - `FacadeBindings`: F1.2 Step 4 replaced the `RunnerGraphBuilder`/`RunnerFacade` `$httpClient` seam with three nullable seams, so this binding now passes `$app->make(OpenApiExecutorInterface::class)` + `$app->make(OutputExtractorInterface::class)` into the builder. If the `ClientInterface`/`RequestFactoryInterface` container bindings are left unused by that swap, leave them registered (they are public container bindings) and note them for a later cleanup — do not delete them in this task.
 - The `OperationExecutorRegistry` filled in `boot()` already holds the two protocol plugins, so F2.0's assembler only has to *read* it; no extra wiring is needed here.
 
-- [ ] **Step 5: Laravel provider + wiring tests**
+- [x] **Step 5: Laravel provider + wiring tests**
 
 `packages/laravel/tests/ProtocolHttpServiceProviderTest.php` (extends a testbench `TestCase`):
 - assert `$app->make(OpenApiExecutorInterface::class)` resolves `DefaultOpenApiExecutor`;
@@ -844,7 +844,7 @@ composer run test-http && composer run test-laravel
 composer run analyse-laravel && composer run analyse-http
 ```
 
-- [ ] **Step 6: Root-level integration gate**
+- [x] **Step 6: Root-level integration gate**
 
 ```bash
 composer run test && composer run analyse && make verify
@@ -852,7 +852,7 @@ composer run test && composer run analyse && make verify
 
 This exercises the `packages/core` and root test suites that construct the moved classes (`Conformance\ConformanceHarness`, `tests/Validator/PreflightValidatorTest.php`, `tests/Validator/InputsPreValidationTest.php`, runner graph tests) through root autoload-dev. `make verify` runs format+analyse+test; **no diffs may remain after `composer run format`**.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A packages/laravel packages/protocol-http composer.json composer.lock
@@ -876,8 +876,8 @@ Confirm F1 delivers a working "HTTP protocol on a composed core" slice with zero
 **Interfaces:**
 - Produces: end-to-end proof — `arazzo-protocol-http` executed through a composed `arazzo-core` + `laravel-arazzo` app (testbench) without touching any core package.
 
-- [ ] **Step 1: Sweeps** — run the five `rg` sweeps above, fix any hits by re-issuing local wiring (not by importing protocol into core).
-- [ ] **Step 2: Full F1 gate**
+- [x] **Step 1: Sweeps** — run the five `rg` sweeps above, fix any hits by re-issuing local wiring (not by importing protocol into core).
+- [x] **Step 2: Full F1 gate**
 
 ```bash
 composer run format
@@ -888,7 +888,7 @@ make verify
 
 `make verify` green; `composer run format` leaves zero diffs (run Pint first, then re-run). Confirm `analyse-http`, `analyse-document`, `analyse-sources`, `analyse-runner`, `analyse-laravel` all pass.
 
-- [ ] **Step 3: Commit + report F1 state**
+- [x] **Step 3: Commit + report F1 state**
 
 ```bash
 git add -A
@@ -928,7 +928,7 @@ Phase E deliberately left `runner` with one flat `Execution/` namespace because 
 - Namespaces `Alama\Arazzo\Runner\Sync\...` and `Alama\Arazzo\Runner\Async\...` are new; the facade classes stay at `Alama\Arazzo\Runner\...`.
 - Arch guards (below) are the deliverable, not the moves.
 
-- [ ] **Step 1: Move the classes and rewrite namespaces**
+- [x] **Step 1: Move the classes and rewrite namespaces**
 
 ```bash
 mkdir -p packages/runner/src/Sync packages/runner/src/Async
@@ -986,7 +986,7 @@ Two things this list cannot express, so verify by hand:
 
 Leave in `tests/Execution/` everything whose subject did not move: the pipeline tests (`RequestCompilerTest`, `ParameterSerializerTest`, `TypeCasterTest`, `SchemaValidatorTest`, `IdempotencyKeyInjectorTest`, `InjectionResultTest`, `ReusableParameterResolverTest`, `StepParameterMergerTest`), plus `AdapterParityTest`, `ArazzoCriteriaEvaluatorTest`, `ArazzoOutputExtractorTest`, `ArazzoSchemaValidatorTest`, `AsyncGraphSeamsTest`, `ExecutionStateTest`, `LedgerRegressionTest`, `ReceiveTimeoutTest`, `RegressionTest`, `ResumerTestHelpers.php`, `RuntimeFailureClassificationTest`, `SharedBudgetTest`, `StateMergeTest`, `WorkflowContextTest`, and the `Validation/`+`Conformance/`+`State/`+`Support/` directories.
 
-- [ ] **Step 2: Resolve the assembler's protocol imports through the registry**
+- [x] **Step 2: Resolve the assembler's protocol imports through the registry**
 
 `AsyncExecutionGraphAssembler` still hard-codes the protocol executor list (importing the two `Alama\Arazzo\Protocol\Http\Protocol\...` executors by name). `OperationExecutorRegistry` exists for exactly this; finish the job:
 
@@ -995,7 +995,7 @@ Leave in `tests/Execution/` everything whose subject did not move: the pipeline 
 - If no registry is injected and the step needs a protocol executor, throw the same `ExecutionException` shape F1.2 uses for the missing `OpenApiExecutorInterface`, naming `arazzo-protocol-http` in the message.
 - The async worker resolves its executor via `findExecutor($step, $document)` against the registry — verify that call site still type-hints `StepProtocolExecutorInterface` (contracts) and not a concrete class.
 
-- [ ] **Step 3: Add the internal arch guards**
+- [x] **Step 3: Add the internal arch guards**
 
 Extend `packages/runner/tests/ArchTest.php` (update the existing `runner does not depend on illuminate framework` / `does not leak expression internals` expectations from `Runner\Execution|Jobs|Protocol` to `Runner\Execution|Sync|Async|Jobs`, and drop the now-empty `Jobs`/`Protocol` entries):
 
@@ -1015,7 +1015,7 @@ arch('nothing below the facade depends on the facade')
 
 The first rule is the one that matters: it keeps the fast path free of queue concerns, which is the whole reason sync and async are distinguishable at all. Verify it bites by temporarily importing an async class into `Sync/StepExecutor.php`, confirming RED, then reverting. The second rule asserts `Async → Sync` is *allowed*; it documents the direction rather than forbidding it, so a future reader does not "fix" it.
 
-- [ ] **Step 4: Gates + commit**
+- [x] **Step 4: Gates + commit**
 
 ```bash
 composer run test-runner && composer run analyse-runner
@@ -1046,11 +1046,11 @@ The spec's actor-in-loop work (interaction steps, `AwaitingActorInput` → `Acto
 - `StepStateMachineEngine` (in `arazzo-engine`) already owns the `AwaitingActorInput` / `ActorInputReceived` transitions — **verified present** at `packages/engine/src/StepStateMachineEngine.php:52-53,140-151`, with the interaction bypass in `fromPending` at line 108. This task supplies the async side effects, not new states.
 - If a durable handoff record needs a new port, it goes in `contracts/Interfaces/` and the implementation in `arazzo-runtime`'s `State/`. Do not put a new port in the runner.
 
-- [ ] **Step 1: Confirm the state machine covers the transitions**
+- [x] **Step 1: Confirm the state machine covers the transitions**
 
 Read `packages/engine/src/StepStateMachineEngine.php` and confirm `fromPending` (interaction bypass), `fromAwaitingActorInput` and `fromActorInputReceived` exist as E6 specified. **They do** (see Interfaces). If that is no longer true at implementation time, stop and flag it: the state machine is E6's deliverable, not this task's.
 
-- [ ] **Step 2: Restore the correlation-id scalar guard (DF6)**
+- [x] **Step 2: Restore the correlation-id scalar guard (DF6)**
 
 `packages/runner/src/Async/StepExecutionWorker.php:170` currently reads:
 
@@ -1067,15 +1067,15 @@ $correlationIdValue = is_scalar($evaluated) ? (string) $evaluated : '';
 
 Add to `packages/runner/tests/Async/StepExecutionWorkerTest.php`: a `receive` step whose `correlationId` expression resolves to a non-scalar asserts an empty correlation id on the dispatched `CorrelationPendingEvent` rather than throwing.
 
-- [ ] **Step 3: Implement the async handoff path**
+- [x] **Step 3: Implement the async handoff path**
 
 Extend `StepOutcomeHandler` so a suspended outcome on an interaction step registers the pending correlation (or handoff record) and emits the existing `CorrelationPendingEvent` instead of scheduling a retry. Note `StepOutcomeHandler:117` currently maps `TransitionType::Suspend => null, // suspension handled by the executor layer` — the executor layer (`StepExecutionWorker:163-182`) owns the persistence + event, so this task adds the *interaction* routing (actor handoff vs. retry), not a second suspension writer. Keep the scalar guard from Step 2 if this path evaluates a correlation id.
 
-- [ ] **Step 4: Test the handoff and resumption**
+- [x] **Step 4: Test the handoff and resumption**
 
 Add `packages/runner/tests/Async/ActorHandoffTest.php`: an interaction step that suspends writes the pending record and emits the event; resuming with the actor's input completes the step; a non-scalar correlation id produces an empty id rather than a cast error.
 
-- [ ] **Step 5: Gates + commit**
+- [x] **Step 5: Gates + commit**
 
 ```bash
 composer run test-runner && composer run analyse-runner
@@ -1101,7 +1101,7 @@ That is the leak: the facade exists (`RunnerFacade`, `RunnerFacadeInterface`, `R
 **Interfaces:**
 - Produces: a documented public surface for consumers — `RunnerFacadeInterface`, `RunnerGraphBuilderInterface`, the `SyncQueueDriver` seam, and the plugin/registry entry points. Everything else becomes `@internal`.
 
-- [ ] **Step 1: Inventory the leak precisely**
+- [x] **Step 1: Inventory the leak precisely**
 
 ```bash
 rg -o 'Alama\\Arazzo\\Runner\\[A-Za-z\\]*' packages/laravel/src packages/cli/src | sed 's/.*://' | sort -u
@@ -1109,7 +1109,7 @@ rg -o 'Alama\\Arazzo\\Runner\\[A-Za-z\\]*' packages/laravel/src packages/cli/src
 
 Save the list. Every symbol is either (a) facade/interface — allowed, (b) a contracts type re-exported through the runner — allowed, or (c) a concrete internal — must go. Expect the names to have moved in F2.0 (`Runner\Execution\StepExecutor` → `Runner\Sync\StepExecutor`, etc.).
 
-- [ ] **Step 2: Replace concrete construction with facade calls**
+- [x] **Step 2: Replace concrete construction with facade calls**
 
 In the Laravel bindings, stop `new`-ing `HttpStepExecutor` / `AsyncApiStepExecutor` / `SubWorkflowStepExecutor` / `StepExecutor` / `StepExecutionWorker` / `StepOutcomeHandler` / `CorrelationResumer`. Instead resolve the protocol objects from the container (F1.3's `ProtocolHttpRegistrar` already registers them) and hand them to the runner through the seams the facade exposes — `RunnerFacade::__construct(?OpenApiExecutorInterface, ?OutputExtractorInterface, ?ResponseValidatorInterface, ?OperationExecutorRegistry, ?QueueDriverInterface, …)` and `AsyncGraphSeams`' nullable fields.
 
@@ -1117,7 +1117,7 @@ In the CLI, do the same: build the registry + normalizers + validators once, han
 
 **Any consumer that genuinely needs a symbol not on the facade** gets it added to the facade (with a test) rather than imported directly. If a symbol resists that, keep it out of `packages/laravel/src`'s public surface and note it in the commit message.
 
-- [ ] **Step 3: Guard the leak so it does not come back**
+- [x] **Step 3: Guard the leak so it does not come back**
 
 Add to `packages/laravel/tests/Architecture/ArchTest.php` (and the equivalent in `packages/cli`):
 
@@ -1137,7 +1137,7 @@ arch('laravel does not reach past the runner facade')
 
 The guard lists *specific* concretes rather than the whole `Alama\Arazzo\Protocol\Http` namespace: consumers are allowed to name protocol *interfaces* and the registrar, and a blanket namespace ban would forbid legitimate composition-root wiring. Verify it bites with a temporary import, then revert.
 
-- [ ] **Step 4: Gates + commit**
+- [x] **Step 4: Gates + commit**
 
 ```bash
 composer run test-laravel && composer run analyse-laravel
@@ -1162,15 +1162,15 @@ With the namespaces settled and the leak closed, the composition surface is wort
 **Interfaces:**
 - None. This task is documentation and must not change behaviour.
 
-- [ ] **Step 1: Write the package map**
+- [x] **Step 1: Write the package map**
 
 Include the layer table, dependency direction per package, the Sync/Async rule with its rationale, the DIP rule (`protocol-*` must not depend on `runner`), and the arch tests that enforce each. Record explicitly that the pipeline helpers live *inside* runner rather than in a layer-2 package, and why (the `c2b03fb` fold-back), so the next reader does not re-propose the extraction. Link `docs/research/2026-09-26-runner-package-split-validation.md` and `docs/research/2026-09-08-arazzo-protocol-spec-prs-impact.md` as evidence.
 
-- [ ] **Step 2: Write the runner README**
+- [x] **Step 2: Write the runner README**
 
 Show the minimum wiring for a non-Laravel consumer, and for Laravel point at auto-discovery. Keep it short.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add -A
@@ -1187,7 +1187,7 @@ git commit -m "docs: add docs/architecture/07 runner package map, index it, add 
 **Interfaces:**
 - Consumes: F1.0–F1.5, F2.0–F2.3.
 
-- [ ] **Step 1: Run every suite**
+- [x] **Step 1: Run every suite**
 
 ```bash
 composer run test-contracts && composer run test-expression && composer run test-evaluation
@@ -1198,7 +1198,7 @@ composer run test-runner && composer run test-http && composer run test-laravel
 
 Expected: PASS. (There is no `test-pipeline` — that script died with the package.)
 
-- [ ] **Step 2: Run static analysis everywhere**
+- [x] **Step 2: Run static analysis everywhere**
 
 ```bash
 composer run analyse
@@ -1206,7 +1206,7 @@ composer run analyse
 
 Expected: PASS (0 errors) across all registered `analyse-*` scripts.
 
-- [ ] **Step 3: Verify the DIP boundary and the layer invariants by sweep**
+- [x] **Step 3: Verify the DIP boundary and the layer invariants by sweep**
 
 ```bash
 # the DIP: no protocol package may reach into the runner
@@ -1225,11 +1225,11 @@ rg -n 'arazzo-request-pipeline|Arazzo\\RequestPipeline' packages/ composer.json 
 
 Expected: `DIP clean`, `layers clean`, `no pipeline reach-through`, `sync queue-free`, `pipeline refs clean`, and the `arazzo-runner` sweep naming only `packages/laravel`, `packages/cli` and the umbrella `packages/core`.
 
-- [ ] **Step 4: Run the repo gate**
+- [x] **Step 4: Run the repo gate**
 
 Run: `make verify` (repo root). Expected: PASS.
 
-- [ ] **Step 5: Mark this plan's steps complete and record in the spec**
+- [x] **Step 5: Mark this plan's steps complete and record in the spec**
 
 Flip every `- [ ]` for F1 and F2 tasks to `- [x]`. Add to `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md` under the Phase F heading:
 
@@ -1237,7 +1237,7 @@ Flip every `- [ ]` for F1 and F2 tasks to `- [x]`. Add to `docs/superpowers/spec
 Phase F status (F1–F3): ✅ Implemented — `arazzo-protocol-http` extracted, `arazzo-runner` split into `Sync\`/`Async\`, `laravel`/`cli` facade leak closed. See `plans/2026-09-08-phase-f-protocol-packages.md`.
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
