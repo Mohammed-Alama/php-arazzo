@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol\Http\Protocol;
 
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
@@ -22,8 +23,14 @@ use Psr\Http\Message\RequestInterface as Psr7Request;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final class HttpStepExecutor implements StepProtocolExecutorInterface
+final class HttpStepExecutor implements OperationExecutorPluginInterface, StepProtocolExecutorInterface
 {
+    /**
+     * Registry ordering (ascending, first supports() wins). HTTP steps and
+     * AsyncAPI actions are disjoint, so the value only stabilises iteration.
+     */
+    public const PLUGIN_PRIORITY = 100;
+
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
         private OpenApiOperationResolver $operationResolver,
@@ -34,6 +41,16 @@ final class HttpStepExecutor implements StepProtocolExecutorInterface
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
     ) {}
+
+    public function name(): string
+    {
+        return 'http';
+    }
+
+    public function priority(): int
+    {
+        return self::PLUGIN_PRIORITY;
+    }
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

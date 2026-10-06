@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Bindings;
 
-use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
-use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Support\AsyncGraphResolver;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
-use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\Execution\CorrelationResumer;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
@@ -21,11 +14,7 @@ use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Illuminate\Contracts\Container\Container;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Execution pipeline: one lazily-sampled AsyncExecutionGraph, with the
@@ -38,23 +27,10 @@ final class ExecutionBindings
 {
     public static function register(Container $app): void
     {
-        // The three protocol value seams, bound here so both graphs resolve
-        // them from one place. F1.3 moves/owns this wiring in
-        // ProtocolHttpServiceProvider (plan F1.3 Steps 2/4); this binding is
-        // the pull-forward that greens the laravel suite before F1.5 lands.
-        $app->singleton(OpenApiExecutorInterface::class, static fn (Container $app): OpenApiExecutorInterface => new DefaultOpenApiExecutor(
-            $app->make(ClientInterface::class),
-            $app->make(RequestFactoryInterface::class),
-            $app->bound(LoggerInterface::class) ? $app->make(LoggerInterface::class) : null,
-        ));
-        $app->singleton(OutputExtractorInterface::class, static fn (Container $app): OutputExtractorInterface => new StepOutputExtractor(
-            $app->make(OpenApiOperationResolver::class),
-            $app->make(EvaluationEngineInterface::class),
-            $app->make(ExpressionEngineInterface::class),
-        ));
-        $app->singleton(ResponseValidatorInterface::class, static fn (Container $app): ResponseValidatorInterface => new ResponseSchemaValidator(
-            $app->make(OpenApiOperationResolver::class),
-        ));
+        // The three protocol value seams (OpenApiExecutorInterface,
+        // OutputExtractorInterface, ResponseValidatorInterface) are owned by
+        // ProtocolHttpServiceProvider since F1.3 — they only exist when
+        // alama/arazzo-protocol-http is installed, so they are not bound here.
 
         $app->singleton(AsyncExecutionGraph::class, static fn (Container $app): AsyncExecutionGraph => AsyncGraphResolver::resolve($app));
 

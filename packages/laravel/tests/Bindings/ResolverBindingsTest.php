@@ -9,6 +9,7 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Bindings\ResolverBindings;
 use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\Validator\PreflightValidator;
@@ -37,4 +38,10 @@ it('registers the resolver bindings on the container', function (): void {
     ResolverBindings::register($this->app);
 
     expect(app(SourceRegistry::class))->toBeInstanceOf(SourceRegistry::class);
+});
+
+it('binds OpenApiOperationResolverInterface onto the sources resolver', function (): void {
+    expect(app(OpenApiOperationResolverInterface::class))
+        ->toBeInstanceOf(OpenApiOperationResolver::class)
+        ->toBe(app(OpenApiOperationResolver::class));
 });

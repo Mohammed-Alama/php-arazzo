@@ -8,6 +8,7 @@ use Alama\Arazzo\Sources\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Fetchers\CachedFetcher;
@@ -55,6 +56,14 @@ final class ResolverBindings
                 new OpenApi31Normalizer(),
             );
         });
+
+        // The interface faces the same concrete sources resolver so
+        // collaborators type-hinting it (PreflightValidator, SourceLoader)
+        // resolve through one binding — DF8: both sides are sources classes.
+        $app->singleton(
+            OpenApiOperationResolverInterface::class,
+            static fn (Container $app): OpenApiOperationResolverInterface => $app->make(OpenApiOperationResolver::class),
+        );
 
         $app->singleton(PreflightValidator::class, function (Container $app) {
             return new PreflightValidator(

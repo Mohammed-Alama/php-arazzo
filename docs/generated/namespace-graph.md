@@ -230,13 +230,11 @@ flowchart LR
     cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
-    laravel_Bindings --> contracts_Interfaces
     laravel_Bindings --> evaluation__
-    laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> laravel_Support
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Execution
-    laravel_Bindings --> sources_Normalizer
+    laravel_Bindings --> contracts_Interfaces
     laravel_Bindings --> laravel_Http
     laravel_Bindings --> contracts_Support
     laravel_Bindings --> events_Interfaces
@@ -247,11 +245,13 @@ flowchart LR
     laravel_Bindings --> laravel_Queue
     laravel_Bindings --> laravel_State
     laravel_Bindings --> runtime_State
+    laravel_Bindings --> sources_Normalizer
     laravel_Bindings --> sources_Resolver
     laravel_Bindings --> sources_Validator
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
     laravel_Bindings --> expression__
+    laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> sources__
     laravel_Http --> contracts_Interfaces
     laravel_Http --> cli_Generator
@@ -272,9 +272,15 @@ flowchart LR
     laravel_Support --> events_Interfaces
     laravel_Support --> runner__
     laravel_Support --> runtime_State
+    laravel__ --> contracts_Interfaces
+    laravel__ --> evaluation__
+    laravel__ --> expression_Interfaces
+    laravel__ --> laravel_Support
+    laravel__ --> runner__
+    laravel__ --> sources_Normalizer
+    laravel__ --> sources_Resolver
     laravel__ --> laravel_Bindings
     laravel__ --> laravel_Http
-    laravel__ --> laravel_Support
     classDef coreNode fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef laravelNode fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a;
 ```

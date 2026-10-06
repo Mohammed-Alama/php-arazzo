@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Protocol\Http\Protocol;
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
@@ -29,8 +30,15 @@ use Psr\Http\Message\UriInterface;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
+final class AsyncApiStepExecutor implements OperationExecutorPluginInterface, StepProtocolExecutorInterface
 {
+    /**
+     * Registry ordering (ascending, first supports() wins). AsyncAPI actions
+     * are disjoint from plain HTTP steps, so the value only stabilises
+     * iteration; see HttpStepExecutor::PLUGIN_PRIORITY.
+     */
+    public const PLUGIN_PRIORITY = 200;
+
     public function __construct(
         private PendingCorrelationRegistryInterface $pendingCorrelations,
         private EvaluationEngineInterface $evaluationEngine,
@@ -39,6 +47,16 @@ final class AsyncApiStepExecutor implements StepProtocolExecutorInterface
         private ?StreamFactoryInterface $streamFactory = null,
         private ?UriFactoryInterface $uriFactory = null,
     ) {}
+
+    public function name(): string
+    {
+        return 'asyncapi';
+    }
+
+    public function priority(): int
+    {
+        return self::PLUGIN_PRIORITY;
+    }
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

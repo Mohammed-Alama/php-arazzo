@@ -21,7 +21,7 @@ Analyzed 327 total file-touches across 46 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 41 | 13% | 411 | 99.8 |
+| `laravel:Bindings` | 41 | 13% | 396 | 103.5 |
 | `cli:Console` | 25 | 8% | 844 | 29.6 |
 | `runner:Execution` | 25 | 8% | 2,288 | 10.9 |
 | `laravel:Http` | 20 | 6% | 170 | 117.6 |
@@ -68,4 +68,4 @@ Analyzed 327 total file-touches across 46 modules.
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (117.6), `laravel:Queue` (110.1), `laravel:Bindings` (99.8)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (117.6), `laravel:Queue` (110.1), `laravel:Bindings` (103.5)
