@@ -144,7 +144,6 @@ flowchart TB
     M_engine_Execution --> M_document_Parser
     M_engine_Execution --> M_evaluation__
     M_engine_Execution --> M_expression_Interfaces
-    M_engine_Execution -.->|violation| M_runner_Execution
     M_engine__ --> M_contracts_Spec
     M_engine__ --> M_contracts_State
     M_engine__ --> M_engine_Data
@@ -342,12 +341,11 @@ flowchart TB
 
 ## Package boundaries
 
-**2 package boundary violation(s):**
+**1 package boundary violation(s):**
 
 | Package | ↑ depends on package | Refs | Modules involved |
 |---|---|---:|---|
 | `document` | `sources` | 3 | `(document package root) -> sources:Normalizer`, `(document package root) -> sources:Validator` |
-| `engine` | `runner` | 1 | `engine:Execution -> runner:Execution` |
 
 ### All package edges (reference counts)
 
@@ -368,7 +366,6 @@ flowchart TB
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
 | `engine` | `expression` | 1 |
-| `engine` | `runner` | 1 |
 | `evaluation` | `contracts` | 46 |
 | `evaluation` | `expression` | 15 |
 | `events` | `contracts` | 1 |
@@ -397,10 +394,9 @@ flowchart TB
 
 ## Module-level detail
 
-**3 module-level violation(s) found:**
+**2 module-level violation(s) found:**
 
 | From | ↑ depends on | Weight |
 |---|---|---:|
 | `(document package root)` | `sources:Normalizer` | 2 |
 | `(document package root)` | `sources:Validator` | 1 |
-| `engine:Execution` | `runner:Execution` | 1 |

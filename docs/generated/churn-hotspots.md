@@ -23,7 +23,7 @@ Analyzed 329 total file-touches across 47 modules.
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 44 | 13% | 385 | 114.3 |
 | `cli:Console` | 27 | 8% | 933 | 28.9 |
-| `runner:Execution` | 26 | 8% | 390 | 66.7 |
+| `runner:Execution` | 26 | 8% | 370 | 70.3 |
 | `laravel:Http` | 21 | 6% | 170 | 123.5 |
 | `laravel:Persistence` | 19 | 6% | 264 | 72 |
 | `document:Validator` | 15 | 5% | 3,470 | 4.3 |
@@ -59,7 +59,7 @@ Analyzed 329 total file-touches across 47 modules.
 | `sources:Validator` | 2 | 1% | 303 | 6.6 |
 | `contracts:State` | 1 | 0% | 667 | 1.5 |
 | `engine:Exceptions` | 1 | 0% | 42 | 23.8 |
-| `engine:Execution` | 1 | 0% | 964 | 1 |
+| `engine:Execution` | 1 | 0% | 984 | 1 |
 | `evaluation:Enum` | 1 | 0% | 82 | 12.2 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |

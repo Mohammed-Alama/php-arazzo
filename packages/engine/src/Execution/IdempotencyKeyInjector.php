@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Engine\Execution;
 
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
+use Alama\Arazzo\Engine\Execution\Data\InjectionResult;
 use Psr\Http\Message\RequestInterface;
 
 /**

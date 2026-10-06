@@ -26,7 +26,7 @@ targets. Regenerated before every commit.
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 7 | 957 | 2 | 6 | 0.75 |  |
+| `engine:Execution` | 8 | 976 | 2 | 5 | 0.71 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -54,7 +54,7 @@ targets. Regenerated before every commit.
 | `laravel:Support` | 2 | 148 | 2 | 4 | 0.67 |  |
 | `(laravel root)` | 2 | 246 | 0 | 9 | 1.00 |  |
 | `runner:Async` | 7 | 1310 | 4 | 20 | 0.83 | ⚠ unstable hub |
-| `runner:Execution` | 16 | 374 | 6 | 9 | 0.60 |  |
+| `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
 | `runner:Sync` | 5 | 799 | 4 | 18 | 0.82 | ⚠ unstable hub |
 | `(runner root)` | 9 | 529 | 6 | 16 | 0.73 |  |
@@ -67,7 +67,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **985**
+Total cross-module edges: **984**
 
 ## Most entangled module pairs
 

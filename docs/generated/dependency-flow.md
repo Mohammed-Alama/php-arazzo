@@ -60,7 +60,6 @@ engine-Execution,contracts-State,2
 engine-Execution,document-Parser,1
 engine-Execution,evaluation-root,1
 engine-Execution,expression-Interfaces,1
-engine-Execution,runner-Execution,1
 engine-root,contracts-Spec,6
 engine-root,contracts-State,2
 engine-root,engine-Data,2

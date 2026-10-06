@@ -39,12 +39,12 @@ when a boundary consciously moves.
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
-| engine | `engine:Execution` | `Psr` | 3 |
+| engine | `engine:Execution` | `Psr` | 4 |
 | engine | `engine:Execution` | `cebe` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Async` | `OpenTelemetry` | 2 |
 | runner | `runner:Async` | `Psr` | 3 |
-| runner | `runner:Execution` | `Psr` | 3 |
+| runner | `runner:Execution` | `Psr` | 2 |
 | runner | `runner:Sync` | `Psr` | 3 |
 | runner | `runner:_` | `Psr` | 2 |
 | runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
@@ -114,7 +114,6 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
-| `engine` | `InjectionResult` | `runner` | 1 | `IdempotencyKeyInjector` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
 | `runner` | `CorrelationPendingEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |

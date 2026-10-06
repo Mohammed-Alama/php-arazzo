@@ -156,7 +156,6 @@ flowchart LR
     engine_Exceptions --> contracts_Support
     engine_Execution --> contracts_Spec
     engine_Execution --> contracts_State
-    engine_Execution --> runner_Execution
     engine_Execution --> document_Parser
     engine_Execution --> evaluation__
     engine_Execution --> expression_Interfaces

@@ -34,7 +34,7 @@ quadrantChart
     engine/Data: [0.75, 1]
     engine/Enum: [0, 1]
     engine/Exceptions: [0.25, 1]
-    engine/Execution: [0.75, 1]
+    engine/Execution: [0.714, 1]
     evaluation/Condition: [0.857, 1]
     evaluation/Enum: [0, 0.333]
     evaluation/Interfaces: [0.333, 0]
@@ -57,7 +57,7 @@ quadrantChart
     laravel/State: [0.5, 1]
     laravel/Support: [0.667, 0.5]
     runner/Async: [0.833, 1]
-    runner/Execution: [0.6, 1]
+    runner/Execution: [0.643, 1]
     runner/Interfaces: [1, 0]
     runner/Sync: [0.818, 1]
     runtime/Infrastructure: [1, 0.667]
@@ -85,7 +85,7 @@ quadrantChart
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
-| `engine/Execution` | 0.75 | 9 | 7 | 100% |
+| `engine/Execution` | 0.71 | 11 | 8 | 100% |
 | `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
@@ -108,7 +108,7 @@ quadrantChart
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.67 | 1 | 2 | 50% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
-| `runner/Execution` | 0.60 | 32 | 16 | 100% |
+| `runner/Execution` | 0.64 | 30 | 15 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
 | `runner/Sync` | 0.82 | 31 | 5 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |

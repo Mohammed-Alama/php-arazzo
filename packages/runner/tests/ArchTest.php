@@ -1,13 +1,13 @@
 <?php
 
 declare(strict_types=1);
+use Alama\Arazzo\Engine\Execution\Data\InjectionResult;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Engine\Execution\ParameterSerializer;
 use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Engine\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Engine\Execution\StepParameterMerger;
 use Alama\Arazzo\Engine\Execution\TypeCaster;
-use Alama\Arazzo\Runner\Execution\Data\InjectionResult;
 
 arch('runner does not depend on illuminate framework')
     ->expect('Alama\Arazzo\Runner\Execution')

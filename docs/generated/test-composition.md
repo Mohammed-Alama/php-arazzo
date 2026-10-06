@@ -93,13 +93,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Engine — 1 test files
-    "Root": 1
+    title Engine — 3 test files
+    "Root": 2
+    "Module-scoped": 1
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 1 | 100% |
+| Root | 2 | 67% |
+| Module-scoped | 1 | 33% |
 
 ## Events package
 
@@ -119,15 +121,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Runner — 46 test files
-    "Module-scoped": 38
+    title Runner — 45 test files
+    "Module-scoped": 37
     "Root": 8
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 38 | 83% |
-| Root | 8 | 17% |
+| Module-scoped | 37 | 82% |
+| Root | 8 | 18% |
 
 ## Cli package
 
