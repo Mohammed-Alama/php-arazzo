@@ -45,6 +45,9 @@ final class FacadeBindings
             $app->make(DocumentInterface::class),
             $app->make(OpenApiOperationResolver::class),
             $app->make(EvaluationEngineInterface::class),
+            openApiExecutor: $app->bound(OpenApiExecutorInterface::class) ? $app->make(OpenApiExecutorInterface::class) : null,
+            outputExtractor: $app->bound(OutputExtractorInterface::class) ? $app->make(OutputExtractorInterface::class) : null,
+            schemaValidator: $app->bound(ResponseValidatorInterface::class) ? $app->make(ResponseValidatorInterface::class) : null,
         ));
         $app->singleton(RunnerGraphBuilderInterface::class, function (Container $app): RunnerGraphBuilder {
             return new RunnerGraphBuilder(

@@ -17,7 +17,6 @@ use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Tests\Support\FakeOpenApiExecutor;
 use Alama\Arazzo\Tests\Support\FakeOutputExtractor;
 use Alama\Arazzo\Tests\Support\FakeResponseValidator;
-use RuntimeException;
 
 function runnerFacadeWithTestFakes(): RunnerFacade
 {

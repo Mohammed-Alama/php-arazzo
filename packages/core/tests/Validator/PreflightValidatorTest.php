@@ -14,15 +14,15 @@ use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi30Normalizer;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApi31Normalizer;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
@@ -164,6 +164,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             $engine,
             $outputExtractor,
             $schemaValidator,
+            inspector: new ExpressionEngine(),
         ),
         new WorkflowEngine($engine),
         events: $events,

@@ -57,6 +57,7 @@ final class AsyncExecutionGraphAssembler
             $this->evaluationEngine,
             $outputExtractor,
             $schemaValidator,
+            inspector: $this->inspector,
             strictValidationDefault: $seams->strictValidation,
             injector: $injector,
         );

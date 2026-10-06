@@ -14,7 +14,6 @@ use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Normalizer\OpenApiOperationHandle;
@@ -31,8 +30,6 @@ class StepExecutor
     /** @phpstan-ignore property.onlyWritten */
     private EventDispatcherInterface $events;
 
-    private ExpressionEngineInterface $inspector;
-
     /** @phpstan-ignore-next-line */
     public function __construct(
         private OpenApiExecutorInterface $openApiExecutor,
@@ -40,13 +37,12 @@ class StepExecutor
         private EvaluationEngineInterface $evaluationEngine,
         private OutputExtractorInterface $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
+        private ExpressionEngineInterface $inspector,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
-        ?ExpressionEngineInterface $inspector = null,
     ) {
         $this->events = $events ?? new NullEventDispatcher();
-        $this->inspector = $inspector ?? new ExpressionEngine();
     }
 
     /**

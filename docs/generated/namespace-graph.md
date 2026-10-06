@@ -178,7 +178,6 @@ flowchart LR
     runner_Execution --> runtime_Telemetry
     runner_Execution --> contracts_Dependency
     runner_Execution --> runtime_Policy
-    runner_Execution --> expression__
     runner_Execution --> expression_Interfaces
     runner_Execution --> runner__
     runner_Execution --> runner_Protocol
@@ -223,11 +222,12 @@ flowchart LR
     cli_Console --> sources__
     cli_Generator --> contracts_Interfaces
     cli_Renderer --> contracts_Spec
+    laravel_Bindings --> contracts_Interfaces
     laravel_Bindings --> evaluation__
+    laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> laravel_Support
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Execution
-    laravel_Bindings --> contracts_Interfaces
     laravel_Bindings --> laravel_Http
     laravel_Bindings --> contracts_Support
     laravel_Bindings --> events_Interfaces
@@ -244,7 +244,6 @@ flowchart LR
     laravel_Bindings --> cli_Generator
     laravel_Bindings --> document__
     laravel_Bindings --> expression__
-    laravel_Bindings --> expression_Interfaces
     laravel_Bindings --> sources__
     laravel_Http --> contracts_Interfaces
     laravel_Http --> cli_Generator

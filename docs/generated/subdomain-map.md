@@ -29,14 +29,14 @@ flowchart LR
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>379 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>411 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>170 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
         S_laravel_Persistence["laravel:Persistence<br/><small>264 LOC</small>"]:::genericDomain
         S_laravel_Queue["laravel:Queue<br/><small>109 LOC</small>"]:::genericDomain
         S_laravel_State["laravel:State<br/><small>46 LOC</small>"]:::genericDomain
-        S_laravel_Support["laravel:Support<br/><small>126 LOC</small>"]:::genericDomain
+        S_laravel_Support["laravel:Support<br/><small>128 LOC</small>"]:::genericDomain
         S_runtime_State["runtime:State<br/><small>1039 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified["Unclassified"]
@@ -60,7 +60,7 @@ flowchart LR
         S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>110 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>110 LOC</small>"]:::unknownDomain
-        S_runner_Execution["runner:Execution<br/><small>2291 LOC</small>"]:::unknownDomain
+        S_runner_Execution["runner:Execution<br/><small>2288 LOC</small>"]:::unknownDomain
         S_runner_Jobs["runner:Jobs<br/><small>40 LOC</small>"]:::unknownDomain
         S_runner_Protocol["runner:Protocol<br/><small>73 LOC</small>"]:::unknownDomain
         S_runtime_Infrastructure["runtime:Infrastructure<br/><small>155 LOC</small>"]:::unknownDomain
@@ -78,8 +78,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 7% |
 | Supporting | 7 | 6,788 | 0 | 38% |
-| Generic subdomain | 11 | 1,891 | 1,170 | 17% |
-| Unclassified | 27 | 6,766 | 0 | 38% |
+| Generic subdomain | 11 | 1,891 | 1,204 | 17% |
+| Unclassified | 27 | 6,763 | 0 | 38% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

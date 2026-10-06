@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Laravel\Support;
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
 use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
@@ -51,6 +52,7 @@ final class AsyncGraphResolver
             lockManager: $app->make(LockManagerInterface::class),
             httpClient: $app->make(HttpClientInterface::class),
             openApiExecutor: $app->bound(OpenApiExecutorInterface::class) ? $app->make(OpenApiExecutorInterface::class) : null,
+            outputExtractor: $app->bound(OutputExtractorInterface::class) ? $app->make(OutputExtractorInterface::class) : null,
             schemaValidator: $app->bound(ResponseValidatorInterface::class) ? $app->make(ResponseValidatorInterface::class) : null,
             requestFactory: $app->bound(RequestFactoryInterface::class) ? $app->make(RequestFactoryInterface::class) : null,
             logger: $app->bound(LoggerInterface::class) ? $app->make(LoggerInterface::class) : null,

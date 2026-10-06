@@ -87,6 +87,7 @@ function parityFixtures(): array
         $engine,
         $outputExtractor,
         $schemaValidator,
+        inspector: new ExpressionEngine(),
     );
 
     // Both adapters execute steps through THIS object.

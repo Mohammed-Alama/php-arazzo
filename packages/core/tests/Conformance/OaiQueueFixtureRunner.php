@@ -6,9 +6,11 @@ namespace Alama\Arazzo\Tests\Conformance;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
 use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
@@ -16,7 +18,6 @@ use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
 use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
-use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\Protocol\SubWorkflowStepExecutor;
 use Alama\Arazzo\Tests\Support\FakeLockManager;
 use Alama\Arazzo\Tests\Support\RecordingEventLedger;
@@ -99,6 +100,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                             $engine,
                             $this->outputExtractor($runtime),
                             $this->schemaValidator($runtime),
+                            inspector: new ExpressionEngine(),
                         ),
                         new WorkflowEngine($engine),
                     ),
@@ -111,6 +113,7 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                     ),
                     $runtime->operations,
                     $engine,
+                    new ExpressionEngine(), // inspector
                     $this->outputExtractor($runtime),
                     $this->schemaValidator($runtime),
                 ),

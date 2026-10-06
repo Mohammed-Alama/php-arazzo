@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 39 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 32 | 16 | allowed |
+| `Psr` | 32 | 19 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 2 | 0 | **forbidden** ⚠ |
@@ -53,7 +53,7 @@ when a boundary consciously moves.
 | sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
-| laravel | `laravel:Bindings` | `Psr` | 10 |
+| laravel | `laravel:Bindings` | `Psr` | 13 |
 | laravel | `laravel:Events` | `Illuminate` | 1 |
 | laravel | `laravel:Events` | `Psr` | 1 |
 | laravel | `laravel:Http` | `GuzzleHttp` | 1 |
@@ -91,11 +91,7 @@ when a boundary consciously moves.
 
 Cross-package references from library code must target `*Interface` facades, value types, or throwables. `laravel`/`cli` wiring is exempt by design.
 
-**1 facade-seam violation(s):**
-
-| From package | To package | From | References concrete facade |
-|---|---|---|---|
-| `runner` | `expression` | `StepExecutor` | `ExpressionEngine` |
+**Clean** — no library package references another package's concrete entry-point facade (`ExpressionEngine`, `Document`, `SourceGraph`, `RunnerFacade`) from non-facade code; facade-to-facade transitions are allowed by the seam policy.
 
 ### Facade-to-facade transitions (allowed by seam policy)
 

@@ -77,7 +77,7 @@ it('validates response schema if configured globally or locally', function (): v
         return new Response(200, ['Content-Type' => 'application/json'], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator);
+    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator, inspector: new ExpressionEngine());
     $step = StepFactory::http('test-step', null, new StepFlow(strictValidation: true), new StepIo(), 'op');
 
     try {
@@ -103,7 +103,7 @@ it('skips validation if configured off globally and locally', function (): void 
         return new Response(200, [], '{"bad": true}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator);
+    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, $validator, inspector: new ExpressionEngine());
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
     $result = $executor->execute($step, new WorkflowContext('test-def'), createTestDocument());
@@ -131,6 +131,7 @@ it('injects the Idempotency-Key header into the request when the injector is ena
         evaluationEngine: new EvaluationEngine(expression: new ExpressionEngine()),
         outputExtractor: $outputExtractor,
         schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
+        inspector: new ExpressionEngine(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
     );
@@ -158,7 +159,7 @@ it('does not inject a header when no injector is passed', function (): void {
         return new Response(200, [], '{}');
     });
 
-    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, Mockery::mock(ResponseValidatorInterface::class));
+    $executor = new StepExecutor($openApiExecutor, createMockDocumentResolver(), new EvaluationEngine(expression: new ExpressionEngine()), $outputExtractor, Mockery::mock(ResponseValidatorInterface::class), inspector: new ExpressionEngine());
     $step = StepFactory::http('test-step', null, new StepFlow(), new StepIo(), 'op');
 
     $executor->execute($step, new WorkflowContext('def-1'), createTestDocument());
@@ -187,6 +188,7 @@ it('does not inject a header on non-mutating verbs even when the injector is ena
         evaluationEngine: new EvaluationEngine(expression: new ExpressionEngine()),
         outputExtractor: $outputExtractor,
         schemaValidator: Mockery::mock(ResponseValidatorInterface::class),
+        inspector: new ExpressionEngine(),
         strictValidationDefault: false,
         injector: new IdempotencyKeyInjector(enabledDefault: true, headerDefault: 'Idempotency-Key'),
     );

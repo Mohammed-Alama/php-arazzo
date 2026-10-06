@@ -56,7 +56,7 @@ quadrantChart
     laravel/Queue: [0.75, 1]
     laravel/State: [0.5, 1]
     laravel/Support: [0.667, 0.5]
-    runner/Execution: [0.786, 1]
+    runner/Execution: [0.778, 1]
     runner/Jobs: [0.333, 1]
     runner/Protocol: [0.889, 1]
     runtime/Infrastructure: [1, 0.667]
@@ -76,7 +76,7 @@ quadrantChart
 | `contracts/Dependency` | 0.40 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.14 | 33 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 191 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 195 | 49 | 100% |
 | `contracts/State` | 0.07 | 51 | 2 | 100% |
 | `contracts/Support` | 0.00 | 10 | 5 | 100% |
 | `document/Parser` | 0.25 | 35 | 11 | 100% |
@@ -106,7 +106,7 @@ quadrantChart
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.67 | 1 | 2 | 50% |
-| `runner/Execution` | 0.79 | 41 | 26 | 100% |
+| `runner/Execution` | 0.78 | 41 | 26 | 100% |
 | `runner/Jobs` | 0.33 | 5 | 2 | 100% |
 | `runner/Protocol` | 0.89 | 2 | 1 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |

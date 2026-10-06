@@ -43,17 +43,17 @@ targets. Regenerated before every commit.
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
 | `expression:Interfaces` | 2 | 108 | 12 | 3 | 0.20 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1143 | 4 | 7 | 0.64 |  |
-| `laravel:Bindings` | 7 | 372 | 1 | 23 | 0.96 |  |
+| `(expression root)` | 9 | 1143 | 3 | 7 | 0.70 |  |
+| `laravel:Bindings` | 7 | 404 | 1 | 23 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 5 | 0.71 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
 | `laravel:Persistence` | 4 | 260 | 1 | 5 | 0.83 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 2 | 124 | 2 | 4 | 0.67 |  |
+| `laravel:Support` | 2 | 126 | 2 | 4 | 0.67 |  |
 | `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
-| `runner:Execution` | 26 | 2265 | 6 | 22 | 0.79 |  |
+| `runner:Execution` | 26 | 2262 | 6 | 21 | 0.78 |  |
 | `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
 | `runner:Protocol` | 1 | 72 | 1 | 8 | 0.89 |  |
 | `(runner root)` | 9 | 511 | 4 | 12 | 0.75 |  |
@@ -66,7 +66,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 169 | 2 | 7 | 0.78 |  |
 
-Total cross-module edges: **893**
+Total cross-module edges: **896**
 
 ## Most entangled module pairs
 

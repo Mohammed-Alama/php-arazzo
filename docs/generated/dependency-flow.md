@@ -106,14 +106,14 @@ expression-root,expression-Exceptions,5
 expression-root,expression-Interfaces,4
 expression-root,expression-Xpath,3
 laravel-Bindings,cli-Generator,2
-laravel-Bindings,contracts-Interfaces,8
+laravel-Bindings,contracts-Interfaces,10
 laravel-Bindings,contracts-Support,1
 laravel-Bindings,document-Parser,1
 laravel-Bindings,document-root,1
 laravel-Bindings,evaluation-root,3
 laravel-Bindings,events-Interfaces,2
 laravel-Bindings,events-Listener,1
-laravel-Bindings,expression-Interfaces,1
+laravel-Bindings,expression-Interfaces,2
 laravel-Bindings,expression-root,1
 laravel-Bindings,laravel-Http,1
 laravel-Bindings,laravel-Lock,1
@@ -143,7 +143,7 @@ laravel-Queue,contracts-Interfaces,1
 laravel-Queue,runner-Execution,2
 laravel-Queue,runner-Jobs,4
 laravel-State,runtime-State,1
-laravel-Support,contracts-Interfaces,5
+laravel-Support,contracts-Interfaces,6
 laravel-Support,events-Interfaces,1
 laravel-Support,runner-root,3
 laravel-Support,runtime-State,3
@@ -165,7 +165,6 @@ runner-Execution,events-Interfaces,4
 runner-Execution,events-root,17
 runner-Execution,expression-Data,4
 runner-Execution,expression-Interfaces,3
-runner-Execution,expression-root,1
 runner-Execution,runner-Jobs,2
 runner-Execution,runner-Protocol,1
 runner-Execution,runtime-Policy,1
