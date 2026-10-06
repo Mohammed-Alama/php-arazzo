@@ -9,7 +9,7 @@ and `packages/laravel/src`. Regenerated before every commit.
 
 ```mermaid
 flowchart LR
-    cli_Console["Alama\Arazzo\Cli\Console\Command"]:::coreNode
+    cli_Console["Alama\Arazzo\Cli\Console\Cli"]:::coreNode
     cli_Generator["Alama\Arazzo\Cli\Generator"]:::coreNode
     cli_Renderer["Alama\Arazzo\Cli\Renderer"]:::coreNode
     contracts_Dependency["Alama\Arazzo\Contracts\Dependency"]:::coreNode
@@ -222,6 +222,7 @@ flowchart LR
     runner__ --> events_Interfaces
     runner__ --> runtime_State
     runner__ --> contracts_Exceptions
+    runner__ --> engine_Exceptions
     runner__ --> evaluation__
     runner__ --> expression_Interfaces
     runner__ --> runner_Execution
@@ -236,9 +237,8 @@ flowchart LR
     cli_Console --> evaluation__
     cli_Console --> events_Interfaces
     cli_Console --> runner_Async
-    cli_Console --> runner_Execution
     cli_Console --> runner__
-    cli_Console --> runner_Sync
+    cli_Console --> runner_Execution
     cli_Console --> runtime_State
     cli_Console --> runtime_Telemetry
     cli_Console --> document_Parser
@@ -253,7 +253,6 @@ flowchart LR
     cli_Renderer --> contracts_Spec
     laravel_Bindings --> evaluation__
     laravel_Bindings --> laravel_Support
-    laravel_Bindings --> runner_Async
     laravel_Bindings --> runner__
     laravel_Bindings --> runner_Sync
     laravel_Bindings --> contracts_Interfaces
@@ -289,6 +288,7 @@ flowchart LR
     laravel_Persistence --> document_Parser
     laravel_Queue --> contracts_Interfaces
     laravel_Queue --> runner_Async
+    laravel_Queue --> runner__
     laravel_State --> runtime_State
     laravel_Support --> contracts_Interfaces
     laravel_Support --> events_Interfaces

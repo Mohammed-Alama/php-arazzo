@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner\Async;
 
+use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
@@ -28,14 +29,22 @@ use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 final class AsyncExecutionGraphAssembler
 {
     public function __construct(
-        private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $evaluationEngine,
+        private readonly ?OperationRuntime $operations = null,
         /** @phpstan-ignore property.onlyWritten */
-        private readonly ExpressionEngineInterface $inspector,
+        private readonly ?ExpressionEngineInterface $inspector = null,
     ) {}
 
     public function assemble(AsyncGraphSeams $seams): AsyncExecutionGraph
     {
+        if ($this->operations === null) {
+            throw new ExecutionException('AsyncExecutionGraphAssembler needs an OperationRuntime to build the full graph; worker-only hosts should call buildWorker().');
+        }
+
+        if ($this->inspector === null) {
+            throw new ExecutionException('AsyncExecutionGraphAssembler needs an ExpressionEngineInterface to build the full graph; worker-only hosts should call buildWorker().');
+        }
+
         $openApiExecutor = $seams->openApiExecutor
             ?? throw new ExecutionException('No HTTP/OpenAPI executor configured; register alama/arazzo-protocol-http (Phase F1).');
         $outputExtractor = $seams->outputExtractor
@@ -124,15 +133,7 @@ final class AsyncExecutionGraphAssembler
             $seams->lockManager,
         );
 
-        $worker = new StepExecutionWorker(
-            $persistence,
-            $seams->lockManager,
-            $seams->definitionRegistry,
-            $this->evaluationEngine,
-            $registry,
-            $controlFlow,
-            $seams->stateTtlSeconds,
-        );
+        $worker = $this->buildWorker($seams, $this->operations->document);
 
         return new AsyncExecutionGraph(
             stepExecutor: $stepExecutor,
@@ -141,6 +142,44 @@ final class AsyncExecutionGraphAssembler
             resumer: $resumer,
             worker: $worker,
             protocolExecutors: $protocolExecutors,
+        );
+    }
+
+    /**
+     * Builds just the queue worker node from the seams — the CLI host drains
+     * in-process without the protocol value seams, so this path never touches
+     * them. assemble() passes the operations document as preflight; worker-only
+     * hosts leave it null (skip preflight validation), matching the manual
+     * worker construction CliRunner historically performed.
+     */
+    public function buildWorker(AsyncGraphSeams $seams, ?DocumentInterface $preflight = null): StepExecutionWorker
+    {
+        $workflowEngine = new WorkflowEngine(
+            $this->evaluationEngine,
+            maxRetryAttempts: $seams->retryCeiling,
+            retryBackoffMultiplier: $seams->retryBackoffMultiplier,
+        );
+
+        $persistence = new RunPersistence(
+            $seams->stateStore,
+            $seams->eventLedger,
+            $seams->executionRegistry,
+        );
+
+        $controlFlow = new RunControlFlow(
+            workflowEngine: $workflowEngine,
+            queueDriver: $seams->queueDriver,
+            preflight: $preflight,
+        );
+
+        return new StepExecutionWorker(
+            $persistence,
+            $seams->lockManager,
+            $seams->definitionRegistry,
+            $this->evaluationEngine,
+            $seams->executorRegistry,
+            $controlFlow,
+            $seams->stateTtlSeconds,
         );
     }
 }

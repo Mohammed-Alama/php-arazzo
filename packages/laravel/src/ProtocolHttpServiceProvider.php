@@ -16,14 +16,11 @@ use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
-use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
-use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Protocol\Http\Registrar\ProtocolHttpRegistrar;
 use Alama\Arazzo\Runner\OperationExecutorRegistry;
 use Alama\Arazzo\Runner\ResponseValidatorDispatcher;
 use Alama\Arazzo\Sources\Normalizer\OpenApiDocumentLoader;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
-use Alama\Arazzo\Sources\Normalizer\OpenApiSourceNormalizer;
 use Alama\Arazzo\Sources\Resolver\SourceNormalizerRegistry;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
@@ -138,18 +135,18 @@ final class ProtocolHttpServiceProvider extends ServiceProvider
         });
 
         // Tag vocabulary (G1/G3): ProtocolDiscovery::tags() lands with G;
-        // until then the provider registers under the config defaults.
-        $this->app->tag([
-            OpenApiSourceNormalizer::class,
-            HttpStepExecutor::class,
-            AsyncApiStepExecutor::class,
-            ResponseSchemaValidator::class,
-        ], ConfigValue::string(config('arazzo.plugins.tags.0'), 'arazzo.plugins.*'));
+        // until then the registrar owns the names and the provider registers
+        // under the config defaults — the host never names the concretes.
+        $tagVocabulary = ProtocolHttpRegistrar::tags();
+        $this->app->tag(
+            $tagVocabulary['arazzo.plugins.*'],
+            ConfigValue::string(config('arazzo.plugins.tags.0'), 'arazzo.plugins.*'),
+        );
 
         // The operation-executor sub-tag is what OperationExecutorRegistry
         // consumers read (G3).
         $this->app->tag(
-            [HttpStepExecutor::class, AsyncApiStepExecutor::class],
+            $tagVocabulary['arazzo.plugins.operation-executor'],
             ConfigValue::string(config('arazzo.plugins.operation_executor'), 'arazzo.plugins.operation-executor'),
         );
     }

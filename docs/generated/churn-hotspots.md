@@ -12,17 +12,17 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "document:Validator", "laravel:Queue", "laravel:Support", "laravel:State", "contracts:Interfaces", "contracts:Spec", "expression:Interfaces"]
+    x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "document:Validator", "laravel:Queue", "laravel:Support", "laravel:State", "contracts:Interfaces", "contracts:Spec", "runner:Async"]
     y-axis "Touches" 0 --> 50
-    bar [43, 26, 26, 21, 19, 15, 13, 13, 11, 10, 10, 9]
+    bar [43, 26, 26, 21, 19, 15, 13, 13, 11, 10, 10, 10]
 ```
 
-Analyzed 324 total file-touches across 47 modules.
+Analyzed 325 total file-touches across 47 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 43 | 13% | 396 | 108.6 |
-| `cli:Console` | 26 | 8% | 850 | 30.6 |
+| `laravel:Bindings` | 43 | 13% | 385 | 111.7 |
+| `cli:Console` | 26 | 8% | 933 | 27.9 |
 | `runner:Execution` | 26 | 8% | 390 | 66.7 |
 | `laravel:Http` | 21 | 6% | 170 | 123.5 |
 | `laravel:Persistence` | 19 | 6% | 264 | 72 |
@@ -32,9 +32,9 @@ Analyzed 324 total file-touches across 47 modules.
 | `laravel:State` | 11 | 3% | 46 | 239.1 |
 | `contracts:Interfaces` | 10 | 3% | 359 | 27.9 |
 | `contracts:Spec` | 10 | 3% | 1,203 | 8.3 |
+| `runner:Async` | 10 | 3% | 1,317 | 7.6 |
 | `expression:Interfaces` | 9 | 3% | 110 | 81.8 |
 | `laravel:Lock` | 9 | 3% | 52 | 173.1 |
-| `runner:Async` | 9 | 3% | 1,278 | 7 |
 | `sources:Normalizer` | 9 | 3% | 809 | 11.1 |
 | `document:Parser` | 8 | 2% | 1,316 | 6.1 |
 | `evaluation:Registries` | 5 | 2% | 123 | 40.7 |
@@ -69,4 +69,4 @@ Analyzed 324 total file-touches across 47 modules.
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (123.5), `laravel:Queue` (119.3), `laravel:Bindings` (108.6)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (123.5), `laravel:Queue` (119.3), `laravel:Bindings` (111.7)

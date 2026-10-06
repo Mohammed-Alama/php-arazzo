@@ -54,6 +54,30 @@ final class ProtocolHttpRegistrar
         private readonly string $idempotencyHeader = 'Idempotency-Key',
     ) {}
 
+    /**
+     * The arazzo.plugins.* tag vocabulary the Laravel host registers. Owned
+     * here so the concrete protocol node names never leak into host packages:
+     * the service provider consumes this vocabulary instead of naming the
+     * step-executor concretes itself.
+     *
+     * @return array{'arazzo.plugins.*': list<class-string>, 'arazzo.plugins.operation-executor': list<class-string>}
+     */
+    public static function tags(): array
+    {
+        return [
+            'arazzo.plugins.*' => [
+                OpenApiSourceNormalizer::class,
+                HttpStepExecutor::class,
+                AsyncApiStepExecutor::class,
+                ResponseSchemaValidator::class,
+            ],
+            'arazzo.plugins.operation-executor' => [
+                HttpStepExecutor::class,
+                AsyncApiStepExecutor::class,
+            ],
+        ];
+    }
+
     public function normalizer(): OpenApiSourceNormalizer
     {
         return new OpenApiSourceNormalizer(

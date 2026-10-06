@@ -23,9 +23,8 @@ use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Async\CorrelationResumer;
 use Alama\Arazzo\Runner\Async\ExecuteStepJob;
-use Alama\Arazzo\Runner\Async\StepExecutionWorker;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
@@ -106,8 +105,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         }
     });
 
-    $this->app->forgetInstance(StepExecutionWorker::class);
-    $this->app->forgetInstance(CorrelationResumer::class);
+    $this->app->forgetInstance(AsyncExecutionGraph::class);
     $this->app->instance(LockManagerInterface::class, new class() implements LockManagerInterface
     {
         public function acquire(string $key, int $ttlSeconds, callable $callback): mixed

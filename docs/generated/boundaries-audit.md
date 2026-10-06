@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 41 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 32 | 19 | allowed |
+| `Psr` | 34 | 19 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 10 | 0 | **forbidden** ⚠ |
@@ -32,7 +32,7 @@ when a boundary consciously moves.
 |---|---|---|---:|
 | cli | `cli:Console` | `GuzzleHttp` | 1 |
 | cli | `cli:Console` | `OpenTelemetry` | 1 |
-| cli | `cli:Console` | `Psr` | 3 |
+| cli | `cli:Console` | `Psr` | 5 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Interfaces` | `Psr` | 2 |

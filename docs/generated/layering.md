@@ -107,7 +107,6 @@ flowchart TB
     M_cli_Console --> M_expression__
     M_cli_Console --> M_runner_Async
     M_cli_Console --> M_runner_Execution
-    M_cli_Console --> M_runner_Sync
     M_cli_Console --> M_runner__
     M_cli_Console --> M_runtime_State
     M_cli_Console --> M_runtime_Telemetry
@@ -207,7 +206,6 @@ flowchart TB
     M_laravel_Bindings --> M_laravel_Queue
     M_laravel_Bindings --> M_laravel_State
     M_laravel_Bindings --> M_laravel_Support
-    M_laravel_Bindings --> M_runner_Async
     M_laravel_Bindings --> M_runner_Execution
     M_laravel_Bindings --> M_runner_Sync
     M_laravel_Bindings --> M_runner__
@@ -229,6 +227,7 @@ flowchart TB
     M_laravel_Persistence --> M_runtime_State
     M_laravel_Queue --> M_contracts_Interfaces
     M_laravel_Queue --> M_runner_Async
+    M_laravel_Queue --> M_runner__
     M_laravel_State --> M_runtime_State
     M_laravel_Support --> M_contracts_Interfaces
     M_laravel_Support --> M_events_Interfaces
@@ -297,6 +296,7 @@ flowchart TB
     M_runner__ --> M_contracts_Spec
     M_runner__ --> M_contracts_State
     M_runner__ --> M_document__
+    M_runner__ --> M_engine_Exceptions
     M_runner__ --> M_engine__
     M_runner__ --> M_evaluation__
     M_runner__ --> M_events_Interfaces
@@ -353,12 +353,12 @@ flowchart TB
 
 | From package | To package | Refs |
 |---|---|---:|
-| `cli` | `contracts` | 27 |
+| `cli` | `contracts` | 31 |
 | `cli` | `document` | 8 |
 | `cli` | `evaluation` | 2 |
 | `cli` | `events` | 2 |
 | `cli` | `expression` | 2 |
-| `cli` | `runner` | 8 |
+| `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
 | `document` | `contracts` | 152 |
@@ -379,12 +379,12 @@ flowchart TB
 | `laravel` | `evaluation` | 4 |
 | `laravel` | `events` | 5 |
 | `laravel` | `expression` | 3 |
-| `laravel` | `runner` | 25 |
+| `laravel` | `runner` | 21 |
 | `laravel` | `runtime` | 10 |
-| `laravel` | `sources` | 21 |
-| `runner` | `contracts` | 125 |
-| `runner` | `document` | 9 |
-| `runner` | `engine` | 12 |
+| `laravel` | `sources` | 20 |
+| `runner` | `contracts` | 123 |
+| `runner` | `document` | 10 |
+| `runner` | `engine` | 13 |
 | `runner` | `evaluation` | 11 |
 | `runner` | `events` | 24 |
 | `runner` | `expression` | 11 |

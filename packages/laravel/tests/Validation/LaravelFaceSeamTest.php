@@ -5,11 +5,12 @@ declare(strict_types=1);
 /**
  * The laravel package's composition resistors must consume the runner through
  * its public face + value types. Runner execution internals — including the
- * Sync\ and Async\ node handles F2.0 carved out of Execution/ — are forbidden
- * in packages/laravel/src; the OpenApiExecutorInterface SPI (swapped by tests
- * via app()->instance()), the shared OperationRuntime value, and the
- * graph/queue node handles the container re-exports as aliases are the only
- * exempt runner-internal types. Document-parser/normalizer carve-outs
+ * Sync\ and Async\ step-execution nodes F2.0 carved out of Execution/ — are
+ * forbidden in packages/laravel/src (F2.2 arch guard); the OpenApiExecutorInterface
+ * SPI (swapped by tests via app()->instance()), the shared OperationRuntime
+ * value, the WorkflowExecutor/WorkflowEngine composition handles the container
+ * still re-exports, and the queue payload jobs are the only exempt
+ * runner-internal types. Document-parser/normalizer carve-outs
  * (Resolver/Persistence/API) are owned by the later @internal sweep (#63).
  */
 const LARAVEL_FORBIDDEN_SEAM_PREFIXES = [
@@ -22,12 +23,8 @@ const LARAVEL_FORBIDDEN_SEAM_PREFIXES = [
 const LARAVEL_SEAM_SPI_ALLOWLIST = [
     'Alama\\Arazzo\\Runner\\Execution\\Interfaces\\OpenApiExecutorInterface',
     'Alama\\Arazzo\\Runner\\Execution\\OperationRuntime',
-    'Alama\\Arazzo\\Runner\\Sync\\StepExecutor',
     'Alama\\Arazzo\\Runner\\Sync\\WorkflowExecutor',
     'Alama\\Arazzo\\Runner\\Sync\\WorkflowEngine',
-    'Alama\\Arazzo\\Runner\\Async\\StepOutcomeHandler',
-    'Alama\\Arazzo\\Runner\\Async\\CorrelationResumer',
-    'Alama\\Arazzo\\Runner\\Async\\StepExecutionWorker',
     'Alama\\Arazzo\\Runner\\Async\\ExecuteStepJob',
     'Alama\\Arazzo\\Runner\\Async\\ResumeCorrelationJob',
 ];

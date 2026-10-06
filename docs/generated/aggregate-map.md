@@ -25,7 +25,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | engine | 3 | 8 | 27% |
 | events | 9 | 1 | 90% |
 | runner | 7 | 26 | 21% |
-| cli | 0 | 14 | 0% |
+| cli | 0 | 15 | 0% |
 | laravel | 0 | 24 | 0% |
 
 ## Mutable clusters

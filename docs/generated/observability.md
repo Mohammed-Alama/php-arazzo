@@ -86,7 +86,7 @@ Runtime state survives process boundaries through these contracts:
 | `EventLedgerInterface` | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `LockManagerInterface` | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
-| `PendingCorrelationRegistryInterface` | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
+| `PendingCorrelationRegistryInterface` | `InProcessPendingCorrelationRegistry` <small>core</small>, `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | `LaravelQueueDriver` <small>laravel</small>, `SyncQueueDriver` <small>core</small> |
 | `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small>, `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | `InMemoryDefinitionRegistry` <small>core</small> |
@@ -98,11 +98,11 @@ Where async suspend/resume bookkeeping happens:
 | Class | Role signals |
 |---|---|
 | `CliRunner` <small>core</small> | resumes from webhook |
+| `InProcessPendingCorrelationRegistry` <small>core</small> | consumes correlation, creates pending correlation, reads pending state |
 | `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
-| `ExecutionBindings` <small>laravel</small> | resumes from webhook |
 | `WebhookResumeController` <small>laravel</small> | resumes from webhook |
 | `LaravelArazzoServiceProvider` <small>laravel</small> | resumes from webhook |
 | `DatabasePendingCorrelationRegistry` <small>laravel</small> | consumes correlation, creates pending correlation, reads pending state |

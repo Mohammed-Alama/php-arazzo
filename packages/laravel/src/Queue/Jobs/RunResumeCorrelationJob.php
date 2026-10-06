@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Queue\Jobs;
 
-use Alama\Arazzo\Runner\Async\CorrelationResumer;
 use Alama\Arazzo\Runner\Async\ResumeCorrelationJob;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -24,8 +24,8 @@ class RunResumeCorrelationJob implements ShouldQueue
 
     public function __construct(public ResumeCorrelationJob $inner) {}
 
-    public function handle(CorrelationResumer $resumer): void
+    public function handle(AsyncExecutionGraph $graph): void
     {
-        $resumer->resume($this->inner->correlationId, $this->inner->response);
+        $graph->resumer()->resume($this->inner->correlationId, $this->inner->response);
     }
 }

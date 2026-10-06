@@ -51,21 +51,12 @@ final class FacadeBindings
         ));
         $app->singleton(RunnerGraphBuilderInterface::class, function (Container $app): RunnerGraphBuilder {
             return new RunnerGraphBuilder(
-                new OperationRuntime(
+                evaluationEngine: $app->make(EvaluationEngineInterface::class),
+                operations: new OperationRuntime(
                     $app->make(DocumentInterface::class),
                     $app->make(OpenApiOperationResolver::class),
                 ),
-                $app->make(EvaluationEngineInterface::class),
-                $app->make(ExpressionEngineInterface::class),
-                $app->bound(OpenApiExecutorInterface::class)
-                    ? $app->make(OpenApiExecutorInterface::class)
-                    : null,
-                $app->bound(OutputExtractorInterface::class)
-                    ? $app->make(OutputExtractorInterface::class)
-                    : null,
-                $app->bound(ResponseValidatorInterface::class)
-                    ? $app->make(ResponseValidatorInterface::class)
-                    : null,
+                inspector: $app->make(ExpressionEngineInterface::class),
             );
         });
     }

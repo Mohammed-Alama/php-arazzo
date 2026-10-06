@@ -61,9 +61,9 @@ it('binds ArazzoGenerator', function () {
     expect(app(ArazzoGenerator::class))->toBeInstanceOf(ArazzoGenerator::class);
 });
 
-it('binds WorkflowExecutor and StepExecutor', function () {
+it('binds WorkflowExecutor and exposes the sync step executor through the graph', function () {
     expect(app(WorkflowExecutor::class))->toBeInstanceOf(WorkflowExecutor::class);
-    expect(app(StepExecutor::class))->toBeInstanceOf(StepExecutor::class);
+    expect(app(AsyncExecutionGraph::class)->stepExecutor())->toBeInstanceOf(StepExecutor::class);
 });
 
 it('binds the persistence interfaces to their Laravel implementations', function () {
@@ -73,11 +73,11 @@ it('binds the persistence interfaces to their Laravel implementations', function
     expect(app(ExecutionRegistryInterface::class))->toBeInstanceOf(DatabaseExecutionRegistry::class);
 });
 
-it('binds StepExecutionWorker', function () {
+it('exposes the worker through the async graph (no container alias)', function () {
     app()->bind(LockManagerInterface::class, fn () => \Mockery::mock(LockManagerInterface::class));
     app()->bind(HttpClientInterface::class, fn () => \Mockery::mock(HttpClientInterface::class));
 
-    expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
+    expect(app(AsyncExecutionGraph::class)->worker())->toBeInstanceOf(StepExecutionWorker::class);
 });
 
 it('binds the queue/lock/http infra', function () {
@@ -87,11 +87,14 @@ it('binds the queue/lock/http infra', function () {
     expect(app(WorkflowEngine::class))->toBeInstanceOf(WorkflowEngine::class);
 });
 
-it('binds the async control flow classes', function () {
+it('exposes the async control flow nodes through the graph', function () {
     expect(app(PendingCorrelationRegistryInterface::class))->toBeInstanceOf(DatabasePendingCorrelationRegistry::class);
-    expect(app(StepOutcomeHandler::class))->toBeInstanceOf(StepOutcomeHandler::class);
-    expect(app(CorrelationResumer::class))->toBeInstanceOf(CorrelationResumer::class);
-    expect(app(StepExecutionWorker::class))->toBeInstanceOf(StepExecutionWorker::class);
+
+    $graph = app(AsyncExecutionGraph::class);
+
+    expect($graph->outcomeHandler())->toBeInstanceOf(StepOutcomeHandler::class)
+        ->and($graph->resumer())->toBeInstanceOf(CorrelationResumer::class)
+        ->and($graph->worker())->toBeInstanceOf(StepExecutionWorker::class);
 });
 
 it('assembles every protocol executor into the graph', function () {

@@ -20,7 +20,7 @@ quadrantChart
     quadrant-2 Solid & stable
     quadrant-3 Stable but untested
     quadrant-4 Untested churn
-    cli/Console: [1, 1]
+    cli/Console: [1, 0.917]
     cli/Generator: [0.333, 1]
     cli/Renderer: [0.5, 1]
     contracts/Dependency: [0.333, 1]
@@ -33,7 +33,7 @@ quadrantChart
     document/Validator: [0.455, 1]
     engine/Data: [0.75, 1]
     engine/Enum: [0, 1]
-    engine/Exceptions: [0.333, 1]
+    engine/Exceptions: [0.25, 1]
     engine/Execution: [0.75, 1]
     evaluation/Condition: [0.857, 1]
     evaluation/Enum: [0, 0.333]
@@ -48,18 +48,18 @@ quadrantChart
     expression/Exceptions: [0.25, 1]
     expression/Interfaces: [0.176, 1]
     expression/Xpath: [0.667, 0.5]
-    laravel/Bindings: [0.962, 0.857]
+    laravel/Bindings: [0.96, 0.857]
     laravel/Events: [0, 1]
     laravel/Http: [0.714, 1]
     laravel/Lock: [0.5, 1]
     laravel/Persistence: [0.833, 1]
-    laravel/Queue: [0.667, 1]
+    laravel/Queue: [0.75, 1]
     laravel/State: [0.5, 1]
     laravel/Support: [0.667, 0.5]
-    runner/Async: [0.8, 1]
+    runner/Async: [0.833, 1]
     runner/Execution: [0.6, 1]
     runner/Interfaces: [1, 0]
-    runner/Sync: [0.783, 1]
+    runner/Sync: [0.818, 1]
     runtime/Infrastructure: [1, 0.667]
     runtime/Policy: [0.75, 1]
     runtime/State: [0.25, 1]
@@ -71,27 +71,27 @@ quadrantChart
 
 | Module | Instability | Test files | Src files | Density |
 |---|---:|---:|---:|---:|
-| `cli/Console` | 1.00 | 11 | 11 | 100% |
+| `cli/Console` | 1.00 | 11 | 12 | 92% |
 | `cli/Generator` | 0.33 | 5 | 2 | 100% |
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 36 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 199 | 49 | 100% |
-| `contracts/State` | 0.07 | 54 | 2 | 100% |
+| `contracts/Interfaces` | 0.12 | 38 | 19 | 100% |
+| `contracts/Spec` | 0.03 | 200 | 49 | 100% |
+| `contracts/State` | 0.07 | 55 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.46 | 75 | 68 | 100% |
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
-| `engine/Exceptions` | 0.33 | 3 | 1 | 100% |
+| `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
 | `engine/Execution` | 0.75 | 9 | 7 | 100% |
 | `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
 | `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
 | `evaluation/Registries` | 0.80 | 0 | 2 | 0% |
-| `events/Interfaces` | 0.00 | 20 | 1 | 100% |
+| `events/Interfaces` | 0.00 | 21 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
 | `expression/Ast` | 0.67 | 5 | 15 | 33% |
 | `expression/Data` | 0.30 | 14 | 4 | 100% |
@@ -104,16 +104,16 @@ quadrantChart
 | `laravel/Http` | 0.71 | 4 | 3 | 100% |
 | `laravel/Lock` | 0.50 | 3 | 1 | 100% |
 | `laravel/Persistence` | 0.83 | 6 | 4 | 100% |
-| `laravel/Queue` | 0.67 | 6 | 3 | 100% |
+| `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
 | `laravel/Support` | 0.67 | 1 | 2 | 50% |
-| `runner/Async` | 0.80 | 18 | 7 | 100% |
-| `runner/Execution` | 0.60 | 31 | 16 | 100% |
+| `runner/Async` | 0.83 | 21 | 7 | 100% |
+| `runner/Execution` | 0.60 | 32 | 16 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
-| `runner/Sync` | 0.78 | 30 | 5 | 100% |
+| `runner/Sync` | 0.82 | 31 | 5 | 100% |
 | `runtime/Infrastructure` | 1.00 | 2 | 3 | 67% |
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
-| `runtime/State` | 0.25 | 26 | 12 | 100% |
+| `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
 | `sources/Normalizer` | 0.36 | 15 | 10 | 100% |
 | `sources/Resolver` | 0.30 | 22 | 13 | 100% |

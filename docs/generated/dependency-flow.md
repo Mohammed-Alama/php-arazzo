@@ -16,18 +16,17 @@ sankey-beta
 
 cli-Console,cli-Renderer,1
 cli-Console,contracts-Dependency,1
-cli-Console,contracts-Interfaces,4
-cli-Console,contracts-Spec,11
+cli-Console,contracts-Interfaces,7
+cli-Console,contracts-Spec,12
 cli-Console,contracts-State,1
 cli-Console,document-Parser,6
 cli-Console,document-Validator,2
 cli-Console,evaluation-root,2
 cli-Console,events-Interfaces,2
 cli-Console,expression-root,2
-cli-Console,runner-Async,2
-cli-Console,runner-Execution,3
-cli-Console,runner-Sync,1
-cli-Console,runner-root,2
+cli-Console,runner-Async,1
+cli-Console,runner-Execution,1
+cli-Console,runner-root,5
 cli-Console,runtime-State,6
 cli-Console,runtime-Telemetry,1
 cli-Console,sources-Normalizer,1
@@ -122,9 +121,8 @@ laravel-Bindings,laravel-Persistence,4
 laravel-Bindings,laravel-Queue,1
 laravel-Bindings,laravel-State,1
 laravel-Bindings,laravel-Support,4
-laravel-Bindings,runner-Async,3
 laravel-Bindings,runner-Execution,1
-laravel-Bindings,runner-Sync,3
+laravel-Bindings,runner-Sync,2
 laravel-Bindings,runner-root,5
 laravel-Bindings,runtime-State,3
 laravel-Bindings,sources-Normalizer,7
@@ -143,7 +141,8 @@ laravel-Persistence,document-Parser,2
 laravel-Persistence,events-Interfaces,1
 laravel-Persistence,runtime-State,3
 laravel-Queue,contracts-Interfaces,1
-laravel-Queue,runner-Async,6
+laravel-Queue,runner-Async,4
+laravel-Queue,runner-root,2
 laravel-State,runtime-State,1
 laravel-Support,contracts-Interfaces,6
 laravel-Support,events-Interfaces,1
@@ -156,7 +155,7 @@ laravel-root,laravel-Bindings,7
 laravel-root,laravel-Http,2
 laravel-root,laravel-Support,2
 laravel-root,runner-root,2
-laravel-root,sources-Normalizer,3
+laravel-root,sources-Normalizer,2
 laravel-root,sources-Resolver,1
 runner-Async,contracts-Dependency,2
 runner-Async,contracts-Exceptions,1
@@ -165,7 +164,7 @@ runner-Async,contracts-Spec,23
 runner-Async,contracts-State,7
 runner-Async,contracts-Support,3
 runner-Async,document-Validator,1
-runner-Async,document-root,1
+runner-Async,document-root,2
 runner-Async,engine-Exceptions,3
 runner-Async,engine-Execution,2
 runner-Async,evaluation-root,5
@@ -175,7 +174,6 @@ runner-Async,expression-Data,3
 runner-Async,expression-Interfaces,1
 runner-Async,runner-Execution,11
 runner-Async,runner-Sync,7
-runner-Async,runner-root,4
 runner-Async,runtime-State,8
 runner-Async,runtime-Telemetry,1
 runner-Execution,contracts-Interfaces,2
@@ -207,15 +205,17 @@ runner-Sync,runtime-Policy,1
 runner-Sync,runtime-State,1
 runner-Sync,sources-Normalizer,2
 runner-root,contracts-Exceptions,1
-runner-root,contracts-Interfaces,16
+runner-root,contracts-Interfaces,14
 runner-root,contracts-Spec,12
 runner-root,contracts-State,1
 runner-root,document-root,1
+runner-root,engine-Exceptions,1
 runner-root,engine-root,1
 runner-root,evaluation-root,2
 runner-root,events-Interfaces,2
 runner-root,expression-Interfaces,2
 runner-root,expression-root,1
+runner-root,runner-Async,6
 runner-root,runner-Execution,3
 runner-root,runner-Sync,4
 runner-root,runtime-State,5
@@ -260,5 +260,5 @@ These references exist in the code but are not drawn: drawing them would close a
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
+| `runner-Async` | `runner-root` | 4 |
 | `runner-Execution` | `runner-Sync` | 1 |
-| `runner-root` | `runner-Async` | 4 |

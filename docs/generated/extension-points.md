@@ -60,6 +60,7 @@ mindmap
     OperationExecutorPluginInterface
       SubWorkflowStepExecutor
     PendingCorrelationRegistryInterface
+      InProcessPendingCorrelationRegistry
       DatabasePendingCorrelationRegistry
     QueueDriverInterface
       SyncQueueDriver
@@ -110,7 +111,7 @@ mindmap
 | `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
 | `OpenApiOperationResolverInterface` | no | `OpenApiOperationResolver` <small>core</small> |
 | `OperationExecutorPluginInterface` | no | `SubWorkflowStepExecutor` <small>core</small> |
-| `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
+| `PendingCorrelationRegistryInterface` | no | `InProcessPendingCorrelationRegistry` <small>core</small>, `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |

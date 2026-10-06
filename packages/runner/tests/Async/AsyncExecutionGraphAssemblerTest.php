@@ -215,14 +215,12 @@ it('assembles graph with all core nodes', function () {
     ));
     $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
-        new OperationRuntime(
+        evaluationEngine: new EvaluationEngine(expression: new ExpressionEngine()),
+        operations: new OperationRuntime(
             $runtime->document,
             $runtime->operations,
         ),
-        new EvaluationEngine(expression: new ExpressionEngine()),
-        new ExpressionEngine(),
-        null,
-        new HttpFactory(),
+        inspector: new ExpressionEngine(),
     );
     $graph = $assembler->assemble($seams);
 
@@ -240,14 +238,12 @@ it('flows host-registered protocol executors into the graph alongside the compos
     $seams = seams(executorRegistry: hostRegistry($httpPlugin, $asyncPlugin));
     $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
-        new OperationRuntime(
+        evaluationEngine: new EvaluationEngine(expression: new ExpressionEngine()),
+        operations: new OperationRuntime(
             $runtime->document,
             $runtime->operations,
         ),
-        new EvaluationEngine(expression: new ExpressionEngine()),
-        new ExpressionEngine(),
-        null,
-        new HttpFactory(),
+        inspector: new ExpressionEngine(),
     );
     $graph = $assembler->assemble($seams);
 

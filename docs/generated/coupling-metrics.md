@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 839 | 0 | 19 | 1.00 |  |
+| `cli:Console` | 12 | 921 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
@@ -25,7 +25,7 @@ targets. Regenerated before every commit.
 | `(document root)` | 5 | 263 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
-| `engine:Exceptions` | 1 | 41 | 2 | 1 | 0.33 |  |
+| `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
 | `engine:Execution` | 7 | 957 | 2 | 6 | 0.75 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
@@ -44,20 +44,20 @@ targets. Regenerated before every commit.
 | `expression:Interfaces` | 2 | 108 | 14 | 3 | 0.18 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
 | `(expression root)` | 9 | 1143 | 4 | 7 | 0.64 |  |
-| `laravel:Bindings` | 7 | 389 | 1 | 25 | 0.96 |  |
+| `laravel:Bindings` | 7 | 378 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 5 | 0.71 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
 | `laravel:Persistence` | 4 | 260 | 1 | 5 | 0.83 |  |
-| `laravel:Queue` | 3 | 106 | 1 | 2 | 0.67 |  |
+| `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 2 | 148 | 2 | 4 | 0.67 |  |
-| `(laravel root)` | 2 | 249 | 0 | 9 | 1.00 |  |
-| `runner:Async` | 7 | 1271 | 5 | 20 | 0.80 | ⚠ unstable hub |
+| `(laravel root)` | 2 | 246 | 0 | 9 | 1.00 |  |
+| `runner:Async` | 7 | 1310 | 4 | 20 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 16 | 374 | 6 | 9 | 0.60 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 5 | 799 | 5 | 18 | 0.78 |  |
-| `(runner root)` | 9 | 512 | 5 | 15 | 0.75 |  |
+| `runner:Sync` | 5 | 799 | 4 | 18 | 0.82 | ⚠ unstable hub |
+| `(runner root)` | 9 | 529 | 6 | 16 | 0.73 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
@@ -80,8 +80,8 @@ Total cross-module edges: **985**
 | `runner:Async` → `contracts:Spec` | 23 |
 | `(evaluation root)` → `contracts:Spec` | 22 |
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
-| `(runner root)` → `contracts:Interfaces` | 16 |
+| `(runner root)` → `contracts:Interfaces` | 14 |
 | `engine:Execution` → `contracts:Spec` | 13 |
 | `(runner root)` → `contracts:Spec` | 12 |
+| `cli:Console` → `contracts:Spec` | 12 |
 | `(document root)` → `contracts:Spec` | 11 |
-| `cli:Console` → `contracts:Spec` | 11 |

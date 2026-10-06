@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
-use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
-use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Async\AsyncExecutionGraphAssembler;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
 
 /**
@@ -17,28 +16,39 @@ use Alama\Arazzo\Runner\Execution\OperationRuntime;
  */
 final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
 {
-    /** @phpstan-ignore-next-line constructor has 6 parameters, max 5 allowed by config */
     public function __construct(
-        private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $evaluationEngine,
-        private readonly ExpressionEngineInterface $inspector,
-        private readonly ?OpenApiExecutorInterface $openApiExecutor = null,
-        private readonly ?OutputExtractorInterface $outputExtractor = null,
-        private readonly ?ResponseValidatorInterface $schemaValidator = null,
+        private readonly ?OperationRuntime $operations = null,
+        private readonly ?ExpressionEngineInterface $inspector = null,
     ) {}
 
     public function buildAsync(AsyncGraphSeams $seams): AsyncExecutionGraph
     {
-        /** @phpstan-ignore-next-line constructor has 6 parameters, 3 required */
+        if ($this->operations === null) {
+            throw new ExecutionException('RunnerGraphBuilder needs an OperationRuntime to assemble the async graph; worker-only hosts should use buildWorker().');
+        }
+
+        if ($this->inspector === null) {
+            throw new ExecutionException('RunnerGraphBuilder needs an ExpressionEngineInterface to assemble the async graph; worker-only hosts should use buildWorker().');
+        }
+
         $assembler = new AsyncExecutionGraphAssembler(
-            $this->operations,
-            $this->evaluationEngine,
-            $this->inspector,
-            $this->openApiExecutor,
-            $this->outputExtractor,
-            $this->schemaValidator,
+            evaluationEngine: $this->evaluationEngine,
+            operations: $this->operations,
+            inspector: $this->inspector,
         );
 
         return $assembler->assemble($seams);
+    }
+
+    public function buildWorker(AsyncGraphSeams $seams): StepExecutionWorker
+    {
+        $assembler = new AsyncExecutionGraphAssembler(
+            evaluationEngine: $this->evaluationEngine,
+            operations: $this->operations,
+            inspector: $this->inspector,
+        );
+
+        return $assembler->buildWorker($seams, $this->operations?->document);
     }
 }
