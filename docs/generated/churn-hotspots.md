@@ -14,14 +14,14 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "runner:Protocol", "document:Validator", "laravel:Queue", "laravel:Support", "laravel:State", "contracts:Spec", "contracts:Interfaces"]
     y-axis "Touches" 0 --> 50
-    bar [41, 25, 25, 20, 19, 19, 15, 12, 12, 11, 10, 9]
+    bar [42, 25, 25, 20, 19, 19, 15, 12, 12, 11, 10, 9]
 ```
 
-Analyzed 327 total file-touches across 46 modules.
+Analyzed 328 total file-touches across 46 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 41 | 13% | 396 | 103.5 |
+| `laravel:Bindings` | 42 | 13% | 396 | 106.1 |
 | `cli:Console` | 25 | 8% | 844 | 29.6 |
 | `runner:Execution` | 25 | 8% | 2,288 | 10.9 |
 | `laravel:Http` | 20 | 6% | 170 | 117.6 |
@@ -68,4 +68,4 @@ Analyzed 327 total file-touches across 46 modules.
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (117.6), `laravel:Queue` (110.1), `laravel:Bindings` (103.5)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Http` (117.6), `laravel:Queue` (110.1), `laravel:Bindings` (106.1)

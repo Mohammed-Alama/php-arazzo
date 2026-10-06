@@ -30,8 +30,8 @@ use Psr\Http\Message\RequestFactoryInterface;
  * core SPI registries. Used by the Laravel provider and by CLI/umbrella wiring.
  *
  * Only contracts-side types appear in the signature (H1/F1.4: no
- * `Alama\Arazzo\Runner` reference below the runner package) — the host wires
- * the runner-side registries (`OperationExecutorRegistry`,
+ * runner-package reference below the runner package) — the host wires the
+ * runner-side registries (`OperationExecutorRegistry`,
  * `ResponseValidatorDispatcher`) from the accessors below.
  *
  * @internal stays out of the advertised contract; not part of the public API surface
