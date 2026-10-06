@@ -15,7 +15,6 @@ use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
@@ -23,6 +22,7 @@ use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\FakeOpenApiExecutor;
 use Alama\Arazzo\Tests\Support\FakeOutputExtractor;
 use Alama\Arazzo\Tests\Support\FakeResponseValidator;
@@ -157,7 +157,7 @@ function seams(
 
 it('assembles graph with all core nodes', function () {
     $seams = seams();
-    $runtime = HttpSourceGraph::runtime();
+    $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
         new OperationRuntime(
             $runtime->document,
@@ -187,7 +187,7 @@ it('injects http client from seams into async executor', function () {
         }
     };
     $seams = seams(httpClient: $client);
-    $runtime = HttpSourceGraph::runtime();
+    $runtime = SourceGraph::runtime();
     $assembler = new AsyncExecutionGraphAssembler(
         new OperationRuntime(
             $runtime->document,

@@ -17,10 +17,6 @@
         },
         {
             "type": "path",
-            "url": "../document"
-        },
-        {
-            "type": "path",
             "url": "../expression"
         },
         {
@@ -39,7 +35,6 @@
     "require": {
         "php": "^8.4",
         "alama/arazzo-contracts": "@dev",
-        "alama/arazzo-document": "@dev",
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-engine": "@dev",

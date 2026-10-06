@@ -11,7 +11,7 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 834 | 0 | 18 | 1.00 |  |
+| `cli:Console` | 11 | 833 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 3 | 2 | 0.40 |  |
@@ -20,7 +20,7 @@ targets. Regenerated before every commit.
 | `contracts:Spec` | 49 | 1154 | 32 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 9 | 0 | 0.00 |  |
-| `document:Parser` | 11 | 1305 | 6 | 2 | 0.25 |  |
+| `document:Parser` | 11 | 1305 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 68 | 3402 | 5 | 5 | 0.50 |  |
 | `(document root)` | 5 | 263 | 5 | 6 | 0.55 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
@@ -43,7 +43,7 @@ targets. Regenerated before every commit.
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
 | `expression:Interfaces` | 2 | 108 | 12 | 3 | 0.20 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1143 | 3 | 7 | 0.70 |  |
+| `(expression root)` | 9 | 1143 | 4 | 7 | 0.64 |  |
 | `laravel:Bindings` | 7 | 404 | 1 | 23 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 167 | 2 | 5 | 0.71 |  |
@@ -64,9 +64,9 @@ targets. Regenerated before every commit.
 | `sources:Normalizer` | 10 | 799 | 7 | 5 | 0.42 |  |
 | `sources:Resolver` | 13 | 475 | 6 | 3 | 0.33 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 169 | 2 | 7 | 0.78 |  |
+| `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **926**
+Total cross-module edges: **943**
 
 ## Most entangled module pairs
 

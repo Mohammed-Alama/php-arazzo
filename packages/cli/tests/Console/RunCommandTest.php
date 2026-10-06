@@ -11,7 +11,6 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
-use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -136,7 +135,7 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
     arazzoDoc($doc);
 
     $document = DocumentLoader::load($doc);
-    $runtime = HttpSourceGraph::runtime(registry: $registry);
+    $runtime = SourceGraph::runtime(registry: $registry);
     $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $runner = new RunnerFacade(
         $runtime->document,

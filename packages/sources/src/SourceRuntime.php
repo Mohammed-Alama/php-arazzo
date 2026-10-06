@@ -9,7 +9,7 @@ use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
 
 /**
  * A document and the resolver behind it, produced by a single
- * HttpSourceGraph::runtime() call.
+ * SourceGraph::runtime() call.
  *
  * Consumers that need cebe operation handles -- the runner's three
  * OpenAPI-specific collaborators -- need the resolver as well as the
@@ -18,7 +18,7 @@ use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
  * they get is the interface, so this package never names a protocol type.
  *
  * Generic in the resolver so that a caller which *does* hold the concrete
- * protocol resolver keeps it: `HttpSourceGraph::runtime()` returns
+ * protocol resolver keeps it: `SourceGraph::runtime()` returns
  * `SourceRuntime<OpenApiOperationResolver>`, so `$runtime->operations` stays
  * concrete for the runner without this package importing protocol-http.
  *

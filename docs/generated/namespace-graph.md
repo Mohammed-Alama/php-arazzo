@@ -140,6 +140,8 @@ flowchart LR
     sources__ --> sources_Normalizer
     sources__ --> sources_Resolver
     sources__ --> sources_Validator
+    sources__ --> document_Parser
+    sources__ --> expression__
     runtime_Infrastructure --> contracts_Interfaces
     runtime_Policy --> contracts_Interfaces
     runtime_Policy --> contracts_Spec

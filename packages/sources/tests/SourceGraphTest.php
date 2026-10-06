@@ -8,14 +8,14 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Document\DocumentInterface;
-use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Sources\SourceLoader;
 
 it('builds a document that satisfies the port without inline http construction', function (): void {
-    $document = HttpSourceGraph::document();
+    $document = SourceGraph::document();
 
     expect($document)->toBeInstanceOf(DocumentInterface::class);
 });
@@ -33,7 +33,7 @@ it('honours an injected source registry', function (): void {
         }
     });
 
-    $loader = HttpSourceGraph::loader(registry: $registry);
+    $loader = SourceGraph::loader(registry: $registry);
 
     $resolved = $loader->resolveSource(
         new SourceDescription('api', 'https://example.test/openapi.json', SourceType::Openapi),
@@ -44,7 +44,7 @@ it('honours an injected source registry', function (): void {
 });
 
 it('keeps the default registry usable when none is injected', function (): void {
-    $loader = HttpSourceGraph::loader();
+    $loader = SourceGraph::loader();
 
     $resolved = $loader->resolveSource(
         new SourceDescription('api', __DIR__.'/fixtures/document/openapi30.yaml', SourceType::Openapi),
@@ -61,7 +61,7 @@ it('does not construct a guzzle client inside the source loader implementation',
 });
 
 it('builds a loader from the default source resolver without arguments', function (): void {
-    $loader = HttpSourceGraph::loader(registry: new SourceRegistry(new DefaultSourceResolver([])));
+    $loader = SourceGraph::loader(registry: new SourceRegistry(new DefaultSourceResolver([])));
 
     expect($loader)->toBeInstanceOf(SourceLoader::class);
 });

@@ -126,7 +126,7 @@ laravel-Bindings,runtime-State,3
 laravel-Bindings,sources-Normalizer,7
 laravel-Bindings,sources-Resolver,6
 laravel-Bindings,sources-Validator,1
-laravel-Bindings,sources-root,1
+laravel-Bindings,sources-root,2
 laravel-Http,cli-Generator,1
 laravel-Http,contracts-Interfaces,3
 laravel-Http,contracts-Spec,2
@@ -213,11 +213,13 @@ sources-Validator,sources-Normalizer,2
 sources-Validator,sources-Resolver,1
 sources-root,contracts-Interfaces,1
 sources-root,contracts-Spec,3
-sources-root,document-Validator,1
-sources-root,document-root,2
-sources-root,sources-Normalizer,2
-sources-root,sources-Resolver,5
-sources-root,sources-Validator,1
+sources-root,document-Parser,2
+sources-root,document-Validator,3
+sources-root,document-root,5
+sources-root,expression-root,1
+sources-root,sources-Normalizer,8
+sources-root,sources-Resolver,6
+sources-root,sources-Validator,2
 ```
 
 ## Folded flows

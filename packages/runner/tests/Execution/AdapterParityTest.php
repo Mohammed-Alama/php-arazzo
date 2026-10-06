@@ -24,7 +24,6 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
-use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runner\Execution\StepExecutor;
 use Alama\Arazzo\Runner\Execution\WorkflowEngine;
@@ -32,6 +31,7 @@ use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
 use Alama\Arazzo\Runtime\State\FileStateStore;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Alama\Arazzo\Tests\Support\FakePsr18Client;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -67,7 +67,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 99])));
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $engine = new EvaluationEngine(expression: new ExpressionEngine());
-    $runtime = HttpSourceGraph::runtime(null, null, new SourceRegistry(new class() implements SourceResolver
+    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new class() implements SourceResolver
     {
         public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {

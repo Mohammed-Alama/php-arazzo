@@ -16,7 +16,6 @@
         "psr/simple-cache": "^3.0"
     },
     "require-dev": {
-        "alama/arazzo-protocol-http": "@dev",
         "larastan/larastan": "^3.0",
         "laravel/pint": "^1.14",
         "mockery/mockery": "^1.6",

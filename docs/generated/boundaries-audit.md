@@ -100,6 +100,8 @@ Cross-package references from library code must target `*Interface` facades, val
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
 | `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
+| `sources` | `document` | `SourceGraph` | `Document` |
+| `sources` | `expression` | `SourceGraph` | `ExpressionEngine` |
 
 ### Concrete references outside facades (review list)
 
@@ -134,9 +136,14 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
 | `sources` | `ErrorCollector` | `document` | 1 | `PreflightValidator` |
+| `sources` | `Loader` | `document` | 1 | `SourceGraph` |
+| `sources` | `ModelStack` | `document` | 1 | `SourceGraph` |
 | `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
+| `sources` | `Parser` | `document` | 1 | `SourceGraph` |
 | `sources` | `ResolvedOperation` | `document` | 5 | `OpenApiOperationHandle` |
+| `sources` | `RuleSet` | `document` | 1 | `SourceGraph` |
 | `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |
+| `sources` | `Validator` | `document` | 1 | `SourceGraph` |
 | `sources` | `Warning` | `document` | 1 | `PreflightValidator` |

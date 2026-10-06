@@ -29,7 +29,7 @@ quadrantChart
     contracts/Spec: [0.03, 1]
     contracts/State: [0.071, 1]
     contracts/Support: [0, 1]
-    document/Parser: [0.25, 1]
+    document/Parser: [0.222, 1]
     document/Validator: [0.5, 1]
     engine/Data: [0.75, 1]
     engine/Enum: [0, 1]
@@ -79,7 +79,7 @@ quadrantChart
 | `contracts/Spec` | 0.03 | 197 | 49 | 100% |
 | `contracts/State` | 0.07 | 51 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
-| `document/Parser` | 0.25 | 35 | 11 | 100% |
+| `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.50 | 74 | 68 | 100% |
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |

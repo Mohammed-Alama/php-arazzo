@@ -454,6 +454,11 @@ this file on a commit is a public API change — review it deliberately.
 
 ### `SourceGraph` class
 - `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
+- `public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface`
+- `public static function loader(?SourceRegistry $registry = null): SourceLoader`
+- `public static function operations(?SourceRegistry $registry = null): OpenApiOperationResolver`
+- `public static function runtime(?SourceRegistry $registry = null, ?OpenApiOperationResolver $operations = null, ): SourceRuntime`
+- `public static function using(?SourceRegistry $registry = null): DocumentInterface`
 
 ### `Alama\Arazzo\Sources`
 

@@ -12,7 +12,6 @@ parameters:
         - ../contracts/src
         - ../expression/src
         - ../evaluation/src
-        - ../document/src
         - ../engine/src
         - ../sources/src
     reportUnmatchedIgnoredErrors: false

@@ -32,7 +32,7 @@ quadrantChart
     contracts/Spec: [0.03, 0.02]
     contracts/State: [0.071, 0]
     contracts/Support: [0, 0.2]
-    document/Parser: [0.25, 0.091]
+    document/Parser: [0.222, 0.091]
     document/Validator: [0.5, 0.015]
     document/_: [0.545, 0.2]
     engine/Data: [0.75, 0]
@@ -55,7 +55,7 @@ quadrantChart
     expression/Exceptions: [0.25, 0]
     expression/Interfaces: [0.2, 1]
     expression/Xpath: [0.667, 0.5]
-    expression/_: [0.7, 0]
+    expression/_: [0.636, 0]
     laravel/Bindings: [0.958, 0]
     laravel/Http: [0.714, 0]
     laravel/Lock: [0.5, 0]
@@ -75,7 +75,7 @@ quadrantChart
     sources/Normalizer: [0.417, 0.2]
     sources/Resolver: [0.333, 0.231]
     sources/Validator: [0.571, 0]
-    sources/_: [0.778, 0]
+    sources/_: [0.818, 0]
 ```
 
 ## God classes (SRP)

@@ -13,9 +13,9 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
+use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Tests\Support\FakeOpenApiExecutor;
 use Alama\Arazzo\Tests\Support\FakeOutputExtractor;
 use Alama\Arazzo\Tests\Support\FakeResponseValidator;
@@ -23,7 +23,7 @@ use GuzzleHttp\Psr7\Response;
 
 function runnerFacadeWithFakes(): RunnerFacade
 {
-    $runtime = HttpSourceGraph::runtime();
+    $runtime = SourceGraph::runtime();
     $seams = [
         'openApiExecutor' => new FakeOpenApiExecutor(
             new Response(200, ['Content-Type' => 'application/json'], '{"pets":[{"id":1,"name":"Rex"}]}'),

@@ -300,8 +300,10 @@ flowchart TB
     M_sources_Validator --> M_sources_Resolver
     M_sources__ --> M_contracts_Interfaces
     M_sources__ --> M_contracts_Spec
+    M_sources__ --> M_document_Parser
     M_sources__ --> M_document_Validator
     M_sources__ --> M_document__
+    M_sources__ --> M_expression__
     M_sources__ --> M_sources_Normalizer
     M_sources__ --> M_sources_Resolver
     M_sources__ --> M_sources_Validator
@@ -351,7 +353,7 @@ flowchart TB
 | `laravel` | `expression` | 3 |
 | `laravel` | `runner` | 22 |
 | `laravel` | `runtime` | 10 |
-| `laravel` | `sources` | 16 |
+| `laravel` | `sources` | 17 |
 | `runner` | `contracts` | 124 |
 | `runner` | `document` | 9 |
 | `runner` | `engine` | 11 |
@@ -362,7 +364,8 @@ flowchart TB
 | `runner` | `sources` | 5 |
 | `runtime` | `contracts` | 19 |
 | `sources` | `contracts` | 30 |
-| `sources` | `document` | 17 |
+| `sources` | `document` | 24 |
+| `sources` | `expression` | 1 |
 
 ## Module-level detail
 

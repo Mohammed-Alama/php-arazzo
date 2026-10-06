@@ -15,7 +15,6 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Protocol\Http\HttpSourceGraph;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
@@ -75,7 +74,7 @@ final class RunCommand extends Command
 
         $registry = $this->resolveRegistry();
         $engine = new EvaluationEngine(expression: new ExpressionEngine());
-        $runtime = HttpSourceGraph::runtime(registry: $registry);
+        $runtime = SourceGraph::runtime(registry: $registry);
 
         $fakeClient = new FakePsr18Client();
         $fakeFactory = new HttpFactory();
