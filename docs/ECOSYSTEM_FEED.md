@@ -1,15 +1,15 @@
 # Ecosystem Feed — Human Dashboard
 
-> **Generated:** 2026-10-07T13:20:00+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-08T13:26:48+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** 54 github (`30 OAI/*` + `4 usearazzo/*` + `20 runners/validators/generators`) from `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` — see `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`
 > **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php` → `.scratch/ecosystem-triage/<date>.md` (10 tasks, `RelevanceMapper` P0-6/P1-6/P2-1/P2-2)
 
 ## Summary
 
-- **Total events:** 860 (showing 200 newest)
-- **Severity:** breaking **39** · actionable **484** · watch **337**
-- **Top relevance:** `Conformance / schema validation` (341) · `uncategorized` (150) · `Dependency maintenance` (109) · `P2-1 CLI binary` (77) · `P1-7 JSON Schema layer` (41)
-- **Top sources:** `strefethen/arazzo-cli` (54) · `OAI/Arazzo-Specification` (51) · `OAI/OpenAPI-Specification` (42) · `speclynx/apidom` (40) · `jentic/jentic-arazzo-tools` (40)
+- **Total events:** 858 (showing 200 newest)
+- **Severity:** breaking **39** · actionable **489** · watch **330**
+- **Top relevance:** `Conformance / schema validation` (346) · `uncategorized` (147) · `Dependency maintenance` (110) · `P2-1 CLI binary` (76) · `P1-7 JSON Schema layer` (43)
+- **Top sources:** `strefethen/arazzo-cli` (54) · `OAI/Arazzo-Specification` (51) · `speclynx/apidom` (40) · `jentic/jentic-arazzo-tools` (40) · `Specmatic/specmatic` (40)
 - **Links:** [Raw JSON](storage/ecosystem-feed/feed.json) · [Snapshots](storage/ecosystem-feed/snapshots/) · [Plan](docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md)
 
 ## Legend
@@ -22,7 +22,7 @@
 
 ### Conformance / schema validation (10)
 
-- `2026-10-07` [tag v2.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0) — `swaggerexpert/arazzo-runtime-expression` · `tag` · _breaking,spec_
+- `2026-10-08` [tag v2.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0) — `swaggerexpert/arazzo-runtime-expression` · `tag` · _breaking,spec_
 - `2026-10-04` [docs(validator): link the README to the product page](https://github.com/usearazzo/arazzo-toolkit/pull/207) — `usearazzo/arazzo-toolkit` · `pr` · _breaking,spec_
 - `2026-10-04` [docs: mark roadmap Phases 1 and 3 as shipped](https://github.com/usearazzo/arazzo-toolkit/pull/205) — `usearazzo/arazzo-toolkit` · `pr` · _breaking,spec_
 - `2026-10-04` [fix(validator): install the workspace parser, not alpha.2](https://github.com/usearazzo/arazzo-toolkit/pull/203) — `usearazzo/arazzo-toolkit` · `pr` · _breaking,spec_
@@ -44,11 +44,12 @@
 - `2021-02-16` [OAS 3.1.0 Released!](https://github.com/OAI/OpenAPI-Specification/releases/tag/3.1.0) — `OAI/OpenAPI-Specification` · `release` · _breaking,schema,spec_
 - … and 2 more in this group (see All events table)
 
-### Dependency maintenance (7)
+### Dependency maintenance (8)
 
+- `2026-10-07` [chore(deps): bump chalk from 5.6.2 to 6.0.1](https://github.com/usearazzo/arazzo-toolkit/pull/223) — `usearazzo/arazzo-toolkit` · `pr` · _breaking,depbump_
+- `2026-10-07` [chore(deps): bump commander from 14.0.3 to 15.0.0](https://github.com/usearazzo/arazzo-toolkit/pull/221) — `usearazzo/arazzo-toolkit` · `pr` · _breaking,depbump_
 - `2026-10-06` [build(deps): bump actions/checkout from 6 to 7](https://github.com/OAI/learn.openapis.org/pull/208) — `OAI/learn.openapis.org` · `pr` · _breaking,depbump_
 - `2026-10-06` [Bump just-the-docs from 0.11.1 to 0.12.0](https://github.com/OAI/learn.openapis.org/pull/180) — `OAI/learn.openapis.org` · `pr` · _breaking,depbump_
-- `2026-09-11` [Bump build-infra to 1.0.2](https://github.com/OAI/OpenAPI-Specification/pull/5552) — `OAI/OpenAPI-Specification` · `pr` · _breaking,depbump_
 - `2025-12-12` [chore(deps): bump actions/download-artifact from 5 to 6](https://github.com/jentic/arazzo-engine/pull/130) — `jentic/arazzo-engine` · `pr` · _breaking,depbump_
 - `2025-12-12` [chore(deps): bump actions/download-artifact from 5 to 7](https://github.com/jentic/arazzo-engine/pull/137) — `jentic/arazzo-engine` · `pr` · _breaking,depbump_
 - `2025-12-12` [chore(deps): bump actions/upload-artifact from 4 to 5](https://github.com/jentic/arazzo-engine/pull/131) — `jentic/arazzo-engine` · `pr` · _breaking,depbump_
@@ -75,10 +76,6 @@
 - `2026-09-22` [feat(contracts): Phase A — plugin SPIs, StepState, state repo, ResponseTransfer, Step decomposition](https://github.com/Mohammed-Alama/php-arazzo/pull/72) — `Mohammed-Alama/php-arazzo` · `pr` · _cli,actor,breaking_
 - `2026-08-26` [v0.5.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.5.0) — `strefethen/arazzo-cli` · `release` · _cli,breaking,spec_
 
-### Issue #410 kind discriminator / human-in-loop (1)
-
-- `2026-10-03` [feat(validator): align validator with parser and resolver](https://github.com/usearazzo/arazzo-toolkit/pull/201) — `usearazzo/arazzo-toolkit` · `pr` · _actor,breaking,spec_
-
 ### OAI Moonwalk (next-gen spec) (1)
 
 - `2026-04-08` [Feat: Proposed content strategy to support repositioning OAI](https://github.com/OAI/Outreach/issues/71) — `OAI/Outreach` · `issue` · _breaking,moonwalk,spec_
@@ -92,42 +89,31 @@
 
 ### Conformance / schema validation (243)
 
-- `2026-10-07` [tag v1.0.2](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
-- `2026-10-07` [tag v1.0.1](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.1) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
-- `2026-10-07` [tag v1.0.0](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
-- `2026-10-07` [tag v0.0.7](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.7) — `b-lab-io/pyarazzo` · `tag` · _spec_
-- `2026-10-07` [tag v0.0.6](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.6) — `b-lab-io/pyarazzo` · `tag` · _spec_
-- `2026-10-07` [tag v0.0.5](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5) — `b-lab-io/pyarazzo` · `tag` · _spec_
-- `2026-10-07` [tag v0.0.4](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.4) — `b-lab-io/pyarazzo` · `tag` · _spec_
-- `2026-10-07` [tag v0.0.3](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.3) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-10-08` [tag v1.0.2](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
+- `2026-10-08` [tag v1.0.1](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.1) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
+- `2026-10-08` [tag v1.0.0](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0) — `frankkilcommins/arazzo2openapi` · `tag` · _spec_
+- `2026-10-08` [tag v0.0.7](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.7) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-10-08` [tag v0.0.6](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.6) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-10-08` [tag v0.0.5](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-10-08` [tag v0.0.4](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.4) — `b-lab-io/pyarazzo` · `tag` · _spec_
+- `2026-10-08` [tag v0.0.3](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.3) — `b-lab-io/pyarazzo` · `tag` · _spec_
 - … and 235 more in this group (see All events table)
 
-### uncategorized (56)
+### uncategorized (62)
 
-- `2026-10-07` [tag 1.1.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.1.0) — `usearazzo/Arazzo-Specification` · `tag` · _no tags_
-- `2026-10-07` [tag 1.0.1](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.1) — `usearazzo/Arazzo-Specification` · `tag` · _no tags_
-- `2026-10-07` [tag 1.0.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.0) — `usearazzo/Arazzo-Specification` · `tag` · _no tags_
-- `2026-10-06` [ci: updates the infra package](https://github.com/OAI/Overlay-Specification/pull/398) — `OAI/Overlay-Specification` · `pr` · _no tags_
-- `2026-10-06` [Update contributing branch guidance](https://github.com/OAI/Overlay-Specification/pull/407) — `OAI/Overlay-Specification` · `pr` · _no tags_
-- `2026-10-04` [Update weekly meeting agenda to include spec/schema publishing](https://github.com/OAI/OpenAPI-Specification/pull/5557) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
-- `2026-10-04` [Phase c evaluator plugins](https://github.com/Mohammed-Alama/php-arazzo/pull/73) — `Mohammed-Alama/php-arazzo` · `pr` · _no tags_
-- `2026-10-02` [Install qualification runner dependencies](https://github.com/OAI/build-infra/pull/43) — `OAI/build-infra` · `pr` · _no tags_
-- … and 48 more in this group (see All events table)
-
-### P2-1 CLI binary (48)
-
-- `2026-10-07` [tag vscode-v0.0.6](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.6) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag vscode-v0.0.5](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag v0.7.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.7.0) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag v0.6.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.1) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag v0.6.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.0) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag v0.5.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.5.0) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag v0.4.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0) — `strefethen/arazzo-cli` · `tag` · _cli_
-- `2026-10-07` [tag v0.3.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0) — `strefethen/arazzo-cli` · `tag` · _cli_
-- … and 40 more in this group (see All events table)
+- `2026-10-08` [tag 1.1.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.1.0) — `usearazzo/Arazzo-Specification` · `tag` · _no tags_
+- `2026-10-08` [tag 1.0.1](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.1) — `usearazzo/Arazzo-Specification` · `tag` · _no tags_
+- `2026-10-08` [tag 1.0.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.0) — `usearazzo/Arazzo-Specification` · `tag` · _no tags_
+- `2026-10-07` [Explain that schemas are for mandatory requirements](https://github.com/OAI/OpenAPI-Specification/pull/5183) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
+- `2026-10-07` [Add comment, re-trigger auto-merge](https://github.com/OAI/OpenAPI-Specification/pull/5500) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
+- `2026-10-07` [Update the build-infra dependency](https://github.com/OAI/OpenAPI-Specification/pull/5520) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
+- `2026-10-07` [Migrate to yarn to avoid npm workarounds](https://github.com/OAI/OpenAPI-Specification/pull/5503) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
+- `2026-10-07` [Don't delete files we need on sync.](https://github.com/OAI/OpenAPI-Specification/pull/5555) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
+- … and 54 more in this group (see All events table)
 
 ### Dependency maintenance (47)
 
+- `2026-10-07` [chore(deps): bump yaml from 2.9.0 to 2.9.1](https://github.com/usearazzo/arazzo-toolkit/pull/222) — `usearazzo/arazzo-toolkit` · `pr` · _depbump_
 - `2026-10-06` [chore(deps-dev): bump nx from 23.2.0 to 23.2.1](https://github.com/usearazzo/arazzo-toolkit/pull/217) — `usearazzo/arazzo-toolkit` · `pr` · _depbump_
 - `2026-10-06` [chore(deps-dev): bump typescript-eslint from 8.70.1 to 8.71.0](https://github.com/usearazzo/arazzo-toolkit/pull/215) — `usearazzo/arazzo-toolkit` · `pr` · _depbump_
 - `2026-10-06` [chore(deps-dev): bump mocha from 12.0.2 to 12.0.3](https://github.com/usearazzo/arazzo-toolkit/pull/213) — `usearazzo/arazzo-toolkit` · `pr` · _depbump_
@@ -135,11 +121,23 @@
 - `2026-10-06` [chore(deps-dev): bump @babel/plugin-transform-runtime from 8.0.1 to 8.0.6](https://github.com/usearazzo/arazzo-toolkit/pull/214) — `usearazzo/arazzo-toolkit` · `pr` · _depbump_
 - `2026-10-06` [build(deps): bump dependabot/fetch-metadata from 3.0.0 to 3.1.0](https://github.com/OAI/learn.openapis.org/pull/211) — `OAI/learn.openapis.org` · `pr` · _depbump_
 - `2026-10-06` [build(deps): bump yaml from 2.8.2 to 2.8.3](https://github.com/OAI/learn.openapis.org/pull/195) — `OAI/learn.openapis.org` · `pr` · _depbump_
-- `2026-10-06` [build(deps): bump dependabot/fetch-metadata from 2.5.0 to 3.0.0](https://github.com/OAI/learn.openapis.org/pull/196) — `OAI/learn.openapis.org` · `pr` · _depbump_
 - … and 39 more in this group (see All events table)
 
-### P1-7 JSON Schema layer (22)
+### P2-1 CLI binary (46)
 
+- `2026-10-08` [tag vscode-v0.0.6](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.6) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag vscode-v0.0.5](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag v0.7.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.7.0) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag v0.6.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.1) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag v0.6.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.0) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag v0.5.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.5.0) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag v0.4.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0) — `strefethen/arazzo-cli` · `tag` · _cli_
+- `2026-10-08` [tag v0.3.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0) — `strefethen/arazzo-cli` · `tag` · _cli_
+- … and 38 more in this group (see All events table)
+
+### P1-7 JSON Schema layer (23)
+
+- `2026-10-07` [v3.2: Fix JSON Schema keyword name. (port of 5195)](https://github.com/OAI/OpenAPI-Specification/pull/5197) — `OAI/OpenAPI-Specification` · `pr` · _schema_
 - `2026-10-06` [build(deps): bump @hyperjump/json-schema from 1.17.3 to 1.17.9](https://github.com/OAI/learn.openapis.org/pull/213) — `OAI/learn.openapis.org` · `pr` · _schema,depbump_
 - `2026-10-05` [v1.25.4](https://github.com/speakeasy-api/openapi/releases/tag/v1.25.4) — `speakeasy-api/openapi` · `release` · _cli,schema,depbump_
 - `2026-10-04` [@usearazzo/validator@1.0.1-alpha.6](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.6) — `npm.@usearazzo/validator` · `release` · _schema,spec_
@@ -147,8 +145,7 @@
 - `2026-10-01` [v6.17.0](https://github.com/stoplightio/spectral/releases/tag/v6.17.0) — `stoplightio/spectral` · `release` · _schema,depbump_
 - `2026-09-27` [Bump @hyperjump/json-schema-coverage from 1.2.2 to 1.3.0 in the hyperjump group across 1 directory](https://github.com/OAI/build-infra/pull/60) — `OAI/build-infra` · `pr` · _schema,depbump_
 - `2026-09-25` [v1.25.3](https://github.com/speakeasy-api/openapi/releases/tag/v1.25.3) — `speakeasy-api/openapi` · `release` · _cli,schema,depbump_
-- `2026-09-21` [v1.25.2](https://github.com/speakeasy-api/openapi/releases/tag/v1.25.2) — `speakeasy-api/openapi` · `release` · _cli,schema,depbump_
-- … and 14 more in this group (see All events table)
+- … and 15 more in this group (see All events table)
 
 ### OAI Moonwalk (next-gen spec) (16)
 
@@ -238,34 +235,34 @@
 
 ## Watch — context (commits/issues/checksums)
 
-### uncategorized (94)
+### Conformance / schema validation (93)
 
-- `2026-10-07` [Rebuild apis.json, scores.json, and API browsing indexes (#24938)](https://github.com/jentic/jentic-public-apis/commit/c405b13bdd2517c2073dda0054c206bf4e0d504b) — `jentic/jentic-public-apis` · `commit` · _no tags_
-- `2026-10-07` [Rebuild apis.json, scores.json, and API browsing indexes (#24935)](https://github.com/jentic/jentic-public-apis/commit/03657c261db688c66c41a95c0c83c4cd611924ec) — `jentic/jentic-public-apis` · `commit` · _no tags_
-- `2026-10-07` [Rebuild apis.json, scores.json, and API browsing indexes (#24934)](https://github.com/jentic/jentic-public-apis/commit/aab8297bd8df12ea7aac1fd37b1e8d82206926a1) — `jentic/jentic-public-apis` · `commit` · _no tags_
-- `2026-10-07` [Rebuild apis.json, scores.json, and API browsing indexes (#24931)](https://github.com/jentic/jentic-public-apis/commit/ca8fef9fdf674e0aa55de9a826f9554378cca9ba) — `jentic/jentic-public-apis` · `commit` · _no tags_
+- `2026-10-08` [openapi.tools checksum 39a6121e4671](https://openapi.tools/collections/arazzo) — `openapi.tools` · `tool_collection` · _spec_
+- `2026-10-08` [Collapse duplicate spec dirs for peoplefinderspro.com, pims.io, positionstack.com (#24494)](https://github.com/jentic/jentic-public-apis/commit/d70e8f325db06354a2456b6a5433a3adc7ca932b) — `jentic/jentic-public-apis` · `commit` · _spec_
+- `2026-10-08` [feat: Import OpenAPI spec from Issue #24997 (#25001)](https://github.com/jentic/jentic-public-apis/commit/d3079516d4e0f67675cd8b91ab4843e72730cdcd) — `jentic/jentic-public-apis` · `commit` · _spec_
+- `2026-10-08` [feat: Import OpenAPI spec from Issue #24999 (#25002)](https://github.com/jentic/jentic-public-apis/commit/c504cb95ef8264fac0aca4895696a0a841b224ef) — `jentic/jentic-public-apis` · `commit` · _spec_
+- `2026-10-08` [feat: Import OpenAPI spec from Issue #24995 (#24996)](https://github.com/jentic/jentic-public-apis/commit/968869b5e04bfca83af202cc83c459b022e6ebcd) — `jentic/jentic-public-apis` · `commit` · _spec_
+- `2026-10-08` [feat: Import OpenAPI spec from Issue #24992 (#24994)](https://github.com/jentic/jentic-public-apis/commit/52e477e0d15e300dab68b3208f7d1a0fc8703798) — `jentic/jentic-public-apis` · `commit` · _spec_
+- `2026-10-08` [feat: Import OpenAPI spec from Issue #24990 (#24991)](https://github.com/jentic/jentic-public-apis/commit/69e8eab20af41388efb7dca64581dc649418e751) — `jentic/jentic-public-apis` · `commit` · _spec_
+- `2026-10-08` [feat: Import OpenAPI spec from Issue #24988 (#24989)](https://github.com/jentic/jentic-public-apis/commit/4b35f5a3ea3b3a655bf3bfd449f19a974d9ef83d) — `jentic/jentic-public-apis` · `commit` · _spec_
+- … and 85 more in this group (see All events table)
+
+### uncategorized (85)
+
+- `2026-10-08` [Rebuild apis.json, scores.json, and API browsing indexes (#24998)](https://github.com/jentic/jentic-public-apis/commit/f945f0c174c4b7fa593d29bd278ae78e4886ffd7) — `jentic/jentic-public-apis` · `commit` · _no tags_
+- `2026-10-08` [Rebuild apis.json, scores.json, and API browsing indexes (#24968)](https://github.com/jentic/jentic-public-apis/commit/dfce18dd90375ef2857b9c2940191e353552399b) — `jentic/jentic-public-apis` · `commit` · _no tags_
+- `2026-10-08` [Rebuild apis.json, scores.json, and API browsing indexes (#24965)](https://github.com/jentic/jentic-public-apis/commit/e69a7f180ab3c45f5c61e2d595a99b41c8c77e94) — `jentic/jentic-public-apis` · `commit` · _no tags_
+- `2026-10-08` [v3.3: First pass at explaining SAFs](https://github.com/OAI/OpenAPI-Specification/pull/5447) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
+- `2026-10-08` [Update Landscape from LFX 2026-10-08 (#227)](https://github.com/OAI/landscape/commit/1f39b65b9043e4cc81c00656161f72fb2e22a1e8) — `OAI/landscape` · `commit` · _no tags_
 - `2026-10-07` [Update Landscape from LFX 2026-10-07 (#226)](https://github.com/OAI/landscape/commit/9548a83c3c32f5147d21cfc8a48c0b7fdfb0921c) — `OAI/landscape` · `commit` · _no tags_
 - `2026-10-06` [ci: updates the agenda template to include additional links to check](https://github.com/OAI/Overlay-Specification/pull/414) — `OAI/Overlay-Specification` · `pr` · _no tags_
-- `2026-10-06` [v3.3: First pass at explaining SAFs](https://github.com/OAI/OpenAPI-Specification/pull/5447) — `OAI/OpenAPI-Specification` · `pr` · _no tags_
 - `2026-10-06` [ci: update the agenda template to lead us down the path of checking the spec repo](https://github.com/OAI/Overlay-Specification/issues/411) — `OAI/Overlay-Specification` · `issue` · _no tags_
-- … and 86 more in this group (see All events table)
-
-### Conformance / schema validation (88)
-
-- `2026-10-07` [openapi.tools checksum 565873db1ac1](https://openapi.tools/collections/arazzo) — `openapi.tools` · `tool_collection` · _spec_
-- `2026-10-07` [feat: Replace OpenAPI spec for Issue #24936 (#24937)](https://github.com/jentic/jentic-public-apis/commit/7fc2c0907ad24f623254ccd16a5546132c986bf8) — `jentic/jentic-public-apis` · `commit` · _spec_
-- `2026-10-07` [feat: Import OpenAPI spec from Issue #24932 (#24933)](https://github.com/jentic/jentic-public-apis/commit/456162a360999f042352a3d9e2fb6b60f67bc078) — `jentic/jentic-public-apis` · `commit` · _spec_
-- `2026-10-07` [feat: Import OpenAPI spec from Issue #24929 (#24930)](https://github.com/jentic/jentic-public-apis/commit/07c2e74cd5c924bc0e6c73ab342a453c626798f1) — `jentic/jentic-public-apis` · `commit` · _spec_
-- `2026-10-06` [ci: adds branches auto-sync workflows](https://github.com/OAI/Overlay-Specification/pull/413) — `OAI/Overlay-Specification` · `pr` · _spec_
-- `2026-10-06` [Open Community (TDC) Meeting, Thursday 08 October 2026](https://github.com/OAI/OpenAPI-Specification/issues/5562) — `OAI/OpenAPI-Specification` · `issue` · _spec_
-- `2026-10-06` [ci: add automation to sync from main -> dev -> vX.Y-dev branches](https://github.com/OAI/Overlay-Specification/issues/410) — `OAI/Overlay-Specification` · `issue` · _spec_
-- `2026-10-06` [Extensible enumerations (growable lists)](https://github.com/OAI/OpenAPI-Specification/issues/1552) — `OAI/OpenAPI-Specification` · `issue` · _spec_
-- … and 80 more in this group (see All events table)
+- … and 77 more in this group (see All events table)
 
 ### Dependency maintenance (55)
 
-- `2026-10-07` [chore(deps-dev): bump vitest from 5.0.1 to 5.0.2 in the vitest group](https://github.com/OAI/Arazzo-Specification/pull/588) — `OAI/Arazzo-Specification` · `pr` · _depbump_
-- `2026-10-06` [build(deps): bump vitest from 4.0.17 to 5.0.3 in the vitest group across 1 directory](https://github.com/OAI/learn.openapis.org/pull/190) — `OAI/learn.openapis.org` · `pr` · _depbump_
+- `2026-10-08` [chore(deps-dev): bump vitest from 5.0.1 to 5.0.2 in the vitest group](https://github.com/OAI/Arazzo-Specification/pull/588) — `OAI/Arazzo-Specification` · `pr` · _depbump_
+- `2026-10-07` [build(deps): bump vitest from 4.0.17 to 5.0.3 in the vitest group across 1 directory](https://github.com/OAI/learn.openapis.org/pull/190) — `OAI/learn.openapis.org` · `pr` · _depbump_
 - `2026-10-06` [build(deps): bump jekyll-include-cache from 0.2.1 to 0.3.1](https://github.com/OAI/learn.openapis.org/pull/212) — `OAI/learn.openapis.org` · `pr` · _depbump_
 - `2026-10-05` [Merge pull request #144 from OAI/dependabot/bundler/jekyll-include-cache-0.3.1](https://github.com/OAI/spec.openapis.org/commit/ea40577169de316c22b24219136ada123ff5af49) — `OAI/spec.openapis.org` · `commit` · _depbump_
 - `2026-10-05` [Merge pull request #145 from OAI/dependabot/bundler/jekyll-remote-theme-0.6.2](https://github.com/OAI/spec.openapis.org/commit/1112ad677f1712a5bafedbd71449795fa68997d0) — `OAI/spec.openapis.org` · `commit` · _depbump_
@@ -274,29 +271,29 @@
 - `2026-10-04` [Merge pull request #64 from OAI/dependabot/npm_and_yarn/vitest-92ac8026ca](https://github.com/OAI/build-infra/commit/c771ab929b8445becf4fd9349ab365823a553206) — `OAI/build-infra` · `commit` · _depbump_
 - … and 47 more in this group (see All events table)
 
-### P2-1 CLI binary (27)
+### P2-1 CLI binary (28)
 
+- `2026-10-08` [ci: write SHA256SUMS in text-mode form on every platform](https://github.com/strefethen/arazzo-cli/commit/ca3a5ea76ac5648d391d4d4038b5411b91f71776) — `strefethen/arazzo-cli` · `commit` · _cli_
+- `2026-10-07` [docs(agents): record the pinned toolchain and the spec fetch step](https://github.com/strefethen/arazzo-cli/commit/d02ca1e06e68694dc0cd2e6a724985eb14633ea6) — `strefethen/arazzo-cli` · `commit` · _cli_
+- `2026-10-07` [ci: fetch the vendored spec before compiling tests](https://github.com/strefethen/arazzo-cli/commit/7c57f0bdfc978738db87c7c823ad61a698654a01) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
+- `2026-10-07` [docs(assessments): add scheduled code-smell audits through 2026-10-03](https://github.com/strefethen/arazzo-cli/commit/eeb7b9707c59c2f76654c9f210e5397d4f9b2fab) — `strefethen/arazzo-cli` · `commit` · _cli_
+- `2026-10-07` [refactor(validate): extract step dependency helpers into step_dependencies.rs](https://github.com/strefethen/arazzo-cli/commit/f79b525c0b3189317a38fd5c9971604fa88fad4e) — `strefethen/arazzo-cli` · `commit` · _cli,actor,spec_
+- `2026-10-07` [refactor(validate): extract expression validation into expressions.rs](https://github.com/strefethen/arazzo-cli/commit/99a5b206aa3a007170331c642e90a30e9aa6f328) — `strefethen/arazzo-cli` · `commit` · _cli,actor,spec_
+- `2026-10-07` [test(validate): cap arazzo-validate lib.rs at its current line count](https://github.com/strefethen/arazzo-cli/commit/7b06b4438780dd3520b14e0f645d58038b776317) — `strefethen/arazzo-cli` · `commit` · _cli,spec_
 - `2026-10-07` [cli: support JavaScript configuration files (usearazzo.js/mjs/cjs)](https://github.com/usearazzo/arazzo-toolkit/issues/219) — `usearazzo/arazzo-toolkit` · `issue` · _cli,spec_
-- `2026-10-04` [docs: say the Validator is on npm across the site](https://github.com/usearazzo/website/commit/104858c30a39e32287ae1994fe50a2a40be6e7e8) — `usearazzo/website` · `commit` · _cli,a2a_
-- `2026-09-18` [refactor(expr): extract simple-condition evaluation into its own module](https://github.com/strefethen/arazzo-cli/commit/38b60889ae05dd5d1b43e63afa04a445452a71bd) — `strefethen/arazzo-cli` · `commit` · _cli,actor,spec_
-- `2026-09-17` [docs(plans): track the 2026-09-05 and 2026-09-12 code smell audits](https://github.com/strefethen/arazzo-cli/commit/5ce6548ddda9bee89ff2eb84f0852382efb9580a) — `strefethen/arazzo-cli` · `commit` · _cli_
-- `2026-09-16` [fix: update rustls for RUSTSEC-2026-0285](https://github.com/strefethen/arazzo-cli/commit/679af12f6ee088b5dace69b4693a5802f7ff5aeb) — `strefethen/arazzo-cli` · `commit` · _cli_
-- `2026-09-16` [chore: pin Rust 1.98.1 for builds and releases](https://github.com/strefethen/arazzo-cli/commit/43cb26abd42f6b8753006412076b83e2b0b177b5) — `strefethen/arazzo-cli` · `commit` · _cli_
-- `2026-09-14` [chore(release): prepare 0.7.0 with the RFC 9535 JSONPath engine](https://github.com/strefethen/arazzo-cli/commit/9a1dd3fe5add36f541b17385a361afb21ff0e825) — `strefethen/arazzo-cli` · `commit` · _cli_
-- `2026-09-14` [docs(plans): complete the RFC 9535 JSONPath migration plan](https://github.com/strefethen/arazzo-cli/commit/26a3dc0137b8eabcef6ecd694a01be5785271af7) — `strefethen/arazzo-cli` · `commit` · _cli_
-- … and 19 more in this group (see All events table)
+- … and 20 more in this group (see All events table)
 
-### API security (OAI sig-security) (16)
+### API security (OAI sig-security) (14)
 
 - `2026-10-02` [Auto-merge deletes the entire src tree](https://github.com/OAI/sig-security/issues/56) — `OAI/sig-security` · `issue` · _security_
 - `2026-09-25` [feat: Add proposal for Security Specification](https://github.com/OAI/sig-security/issues/53) — `OAI/sig-security` · `issue` · _spec,security_
 - `2026-09-24` [Support for GNAP](https://github.com/OAI/sig-security/issues/9) — `OAI/sig-security` · `issue` · _spec,security_
-- `2026-09-11` [v3.2: fix schema test that lacks security scheme definitions](https://github.com/OAI/OpenAPI-Specification/pull/5534) — `OAI/OpenAPI-Specification` · `pr` · _security_
-- `2026-09-11` [v3.3: fix schema test that lacks security scheme definitions](https://github.com/OAI/OpenAPI-Specification/pull/5533) — `OAI/OpenAPI-Specification` · `pr` · _security_
 - `2026-08-22` [Support for message level security](https://github.com/OAI/sig-security/issues/22) — `OAI/sig-security` · `issue` · _security,spec_
 - `2026-08-21` [Support for JOSE (JSON Signature and Encryption) Standards](https://github.com/OAI/sig-security/issues/37) — `OAI/sig-security` · `issue` · _security,spec_
 - `2026-08-21` [Add info to security considerations about outdated security practices, and link in new versions](https://github.com/OAI/sig-security/issues/36) — `OAI/sig-security` · `issue` · _spec,security_
-- … and 8 more in this group (see All events table)
+- `2026-08-21` [security scheme apiKey in body form data parameter](https://github.com/OAI/sig-lifecycle/issues/9) — `OAI/sig-lifecycle` · `issue` · _security_
+- `2026-08-21` [Add support OpenID Connect Hybrid Flow](https://github.com/OAI/sig-security/issues/34) — `OAI/sig-security` · `issue` · _spec,security_
+- … and 6 more in this group (see All events table)
 
 ### Issue #410 kind discriminator / human-in-loop (11)
 
@@ -310,17 +307,17 @@
 - `2026-08-21` [Endpoint-level and field-level role/permission support](https://github.com/OAI/sig-security/issues/35) — `OAI/sig-security` · `issue` · _actor,spec,security_
 - … and 3 more in this group (see All events table)
 
-### P1-7 JSON Schema layer (9)
+### P1-7 JSON Schema layer (10)
 
+- `2026-10-07` [Bump the hyperjump group with 2 updates](https://github.com/OAI/build-infra/pull/69) — `OAI/build-infra` · `pr` · _schema,depbump_
+- `2026-10-07` [JSON Schema for OpenAPI YAML document (in VS Code)](https://github.com/OAI/learn.openapis.org/issues/216) — `OAI/learn.openapis.org` · `issue` · _schema,spec_
 - `2026-10-07` [chore(deps-dev): bump @hyperjump/json-schema from 1.17.8 to 1.17.9](https://github.com/OAI/Arazzo-Specification/pull/593) — `OAI/Arazzo-Specification` · `pr` · _schema,depbump_
-- `2026-10-06` [Bump the hyperjump group with 2 updates](https://github.com/OAI/build-infra/pull/69) — `OAI/build-infra` · `pr` · _schema,depbump_
 - `2026-10-06` [build(deps): bump @hyperjump/json-schema from 1.17.3 to 1.17.5](https://github.com/OAI/learn.openapis.org/pull/193) — `OAI/learn.openapis.org` · `pr` · _schema,depbump_
 - `2026-10-04` [docs(validator): JSON Schema validation covers Arazzo 1.1.0](https://github.com/usearazzo/website/commit/3d96e308603217dc3a54fd0475fed97c3977c20b) — `usearazzo/website` · `commit` · _schema,spec_
 - `2026-09-27` [Merge pull request #60 from OAI/dependabot/npm_and_yarn/hyperjump-9c181a841b](https://github.com/OAI/build-infra/commit/135d2c92704b6628ef6f622231723845f7b4ad46) — `OAI/build-infra` · `commit` · _schema,depbump_
 - `2026-09-27` [Bump @hyperjump/json-schema-coverage](https://github.com/OAI/build-infra/commit/a62c9551ac450bbe70e65ec2b4e34429368fa719) — `OAI/build-infra` · `commit` · _schema,depbump_
 - `2026-08-10` [Add Diff Anything](https://github.com/OAI/tools.openapis.org/issues/281) — `OAI/tools.openapis.org` · `issue` · _cli,schema,spec_
-- `2026-08-02` [Add Gesso (PHP OpenAPI 3.0/3.1/3.2 contract testing library)](https://github.com/OAI/tools.openapis.org/pull/273) — `OAI/tools.openapis.org` · `pr` · _schema,spec_
-- … and 1 more in this group (see All events table)
+- … and 2 more in this group (see All events table)
 
 ### OAI Moonwalk (next-gen spec) (8)
 
@@ -333,25 +330,24 @@
 - `2024-05-24` [Allow recursive paths](https://github.com/OAI/sig-moonwalk/issues/117) — `OAI/sig-moonwalk` · `issue` · _moonwalk,spec_
 - `2024-05-24` [Structural improvements: inheritance on paths and its sublevels](https://github.com/OAI/sig-moonwalk/issues/115) — `OAI/sig-moonwalk` · `issue` · _moonwalk,spec_
 
-### P2-2 MCP server exposure (7)
-
-- `2026-10-01` [chore: ignore local MCP configuration](https://github.com/usearazzo/website/commit/9e14c5dd36ec8b09ea9b8c5ce07de337dd4cb61f) — `usearazzo/website` · `commit` · _mcp_
-- `2026-09-17` [feat(ecosystem): add 26 repositories from the GitHub "arazzo" search](https://github.com/usearazzo/website/commit/0060622a797c8922444b6d7e27416dce06fff576) — `usearazzo/website.ecosystem.atom` · `commit` · _mcp,spec_
-- `2026-09-13` [Align lifecycle.md with SAF framing, using discussion #5 example data](https://github.com/OAI/sig-lifecycle/pull/15) — `OAI/sig-lifecycle` · `pr` · _mcp,spec_
-- `2026-09-12` [fix(runtime): stop JSONPath delimiter runs from panicking criteria](https://github.com/strefethen/arazzo-cli/commit/48b426d56317ca9f2455a55e98e6e2f8dd21fedc) — `strefethen/arazzo-cli` · `commit` · _mcp,cli,spec_
-- `2026-09-10` [Add Routebase (OpenAPI-native API lifecycle platform)](https://github.com/OAI/tools.openapis.org/issues/270) — `OAI/tools.openapis.org` · `issue` · _mcp,spec_
-- `2026-08-28` [feat(ecosystem): add HAPI MCP](https://github.com/usearazzo/website/commit/5e0ff2239f14afcf186d805c7ade84037772e4d8) — `usearazzo/website.ecosystem.atom` · `commit` · _mcp_
-- `2026-08-26` [Fetch remote sourceDescriptions OpenAPI documents (opt-in)](https://github.com/strefethen/arazzo-cli/issues/4) — `strefethen/arazzo-cli` · `issue` · _mcp,cli,runner,spec_
-
 ### Roadmap A2A step type (7)
 
-- `2026-10-06` [Bump the vitest group with 3 updates](https://github.com/OAI/build-infra/pull/67) — `OAI/build-infra` · `pr` · _actor,a2a,depbump_
-- `2026-10-06` [Bump respec from 37.4.0 to 37.4.1 in the publishing group](https://github.com/OAI/build-infra/pull/68) — `OAI/build-infra` · `pr` · _a2a,depbump_
+- `2026-10-07` [Bump the vitest group with 3 updates](https://github.com/OAI/build-infra/pull/67) — `OAI/build-infra` · `pr` · _actor,a2a,depbump_
+- `2026-10-07` [Bump respec from 37.4.0 to 37.4.1 in the publishing group](https://github.com/OAI/build-infra/pull/68) — `OAI/build-infra` · `pr` · _a2a,depbump_
 - `2026-10-06` [build(deps): bump jekyll-remote-theme from 0.4.3 to 0.6.2](https://github.com/OAI/learn.openapis.org/pull/210) — `OAI/learn.openapis.org` · `pr` · _a2a,depbump_
 - `2026-10-06` [chore(deps): bump respec from 37.4.0 to 37.4.1](https://github.com/OAI/Arazzo-Specification/pull/591) — `OAI/Arazzo-Specification` · `pr` · _a2a,depbump_
 - `2026-10-01` [fix(docs): say what the caret marks in the runtime expressions tutorial](https://github.com/usearazzo/website/commit/a2abbb6d90c5e61f176d6c034033d9f5947a7f54) — `usearazzo/website` · `commit` · _a2a_
 - `2026-09-18` [feat(ecosystem): add JArazzo Java models library](https://github.com/usearazzo/website/commit/77492b26f44bd210b3e2b19f08bd7e26fc9a2a3d) — `usearazzo/website.ecosystem.atom` · `commit` · _a2a,spec_
 - `2026-09-18` [Merge pull request #136 from OAI/dependabot/github_actions/ruby/setup-ruby-1.323.0](https://github.com/OAI/spec.openapis.org/commit/06adacc41e9ce9a37686b0ca2ab8551346cb8a55) — `OAI/spec.openapis.org` · `commit` · _a2a,depbump_
+
+### P2-2 MCP server exposure (6)
+
+- `2026-10-01` [chore: ignore local MCP configuration](https://github.com/usearazzo/website/commit/9e14c5dd36ec8b09ea9b8c5ce07de337dd4cb61f) — `usearazzo/website` · `commit` · _mcp_
+- `2026-09-17` [feat(ecosystem): add 26 repositories from the GitHub "arazzo" search](https://github.com/usearazzo/website/commit/0060622a797c8922444b6d7e27416dce06fff576) — `usearazzo/website.ecosystem.atom` · `commit` · _mcp,spec_
+- `2026-09-13` [Align lifecycle.md with SAF framing, using discussion #5 example data](https://github.com/OAI/sig-lifecycle/pull/15) — `OAI/sig-lifecycle` · `pr` · _mcp,spec_
+- `2026-09-10` [Add Routebase (OpenAPI-native API lifecycle platform)](https://github.com/OAI/tools.openapis.org/issues/270) — `OAI/tools.openapis.org` · `issue` · _mcp,spec_
+- `2026-08-28` [feat(ecosystem): add HAPI MCP](https://github.com/usearazzo/website/commit/5e0ff2239f14afcf186d805c7ade84037772e4d8) — `usearazzo/website.ecosystem.atom` · `commit` · _mcp_
+- `2026-08-26` [Fetch remote sourceDescriptions OpenAPI documents (opt-in)](https://github.com/strefethen/arazzo-cli/issues/4) — `strefethen/arazzo-cli` · `issue` · _mcp,cli,runner,spec_
 
 ### Arazzo runner / step execution (4)
 
@@ -362,16 +358,14 @@
 
 ### P0-5 XPath criteria + P1-6 targetSelectorType (4)
 
+- `2026-09-30` [fix(runtime): refuse deep or DTD-entity XML before XPath parsing](https://github.com/strefethen/arazzo-cli/commit/4505178a852801118bde90dc956281a1693ee836) — `strefethen/arazzo-cli` · `commit` · _xml,xpath,cli_
 - `2026-09-16` [Clarify when Criterion `context` is required](https://github.com/OAI/Arazzo-Specification/pull/499) — `OAI/Arazzo-Specification` · `pr` · _xml,xpath,spec_
-- `2026-09-13` [fix(runtime): decide jsonpath criteria by nodelist cardinality](https://github.com/strefethen/arazzo-cli/commit/7511e40d0113803274e95a3e3e0115cec3a916ee) — `strefethen/arazzo-cli` · `commit` · _xml,xpath,cli,spec_
 - `2026-09-06` [Richen expression public face: ExpressionEngineInterface covers document's needs](https://github.com/Mohammed-Alama/php-arazzo/issues/56) — `Mohammed-Alama/php-arazzo` · `issue` · _xml,xpath,actor_
 - `2024-05-24` [Ability to import datatype declarations from XSD files](https://github.com/OAI/sig-moonwalk/issues/123) — `OAI/sig-moonwalk` · `issue` · _xml,xpath,schema,moonwalk,spec_
 
-### P1-6 payload XPath / P0-5 XPath criteria (4)
+### P1-6 payload XPath / P0-5 XPath criteria (2)
 
 - `2026-10-04` [chore(deps): bump actions/cache from 4 to 6](https://github.com/Mohammed-Alama/php-arazzo/pull/51) — `Mohammed-Alama/php-arazzo` · `pr` · _xml,depbump_
-- `2026-09-16` [v3.3: define defaults for "nodeType" in the XML Object](https://github.com/OAI/OpenAPI-Specification/pull/5540) — `OAI/OpenAPI-Specification` · `pr` · _xml,spec_
-- `2026-09-12` [v3.2: define defaults for "nodeType" in the XML Object](https://github.com/OAI/OpenAPI-Specification/pull/5541) — `OAI/OpenAPI-Specification` · `pr` · _xml,spec_
 - `2026-02-04` [chore(deps): bump actions/cache from 4 to 5](https://github.com/jentic/arazzo-engine/pull/135) — `jentic/arazzo-engine` · `pr` · _xml,depbump_
 
 ### Roadmap GraphQL step type (2)
@@ -388,206 +382,206 @@
 
 | Date | Source | Type | Title | Tags | Severity | Relevance |
 |---|---|---|---|---|---|---|
-| 2026-10-07 | usearazzo/Arazzo-Specification | tag | [tag 1.1.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.1.0) |  | actionable |  |
-| 2026-10-07 | usearazzo/Arazzo-Specification | tag | [tag 1.0.1](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.1) |  | actionable |  |
-| 2026-10-07 | usearazzo/Arazzo-Specification | tag | [tag 1.0.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.0) |  | actionable |  |
-| 2026-10-07 | openapi.tools | tool_collection | [openapi.tools checksum 565873db1ac1](https://openapi.tools/collections/arazzo) | spec | watch | Conformance / schema validation |
-| 2026-10-07 | frankkilcommins/arazzo2openapi | tag | [tag v1.0.2](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | frankkilcommins/arazzo2openapi | tag | [tag v1.0.1](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | frankkilcommins/arazzo2openapi | tag | [tag v1.0.0](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.7](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.7) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.6](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.6) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.5](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.4](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.4) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.3](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.2](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | b-lab-io/pyarazzo | tag | [tag v0.0.1](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | JaredCE/Arazzo-Generator | tag | [tag 0.0.4](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.4) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | JaredCE/Arazzo-Generator | tag | [tag 0.0.3](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | JaredCE/Arazzo-Generator | tag | [tag 0.0.2](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.6](https://github.com/speclynx/apidom/releases/tag/v5.2.6) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.5](https://github.com/speclynx/apidom/releases/tag/v5.2.5) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.4](https://github.com/speclynx/apidom/releases/tag/v5.2.4) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.3](https://github.com/speclynx/apidom/releases/tag/v5.2.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.2](https://github.com/speclynx/apidom/releases/tag/v5.2.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.1](https://github.com/speclynx/apidom/releases/tag/v5.2.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.2.0](https://github.com/speclynx/apidom/releases/tag/v5.2.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.1.1](https://github.com/speclynx/apidom/releases/tag/v5.1.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.1.0](https://github.com/speclynx/apidom/releases/tag/v5.1.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.0.2](https://github.com/speclynx/apidom/releases/tag/v5.0.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.0.1](https://github.com/speclynx/apidom/releases/tag/v5.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v5.0.0](https://github.com/speclynx/apidom/releases/tag/v5.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.16.0](https://github.com/speclynx/apidom/releases/tag/v4.16.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.15.0](https://github.com/speclynx/apidom/releases/tag/v4.15.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.14.0](https://github.com/speclynx/apidom/releases/tag/v4.14.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.13.0](https://github.com/speclynx/apidom/releases/tag/v4.13.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.12.1](https://github.com/speclynx/apidom/releases/tag/v4.12.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.12.0](https://github.com/speclynx/apidom/releases/tag/v4.12.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.11.1](https://github.com/speclynx/apidom/releases/tag/v4.11.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | speclynx/apidom | tag | [tag v4.11.0](https://github.com/speclynx/apidom/releases/tag/v4.11.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-criterion | tag | [tag v1.0.1](https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-criterion | tag | [tag v1.0.0](https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v3.2.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.2.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v3.1.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.1.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v3.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.3](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.2](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.1](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0) | breaking, spec | breaking | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v1.0.1](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | swaggerexpert/arazzo-runtime-expression | tag | [tag v1.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.32](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.32) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.31](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.31) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.30](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.30) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.29](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.29) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.28](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.28) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.27](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.27) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.26](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.26) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.25](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.25) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.24](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.24) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.23](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.23) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.22](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.22) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.21](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.21) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.20](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.20) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.19](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.19) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.18](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.18) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.17](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.17) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.16](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.16) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.15](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.15) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.14](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.14) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.13](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.13) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag v0.0.1](https://github.com/Specmatic/specmatic/releases/tag/v0.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.55.3](https://github.com/Specmatic/specmatic/releases/tag/2.55.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.55.2](https://github.com/Specmatic/specmatic/releases/tag/2.55.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.55.1](https://github.com/Specmatic/specmatic/releases/tag/2.55.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.55.0](https://github.com/Specmatic/specmatic/releases/tag/2.55.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.54.1](https://github.com/Specmatic/specmatic/releases/tag/2.54.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.54.0](https://github.com/Specmatic/specmatic/releases/tag/2.54.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.53.1](https://github.com/Specmatic/specmatic/releases/tag/2.53.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.53.0](https://github.com/Specmatic/specmatic/releases/tag/2.53.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.52.0](https://github.com/Specmatic/specmatic/releases/tag/2.52.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.51.1](https://github.com/Specmatic/specmatic/releases/tag/2.51.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.51.0](https://github.com/Specmatic/specmatic/releases/tag/2.51.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.50.1](https://github.com/Specmatic/specmatic/releases/tag/2.50.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.50.0](https://github.com/Specmatic/specmatic/releases/tag/2.50.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.49.1](https://github.com/Specmatic/specmatic/releases/tag/2.49.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.49.0](https://github.com/Specmatic/specmatic/releases/tag/2.49.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.48.0](https://github.com/Specmatic/specmatic/releases/tag/2.48.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.47.0](https://github.com/Specmatic/specmatic/releases/tag/2.47.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.46.5](https://github.com/Specmatic/specmatic/releases/tag/2.46.5) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Specmatic/specmatic | tag | [tag 2.46.4](https://github.com/Specmatic/specmatic/releases/tag/2.46.4) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-rc.3](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-rc.2](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-rc.1](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.131](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.131) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.130](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.130) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.129](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.129) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.128](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.128) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.127](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.127) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.126](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.126) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.125](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.125) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.124](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.124) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.123](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.123) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.122](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.122) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.121](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.121) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.120](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.120) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.119](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.119) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.118](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.118) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.117](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.117) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.116](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.116) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag vscode-v0.0.6](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.6) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag vscode-v0.0.5](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.7.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.7.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.6.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.1) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.6.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.5.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.5.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.4.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.3.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.2.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.2) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.2.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.2.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.1.3](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.3) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.1.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.2) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.1.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | strefethen/arazzo-cli | tag | [tag v0.1.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.0) | cli | actionable | P2-1 CLI binary |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.5](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.5) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.2](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.0](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.2.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.2.0](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.1.2](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.1.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.6](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.6) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.5](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.5) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.4](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.4) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.3](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.3) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.2](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.2) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.1](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | OAI/Arazzo-Specification | tag | [tag 1.1.0](https://github.com/OAI/Arazzo-Specification/releases/tag/1.1.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | OAI/Arazzo-Specification | tag | [tag 1.0.1](https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.1) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | OAI/Arazzo-Specification | tag | [tag 1.0.0](https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24938)](https://github.com/jentic/jentic-public-apis/commit/c405b13bdd2517c2073dda0054c206bf4e0d504b) |  | watch |  |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [feat: Replace OpenAPI spec for Issue #24936 (#24937)](https://github.com/jentic/jentic-public-apis/commit/7fc2c0907ad24f623254ccd16a5546132c986bf8) | spec | watch | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24935)](https://github.com/jentic/jentic-public-apis/commit/03657c261db688c66c41a95c0c83c4cd611924ec) |  | watch |  |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24932 (#24933)](https://github.com/jentic/jentic-public-apis/commit/456162a360999f042352a3d9e2fb6b60f67bc078) | spec | watch | Conformance / schema validation |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24934)](https://github.com/jentic/jentic-public-apis/commit/aab8297bd8df12ea7aac1fd37b1e8d82206926a1) |  | watch |  |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24929 (#24930)](https://github.com/jentic/jentic-public-apis/commit/07c2e74cd5c924bc0e6c73ab342a453c626798f1) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | usearazzo/Arazzo-Specification | tag | [tag 1.1.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.1.0) |  | actionable |  |
+| 2026-10-08 | usearazzo/Arazzo-Specification | tag | [tag 1.0.1](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.1) |  | actionable |  |
+| 2026-10-08 | usearazzo/Arazzo-Specification | tag | [tag 1.0.0](https://github.com/usearazzo/Arazzo-Specification/releases/tag/1.0.0) |  | actionable |  |
+| 2026-10-08 | openapi.tools | tool_collection | [openapi.tools checksum 39a6121e4671](https://openapi.tools/collections/arazzo) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | frankkilcommins/arazzo2openapi | tag | [tag v1.0.2](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | frankkilcommins/arazzo2openapi | tag | [tag v1.0.1](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | frankkilcommins/arazzo2openapi | tag | [tag v1.0.0](https://github.com/frankkilcommins/arazzo2openapi/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.7](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.7) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.6](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.6) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.5](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.5) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.4](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.4) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.3](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.2](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | b-lab-io/pyarazzo | tag | [tag v0.0.1](https://github.com/b-lab-io/pyarazzo/releases/tag/v0.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | JaredCE/Arazzo-Generator | tag | [tag 0.0.4](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.4) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | JaredCE/Arazzo-Generator | tag | [tag 0.0.3](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | JaredCE/Arazzo-Generator | tag | [tag 0.0.2](https://github.com/JaredCE/Arazzo-Generator/releases/tag/0.0.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.6](https://github.com/speclynx/apidom/releases/tag/v5.2.6) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.5](https://github.com/speclynx/apidom/releases/tag/v5.2.5) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.4](https://github.com/speclynx/apidom/releases/tag/v5.2.4) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.3](https://github.com/speclynx/apidom/releases/tag/v5.2.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.2](https://github.com/speclynx/apidom/releases/tag/v5.2.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.1](https://github.com/speclynx/apidom/releases/tag/v5.2.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.2.0](https://github.com/speclynx/apidom/releases/tag/v5.2.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.1.1](https://github.com/speclynx/apidom/releases/tag/v5.1.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.1.0](https://github.com/speclynx/apidom/releases/tag/v5.1.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.0.2](https://github.com/speclynx/apidom/releases/tag/v5.0.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.0.1](https://github.com/speclynx/apidom/releases/tag/v5.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v5.0.0](https://github.com/speclynx/apidom/releases/tag/v5.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.16.0](https://github.com/speclynx/apidom/releases/tag/v4.16.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.15.0](https://github.com/speclynx/apidom/releases/tag/v4.15.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.14.0](https://github.com/speclynx/apidom/releases/tag/v4.14.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.13.0](https://github.com/speclynx/apidom/releases/tag/v4.13.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.12.1](https://github.com/speclynx/apidom/releases/tag/v4.12.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.12.0](https://github.com/speclynx/apidom/releases/tag/v4.12.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.11.1](https://github.com/speclynx/apidom/releases/tag/v4.11.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | speclynx/apidom | tag | [tag v4.11.0](https://github.com/speclynx/apidom/releases/tag/v4.11.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-criterion | tag | [tag v1.0.1](https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-criterion | tag | [tag v1.0.0](https://github.com/swaggerexpert/arazzo-criterion/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v3.2.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.2.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v3.1.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.1.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v3.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.3](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.2](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.1](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v2.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v2.0.0) | breaking, spec | breaking | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v1.0.1](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | swaggerexpert/arazzo-runtime-expression | tag | [tag v1.0.0](https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.32](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.32) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.31](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.31) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.30](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.30) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.29](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.29) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.28](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.28) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.27](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.27) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.26](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.26) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.25](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.25) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.24](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.24) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.23](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.23) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.22](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.22) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.21](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.21) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.20](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.20) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.19](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.19) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.18](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.18) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.17](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.17) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.16](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.16) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.15](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.15) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.14](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.14) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-arazzo-tools | tag | [tag v1.0.0-alpha.13](https://github.com/jentic/jentic-arazzo-tools/releases/tag/v1.0.0-alpha.13) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag v0.0.1](https://github.com/Specmatic/specmatic/releases/tag/v0.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.55.3](https://github.com/Specmatic/specmatic/releases/tag/2.55.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.55.2](https://github.com/Specmatic/specmatic/releases/tag/2.55.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.55.1](https://github.com/Specmatic/specmatic/releases/tag/2.55.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.55.0](https://github.com/Specmatic/specmatic/releases/tag/2.55.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.54.1](https://github.com/Specmatic/specmatic/releases/tag/2.54.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.54.0](https://github.com/Specmatic/specmatic/releases/tag/2.54.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.53.1](https://github.com/Specmatic/specmatic/releases/tag/2.53.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.53.0](https://github.com/Specmatic/specmatic/releases/tag/2.53.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.52.0](https://github.com/Specmatic/specmatic/releases/tag/2.52.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.51.1](https://github.com/Specmatic/specmatic/releases/tag/2.51.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.51.0](https://github.com/Specmatic/specmatic/releases/tag/2.51.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.50.1](https://github.com/Specmatic/specmatic/releases/tag/2.50.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.50.0](https://github.com/Specmatic/specmatic/releases/tag/2.50.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.49.1](https://github.com/Specmatic/specmatic/releases/tag/2.49.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.49.0](https://github.com/Specmatic/specmatic/releases/tag/2.49.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.48.0](https://github.com/Specmatic/specmatic/releases/tag/2.48.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.47.0](https://github.com/Specmatic/specmatic/releases/tag/2.47.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.46.5](https://github.com/Specmatic/specmatic/releases/tag/2.46.5) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Specmatic/specmatic | tag | [tag 2.46.4](https://github.com/Specmatic/specmatic/releases/tag/2.46.4) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-rc.3](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-rc.2](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-rc.1](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-rc.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.131](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.131) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.130](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.130) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.129](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.129) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.128](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.128) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.127](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.127) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.126](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.126) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.125](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.125) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.124](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.124) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.123](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.123) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.122](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.122) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.121](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.121) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.120](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.120) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.119](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.119) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.118](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.118) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.117](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.117) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | Redocly/redocly-cli | tag | [tag v1.0.0-beta.116](https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.116) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag vscode-v0.0.6](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.6) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag vscode-v0.0.5](https://github.com/strefethen/arazzo-cli/releases/tag/vscode-v0.0.5) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.7.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.7.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.6.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.1) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.6.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.6.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.5.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.5.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.4.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.4.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.3.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.3.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.2.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.2) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.2.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.1) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.2.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.2.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.1.3](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.3) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.1.2](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.2) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.1.1](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.1) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | strefethen/arazzo-cli | tag | [tag v0.1.0](https://github.com/strefethen/arazzo-cli/releases/tag/v0.1.0) | cli | actionable | P2-1 CLI binary |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.5](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.5) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.2](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_runner/v0.9.0](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_runner/v0.9.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.2.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.2.0](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.2.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.1.2](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/arazzo-engine | tag | [tag arazzo_generator/v0.1.1](https://github.com/jentic/arazzo-engine/releases/tag/arazzo_generator/v0.1.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.6](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.6) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.5](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.5) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.4](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.4) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.3](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.3) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.2](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.2) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | usearazzo/arazzo-toolkit | tag | [tag v1.0.1-alpha.1](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | OAI/Arazzo-Specification | tag | [tag 1.1.0](https://github.com/OAI/Arazzo-Specification/releases/tag/1.1.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | OAI/Arazzo-Specification | tag | [tag 1.0.1](https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.1) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | OAI/Arazzo-Specification | tag | [tag 1.0.0](https://github.com/OAI/Arazzo-Specification/releases/tag/1.0.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [Collapse duplicate spec dirs for peoplefinderspro.com, pims.io, positionstack.com (#24494)](https://github.com/jentic/jentic-public-apis/commit/d70e8f325db06354a2456b6a5433a3adc7ca932b) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24997 (#25001)](https://github.com/jentic/jentic-public-apis/commit/d3079516d4e0f67675cd8b91ab4843e72730cdcd) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24999 (#25002)](https://github.com/jentic/jentic-public-apis/commit/c504cb95ef8264fac0aca4895696a0a841b224ef) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24998)](https://github.com/jentic/jentic-public-apis/commit/f945f0c174c4b7fa593d29bd278ae78e4886ffd7) |  | watch |  |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24995 (#24996)](https://github.com/jentic/jentic-public-apis/commit/968869b5e04bfca83af202cc83c459b022e6ebcd) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24992 (#24994)](https://github.com/jentic/jentic-public-apis/commit/52e477e0d15e300dab68b3208f7d1a0fc8703798) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24990 (#24991)](https://github.com/jentic/jentic-public-apis/commit/69e8eab20af41388efb7dca64581dc649418e751) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24988 (#24989)](https://github.com/jentic/jentic-public-apis/commit/4b35f5a3ea3b3a655bf3bfd449f19a974d9ef83d) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24986 (#24987)](https://github.com/jentic/jentic-public-apis/commit/32496a3f1b41c6bd4facc2144f3620d08c48ea08) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24984 (#24985)](https://github.com/jentic/jentic-public-apis/commit/c85ee951637f4c423d4f3dd08fa6b9b96ad1d590) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24982 (#24983)](https://github.com/jentic/jentic-public-apis/commit/0037e2087fceda073c6282acdab9f982692b5300) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24980 (#24981)](https://github.com/jentic/jentic-public-apis/commit/a13dc4afb68d1a53a1ef09d493416bbd7352c78d) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24977 (#24979)](https://github.com/jentic/jentic-public-apis/commit/75849ef438469671c2c3f8fdf1c38a36393ab7a5) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24975 (#24978)](https://github.com/jentic/jentic-public-apis/commit/4514c450d4841f19f667c7de96c42608fdd4c121) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24972 (#24974)](https://github.com/jentic/jentic-public-apis/commit/57f8b987f6f8b6a0c597b0353122ec13660ed372) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | OAI/Outreach | issue | [feat: Fall OpenAPI newsletter](https://github.com/OAI/Outreach/issues/77) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24969 (#24973)](https://github.com/jentic/jentic-public-apis/commit/c694eed41f47a2c1d75195b1fdd17f1bbcc4a7d5) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24966 (#24970)](https://github.com/jentic/jentic-public-apis/commit/6ff080b75d743d56578f6ab90edd64f2401274f9) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24968)](https://github.com/jentic/jentic-public-apis/commit/dfce18dd90375ef2857b9c2940191e353552399b) |  | watch |  |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24964 (#24967)](https://github.com/jentic/jentic-public-apis/commit/5fbab945d7a903c3e600e2dce596627337fde97b) | spec | watch | Conformance / schema validation |
+| 2026-10-08 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24965)](https://github.com/jentic/jentic-public-apis/commit/e69a7f180ab3c45f5c61e2d595a99b41c8c77e94) |  | watch |  |
+| 2026-10-08 | OAI/OpenAPI-Specification | pr | [v3.3: First pass at explaining SAFs](https://github.com/OAI/OpenAPI-Specification/pull/5447) |  | watch |  |
+| 2026-10-08 | strefethen/arazzo-cli | commit | [ci: write SHA256SUMS in text-mode form on every platform](https://github.com/strefethen/arazzo-cli/commit/ca3a5ea76ac5648d391d4d4038b5411b91f71776) | cli | watch | P2-1 CLI binary |
+| 2026-10-08 | OAI/landscape | commit | [Update Landscape from LFX 2026-10-08 (#227)](https://github.com/OAI/landscape/commit/1f39b65b9043e4cc81c00656161f72fb2e22a1e8) |  | watch |  |
+| 2026-10-08 | OAI/Arazzo-Specification | pr | [chore(deps-dev): bump vitest from 5.0.1 to 5.0.2 in the vitest group](https://github.com/OAI/Arazzo-Specification/pull/588) | depbump | watch | Dependency maintenance |
+| 2026-10-07 | usearazzo/arazzo-toolkit | pr | [chore(deps): bump chalk from 5.6.2 to 6.0.1](https://github.com/usearazzo/arazzo-toolkit/pull/223) | breaking, depbump | breaking | Dependency maintenance |
+| 2026-10-07 | usearazzo/arazzo-toolkit | pr | [chore(deps): bump commander from 14.0.3 to 15.0.0](https://github.com/usearazzo/arazzo-toolkit/pull/221) | breaking, depbump | breaking | Dependency maintenance |
+| 2026-10-07 | usearazzo/arazzo-toolkit | pr | [chore(deps): bump yaml from 2.9.0 to 2.9.1](https://github.com/usearazzo/arazzo-toolkit/pull/222) | depbump | actionable | Dependency maintenance |
+| 2026-10-07 | OAI/build-infra | pr | [Bump the vitest group with 3 updates](https://github.com/OAI/build-infra/pull/67) | actor, a2a, depbump | watch | Roadmap A2A step type |
+| 2026-10-07 | OAI/build-infra | pr | [Bump the hyperjump group with 2 updates](https://github.com/OAI/build-infra/pull/69) | schema, depbump | watch | P1-7 JSON Schema layer |
+| 2026-10-07 | OAI/build-infra | pr | [Bump respec from 37.4.0 to 37.4.1 in the publishing group](https://github.com/OAI/build-infra/pull/68) | a2a, depbump | watch | Roadmap A2A step type |
+| 2026-10-07 | OAI/learn.openapis.org | issue | [JSON Schema for OpenAPI YAML document (in VS Code)](https://github.com/OAI/learn.openapis.org/issues/216) | schema, spec | watch | P1-7 JSON Schema layer |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Explain that schemas are for mandatory requirements](https://github.com/OAI/OpenAPI-Specification/pull/5183) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Add comment, re-trigger auto-merge](https://github.com/OAI/OpenAPI-Specification/pull/5500) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Update the build-infra dependency](https://github.com/OAI/OpenAPI-Specification/pull/5520) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Migrate to yarn to avoid npm workarounds](https://github.com/OAI/OpenAPI-Specification/pull/5503) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Don't delete files we need on sync.](https://github.com/OAI/OpenAPI-Specification/pull/5555) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [v3.3: Fix RFC reference with stray space](https://github.com/OAI/OpenAPI-Specification/pull/5516) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Use build-infra schema test helpers on dev branches](https://github.com/OAI/OpenAPI-Specification/pull/5499) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [Migrate to new shared build infrastructure.](https://github.com/OAI/OpenAPI-Specification/pull/5424) |  | actionable |  |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [v3.3: Add security field at the Path Item Object level](https://github.com/OAI/OpenAPI-Specification/pull/5319) | spec | actionable | Conformance / schema validation |
+| 2026-10-07 | OAI/OpenAPI-Specification | pr | [v3.2: Fix JSON Schema keyword name. (port of 5195)](https://github.com/OAI/OpenAPI-Specification/pull/5197) | schema | actionable | P1-7 JSON Schema layer |
+| 2026-10-07 | strefethen/arazzo-cli | commit | [docs(agents): record the pinned toolchain and the spec fetch step](https://github.com/strefethen/arazzo-cli/commit/d02ca1e06e68694dc0cd2e6a724985eb14633ea6) | cli | watch | P2-1 CLI binary |
+| 2026-10-07 | strefethen/arazzo-cli | commit | [ci: fetch the vendored spec before compiling tests](https://github.com/strefethen/arazzo-cli/commit/7c57f0bdfc978738db87c7c823ad61a698654a01) | cli, spec | watch | P2-1 CLI binary |
+| 2026-10-07 | strefethen/arazzo-cli | commit | [docs(assessments): add scheduled code-smell audits through 2026-10-03](https://github.com/strefethen/arazzo-cli/commit/eeb7b9707c59c2f76654c9f210e5397d4f9b2fab) | cli | watch | P2-1 CLI binary |
+| 2026-10-07 | strefethen/arazzo-cli | commit | [refactor(validate): extract step dependency helpers into step_dependencies.rs](https://github.com/strefethen/arazzo-cli/commit/f79b525c0b3189317a38fd5c9971604fa88fad4e) | cli, actor, spec | watch | P2-1 CLI binary |
+| 2026-10-07 | strefethen/arazzo-cli | commit | [refactor(validate): extract expression validation into expressions.rs](https://github.com/strefethen/arazzo-cli/commit/99a5b206aa3a007170331c642e90a30e9aa6f328) | cli, actor, spec | watch | P2-1 CLI binary |
+| 2026-10-07 | strefethen/arazzo-cli | commit | [test(validate): cap arazzo-validate lib.rs at its current line count](https://github.com/strefethen/arazzo-cli/commit/7b06b4438780dd3520b14e0f645d58038b776317) | cli, spec | watch | P2-1 CLI binary |
+| 2026-10-07 | OAI/learn.openapis.org | pr | [build(deps): bump vitest from 4.0.17 to 5.0.3 in the vitest group across 1 directory](https://github.com/OAI/learn.openapis.org/pull/190) | depbump | watch | Dependency maintenance |
+| 2026-10-07 | Redocly/redocly-cli | release | [@redocly/reunite-integration@2.60.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/reunite-integration%402.60.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-07 | Redocly/redocly-cli | release | [@redocly/respect-core@2.60.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/respect-core%402.60.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-07 | Redocly/redocly-cli | release | [@redocly/recheck@2.60.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/recheck%402.60.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-07 | Redocly/redocly-cli | release | [@redocly/openapi-core@2.60.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.60.0) | spec | actionable | Conformance / schema validation |
+| 2026-10-07 | Redocly/redocly-cli | release | [@redocly/client-generator@0.4.25](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/client-generator%400.4.25) | spec | actionable | Conformance / schema validation |
+| 2026-10-07 | Redocly/redocly-cli | release | [@redocly/cli@2.60.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.60.0) | spec | actionable | Conformance / schema validation |
 | 2026-10-07 | usearazzo/arazzo-toolkit | pr | [feat(cli): add @usearazzo/cli package with validate command](https://github.com/usearazzo/arazzo-toolkit/pull/220) | cli, breaking, schema, runner, depbump | breaking | P1-7 JSON Schema layer |
 | 2026-10-07 | usearazzo/arazzo-toolkit | issue | [cli: support JavaScript configuration files (usearazzo.js/mjs/cjs)](https://github.com/usearazzo/arazzo-toolkit/issues/219) | cli, spec | watch | P2-1 CLI binary |
-| 2026-10-07 | jentic/jentic-public-apis | commit | [Rebuild apis.json, scores.json, and API browsing indexes (#24931)](https://github.com/jentic/jentic-public-apis/commit/ca8fef9fdf674e0aa55de9a826f9554378cca9ba) |  | watch |  |
 | 2026-10-07 | OAI/landscape | commit | [Update Landscape from LFX 2026-10-07 (#226)](https://github.com/OAI/landscape/commit/9548a83c3c32f5147d21cfc8a48c0b7fdfb0921c) |  | watch |  |
-| 2026-10-07 | OAI/Arazzo-Specification | pr | [chore(deps-dev): bump vitest from 5.0.1 to 5.0.2 in the vitest group](https://github.com/OAI/Arazzo-Specification/pull/588) | depbump | watch | Dependency maintenance |
 | 2026-10-07 | OAI/Arazzo-Specification | pr | [chore(deps-dev): bump @hyperjump/json-schema from 1.17.8 to 1.17.9](https://github.com/OAI/Arazzo-Specification/pull/593) | schema, depbump | watch | P1-7 JSON Schema layer |
 | 2026-10-06 | usearazzo/arazzo-toolkit | pr | [chore(deps-dev): bump nx from 23.2.0 to 23.2.1](https://github.com/usearazzo/arazzo-toolkit/pull/217) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | usearazzo/arazzo-toolkit | pr | [chore(deps-dev): bump typescript-eslint from 8.70.1 to 8.71.0](https://github.com/usearazzo/arazzo-toolkit/pull/215) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | usearazzo/arazzo-toolkit | pr | [chore(deps-dev): bump shell-quote from 1.10.0 to 1.12.0](https://github.com/usearazzo/arazzo-toolkit/pull/218) | actor, depbump | actionable | Issue #410 kind discriminator / human-in-loop |
-| 2026-10-06 | usearazzo/arazzo-toolkit | pr | [chore(deps-dev): bump mocha from 12.0.2 to 12.0.3](https://github.com/usearazzo/arazzo-toolkit/pull/213) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | usearazzo/arazzo-toolkit | pr | [chore(deps): bump source-map-js from 1.2.1 to 1.2.2](https://github.com/usearazzo/arazzo-toolkit/pull/216) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | usearazzo/arazzo-toolkit | pr | [chore(deps-dev): bump @babel/plugin-transform-runtime from 8.0.1 to 8.0.6](https://github.com/usearazzo/arazzo-toolkit/pull/214) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | OAI/build-infra | pr | [Bump the vitest group with 3 updates](https://github.com/OAI/build-infra/pull/67) | actor, a2a, depbump | watch | Roadmap A2A step type |
-| 2026-10-06 | OAI/build-infra | pr | [Bump the hyperjump group with 2 updates](https://github.com/OAI/build-infra/pull/69) | schema, depbump | watch | P1-7 JSON Schema layer |
-| 2026-10-06 | OAI/build-infra | pr | [Bump respec from 37.4.0 to 37.4.1 in the publishing group](https://github.com/OAI/build-infra/pull/68) | a2a, depbump | watch | Roadmap A2A step type |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump prettier from 3.8.3 to 3.9.9](https://github.com/OAI/learn.openapis.org/pull/214) | a2a, depbump | actionable | Roadmap A2A step type |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump yaml from 2.8.3 to 2.9.1](https://github.com/OAI/learn.openapis.org/pull/215) | a2a, depbump | actionable | Roadmap A2A step type |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump dependabot/fetch-metadata from 3.0.0 to 3.1.0](https://github.com/OAI/learn.openapis.org/pull/211) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump vitest from 4.0.17 to 5.0.3 in the vitest group across 1 directory](https://github.com/OAI/learn.openapis.org/pull/190) | depbump | watch | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump @hyperjump/json-schema from 1.17.3 to 1.17.9](https://github.com/OAI/learn.openapis.org/pull/213) | schema, depbump | actionable | P1-7 JSON Schema layer |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump actions/setup-node from 6 to 7](https://github.com/OAI/learn.openapis.org/pull/209) | xml, depbump | actionable | P1-6 payload XPath / P0-5 XPath criteria |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump @hyperjump/json-schema from 1.17.3 to 1.17.5](https://github.com/OAI/learn.openapis.org/pull/193) | schema, depbump | watch | P1-7 JSON Schema layer |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump actions/checkout from 6 to 7](https://github.com/OAI/learn.openapis.org/pull/208) | breaking, depbump | breaking | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump jekyll-include-cache from 0.2.1 to 0.3.1](https://github.com/OAI/learn.openapis.org/pull/212) | depbump | watch | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump jekyll-remote-theme from 0.4.3 to 0.6.2](https://github.com/OAI/learn.openapis.org/pull/210) | a2a, depbump | watch | Roadmap A2A step type |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [Bump just-the-docs from 0.11.1 to 0.12.0](https://github.com/OAI/learn.openapis.org/pull/180) | breaking, depbump | breaking | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump yaml from 2.8.2 to 2.8.3](https://github.com/OAI/learn.openapis.org/pull/195) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump dependabot/fetch-metadata from 2.5.0 to 3.0.0](https://github.com/OAI/learn.openapis.org/pull/196) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | OAI/learn.openapis.org | pr | [build(deps): bump prettier from 3.8.0 to 3.8.3](https://github.com/OAI/learn.openapis.org/pull/204) | depbump | actionable | Dependency maintenance |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [ci: updates the agenda template to include additional links to check](https://github.com/OAI/Overlay-Specification/pull/414) |  | watch |  |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [ci: adds branches auto-sync workflows](https://github.com/OAI/Overlay-Specification/pull/413) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [ci: updates the infra package](https://github.com/OAI/Overlay-Specification/pull/398) |  | actionable |  |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [feat: adds support for self in overlay](https://github.com/OAI/Overlay-Specification/pull/322) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | OAI/OpenAPI-Specification | issue | [Open Community (TDC) Meeting, Thursday 08 October 2026](https://github.com/OAI/OpenAPI-Specification/issues/5562) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | OAI/OpenAPI-Specification | pr | [v3.3: First pass at explaining SAFs](https://github.com/OAI/OpenAPI-Specification/pull/5447) |  | watch |  |
-| 2026-10-06 | OAI/Overlay-Specification | issue | [ci: add automation to sync from main -> dev -> vX.Y-dev branches](https://github.com/OAI/Overlay-Specification/issues/410) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | OAI/Overlay-Specification | issue | [ci: update the agenda template to lead us down the path of checking the spec repo](https://github.com/OAI/Overlay-Specification/issues/411) |  | watch |  |
-| 2026-10-06 | OAI/OpenAPI-Specification | issue | [Extensible enumerations (growable lists)](https://github.com/OAI/OpenAPI-Specification/issues/1552) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [refresh dev from main](https://github.com/OAI/Overlay-Specification/pull/409) |  | watch |  |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [Update contributing branch guidance](https://github.com/OAI/Overlay-Specification/pull/407) |  | actionable |  |
-| 2026-10-06 | OAI/Overlay-Specification | issue | [Branching strategy in CONTRIBUTING.md is outdated (I think)](https://github.com/OAI/Overlay-Specification/issues/393) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | OAI/Overlay-Specification | pr | [ci: Update workflow triggers for schema publishing](https://github.com/OAI/Overlay-Specification/pull/406) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | spec.arazzo.html | spec_html_checksum | [spec.arazzo.html checksum 8e2ea7d20acc](https://spec.openapis.org/arazzo/latest.html) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | spec.arazzo.schema.1.1 | schema_checksum | [spec.arazzo.schema.1.1 checksum 37be908409bd](https://spec.openapis.org/arazzo/1.1/schema/2026-04-15) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | spec.arazzo.schema.1.0 | schema_checksum | [spec.arazzo.schema.1.0 checksum b8715bd824ff](https://spec.openapis.org/arazzo/1.0/schema/2025-10-15) | spec | watch | Conformance / schema validation |
-| 2026-10-06 | OAI/spec.openapis.org | pr | [Overlay - publish schema iterations](https://github.com/OAI/spec.openapis.org/pull/141) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | OAI/spec.openapis.org | commit | [Merge pull request #141 from OAI/overlay-schema-iterations](https://github.com/OAI/spec.openapis.org/commit/1ccdd530a70c4d3ded14019bf808ad56180807be) |  | watch |  |
-| 2026-10-06 | Redocly/redocly-cli | release | [@redocly/reunite-integration@2.59.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/reunite-integration%402.59.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | Redocly/redocly-cli | release | [@redocly/respect-core@2.59.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/respect-core%402.59.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | Redocly/redocly-cli | release | [@redocly/recheck@2.59.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/recheck%402.59.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | Redocly/redocly-cli | release | [@redocly/openapi-core@2.59.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/openapi-core%402.59.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | Redocly/redocly-cli | release | [@redocly/client-generator@0.4.24](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/client-generator%400.4.24) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | Redocly/redocly-cli | release | [@redocly/cli@2.59.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.59.0) | spec | actionable | Conformance / schema validation |
-| 2026-10-06 | jentic/jentic-public-apis | commit | [feat: Import OpenAPI spec from Issue #24890 (#24925)](https://github.com/jentic/jentic-public-apis/commit/6b73e52a5a0eda6b162b9f46a42afeb2274213b4) | spec | watch | Conformance / schema validation |
 
 ## How to use
 
