@@ -88,7 +88,7 @@ Concrete types over 300 LOC:
 | `Parser` | `document:Parser` | 956 |
 | `ExecutionContext` | `runtime:State` | 496 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |
-| `WsdlSourceNormalizer` | `sources:Normalizer` | 432 |
+| `WsdlSourceNormalizer` | `sources:Normalizer` | 438 |
 | `StepExecutionWorker` | `runner:Async` | 396 |
 | `Parser` | `expression:_` | 365 |
 | `WorkflowContext` | `contracts:State` | 359 |

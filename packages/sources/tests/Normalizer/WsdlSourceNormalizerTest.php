@@ -66,6 +66,7 @@ it('builds a ResolvedOperation index for a WSDL 1.1 document', function (): void
     expect($request['xsdElement'])->toBe('tns:Add');
     expect($request['portType'])->toBe('CalculatorSoap');
     expect($request['soapVersion'])->toBe('1.1');
+    expect($request['namespace'])->toBe('urn:calculator');
     expect($request['schema'])->toContain('<xsd:element name="Add"');
 
     $response = $normalized->responses['application/xml'];
@@ -127,6 +128,7 @@ it('indexes every operation with its own soapAction and endpoint', function (): 
     expect($index['PlaceOrder']->normalized->resolvedServerUrl)->toBe('https://orders.example.test/soap');
     expect($index['PlaceOrder']->normalized->headerParameters['SOAPAction']['value'])->toBe('urn:orders:PlaceOrder');
     expect($index['PlaceOrder']->normalized->requestBodies['application/xml']['xsdElement'])->toBe('tns:PlaceOrder');
+    expect($index['PlaceOrder']->normalized->requestBodies['application/xml']['namespace'])->toBe('urn:orders');
 
     expect($index['GetOrder']->normalized->headerParameters['SOAPAction']['value'])->toBe('urn:orders:GetOrder');
     expect($index['GetOrder']->normalized->responses['application/xml']['xsdElement'])->toBe('tns:GetOrderResponse');

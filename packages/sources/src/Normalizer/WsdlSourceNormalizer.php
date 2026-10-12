@@ -31,10 +31,12 @@ use InvalidArgumentException;
  * executor/validator consume (best-effort, DOM-only — no vendor):
  *   - resolvedServerUrl = <port location>, method = POST
  *   - headerParameters: Content-Type (+ SOAPAction per operation)
- *   - requestBodies['application/xml'] = { xsdElement, schema, portType, soapVersion }
+ *   - requestBodies['application/xml'] = { xsdElement, schema, portType, soapVersion, namespace }
  *   - responses['application/xml']   = { xsdElement, schema }
  * `schema` is the document's inline `<xsd:schema>` serialized for
  * `DOMDocument::schemaValidateSource`, or null when unresolvable.
+ * `namespace` is the <definitions> targetNamespace the envelope/body elements
+ * live in (consumed by protocol-soap's envelope builder).
  *
  * WSDL 2.0 (`<description>` root) is detected and rejected with an explicit
  * version exception rather than silently misparsed — the extraction vocabulary
@@ -128,6 +130,7 @@ final class WsdlSourceNormalizer implements SourceNormalizerInterface
         $portTypes = $this->collectPortTypes($root);
         $bindings = $this->collectBindings($root);
         $schemaXml = $this->extractInlineSchema($dom, $root);
+        $targetNamespace = $root->getAttribute('targetNamespace');
 
         $index = [];
         foreach ($this->collectPorts($root) as $port) {
@@ -147,6 +150,7 @@ final class WsdlSourceNormalizer implements SourceNormalizerInterface
                     'location' => $port['location'],
                     'soapVersion' => $binding['soapVersion'],
                     'soapAction' => $binding['operations'][$operationName]['soapAction'] ?? null,
+                    'namespace' => $targetNamespace === '' ? null : $targetNamespace,
                     'input' => $io['input'],
                     'output' => $io['output'],
                     'messages' => $messages,
@@ -322,6 +326,7 @@ final class WsdlSourceNormalizer implements SourceNormalizerInterface
      *     location: string,
      *     soapVersion: string,
      *     soapAction: ?string,
+     *     namespace: ?string,
      *     input: ?string,
      *     output: ?string,
      *     messages: array<string, array{element: ?string}>,
@@ -359,6 +364,7 @@ final class WsdlSourceNormalizer implements SourceNormalizerInterface
                     'schema' => $context['schemaXml'],
                     'portType' => $context['portType'],
                     'soapVersion' => $context['soapVersion'],
+                    'namespace' => $context['namespace'],
                 ],
             ],
             responses: [
