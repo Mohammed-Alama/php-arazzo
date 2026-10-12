@@ -1481,7 +1481,7 @@ arch('protocol-rpc does not depend on the runner, the other protocols, or a fram
 
 - [x] **Step 4:** Root plumbing + install + verify + commit: `composer update alama/arazzo-protocol-rpc --with-dependencies --no-interaction`, `composer run analyse-rpc && composer run test-rpc`, commit `build(protocol-rpc): scaffold arazzo-protocol-rpc (F5.0)`.
 
-- [ ] **Step 5 (F5.1):** `ProtoSourceNormalizer` + `RpcOperationExecutor` with the four-variant dispatch table, plus `RpcResponseTransfer`. Assert per-variant: content-type header, status decoding (integer vs string error code), and that an unknown `rpcProtocol` value throws `ExecutionException` naming the four supported variants. The `.proto` parser stays **inside protocol-rpc** (DF11/D5 vendored-codec exception) — unlike WSDL, it never moves to sources.
+- [x] **Step 5 (F5.1):** `ProtoSourceNormalizer` + `RpcOperationExecutor` with the four-variant dispatch table, plus `RpcResponseTransfer`. Assert per-variant: content-type header, status decoding (integer vs string error code), and that an unknown `rpcProtocol` value throws `ExecutionException` naming the four supported variants. The `.proto` parser stays **inside protocol-rpc** (DF11/D5 vendored-codec exception) — unlike WSDL, it never moves to sources.
 - [ ] **Step 6 (F5.2):** `RpcRegistrar` (in `packages/protocol-rpc/src/Registrar/`) + `RpcServiceProvider` (in `packages/laravel/src/`, DF10) + tags + Laravel test (testbench resolves the executor, end-to-end execute against a fake PSR-18 client per variant), then the root gate.
 
 ---
