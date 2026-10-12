@@ -12,12 +12,12 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "document:Validator", "laravel:Queue", "laravel:Support", "laravel:State", "runner:Async", "contracts:Interfaces", "contracts:Spec"]
+    x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "document:Validator", "laravel:Queue", "laravel:Support", "laravel:State", "runner:Async", "sources:Normalizer", "contracts:Interfaces"]
     y-axis "Touches" 0 --> 60
-    bar [44, 27, 26, 21, 19, 15, 14, 13, 11, 11, 10, 10]
+    bar [44, 27, 26, 21, 19, 15, 14, 13, 11, 11, 11, 10]
 ```
 
-Analyzed 331 total file-touches across 47 modules.
+Analyzed 332 total file-touches across 47 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -31,9 +31,9 @@ Analyzed 331 total file-touches across 47 modules.
 | `laravel:Support` | 13 | 4% | 150 | 86.7 |
 | `laravel:State` | 11 | 3% | 46 | 239.1 |
 | `runner:Async` | 11 | 3% | 1,317 | 8.4 |
+| `sources:Normalizer` | 11 | 3% | 1,247 | 8.8 |
 | `contracts:Interfaces` | 10 | 3% | 359 | 27.9 |
 | `contracts:Spec` | 10 | 3% | 1,203 | 8.3 |
-| `sources:Normalizer` | 10 | 3% | 1,247 | 8 |
 | `expression:Interfaces` | 9 | 3% | 110 | 81.8 |
 | `laravel:Lock` | 9 | 3% | 52 | 173.1 |
 | `document:Parser` | 8 | 2% | 1,316 | 6.1 |
