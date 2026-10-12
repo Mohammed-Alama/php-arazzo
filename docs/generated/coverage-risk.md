@@ -77,7 +77,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.12 | 38 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 200 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 201 | 49 | 100% |
 | `contracts/State` | 0.07 | 55 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
@@ -115,8 +115,8 @@ quadrantChart
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.36 | 15 | 10 | 100% |
-| `sources/Resolver` | 0.30 | 22 | 13 | 100% |
+| `sources/Normalizer` | 0.36 | 16 | 11 | 100% |
+| `sources/Resolver` | 0.30 | 23 | 13 | 100% |
 | `sources/Validator` | 0.57 | 4 | 1 | 100% |
 
 **Refactor-now list** (untested churn): `runner/Interfaces`, `evaluation/Registries`, `evaluation/Plugins`

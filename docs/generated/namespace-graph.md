@@ -122,11 +122,11 @@ flowchart LR
     document__ --> document_Parser
     document__ --> expression_Interfaces
     document__ --> sources_Validator
-    sources_Normalizer --> contracts_Support
-    sources_Normalizer --> document__
-    sources_Normalizer --> contracts_Spec
-    sources_Normalizer --> sources_Resolver
     sources_Normalizer --> contracts_Interfaces
+    sources_Normalizer --> contracts_Spec
+    sources_Normalizer --> document__
+    sources_Normalizer --> sources_Resolver
+    sources_Normalizer --> contracts_Support
     sources_Resolver --> contracts_Spec
     sources_Resolver --> document_Parser
     sources_Resolver --> contracts_Interfaces

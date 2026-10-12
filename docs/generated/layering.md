@@ -388,8 +388,8 @@ flowchart TB
 | `runner` | `runtime` | 20 |
 | `runner` | `sources` | 5 |
 | `runtime` | `contracts` | 19 |
-| `sources` | `contracts` | 30 |
-| `sources` | `document` | 24 |
+| `sources` | `contracts` | 34 |
+| `sources` | `document` | 26 |
 | `sources` | `expression` | 1 |
 
 ## Module-level detail

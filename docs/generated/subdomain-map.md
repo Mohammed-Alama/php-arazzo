@@ -67,7 +67,7 @@ flowchart LR
         S_runtime_Infrastructure["runtime:Infrastructure<br/><small>155 LOC</small>"]:::unknownDomain
         S_runtime_Policy["runtime:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runtime_Telemetry["runtime:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
-        S_sources_Normalizer["sources:Normalizer<br/><small>809 LOC</small>"]:::unknownDomain
+        S_sources_Normalizer["sources:Normalizer<br/><small>1241 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -78,9 +78,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
-| Supporting | 7 | 6,876 | 0 | 37% |
+| Supporting | 7 | 6,876 | 0 | 36% |
 | Generic subdomain | 11 | 1,891 | 1,200 | 16% |
-| Unclassified | 28 | 7,623 | 0 | 41% |
+| Unclassified | 28 | 8,055 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

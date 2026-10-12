@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="urn:orders"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             name="OrderService"
+             targetNamespace="urn:orders">
+    <types>
+        <xsd:schema targetNamespace="urn:orders">
+            <xsd:element name="PlaceOrder">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="productId" type="xsd:string"/>
+                        <xsd:element name="quantity" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PlaceOrderResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="orderId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetOrder">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="orderId" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetOrderResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="status" type="xsd:string"/>
+                        <xsd:element name="total" type="xsd:decimal"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="PlaceOrderSoapIn">
+        <part name="parameters" element="tns:PlaceOrder"/>
+    </message>
+    <message name="PlaceOrderSoapOut">
+        <part name="parameters" element="tns:PlaceOrderResponse"/>
+    </message>
+    <message name="GetOrderSoapIn">
+        <part name="parameters" element="tns:GetOrder"/>
+    </message>
+    <message name="GetOrderSoapOut">
+        <part name="parameters" element="tns:GetOrderResponse"/>
+    </message>
+    <portType name="OrderPortType">
+        <operation name="PlaceOrder">
+            <input message="tns:PlaceOrderSoapIn"/>
+            <output message="tns:PlaceOrderSoapOut"/>
+        </operation>
+        <operation name="GetOrder">
+            <input message="tns:GetOrderSoapIn"/>
+            <output message="tns:GetOrderSoapOut"/>
+        </operation>
+    </portType>
+    <binding name="OrderBinding" type="tns:OrderPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="PlaceOrder">
+            <soap:operation soapAction="urn:orders:PlaceOrder" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetOrder">
+            <soap:operation soapAction="urn:orders:GetOrder" style="document"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="OrderService">
+        <port name="OrderPort" binding="tns:OrderBinding">
+            <soap:address location="https://orders.example.test/soap"/>
+        </port>
+    </service>
+</definitions>

@@ -201,6 +201,8 @@ flowchart LR
     C_sources_sources_Normalizer_OpenApiOperationResolver -.->|implements| I_OpenApiOperationResolverInterface
     C_sources_sources_Normalizer_OpenApiSourceNormalizer["OpenApiSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
     C_sources_sources_Normalizer_OpenApiSourceNormalizer -.->|implements| I_SourceNormalizerInterface
+    C_sources_sources_Normalizer_WsdlSourceNormalizer["WsdlSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_WsdlSourceNormalizer -.->|implements| I_SourceNormalizerInterface
     C_sources_sources_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_sources_sources_Resolver_SourceRegistry["SourceRegistry<br/><small>sources:Resolver</small>"]:::implCore

@@ -226,11 +226,11 @@ runtime-Policy,contracts-State,1
 runtime-State,contracts-Interfaces,1
 runtime-State,contracts-Spec,6
 runtime-State,contracts-State,3
-sources-Normalizer,contracts-Interfaces,1
-sources-Normalizer,contracts-Spec,10
+sources-Normalizer,contracts-Interfaces,2
+sources-Normalizer,contracts-Spec,13
 sources-Normalizer,contracts-Support,1
-sources-Normalizer,document-root,7
-sources-Normalizer,sources-Resolver,3
+sources-Normalizer,document-root,9
+sources-Normalizer,sources-Resolver,4
 sources-Resolver,contracts-Interfaces,2
 sources-Resolver,contracts-Spec,7
 sources-Resolver,document-Parser,2

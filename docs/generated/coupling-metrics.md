@@ -62,12 +62,12 @@ targets. Regenerated before every commit.
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 10 | 799 | 9 | 5 | 0.36 |  |
+| `sources:Normalizer` | 11 | 1230 | 9 | 5 | 0.36 |  |
 | `sources:Resolver` | 13 | 475 | 7 | 3 | 0.30 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **984**
+Total cross-module edges: **991**
 
 ## Most entangled module pairs
 
@@ -82,6 +82,6 @@ Total cross-module edges: **984**
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
 | `(runner root)` → `contracts:Interfaces` | 14 |
 | `engine:Execution` → `contracts:Spec` | 13 |
+| `sources:Normalizer` → `contracts:Spec` | 13 |
 | `(runner root)` → `contracts:Spec` | 12 |
 | `cli:Console` → `contracts:Spec` | 12 |
-| `(document root)` → `contracts:Spec` | 11 |
