@@ -1469,9 +1469,9 @@ Create the third protocol package for Protocol-Buffer RPC (PR #556). One package
 - Consumes: `SourceNormalizerRegistryInterface`, `OperationExecutorRegistry`, `ResponseValidatorDispatcher`, `HttpClientInterface` (contracts), `StepProtocolExecutorInterface` (contracts) — **not** `ExecutionEvaluationInput` (deleted, DF2), **not** the folded pipeline helpers (DF7).
 - Produces: nothing yet — F5.1 produces the normalizer + executors.
 
-- [ ] **Step 1:** `composer.json` — mirror F1.0's manifest shape with `alama/arazzo-protocol-rpc`, requiring `contracts`, `document`, `expression`, `evaluation`, `engine`, `sources` + the PSR HTTP packages. No cebe, no guzzle unless the RPC transport needs one, **no `illuminate/*`** (DF10 — the provider ships from `packages/laravel` in F5.2; transport per DF9 is contracts' `HttpClientInterface`).
-- [ ] **Step 2:** `phpstan.neon.dist` mirroring `packages/protocol-http/phpstan.neon.dist`.
-- [ ] **Step 3:** `tests/Pest.php` + `tests/Architecture/ArchTest.php`:
+- [x] **Step 1:** `composer.json` — mirror F1.0's manifest shape with `alama/arazzo-protocol-rpc`, requiring `contracts`, `document`, `expression`, `evaluation`, `engine`, `sources` + the PSR HTTP packages. No cebe, no guzzle unless the RPC transport needs one, **no `illuminate/*`** (DF10 — the provider ships from `packages/laravel` in F5.2; transport per DF9 is contracts' `HttpClientInterface`).
+- [x] **Step 2:** `phpstan.neon.dist` mirroring `packages/protocol-http/phpstan.neon.dist`.
+- [x] **Step 3:** `tests/Pest.php` + `tests/Architecture/ArchTest.php`:
 
 ```php
 arch('protocol-rpc does not depend on the runner, the other protocols, or a framework')
@@ -1479,7 +1479,7 @@ arch('protocol-rpc does not depend on the runner, the other protocols, or a fram
     ->not->toUse(['Alama\Arazzo\Runner', 'Alama\Arazzo\Protocol\Http', 'Alama\Arazzo\Protocol\Soap', 'Illuminate']);
 ```
 
-- [ ] **Step 4:** Root plumbing + install + verify + commit: `composer update alama/arazzo-protocol-rpc --with-dependencies --no-interaction`, `composer run analyse-rpc && composer run test-rpc`, commit `build(protocol-rpc): scaffold arazzo-protocol-rpc (F5.0)`.
+- [x] **Step 4:** Root plumbing + install + verify + commit: `composer update alama/arazzo-protocol-rpc --with-dependencies --no-interaction`, `composer run analyse-rpc && composer run test-rpc`, commit `build(protocol-rpc): scaffold arazzo-protocol-rpc (F5.0)`.
 
 - [ ] **Step 5 (F5.1):** `ProtoSourceNormalizer` + `RpcOperationExecutor` with the four-variant dispatch table, plus `RpcResponseTransfer`. Assert per-variant: content-type header, status decoding (integer vs string error code), and that an unknown `rpcProtocol` value throws `ExecutionException` naming the four supported variants. The `.proto` parser stays **inside protocol-rpc** (DF11/D5 vendored-codec exception) — unlike WSDL, it never moves to sources.
 - [ ] **Step 6 (F5.2):** `RpcRegistrar` (in `packages/protocol-rpc/src/Registrar/`) + `RpcServiceProvider` (in `packages/laravel/src/`, DF10) + tags + Laravel test (testbench resolves the executor, end-to-end execute against a fake PSR-18 client per variant), then the root gate.
