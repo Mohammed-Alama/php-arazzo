@@ -1257,7 +1257,7 @@ First brand-new protocol (spec #17/#16): SOAP over PSR-18 with DOM + libxml, zer
 **Interfaces:**
 - Produces: installable `alama/arazzo-protocol-soap`, `composer run analyse-soap`, `composer run test-soap`.
 
-- [ ] **Step 1: Composer manifest**
+- [x] **Step 1: Composer manifest**
 
 ```json
 {
@@ -1301,8 +1301,8 @@ First brand-new protocol (spec #17/#16): SOAP over PSR-18 with DOM + libxml, zer
 
 No DTO-relocation concern → **single PSR-4 map** (unlike F1.0). No `illuminate` require **ever** (DF10 — the provider ships from `packages/laravel` in F4.6; F1.5 removed the same pattern from protocol-http, and no `extra.laravel.providers` entry is scaffolded here for discovery to find).
 
-- [ ] **Step 2: `phpstan.neon.dist`** — mirror `packages/document/phpstan.neon.dist` (`includes` + `scanDirectories` for `../contracts/src`, `../expression/src`, `../evaluation/src`, `../document/src`, `../engine/src`, `../sources/src`, `../protocol-http/src`).
-- [ ] **Step 3: Pest bootstrap + arch smoke test**
+- [x] **Step 2: `phpstan.neon.dist`** — mirror `packages/document/phpstan.neon.dist` (`includes` + `scanDirectories` for `../contracts/src`, `../expression/src`, `../evaluation/src`, `../document/src`, `../engine/src`, `../sources/src`, `../protocol-http/src`).
+- [x] **Step 3: Pest bootstrap + arch smoke test**
 
 `packages/protocol-soap/tests/Pest.php` — copy `packages/protocol-http/tests/Pest.php`. `packages/protocol-soap/tests/Architecture/ArchTest.php`:
 
@@ -1316,8 +1316,8 @@ arch('protocol-soap is vendor-free and does not depend on the HTTP protocol')
 
 The third clause is the DIP guard (DF7) — SOAP must not reach the folded pipeline helpers either.
 
-- [ ] **Step 4: Root plumbing** — same shape as F1.0 Step 4: repositories entry, root `require`, autoload-dev entry, scripts `analyse-soap`/`test-soap` (+ compositions).
-- [ ] **Step 5: Install + verify + commit**
+- [x] **Step 4: Root plumbing** — same shape as F1.0 Step 4: repositories entry, root `require`, autoload-dev entry, scripts `analyse-soap`/`test-soap` (+ compositions).
+- [x] **Step 5: Install + verify + commit**
 
 ```bash
 composer update alama/arazzo-protocol-soap --with-dependencies --no-interaction
@@ -1343,11 +1343,11 @@ Read a WSDL 1.1/2.0 document (DOM, no vendor) and produce `ResolvedOperation`s f
 **Interfaces:**
 - Implements contracts `SourceNormalizerInterface`; in-package consumption of sources' own `Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver` + the document parser — no protocol-http types, no runner types (it *is* a sources class, DF8).
 
-- [ ] **Step 1:** Class skeleton implementing `supports($source): bool` (sniffs `definition` root + `wsdl:` namespace / `definitions`), `normalize($source): NormalizedOpenApiOperation` — the *document* DTO `Alama\Arazzo\Document\NormalizedOpenApiOperation`, reused by value for a shared shape.
-- [ ] **Step 2:** `DOMDocument::loadXML` parse; extract `service` → `port` → `binding` (`@type` → portType/interface) → `operation` (`@name`) → `bindingOperation` (`soap:operation soapAction`; `soap:body use="literal"`). Build the `ResolvedOperation`'s `targetResolver`-compatible fields: target URL = `$port['location']` (+ optional per-step path), `method` = SOAP POST, headers `Content-Type: text/xml; charset=utf-8` (+ `SOAPAction`). Derive `bodySchema`/`responseSchema` from the XSD types referenced by `message` parts via `types`/`schema` `import`, best-effort; keep `null` when unresolvable and note it in code.
-- [ ] **Step 3:** Fixture WSDLs; test `supports()` true for WSDL strings/`{url: ...}` values, false for plain JSON; `normalize()` returns expected target + soapAction + portType.
-- [ ] **Step 4:** Register into `protocol-soap`'s `SoapRegistrar` (F4.6 — the registrar constructs this sources-resident class); for now instantiate + unit-test directly.
-- [ ] **Step 5:** `composer run analyse-sources && composer run test-sources && composer run analyse-soap && composer run test-soap`; `git commit -m "feat(sources): WsdlSourceNormalizer (F4.1)"`.
+- [x] **Step 1:** Class skeleton implementing `supports($source): bool` (sniffs `definition` root + `wsdl:` namespace / `definitions`), `normalize($source): NormalizedOpenApiOperation` — the *document* DTO `Alama\Arazzo\Document\NormalizedOpenApiOperation`, reused by value for a shared shape.
+- [x] **Step 2:** `DOMDocument::loadXML` parse; extract `service` → `port` → `binding` (`@type` → portType/interface) → `operation` (`@name`) → `bindingOperation` (`soap:operation soapAction`; `soap:body use="literal"`). Build the `ResolvedOperation`'s `targetResolver`-compatible fields: target URL = `$port['location']` (+ optional per-step path), `method` = SOAP POST, headers `Content-Type: text/xml; charset=utf-8` (+ `SOAPAction`). Derive `bodySchema`/`responseSchema` from the XSD types referenced by `message` parts via `types`/`schema` `import`, best-effort; keep `null` when unresolvable and note it in code.
+- [x] **Step 3:** Fixture WSDLs; test `supports()` true for WSDL strings/`{url: ...}` values, false for plain JSON; `normalize()` returns expected target + soapAction + portType.
+- [x] **Step 4:** Register into `protocol-soap`'s `SoapRegistrar` (F4.6 — the registrar constructs this sources-resident class); for now instantiate + unit-test directly.
+- [x] **Step 5:** `composer run analyse-sources && composer run test-sources && composer run analyse-soap && composer run test-soap`; `git commit -m "feat(sources): WsdlSourceNormalizer (F4.1)"`.
 
 ---
 
@@ -1362,10 +1362,10 @@ Read a WSDL 1.1/2.0 document (DOM, no vendor) and produce `ResolvedOperation`s f
 **Interfaces:**
 - Implements `OperationExecutorPluginInterface` over `OperationExecutorRegistry`; consumes contracts `ResponseTransferInterface` + `StepState`, `HttpClientInterface` (contracts), `StepProtocolExecutorInterface`'s `execute(Step, WorkflowContext, ArazzoDocument, string $executionId): StepExecutionOutcome` signature (**not** the deleted `ExecutionEvaluationInput` — DF2), and throws `Alama\Arazzo\Engine\Exceptions\ExecutionException` for configuration failures (DF3).
 
-- [ ] **Step 1:** `SoapEnvelope` — `DOMDocument` builder: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">`, `<Header>` (correlation id when provided), `<Body><tns:{op} …>` with params serialized from the step's resolved parameters (bool/string/number → text nodes; nested arrays → nested DOM). `__toString(): string` returns XML. Switch to SOAP 1.2 namespace when the resolved version says 1.2.
-- [ ] **Step 2:** `SoapOperationExecutor::execute()` — resolve target URL + soapAction from the `ResolvedOperation` (or per-step overrides); build the request (`POST`, `Content-Type: text/xml`, `SOAPAction` or `action` for 1.2); send via `HttpClientInterface`; on non-2xx → `SoapFaultMapper` outcome. Map SOAP faults (HTTP 200 with `faultcode`/`faultstring`) into a failed `StepExecutionOutcome` carrying `{'soap.faultcode', 'soap.faultstring'}` in the transfer `meta` bag.
-- [ ] **Step 3:** Tests with a fixture PSR-18 client. Assert envelope XML structure, soapAction header, fault mapping, success path returns a `SoapResponseTransfer` with the XML preserved in `view('xml')`.
-- [ ] **Step 4:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): SoapOperationExecutor + envelope + fault mapping (F4.2)"`.
+- [x] **Step 1:** `SoapEnvelope` — `DOMDocument` builder: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">`, `<Header>` (correlation id when provided), `<Body><tns:{op} …>` with params serialized from the step's resolved parameters (bool/string/number → text nodes; nested arrays → nested DOM). `__toString(): string` returns XML. Switch to SOAP 1.2 namespace when the resolved version says 1.2.
+- [x] **Step 2:** `SoapOperationExecutor::execute()` — resolve target URL + soapAction from the `ResolvedOperation` (or per-step overrides); build the request (`POST`, `Content-Type: text/xml`, `SOAPAction` or `action` for 1.2); send via `HttpClientInterface`; on non-2xx → `SoapFaultMapper` outcome. Map SOAP faults (HTTP 200 with `faultcode`/`faultstring`) into a failed `StepExecutionOutcome` carrying `{'soap.faultcode', 'soap.faultstring'}` in the transfer `meta` bag.
+- [x] **Step 3:** Tests with a fixture PSR-18 client. Assert envelope XML structure, soapAction header, fault mapping, success path returns a `SoapResponseTransfer` with the XML preserved in `view('xml')`.
+- [x] **Step 4:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): SoapOperationExecutor + envelope + fault mapping (F4.2)"`.
 
 ---
 
@@ -1379,10 +1379,10 @@ Read a WSDL 1.1/2.0 document (DOM, no vendor) and produce `ResolvedOperation`s f
 **Interfaces:**
 - Consumes contracts `ResponseTransferInterface`; produces `SoapResponseTransfer implements ResponseTransferInterface` with documented key homes — `view('xml')` = the parsed `DOMDocument` body envelope, `meta['soap.faultcode']` / `meta['soap.faultstring']` on faults.
 
-- [ ] **Step 1:** Create `SoapResponseTransfer` — `final readonly`, six public methods returning constructor state (mirror the generic `ResponseTransfer` from A6; no flat `json`/`xml`/`proto` props — facets stay in `views`, metadata in `meta`).
-- [ ] **Step 2:** `SoapResponseTransferMapper` — 2xx → transfer with `views: ['xml' => $dom]`, fault meta keys via XPath on the body, `headers` passthrough. Non-2xx / parse failure → transfer with the raw `status` and a `meta['error']` entry.
-- [ ] **Step 3:** Tests — DTO satisfies the seam; success XML → `hasView('xml')` true, no fault keys; fault XML → both meta keys set; garbage body → `meta['error']` set.
-- [ ] **Step 4:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): SoapResponseTransfer + SoapResponseTransferMapper (F4.3)"`.
+- [x] **Step 1:** Create `SoapResponseTransfer` — `final readonly`, six public methods returning constructor state (mirror the generic `ResponseTransfer` from A6; no flat `json`/`xml`/`proto` props — facets stay in `views`, metadata in `meta`).
+- [x] **Step 2:** `SoapResponseTransferMapper` — 2xx → transfer with `views: ['xml' => $dom]`, fault meta keys via XPath on the body, `headers` passthrough. Non-2xx / parse failure → transfer with the raw `status` and a `meta['error']` entry.
+- [x] **Step 3:** Tests — DTO satisfies the seam; success XML → `hasView('xml')` true, no fault keys; fault XML → both meta keys set; garbage body → `meta['error']` set.
+- [x] **Step 4:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): SoapResponseTransfer + SoapResponseTransferMapper (F4.3)"`.
 
 ---
 
@@ -1397,9 +1397,9 @@ SOAP steps resolve request replacements of the form `xpath:{expr}` against the p
 **Interfaces:**
 - Implements contracts `ReplacementTargetResolverInterface` (verified present at `packages/contracts/src/Interfaces/ReplacementTargetResolverInterface.php`, extends `PluginInterface`). **Not** `RequestCompiler` — that class is runner-internal post-`c2b03fb` and importing it would violate DF7.
 
-- [ ] **Step 1:** `resolve(string $target, ResponseTransferInterface $transfer): mixed` — match the `xpath:` prefix; `DOMXPath::query` over `view('xml')` (guard with `hasView('xml')`); return node text (or a node set as an array of texts) so expressions render `{{ $request.xpath:… }}`. Non-`xpath:` targets return `null` (chain to any JSON-path resolver, lowest priority).
-- [ ] **Step 2:** Tests — `xpath:/Envelope/Body/…` on a fixture `SoapResponseTransfer`; fallthrough for non-xpath targets.
-- [ ] **Step 3:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): XPathReplacementTargetResolver (F4.4)"`.
+- [x] **Step 1:** `resolve(string $target, ResponseTransferInterface $transfer): mixed` — match the `xpath:` prefix; `DOMXPath::query` over `view('xml')` (guard with `hasView('xml')`); return node text (or a node set as an array of texts) so expressions render `{{ $request.xpath:… }}`. Non-`xpath:` targets return `null` (chain to any JSON-path resolver, lowest priority).
+- [x] **Step 2:** Tests — `xpath:/Envelope/Body/…` on a fixture `SoapResponseTransfer`; fallthrough for non-xpath targets.
+- [x] **Step 3:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): XPathReplacementTargetResolver (F4.4)"`.
 
 ---
 
@@ -1413,9 +1413,9 @@ SOAP steps resolve request replacements of the form `xpath:{expr}` against the p
 **Interfaces:**
 - Implements contracts `ResponseValidatorInterface` (the same seam `ResponseSchemaValidator` uses); consumed by `ResponseValidatorDispatcher` via priority.
 
-- [ ] **Step 1:** `validate(...)` — pick the schema from the document's SOAP source (`ResolvedOperation` XSD reference) or the step's explicit `schemaUrl`; `DOMDocument::schemaValidateSource($xsd)`; throw a validation failure with `libxml_get_errors()` details.
-- [ ] **Step 2:** Tests — valid response passes; invalid (missing element / wrong type) throws with a message; missing schema reference passes through (validation not applicable).
-- [ ] **Step 3:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): XsdResponseValidator (F4.5)"`.
+- [x] **Step 1:** `validate(...)` — pick the schema from the document's SOAP source (`ResolvedOperation` XSD reference) or the step's explicit `schemaUrl`; `DOMDocument::schemaValidateSource($xsd)`; throw a validation failure with `libxml_get_errors()` details.
+- [x] **Step 2:** Tests — valid response passes; invalid (missing element / wrong type) throws with a message; missing schema reference passes through (validation not applicable).
+- [x] **Step 3:** `composer run analyse-soap && composer run test-soap`; `git commit -m "feat(protocol-soap): XsdResponseValidator (F4.5)"`.
 
 ---
 
@@ -1428,12 +1428,12 @@ SOAP steps resolve request replacements of the form `xpath:{expr}` against the p
 - `packages/laravel/tests/SoapServiceProviderTest.php`
 - Modify `packages/laravel/composer.json` — add `alama/arazzo-protocol-soap` require + path repository. protocol-soap itself gains **no** `illuminate/*` (DF10).
 
-- [ ] **Step 1:** `SoapRegistrar` — register the sources-resident `Alama\Arazzo\Sources\Normalizer\WsdlSourceNormalizer` (F4.1/DF8), `SoapOperationExecutor`, `XsdResponseValidator` into the core registries (constructor-injected like F1.3 Step 1); priority descending.
-- [ ] **Step 2:** `SoapServiceProvider` (`packages/laravel/src/`) — `mergeConfigFrom(__DIR__.'/../config/arazzo.php', 'arazzo')`; bind `SoapOperationExecutor` + register the tag list; in `boot()` call `SoapRegistrar::registerInto(...)` with container-resolved registries. Keep only `Illuminate\Support\ServiceProvider` + container usage at the provider edge.
-- [ ] **Step 3:** `SoapServiceProviderTest` (testbench): container resolves `SoapOperationExecutor`, tagged services exist, `PreflightValidator` accepts the WSDL fixture, end-to-end execute via a fake PSR-18 client (assert `xpath:` replacement worked + the transfer exposes `view('xml')`).
-- [ ] **Step 4:** Wire as an optional peer — the composed app works with EITHER protocol installed. Confirm `rg "Protocol\\\\Soap" packages/laravel/src packages/document packages/runner packages/sources` is empty.
-- [ ] **Step 5:** Gates: `composer run test-soap && composer run analyse-soap && composer run test-laravel && composer run test && make verify`.
-- [ ] **Step 6:** `git add -A`, commit `feat(protocol-soap): SoapServiceProvider + registrar + tags (F4.6)`.
+- [x] **Step 1:** `SoapRegistrar` — register the sources-resident `Alama\Arazzo\Sources\Normalizer\WsdlSourceNormalizer` (F4.1/DF8), `SoapOperationExecutor`, `XsdResponseValidator` into the core registries (constructor-injected like F1.3 Step 1); priority descending.
+- [x] **Step 2:** `SoapServiceProvider` (`packages/laravel/src/`) — `mergeConfigFrom(__DIR__.'/../config/arazzo.php', 'arazzo')`; bind `SoapOperationExecutor` + register the tag list; in `boot()` call `SoapRegistrar::registerInto(...)` with container-resolved registries. Keep only `Illuminate\Support\ServiceProvider` + container usage at the provider edge.
+- [x] **Step 3:** `SoapServiceProviderTest` (testbench): container resolves `SoapOperationExecutor`, tagged services exist, `PreflightValidator` accepts the WSDL fixture, end-to-end execute via a fake PSR-18 client (assert `xpath:` replacement worked + the transfer exposes `view('xml')`).
+- [x] **Step 4:** Wire as an optional peer — the composed app works with EITHER protocol installed. Confirm `rg "Protocol\\\\Soap" packages/laravel/src packages/document packages/runner packages/sources` is empty. **(F4.6 ruling — superseded: `packages/laravel/src/SoapServiceProvider.php` necessarily names `Protocol\Soap` under DF10/R2, so this sweep can never be empty. The zero-core-edit guarantee is instead verified on the core slices only: `packages/{document,runner,sources}/src` + `packages/{contracts,engine,evaluation,expression,events,runtime}/src` — confirmed empty. `Alama\Arazzo\Protocol\Soap\Laravel` is not created.)**
+- [x] **Step 5:** Gates: `composer run test-soap && composer run analyse-soap && composer run test-laravel && composer run test && make verify`.
+- [x] **Step 6:** `git add -A`, commit `feat(protocol-soap): SoapServiceProvider + registrar + tags (F4.6)`.
 
 ---
 
@@ -1441,10 +1441,10 @@ SOAP steps resolve request replacements of the form `xpath:{expr}` against the p
 
 Same final-gate routine as F1.4.
 
-- [ ] **Step 1:** Sweeps — `rg -n "Protocol\\\\Soap" packages/{contracts,expression,document,evaluation,runtime,events,sources,engine}/src` empty; `rg -n 'Alama\\Arazzo\\Runner' packages/protocol-soap/src` empty (DF7); `composer run format` zero-diff.
-- [ ] **Step 2:** `composer run analyse && composer run test && make verify` — all green.
-- [ ] **Step 3:** `git add -A && git commit -m "chore(protocol-soap): F4 verification gate green (F4.7)"`.
-- [ ] **Step 4:** Report: `alama/arazzo-protocol-soap` installed via one `composer require` with ZERO core edits; WSDL→SOAP→XSD vertical slice exercised by `test-soap` + root gate; both protocol packages coexist.
+- [x] **Step 1:** Sweeps — `rg -n "Protocol\\\\Soap" packages/{contracts,expression,document,evaluation,runtime,events,sources,engine}/src` empty; `rg -n 'Alama\\Arazzo\\Runner' packages/protocol-soap/src` empty (DF7); `composer run format` zero-diff.
+- [x] **Step 2:** `composer run analyse && composer run test && make verify` — all green.
+- [x] **Step 3:** `git add -A && git commit -m "chore(protocol-soap): F4 verification gate green (F4.7)"`.
+- [x] **Step 4:** Report: `alama/arazzo-protocol-soap` installed via one `composer require` with ZERO core edits; WSDL→SOAP→XSD vertical slice exercised by `test-soap` + root gate; both protocol packages coexist.
 
 ---
 
