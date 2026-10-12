@@ -129,6 +129,7 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
+- `OperationResolverInterface` <small></small>
 - `OutputExtractorInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
 - `ProtocolExecutorRegistryInterface` <small>Interfaces</small>

@@ -408,6 +408,10 @@ this file on a commit is a public API change — review it deliberately.
 #### `ModelStack` class
 - `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolverInterface $operationResolver = null)`
 
+#### `OperationResolverInterface` interface
+- `public function resolve(Step $step, ArazzoDocument $document): ResolvedOperation;`
+- `public function supportsStep(Step $step, ArazzoDocument $document): bool;`
+
 #### `ResolvedOperation` class
 - `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?GraphQlOperation $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
 - `public function binding(): string`

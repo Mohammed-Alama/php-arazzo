@@ -20,6 +20,7 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\OperationResolverInterface;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
@@ -27,7 +28,6 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Protocol\Soap\Execution\SoapFaultMapper;
 use Alama\Arazzo\Protocol\Soap\Execution\SoapOperationExecutor;
-use Alama\Arazzo\Protocol\Soap\Execution\SoapOperationResolverInterface;
 use Alama\Arazzo\Protocol\Soap\Execution\SoapRequestBuilder;
 use Alama\Arazzo\Protocol\Soap\Execution\WsdlOperationResolver;
 use Alama\Arazzo\Protocol\Soap\Transfer\SoapResponseTransfer;
@@ -107,7 +107,7 @@ class SoapExecutorMockEngine implements EvaluationEngineInterface
     }
 }
 
-class SoapExecutorFakeResolver implements SoapOperationResolverInterface
+class SoapExecutorFakeResolver implements OperationResolverInterface
 {
     public function __construct(private ResolvedOperation $resolved) {}
 
@@ -184,7 +184,7 @@ function soapExecutorResolvedOperation(string $soapVersion = '1.1'): ResolvedOpe
     );
 }
 
-function soapExecutor(SoapExecutorFakeClient $client, SoapOperationResolverInterface $resolver): SoapOperationExecutor
+function soapExecutor(SoapExecutorFakeClient $client, OperationResolverInterface $resolver): SoapOperationExecutor
 {
     $psr17 = new HttpFactory();
 

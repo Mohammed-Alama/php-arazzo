@@ -10,6 +10,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Document\OperationResolverInterface;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Protocol\Soap\Transfer\SoapResponseTransfer;
@@ -41,7 +42,7 @@ final class SoapOperationExecutor implements OperationExecutorPluginInterface
     public const PLUGIN_PRIORITY = 50;
 
     public function __construct(
-        private SoapOperationResolverInterface $operationResolver,
+        private OperationResolverInterface $operationResolver,
         private SoapRequestBuilder $requestBuilder,
         private HttpClientInterface $httpClient,
         private SoapResponseTransferMapper $responseMapper,

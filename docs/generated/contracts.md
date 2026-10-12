@@ -29,6 +29,7 @@ flowchart LR
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>sources:Normalizer</small>"]:::contract
     I_OpenApiOperationResolverInterface["OpenApiOperationResolverInterface<br/><small>sources:Normalizer</small>"]:::contract
     I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_OperationResolverInterface["OperationResolverInterface<br/><small>(document root)</small>"]:::contract
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -271,6 +272,7 @@ flowchart LR
     C_laravel_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
+    N_OperationResolverInterface["no implementation found"]:::orphan --> I_OperationResolverInterface
     N_OutputExtractorInterface["no implementation found"]:::orphan --> I_OutputExtractorInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ProtocolExecutorRegistryInterface["no implementation found"]:::orphan --> I_ProtocolExecutorRegistryInterface

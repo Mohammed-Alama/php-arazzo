@@ -8,13 +8,14 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Document\OperationResolverInterface;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Sources\Normalizer\WsdlSourceNormalizer;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceFetcher;
 use RuntimeException;
 
 /**
- * SoapOperationResolverInterface over a described WSDL source (plan F4.2).
+ * OperationResolverInterface over a described WSDL source (plan F4.2).
  *
  * Reuses the source-name grammar shared with OpenApiOperationResolver (plain
  * operationId, `$sourceDescriptions.<name>.<op>`,
@@ -28,7 +29,7 @@ use RuntimeException;
  *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final class WsdlOperationResolver implements SoapOperationResolverInterface
+final class WsdlOperationResolver implements OperationResolverInterface
 {
     private const SOURCE_PREFIX = '{$sourceDescriptions.';
 
