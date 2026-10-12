@@ -76,9 +76,9 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 39 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 202 | 49 | 100% |
-| `contracts/State` | 0.07 | 56 | 2 | 100% |
+| `contracts/Interfaces` | 0.12 | 40 | 19 | 100% |
+| `contracts/Spec` | 0.03 | 203 | 49 | 100% |
+| `contracts/State` | 0.07 | 57 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.46 | 76 | 68 | 100% |
@@ -115,7 +115,7 @@ quadrantChart
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.36 | 17 | 11 | 100% |
+| `sources/Normalizer` | 0.36 | 18 | 11 | 100% |
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 

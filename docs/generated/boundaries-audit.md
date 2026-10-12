@@ -18,10 +18,10 @@ when a boundary consciously moves.
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 44 | **forbidden** |
+| `Illuminate` | 0 | 46 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 34 | 23 | allowed |
+| `Psr` | 34 | 25 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 10 | 0 | **forbidden** ⚠ |
@@ -69,8 +69,8 @@ when a boundary consciously moves.
 | laravel | `laravel:State` | `Illuminate` | 1 |
 | laravel | `laravel:Support` | `Illuminate` | 3 |
 | laravel | `laravel:Support` | `Psr` | 4 |
-| laravel | `laravel:_` | `Illuminate` | 6 |
-| laravel | `laravel:_` | `Psr` | 5 |
+| laravel | `laravel:_` | `Illuminate` | 8 |
+| laravel | `laravel:_` | `Psr` | 7 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **13 library boundary violation(s):**

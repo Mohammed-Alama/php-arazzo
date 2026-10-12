@@ -52,7 +52,7 @@ targets. Regenerated before every commit.
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 3 | 210 | 2 | 5 | 0.71 |  |
-| `(laravel root)` | 3 | 428 | 0 | 9 | 1.00 |  |
+| `(laravel root)` | 4 | 594 | 0 | 9 | 1.00 |  |
 | `runner:Async` | 7 | 1310 | 4 | 20 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
@@ -67,7 +67,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1009**
+Total cross-module edges: **1018**
 
 ## Most entangled module pairs
 
