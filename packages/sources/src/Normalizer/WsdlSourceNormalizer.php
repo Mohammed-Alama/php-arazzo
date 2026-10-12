@@ -14,6 +14,7 @@ use Alama\Arazzo\Sources\Resolver\Exceptions\UnsupportedSourceVersionException;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
+use DOMXPath;
 use InvalidArgumentException;
 
 /**
@@ -56,6 +57,8 @@ final class WsdlSourceNormalizer implements SourceNormalizerInterface
     private const WSDL2_NS = 'http://www.w3.org/ns/wsdl';
 
     private const XML_SCHEMA_NS = 'http://www.w3.org/2001/XMLSchema';
+
+    private const XMLNS_NS = 'http://www.w3.org/2000/xmlns/';
 
     private const MEDIA_TYPE_XML = 'application/xml';
 
@@ -303,7 +306,40 @@ final class WsdlSourceNormalizer implements SourceNormalizerInterface
             return null;
         }
 
-        $xml = $dom->saveXML($schema);
+        return $this->serializeSchema($dom, $schema);
+    }
+
+    /**
+     * saveXML($node) does not inline namespace declarations inherited from
+     * ancestors — WSDLs declare `xmlns:xsd` on `<definitions>` — so a bare
+     * serialized `<xsd:schema>` would be invalid for
+     * `DOMDocument::schemaValidateSource`. Clone the schema into a standalone
+     * document and re-declare its in-scope namespaces on the clone root.
+     */
+    private function serializeSchema(DOMDocument $dom, DOMElement $schema): ?string
+    {
+        $container = new DOMDocument('1.0', 'UTF-8');
+        $imported = $container->importNode($schema, true);
+        if (!$imported instanceof DOMElement) {
+            return null;
+        }
+
+        $xpath = new DOMXPath($dom);
+        $namespaces = $xpath->query('namespace::*', $schema);
+        if ($namespaces !== false) {
+            foreach ($namespaces as $namespaceNode) {
+                $prefix = $namespaceNode->localName;
+                $uri = $namespaceNode->nodeValue;
+                if ($prefix === 'xml' || $uri === null || $uri === '') {
+                    continue;
+                }
+
+                $qualified = $prefix === null || $prefix === '' ? 'xmlns' : 'xmlns:'.$prefix;
+                $imported->setAttributeNS(self::XMLNS_NS, $qualified, $uri);
+            }
+        }
+
+        $xml = $container->saveXML($imported);
 
         return $xml === false ? null : $xml;
     }

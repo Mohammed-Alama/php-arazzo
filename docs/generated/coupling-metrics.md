@@ -62,7 +62,7 @@ targets. Regenerated before every commit.
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 11 | 1236 | 9 | 5 | 0.36 |  |
+| `sources:Normalizer` | 11 | 1272 | 9 | 5 | 0.36 |  |
 | `sources:Resolver` | 13 | 475 | 7 | 3 | 0.30 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |

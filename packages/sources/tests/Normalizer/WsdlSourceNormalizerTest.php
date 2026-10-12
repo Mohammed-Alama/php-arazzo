@@ -67,6 +67,7 @@ it('builds a ResolvedOperation index for a WSDL 1.1 document', function (): void
     expect($request['portType'])->toBe('CalculatorSoap');
     expect($request['soapVersion'])->toBe('1.1');
     expect($request['namespace'])->toBe('urn:calculator');
+    expect($request['schema'])->toContain('xmlns:xsd="http://www.w3.org/2001/XMLSchema"');
     expect($request['schema'])->toContain('<xsd:element name="Add"');
 
     $response = $normalized->responses['application/xml'];
@@ -132,6 +133,7 @@ it('indexes every operation with its own soapAction and endpoint', function (): 
 
     expect($index['GetOrder']->normalized->headerParameters['SOAPAction']['value'])->toBe('urn:orders:GetOrder');
     expect($index['GetOrder']->normalized->responses['application/xml']['xsdElement'])->toBe('tns:GetOrderResponse');
+    expect($index['GetOrder']->normalized->responses['application/xml']['schema'])->toContain('xmlns:xsd="http://www.w3.org/2001/XMLSchema"');
 });
 
 it('rejects non-XML source content', function (): void {
