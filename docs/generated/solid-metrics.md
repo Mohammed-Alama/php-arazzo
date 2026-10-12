@@ -62,7 +62,7 @@ quadrantChart
     laravel/Persistence: [0.833, 0]
     laravel/Queue: [0.75, 0]
     laravel/State: [0.5, 0]
-    laravel/Support: [0.667, 0]
+    laravel/Support: [0.714, 0]
     laravel/_: [1, 0]
     runner/Async: [0.833, 0]
     runner/Execution: [0.643, 0.067]
@@ -74,7 +74,7 @@ quadrantChart
     runtime/State: [0.25, 0.333]
     runtime/Telemetry: [0, 0]
     sources/Normalizer: [0.357, 0.182]
-    sources/Resolver: [0.3, 0.231]
+    sources/Resolver: [0.273, 0.231]
     sources/Validator: [0.571, 0]
     sources/_: [0.818, 0]
 ```

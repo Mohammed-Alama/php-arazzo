@@ -36,7 +36,7 @@ flowchart LR
         S_laravel_Persistence["laravel:Persistence<br/><small>264 LOC</small>"]:::genericDomain
         S_laravel_Queue["laravel:Queue<br/><small>109 LOC</small>"]:::genericDomain
         S_laravel_State["laravel:State<br/><small>46 LOC</small>"]:::genericDomain
-        S_laravel_Support["laravel:Support<br/><small>150 LOC</small>"]:::genericDomain
+        S_laravel_Support["laravel:Support<br/><small>213 LOC</small>"]:::genericDomain
         S_runtime_State["runtime:State<br/><small>1039 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified["Unclassified"]
@@ -79,7 +79,7 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
 | Supporting | 7 | 6,876 | 0 | 36% |
-| Generic subdomain | 11 | 1,891 | 1,200 | 16% |
+| Generic subdomain | 11 | 1,891 | 1,263 | 16% |
 | Unclassified | 28 | 8,097 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:

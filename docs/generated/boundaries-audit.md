@@ -18,10 +18,10 @@ when a boundary consciously moves.
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
 | `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 41 | **forbidden** |
+| `Illuminate` | 0 | 44 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 34 | 19 | allowed |
+| `Psr` | 34 | 23 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 10 | 0 | **forbidden** ⚠ |
@@ -67,10 +67,10 @@ when a boundary consciously moves.
 | laravel | `laravel:Persistence` | `Psr` | 1 |
 | laravel | `laravel:Queue` | `Illuminate` | 11 |
 | laravel | `laravel:State` | `Illuminate` | 1 |
-| laravel | `laravel:Support` | `Illuminate` | 2 |
-| laravel | `laravel:Support` | `Psr` | 2 |
-| laravel | `laravel:_` | `Illuminate` | 4 |
-| laravel | `laravel:_` | `Psr` | 3 |
+| laravel | `laravel:Support` | `Illuminate` | 3 |
+| laravel | `laravel:Support` | `Psr` | 4 |
+| laravel | `laravel:_` | `Illuminate` | 6 |
+| laravel | `laravel:_` | `Psr` | 5 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **13 library boundary violation(s):**

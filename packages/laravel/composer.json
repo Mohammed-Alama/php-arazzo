@@ -14,6 +14,7 @@
         {"type": "path", "url": "../events"},
         {"type": "path", "url": "../expression"},
         {"type": "path", "url": "../protocol-http"},
+        {"type": "path", "url": "../protocol-soap"},
         {"type": "path", "url": "../runner"},
         {"type": "path", "url": "../runtime"},
         {"type": "path", "url": "../sources"}
@@ -31,6 +32,7 @@
         "alama/arazzo-events": "@dev",
         "alama/arazzo-expression": "@dev",
         "alama/arazzo-protocol-http": "@dev",
+        "alama/arazzo-protocol-soap": "@dev",
         "alama/arazzo-runner": "@dev",
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",
@@ -64,7 +66,8 @@
         "laravel": {
             "providers": [
                 "Alama\\Arazzo\\Laravel\\LaravelArazzoServiceProvider",
-                "Alama\\Arazzo\\Laravel\\ProtocolHttpServiceProvider"
+                "Alama\\Arazzo\\Laravel\\ProtocolHttpServiceProvider",
+                "Alama\\Arazzo\\Laravel\\SoapServiceProvider"
             ]
         }
     },

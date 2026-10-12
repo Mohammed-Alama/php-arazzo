@@ -55,7 +55,7 @@ quadrantChart
     laravel/Persistence: [0.833, 1]
     laravel/Queue: [0.75, 1]
     laravel/State: [0.5, 1]
-    laravel/Support: [0.667, 0.5]
+    laravel/Support: [0.714, 0.333]
     runner/Async: [0.833, 1]
     runner/Execution: [0.643, 1]
     runner/Interfaces: [1, 0]
@@ -65,7 +65,7 @@ quadrantChart
     runtime/State: [0.25, 1]
     runtime/Telemetry: [0, 1]
     sources/Normalizer: [0.357, 1]
-    sources/Resolver: [0.3, 1]
+    sources/Resolver: [0.273, 1]
     sources/Validator: [0.571, 1]
 ```
 
@@ -76,12 +76,12 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 3 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 38 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 201 | 49 | 100% |
-| `contracts/State` | 0.07 | 55 | 2 | 100% |
+| `contracts/Interfaces` | 0.12 | 39 | 19 | 100% |
+| `contracts/Spec` | 0.03 | 202 | 49 | 100% |
+| `contracts/State` | 0.07 | 56 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
-| `document/Validator` | 0.46 | 75 | 68 | 100% |
+| `document/Validator` | 0.46 | 76 | 68 | 100% |
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
@@ -106,7 +106,7 @@ quadrantChart
 | `laravel/Persistence` | 0.83 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
 | `laravel/State` | 0.50 | 3 | 1 | 100% |
-| `laravel/Support` | 0.67 | 1 | 2 | 50% |
+| `laravel/Support` | 0.71 | 1 | 3 | 33% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
 | `runner/Execution` | 0.64 | 30 | 15 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |
@@ -115,8 +115,8 @@ quadrantChart
 | `runtime/Policy` | 0.75 | 2 | 2 | 100% |
 | `runtime/State` | 0.25 | 27 | 12 | 100% |
 | `runtime/Telemetry` | 0.00 | 2 | 2 | 100% |
-| `sources/Normalizer` | 0.36 | 16 | 11 | 100% |
-| `sources/Resolver` | 0.30 | 23 | 13 | 100% |
-| `sources/Validator` | 0.57 | 4 | 1 | 100% |
+| `sources/Normalizer` | 0.36 | 17 | 11 | 100% |
+| `sources/Resolver` | 0.27 | 24 | 13 | 100% |
+| `sources/Validator` | 0.57 | 5 | 1 | 100% |
 
 **Refactor-now list** (untested churn): `runner/Interfaces`, `evaluation/Registries`, `evaluation/Plugins`

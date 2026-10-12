@@ -51,8 +51,8 @@ targets. Regenerated before every commit.
 | `laravel:Persistence` | 4 | 260 | 1 | 5 | 0.83 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 2 | 148 | 2 | 4 | 0.67 |  |
-| `(laravel root)` | 2 | 246 | 0 | 9 | 1.00 |  |
+| `laravel:Support` | 3 | 210 | 2 | 5 | 0.71 |  |
+| `(laravel root)` | 3 | 428 | 0 | 9 | 1.00 |  |
 | `runner:Async` | 7 | 1310 | 4 | 20 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
@@ -63,11 +63,11 @@ targets. Regenerated before every commit.
 | `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `sources:Normalizer` | 11 | 1272 | 9 | 5 | 0.36 |  |
-| `sources:Resolver` | 13 | 475 | 7 | 3 | 0.30 |  |
+| `sources:Resolver` | 13 | 475 | 8 | 3 | 0.27 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **991**
+Total cross-module edges: **1007**
 
 ## Most entangled module pairs
 

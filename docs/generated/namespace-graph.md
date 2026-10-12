@@ -289,6 +289,7 @@ flowchart LR
     laravel_Queue --> runner_Async
     laravel_Queue --> runner__
     laravel_State --> runtime_State
+    laravel_Support --> sources_Resolver
     laravel_Support --> contracts_Interfaces
     laravel_Support --> events_Interfaces
     laravel_Support --> runner__

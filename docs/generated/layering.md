@@ -232,6 +232,7 @@ flowchart TB
     M_laravel_Support --> M_events_Interfaces
     M_laravel_Support --> M_runner__
     M_laravel_Support --> M_runtime_State
+    M_laravel_Support --> M_sources_Resolver
     M_laravel__ --> M_contracts_Interfaces
     M_laravel__ --> M_evaluation__
     M_laravel__ --> M_expression_Interfaces
@@ -371,14 +372,14 @@ flowchart TB
 | `events` | `contracts` | 1 |
 | `expression` | `contracts` | 18 |
 | `laravel` | `cli` | 3 |
-| `laravel` | `contracts` | 33 |
+| `laravel` | `contracts` | 36 |
 | `laravel` | `document` | 4 |
-| `laravel` | `evaluation` | 4 |
+| `laravel` | `evaluation` | 5 |
 | `laravel` | `events` | 5 |
-| `laravel` | `expression` | 3 |
-| `laravel` | `runner` | 21 |
+| `laravel` | `expression` | 4 |
+| `laravel` | `runner` | 23 |
 | `laravel` | `runtime` | 10 |
-| `laravel` | `sources` | 20 |
+| `laravel` | `sources` | 27 |
 | `runner` | `contracts` | 123 |
 | `runner` | `document` | 10 |
 | `runner` | `engine` | 13 |

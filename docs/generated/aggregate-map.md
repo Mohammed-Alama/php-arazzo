@@ -26,7 +26,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | events | 9 | 1 | 90% |
 | runner | 6 | 26 | 19% |
 | cli | 0 | 15 | 0% |
-| laravel | 0 | 24 | 0% |
+| laravel | 0 | 26 | 0% |
 
 ## Mutable clusters
 
@@ -37,6 +37,7 @@ Where mutable state lives, and which of it crosses process boundaries:
 | `ExecutionContext` | runtime | `State/Data` | `toArray`, `hydrate` |
 | `ParameterSerializer` | engine | `Execution` | `serialize` |
 | `CliRunResult` | cli | `Console/Cli` | `hydrate` |
+| `SchemeSourceFetcher` | laravel | `Support` | `hydrate` |
 
 ## Cross-process aggregates
 
@@ -46,4 +47,5 @@ Mutable types that serialize themselves or are carried by queue jobs — each ne
 - `ImplicitDependencies` <small>contracts · `hydrate`</small>
 - `DecoderRegistry` <small>document · `hydrate`</small>
 - `ParameterSerializer` <small>engine · `serialize`</small>
+- `SchemeSourceFetcher` <small>laravel · `hydrate`</small>
 - `ExecutionContext` <small>runtime · `toArray`, `hydrate`</small>

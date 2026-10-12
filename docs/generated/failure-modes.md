@@ -28,7 +28,7 @@ Regenerated before every commit.
 | **PreflightFailureException** | `StepExecutionWorker` <small>runner:Async</small>, `WorkflowExecutor` <small>runner:Sync</small> |
 | **RuntimeException** | `CliRunner` <small>cli:Console</small>, `OpenAiClient` <small>cli:Generator</small>, `Reusable` <small>contracts:Spec</small>, `Document` <small>(document root)</small>, `ReusableParameterResolver` <small>engine:Execution</small>, `RunnerFacade` <small>(runner root)</small>, `FileLockStrategy` <small>runtime:Infrastructure</small>, `FileStateStore` <small>runtime:State</small>, `OtelSetup` <small>runtime:Telemetry</small>, `OpenApiOperationResolver` <small>sources:Normalizer</small> |
 | **SelectorEvaluationException** | `SelectorEvaluator` <small>(expression root)</small> |
-| **SourceFetchException** | `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
+| **SourceFetchException** | `SchemeSourceFetcher` <small>laravel:Support</small>, `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>sources:Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Sync</small> |
 | **UnresolvableReferenceException** | `SourceRegistry` <small>sources:Resolver</small> |

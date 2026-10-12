@@ -67,6 +67,15 @@ final class SoapEnvelope
 
     private function __construct(private readonly DOMDocument $dom) {}
 
+    /**
+     * The underlying DOM, exposed so the request builder can apply payload
+     * replacements of selector type `xpath` to the built envelope (F4.6).
+     */
+    public function dom(): DOMDocument
+    {
+        return $this->dom;
+    }
+
     public function __toString(): string
     {
         $xml = $this->dom->saveXML();

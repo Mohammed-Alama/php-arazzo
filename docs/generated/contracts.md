@@ -213,6 +213,8 @@ flowchart LR
     C_sources_sources_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
     C_sources_sources_Resolver_LocalFetcher["LocalFetcher<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
+    C_laravel_laravel_Support_SchemeSourceFetcher["SchemeSourceFetcher<br/><small>laravel:Support</small>"]:::implLaravel
+    C_laravel_laravel_Support_SchemeSourceFetcher -.->|implements| I_SourceFetcher
     C_sources_sources_Resolver_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
     C_runtime_runtime_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>runtime:Infrastructure</small>"]:::implCore

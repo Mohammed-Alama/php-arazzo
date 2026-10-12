@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Protocol\Soap\Execution;
 
+use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
@@ -42,6 +44,7 @@ final class SoapRequestBuilder
         private StreamFactoryInterface $streamFactory,
         private EvaluationEngineInterface $evaluationEngine,
         private ExpressionEngineInterface $inspector,
+        private ?ReplacementTargetResolverInterface $replacementResolver = null,
     ) {}
 
     public function build(
@@ -88,6 +91,7 @@ final class SoapRequestBuilder
         $bodyParameters = array_diff_key($inputs, array_flip(self::OVERRIDE_PARAMETERS));
 
         $envelope = SoapEnvelope::build($operationName, $namespace, $bodyParameters, $executionId, $soapVersion);
+        $this->applyReplacements($step, $context, $envelope);
 
         $request = $this->requestFactory->createRequest('POST', $target);
         $request = $request->withBody($this->streamFactory->createStream((string) $envelope));
@@ -110,6 +114,44 @@ final class SoapRequestBuilder
         $soapAction = $normalized->headerParameters['SOAPAction']['value'] ?? null;
 
         return is_string($soapAction) && $soapAction !== '' ? $soapAction : null;
+    }
+
+    /**
+     * Applies the step's xpath-typed payload replacements to the built envelope
+     * (plan F4.6). Targets of other selector types (jsonpointer/jsonpath)
+     * address array-shaped bodies and are handled by RequestCompiler /
+     * PayloadReplacer instead; only DOM-resolvable xpath targets land here.
+     */
+    private function applyReplacements(Step $step, WorkflowContext $context, SoapEnvelope $envelope): void
+    {
+        $resolver = $this->replacementResolver;
+        $replacements = $step->io->requestBody->replacements ?? [];
+
+        if ($resolver === null || $replacements === []) {
+            return;
+        }
+
+        foreach ($replacements as $replacement) {
+            $type = self::selectorType($replacement);
+
+            if ($type === null || !$resolver->supports($type)) {
+                continue;
+            }
+
+            $value = $this->evaluationEngine->resolveValue($replacement->value, $context, $step->stepId);
+            $resolver->resolve($envelope->dom(), $replacement->target, $value);
+        }
+    }
+
+    private static function selectorType(PayloadReplacement $replacement): ?string
+    {
+        if (is_array($replacement->targetSelectorType)) {
+            $type = $replacement->targetSelectorType['type'] ?? null;
+
+            return is_string($type) ? $type : null;
+        }
+
+        return is_string($replacement->targetSelectorType) ? $replacement->targetSelectorType : null;
     }
 
     private function applyMediaHeaders(RequestInterface $request, string $soapVersion, ?string $soapAction): RequestInterface
