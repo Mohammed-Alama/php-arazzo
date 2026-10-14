@@ -51,6 +51,9 @@
         <testsuite name="Arazzo Laravel Test Suite">
             <directory>packages/laravel/tests</directory>
         </testsuite>
+        <testsuite name="Arazzo Tools Test Suite">
+            <directory>tools/issue-intake/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
@@ -66,6 +69,7 @@
             <directory suffix=".php">packages/cli/src</directory>
             <directory suffix=".php">packages/core/src</directory>
             <directory suffix=".php">packages/laravel/src</directory>
+            <directory suffix=".php">tools/issue-intake/src</directory>
         </include>
     </source>
     <php>

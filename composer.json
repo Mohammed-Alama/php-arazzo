@@ -87,6 +87,7 @@
     },
     "require-dev": {
         "infection/infection": "^0.35.2",
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.14",
         "orchestra/testbench": "^11.0",
         "pdepend/pdepend": "^2.16",
@@ -97,7 +98,7 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
-        "larastan/larastan": "^3.0",
+        "symfony/yaml": "^7.4",
         "symplify/monorepo-builder": "^12.0"
     },
     "autoload": {
@@ -132,7 +133,8 @@
             "Alama\\Arazzo\\Tests\\Events\\": "packages/events/tests/",
             "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "packages/protocol-http/tests",
             "Alama\\Arazzo\\Tests\\Protocol\\Soap\\": "packages/protocol-soap/tests",
-            "Alama\\Arazzo\\Tests\\Protocol\\Rpc\\": "packages/protocol-rpc/tests"
+            "Alama\\Arazzo\\Tests\\Protocol\\Rpc\\": "packages/protocol-rpc/tests",
+            "Alama\\Tools\\IssueIntake\\": "tools/issue-intake/src/"
         }
     },
     "scripts": {
@@ -181,6 +183,7 @@
         "test-http": "vendor/bin/pest packages/protocol-http/tests",
         "test-soap": "vendor/bin/pest packages/protocol-soap/tests",
         "test-rpc": "vendor/bin/pest packages/protocol-rpc/tests",
+        "test-tools": "vendor/bin/pest tools/issue-intake/tests",
         "test": [
             "@test-contracts",
             "@test-expression",
@@ -196,7 +199,8 @@
             "@test-laravel",
             "@test-http",
             "@test-soap",
-            "@test-rpc"
+            "@test-rpc",
+            "@test-tools"
         ],
         "tia": "@php vendor/bin/pest --parallel",
         "docs": "@php scripts/generate-docs.php",
