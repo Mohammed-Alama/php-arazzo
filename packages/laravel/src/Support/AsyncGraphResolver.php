@@ -6,16 +6,18 @@ namespace Alama\Arazzo\Laravel\Support;
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
 use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
@@ -51,6 +53,7 @@ final class AsyncGraphResolver
             lockManager: $app->make(LockManagerInterface::class),
             httpClient: $app->make(HttpClientInterface::class),
             openApiExecutor: $app->bound(OpenApiExecutorInterface::class) ? $app->make(OpenApiExecutorInterface::class) : null,
+            outputExtractor: $app->bound(OutputExtractorInterface::class) ? $app->make(OutputExtractorInterface::class) : null,
             schemaValidator: $app->bound(ResponseValidatorInterface::class) ? $app->make(ResponseValidatorInterface::class) : null,
             requestFactory: $app->bound(RequestFactoryInterface::class) ? $app->make(RequestFactoryInterface::class) : null,
             logger: $app->bound(LoggerInterface::class) ? $app->make(LoggerInterface::class) : null,
@@ -60,6 +63,27 @@ final class AsyncGraphResolver
             retryCeiling: ConfigValue::int(config('arazzo.retry_ceiling', 10), 10),
             retryBackoffMultiplier: ConfigValue::float(config('arazzo.retry_backoff_multiplier', 1.0), 1.0),
             stateTtlSeconds: ConfigValue::int(config('arazzo.state_ttl', 86400), 86400),
+            executorRegistry: self::executorRegistry($app),
         );
+    }
+
+    /**
+     * A per-graph copy of the container's operation-executor registry (F1.3
+     * fills it from the HTTP registrar). The assembler registers the
+     * graph-scoped sub-workflow plugin into the copy, so re-assembling never
+     * duplicates plugins in the shared container singleton.
+     */
+    private static function executorRegistry(Container $app): ?OperationExecutorRegistry
+    {
+        if (!$app->bound(OperationExecutorRegistry::class)) {
+            return null;
+        }
+
+        $registry = new OperationExecutorRegistry();
+        foreach ($app->make(OperationExecutorRegistry::class)->all() as $plugin) {
+            $registry->register($plugin);
+        }
+
+        return $registry;
     }
 }

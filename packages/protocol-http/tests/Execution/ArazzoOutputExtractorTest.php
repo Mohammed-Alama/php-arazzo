@@ -1,0 +1,170 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests\Protocol\Http\Execution;
+
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
+use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
+use Alama\Arazzo\Sources\Resolver\Fetchers\LocalFetcher;
+use Alama\Arazzo\Sources\Resolver\SourceRegistry;
+use Alama\Arazzo\Sources\SourceGraph;
+
+beforeEach(function () {
+    $openApiJson = json_encode([
+        'openapi' => '3.0.0',
+        'info' => ['title' => 'Test', 'version' => '1.0'],
+        'servers' => [['url' => 'https://api.test']],
+        'paths' => [
+            '/users' => [
+                'post' => [
+                    'operationId' => 'createUser',
+                    'responses' => [
+                        '201' => [
+                            'description' => 'Created',
+                            'content' => [
+                                'application/json' => [
+                                    'schema' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'id' => ['type' => 'integer'],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ]);
+
+    $this->openApiFile = tempnam(sys_get_temp_dir(), 'openapi_').'.json';
+    file_put_contents($this->openApiFile, $openApiJson);
+
+    $this->makeExtractor = function (): StepOutputExtractor {
+        $runtime = SourceGraph::runtime(null, null, new SourceRegistry(
+            new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
+        ));
+
+        return new StepOutputExtractor($runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()), new ExpressionEngine());
+    };
+
+    $this->makeDocument = function (): ArazzoDocument {
+        return new ArazzoDocument(
+            arazzo: '1.0.1',
+            info: new Info('Test', null, null, '1.0.0'),
+            sourceDescriptions: [new SourceDescription('test-api', $this->openApiFile, SourceType::Openapi)],
+            workflows: [],
+            components: new Components([], [], [], []),
+            specificationExtensions: [],
+        );
+    };
+});
+
+afterEach(function () {
+    @unlink($this->openApiFile);
+});
+
+it('extracts output via runtime expression with schema cast', function () {
+    $extractor = ($this->makeExtractor)();
+    $document = ($this->makeDocument)();
+
+    $step = StepFactory::http(
+        stepId: 'create-user',
+        description: null,
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['userId' => new Expression('{$steps.create-user.response.body#/id}')]),
+        operationId: 'createUser',
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('create-user', [
+        'statusCode' => 201,
+        'headers' => [],
+        'body' => ['id' => '123'],
+    ]);
+
+    $outputs = $extractor->extractOutputs($step, $context, $document);
+
+    expect($outputs['userId'])->toBe(123);
+});
+
+it('extracts output via bare jsonpath', function () {
+    $extractor = ($this->makeExtractor)();
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['firstId' => new Expression('$.users[0].id')]),
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => ['users' => [['id' => 1], ['id' => 2]]],
+    ]);
+
+    $outputs = $extractor->extractOutputs($step, $context);
+
+    expect($outputs['firstId'])->toBe(1);
+});
+
+it('extracts output via json pointer selector', function () {
+    $extractor = ($this->makeExtractor)();
+
+    $step = new Step(
+        stepId: 'step1',
+        description: null,
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['firstUser' => new Selector(null, '/users/0/id', ExpressionType::JsonPointer)]),
+    );
+
+    $context = (new WorkflowContext('def_1'))->withStepResponse('step1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => ['users' => [['id' => 7], ['id' => 8]]],
+    ]);
+
+    $outputs = $extractor->extractOutputs($step, $context);
+
+    expect($outputs['firstUser'])->toBe(7);
+});
+
+it('extracts output via selector with a context expression', function () {
+    $extractor = ($this->makeExtractor)();
+
+    $step = new Step(
+        stepId: 's2',
+        description: null,
+        target: new StepTarget(),
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['token' => new Selector('{$steps.s1.outputs.auth}', '$.access.token', ExpressionType::JsonPath)]),
+    );
+
+    $context = (new WorkflowContext('def_1'))
+        ->withStepResponse('s1', ['statusCode' => 200, 'headers' => [], 'body' => []])
+        ->withStepOutput('s1', 'auth', ['access' => ['token' => 'jwt-9']]);
+
+    $outputs = $extractor->extractOutputs($step, $context);
+
+    expect($outputs['token'])->toBe('jwt-9');
+});

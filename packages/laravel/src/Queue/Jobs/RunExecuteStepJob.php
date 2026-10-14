@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Queue\Jobs;
 
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\Async\ExecuteStepJob;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,8 +35,8 @@ class RunExecuteStepJob implements ShouldQueue
         $this->executionId = $this->inner->context->getExecutionId();
     }
 
-    public function handle(StepExecutionWorker $worker): void
+    public function handle(AsyncExecutionGraph $graph): void
     {
-        $worker->handle($this->inner);
+        $graph->worker()->handle($this->inner);
     }
 }

@@ -1,0 +1,111 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests\Protocol\Http\Execution;
+
+use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
+use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
+use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Contracts\Spec\SourceDocument;
+use Alama\Arazzo\Document\NormalizedOpenApiOperation;
+use Alama\Arazzo\Document\ResolvedOperation;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
+use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
+use cebe\openapi\Reader;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Mockery;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Log\NullLogger;
+
+it('builds and sends an openapi request using the schema to route parameters', function () {
+    $openapiJson = <<<'JSON'
+    {
+      "openapi": "3.0.0",
+      "info": { "title": "API", "version": "1.0" },
+      "servers": [{ "url": "https://api.example.com/v1" }],
+      "paths": {
+        "/users/{userId}": {
+          "get": {
+            "operationId": "getUser",
+            "parameters": [
+              { "name": "userId", "in": "path", "required": true, "schema": { "type": "integer" } },
+              { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+              { "name": "X-Auth", "in": "header", "schema": { "type": "string" } }
+            ]
+          }
+        }
+      }
+    }
+    JSON;
+
+    $openApi = Reader::readFromJson($openapiJson);
+
+    $sourceDoc = new SourceDocument('test', SourceType::Openapi, 'http://test', json_decode($openapiJson, true));
+    $sourceResolver = Mockery::mock(SourceResolver::class);
+    $sourceResolver->shouldReceive('resolve')->andReturn($sourceDoc);
+
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $httpClient->shouldReceive('sendRequest')->withArgs(function ($request) {
+        expect($request->getMethod())->toBe('GET');
+        expect((string) $request->getUri())->toBe('https://api.example.com/v1/users/42?limit=10');
+        expect($request->getHeaderLine('X-Auth'))->toBe('token123');
+
+        return true;
+    })->andReturn(new Response(200));
+
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $requestFactory->shouldReceive('createRequest')->andReturnUsing(function ($method, $uri) {
+        return new Request($method, $uri);
+    });
+
+    $executor = new DefaultOpenApiExecutor(
+        $httpClient,
+        $requestFactory,
+        new NullLogger(),
+    );
+
+    $payload = new OpenApiPayload(
+        auto: ['userId' => '42', 'limit' => '10', 'X-Auth' => 'token123'],
+    );
+
+    $source = new SourceDescription('test', 'test.json', SourceType::Openapi);
+    $normalized = new NormalizedOpenApiOperation(
+        path: '/users/{userId}',
+        method: 'get',
+        resolvedServerUrl: 'https://api.example.com/v1',
+        pathParameters: [
+            'userId' => ['name' => 'userId', 'in' => 'path', 'schema' => ['type' => 'integer']],
+        ],
+        queryParameters: [
+            'limit' => ['name' => 'limit', 'in' => 'query', 'schema' => ['type' => 'integer']],
+        ],
+        headerParameters: [
+            'X-Auth' => ['name' => 'X-Auth', 'in' => 'header', 'schema' => ['type' => 'string']],
+        ],
+        cookieParameters: [],
+        requestBodies: [],
+        responses: [],
+    );
+
+    $resolved = new OpenApiOperationHandle(
+        new ResolvedOperation(
+            source: $source,
+            normalized: $normalized,
+            rpcProtocol: null,
+            operationName: null,
+            rpcMethod: null,
+            graphqlOperation: null,
+            interaction: null,
+        ),
+        $openApi,
+        clone $openApi->paths->getPath('/users/{userId}')->get,
+    );
+
+    $response = $executor->execute($resolved, $payload);
+
+    expect($response->getStatusCode())->toBe(200);
+});

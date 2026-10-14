@@ -9,12 +9,12 @@ use Alama\Arazzo\Document\Validator\Exceptions\PreflightFailureException;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Events\RunStartedEvent;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Alama\Arazzo\Sources\Resolver\DefaultSourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -75,6 +75,7 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
             $engine,
             $outputExtractor,
             $schemaValidator,
+            inspector: new ExpressionEngine(),
         ),
         workflowEngine: new WorkflowEngine($engine),
         events: $events,

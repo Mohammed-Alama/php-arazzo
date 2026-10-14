@@ -8,24 +8,25 @@ use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
-use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\Validator\PreflightValidator;
 
 /**
  * Entry point for the Sources package – pure source resolution and normalization.
- * No generic document pipeline; only operations that need HTTP / cebe / OpenAPI live here.
+ * No generic document pipeline; no cebe, no OpenAPI parser.
+ *
+ * Operation resolution is deliberately absent: returning a cebe-carrying
+ * handle would drag `cebe/php-openapi` back into this package. Callers that
+ * need one go through `OpenApiOperationResolverInterface::resolveModel()` for
+ * the vendor-free model, or through the protocol package for the handle.
  */
 final class SourceLoader
 {
     public function __construct(
         private readonly SourceRegistry $sources,
-        private readonly OpenApiOperationResolver $operations,
         private readonly OpenApiVersionDetector $versionDetector,
         private readonly PreflightValidator $preflight,
         private readonly SourceNormalizerRegistryInterface $normalizers,
@@ -43,12 +44,6 @@ final class SourceLoader
     public function detectOpenApiVersion(array $document): string
     {
         return $this->versionDetector->detect($document);
-    }
-
-    /** Returns a handle that carries the cebe OpenApi + Operation objects */
-    public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle
-    {
-        return $this->operations->resolve($step, $document);
     }
 
     /* --------------------------------------------------------------- *

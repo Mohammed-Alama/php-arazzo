@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Execution;
 
-use Alama\Arazzo\Runner\Execution\TypeCaster;
+use Alama\Arazzo\Engine\Execution\TypeCaster;
 use InvalidArgumentException;
 
 it('casts to integer', function () {

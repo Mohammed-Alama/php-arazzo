@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Expression\JsonPointer;
 use Alama\Arazzo\Expression\Lexer;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Alama\Arazzo\Tests\Support\Fx;
 

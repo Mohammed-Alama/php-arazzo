@@ -8,6 +8,9 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDocument;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
@@ -133,11 +136,14 @@ it('exposes the facade result shape the CLI output rendering depends on', functi
 
     $document = DocumentLoader::load($doc);
     $runtime = SourceGraph::runtime(registry: $registry);
+    $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $runner = new RunnerFacade(
         $runtime->document,
         $runtime->operations,
-        new EvaluationEngine(expression: new ExpressionEngine()),
-        $client,
+        $engine,
+        openApiExecutor: new DefaultOpenApiExecutor($client, $factory),
+        outputExtractor: new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine()),
+        schemaValidator: new ResponseSchemaValidator($runtime->operations),
     );
 
     unlink($doc);

@@ -38,6 +38,20 @@ final class SourceGraph
     private static ?SourceLoader $cachedLoader = null;
 
     /**
+     * The default source registry for this slice.
+     *
+     * Deliberately NOT memoised. A resolver memoises nothing itself, but the
+     * loader behind it caches parsed documents keyed by source name, so a
+     * process-wide shared resolver would serve the first caller's document to
+     * every later caller that reuses a source name. Callers that want one
+     * instance across several entry points inject it (see `runtime()`).
+     */
+    private static function defaultRegistry(): SourceRegistry
+    {
+        return new SourceRegistry(DefaultSourceResolver::withDefaults());
+    }
+
+    /**
      * Create a source registry using the given HTTP client and request factory.
      * This hides the fetcher implementation details from consumers.
      */
@@ -57,7 +71,7 @@ final class SourceGraph
 
     public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface
     {
-        $operations = $operationResolver ?? self::operations(new SourceRegistry(DefaultSourceResolver::withDefaults()));
+        $operations = $operationResolver ?? self::operations();
 
         return new DocumentFacade(
             new ModelStack(
@@ -66,7 +80,7 @@ final class SourceGraph
                 validator: new Validator(RuleSet::default(new ExpressionEngine())),
                 engine: new ExpressionEngine(),
                 preflight: new PreflightValidator(
-                    new SourceRegistry(DefaultSourceResolver::withDefaults()),
+                    self::defaultRegistry(),
                     $operations,
                 ),
                 operationResolver: $operationResolver,
@@ -83,8 +97,8 @@ final class SourceGraph
             return self::$cachedLoader;
         }
 
-        $defaultRegistry = $registry ?? new SourceRegistry(DefaultSourceResolver::withDefaults());
-        $defaultOperations = self::operations($defaultRegistry);
+        $defaultRegistry = $registry ?? self::defaultRegistry();
+        $defaultOperations = self::operations($registry);
 
         // Build normalizer registry
         $normalizerRegistry = new SourceNormalizerRegistry();
@@ -97,10 +111,9 @@ final class SourceGraph
 
         $loader = new SourceLoader(
             sources: $defaultRegistry,
-            operations: $defaultOperations,
             versionDetector: new OpenApiVersionDetector(),
             preflight: new PreflightValidator(
-                new SourceRegistry(DefaultSourceResolver::withDefaults()),
+                $defaultRegistry,
                 $defaultOperations,
             ),
             normalizers: $normalizerRegistry,
@@ -114,12 +127,22 @@ final class SourceGraph
         return $loader;
     }
 
-    /** Bundle both independent façades for the runner */
-    public static function runtime(?SourceRegistry $registry = null): SourceRuntime
-    {
-        $sources = $registry ?? new SourceRegistry(DefaultSourceResolver::withDefaults());
+    /**
+     * Bundle both independent façades for the runner
+     *
+     * Pass `$operations` when the caller already holds a resolver, so the
+     * document and the resolver share one transport instead of each building
+     * a loader (and its document cache) of their own.
+     *
+     * @return SourceRuntime<OpenApiOperationResolver>
+     */
+    public static function runtime(
+        ?SourceRegistry $registry = null,
+        ?OpenApiOperationResolver $operations = null,
+    ): SourceRuntime {
+        $sources = $registry ?? self::defaultRegistry();
 
-        $operations = self::operations($sources);
+        $operations ??= self::buildOperations($sources);
 
         $normalizerRegistry = new SourceNormalizerRegistry();
         $normalizerRegistry->register(new OpenApiSourceNormalizer(
@@ -131,7 +154,6 @@ final class SourceGraph
 
         $loader = new SourceLoader(
             sources: $sources,
-            operations: $operations,
             versionDetector: new OpenApiVersionDetector(),
             preflight: new PreflightValidator($sources, $operations),
             normalizers: $normalizerRegistry,
@@ -151,8 +173,19 @@ final class SourceGraph
         return self::document();
     }
 
-    /** Factory used by the two public methods above */
-    private static function operations(SourceRegistry $sources): OpenApiOperationResolver
+    /**
+     * Build the concrete operation resolver for this slice.
+     *
+     * Public so a container can bind the resolver once and hand that same
+     * instance to `runtime()`, instead of letting the graph build a second one
+     * behind its back.
+     */
+    public static function operations(?SourceRegistry $registry = null): OpenApiOperationResolver
+    {
+        return self::buildOperations($registry ?? self::defaultRegistry());
+    }
+
+    private static function buildOperations(SourceRegistry $sources): OpenApiOperationResolver
     {
         $detector = new OpenApiVersionDetector();
 

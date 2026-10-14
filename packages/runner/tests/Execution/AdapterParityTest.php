@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Execution;
 
 use Alama\Arazzo\Cli\Console\Cli\CliRunner;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
@@ -21,13 +21,13 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
 use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Alama\Arazzo\Runtime\State\FileStateStore;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
@@ -87,15 +87,26 @@ function parityFixtures(): array
         $engine,
         $outputExtractor,
         $schemaValidator,
+        inspector: new ExpressionEngine(),
     );
 
     // Both adapters execute steps through THIS object.
-    $protocol = new class($stepExecutor, $document) implements StepProtocolExecutorInterface
+    $protocol = new class($stepExecutor, $document) implements OperationExecutorPluginInterface
     {
         public function __construct(
             private readonly StepExecutor $stepExecutor,
             private readonly ArazzoDocument $document,
         ) {}
+
+        public function name(): string
+        {
+            return 'parity-bridge';
+        }
+
+        public function priority(): int
+        {
+            return 100;
+        }
 
         public function supports(Step $step, ArazzoDocument $document): bool
         {

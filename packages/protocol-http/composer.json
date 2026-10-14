@@ -1,0 +1,72 @@
+{
+    "name": "alama/arazzo-protocol-http",
+    "description": "HTTP/OpenAPI + AsyncAPI vertical slice for alama/arazzo-core: normalizers, operation executors, transport, response validation. Reference protocol package.",
+    "keywords": [
+        "alama",
+        "arazzo",
+        "openapi",
+        "asyncapi",
+        "http",
+        "protocol"
+    ],
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../contracts"
+        },
+        {
+            "type": "path",
+            "url": "../expression"
+        },
+        {
+            "type": "path",
+            "url": "../evaluation"
+        },
+        {
+            "type": "path",
+            "url": "../engine"
+        },
+        {
+            "type": "path",
+            "url": "../sources"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-expression": "@dev",
+        "alama/arazzo-evaluation": "@dev",
+        "alama/arazzo-engine": "@dev",
+        "alama/arazzo-sources": "@dev",
+        "cebe/php-openapi": "^1.7",
+        "guzzlehttp/guzzle": "^7.8||^8.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.1",
+        "psr/http-message": "^2.0",
+        "psr/log": "^3.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alama\\Arazzo\\Protocol\\Http\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\Protocol\\Http\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

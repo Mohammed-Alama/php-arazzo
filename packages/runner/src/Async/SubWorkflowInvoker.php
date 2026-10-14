@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Runner\Async;
+
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowFailureAction;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
+use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
+
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
+class SubWorkflowInvoker
+{
+    public function __construct(
+        private DefinitionRegistryInterface $registry,
+        private WorkflowExecutor $executor,
+        private EvaluationEngineInterface $evaluationEngine,
+    ) {}
+
+    public function invoke(
+        SubWorkflowSuccessAction|SubWorkflowFailureAction $action,
+        WorkflowContext $parent,
+    ): SubWorkflowResult {
+        $document = $this->registry->get($parent->getDefinitionId());
+
+        if ($document === null) {
+            throw ExecutionException::subWorkflowNotFound($action->workflowId);
+        }
+
+        $target = null;
+        foreach ($document->workflows as $w) {
+            if ($w->workflowId === $action->workflowId) {
+                $target = $w;
+                break;
+            }
+        }
+
+        if ($target === null) {
+            throw ExecutionException::subWorkflowNotFound($action->workflowId);
+        }
+
+        $bound = array_map(function ($spec) use ($parent) {
+            return match (true) {
+                $spec instanceof Expression => $this->evaluationEngine->evaluate($spec, new EvaluationContext($parent, '__invoke__')),
+                $spec instanceof Selector => $this->evaluationEngine->evaluateSelector($spec, $parent, '__invoke__'),
+                default => $spec,
+            };
+        }, $action->parameters);
+
+        $child = WorkflowContext::forChildInvocation($parent, $target, $bound);
+        $outcome = $this->executor->execute($target, $document, $bound, $child);
+
+        return new SubWorkflowResult(
+            outputs: $outcome->outputs,
+            status: $outcome->status,
+            childRunId: (string) $child->getExecutionId(),
+            inputs: $bound,
+            stepsSpent: $outcome->stepsSpent,
+            workflowCallStack: $outcome->workflowCallStack,
+        );
+    }
+}

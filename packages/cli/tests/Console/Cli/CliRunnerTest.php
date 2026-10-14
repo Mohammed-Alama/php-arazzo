@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Cli\Console\Cli\CliRunner;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Info;
@@ -18,9 +18,19 @@ use Alama\Arazzo\Runner\Execution\InMemoryDefinitionRegistry;
 use Alama\Arazzo\Runtime\State\FileStateStore;
 use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 
-class CliFakeExecutor implements StepProtocolExecutorInterface
+class CliFakeExecutor implements OperationExecutorPluginInterface
 {
     public function __construct(private readonly int $statusCode = 200) {}
+
+    public function name(): string
+    {
+        return 'cli-fake';
+    }
+
+    public function priority(): int
+    {
+        return 100;
+    }
 
     public function supports(Step $step, ArazzoDocument $document): bool
     {

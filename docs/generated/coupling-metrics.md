@@ -11,74 +11,77 @@ targets. Regenerated before every commit.
 
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
-| `cli:Console` | 11 | 783 | 0 | 17 | 1.00 |  |
+| `cli:Console` | 12 | 921 | 0 | 18 | 1.00 |  |
 | `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
-| `contracts:Dependency` | 3 | 333 | 3 | 2 | 0.40 |  |
-| `contracts:Exceptions` | 1 | 30 | 3 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 17 | 287 | 19 | 3 | 0.14 |  |
-| `contracts:Spec` | 49 | 1154 | 31 | 1 | 0.03 |  |
-| `contracts:State` | 2 | 665 | 12 | 1 | 0.08 |  |
-| `contracts:Support` | 5 | 180 | 8 | 0 | 0.00 |  |
+| `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
+| `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
+| `contracts:Interfaces` | 19 | 340 | 23 | 3 | 0.12 |  |
+| `contracts:Spec` | 49 | 1154 | 33 | 1 | 0.03 |  |
+| `contracts:State` | 2 | 665 | 13 | 1 | 0.07 |  |
+| `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1305 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 68 | 3402 | 5 | 5 | 0.50 |  |
-| `(document root)` | 5 | 263 | 5 | 6 | 0.55 |  |
+| `document:Validator` | 68 | 3518 | 6 | 5 | 0.45 |  |
+| `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
+| `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
+| `engine:Execution` | 8 | 976 | 2 | 5 | 0.71 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
 | `evaluation:Plugins` | 2 | 108 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 121 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 5 | 617 | 5 | 7 | 0.58 |  |
-| `events:Interfaces` | 1 | 18 | 7 | 0 | 0.00 |  |
+| `(evaluation root)` | 5 | 617 | 7 | 7 | 0.50 |  |
+| `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
-| `(events root)` | 9 | 205 | 2 | 0 | 0.00 |  |
+| `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
 | `expression:Ast` | 15 | 335 | 1 | 2 | 0.67 |  |
 | `expression:Data` | 4 | 124 | 7 | 3 | 0.30 |  |
-| `expression:Enum` | 2 | 43 | 5 | 0 | 0.00 |  |
+| `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
-| `expression:Interfaces` | 2 | 108 | 11 | 3 | 0.21 |  |
+| `expression:Interfaces` | 2 | 108 | 14 | 3 | 0.18 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
 | `(expression root)` | 9 | 1143 | 4 | 7 | 0.64 |  |
-| `laravel:Bindings` | 7 | 358 | 1 | 23 | 0.96 |  |
+| `laravel:Bindings` | 7 | 378 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
-| `laravel:Http` | 3 | 167 | 2 | 6 | 0.75 |  |
+| `laravel:Http` | 3 | 167 | 2 | 5 | 0.71 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
-| `laravel:Persistence` | 4 | 260 | 1 | 4 | 0.80 |  |
+| `laravel:Persistence` | 4 | 260 | 1 | 5 | 0.83 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 2 | 124 | 2 | 5 | 0.71 |  |
-| `(laravel root)` | 1 | 93 | 0 | 3 | 1.00 |  |
-| `runner:Execution` | 37 | 3706 | 6 | 22 | 0.79 |  |
-| `runner:Jobs` | 2 | 38 | 4 | 2 | 0.33 |  |
-| `runner:Protocol` | 3 | 364 | 1 | 8 | 0.89 |  |
-| `(runner root)` | 9 | 491 | 4 | 13 | 0.76 |  |
+| `laravel:Support` | 3 | 210 | 2 | 5 | 0.71 |  |
+| `(laravel root)` | 4 | 594 | 0 | 9 | 1.00 |  |
+| `runner:Async` | 7 | 1310 | 4 | 20 | 0.83 | ⚠ unstable hub |
+| `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
+| `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
+| `runner:Sync` | 5 | 799 | 4 | 18 | 0.82 | ⚠ unstable hub |
+| `(runner root)` | 9 | 529 | 6 | 16 | 0.73 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
-| `runtime:State` | 13 | 1050 | 9 | 3 | 0.25 |  |
+| `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
-| `sources:Normalizer` | 9 | 773 | 7 | 5 | 0.42 |  |
-| `sources:Resolver` | 13 | 475 | 6 | 3 | 0.33 |  |
+| `sources:Normalizer` | 11 | 1272 | 9 | 5 | 0.36 |  |
+| `sources:Resolver` | 13 | 475 | 8 | 3 | 0.27 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
-| `(sources root)` | 3 | 283 | 2 | 9 | 0.82 |  |
+| `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **955**
+Total cross-module edges: **1020**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `document:Validator` → `contracts:Spec` | 98 |
-| `runner:Execution` → `contracts:Spec` | 67 |
+| `document:Validator` → `contracts:Spec` | 100 |
 | `document:Parser` → `contracts:Spec` | 38 |
 | `(expression root)` → `expression:Ast` | 27 |
+| `runner:Sync` → `contracts:Spec` | 24 |
+| `runner:Async` → `contracts:Spec` | 23 |
 | `(evaluation root)` → `contracts:Spec` | 22 |
-| `contracts:Interfaces` → `contracts:Spec` | 18 |
-| `runner:Execution` → `(events root)` | 17 |
-| `runner:Execution` → `runtime:State` | 15 |
-| `runner:Execution` → `contracts:State` | 13 |
-| `runner:Protocol` → `contracts:Spec` | 13 |
+| `contracts:Interfaces` → `contracts:Spec` | 22 |
+| `(runner root)` → `contracts:Interfaces` | 14 |
+| `(document root)` → `contracts:Spec` | 13 |
+| `engine:Execution` → `contracts:Spec` | 13 |
+| `sources:Normalizer` → `contracts:Spec` | 13 |
 | `(runner root)` → `contracts:Spec` | 12 |
-| `(runner root)` → `runner:Execution` | 12 |

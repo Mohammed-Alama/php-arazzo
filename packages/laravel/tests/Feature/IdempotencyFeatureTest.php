@@ -17,8 +17,8 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\OpenApi;
@@ -60,7 +60,7 @@ it('executes a step with automatic idempotency key injection using Laravel bindi
     $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
     app()->instance(DocumentInterface::class, $documents);
 
-    $executor = app(StepExecutor::class);
+    $executor = app(AsyncExecutionGraph::class)->stepExecutor();
 
     $step = StepFactory::http('charge-step', null, new StepFlow(), new StepIo(), operationId: 'chargeOp');
     $context = new WorkflowContext('def-1', [], [], [], 'wf-1', 'exec-1');

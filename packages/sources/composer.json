@@ -5,6 +5,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "ext-dom": "*",
+        "ext-libxml": "*",
         "alama/arazzo-contracts": "@dev",
         "alama/arazzo-document": "@dev",
         "alama/arazzo-expression": "@dev",

@@ -29,7 +29,13 @@ final class StepOperationIdSourceScopedRule implements Rule
                 }
                 $isQualified = false;
                 foreach ($symbols->sourceDescriptions as $srcName => $source) {
-                    if (str_starts_with($s->target->operationId, $srcName.'.')) {
+                    // Accept both the spec runtime-expression form
+                    // `$sourceDescriptions.<name>.<operationId>` and the
+                    // bare `<name>.<operationId>` form.
+                    if (
+                        str_starts_with($s->target->operationId, $srcName.'.')
+                        || str_starts_with($s->target->operationId, '$sourceDescriptions.'.$srcName.'.')
+                    ) {
                         $isQualified = true;
                         break;
                     }

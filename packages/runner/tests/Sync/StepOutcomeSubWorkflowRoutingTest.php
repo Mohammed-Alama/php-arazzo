@@ -1,0 +1,69 @@
+<?php
+
+declare(strict_types=1);
+
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Spec\Action\SubWorkflowSuccessAction;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Async\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
+use Alama\Arazzo\Runner\Execution\Data\SubWorkflowResult;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+
+it('routes SubWorkflowSuccessAction to SubWorkflowInvoker', function () {
+    $invoker = Mockery::mock(SubWorkflowInvoker::class);
+    $action = new SubWorkflowSuccessAction('sub1', 'workflow_2', [], []);
+    $invoker->shouldReceive('invoke')->with($action, Mockery::type(WorkflowContext::class))->once()->andReturn(new SubWorkflowResult(['subOut' => 'abc'], ExecutionStatus::Succeeded->value, 'child_1'));
+
+    $store = Mockery::mock(StateStoreInterface::class);
+    $store->shouldReceive('save');
+
+    $pending = Mockery::mock(PendingCorrelationRegistryInterface::class);
+    $pending->shouldReceive('existsForExecution')->once()->andReturn(false);
+
+    $exec = Mockery::mock(ExecutionRegistryInterface::class);
+    $exec->shouldReceive('complete')->once();
+
+    $ledger = Mockery::mock(EventLedgerInterface::class);
+    $ledger->shouldReceive('append')->once();
+
+    $resolver = Mockery::mock(EvaluationEngineInterface::class);
+    $resolver->shouldReceive('evaluateCriteria')->andReturn(true);
+
+    $handler = new StepOutcomeHandler(
+        new RunPersistence($store, $ledger, $exec),
+        new RunControlFlow(new WorkflowEngine($resolver), Mockery::mock(QueueDriverInterface::class)),
+        pendingCorrelations: $pending,
+        invoker: $invoker,
+        evaluationEngine: Mockery::mock(EvaluationEngineInterface::class),
+    );
+
+    $step = StepFactory::http(
+        stepId: 'step1',
+        description: 'Test step',
+        flow: new StepFlow(onSuccess: [$action]),
+        io: new StepIo(),
+        operationId: 'op1',
+    );
+
+    $workflow = new Workflow('test_wf', null, null, null, [], [$step], [], [], [], []);
+    $document = new ArazzoDocument('1.0.0', new Info('Title', null, null, '1.1.0'), [], [], new Components([], [], [], []), []);
+    $context = new WorkflowContext('def_1', [], ['step1' => []], [], 'test_wf', 'exec_1');
+
+    $handler->handle($document, $workflow, $step, $context, 'exec_1', true);
+});

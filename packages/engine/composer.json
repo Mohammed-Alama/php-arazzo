@@ -10,8 +10,7 @@
     },
     "require-dev": {
         "pestphp/pest": "^5.0",
-        "phpstan/phpstan": "^2.0",
-        "alama/arazzo-runner": "@dev"
+        "phpstan/phpstan": "^2.0"
     },
     "autoload": {
         "psr-4": {

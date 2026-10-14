@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Laravel\Tests;
 
 use Alama\Arazzo\Laravel\LaravelArazzoServiceProvider;
+use Alama\Arazzo\Laravel\ProtocolHttpServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Events\Dispatcher as LaravelDispatcher;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -13,7 +14,7 @@ class TestCase extends Orchestra
 {
     protected function getPackageProviders($app): array
     {
-        return [LaravelArazzoServiceProvider::class];
+        return [LaravelArazzoServiceProvider::class, ProtocolHttpServiceProvider::class];
     }
 
     protected function defineEnvironment($app): void

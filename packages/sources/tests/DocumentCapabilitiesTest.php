@@ -71,17 +71,19 @@ it('resolves an operation-targeted step through the face', function (): void {
 
     $step = $arazzo->workflows[0]->steps[0];
 
-    // The port yields the vendor-free model; the cebe handle comes from the
-    // resolver, which is why the runtime hands out both.
+    // Both entry points project to the vendor-free model: the document
+    // facade and the seam the runtime hands out. The cebe-carrying handle
+    // lives above this layer, and is asserted in protocol-http's
+    // OpenApiOperationResolverVersionTest.
     $resolved = $runtime->document->resolveOperation($step, $arazzo);
-    $handle = $runtime->operations->resolve($step, $arazzo);
+    $viaSeam = $runtime->operations->resolveModel($step, $arazzo);
 
     expect($resolved)->toBeInstanceOf(ResolvedOperation::class)
         ->and($resolved->normalized->path)->toBe('/pets')
         ->and($resolved->normalized->method)->toBe('get')
         ->and($resolved->normalized->resolvedServerUrl)->toBeNull()
-        ->and($handle->operation->normalized->path)->toBe($resolved->normalized->path)
-        ->and($handle->cebeOperation->operationId)->toBe('listPets');
+        ->and($viaSeam->normalized->path)->toBe($resolved->normalized->path)
+        ->and($viaSeam->normalized->method)->toBe('get');
 });
 
 it('fails fast when a step declares no operation target', function (): void {

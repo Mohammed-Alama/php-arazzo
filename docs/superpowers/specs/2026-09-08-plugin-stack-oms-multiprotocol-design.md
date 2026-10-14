@@ -3,6 +3,20 @@
 Date: 2026-09-08
 Issue: to be created — the Phase tickets A–H below are the issue breakdown
 
+**Revision R1 (2026-10-06) — Phase F boundary correction (Option 2).** Decided mid-phase
+after F1.2 landed: **spec reading lives in `alama/arazzo-sources`; `alama/arazzo-protocol-*`
+packages are execution-only** (executor, transfer mapper, replacement resolver, validator,
+registrar) and carry no `illuminate/*` — all Laravel wiring (providers, config, testbench
+tests) ships from `packages/laravel`. Consequences: the OpenAPI normalizers F1 relocated
+return to `arazzo-sources` (plan task F1.5); F4.1's `WsdlSourceNormalizer` lands in
+`arazzo-sources` too; D7's zero-core-edit promise is **scoped to execution** (adding a format
+parser may edit sources; D5's vendored-codec exception unchanged — the `.proto` parser stays
+in `protocol-rpc`); D9's normalizer-relocation clause below is superseded (the HTTP/AsyncAPI
+executors + response validators do still relocate to `arazzo-protocol-http`, and the pipeline
+helpers went to `arazzo-engine` in F1.2, not to a protocol package). Full decisions
+(DF8–DF11) and the landing sequence: `plans/2026-09-08-phase-f-protocol-packages.md`,
+"Revision note R2". Superseded clauses are marked in place below.
+
 ## Context
 
 The Arazzo 1.1+ roadmap adds new Step targets and protocols — SOAP, gRPC,
@@ -49,8 +63,10 @@ Three forces shape this design:
   (execution variant, e.g. `grpc`/`twirp`).
 - **Plugin** — a named, priority-ordered extension unit behind a contracts SPI.
 - **Protocol package** — a single `alama/arazzo-protocol-*` package that carries
-  *all* ports a protocol implements (normalizer + executor + transfer mapper +
-  replacement resolver + validator). Core never imports protocol packages.
+  the *execution* ports a protocol implements (executor + transfer mapper +
+  replacement resolver + validator + registrar); its spec **normalizer ships in
+  `alama/arazzo-sources`** and is registered by the package's registrar (R1).
+  Core never imports protocol packages.
   `arazzo-protocol-http` is extracted first (F1); SOAP/RPC/GraphQL follow it.
 - **Expression package** — `alama/arazzo-expression`: the closed,
   protocol-agnostic **reference model**: lexer/parser/AST + `ReferenceKind` +
@@ -134,9 +150,9 @@ SPI seam: `OperationExecutorPluginInterface` in `contracts`; the existing
 | D4 | `arazzo-protocol-http` is the **first** protocol slice (Phase F1): the extracted HTTP/OpenAPI + AsyncAPI defaults prove the vertical pattern. SOAP (F2, zero-vendor DOM + PSR-18) is the first **new**-protocol slice. |
 | D5 | Protocol Buffer RPC is planned fully: one `arazzo-protocol-rpc` package carries the `.proto` normalizer + executor for all four `rpcProtocol` variants (grpc, grpc-web, twirp, connect); optional `grpc/grpc` + `google/protobuf` vendor allowed only there. |
 | D6 | Protocol-typed response handling is **additive**: new `ResponseTransferInterface` seam (in contracts) + per-protocol transfer DTOs implementing it (in protocol packages); existing `EvaluationInput` DTO untouched. |
-| D7 | **Protocols are vertical packages.** Every seam a protocol touches (source normalizer, executor, transfer mapper, replacement resolver, schema validator) ships in `alama/arazzo-protocol-<X>`. Core edits nothing when a protocol is added. |
+| D7 | **Protocols are vertical packages.** Every seam a protocol touches (source normalizer, executor, transfer mapper, replacement resolver, schema validator) ships in `alama/arazzo-protocol-<X>`. Core edits nothing when a protocol is added. *(R1: scoped to execution — the **format parser** half of "source normalizer" lives in `alama/arazzo-sources`, so adding a format may edit sources; executor/transfer/resolver/validator additions still edit nothing below the protocol package. D5's vendored-codec exception unchanged.)* |
 | D8 | **Spec-mandated, step-scoped grammar.** The lexer gains only the expression forms the Arazzo spec itself defines, each scoped to its step type (`$response.status#/…`, `$response.metadata.*`, `$response.trailingMetadata.*` on RPC steps; `$interaction.payload` on interaction steps; `$sourceDescriptions.<name>` whole-source for GraphQL) plus ONE generic `$response.meta.<key>` escape hatch for execution-environment extras. A protocol never invents grammar the spec does not define; extra keys go in the `meta` bag. |
-| D9 | **HTTP-first extraction.** `arazzo-protocol-http` (F1) relocates the embedded OpenAPI/AsyncAPI normalizers + HTTP/AsyncAPI executors + `RequestCompiler` + response validators out of `document`/`runner` into the first vertical slice — Guzzle/`cebe`/jsonpath deps move with it. The umbrella (`arazzo-core`, laravel, cli) requires it by default so end-user composition is unchanged; standalone `document`/`runner` consumers resolve OpenAPI through the registry once the package is registered (documented change). |
+| D9 | **HTTP-first extraction.** `arazzo-protocol-http` (F1) relocates the embedded OpenAPI/AsyncAPI normalizers + HTTP/AsyncAPI executors + `RequestCompiler` + response validators out of `document`/`runner` into the first vertical slice — Guzzle/`cebe`/jsonpath deps move with it. The umbrella (`arazzo-core`, laravel, cli) requires it by default so end-user composition is unchanged; standalone `document`/`runner` consumers resolve OpenAPI through the registry once the package is registered (documented change). *(R1: superseded in part — the OpenAPI **normalizers** stay in/return to `arazzo-sources`; `RequestCompiler`-class helpers went to `arazzo-engine` (F1.2) or remain runner-internal (`ExpressionValueResolver` no longer exists). The HTTP/AsyncAPI **executors**, response validators and transport deps do relocate as stated, and the umbrella/laravel/cli default requires hold.)* |
 | D10 | **Design to PR shapes now.** The four open `v1.2-dev` PRs (#533 SOAP, #556 RPC, #567 GraphQL, #568 actor-in-the-loop) are the design target — their `sourceType` enum + step-object variants and field names are locked in below, flagged **proposal**. Every expression form and validation rule is re-validated against the merged spec at conformance time (Phase H). |
 | D11 | **Expression split.** `alama/arazzo-expression` (kept) becomes the **reference model**: lexer/parser/AST + the static `SymbolTable`/`WorkflowSymbols`/`StepSymbols`. Its public face is the parse/inspect seam `ExpressionInterface` (`parseExpression`, `expressionReferences`, `buildSymbolTable`) plus the parse-side `ExpressionInspector` — no evaluation capability. `alama/arazzo-evaluation` (new) owns `ExpressionEngine`/`ExpressionEngineInterface`, evaluators/resolvers, flattened evaluation DTOs, `EvaluationInput`, registries, and built-in JsonPath plugins. Evaluation FQCNs intentionally move once to flat `Alama\Arazzo\Evaluation\`; parse-side FQCNs remain under `Alama\Arazzo\Expression\`. `arazzo-expression` is zero-vendor and protocol-agnostic; `arazzo-evaluation` requires it and delegates parse/inspect/symbols through `ExpressionInterface`. `document` depends on `arazzo-expression` only and consumes `ExpressionInterface` (validation is static); `runner` consumes both (it evaluates). |
 
@@ -487,6 +503,8 @@ Phase C status: ✅ Implemented 2026-09-22 — see `plans/2026-09-08-phase-c-eva
 
 Phase E status: ✅ Implemented — the four-layer split (`arazzo-runtime`, `arazzo-events`, `arazzo-request-pipeline`, `arazzo-engine`) landed in E0–E5, then the OMS in E6–E10. See `plans/2026-09-08-phase-e-runner-oms.md`.
 ### Phase F — Protocol packages (vertical slices; core untouched)
+Phase F status (F1–F3): ✅ Implemented — `arazzo-protocol-http` extracted, `arazzo-runner` split into `Sync\`/`Async\`, `laravel`/`cli` facade leak closed. See `plans/2026-09-08-phase-f-protocol-packages.md`.
+
 - **F1** `alama/arazzo-protocol-http` **(reference slice; D4/D9)** —
   relocate the embedded defaults out of core into the first vertical package:
   document OpenAPI/AsyncAPI normalizers (`OpenApi30Normalizer`,
@@ -500,6 +518,12 @@ Phase E status: ✅ Implemented — the four-layer split (`arazzo-runtime`, `ara
   assemblers stop defaulting a Guzzle client (client injected via seams,
   default wiring shipped here). Registers as `arazzo.plugins.*`. **This is the
   recipe SOAP/RPC/GraphQL copy.**
+  > **R1 (2026-10-06):** the normalizer names in this move list return to
+  > `arazzo-sources` (plan F1.5); `RequestCompiler`/`ParameterSerializer`/
+  > `TypeCaster`/`SchemaValidator` went to `arazzo-engine` in F1.2 and
+  > `ExpressionValueResolver` no longer exists (ledger ruling). Executors +
+  > response validators relocate as listed; the package carries **no
+  > `illuminate/*`** — its provider ships from `packages/laravel` (DF10).
 - **F2** `alama/arazzo-protocol-soap` **(first new protocol)**:
   `WsdlSourceNormalizer` (DOM, no vendor) → operations, extracting WSDL
   `operationName` from `portType`/`interface` and the HTTP method/endpoint from
@@ -676,6 +700,11 @@ The plan overlaps with 13 open issues. Issues are grouped by relationship:
   FQCNs are unchanged). Standalone `document`/`runner` consumers need
   `arazzo-protocol-http` registered to resolve/execute OpenAPI sources; the
   umbrella and Laravel require it by default so composed apps see no change.
+  **(R1:** only the executors + response validators land in
+  `arazzo-protocol-http` — the normalizers stay in `arazzo-sources` and the
+  pipeline helpers in `arazzo-engine`, so *resolution* works from
+  `arazzo-sources` alone; `arazzo-protocol-http` is required only to
+  **execute**. The umbrella/Laravel/cli default-require sentence stands.**)**
 - `StepProtocolExecutorInterface` / `OpenApiExecutorInterface` become
   deprecated aliases (kept for BC, removed from active BC-tracking in a later
   minor release).

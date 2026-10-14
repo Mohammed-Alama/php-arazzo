@@ -11,7 +11,7 @@ use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Runner\Execution\StepParameterMerger;
+use Alama\Arazzo\Engine\Execution\StepParameterMerger;
 use Alama\Arazzo\Tests\Support\Fx;
 
 function wfParam(string $name, ParameterIn $in, mixed $value): Parameter

@@ -16,7 +16,7 @@ Evans' first question: does the code speak one language?
 ### run vs execute vs invoke
 
 - **Execute**: `ExecuteStepJob`, `RunExecuteStepJob`, `StepExecutedEvent` (3 types)
-- **Executor**: `AsyncApiStepExecutor`, `DefaultOpenApiExecutor`, `HttpStepExecutor`, `OpenApiExecutorInterface` + 7 more (11 types)
+- **Executor**: `OpenApiExecutorInterface`, `OperationExecutorPluginInterface`, `OperationExecutorRegistry`, `ProtocolExecutorRegistryInterface` + 4 more (8 types)
 - **Invoke**: `SubWorkflowInvokeTargetResolvesRule`, `SubWorkflowInvoker` (2 types)
 - **Run**: `CliRunResult`, `CliRunner`, `OperationRuntime`, `RunCommand` + 13 more (17 types)
 - **Runner**: `CliRunner`, `RunnerFacade`, `RunnerFacadeInterface`, `RunnerGraphBuilder` + 1 more (5 types)
@@ -35,8 +35,8 @@ Evans' first question: does the code speak one language?
 
 ### fetch vs resolve vs retrieve
 
-- **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SourceFetcher` (4 types)
-- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolver` + 4 more (8 types)
+- **Fetcher**: `CachedFetcher`, `HttpFetcher`, `LocalFetcher`, `SchemeSourceFetcher` + 1 more (5 types)
+- **Resolver**: `AsyncGraphResolver`, `DefaultSourceResolver`, `InputSchemaResolver`, `OpenApiOperationResolver` + 6 more (10 types)
 
 ### state vs status
 
@@ -45,14 +45,14 @@ Evans' first question: does the code speak one language?
 
 ### registry vs store vs repository
 
-- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 13 more (17 types)
+- **Registry**: `CriterionEvaluatorRegistry`, `DatabaseDefinitionRegistry`, `DatabaseExecutionRegistry`, `DatabasePendingCorrelationRegistry` + 14 more (18 types)
 - **Repository**: `StoredWorkflowStateRepository`, `WorkflowStateRepositoryInterface` (2 types)
 - **Store**: `FileStateStore`, `InMemoryStateStore`, `RedisHotStateStore`, `StateStoreInterface` + 1 more (5 types)
 
 ### workflow vs process vs flow
 
 - **Flow**: `RunControlFlow`, `StepFlow` (2 types)
-- **Process**: `InProcessExecutionRegistry` (1 types)
+- **Process**: `InProcessExecutionRegistry`, `InProcessPendingCorrelationRegistry` (2 types)
 - **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 24 more (28 types)
 
 ### render vs generate

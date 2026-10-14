@@ -8,7 +8,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
 use RuntimeException;
 
 /**
@@ -20,7 +20,7 @@ final class Document implements DocumentInterface
 {
     public function __construct(
         private readonly ModelStack $model,
-        private readonly ?OpenApiOperationResolver $operationResolver = null,
+        private readonly ?OpenApiOperationResolverInterface $operationResolver = null,
     ) {}
 
     public function load(string $path): ArazzoDocument

@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Cli\Console\Cli;
 
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
-use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
-use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
-use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
+use Alama\Arazzo\Runner\Async\ExecuteStepJob;
+use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\SyncQueueDriver;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
+use Alama\Arazzo\Runner\RunnerGraphBuilder;
+use Alama\Arazzo\Runner\RunnerGraphBuilderInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\Telemetry\OtelSetup;
 use OpenTelemetry\API\Trace\SpanInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
 /**
@@ -46,8 +50,16 @@ final class CliRunner
 
     private readonly LockManagerInterface $locks;
 
+    private readonly RunnerGraphBuilderInterface $builder;
+
+    private readonly HttpClientInterface $httpClient;
+
+    private readonly PendingCorrelationRegistryInterface $pendingCorrelations;
+
+    private readonly OperationExecutorRegistry $executors;
+
     /**
-     * @param  list<StepProtocolExecutorInterface>  $protocolExecutors
+     * @param  list<OperationExecutorPluginInterface>  $protocolExecutors
      */
     public function __construct(
         private readonly EvaluationEngineInterface $evaluationEngine,
@@ -58,6 +70,9 @@ final class CliRunner
         ?LockManagerInterface $locks = null,
         private readonly array $protocolExecutors = [],
         private readonly int $maxQueuedSteps = 10_000,
+        ?RunnerGraphBuilderInterface $builder = null,
+        ?HttpClientInterface $httpClient = null,
+        ?PendingCorrelationRegistryInterface $pendingCorrelations = null,
     ) {
         $this->queue = new SyncQueueDriver();
         $this->locks = $locks ?? new class() implements LockManagerInterface
@@ -74,6 +89,19 @@ final class CliRunner
 
             public function release(string $key): void {}
         };
+        $this->executors = new OperationExecutorRegistry();
+        foreach ($protocolExecutors as $plugin) {
+            $this->executors->register($plugin);
+        }
+        $this->builder = $builder ?? new RunnerGraphBuilder(evaluationEngine: $this->evaluationEngine);
+        $this->httpClient = $httpClient ?? new class() implements HttpClientInterface
+        {
+            public function sendRequest(RequestInterface $request, ?float $timeoutSeconds = null): ResponseInterface
+            {
+                throw new RuntimeException('The CLI worker does not perform outbound HTTP; register an alama/arazzo-protocol-http executor plugin if a step needs one.');
+            }
+        };
+        $this->pendingCorrelations = $pendingCorrelations ?? new InProcessPendingCorrelationRegistry();
     }
 
     /**
@@ -172,14 +200,19 @@ final class CliRunner
 
     private function drainUnderSpan(string $executionId, SpanInterface $runSpan): CliRunResult
     {
-        $worker = new StepExecutionWorker(
-            new RunPersistence($this->stateStore, $this->eventLedger, $this->registry),
-            $this->locks,
-            $this->definitions,
-            $this->evaluationEngine,
-            $this->protocolExecutors,
-            new RunControlFlow(new WorkflowEngine($this->evaluationEngine), $this->queue),
-        );
+        // CliRunner is a worker-only host: the facade builds the canonical
+        // async worker from the seams (no protocol value seams required).
+        $worker = $this->builder->buildWorker(new AsyncGraphSeams(
+            stateStore: $this->stateStore,
+            queueDriver: $this->queue,
+            eventLedger: $this->eventLedger,
+            executionRegistry: $this->registry,
+            pendingCorrelationRegistry: $this->pendingCorrelations,
+            definitionRegistry: $this->definitions,
+            lockManager: $this->locks,
+            httpClient: $this->httpClient,
+            executorRegistry: $this->executors,
+        ));
 
         $processed = 0;
 

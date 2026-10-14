@@ -16,7 +16,7 @@ use RuntimeException;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-class OpenApiOperationResolver
+class OpenApiOperationResolver implements OpenApiOperationResolverInterface
 {
     public function __construct(
         private OpenApiDocumentLoader $loader,

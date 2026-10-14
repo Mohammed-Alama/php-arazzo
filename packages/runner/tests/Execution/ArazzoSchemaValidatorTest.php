@@ -10,7 +10,7 @@ use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use cebe\openapi\spec\Operation;
 use cebe\openapi\spec\Response;

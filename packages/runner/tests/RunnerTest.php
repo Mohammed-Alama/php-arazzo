@@ -14,6 +14,24 @@ use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Runner\RunnerFacade;
 use Alama\Arazzo\Runner\RunnerFacadeInterface;
 use Alama\Arazzo\Sources\SourceGraph;
+use Alama\Arazzo\Tests\Support\FakeOpenApiExecutor;
+use Alama\Arazzo\Tests\Support\FakeOutputExtractor;
+use Alama\Arazzo\Tests\Support\FakeResponseValidator;
+
+function runnerFacadeWithTestFakes(): RunnerFacade
+{
+    $runtime = SourceGraph::runtime();
+
+    return new RunnerFacade(
+        $runtime->document,
+        $runtime->operations,
+        new EvaluationEngine(expression: new ExpressionEngine()),
+        new ExpressionEngine(), // inspector
+        new FakeOpenApiExecutor(),
+        new FakeOutputExtractor(),
+        new FakeResponseValidator(),
+    );
+}
 
 function runnerDocument(): ArazzoDocument
 {
@@ -25,24 +43,17 @@ function runnerDocument(): ArazzoDocument
     );
 }
 
-function runnerFacade(): RunnerFacade
-{
-    $runtime = SourceGraph::runtime();
-
-    return new RunnerFacade($runtime->document, $runtime->operations, new EvaluationEngine(expression: new ExpressionEngine()));
-}
-
 it('exposes the RunnerFacadeInterface entry point', function () {
-    $runner = runnerFacade();
+    $runner = runnerFacadeWithTestFakes();
     expect($runner)->toBeInstanceOf(RunnerFacadeInterface::class);
 });
 
 it('executes with only the document public face injected', function () {
-    $runner = runnerFacade();
+    $runner = runnerFacadeWithTestFakes();
     expect($runner)->toBeInstanceOf(RunnerFacade::class);
 });
 
 it('throws on an unknown workflow id', function () {
-    $runner = runnerFacade();
+    $runner = runnerFacadeWithTestFakes();
     $runner->run(runnerDocument(), 'missing', []);
 })->throws(RuntimeException::class, "unknown workflow 'missing'");

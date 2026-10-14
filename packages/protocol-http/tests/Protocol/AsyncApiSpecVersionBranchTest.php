@@ -1,0 +1,70 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Tests\Protocol\Http\Protocol;
+
+use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Expression;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\StepTarget;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
+use LogicException;
+use Mockery;
+
+it('rejects async fields on 1.0 doc at execution', function () {
+    $executor = new AsyncApiStepExecutor(
+        Mockery::mock(PendingCorrelationRegistryInterface::class),
+        Mockery::mock(EvaluationEngineInterface::class),
+        Mockery::mock(HttpClientInterface::class),
+    );
+
+    $step = new Step(
+        stepId: 'step1',
+        description: 'Test step',
+        target: StepTarget::async('receive', 'test/channel'),
+        flow: new StepFlow(),
+        io: new StepIo(),
+    );
+
+    $document = new ArazzoDocument('1.0.0', new Info('Title', null, null, '1.0.0'), [], [], new Components([], [], [], []), [], null, SpecVersion::V1_0);
+    $context = new WorkflowContext('def_1', [], [], [], 'test_wf', 'exec_1');
+
+    $executor->execute($step, $context, $document, 'exec_1');
+})->throws(LogicException::class, "AsyncAPI step 'step1' encountered under a 1.0.0 document; upgrade to arazzo: 1.1.0.");
+
+it('accepts async fields on 1.1 doc', function () {
+    $pending = Mockery::mock(PendingCorrelationRegistryInterface::class);
+    $pending->shouldReceive('create')->with('corr-1', 'exec_1', 'step1', 'test/channel', null)->once();
+
+    $engine = Mockery::mock(EvaluationEngineInterface::class);
+    $engine->shouldReceive('evaluate')->once()->andReturn('corr-1');
+
+    $executor = new AsyncApiStepExecutor(
+        $pending,
+        $engine,
+        Mockery::mock(HttpClientInterface::class),
+    );
+
+    $step = new Step(
+        stepId: 'step1',
+        description: 'Test step',
+        target: StepTarget::async('receive', 'test/channel', new Expression('$.foo')),
+        flow: new StepFlow(),
+        io: new StepIo(),
+    );
+
+    $document = new ArazzoDocument('1.0.0', new Info('Title', null, null, '1.1.0'), [], [], new Components([], [], [], []), [], null, SpecVersion::V1_1);
+    $context = new WorkflowContext('def_1', [], [], [], 'test_wf', 'exec_1');
+
+    $executor->execute($step, $context, $document, 'exec_1');
+});

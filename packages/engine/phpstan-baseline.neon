@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#2 \$value of static method Alama\\Arazzo\\Engine\\Execution\\SchemaValidator\:\:validateObject\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Execution/SchemaValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array\<cebe\\openapi\\spec\\Reference\|cebe\\openapi\\spec\\Schema\> and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 3
+			path: src/Execution/SchemaValidator.php

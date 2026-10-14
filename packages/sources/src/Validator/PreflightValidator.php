@@ -14,7 +14,7 @@ use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\Data\Warning;
 use Alama\Arazzo\Document\Validator\Enum\Severity;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
-use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolverInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiVersionDetector;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use JsonSchema\Constraints\Constraint;
@@ -39,7 +39,7 @@ final class PreflightValidator
      */
     public function __construct(
         private readonly SourceRegistry $sources,
-        private readonly OpenApiOperationResolver $operations,
+        private readonly OpenApiOperationResolverInterface $operations,
         private array $supportedXPathVersions = ['xpath-10'],
     ) {
         $this->versionDetector = new OpenApiVersionDetector();
@@ -216,7 +216,7 @@ final class PreflightValidator
 
             // 2. Operation reference resolves against the local document.
             try {
-                $this->operations->resolve($step, $document);
+                $this->operations->resolveModel($step, $document);
             } catch (\Throwable $e) {
                 $errors->add(new Error(
                     'preflight.operation_unresolvable',

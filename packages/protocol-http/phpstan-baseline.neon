@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Property Alama\\Arazzo\\Protocol\\Http\\Execution\\DefaultOpenApiExecutor::\$logger is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Execution/DefaultOpenApiExecutor.php

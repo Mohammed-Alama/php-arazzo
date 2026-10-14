@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
 use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
 use Alama\Arazzo\Contracts\Spec\Enum\StepStatus;
@@ -15,7 +16,6 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Engine\WorkflowEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use LogicException;
 

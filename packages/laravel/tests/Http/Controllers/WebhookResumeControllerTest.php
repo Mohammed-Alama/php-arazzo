@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Laravel\Tests\Http\Controllers;
 
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
@@ -21,12 +22,10 @@ use Alama\Arazzo\Document\Parser\Parser;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunResumeCorrelationJob;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Async\ExecuteStepJob;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
@@ -106,8 +105,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         }
     });
 
-    $this->app->forgetInstance(StepExecutionWorker::class);
-    $this->app->forgetInstance(CorrelationResumer::class);
+    $this->app->forgetInstance(AsyncExecutionGraph::class);
     $this->app->instance(LockManagerInterface::class, new class() implements LockManagerInterface
     {
         public function acquire(string $key, int $ttlSeconds, callable $callback): mixed

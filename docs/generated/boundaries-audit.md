@@ -17,34 +17,36 @@ when a boundary consciously moves.
 | Vendor | core refs | laravel refs | Policy in core |
 |---|---:|---:|---|
 | `Flow` | 1 | 0 | _unclassified_ ⚠ |
-| `GuzzleHttp` | 10 | 3 | **forbidden** ⚠ |
-| `Illuminate` | 0 | 39 | **forbidden** |
+| `GuzzleHttp` | 5 | 3 | **forbidden** ⚠ |
+| `Illuminate` | 0 | 46 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 26 | 0 | _unclassified_ ⚠ |
-| `Psr` | 51 | 17 | allowed |
+| `Psr` | 34 | 25 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
-| `cebe` | 18 | 0 | **forbidden** ⚠ |
+| `cebe` | 10 | 0 | **forbidden** ⚠ |
 
 ## Module detail
 
 | Package | Module | Vendor | References |
 |---|---|---|---:|
+| cli | `cli:Console` | `GuzzleHttp` | 1 |
 | cli | `cli:Console` | `OpenTelemetry` | 1 |
-| cli | `cli:Console` | `Psr` | 2 |
+| cli | `cli:Console` | `Psr` | 5 |
 | cli | `cli:Console` | `Symfony` | 30 |
 | cli | `cli:Generator` | `Psr` | 3 |
 | contracts | `contracts:Interfaces` | `Psr` | 2 |
 | contracts | `contracts:Support` | `Psr` | 4 |
 | document | `document:Parser` | `Symfony` | 2 |
 | document | `document:Validator` | `JsonSchema` | 4 |
+| engine | `engine:Execution` | `Psr` | 4 |
+| engine | `engine:Execution` | `cebe` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
-| runner | `runner:Execution` | `GuzzleHttp` | 6 |
-| runner | `runner:Execution` | `OpenTelemetry` | 2 |
-| runner | `runner:Execution` | `Psr` | 23 |
-| runner | `runner:Execution` | `cebe` | 10 |
-| runner | `runner:Protocol` | `Psr` | 6 |
-| runner | `runner:_` | `Psr` | 5 |
+| runner | `runner:Async` | `OpenTelemetry` | 2 |
+| runner | `runner:Async` | `Psr` | 3 |
+| runner | `runner:Execution` | `Psr` | 2 |
+| runner | `runner:Sync` | `Psr` | 3 |
+| runner | `runner:_` | `Psr` | 2 |
 | runtime | `runtime:Telemetry` | `OpenTelemetry` | 23 |
 | sources | `sources:Normalizer` | `cebe` | 8 |
 | sources | `sources:Resolver` | `GuzzleHttp` | 2 |
@@ -54,7 +56,7 @@ when a boundary consciously moves.
 | sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
-| laravel | `laravel:Bindings` | `Psr` | 11 |
+| laravel | `laravel:Bindings` | `Psr` | 10 |
 | laravel | `laravel:Events` | `Illuminate` | 1 |
 | laravel | `laravel:Events` | `Psr` | 1 |
 | laravel | `laravel:Http` | `GuzzleHttp` | 1 |
@@ -65,20 +67,21 @@ when a boundary consciously moves.
 | laravel | `laravel:Persistence` | `Psr` | 1 |
 | laravel | `laravel:Queue` | `Illuminate` | 11 |
 | laravel | `laravel:State` | `Illuminate` | 1 |
-| laravel | `laravel:Support` | `Illuminate` | 2 |
-| laravel | `laravel:Support` | `Psr` | 2 |
-| laravel | `laravel:_` | `Illuminate` | 2 |
+| laravel | `laravel:Support` | `Illuminate` | 3 |
+| laravel | `laravel:Support` | `Psr` | 4 |
+| laravel | `laravel:_` | `Illuminate` | 8 |
+| laravel | `laravel:_` | `Psr` | 7 |
 | laravel | `laravel:_` | `Spatie` | 2 |
 
 **13 library boundary violation(s):**
+- `cli:Console` imports `GuzzleHttp\*` (1 refs)
 - `cli:Console` imports `OpenTelemetry\*` (1 refs)
 - `cli:Console` imports `Symfony\*` (30 refs)
 - `document:Parser` imports `Symfony\*` (2 refs)
 - `document:Validator` imports `JsonSchema\*` (4 refs)
+- `engine:Execution` imports `cebe\*` (2 refs)
 - `expression:_` imports `Flow\*` (1 refs)
-- `runner:Execution` imports `GuzzleHttp\*` (6 refs)
-- `runner:Execution` imports `OpenTelemetry\*` (2 refs)
-- `runner:Execution` imports `cebe\*` (10 refs)
+- `runner:Async` imports `OpenTelemetry\*` (2 refs)
 - `runtime:Telemetry` imports `OpenTelemetry\*` (23 refs)
 - `sources:Normalizer` imports `cebe\*` (8 refs)
 - `sources:Resolver` imports `GuzzleHttp\*` (2 refs)
@@ -110,24 +113,27 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
-| `document` | `OpenApiOperationResolver` | `sources` | 2 | `Document` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
-| `runner` | `CorrelationPendingEvent` | `events` | 1 | `StepExecutionWorker` |
+| `runner` | `CorrelationPendingEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |
 | `runner` | `DependencyAnalyzer` | `contracts` | 1 | `StepOutcomeHandler` |
-| `runner` | `DependencyGraph` | `contracts` | 2 | `WorkflowEngine` |
-| `runner` | `EvaluationContext` | `expression` | 7 | `SubWorkflowInvoker` |
-| `runner` | `ExecutionContext` | `runtime` | 2 | `WorkflowEngine` |
-| `runner` | `OpenApiOperationHandle` | `sources` | 4 | `StepOutputExtractor` |
-| `runner` | `OpenApiOperationResolver` | `sources` | 6 | `OperationRuntime` |
+| `runner` | `DependencyGraph` | `contracts` | 2 | `StepOutcomeHandler` |
+| `runner` | `EvaluationContext` | `expression` | 5 | `SubWorkflowInvoker` |
+| `runner` | `ExecutionContext` | `runtime` | 2 | `Transition` |
+| `runner` | `IdempotencyKeyInjector` | `engine` | 2 | `AsyncExecutionGraphAssembler` |
+| `runner` | `OpenApiOperationHandle` | `sources` | 2 | `OpenApiExecutorInterface` |
+| `runner` | `OpenApiOperationResolver` | `sources` | 3 | `OperationRuntime` |
 | `runner` | `OtelSetup` | `runtime` | 1 | `StepExecutionWorker` |
+| `runner` | `RequestCompiler` | `engine` | 1 | `StepExecutor` |
 | `runner` | `RetryPolicy` | `runtime` | 1 | `WorkflowEngine` |
+| `runner` | `ReusableParameterResolver` | `engine` | 1 | `SubWorkflowStepExecutor` |
 | `runner` | `RunCompletedEvent` | `events` | 3 | `StepExecutionWorker` |
 | `runner` | `RunFailedEvent` | `events` | 3 | `StepExecutionWorker` |
 | `runner` | `RunStartedEvent` | `events` | 1 | `WorkflowExecutor` |
 | `runner` | `StepExecutedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `StepFailedEvent` | `events` | 2 | `StepExecutionWorker` |
+| `runner` | `StepParameterMerger` | `engine` | 2 | `StepExecutionWorker` |
 | `runner` | `StepRetriedEvent` | `events` | 2 | `StepOutcomeHandler` |
 | `runner` | `StepStartedEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `ValidationResult` | `document` | 1 | `WorkflowExecutor` |
@@ -135,9 +141,9 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `sources` | `Loader` | `document` | 1 | `SourceGraph` |
 | `sources` | `ModelStack` | `document` | 1 | `SourceGraph` |
 | `sources` | `NativeJsonDecoder` | `document` | 1 | `DefaultSourceResolver` |
-| `sources` | `NormalizedOpenApiOperation` | `document` | 3 | `Swagger2Normalizer` |
+| `sources` | `NormalizedOpenApiOperation` | `document` | 4 | `WsdlSourceNormalizer` |
 | `sources` | `Parser` | `document` | 1 | `SourceGraph` |
-| `sources` | `ResolvedOperation` | `document` | 4 | `OpenApiOperationHandle` |
+| `sources` | `ResolvedOperation` | `document` | 6 | `WsdlSourceNormalizer` |
 | `sources` | `RuleSet` | `document` | 1 | `SourceGraph` |
 | `sources` | `SymfonyYamlDecoder` | `document` | 1 | `DefaultSourceResolver` |
 | `sources` | `ValidationResult` | `document` | 2 | `PreflightValidator` |

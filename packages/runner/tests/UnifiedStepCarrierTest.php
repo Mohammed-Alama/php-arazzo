@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\PluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
@@ -25,7 +26,6 @@ use Alama\Arazzo\Runner\UnifiedStepCarrier;
 use Alama\Arazzo\Runtime\Infrastructure\NullLockStrategy;
 use Alama\Arazzo\Runtime\State\InMemoryStateStore;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 
 class UnifiedTestEventLedger implements EventLedgerInterface
 {

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Conformance;
 
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use GuzzleHttp\Psr7\HttpFactory;
 
 /**
@@ -70,6 +71,7 @@ final class OaiFixtureRunner extends ConformanceHarness
                 $this->engine(),
                 $this->outputExtractor($runtime),
                 $this->schemaValidator($runtime),
+                inspector: new ExpressionEngine(),
             ),
             new WorkflowEngine($this->engine()),
             events: $this->events,

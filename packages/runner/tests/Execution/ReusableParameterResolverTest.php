@@ -13,7 +13,7 @@ use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Runner\Execution\ReusableParameterResolver;
+use Alama\Arazzo\Engine\Execution\ReusableParameterResolver;
 use RuntimeException;
 
 function resolverDocument(): ArazzoDocument

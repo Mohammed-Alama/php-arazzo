@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Laravel\Jobs;
 
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
 use Alama\Arazzo\Contracts\Spec\StepFlow;
 use Alama\Arazzo\Contracts\Spec\StepIo;
@@ -21,9 +23,10 @@ use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Laravel\Queue\Jobs\RunExecuteStepJob;
-use Alama\Arazzo\Runner\Execution\Interfaces\OpenApiExecutorInterface;
-use Alama\Arazzo\Runner\Execution\StepExecutionWorker;
-use Alama\Arazzo\Runner\Jobs\ExecuteStepJob;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Runner\Async\ExecuteStepJob;
+use Alama\Arazzo\Runner\AsyncExecutionGraph;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
@@ -34,43 +37,97 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Queue;
 
-class RecordingStepExecutionWorker extends StepExecutionWorker
+class RecordingRunStepPlugin implements OperationExecutorPluginInterface
 {
-    /** @var list<ExecuteStepJob> */
-    public array $handled = [];
+    /** @var list<Step> */
+    public array $executed = [];
 
-    public function __construct() {}
-
-    public function handle(ExecuteStepJob $job): void
+    public function name(): string
     {
-        $this->handled[] = $job;
+        return 'run-job-fake';
+    }
+
+    public function priority(): int
+    {
+        return 100;
+    }
+
+    public function supports(Step $step, ArazzoDocument $document): bool
+    {
+        return true;
+    }
+
+    public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
+    {
+        $this->executed[] = $step;
+
+        return StepExecutionOutcome::resolved(200, ['from' => $step->stepId], [], inputs: []);
     }
 }
 
-it('round-trips ExecuteStepJob through a real Laravel queue connection and reaches StepExecutionWorker::handle()', function (): void {
+function runJobStateStore(): StateStoreInterface
+{
+    return new class() implements StateStoreInterface
+    {
+        /** @var array<string, array<string, mixed>> */
+        private array $store = [];
+
+        public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
+        {
+            $this->store[$executionId] = $state;
+        }
+
+        public function load(string $executionId): ?array
+        {
+            return $this->store[$executionId] ?? null;
+        }
+
+        public function delete(string $executionId): void
+        {
+            unset($this->store[$executionId]);
+        }
+    };
+}
+
+it('round-trips ExecuteStepJob through a real Laravel queue connection and reaches the graph worker', function (): void {
     config(['queue.default' => 'sync']);
 
-    $recorder = new RecordingStepExecutionWorker();
-    $this->app->instance(StepExecutionWorker::class, $recorder);
+    $workflow = new Workflow('wf-1', 'WF 1', null, [], [], [
+        $inStep = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo()),
+    ], [], [], [], []);
+    $document = new ArazzoDocument('1.0.0', new Info('t', null, null, '1'), [], [$workflow], new Components([], [], [], []), []);
 
-    $step = new Step('A', null, new StepTarget(), new StepFlow(), new StepIo());
-    $context = (new WorkflowContext('def_1'))->withExecutionId('exec_1');
-    $innerJob = new ExecuteStepJob($step, $context);
+    $registered = \Mockery::mock(DefinitionRegistryInterface::class);
+    $registered->shouldReceive('get')->with('def_1')->andReturn($document);
+    app()->instance(DefinitionRegistryInterface::class, $registered);
+
+    app()->instance(StateStoreInterface::class, runJobStateStore());
+
+    // The worker executes steps through the executor registry the graph was
+    // assembled with — a recording plugin proves the step actually ran.
+    $recorder = new RecordingRunStepPlugin();
+    $executors = new OperationExecutorRegistry();
+    $executors->register($recorder);
+    app()->instance(OperationExecutorRegistry::class, $executors);
+
+    app()->forgetInstance(AsyncExecutionGraph::class);
+
+    $context = (new WorkflowContext('def_1'))->withWorkflowId('wf-1')->withExecutionId('exec_1');
+    $innerJob = new ExecuteStepJob($inStep, $context);
 
     $wrapper = new RunExecuteStepJob($innerJob);
 
     expect($wrapper->definitionId)->toBe('def_1');
-    expect($wrapper->workflowId)->toBeNull();
+    expect($wrapper->workflowId)->toBe('wf-1');
     expect($wrapper->executionId)->toBe('exec_1');
 
     Queue::connection('sync')->push($wrapper);
 
-    expect($recorder->handled)->toHaveCount(1);
-    expect($recorder->handled[0]->step->stepId)->toBe('A');
-    expect($recorder->handled[0]->context->getExecutionId())->toBe('exec_1');
+    expect($recorder->executed)->toHaveCount(1);
+    expect($recorder->executed[0]->stepId)->toBe('A');
     // A genuinely different instance -- confirms it went through real serialize/unserialize,
     // not just an in-memory closure call.
-    expect($recorder->handled[0])->not->toBe($innerJob);
+    expect($recorder->executed[0])->not->toBe($inStep);
 });
 
 it('injects idempotency key natively during job execution independently of StepExecutor', function (): void {
@@ -113,35 +170,15 @@ it('injects idempotency key natively during job execution independently of StepE
     $registry->shouldReceive('get')->with('def-1')->andReturn($document);
     app()->instance(DefinitionRegistryInterface::class, $registry);
 
-    app()->instance(StateStoreInterface::class, new class() implements StateStoreInterface
-    {
-        /** @var array<string, array<string, mixed>> */
-        private array $store = [];
-
-        public function save(string $executionId, array $state, ?int $ttlSeconds = null): void
-        {
-            $this->store[$executionId] = $state;
-        }
-
-        public function load(string $executionId): ?array
-        {
-            return $this->store[$executionId] ?? null;
-        }
-
-        public function delete(string $executionId): void
-        {
-            unset($this->store[$executionId]);
-        }
-    });
-    app()->forgetInstance(StepExecutionWorker::class);
+    app()->instance(StateStoreInterface::class, runJobStateStore());
+    app()->forgetInstance(AsyncExecutionGraph::class);
 
     // Enable the idempotency feature in config so the binding passes it to the Job's dependencies
     config(['arazzo.idempotency.enabled' => true]);
 
     $job = new RunExecuteStepJob(new ExecuteStepJob($step, $context));
 
-    $worker = app(StepExecutionWorker::class);
-    $job->handle($worker);
+    $job->handle(app(AsyncExecutionGraph::class));
 
     // 5. Assert the header is present and valid
     expect($capturedRequest)->not->toBeNull();

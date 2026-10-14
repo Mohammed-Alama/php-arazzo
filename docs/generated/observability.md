@@ -71,9 +71,8 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WorkflowIdPatternRule` <small>core</small> | `error` | 1 |
 | `WorkflowInputsValidSchemaRule` <small>core</small> | `error` | 3 |
 | `WorkflowUniqueIdRule` <small>core</small> | `error` | 1 |
-| `WsdlStepRule` <small>core</small> | `error` | 2 |
+| `WsdlStepRule` <small>core</small> | `error` | 3 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
-| `StepOutputExtractor` <small>core</small> | `warning` | 1 |
 
 85 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
@@ -87,7 +86,7 @@ Runtime state survives process boundaries through these contracts:
 | `EventLedgerInterface` | `NullEventLedger` <small>core</small>, `DatabaseEventLedger` <small>laravel</small> |
 | `ExecutionRegistryInterface` | `InProcessExecutionRegistry` <small>core</small>, `DatabaseExecutionRegistry` <small>laravel</small> |
 | `LockManagerInterface` | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
-| `PendingCorrelationRegistryInterface` | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
+| `PendingCorrelationRegistryInterface` | `InProcessPendingCorrelationRegistry` <small>core</small>, `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | `LaravelQueueDriver` <small>laravel</small>, `SyncQueueDriver` <small>core</small> |
 | `StateStoreInterface` | `RedisHotStateStore` <small>laravel</small>, `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | `InMemoryDefinitionRegistry` <small>core</small> |
@@ -99,10 +98,11 @@ Where async suspend/resume bookkeeping happens:
 | Class | Role signals |
 |---|---|
 | `CliRunner` <small>core</small> | resumes from webhook |
+| `InProcessPendingCorrelationRegistry` <small>core</small> | consumes correlation, creates pending correlation, reads pending state |
+| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |
 | `WorkflowContext` <small>core</small> | resumes from webhook |
 | `CorrelationResumedEvent` <small>core</small> | resumes from webhook |
 | `LedgerEventListener` <small>core</small> | resumes from webhook |
-| `ExecutionBindings` <small>laravel</small> | resumes from webhook |
 | `WebhookResumeController` <small>laravel</small> | resumes from webhook |
 | `LaravelArazzoServiceProvider` <small>laravel</small> | resumes from webhook |
 | `DatabasePendingCorrelationRegistry` <small>laravel</small> | consumes correlation, creates pending correlation, reads pending state |
@@ -111,7 +111,6 @@ Where async suspend/resume bookkeeping happens:
 | `AsyncExecutionGraph` <small>core</small> | resumes from webhook |
 | `AsyncExecutionGraphAssembler` <small>core</small> | resumes from webhook |
 | `CorrelationResumer` <small>core</small> | consumes correlation, resumes from webhook |
+| `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
 | `StepExecutionWorker` <small>core</small> | resumes from webhook |
 | `StepOutcomeHandler` <small>core</small> | reads pending state |
-| `ResumeCorrelationJob` <small>core</small> | resumes from webhook |
-| `PendingCorrelationRegistryInterface` <small>core</small> | consumes correlation, reads pending state |

@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Cli\Console\Command;
 
 use Alama\Arazzo\Cli\Console\DocumentLoader;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
+use Alama\Arazzo\Contracts\Spec\OpenApiPayload;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\RunnerFacade;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Resolver\SourceRegistry;
 use Alama\Arazzo\Sources\SourceGraph;
+use Alama\Arazzo\Tests\Support\FakePsr18Client;
+use GuzzleHttp\Psr7\HttpFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -65,7 +75,47 @@ final class RunCommand extends Command
         $registry = $this->resolveRegistry();
         $engine = new EvaluationEngine(expression: new ExpressionEngine());
         $runtime = SourceGraph::runtime(registry: $registry);
-        $runner = new RunnerFacade($runtime->document, $runtime->operations, $engine, $this->httpClient);
+
+        $fakeClient = new FakePsr18Client();
+        $fakeFactory = new HttpFactory();
+
+        $openApiExecutor = new class($fakeClient, $fakeFactory) implements OpenApiExecutorInterface
+        {
+            public function __construct(
+                private ClientInterface $client,
+                private RequestFactoryInterface $factory,
+            ) {}
+
+            public function execute(OpenApiOperationHandle $operation, OpenApiPayload $payload, ?callable $requestInterceptor = null, ?float $timeoutSeconds = null): ResponseInterface
+            {
+                $request = $this->factory->createRequest('POST', 'http://test');
+
+                return $this->client->sendRequest($request);
+            }
+        };
+
+        $outputExtractor = new class() implements OutputExtractorInterface
+        {
+            public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+            {
+                return [];
+            }
+        };
+
+        $schemaValidator = new class() implements ResponseValidatorInterface
+        {
+            public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void {}
+        };
+
+        $runner = new RunnerFacade(
+            $runtime->document,
+            $runtime->operations,
+            $engine,
+            inspector: null,
+            openApiExecutor: $openApiExecutor,
+            outputExtractor: $outputExtractor,
+            schemaValidator: $schemaValidator,
+        );
 
         /** @var array<string, mixed> $inputs */
         $result = $runner->execute($document, (string) $workflow->workflowId, $inputs);

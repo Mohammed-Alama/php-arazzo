@@ -27,10 +27,13 @@ flowchart LR
     I_LockStrategyInterface["LockStrategyInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OpenApiExecutorInterface["OpenApiExecutorInterface<br/><small>runner:Execution</small>"]:::contract
     I_OpenApiNormalizerInterface["OpenApiNormalizerInterface<br/><small>sources:Normalizer</small>"]:::contract
+    I_OpenApiOperationResolverInterface["OpenApiOperationResolverInterface<br/><small>sources:Normalizer</small>"]:::contract
     I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>runtime:State</small>"]:::contract
+    I_OperationResolverInterface["OperationResolverInterface<br/><small>(document root)</small>"]:::contract
+    I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
-    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Execution</small>"]:::contract
+    I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Interfaces</small>"]:::contract
     I_QueueDriverInterface["QueueDriverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ReplacementTargetResolverInterface["ReplacementTargetResolverInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ResponseTransferInterface["ResponseTransferInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -195,8 +198,12 @@ flowchart LR
     C_sources_sources_Normalizer_OpenApi30Normalizer -.->|implements| I_OpenApiNormalizerInterface
     C_sources_sources_Normalizer_Swagger2Normalizer["Swagger2Normalizer<br/><small>sources:Normalizer</small>"]:::implCore
     C_sources_sources_Normalizer_Swagger2Normalizer -.->|implements| I_OpenApiNormalizerInterface
+    C_sources_sources_Normalizer_OpenApiOperationResolver["OpenApiOperationResolver<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_OpenApiOperationResolver -.->|implements| I_OpenApiOperationResolverInterface
     C_sources_sources_Normalizer_OpenApiSourceNormalizer["OpenApiSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
     C_sources_sources_Normalizer_OpenApiSourceNormalizer -.->|implements| I_SourceNormalizerInterface
+    C_sources_sources_Normalizer_WsdlSourceNormalizer["WsdlSourceNormalizer<br/><small>sources:Normalizer</small>"]:::implCore
+    C_sources_sources_Normalizer_WsdlSourceNormalizer -.->|implements| I_SourceNormalizerInterface
     C_sources_sources_Resolver_DefaultSourceResolver["DefaultSourceResolver<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_DefaultSourceResolver -.->|implements| I_SourceResolver
     C_sources_sources_Resolver_SourceRegistry["SourceRegistry<br/><small>sources:Resolver</small>"]:::implCore
@@ -207,6 +214,8 @@ flowchart LR
     C_sources_sources_Resolver_HttpFetcher -.->|implements| I_SourceFetcher
     C_sources_sources_Resolver_LocalFetcher["LocalFetcher<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_LocalFetcher -.->|implements| I_SourceFetcher
+    C_laravel_laravel_Support_SchemeSourceFetcher["SchemeSourceFetcher<br/><small>laravel:Support</small>"]:::implLaravel
+    C_laravel_laravel_Support_SchemeSourceFetcher -.->|implements| I_SourceFetcher
     C_sources_sources_Resolver_SourceNormalizerRegistry["SourceNormalizerRegistry<br/><small>sources:Resolver</small>"]:::implCore
     C_sources_sources_Resolver_SourceNormalizerRegistry -.->|implements| I_SourceNormalizerRegistryInterface
     C_runtime_runtime_Infrastructure_FileLockStrategy["FileLockStrategy<br/><small>runtime:Infrastructure</small>"]:::implCore
@@ -225,26 +234,20 @@ flowchart LR
     C_laravel_laravel_State_RedisHotStateStore -.->|implements| I_StateStoreInterface
     C_runtime_runtime_State_StoredWorkflowStateRepository["StoredWorkflowStateRepository<br/><small>runtime:State</small>"]:::implCore
     C_runtime_runtime_State_StoredWorkflowStateRepository -.->|implements| I_WorkflowStateRepositoryInterface
-    C_runner_runner_Execution_DefaultOpenApiExecutor["DefaultOpenApiExecutor<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_DefaultOpenApiExecutor -.->|implements| I_OpenApiExecutorInterface
     C_runner_runner_Execution_InMemoryDefinitionRegistry["InMemoryDefinitionRegistry<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_InMemoryDefinitionRegistry -.->|implements| I_WritableDefinitionRegistryInterface
-    C_runner_runner_Execution_ResponseSchemaValidator["ResponseSchemaValidator<br/><small>runner:Execution</small>"]:::implCore
-    C_runner_runner_Execution_ResponseSchemaValidator -.->|implements| I_ResponseValidatorInterface
     C_runner_runner_Execution_SyncQueueDriver["SyncQueueDriver<br/><small>runner:Execution</small>"]:::implCore
     C_runner_runner_Execution_SyncQueueDriver -.->|implements| I_QueueDriverInterface
     C_laravel_laravel_Queue_LaravelQueueDriver["LaravelQueueDriver<br/><small>laravel:Queue</small>"]:::implLaravel
     C_laravel_laravel_Queue_LaravelQueueDriver -.->|implements| I_QueueDriverInterface
-    C_runner_runner_Protocol_AsyncApiStepExecutor["AsyncApiStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
-    C_runner_runner_Protocol_AsyncApiStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_runner_runner_Protocol_HttpStepExecutor["HttpStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
-    C_runner_runner_Protocol_HttpStepExecutor -.->|implements| I_StepProtocolExecutorInterface
-    C_runner_runner_Protocol_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Protocol</small>"]:::implCore
-    C_runner_runner_Protocol_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_runner_runner___RunnerFacade["RunnerFacade<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerFacade -.->|implements| I_RunnerFacadeInterface
     C_runner_runner___RunnerGraphBuilder["RunnerGraphBuilder<br/><small>(runner root)</small>"]:::implCore
     C_runner_runner___RunnerGraphBuilder -.->|implements| I_RunnerGraphBuilderInterface
+    C_runner_runner_Sync_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Sync</small>"]:::implCore
+    C_runner_runner_Sync_SubWorkflowStepExecutor -.->|implements| I_OperationExecutorPluginInterface
+    C_runner_runner_Sync_SubWorkflowStepExecutor["SubWorkflowStepExecutor<br/><small>runner:Sync</small>"]:::implCore
+    C_runner_runner_Sync_SubWorkflowStepExecutor -.->|implements| I_StepProtocolExecutorInterface
     C_cli_cli_Console_CliRunner["CliRunner<br/><small>cli:Console</small>"]:::implCore
     C_cli_cli_Console_CliRunner -.->|implements| I_LockManagerInterface
     C_laravel_laravel_Lock_LaravelRedisLockManager["LaravelRedisLockManager<br/><small>laravel:Lock</small>"]:::implLaravel
@@ -253,22 +256,28 @@ flowchart LR
     C_cli_cli_Console_InProcessExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
     C_laravel_laravel_Persistence_DatabaseExecutionRegistry["DatabaseExecutionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseExecutionRegistry -.->|implements| I_ExecutionRegistryInterface
+    C_cli_cli_Console_InProcessPendingCorrelationRegistry["InProcessPendingCorrelationRegistry<br/><small>cli:Console</small>"]:::implCore
+    C_cli_cli_Console_InProcessPendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
+    C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
+    C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
     C_cli_cli_Console_NullEventLedger["NullEventLedger<br/><small>cli:Console</small>"]:::implCore
     C_cli_cli_Console_NullEventLedger -.->|implements| I_EventLedgerInterface
     C_laravel_laravel_Persistence_DatabaseEventLedger["DatabaseEventLedger<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseEventLedger -.->|implements| I_EventLedgerInterface
+    C_cli_cli_Console_RunCommand["RunCommand<br/><small>cli:Console</small>"]:::implCore
+    C_cli_cli_Console_RunCommand -.->|implements| I_OpenApiExecutorInterface
     C_cli_cli_Generator_OpenAiClient["OpenAiClient<br/><small>cli:Generator</small>"]:::implCore
     C_cli_cli_Generator_OpenAiClient -.->|implements| I_AiClientInterface
     C_laravel_laravel_Http_Psr18HttpClient["Psr18HttpClient<br/><small>laravel:Http</small>"]:::implLaravel
     C_laravel_laravel_Http_Psr18HttpClient -.->|implements| I_HttpClientInterface
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry["DatabaseDefinitionRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
     C_laravel_laravel_Persistence_DatabaseDefinitionRegistry -.->|implements| I_DefinitionRegistryInterface
-    C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry["DatabasePendingCorrelationRegistry<br/><small>laravel:Persistence</small>"]:::implLaravel
-    C_laravel_laravel_Persistence_DatabasePendingCorrelationRegistry -.->|implements| I_PendingCorrelationRegistryInterface
-    N_OperationExecutorPluginInterface["no implementation found"]:::orphan --> I_OperationExecutorPluginInterface
+    N_OperationResolverInterface["no implementation found"]:::orphan --> I_OperationResolverInterface
+    N_OutputExtractorInterface["no implementation found"]:::orphan --> I_OutputExtractorInterface
     N_PluginInterface["no implementation found"]:::orphan --> I_PluginInterface
     N_ProtocolExecutorRegistryInterface["no implementation found"]:::orphan --> I_ProtocolExecutorRegistryInterface
     N_ReplacementTargetResolverInterface["no implementation found"]:::orphan --> I_ReplacementTargetResolverInterface
+    N_ResponseValidatorInterface["no implementation found"]:::orphan --> I_ResponseValidatorInterface
     N_WorkflowEngineInterface["no implementation found"]:::orphan --> I_WorkflowEngineInterface
     classDef contract fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
     classDef contractLaravel fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;

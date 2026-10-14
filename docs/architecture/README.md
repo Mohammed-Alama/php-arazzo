@@ -10,6 +10,7 @@ flowchart TD
     README --> D04["04 — Expression Evaluation<br/><small>lexer/parser/AST, selectors</small>"]
     README --> D05["05 — Source Resolution<br/><small>fetchers, registry, OpenAPI path</small>"]
     README --> D06["06 — Laravel Integration<br/><small>queues, locks, webhooks</small>"]
+    README --> D07["07 — Runner Package Map<br/><small>Sync/Async split, seams, arch rules</small>"]
 
     GEN["docs/generated/<br/><small>auto-refreshed per commit</small>"] -.-> G1["namespace-graph.md"]
     GEN -.-> G2["document-model.md"]
@@ -32,6 +33,7 @@ flowchart TD
 | [04 — Expression Evaluation](./04-expression-evaluation.md) | Runtime expressions, JSONPath/XPath selectors, condition sub-language |
 | [05 — Source Resolution](./05-source-resolution.md) | sourceDescriptions fetching, caching, cycle guard, OpenAPI normalization |
 | [06 — Laravel Integration](./06-laravel-integration.md) | Ports & adapters, queue jobs, Redis state, webhook resume |
+| [07 — Runner Package Map](./07-runner-package-map.md) | `Sync\`/`Async\` split, seam ownership, arch rules, facade |
 
 ## Generated docs
 

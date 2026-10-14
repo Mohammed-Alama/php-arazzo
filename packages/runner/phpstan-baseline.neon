@@ -14,12 +14,12 @@ parameters:
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 2
-			path: src/Execution/CorrelationResumer.php
+			path: src/Async/CorrelationResumer.php
 
 		-
 			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/CorrelationResumer.php
+			path: src/Async/CorrelationResumer.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
@@ -131,138 +131,138 @@ parameters:
 			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Execution/StepExecutionWorker.php
+			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 1
-			path: src/Execution/StepExecutionWorker.php
+			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 1
-			path: src/Execution/StepExecutionWorker.php
+			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepExecutionWorker.php
+			path: src/Async/StepExecutionWorker.php
 
 		-
-			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(24\)\. Maximum allowed is 10\.$#'
+			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(25\)\. Maximum allowed is 10\.$#'
 			count: 1
-			path: src/Execution/StepExecutionWorker.php
+			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 2
-			path: src/Execution/StepExecutionWorker.php
+			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot call method getBody\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot call method getContents\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot call method getHeaders\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot call method getQuery\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot call method getUri\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot call method rewind\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 2
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\Runner\\Execution\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Parameter \#1 \$string of function parse_str expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Parameter \#2 \$array of function implode expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
 			count: 1
-			path: src/Execution/StepExecutor.php
+			path: src/Sync/StepExecutor.php
 
 		-
 			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Execution/StepOutcomeHandler.php
+			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutcomeHandler.php
+			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method applyGoto has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutcomeHandler.php
+			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method applyRetry has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutcomeHandler.php
+			path: src/Async/StepOutcomeHandler.php
 
 		-
-			message: '#^Method handle has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			message: '#^Method handle has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutcomeHandler.php
+			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Cannot access offset ''body'' on mixed\.$#'
@@ -308,28 +308,28 @@ parameters:
 			message: '#^Cannot access offset ''status'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
-			path: src/Execution/WorkflowEngine.php
+			path: src/Sync/WorkflowEngine.php
 
 		-
 			message: '#^Method transition has too high cyclomatic complexity \(23\)\. Maximum allowed is 10\.$#'
 			count: 1
-			path: src/Execution/WorkflowEngine.php
+			path: src/Sync/WorkflowEngine.php
 
 		-
 			message: '#^Method transition has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/WorkflowEngine.php
+			path: src/Sync/WorkflowEngine.php
 
 		-
 			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Execution/WorkflowEngine.php
+			path: src/Sync/WorkflowEngine.php
 
 		-
 			message: '#^Method executeCanonically has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
 			count: 1
-			path: src/Execution/WorkflowExecutor.php
+			path: src/Sync/WorkflowExecutor.php
 
 		-
 			message: '#^Cannot cast mixed to string\.$#'

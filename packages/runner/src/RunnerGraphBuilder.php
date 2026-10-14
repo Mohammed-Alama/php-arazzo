@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Runner;
 
+use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Runner\Execution\AsyncExecutionGraphAssembler;
+use Alama\Arazzo\Runner\Async\AsyncExecutionGraphAssembler;
+use Alama\Arazzo\Runner\Async\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -17,23 +17,38 @@ use Psr\Http\Message\RequestFactoryInterface;
 final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
 {
     public function __construct(
-        private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $evaluationEngine,
-        private readonly ExpressionEngineInterface $inspector,
-        private readonly ?ClientInterface $httpClient = null,
-        private readonly ?RequestFactoryInterface $requestFactory = null,
+        private readonly ?OperationRuntime $operations = null,
+        private readonly ?ExpressionEngineInterface $inspector = null,
     ) {}
 
     public function buildAsync(AsyncGraphSeams $seams): AsyncExecutionGraph
     {
+        if ($this->operations === null) {
+            throw new ExecutionException('RunnerGraphBuilder needs an OperationRuntime to assemble the async graph; worker-only hosts should use buildWorker().');
+        }
+
+        if ($this->inspector === null) {
+            throw new ExecutionException('RunnerGraphBuilder needs an ExpressionEngineInterface to assemble the async graph; worker-only hosts should use buildWorker().');
+        }
+
         $assembler = new AsyncExecutionGraphAssembler(
-            $this->operations,
-            $this->evaluationEngine,
-            $this->inspector,
-            $this->httpClient,
-            $this->requestFactory,
+            evaluationEngine: $this->evaluationEngine,
+            operations: $this->operations,
+            inspector: $this->inspector,
         );
 
         return $assembler->assemble($seams);
+    }
+
+    public function buildWorker(AsyncGraphSeams $seams): StepExecutionWorker
+    {
+        $assembler = new AsyncExecutionGraphAssembler(
+            evaluationEngine: $this->evaluationEngine,
+            operations: $this->operations,
+            inspector: $this->inspector,
+        );
+
+        return $assembler->buildWorker($seams, $this->operations?->document);
     }
 }

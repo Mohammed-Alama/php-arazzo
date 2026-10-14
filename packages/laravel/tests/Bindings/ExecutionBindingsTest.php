@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Laravel\Bindings\ExecutionBindings;
-use Alama\Arazzo\Runner\Execution\CorrelationResumer;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutcomeHandler;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
+use Alama\Arazzo\Runner\Async\CorrelationResumer;
+use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 
 function engineProp(WorkflowEngine $engine, string $name): mixed
 {

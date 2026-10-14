@@ -1,0 +1,130 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Alama\Arazzo\Protocol\Http\Protocol;
+
+use Alama\Arazzo\Contracts\Interfaces\OperationExecutorPluginInterface;
+use Alama\Arazzo\Contracts\Interfaces\OutputExtractorInterface;
+use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
+use Alama\Arazzo\Contracts\Interfaces\StepProtocolExecutorInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\StepExecutionOutcome;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
+use Alama\Arazzo\Engine\Execution\RequestCompiler;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
+use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
+use Psr\Http\Message\RequestInterface as Psr7Request;
+
+/**
+ * @internal stays out of the advertised contract; not part of the public API surface
+ */
+final class HttpStepExecutor implements OperationExecutorPluginInterface, StepProtocolExecutorInterface
+{
+    /**
+     * Registry ordering (ascending, first supports() wins). HTTP steps and
+     * AsyncAPI actions are disjoint, so the value only stabilises iteration.
+     */
+    public const PLUGIN_PRIORITY = 100;
+
+    public function __construct(
+        private OpenApiExecutorInterface $openApiExecutor,
+        private OpenApiOperationResolver $operationResolver,
+        private EvaluationEngineInterface $evaluationEngine,
+        private ExpressionEngineInterface $inspector,
+        private OutputExtractorInterface $outputExtractor,
+        private ResponseValidatorInterface $schemaValidator,
+        private bool $strictValidationDefault = false,
+        private ?IdempotencyKeyInjector $injector = null,
+    ) {}
+
+    public function name(): string
+    {
+        return 'http';
+    }
+
+    public function priority(): int
+    {
+        return self::PLUGIN_PRIORITY;
+    }
+
+    public function supports(Step $step, ArazzoDocument $document): bool
+    {
+        return $step->target->action === null;
+    }
+
+    public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document, string $executionId): StepExecutionOutcome
+    {
+        $compiler = new RequestCompiler($this->evaluationEngine, $this->inspector);
+        ['payload' => $payload, 'resolvedInputs' => $resolvedInputs] = $compiler->compile($step, $document, $context);
+
+        $resolved = $this->operationResolver->resolve($step, $document);
+
+        $capturedRequest = null;
+        try {
+            $response = $this->openApiExecutor->execute(
+                $resolved,
+                $payload,
+                function (Psr7Request $request) use ($context, $step, &$capturedRequest) {
+                    $capturedRequest = $request;
+
+                    if ($this->injector !== null) {
+                        return $this->injector->inject($request, $step, $context)->request;
+                    }
+
+                    return $request;
+                },
+                $step->flow->timeout !== null ? $step->flow->timeout / 1000 : null,
+            );
+        } catch (\Throwable $e) {
+            // Transport-level failures become a synthetic 500 response so
+            // failureActions (e.g. retry) apply identically to the sync
+            // adapter's StepExecutor policy.
+            return StepExecutionOutcome::resolved(500, [], ['error' => $e->getMessage()], failureCategory: 'transport');
+        }
+
+        $decoded = $compiler->decodeResponse($response);
+
+        if ($this->shouldValidateSchema($step)) {
+            $this->schemaValidator->validateResponseSchema(
+                $step,
+                $decoded['statusCode'],
+                $decoded['contentType'],
+                $decoded['body'],
+                $document,
+            );
+        }
+
+        $requestRecord = $compiler->requestRecord($capturedRequest, $payload);
+
+        $contextWithResponse = $context
+            ->withStepRequest($step->stepId, $requestRecord)
+            ->withStepResponse($step->stepId, [
+                'statusCode' => $decoded['statusCode'],
+                'headers' => $decoded['headers'],
+                'body' => $decoded['body'],
+            ]);
+
+        $outputs = $this->outputExtractor->extractOutputs($step, $contextWithResponse, $document);
+
+        return StepExecutionOutcome::resolved(
+            $decoded['statusCode'],
+            $outputs,
+            $decoded['body'],
+            $resolvedInputs,
+            $requestRecord,
+            $decoded['headers'],
+            rawBody: $decoded['rawBody'],
+            contentType: $decoded['contentType'],
+        );
+    }
+
+    private function shouldValidateSchema(Step $step): bool
+    {
+        return $step->flow->strictValidation ?? $this->strictValidationDefault;
+    }
+}

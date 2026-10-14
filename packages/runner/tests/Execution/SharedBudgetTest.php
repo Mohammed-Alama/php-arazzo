@@ -7,7 +7,7 @@ use Alama\Arazzo\Contracts\State\ExecutionState;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Runner\Execution\Enum\TransitionType;
 use Alama\Arazzo\Runner\Execution\Exceptions\StepBudgetExceededException;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
 use Alama\Arazzo\Tests\Expression\Support\TestEvaluationEngine;
 use Alama\Arazzo\Tests\Support\Fx;
 

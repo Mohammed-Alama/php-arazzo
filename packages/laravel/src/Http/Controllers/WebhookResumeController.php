@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\Http\Controllers;
 
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
-use Alama\Arazzo\Runner\Jobs\ResumeCorrelationJob;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Runner\Async\ResumeCorrelationJob;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

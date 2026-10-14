@@ -10,9 +10,13 @@
         {"type": "path", "url": "../core"},
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
+        {"type": "path", "url": "../engine"},
         {"type": "path", "url": "../evaluation"},
         {"type": "path", "url": "../events"},
         {"type": "path", "url": "../expression"},
+        {"type": "path", "url": "../protocol-http"},
+        {"type": "path", "url": "../protocol-rpc"},
+        {"type": "path", "url": "../protocol-soap"},
         {"type": "path", "url": "../runner"},
         {"type": "path", "url": "../runtime"},
         {"type": "path", "url": "../sources"}
@@ -29,6 +33,9 @@
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-events": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-protocol-http": "@dev",
+        "alama/arazzo-protocol-rpc": "@dev",
+        "alama/arazzo-protocol-soap": "@dev",
         "alama/arazzo-runner": "@dev",
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",
@@ -60,7 +67,12 @@
     },
     "extra": {
         "laravel": {
-            "providers": ["Alama\\Arazzo\\Laravel\\LaravelArazzoServiceProvider"]
+            "providers": [
+                "Alama\\Arazzo\\Laravel\\LaravelArazzoServiceProvider",
+                "Alama\\Arazzo\\Laravel\\ProtocolHttpServiceProvider",
+                "Alama\\Arazzo\\Laravel\\SoapServiceProvider",
+                "Alama\\Arazzo\\Laravel\\RpcServiceProvider"
+            ]
         }
     },
     "config": {

@@ -10,13 +10,13 @@ use Alama\Arazzo\Events\StepFailedEvent;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Lexer;
-use Alama\Arazzo\Runner\Execution\DefaultOpenApiExecutor;
-use Alama\Arazzo\Runner\Execution\ResponseSchemaValidator;
-use Alama\Arazzo\Runner\Execution\StepExecutor;
-use Alama\Arazzo\Runner\Execution\StepOutputExtractor;
-use Alama\Arazzo\Runner\Execution\WorkflowEngine;
-use Alama\Arazzo\Runner\Execution\WorkflowExecutor;
-use Alama\Arazzo\Runner\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
+use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
+use Alama\Arazzo\Protocol\Http\Execution\StepOutputExtractor;
+use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
+use Alama\Arazzo\Runner\Sync\StepExecutor;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runner\Sync\WorkflowExecutor;
 use Alama\Arazzo\Sources\Resolver\Exceptions\UnresolvableReferenceException;
 use Alama\Arazzo\Sources\SourceRuntime;
 use Alama\Arazzo\Tests\Conformance\ConformanceHarness;
@@ -25,7 +25,7 @@ use Alama\Arazzo\Tests\Support\RecordingEventDispatcher;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;
 
-require_once __DIR__.'/HttpStepExecutorTest.php';
+require_once __DIR__.'/../../../protocol-http/tests/Protocol/HttpStepExecutorTest.php';
 
 /**
  * Anonymous harness exposing the protected conformance plumbing so the
@@ -98,6 +98,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
         $runtime->operations,
         $engine,
+        new ExpressionEngine(), // inspector
         $outputExtractor,
         $schemaValidator,
     );
@@ -119,6 +120,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($failingHttp, new HttpFactory()),
         $runtime->operations,
         $engine,
+        new ExpressionEngine(), // inspector
         $outputExtractor,
         $schemaValidator,
     );
@@ -140,6 +142,7 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($http2, new HttpFactory()),
         $runtime->operations,
         $engine,
+        new ExpressionEngine(), // inspector
         $outputExtractor,
         $schemaValidator,
     );
@@ -170,6 +173,10 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
             $engine,
             $outputExtractor,
             $schemaValidator,
+            strictValidationDefault: false,
+            injector: null,
+            events: null,
+            inspector: new ExpressionEngine(),
         ),
         new WorkflowEngine($engine),
         events: $classificationHarness->ev(),

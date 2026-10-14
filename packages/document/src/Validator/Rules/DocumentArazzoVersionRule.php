@@ -16,10 +16,10 @@ final class DocumentArazzoVersionRule implements Rule
 {
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
-        if (preg_match('/^1\.[01]\.\d+$/', $doc->arazzo) !== 1) {
+        if (preg_match('/^1\.[012]\.\d+$/', $doc->arazzo) !== 1) {
             $errors->error(
                 $this->code(),
-                "Unsupported arazzo version '{$doc->arazzo}'; only '1.0.x' and '1.1.x' are supported.",
+                "Unsupported arazzo version '{$doc->arazzo}'; expected 1.0.x, 1.1.x, or 1.2.x.",
                 '/arazzo',
             );
         }

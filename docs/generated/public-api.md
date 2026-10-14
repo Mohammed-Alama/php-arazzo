@@ -398,7 +398,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Document`
 
 #### `Document` class
-- `public function __construct(private readonly ModelStack $model, private readonly ?OpenApiOperationResolver $operationResolver = null)`
+- `public function __construct(private readonly ModelStack $model, private readonly ?OpenApiOperationResolverInterface $operationResolver = null)`
 - `public function parse(RawDocument $raw): ArazzoDocument`
 - `public function preflight(ArazzoDocument $document): ValidationResult`
 - `public function preflightInputs(ArazzoDocument $document, string $workflowId, array $inputs): ValidationResult`
@@ -406,7 +406,11 @@ this file on a commit is a public API change — review it deliberately.
 - `public function validate(ArazzoDocument $document): ValidationResult`
 
 #### `ModelStack` class
-- `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolver $operationResolver = null)`
+- `public function __construct(public Loader $loader, public Parser $parser, public Validator $validator, public ExpressionEngineInterface $engine, public ?PreflightValidator $preflight = null, public ?OpenApiOperationResolverInterface $operationResolver = null)`
+
+#### `OperationResolverInterface` interface
+- `public function resolve(Step $step, ArazzoDocument $document): ResolvedOperation;`
+- `public function supportsStep(Step $step, ArazzoDocument $document): bool;`
 
 #### `ResolvedOperation` class
 - `public function __construct(public readonly SourceDescription $source, public readonly NormalizedOpenApiOperation $normalized, public readonly ?RpcProtocol $rpcProtocol = null, public readonly ?string $operationName = null, public readonly ?string $rpcMethod = null, public readonly ?GraphQlOperation $graphqlOperation = null, public readonly ?Interaction $interaction = null)`
@@ -456,17 +460,17 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
 - `public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface`
 - `public static function loader(?SourceRegistry $registry = null): SourceLoader`
-- `public static function runtime(?SourceRegistry $registry = null): SourceRuntime`
+- `public static function operations(?SourceRegistry $registry = null): OpenApiOperationResolver`
+- `public static function runtime(?SourceRegistry $registry = null, ?OpenApiOperationResolver $operations = null, ): SourceRuntime`
 - `public static function using(?SourceRegistry $registry = null): DocumentInterface`
 
 ### `Alama\Arazzo\Sources`
 
 #### `SourceLoader` class
-- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiOperationResolver $operations, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
+- `public function __construct(private readonly SourceRegistry $sources, private readonly OpenApiVersionDetector $versionDetector, private readonly PreflightValidator $preflight, private readonly SourceNormalizerRegistryInterface $normalizers)`
 - `public function detectOpenApiVersion(array $document): string`
 - `public function normalizeSources(ArazzoDocument $document, string $basePath = ''): array`
 - `public function preflightSource(ArazzoDocument $document): ValidationResult`
-- `public function resolveHandle(Step $step, ArazzoDocument $document): OpenApiOperationHandle`
 
 ## engine
 
@@ -490,7 +494,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array;`
 
 ### `RunnerFacade` class
-- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $evaluationEngine, ?ClientInterface $httpClient = null, ?ExpressionEngineInterface $inspector = null)`
+- `public function __construct(DocumentInterface $documents, OpenApiOperationResolver $operationResolver, EvaluationEngineInterface $evaluationEngine, ?ExpressionEngineInterface $inspector = null, ?OpenApiExecutorInterface $openApiExecutor = null, ?OutputExtractorInterface $outputExtractor = null, ?ResponseValidatorInterface $schemaValidator = null)`
 - `public function execute(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 - `public function run(ArazzoDocument $document, string $workflowId, array $inputs = []): array`
 
@@ -504,7 +508,10 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Cli\Console\Command`
 
 #### `RunCommand` class
+- `public function __construct(private ClientInterface $client, private RequestFactoryInterface $factory)`
 - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
+- `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
+- `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
 
 ## laravel
 

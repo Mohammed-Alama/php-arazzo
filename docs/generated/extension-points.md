@@ -51,25 +51,29 @@ mindmap
       NullLockStrategy
       PessimisticLockStrategy
     OpenApiExecutorInterface
-      DefaultOpenApiExecutor
+      RunCommand
     OpenApiNormalizerInterface
       OpenApi30Normalizer
       Swagger2Normalizer
+    OpenApiOperationResolverInterface
+      OpenApiOperationResolver
+    OperationExecutorPluginInterface
+      SubWorkflowStepExecutor
     PendingCorrelationRegistryInterface
+      InProcessPendingCorrelationRegistry
       DatabasePendingCorrelationRegistry
     QueueDriverInterface
       SyncQueueDriver
       LaravelQueueDriver
     ResponseTransferInterface
       ResponseTransfer
-    ResponseValidatorInterface
-      ResponseSchemaValidator
     RunnerFacadeInterface
       RunnerFacade
     RunnerGraphBuilderInterface
       RunnerGraphBuilder
     SourceNormalizerInterface
       OpenApiSourceNormalizer
+      WsdlSourceNormalizer
     SourceNormalizerRegistryInterface
       SourceNormalizerRegistry
     StateStoreInterface
@@ -77,8 +81,6 @@ mindmap
       InMemoryStateStore
       RedisHotStateStore
     StepProtocolExecutorInterface
-      AsyncApiStepExecutor
-      HttpStepExecutor
       SubWorkflowStepExecutor
     WorkflowContextInterface
       WorkflowContext
@@ -106,18 +108,19 @@ mindmap
 | `HttpClientInterface` | no | `Psr18HttpClient` <small>laravel</small> |
 | `LockManagerInterface` | no | `CliRunner` <small>core</small>, `LaravelRedisLockManager` <small>laravel</small> |
 | `LockStrategyInterface` | no | `FileLockStrategy` <small>core</small>, `NullLockStrategy` <small>core</small>, `PessimisticLockStrategy` <small>core</small> |
-| `OpenApiExecutorInterface` | no | `DefaultOpenApiExecutor` <small>core</small> |
+| `OpenApiExecutorInterface` | no | `RunCommand` <small>core</small> |
 | `OpenApiNormalizerInterface` | no | `OpenApi30Normalizer` <small>core</small>, `Swagger2Normalizer` <small>core</small> |
-| `PendingCorrelationRegistryInterface` | no | `DatabasePendingCorrelationRegistry` <small>laravel</small> |
+| `OpenApiOperationResolverInterface` | no | `OpenApiOperationResolver` <small>core</small> |
+| `OperationExecutorPluginInterface` | no | `SubWorkflowStepExecutor` <small>core</small> |
+| `PendingCorrelationRegistryInterface` | no | `InProcessPendingCorrelationRegistry` <small>core</small>, `DatabasePendingCorrelationRegistry` <small>laravel</small> |
 | `QueueDriverInterface` | no | `SyncQueueDriver` <small>core</small>, `LaravelQueueDriver` <small>laravel</small> |
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
-| `ResponseValidatorInterface` | no | `ResponseSchemaValidator` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
-| `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small> |
+| `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small>, `WsdlSourceNormalizer` <small>core</small> |
 | `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |
-| `StepProtocolExecutorInterface` | no | `AsyncApiStepExecutor` <small>core</small>, `HttpStepExecutor` <small>core</small>, `SubWorkflowStepExecutor` <small>core</small> |
+| `StepProtocolExecutorInterface` | no | `SubWorkflowStepExecutor` <small>core</small> |
 | `WorkflowContextInterface` | no | `WorkflowContext` <small>core</small> |
 | `WorkflowStateRepositoryInterface` | no | `StoredWorkflowStateRepository` <small>core</small> |
 | `WritableDefinitionRegistryInterface` | no | `InMemoryDefinitionRegistry` <small>core</small> |
@@ -126,8 +129,10 @@ mindmap
 
 Declared but nothing in src implements them — candidates for removal or for a first adapter:
 
-- `OperationExecutorPluginInterface` <small>Interfaces</small>
+- `OperationResolverInterface` <small></small>
+- `OutputExtractorInterface` <small>Interfaces</small>
 - `PluginInterface` <small>Interfaces</small>
-- `ProtocolExecutorRegistryInterface` <small>Execution/Interfaces</small>
+- `ProtocolExecutorRegistryInterface` <small>Interfaces</small>
 - `ReplacementTargetResolverInterface` <small>Interfaces</small>
+- `ResponseValidatorInterface` <small>Interfaces</small>
 - `WorkflowEngineInterface` <small></small>

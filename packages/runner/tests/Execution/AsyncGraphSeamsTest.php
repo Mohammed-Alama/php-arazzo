@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\LockManagerInterface;
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\ExecutionStatus;
@@ -12,7 +13,6 @@ use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runtime\State\Interfaces\DefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
-use Alama\Arazzo\Runtime\State\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use GuzzleHttp\Psr7\HttpFactory;
 use GuzzleHttp\Psr7\Response;

@@ -1,0 +1,76 @@
+{
+    "name": "alama/arazzo-protocol-soap",
+    "description": "SOAP vertical slice for alama/arazzo-core: SOAP executor, SoapResponseTransfer mapper, XSD response validator (WSDL parsing ships in alama/arazzo-sources — DF8). Zero vendor, DOM + PSR-18.",
+    "keywords": [
+        "alama",
+        "arazzo",
+        "soap",
+        "wsdl",
+        "xsd",
+        "protocol"
+    ],
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../contracts"
+        },
+        {
+            "type": "path",
+            "url": "../document"
+        },
+        {
+            "type": "path",
+            "url": "../expression"
+        },
+        {
+            "type": "path",
+            "url": "../evaluation"
+        },
+        {
+            "type": "path",
+            "url": "../engine"
+        },
+        {
+            "type": "path",
+            "url": "../sources"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "alama/arazzo-contracts": "@dev",
+        "alama/arazzo-document": "@dev",
+        "alama/arazzo-expression": "@dev",
+        "alama/arazzo-evaluation": "@dev",
+        "alama/arazzo-engine": "@dev",
+        "alama/arazzo-sources": "@dev",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.1",
+        "psr/http-message": "^2.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-arch": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alama\\Arazzo\\Protocol\\Soap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alama\\Arazzo\\Tests\\Protocol\\Soap\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

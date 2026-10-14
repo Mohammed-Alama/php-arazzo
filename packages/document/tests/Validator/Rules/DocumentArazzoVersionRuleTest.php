@@ -23,7 +23,7 @@ function docV(string $arazzo, SpecVersion $sv): ArazzoDocument
     );
 }
 
-it('accepts 1.0.x and 1.1.x', function (string $v, SpecVersion $sv) {
+it('accepts 1.0.x, 1.1.x and 1.2.x', function (string $v, SpecVersion $sv) {
     $errors = new ErrorCollector();
     $doc = docV($v, $sv);
     (new DocumentArazzoVersionRule())->check($doc, SymbolTable::build($doc), $errors);
@@ -33,4 +33,15 @@ it('accepts 1.0.x and 1.1.x', function (string $v, SpecVersion $sv) {
     ['1.0.7', SpecVersion::V1_0],
     ['1.1.0', SpecVersion::V1_1],
     ['1.1.3', SpecVersion::V1_1],
+    ['1.2.0', SpecVersion::V1_2],
+    ['1.2.5', SpecVersion::V1_2],
 ]);
+
+it('rejects an unsupported arazzo version', function (): void {
+    $errors = new ErrorCollector();
+    $doc = docV('2.0.0', SpecVersion::V1_2);
+    (new DocumentArazzoVersionRule())->check($doc, SymbolTable::build($doc), $errors);
+
+    expect($errors->errors())->toHaveCount(1)
+        ->and($errors->errors()[0]->code)->toBe('document.arazzo_version');
+});

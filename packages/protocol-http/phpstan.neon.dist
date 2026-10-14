@@ -1,0 +1,45 @@
+includes:
+    - ../core/phpstan/rules/phpstan-custom.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+    excludePaths:
+        - tests
+    scanDirectories:
+        - ../contracts/src
+        - ../expression/src
+        - ../evaluation/src
+        - ../engine/src
+        - ../sources/src
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        -
+            message: "#Method __construct has too many parameters#"
+        -
+            message: "#Cannot cast mixed to string#"
+        -
+            message: "#Strict comparison using === between string and null will always evaluate to false#"
+        -
+            message: "#Class Alama\\\\Arazzo\\\\Engine\\\\Execution\\\\RequestCompiler constructor invoked with 1 parameter, 2 required#"
+            path: src/Protocol/HttpStepExecutor.php
+        -
+            message: "#Method findResponseSchema has too high cyclomatic complexity#"
+        -
+            message: "#Strict comparison using === between array<cebe\\\\openapi\\\\spec\\\\MediaType> and null will always evaluate to false#"
+        -
+            message: "#Cannot access offset 'body' on mixed#"
+        -
+            message: "#Cannot access offset 'response' on mixed#"
+        -
+            message: "#Method castOutputAgainstResponseSchema has too high cyclomatic complexity#"
+        -
+            message: "#Method name 'castOutputAgainstResponseSchema' length#"
+        -
+            message: "#Cannot access offset 'statusCode' on mixed#"
+        -
+            message: "#Method execute has too high cyclomatic complexity#"
+        -
+            message: "#Comparison operation \">\" between int<1, max> and 0 is always true#"

@@ -328,6 +328,9 @@ _None — the entry surface exchanges plain arrays._
   - `public function __construct()`
 - `RunCommand` (`class`)
   - `public function __construct(private readonly ?ClientInterface $httpClient = null, private readonly ?RequestFactoryInterface $httpFactory = null, private readonly ?SourceRegistry $registry = null)`
+  - `public function __construct(private ClientInterface $client, private RequestFactoryInterface $factory)`
+  - `public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array`
+  - `public function validateResponseSchema(Step $step, int $statusCode, string $contentType, mixed $decodedBody, ?ArazzoDocument $document = null): void`
 - `ValidateCommand` (`class`)
 - `ListWorkflowsCommand` (`class`)
 - `ExplainCommand` (`class`)

@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
+use Alama\Arazzo\Contracts\Interfaces\QueueDriverInterface;
+use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
+use Alama\Arazzo\Contracts\Spec\Components;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
+use Alama\Arazzo\Contracts\Spec\Info;
+use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\StepFactory;
+use Alama\Arazzo\Contracts\Spec\StepFlow;
+use Alama\Arazzo\Contracts\Spec\StepIo;
+use Alama\Arazzo\Contracts\Spec\Workflow;
+use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
+use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
+use Alama\Arazzo\Runner\Async\StepOutcomeHandler;
+use Alama\Arazzo\Runner\Async\SubWorkflowInvoker;
+use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
+use Alama\Arazzo\Runner\Execution\Data\RunPersistence;
+use Alama\Arazzo\Runner\Sync\WorkflowEngine;
+use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
+use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
+
+it('resolves a Selector output through SelectorEvaluator', function () {
+    $exprEngine = Mockery::mock(EvaluationEngineInterface::class);
+    $exprEngine->shouldReceive('evaluateSelector')->once()->andReturn('bar');
+
+    $engine = new WorkflowEngine(Mockery::mock(EvaluationEngineInterface::class));
+
+    $store = Mockery::mock(StateStoreInterface::class);
+    $store->shouldReceive('save');
+
+    $pending = Mockery::mock(PendingCorrelationRegistryInterface::class);
+    $pending->shouldReceive('existsForExecution')->once()->andReturn(false);
+
+    $exec = Mockery::mock(ExecutionRegistryInterface::class);
+    $exec->shouldReceive('complete')->once();
+
+    $ledger = Mockery::mock(EventLedgerInterface::class);
+    $ledger->shouldReceive('append')->once();
+
+    $handler = new StepOutcomeHandler(
+        new RunPersistence($store, $ledger, $exec),
+        new RunControlFlow(new WorkflowEngine(Mockery::mock(EvaluationEngineInterface::class)), Mockery::mock(QueueDriverInterface::class)),
+        pendingCorrelations: $pending,
+        invoker: Mockery::mock(SubWorkflowInvoker::class),
+        evaluationEngine: $exprEngine,
+    );
+
+    $step = StepFactory::http(
+        stepId: 'step1',
+        description: 'Test step',
+        flow: new StepFlow(),
+        io: new StepIo(outputs: ['id' => new Selector(null, '$.foo', ExpressionType::JsonPath)]),
+        operationId: 'op1',
+    );
+
+    $workflow = new Workflow('test_wf', null, null, null, [], [$step], [], [], [], []);
+    $document = new ArazzoDocument('1.0.0', new Info('Title', null, null, '1.1.0'), [], [], new Components([], [], [], []), []);
+    $context = new WorkflowContext('def_1', [], ['step1' => []], [], 'test_wf', 'exec_1');
+
+    $handler->handle($document, $workflow, $step, $context, 'exec_1', true);
+});
