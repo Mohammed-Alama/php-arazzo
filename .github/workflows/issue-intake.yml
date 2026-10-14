@@ -1,0 +1,53 @@
+name: Issue intake
+
+# The soft backstop (spec A4, decision O1). Structure is deterministic, so the
+# shim can hard-block; this gate catches every other source — the web UI, a
+# rogue agent, `gh api` — and chases them with `needs-info` instead of blocking.
+# It never closes and never assigns.
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to validate
+        required: true
+        type: number
+
+concurrency:
+  group: issue-intake-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  gate:
+    name: Structural intake gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          cache: composer
+
+      - name: Install dependencies
+        run: composer update --no-progress --prefer-dist --no-interaction
+
+      - name: Validate and label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+        run: bash .github/scripts/issue-intake-gate.sh

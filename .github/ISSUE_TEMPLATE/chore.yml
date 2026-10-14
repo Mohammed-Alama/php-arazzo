@@ -1,0 +1,72 @@
+name: Chore
+description: 'Maintenance, tooling or cleanup — no user-facing change.'
+title: '[Chore] '
+labels:
+  - chore
+body:
+  -
+    type: dropdown
+    id: level
+    attributes:
+      label: Level
+      description: 'Where this sits in the hierarchy: Epic → Story → Sub-task.'
+      options:
+        - 'level:epic'
+        - 'level:story'
+        - 'level:subtask'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: core-metadata
+    attributes:
+      label: 'Core Metadata & Alignment'
+      description: 'Which component, which versions, which ecosystem.'
+      placeholder: 'Component / subsystem, Arazzo spec version, PHP target, framework ecosystem.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: problem-statement
+    attributes:
+      label: 'Problem Statement & Intent'
+      description: 'What is wrong (or wanted), and why it matters.'
+      placeholder: 'Observed vs. expected behaviour, or the intent behind the request.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: affected-surface
+    attributes:
+      label: 'Affected Surface & Rollback'
+      description: 'Packages touched, the risk, and how to roll back.'
+      placeholder: 'Packages touched, risk level, rollback plan.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: 'Acceptance Criteria & Behavioral Specification'
+      description: 'How we will know it is done.'
+      placeholder: '- [ ] Given … when … then …'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: source-grounding
+    attributes:
+      label: 'Source Grounding & Code Location'
+      description: 'The exact code, commit and evidence behind the claim.'
+      placeholder: 'file:line references, commit SHA, command output.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: impact-profile
+    attributes:
+      label: 'Public Domains & Impact Profile'
+      description: 'Who is affected, and how badly.'
+      placeholder: 'Public API impact, blast radius, severity.'
+    validations:
+      required: true
