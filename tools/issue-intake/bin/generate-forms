@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Tools\IssueIntake\FormGenerator;
+use Alama\Tools\IssueIntake\Schema;
+use Symfony\Component\Yaml\Yaml;
+
+/**
+ * Emits .github/ISSUE_TEMPLATE/*.yml from the schema (spec A2).
+ *
+ * Generated, never hand-maintained, so a form can never disagree with the
+ * validator about which sections a kind requires. Idempotent: re-running it
+ * on an unchanged schema produces byte-identical files.
+ */
+
+$root = dirname(__DIR__, 3);
+$autoload = $root.'/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    fwrite(STDERR, "generate-forms: cannot locate vendor/autoload.php\n");
+    exit(2);
+}
+
+require $autoload;
+
+$schema = Schema::fromFile($root.'/config/issues/schema.yaml');
+$generator = new FormGenerator($schema);
+$directory = $root.'/.github/ISSUE_TEMPLATE';
+
+if (!is_dir($directory) && !mkdir($directory, 0o777, true) && !is_dir($directory)) {
+    fwrite(STDERR, "generate-forms: cannot create {$directory}\n");
+    exit(2);
+}
+
+foreach ($generator->kinds() as $kind) {
+    $filename = $generator->filename($kind);
+    $document = Yaml::dump($generator->forKind($kind), 8, 2);
+
+    file_put_contents($directory.'/'.$filename, $document);
+
+    echo "wrote .github/ISSUE_TEMPLATE/{$filename}\n";
+}
