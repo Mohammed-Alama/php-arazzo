@@ -1,6 +1,9 @@
 # Issue Intake Enforcement & Arazzo Detective — Design
 
-> **Status:** Proposed · **Date:** 2026-10-14 · **Revision 3 (2026-10-14):** Part B made explicit as the
+> **Status:** Proposed · **Date:** 2026-10-14 · **Revision 4 (2026-10-14):** the CI gate deletes its marker
+> comment once the issue conforms — a resolved note is stale copy, and keeping it let the gate read its own
+> history as a live ownership claim (§A4).
+> **Revision 3 (2026-10-14):** Part B made explicit as the
 > **execution engine** for the protocol's five operations (Operation 3 had been implied but unnamed);
 > O1–O3 decided.
 > **Revision 2 (2026-10-14):** builder check incorporated —
@@ -213,10 +216,12 @@ Deterministic, no LLM, no secrets; calls the **validator CLI** (D12):
 1. Validate the issue body with the same semantics as the shim.
 2. If it does not conform → add the label and post **one** marker comment listing exactly which sections
    are missing/empty and what the level invariant expects.
-3. If it *does* conform → remove that label **only if our own marker comment is present** (see ownership), leaving everything else alone.
+3. If it *does* conform → remove that label **while our own marker comment is present** (see ownership), then **delete that comment**. A resolved notice is stale copy, and leaving it behind would let the gate later mistake its own history for a live ownership claim (Revision 4).
 4. **Never close. Never assign.**
 
 **Label ownership (Revision 2).** `needs-info` is owned by the `triage` skill (meaning *"waiting on the reporter"*) — and the intake gate's meaning is close enough to be compatible. The gate therefore reuses `needs-info` as decided, and records ownership with an HTML marker (`<!-- intake-gate -->`) in the comment it posts. It only ever removes `needs-info` when its own marker is present and the body now conforms, so it can never strip a label `triage` set for a different reason.
+
+**Resolved markers are deleted (Revision 4).** The ownership test above only holds while a marker means *"we are flagging this now"*. Left in place after the body conforms, the same marker also means *"we once did"* — and the gate cannot tell the two apart. So a marker that has outlived its purpose would let the gate claim a `needs-info` that `triage` set later, for a reason of its own. The gate therefore deletes its marker comment as soon as it clears the label (and whenever the marker is found without the label, closing the same hole for a label cleared by hand). Consequence: at most one marker comment exists at any time, and only while the gate is actively flagging.
 
 **Grandfathering (Revision 2).** There are ~54 pre-existing open issues with none of the new labels, and the workflow also fires on `edited`. To avoid mass false-positive labelling:
 

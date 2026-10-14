@@ -360,11 +360,11 @@ git commit -m "feat(issue-intake): generate GitHub issue forms from the schema"
 
 - [ ] **Step 1: Write the workflow**
 
-Triggers: `issues: [opened, edited]` + `workflow_dispatch`. Steps: checkout; `setup-php` 8.4; `composer install --no-interaction --prefer-dist`; skip if the issue carries `ecosystem`; if it is an `edited` event, skip unless a `level:*` label is present on the issue (grandfathering); pipe `{body, labels, parentLevel}` into `php tools/issue-intake/bin/validate-issue`; on exit `1`, `gh issue edit <n> --add-label needs-info` and post **one** comment — found or created by the marker `<!-- intake-gate -->`; on exit `0`, remove `needs-info` **only if** a comment carrying that marker exists.
+Triggers: `issues: [opened, edited]` + `workflow_dispatch`. Steps: checkout; `setup-php` 8.4; `composer install --no-interaction --prefer-dist`; skip if the issue carries `ecosystem`; if it is an `edited` event, skip unless a `level:*` label is present on the issue (grandfathering); pipe `{body, labels, parentLevel}` into `php tools/issue-intake/bin/validate-issue`; on exit `1`, `gh issue edit <n> --add-label needs-info` and post **one** comment — found or created by the marker `<!-- intake-gate -->`; on exit `0`, remove `needs-info` **only while** a comment carrying that marker exists, then **delete** that comment (Revision 4 — a resolved marker would otherwise read as a live ownership claim).
 
 - [ ] **Step 2: Verify against a scratch issue**
 
-Open a scratch issue via the form with one section blanked; expect the `needs-info` label plus one marker comment. Fill it in and re-save; expect the label removed and **no** second comment. Then confirm a pre-existing legacy issue edit is untouched.
+Open a scratch issue via the form with one section blanked; expect the `needs-info` label plus one marker comment. Fill it in and re-save; expect the label removed, our marker comment deleted, and **no** second comment. Then confirm a pre-existing legacy issue edit is untouched.
 
 - [ ] **Step 3: Commit**
 

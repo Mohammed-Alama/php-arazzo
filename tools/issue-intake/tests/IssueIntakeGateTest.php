@@ -122,3 +122,37 @@ it('clears needs-info on a conforming issue we previously commented on', functio
         ->and($process->getOutput())->toContain('cleared needs-info')
         ->and($log)->toContain('--remove-label needs-info');
 });
+
+it('removes its stale marker comment once the issue conforms', function () {
+    $body = issueBody(arazzoSchema(), bugSectionIds());
+
+    [$process, $log] = runIntakeGate([
+        'issue' => (string) json_encode([
+            'body' => $body,
+            'labels' => [['name' => 'bug'], ['name' => 'level:epic'], ['name' => 'needs-info']],
+        ]),
+        'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
+    ]);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($log)->toContain('--remove-label needs-info')
+        ->and($log)->toContain('api -X DELETE')
+        ->and($log)->toContain('comments/99');
+});
+
+it('removes a stale marker comment even when the label was cleared elsewhere', function () {
+    $body = issueBody(arazzoSchema(), bugSectionIds());
+
+    [$process, $log] = runIntakeGate([
+        'issue' => (string) json_encode([
+            'body' => $body,
+            'labels' => [['name' => 'bug'], ['name' => 'level:epic']],
+        ]),
+        'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
+    ]);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($log)->not->toContain('--remove-label')
+        ->and($log)->toContain('api -X DELETE')
+        ->and($log)->toContain('comments/99');
+});
