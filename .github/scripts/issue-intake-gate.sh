@@ -97,11 +97,19 @@ if [ "$code" -eq 1 ]; then
     exit 0
 fi
 
-# Conforming: clear the label only when our own marker comment is present, so
-# we can never strip a needs-info that the triage skill set for another reason.
-if [ -n "$marker_id" ] && jq -e 'any(.labels[]; .name == "needs-info")' <<<"$issue_json" >/dev/null; then
-    gh issue edit "$NUMBER" --repo "$REPO" --remove-label needs-info
-    echo "issue #$NUMBER conforms; cleared needs-info."
+# Conforming: the marker comment records that *we* flagged this issue, so we
+# only ever remove needs-info while it is present — never a needs-info that the
+# triage skill set for a reason of its own. Drop the note itself once it has
+# served that purpose: left behind it is both stale copy and a false ownership
+# claim over a needs-info set later.
+if [ -n "$marker_id" ]; then
+    if jq -e 'any(.labels[]; .name == "needs-info")' <<<"$issue_json" >/dev/null; then
+        gh issue edit "$NUMBER" --repo "$REPO" --remove-label needs-info
+        echo "issue #$NUMBER conforms; cleared needs-info."
+    fi
+
+    gh api -X DELETE "repos/$REPO/issues/comments/$marker_id" >/dev/null
+    echo "issue #$NUMBER conforms; removed the stale intake note."
 else
     echo "issue #$NUMBER conforms; nothing to clear."
 fi
