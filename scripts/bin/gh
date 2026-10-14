@@ -1,0 +1,354 @@
+#!/bin/sh
+#
+# gh-shim — the hard intake gate (spec A3; decisions D2/D12/D13).
+#
+# Installed ahead of the real `gh` on the host PATH (see install-gh-shim). It
+# carries no validation semantics of its own: it extracts the body, labels and
+# parent from the arguments and defers the verdict to the one engine,
+# tools/issue-intake/bin/validate-issue (D12).
+#
+# Guarded (only when a body is supplied):
+#   gh issue create ...
+#   gh issue edit ...                    (label-only edits pass straight through)
+#   gh api .../issues | .../issues/<n>   (POST/PATCH with a body field)
+#
+# Everything else — reads, label changes, comments, sub-resources — execs the
+# real gh untouched (anti-goal A2). GATE_GH_BIN overrides the real binary.
+
+set -u
+
+die() { printf 'gh-shim: %s\n' "$1" >&2; exit "${2:-1}"; }
+
+resolve_script_path() {
+    target=$0
+
+    while [ -L "$target" ]; do
+        dir=$(cd "$(dirname "$target")" && pwd)
+        link=$(readlink "$target")
+
+        case "$link" in
+            /*) target=$link ;;
+            *)  target="$dir/$link" ;;
+        esac
+    done
+
+    printf '%s\n' "$(cd "$(dirname "$target")" && pwd)/$(basename "$target")"
+}
+
+resolve_real_gh() {
+    if [ -n "${GATE_GH_BIN:-}" ]; then
+        printf '%s\n' "$GATE_GH_BIN"
+        return 0
+    fi
+
+    self=$1
+    old_ifs=$IFS
+    IFS=:
+
+    for dir in $PATH; do
+        [ -n "$dir" ] || continue
+        candidate="$dir/gh"
+
+        if [ -x "$candidate" ] && [ ! "$candidate" -ef "$self" ]; then
+            IFS=$old_ifs
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+
+    IFS=$old_ifs
+    return 1
+}
+
+SCRIPT=$(resolve_script_path)
+REPO_ROOT=$(cd "$(dirname "$SCRIPT")/../.." && pwd)
+VALIDATOR="$REPO_ROOT/tools/issue-intake/bin/validate-issue"
+
+REAL_GH=$(resolve_real_gh "$SCRIPT") || die 'cannot find the real gh on PATH (set GATE_GH_BIN)' 127
+
+TMP_RESULT=''
+TMP_BODY=''
+
+# ---------------------------------------------------------------------------
+
+require_engine() {
+    command -v jq >/dev/null 2>&1 || die 'jq is required to validate issues; install it or use the file-issue skill' 2
+    [ -f "$VALIDATOR" ] || die "validator not found at $VALIDATOR" 2
+    command -v php >/dev/null 2>&1 || die 'php is required to validate issues' 2
+}
+
+# Turn a newline/comma-separated list of labels into a JSON array (deduped).
+labels_to_json() {
+    if [ -z "$(printf '%s' "$1" | tr -d '[:space:]')" ]; then
+        printf '[]'
+        return 0
+    fi
+
+    printf '%s' "$1" | jq -Rsc '
+        split("\n")
+        | map(split(","))
+        | add
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(. != ""))
+        | unique
+    '
+}
+
+level_label_of() {
+    "$REAL_GH" issue view "$1" --json labels 2>/dev/null \
+        | jq -r '[.labels[]?.name | select(startswith("level:"))][0] // empty' 2>/dev/null || true
+}
+
+all_labels_of() {
+    "$REAL_GH" issue view "$1" --json labels 2>/dev/null \
+        | jq -r '.labels[]?.name' 2>/dev/null || true
+}
+
+# $1 body, $2 labels-json, $3 parent number or empty, $4 parent level or empty.
+gate() {
+    parent_json='null'
+    parent_level_json='null'
+
+    if [ -n "$3" ]; then
+        parent_json=$3
+        [ -n "$4" ] && parent_level_json=$(jq -n --arg level "$4" '$level')
+    fi
+
+    payload=$(jq -n \
+        --arg body "$1" \
+        --argjson labels "$2" \
+        --argjson parent "$parent_json" \
+        --argjson parentLevel "$parent_level_json" \
+        '{body: $body, labels: $labels, parent: $parent, parentLevel: $parentLevel}')
+
+    printf '%s' "$payload" | php "$VALIDATOR" > "$TMP_RESULT"
+
+    case $? in
+        0) return 0 ;;
+        1)
+            printf '\ngh-shim: refusing to run gh — the issue does not match the intake structure.\n' >&2
+            printf 'Fix the findings above, then retry. Paved path:\n  php %s/.agents/skills/file-issue/scripts/file-issue.php --help\n' "$REPO_ROOT" >&2
+            return 1
+        ;;
+        *) die 'validator failed to run; refusing to reach the real gh' 2 ;;
+    esac
+}
+
+# Read a `body` value supplied as `@path` (gh api's file form).
+read_at_file() {
+    case "$1" in
+        @-*) printf '' ; return 1 ;;
+        @*)  file=${1#@}
+             [ -f "$file" ] || return 1
+             cat "$file" ;;
+        *)   printf '%s' "$1" ;;
+    esac
+}
+
+# Record a `key=value` field from a gh api call, keeping only body and labels.
+add_field() {
+    case "$1" in
+        body=*)       api_body=${1#body=}; api_body_supplied=1 ;;
+        labels\[\]=*) api_labels="$api_labels
+${1#labels[]=}" ;;
+        labels=*)     api_labels="$api_labels
+${1#labels=}" ;;
+    esac
+}
+
+# ---------------------------------------------------------------------------
+# Dispatch
+
+action=''
+
+case "${1:-}" in
+    issue)
+        case "${2:-}" in
+            create) action=create ;;
+            edit)   action=edit ;;
+        esac
+    ;;
+    api) action=api ;;
+esac
+
+if [ "$action" = create ] || [ "$action" = edit ]; then
+    body='' body_file='' body_supplied=0 labels_in='' parent='' issue_number=''
+    skip=0 pending='' index=0
+
+    for arg in "$@"; do
+        index=$((index + 1))
+
+        [ "$index" -le 2 ] && continue
+
+        if [ "$skip" -eq 1 ]; then
+            skip=0
+            case "$pending" in
+                body)   body=$arg; body_supplied=1 ;;
+                file)   body_file=$arg; body_supplied=1 ;;
+                label)  labels_in="$labels_in
+$arg" ;;
+                parent) parent=$arg ;;
+            esac
+            pending=''
+            continue
+        fi
+
+        case "$arg" in
+            --body)       skip=1; pending=body ;;
+            -b)           skip=1; pending=body ;;
+            --body-file)  skip=1; pending=file ;;
+            -F)           skip=1; pending=file ;;
+            --label|--add-label|-l) skip=1; pending=label ;;
+            --parent)     skip=1; pending=parent ;;
+            -t|--title|--milestone|-m|--assignee|-a|--add-assignee|--remove-assignee|--project|-p|--add-project|--remove-project|--repo|-R|--template|-T|--type)
+                skip=1; pending='' ;;
+            --body=*)      body=${arg#--body=}; body_supplied=1 ;;
+            --body-file=*) body_file=${arg#--body-file=}; body_supplied=1 ;;
+            --label=*|--add-label=*) labels_in="$labels_in
+${arg#*=}" ;;
+            --parent=*)    parent=${arg#--parent=} ;;
+            -b*)           body=${arg#-b}; body_supplied=1 ;;
+            -F*)           body_file=${arg#-F}; body_supplied=1 ;;
+            -l*)           labels_in="$labels_in
+${arg#-l}" ;;
+            -*)            : ;;
+            *)             case "$arg" in *[!0-9]*) : ;; *) [ -z "$issue_number" ] && issue_number=$arg ;; esac ;;
+        esac
+    done
+
+    if [ "$body_supplied" -eq 1 ]; then
+        let_through=0
+
+        case "$body_file" in
+            '') : ;;
+            '-')
+                require_engine
+                TMP_BODY=$(mktemp "${TMPDIR:-/tmp}/gh-shim-body.XXXXXX") || die 'cannot create a temp file' 2
+                cat > "$TMP_BODY"
+                body=$(cat "$TMP_BODY")
+            ;;
+            *)
+                if [ -f "$body_file" ]; then
+                    body=$(cat "$body_file")
+                else
+                    let_through=1   # unreadable body file: let the real gh report it
+                fi
+            ;;
+        esac
+
+        if [ "$let_through" -eq 0 ]; then
+            require_engine
+            TMP_RESULT=$(mktemp "${TMPDIR:-/tmp}/gh-shim-result.XXXXXX") || die 'cannot create a temp file' 2
+
+            labels_final=$labels_in
+
+            if [ "$action" = edit ] && [ -n "$issue_number" ]; then
+                labels_final=$(all_labels_of "$issue_number")
+                labels_final="$labels_final
+$labels_in"
+            fi
+
+            parent_level=''
+            [ -n "$parent" ] && parent_level=$(level_label_of "$parent")
+
+            if ! gate "$body" "$(labels_to_json "$labels_final")" "$parent" "$parent_level"; then
+                rm -f "$TMP_RESULT" "$TMP_BODY"
+                exit 1
+            fi
+
+            if [ -n "$TMP_BODY" ]; then
+                "$REAL_GH" "$@" < "$TMP_BODY"
+                status=$?
+                rm -f "$TMP_RESULT" "$TMP_BODY"
+                exit $status
+            fi
+
+            rm -f "$TMP_RESULT"
+        fi
+    fi
+
+    exec "$REAL_GH" "$@"
+fi
+
+if [ "$action" = api ]; then
+    api_method='' api_path='' api_body='' api_body_supplied=0 api_labels='' fields_present=0
+    skip=0 pending='' index=0
+
+    for arg in "$@"; do
+        index=$((index + 1))
+
+        [ "$index" -le 1 ] && continue
+
+        if [ "$skip" -eq 1 ]; then
+            skip=0
+            case "$pending" in
+                method) api_method=$arg ;;
+                field)  add_field "$arg" ;;
+            esac
+            pending=''
+            continue
+        fi
+
+        case "$arg" in
+            -X|--method)                    skip=1; pending=method ;;
+            -f|--raw-field|-F|--field)      fields_present=1; skip=1; pending=field ;;
+            -H|--header|--hostname|--cache|-q|--jq|-p|--preview|-t|--template|--input)
+                skip=1; pending='' ;;
+            --method=*)                     api_method=${arg#--method=} ;;
+            --field=*|--raw-field=*)        fields_present=1; add_field "${arg#*=}" ;;
+            -X*)                            api_method=${arg#-X} ;;
+            -f*|-F*)                        fields_present=1; add_field "${arg#-?}" ;;
+            --*=*)                          : ;;
+            -*)                             : ;;
+            *)                              [ -z "$api_path" ] && api_path=$arg ;;
+        esac
+    done
+
+    method=${api_method:-}
+    if [ -z "$method" ]; then
+        [ "$fields_present" -eq 1 ] && method=POST || method=GET
+    fi
+
+    guarded_method=0
+    case "$(printf '%s' "$method" | tr '[:lower:]' '[:upper:]')" in
+        POST|PATCH) guarded_method=1 ;;
+    esac
+
+    guarded_path=0
+    api_issue=''
+    case "$api_path" in
+        */issues) guarded_path=1 ;;
+        */issues/*)
+            rest=${api_path#*/issues/}
+            case "$rest" in
+                ''|*[!0-9]*) : ;;
+                *) guarded_path=1; api_issue=$rest ;;
+            esac
+        ;;
+    esac
+
+    if [ "$guarded_method" -eq 1 ] && [ "$guarded_path" -eq 1 ] && [ "$api_body_supplied" -eq 1 ]; then
+        if ! api_body=$(read_at_file "$api_body"); then
+            exec "$REAL_GH" "$@"   # body from stdin/@-: not supported, let it through
+        fi
+
+        require_engine
+        TMP_RESULT=$(mktemp "${TMPDIR:-/tmp}/gh-shim-result.XXXXXX") || die 'cannot create a temp file' 2
+
+        labels_final=$api_labels
+        if [ -n "$api_issue" ]; then
+            labels_final=$(all_labels_of "$api_issue")
+            labels_final="$labels_final
+$api_labels"
+        fi
+
+        if ! gate "$api_body" "$(labels_to_json "$labels_final")" '' ''; then
+            rm -f "$TMP_RESULT"
+            exit 1
+        fi
+
+        rm -f "$TMP_RESULT"
+    fi
+fi
+
+exec "$REAL_GH" "$@"
