@@ -111,15 +111,15 @@ it('requires a story to sit under an epic', function () {
     $body = issueBody($schema, enhancementSectionIds());
 
     $underEpic = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['enhancement', 'level:story'],
+        'body' => $body, 'labels' => ['enhancement', 'level:user-story'],
         'parent' => 10, 'parentLevel' => 'level:epic',
     ]);
 
     expect($underEpic)->toBe([]);
 
     $underStory = (new Validator($schema))->validate([
-        'body' => $body, 'labels' => ['enhancement', 'level:story'],
-        'parent' => 10, 'parentLevel' => 'level:story',
+        'body' => $body, 'labels' => ['enhancement', 'level:user-story'],
+        'parent' => 10, 'parentLevel' => 'level:user-story',
     ]);
 
     expect(codes($underStory))->toBe(['parent-level-invalid']);
@@ -130,7 +130,7 @@ it('requires a story to have a parent at all', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, enhancementSectionIds()),
-        'labels' => ['enhancement', 'level:story'],
+        'labels' => ['enhancement', 'level:user-story'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -143,7 +143,7 @@ it('names a legacy parent that carries no level label', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, enhancementSectionIds()),
-        'labels' => ['enhancement', 'level:story'],
+        'labels' => ['enhancement', 'level:user-story'],
         'parent' => 42,
         'parentLevel' => null,
     ]);
@@ -159,9 +159,9 @@ it('refuses to give a sub-task children', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, choreSectionIds()),
-        'labels' => ['chore', 'level:subtask'],
+        'labels' => ['chore', 'level:sub-task'],
         'parent' => 7,
-        'parentLevel' => 'level:subtask',
+        'parentLevel' => 'level:sub-task',
     ]);
 
     expect(codes($findings))->toBe(['children-forbidden'])

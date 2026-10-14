@@ -28,17 +28,27 @@ kind_sections:
     requires: [affected-surface]
 
 # Level invariants the shim and CI enforce (GitHub will not).
+# `level:package-epic` is the root of a package's tree: it names the package,
+# carries no kind, and its body is generated (spec Revision 5, §A7).
 levels:
-  level:epic:
+  level:package-epic:
     parent: forbidden
-  level:story:
+    kind: forbidden
+    sections: exempt
+    requires_package_label: true
+    form: false
+  level:epic:
+    parent:
+      required: true
+      allowed_parent_levels: [level:package-epic]
+  level:user-story:
     parent:
       required: true
       allowed_parent_levels: [level:epic]
-  level:subtask:
+  level:sub-task:
     parent:
       required: true
-      allowed_parent_levels: [level:story]
+      allowed_parent_levels: [level:user-story]
     children: forbidden
 
 sections:

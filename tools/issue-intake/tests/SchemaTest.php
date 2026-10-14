@@ -45,3 +45,31 @@ it('rejects a kind referencing an undeclared section', function () {
         'sections' => [],
     ]);
 })->throws(InvalidArgumentException::class);
+
+it('exposes the four levels and their per-level facts', function () {
+    $schema = Schema::fromFile(dirname(__DIR__, 3).'/config/issues/schema.yaml');
+
+    expect(array_keys($schema->levels()))->toBe([
+        'level:package-epic', 'level:epic', 'level:user-story', 'level:sub-task',
+    ])
+        ->and($schema->formLevels())->toBe(['level:epic', 'level:user-story', 'level:sub-task'])
+        ->and($schema->levelKindForbidden('level:package-epic'))->toBeTrue()
+        ->and($schema->levelSectionsExempt('level:package-epic'))->toBeTrue()
+        ->and($schema->levelRequiresPackageLabel('level:package-epic'))->toBeTrue()
+        ->and($schema->levelKindForbidden('level:epic'))->toBeFalse()
+        ->and($schema->levelSectionsExempt('level:epic'))->toBeFalse();
+
+    expect($schema->level('level:epic')['parent']['allowed_parent_levels'])
+        ->toBe(['level:package-epic']);
+});
+
+it('rejects a level whose sections fact is neither absent nor exempt', function () {
+    Schema::fromArray([
+        'version' => 1,
+        'kinds' => [],
+        'levels' => ['level:x' => ['sections' => 'sometimes']],
+        'skeleton' => [],
+        'kind_sections' => [],
+        'sections' => [],
+    ]);
+})->throws(InvalidArgumentException::class);

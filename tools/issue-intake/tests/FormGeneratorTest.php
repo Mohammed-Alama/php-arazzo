@@ -20,7 +20,7 @@ it('emits a leading level dropdown built from the schema levels', function () {
 
     expect($level['id'])->toBe('level')
         ->and($level['attributes']['label'])->toBe('Level')
-        ->and($level['attributes']['options'])->toBe(['level:epic', 'level:story', 'level:subtask'])
+        ->and($level['attributes']['options'])->toBe(['level:epic', 'level:user-story', 'level:sub-task'])
         ->and($level['validations']['required'])->toBeTrue();
 });
 

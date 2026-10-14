@@ -94,7 +94,7 @@ it('files a story under an epic', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=bug', '--level=level:story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
+        '--kind=bug', '--level=level:user-story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -105,7 +105,7 @@ it('refuses a story under a parent that has no level label', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=bug', '--level=level:story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
+        '--kind=bug', '--level=level:user-story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
     ], $gh, $log, parentLabel: 'chore');
 
     expect($process->getExitCode())->toBe(1)

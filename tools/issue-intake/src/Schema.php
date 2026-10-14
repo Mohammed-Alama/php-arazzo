@@ -120,6 +120,28 @@ final class Schema
                     }
                 }
             }
+
+            $levelSections = $spec['sections'] ?? null;
+
+            if ($levelSections !== null && $levelSections !== 'exempt') {
+                throw new InvalidArgumentException("levels.\"{$label}\".sections must be \"exempt\" when set.");
+            }
+
+            $children = $spec['children'] ?? null;
+
+            if ($children !== null && $children !== 'forbidden') {
+                throw new InvalidArgumentException("levels.\"{$label}\".children must be \"forbidden\" when set.");
+            }
+
+            foreach (['kind', 'requires_package_label', 'form'] as $flag) {
+                $value = $spec[$flag] ?? null;
+
+                if ($value !== null && $value !== 'forbidden' && !is_bool($value)) {
+                    throw new InvalidArgumentException(
+                        "levels.\"{$label}\".{$flag} must be a boolean or \"forbidden\".",
+                    );
+                }
+            }
         }
 
         foreach ($sections as $id => $section) {
@@ -149,6 +171,46 @@ final class Schema
     public function levels(): array
     {
         return $this->levels;
+    }
+
+    /** @return array<string, mixed> */
+    public function level(string $level): array
+    {
+        if (!array_key_exists($level, $this->levels)) {
+            throw new InvalidArgumentException("Unknown level \"{$level}\".");
+        }
+
+        return $this->levels[$level];
+    }
+
+    /**
+     * The levels the web form offers. A package-epic is excluded by design: it
+     * carries no kind and no sections, and `file-issue` is its only creation
+     * path (spec Revision 5, §A6).
+     *
+     * @return list<string>
+     */
+    public function formLevels(): array
+    {
+        return array_values(array_filter(
+            array_keys($this->levels),
+            fn (string $level): bool => ($this->levels[$level]['form'] ?? true) !== false,
+        ));
+    }
+
+    public function levelKindForbidden(string $level): bool
+    {
+        return ($this->levels[$level]['kind'] ?? null) === 'forbidden';
+    }
+
+    public function levelSectionsExempt(string $level): bool
+    {
+        return ($this->levels[$level]['sections'] ?? null) === 'exempt';
+    }
+
+    public function levelRequiresPackageLabel(string $level): bool
+    {
+        return ($this->levels[$level]['requires_package_label'] ?? false) === true;
     }
 
     /** @return list<string> */

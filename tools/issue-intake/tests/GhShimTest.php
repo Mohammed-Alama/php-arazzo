@@ -136,7 +136,7 @@ it('refuses a story whose parent has no level label', function () {
 
     $process = runShim([
         'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:story', '--parent', '99',
+        '--label', 'bug', '--label', 'level:user-story', '--parent', '99',
     ], $gh, $log, ['GATE_STUB_PARENT_LABEL' => 'chore']);
 
     expect($process->getExitCode())->toBe(1)
