@@ -181,6 +181,17 @@ it('refuses a parent on an epic', function () {
     expect(codes($findings))->toBe(['parent-forbidden']);
 });
 
+it('treats GitHub\'s no-response sentinel as an empty section', function () {
+    $schema = arazzoSchema();
+
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, bugSectionIds(), ['artifacts' => '_No response_']),
+        'labels' => ['bug', 'level:epic'],
+    ]);
+
+    expect(codes($findings))->toBe(['empty-section']);
+});
+
 it('tolerates a missing parentLevel key', function () {
     $schema = arazzoSchema();
 

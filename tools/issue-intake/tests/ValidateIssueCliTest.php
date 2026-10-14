@@ -42,7 +42,12 @@ it('exits 0 and reports conforming for a complete body', function () {
 
     expect($process->getExitCode())->toBe(0)
         ->and(json_decode($process->getOutput(), true))
-        ->toBe(['conforming' => true, 'findings' => []]);
+        ->toBe([
+            'conforming' => true,
+            'findings' => [],
+            'kind' => 'bug',
+            'level' => 'level:epic',
+        ]);
 });
 
 it('exits 2 on invalid JSON', function () {

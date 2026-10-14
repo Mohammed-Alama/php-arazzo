@@ -45,12 +45,16 @@ try {
     exit(2);
 }
 
-$findings = (new Validator($schema))->validate([
+$validator = new Validator($schema);
+$input = [
     'body' => is_string($decoded['body'] ?? null) ? $decoded['body'] : '',
     'labels' => is_array($decoded['labels'] ?? null) ? $decoded['labels'] : [],
     'parent' => is_int($decoded['parent'] ?? null) ? $decoded['parent'] : null,
     'parentLevel' => is_string($decoded['parentLevel'] ?? null) ? $decoded['parentLevel'] : null,
-]);
+];
+
+$findings = $validator->validate($input);
+$classified = $validator->classify($input);
 
 foreach ($findings as $finding) {
     fwrite(STDERR, "[{$finding->code}] {$finding->message}\n");
@@ -65,6 +69,8 @@ echo json_encode([
         ],
         $findings,
     ),
+    'kind' => $classified['kind'],
+    'level' => $classified['level'],
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
 
 exit($findings === [] ? 0 : 1);

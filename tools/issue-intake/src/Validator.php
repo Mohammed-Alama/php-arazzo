@@ -13,6 +13,9 @@ namespace Alama\Tools\IssueIntake;
  */
 final class Validator
 {
+    /** GitHub renders this for a form field the reporter left blank. */
+    private const NO_RESPONSE = '_No response_';
+
     public function __construct(private readonly Schema $schema) {}
 
     /**
@@ -52,6 +55,28 @@ final class Validator
     public static function isConforming(array $findings): bool
     {
         return $findings === [];
+    }
+
+    /**
+     * The kind and level this input resolves to, without validating.
+     *
+     * The CI gate reads this to apply the `level:*` label an issue declares
+     * only in its body (a web-filed issue carries no such label), reusing the
+     * exact resolution the validator uses — no second parser (spec D12).
+     *
+     * @param  array{body?: string, labels?: list<string>}  $input
+     * @return array{kind: string|null, level: string|null}
+     */
+    public function classify(array $input): array
+    {
+        $labels = self::strings($input['labels'] ?? []);
+        $parsed = SectionParser::parse($input['body'] ?? '');
+        $ignored = [];
+
+        return [
+            'kind' => $this->resolveKind($labels, $ignored),
+            'level' => $this->resolveLevel($labels, $parsed, $ignored),
+        ];
     }
 
     /**
@@ -165,7 +190,7 @@ final class Validator
         foreach ($blocks as $block) {
             $text = trim(preg_replace('/<!--.*?-->/s', '', $block) ?? '');
 
-            if ($text === '' || SectionParser::normalise($text) === $expected) {
+            if ($text === '' || $text === self::NO_RESPONSE || SectionParser::normalise($text) === $expected) {
                 continue;
             }
 
