@@ -58,11 +58,15 @@ function runShim(array $args, string $binary, string $log, array $env = [], stri
 }
 
 it('passes --version through untouched', function () {
-    $process = new Process(['scripts/bin/gh', '--version'], env: ['GATE_GH_BIN' => '/bin/echo']);
-    $process->run();
+    [$gh, $log] = shimStub();
 
+    $process = runShim(['--version'], $gh, $log);
+
+    // The claim is that the shim hands the call to the real binary, so assert
+    // on the binary's own call log — not on what a system `echo` makes of
+    // `--version` (GNU echo intercepts the flag; BSD echo does not).
     expect($process->getExitCode())->toBe(0)
-        ->and($process->getOutput())->toContain('--version');
+        ->and(file_get_contents($log))->toContain('--version');
 });
 
 it('blocks an incomplete issue create before calling real gh', function () {
