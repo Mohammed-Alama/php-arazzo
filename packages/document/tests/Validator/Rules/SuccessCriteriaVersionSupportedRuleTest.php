@@ -25,35 +25,26 @@ function versionRuleDoc(SuccessCriterion $c): ArazzoDocument
     return new ArazzoDocument('1.0.0', new Info('T', null, null, '1'), [], [$w], new Components([], [], [], []), []);
 }
 
-it('rejects xpath-30', function (): void {
-    $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, 'xpath-30');
-    $doc = versionRuleDoc($c);
-    $ec = new ErrorCollector();
-
-    (new SuccessCriteriaVersionSupportedRule())->check($doc, SymbolTable::build($doc), $ec);
-
-    expect($ec->errors())->toHaveCount(1)
-        ->and($ec->errors()[0]->message)->toContain('xpath-30');
-});
-
-it('rejects xpath-31', function (): void {
-    $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, 'xpath-31');
-    $doc = versionRuleDoc($c);
-    $ec = new ErrorCollector();
-
-    (new SuccessCriteriaVersionSupportedRule())->check($doc, SymbolTable::build($doc), $ec);
-
-    expect($ec->errors())->toHaveCount(1);
-});
-
-it('accepts xpath-10', function (): void {
-    $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, 'xpath-10');
+it('accepts recognised xpath versions', function (string $version): void {
+    $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, $version);
     $doc = versionRuleDoc($c);
     $ec = new ErrorCollector();
 
     (new SuccessCriteriaVersionSupportedRule())->check($doc, SymbolTable::build($doc), $ec);
 
     expect($ec->errors())->toHaveCount(0);
+})->with(['xpath-10', 'xpath-20', 'xpath-30', 'xpath-31']);
+
+it('rejects an unrecognised xpath version', function (): void {
+    $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, 'xpath-99');
+    $doc = versionRuleDoc($c);
+    $ec = new ErrorCollector();
+
+    (new SuccessCriteriaVersionSupportedRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->message)->toContain('xpath-99')
+        ->and($ec->errors()[0]->message)->toContain('xpath-31');
 });
 
 it('accepts xpath with no version pinned', function (): void {
@@ -67,7 +58,7 @@ it('accepts xpath with no version pinned', function (): void {
 });
 
 it('ignores version on a non-xpath criterion type', function (): void {
-    $c = new SuccessCriterion(null, '$.id', CriterionType::JsonPath, 'xpath-30');
+    $c = new SuccessCriterion(null, '$.id', CriterionType::JsonPath, 'xpath-99');
     $doc = versionRuleDoc($c);
     $ec = new ErrorCollector();
 

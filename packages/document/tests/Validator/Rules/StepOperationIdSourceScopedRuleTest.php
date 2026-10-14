@@ -30,3 +30,22 @@ it('handles null skip, qualified unknown source, qualified known source, and unq
     (new StepOperationIdSourceScopedRule())->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(2);
 });
+
+it('accepts the spec runtime-expression qualified form and rejects an unknown source', function (): void {
+    $doc = Fx::doc(
+        workflows: [
+            Fx::wf('w', [
+                Fx::step('a', '$sourceDescriptions.src.op'),
+                Fx::step('b', '$sourceDescriptions.ghost.op'),
+            ]),
+        ],
+        sources: [
+            new SourceDescription('src', '/u', SourceType::Openapi),
+            new SourceDescription('src2', '/u2', SourceType::Openapi),
+        ],
+    );
+    $ec = new ErrorCollector();
+    (new StepOperationIdSourceScopedRule())->check($doc, SymbolTable::build($doc), $ec);
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->message)->toContain('$sourceDescriptions.ghost.op');
+});

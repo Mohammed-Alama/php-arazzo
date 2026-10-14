@@ -11,14 +11,22 @@ use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 
 /**
+ * Guard the Expression Type Object `version` for `xpath` criteria against the
+ * versions the Arazzo Specification recognises.
+ *
+ * The specification (Expression Type Object) permits `xpath-10`, `xpath-20`,
+ * `xpath-30` and `xpath-31`, and defines `xpath-31` as the default when the
+ * version is omitted. Any other value is not a recognised version. The
+ * evaluation engine currently applies XPath 1.0 semantics (DOMXPath); higher
+ * versions are accepted at validation time and evaluated on a best-effort
+ * basis.
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class SuccessCriteriaVersionSupportedRule implements Rule
 {
-    /** @var array<string, list<string>> */
-    private const UNSUPPORTED = [
-        'xpath' => ['xpath-30', 'xpath-31'],
-    ];
+    /** @var list<string> */
+    private const XPATH_VERSIONS = ['xpath-10', 'xpath-20', 'xpath-30', 'xpath-31'];
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
@@ -29,10 +37,10 @@ final class SuccessCriteriaVersionSupportedRule implements Rule
                         continue;
                     }
 
-                    if (in_array($c->version, self::UNSUPPORTED['xpath'], true)) {
+                    if (!in_array($c->version, self::XPATH_VERSIONS, true)) {
                         $errors->error(
                             $this->code(),
-                            "criterion type 'xpath' version '{$c->version}' is not supported — DOMXPath only implements XPath 1.0 (use 'xpath-10' or omit version).",
+                            "criterion type 'xpath' version '{$c->version}' is not a recognised XPath version (allowed: ".implode(', ', self::XPATH_VERSIONS).').',
                             "/workflows/{$i}/steps/{$j}/successCriteria/{$k}/type/version",
                         );
                     }

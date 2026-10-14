@@ -27,6 +27,7 @@ final class OfficialSchemaRule implements Rule
     private const SCHEMA_FILES = [
         '1.0' => __DIR__.'/../../resources/schemas/arazzo-1.0.schema.json',
         '1.1' => __DIR__.'/../../resources/schemas/arazzo-1.1.schema.json',
+        '1.2' => __DIR__.'/../../resources/schemas/arazzo-1.2.schema.json',
     ];
 
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
@@ -36,47 +37,10 @@ final class OfficialSchemaRule implements Rule
             return; // parser-built documents (tests) carry no raw payload
         }
 
-        $minor = str_starts_with($doc->arazzo, '1.0') ? '1.0' : '1.1';
-        $schemaFile = self::SCHEMA_FILES[$minor];
-        if (!is_file($schemaFile)) {
+        $schema = self::loadSchema($doc->arazzo);
+        if ($schema === null) {
             return;
         }
-
-        $decoded = json_decode((string) file_get_contents($schemaFile), true);
-        if (!is_array($decoded) || !is_string($decoded['$id'] ?? null)) {
-            return;
-        }
-
-        $defs = $decoded['$defs'] ?? null;
-        if (!is_array($defs)) {
-            return;
-        }
-
-        if (!is_array($defs['schema'] ?? null)) {
-            return;
-        }
-
-        $schemaId = $decoded['$id'];
-
-        // Neutralize remote refs into the 2020-12 metaschema (workflow inputs)
-        // so validation works fully offline.
-        /** @var array<array-key, mixed> $schemaDefs */
-        $schemaDefs = $defs;
-        $schemaDefs['schema'] = ['type' => 'object'];
-        $decoded['$defs'] = $schemaDefs;
-
-        // The official schemas are written for draft 2020-12, where $ref may
-        // appear alongside sibling keywords. Justinrainbow treats a $ref as
-        // exclusive (draft-7 style), which silently skips "required" checks.
-        // Hoist every sibling $ref into allOf to restore correct semantics.
-        $decoded = self::hoistSiblingRefs($decoded);
-
-        $schemaData = json_decode((string) json_encode($decoded));
-        assert($schemaData instanceof \stdClass);
-
-        $storage = new SchemaStorage();
-        $storage->addSchema($schemaId, $schemaData);
-        $validator = new JsonSchemaValidator();
 
         $data = json_decode(json_encode($raw) ?: '{}');
         if (!is_object($data) && !is_array($data)) {
@@ -85,10 +49,12 @@ final class OfficialSchemaRule implements Rule
             return;
         }
 
+        $validator = new JsonSchemaValidator();
+
         try {
             $validator->validate(
                 $data,
-                $storage->getSchema($schemaId),
+                $schema,
                 Constraint::CHECK_MODE_APPLY_DEFAULTS | Constraint::CHECK_MODE_DISABLE_FORMAT,
             );
         } catch (ValidationException) {
@@ -99,6 +65,63 @@ final class OfficialSchemaRule implements Rule
             return;
         }
 
+        self::reportErrors($validator, $errors);
+    }
+
+    /**
+     * Loads and prepares the official schema for the document's minor version,
+     * returning null when the schema cannot be used offline.
+     */
+    private static function loadSchema(string $arazzo): ?object
+    {
+        $minor = match (true) {
+            str_starts_with($arazzo, '1.0') => '1.0',
+            str_starts_with($arazzo, '1.2') => '1.2',
+            default => '1.1',
+        };
+        $schemaFile = self::SCHEMA_FILES[$minor];
+        if (!is_file($schemaFile)) {
+            return null;
+        }
+
+        $decoded = json_decode((string) file_get_contents($schemaFile), true);
+        if (!is_array($decoded) || !is_string($decoded['$id'] ?? null)) {
+            return null;
+        }
+
+        $schemaId = $decoded['$id'];
+
+        $defs = $decoded['$defs'] ?? null;
+        if (!is_array($defs) || !is_array($defs['schema'] ?? null)) {
+            return null;
+        }
+
+        // Neutralize remote refs into the 2020-12 metaschema (workflow inputs)
+        // so validation works fully offline.
+        $defs['schema'] = ['type' => 'object'];
+        $decoded['$defs'] = $defs;
+
+        // The official schemas are written for draft 2020-12, where $ref may
+        // appear alongside sibling keywords. Justinrainbow treats a $ref as
+        // exclusive (draft-7 style), which silently skips "required" checks.
+        // Hoist every sibling $ref into allOf to restore correct semantics.
+        $decoded = self::hoistSiblingRefs($decoded);
+
+        $schemaData = json_decode((string) json_encode($decoded));
+        if (!$schemaData instanceof \stdClass) {
+            return null;
+        }
+
+        $storage = new SchemaStorage();
+        $storage->addSchema($schemaId, $schemaData);
+
+        $resolved = $storage->getSchema($schemaId);
+
+        return is_object($resolved) ? $resolved : null;
+    }
+
+    private static function reportErrors(JsonSchemaValidator $validator, ErrorCollector $errors): void
+    {
         /** @var array{property: string, message: string, pointer: string} $error */
         foreach (array_slice($validator->getErrors(), 0, 25) as $error) {
             $errors->error(
