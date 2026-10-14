@@ -3,7 +3,7 @@
 **What to build:**
 Enable workflow references targeting workflows defined in external Arazzo documents via `$sourceDescriptions.{name}.{workflowId}` runtime expressions. This allows sub-workflow steps, `dependsOn` declarations, retry repair targets, and goto one-way transfers to cleanly reference and execute workflows defined across multiple federated Arazzo documents.
 
-**Blocked by:** 03: Support step-level goto to workflowId as one-way transfer
+**Blocked by:** #81
 
 **Status:** ready-for-agent
 

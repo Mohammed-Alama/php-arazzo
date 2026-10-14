@@ -4,9 +4,9 @@
 Import upstream golden fixtures from `arazzo-toolkit` covering control flow transitions, retry repair references, and cross-document workflows into `packages/core/tests/fixtures/`, verifying that `php-arazzo` produces identical results across the shared conformance suite and updating `docs/CONFORMANCE.md`.
 
 **Blocked by:**
-- 03: Support step-level goto to workflowId as one-way transfer
-- 04: Implement retry action repair reference execution with budget accounting
-- 05: Support cross-document workflow references ($sourceDescriptions.{name}.{workflowId})
+- #81
+- #82
+- #83
 
 **Status:** ready-for-agent
 

@@ -3,7 +3,7 @@
 **What to build:**
 When a failing step triggers a `retry` action that specifies a `stepId` or `workflowId`, the runner must execute that referenced step or workflow as an auxiliary repair procedure *before* re-attempting the original failing step. After the repair reference successfully completes, control returns to re-attempt the original step with fresh context (e.g. newly refreshed authorization tokens). Each execution step within the repair procedure must deduct from the shared workflow step budget.
 
-**Blocked by:** 01: Reject ambiguous goto and retry actions declaring both stepId and workflowId
+**Blocked by:** #79
 
 **Status:** ready-for-agent
 

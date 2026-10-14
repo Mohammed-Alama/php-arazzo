@@ -3,7 +3,7 @@
 **What to build:**
 When a step executes a `goto` action targeting a `workflowId`, it represents a one-way transfer of workflow control per the Arazzo specification. The calling workflow terminates immediately, and execution transfers permanently to the target workflow. Context does not return to the calling workflow upon completion, and the final `ExecutionResult` reflects the target workflow's settled status and outputs.
 
-**Blocked by:** 01: Reject ambiguous goto and retry actions declaring both stepId and workflowId
+**Blocked by:** #79
 
 **Status:** ready-for-agent
 
