@@ -36,6 +36,9 @@ the report, so nothing can be dropped.
    memory vs code, confidence vs evidence, suppressed uncertainty).
 
 The theory lives in `docs/epistemic-protocol.md` and is **not restated here**.
+The per-operation **execution guide** — the resolution decision tree, the
+php-arazzo rank table, the worked prior/evidence/posterior example, and the
+falsification searches — is `references/grounding-operations.md`.
 
 ## When to use
 
