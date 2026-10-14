@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Tools\IssueIntake\Finding;
+use Alama\Tools\IssueIntake\Schema;
+use Alama\Tools\IssueIntake\Validator;
+
+/**
+ * The one engine, exposed to the shell (spec D12).
+ *
+ * Reads a JSON object from stdin — {body, labels, parent, parentLevel} — and
+ * prints {"conforming": bool, "findings": [...]} to stdout, with the human
+ * messages on stderr. Exit 0 = conforms, 1 = findings, 2 = usage/internal error.
+ *
+ * Consumed by the gh shim, the CI workflow and the file-issue skill so all
+ * three reach their verdict through the same semantics.
+ */
+
+$autoload = dirname(__DIR__, 3).'/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    fwrite(STDERR, "validate-issue: cannot locate vendor/autoload.php\n");
+    exit(2);
+}
+
+require $autoload;
+
+$raw = stream_get_contents(STDIN);
+$decoded = json_decode($raw === false ? '' : $raw, true);
+
+if (!is_array($decoded)) {
+    fwrite(STDERR, "usage: validate-issue < issue.json\n");
+    fwrite(STDERR, "  expects {\"body\": string, \"labels\": string[], \"parent\": int|null, \"parentLevel\": string|null}\n");
+    exit(2);
+}
+
+$schemaPath = getenv('ISSUE_INTAKE_SCHEMA') ?: dirname(__DIR__, 3).'/config/issues/schema.yaml';
+
+try {
+    $schema = Schema::fromFile($schemaPath);
+} catch (Throwable $error) {
+    fwrite(STDERR, 'validate-issue: '.$error->getMessage()."\n");
+    exit(2);
+}
+
+$findings = (new Validator($schema))->validate([
+    'body' => is_string($decoded['body'] ?? null) ? $decoded['body'] : '',
+    'labels' => is_array($decoded['labels'] ?? null) ? $decoded['labels'] : [],
+    'parent' => is_int($decoded['parent'] ?? null) ? $decoded['parent'] : null,
+    'parentLevel' => is_string($decoded['parentLevel'] ?? null) ? $decoded['parentLevel'] : null,
+]);
+
+foreach ($findings as $finding) {
+    fwrite(STDERR, "[{$finding->code}] {$finding->message}\n");
+}
+
+echo json_encode([
+    'conforming' => Validator::isConforming($findings),
+    'findings' => array_map(
+        static fn (Finding $finding): array => [
+            'code' => $finding->code,
+            'message' => $finding->message,
+        ],
+        $findings,
+    ),
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
+
+exit($findings === [] ? 0 : 1);
