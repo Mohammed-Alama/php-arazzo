@@ -99,6 +99,12 @@ level_label_of() {
         | jq -r '[.labels[]?.name | select(startswith("level:"))][0] // empty' 2>/dev/null || true
 }
 
+# ecosystem-labelled issues are automation-owned and explicitly out of scope
+# (spec A4) — the same exemption the CI gate applies. $1 is a JSON array.
+labels_include_ecosystem() {
+    printf '%s' "$1" | jq -e 'index("ecosystem")' >/dev/null 2>&1
+}
+
 all_labels_of() {
     "$REAL_GH" issue view "$1" --json labels 2>/dev/null \
         | jq -r '.labels[]?.name' 2>/dev/null || true
@@ -248,12 +254,17 @@ ${arg#-l}" ;;
 $labels_in"
             fi
 
-            parent_level=''
-            [ -n "$parent" ] && parent_level=$(level_label_of "$parent")
+            labels_json=$(labels_to_json "$labels_final")
 
-            if ! gate "$body" "$(labels_to_json "$labels_final")" "$parent" "$parent_level"; then
-                rm -f "$TMP_RESULT" "$TMP_BODY"
-                exit 1
+            # Automation-owned issues are out of scope; let them through (A4).
+            if ! labels_include_ecosystem "$labels_json"; then
+                parent_level=''
+                [ -n "$parent" ] && parent_level=$(level_label_of "$parent")
+
+                if ! gate "$body" "$labels_json" "$parent" "$parent_level"; then
+                    rm -f "$TMP_RESULT" "$TMP_BODY"
+                    exit 1
+                fi
             fi
 
             if [ -n "$TMP_BODY" ]; then
@@ -342,9 +353,14 @@ if [ "$action" = api ]; then
 $api_labels"
         fi
 
-        if ! gate "$api_body" "$(labels_to_json "$labels_final")" '' ''; then
-            rm -f "$TMP_RESULT"
-            exit 1
+        labels_json=$(labels_to_json "$labels_final")
+
+        # Automation-owned issues are out of scope; let them through (A4).
+        if ! labels_include_ecosystem "$labels_json"; then
+            if ! gate "$api_body" "$labels_json" '' ''; then
+                rm -f "$TMP_RESULT"
+                exit 1
+            fi
         fi
 
         rm -f "$TMP_RESULT"

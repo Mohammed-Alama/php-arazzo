@@ -210,11 +210,6 @@ final class Schema
         return array_keys($this->sections);
     }
 
-    public function hasSection(string $id): bool
-    {
-        return array_key_exists($id, $this->sections);
-    }
-
     /** @return array{requires: list<string>, optional: list<string>, exempt: list<string>} */
     private function selectors(string $kind): array
     {

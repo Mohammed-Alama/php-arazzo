@@ -173,6 +173,29 @@ it('does not guard a read-only gh api request', function () {
         ->and(file_get_contents($log))->toContain('repos/o/r/issues/5');
 });
 
+it('lets an ecosystem-labelled create through untouched (A4)', function () {
+    [$gh, $log] = shimStub();
+
+    $process = runShim(
+        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'ecosystem'],
+        $gh, $log,
+    );
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(file_get_contents($log))->toContain('issue create');
+});
+
+it('lets an ecosystem-labelled gh api write through untouched (A4)', function () {
+    [$gh, $log] = shimStub();
+
+    $process = runShim([
+        'api', '-X', 'POST', 'repos/o/r/issues', '-f', 'body=nothing', '-f', 'labels[]=ecosystem',
+    ], $gh, $log);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(file_get_contents($log))->toContain('repos/o/r/issues');
+});
+
 it('install-gh-shim symlinks gh and is idempotent', function () {
     $dir = sys_get_temp_dir().'/gh-shim-install-'.bin2hex(random_bytes(6));
 
