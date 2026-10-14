@@ -72,7 +72,7 @@ function soapProviderDocument(): ArazzoDocument
     $step = new Step(
         stepId: 's1',
         description: null,
-        target: new StepTarget(operationId: '$sourceDescriptions.calculator.Add'),
+        target: new StepTarget(operationName: '$sourceDescriptions.calculator.Add'),
         flow: new StepFlow(),
         io: new StepIo(
             parameters: [new Parameter('a', null, 5), new Parameter('b', null, 3)],

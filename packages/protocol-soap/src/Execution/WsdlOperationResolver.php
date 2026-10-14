@@ -17,10 +17,14 @@ use RuntimeException;
 /**
  * OperationResolverInterface over a described WSDL source (plan F4.2).
  *
- * Reuses the source-name grammar shared with OpenApiOperationResolver (plain
- * operationId, `$sourceDescriptions.<name>.<op>`,
- * `{$sourceDescriptions.<name>.url}#<op>`), restricts to WSDL-typed sources to
- * keep supportsStep() collision-safe against the HTTP/AsyncAPI executors, then
+ * A WSDL step references its operation through `operationName` (Arazzo
+ * Specification, Step Object: `operationId`/`operationPath` MUST NOT reference
+ * a `wsdl` source). The shared source-name grammar accepts a plain operation
+ * name, `$sourceDescriptions.<name>.<op>` and
+ * `{$sourceDescriptions.<name>.url}#<op>`. `operationId` is additionally
+ * honoured as an internal/back-compat fallback for callers that predate the
+ * `operationName` field. The resolver restricts to WSDL-typed sources to keep
+ * supportsStep() collision-safe against the HTTP/AsyncAPI executors, then
  * fetches the raw WSDL and normalises it into the operation index.
  *
  * The fetcher is injected by the host (F4.6) so protocol-soap stays
@@ -84,22 +88,24 @@ final class WsdlOperationResolver implements OperationResolverInterface
             return null;
         }
 
-        $operationId = $step->target->operationId;
-        if ($operationId === null) {
+        // Spec: a `wsdl` source MUST be referenced with `operationName`;
+        // `operationId` is honoured as an internal/back-compat fallback.
+        $operationReference = $step->target->operationName ?? $step->target->operationId;
+        if ($operationReference === null) {
             return null;
         }
 
-        if (str_contains($operationId, '#')) {
-            $parts = explode('#', $operationId, 2);
+        if (str_contains($operationReference, '#')) {
+            $parts = explode('#', $operationReference, 2);
             if (!str_starts_with($parts[0], self::SOURCE_PREFIX) || !str_ends_with($parts[0], self::SOURCE_URL_SUFFIX)) {
                 return null;
             }
 
             $sourceName = substr($parts[0], strlen(self::SOURCE_PREFIX), -strlen(self::SOURCE_URL_SUFFIX));
-            $operationReference = $parts[1];
-        } elseif (preg_match(self::DOTTED_REFERENCE, $operationId, $matches) === 1) {
+            $reference = $parts[1];
+        } elseif (preg_match(self::DOTTED_REFERENCE, $operationReference, $matches) === 1) {
             $sourceName = $matches[1];
-            $operationReference = $matches[2];
+            $reference = $matches[2];
         } else {
             $nonArazzo = array_values(array_filter(
                 $document->sourceDescriptions,
@@ -110,12 +116,12 @@ final class WsdlOperationResolver implements OperationResolverInterface
             }
 
             $sourceName = $nonArazzo[0]->name;
-            $operationReference = $operationId;
+            $reference = $operationReference;
         }
 
         $source = self::findSource($document, $sourceName);
 
-        return $source !== null && $source->type === SourceType::Wsdl ? [$sourceName, $operationReference] : null;
+        return $source !== null && $source->type === SourceType::Wsdl ? [$sourceName, $reference] : null;
     }
 
     private static function findSource(ArazzoDocument $document, string $sourceName): ?SourceDescription

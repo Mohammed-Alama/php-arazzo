@@ -29,7 +29,7 @@ function xsdValidator(): XsdResponseValidator
     );
 }
 
-function xsdValidatorStep(string $operationId, array $sources): array
+function xsdValidatorStep(string $operationName, array $sources): array
 {
     $document = new ArazzoDocument(
         '1.0.0',
@@ -40,7 +40,7 @@ function xsdValidatorStep(string $operationId, array $sources): array
         [],
     );
 
-    return [$document, new Step('get', null, new StepTarget(operationId: $operationId), new StepFlow(), new StepIo())];
+    return [$document, new Step('get', null, new StepTarget(operationName: $operationName), new StepFlow(), new StepIo())];
 }
 
 function xsdResponseEnvelope(string $bodyXml): DOMDocument

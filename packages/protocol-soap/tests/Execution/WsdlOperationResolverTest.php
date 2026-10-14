@@ -24,7 +24,7 @@ function makeWsdlOperationResolver(): WsdlOperationResolver
     return new WsdlOperationResolver(fetcher: new LocalFetcher(), normalizer: new WsdlSourceNormalizer());
 }
 
-function wsdlStepDocument(array $sources, string $operationId): array
+function wsdlStepDocument(array $sources, ?string $operationId = null, ?string $operationName = null): array
 {
     $document = new ArazzoDocument(
         '1.0.0',
@@ -35,7 +35,7 @@ function wsdlStepDocument(array $sources, string $operationId): array
         [],
     );
 
-    return [$document, new Step('op', null, new StepTarget(operationId: $operationId), new StepFlow(), new StepIo())];
+    return [$document, new Step('op', null, new StepTarget(operationId: $operationId, operationName: $operationName), new StepFlow(), new StepIo())];
 }
 
 function wsdlSource(string $name, string $path, SourceType $type = SourceType::Wsdl): SourceDescription
@@ -130,4 +130,54 @@ it('throws when the step does not reference a WSDL source', function (): void {
     );
 
     expect(fn () => $resolver->resolve($step, $document))->toThrow(RuntimeException::class);
+});
+
+it('resolves a dotted source reference supplied through operationName (spec form)', function (): void {
+    $resolver = makeWsdlOperationResolver();
+    [$document, $step] = wsdlStepDocument(
+        [wsdlSource('calculator', __DIR__.'/../../../sources/tests/fixtures/calculator.wsdl')],
+        operationName: '$sourceDescriptions.calculator.Add',
+    );
+
+    $resolved = $resolver->resolve($step, $document);
+
+    expect($resolved->operationName)->toBe('Add');
+    expect($resolver->supportsStep($step, $document))->toBeTrue();
+});
+
+it('resolves a plain operationName against the single described WSDL source', function (): void {
+    $resolver = makeWsdlOperationResolver();
+    [$document, $step] = wsdlStepDocument(
+        [wsdlSource('calculator', __DIR__.'/../../../sources/tests/fixtures/calculator.wsdl')],
+        operationName: 'Add',
+    );
+
+    expect($resolver->resolve($step, $document)->operationName)->toBe('Add');
+});
+
+it('prefers operationName over operationId when both are present', function (): void {
+    $resolver = makeWsdlOperationResolver();
+    [$document, $step] = wsdlStepDocument(
+        [wsdlSource('calculator', __DIR__.'/../../../sources/tests/fixtures/calculator.wsdl')],
+        operationId: '$sourceDescriptions.calculator.Divide',
+        operationName: '$sourceDescriptions.calculator.Add',
+    );
+
+    expect($resolver->resolve($step, $document)->operationName)->toBe('Add');
+});
+
+it('resolves the OAI Arazzo spec #533 customer-service WSDL via operationName', function (): void {
+    // Conformance against the WSDL vendored from OAI Arazzo Specification PR #533
+    // (`tests/fixtures/valid/v1.2.0/customer-service.wsdl`).
+    $resolver = makeWsdlOperationResolver();
+    [$document, $step] = wsdlStepDocument(
+        [wsdlSource('customerService', __DIR__.'/../../../core/tests/fixtures/valid/v1.2.0/customer-service.wsdl')],
+        operationName: '$sourceDescriptions.customerService.ListCustomers',
+    );
+
+    $resolved = $resolver->resolve($step, $document);
+
+    expect($resolved->operationName)->toBe('ListCustomers');
+    expect($resolved->binding())->toBe('soap');
+    expect($resolved->normalized->requestBodies['application/xml']['namespace'])->toBe('http://example.com/customer-service');
 });

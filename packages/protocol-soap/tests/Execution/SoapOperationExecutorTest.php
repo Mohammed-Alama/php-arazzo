@@ -202,9 +202,9 @@ function soapExecutor(SoapExecutorFakeClient $client, OperationResolverInterface
     );
 }
 
-function soapExecutorStep(array $parameters = [], string $operationId = '$sourceDescriptions.calculator.Add'): Step
+function soapExecutorStep(array $parameters = [], string $operationName = '$sourceDescriptions.calculator.Add'): Step
 {
-    return new Step('add', null, new StepTarget(operationId: $operationId), new StepFlow(), new StepIo(parameters: $parameters));
+    return new Step('add', null, new StepTarget(operationName: $operationName), new StepFlow(), new StepIo(parameters: $parameters));
 }
 
 function soapExecutorContext(): WorkflowContext
@@ -231,7 +231,7 @@ it('supports WSDL steps and rejects non-SOAP steps', function (): void {
     expect($executor->priority())->toBe(50);
     expect($executor->supports(soapExecutorStep(), $document))->toBeTrue();
     expect($executor->supports(new Step('a', null, new StepTarget(action: 'send'), new StepFlow(), new StepIo()), $document))->toBeFalse();
-    expect($executor->supports(new Step('b', null, new StepTarget(operationId: '$sourceDescriptions.rest.Add'), new StepFlow(), new StepIo()), $document))->toBeFalse();
+    expect($executor->supports(new Step('b', null, new StepTarget(operationName: '$sourceDescriptions.rest.Add'), new StepFlow(), new StepIo()), $document))->toBeFalse();
 });
 
 it('posts a SOAP 1.1 envelope and reports the mapped transfer on success', function (): void {
