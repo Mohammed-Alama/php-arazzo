@@ -1,0 +1,107 @@
+# Investigation — {question in one line}
+
+<!--
+HOW TO USE THIS TEMPLATE
+
+Each section is the artefact of one operation of the five-operation engine in
+SKILL.md. Fill them in order; if a section is empty, the operation was skipped.
+
+  §Target                 ← the question, sharpened
+  §Epistemic Tier Summary ← the report in one table
+  §1 Ontological Map      ← Operation 1
+  §2 Source Reliability Map ← Operation 2
+  §3 Justification Chain  ← Operation 3 (prior/evidence/posterior written inline)
+  §4 Failure Modes Detected ← the scan rules vs. this code
+  §5 Confidence Summary   ← Operations 2 + 3
+  §6 Recommendations      ← what a builder should do
+  §7 Epistemic Gaps       ← Operation 4 (what stayed unfalsified)
+  §Metacognitive Audit    ← Operation 5 (the pre-output checklist)
+
+Replace every {slot}. Cite `file:line`. Do not restate the protocol's theory —
+link `docs/epistemic-protocol.md`. Save to
+`docs/superpowers/investigations/YYYY-MM-DD-<slug>.md`.
+
+After §7, emit the fenced `markdown` linkage block at the bottom of this file,
+populated from §1/§2/§3/§5/§7 — it is the section payload a `file-issue` bug or
+enhancement issue pastes straight in.
+-->
+
+- **Date:** {YYYY-MM-DD}
+- **Focus:** `{general|bug|architecture|security|performance|conformance}` · **Depth:** `{quick|standard|deep}`
+- **Owner:** `arazzo-detective`
+- **Question:** {one-sentence question}
+
+## Epistemic Tier Summary
+
+| Claim | Tier | Anchor |
+| --- | --- | --- |
+| {claim} | {1–4} | `{file:line or command}` |
+
+## 1. Ontological Map
+
+{Entities that actually exist, read directly. One bullet per entity, each with
+`file:line`. Injected dependencies, guard clauses, registered error codes.}
+
+## 2. Source Reliability Map
+
+| Fact | Rank | Source |
+| --- | --- | --- |
+| {fact} | {1–6} | {read / Pest run / composer.json / doc / memory} |
+
+{No fact stated above its rank. Any rank-4 item names the command that would
+raise it.}
+
+## 3. Justification Chain
+
+- **Claim.** {the significant claim}
+- **Prior.** {what was believed before looking, and why}
+- **Evidence.** {the rank-1/2 observation, with `file:line` and the command}
+- **Posterior.** {very high | high | medium | low | contradicted} → {tier
+  language used}
+
+{Falsifier: "This would be falsified if …, and I looked for that by …."}
+
+## 4. Failure Modes Detected
+
+{Bugs found, plus a check against the scan rules in
+`references/grounding-operations.md`. Flag any plausible-but-unfounded finding
+and any tier laundering.}
+
+## 5. Confidence Summary
+
+| Finding | Confidence |
+| --- | --- |
+| {finding} | {0.0–1.0} |
+
+## 6. Recommendations
+
+1. {actionable next step}
+
+## 7. Epistemic Gaps
+
+{What could not be grounded / falsified, and what closing it would require.}
+
+## Metacognitive Audit
+
+{One line answering the Operation 5 checklist, e.g. "read not recalled; every
+fact ranked; posterior drove confidence; falsifier at §3 searched; question asked
+was answered; convention audit done; no claim suppressed."}
+
+<!--
+Linkage block — the §7 + §9 payload for a file-issue bug/enhancement body.
+Headings normalise to the schema ids `source-grounding` and `epistemic-matrix`.
+Delete this comment and the surrounding fence only when the report is the source.
+-->
+
+```markdown
+### 🧬 7. Source Grounding & Code Location
+
+- {file:line — what it proves}
+- Commit: `{sha}` · Commands: `{command}` → {result}
+
+### 📊 9. Epistemic Verification Matrix
+
+| Claim | Tier (T1–T4) | Evidence | Verification |
+| --- | --- | --- | --- |
+| {claim} | T{tier} | `{file:line or command}` | {command or read} |
+```

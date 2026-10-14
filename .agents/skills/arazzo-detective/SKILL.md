@@ -140,10 +140,23 @@ One section per operation, plus the framing sections:
 Reliability Map` · `3 Justification Chain` · `4 Failure Modes Detected` ·
 `5 Confidence Summary` · `6 Recommendations` · `7 Epistemic Gaps`.
 
+The skeleton, the placeholder slots, and the operation → section mapping are in
+`templates/investigation-report.md.template`.
+
+## Intake linkage
+
+After §7 the report ends with a fenced ```` ```markdown ```` block: the exact
+section payload a `file-issue` bug or enhancement issue pastes in. Its two
+headings normalise to the schema's `source-grounding` and `epistemic-matrix`
+section ids — populated from §2/§3 and from §1/§5/§7 respectively. The report is
+the source of the issue's grounding, so open a bug or enhancement with
+`file-issue` and paste the block; never hand-write those two sections.
+
 ## Mandatory output rule
 
 1. Write the report to
-   `docs/superpowers/investigations/YYYY-MM-DD-<target-slug>.md`.
+   `docs/superpowers/investigations/YYYY-MM-DD-<target-slug>.md`, following
+   `templates/investigation-report.md.template`.
 2. **Only then** give a terminal summary of 3–5 lines: the answer, its tier, the
    single most important caveat, and the report path.
 

@@ -121,3 +121,29 @@ claimed `$steps.…`. (a) is refuted at `ExpressionEvaluator.php:109`; (b) at
   unit layer.
 - No end-to-end run against `LoginAndRetrievePets.arazzo.yaml` was performed;
   the two unit anchors were taken as sufficient for a `standard`-depth question.
+
+## Metacognitive Audit
+
+Read, not recalled — every fact is a direct read or a green Pest result; ranks
+kept separate from language (Operation 2); the posterior **reversed** the prior
+and the report says so; the falsifier at §4 was searched and refuted; the
+question asked (which seam?) was the question answered; the convention audit
+checked the parser/validator boundary; no claim was suppressed.
+
+```markdown
+### 🧬 7. Source Grounding & Code Location
+
+- `packages/expression/src/Parser.php:135,244-267` — the `outputs` branch parses the `#/…` suffix into `OutputPart::$jsonPointer`
+- `packages/expression/src/ExpressionEvaluator.php:105-111` — the `OutputPart` branch resolves through `JsonPointer::resolve` (line 109)
+- `packages/evaluation/src/Plugins/JsonPathExpressionPlugin.php:43` — the JSONPath seam refuses `$steps.…`
+- Commit: `dd035630` · Commands: `vendor/bin/pest packages/expression/tests/Expression/ExpressionEvaluatorTest.php --filter "json pointer suffixes"` → 1 passed; `--filter "parses"` → 15 passed
+
+### 📊 9. Epistemic Verification Matrix
+
+| Claim | Tier (T1–T4) | Evidence | Verification |
+| --- | --- | --- | --- |
+| The `#/…` suffix is an RFC 6901 JSON Pointer, not JSONPath | T1 | `packages/expression/src/Parser.php:135,244-267` | direct read + green test |
+| Resolution runs through `JsonPointer`, never `JsonPathEvaluator` | T1 | `packages/expression/src/ExpressionEvaluator.php:109` | direct read + green test |
+| The JSONPath seam serves selectors and raw `$…` only | T1 | `JsonPathExpressionPlugin.php:43`, `SelectorEvaluator.php:39-45` | direct read |
+| Runtime composition matches the unit seams | T3 | inference | not traced (see §7) |
+```
