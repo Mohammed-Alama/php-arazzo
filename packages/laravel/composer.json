@@ -10,6 +10,7 @@
         {"type": "path", "url": "../core"},
         {"type": "path", "url": "../contracts"},
         {"type": "path", "url": "../document"},
+        {"type": "path", "url": "../engine"},
         {"type": "path", "url": "../evaluation"},
         {"type": "path", "url": "../events"},
         {"type": "path", "url": "../expression"},
