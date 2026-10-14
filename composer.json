@@ -112,6 +112,9 @@
             "Alama\\Arazzo\\Engine\\": "packages/engine/src/",
             "Alama\\Arazzo\\Events\\": "packages/events/src/",
             "Alama\\Arazzo\\Sources\\": "packages/sources/src/",
+            "Alama\\Arazzo\\Protocol\\Http\\": "packages/protocol-http/src/",
+            "Alama\\Arazzo\\Protocol\\Soap\\": "packages/protocol-soap/src/",
+            "Alama\\Arazzo\\Protocol\\Rpc\\": "packages/protocol-rpc/src/",
             "Arazzo\\PHPStan\\Rules\\": "packages/core/phpstan/rules/"
         }
     },

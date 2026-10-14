@@ -10,6 +10,7 @@
         "alama/arazzo-evaluation": "@dev",
         "alama/arazzo-events": "@dev",
         "alama/arazzo-expression": "@dev",
+        "alama/arazzo-protocol-http": "@dev",
         "alama/arazzo-runner": "@dev",
         "alama/arazzo-runtime": "@dev",
         "alama/arazzo-sources": "@dev",

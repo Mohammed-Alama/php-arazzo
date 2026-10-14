@@ -21,3 +21,6 @@ parameters:
         - ../../packages/events/src
         - ../../packages/cli/src
         - ../../packages/sources/src
+        - ../../packages/protocol-http/src
+        - ../../packages/protocol-soap/src
+        - ../../packages/protocol-rpc/src
