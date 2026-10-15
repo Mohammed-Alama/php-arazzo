@@ -97,7 +97,7 @@ final class FormGenerator
             'attributes' => [
                 'label' => 'Level',
                 'description' => 'Where this sits in the hierarchy: Epic → Story → Sub-task.',
-                'options' => array_keys($this->schema->levels()),
+                'options' => $this->schema->formLevels(),
             ],
             'validations' => ['required' => true],
         ];

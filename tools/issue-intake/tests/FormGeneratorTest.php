@@ -99,11 +99,15 @@ it('produces forms whose filled body conforms to the validator', function () {
             };
         }
 
+        // Epics require a parent (package-epic); all kinds get level:epic in this test.
+        $parent = 1;
+        $parentLevel = 'level:package-epic';
+
         $findings = (new Validator($schema))->validate([
             'body' => $body,
             'labels' => $form['labels'],
-            'parent' => null,
-            'parentLevel' => null,
+            'parent' => $parent,
+            'parentLevel' => $parentLevel,
         ]);
 
         expect($findings)->toBe([], "a filled {$kind} form must conform");

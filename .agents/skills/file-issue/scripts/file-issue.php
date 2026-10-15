@@ -41,15 +41,16 @@ function fail(string $message, int $code = 2): void
 function usage(): void
 {
     fwrite(STDOUT, <<<'TXT'
-        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>]
+        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>]
 
           --kind=<kind>        one of: bug, enhancement, chore
-          --level=<label>      one of: level:epic, level:story, level:subtask
+          --level=<label>      one of: level:package-epic, level:epic, level:user-story, level:sub-task
           --title=<title>      the issue title
           --sections=<file|->  JSON object mapping section id -> markdown content ("-" reads stdin)
           --parent=<n>         file as a sub-issue of <n> (checked against <n>'s level:* label)
           --edit=<n>           edit issue <n> instead of creating a new one
           --repo=<owner/name>  target repository (defaults to the current one)
+          --package=<name>     primary package (required for level:package-epic; adds package:<name> label)
 
         The body is validated before `gh` is called; nothing is filed when it
         does not conform.
@@ -185,6 +186,12 @@ if (isset($options['edit'])) {
 
 $repo = ($options['repo'] ?? '') !== '' ? $options['repo'] : null;
 
+$package = ($options['package'] ?? '') !== '' ? $options['package'] : null;
+
+if ($level === 'level:package-epic' && $package === null) {
+    fail('--package is required for level:package-epic');
+}
+
 $raw = $options['sections'] === '-'
     ? (stream_get_contents(STDIN) ?: '')
     : (is_file($options['sections']) ? (file_get_contents($options['sections']) ?: '') : null);
@@ -230,9 +237,14 @@ $body = implode("\n\n", $blocks);
 $gh = getenv('FILE_ISSUE_GH_BIN') ?: 'gh';
 $parentLevel = $parent !== null ? resolveParentLevel($gh, $parent, $repo) : null;
 
+$labels = [$kind, $level];
+if ($package !== null) {
+    $labels[] = 'package:'.$package;
+}
+
 $findings = (new Validator($schema))->validate([
     'body' => $body,
-    'labels' => [$kind, $level],
+    'labels' => $labels,
     'parent' => $parent,
     'parentLevel' => $parentLevel,
 ]);
@@ -256,6 +268,11 @@ file_put_contents($bodyFile, $body);
 $command = $edit === null
     ? [$gh, 'issue', 'create', '--title', $options['title'], '--body-file', $bodyFile, '--label', $kind, '--label', $level]
     : [$gh, 'issue', 'edit', (string) $edit, '--body-file', $bodyFile, '--add-label', $kind, '--add-label', $level];
+
+if ($package !== null) {
+    $command[] = $edit === null ? '--label' : '--add-label';
+    $command[] = 'package:'.$package;
+}
 
 if ($parent !== null) {
     $command[] = '--parent';

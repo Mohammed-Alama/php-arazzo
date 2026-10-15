@@ -113,7 +113,7 @@ it('clears needs-info on a conforming issue we previously commented on', functio
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'bug'], ['name' => 'level:epic'], ['name' => 'needs-info']],
+            'labels' => [['name' => 'bug'], ['name' => 'level:package-epic'], ['name' => 'package:core'], ['name' => 'needs-info']],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ]);
@@ -129,7 +129,7 @@ it('removes its stale marker comment once the issue conforms', function () {
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'bug'], ['name' => 'level:epic'], ['name' => 'needs-info']],
+            'labels' => [['name' => 'bug'], ['name' => 'level:package-epic'], ['name' => 'package:core'], ['name' => 'needs-info']],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ]);
@@ -146,7 +146,7 @@ it('removes a stale marker comment even when the label was cleared elsewhere', f
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'bug'], ['name' => 'level:epic']],
+            'labels' => [['name' => 'bug'], ['name' => 'level:package-epic'], ['name' => 'package:core']],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ]);

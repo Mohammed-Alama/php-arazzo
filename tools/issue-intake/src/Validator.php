@@ -37,18 +37,30 @@ final class Validator
         $parsed = SectionParser::parse($body);
         $findings = [];
 
-        $kind = $this->resolveKind($labels, $findings);
         $level = $this->resolveLevel($labels, $parsed, $findings);
+        $kind = $this->resolveKind($labels, $findings, !$this->kindForbidden($level));
 
-        if ($kind !== null) {
+        if ($kind !== null && !$this->sectionsExempt($level)) {
             $this->checkSections($kind, $parsed, $findings);
         }
 
         if ($level !== null) {
             $this->checkLevel($level, $parent, $parentLevel, $findings);
+            $this->checkPackageLabel($level, $labels, $findings);
         }
 
         return $findings;
+    }
+
+    /** A package-epic reports no work; it indexes it, so it carries no kind. */
+    private function kindForbidden(?string $level): bool
+    {
+        return $level !== null && $this->schema->levelKindForbidden($level);
+    }
+
+    private function sectionsExempt(?string $level): bool
+    {
+        return $level !== null && $this->schema->levelSectionsExempt($level);
     }
 
     /** @param list<Finding> $findings */
@@ -72,10 +84,11 @@ final class Validator
         $labels = self::strings($input['labels'] ?? []);
         $parsed = SectionParser::parse($input['body'] ?? '');
         $ignored = [];
+        $level = $this->resolveLevel($labels, $parsed, $ignored);
 
         return [
-            'kind' => $this->resolveKind($labels, $ignored),
-            'level' => $this->resolveLevel($labels, $parsed, $ignored),
+            'kind' => $this->resolveKind($labels, $ignored, !$this->kindForbidden($level)),
+            'level' => $level,
         ];
     }
 
@@ -86,14 +99,16 @@ final class Validator
      * @param  list<string>  $labels
      * @param  list<Finding>  $findings
      */
-    private function resolveKind(array $labels, array &$findings): ?string
+    private function resolveKind(array $labels, array &$findings, bool $required = true): ?string
     {
         $kinds = array_values(array_intersect($labels, $this->schema->kinds()));
 
         if ($kinds === []) {
-            $findings[] = new Finding('missing-kind-label', sprintf(
-                'Add exactly one kind label: %s.', implode(', ', $this->schema->kinds()),
-            ));
+            if ($required) {
+                $findings[] = new Finding('missing-kind-label', sprintf(
+                    'Add exactly one kind label: %s.', implode(', ', $this->schema->kinds()),
+                ));
+            }
 
             return null;
         }
@@ -255,6 +270,41 @@ final class Validator
             $findings[] = new Finding('parent-level-invalid', sprintf(
                 'A %s issue must sit under %s; parent #%d is %s.',
                 $level, implode(', ', $allowed), $parent, $parentLevel,
+            ));
+        }
+    }
+
+    /**
+     * A package-epic names one primary package — the package it is *mostly*
+     * about (spec D14). This is the one invariant the level adds beyond the
+     * parent chain.
+     *
+     * @param  list<string>  $labels
+     * @param  list<Finding>  $findings
+     */
+    private function checkPackageLabel(string $level, array $labels, array &$findings): void
+    {
+        if (!$this->schema->levelRequiresPackageLabel($level)) {
+            return;
+        }
+
+        $packages = array_values(array_filter(
+            $labels,
+            static fn (string $label): bool => str_starts_with($label, 'package:'),
+        ));
+
+        if ($packages === []) {
+            $findings[] = new Finding('missing-package-label', sprintf(
+                'A %s issue must name exactly one primary package (add a package:* label).', $level,
+            ));
+
+            return;
+        }
+
+        if (count($packages) > 1) {
+            $findings[] = new Finding('multiple-package-labels', sprintf(
+                '%s carries several package labels (%s); keep the package it is mostly about.',
+                $level, implode(', ', $packages),
             ));
         }
     }

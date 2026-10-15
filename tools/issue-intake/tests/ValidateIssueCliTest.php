@@ -35,7 +35,7 @@ it('exits 0 and reports conforming for a complete body', function () {
 
     $process = runIntakeValidator([
         'body' => issueBody($schema, bugSectionIds()),
-        'labels' => ['bug', 'level:epic'],
+        'labels' => ['bug', 'level:package-epic', 'package:core'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -46,7 +46,7 @@ it('exits 0 and reports conforming for a complete body', function () {
             'conforming' => true,
             'findings' => [],
             'kind' => 'bug',
-            'level' => 'level:epic',
+            'level' => 'level:package-epic',
         ]);
 });
 

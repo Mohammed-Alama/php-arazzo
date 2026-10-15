@@ -19,8 +19,8 @@ it('passes a complete bug body', function () {
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugSectionIds()),
         'labels' => ['bug', 'level:epic'],
-        'parent' => null,
-        'parentLevel' => null,
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect($findings)->toBe([])
@@ -36,6 +36,8 @@ it('flags an unedited placeholder or bare checklist as empty, not missing', func
             'acceptance-criteria' => "- [ ]\n- [ ]",
         ]),
         'labels' => ['bug', 'level:epic'],
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect(codes($findings))->toBe(['empty-section', 'empty-section']);
@@ -49,6 +51,8 @@ it('treats a written checklist as content', function () {
             'acceptance-criteria' => '- [ ] Given a valid document, when I validate, then it passes',
         ]),
         'labels' => ['bug', 'level:epic'],
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect(codes($findings))->toBe([]);
@@ -60,6 +64,8 @@ it('reports sections that are absent entirely', function () {
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, ['core-metadata']),
         'labels' => ['bug', 'level:epic'],
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect(codes($findings))->toBe(array_fill(0, 8, 'missing-section'));
@@ -89,6 +95,8 @@ it('accepts the level declared by the form dropdown when no level label is set',
     $findings = (new Validator($schema))->validate([
         'body' => "### Level\n\nlevel:epic\n\n".issueBody($schema, bugSectionIds()),
         'labels' => ['bug'],
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect(codes($findings))->toBe([]);
@@ -168,25 +176,14 @@ it('refuses to give a sub-task children', function () {
         ->and($findings[0]->message)->toContain('#7');
 });
 
-it('refuses a parent on an epic', function () {
-    $schema = arazzoSchema();
-
-    $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, bugSectionIds()),
-        'labels' => ['bug', 'level:epic'],
-        'parent' => 3,
-        'parentLevel' => 'level:epic',
-    ]);
-
-    expect(codes($findings))->toBe(['parent-forbidden']);
-});
-
 it('treats GitHub\'s no-response sentinel as an empty section', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugSectionIds(), ['artifacts' => '_No response_']),
         'labels' => ['bug', 'level:epic'],
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect(codes($findings))->toBe(['empty-section']);
@@ -198,7 +195,56 @@ it('tolerates a missing parentLevel key', function () {
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugSectionIds()),
         'labels' => ['bug', 'level:epic'],
+        'parent' => 1,
+        'parentLevel' => 'level:package-epic',
     ]);
 
     expect($findings)->toBe([]);
+});
+
+it('accepts a package-epic with no kind and no sections', function () {
+    $findings = (new Validator(arazzoSchema()))->validate([
+        'body' => "Anything at all — the body is generated.\n",
+        'labels' => ['level:package-epic', 'package:runner'],
+        'parent' => null,
+        'parentLevel' => null,
+    ]);
+
+    expect($findings)->toBe([]);
+});
+
+it('demands exactly one package label on a package-epic', function () {
+    $schema = arazzoSchema();
+
+    $missing = (new Validator($schema))->validate([
+        'body' => '', 'labels' => ['level:package-epic'], 'parent' => null,
+    ]);
+
+    expect(codes($missing))->toBe(['missing-package-label']);
+
+    $tooMany = (new Validator($schema))->validate([
+        'body' => '', 'labels' => ['level:package-epic', 'package:runner', 'package:runtime'], 'parent' => null,
+    ]);
+
+    expect(codes($tooMany))->toBe(['multiple-package-labels']);
+});
+
+it('forbids a parent on a package-epic', function () {
+    $findings = (new Validator(arazzoSchema()))->validate([
+        'body' => '', 'labels' => ['level:package-epic', 'package:runner'],
+        'parent' => 3, 'parentLevel' => 'level:package-epic',
+    ]);
+
+    expect(codes($findings))->toBe(['parent-forbidden']);
+});
+
+it('requires an epic to sit under a package-epic', function () {
+    $findings = (new Validator(arazzoSchema()))->validate([
+        'body' => issueBody(arazzoSchema(), bugSectionIds()),
+        'labels' => ['bug', 'level:epic'],
+        'parent' => null,
+        'parentLevel' => null,
+    ]);
+
+    expect(codes($findings))->toBe(['parent-missing']);
 });
