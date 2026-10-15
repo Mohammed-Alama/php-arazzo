@@ -138,3 +138,17 @@ it('flags two open package-epics for one package, and never closes', function ()
         ->and($log)->toContain('package-index')
         ->and($log)->not->toContain('issue close');
 });
+
+it('skips cleanly when a levelled issue has no parent', function () {
+    // A transient/broken hierarchy (e.g. a level label applied before its
+    // parent link) must not fail the whole run: the intake gate owns that
+    // verdict, and the sweep retries. Regression for the `level:story` with
+    // no parent that failed the package-index job.
+    [$process, $log] = runPackageIndex([
+        'target' => '{"data":{"repository":{"issue":{"number":5,"body":"x","labels":{"nodes":[{"name":"level:story"}]},"parent":null,"subIssues":{"nodes":[]}}}}}',
+    ]);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($process->getOutput())->toContain('has no parent; skipping')
+        ->and($log)->not->toContain('issue edit');
+});

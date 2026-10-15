@@ -2,13 +2,19 @@ name: Package index
 
 # The living index (spec A7). Separate from the intake gate because it reads
 # children and writes a body, where the gate reads a body and writes a label.
-# The sweep is not optional: the `issues` event set does not reliably cover
-# parent-link changes, so the schedule is how the index stays true. The
-# concurrency group is prefixed to stay clear of issue-intake's.
+#
+# Triggers are deliberately narrow: the index only changes when the *set* of a
+# package's children changes or a child's state flips, so we listen to the
+# structural events (`opened`, `closed`, `reopened`, `transferred`) and leave
+# body/label churn (`edited`, `labeled`, `unlabeled`) out — those fired a heavy
+# job on every triage edit for no index change. The schedule is not optional:
+# the `issues` event set does not reliably cover parent-link changes or title
+# edits, so the sweep is how the index stays true. The concurrency group is
+# prefixed to stay clear of issue-intake's.
 
 on:
   issues:
-    types: [opened, edited, closed, reopened, deleted, transferred, labeled, unlabeled]
+    types: [opened, closed, reopened, transferred]
   workflow_dispatch:
     inputs:
       issue_number:

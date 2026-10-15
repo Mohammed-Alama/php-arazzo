@@ -57,13 +57,22 @@ if [ -n "$ISSUE_NUMBER" ]; then
         case "$level" in
             level:package) break ;;
             level:epic|level:story|level:task)
-                # Walk to parent
+                # Walk to parent. A level label without a parent is a transient
+                # or broken hierarchy, not a reason to fail the whole run — the
+                # intake gate owns that verdict and flags `needs-info` on the
+                # issue itself. Skip this event and let the nightly sweep retry.
                 parent=$(jq -r '.data.repository.issue.parent.number // empty' <<<"$json")
-                [ -n "$parent" ] || die "issue #$ISSUE_NUMBER is $level but has no parent"
+                if [ -z "$parent" ]; then
+                    echo "package-index: issue #$ISSUE_NUMBER is $level but has no parent; skipping."
+                    exit 0
+                fi
                 json=$(gh api graphql -f query="$QUERY_PARENT" -F owner="$OWNER" -F repo="$REPO" -F number="$parent" 2>/dev/null || echo '{"data":{"repository":{"issue":null}}}')
                 json=$(gh api graphql -f query="$QUERY_EPICS" -F owner="$OWNER" -F repo="$REPO" -F number="$parent")
                 ;;
-            *) die "issue #$ISSUE_NUMBER has no level label" ;;
+            *)
+                echo "package-index: issue #$ISSUE_NUMBER has no level label; skipping."
+                exit 0
+                ;;
         esac
     done
     targets+=("$json")
