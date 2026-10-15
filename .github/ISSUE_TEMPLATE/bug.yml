@@ -12,8 +12,8 @@ body:
       description: 'Where this sits in the hierarchy: Epic → Story → Sub-task.'
       options:
         - 'level:epic'
-        - 'level:story'
-        - 'level:subtask'
+        - 'level:user-story'
+        - 'level:sub-task'
     validations:
       required: true
   -
