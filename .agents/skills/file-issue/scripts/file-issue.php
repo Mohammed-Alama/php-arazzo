@@ -152,7 +152,6 @@ try {
     fail('cannot load schema: '.$error->getMessage());
 }
 
-$kind = $options['kind'];
 $level = $options['level'];
 
 if (!in_array($level, array_keys($schema->levels()), true)) {
@@ -172,8 +171,14 @@ if ($packageEpic) {
         usage();
         fail('--package=<name> is required for a package-epic (lowercase, digits, hyphens)');
     }
+    $kind = null;
 } else {
-    $kind = $options['kind'];
+    $kind = $options['kind'] ?? '';
+
+    if ($kind === '') {
+        usage();
+        fail('missing required --kind');
+    }
 
     if (!in_array($kind, $schema->kinds(), true)) {
         fail("unknown kind \"{$kind}\"; expected one of: ".implode(', ', $schema->kinds()));
