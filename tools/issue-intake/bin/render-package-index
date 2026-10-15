@@ -82,7 +82,8 @@ foreach ($rawEpics as $epic) {
 }
 
 $index = new PackageIndex;
-$newBody = $index->splice($body, $index->render($package, $epics));
+$rendered = $index->render($package, $epics);
+$newBody = $index->splice($body, $rendered);
 $changed = $newBody !== $body;
 
 echo json_encode([

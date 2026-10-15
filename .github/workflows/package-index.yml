@@ -1,0 +1,54 @@
+name: Package index
+
+# The living index (spec A7). Separate from the intake gate because it reads
+# children and writes a body, where the gate reads a body and writes a label.
+# The sweep is not optional: the `issues` event set does not reliably cover
+# parent-link changes, so the schedule is how the index stays true. The
+# concurrency group is prefixed to stay clear of issue-intake's.
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, deleted, transferred, labeled, unlabeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Package-epic (or a child) to re-index; omit to sweep
+        required: false
+        type: number
+  schedule:
+    - cron: '17 4 * * *'
+
+concurrency:
+  group: package-index-${{ github.event.issue.number || inputs.issue_number || 'sweep' }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  index:
+    name: Regenerate the package index
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          cache: composer
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Re-index
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number || '' }}
+        run: bash .github/scripts/package-index.sh

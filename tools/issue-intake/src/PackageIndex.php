@@ -58,9 +58,8 @@ final class PackageIndex
         }
 
         $lines[] = self::END;
-        $lines[] = ''; // trailing newline
 
-        return implode("\n", $lines);
+        return implode("\n", $lines)."\n";
     }
 
     /**
