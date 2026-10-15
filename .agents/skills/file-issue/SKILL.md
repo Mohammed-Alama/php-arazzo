@@ -36,13 +36,23 @@ php .agents/skills/file-issue/scripts/file-issue.php \
     --sections=sections.json
 ```
 
+**Package index (no kind, no sections):**
+
+```bash
+php .agents/skills/file-issue/scripts/file-issue.php \
+    --level=level:package \
+    --package=runner \
+    --title="[Package] runner"
+```
+
 | Argument | Required | Meaning |
 | --- | --- | --- |
-| `--kind=` | yes | `bug`, `enhancement`, or `chore`. Becomes the kind label. |
-| `--level=` | yes | `level:epic`, `level:story`, or `level:subtask`. Becomes the level label. |
+| `--kind=` | yes, unless `--level=level:package` | `bug`, `enhancement`, or `chore`. Becomes the kind label. |
+| `--level=` | yes | `level:package`, `level:epic`, `level:story`, or `level:task`. Becomes the level label. |
 | `--title=` | yes | The issue title. |
-| `--sections=` | yes | Path to a JSON object mapping section id → markdown (`-` reads stdin). |
-| `--parent=` | for story/sub-task | Issue number to file under. Its `level:*` label is checked. |
+| `--sections=` | yes, unless `--level=level:package` | Path to a JSON object mapping section id → markdown (`-` reads stdin). |
+| `--package=` | required for `level:package` | Primary package name (lowercase, digits, hyphens). Adds `package:<name>` label. |
+| `--parent=` | for story/task | Issue number to file under. Its `level:*` label is checked. |
 | `--edit=` | no | Edit issue `#n` instead of creating a new one. |
 | `--repo=` | no | `owner/name`; defaults to the current repository. |
 
@@ -74,14 +84,15 @@ Required section ids per kind (visual order):
 
 ## Levels and parents
 
-The hierarchy is **Epic → Story → Sub-task**, enforced by parent/child links,
+The hierarchy is **Package → Epic → Story → Task**, enforced by parent/child links,
 not by nesting labels alone:
 
-- `level:epic` must have **no** parent.
+- `level:package` must have **no** parent; carries no `--kind` and no `--sections`; its body is a generated index of the epics under it. Created **only** via `file-issue --level=level:package --package=<name>`.
+- `level:epic` must sit **under** a `level:package`.
 - `level:story` must sit **under** a `level:epic`.
-- `level:subtask` must sit **under** a `level:story` and can never have children.
+- `level:task` must sit **under** a `level:story` and can never have children.
 
-Pass `--parent=<n>` for a story or sub-task. The script reads `#n`'s `level:*`
+Pass `--parent=<n>` for a story or task. The script reads `#n`'s `level:*`
 label and refuses if the link would break an invariant (a story under a legacy
 issue with no level label is refused, with the reason printed). File the parent
 first, then the child.

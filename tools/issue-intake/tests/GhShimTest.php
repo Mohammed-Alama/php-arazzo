@@ -26,7 +26,7 @@ function shimStub(): array
 printf '%s\n' "$*" >> "$GATE_GH_LOG"
 if [ "$1 $2" = "issue view" ]; then
     # Default labels as a proper JSON array
-    default='[{"name":"level:package-epic"},{"name":"package:core"}]'
+    default='[{"name":"level:package"},{"name":"package:core"}]'
     labels="${GATE_STUB_LABELS:-$default}"
     printf '{"labels":%s}\n' "$labels" | tee -a "$GATE_GH_RESPONSE_LOG"
     exit 0
@@ -82,7 +82,7 @@ it('blocks an incomplete issue create before calling real gh', function () {
     $marker = tempnam(sys_get_temp_dir(), 'marker');
 
     $process = runShim(
-        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'bug', '--label', 'level:package-epic'],
+        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'bug', '--label', 'level:package'],
         $marker, $log,
     );
 
@@ -97,7 +97,7 @@ it('delegates a conforming issue create untouched', function () {
 
     $process = runShim([
         'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:package-epic', '--label', 'package:core',
+        '--label', 'bug', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -110,7 +110,7 @@ it('reads --body-file - once and re-supplies it downstream', function () {
     $body = issueBody(arazzoSchema(), bugSectionIds());
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'bug', '--label', 'level:package-epic', '--label', 'package:core',
+        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'bug', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log, null, ['GATE_STUB_CAPTURE' => $capture], $body);
 
     expect($process->getExitCode())->toBe(0)
@@ -128,7 +128,7 @@ it('does not guard a label-only edit (the triage escape hatch)', function () {
 });
 
 it('merges existing labels when editing with a body', function () {
-    [$gh, $log] = shimStub();   // `issue view` answers level:package-epic + package:core
+    [$gh, $log] = shimStub();   // `issue view` answers level:package + package:core
 
     $process = runShim([
         'issue', 'edit', '5', '--body', issueBody(arazzoSchema(), bugSectionIds()), '--add-label', 'bug',
@@ -144,7 +144,7 @@ it('refuses a story whose parent has no level label', function () {
 
     $process = runShim([
         'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:user-story', '--parent', '99',
+        '--label', 'bug', '--label', 'level:story', '--parent', '99',
     ], $gh, $log, null, ['GATE_STUB_LABELS' => '[{"name":"chore"}]']);
 
     expect($process->getExitCode())->toBe(1)

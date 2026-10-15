@@ -14,6 +14,7 @@ namespace Alama\Tools\IssueIntake;
 final class PackageIndex
 {
     public const START = '<!-- package-index: generated -->';
+
     public const END = '<!-- /package-index -->';
 
     /**
@@ -21,7 +22,7 @@ final class PackageIndex
      *
      * @param  string  $package  The package name (e.g. 'runner').
      * @param  list<array{number: int, title: string, state: string, stories: int}>  $epics
-     * @return string  The index block, wrapped in markers, with a trailing newline.
+     * @return string The index block, wrapped in markers, with a trailing newline.
      */
     public function render(string $package, array $epics): string
     {
@@ -71,8 +72,8 @@ final class PackageIndex
      * is blank).
      *
      * @param  string  $currentBody  The existing issue body.
-     * @param  string  $newBlock     The new index block (output of render()).
-     * @return string  The body with the index replaced/appended.
+     * @param  string  $newBlock  The new index block (output of render()).
+     * @return string The body with the index replaced/appended.
      */
     public function splice(string $currentBody, string $newBlock): string
     {
@@ -110,7 +111,7 @@ final class PackageIndex
      * Return the empty index for a new package-epic.
      *
      * @param  string  $package  The package name.
-     * @return string  The empty index block (markers + preamble + no epics message).
+     * @return string The empty index block (markers + preamble + no epics message).
      */
     public function stub(string $package): string
     {

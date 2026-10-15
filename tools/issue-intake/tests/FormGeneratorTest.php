@@ -20,7 +20,7 @@ it('emits a leading level dropdown built from the schema levels', function () {
 
     expect($level['id'])->toBe('level')
         ->and($level['attributes']['label'])->toBe('Level')
-        ->and($level['attributes']['options'])->toBe(['level:epic', 'level:user-story', 'level:sub-task'])
+        ->and($level['attributes']['options'])->toBe(['level:epic', 'level:story', 'level:task'])
         ->and($level['validations']['required'])->toBeTrue();
 });
 
@@ -101,7 +101,7 @@ it('produces forms whose filled body conforms to the validator', function () {
 
         // Epics require a parent (package-epic); all kinds get level:epic in this test.
         $parent = 1;
-        $parentLevel = 'level:package-epic';
+        $parentLevel = 'level:package';
 
         $findings = (new Validator($schema))->validate([
             'body' => $body,

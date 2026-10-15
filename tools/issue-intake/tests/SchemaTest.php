@@ -50,17 +50,17 @@ it('exposes the four levels and their per-level facts', function () {
     $schema = Schema::fromFile(dirname(__DIR__, 3).'/config/issues/schema.yaml');
 
     expect(array_keys($schema->levels()))->toBe([
-        'level:package-epic', 'level:epic', 'level:user-story', 'level:sub-task',
+        'level:package', 'level:epic', 'level:story', 'level:task',
     ])
-        ->and($schema->formLevels())->toBe(['level:epic', 'level:user-story', 'level:sub-task'])
-        ->and($schema->levelKindForbidden('level:package-epic'))->toBeTrue()
-        ->and($schema->levelSectionsExempt('level:package-epic'))->toBeTrue()
-        ->and($schema->levelRequiresPackageLabel('level:package-epic'))->toBeTrue()
+        ->and($schema->formLevels())->toBe(['level:epic', 'level:story', 'level:task'])
+        ->and($schema->levelKindForbidden('level:package'))->toBeTrue()
+        ->and($schema->levelSectionsExempt('level:package'))->toBeTrue()
+        ->and($schema->levelRequiresPackageLabel('level:package'))->toBeTrue()
         ->and($schema->levelKindForbidden('level:epic'))->toBeFalse()
         ->and($schema->levelSectionsExempt('level:epic'))->toBeFalse();
 
     expect($schema->level('level:epic')['parent']['allowed_parent_levels'])
-        ->toBe(['level:package-epic']);
+        ->toBe(['level:package']);
 });
 
 it('rejects a level whose sections fact is neither absent nor exempt', function () {
