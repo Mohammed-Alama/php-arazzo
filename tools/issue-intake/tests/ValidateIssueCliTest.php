@@ -17,7 +17,7 @@ function runIntakeValidator(array|string $input): Process
 it('exits 1 and prints findings for a malformed body', function () {
     $process = runIntakeValidator([
         'body' => 'nothing here',
-        'labels' => ['bug', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -34,8 +34,8 @@ it('exits 0 and reports conforming for a complete body', function () {
     $schema = arazzoSchema();
 
     $process = runIntakeValidator([
-        'body' => issueBody($schema, bugSectionIds()),
-        'labels' => ['bug', 'level:package', 'package:core'],
+        'body' => issueBody($schema, bugfixSectionIds()),
+        'labels' => ['kind:bugfix', 'level:package', 'package:core'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -45,7 +45,7 @@ it('exits 0 and reports conforming for a complete body', function () {
         ->toBe([
             'conforming' => true,
             'findings' => [],
-            'kind' => 'bug',
+            'kind' => 'kind:bugfix',
             'level' => 'level:package',
         ]);
 });

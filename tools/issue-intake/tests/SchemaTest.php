@@ -10,8 +10,8 @@ it('loads the repo schema and exposes the skeleton', function () {
     expect($schema->skeleton())->toBe([
         'core-metadata', 'problem-statement', 'acceptance-criteria', 'source-grounding', 'impact-profile',
     ]);
-    expect($schema->requiredFor('bug'))->toContain('artifacts', 'runtime-state', 'epistemic-matrix');
-    expect($schema->requiredFor('chore'))->toBe(['affected-surface']);
+    expect($schema->requiredFor('kind:bugfix'))->toContain('artifacts', 'runtime-state', 'epistemic-matrix');
+    expect($schema->requiredFor('kind:chore'))->toBe(['affected-surface']);
 });
 
 it('keeps the form copy in the schema, not the generator', function () {

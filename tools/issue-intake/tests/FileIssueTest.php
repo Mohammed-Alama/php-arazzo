@@ -68,19 +68,19 @@ it('files a conforming issue and relays the kind and level labels to gh', functi
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=bug', '--level=level:epic', '--parent=1', '--title=[Bug] x', '--sections='.sectionsFile(bugSectionIds()),
+        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=[Bugfix] x', '--sections='.sectionsFile(bugfixSectionIds()),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:package"}]']);
 
     expect($process->getExitCode())->toBe(0)
         ->and(file_get_contents($log))->toContain('issue create')
-        ->and(file_get_contents($log))->toContain('--label bug --label level:epic');
+        ->and(file_get_contents($log))->toContain('--label kind:bugfix --label level:epic');
 });
 
 it('refuses an incomplete issue before gh is called', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=bug', '--level=level:epic', '--parent=1', '--title=x', '--sections='.sectionsFile(['core-metadata']),
+        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=x', '--sections='.sectionsFile(['core-metadata']),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:package"}]']);
 
     expect($process->getExitCode())->toBe(1)
@@ -91,7 +91,7 @@ it('files a story under an epic', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=bug', '--level=level:story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
+        '--kind=kind:bugfix', '--level=level:story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"}]']);
 
     expect($process->getExitCode())->toBe(0)
@@ -102,8 +102,8 @@ it('refuses a story under a parent that has no level label', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=bug', '--level=level:story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
-    ], $gh, $log, ['STUB_LABELS' => '[{"name":"chore"}]']);
+        '--kind=kind:bugfix', '--level=level:story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
+    ], $gh, $log, ['STUB_LABELS' => '[{"name":"kind:chore"}]']);
 
     expect($process->getExitCode())->toBe(1)
         ->and(file_get_contents($log))->not->toContain('issue create')
@@ -138,7 +138,7 @@ it('exits 2 for an unknown kind', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=banana', '--level=level:package', '--package=core', '--title=x', '--sections='.sectionsFile(bugSectionIds()),
+        '--kind=banana', '--level=level:package', '--package=core', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(2);
@@ -174,7 +174,7 @@ it('refuses a --kind on a package-epic', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue(
-        ['--kind=chore', '--level=level:package', '--package=runner', '--title=x'],
+        ['--kind=kind:chore', '--level=level:package', '--package=runner', '--title=x'],
         $gh,
         $log,
     );

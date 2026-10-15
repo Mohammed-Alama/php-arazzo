@@ -11,7 +11,7 @@
 
 version: 1
 
-kinds: [bug, enhancement, chore]
+kinds: [kind:feature, kind:bugfix, kind:release, kind:chore]
 
 # Present on every kind. Order here is the skeleton's own order; it is not
 # the render order (see the note above).
@@ -19,12 +19,14 @@ skeleton: [core-metadata, problem-statement, acceptance-criteria, source-groundi
 
 # Kind-specific sections, appended to the skeleton.
 kind_sections:
-  bug:
-    requires: [dependency-matrix, artifacts, runtime-state, epistemic-matrix]
-  enhancement:
+  kind:feature:
     requires: [feature-scope, epistemic-matrix]
     optional: [source-grounding]
-  chore:
+  kind:bugfix:
+    requires: [dependency-matrix, artifacts, runtime-state, epistemic-matrix]
+  kind:release:
+    requires: [affected-surface, epistemic-matrix]
+  kind:chore:
     requires: [affected-surface]
 
 # Level invariants the shim and CI enforce (GitHub will not).

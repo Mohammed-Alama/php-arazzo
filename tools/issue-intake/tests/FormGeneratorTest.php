@@ -16,7 +16,7 @@ function formFields(array $form, string $type): array
 }
 
 it('emits a leading level dropdown built from the schema levels', function () {
-    $level = formFields((new FormGenerator(arazzoSchema()))->forKind('bug'), 'dropdown')[0];
+    $level = formFields((new FormGenerator(arazzoSchema()))->forKind('kind:bugfix'), 'dropdown')[0];
 
     expect($level['id'])->toBe('level')
         ->and($level['attributes']['label'])->toBe('Level')
@@ -27,16 +27,16 @@ it('emits a leading level dropdown built from the schema levels', function () {
 it('emits one textarea per section, in visual order, using the schema label', function () {
     $schema = arazzoSchema();
 
-    $fields = formFields((new FormGenerator($schema))->forKind('bug'), 'textarea');
+    $fields = formFields((new FormGenerator($schema))->forKind('kind:bugfix'), 'textarea');
 
     expect(array_column(array_column($fields, 'attributes'), 'label'))->toBe(
-        array_map(static fn (string $id): string => $schema->section($id)['label'], $schema->requiredIdsFor('bug')),
+        array_map(static fn (string $id): string => $schema->section($id)['label'], $schema->requiredIdsFor('kind:bugfix')),
     )->and(array_map(static fn (array $field): bool => $field['validations']['required'], $fields))
         ->toBe(array_fill(0, count($fields), true));
 });
 
 it('marks a section the kind only offers as optional as not required', function () {
-    $fields = formFields((new FormGenerator(arazzoSchema()))->forKind('enhancement'), 'textarea');
+    $fields = formFields((new FormGenerator(arazzoSchema()))->forKind('kind:feature'), 'textarea');
     $byId = array_column($fields, null, 'id');
 
     expect($byId)->toHaveKey('source-grounding')
@@ -69,17 +69,17 @@ it('round-trips every form label back to its schema heading', function () {
 it('carries the kind label GitHub applies automatically', function () {
     $generator = new FormGenerator(arazzoSchema());
 
-    expect($generator->forKind('bug')['labels'])->toBe(['bug'])
-        ->and($generator->forKind('enhancement')['labels'])->toBe(['enhancement'])
-        ->and($generator->forKind('chore')['labels'])->toBe(['chore']);
+    expect($generator->forKind('kind:bugfix')['labels'])->toBe(['kind:bugfix'])
+        ->and($generator->forKind('kind:feature')['labels'])->toBe(['kind:feature'])
+        ->and($generator->forKind('kind:chore')['labels'])->toBe(['kind:chore']);
 });
 
 it('maps each kind to its committed form filename', function () {
     $generator = new FormGenerator(arazzoSchema());
 
-    expect($generator->filename('bug'))->toBe('bug.yml')
-        ->and($generator->filename('enhancement'))->toBe('feature.yml')
-        ->and($generator->filename('chore'))->toBe('chore.yml');
+    expect($generator->filename('kind:bugfix'))->toBe('kind-bugfix.yml')
+        ->and($generator->filename('kind:feature'))->toBe('kind-feature.yml')
+        ->and($generator->filename('kind:chore'))->toBe('kind-chore.yml');
 });
 
 it('produces forms whose filled body conforms to the validator', function () {

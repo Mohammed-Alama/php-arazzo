@@ -29,7 +29,7 @@ function issueBody(Schema $schema, array $ids, array $content = []): string
 }
 
 /** @return list<string> */
-function bugSectionIds(): array
+function bugfixSectionIds(): array
 {
     return [
         'core-metadata', 'problem-statement', 'dependency-matrix', 'artifacts', 'runtime-state',
@@ -38,10 +38,19 @@ function bugSectionIds(): array
 }
 
 /** @return list<string> */
-function enhancementSectionIds(): array
+function featureSectionIds(): array
 {
     return [
         'core-metadata', 'problem-statement', 'feature-scope', 'acceptance-criteria',
+        'source-grounding', 'impact-profile', 'epistemic-matrix',
+    ];
+}
+
+/** @return list<string> */
+function releaseSectionIds(): array
+{
+    return [
+        'core-metadata', 'problem-statement', 'affected-surface', 'acceptance-criteria',
         'source-grounding', 'impact-profile', 'epistemic-matrix',
     ];
 }

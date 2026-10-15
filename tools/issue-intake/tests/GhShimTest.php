@@ -82,7 +82,7 @@ it('blocks an incomplete issue create before calling real gh', function () {
     $marker = tempnam(sys_get_temp_dir(), 'marker');
 
     $process = runShim(
-        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'bug', '--label', 'level:package'],
+        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'kind:bugfix', '--label', 'level:package'],
         $marker, $log,
     );
 
@@ -96,8 +96,8 @@ it('delegates a conforming issue create untouched', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:package', '--label', 'package:core',
+        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
+        '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -107,10 +107,10 @@ it('delegates a conforming issue create untouched', function () {
 it('reads --body-file - once and re-supplies it downstream', function () {
     [$gh, $log] = shimStub();
     $capture = tempnam(sys_get_temp_dir(), 'capture');
-    $body = issueBody(arazzoSchema(), bugSectionIds());
+    $body = issueBody(arazzoSchema(), bugfixSectionIds());
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'bug', '--label', 'level:package', '--label', 'package:core',
+        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log, null, ['GATE_STUB_CAPTURE' => $capture], $body);
 
     expect($process->getExitCode())->toBe(0)
@@ -131,7 +131,7 @@ it('merges existing labels when editing with a body', function () {
     [$gh, $log] = shimStub();   // `issue view` answers level:package + package:core
 
     $process = runShim([
-        'issue', 'edit', '5', '--body', issueBody(arazzoSchema(), bugSectionIds()), '--add-label', 'bug',
+        'issue', 'edit', '5', '--body', issueBody(arazzoSchema(), bugfixSectionIds()), '--add-label', 'kind:bugfix',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -143,9 +143,9 @@ it('refuses a story whose parent has no level label', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:story', '--parent', '99',
-    ], $gh, $log, null, ['GATE_STUB_LABELS' => '[{"name":"chore"}]']);
+        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
+        '--label', 'kind:bugfix', '--label', 'level:story', '--parent', '99',
+    ], $gh, $log, null, ['GATE_STUB_LABELS' => '[{"name":"kind:chore"}]']);
 
     expect($process->getExitCode())->toBe(1)
         ->and(file_get_contents($log))->not->toContain('issue create')
@@ -157,7 +157,7 @@ it('blocks an incomplete issue created through gh api', function () {
 
     $process = runShim([
         'api', '-X', 'POST', 'repos/o/r/issues', '-f', 'body=nothing',
-        '-f', 'labels[]=bug', '-f', 'labels[]=level:epic',
+        '-f', 'labels[]=kind:bugfix', '-f', 'labels[]=level:epic',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(1)
