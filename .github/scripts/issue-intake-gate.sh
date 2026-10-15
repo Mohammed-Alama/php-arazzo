@@ -27,6 +27,13 @@ if jq -e 'any(.labels[]; .name == "ecosystem")' <<<"$issue_json" >/dev/null; the
     exit 0
 fi
 
+# level:package issues are generated indexes (spec §A7), carry no kind,
+# and have no required sections — they are explicitly out of scope.
+if jq -e 'any(.labels[]; .name == "level:package")' <<<"$issue_json" >/dev/null; then
+    echo "issue #$NUMBER is a package-epic; exempt."
+    exit 0
+fi
+
 # Grandfathering: never mass-label the ~54 legacy issues. Only edits to an
 # issue that has opted in with a level:* label are re-validated.
 if [ "${EVENT_NAME:-}" = "issues" ] && [ "${EVENT_ACTION:-}" = "edited" ] \

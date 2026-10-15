@@ -1,6 +1,11 @@
 # Issue Intake Enforcement & Arazzo Detective — Design
 
-> **Status:** Proposed · **Date:** 2026-10-14 · **Revision 4 (2026-10-14):** the CI gate deletes its marker
+> **Status:** Proposed · **Date:** 2026-10-14 · **Revision 5 (2026-10-14):** the hierarchy gains a level
+> above `epic` — **Package-epic → Epic → User-story → Sub-task**. A `package-epic` is one long-lived issue
+> per package, carrying exactly one `package:*` label as its *primary* package (a cross-package epic picks
+> one). Its body is a **generated index of the epics under it**, exempt from the section model, rewritten by
+> a second CI workflow off `issues` events (§A7). Supersedes D6; revises G5 and §A1, §A4, §A5.
+> **Revision 4 (2026-10-14):** the CI gate deletes its marker
 > comment once the issue conforms — a resolved note is stale copy, and keeping it let the gate read its own
 > history as a live ownership claim (§A4).
 > **Revision 3 (2026-10-14):** Part B made explicit as the
@@ -56,8 +61,9 @@ The pipeline is: **investigate (`arazzo-detective`) → file (`file-issue` + shi
 | G2 | Issues from *any* source (human web, rogue agent, `gh api`, automation) are caught by a universal backstop. |
 | G3 | Bug and enhancement issues carry evidence: verified ground-truths separated from inferred assumptions. |
 | G4 | One edit to the required-fields contract propagates to agents, humans, and CI — no drift. |
-| G5 | Epic → Story → Sub-task hierarchy exists with real parent/child links *and* labels, consistent with each other. |
+| G5 | Package-epic → Epic → User-story → Sub-task hierarchy exists with real parent/child links *and* labels, consistent with each other. |
 | G6 | A repeatable, epistemically-grounded way to investigate php-arazzo code before filing work. |
+| G7 | Each package has one long-lived `package-epic` whose body is a *generated* index of the epics under it. |
 
 **Non-goals**
 
@@ -73,6 +79,7 @@ The pipeline is: **investigate (`arazzo-detective`) → file (`file-issue` + shi
 - **A2 — Blocking legitimate work.** The shim must never fail a read-only operation, and CI must never close an issue.
 - **A3 — A second source of truth.** If the schema and the templates can drift, we have rebuilt the problem.
 - **A4 — Report noise.** Detective output that is not saved, not tiered, or not actionable is worse than nothing.
+- **A5 — A hand-maintained index.** The package-epic's body must be regenerated from the hierarchy. If a human has to keep it current, it is a lie within a week.
 
 ---
 
@@ -85,7 +92,7 @@ The pipeline is: **investigate (`arazzo-detective`) → file (`file-issue` + shi
 | **D3** | CI gate is **soft**: label `needs-info`, comment what's missing, **leave open**, let `triage` chase. | Matches the repo's existing triage state machine (`needs-info`). |
 | **D4** | **Kind = labels**, three typed templates: `bug`, `enhancement` (feature), `chore`. | Keeps the `triage` skill's category roles intact (`bug`/`enhancement` are unprefixed); avoids the native-type/label fork. |
 | **D5** | **Native issue types stay unused.** | Decided. Note: the repo *does* have them enabled (`Bug`/`Feature`/`Task`) — verified via API — but we deliberately do not depend on them. |
-| **D6** | **Level = `level:*` labels + real `--parent` links**, three levels: **Epic → Story → Sub-task**. | `gh issue create --parent` / `gh issue edit --add-sub-issue` are native in 2.97.0. |
+| **D6** | **Level = `level:*` labels + real `--parent` links**, four levels: **Package-epic → Epic → User-story → Sub-task**. *(Revision 5)* | `gh issue create --parent` / `gh issue edit --add-sub-issue` are native in 2.97.0. [T2] GitHub nests to **8 levels**, allows **100 sub-issues per parent**, and each issue has **exactly one parent** — so the chain fits with room to spare. |
 | **D7** | The pasted **"Unified Technical Tracker" is a shared skeleton** that each kind extends with its own sections. | Chosen over "it is the bug template". |
 | **D8** | **Epistemic Verification Matrix required for `bug` and `enhancement`; exempt for `chore`.** | It earns its keep where evidence matters. |
 | **D9** | One **YAML schema** is the single source of truth for all three consumers. | Anti-goal A3. |
@@ -93,6 +100,12 @@ The pipeline is: **investigate (`arazzo-detective`) → file (`file-issue` + shi
 | **D11** | One project, one document (Parts A and B together). | Decided. |
 | **D12** | **One validator engine** — a PHP CLI — is the single implementation of the schema semantics; the shim, CI, and `file-issue` all invoke it. | Anti-goal A3, extended from *schema* to *semantics*: three independent reimplementations would whipsaw agents (shim passes, CI flags). |
 | **D13** | **Agents invoke `gh` on the host**, not in the container; the shim's primary install target is therefore the **host `PATH`**. | [T2] `Dockerfile` is `php:8.4-cli-alpine` and installs no `gh`; `scripts/apptree` contains no `gh`. Host `gh` 2.97.0 at `/opt/homebrew/bin/gh`. |
+| **D14** | A `package-epic` names **one primary package** via exactly one `package:*` label. A cross-package epic picks the package it is *mostly* about; the others stay labels. *(Revision 5)* | [T2] Each issue has exactly one parent, so a cross-package node *cannot* have two. And 33 of the 55 open issues already carry two `package:*` labels — "mostly about" is the common case, not the corner. |
+| **D15** | The `package-epic` body is a **generated index of its child epics**, and the level is **exempt from the section model**. *(Revision 5)* | The body is a derived view; the seven-section template would fight the writer on every rewrite (anti-goal A3). |
+| **D16** | The index is rewritten by a **second CI workflow reacting to `issues` events**, with a scheduled sweep as backstop. *(Revision 5)* | "Living" rules out hand-maintenance (anti-goal A5); the sweep heals whatever the event set misses. |
+| **D17** | The chain is **mandatory**: `level:user-story`'s only allowed parent is `level:epic`. *(Revision 5, decided with the human)* | Keeps "name the primary package" confined to the handful of epics instead of forcing it on ~33 cross-package backlog items. |
+| **D18** | The two lower levels are **renamed**: `level:story` → `level:user-story`, `level:subtask` → `level:sub-task`. *(Revision 5, decided with the human)* | The vocabulary is read by humans; "user-story"/"sub-task" is what the words mean. Costs one live migration (#79) and a sweep of schema, forms, tests, `file-issue` CLI and the `triage-kinds` doc. |
+| **D19** | The bootstrap creates a `package-epic` for **all 15** packages. *(Revision 5, decided with the human)* | `packages/` and `package:*` are already 1:1 (verified: 15 directories, 15 labels). Each body is generated-and-thin, and it stops the next epic stalling on a missing parent. |
 
 ---
 
@@ -109,7 +122,7 @@ version: 1
 
 labels:
   kind: [bug, enhancement, chore]           # exactly one required
-  level: [level:epic, level:story, level:subtask]  # exactly one required
+  level: [level:package-epic, level:epic, level:user-story, level:sub-task]  # exactly one required
 
 # Sections present on EVERY kind (the shared skeleton).
 skeleton:
@@ -151,9 +164,13 @@ sections:
 
 # Level invariants the shim enforces (GitHub will not).
 levels:
-  level:epic:    { parent: forbidden }
-  level:story:   { parent: { required: true, allowed_parent_levels: [level:epic] } }
-  level:subtask: { parent: { required: true, allowed_parent_levels: [level:story] }, children: forbidden }
+  level:package-epic:
+    parent: forbidden
+    sections: exempt                # body is a generated index (D15), not the template
+    requires_package_label: true    # exactly one package:* label = the primary package (D14)
+  level:epic:       { parent: { required: true, allowed_parent_levels: [level:package-epic] } }
+  level:user-story: { parent: { required: true, allowed_parent_levels: [level:epic] } }
+  level:sub-task:   { parent: { required: true, allowed_parent_levels: [level:user-story] }, children: forbidden }
 ```
 
 **Validation semantics (implemented once, in the validator CLI — D12; the shim, CI, and `file-issue` all call it):**
@@ -162,9 +179,12 @@ levels:
 - **Section copy lives in the schema** — the labels, descriptions and placeholders the form generator emits are schema fields, not hard-coded in the generator. Otherwise the schema is not the single source of truth (anti-goal A3).
 - A body *satisfies* a section if a normalised heading matches **and** the content beneath it is non-empty — "non-empty" excludes whitespace, HTML comments (`<!-- … -->`), unedited placeholder text, and unchecked-only checkbox lists.
 - **Precedence — most specific wins.** A kind may *downgrade* a skeleton section to `optional` or `exempt`; it may not remove it from the schema, nor add a section that is not declared under `sections:`. A kind that both `requires` and `exempt`s the same section is a schema error (fail loud at load). A selector naming a section `optional`/`exempt` is a **legitimate override**, not a contradiction.
-- Exactly one `kind` label and exactly one `level` label must be present.
+- Exactly one `level` label must be present, and exactly one `kind` label — **except on `level:package-epic`**, which carries no kind. The level alone is the exemption: a package-epic reports no work, it indexes it.
 - **Kind and level are independent across the hierarchy.** An Epic carries a kind; a Story's kind need not match its Epic's. No inheritance rule is imposed.
 - Level invariants in `levels:` must hold against the parent issue's labels.
+- **A `package-epic` is exempt from every section** (`sections: exempt`) — its body is generated (D15). Every other level requires whatever its kind requires.
+- **A `package-epic` must carry exactly one `package:*` label** — that label *is* its primary package (D14). A node that has to name a package cannot also stay silent about which.
+- **At most one open `package-epic` per `package:*` label.** This is a *cross-issue* invariant, so the single-issue validator cannot see it; the CI index writer owns it (§A7).
 
 > **Left to the builder:** the exact `requires`/`optional`/`exempt` split per kind is transcribed from the pasted template plus reasonable additions for `enhancement` (`feature-scope`: goals, non-goals, prior art, proposed interface) and `chore` (`affected-surface`: packages touched, risk, rollback). Confirm against the template and adjust. Section numbering in the headings is decorative and copies the pasted template verbatim.
 
@@ -226,7 +246,7 @@ Deterministic, no LLM, no secrets; calls the **validator CLI** (D12):
 **Grandfathering (Revision 2).** There are ~54 pre-existing open issues with none of the new labels, and the workflow also fires on `edited`. To avoid mass false-positive labelling:
 
 - On `opened` → always validate.
-- On `edited` → validate **only if the issue already carries a `level:*` label** (a reliable "new-style issue" signal). Legacy issues stay quiet until someone opts them in.
+- On `edited` → validate **only if the issue already carries a `level:*` label** (a reliable "new-style issue" signal). Revision 5 leaves this key as it is: it now matches any of the four levels, and `level:package-epic` counts. Legacy issues stay quiet until someone opts them in.
 - Issues labelled `ecosystem` are **exempt** (automation-owned; out of scope).
 
 ### A5. Label taxonomy (final)
@@ -234,7 +254,7 @@ Deterministic, no LLM, no secrets; calls the **validator CLI** (D12):
 | Axis | Labels | Status |
 |---|---|---|
 | Kind | `bug`, `enhancement`, `chore` | `bug`/`enhancement` exist; **add `chore`** |
-| Level | `level:epic`, `level:story`, `level:subtask` | **new** |
+| Level | `level:package-epic`, `level:epic`, `level:user-story`, `level:sub-task` | **new** (Revision 5; the two lower names are renames — D18) |
 | Priority | `P0`, `P1`, `P2`, `P3` | exists — unchanged |
 | State | `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `ask-human`, `wontfix` | exists (per `triage` skill) |
 | Surface | `package:*` | exists — unchanged |
@@ -255,6 +275,19 @@ Purpose: give agents a **paved path** to a conforming body, so the shim rejects 
 - Renders the body from the schema and invokes `gh issue create`/`gh issue edit` with the right kind/level labels and `--parent`.
 - Refuses to emit a body missing required sections *before* it ever reaches `gh` (defence in depth with the shim).
 - Is the documented remediation printed by the shim on failure.
+- **It is also the only way a `package-epic` is born (Revision 5).** `--level=level:package-epic --package=<name>` is a kind-less mode: it renders the stub index body with the ownership marker and applies `level:package-epic` + `package:<name>`. `Validator::resolveKind()` stays strict everywhere else. No second creation path exists, so the paved path stays paved.
+
+### A7. The package index writer (Revision 5)
+
+A second workflow, `.github/workflows/package-index.yml`, regenerates each `package-epic`'s body from the hierarchy. It mirrors the intake gate: the gate *reads* a body and writes a label; the index writer *reads* children and writes a body.
+
+- **Trigger:** `issues` (`opened`, `edited`, `closed`, `reopened`, `deleted`, `transferred`, `labeled`, `unlabeled`) + `workflow_dispatch` + a `schedule` sweep. Event coverage for *parent-link* changes is the uncertain part — the `issues` event set does not obviously carry a sub-issue-added action [T4] — so the sweep is not a nicety, it is how the index stays true.
+- **Scope:** for the affected issue, walk upward to its `package-epic` (at most three hops) and re-render that one body. `workflow_dispatch` takes an `issue_number` input, like the gate.
+- **Body:** a generated index — for each child epic: number, title, state, and its story count — under a short generated preamble (the package label, the open-epic count). No hand-written region, therefore nothing to keep current by hand (anti-goal A5).
+- **Ownership marker:** the body is wrapped in `<!-- package-index: generated -->` … `<!-- /package-index -->`. Ownership is **regional, not whole-body**: the writer replaces only the text between the markers, so anything a human puts above or below survives. If no marker pair is present — a bootstrapped or hand-seeded body — the writer **adopts** it by appending a marker pair and leaving the existing text untouched. It never refuses to index a `package-epic`, and it never clobbers text outside its markers.
+- **Uniqueness scan (the one cross-issue invariant lives here):** every run opens with a query of all open `level:package-epic` issues, grouped by `package:*`. Two sharing a package → respond exactly as §A4 does: add `needs-info`, post **one** `<!-- package-index -->`-marked comment naming both, delete the marker when it resolves. Never close, never assign. A `package:*` label with no `package-epic` is fine — not every package is live yet.
+- **Idempotence and loop-safety:** the writer compares the rendered body with the current one and **writes only on a difference**. A rewrite does not itself re-trigger the workflow, because events raised with a workflow's own `GITHUB_TOKEN` do not start new workflow runs [T3 — GitHub's documented recursion guard]. The no-op guard is the belt to that braces.
+- **Interaction with the intake gate:** the gate now sees `level:package-epic` edits, and would flag a generated body for lacking sections. The `sections: exempt` rule in §A1 is what stops the two workflows fighting — the gate must resolve the level exemption *before* it checks sections.
 
 ---
 
@@ -354,8 +387,8 @@ Revision 2 resolved the container-vs-host question by evidence (D13), so it is n
 
 ## 9. Self-Review Checklist
 
-- [x] **Goals traceable to decisions:** G1→D1/D2, G2→D3/A4, G3→D8/Part B, G4→D9, G5→D6, G6→Part B.
-- [x] **Anti-goals have mechanisms:** A1→D8 + tiny chore extension; A2→shim passthrough + CI never closes; A3→D9 single schema; A4→mandatory save-to-file.
+- [x] **Goals traceable to decisions:** G1→D1/D2, G2→D3/A4, G3→D8/Part B, G4→D9, G5→D6, G6→Part B, G7→D15/D16/§A7.
+- [x] **Anti-goals have mechanisms:** A1→D8 + tiny chore extension; A2→shim passthrough + CI never closes; A3→D9 single schema; A4→mandatory save-to-file; A5→D15/D16 generated index (§A7).
 - [x] **No placeholders** (no TBD/TODO).
 - [x] **Evidence tiered** per `.agents/rules/epistemic.md`; unverified items listed in the header and marked [T4].
 - [x] **Scope:** one project, two coupled deliverables; `ecosystem` surfaces explicitly out of scope.
@@ -371,3 +404,4 @@ On approval of this spec, transition to `writing-plans` to produce the implement
 4. **`gh` shim** + **host** `PATH` install (the hard gate).
 5. **`arazzo-detective`** (standalone; can ship before or after 2–4).
 6. **Label set + triage integration** (`chore`, `level:*`, local `triage` mapping).
+7. **Four-level revision (Revision 5):** schema `levels` + the `package-epic` exemption → validator → generated forms → shim → the gate's grandfathering key (already level-prefixed, so unchanged) → `package-index.yml` and its renderer → bootstrap the 15 `package-epic`s (D19) → migrate live labels (#118 gains a parent; #79's level label renamed per D18).

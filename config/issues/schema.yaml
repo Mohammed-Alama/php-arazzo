@@ -11,7 +11,7 @@
 
 version: 1
 
-kinds: [bug, enhancement, chore]
+kinds: [kind:feature, kind:bugfix, kind:release, kind:chore]
 
 # Present on every kind. Order here is the skeleton's own order; it is not
 # the render order (see the note above).
@@ -19,23 +19,35 @@ skeleton: [core-metadata, problem-statement, acceptance-criteria, source-groundi
 
 # Kind-specific sections, appended to the skeleton.
 kind_sections:
-  bug:
-    requires: [dependency-matrix, artifacts, runtime-state, epistemic-matrix]
-  enhancement:
+  kind:feature:
     requires: [feature-scope, epistemic-matrix]
     optional: [source-grounding]
-  chore:
+  kind:bugfix:
+    requires: [dependency-matrix, artifacts, runtime-state, epistemic-matrix]
+  kind:release:
+    requires: [affected-surface, epistemic-matrix]
+  kind:chore:
     requires: [affected-surface]
 
 # Level invariants the shim and CI enforce (GitHub will not).
+# `level:package` is the root of a package's tree: it names the package,
+# carries no kind, and its body is generated (spec Revision 5, §A7).
 levels:
-  level:epic:
+  level:package:
     parent: forbidden
+    kind: forbidden
+    sections: exempt
+    requires_package_label: true
+    form: false
+  level:epic:
+    parent:
+      required: true
+      allowed_parent_levels: [level:package]
   level:story:
     parent:
       required: true
       allowed_parent_levels: [level:epic]
-  level:subtask:
+  level:task:
     parent:
       required: true
       allowed_parent_levels: [level:story]

@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use Alama\Tools\IssueIntake\PackageIndex;
 use Alama\Tools\IssueIntake\Schema;
 use Alama\Tools\IssueIntake\Validator;
 
@@ -41,15 +42,16 @@ function fail(string $message, int $code = 2): void
 function usage(): void
 {
     fwrite(STDOUT, <<<'TXT'
-        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>]
+        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>]
 
           --kind=<kind>        one of: bug, enhancement, chore
-          --level=<label>      one of: level:epic, level:story, level:subtask
+          --level=<label>      one of: level:package, level:epic, level:story, level:task
           --title=<title>      the issue title
           --sections=<file|->  JSON object mapping section id -> markdown content ("-" reads stdin)
           --parent=<n>         file as a sub-issue of <n> (checked against <n>'s level:* label)
           --edit=<n>           edit issue <n> instead of creating a new one
           --repo=<owner/name>  target repository (defaults to the current one)
+          --package=<name>     primary package (required for level:package; adds package:<name> label)
 
         The body is validated before `gh` is called; nothing is filed when it
         does not conform.
@@ -135,7 +137,7 @@ foreach (array_slice($argv, 1) as $argument) {
     $options[$matches[1]] = $matches[2];
 }
 
-foreach (['kind', 'level', 'title', 'sections'] as $required) {
+foreach (['level', 'title'] as $required) {
     if (($options[$required] ?? '') === '') {
         usage();
         fail("missing required --{$required}");
@@ -150,17 +152,37 @@ try {
     fail('cannot load schema: '.$error->getMessage());
 }
 
-$kind = $options['kind'];
 $level = $options['level'];
 
-if (!in_array($kind, $schema->kinds(), true)) {
-    fail("unknown kind \"{$kind}\"; expected one of: ".implode(', ', $schema->kinds()));
+if (!in_array($level, array_keys($schema->levels()), true)) {
+    fail("unknown level \"{$level}\"; expected one of: ".implode(', ', array_keys($schema->levels())));
 }
 
-$levels = array_keys($schema->levels());
+$packageEpic = $schema->levelKindForbidden($level);
+$package = ($options['package'] ?? '') !== '' ? $options['package'] : null;
 
-if (!in_array($level, $levels, true)) {
-    fail("unknown level \"{$level}\"; expected one of: ".implode(', ', $levels));
+if ($packageEpic) {
+    if (($options['kind'] ?? '') !== '') {
+        usage();
+        fail('a package-epic carries no --kind; drop it');
+    }
+
+    if (($package ?? '') === '' || preg_match('/^[a-z0-9-]+$/', $package) !== 1) {
+        usage();
+        fail('--package=<name> is required for a package-epic (lowercase, digits, hyphens)');
+    }
+    $kind = null;
+} else {
+    $kind = $options['kind'] ?? '';
+
+    if ($kind === '') {
+        usage();
+        fail('missing required --kind');
+    }
+
+    if (!in_array($kind, $schema->kinds(), true)) {
+        fail("unknown kind \"{$kind}\"; expected one of: ".implode(', ', $schema->kinds()));
+    }
 }
 
 $parent = null;
@@ -185,54 +207,67 @@ if (isset($options['edit'])) {
 
 $repo = ($options['repo'] ?? '') !== '' ? $options['repo'] : null;
 
-$raw = $options['sections'] === '-'
-    ? (stream_get_contents(STDIN) ?: '')
-    : (is_file($options['sections']) ? (file_get_contents($options['sections']) ?: '') : null);
+$package = ($options['package'] ?? '') !== '' ? $options['package'] : null;
 
-if ($raw === null) {
-    fail("sections file not found: {$options['sections']}");
-}
-
-$decoded = json_decode($raw, true);
-
-if (!is_array($decoded)) {
-    fail('--sections must be a JSON object mapping section id -> content');
-}
-
-$content = [];
-
-foreach ($decoded as $id => $value) {
-    if (is_array($value)) {
-        $value = implode("\n", array_filter($value, 'is_string'));
+if (!$packageEpic) {
+    if (($options['sections'] ?? '') === '') {
+        usage();
+        fail('missing required --sections');
     }
 
-    if (!is_string($value)) {
-        fail("section \"{$id}\" must be a string (or a list of strings)");
+    $raw = $options['sections'] === '-'
+        ? (stream_get_contents(STDIN) ?: '')
+        : (is_file($options['sections']) ? (file_get_contents($options['sections']) ?: '') : null);
+
+    if ($raw === null) {
+        fail("sections file not found: {$options['sections']}");
     }
 
-    $content[(string) $id] = $value;
-}
+    $decoded = json_decode($raw, true);
 
-// Render the sections the kind cares about, in schema (visual) order.
-$wanted = [...$schema->requiredIdsFor($kind), ...$schema->optionalFor($kind)];
-$blocks = [];
-
-foreach ($schema->sectionIds() as $id) {
-    if (!in_array($id, $wanted, true) || trim($content[$id] ?? '') === '') {
-        continue;
+    if (!is_array($decoded)) {
+        fail('--sections must be a JSON object mapping section id -> content');
     }
 
-    $blocks[] = '### '.$schema->section($id)['heading']."\n\n".trim($content[$id]);
-}
+    $content = [];
 
-$body = implode("\n\n", $blocks);
+    foreach ($decoded as $id => $value) {
+        if (is_array($value)) {
+            $value = implode("\n", array_filter($value, 'is_string'));
+        }
+
+        if (!is_string($value)) {
+            fail("section \"{$id}\" must be a string (or a list of strings)");
+        }
+
+        $content[(string) $id] = $value;
+    }
+
+    // Render the sections the kind cares about, in schema (visual) order.
+    $wanted = [...$schema->requiredIdsFor($kind), ...$schema->optionalFor($kind)];
+    $blocks = [];
+
+    foreach ($schema->sectionIds() as $id) {
+        if (!in_array($id, $wanted, true) || trim($content[$id] ?? '') === '') {
+            continue;
+        }
+
+        $blocks[] = '### '.$schema->section($id)['heading']."\n\n".trim($content[$id]);
+    }
+
+    $body = implode("\n\n", $blocks);
+} else {
+    $body = (new PackageIndex)->stub($package);
+}
 
 $gh = getenv('FILE_ISSUE_GH_BIN') ?: 'gh';
 $parentLevel = $parent !== null ? resolveParentLevel($gh, $parent, $repo) : null;
 
+$labels = $packageEpic ? [$level, 'package:'.$package] : [$kind, $level];
+
 $findings = (new Validator($schema))->validate([
     'body' => $body,
-    'labels' => [$kind, $level],
+    'labels' => $labels,
     'parent' => $parent,
     'parentLevel' => $parentLevel,
 ]);
@@ -253,9 +288,13 @@ if ($bodyFile === false) {
 
 file_put_contents($bodyFile, $body);
 
-$command = $edit === null
-    ? [$gh, 'issue', 'create', '--title', $options['title'], '--body-file', $bodyFile, '--label', $kind, '--label', $level]
-    : [$gh, 'issue', 'edit', (string) $edit, '--body-file', $bodyFile, '--add-label', $kind, '--add-label', $level];
+$command = $packageEpic
+    ? ($edit === null
+        ? [$gh, 'issue', 'create', '--title', $options['title'], '--body-file', $bodyFile, '--label', $level, '--label', 'package:'.$package]
+        : [$gh, 'issue', 'edit', (string) $edit, '--body-file', $bodyFile, '--add-label', $level, '--add-label', 'package:'.$package])
+    : ($edit === null
+        ? [$gh, 'issue', 'create', '--title', $options['title'], '--body-file', $bodyFile, '--label', $kind, '--label', $level]
+        : [$gh, 'issue', 'edit', (string) $edit, '--body-file', $bodyFile, '--add-label', $kind, '--add-label', $level]);
 
 if ($parent !== null) {
     $command[] = '--parent';

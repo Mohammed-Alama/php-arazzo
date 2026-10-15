@@ -5,8 +5,8 @@ declare(strict_types=1);
 use Symfony\Component\Process\Process;
 
 /**
- * A stub `gh`: logs every call to `$log`, answers `issue view` with one label
- * from `GATE_STUB_PARENT_LABEL`, and optionally captures stdin. Used as the
+ * A stub `gh`: logs every call to `$log`, answers `issue view` with labels
+ * from `GATE_STUB_LABELS`, and optionally captures stdin. Used as the
  * real binary via GATE_GH_BIN so nothing touches GitHub.
  *
  * @return array{0: string, 1: string} [binary, log]
@@ -18,21 +18,28 @@ function shimStub(): array
 
     $binary = $dir.'/gh';
     $log = $dir.'/calls.log';
+    $responseLog = $dir.'/responses.log';
 
-    file_put_contents($binary, <<<'SH'
-        #!/usr/bin/env bash
-        printf '%s\n' "$*" >> "$GATE_GH_LOG"
-        if [ "$1 $2" = "issue view" ]; then
-            printf '{"labels":[{"name":"%s"}]}\n' "${GATE_STUB_PARENT_LABEL:-level:epic}"
-            exit 0
-        fi
-        if [ -n "${GATE_STUB_CAPTURE:-}" ]; then
-            cat > "$GATE_STUB_CAPTURE"
-        fi
-        exit 0
-        SH);
+    // Use a bash function to avoid printf escaping hell
+    $stub = <<<'SH'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$GATE_GH_LOG"
+if [ "$1 $2" = "issue view" ]; then
+    # Default labels as a proper JSON array
+    default='[{"name":"level:package"},{"name":"package:core"}]'
+    labels="${GATE_STUB_LABELS:-$default}"
+    printf '{"labels":%s}\n' "$labels" | tee -a "$GATE_GH_RESPONSE_LOG"
+    exit 0
+fi
+if [ -n "${GATE_STUB_CAPTURE:-}" ]; then
+    cat > "$GATE_STUB_CAPTURE"
+fi
+exit 0
+SH;
+    file_put_contents($binary, $stub);
     chmod($binary, 0o755);
     file_put_contents($log, '');
+    file_put_contents($responseLog, '');
 
     return [$binary, $log];
 }
@@ -41,11 +48,12 @@ function shimStub(): array
  * @param  list<string>  $args
  * @param  array<string, string>  $env
  */
-function runShim(array $args, string $binary, string $log, array $env = [], string $input = ''): Process
+function runShim(array $args, string $binary, string $log, ?string $responseLog = null, array $env = [], string $input = ''): Process
 {
+    $responseLog ??= tempnam(sys_get_temp_dir(), 'gh-response');
     $process = new Process(
         ['scripts/bin/gh', ...$args],
-        env: ['GATE_GH_BIN' => $binary, 'GATE_GH_LOG' => $log] + $env,
+        env: ['GATE_GH_BIN' => $binary, 'GATE_GH_LOG' => $log, 'GATE_GH_RESPONSE_LOG' => $responseLog] + $env,
     );
 
     if ($input !== '') {
@@ -74,12 +82,12 @@ it('blocks an incomplete issue create before calling real gh', function () {
     $marker = tempnam(sys_get_temp_dir(), 'marker');
 
     $process = runShim(
-        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'bug', '--label', 'level:epic'],
+        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'kind:bugfix', '--label', 'level:package'],
         $marker, $log,
     );
 
     expect($process->getExitCode())->toBe(1)
-        ->and($process->getErrorOutput())->toContain('Missing required section')
+        ->and($process->getErrorOutput())->toContain('missing-package-label')
         ->and($process->getErrorOutput())->toContain('file-issue')
         ->and(file_get_contents($marker))->toBe('');
 });
@@ -88,8 +96,8 @@ it('delegates a conforming issue create untouched', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:epic',
+        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
+        '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -99,11 +107,11 @@ it('delegates a conforming issue create untouched', function () {
 it('reads --body-file - once and re-supplies it downstream', function () {
     [$gh, $log] = shimStub();
     $capture = tempnam(sys_get_temp_dir(), 'capture');
-    $body = issueBody(arazzoSchema(), bugSectionIds());
+    $body = issueBody(arazzoSchema(), bugfixSectionIds());
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'bug', '--label', 'level:epic',
-    ], $gh, $log, ['GATE_STUB_CAPTURE' => $capture], $body);
+        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
+    ], $gh, $log, null, ['GATE_STUB_CAPTURE' => $capture], $body);
 
     expect($process->getExitCode())->toBe(0)
         ->and(file_get_contents($log))->toContain('issue create')
@@ -120,10 +128,10 @@ it('does not guard a label-only edit (the triage escape hatch)', function () {
 });
 
 it('merges existing labels when editing with a body', function () {
-    [$gh, $log] = shimStub();   // `issue view` answers level:epic
+    [$gh, $log] = shimStub();   // `issue view` answers level:package + package:core
 
     $process = runShim([
-        'issue', 'edit', '5', '--body', issueBody(arazzoSchema(), bugSectionIds()), '--add-label', 'bug',
+        'issue', 'edit', '5', '--body', issueBody(arazzoSchema(), bugfixSectionIds()), '--add-label', 'kind:bugfix',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(0)
@@ -135,9 +143,9 @@ it('refuses a story whose parent has no level label', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugSectionIds()),
-        '--label', 'bug', '--label', 'level:story', '--parent', '99',
-    ], $gh, $log, ['GATE_STUB_PARENT_LABEL' => 'chore']);
+        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
+        '--label', 'kind:bugfix', '--label', 'level:story', '--parent', '99',
+    ], $gh, $log, null, ['GATE_STUB_LABELS' => '[{"name":"kind:chore"}]']);
 
     expect($process->getExitCode())->toBe(1)
         ->and(file_get_contents($log))->not->toContain('issue create')
@@ -149,7 +157,7 @@ it('blocks an incomplete issue created through gh api', function () {
 
     $process = runShim([
         'api', '-X', 'POST', 'repos/o/r/issues', '-f', 'body=nothing',
-        '-f', 'labels[]=bug', '-f', 'labels[]=level:epic',
+        '-f', 'labels[]=kind:bugfix', '-f', 'labels[]=level:epic',
     ], $gh, $log);
 
     expect($process->getExitCode())->toBe(1)

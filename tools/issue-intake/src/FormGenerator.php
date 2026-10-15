@@ -25,23 +25,29 @@ final class FormGenerator
      * @var array<string, array{name: string, description: string, title: string, file: string}>
      */
     private const FORMS = [
-        'bug' => [
-            'name' => 'Bug report',
-            'description' => 'Report something that is broken or behaves incorrectly.',
-            'title' => '[Bug] ',
-            'file' => 'bug.yml',
-        ],
-        'enhancement' => [
+        'kind:feature' => [
             'name' => 'Feature request',
             'description' => 'Request a new capability or an improvement.',
             'title' => '[Feature] ',
-            'file' => 'feature.yml',
+            'file' => 'kind-feature.yml',
         ],
-        'chore' => [
+        'kind:bugfix' => [
+            'name' => 'Bug fix',
+            'description' => 'Report something that is broken or behaves incorrectly.',
+            'title' => '[Bugfix] ',
+            'file' => 'kind-bugfix.yml',
+        ],
+        'kind:release' => [
+            'name' => 'Release task',
+            'description' => 'Cut a release, publish artifacts, or update changelogs.',
+            'title' => '[Release] ',
+            'file' => 'kind-release.yml',
+        ],
+        'kind:chore' => [
             'name' => 'Chore',
             'description' => 'Maintenance, tooling or cleanup — no user-facing change.',
             'title' => '[Chore] ',
-            'file' => 'chore.yml',
+            'file' => 'kind-chore.yml',
         ],
     ];
 
@@ -96,8 +102,8 @@ final class FormGenerator
             'id' => 'level',
             'attributes' => [
                 'label' => 'Level',
-                'description' => 'Where this sits in the hierarchy: Epic → Story → Sub-task.',
-                'options' => array_keys($this->schema->levels()),
+                'description' => 'Where this sits in the hierarchy: Epic → Story → Task.',
+                'options' => $this->schema->formLevels(),
             ],
             'validations' => ['required' => true],
         ];

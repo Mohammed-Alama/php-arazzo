@@ -1,0 +1,99 @@
+name: 'Bug fix'
+description: 'Report something that is broken or behaves incorrectly.'
+title: '[Bugfix] '
+labels:
+  - bugfix
+body:
+  -
+    type: dropdown
+    id: level
+    attributes:
+      label: Level
+      description: 'Where this sits in the hierarchy: Epic → Story → Task.'
+      options:
+        - 'level:epic'
+        - 'level:story'
+        - 'level:task'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: core-metadata
+    attributes:
+      label: 'Core Metadata & Alignment'
+      description: 'Which component, which versions, which ecosystem.'
+      placeholder: 'Component / subsystem, Arazzo spec version, PHP target, framework ecosystem.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: problem-statement
+    attributes:
+      label: 'Problem Statement & Intent'
+      description: 'What is wrong (or wanted), and why it matters.'
+      placeholder: 'Observed vs. expected behaviour, or the intent behind the request.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: dependency-matrix
+    attributes:
+      label: 'System Dependency Matrix'
+      description: 'What this touches, upstream and downstream.'
+      placeholder: 'Packages involved, upstream spec versions, runtime dependencies.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: artifacts
+    attributes:
+      label: 'Structural Artifacts & Raw Inputs'
+      description: 'The smallest document, request or fixture that shows the behaviour.'
+      placeholder: 'Minimal Arazzo/OpenAPI document, request/response, stack trace, or exact command.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: runtime-state
+    attributes:
+      label: 'Runtime Execution State Context'
+      description: 'Where in the execution this happens.'
+      placeholder: 'Workflow/step/action id, inputs, resolved expressions, environment.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: 'Acceptance Criteria & Behavioral Specification'
+      description: 'How we will know it is done.'
+      placeholder: '- [ ] Given … when … then …'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: source-grounding
+    attributes:
+      label: 'Source Grounding & Code Location'
+      description: 'The exact code, commit and evidence behind the claim.'
+      placeholder: 'file:line references, commit SHA, command output.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: impact-profile
+    attributes:
+      label: 'Public Domains & Impact Profile'
+      description: 'Who is affected, and how badly.'
+      placeholder: 'Public API impact, blast radius, severity.'
+    validations:
+      required: true
+  -
+    type: textarea
+    id: epistemic-matrix
+    attributes:
+      label: 'Epistemic Verification Matrix'
+      description: 'Verified ground-truths separated from inferred assumptions.'
+      placeholder: 'Claim | Tier (T1–T4) | Evidence | Verification'
+    validations:
+      required: true

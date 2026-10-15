@@ -9,11 +9,11 @@ body:
     id: level
     attributes:
       label: Level
-      description: 'Where this sits in the hierarchy: Epic → Story → Sub-task.'
+      description: 'Where this sits in the hierarchy: Epic → Story → Task.'
       options:
         - 'level:epic'
         - 'level:story'
-        - 'level:subtask'
+        - 'level:task'
     validations:
       required: true
   -

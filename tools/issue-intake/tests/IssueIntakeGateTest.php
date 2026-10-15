@@ -84,9 +84,19 @@ it('exempts an ecosystem-labelled issue', function () {
         ->and($log)->not->toContain('issue edit');
 });
 
+it('exempts a package-epic (level:package)', function () {
+    [$process, $log] = runIntakeGate([
+        'issue' => '{"body":"whatever","labels":[{"name":"level:package"},{"name":"package:core"}]}',
+    ]);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($process->getOutput())->toContain('package-epic; exempt')
+        ->and($log)->not->toContain('issue edit');
+});
+
 it('skips a legacy edit that carries no level label', function () {
     [$process, $log] = runIntakeGate(
-        ['issue' => '{"body":"legacy","labels":[{"name":"bug"}]}'],
+        ['issue' => '{"body":"legacy","labels":[{"name":"kind:bugfix"}]}'],
         ['EVENT_ACTION' => 'edited'],
     );
 
@@ -108,12 +118,15 @@ it('flags a non-conforming issue needs-info with one marker comment', function (
 });
 
 it('clears needs-info on a conforming issue we previously commented on', function () {
-    $body = issueBody(arazzoSchema(), bugSectionIds());
+    $body = issueBody(arazzoSchema(), bugfixSectionIds());
 
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'bug'], ['name' => 'level:epic'], ['name' => 'needs-info']],
+            'labels' => [['name' => 'kind:bugfix'], ['name' => 'level:epic'], ['name' => 'package:core'], ['name' => 'needs-info']],
+        ]),
+        'parent' => (string) json_encode([
+            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package']]]]]]],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ]);
@@ -124,12 +137,15 @@ it('clears needs-info on a conforming issue we previously commented on', functio
 });
 
 it('removes its stale marker comment once the issue conforms', function () {
-    $body = issueBody(arazzoSchema(), bugSectionIds());
+    $body = issueBody(arazzoSchema(), bugfixSectionIds());
 
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'bug'], ['name' => 'level:epic'], ['name' => 'needs-info']],
+            'labels' => [['name' => 'kind:bugfix'], ['name' => 'level:epic'], ['name' => 'package:core'], ['name' => 'needs-info']],
+        ]),
+        'parent' => (string) json_encode([
+            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package']]]]]]],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ]);
@@ -141,12 +157,15 @@ it('removes its stale marker comment once the issue conforms', function () {
 });
 
 it('removes a stale marker comment even when the label was cleared elsewhere', function () {
-    $body = issueBody(arazzoSchema(), bugSectionIds());
+    $body = issueBody(arazzoSchema(), bugfixSectionIds());
 
     [$process, $log] = runIntakeGate([
         'issue' => (string) json_encode([
             'body' => $body,
-            'labels' => [['name' => 'bug'], ['name' => 'level:epic']],
+            'labels' => [['name' => 'kind:bugfix'], ['name' => 'level:epic'], ['name' => 'package:core']],
+        ]),
+        'parent' => (string) json_encode([
+            'data' => ['repository' => ['issue' => ['parent' => ['number' => 1, 'labels' => ['nodes' => [['name' => 'level:package']]]]]]],
         ]),
         'comments' => (string) json_encode([['id' => 99, 'body' => '<!-- intake-gate -->']]),
     ]);
