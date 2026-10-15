@@ -1,0 +1,93 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Tools\IssueIntake\PackageIndex;
+
+/**
+ * Render a package-epic body from its epics.
+ *
+ * Reads JSON from stdin:
+ *   {"package": string, "body": string, "epics": list<{number:int,title:string,state:string,stories?:int}>}
+ *
+ * Writes JSON to stdout:
+ *   {"body": string, "changed": bool}
+ *
+ * Exit codes: 0 = OK, 2 = usage/error.
+ */
+$autoload = dirname(__DIR__, 3).'/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    fwrite(STDERR, "render-package-index: cannot locate vendor/autoload.php\n");
+    exit(2);
+}
+
+require $autoload;
+
+$raw = stream_get_contents(STDIN);
+$input = $raw === false ? '' : $raw;
+
+$decoded = json_decode($input, true);
+
+if (!is_array($decoded)) {
+    fwrite(STDERR, "usage: render-package-index < payload.json\n");
+    fwrite(STDERR, "  expects {\"package\": string, \"body\": string, \"epics\": list<{number:int,title:string,state:string,stories?:int}>}\n");
+    exit(2);
+}
+
+$package = $decoded['package'] ?? null;
+$body = is_string($decoded['body'] ?? null) ? $decoded['body'] : '';
+$rawEpics = is_array($decoded['epics'] ?? null) ? $decoded['epics'] : [];
+
+if (!is_string($package) || $package === '') {
+    fwrite(STDERR, 'package is required and must be a string'."\n");
+    exit(2);
+}
+
+$epics = [];
+
+foreach ($rawEpics as $epic) {
+    if (!is_array($epic)) {
+        continue;
+    }
+
+    $number = $epic['number'] ?? null;
+    $title = $epic['title'] ?? null;
+    $state = $epic['state'] ?? 'OPEN';
+    $stories = $epic['stories'] ?? 0;
+
+    if (!is_int($number) || $number < 1) {
+        continue;
+    }
+
+    if (!is_string($title) || $title === '') {
+        continue;
+    }
+
+    if (!in_array($state, ['OPEN', 'CLOSED'], true)) {
+        $state = 'OPEN';
+    }
+
+    if (!is_int($stories) || $stories < 0) {
+        $stories = 0;
+    }
+
+    $epics[] = [
+        'number' => $number,
+        'title' => $title,
+        'state' => $state,
+        'stories' => $stories,
+    ];
+}
+
+$index = new PackageIndex;
+$newBody = $index->splice($body, $index->render($package, $epics));
+$changed = $newBody !== $body;
+
+echo json_encode([
+    'body' => $newBody,
+    'changed' => $changed,
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
+
+exit(0);
