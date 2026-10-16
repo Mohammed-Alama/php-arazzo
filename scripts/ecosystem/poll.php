@@ -13,9 +13,11 @@ require __DIR__.'/RelevanceMapper.php';
 require __DIR__.'/Normalizer.php';
 require __DIR__.'/State.php';
 require __DIR__.'/Differ.php';
+require __DIR__.'/Watchlist.php';
 require __DIR__.'/Renderer.php';
 require __DIR__.'/Enumerators/OaiOrgEnumerator.php';
 require __DIR__.'/Ingestors/GithubApiIngestor.php';
+require __DIR__.'/Ingestors/WatchlistIngestor.php';
 require __DIR__.'/Ingestors/AtomRssIngestor.php';
 require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
 require __DIR__.'/Ingestors/SpecBranchIngestor.php';
@@ -28,10 +30,12 @@ use Ecosystem\Ingestors\AtomRssIngestor;
 use Ecosystem\Ingestors\GithubApiIngestor;
 use Ecosystem\Ingestors\NpmRegistryIngestor;
 use Ecosystem\Ingestors\SpecBranchIngestor;
+use Ecosystem\Ingestors\WatchlistIngestor;
 use Ecosystem\Ingestors\WebScrapeIngestor;
 use Ecosystem\Normalizer;
 use Ecosystem\Renderer;
 use Ecosystem\State;
+use Ecosystem\Watchlist;
 
 $root = dirname(__DIR__, 2);
 $opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'baseline', 'help']);
@@ -215,6 +219,23 @@ foreach ($feedEvents as $event) {
     ]);
 }
 
+// Watchlist (§5.5): fetch per-item detail for the tracked upstream proposals and merge it
+// into the same transition pipeline, so a merge/retarget emits a real event.
+// NOTE: State is constructed up front (above) because the spec-branch and npm ingestors need
+// their watermarks before polling; only the watchlist half of T5's block is merged here.
+$watchlistPath = $root.'/config/ecosystem/watchlist.json';
+$watchlistItems = Watchlist::load($watchlistPath);
+if ($watchlistItems !== [] && !$useFixtures) {
+    $watchlistObservations = WatchlistIngestor::poll($watchlistItems, $token, $verbose);
+    foreach ($watchlistObservations as $watchlistObservation) {
+        $observations[] = $watchlistObservation;
+    }
+    if ($verbose) {
+        echo sprintf("Watchlist: %d items, %d observed\n", count($watchlistItems), count($watchlistObservations));
+    }
+}
+$watchlistStatus = Watchlist::statusRows($watchlistItems, $observations);
+
 // Baseline: the first run on empty state records entities + watermarks but emits nothing,
 // so historical releases/tags/PRs are not re-announced as "new" (F2/A2). Also forced by --baseline.
 $baseline = isset($opts['baseline']) || $state->isEmpty();
@@ -225,6 +246,18 @@ $newEvents = $differ->diff($observations, $state, gmdate('c'), $baseline);
 if (!$dryRun) {
     $state->appendEvents($newEvents);
     $state->save();
+}
+
+// Persist the watchlist status (§5.7 output 5). No run clock is written, so an unchanged
+// status is byte-identical and produces no commit (A10 guardrail).
+$statusPath = $stateDir.'/watchlist-status.json';
+$statusJson = $watchlistItems === [] ? null : State::prettyJson([
+    'version' => State::SCHEMA_VERSION,
+    'items' => $watchlistStatus,
+])."\n";
+$watchlistChanged = $statusJson !== null && (!is_file($statusPath) || file_get_contents($statusPath) !== $statusJson);
+if (!$dryRun && $watchlistChanged) {
+    file_put_contents($statusPath, $statusJson);
 }
 
 echo sprintf("Collected %d raw -> %d observations (dryRun=%s, fixtures=%s, baseline=%s)\n", count($rawItems), count($observations), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no', $baseline ? 'yes' : 'no');
@@ -248,11 +281,11 @@ $renderRows = array_map(fn (Event $event) => [
 ], $newEvents);
 
 $digestPath = $root.'/docs/ECOSYSTEM_FEED.md';
-$md = Renderer::renderMarkdown(array_values($renderRows), gmdate('c'));
+$md = Renderer::renderMarkdown(array_values($renderRows), gmdate('c'), $watchlistStatus);
 if ($dryRun) {
     echo "\n--- Markdown preview (not written) ---\n";
     echo substr($md, 0, 2000)."\n";
-} elseif ($newEvents !== [] || $baseline || !is_file($digestPath)) {
+} elseif ($newEvents !== [] || $baseline || $watchlistChanged || !is_file($digestPath)) {
     file_put_contents($digestPath, $md);
     echo "Wrote {$digestPath}\n";
 } else {

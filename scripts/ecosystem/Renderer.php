@@ -8,8 +8,9 @@ final class Renderer
 {
     /**
      * @param  array<int,array<string,mixed>>  $feed  sorted publishedAt desc
+     * @param  array<int,array<string,mixed>>  $watchlist  status rows from {@see Watchlist::statusRows()}
      */
-    public static function renderMarkdown(array $feed, string $generatedAt): string
+    public static function renderMarkdown(array $feed, string $generatedAt, array $watchlist = []): string
     {
         $total = count($feed);
         $bySeverity = ['breaking' => 0, 'actionable' => 0, 'watch' => 0];
@@ -45,6 +46,7 @@ final class Renderer
         $out .= "- **Severity:** `breaking` = requires immediate planning (spec 2.0, wsdl, schema) · `actionable` = new release/tag worth reviewing · `watch` = commit/issue for context\n";
         $out .= "- **Relevance:** `P0-6 source routing (wsdl)` · `P1-6/P0-5 xml/xpath` · `P1-7 schema` · `P2-1 CLI` · `P2-2 MCP` (from `scripts/ecosystem/RelevanceMapper.php`)\n";
         $out .= "- **Tags:** `soap,wsdl,xml,xpath,mcp,cli,actor,loop,a2a,grpc,graphql` derived from title/body/labels\n\n";
+        $out .= self::renderWatchlist($watchlist);
         $out .= "## Breaking — needs attention\n\n";
         $out .= self::renderGroup($feed, 'breaking');
         $out .= "\n## Actionable — new releases/tags to review\n\n";
@@ -80,6 +82,40 @@ final class Renderer
         $out .= "- **State:** `storage/ecosystem-feed/state/` (watermarks + entities + monthly events)\n";
 
         return $out;
+    }
+
+    /**
+     * The Watchlist status table (§5.7.1): one row per seeded item, always present even when
+     * an item could not be observed this run.
+     *
+     * @param  array<int,array<string,mixed>>  $watchlist
+     */
+    private static function renderWatchlist(array $watchlist): string
+    {
+        $out = "## Watchlist — tracked upstream items\n\n";
+        if ($watchlist === []) {
+            return $out."_No watchlist items configured._\n\n";
+        }
+
+        $out .= "| Ref | Title | State | Base | Last change | Roadmap | Our issue | Stance |\n";
+        $out .= "|---|---|---|---|---|---|---|---|\n";
+        foreach ($watchlist as $row) {
+            $ref = self::sanitizeCell((string) ($row['ref'] ?? ''));
+            $refCell = $ref !== '' ? '`'.$ref.'`' : '—';
+            $title = self::sanitizeCell((string) ($row['title'] ?? ''));
+            $titleEsc = str_replace(['[', ']'], ['\\[', '\\]'], $title);
+            $url = trim((string) ($row['url'] ?? ''));
+            $titleCell = $url !== '' && $title !== '—' ? "[{$titleEsc}]({$url})" : ($title !== '' ? $titleEsc : '—');
+            $state = self::sanitizeCell((string) ($row['state'] ?? ''));
+            $base = self::sanitizeCell((string) ($row['base'] ?? ''));
+            $lastChange = self::sanitizeCell((string) ($row['lastChange'] ?? ''));
+            $roadmap = self::sanitizeCell(implode(', ', array_map('strval', is_array($row['roadmap'] ?? null) ? $row['roadmap'] : [])));
+            $ourIssue = self::sanitizeCell((string) ($row['ourIssue'] ?? ''));
+            $stance = self::sanitizeCell((string) ($row['stance'] ?? ''));
+            $out .= "| {$refCell} | {$titleCell} | {$state} | {$base} | {$lastChange} | {$roadmap} | ".($ourIssue !== '' ? $ourIssue : '—')." | {$stance} |\n";
+        }
+
+        return $out."\n";
     }
 
     private static function sanitizeCell(string $value): string

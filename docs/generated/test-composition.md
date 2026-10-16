@@ -149,8 +149,8 @@ pie showData
 
 ```mermaid
 pie showData
-    title Core (integration) — 26 test files
-    "Module-scoped": 12
+    title Core (integration) — 29 test files
+    "Module-scoped": 15
     "Feature": 4
     "Unit": 4
     "Conformance": 2
@@ -161,13 +161,13 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 12 | 46% |
-| Feature | 4 | 15% |
-| Unit | 4 | 15% |
-| Conformance | 2 | 8% |
-| Root | 2 | 8% |
-| Architecture | 1 | 4% |
-| Property | 1 | 4% |
+| Module-scoped | 15 | 52% |
+| Feature | 4 | 14% |
+| Unit | 4 | 14% |
+| Conformance | 2 | 7% |
+| Root | 2 | 7% |
+| Architecture | 1 | 3% |
+| Property | 1 | 3% |
 
 ## Laravel package
 
