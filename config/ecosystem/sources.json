@@ -403,7 +403,8 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases"
+                "releases",
+                "tags"
             ]
         },
         {

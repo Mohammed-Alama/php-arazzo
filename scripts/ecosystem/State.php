@@ -66,6 +66,70 @@ final class State
         $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] = $value;
     }
 
+    /** Read a single watermark, or null when unset. */
+    public function watermark(string $source, string $endpoint, string $field): ?string
+    {
+        $value = $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] ?? null;
+
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    /**
+     * Overwrite a watermark with the value observed this run. Used for `lastTag`,
+     * which the caller guarantees is the newest tag (and which cannot be ordered
+     * lexically). Byte-stable when the value does not move.
+     */
+    public function setWatermark(string $source, string $endpoint, string $field, string $value): void
+    {
+        if ($source === '' || $endpoint === '' || $field === '' || $value === '') {
+            return;
+        }
+        if (($this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] ?? null) === $value) {
+            return;
+        }
+
+        $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] = $value;
+    }
+
+    /**
+     * Record a semver watermark, advancing only when `$version` is newer than the
+     * stored one (lexical comparison would rank `1.9.0` above `1.10.0`).
+     */
+    public function recordVersionWatermark(string $source, string $endpoint, string $field, string $version): void
+    {
+        if ($source === '' || $endpoint === '' || $field === '' || $version === '') {
+            return;
+        }
+
+        $current = $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] ?? null;
+        if (is_string($current) && version_compare($current, $version, '>=')) {
+            return;
+        }
+
+        $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] = $version;
+    }
+
+    /** Date (YYYY-MM-DD) this source was last polled, for `poll: weekly` cadence. */
+    public function lastPolledAt(string $source): ?string
+    {
+        $value = $this->watermarks['sources'][$source]['lastPolledAt'] ?? null;
+
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    /** Record (source-level) that a source was polled on `$date`. Byte-stable when unchanged. */
+    public function recordPolledAt(string $source, string $date): void
+    {
+        if ($source === '' || $date === '') {
+            return;
+        }
+        if (($this->watermarks['sources'][$source]['lastPolledAt'] ?? null) === $date) {
+            return;
+        }
+
+        $this->watermarks['sources'][$source]['lastPolledAt'] = $date;
+    }
+
     // ---------------------------------------------------------------- entities
 
     /** @return array<string,array<string,mixed>> entityId => row */
