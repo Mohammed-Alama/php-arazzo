@@ -10,7 +10,7 @@ require __DIR__.'/GhCli.php';
 require __DIR__.'/FeedEvent.php';
 require __DIR__.'/Event.php';
 require __DIR__.'/RelevanceMapper.php';
-require __DIR__.'/TopicMatcher.php';
+require_once __DIR__.'/TopicMatcher.php';
 require __DIR__.'/Scorer.php';
 require __DIR__.'/Normalizer.php';
 require __DIR__.'/State.php';
@@ -316,26 +316,18 @@ foreach (array_slice($newEvents, 0, 10) as $event) {
     echo sprintf("  [%s] %s %s %s\n", $event->occurredAt, $event->kind, $event->source, $event->subject['title'] ?? '');
 }
 
-// Render the digest from this run's events. It is only rewritten when something actually
-// changed (or on the first baseline run) so a quiet run produces no commit (§5.2 guardrail).
-$renderRows = array_map(fn (Event $event) => [
-    'publishedAt' => $event->occurredAt,
-    'source' => $event->source,
-    'type' => $event->kind,
-    'title' => $event->subject['title'] ?? '',
-    'url' => $event->subject['url'] ?? '',
-    'tags' => $event->topics,
-    'severity' => $event->tier ?? 'watch',
-    'relevance' => $event->roadmapRefs[0] ?? null,
-    'breaking' => $event->breaking,
-], $newEvents);
+// Render the bounded digest (T4/§5.7.1) from this run's transition events. The renderer reuses
+// the previous `Generated` timestamp when the body (everything else) is unchanged, so a quiet
+// run is byte-identical and produces no commit (A10 / §5.2 guardrail).
+$eventRows = array_map(static fn (Event $event): array => $event->toArray(), $newEvents);
 
 $digestPath = $root.'/docs/ECOSYSTEM_FEED.md';
-$md = Renderer::renderMarkdown(array_values($renderRows), gmdate('c'), $watchlistStatus);
+$existingDigest = is_file($digestPath) ? (string) file_get_contents($digestPath) : null;
+$md = Renderer::renderDigest(array_values($eventRows), $watchlistStatus, gmdate('c'), $existingDigest);
 if ($dryRun) {
     echo "\n--- Markdown preview (not written) ---\n";
     echo substr($md, 0, 2000)."\n";
-} elseif ($newEvents !== [] || $baseline || $watchlistChanged || !is_file($digestPath)) {
+} elseif ($md !== $existingDigest) {
     file_put_contents($digestPath, $md);
     echo "Wrote {$digestPath}\n";
 } else {

@@ -561,6 +561,14 @@ final class Differ
                     'labels' => is_array($observation['labels'] ?? null) ? $observation['labels'] : [],
                     'prerelease' => ($observation['prerelease'] ?? false) === true,
                     'packages' => $this->stringList($priorPackages),
+                    // Carry the Scorer output through the collapse: a spec-repo release or a
+                    // tracked-library major/minor must stay Act in the digest (§5.6).
+                    'topics' => $this->stringList(is_array($observation['topics'] ?? null) ? $observation['topics'] : []),
+                    'roadmapRefs' => $this->stringList(is_array($observation['roadmapRefs'] ?? null) ? $observation['roadmapRefs'] : []),
+                    'tier' => is_string($observation['tier'] ?? null) ? $observation['tier'] : null,
+                    'score' => is_int($observation['score'] ?? null) ? $observation['score'] : null,
+                    'why' => $this->stringList(is_array($observation['why'] ?? null) ? $observation['why'] : []),
+                    'breaking' => ($observation['breaking'] ?? false) === true,
                 ];
                 $order[] = $key;
             }
@@ -572,6 +580,25 @@ final class Differ
                 $groups[$key]['publishedAt'] = (string) ($observation['publishedAt'] ?? '');
             }
             $groups[$key]['prerelease'] = $groups[$key]['prerelease'] || (($observation['prerelease'] ?? false) === true);
+            // Union the scoring across the collapsed packages; a single package being Act (or
+            // breaking) makes the merged version Act (or breaking).
+            $groups[$key]['topics'] = array_values(array_unique(array_merge(
+                $groups[$key]['topics'],
+                $this->stringList(is_array($observation['topics'] ?? null) ? $observation['topics'] : []),
+            )));
+            $groups[$key]['roadmapRefs'] = array_values(array_unique(array_merge(
+                $groups[$key]['roadmapRefs'],
+                $this->stringList(is_array($observation['roadmapRefs'] ?? null) ? $observation['roadmapRefs'] : []),
+            )));
+            $groups[$key]['why'] = array_values(array_unique(array_merge(
+                $groups[$key]['why'],
+                $this->stringList(is_array($observation['why'] ?? null) ? $observation['why'] : []),
+            )));
+            if (($observation['tier'] ?? null) === 'act') {
+                $groups[$key]['tier'] = 'act';
+            }
+            $groups[$key]['score'] = max((int) ($groups[$key]['score'] ?? 0), (int) ($observation['score'] ?? 0));
+            $groups[$key]['breaking'] = $groups[$key]['breaking'] || (($observation['breaking'] ?? false) === true);
         }
 
         $merged = [];

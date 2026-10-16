@@ -59,6 +59,23 @@ function pr_obs(array $overrides = []): array
     ], $overrides);
 }
 
+/** @param array<string,mixed> $overrides */
+function release_obs(string $tag, array $overrides = []): array
+{
+    return array_merge([
+        'source' => 'Redocly/redocly-cli',
+        'type' => 'release',
+        'externalId' => 'release:'.$tag,
+        'title' => $tag,
+        'url' => 'https://github.com/Redocly/redocly-cli/releases/tag/'.$tag,
+        'publishedAt' => '2026-10-15T07:17:32Z',
+        'body' => '',
+        'labels' => [],
+        'prerelease' => false,
+        'draft' => false,
+    ], $overrides);
+}
+
 it('A2: emits nothing on a baseline run but records entities and watermarks', function (): void {
     $dir = differ_tmp_dir();
     $state = new State($dir);
@@ -278,6 +295,29 @@ it('carries Scorer output (tier/score/why/breaking/roadmapRefs) onto events', fu
         ->and($events[0]->why)->toBe(['spec-repo', 'watchlist'])
         ->and($events[0]->breaking)->toBeTrue()
         ->and($events[0]->toArray()['breaking'])->toBeTrue();
+
+    differ_rrmdir($dir);
+});
+
+it('carries Scorer output through the monorepo release collapse', function (): void {
+    $dir = differ_tmp_dir();
+    $differ = new Differ();
+    $state = new State($dir);
+
+    $events = $differ->diff([
+        release_obs('@redocly/cli@2.64.0', ['tier' => 'act', 'score' => 88, 'why' => ['tracked-library-release'], 'breaking' => true, 'topics' => ['xml']]),
+        release_obs('@redocly/openapi-core@2.64.0', ['tier' => 'watch', 'score' => 10, 'why' => [], 'breaking' => false, 'topics' => ['xpath']]),
+    ], $state, '2026-10-16T06:17:00Z');
+
+    expect($events)->toHaveCount(1)
+        ->and($events[0]->kind)->toBe('release.published')
+        ->and($events[0]->entityId)->toBe('gh:Redocly/redocly-cli#release:2.64.0')
+        ->and($events[0]->tier)->toBe('act') // one Act package keeps the merged version Act
+        ->and($events[0]->score)->toBe(88)
+        ->and($events[0]->why)->toContain('tracked-library-release')
+        ->and($events[0]->breaking)->toBeTrue()
+        ->and($events[0]->topics)->toContain('xml')
+        ->and($events[0]->topics)->toContain('xpath');
 
     differ_rrmdir($dir);
 });
