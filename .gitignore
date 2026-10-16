@@ -54,8 +54,8 @@ storage/**
 /packages/core/_*.json
 /packages/core/storage/*
 
-# Ecosystem feed (snapshots + generated feed)
-/storage/ecosystem-feed
+# Ecosystem feed raw payload snapshots (not state; the feed itself is committed)
+/storage/ecosystem-feed/snapshots/
 
 # PHPMD cache
 /.phpmd.result-cache.php

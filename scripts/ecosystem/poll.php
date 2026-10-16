@@ -19,7 +19,6 @@ require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
 require __DIR__.'/Ingestors/WebScrapeIngestor.php';
 
 use Ecosystem\Enumerators\OaiOrgEnumerator;
-use Ecosystem\GhCli;
 use Ecosystem\Ingestors\AtomRssIngestor;
 use Ecosystem\Ingestors\GithubApiIngestor;
 use Ecosystem\Ingestors\NpmRegistryIngestor;
@@ -29,12 +28,13 @@ use Ecosystem\Renderer;
 use Ecosystem\Store;
 
 $root = dirname(__DIR__, 2);
-$opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'help']);
+$opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'baseline', 'help']);
 
 if (isset($opts['help'])) {
-    echo "Usage: php scripts/ecosystem/poll.php [--dry-run|--commit] [--since=YYYY-MM-DD] [--source=REPO] [--limit=N] [--verbose] [--fixtures]\n";
+    echo "Usage: php scripts/ecosystem/poll.php [--dry-run|--commit] [--baseline] [--since=YYYY-MM-DD] [--source=REPO] [--limit=N] [--verbose] [--fixtures]\n";
     echo "  --dry-run : normalize+render without writing snapshots/feed\n";
     echo "  --commit  : write storage/ecosystem-feed/* + docs/ECOSYSTEM_FEED.md\n";
+    echo "  --baseline: record current events as state but emit nothing (also automatic on empty state)\n";
     echo "  --since   : filter events publishedAt >= date (post-normalize)\n";
     echo "  --source  : filter to single source id (e.g. OAI/Arazzo-Specification)\n";
     echo "  --limit   : per-endpoint cap (default 20, fixtures mode ignores)\n";
@@ -65,13 +65,12 @@ if (is_file($etagCachePath)) {
 
 $rawItems = [];
 
-// Optionally enumerate OAI org live and diff + auto-merge any missing repos so no github is missed
-$oaiLiveRepos = null;
+// Lightweight OAI org enumeration: surface new/removed repos as an `org_diff` event.
+// New repos are curated into `sources.json` by hand (the enumerator never rewrites it).
 if (!$useFixtures) {
-    // lightweight OAI enumeration only in verbose or when no source filter; keeps daily cheap (uses gh cli)
+    // only in verbose or when no source filter; keeps daily cheap (uses gh cli)
     if ($verbose || $filterSource === null) {
         $enum = OaiOrgEnumerator::fetch($etagCachePath, $token, $verbose);
-        $oaiLiveRepos = $enum['repos'];
         $committedPath = $root.'/config/ecosystem/sources.oai.json';
         $committed = json_decode((string) file_get_contents($committedPath), true)['repos'] ?? [];
         $diff = OaiOrgEnumerator::diff($enum['repos'], $committed);
@@ -93,75 +92,9 @@ if (!$useFixtures) {
             ];
         }
 
-        // Auto-merge any OAI repo not yet in curated sources.json as weekly github source so nothing is missed.
-        // Also keep sources.json in sync on --commit.
-        $curatedRepos = array_column(array_filter($sources['sources'], fn ($s) => isset($s['repo'])), 'repo');
-        $curatedSet = array_flip($curatedRepos);
-        $missing = [];
-        foreach ($oaiLiveRepos as $r) {
-            $full = $r['full_name'] ?? '';
-            if ($full !== '' && !isset($curatedSet[$full])) {
-                $missing[] = $full;
-            }
-        }
-        if ($missing !== []) {
-            if ($verbose) {
-                echo 'Auto-adding missing OAI repos as weekly sources: '.implode(', ', $missing)."\n";
-            }
-            foreach ($missing as $full) {
-                $id = $full;
-                // don't re-add if filtered out
-                if ($filterSource !== null && $id !== $filterSource && $full !== $filterSource) {
-                    continue;
-                }
-                $sources['sources'][] = [
-                    'id' => $id,
-                    'repo' => $full,
-                    'tier' => 'auto',
-                    'ingestor' => 'github',
-                    'poll' => 'weekly',
-                    'endpoints' => ['releases', 'pulls', 'issues'],
-                    'auto' => true,
-                ];
-            }
-            // Persist auto-added sources back to sources.json on commit so next run is stable without re-enum cost
-            if (!$dryRun && $filterSource === null) {
-                file_put_contents($sourcesPath, json_encode($sources, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
-                if ($verbose) {
-                    echo "Updated {$sourcesPath} with ".count($missing)." auto sources\n";
-                }
-            }
-        }
-
-        // Also enumerate usearazzo org for completeness (4 repos) via gh if available
-        if (class_exists(GhCli::class) && GhCli::isAvailable()) {
-            $usearazzoRepos = GhCli::api('orgs/usearazzo/repos?per_page=100', true, false);
-            if (is_array($usearazzoRepos)) {
-                $curatedRepos2 = array_column(array_filter($sources['sources'], fn ($s) => isset($s['repo'])), 'repo');
-                $curatedSet2 = array_flip($curatedRepos2);
-                foreach ($usearazzoRepos as $r) {
-                    $full = $r['full_name'] ?? '';
-                    if ($full !== '' && !isset($curatedSet2[$full])) {
-                        if ($verbose) {
-                            echo "Auto-adding missing usearazzo repo: {$full}\n";
-                        }
-                        if ($filterSource !== null && $full !== $filterSource) {
-                            continue;
-                        }
-                        $sources['sources'][] = [
-                            'id' => $full,
-                            'repo' => $full,
-                            'tier' => 'auto',
-                            'ingestor' => 'github',
-                            'poll' => 'weekly',
-                            'endpoints' => ['releases', 'tags', 'pulls', 'issues'],
-                            'auto' => true,
-                        ];
-                        $curatedSet2[$full] = true;
-                    }
-                }
-            }
-        }
+        // NOTE: OAI/usearazzo repos are no longer auto-merged into the curated source list.
+        // New repos surface as an `org_diff` event and are added to `sources.json` by hand;
+        // auto-adding them (and rewriting `sources.json`) only fed non-Arazzo noise into the feed (F9).
     }
 }
 
@@ -239,20 +172,30 @@ if ($filterSource !== null) {
 
 usort($events, fn ($a, $b) => strcmp($b->publishedAt, $a->publishedAt));
 
-echo sprintf("Collected %d raw -> %d events (dryRun=%s, fixtures=%s)\n", count($rawItems), count($events), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no');
+// Baseline: the first run on empty state records the current events but emits none, so
+// historical releases/tags/PRs are not re-announced as "new" (F2). Also forced by --baseline.
+$feedPath = $root.'/storage/ecosystem-feed/feed.json';
+$snapshotsDir = $root.'/storage/ecosystem-feed/snapshots';
+$existingFeed = is_file($feedPath) ? (json_decode((string) file_get_contents($feedPath), true) ?? []) : [];
+$baseline = isset($opts['baseline']) || $existingFeed === [];
+
+echo sprintf("Collected %d raw -> %d events (dryRun=%s, fixtures=%s, baseline=%s)\n", count($rawItems), count($events), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no', $baseline ? 'yes' : 'no');
 foreach (array_slice($events, 0, 10) as $e) {
     echo sprintf("  [%s] %s %s tags=%s sev=%s rel=%s\n", $e->publishedAt, $e->source, $e->title, implode(',', $e->tags), $e->severity, $e->relevance ?? '-');
 }
 
-$feedPath = $root.'/storage/ecosystem-feed/feed.json';
-$snapshotsDir = $root.'/storage/ecosystem-feed/snapshots';
 $store = new Store($feedPath, $snapshotsDir);
 $res = $store->commit($events, $dryRun);
 echo sprintf("Store: written %d new, feedCount %d -> %s\n", $res['written'], $res['feedCount'], $res['feedPath']);
+if ($baseline) {
+    echo "Baseline run: recorded state, emitting no events.\n";
+}
 
 // always render markdown preview even in dry-run (but only write on commit)
 $feedForRender = [];
-if (is_file($feedPath)) {
+if ($baseline) {
+    $feedForRender = []; // baseline emits nothing
+} elseif (is_file($feedPath)) {
     $feedForRender = json_decode((string) file_get_contents($feedPath), true) ?? [];
 } else {
     // dry-run first time: render from events

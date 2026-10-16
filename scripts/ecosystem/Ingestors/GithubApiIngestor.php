@@ -146,6 +146,14 @@ final class GithubApiIngestor
     /** @param array<string,mixed> $item @return array<string,mixed>|null */
     private static function map(string $repo, string $ep, array $item): ?array
     {
+        // Tags carry no timestamp in the REST API. The old code stamped them with `now`, so every
+        // historical tag looked brand-new on every poll (F2). Drop undated tag events; only use a
+        // date when the payload actually provides one (Phase 1 will resolve it via GraphQL).
+        $tagDate = $item['published_at'] ?? $item['commit']['committer']['date'] ?? null;
+        if ($ep === 'tags' && $tagDate === null) {
+            return null;
+        }
+
         return match ($ep) {
             'releases' => [
                 'source' => $repo,
@@ -153,10 +161,11 @@ final class GithubApiIngestor
                 'externalId' => 'release:'.($item['tag_name'] ?? $item['id'] ?? ''),
                 'title' => $item['name'] ?? $item['tag_name'] ?? 'release',
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/releases/tag/".($item['tag_name'] ?? ''),
-                'publishedAt' => $item['published_at'] ?? $item['created_at'] ?? gmdate('c'),
+                'publishedAt' => $item['published_at'] ?? $item['created_at'] ?? '',
                 'body' => $item['body'] ?? '',
                 'labels' => [],
                 'state' => 'published',
+                'author' => $item['author']['login'] ?? '',
             ],
             'tags' => [
                 'source' => $repo,
@@ -164,10 +173,11 @@ final class GithubApiIngestor
                 'externalId' => 'tag:'.($item['name'] ?? ''),
                 'title' => 'tag '.($item['name'] ?? ''),
                 'url' => "https://github.com/{$repo}/releases/tag/".($item['name'] ?? ''),
-                'publishedAt' => gmdate('c'), // tags lack timestamp; use now but dedup via id
+                'publishedAt' => (string) $tagDate,
                 'body' => $item['commit']['sha'] ?? '',
                 'labels' => [],
                 'state' => 'published',
+                'author' => '',
             ],
             'pulls' => [
                 'source' => $repo,
@@ -175,11 +185,12 @@ final class GithubApiIngestor
                 'externalId' => 'pr:'.($item['number'] ?? ''),
                 'title' => $item['title'] ?? 'PR',
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/pull/".($item['number'] ?? ''),
-                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? gmdate('c'),
+                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? '',
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
                 'state' => $item['state'] ?? '',
                 'merged' => $item['merged_at'] !== null,
+                'author' => $item['user']['login'] ?? '',
             ],
             'issues' => isset($item['pull_request']) ? null : [
                 'source' => $repo,
@@ -187,10 +198,11 @@ final class GithubApiIngestor
                 'externalId' => 'issue:'.($item['number'] ?? ''),
                 'title' => $item['title'] ?? 'issue',
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/issues/".($item['number'] ?? ''),
-                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? gmdate('c'),
+                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? '',
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
                 'state' => $item['state'] ?? '',
+                'author' => $item['user']['login'] ?? '',
             ],
             'commits' => [
                 'source' => $repo,
@@ -198,10 +210,11 @@ final class GithubApiIngestor
                 'externalId' => 'commit:'.substr($item['sha'] ?? '', 0, 7),
                 'title' => trim(explode("\n", $item['commit']['message'] ?? 'commit')[0]),
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/commit/".($item['sha'] ?? ''),
-                'publishedAt' => $item['commit']['committer']['date'] ?? $item['commit']['author']['date'] ?? gmdate('c'),
+                'publishedAt' => $item['commit']['committer']['date'] ?? $item['commit']['author']['date'] ?? '',
                 'body' => $item['commit']['message'] ?? '',
                 'labels' => [],
                 'state' => '',
+                'author' => $item['author']['login'] ?? $item['commit']['author']['name'] ?? '',
             ],
             default => null,
         };

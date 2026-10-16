@@ -8,7 +8,7 @@ final class Normalizer
 {
     /**
      * Map raw item from an ingestor to a FeedEvent.
-     * Heuristics: label/title/url -> tags, severity from type/state.
+     * Heuristics: title/labels(/human body) -> tags, severity from type/state.
      *
      * @param  array<string,mixed>  $raw  must contain at least source/type/externalId/title/url/publishedAt
      */
@@ -20,81 +20,64 @@ final class Normalizer
         $type = (string) ($raw['type'] ?? 'unknown');
         $title = (string) ($raw['title'] ?? $externalId);
         $url = (string) ($raw['url'] ?? '');
-        $publishedAt = (string) ($raw['publishedAt'] ?? gmdate('c'));
+        $publishedAt = (string) ($raw['publishedAt'] ?? '');
+        $body = (string) ($raw['body'] ?? '');
+        $author = (string) ($raw['author'] ?? '');
+        $labels = array_map('strval', is_array($raw['labels'] ?? null) ? $raw['labels'] : []);
 
-        $haystack = strtolower(implode(' ', [
-            $title,
-            $raw['body'] ?? '',
-            implode(' ', $raw['labels'] ?? []),
-            $url,
-        ]));
-        // Narrower haystack: title + body + labels only (no URL).
-        // Used for keywords that would match almost every GitHub URL (e.g. "arazzo", "openapi").
-        $titleBodyLabels = strtolower(implode(' ', [
-            $title,
-            $raw['body'] ?? '',
-            implode(' ', $raw['labels'] ?? []),
-        ]));
+        // Bot / dependency-bump items carry upstream release notes (and commit SHAs) in their
+        // bodies, which produced bogus tags like `breaking` and `a2a` (F5). Never scan bot bodies.
+        $authorLc = strtolower($author);
+        $isBot = $authorLc !== '' && (str_ends_with($authorLc, '[bot]')
+            || in_array($authorLc, ['dependabot', 'renovate', 'github-actions'], true));
+        $isDepBump = preg_match('/\bbump\b|\b(?:chore|build)\(deps(?:-dev)?\)/i', $title) === 1;
+        $skipBody = $isBot || $isDepBump;
+
+        // Haystack = title + labels (+ body for human items). The URL is never matched: every
+        // GitHub URL contains "arazzo"/"openapi" and the repo slug, which falsely tagged every
+        // strefethen/arazzo-cli row as `cli` and (nearly) every spec-repo item as `spec` (F5).
+        $haystack = $title.' '.implode(' ', $labels).($skipBody ? '' : ' '.$body);
+        $lc = strtolower($haystack);
 
         $tags = [];
 
-        // Keywords that use the full haystack (title+body+labels+URL).
+        // Word-boundary regexes only (never substrings): `actor` must not match `refactor` or
+        // `api-extractor`; `cli` must not match inside a URL/repo slug.
         $keywordMap = [
-            'soap' => ['soap', 'wsdl'],
-            'wsdl' => ['wsdl'],
-            'xml' => ['xml', 'xpath', 'application/xml'],
-            'xpath' => ['xpath'],
-            'mcp' => ['mcp', 'model context protocol', 'mcp server', 'mcp compiler'],
-            'cli' => ['cli ', 'command line', 'respect-cli', 'arazzo-cli'],
-            'actor' => ['actor', 'human-in-loop', 'human in the loop', 'human-in-the-loop'],
-            'human' => ['human'],
-            // Arazzo-specific loop/goto phrasing only — avoids common English words.
-            'loop' => ['goto', 'step loop', 'loop step', 'retry loop', 'iteration loop', 'arazzo loop'],
-            'a2a' => ['a2a', 'agent2agent', 'agent-to-agent'],
-            'grpc' => ['grpc'],
-            'graphql' => ['graphql'],
-            'transformer' => ['transformer'],
-            'function' => ['function support'],
-            // 'breaking change' listed first; bare '2.0' dropped (fires on v2.0.x patch strings);
-            // 'major' dropped (too broad). Space-bounded ' 2.0 ' + explicit strings catch real spec 2.0.
-            'breaking' => ['breaking change', 'breaking', ' 2.0 ', 'arazzo 2.0', 'v2.0.0'],
-            // JSON Schema only — bare 'schema' matches too many unrelated contexts.
-            'schema' => ['json schema', 'json-schema', '$schema', 'jsonschema'],
-            // Arazzo runner / step execution events.
-            'runner' => ['runner:', 'step execution', 'retrylimit', 'retry limit', 'step response',
-                'success action', 'failure action', 'execution observability', 'arazzo runner'],
-            // OAI Moonwalk — next-gen spec design.
-            'moonwalk' => ['moonwalk'],
-            // API security (JOSE, JWT, sig-security keywords).
-            'security' => ['jose ', 'jose,', 'json web', 'pii data', 'sensitive data',
-                'message level security', 'security scheme'],
-            // Dependency-bump maintenance events — title pattern match.
-            'depbump' => ['bump ', 'chore(deps', 'build(deps', 'chore: bump', 'chore(deps-dev'],
+            'soap' => '/\b(?:soap|wsdl)\b/',
+            'wsdl' => '/\bwsdl\b/',
+            'xml' => '/\b(?:xml|xpath)\b|\bapplication\/xml\b/',
+            'xpath' => '/\bxpath\b/',
+            'mcp' => '/\bmcp\b|\bmodel context protocol\b/',
+            'cli' => '/\bcli\b|\barazzo[- ]cli\b|\bcommand line\b/',
+            'actor' => '/\bactor\b|\bhuman[- ]in[- ]the[- ]loop\b/',
+            'human' => '/\bhuman\b/',
+            'loop' => '/\b(?:goto|step loop|loop step|retry loop|iteration loop|arazzo loop)\b/',
+            'grpc' => '/\bgrpc\b/',
+            'graphql' => '/\bgraphql\b/',
+            'transformer' => '/\btransformer\b/',
+            'function' => '/\bfunction support\b/',
+            'runner' => '/\brunner\b|\bstep execution\b|\bretrylimit\b|\bretry limit\b|\bstep response\b|\bsuccess action\b|\bfailure action\b|\bexecution observability\b/',
+            'moonwalk' => '/\bmoonwalk\b/',
+            'security' => '/\bjose\b|\bjson web\b|\bpii data\b|\bsensitive data\b|\bmessage level security\b|\bsecurity scheme\b/',
+            'schema' => '/\bjson[- ]?schema\b|\$schema\b|\bjsonschema\b/',
+            'depbump' => '/\bbump\b|\b(?:chore|build)\(deps(?:-dev)?\)/',
         ];
 
-        // Keywords that must NOT fire on the URL (e.g. every GitHub URL contains "arazzo" or "openapi").
-        $titleBodyOnlyMap = [
-            'spec' => ['arazzo', 'openapi', 'openapi spec', 'specification'],
-        ];
-
-        foreach ($keywordMap as $tag => $kws) {
-            foreach ($kws as $kw) {
-                if (str_contains($haystack, $kw)) {
-                    $tags[] = $tag;
-
-                    break;
-                }
+        foreach ($keywordMap as $tag => $pattern) {
+            if (preg_match($pattern, $lc) === 1) {
+                $tags[] = $tag;
             }
         }
 
-        foreach ($titleBodyOnlyMap as $tag => $kws) {
-            foreach ($kws as $kw) {
-                if (str_contains($titleBodyLabels, $kw)) {
-                    $tags[] = $tag;
+        // `A2A` requires uppercase (or an explicit spelling) so it cannot match a commit SHA.
+        if (preg_match('/\bA2A\b/', $haystack) === 1 || preg_match('/\bagent2agent\b|\bagent-to-agent\b/', $lc) === 1) {
+            $tags[] = 'a2a';
+        }
 
-                    break;
-                }
-            }
+        // `spec` catch-all (Arazzo/OpenAPI content) on title/labels(+human body) only.
+        if (preg_match('/\barazzo\b|\bopenapi\b|\bspecification\b/', $lc) === 1) {
+            $tags[] = 'spec';
         }
 
         // Source-based tagging: some repos emit bare version tags (e.g. "tag v1.0.2") with no
@@ -138,7 +121,11 @@ final class Normalizer
 
         $tags = array_values(array_unique($tags));
 
-        // severity heuristics
+        // Severity: `breaking` is no longer a keyword tag (F5). Only a spec-repo release, or an
+        // explicit upstream `breaking` label, marks an event breaking — never Dependabot bodies.
+        $labelsLc = strtolower(implode(' ', $labels));
+        $explicitBreaking = preg_match('/\bbreaking\b/', $labelsLc) === 1;
+
         $severity = 'watch';
         if (in_array($type, ['release', 'tag'], true)) {
             $severity = 'actionable';
@@ -146,11 +133,11 @@ final class Normalizer
         if ($type === 'pr' && (($raw['state'] ?? '') === 'merged' || ($raw['merged'] ?? false) === true)) {
             $severity = 'actionable';
         }
-        if (in_array('breaking', $tags, true) || str_contains($haystack, 'breaking change')) {
-            $severity = 'breaking';
-        }
-        if (in_array($source, ['OAI/Arazzo-Specification'], true) && $type === 'release') {
+        if ($source === 'OAI/Arazzo-Specification' && in_array($type, ['release', 'tag'], true)) {
             $severity = 'breaking'; // spec releases need review
+        }
+        if ($explicitBreaking) {
+            $severity = 'breaking';
         }
 
         $relevance = RelevanceMapper::map($tags);
@@ -168,6 +155,10 @@ final class Normalizer
         $seen = [];
         foreach ($rawItems as $raw) {
             $ev = self::normalize($raw);
+            if ($ev->publishedAt === '') {
+                // No real provider timestamp: never emit an event without one (F2).
+                continue;
+            }
             if (!isset($seen[$ev->id])) {
                 $seen[$ev->id] = true;
                 $out[] = $ev;

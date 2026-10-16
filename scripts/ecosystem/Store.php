@@ -27,10 +27,12 @@ final class Store
 
         $new = 0;
         foreach ($events as $ev) {
-            if (!isset($byId[$ev->id])) {
-                $byId[$ev->id] = $ev->toArray();
-                $new++;
+            if (isset($byId[$ev->id])) {
+                continue; // already seen: no new feed row and no new snapshot (F11)
             }
+
+            $byId[$ev->id] = $ev->toArray();
+            $new++;
 
             if (!$dryRun) {
                 $date = substr($ev->publishedAt, 0, 10) ?: gmdate('Y-m-d');

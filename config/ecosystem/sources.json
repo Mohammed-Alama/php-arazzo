@@ -17,7 +17,6 @@
             "poll": "daily",
             "endpoints": [
                 "releases",
-                "tags",
                 "pulls",
                 "issues",
                 "commits"
@@ -198,7 +197,6 @@
             "poll": "daily",
             "endpoints": [
                 "releases",
-                "tags",
                 "pulls",
                 "issues"
             ]
@@ -271,7 +269,6 @@
             "poll": "daily",
             "endpoints": [
                 "releases",
-                "tags",
                 "pulls"
             ]
         },
@@ -283,7 +280,6 @@
             "poll": "daily",
             "endpoints": [
                 "releases",
-                "tags",
                 "pulls",
                 "issues",
                 "commits"
@@ -297,8 +293,7 @@
             "ingestor": "github",
             "poll": "daily",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -308,8 +303,7 @@
             "ingestor": "github",
             "poll": "daily",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -319,8 +313,7 @@
             "ingestor": "github",
             "poll": "daily",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -330,8 +323,7 @@
             "ingestor": "github",
             "poll": "daily",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -361,8 +353,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -372,8 +363,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -383,8 +373,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -394,8 +383,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -405,8 +393,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -416,8 +403,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -427,8 +413,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -438,8 +423,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -449,8 +433,7 @@
             "ingestor": "github",
             "poll": "weekly",
             "endpoints": [
-                "releases",
-                "tags"
+                "releases"
             ]
         },
         {
@@ -459,9 +442,7 @@
             "tier": "editor",
             "ingestor": "github",
             "poll": "weekly",
-            "endpoints": [
-                "commits"
-            ]
+            "endpoints": []
         },
         {
             "id": "openapi.tools",
@@ -477,227 +458,6 @@
             "tier": "P1",
             "ingestor": "atom",
             "poll": "weekly"
-        },
-        {
-            "id": "OAI/OpenAPI-Style-Guide",
-            "repo": "OAI/OpenAPI-Style-Guide",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/Gluecon-Workshop",
-            "repo": "OAI/Gluecon-Workshop",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/OSSNA-OpenAPI-Workshop",
-            "repo": "OAI/OSSNA-OpenAPI-Workshop",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/Talks-and-Workshops",
-            "repo": "OAI/Talks-and-Workshops",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/apidays-paris-2018-unconference",
-            "repo": "OAI/apidays-paris-2018-unconference",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/Stories",
-            "repo": "OAI/Stories",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/Projects",
-            "repo": "OAI/Projects",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/sig-travel",
-            "repo": "OAI/sig-travel",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/sig-formats",
-            "repo": "OAI/sig-formats",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/sig-finance",
-            "repo": "OAI/sig-finance",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/.github",
-            "repo": "OAI/.github",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/oascomply",
-            "repo": "OAI/oascomply",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/1password-teams-open-source",
-            "repo": "OAI/1password-teams-open-source",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/OAI-Courses",
-            "repo": "OAI/OAI-Courses",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/sig-industry-standards",
-            "repo": "OAI/sig-industry-standards",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/conference",
-            "repo": "OAI/conference",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "OAI/events.openapis.org",
-            "repo": "OAI/events.openapis.org",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ],
-            "auto": true
-        },
-        {
-            "id": "usearazzo/.github",
-            "repo": "usearazzo/.github",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ]
-        },
-        {
-            "id": "usearazzo/community",
-            "repo": "usearazzo/community",
-            "tier": "auto",
-            "ingestor": "github",
-            "poll": "weekly",
-            "endpoints": [
-                "releases"
-            ]
-        },
-        {
-            "id": "Mohammed-Alama/php-arazzo",
-            "repo": "Mohammed-Alama/php-arazzo",
-            "tier": "P0",
-            "ingestor": "github",
-            "poll": "daily",
-            "endpoints": [
-                "releases",
-                "tags",
-                "pulls",
-                "issues"
-            ],
-            "notes": "self - track own releases for changelog"
         },
         {
             "id": "workflows-guru/awesome-arazzo",
