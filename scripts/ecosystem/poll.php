@@ -18,6 +18,7 @@ require __DIR__.'/Enumerators/OaiOrgEnumerator.php';
 require __DIR__.'/Ingestors/GithubApiIngestor.php';
 require __DIR__.'/Ingestors/AtomRssIngestor.php';
 require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
+require __DIR__.'/Ingestors/SpecBranchIngestor.php';
 require __DIR__.'/Ingestors/WebScrapeIngestor.php';
 
 use Ecosystem\Differ;
@@ -26,6 +27,7 @@ use Ecosystem\Event;
 use Ecosystem\Ingestors\AtomRssIngestor;
 use Ecosystem\Ingestors\GithubApiIngestor;
 use Ecosystem\Ingestors\NpmRegistryIngestor;
+use Ecosystem\Ingestors\SpecBranchIngestor;
 use Ecosystem\Ingestors\WebScrapeIngestor;
 use Ecosystem\Normalizer;
 use Ecosystem\Renderer;
@@ -68,6 +70,13 @@ if (is_file($etagCachePath)) {
 }
 
 $rawItems = [];
+
+// State is loaded up front: the spec-branch ingestor needs the stored `headSha` per branch to
+// call `compare/{lastSha}...{branch}` (§5.4), and the npm ingestor needs its version watermark.
+$stateDir = $root.'/storage/ecosystem-feed/state';
+$decisionsPath = $root.'/config/ecosystem/decisions.json';
+$state = new State($stateDir, $decisionsPath);
+$loadedEntities = $state->count();
 
 // Lightweight OAI org enumeration: surface new/removed repos as an `org_diff` event.
 // New repos are curated into `sources.json` by hand (the enumerator never rewrites it).
@@ -138,10 +147,30 @@ if ($useFixtures) {
             $items = match ($ingestor) {
                 'github' => GithubApiIngestor::poll($src['repo'], $src['endpoints'] ?? ['releases'], $etagCache, $token, $limit, $verbose),
                 'atom' => AtomRssIngestor::poll($src['url'], $id, $limit),
-                'npm' => NpmRegistryIngestor::poll($src['package'], $id),
+                'npm' => NpmRegistryIngestor::poll($src['package'], $id, $state->endpointWatermark($id, 'npm', 'lastSeenUpdatedAt')),
                 'scrape' => WebScrapeIngestor::poll($src['url'], $id, $src['kind'] ?? 'scrape'),
                 default => [],
             };
+
+            // Spec-branch diffing (§5.4): compare the stored headSha against the live branch head
+            // and emit `spec.text_changed` / `schema.changed` observations for confirmed paths.
+            if ($ingestor === 'github' && is_array($src['branches'] ?? null) && $src['branches'] !== []) {
+                $newShas = [];
+                $items = array_merge($items, SpecBranchIngestor::poll(
+                    (string) ($src['repo'] ?? $id),
+                    $id,
+                    $src['branches'],
+                    is_array($src['watch_files'] ?? null) ? $src['watch_files'] : [],
+                    $state->branchHeads($id),
+                    $newShas,
+                    $token,
+                    $verbose,
+                ));
+                foreach ($newShas as $branch => $sha) {
+                    $state->recordBranchHead($id, (string) $branch, (string) $sha);
+                }
+            }
+
             foreach ($items as $it) {
                 $rawItems[] = $it;
             }
@@ -185,11 +214,6 @@ foreach ($feedEvents as $event) {
         'relevance' => $event->relevance,
     ]);
 }
-
-$stateDir = $root.'/storage/ecosystem-feed/state';
-$decisionsPath = $root.'/config/ecosystem/decisions.json';
-$state = new State($stateDir, $decisionsPath);
-$loadedEntities = $state->count();
 
 // Baseline: the first run on empty state records entities + watermarks but emits nothing,
 // so historical releases/tags/PRs are not re-announced as "new" (F2/A2). Also forced by --baseline.

@@ -66,6 +66,56 @@ final class State
         $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] = $value;
     }
 
+    /** Read a provider-derived watermark, or null when unset. */
+    public function endpointWatermark(string $source, string $endpoint, string $field): ?string
+    {
+        $value = $this->watermarks['sources'][$source]['endpoints'][$endpoint][$field] ?? null;
+
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    // ---------------------------------------------------------------- spec branches
+
+    /**
+     * Stored `headSha` per tracked spec branch (§5.2 / §5.4).
+     *
+     * @return array<string,string> branch => headSha
+     */
+    public function branchHeads(string $source): array
+    {
+        $branches = $this->watermarks['sources'][$source]['branches'] ?? [];
+        if (!is_array($branches)) {
+            return [];
+        }
+
+        $out = [];
+        foreach ($branches as $branch => $row) {
+            $sha = is_array($row) ? ($row['headSha'] ?? null) : null;
+            if (is_string($sha) && $sha !== '') {
+                $out[(string) $branch] = $sha;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Record a branch head. Only writes when the sha moved, so a quiet run stays byte-identical
+     * (no per-run clock, §5.2 guardrail).
+     */
+    public function recordBranchHead(string $source, string $branch, string $sha): void
+    {
+        if ($source === '' || $branch === '' || $sha === '') {
+            return;
+        }
+        $current = $this->watermarks['sources'][$source]['branches'][$branch]['headSha'] ?? null;
+        if ($current === $sha) {
+            return;
+        }
+
+        $this->watermarks['sources'][$source]['branches'][$branch]['headSha'] = $sha;
+    }
+
     // ---------------------------------------------------------------- entities
 
     /** @return array<string,array<string,mixed>> entityId => row */

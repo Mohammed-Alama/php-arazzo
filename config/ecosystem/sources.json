@@ -23,7 +23,9 @@
             ],
             "branches": [
                 "main",
-                "v1.2-dev"
+                "dev",
+                "v1.2-dev",
+                "v1.1-dev"
             ],
             "watch_files": [
                 "versions/*.md",

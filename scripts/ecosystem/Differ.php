@@ -188,11 +188,16 @@ final class Differ
     private function branchDescriptor(string $kind, array $obs, string $source, string $externalId, string $occurredAt, string $title, string $url, array $topics, array $roadmapRefs): array
     {
         $branch = (string) ($obs['branch'] ?? $obs['base'] ?? 'main');
+        $fileStats = $this->fileRows(is_array($obs['fileStats'] ?? null) ? $obs['fileStats'] : []);
         $fields = [
             'branch' => $branch,
             'headSha' => $kind === 'spec' ? (string) ($obs['headSha'] ?? $obs['sha'] ?? $this->localId($externalId)) : '',
             'hash' => $kind === 'schema' ? (string) ($obs['hash'] ?? $this->localId($externalId)) : '',
             'files' => $this->stringList(is_array($obs['files'] ?? null) ? $obs['files'] : []),
+            'fileStats' => $fileStats,
+            'commits' => $this->orderedList(is_array($obs['commits'] ?? null) ? $obs['commits'] : []),
+            'additions' => $this->sumField($fileStats, 'additions'),
+            'deletions' => $this->sumField($fileStats, 'deletions'),
         ];
 
         return $this->descriptor($kind, 'branches', 'gh:'.$source.'#'.$kind.':'.$branch, $source, $occurredAt, $kind, $title, $url, $fields, $topics, $roadmapRefs);
@@ -257,7 +262,7 @@ final class Differ
             default => ['field' => 'entity', 'from' => null, 'to' => null],
         };
 
-        return [$this->event($d, $kind, $change)];
+        return [$this->event($d, $kind, $change + $this->branchDetail($d['fields'], $d['kind']))];
     }
 
     /**
@@ -334,15 +339,14 @@ final class Differ
                     'field' => 'headSha',
                     'from' => $previousFields['headSha'] ?? null,
                     'to' => $fields['headSha'] ?? null,
-                    'files' => $fields['files'] ?? [],
-                ]);
+                ] + $this->branchDetail($fields, 'spec'));
                 break;
             case 'schema':
                 $events[] = $this->event($d, 'schema.changed', [
                     'field' => 'hash',
                     'from' => $previousFields['hash'] ?? null,
                     'to' => $fields['hash'] ?? null,
-                ]);
+                ] + $this->branchDetail($fields, 'schema'));
                 break;
             default:
                 break; // immutable kinds emit only `entity.created`
@@ -526,6 +530,93 @@ final class Differ
         }
 
         return '';
+    }
+
+    /**
+     * Changed-file payload for a `spec.text_changed` / `schema.changed` transition: the files,
+     * their per-file +/- line counts, the commit titles, and the totals (§5.4).
+     *
+     * @param  array<string,mixed>  $fields
+     * @return array<string,mixed>
+     */
+    private function branchDetail(array $fields, string $kind): array
+    {
+        if ($kind !== 'spec' && $kind !== 'schema') {
+            return [];
+        }
+
+        return [
+            'files' => is_array($fields['files'] ?? null) ? $fields['files'] : [],
+            'fileStats' => is_array($fields['fileStats'] ?? null) ? $fields['fileStats'] : [],
+            'commits' => is_array($fields['commits'] ?? null) ? $fields['commits'] : [],
+            'additions' => (int) ($fields['additions'] ?? 0),
+            'deletions' => (int) ($fields['deletions'] ?? 0),
+        ];
+    }
+
+    /**
+     * Normalize changed-file rows (deterministic order) for the entity fingerprint + event payload.
+     *
+     * @param  array<int,mixed>  $rows
+     * @return array<int,array{path:string,status:string,additions:int,deletions:int,changes:int}>
+     */
+    private function fileRows(array $rows): array
+    {
+        $out = [];
+        foreach ($rows as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $path = (string) ($row['path'] ?? '');
+            if ($path === '') {
+                continue;
+            }
+            $out[] = [
+                'path' => $path,
+                'status' => (string) ($row['status'] ?? ''),
+                'additions' => (int) ($row['additions'] ?? 0),
+                'deletions' => (int) ($row['deletions'] ?? 0),
+                'changes' => (int) ($row['changes'] ?? 0),
+            ];
+        }
+        usort($out, static fn (array $a, array $b): int => strcmp($a['path'], $b['path']));
+
+        return $out;
+    }
+
+    /**
+     * @param  array<int,array<string,mixed>>  $rows
+     */
+    private function sumField(array $rows, string $field): int
+    {
+        $total = 0;
+        foreach ($rows as $row) {
+            $total += (int) ($row[$field] ?? 0);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Deduplicate a list of scalars, preserving author order (used for commit titles, where the
+     * chronological order carries meaning).
+     *
+     * @param  array<int,mixed>  $values
+     * @return string[]
+     */
+    private function orderedList(array $values): array
+    {
+        $list = [];
+        foreach ($values as $value) {
+            if (is_scalar($value)) {
+                $string = (string) $value;
+                if ($string !== '' && !in_array($string, $list, true)) {
+                    $list[] = $string;
+                }
+            }
+        }
+
+        return $list;
     }
 
     /**

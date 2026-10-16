@@ -67,6 +67,29 @@ it('persists entities and watermarks deterministically and byte-stably', functio
     ecosystem_rrmdir($dir);
 });
 
+it('persists per-branch head shas and stays byte-stable on a no-op', function (): void {
+    $dir = state_tmp_dir();
+
+    $state = new State($dir);
+    $state->recordBranchHead('OAI/Arazzo-Specification', 'v1.2-dev', 'sha-v12');
+    $state->recordBranchHead('OAI/Arazzo-Specification', 'main', 'sha-main');
+    $state->save();
+
+    $again = new State($dir);
+    expect($again->branchHeads('OAI/Arazzo-Specification'))->toBe([
+        'main' => 'sha-main',
+        'v1.2-dev' => 'sha-v12',
+    ]);
+
+    $before = (string) file_get_contents($dir.'/watermarks.json');
+    $again->recordBranchHead('OAI/Arazzo-Specification', 'main', 'sha-main'); // identical -> no write
+    $again->save();
+
+    expect((string) file_get_contents($dir.'/watermarks.json'))->toBe($before);
+
+    ecosystem_rrmdir($dir);
+});
+
 it('appends events to monthly files losslessly and deduplicates by id', function (): void {
     $dir = state_tmp_dir();
 
