@@ -16,6 +16,7 @@ require __DIR__.'/Normalizer.php';
 require __DIR__.'/State.php';
 require __DIR__.'/Differ.php';
 require __DIR__.'/Watchlist.php';
+require __DIR__.'/Cadence.php';
 require __DIR__.'/Renderer.php';
 require __DIR__.'/Enumerators/OaiOrgEnumerator.php';
 require __DIR__.'/Ingestors/GithubApiIngestor.php';
@@ -25,9 +26,11 @@ require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
 require __DIR__.'/Ingestors/SpecBranchIngestor.php';
 require __DIR__.'/Ingestors/WebScrapeIngestor.php';
 
+use Ecosystem\Cadence;
 use Ecosystem\Differ;
 use Ecosystem\Enumerators\OaiOrgEnumerator;
 use Ecosystem\Event;
+use Ecosystem\GhCli;
 use Ecosystem\Ingestors\AtomRssIngestor;
 use Ecosystem\Ingestors\GithubApiIngestor;
 use Ecosystem\Ingestors\NpmRegistryIngestor;
@@ -76,6 +79,17 @@ $etagCache = [];
 if (is_file($etagCachePath)) {
     $etagCache = json_decode((string) file_get_contents($etagCachePath), true) ?? [];
 }
+
+// State is loaded before polling so cadence decisions and API watermarks (lastTag,
+// npm lastSeenVersion) are available to the ingestors (§5.4).
+$stateDir = $root.'/storage/ecosystem-feed/state';
+$decisionsPath = $root.'/config/ecosystem/decisions.json';
+$state = new State($stateDir, $decisionsPath);
+$loadedEntities = $state->count();
+
+// Baseline: the first run on empty state records entities + watermarks but emits nothing,
+// so historical releases/tags/PRs are not re-announced as "new" (F2/A2). Also forced by --baseline.
+$baseline = isset($opts['baseline']) || $state->isEmpty();
 
 $rawItems = [];
 
@@ -140,9 +154,20 @@ if ($useFixtures) {
         ];
     }
 } else {
+    $today = gmdate('Y-m-d');
     foreach ($sources['sources'] as $src) {
         $id = $src['id'] ?? '';
         if ($filterSource !== null && $id !== $filterSource && ($src['repo'] ?? '') !== $filterSource) {
+            continue;
+        }
+
+        // Cadence (§5.4, F12): honour `poll: daily|weekly` using the stored poll date.
+        $poll = (string) ($src['poll'] ?? 'daily');
+        if (!Cadence::isDue($poll, $state->lastPolledAt($id), $today)) {
+            if ($verbose) {
+                echo "Skip {$id} (poll={$poll}, lastPolledAt=".$state->lastPolledAt($id).")\n";
+            }
+
             continue;
         }
 
@@ -152,10 +177,11 @@ if ($useFixtures) {
         }
 
         try {
+            $watermarks = $state->watermarks();
             $items = match ($ingestor) {
-                'github' => GithubApiIngestor::poll($src['repo'], $src['endpoints'] ?? ['releases'], $etagCache, $token, $limit, $verbose),
+                'github' => GithubApiIngestor::poll($src['repo'], $src['endpoints'] ?? ['releases'], $etagCache, $token, $limit, $verbose, $watermarks),
                 'atom' => AtomRssIngestor::poll($src['url'], $id, $limit),
-                'npm' => NpmRegistryIngestor::poll($src['package'], $id, $state->endpointWatermark($id, 'npm', 'lastSeenUpdatedAt')),
+                'npm' => NpmRegistryIngestor::poll($src['package'], $id, $state->watermark($id, 'npm', 'lastSeenUpdatedAt')),
                 'scrape' => WebScrapeIngestor::poll($src['url'], $id, $src['kind'] ?? 'scrape'),
                 default => [],
             };
@@ -181,6 +207,12 @@ if ($useFixtures) {
 
             foreach ($items as $it) {
                 $rawItems[] = $it;
+            }
+
+            // Only weekly sources persist a poll date; daily sources must not churn state
+            // on every run (§5.2 guardrail / A10).
+            if ($poll === 'weekly' && !$dryRun) {
+                $state->recordPolledAt($id, $today);
             }
         } catch (Throwable $e) {
             fwrite(STDERR, "  [error] {$id}: ".$e->getMessage()."\n");
@@ -308,6 +340,27 @@ if ($dryRun) {
     echo "Wrote {$digestPath}\n";
 } else {
     echo "Digest unchanged (no events this run) - {$digestPath} left as-is.\n";
+}
+
+// A9: log the remaining API budget at the end of the run. The `rate_limit` endpoint
+// does not itself count against the limit, so this is cheap and safe.
+if (!$useFixtures) {
+    $resources = GhCli::rateLimit($verbose);
+    if (is_array($resources)) {
+        foreach (['core', 'graphql', 'search'] as $bucket) {
+            $row = $resources[$bucket] ?? null;
+            if (!is_array($row)) {
+                continue;
+            }
+            echo sprintf(
+                "X-RateLimit %s: %d/%d remaining (resets %s)\n",
+                $bucket,
+                (int) ($row['remaining'] ?? 0),
+                (int) ($row['limit'] ?? 0),
+                (string) ($row['reset'] ?? '?'),
+            );
+        }
+    }
 }
 
 exit(0);

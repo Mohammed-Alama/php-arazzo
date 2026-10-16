@@ -38,12 +38,14 @@ final class Differ
      */
     public function diff(array $observations, State $state, string $observedAt, bool $baseline = false): array
     {
-        $observations = $this->applyReleaseOverTag($observations);
+        $observations = $this->applyReleaseOverTag($this->collapseReleases($observations, $state));
 
         /** @var array<string,Event> $events */
         $events = [];
         /** @var array<string,string> $seen latest occurredAt per entityId this run */
         $seen = [];
+        /** @var array<string,array{at:string,tag:string}> $lastTags newest release/tag per source+endpoint */
+        $lastTags = [];
 
         foreach ($observations as $observation) {
             $descriptor = $this->observe($observation, $state->entity($this->entityId($observation)));
@@ -59,6 +61,21 @@ final class Differ
             $seen[$entityId] = $descriptor['occurredAt'];
 
             $state->recordWatermark($descriptor['source'], $descriptor['endpoint'], 'lastSeenUpdatedAt', $descriptor['occurredAt']);
+
+            // §5.4 watermarks: track the newest release/tag name so next run can stop paging
+            // at it, and the newest npm version so a regressed `dist-tags.latest` never emits.
+            if ($descriptor['kind'] === 'release' || $descriptor['kind'] === 'tag') {
+                $tagName = is_string($descriptor['tagName'] ?? null) ? $descriptor['tagName'] : '';
+                if ($tagName !== '') {
+                    $key = $descriptor['source']."\0".$descriptor['endpoint'];
+                    $at = (string) $descriptor['occurredAt'];
+                    if (!isset($lastTags[$key]) || strcmp($at, $lastTags[$key]['at']) > 0) {
+                        $lastTags[$key] = ['at' => $at, 'tag' => $tagName];
+                    }
+                }
+            } elseif ($descriptor['kind'] === 'package') {
+                $state->recordVersionWatermark($descriptor['source'], $descriptor['endpoint'], 'lastSeenVersion', (string) ($descriptor['fields']['version'] ?? ''));
+            }
 
             $previous = $state->entity($entityId);
             if ($previous === null) {
@@ -80,6 +97,11 @@ final class Differ
                 $events[$event->id] = $event;
             }
             $state->putEntity($this->updatedRow($previous, $descriptor));
+        }
+
+        foreach ($lastTags as $key => $entry) {
+            [$source, $endpoint] = explode("\0", $key, 2);
+            $state->setWatermark($source, $endpoint, 'lastTag', $entry['tag']);
         }
 
         return array_values($events);
@@ -180,9 +202,17 @@ final class Differ
         if ($kind === 'release') {
             $fields['prerelease'] = ($obs['prerelease'] ?? false) === true;
             $fields['draft'] = ($obs['draft'] ?? false) === true;
+            $packages = $this->stringList(is_array($obs['packages'] ?? null) ? $obs['packages'] : []);
+            if ($packages !== []) {
+                $fields['packages'] = $packages;
+            }
         }
 
-        return $this->descriptor($kind, $endpoint, 'gh:'.$source.'#'.$kind.':'.$version, $source, $occurredAt, $kind, $title, $url, $fields, $topics, $roadmapRefs);
+        $descriptor = $this->descriptor($kind, $endpoint, 'gh:'.$source.'#'.$kind.':'.$version, $source, $occurredAt, $kind, $title, $url, $fields, $topics, $roadmapRefs);
+        // Raw tag name (pre-normalization) — used only for the `lastTag` paging watermark.
+        $descriptor['tagName'] = (string) ($obs['tagName'] ?? $this->rawVersionOf($externalId));
+
+        return $descriptor;
     }
 
     /**
@@ -268,7 +298,9 @@ final class Differ
 
         $change = match ($d['kind']) {
             'pr', 'issue', 'meeting' => ['field' => 'state', 'from' => null, 'to' => $d['fields']['state'] ?? null],
-            'release', 'package', 'tag' => ['field' => 'version', 'from' => null, 'to' => $d['fields']['version'] ?? null],
+            'release' => $this->versionChange(null, $d['fields']),
+            'tag' => ['field' => 'version', 'from' => null, 'to' => $d['fields']['version'] ?? null],
+            'package' => ['field' => 'version', 'from' => null, 'to' => $d['fields']['version'] ?? null],
             'spec' => ['field' => 'headSha', 'from' => null, 'to' => $d['fields']['headSha'] ?? null],
             'schema' => ['field' => 'hash', 'from' => null, 'to' => $d['fields']['hash'] ?? null],
             default => ['field' => 'entity', 'from' => null, 'to' => null],
@@ -333,11 +365,7 @@ final class Differ
                 break;
             case 'release':
                 $kind = ($fields['prerelease'] ?? false) === true ? 'release.prerelease' : 'release.published';
-                $events[] = $this->event($d, $kind, [
-                    'field' => 'version',
-                    'from' => $previousFields['version'] ?? null,
-                    'to' => $fields['version'] ?? null,
-                ]);
+                $events[] = $this->event($d, $kind, $this->versionChange($previousFields['version'] ?? null, $fields));
                 break;
             case 'package':
                 $events[] = $this->event($d, 'package.version', [
@@ -365,6 +393,26 @@ final class Differ
         }
 
         return $events;
+    }
+
+    /**
+     * Release change payload: version transition plus the collapsed `packages[]` (§5.4).
+     *
+     * @param  array<string,mixed>  $fields
+     * @return array<string,mixed>
+     */
+    private function versionChange(mixed $from, array $fields): array
+    {
+        $change = [
+            'field' => 'version',
+            'from' => $from,
+            'to' => $fields['version'] ?? null,
+        ];
+        if (is_array($fields['packages'] ?? null) && $fields['packages'] !== []) {
+            $change['packages'] = array_values($fields['packages']);
+        }
+
+        return $change;
     }
 
     /** @param array<string,mixed> $change */
@@ -456,6 +504,87 @@ final class Differ
     }
 
     /**
+     * Collapse monorepo releases (§5.4): group non-draft releases by `(repo, version)` into
+     * a single observation carrying `packages[]`, so Redocly's six `@redocly/*` releases for
+     * one version become one event. The version is normalized (package prefix and a leading
+     * `v` stripped) so `1.1.0` and `v1.1.0` share an entity.
+     *
+     * Prior `packages` are merged in so that early-stopping a fetch part-way through a
+     * monorepo release train cannot shrink the group and emit a spurious change (A1/A10).
+     *
+     * @param  array<int,array<string,mixed>>  $observations
+     * @return array<int,array<string,mixed>>
+     */
+    private function collapseReleases(array $observations, State $state): array
+    {
+        /** @var array<string,array<string,mixed>> $groups */
+        $groups = [];
+        /** @var string[] $order */
+        $order = [];
+        /** @var array<int,array<string,mixed>> $passthrough */
+        $passthrough = [];
+
+        foreach ($observations as $index => $observation) {
+            $type = (string) ($observation['type'] ?? '');
+            $externalId = (string) ($observation['externalId'] ?? '');
+            if ($type !== 'release' || str_starts_with($externalId, 'npm:')) {
+                $passthrough[$index] = $observation;
+
+                continue;
+            }
+            if (($observation['draft'] ?? false) === true) {
+                continue; // draft releases are not releases yet
+            }
+
+            $tagName = $this->rawVersionOf($externalId);
+            [$package, $version] = $this->parseTagName($tagName);
+            if ($version === '') {
+                $passthrough[$index] = $observation;
+
+                continue;
+            }
+
+            $key = (string) ($observation['source'] ?? '')."\0".$version;
+            if (!isset($groups[$key])) {
+                $previous = $state->entity('gh:'.(string) ($observation['source'] ?? '').'#release:'.$version);
+                $priorPackages = is_array($previous['fields']['packages'] ?? null) ? $previous['fields']['packages'] : [];
+
+                $groups[$key] = [
+                    'source' => (string) ($observation['source'] ?? ''),
+                    'type' => 'release',
+                    'externalId' => 'release:'.$version,
+                    'version' => $version,
+                    'tagName' => $tagName,
+                    'title' => (string) ($observation['title'] ?? ('release '.$version)),
+                    'url' => (string) ($observation['url'] ?? ''),
+                    'publishedAt' => (string) ($observation['publishedAt'] ?? ''),
+                    'labels' => is_array($observation['labels'] ?? null) ? $observation['labels'] : [],
+                    'prerelease' => ($observation['prerelease'] ?? false) === true,
+                    'packages' => $this->stringList($priorPackages),
+                ];
+                $order[] = $key;
+            }
+
+            if ($package !== '' && !in_array($package, $groups[$key]['packages'], true)) {
+                $groups[$key]['packages'][] = $package;
+            }
+            if (strcmp((string) ($observation['publishedAt'] ?? ''), (string) $groups[$key]['publishedAt']) > 0) {
+                $groups[$key]['publishedAt'] = (string) ($observation['publishedAt'] ?? '');
+            }
+            $groups[$key]['prerelease'] = $groups[$key]['prerelease'] || (($observation['prerelease'] ?? false) === true);
+        }
+
+        $merged = [];
+        foreach ($order as $key) {
+            $group = $groups[$key];
+            sort($group['packages'], SORT_STRING);
+            $merged[] = $group;
+        }
+
+        return array_merge(array_values($passthrough), $merged);
+    }
+
+    /**
      * Release-over-tag precedence (§5.4): never emit a tag event for a version that has a
      * release; draft releases are not releases yet.
      *
@@ -537,7 +666,16 @@ final class Differ
         return $externalId;
     }
 
+    /** Normalized version of a release/tag id: `release:@scope/pkg@1.2.0` -> `1.2.0`. */
     private function versionOf(string $externalId): string
+    {
+        [, $version] = $this->parseTagName($this->rawVersionOf($externalId));
+
+        return $version;
+    }
+
+    /** Raw tag name behind a release/tag id, exactly as GitHub reports it. */
+    private function rawVersionOf(string $externalId): string
     {
         foreach (['release:', 'tag:'] as $prefix) {
             if (str_starts_with($externalId, $prefix)) {
@@ -657,6 +795,31 @@ final class Differ
         $relevance = $obs['relevance'] ?? null;
 
         return is_string($relevance) && $relevance !== '' ? [$relevance] : [];
+    }
+
+    /**
+     * Split a tag name into `[package, version]`. Handles monorepo tags
+     * (`@redocly/cli@2.64.0`) and plain tags (`v1.0.0`).
+     *
+     * @return array{0:string,1:string}
+     */
+    private function parseTagName(string $tagName): array
+    {
+        $tagName = trim($tagName);
+        if ($tagName === '') {
+            return ['', ''];
+        }
+
+        $at = strrpos($tagName, '@');
+        if ($at !== false && $at > 0) {
+            $package = substr($tagName, 0, $at);
+            $version = substr($tagName, $at + 1);
+            if (preg_match('/^v?\d/', $version) === 1) {
+                return [$package, (string) preg_replace('/^v(?=\d)/', '', $version)];
+            }
+        }
+
+        return ['', (string) preg_replace('/^v(?=\d)/', '', $tagName)];
     }
 
     /**

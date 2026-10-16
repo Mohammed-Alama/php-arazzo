@@ -96,4 +96,76 @@ final class GhCli
 
         return self::api($endpoint, $paginate, $verbose);
     }
+
+    /**
+     * Run a GraphQL query via `gh api graphql`. Variables are passed with `-F`
+     * so numeric values (e.g. `first`) keep their type.
+     *
+     * @param  array<string,string|int>  $variables
+     * @return array<string,mixed>|null the decoded `{data:…}` response, or null on failure
+     */
+    public static function graphql(string $query, array $variables = [], bool $verbose = false): ?array
+    {
+        if (!self::isAvailable()) {
+            return null;
+        }
+
+        $cmd = 'gh api graphql -f query='.self::shellQuote($query);
+        foreach ($variables as $key => $value) {
+            $cmd .= ' -F '.$key.'='.self::shellQuote((string) $value);
+        }
+        $cmd .= ' 2>&1';
+
+        if ($verbose) {
+            fwrite(STDERR, "  gh: {$cmd}\n");
+        }
+
+        $output = @shell_exec($cmd);
+        if (!is_string($output) || trim($output) === '') {
+            return null;
+        }
+
+        $decoded = json_decode(trim($output), true);
+        if (!is_array($decoded)) {
+            $start = strpos($output, '{');
+            if ($start !== false) {
+                $decoded = json_decode(substr($output, $start), true);
+            }
+        }
+        if (!is_array($decoded)) {
+            return null;
+        }
+
+        return $decoded;
+    }
+
+    /**
+     * Remaining API budget (A9). The `rate_limit` endpoint itself does not count
+     * against the limit, so this is safe to call on every run.
+     *
+     * @return array<string,mixed>|null decoded `resources` map from `gh api rate_limit`
+     */
+    public static function rateLimit(bool $verbose = false): ?array
+    {
+        if (!self::isAvailable()) {
+            return null;
+        }
+
+        $output = @shell_exec('gh api rate_limit 2>&1');
+        if (!is_string($output) || trim($output) === '') {
+            return null;
+        }
+
+        $decoded = json_decode(trim($output), true);
+        if (!is_array($decoded)) {
+            return null;
+        }
+
+        return is_array($decoded['resources'] ?? null) ? $decoded['resources'] : $decoded;
+    }
+
+    private static function shellQuote(string $value): string
+    {
+        return "'".str_replace("'", "'\"'\"'", $value)."'";
+    }
 }

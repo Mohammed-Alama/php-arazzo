@@ -14,6 +14,20 @@ namespace Ecosystem\Ingestors;
 final class NpmRegistryIngestor
 {
     /**
+     * Whether `$latest` is strictly newer than the stored `$watermark` (a regression
+     * in `dist-tags.latest` must never re-announce an older version).
+     */
+    public static function shouldEmit(string $latest, ?string $watermark): bool
+    {
+        if ($watermark === null || $watermark === '') {
+            return true;
+        }
+
+        return version_compare($latest, $watermark, '>');
+    }
+
+    /**
+     * @param  ?string  $since  watermark timestamp; only versions published strictly after it emit
      * @return array<int,array<string,mixed>>
      */
     public static function poll(string $package, string $sourceId, ?string $since = null): array
