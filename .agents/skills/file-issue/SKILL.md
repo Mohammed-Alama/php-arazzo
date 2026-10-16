@@ -70,7 +70,7 @@ keys are ignored — the validator names any required section you left out.
   "artifacts": "Minimal Arazzo document + the failing command (see below).",
   "runtime-state": "workflowId=wf, stepId=fetch, expression on line 3.",
   "acceptance-criteria": "- [ ] the expression resolves to `42` for the fixture",
-  "source-grounding": "packages/evaluation/src/JsonPath.php:88 (commit abc1234)",
+  "source-grounding": "- `packages/evaluation/src/JsonPath.php:88-92` — permalink pinned to `abc1234`, snippet in <details>.",
   "impact-profile": "Correctness of every output expression; medium blast radius.",
   "epistemic-matrix": "| Claim | Tier | Evidence |\n| --- | --- | --- |\n| … | T1 | Pest result |"
 }
@@ -112,6 +112,39 @@ first, then the child.
 
 Exit codes: `0` filed/edited, `1` refused (findings printed), `2` bad usage,
 unknown kind/level, unreadable sections file, or a parent lookup that failed.
+
+## Grounding a claim in code (§7)
+
+§7 must carry a **permanent link** — a blob URL pinned to a commit, not a bare
+`file:line` that rots the moment the file moves:
+`https://github.com/<owner>/<repo>/blob/<sha>/<path>#L<start>-L<end>`. Fold the
+snippet into a `<details>` block so the permalink stays visible while the code
+stays collapsed:
+
+````markdown
+- `packages/evaluation/src/JsonPath.php:88-92` — the resolver returns null for string bodies.
+
+<details><summary><a href="https://github.com/Mohammed-Alama/php-arazzo/blob/abc1234/packages/evaluation/src/JsonPath.php#L88-L92"><code>JsonPath.php:88-92</code></a> @ <code>abc1234</code></summary>
+
+```php
+…the lines…
+```
+
+</details>
+
+- Commands: `vendor/bin/pest --filter=JsonPath` → 1 failure.
+````
+
+`code-permalink` builds this from a `path:start-end` shorthand, resolving the
+repo slug and commit SHA from git:
+
+```bash
+php tools/issue-intake/bin/code-permalink packages/evaluation/src/JsonPath.php:88-92 --fold
+```
+
+Without `--fold` it prints just the permalink. It warns on stderr when the file
+has uncommitted changes or the commit is not on a remote — a link to the working
+copy, or to an unpushed SHA, is not permanent.
 
 ## Notes
 
