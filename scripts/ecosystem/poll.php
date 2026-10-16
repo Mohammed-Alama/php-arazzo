@@ -10,6 +10,8 @@ require __DIR__.'/GhCli.php';
 require __DIR__.'/FeedEvent.php';
 require __DIR__.'/Event.php';
 require __DIR__.'/RelevanceMapper.php';
+require __DIR__.'/TopicMatcher.php';
+require __DIR__.'/Scorer.php';
 require __DIR__.'/Normalizer.php';
 require __DIR__.'/State.php';
 require __DIR__.'/Differ.php';
@@ -29,7 +31,9 @@ use Ecosystem\Ingestors\NpmRegistryIngestor;
 use Ecosystem\Ingestors\WebScrapeIngestor;
 use Ecosystem\Normalizer;
 use Ecosystem\Renderer;
+use Ecosystem\Scorer;
 use Ecosystem\State;
+use Ecosystem\TopicMatcher;
 
 $root = dirname(__DIR__, 2);
 $opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'baseline', 'help']);
@@ -176,13 +180,26 @@ if ($filterSource !== null) {
 
 usort($feedEvents, fn ($a, $b) => strcmp($b->publishedAt, $a->publishedAt));
 
-// Observations carry the normalizer's tags/relevance until the T3 topic scorer replaces
-// `RelevanceMapper`; the Differ turns them into transition events (§5.3).
+// T3: topics come from the authored `topics.json` vocabulary (via the Normalizer) and the Scorer
+// classifies each observation Act/Watch/Noise; the Differ turns them into transition events and
+// carries topics/roadmapRefs/tier/score/why/breaking (§5.3, §5.6).
+$matcher = TopicMatcher::fromDefault();
+$scorer = new Scorer($matcher);
 $observations = [];
 foreach ($feedEvents as $event) {
-    $observations[] = array_merge($event->raw, [
+    $observation = array_merge($event->raw, [
         'tags' => $event->tags,
+        'topics' => $event->tags,
         'relevance' => $event->relevance,
+    ]);
+    $scored = $scorer->score($observation);
+    $observations[] = array_merge($observation, [
+        'topics' => $scored['topics'],
+        'roadmapRefs' => $scored['roadmapRefs'],
+        'tier' => $scored['tier'],
+        'score' => $scored['score'],
+        'why' => $scored['why'],
+        'breaking' => $scored['breaking'],
     ]);
 }
 
@@ -221,6 +238,7 @@ $renderRows = array_map(fn (Event $event) => [
     'tags' => $event->topics,
     'severity' => $event->tier ?? 'watch',
     'relevance' => $event->roadmapRefs[0] ?? null,
+    'breaking' => $event->breaking,
 ], $newEvents);
 
 $digestPath = $root.'/docs/ECOSYSTEM_FEED.md';

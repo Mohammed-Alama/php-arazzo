@@ -255,6 +255,33 @@ it('emits package.version for a new npm release', function (): void {
     differ_rrmdir($dir);
 });
 
+it('carries Scorer output (tier/score/why/breaking/roadmapRefs) onto events', function (): void {
+    $dir = differ_tmp_dir();
+    $differ = new Differ();
+    $state = new State($dir);
+
+    $events = $differ->diff([pr_obs([
+        'topics' => ['wsdl'],
+        'roadmapRefs' => ['plan:phase-f-protocol-packages'],
+        'tier' => 'act',
+        'score' => 87,
+        'why' => ['watchlist', 'spec-repo'],
+        'breaking' => true,
+    ])], $state, '2026-10-21T06:17:10Z');
+
+    expect($events)->toHaveCount(1)
+        ->and($events[0]->kind)->toBe('entity.created')
+        ->and($events[0]->topics)->toBe(['wsdl'])
+        ->and($events[0]->roadmapRefs)->toBe(['plan:phase-f-protocol-packages'])
+        ->and($events[0]->tier)->toBe('act')
+        ->and($events[0]->score)->toBe(87)
+        ->and($events[0]->why)->toBe(['spec-repo', 'watchlist'])
+        ->and($events[0]->breaking)->toBeTrue()
+        ->and($events[0]->toArray()['breaking'])->toBeTrue();
+
+    differ_rrmdir($dir);
+});
+
 it('skips draft releases', function (): void {
     $dir = differ_tmp_dir();
     $differ = new Differ();

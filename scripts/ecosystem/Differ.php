@@ -29,6 +29,9 @@ final class Differ
         'meeting.agenda',
     ];
 
+    /** @var array{tier:?string,score:?int,why:string[],breaking:bool} scorer output for the current observation */
+    private array $scoring = ['tier' => null, 'score' => null, 'why' => [], 'breaking' => false];
+
     /**
      * @param  array<int,array<string,mixed>>  $observations
      * @return Event[] transition events (empty on baseline or when nothing changed)
@@ -100,10 +103,17 @@ final class Differ
             return null; // §5.3: no event is created without a provider timestamp
         }
 
-        $topics = $this->stringList(is_array($obs['tags'] ?? null) ? $obs['tags'] : []);
-        $relevance = $obs['relevance'] ?? null;
-        $roadmapRefs = is_string($relevance) && $relevance !== '' ? [$relevance] : [];
+        $topics = $this->stringList(is_array($obs['topics'] ?? null) ? $obs['topics'] : (is_array($obs['tags'] ?? null) ? $obs['tags'] : []));
+        $roadmapRefs = is_array($obs['roadmapRefs'] ?? null)
+            ? $this->stringList($obs['roadmapRefs'])
+            : (is_string($obs['relevance'] ?? null) && $obs['relevance'] !== '' ? [$obs['relevance']] : []);
+        $tier = is_string($obs['tier'] ?? null) ? $obs['tier'] : null;
+        $score = is_int($obs['score'] ?? null) ? $obs['score'] : null;
+        $why = $this->stringList(is_array($obs['why'] ?? null) ? $obs['why'] : []);
+        $breaking = ($obs['breaking'] ?? false) === true;
         $previousFields = is_array($previous['fields'] ?? null) ? $previous['fields'] : [];
+
+        $this->scoring = ['tier' => $tier, 'score' => $score, 'why' => $why, 'breaking' => $breaking];
 
         if (str_starts_with($externalId, 'npm:')) {
             $version = substr($externalId, 4);
@@ -232,6 +242,10 @@ final class Differ
             'fingerprint' => hash('sha256', State::canonicalJson($fields)),
             'topics' => $topics,
             'roadmapRefs' => $roadmapRefs,
+            'tier' => $this->scoring['tier'],
+            'score' => $this->scoring['score'],
+            'why' => $this->scoring['why'],
+            'breaking' => $this->scoring['breaking'],
         ];
     }
 
@@ -381,6 +395,10 @@ final class Differ
             $change,
             $d['topics'],
             $d['roadmapRefs'],
+            $d['tier'],
+            $d['score'],
+            $d['why'],
+            ($d['breaking'] ?? false) === true,
         );
     }
 

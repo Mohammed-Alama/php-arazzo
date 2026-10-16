@@ -6,10 +6,11 @@ use Ecosystem\FeedEvent;
 use Ecosystem\Normalizer;
 
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/FeedEvent.php';
+require_once dirname(__DIR__, 4).'/scripts/ecosystem/TopicMatcher.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/RelevanceMapper.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/Normalizer.php';
 
-it('normalizes PR #533 SOAP to wsdl tags', function (): void {
+it('normalizes PR #533 SOAP to the wsdl topic', function (): void {
     $raw = [
         'source' => 'OAI/Arazzo-Specification',
         'type' => 'pr',
@@ -27,7 +28,6 @@ it('normalizes PR #533 SOAP to wsdl tags', function (): void {
 
     expect($ev->source)->toBe('OAI/Arazzo-Specification')
         ->and($ev->type)->toBe('pr')
-        ->and($ev->tags)->toContain('soap')
         ->and($ev->tags)->toContain('wsdl')
         ->and($ev->tags)->not->toContain('breaking')
         ->and($ev->severity)->toBe('watch')
@@ -35,7 +35,7 @@ it('normalizes PR #533 SOAP to wsdl tags', function (): void {
         ->and($ev->id)->toBe(FeedEvent::makeId('OAI/Arazzo-Specification', 'pr:533'));
 });
 
-it('normalizes issue #410 actor/loop to mcp tags', function (): void {
+it('normalizes issue #410 actor/loop/mcp topics', function (): void {
     $raw = [
         'source' => 'OAI/Arazzo-Specification',
         'type' => 'issue',
@@ -51,9 +51,10 @@ it('normalizes issue #410 actor/loop to mcp tags', function (): void {
     $ev = Normalizer::normalize($raw);
 
     expect($ev->tags)->toContain('mcp')
-        ->and($ev->tags)->toContain('actor')
+        ->and($ev->tags)->toContain('actor-in-loop')
         ->and($ev->tags)->toContain('loop')
         ->and($ev->tags)->not->toContain('a2a')
+        ->and($ev->tags)->not->toContain('actor')
         ->and($ev->severity)->toBe('watch');
 });
 
@@ -74,7 +75,7 @@ it('normalizes 1.1.0 release with xml/xpath', function (): void {
 
     expect($ev->tags)->toContain('xml')
         ->and($ev->tags)->toContain('xpath')
-        ->and($ev->severity)->toBe('breaking'); // spec-repo release
+        ->and($ev->severity)->toBe('actionable'); // release severity is a legacy hint; tier comes from the Scorer
 });
 
 it('deduplicates by id', function (): void {
@@ -86,7 +87,7 @@ it('deduplicates by id', function (): void {
     expect($events)->toHaveCount(1);
 });
 
-it('maps spec tag to relevance', function (): void {
+it('maps the criterion-regex topic to the parity-hardening ref', function (): void {
     $raw = [
         'source' => 'OAI/Arazzo-Specification',
         'type' => 'pr',
@@ -102,7 +103,9 @@ it('maps spec tag to relevance', function (): void {
 
     $ev = Normalizer::normalize($raw);
 
-    expect($ev->tags)->toContain('spec')
+    expect($ev->tags)->toContain('criterion-regex')
+        ->and($ev->tags)->not->toContain('spec')
+        ->and($ev->relevance)->toBe('plan:expression-evaluation-parity-hardening')
         ->and($ev->severity)->toBe('watch');
 });
 
@@ -121,6 +124,7 @@ it('uses word boundaries so refactor/api-extractor do not match actor', function
     ]);
 
     expect($refactor->tags)->not->toContain('actor')
+        ->and($refactor->tags)->not->toContain('actor-in-loop')
         ->and($depbump->tags)->not->toContain('actor');
 });
 
@@ -145,13 +149,12 @@ it('does not scan bot/dep-bump bodies and never marks them breaking', function (
         'labels' => [], 'author' => 'dependabot[bot]', 'state' => 'open', 'merged' => false,
     ]);
 
-    expect($ev->tags)->toContain('depbump')
+    expect($ev->tags)->not->toContain('a2a')
         ->and($ev->tags)->not->toContain('breaking')
-        ->and($ev->tags)->not->toContain('a2a')
-        ->and($ev->severity)->toBe('watch');
+        ->and($ev->severity)->not->toBe('breaking');
 });
 
-it('marks breaking only for spec-repo releases or explicit labels', function (): void {
+it('retires breaking as a tag/severity — it is derived by the Scorer', function (): void {
     $bodyOnly = Normalizer::normalize([
         'source' => 'stoplightio/spectral', 'type' => 'pr', 'externalId' => 'pr:5',
         'title' => 'update ruleset docs',
@@ -166,7 +169,9 @@ it('marks breaking only for spec-repo releases or explicit labels', function ():
     ]);
 
     expect($bodyOnly->severity)->not->toBe('breaking')
-        ->and($labelled->severity)->toBe('breaking');
+        ->and($bodyOnly->tags)->not->toContain('breaking')
+        ->and($labelled->severity)->not->toBe('breaking')
+        ->and($labelled->tags)->not->toContain('breaking');
 });
 
 it('drops events with no real timestamp', function (): void {

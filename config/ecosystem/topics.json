@@ -1,0 +1,124 @@
+{
+    "version": 1,
+    "topics": {
+        "wsdl": {
+            "match": ["\\bwsdl\\b", "\\bsoap\\b"],
+            "scope": ["OAI/Arazzo-Specification", "OAI/sig-*"],
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "weight": 5
+        },
+        "protobuf": {
+            "match": ["\\bprotobuf\\b", "\\bprotocol[ -]?buffer\\b"],
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "weight": 5
+        },
+        "graphql": {
+            "match": ["\\bgraphql\\b"],
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "weight": 5
+        },
+        "grpc": {
+            "match": ["\\bgrpc\\b"],
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "weight": 4
+        },
+        "a2a": {
+            "match": ["\\bA2A\\b"],
+            "caseSensitive": true,
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "weight": 4
+        },
+        "mcp": {
+            "match": ["\\bmcp\\b", "model context protocol"],
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "weight": 3
+        },
+        "xpath": {
+            "match": ["\\bxpath\\b"],
+            "roadmap": ["spec:plugin-stack-oms-multiprotocol"],
+            "weight": 4
+        },
+        "xml": {
+            "match": ["\\bxml\\b", "application/xml"],
+            "roadmap": ["spec:plugin-stack-oms-multiprotocol"],
+            "weight": 3
+        },
+        "json-schema": {
+            "match": ["json[ -]?schema", "\\$schema\\b", "\\bjsonschema\\b"],
+            "roadmap": ["plan:php-arazzo-spec-suite-plan-index"],
+            "weight": 3
+        },
+        "criterion-regex": {
+            "match": ["\\bcriterion\\b", "\\bECMA-?262\\b"],
+            "roadmap": ["plan:expression-evaluation-parity-hardening"],
+            "weight": 2
+        },
+        "retry-outputs": {
+            "match": ["\\bretry\\b"],
+            "roadmap": ["plan:phase-e-runner-oms"],
+            "weight": 2
+        },
+        "actor-in-loop": {
+            "match": ["human[ -]in[ -]the[ -]loop", "actor[ -]in[ -]the[ -]loop"],
+            "roadmap": ["upstream:OAI/Arazzo-Specification#410"],
+            "weight": 3
+        },
+        "cli": {
+            "match": ["\\barazzo[ -]cli\\b", "\\bcommand[ -]line\\b"],
+            "roadmap": ["plan:php-arazzo-spec-suite-plan-index"],
+            "weight": 2
+        },
+        "runner": {
+            "match": ["\\brunner\\b", "\\bstep execution\\b", "success action", "failure action", "\\bretrylimit\\b"],
+            "roadmap": ["plan:phase-e-runner-oms"],
+            "weight": 2
+        },
+        "loop": {
+            "match": ["\\bgoto\\b", "step loop", "loop step", "retry loop", "iteration loop"],
+            "roadmap": ["plan:phase-e-runner-oms"],
+            "weight": 2
+        },
+        "security": {
+            "match": ["\\bjose\\b", "json web", "security scheme", "sensitive data", "message level security"],
+            "roadmap": ["plan:php-arazzo-spec-suite-plan-index"],
+            "weight": 3
+        },
+        "moonwalk": {
+            "sources": ["OAI/sig-moonwalk"],
+            "roadmap": ["plan:php-arazzo-spec-suite-plan-index"],
+            "weight": 3
+        },
+        "1.2-discussion": {
+            "match": ["1\\.2[- ](?:discussion|ideas|breaking changes)", "start of discussion/ideas"],
+            "weight": 2
+        }
+    },
+    "sources": {
+        "OAI/Arazzo-Specification": 5,
+        "OAI/sig-*": 4,
+        "swaggerexpert/*": 4,
+        "strefethen/arazzo-cli": 3,
+        "usearazzo/*": 3,
+        "jentic/arazzo-engine": 3,
+        "Redocly/redocly-cli": 3,
+        "speclynx/apidom": 2
+    },
+    "trackedLibraries": [
+        "swaggerexpert/*",
+        "strefethen/arazzo-cli",
+        "jentic/arazzo-engine",
+        "usearazzo/arazzo-toolkit",
+        "Redocly/redocly-cli"
+    ],
+    "noise": {
+        "authors": ["*[bot]", "dependabot", "renovate", "github-actions"],
+        "sources": ["Mohammed-Alama/php-arazzo", "jentic/jentic-public-apis"],
+        "title": [
+            "\\bbump\\b",
+            "(?:chore|build)\\(deps(?:-dev)?\\)",
+            "^\\s*v\\d+(?:\\.\\d+)*-dev:\\s*sync with dev",
+            "^\\s*(?:docs|ci|style|test|chore)(?:\\(|:)",
+            "\\btypo\\b"
+        ]
+    }
+}
