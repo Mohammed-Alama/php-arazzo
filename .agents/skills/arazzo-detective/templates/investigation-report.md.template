@@ -93,15 +93,24 @@ Headings normalise to the schema ids `source-grounding` and `epistemic-matrix`.
 Delete this comment and the surrounding fence only when the report is the source.
 -->
 
-```markdown
+````markdown
 ### 🧬 7. Source Grounding & Code Location
 
-- {file:line — what it proves}
-- Commit: `{sha}` · Commands: `{command}` → {result}
+- `{path}:{start}-{end}` — {what it proves}.
+
+<details><summary><a href="{permalink}">{path}:{start}-{end}</a> @ <code>{short-sha}</code></summary>
+
+```{lang}
+{the lines}
+```
+
+</details>
+
+- Commands: `{command}` → {result}
 
 ### 📊 9. Epistemic Verification Matrix
 
 | Claim | Tier (T1–T4) | Evidence | Verification |
 | --- | --- | --- | --- |
 | {claim} | T{tier} | `{file:line or command}` | {command or read} |
-```
+````

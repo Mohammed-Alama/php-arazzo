@@ -150,7 +150,10 @@ section payload a `file-issue` bug or enhancement issue pastes in. Its two
 headings normalise to the schema's `source-grounding` and `epistemic-matrix`
 section ids — populated from §2/§3 and from §1/§5/§7 respectively. The report is
 the source of the issue's grounding, so open a bug or enhancement with
-`file-issue` and paste the block; never hand-write those two sections.
+`file-issue` and paste the block; never hand-write those two sections. Build
+§7's link with `php tools/issue-intake/bin/code-permalink <path>:<start>-<end>
+--fold` — it emits the permalink and the folded snippet, because a hand-typed
+`file:line` is not a permanent link.
 
 ## Mandatory output rule
 
