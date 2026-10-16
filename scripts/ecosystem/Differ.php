@@ -29,6 +29,9 @@ final class Differ
         'meeting.agenda',
     ];
 
+    /** @var array{tier:?string,score:?int,why:string[],breaking:bool} scorer output for the current observation */
+    private array $scoring = ['tier' => null, 'score' => null, 'why' => [], 'breaking' => false];
+
     /**
      * @param  array<int,array<string,mixed>>  $observations
      * @return Event[] transition events (empty on baseline or when nothing changed)
@@ -100,9 +103,15 @@ final class Differ
             return null; // §5.3: no event is created without a provider timestamp
         }
 
-        $topics = $this->stringList(is_array($obs['tags'] ?? null) ? $obs['tags'] : []);
+        $topics = $this->stringList(is_array($obs['topics'] ?? null) ? $obs['topics'] : (is_array($obs['tags'] ?? null) ? $obs['tags'] : []));
         $roadmapRefs = $this->roadmapRefs($obs);
+        $tier = is_string($obs['tier'] ?? null) ? $obs['tier'] : null;
+        $score = is_int($obs['score'] ?? null) ? $obs['score'] : null;
+        $why = $this->stringList(is_array($obs['why'] ?? null) ? $obs['why'] : []);
+        $breaking = ($obs['breaking'] ?? false) === true;
         $previousFields = is_array($previous['fields'] ?? null) ? $previous['fields'] : [];
+
+        $this->scoring = ['tier' => $tier, 'score' => $score, 'why' => $why, 'breaking' => $breaking];
 
         if (str_starts_with($externalId, 'npm:')) {
             $version = substr($externalId, 4);
@@ -236,6 +245,10 @@ final class Differ
             'fingerprint' => hash('sha256', State::canonicalJson($fields)),
             'topics' => $topics,
             'roadmapRefs' => $roadmapRefs,
+            'tier' => $this->scoring['tier'],
+            'score' => $this->scoring['score'],
+            'why' => $this->scoring['why'],
+            'breaking' => $this->scoring['breaking'],
         ];
     }
 
@@ -384,6 +397,10 @@ final class Differ
             $change,
             $d['topics'],
             $d['roadmapRefs'],
+            $d['tier'],
+            $d['score'],
+            $d['why'],
+            ($d['breaking'] ?? false) === true,
         );
     }
 
@@ -619,19 +636,21 @@ final class Differ
     }
 
     /**
-     * Roadmap refs from a watchlist observation (`roadmap: [...]`) or, for the normal feed,
-     * the single `relevance` string. Stable refs survive renumbering (§5.6).
+     * Roadmap refs from a watchlist observation (`roadmap: [...]`, or T3's `roadmapRefs: [...]`)
+     * or, for the normal feed, the single `relevance` string. Stable refs survive renumbering (§5.6).
      *
      * @param  array<string,mixed>  $obs
      * @return string[]
      */
     private function roadmapRefs(array $obs): array
     {
-        $roadmap = $obs['roadmap'] ?? null;
-        if (is_array($roadmap)) {
-            $refs = $this->stringList($roadmap);
-            if ($refs !== []) {
-                return $refs;
+        foreach (['roadmap', 'roadmapRefs'] as $key) {
+            $refs = $obs[$key] ?? null;
+            if (is_array($refs)) {
+                $list = $this->stringList($refs);
+                if ($list !== []) {
+                    return $list;
+                }
             }
         }
 

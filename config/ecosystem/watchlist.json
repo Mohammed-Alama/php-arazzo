@@ -41,14 +41,14 @@
         {
             "ref": "OAI/Arazzo-Specification#590",
             "topic": "retry-outputs",
-            "roadmap": ["roadmap:P1-1"],
+            "roadmap": ["plan:phase-e-runner-oms"],
             "ourIssue": null,
             "stance": "watch"
         },
         {
             "ref": "OAI/Arazzo-Specification#516",
             "topic": "criterion-regex",
-            "roadmap": ["roadmap:P0-4"],
+            "roadmap": ["plan:expression-evaluation-parity-hardening"],
             "ourIssue": null,
             "stance": "watch"
         },

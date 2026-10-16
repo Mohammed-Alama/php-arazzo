@@ -34,6 +34,7 @@ final class Event
         public readonly ?string $tier = null,
         public readonly ?int $score = null,
         public readonly array $why = [],
+        public readonly bool $breaking = false,
     ) {}
 
     public static function makeId(string $entityId, string $kind, string $toValue): string
@@ -58,6 +59,7 @@ final class Event
             'tier' => $this->tier,
             'score' => $this->score,
             'why' => $this->why,
+            'breaking' => $this->breaking,
         ];
     }
 }

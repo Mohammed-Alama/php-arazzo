@@ -206,6 +206,7 @@
         "docs": "@php scripts/generate-docs.php",
         "ecosystem:poll": "@php scripts/ecosystem/poll.php --commit",
         "ecosystem:poll:dry": "@php scripts/ecosystem/poll.php --dry-run",
+        "ecosystem:check-refs": "@php scripts/ecosystem/check-refs.php",
         "format": "vendor/bin/pint",
         "quality-gates": "@php scripts/quality-gates.php",
         "quality-gates:mutations": "@php scripts/quality-gates.php --with-mutations",

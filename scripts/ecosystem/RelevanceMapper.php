@@ -4,72 +4,123 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/TopicMatcher.php';
+
+/**
+ * Maps matched topics (or legacy tags) to a stable roadmap ref (§5.6, fixes F7).
+ *
+ * Refs use the `plan:<file-stem>` / `spec:<file-stem>` / `upstream:<owner>/<repo>#<n>` key space
+ * that resolves to the current superpowers plan/spec docs (A8) — the dead
+ * `docs/arazzo-conformance-and-enhancement-roadmap.md` `Pn-m` scheme is gone. The topic → ref
+ * mapping is authored in `config/ecosystem/topics.json`; this class only exposes it, so there is
+ * a single source of truth. {@see self::refs()} returns every ref that can appear in
+ * `roadmapRefs`, which is what the A8 check and its test consume.
+ */
 final class RelevanceMapper
 {
     /**
-     * tag -> stable roadmap ref.
-     *
-     * Refs use `plan:<file-stem>` / `spec:<file-stem>` / `upstream:<ref>` keys that resolve to the
-     * current superpowers plan/spec docs (§5.6), replacing the deleted
-     * `docs/arazzo-conformance-and-enhancement-roadmap.md` `Pn-m` scheme (F7). The protocol topics
-     * (soap/wsdl/protobuf/graphql) map to Phase F until `topics.json` lands (P0.6).
+     * Legacy tags that are not topics but still carry a roadmap ref.
      *
      * @var array<string,string>
      */
-    private const MAP = [
-        'soap' => 'plan:phase-f-protocol-packages',
-        'wsdl' => 'plan:phase-f-protocol-packages',
-        'protobuf' => 'plan:phase-f-protocol-packages',
-        'graphql' => 'plan:phase-f-protocol-packages',
-        'grpc' => 'plan:phase-f-protocol-packages',
-        'a2a' => 'plan:phase-f-protocol-packages',
-        'mcp' => 'plan:phase-f-protocol-packages',
-        'xml' => 'spec:plugin-stack-oms-multiprotocol',
-        'xpath' => 'spec:plugin-stack-oms-multiprotocol',
-        'transformer' => 'plan:phase-e-runner-oms',
-        'function' => 'plan:phase-e-runner-oms',
-        'runner' => 'plan:phase-e-runner-oms',
-        'actor' => 'upstream:OAI/Arazzo-Specification#410',
-        'human' => 'upstream:OAI/Arazzo-Specification#410',
-        'loop' => 'upstream:OAI/Arazzo-Specification#410',
-        'schema' => 'plan:php-arazzo-spec-suite-plan-index',
-        'cli' => 'plan:php-arazzo-spec-suite-plan-index',
+    private const FALLBACK = [
         'spec' => 'plan:php-arazzo-spec-suite-plan-index',
-        'moonwalk' => 'plan:php-arazzo-spec-suite-plan-index',
-        'security' => 'plan:php-arazzo-spec-suite-plan-index',
-        'depbump' => 'dependency maintenance (no roadmap)',
     ];
 
+    /** @var array<string,string>|null */
+    private static ?array $map = null;
+
+    /** @var string[] */
+    private static array $order = [];
+
+    /** @var string[]|null */
+    private static ?array $allRefs = null;
+
     /**
-     * @param  string[]  $tags
+     * Primary ref for the highest-priority matched tag/topic (declaration order), or null.
      *
-     * Iterates tags in an explicit priority order instead of insertion order so that
-     * high-specificity roadmap features always win over generic catch-alls.
-     * e.g. a dep-bump PR tagged [soap, depbump] -> protocol packages (correct); one tagged only
-     * [depbump] -> "dependency maintenance" (correct fallback).
+     * @param  string[]  $tags
      */
     public static function map(array $tags): ?string
     {
-        // Explicit priority: most specific roadmap features first, catch-alls last.
-        $priority = [
-            'soap', 'wsdl', 'protobuf', 'graphql', 'grpc', 'a2a', // Phase F protocol packages
-            'xpath', 'xml',                                       // Phase F spec
-            'schema',                                             // JSON Schema layer (spec-suite)
-            'mcp',                                                // Phase F
-            'cli',                                                // CLI binary
-            'transformer', 'function', 'runner',                  // Runner
-            'actor', 'human', 'loop',                             // Issue #410 kind discriminator
-            'moonwalk',                                           // OAI next-gen spec
-            'security',                                           // OAI sig-security
-            'spec',                                               // Conformance (broad catch-all)
-            'depbump',                                            // Dependency maintenance (lowest)
-        ];
+        self::load();
+        $byTag = array_flip(array_map('strtolower', $tags));
 
-        $tagSet = array_flip(array_map('strtolower', $tags));
+        foreach (self::$order as $topic) {
+            if (isset($byTag[strtolower($topic)]) && isset(self::$map[$topic])) {
+                return self::$map[$topic];
+            }
+        }
+        foreach (self::FALLBACK as $tag => $ref) {
+            if (isset($byTag[$tag])) {
+                return $ref;
+            }
+        }
 
-        foreach ($priority as $t) {
-            if (isset($tagSet[$t], self::MAP[$t])) {
-                return self::MAP[$t];
+        return null;
+    }
+
+    /**
+     * Every ref this mapper (and `topics.json`) can emit — the A8 universe.
+     *
+     * @return string[]
+     */
+    public static function refs(): array
+    {
+        self::load();
+
+        return self::$allRefs ?? [];
+    }
+
+    public static function topicsPath(): string
+    {
+        return TopicMatcher::defaultPath();
+    }
+
+    private static function load(): void
+    {
+        if (self::$map !== null) {
+            return;
+        }
+
+        self::$map = self::FALLBACK;
+        $refs = array_flip(array_values(self::FALLBACK));
+        $path = self::topicsPath();
+        if (is_file($path)) {
+            $data = json_decode((string) file_get_contents($path), true);
+            $topics = is_array($data) ? ($data['topics'] ?? []) : [];
+            if (is_array($topics)) {
+                $order = [];
+                foreach ($topics as $name => $spec) {
+                    if (!is_array($spec)) {
+                        continue;
+                    }
+                    $order[] = (string) $name;
+                    foreach ((array) ($spec['roadmap'] ?? []) as $ref) {
+                        if (is_string($ref) && $ref !== '') {
+                            $refs[$ref] = true;
+                        }
+                    }
+                    $first = self::firstString((array) ($spec['roadmap'] ?? []));
+                    if ($first !== null) {
+                        self::$map[(string) $name] = $first;
+                    }
+                }
+                self::$order = $order;
+            }
+        }
+
+        self::$allRefs = array_keys($refs);
+    }
+
+    /**
+     * @param  array<int,mixed>  $values
+     */
+    private static function firstString(array $values): ?string
+    {
+        foreach ($values as $value) {
+            if (is_string($value) && $value !== '') {
+                return $value;
             }
         }
 

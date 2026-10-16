@@ -149,8 +149,8 @@ pie showData
 
 ```mermaid
 pie showData
-    title Core (integration) — 29 test files
-    "Module-scoped": 15
+    title Core (integration) — 32 test files
+    "Module-scoped": 18
     "Feature": 4
     "Unit": 4
     "Conformance": 2
@@ -161,11 +161,11 @@ pie showData
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Module-scoped | 15 | 52% |
-| Feature | 4 | 14% |
-| Unit | 4 | 14% |
-| Conformance | 2 | 7% |
-| Root | 2 | 7% |
+| Module-scoped | 18 | 56% |
+| Feature | 4 | 12% |
+| Unit | 4 | 12% |
+| Conformance | 2 | 6% |
+| Root | 2 | 6% |
 | Architecture | 1 | 3% |
 | Property | 1 | 3% |
 
