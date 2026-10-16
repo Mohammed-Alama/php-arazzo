@@ -101,8 +101,7 @@ final class Differ
         }
 
         $topics = $this->stringList(is_array($obs['tags'] ?? null) ? $obs['tags'] : []);
-        $relevance = $obs['relevance'] ?? null;
-        $roadmapRefs = is_string($relevance) && $relevance !== '' ? [$relevance] : [];
+        $roadmapRefs = $this->roadmapRefs($obs);
         $previousFields = is_array($previous['fields'] ?? null) ? $previous['fields'] : [];
 
         if (str_starts_with($externalId, 'npm:')) {
@@ -526,6 +525,28 @@ final class Differ
         }
 
         return '';
+    }
+
+    /**
+     * Roadmap refs from a watchlist observation (`roadmap: [...]`) or, for the normal feed,
+     * the single `relevance` string. Stable refs survive renumbering (§5.6).
+     *
+     * @param  array<string,mixed>  $obs
+     * @return string[]
+     */
+    private function roadmapRefs(array $obs): array
+    {
+        $roadmap = $obs['roadmap'] ?? null;
+        if (is_array($roadmap)) {
+            $refs = $this->stringList($roadmap);
+            if ($refs !== []) {
+                return $refs;
+            }
+        }
+
+        $relevance = $obs['relevance'] ?? null;
+
+        return is_string($relevance) && $relevance !== '' ? [$relevance] : [];
     }
 
     /**

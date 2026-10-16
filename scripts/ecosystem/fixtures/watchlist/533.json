@@ -1,0 +1,83 @@
+{
+  "ref": "OAI/Arazzo-Specification#533",
+  "topic": "wsdl",
+  "roadmap": ["spec:plugin-stack-oms-multiprotocol", "plan:phase-f-protocol-packages"],
+  "ourIssue": null,
+  "stance": "shipped",
+  "note": "Staged #533 (SOAP) lifecycle, anchored to the live merge (2026-09-30T16:32:28Z). GitHub reports a draft PR as `state: open`; the silent baseline records the derived state `draft`. Transitions: draft -> ready -> merged.",
+  "stages": [
+    {
+      "kind": "pr",
+      "observedAt": "2026-07-28T06:17:10Z",
+      "payload": {
+        "number": 533,
+        "title": "feat(spec): add SOAP support",
+        "html_url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+        "state": "open",
+        "draft": true,
+        "merged_at": null,
+        "base": {"ref": "v1.2-dev"},
+        "user": {"login": "earth2marsh"},
+        "body": "Adds first-class WSDL/SOAP support to Arazzo 1.2.",
+        "created_at": "2026-07-27T15:46:00Z",
+        "updated_at": "2026-07-27T15:46:00Z",
+        "comments": 3,
+        "mergeable": true,
+        "labels": [{"name": "enhancement"}]
+      },
+      "files": [
+        {"filename": "versions/arazzo.md", "status": "modified", "additions": 10, "deletions": 2},
+        {"filename": "_archive_/schemas/validation/schema.yaml", "status": "modified", "additions": 20, "deletions": 0}
+      ]
+    },
+    {
+      "kind": "pr",
+      "observedAt": "2026-08-15T06:17:10Z",
+      "payload": {
+        "number": 533,
+        "title": "feat(spec): add SOAP support",
+        "html_url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+        "state": "open",
+        "draft": false,
+        "merged_at": null,
+        "base": {"ref": "v1.2-dev"},
+        "user": {"login": "earth2marsh"},
+        "body": "Adds first-class WSDL/SOAP support to Arazzo 1.2.",
+        "created_at": "2026-07-27T15:46:00Z",
+        "updated_at": "2026-08-14T09:30:00Z",
+        "comments": 6,
+        "mergeable": true,
+        "reviewDecision": "APPROVED",
+        "labels": [{"name": "enhancement"}]
+      },
+      "files": [
+        {"filename": "_archive_/schemas/validation/schema.yaml", "status": "modified", "additions": 34, "deletions": 1},
+        {"filename": "versions/arazzo.md", "status": "modified", "additions": 42, "deletions": 3}
+      ]
+    },
+    {
+      "kind": "pr",
+      "observedAt": "2026-10-01T06:17:10Z",
+      "payload": {
+        "number": 533,
+        "title": "feat(spec): add SOAP support",
+        "html_url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+        "state": "closed",
+        "draft": false,
+        "merged_at": "2026-09-30T16:32:28Z",
+        "base": {"ref": "v1.2-dev"},
+        "user": {"login": "earth2marsh"},
+        "body": "Adds first-class WSDL/SOAP support to Arazzo 1.2.",
+        "created_at": "2026-07-27T15:46:00Z",
+        "updated_at": "2026-09-30T16:32:28Z",
+        "comments": 9,
+        "mergeable": true,
+        "labels": [{"name": "enhancement"}]
+      },
+      "files": [
+        {"filename": "_archive_/schemas/validation/schema.yaml", "status": "modified", "additions": 34, "deletions": 1},
+        {"filename": "versions/arazzo.md", "status": "modified", "additions": 42, "deletions": 3}
+      ]
+    }
+  ]
+}
