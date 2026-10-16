@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 use Ecosystem\FeedEvent;
 use Ecosystem\Normalizer;
-use Ecosystem\Store;
 
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/FeedEvent.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/RelevanceMapper.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/Normalizer.php';
-require_once dirname(__DIR__, 4).'/scripts/ecosystem/Store.php';
 
 it('normalizes PR #533 SOAP to wsdl tags', function (): void {
     $raw = [
@@ -177,31 +175,4 @@ it('drops events with no real timestamp', function (): void {
     ]);
 
     expect($events)->toHaveCount(0);
-});
-
-it('writes a snapshot only for new events', function (): void {
-    $tmp = sys_get_temp_dir().'/ecosystem-store-'.uniqid();
-    $feed = $tmp.'/feed.json';
-    $snaps = $tmp.'/snapshots';
-    $store = new Store($feed, $snaps);
-
-    $ev = Normalizer::normalize([
-        'source' => 'X', 'type' => 'release', 'externalId' => 'release:1', 'title' => 'v1',
-        'url' => 'https://example.com/1', 'publishedAt' => '2026-01-01T00:00:00Z', 'body' => '', 'labels' => [],
-    ]);
-
-    $first = $store->commit([$ev]);
-    $second = $store->commit([$ev]);
-
-    $snapshots = glob($snaps.'/2026-01-01/*.json') ?: [];
-
-    expect($first['written'])->toBe(1)
-        ->and($second['written'])->toBe(0)
-        ->and($snapshots)->toHaveCount(1);
-
-    @array_map('unlink', $snapshots);
-    @rmdir($snaps.'/2026-01-01');
-    @rmdir($snaps);
-    @unlink($feed);
-    @rmdir($tmp);
 });

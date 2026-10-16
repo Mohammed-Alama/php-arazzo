@@ -8,9 +8,11 @@ error_reporting(E_ALL);
 // No Composer autoload needed — pure PHP, PSR-0 via require chain.
 require __DIR__.'/GhCli.php';
 require __DIR__.'/FeedEvent.php';
+require __DIR__.'/Event.php';
 require __DIR__.'/RelevanceMapper.php';
 require __DIR__.'/Normalizer.php';
-require __DIR__.'/Store.php';
+require __DIR__.'/State.php';
+require __DIR__.'/Differ.php';
 require __DIR__.'/Renderer.php';
 require __DIR__.'/Enumerators/OaiOrgEnumerator.php';
 require __DIR__.'/Ingestors/GithubApiIngestor.php';
@@ -18,23 +20,25 @@ require __DIR__.'/Ingestors/AtomRssIngestor.php';
 require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
 require __DIR__.'/Ingestors/WebScrapeIngestor.php';
 
+use Ecosystem\Differ;
 use Ecosystem\Enumerators\OaiOrgEnumerator;
+use Ecosystem\Event;
 use Ecosystem\Ingestors\AtomRssIngestor;
 use Ecosystem\Ingestors\GithubApiIngestor;
 use Ecosystem\Ingestors\NpmRegistryIngestor;
 use Ecosystem\Ingestors\WebScrapeIngestor;
 use Ecosystem\Normalizer;
 use Ecosystem\Renderer;
-use Ecosystem\Store;
+use Ecosystem\State;
 
 $root = dirname(__DIR__, 2);
 $opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'baseline', 'help']);
 
 if (isset($opts['help'])) {
     echo "Usage: php scripts/ecosystem/poll.php [--dry-run|--commit] [--baseline] [--since=YYYY-MM-DD] [--source=REPO] [--limit=N] [--verbose] [--fixtures]\n";
-    echo "  --dry-run : normalize+render without writing snapshots/feed\n";
-    echo "  --commit  : write storage/ecosystem-feed/* + docs/ECOSYSTEM_FEED.md\n";
-    echo "  --baseline: record current events as state but emit nothing (also automatic on empty state)\n";
+    echo "  --dry-run : normalize+render without writing state/feed\n";
+    echo "  --commit  : write storage/ecosystem-feed/state/* + docs/ECOSYSTEM_FEED.md\n";
+    echo "  --baseline: record current entities as state but emit nothing (also automatic on empty state)\n";
     echo "  --since   : filter events publishedAt >= date (post-normalize)\n";
     echo "  --source  : filter to single source id (e.g. OAI/Arazzo-Specification)\n";
     echo "  --limit   : per-endpoint cap (default 20, fixtures mode ignores)\n";
@@ -158,57 +162,77 @@ if (!$useFixtures && !$dryRun) {
     file_put_contents($etagCachePath, json_encode($etagCache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 }
 
-$events = Normalizer::normalizeMany($rawItems);
+$feedEvents = Normalizer::normalizeMany($rawItems);
 
 // filters
 if ($since !== null) {
     $sinceTs = strtotime($since);
-    $events = array_values(array_filter($events, fn ($e) => strtotime($e->publishedAt) >= $sinceTs));
+    $feedEvents = array_values(array_filter($feedEvents, fn ($e) => strtotime($e->publishedAt) >= $sinceTs));
 }
 if ($filterSource !== null) {
     // after normalize, source may be repo id
-    $events = array_values(array_filter($events, fn ($e) => $e->source === $filterSource));
+    $feedEvents = array_values(array_filter($feedEvents, fn ($e) => $e->source === $filterSource));
 }
 
-usort($events, fn ($a, $b) => strcmp($b->publishedAt, $a->publishedAt));
+usort($feedEvents, fn ($a, $b) => strcmp($b->publishedAt, $a->publishedAt));
 
-// Baseline: the first run on empty state records the current events but emits none, so
-// historical releases/tags/PRs are not re-announced as "new" (F2). Also forced by --baseline.
-$feedPath = $root.'/storage/ecosystem-feed/feed.json';
-$snapshotsDir = $root.'/storage/ecosystem-feed/snapshots';
-$existingFeed = is_file($feedPath) ? (json_decode((string) file_get_contents($feedPath), true) ?? []) : [];
-$baseline = isset($opts['baseline']) || $existingFeed === [];
-
-echo sprintf("Collected %d raw -> %d events (dryRun=%s, fixtures=%s, baseline=%s)\n", count($rawItems), count($events), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no', $baseline ? 'yes' : 'no');
-foreach (array_slice($events, 0, 10) as $e) {
-    echo sprintf("  [%s] %s %s tags=%s sev=%s rel=%s\n", $e->publishedAt, $e->source, $e->title, implode(',', $e->tags), $e->severity, $e->relevance ?? '-');
+// Observations carry the normalizer's tags/relevance until the T3 topic scorer replaces
+// `RelevanceMapper`; the Differ turns them into transition events (§5.3).
+$observations = [];
+foreach ($feedEvents as $event) {
+    $observations[] = array_merge($event->raw, [
+        'tags' => $event->tags,
+        'relevance' => $event->relevance,
+    ]);
 }
 
-$store = new Store($feedPath, $snapshotsDir);
-$res = $store->commit($events, $dryRun);
-echo sprintf("Store: written %d new, feedCount %d -> %s\n", $res['written'], $res['feedCount'], $res['feedPath']);
-if ($baseline) {
-    echo "Baseline run: recorded state, emitting no events.\n";
+$stateDir = $root.'/storage/ecosystem-feed/state';
+$decisionsPath = $root.'/config/ecosystem/decisions.json';
+$state = new State($stateDir, $decisionsPath);
+$loadedEntities = $state->count();
+
+// Baseline: the first run on empty state records entities + watermarks but emits nothing,
+// so historical releases/tags/PRs are not re-announced as "new" (F2/A2). Also forced by --baseline.
+$baseline = isset($opts['baseline']) || $state->isEmpty();
+
+$differ = new Differ();
+$newEvents = $differ->diff($observations, $state, gmdate('c'), $baseline);
+
+if (!$dryRun) {
+    $state->appendEvents($newEvents);
+    $state->save();
 }
 
-// always render markdown preview even in dry-run (but only write on commit)
-$feedForRender = [];
-if ($baseline) {
-    $feedForRender = []; // baseline emits nothing
-} elseif (is_file($feedPath)) {
-    $feedForRender = json_decode((string) file_get_contents($feedPath), true) ?? [];
-} else {
-    // dry-run first time: render from events
-    $feedForRender = array_map(fn ($e) => $e->toArray(), $events);
+echo sprintf("Collected %d raw -> %d observations (dryRun=%s, fixtures=%s, baseline=%s)\n", count($rawItems), count($observations), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no', $baseline ? 'yes' : 'no');
+echo sprintf("State: loaded %d entities from %s\n", $loadedEntities, $stateDir);
+echo sprintf("Differ: %d new events, %d entities tracked%s\n", count($newEvents), $state->count(), $baseline ? ' (baseline - nothing emitted)' : '');
+foreach (array_slice($newEvents, 0, 10) as $event) {
+    echo sprintf("  [%s] %s %s %s\n", $event->occurredAt, $event->kind, $event->source, $event->subject['title'] ?? '');
 }
-$md = Renderer::renderMarkdown($feedForRender, gmdate('c'));
+
+// Render the digest from this run's events. It is only rewritten when something actually
+// changed (or on the first baseline run) so a quiet run produces no commit (§5.2 guardrail).
+$renderRows = array_map(fn (Event $event) => [
+    'publishedAt' => $event->occurredAt,
+    'source' => $event->source,
+    'type' => $event->kind,
+    'title' => $event->subject['title'] ?? '',
+    'url' => $event->subject['url'] ?? '',
+    'tags' => $event->topics,
+    'severity' => $event->tier ?? 'watch',
+    'relevance' => $event->roadmapRefs[0] ?? null,
+], $newEvents);
+
+$digestPath = $root.'/docs/ECOSYSTEM_FEED.md';
+$md = Renderer::renderMarkdown(array_values($renderRows), gmdate('c'));
 if ($dryRun) {
     echo "\n--- Markdown preview (not written) ---\n";
     echo substr($md, 0, 2000)."\n";
+} elseif ($newEvents !== [] || $baseline || !is_file($digestPath)) {
+    file_put_contents($digestPath, $md);
+    echo "Wrote {$digestPath}\n";
 } else {
-    $outPath = $root.'/docs/ECOSYSTEM_FEED.md';
-    file_put_contents($outPath, $md);
-    echo "Wrote {$outPath}\n";
+    echo "Digest unchanged (no events this run) - {$digestPath} left as-is.\n";
 }
 
 exit(0);

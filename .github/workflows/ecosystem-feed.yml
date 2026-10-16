@@ -59,33 +59,20 @@ jobs:
           php scripts/ecosystem/poll.php $ARGS --verbose 2>&1 | tee /tmp/ecosystem.log
           cat /tmp/ecosystem.log
 
-      - name: Prune snapshots older than 30d
-        if: inputs.dry_run != 'true'
-        run: |
-          php -r '
-            $dir="storage/ecosystem-feed/snapshots";
-            if (!is_dir($dir)) exit(0);
-            $cut=strtotime("-30 days");
-            foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS)) as $f) {
-              if ($f->isFile() && $f->getMTime() < $cut) { unlink($f->getPathname()); }
-            }
-            foreach (glob($dir."/*") as $d) { if (is_dir($d) && count(glob($d."/*"))===0) rmdir($d); }
-          '
-
-      - name: Commit feed if changed
+      - name: Commit state if changed
         if: inputs.dry_run != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # State (feed.json) must be committed; raw payload snapshots are not.
+          # State (watermarks + entities + monthly events) must be committed; raw payload snapshots are not.
           # No `|| true`: a failed add (e.g. an ignored state path) must fail the job.
-          git add storage/ecosystem-feed/feed.json docs/ECOSYSTEM_FEED.md config/ecosystem/sources.oai.json
-          if ! git ls-files --error-unmatch storage/ecosystem-feed/feed.json >/dev/null 2>&1; then
-            echo "::error::storage/ecosystem-feed/feed.json is not tracked by git — state would be lost."
+          git add storage/ecosystem-feed/state docs/ECOSYSTEM_FEED.md config/ecosystem/sources.oai.json
+          if ! git ls-files --error-unmatch storage/ecosystem-feed/state/watermarks.json >/dev/null 2>&1; then
+            echo "::error::storage/ecosystem-feed/state/watermarks.json is not tracked by git — state would be lost."
             exit 1
           fi
           if git diff --cached --quiet; then
-            echo "No feed changes."
+            echo "No ecosystem state changes."
           else
             git commit -m "chore(ecosystem): update feed $(date -u +%Y-%m-%d)"
             for attempt in 1 2; do

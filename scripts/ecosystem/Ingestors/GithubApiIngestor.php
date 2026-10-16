@@ -165,6 +165,8 @@ final class GithubApiIngestor
                 'body' => $item['body'] ?? '',
                 'labels' => [],
                 'state' => 'published',
+                'draft' => ($item['draft'] ?? false) === true,
+                'prerelease' => ($item['prerelease'] ?? false) === true,
                 'author' => $item['author']['login'] ?? '',
             ],
             'tags' => [
@@ -189,7 +191,9 @@ final class GithubApiIngestor
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
                 'state' => $item['state'] ?? '',
+                'draft' => ($item['draft'] ?? false) === true,
                 'merged' => $item['merged_at'] !== null,
+                'base' => (string) ($item['base']['ref'] ?? ''),
                 'author' => $item['user']['login'] ?? '',
             ],
             'issues' => isset($item['pull_request']) ? null : [
