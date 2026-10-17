@@ -48,8 +48,3 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: snapshot
-    attributes:
-      label: Raw snapshot excerpt
-      render: json
