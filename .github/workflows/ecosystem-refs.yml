@@ -1,0 +1,39 @@
+name: Ecosystem refs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/ecosystem/**'
+      - 'config/ecosystem/topics.json'
+      - 'config/ecosystem/watchlist.json'
+      - 'docs/superpowers/**'
+      - '.github/workflows/ecosystem-refs.yml'
+  pull_request:
+    paths:
+      - 'scripts/ecosystem/**'
+      - 'config/ecosystem/topics.json'
+      - 'config/ecosystem/watchlist.json'
+      - 'docs/superpowers/**'
+      - '.github/workflows/ecosystem-refs.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ecosystem-refs:
+    name: Ecosystem refs (A8)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Assert every roadmap ref resolves
+        run: php scripts/ecosystem/check-refs.php --verbose

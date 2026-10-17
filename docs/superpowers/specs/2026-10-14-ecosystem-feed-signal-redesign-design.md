@@ -1,15 +1,18 @@
 # Ecosystem Feed — Signal Redesign (Spec + Implementation Plan)
 
-> **Status:** Proposed · **Date:** 2026-10-14 · **Revision 1 (2026-10-14):** D1 decided — state is committed to `main` (daily bot commits accepted)
+> **Status:** Proposed · **Date:** 2026-10-14 · **Revision 1 (2026-10-14):** D1 decided — state is committed to `main` (daily bot commits accepted) · **Revision 2 (2026-10-15):** validation pass — all 12 findings re-derived against the repo and the live GitHub API (Appendix D); 4 fix-targets corrected (roadmap refs → superpowers docs, §5.4 paths, branch list, watchlist seed); D1 feasibility confirmed (`main` is unprotected)
 > **Supersedes (in part):** `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md` — the pipeline shape
 > (Ingestors → Normalizer → Store → Renderer) stays; **state, event model, relevance and outputs change**.
 > **Evidence base (direct reads):** `scripts/ecosystem/*` (all PHP), `config/ecosystem/sources.json` (first ~100 KB;
 > tail truncated), `.github/workflows/ecosystem-feed.yml`, `.github/ISSUE_TEMPLATE/ecosystem-update.yml`, `.gitignore`,
 > `docs/ECOSYSTEM_FEED.md` (generated 2026-10-13T14:08Z), `.agents/skills/ecosystem-triage/*`,
-> `.scratch/ecosystem-triage/2026-08-26.md`, `docs/arazzo-conformance-and-enhancement-roadmap.md`,
+> `.scratch/ecosystem-triage/2026-08-26.md`, `docs/superpowers/plans/2026-08-21-php-arazzo-spec-suite-plan-index.md`,
+> `docs/superpowers/specs/2026-09-08-plugin-stack-oms-multiprotocol-design.md` (Phase F),
+> `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`,
 > `docs/research/2026-09-08-arazzo-protocol-spec-prs-impact.md`, `packages/core/tests/Ecosystem/FeedTest.php`.
-> **Not read / not verifiable from here:** remote CI run logs, the live GitHub API, `composer.json` scripts,
-> `sources.oai.json`, the truncated tail of `sources.json`.
+> **[R2]** The originally cited `docs/arazzo-conformance-and-enhancement-roadmap.md` was **deleted** (`94e7674d`); roadmap refs now target the superpowers plan/spec docs above.
+> **Not read / not verifiable from here:** remote CI run logs, `composer.json` scripts, `sources.oai.json`.
+> **[R2]** Now verified via the live GitHub API: spec branches, spec file paths, watchlist PR/issue states, and `main` branch-protection status (Appendix D). `sources.json` was read in full (66 sources; the tail holds `Mohammed-Alama/php-arazzo` and the 20 `tier:auto` OAI repos).
 >
 > Confidence markers follow `.agents/rules/epistemic.md`:
 > **[T2]** established by direct code/doc read · **[T3]** inferred from evidence (a verification command is given) · **[T4]** speculative.
@@ -62,8 +65,8 @@ no change to the public `alama/*` packages; no replacement of GitHub as the syst
 | **F4** | **State changes are never emitted.** `Store::commit` inserts only `if (!isset($byId[$ev->id]))`, and `id = sha256(source|externalId)` has no state in it. A PR that is later merged/closed/retargeted, or an issue closed/relabeled, never produces an event; `Normalizer`'s "merged ⇒ actionable" rule can only fire if the PR was *already merged* the first time it was seen. | T2 | `Store.php`; `FeedEvent::makeId`; `Normalizer` severity block. |
 | **F5** | **Keyword tagging is substring matching over title + *body* + labels + **URL**.** Consequences visible in the data: `actor` matches inside `refactor` and `extractor` → `refactor: extract framework-agnostic engine into arazzo-core` and `bump @microsoft/api-extractor` are tagged `actor` ("Issue #410 human-in-loop"); the repo name `arazzo-cli` is in every URL, so (nearly) all `strefethen/arazzo-cli` events get `cli` ("P2-1 CLI binary": 92); Dependabot bodies embed upstream release notes, so `actions/checkout 6→7` is **breaking** and a `highlight.js` bump was tagged `soap,breaking` (2026-08-26 triage). `a2a` is hex-valid and **may** be matching commit SHAs in bodies (the `a2a` tag on `respec`/`prettier`/`jekyll` bumps is otherwise unexplained). | T2 (mechanism) · T3 (`a2a`/SHA) | `Normalizer.php` `$haystack`, `str_contains`; feed rows; `.scratch/ecosystem-triage/2026-08-26.md` task 02. |
 | **F6** | **Relevance is a catch-all.** Every event from the allow-listed repos gets `spec`, which maps to "Conformance / schema validation" → **340 of 883** events; 154 are `uncategorized`; **507 are `actionable`** (any release/tag). Severity has no notion of *whether the change is about Arazzo*. | T2 | `Normalizer` source allow-list; `RelevanceMapper` priority; summary block of the dashboard. |
-| **F7** | **Roadmap IDs drifted.** `RelevanceMapper` says `P0-6 = wsdl source routing`; the roadmap's `P0-6` is *Swagger 2.0 / OpenAPI 3.1 routing*. `P1-7 = JSON Schema layer` in the mapper; in the roadmap it is `P1-8` (P1-7 = validator closure). SOAP/WSDL, protobuf RPC and GraphQL are not in the August roadmap at all — they live in the September design (`2026-09-08-plugin-stack-oms-multiprotocol-design.md`, phase F). Matching IDs: P0-5, P1-6 (partial), P2-1, P2-2. | T2 | `RelevanceMapper::MAP` vs roadmap §4. |
-| **F8** | **Highest-value signals are configured but not implemented.** `sources.json` gives `OAI/Arazzo-Specification` `branches: [main, v1.2-dev]` and `watch_files`, but `GithubApiIngestor::poll()` takes neither. The only spec-text signal is a whole-page checksum (`spec.arazzo.html`, schema checksums) that fires on any byte change and carries no diff. `watch_files` also lists `versions/*.md` while the Sept research doc cites `src/arazzo.md` and `src/schemas/validation/schema.yaml` — the paths need confirming. NPM ingestor reads only `dist-tags.latest`. | T2 (code) · T3 (paths) | `poll.php` call to `GithubApiIngestor::poll`; `WebScrapeIngestor.php`; `NpmRegistryIngestor.php`. |
+| **F7** | **Roadmap IDs drifted — and the cited roadmap no longer exists.** `RelevanceMapper` hard-codes `P0-6 = wsdl source routing`, `P1-7 = JSON Schema layer`, `P2-1 CLI`, `P2-2 MCP`. The August roadmap it referenced (`docs/arazzo-conformance-and-enhancement-roadmap.md`) was **deleted** (`94e7674d docs: remove the Aug-2026 conformance audit roadmap`), so those IDs resolve to nothing. The current de-facto roadmap is the superpowers set (`2026-08-21-php-arazzo-spec-suite-plan-index.md` + `2026-09-08-plugin-stack-oms-multiprotocol-design.md` Phase F). **R2:** refs move to stable `plan:`/`spec:` keys (§5.6); the dead `roadmap:Pn-m` scheme is dropped. | T2 | `RelevanceMapper::MAP`; `git log --all -- docs/arazzo-conformance-and-enhancement-roadmap.md`. |
+| **F8** | **Highest-value signals are configured but not implemented.** `sources.json` gives `OAI/Arazzo-Specification` `branches: [main, v1.2-dev]` and `watch_files`, but `GithubApiIngestor::poll()` takes neither. The only spec-text signal is a whole-page checksum (`spec.arazzo.html`, schema checksums) that fires on any byte change and carries no diff. `watch_files` also lists `versions/*.md`. **R2:** the config's paths are correct — the real spec tree is `versions/*.md`, `examples/**`, `_archive_/schemas/**`; the Sept research doc's `src/arazzo.md` and `src/schemas/validation/schema.yaml` return **404** (no `src/` dir). NPM ingestor reads only `dist-tags.latest`. | T2 (code) · T2 (paths, R2) | `poll.php` call to `GithubApiIngestor::poll`; `WebScrapeIngestor.php`; `NpmRegistryIngestor.php`. |
 | **F9** | **Volume sources swamp the signal.** `jentic/jentic-public-apis` commits ("Rebuild apis.json…", "feat: Import OpenAPI spec from Issue #…") fill most of the Watch/uncategorized rows; `OAI/build-infra`, `learn.openapis.org`, `spec.openapis.org` are mostly Dependabot; `OAI/Arazzo-Specification` contributes `vN-dev: sync with dev` PRs and `Meeting:` issues. **Our own repo** (`Mohammed-Alama/php-arazzo` PRs #6, #9, #51–#75) is in the feed (PR #72 is even listed under "breaking"). | T2 | Dashboard rows. |
 | **F10** | **Triage can't persist decisions and is partly hard-coded.** `analyze.php` groups by relevance (so F6's 340-event bucket becomes one giant task), hard-codes titles/acceptance for wsdl/xpath/mcp/cli, hard-codes `Blocked by: 01 — Support wsdl source type`, correlates to local PRs by keyword overlap that includes the word `arazzo` (matches everything), and never records *reviewed/dismissed/linked*. The `ecosystem-update` issue template says automation creates issues — nothing does. | T2 | `analyze.php`; `SKILL.md`; issue template text. |
 | **F11** | **Store writes a snapshot file for every event on every run** (inside the loop, not only for new ones), keyed by `publishedAt` date (= poll date for tags); cap 2000 by `publishedAt` with no `firstSeenAt` means evicted events can later re-enter as "new". | T2 | `Store::commit`. |
@@ -122,7 +125,7 @@ Because the bot commits daily, the design must keep those commits **small, quiet
 | **Bounded growth** | `events` roll monthly (`state/events/2026-10.jsonl`); entities for closed/merged items older than N days compact to a tombstone `{entityId, fingerprint, closedAt}`; no raw payloads in git. |
 | **CI does not run on bot commits** | `ci.yml` on `push` to `main` is path-filtered to `**.php` and composer/phpstan/pint/phpmd/phpdoc config files, so `.json`/`.jsonl`/`.md` state commits don't trigger it **[T2: read `ci.yml`]**. Changes to `scripts/ecosystem/*.php` still do, as they should. No `[skip ci]` needed. |
 | **Push races** | The workflow already has `concurrency: ecosystem-feed`; add `git pull --rebase origin main` before `git push` and retry once. Locally: `git pull --rebase` before pushing — your `.githooks/pre-push` gates pushes to `main`, so a non-fast-forward after a bot commit is the usual cause of a rejected push. Avoid running `poll.php --commit` locally. |
-| **Branch protection** | If `main` requires PRs or status checks, the default `GITHUB_TOKEN` push is rejected. **Verify** under repo Settings → Branches. If protected: allow `github-actions[bot]` to bypass, or push with a GitHub App / fine-grained token. **[T3: protection status not visible from here]** |
+| **Branch protection** | **[R2 resolved]** `main` is **not protected** (`gh api repos/…/branches/main/protection` → 404). The default `GITHUB_TOKEN` push works; no bypass needed. Re-check if protection is ever enabled. |
 | **Readable history** | Keep the `chore(ecosystem):` prefix; browse code history with `git log --invert-grep --grep='^chore(ecosystem)'`. |
 
 `decisions.json`, `watchlist.json`, `topics.json` and `sources.json` are **human-authored config** edited via normal commits; the bot never writes them. Exception: `sources.oai.json`, generated by the enumerator as today. (`poll.php` currently also auto-writes into `sources.json` on `--commit`, but the workflow never `git add`s that file, so those edits are lost — remove that write.)
@@ -159,7 +162,7 @@ Because the bot commits daily, the design must keep those commits **small, quiet
 | **Releases** | Authoritative version signal. Skip `draft`; mark `prerelease`; collapse monorepo releases by `(repo, version)` into one event with `packages[]` (Redocly ×6 → 1). Stop paging at the stored `lastSeenTag`. |
 | **Tags** | Only for repos with **no** GitHub Releases. Resolve a real date via GraphQL `refs(refPrefix:"refs/tags/", orderBy:{field:TAG_COMMIT_DATE, direction:DESC}, first:N){ target{ ... on Commit{committedDate} ... on Tag{tagger{date}} } }`. Never emit tag events for a version that already has a release. |
 | **PRs / issues** | REST list sorted by `updated` desc with **early stop at `lastSeenUpdatedAt`**; issues also use `since=`. Diff against `entities.jsonl` fingerprint `{state, draft, merged, base, labels}`. Watchlist items additionally fetch detail (`files`, review decision, `mergeable`, comments count). |
-| **Spec text** (`OAI/Arazzo-Specification`, branches `main`, `dev`, `v1.2-dev`, `v1.1-dev`) | Store `headSha` per branch; next run `GET compare/{lastSha}...{branch}`; emit `spec.text_changed` listing changed files filtered by **confirmed** paths (`src/arazzo.md`, `src/schemas/validation/schema.yaml`, `versions/*.md`, `examples/**`), commit titles, and +/− line counts. Replaces checksum-only detection (keep schema-iteration checksums as a cheap secondary signal). |
+| **Spec text** (`OAI/Arazzo-Specification`, branches `main`, `dev`, `v1.2-dev`, `v1.1-dev` — all **confirmed live [R2]**) | Store `headSha` per branch; next run `GET compare/{lastSha}...{branch}`; emit `spec.text_changed` listing changed files filtered by **confirmed** paths (`versions/*.md`, `examples/**`, `_archive_/schemas/**` — **verified [R2]**: `src/arazzo.md` and `src/schemas/validation/schema.yaml` do not exist, 404), commit titles, and +/− line counts. Replaces checksum-only detection (keep schema-iteration checksums as a cheap secondary signal). |
 | **npm** | Read `time` map; emit `package.version` for versions newer than the watermark (not only `dist-tags.latest`). |
 | **Cadence** | Honor `poll: daily|weekly` using `lastPolledAt`. |
 | **Snapshots** | Write raw payload snapshot **only for new events**; short retention (14 d) or drop — state + events are the record. |
@@ -182,8 +185,7 @@ Because the bot commits daily, the design must keep those commits **small, quiet
 }
 ```
 
-*Seed note:* #533/#556/#567 are from your research doc; #568 and #410/#590/#516 were seen in the 2026-10-13 feed; the research doc names four PRs but its
-fourth was not in the portion read — **confirm the seed list and `stance` values** before enabling.
+*Seed note (updated [R2], live states 2026-10-15):* the research doc names exactly four PRs — #533, #556, #567, #568, all based on `v1.2-dev`. Live state: **#533 is merged/closed (2026-09-30)** → `stance` must be `shipped`, not `plan-to-support`; #556/#567/#568 are **open**; #516 is a PR on **`v1.1-dev`** (not v1.2-dev); #410/#590/#597 are **issues** (kind `meeting.agenda` for #597). Confirm `stance` values before enabling.
 
 Per run, each item yields: current state, draft/ready, base branch, review/merge status, changed-file list, label set, last activity, and a
 **transition event** when any tracked field changes. The digest renders them as a status table (§5.7). Adding an item is a one-line PR; removing it records a decision.
@@ -333,9 +335,11 @@ Tests live with the existing suite (`packages/core/tests/Ecosystem/`) using reco
 | ~~D1~~ | State location | **Decided:** committed to `main` by the daily bot, with the §5.2 guardrails |
 | **D2** | Auto-create issues for Act events? | Start **off**; weekly digest issue only; enable after 2–3 weeks if precision is good |
 | **D3** | Keep our own repo in the feed? | No — exclude from digest; use it only to link `ourIssue` |
-| **D4** | Spec branches to diff | `main`, `dev`, `v1.2-dev` (+ `v1.1-dev` while 1.1.x patches ship) — **confirm real default/dev branch names** |
+| ~~D4~~ | Spec branches to diff | **Decided [R2]:** `main`, `dev`, `v1.2-dev`, `v1.1-dev` — all confirmed to exist live. `config/ecosystem/sources.json` currently lists only `main`, `v1.2-dev` and must be updated. |
 | **D5** | Which peers are "tracked libraries" for major/minor Act? | `swaggerexpert/*` (oracles), `strefethen/arazzo-cli`, `jentic/arazzo-engine`, `usearazzo/arazzo-toolkit`, `Redocly/redocly-cli` |
 | **D6** | Do you want the GitHub Project hook? | Yes if the org Project exists; otherwise skip |
+| **D7** | Feed goal / success metric | **Decided [R2]:** capture *all* upstream changes; surface the issues/PRs that move php-arazzo forward (spec proposals like SOAP/GraphQL, peer features/fixes); suppress bot/dep-bump noise. **Recall first, precision second.** |
+| **D8** | Scope | **Decided [R2]:** full plan (§6 Phases 0–4; Phase 5 optional). |
 
 ---
 
@@ -403,3 +407,31 @@ gh api repos/OAI/Arazzo-Specification/branches --jq '.[].name'
   </falsifiability>
 </epistemic_audit>
 ```
+
+## Appendix D — Validation pass (R2, 2026-10-15)
+
+Every falsifiable finding (F1–F12) was re-derived directly against the repo and the live GitHub API. All 12 hold; four fix-targets were wrong or stale and are corrected above.
+
+| Finding | Re-derivation | Result |
+|---|---|---|
+| F1 CI stateless | `git check-ignore -v storage/ecosystem-feed/feed.json` → hit `.gitignore:58`; `git ls-files` lists snapshots only; last bot commit = 1 file (`docs/ECOSYSTEM_FEED.md`); cache path = `.cache/ecosystem`. `git add <ignored> <ok>` errors (exit 1) **but still stages the non-ignored paths** — so the `.md` commits and `feed.json` never does. | ✅ |
+| F2 synthetic tag dates | feed 2026-10-15: **145 tag rows, 145 dated the poll day**; Redocly `v1.0.0…` tags unordered vs `@redocly/*@2.64.0` releases | ✅ |
+| F3 release+tag double-count | **103** tag rows match a release title in the same repo; Redocly emits 6 `@redocly/*` releases/version | ✅ |
+| F4 insert-only store | `Store::commit` `if (!isset($byId[$ev->id]))`; `id = sha256(source\|externalId)` | ✅ |
+| F5 substring over URL+body | `Normalizer.php:25` haystack includes `$url`; live tags `spec 494`, `cli 119` (`strefethen/arazzo-cli` = 62 rows) | ✅ |
+| F6 catch-all relevance | "Conformance / schema validation" = **346/893**; `actionable` = **505** | ✅ |
+| F7 roadmap IDs drifted | mapper values confirmed; **cited roadmap deleted (`94e7674d`)** → refs retargeted to superpowers plan/spec docs | ⚠️→fixed |
+| F8 branches/watch_files unused | `GithubApiIngestor::poll()` takes neither; live branches `main, dev, v1.0-dev, v1.1-dev, v1.2-dev`; real paths `versions/`, `examples/`, `_archive_/schemas/`; `src/…` 404 | ✅→paths fixed |
+| F9 volume swamps signal | top sources confirmed; `sources.json` read in full (66 sources; own repo + 20 `tier:auto` OAI repos in the tail) | ✅ |
+| F10 triage hard-coded | `analyze.php:151` hard-codes "01 — Support wsdl…"; keyword overlap includes `arazzo` | ✅ |
+| F11 snapshot per event | snapshot written inside the loop for every event | ✅ |
+| F12 poll/tier decorative | `poll.php:189` loops all sources, ignores `poll`/`tier` | ✅ |
+
+**New facts resolved (previously T3 / "not verifiable from here"):**
+
+- `main` is **not protected** (`gh api …/branches/main/protection` → 404) → D1 feasible.
+- `ci.yml` on push is path-filtered to `**.php` + config files → bot `.json`/`.md` commits do not trigger CI. ✅ guardrail holds.
+- The spec repo has **no `src/`**; real spec text lives at `versions/*.md`, `examples/**`, `_archive_/schemas/**`.
+- Live watchlist states: **#533 merged 2026-09-30 → `v1.2-dev`** (exactly the transition the current feed cannot emit); #556/#567/#568 open on `v1.2-dev`; #516 PR on `v1.1-dev`; #410/#590/#597 issues.
+
+**Proof of value:** `OAI/Arazzo-Specification#533` (SOAP) merged into `v1.2-dev` on 2026-09-30 and the current feed has no way to say so — the redesign's stateful transition model is what surfaces it.

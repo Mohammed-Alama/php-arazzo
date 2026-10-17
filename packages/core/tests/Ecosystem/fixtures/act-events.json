@@ -1,0 +1,22 @@
+[
+    {
+        "id": "evt_533merged",
+        "entityId": "gh:OAI/Arazzo-Specification#533",
+        "kind": "pr.state_changed",
+        "source": "OAI/Arazzo-Specification",
+        "occurredAt": "2026-10-14T16:32:28Z",
+        "observedAt": "2026-10-16T06:17:00Z",
+        "subject": {
+            "type": "pr",
+            "title": "feat(spec): add SOAP support",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/533"
+        },
+        "change": {"field": "state", "from": "ready", "to": "merged", "base": "v1.2-dev"},
+        "topics": ["wsdl"],
+        "roadmapRefs": ["plan:phase-f-protocol-packages"],
+        "tier": "act",
+        "score": 120,
+        "why": ["watchlist-transition"],
+        "breaking": false
+    }
+]

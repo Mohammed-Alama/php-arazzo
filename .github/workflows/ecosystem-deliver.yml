@@ -1,0 +1,63 @@
+name: Ecosystem Delivery
+
+# §5.7.2–§5.7.4: the weekly `ecosystem-digest: YYYY-Www` roll-up issue, plus opt-in per-Act
+# auto-issues. Reads the committed feed events written by the daily feed workflow, so it is
+# deterministic: the digest issue is deduped by title and auto-issues by `entityId` marker —
+# a re-run in the same week creates nothing. Auto-issue stays OFF unless `delivery.json` enables
+# it or a manual dispatch passes `auto_issue: true` (decision Q9).
+
+on:
+  schedule:
+    - cron: '13 7 * * 1'  # Mondays 07:13 UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (plan only, create nothing)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+      auto_issue:
+        description: 'Opt in to per-Act auto-issues for this run'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ecosystem-deliver
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: curl, dom, libxml, json
+
+      - name: Deliver digest + auto-issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Report on the ISO week that just closed. Referencing "7 days ago" means a Monday
+          # run summarizes the full Mon–Sun window that ended the night before, and the issue
+          # is titled `ecosystem-digest: <that week>` — not the 7-hour stub of the current week.
+          WEEK_REF=$(date -u -d '7 days ago' +%Y-%m-%dT12:00:00Z)
+          ARGS="--verbose --now=$WEEK_REF"
+          if [[ "${{ inputs.dry_run }}" != "true" ]]; then ARGS="$ARGS --commit"; fi
+          if [[ "${{ inputs.auto_issue }}" == "true" ]]; then ARGS="$ARGS --auto-issue"; fi
+          php scripts/ecosystem/deliver.php $ARGS
