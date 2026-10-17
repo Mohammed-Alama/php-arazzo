@@ -111,7 +111,7 @@ it('creates exactly one deduped auto-issue per Act entity when opted in', functi
         ->toContain('### Upstream URL')
         ->toContain('### Impact on php-arazzo')
         ->toContain('### Severity')
-        ->toContain('### Raw snapshot excerpt');
+        ->and($plan['autoIssues'][0]['body'])->not->toContain('Raw snapshot excerpt');
 });
 
 it('honours the --auto-issue override even when the config gate is off', function (): void {

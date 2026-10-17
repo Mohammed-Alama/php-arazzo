@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
 require_once __DIR__.'/TopicMatcher.php';
 
 /**
@@ -31,6 +32,28 @@ final class Scorer
     }
 
     /**
+     * Score an observation and merge the scored fields onto it, exactly as the poll pipeline
+     * does (§5.6). Watchlist observations must be scored with `$watchlist = true` so a tracked
+     * transition reaches Act (`Renderer` otherwise falls back to Watch).
+     *
+     * @param  array<string,mixed>  $observation
+     * @return array<string,mixed>
+     */
+    public function annotate(array $observation, bool $watchlist = false): array
+    {
+        $scored = $this->score($observation, $watchlist);
+
+        return array_merge($observation, [
+            'topics' => $scored['topics'],
+            'roadmapRefs' => $scored['roadmapRefs'],
+            'tier' => $scored['tier'],
+            'score' => $scored['score'],
+            'why' => $scored['why'],
+            'breaking' => $scored['breaking'],
+        ]);
+    }
+
+    /**
      * @param  array<string,mixed>  $observation  source/type/title/body/author/labels/state/merged/base/prerelease
      * @return array{tier:string,score:int,why:string[],topics:string[],roadmapRefs:string[],breaking:bool}
      */
@@ -47,12 +70,12 @@ final class Scorer
         $base = (string) ($observation['base'] ?? '');
         $version = (string) ($observation['version'] ?? $this->versionOf((string) ($observation['externalId'] ?? '')));
 
-        $topics = $this->stringList($observation['topics'] ?? $observation['tags'] ?? []);
+        $topics = Support::stringList($observation['topics'] ?? $observation['tags'] ?? []);
         if ($topics === [] && !isset($observation['topics'])) {
             $topics = $this->topics->topics($observation);
         }
         $roadmapRefs = isset($observation['roadmapRefs']) && is_array($observation['roadmapRefs'])
-            ? $this->stringList($observation['roadmapRefs'])
+            ? Support::stringList($observation['roadmapRefs'])
             : $this->topics->roadmapFor($topics);
 
         $isSpecSource = $source === 'OAI/Arazzo-Specification';
@@ -241,51 +264,21 @@ final class Scorer
 
     private function isMajorOrMinor(string $version): bool
     {
-        return preg_match('/^v?(\d+)\.(\d+)\.(\d+)/', $version, $m) === 1 && $m[3] === '0';
+        return Support::isMajorOrMinor($version);
     }
 
     private function isMajor(string $version): bool
     {
-        return preg_match('/^v?(\d+)\.0\.0/', $version) === 1;
+        return Support::isMajor($version);
     }
 
     private function isPrerelease(string $version): bool
     {
-        return str_contains($version, '-');
+        return Support::isPrerelease($version);
     }
 
     private function versionOf(string $externalId): string
     {
-        $version = $externalId;
-        foreach (['release:', 'tag:', 'npm:'] as $prefix) {
-            if (str_starts_with($version, $prefix)) {
-                $version = substr($version, strlen($prefix));
-            }
-        }
-        // Monorepo releases carry the package name: `@redocly/cli@2.63.0`.
-        if (str_contains($version, '@')) {
-            $version = substr($version, (int) strrpos($version, '@') + 1);
-        }
-
-        return $version;
-    }
-
-    /**
-     * @param  array<int,mixed>  $values
-     * @return string[]
-     */
-    private function stringList(array $values): array
-    {
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value)) {
-                $string = (string) $value;
-                if ($string !== '') {
-                    $list[] = $string;
-                }
-            }
-        }
-
-        return array_values(array_unique($list));
+        return Support::versionOf($externalId);
     }
 }

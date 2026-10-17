@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Ecosystem\Ingestors;
 
 use Ecosystem\GhCli;
+use Ecosystem\Support;
 
 require_once dirname(__DIR__).'/GhCli.php';
+require_once dirname(__DIR__).'/Support.php';
 
 /**
  * Spec-text diffing against `OAI/Arazzo-Specification` branches (§5.4, ticket #183).
@@ -153,8 +155,8 @@ final class SpecBranchIngestor
                 'files' => array_values(array_map(static fn (array $r): string => (string) $r['path'], $specRows)),
                 'fileStats' => $specRows,
                 'commits' => $commits,
-                'additions' => self::sum($specRows, 'additions'),
-                'deletions' => self::sum($specRows, 'deletions'),
+                'additions' => Support::sumField($specRows, 'additions'),
+                'deletions' => Support::sumField($specRows, 'deletions'),
             ];
         }
 
@@ -173,8 +175,8 @@ final class SpecBranchIngestor
                 'files' => array_values(array_map(static fn (array $r): string => (string) $r['path'], $schemaRows)),
                 'fileStats' => $schemaRows,
                 'commits' => $commits,
-                'additions' => self::sum($schemaRows, 'additions'),
-                'deletions' => self::sum($schemaRows, 'deletions'),
+                'additions' => Support::sumField($schemaRows, 'additions'),
+                'deletions' => Support::sumField($schemaRows, 'deletions'),
             ];
         }
 
@@ -299,19 +301,6 @@ final class SpecBranchIngestor
     private static function schemaChecksum(string $branch, string $headSha, array $rows): string
     {
         return hash('sha256', $branch.'|'.$headSha.'|'.json_encode($rows, JSON_UNESCAPED_SLASHES));
-    }
-
-    /**
-     * @param  array<int,array<string,mixed>>  $rows
-     */
-    private static function sum(array $rows, string $field): int
-    {
-        $total = 0;
-        foreach ($rows as $row) {
-            $total += (int) ($row[$field] ?? 0);
-        }
-
-        return $total;
     }
 
     private static function isSchemaPath(string $path): bool

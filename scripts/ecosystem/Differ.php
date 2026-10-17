@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
+
 /**
  * Turns observations into transition events against persisted {@see State} (§5.3).
  *
@@ -125,11 +127,11 @@ final class Differ
             return null; // §5.3: no event is created without a provider timestamp
         }
 
-        $topics = $this->stringList(is_array($obs['topics'] ?? null) ? $obs['topics'] : (is_array($obs['tags'] ?? null) ? $obs['tags'] : []));
+        $topics = Support::sortedStringList(is_array($obs['topics'] ?? null) ? $obs['topics'] : (is_array($obs['tags'] ?? null) ? $obs['tags'] : []));
         $roadmapRefs = $this->roadmapRefs($obs);
         $tier = is_string($obs['tier'] ?? null) ? $obs['tier'] : null;
         $score = is_int($obs['score'] ?? null) ? $obs['score'] : null;
-        $why = $this->stringList(is_array($obs['why'] ?? null) ? $obs['why'] : []);
+        $why = Support::sortedStringList(is_array($obs['why'] ?? null) ? $obs['why'] : []);
         $breaking = ($obs['breaking'] ?? false) === true;
         $previousFields = is_array($previous['fields'] ?? null) ? $previous['fields'] : [];
 
@@ -148,11 +150,11 @@ final class Differ
 
         return match ($type) {
             'pr' => $this->descriptor('pr', 'pulls', 'gh:'.$source.'#'.$this->localId($externalId), $source, $occurredAt, 'pr', $title, $url, [
-                'state' => $this->prState($obs, $previousFields),
+                'state' => Support::prState($obs, $previousFields),
                 'draft' => ($obs['draft'] ?? false) === true,
                 'merged' => ($obs['merged'] ?? false) === true,
                 'base' => (string) ($obs['base'] ?? ''),
-                'labels' => $this->stringList(is_array($obs['labels'] ?? null) ? $obs['labels'] : []),
+                'labels' => Support::sortedStringList(is_array($obs['labels'] ?? null) ? $obs['labels'] : []),
             ], $topics, $roadmapRefs),
             'issue' => $this->issueDescriptor($obs, $source, $externalId, $occurredAt, $title, $url, $topics, $roadmapRefs),
             'release' => $this->versionDescriptor('release', 'releases', $source, $externalId, $occurredAt, $title, $url, $obs, $topics, $roadmapRefs),
@@ -179,7 +181,7 @@ final class Differ
 
         return $this->descriptor($isMeeting ? 'meeting' : 'issue', 'issues', 'gh:'.$source.'#'.$this->localId($externalId), $source, $occurredAt, 'issue', $title, $url, [
             'state' => (string) ($obs['state'] ?? ''),
-            'labels' => $this->stringList(is_array($obs['labels'] ?? null) ? $obs['labels'] : []),
+            'labels' => Support::sortedStringList(is_array($obs['labels'] ?? null) ? $obs['labels'] : []),
         ], $topics, $roadmapRefs);
     }
 
@@ -193,7 +195,7 @@ final class Differ
      */
     private function versionDescriptor(string $kind, string $endpoint, string $source, string $externalId, string $occurredAt, string $title, string $url, array $obs, array $topics, array $roadmapRefs): ?array
     {
-        $version = $this->versionOf($externalId);
+        $version = Support::versionOf($externalId);
         if ($version === '') {
             return null;
         }
@@ -202,7 +204,7 @@ final class Differ
         if ($kind === 'release') {
             $fields['prerelease'] = ($obs['prerelease'] ?? false) === true;
             $fields['draft'] = ($obs['draft'] ?? false) === true;
-            $packages = $this->stringList(is_array($obs['packages'] ?? null) ? $obs['packages'] : []);
+            $packages = Support::sortedStringList(is_array($obs['packages'] ?? null) ? $obs['packages'] : []);
             if ($packages !== []) {
                 $fields['packages'] = $packages;
             }
@@ -210,7 +212,7 @@ final class Differ
 
         $descriptor = $this->descriptor($kind, $endpoint, 'gh:'.$source.'#'.$kind.':'.$version, $source, $occurredAt, $kind, $title, $url, $fields, $topics, $roadmapRefs);
         // Raw tag name (pre-normalization) — used only for the `lastTag` paging watermark.
-        $descriptor['tagName'] = (string) ($obs['tagName'] ?? $this->rawVersionOf($externalId));
+        $descriptor['tagName'] = (string) ($obs['tagName'] ?? Support::rawTagName($externalId));
 
         return $descriptor;
     }
@@ -231,11 +233,11 @@ final class Differ
             'branch' => $branch,
             'headSha' => $kind === 'spec' ? (string) ($obs['headSha'] ?? $obs['sha'] ?? $this->localId($externalId)) : '',
             'hash' => $kind === 'schema' ? (string) ($obs['hash'] ?? $this->localId($externalId)) : '',
-            'files' => $this->stringList(is_array($obs['files'] ?? null) ? $obs['files'] : []),
+            'files' => Support::sortedStringList(is_array($obs['files'] ?? null) ? $obs['files'] : []),
             'fileStats' => $fileStats,
             'commits' => $this->orderedList(is_array($obs['commits'] ?? null) ? $obs['commits'] : []),
-            'additions' => $this->sumField($fileStats, 'additions'),
-            'deletions' => $this->sumField($fileStats, 'deletions'),
+            'additions' => Support::sumField($fileStats, 'additions'),
+            'deletions' => Support::sumField($fileStats, 'deletions'),
         ];
 
         return $this->descriptor($kind, 'branches', 'gh:'.$source.'#'.$kind.':'.$branch, $source, $occurredAt, $kind, $title, $url, $fields, $topics, $roadmapRefs);
@@ -484,25 +486,6 @@ final class Differ
 
     // ---------------------------------------------------------------- primitives
 
-    /** Derive the PR display state (§5.3: open/draft/ready/merged/closed). */
-    private function prState(array $obs, array $previousFields): string
-    {
-        if (($obs['merged'] ?? false) === true) {
-            return 'merged';
-        }
-        if (($obs['state'] ?? '') === 'closed') {
-            return 'closed';
-        }
-        if (($obs['draft'] ?? false) === true) {
-            return 'draft';
-        }
-        if (($previousFields['state'] ?? null) === 'draft') {
-            return 'ready';
-        }
-
-        return 'open';
-    }
-
     /**
      * Collapse monorepo releases (§5.4): group non-draft releases by `(repo, version)` into
      * a single observation carrying `packages[]`, so Redocly's six `@redocly/*` releases for
@@ -536,8 +519,8 @@ final class Differ
                 continue; // draft releases are not releases yet
             }
 
-            $tagName = $this->rawVersionOf($externalId);
-            [$package, $version] = $this->parseTagName($tagName);
+            $tagName = Support::rawTagName($externalId);
+            [$package, $version] = Support::parseTagName($tagName);
             if ($version === '') {
                 $passthrough[$index] = $observation;
 
@@ -560,14 +543,14 @@ final class Differ
                     'publishedAt' => (string) ($observation['publishedAt'] ?? ''),
                     'labels' => is_array($observation['labels'] ?? null) ? $observation['labels'] : [],
                     'prerelease' => ($observation['prerelease'] ?? false) === true,
-                    'packages' => $this->stringList($priorPackages),
+                    'packages' => Support::sortedStringList($priorPackages),
                     // Carry the Scorer output through the collapse: a spec-repo release or a
                     // tracked-library major/minor must stay Act in the digest (§5.6).
-                    'topics' => $this->stringList(is_array($observation['topics'] ?? null) ? $observation['topics'] : []),
-                    'roadmapRefs' => $this->stringList(is_array($observation['roadmapRefs'] ?? null) ? $observation['roadmapRefs'] : []),
+                    'topics' => Support::sortedStringList(is_array($observation['topics'] ?? null) ? $observation['topics'] : []),
+                    'roadmapRefs' => Support::sortedStringList(is_array($observation['roadmapRefs'] ?? null) ? $observation['roadmapRefs'] : []),
                     'tier' => is_string($observation['tier'] ?? null) ? $observation['tier'] : null,
                     'score' => is_int($observation['score'] ?? null) ? $observation['score'] : null,
-                    'why' => $this->stringList(is_array($observation['why'] ?? null) ? $observation['why'] : []),
+                    'why' => Support::sortedStringList(is_array($observation['why'] ?? null) ? $observation['why'] : []),
                     'breaking' => ($observation['breaking'] ?? false) === true,
                 ];
                 $order[] = $key;
@@ -584,15 +567,15 @@ final class Differ
             // breaking) makes the merged version Act (or breaking).
             $groups[$key]['topics'] = array_values(array_unique(array_merge(
                 $groups[$key]['topics'],
-                $this->stringList(is_array($observation['topics'] ?? null) ? $observation['topics'] : []),
+                Support::sortedStringList(is_array($observation['topics'] ?? null) ? $observation['topics'] : []),
             )));
             $groups[$key]['roadmapRefs'] = array_values(array_unique(array_merge(
                 $groups[$key]['roadmapRefs'],
-                $this->stringList(is_array($observation['roadmapRefs'] ?? null) ? $observation['roadmapRefs'] : []),
+                Support::sortedStringList(is_array($observation['roadmapRefs'] ?? null) ? $observation['roadmapRefs'] : []),
             )));
             $groups[$key]['why'] = array_values(array_unique(array_merge(
                 $groups[$key]['why'],
-                $this->stringList(is_array($observation['why'] ?? null) ? $observation['why'] : []),
+                Support::sortedStringList(is_array($observation['why'] ?? null) ? $observation['why'] : []),
             )));
             if (($observation['tier'] ?? null) === 'act') {
                 $groups[$key]['tier'] = 'act';
@@ -629,7 +612,7 @@ final class Differ
             if (($observation['draft'] ?? false) === true) {
                 continue;
             }
-            $version = $this->versionOf((string) ($observation['externalId'] ?? ''));
+            $version = Support::versionOf((string) ($observation['externalId'] ?? ''));
             if ($version !== '') {
                 $releaseVersions[(string) ($observation['source'] ?? '')][$version] = true;
             }
@@ -642,7 +625,7 @@ final class Differ
                 continue; // skip draft releases outright
             }
             if ($type === 'tag') {
-                $version = $this->versionOf((string) ($observation['externalId'] ?? ''));
+                $version = Support::versionOf((string) ($observation['externalId'] ?? ''));
                 if ($version !== '' && isset($releaseVersions[(string) ($observation['source'] ?? '')][$version])) {
                     continue; // release wins over tag
                 }
@@ -666,8 +649,8 @@ final class Differ
 
         return match ($type) {
             'pr', 'issue' => 'gh:'.$source.'#'.$this->localId($externalId),
-            'release' => 'gh:'.$source.'#release:'.$this->versionOf($externalId),
-            'tag' => 'gh:'.$source.'#tag:'.$this->versionOf($externalId),
+            'release' => 'gh:'.$source.'#release:'.Support::versionOf($externalId),
+            'tag' => 'gh:'.$source.'#tag:'.Support::versionOf($externalId),
             'commit' => 'gh:'.$source.'#commit:'.$this->localId($externalId),
             'spec', 'spec_text', 'spec-text' => 'gh:'.$source.'#spec:'.(string) ($obs['branch'] ?? $obs['base'] ?? 'main'),
             'schema' => 'gh:'.$source.'#schema:'.(string) ($obs['branch'] ?? $obs['base'] ?? 'main'),
@@ -691,26 +674,6 @@ final class Differ
         }
 
         return $externalId;
-    }
-
-    /** Normalized version of a release/tag id: `release:@scope/pkg@1.2.0` -> `1.2.0`. */
-    private function versionOf(string $externalId): string
-    {
-        [, $version] = $this->parseTagName($this->rawVersionOf($externalId));
-
-        return $version;
-    }
-
-    /** Raw tag name behind a release/tag id, exactly as GitHub reports it. */
-    private function rawVersionOf(string $externalId): string
-    {
-        foreach (['release:', 'tag:'] as $prefix) {
-            if (str_starts_with($externalId, $prefix)) {
-                return substr($externalId, strlen($prefix));
-            }
-        }
-
-        return '';
     }
 
     /**
@@ -766,19 +729,6 @@ final class Differ
     }
 
     /**
-     * @param  array<int,array<string,mixed>>  $rows
-     */
-    private function sumField(array $rows, string $field): int
-    {
-        $total = 0;
-        foreach ($rows as $row) {
-            $total += (int) ($row[$field] ?? 0);
-        }
-
-        return $total;
-    }
-
-    /**
      * Deduplicate a list of scalars, preserving author order (used for commit titles, where the
      * chronological order carries meaning).
      *
@@ -812,7 +762,7 @@ final class Differ
         foreach (['roadmap', 'roadmapRefs'] as $key) {
             $refs = $obs[$key] ?? null;
             if (is_array($refs)) {
-                $list = $this->stringList($refs);
+                $list = Support::sortedStringList($refs);
                 if ($list !== []) {
                     return $list;
                 }
@@ -822,51 +772,5 @@ final class Differ
         $relevance = $obs['relevance'] ?? null;
 
         return is_string($relevance) && $relevance !== '' ? [$relevance] : [];
-    }
-
-    /**
-     * Split a tag name into `[package, version]`. Handles monorepo tags
-     * (`@redocly/cli@2.64.0`) and plain tags (`v1.0.0`).
-     *
-     * @return array{0:string,1:string}
-     */
-    private function parseTagName(string $tagName): array
-    {
-        $tagName = trim($tagName);
-        if ($tagName === '') {
-            return ['', ''];
-        }
-
-        $at = strrpos($tagName, '@');
-        if ($at !== false && $at > 0) {
-            $package = substr($tagName, 0, $at);
-            $version = substr($tagName, $at + 1);
-            if (preg_match('/^v?\d/', $version) === 1) {
-                return [$package, (string) preg_replace('/^v(?=\d)/', '', $version)];
-            }
-        }
-
-        return ['', (string) preg_replace('/^v(?=\d)/', '', $tagName)];
-    }
-
-    /**
-     * @param  array<int,mixed>  $values
-     * @return string[]
-     */
-    private function stringList(array $values): array
-    {
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value)) {
-                $string = (string) $value;
-                if ($string !== '') {
-                    $list[] = $string;
-                }
-            }
-        }
-        $list = array_values(array_unique($list));
-        sort($list, SORT_STRING);
-
-        return $list;
     }
 }

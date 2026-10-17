@@ -26,7 +26,7 @@ final class WatchlistIngestor
      * @param  array<int,array<string,mixed>>  $items
      * @return array<int,array<string,mixed>> normalized observations
      */
-    public static function poll(array $items, ?string $token, bool $verbose = false): array
+    public static function poll(array $items, bool $verbose = false): array
     {
         $out = [];
         foreach ($items as $item) {

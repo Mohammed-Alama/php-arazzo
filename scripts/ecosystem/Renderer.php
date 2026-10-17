@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
+
 /**
  * Bounded, evidence-first digest renderer (§5.7.1, T4).
  *
@@ -292,11 +294,11 @@ final class Renderer
         $bullet = '- `'.$date.'` '.($breaking ? '**breaking** ' : '').self::eventLink($event);
         $bullet .= ' — `'.$source.'` · `'.$kind.'` · '.self::changeSummary($event);
 
-        $topics = self::stringList($event['topics'] ?? []);
+        $topics = Support::stringList($event['topics'] ?? []);
         if ($topics !== []) {
             $bullet .= ' · topics '.implode(', ', array_map(static fn (string $topic): string => '`'.self::sanitizeCell($topic).'`', $topics));
         }
-        $refs = self::stringList($event['roadmapRefs'] ?? []);
+        $refs = Support::stringList($event['roadmapRefs'] ?? []);
         if ($refs !== []) {
             $bullet .= ' → '.implode(', ', array_map(static fn (string $ref): string => '`'.self::sanitizeCell($ref).'`', $refs));
         }
@@ -328,11 +330,11 @@ final class Renderer
         };
 
         $extras = [];
-        $packages = self::stringList($change['packages'] ?? []);
+        $packages = Support::stringList($change['packages'] ?? []);
         if ($packages !== []) {
             $extras[] = count($packages).' package'.(count($packages) === 1 ? '' : 's');
         }
-        $files = self::stringList($change['files'] ?? []);
+        $files = Support::stringList($change['files'] ?? []);
         if ($files !== []) {
             $extras[] = count($files).' file'.(count($files) === 1 ? '' : 's');
         }
@@ -361,8 +363,8 @@ final class Renderer
      */
     private static function labelDelta(array $change): string
     {
-        $added = self::stringList($change['added'] ?? []);
-        $removed = self::stringList($change['removed'] ?? []);
+        $added = Support::stringList($change['added'] ?? []);
+        $removed = Support::stringList($change['removed'] ?? []);
         $parts = [];
         if ($added !== []) {
             $parts[] = '+'.implode(',', $added);
@@ -434,7 +436,7 @@ final class Renderer
 
         return $kind === 'meeting.agenda'
             || self::subjectType($event) === 'meeting'
-            || in_array('meeting-agenda', self::stringList($event['why'] ?? []), true);
+            || in_array('meeting-agenda', Support::stringList($event['why'] ?? []), true);
     }
 
     /** @param array<string,mixed> $event */
@@ -448,7 +450,7 @@ final class Renderer
     /** @param array<string,mixed> $event */
     private static function noiseCategory(array $event): ?string
     {
-        $why = self::stringList($event['why'] ?? []);
+        $why = Support::stringList($event['why'] ?? []);
         foreach (self::NOISE_CATEGORIES as $reason => $label) {
             if (in_array($reason, $why, true)) {
                 return $label;
@@ -528,23 +530,5 @@ final class Renderer
     private static function shortSha(string $sha): string
     {
         return $sha !== '' ? substr($sha, 0, 8) : '—';
-    }
-
-    /**
-     * @return string[]
-     */
-    private static function stringList(mixed $values): array
-    {
-        if (!is_array($values)) {
-            return [];
-        }
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value) && (string) $value !== '') {
-                $list[] = (string) $value;
-            }
-        }
-
-        return array_values(array_unique($list));
     }
 }

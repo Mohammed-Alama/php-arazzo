@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
+
 /**
  * Pure triage logic for the rewritten `ecosystem-triage` skill (§5.8).
  *
@@ -68,12 +70,12 @@ final class Triage
      */
     public static function groupKey(array $event): string
     {
-        $refs = self::stringList($event['roadmapRefs'] ?? []);
+        $refs = Support::stringList($event['roadmapRefs'] ?? []);
         if ($refs !== []) {
             return $refs[0];
         }
 
-        $topics = self::stringList($event['topics'] ?? []);
+        $topics = Support::stringList($event['topics'] ?? []);
         if ($topics !== []) {
             return 'unmapped:'.$topics[0];
         }
@@ -116,7 +118,7 @@ final class Triage
      */
     public static function refsOf(array $event): array
     {
-        $refs = self::stringList($event['roadmapRefs'] ?? []);
+        $refs = Support::stringList($event['roadmapRefs'] ?? []);
 
         return $refs !== [] ? $refs : [self::groupKey($event)];
     }
@@ -156,7 +158,7 @@ final class Triage
     public static function titleFor(string $ref, array $group, array $topicsConfig, array $watchlistStatus): string
     {
         foreach ($watchlistStatus as $row) {
-            if (!is_array($row) || !in_array($ref, self::stringList($row['roadmap'] ?? []), true)) {
+            if (!is_array($row) || !in_array($ref, Support::stringList($row['roadmap'] ?? []), true)) {
                 continue;
             }
             $title = (string) ($row['title'] ?? '');
@@ -212,7 +214,7 @@ final class Triage
             if ($ourIssue === null || $ourIssue === '' || (int) $ourIssue <= 0) {
                 continue;
             }
-            $sameRef = in_array($ref, self::stringList($item['roadmap'] ?? []), true);
+            $sameRef = in_array($ref, Support::stringList($item['roadmap'] ?? []), true);
             $sameEntity = isset($entityIds[self::itemEntityId((string) ($item['ref'] ?? ''))]);
             if ($sameRef || $sameEntity) {
                 $out[] = ['ref' => '#'.(int) $ourIssue, 'why' => 'watchlist ourIssue'];
@@ -336,7 +338,7 @@ final class Triage
             if (!is_array($event)) {
                 continue;
             }
-            foreach (self::stringList($event['topics'] ?? []) as $topic) {
+            foreach (Support::stringList($event['topics'] ?? []) as $topic) {
                 $topics[$topic] = true;
             }
         }
@@ -356,7 +358,7 @@ final class Triage
             }
             $subject = is_array($event['subject'] ?? null) ? $event['subject'] : [];
             $bits[] = (string) ($subject['title'] ?? '');
-            $bits[] = implode(' ', self::stringList($event['topics'] ?? []));
+            $bits[] = implode(' ', Support::stringList($event['topics'] ?? []));
         }
 
         return implode(' ', $bits);
@@ -384,24 +386,5 @@ final class Triage
         $words = array_values(array_filter($words, static fn (string $w): bool => $w !== ''));
 
         return ucfirst(implode(' ', $words));
-    }
-
-    /**
-     * @param  array<int,mixed>  $values
-     * @return string[]
-     */
-    private static function stringList(mixed $values): array
-    {
-        if (!is_array($values)) {
-            return [];
-        }
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value) && (string) $value !== '') {
-                $list[] = (string) $value;
-            }
-        }
-
-        return array_values(array_unique($list));
     }
 }

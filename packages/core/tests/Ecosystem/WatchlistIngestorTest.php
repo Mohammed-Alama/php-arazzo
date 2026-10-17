@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 use Ecosystem\Differ;
 use Ecosystem\Ingestors\WatchlistIngestor;
+use Ecosystem\Scorer;
 use Ecosystem\State;
 
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/Event.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/State.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/Differ.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/Watchlist.php';
+require_once dirname(__DIR__, 4).'/scripts/ecosystem/TopicMatcher.php';
+require_once dirname(__DIR__, 4).'/scripts/ecosystem/Scorer.php';
 require_once dirname(__DIR__, 4).'/scripts/ecosystem/Ingestors/WatchlistIngestor.php';
 
 if (!function_exists('watchlist_ingestor_tmp_dir')) {
@@ -171,6 +174,52 @@ it('the recorded #533 fixture yields exactly the open -> ready -> merged transit
         ->and($events[1]->observedAt)->toBe('2026-10-01T06:17:10Z');
 
     watchlist_ingestor_rrmdir($dir);
+});
+
+it('scores an unscored watchlist observation so its transition reaches Act (P0-1)', function (): void {
+    $fixture = json_decode((string) file_get_contents(dirname(__DIR__, 4).'/scripts/ecosystem/fixtures/watchlist/533.json'), true);
+    $item = [
+        'ref' => $fixture['ref'],
+        'topic' => $fixture['topic'],
+        'roadmap' => $fixture['roadmap'],
+        'ourIssue' => $fixture['ourIssue'],
+        'stance' => $fixture['stance'],
+    ];
+
+    $open = WatchlistIngestor::observe($item, $fixture['stages'][0]['payload'], $fixture['stages'][0]['files'], $fixture['stages'][0]['kind']);
+    $merged = WatchlistIngestor::observe($item, $fixture['stages'][2]['payload'], $fixture['stages'][2]['files'], $fixture['stages'][2]['kind']);
+
+    // `observe()` is pure and unscored — the poll pipeline must annotate it (§5.6).
+    // Before the P0-1 fix the unscored observation reached `Differ` with a null tier, so the
+    // merged transition collapsed into Watch instead of Act.
+    expect($open)->not->toHaveKey('tier')
+        ->and($merged)->not->toHaveKey('tier');
+
+    $dir = watchlist_ingestor_tmp_dir();
+    $differ = new Differ();
+    $scorer = Scorer::fromDefault();
+
+    // Baseline the draft silently, then diff the merge *scored with watchlist=true*, exactly
+    // as `poll.php` now does.
+    $state = new State($dir);
+    $differ->diff([$scorer->annotate($open, true)], $state, $fixture['stages'][0]['observedAt'], true);
+    $state->save();
+
+    $state = new State($dir);
+    $events = $differ->diff([$scorer->annotate($merged, true)], $state, $fixture['stages'][2]['observedAt']);
+
+    watchlist_ingestor_rrmdir($dir);
+
+    $transition = null;
+    foreach ($events as $event) {
+        if ($event->kind === 'pr.state_changed') {
+            $transition = $event;
+        }
+    }
+
+    expect($transition)->not->toBeNull()
+        ->and($transition->tier)->toBe('act')
+        ->and($transition->why)->toContain('watchlist-transition');
 });
 
 it('emits meeting.agenda for a watchlist Meeting: issue (#597)', function (): void {

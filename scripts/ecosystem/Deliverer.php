@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
+
 /**
  * Delivery surfaces (§5.7.2–§5.7.4, decision Q9).
  *
@@ -333,7 +335,7 @@ final class Deliverer
 
     /**
      * Render an auto-issue from an Act event, reusing the `.github/ISSUE_TEMPLATE/ecosystem-update.yml`
-     * field set (source · URL · impact · severity · snapshot) — §5.7.3.
+     * field set (source · URL · impact · severity) — §5.7.3.
      *
      * @param  array<string,mixed>  $event
      * @return array{entityId:string,title:string,labels:string[],upstreamRef:string,body:string}
@@ -366,9 +368,9 @@ final class Deliverer
         $source = (string) ($event['source'] ?? '');
         $subject = is_array($event['subject'] ?? null) ? $event['subject'] : [];
         $url = (string) ($subject['url'] ?? '');
-        $topics = self::stringList($event['topics'] ?? []);
-        $refs = self::stringList($event['roadmapRefs'] ?? []);
-        $why = self::stringList($event['why'] ?? []);
+        $topics = Support::stringList($event['topics'] ?? []);
+        $refs = Support::stringList($event['roadmapRefs'] ?? []);
+        $why = Support::stringList($event['why'] ?? []);
 
         $out = self::entityMarker($entityId)."\n\n";
         $out .= "### Source\n\n`{$source}`\n\n";
@@ -378,11 +380,7 @@ final class Deliverer
         $out .= '- roadmap: '.($refs === [] ? '—' : self::inlineCode($refs))."\n";
         $out .= '- why: '.($why === [] ? '—' : implode(', ', array_map(static fn (string $w): string => '`'.$w.'`', $why)))."\n";
         $out .= '- change: '.self::changeSummary($event)."\n\n";
-        $out .= "### Severity\n\n{$severity}\n\n";
-        $out .= "### Raw snapshot excerpt\n\n```json\n".json_encode(
-            $event,
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
-        )."\n```\n";
+        $out .= "### Severity\n\n{$severity}\n";
 
         return $out;
     }
@@ -428,11 +426,11 @@ final class Deliverer
 
         $bullet = '- `'.$date.'` '.$breaking.($url !== '' ? '['.self::escapeBrackets($title).']('.$url.')' : self::escapeBrackets($title));
 
-        $topics = self::stringList($event['topics'] ?? []);
+        $topics = Support::stringList($event['topics'] ?? []);
         if ($topics !== []) {
             $bullet .= ' · topics '.self::inlineCode($topics);
         }
-        $refs = self::stringList($event['roadmapRefs'] ?? []);
+        $refs = Support::stringList($event['roadmapRefs'] ?? []);
         if ($refs !== []) {
             $bullet .= ' → '.self::inlineCode($refs);
         }
@@ -494,24 +492,5 @@ final class Deliverer
         }
 
         return $base;
-    }
-
-    /**
-     * @param  array<int,mixed>  $values
-     * @return string[]
-     */
-    private static function stringList(mixed $values): array
-    {
-        if (!is_array($values)) {
-            return [];
-        }
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value) && (string) $value !== '') {
-                $list[] = (string) $value;
-            }
-        }
-
-        return array_values(array_unique($list));
     }
 }

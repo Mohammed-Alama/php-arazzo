@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
+
 /**
  * Matches raw observations against the authored topic vocabulary in
  * `config/ecosystem/topics.json` (§5.6, fixes F5–F7).
@@ -73,7 +75,7 @@ final class TopicMatcher
         $title = (string) ($raw['title'] ?? '');
         $body = (string) ($raw['body'] ?? '');
         $author = (string) ($raw['author'] ?? '');
-        $labels = $this->stringList(is_array($raw['labels'] ?? null) ? $raw['labels'] : []);
+        $labels = Support::stringList(is_array($raw['labels'] ?? null) ? $raw['labels'] : []);
 
         // Never scan bot/dep-bump bodies: they embed upstream release notes and commit SHAs (F5).
         $scanBody = !$this->isBot($author) && !$this->isDepBumpTitle($title);
@@ -153,7 +155,7 @@ final class TopicMatcher
     {
         $libs = $this->config['trackedLibraries'] ?? [];
 
-        return is_array($libs) ? $this->stringList($libs) : [];
+        return is_array($libs) ? Support::stringList($libs) : [];
     }
 
     public function isTrackedLibrary(string $source): bool
@@ -293,24 +295,5 @@ final class TopicMatcher
         $result = @preg_match($regex, $subject);
 
         return $result === 1;
-    }
-
-    /**
-     * @param  array<int,mixed>  $values
-     * @return string[]
-     */
-    private function stringList(array $values): array
-    {
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value)) {
-                $string = (string) $value;
-                if ($string !== '') {
-                    $list[] = $string;
-                }
-            }
-        }
-
-        return array_values(array_unique($list));
     }
 }

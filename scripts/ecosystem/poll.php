@@ -80,8 +80,10 @@ if (is_file($etagCachePath)) {
     $etagCache = json_decode((string) file_get_contents($etagCachePath), true) ?? [];
 }
 
-// State is loaded before polling so cadence decisions and API watermarks (lastTag,
-// npm lastSeenVersion) are available to the ingestors (§5.4).
+// State is loaded up front so cadence decisions and API watermarks (lastTag, npm
+// lastSeenVersion) are available to the ingestors (§5.4); the spec-branch ingestor needs the
+// stored `headSha` per branch to call `compare/{lastSha}...{branch}`, and the npm ingestor needs
+// its version watermark.
 $stateDir = $root.'/storage/ecosystem-feed/state';
 $decisionsPath = $root.'/config/ecosystem/decisions.json';
 $state = new State($stateDir, $decisionsPath);
@@ -92,13 +94,6 @@ $loadedEntities = $state->count();
 $baseline = isset($opts['baseline']) || $state->isEmpty();
 
 $rawItems = [];
-
-// State is loaded up front: the spec-branch ingestor needs the stored `headSha` per branch to
-// call `compare/{lastSha}...{branch}` (§5.4), and the npm ingestor needs its version watermark.
-$stateDir = $root.'/storage/ecosystem-feed/state';
-$decisionsPath = $root.'/config/ecosystem/decisions.json';
-$state = new State($stateDir, $decisionsPath);
-$loadedEntities = $state->count();
 
 // Lightweight OAI org enumeration: surface new/removed repos as an `org_diff` event.
 // New repos are curated into `sources.json` by hand (the enumerator never rewrites it).
@@ -257,15 +252,7 @@ foreach ($feedEvents as $event) {
         'topics' => $event->tags,
         'relevance' => $event->relevance,
     ]);
-    $scored = $scorer->score($observation);
-    $observations[] = array_merge($observation, [
-        'topics' => $scored['topics'],
-        'roadmapRefs' => $scored['roadmapRefs'],
-        'tier' => $scored['tier'],
-        'score' => $scored['score'],
-        'why' => $scored['why'],
-        'breaking' => $scored['breaking'],
-    ]);
+    $observations[] = $scorer->annotate($observation);
 }
 
 // Watchlist (§5.5): fetch per-item detail for the tracked upstream proposals and merge it
@@ -275,19 +262,17 @@ foreach ($feedEvents as $event) {
 $watchlistPath = $root.'/config/ecosystem/watchlist.json';
 $watchlistItems = Watchlist::load($watchlistPath);
 if ($watchlistItems !== [] && !$useFixtures) {
-    $watchlistObservations = WatchlistIngestor::poll($watchlistItems, $token, $verbose);
+    $watchlistObservations = WatchlistIngestor::poll($watchlistItems, $verbose);
     foreach ($watchlistObservations as $watchlistObservation) {
-        $observations[] = $watchlistObservation;
+        // A watchlist transition is Act (§5.6), so score with the watchlist flag — an unscored
+        // observation would fall back to `tier: null` → Watch in the Renderer (P0-1).
+        $observations[] = $scorer->annotate($watchlistObservation, true);
     }
     if ($verbose) {
         echo sprintf("Watchlist: %d items, %d observed\n", count($watchlistItems), count($watchlistObservations));
     }
 }
 $watchlistStatus = Watchlist::statusRows($watchlistItems, $observations);
-
-// Baseline: the first run on empty state records entities + watermarks but emits nothing,
-// so historical releases/tags/PRs are not re-announced as "new" (F2/A2). Also forced by --baseline.
-$baseline = isset($opts['baseline']) || $state->isEmpty();
 
 $differ = new Differ();
 $newEvents = $differ->diff($observations, $state, gmdate('c'), $baseline);

@@ -17,6 +17,14 @@ namespace Ecosystem;
  * All writes are deterministic: keys are sorted, rows are sorted, and a file is only
  * rewritten when its bytes actually change — so a run with no upstream change produces
  * no diff and therefore no commit (A10 / §5.2 guardrail).
+ *
+ * Follow-up (P2-7): `entities.jsonl` only ever grows. Retired entities (e.g. a PR long since
+ * merged, a delisted library) are retained indefinitely so a re-appearance is still
+ * transition-aware. Adding tombstone compaction — dropping rows whose `lastChangedAt` is older
+ * than a retention window — is deliberately deferred: `Differ` emits on any `fields` delta, so
+ * pruning an entity that later reappears would re-emit `entity.created`, which is exactly the
+ * noise this feed exists to suppress. Any compaction must therefore write a tombstone the
+ * differ recognises, not simply delete the row.
  */
 final class State
 {

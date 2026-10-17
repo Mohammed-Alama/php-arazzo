@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ecosystem;
 
+require_once __DIR__.'/Support.php';
+
 /**
  * Authored watchlist of tracked upstream items (§5.5).
  *
@@ -126,7 +128,7 @@ final class Watchlist
                 'state' => $obs !== null ? self::displayState($obs) : 'unknown',
                 'base' => $obs !== null ? self::displayBase($obs) : '—',
                 'lastChange' => $obs !== null ? self::displayDate($obs) : '—',
-                'roadmap' => self::stringList($item['roadmap'] ?? []),
+                'roadmap' => Support::stringList($item['roadmap'] ?? []),
                 'ourIssue' => $item['ourIssue'] ?? null,
                 'stance' => (string) $item['stance'],
                 'url' => $obs !== null ? (string) ($obs['url'] ?? '') : '',
@@ -140,17 +142,7 @@ final class Watchlist
     /** The current lifecycle state of a PR/issue observation. */
     public static function displayState(array $obs): string
     {
-        if (($obs['merged'] ?? false) === true) {
-            return 'merged';
-        }
-        if (($obs['state'] ?? '') === 'closed') {
-            return 'closed';
-        }
-        if (($obs['draft'] ?? false) === true) {
-            return 'draft';
-        }
-
-        return 'open';
+        return Support::prState($obs);
     }
 
     private static function displayBase(array $obs): string
@@ -233,21 +225,5 @@ final class Watchlist
         file_put_contents($decisionsPath, State::prettyJson($decisions)."\n");
 
         return $decision;
-    }
-
-    /** @param mixed $values @return string[] */
-    private static function stringList(mixed $values): array
-    {
-        if (!is_array($values)) {
-            return [];
-        }
-        $list = [];
-        foreach ($values as $value) {
-            if (is_scalar($value) && (string) $value !== '') {
-                $list[] = (string) $value;
-            }
-        }
-
-        return array_values($list);
     }
 }
