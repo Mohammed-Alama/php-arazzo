@@ -97,8 +97,8 @@ sections:
   source-grounding:
     heading: "🧬 7. Source Grounding & Code Location"
     label: "Source Grounding & Code Location"
-    description: "The exact code, commit and evidence behind the claim."
-    placeholder: "file:line references, commit SHA, command output."
+    description: "A permalink to the exact code, pinned to a commit, with the snippet folded away."
+    placeholder: "permalink to <path> at a commit SHA: blob/<sha>/<path>#L<start>-L<end>; snippet in <details>; command → output."
   impact-profile:
     heading: "🌍 8. Public Domains & Impact Profile"
     label: "Public Domains & Impact Profile"

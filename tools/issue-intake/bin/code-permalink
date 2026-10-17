@@ -1,0 +1,185 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Alama\Tools\IssueIntake\Permalink;
+use Alama\Tools\IssueIntake\SourceLocation;
+use Symfony\Component\Process\Process;
+
+/**
+ * Builds a §7 source-grounding permalink (schema: "the exact code … behind the
+ * claim"). Resolves the repo slug and commit SHA from git, then prints either
+ * the permalink or the foldable `<details>` block the issue body pastes in.
+ *
+ * usage: code-permalink <path>:<start>[-<end>] [--ref=<rev>] [--repo=<owner/name>] [--fold] [--json]
+ *
+ * A permalink is only permanent once the file is committed and the SHA is
+ * pushed. Uncommitted edits and unpushed commits are warned about on stderr,
+ * never silently baked into the link.
+ */
+
+$root = dirname(__DIR__, 3);
+$autoload = $root.'/vendor/autoload.php';
+
+if (!is_file($autoload)) {
+    fwrite(STDERR, "code-permalink: cannot locate vendor/autoload.php\n");
+    exit(2);
+}
+
+require $autoload;
+
+/** @param list<string> $arguments @return array{ok: bool, out: string, err: string} */
+function git(string $directory, array $arguments): array
+{
+    $process = new Process(['git', '-C', $directory, ...$arguments]);
+    $process->run();
+
+    return [
+        'ok' => $process->isSuccessful(),
+        'out' => $process->getOutput(),
+        'err' => trim($process->getErrorOutput()),
+    ];
+}
+
+function usage(): void
+{
+    fwrite(STDERR, <<<'TXT'
+        usage: code-permalink <path>:<start>[-<end>] [--ref=<rev>] [--repo=<owner/name>] [--fold] [--json]
+
+          <path>:<start>[-<end>]  repo-relative path and inclusive line range, e.g. src/JsonPath.php:88-92
+          --ref=<rev>             commit the link is pinned to (default: HEAD)
+          --repo=<owner/name>     override the repo slug resolved from `origin` (use for forks)
+          --fold                  emit the <details> block with the snippet, not just the URL
+          --json                  emit {repo, sha, url, label} (plus code/details with --fold)
+
+        TXT);
+}
+
+$options = ['ref' => 'HEAD', 'repo' => null, 'fold' => false, 'json' => false];
+$locationSpec = null;
+
+foreach (array_slice($argv, 1) as $argument) {
+    if ($argument === '--help' || $argument === '-h') {
+        usage();
+        exit(0);
+    }
+
+    if (str_starts_with($argument, '--ref=')) {
+        $options['ref'] = substr($argument, 6);
+        continue;
+    }
+
+    if (str_starts_with($argument, '--repo=')) {
+        $options['repo'] = substr($argument, 7);
+        continue;
+    }
+
+    if ($argument === '--fold') {
+        $options['fold'] = true;
+        continue;
+    }
+
+    if ($argument === '--json') {
+        $options['json'] = true;
+        continue;
+    }
+
+    if (str_starts_with($argument, '-')) {
+        fwrite(STDERR, "code-permalink: unknown option {$argument}\n");
+        exit(2);
+    }
+
+    if ($locationSpec !== null) {
+        fwrite(STDERR, "code-permalink: expected one location, got a second ({$argument})\n");
+        exit(2);
+    }
+
+    $locationSpec = $argument;
+}
+
+if ($locationSpec === null) {
+    usage();
+    exit(2);
+}
+
+try {
+    $location = SourceLocation::parse($locationSpec);
+} catch (InvalidArgumentException $error) {
+    fwrite(STDERR, 'code-permalink: '.$error->getMessage()."\n");
+    exit(2);
+}
+
+$repo = $options['repo'];
+
+if ($repo === null) {
+    $remote = git($root, ['remote', 'get-url', 'origin']);
+
+    if ($remote['ok']) {
+        $repo = Permalink::slugFromRemote(trim($remote['out']));
+    }
+}
+
+if (!is_string($repo)) {
+    fwrite(STDERR, "code-permalink: cannot resolve a github.com repo from origin; pass --repo=<owner/name>.\n");
+    exit(2);
+}
+
+$resolved = git($root, ['rev-parse', '--verify', $options['ref'].'^{commit}']);
+$sha = trim($resolved['out']);
+
+if (!$resolved['ok'] || $sha === '') {
+    fwrite(STDERR, "code-permalink: cannot resolve ref \"{$options['ref']}\" to a commit.\n");
+    exit(2);
+}
+
+try {
+    $permalink = new Permalink($repo, $sha);
+} catch (InvalidArgumentException $error) {
+    fwrite(STDERR, 'code-permalink: '.$error->getMessage()."\n");
+    exit(2);
+}
+
+// A permalink to a path that does not exist at the SHA is a 404 by construction.
+if (!git($root, ['cat-file', '-e', $sha.':'.$location->path])['ok']) {
+    fwrite(STDERR, "code-permalink: {$location->path} does not exist at {$permalink->shortSha()} — commit it first.\n");
+    exit(2);
+}
+
+$dirty = git($root, ['status', '--porcelain', '--', $location->path]);
+
+if ($dirty['ok'] && trim($dirty['out']) !== '') {
+    fwrite(STDERR, "warning: {$location->path} has uncommitted changes; the permalink shows the committed version.\n");
+}
+
+$containing = git($root, ['branch', '-r', '--contains', $sha]);
+
+if (!$containing['ok'] || trim($containing['out']) === '') {
+    fwrite(STDERR, "warning: {$permalink->shortSha()} is not on any remote branch; the permalink 404s until it is pushed.\n");
+}
+
+$payload = [
+    'repo' => $repo,
+    'sha' => $sha,
+    'label' => $location->label(),
+    'url' => $permalink->url($location),
+];
+
+if ($options['fold']) {
+    $blob = git($root, ['show', $sha.':'.$location->path]);
+    $lines = preg_split('/\R/', rtrim($blob['out'], "\n")) ?: [];
+    $code = implode("\n", array_slice($lines, $location->start - 1, $location->end - $location->start + 1));
+
+    $payload['code'] = $code;
+    $payload['details'] = $permalink->details($location, $code);
+}
+
+if ($options['json']) {
+    echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
+} elseif ($options['fold']) {
+    echo $payload['details'], "\n";
+} else {
+    echo $permalink->url($location), "\n";
+}
+
+exit(0);
