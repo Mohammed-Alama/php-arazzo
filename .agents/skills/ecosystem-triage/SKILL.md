@@ -1,83 +1,112 @@
 ---
 name: ecosystem-triage
-description: Analyze the ecosystem feed to produce prioritized tasks linked to local PRs. Use when planning work from Arazzo spec/tooling changes, turning feed events into ready-for-agent tickets.
+description: Analyze the stateful ecosystem feed events to produce prioritized tasks grouped by roadmap ref, correlated to local PRs/issues and recorded in decisions.json. Use when planning work from Arazzo spec/tooling changes, or when turning feed events into ready-for-agent tickets.
 ---
 
 # Ecosystem Triage
 
-Turns `storage/ecosystem-feed/feed.json` into a prioritized, de-duplicated task list that is **anchored to local PRs/issues** — so you plan what the feed actually requires, not what it merely mentions.
+Turns the **stateful feed events** (`storage/ecosystem-feed/state/events/*.jsonl`) plus the
+**watchlist status table** (`state/watchlist-status.json`) and **`config/ecosystem/decisions.json`**
+into a prioritized, de-duplicated task list **grouped by roadmap ref**.
 
-Feed source: `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` (30 OAI repos) via `gh api` (`scripts/ecosystem/poll.php` daily `17 6 * * *`). Analysis correlates via `scripts/ecosystem/RelevanceMapper.php` (`soap→P0-6`, `xml→P1-6`, `mcp→P2-2`, etc.).
+It never reads the retired `storage/ecosystem-feed/feed.json` and never hard-codes titles or
+blockers: a task's title comes from `config/ecosystem/topics.json` (`roadmaps`/`topics`) or the live
+`watchlist-status.json` title; one roadmap ref is one task, with the source events as evidence.
+
+Feed source: `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` via
+`scripts/ecosystem/poll.php` (daily `17 6 * * *`); the transition events are written by the stateful
+`Differ` (`scripts/ecosystem/Differ.php`) and scored by `TopicMatcher` + `Scorer` into
+Act/Watch/Noise with `topics` and `roadmapRefs`.
 
 ## When to use
 
-- After `composer ecosystem:poll` or the daily workflow updates `docs/ECOSYSTEM_FEED.md`
-- When `Relevance` column shows `breaking`/`actionable` and you need to decide what to build next
-- Before opening a planning PR — to avoid duplicating an open `gh pr` that already covers the feed event
+- After the daily feed workflow updates `docs/ECOSYSTEM_FEED.md` / `storage/ecosystem-feed/state/`
+- When the digest shows Act/Breaking items and you need to decide what to build next
+- Before opening a planning PR — to avoid duplicating work an explicit `ourIssue` already covers
 
 ## Run
 
 ```bash
 php .agents/skills/ecosystem-triage/scripts/analyze.php [--since=YYYY-MM-DD] [--json] [--limit=20] [--verbose]
+php .agents/skills/ecosystem-triage/scripts/analyze.php --mark-reviewed <id>
 ```
 
-- `--since` filters `publishedAt >= date` (e.g. last 7 days: `--since=$(date -v-7d +%Y-%m-%d)` or `date -d '7 days ago' +%Y-%m-%d`)
-- `--json` emits machine-readable `{"tasks":[...],"prs":[...]}` for `to-tickets` or CI
-- `--limit` caps tasks (default 20, feed is deduped by `id = sha256(source|externalId)`)
-- `--verbose` prints correlation hits per local PR
-- Reads `storage/ecosystem-feed/feed.json` + snapshots for `raw.body`; runs `gh pr list --state open --json number,title,body,labels,url` and `gh issue list --state open` when `gh` is available (no `gh` → still produces tasks, just without correlation)
+- `--since` filters `occurredAt >= date` (last 7 days: `--since=$(date -v-7d +%Y-%m-%d)` or `date -d '7 days ago' +%Y-%m-%d`)
+- `--json` emits `{"tasks":[...],"prs":[...],"events":N,"groups":N,"decisions":N}`
+- `--limit` caps tasks (default 20; one task per roadmap ref)
+- `--verbose` prints the `gh` calls used for correlation
+- `--events=PATH` / `--state=DIR` / `--watchlist-status=PATH` / `--decisions=PATH` override the defaults (used by tests)
+- `--mark-reviewed <id>` records a decision (see below)
 
-Output lands in `.scratch/ecosystem-triage/<YYYY-MM-DD>.md` and prints to stdout — **read it before publishing tickets**.
+Events come from `storage/ecosystem-feed/state/events/*.jsonl`; local PRs are fetched with
+`gh api repos/<owner>/<repo>/pulls?state=open` when `gh` is available (no `gh` → tasks still emit,
+only correlation falls back to explicit links).
+
+Output lands in `.scratch/ecosystem-triage/<YYYY-MM-DD>.md` and prints to stdout — **read it before
+publishing tickets**.
 
 ## What the script does
 
-1. **Gather feed** — newest first, `publishedAt` desc, capped 2000 (`scripts/ecosystem/Store.php`). Each `FeedEvent` carries `tags[]`, `severity` (`watch|actionable|breaking`), `relevance` (`RelevanceMapper`).
-2. **Gather local** — `gh pr list --state open --limit 100` + `gh issue list --state open` (if `gh` auth present). Falls back to empty when offline.
-3. **Correlate** — keyword overlap between feed `tags+title+body` and local `title+body+labels` (case-insensitive, normalized). Score ≥ 2 keywords or explicit `Relevance` substring → `related_pr: #123` link. Feed events with same `relevance` are grouped (e.g. all `P0-6 source routing (wsdl)` coalesce to one task).
-4. **Draft tasks** — vertical slices, not one-per-event:
+1. **Gather events** — read the monthly `state/events/*.jsonl` files (transition events, not raw
+   observations). Each event carries `tier` (`act|watch|noise`), `topics`, `roadmapRefs`, `score`
+   and `breaking`.
+2. **Drop settled items** — any event whose `entityId`/`id` is `reviewed`/`dismissed`/`linked` in
+   `decisions.json` is removed, so handled items do not resurface.
+3. **Group by roadmap ref** — one task per `roadmapRefs` entry (`plan:` / `spec:` / `upstream:`).
+   Events with no ref land in an `unmapped:<topic|source>` bucket so they never collapse into a
+   single mega-task.
+4. **Title from authored config** — `watchlist-status.json` live title, else the `topics.json`
+   `roadmaps[ref].title`, else the group's topic title, else a humanized ref. No hard-coded titles.
+5. **Correlate** — explicit watchlist `ourIssue` links and `decisions.json` `linked` entries win;
+   otherwise keyword overlap between the group's titles/topics and open local PRs, **excluding**
+   the words `arazzo`, `spec`, `openapi` (they match nearly everything).
+6. **Order** — breaking groups first, then highest `score`, then ref.
 
-   - **Title:** behaviour, not feed headline (e.g. `Support wsdl sourceDescription type + operationId reuse` not `PR #533`)
-   - **Blocked by:** computed from `RelevanceMapper` tiers — `P0` before `P1` before `P2`; `breaking` before `actionable`; `wsdl` blocks `soap Fault detection`
-   - **Related PRs:** `gh pr #123` with URL, or `None — new work`
-   - **Source events:** bullet list of feed URLs that motivate the task (so you can verify)
-   - **Acceptance:** concrete, testable — `gh api repos/OAI/Arazzo-Specification/pulls/533` renders `wsdl` type, `vendor/bin/pest` green, `docs/ECOSYSTEM_FEED.md` relevance cleared
+## Record outcomes — `--mark-reviewed`
+
+```bash
+php .agents/skills/ecosystem-triage/scripts/analyze.php --mark-reviewed gh:OAI/Arazzo-Specification#533
+```
+
+`<id>` is an event `id` (`evt_…`) or an entity id (`gh:owner/repo#N`). It appends a `reviewed`
+decision to `config/ecosystem/decisions.json`; the item is then excluded from later runs. The
+command is idempotent (marking the same item twice records one row). Use `--by=<actor>` to override
+the recorder (defaults to `$GITHUB_ACTOR` or `human`). The same file records `dismissed` and
+`linked: #123` outcomes; commit it with your PR so the decision is durable.
 
 ## Output shape
 
-Markdown (default) — one section per task:
+Markdown (default) — one section per roadmap-ref task:
 
 ```markdown
-## 01 — Support wsdl source type (P0-6) — breaking
+## 01 — Phase F — protocol packages
 
-**Severity:** breaking | **Relevance:** P0-6 source routing (wsdl type)
-**Blocked by:** None — can start immediately
-**Related PRs:** None — new work (closest: #42 chore: bump speclynx — no overlap)
-**Source events:**
-- feat(spec): add SOAP support — OAI/Arazzo-Specification#533 https://github.com/OAI/Arazzo-Specification/pull/533 — tags: soap,wsdl,breaking
-- Arazzo 1.1.0 — tag 1.1.0 — tags: xml,xpath
+**Roadmap ref:** `plan:phase-f-protocol-packages`
+**Severity:** actionable
+**Related:** #151 (watchlist ourIssue)
 
-**What to build:** step `sourceDescription.type=wsdl` resolves WSDL 1.1/2.0, `operationId` maps to `wsdl:operation/@name`, `MUST NOT operationPath` enforced.
-
-**Acceptance:**
-- [ ] gh api shows wsdl type accepted, openapi-or-wsdl-step-object validated
-- [ ] packages/core/tests/Parser/WsdlSourceTest.php green
-- [ ] Related feed events marked reviewed in .scratch file
-
-**Out of scope:** SOAP Fault body handling (next task)
+**Source events (3):**
+- `2026-10-14` feat(spec): add SOAP support — `OAI/Arazzo-Specification` · `pr.state_changed` https://github.com/OAI/Arazzo-Specification/pull/533
+- …
 ```
 
-JSON (`--json`) — same structure under `tasks[]` for `to-tickets` publishing.
+JSON (`--json`) — the same under `tasks[]` for `to-tickets` publishing.
 
 ## Next step — publish
 
-1. Review the `.scratch/ecosystem-triage/<date>.md` draft — adjust granularity (too coarse = split by `soap` vs `wsdl`; too fine = merge `xml+xpath`).
-2. Confirm `Blocked by` edges — `P0` tasks should not block on `P2` (`mcp` never blocks `soap`).
-3. Confirm `Related PRs` — if a feed event already has an open PR, retitle that PR's remaining work instead of opening a duplicate.
-4. Publish via `/to-tickets` (local files `.scratch/ecosystem-triage/issues/NN-*.md`) or `gh issue create` with label `ecosystem` + `ready-for-agent`.
-
-Completion criterion: `.scratch` file reviewed, blocking edges make sense against `docs/superpowers/plans/2026-08-25-ecosystem-feed-plan.md`, and no open PR duplicates the proposed work (checked via `gh pr list` correlation in the output).
+1. Review the `.scratch/ecosystem-triage/<date>.md` draft. Adjust granularity by editing
+   `topics.json` / `watchlist.json` (add a roadmap ref or a title), **not** the script.
+2. Confirm `Related` links — if an `ourIssue` already covers the task, add to that issue instead of
+   opening a duplicate.
+3. Publish via `/to-tickets` (local files `.scratch/ecosystem-triage/issues/NN-*.md`) or
+   `gh issue create --label ecosystem,ready-for-agent`.
+4. Record the outcome with `--mark-reviewed <id>` so the item stops resurfacing.
 
 ## Offline / CI note
 
-Without `gh` or `GITHUB_TOKEN`, correlation is skipped but tasks still emit — `Related PRs: (gh not available — run with auth to correlate)`. The daily workflow sets `GH_TOKEN` so correlation works there.
-
+Without `gh` or `GITHUB_TOKEN`, PR correlation is skipped but tasks still emit. When an item has an
+explicit watchlist `ourIssue` or a `decisions.json` link, that correlation still shows. The daily
+feed workflow sets `GH_TOKEN`; the weekly delivery workflow
+(`.github/workflows/ecosystem-deliver.yml`) opens the `ecosystem-digest: YYYY-Www` issue and — only
+when opted in (`config/ecosystem/delivery.json` `autoIssue` or a manual dispatch) — the per-Act
+auto-issues this analysis mirrors.

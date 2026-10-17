@@ -46,6 +46,15 @@ $collectTopicRefs = static function (string $path): array {
             }
         }
     }
+    // Authored display titles per roadmap ref (`roadmaps` map) are refs too (T7 triage titles).
+    $roadmaps = is_array($data) ? ($data['roadmaps'] ?? []) : [];
+    if (is_array($roadmaps)) {
+        foreach (array_keys($roadmaps) as $ref) {
+            if (is_string($ref) && $ref !== '') {
+                $refs[$ref] = true;
+            }
+        }
+    }
 
     return array_keys($refs);
 };
