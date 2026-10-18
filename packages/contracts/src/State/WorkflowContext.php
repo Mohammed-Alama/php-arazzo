@@ -258,7 +258,10 @@ final readonly class WorkflowContext implements WorkflowContextInterface
     public function withStepRequest(string $stepId, array $request): self
     {
         $newSteps = $this->steps;
-        $newSteps[$stepId]['request'] = $request;
+        /** @var array<string, mixed> $record */
+        $record = is_array($newSteps[$stepId] ?? null) ? $newSteps[$stepId] : [];
+        $record['request'] = $request;
+        $newSteps[$stepId] = $record;
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
@@ -269,7 +272,10 @@ final readonly class WorkflowContext implements WorkflowContextInterface
     public function withStepResponse(string $stepId, array $response): self
     {
         $newSteps = $this->steps;
-        $newSteps[$stepId]['response'] = $response;
+        /** @var array<string, mixed> $record */
+        $record = is_array($newSteps[$stepId] ?? null) ? $newSteps[$stepId] : [];
+        $record['response'] = $response;
+        $newSteps[$stepId] = $record;
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
@@ -277,7 +283,13 @@ final readonly class WorkflowContext implements WorkflowContextInterface
     public function withStepOutput(string $stepId, string $key, mixed $value): self
     {
         $newSteps = $this->steps;
-        $newSteps[$stepId]['outputs'][$key] = $value;
+        /** @var array<string, mixed> $record */
+        $record = is_array($newSteps[$stepId] ?? null) ? $newSteps[$stepId] : [];
+        /** @var array<string, mixed> $outputs */
+        $outputs = is_array($record['outputs'] ?? null) ? $record['outputs'] : [];
+        $outputs[$key] = $value;
+        $record['outputs'] = $outputs;
+        $newSteps[$stepId] = $record;
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
@@ -314,7 +326,8 @@ final readonly class WorkflowContext implements WorkflowContextInterface
 
     public function getStepStatus(string $stepId): ?StepStatus
     {
-        $status = $this->steps[$stepId]['status'] ?? null;
+        $record = $this->steps[$stepId] ?? null;
+        $status = is_array($record) ? ($record['status'] ?? null) : null;
 
         if ($status instanceof StepStatus) {
             return $status;
@@ -326,20 +339,30 @@ final readonly class WorkflowContext implements WorkflowContextInterface
     public function withStepStatus(string $stepId, StepStatus $status): self
     {
         $newSteps = $this->steps;
-        $newSteps[$stepId]['status'] = $status;
+        /** @var array<string, mixed> $record */
+        $record = is_array($newSteps[$stepId] ?? null) ? $newSteps[$stepId] : [];
+        $record['status'] = $status;
+        $newSteps[$stepId] = $record;
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
 
     public function getStepAttempts(string $stepId): int
     {
-        return $this->steps[$stepId]['attempts'] ?? 0;
+        $record = $this->steps[$stepId] ?? null;
+        $attempts = is_array($record) ? ($record['attempts'] ?? null) : null;
+
+        return is_int($attempts) ? $attempts : 0;
     }
 
     public function withStepAttemptIncremented(string $stepId): self
     {
         $newSteps = $this->steps;
-        $newSteps[$stepId]['attempts'] = ($newSteps[$stepId]['attempts'] ?? 0) + 1;
+        /** @var array<string, mixed> $record */
+        $record = is_array($newSteps[$stepId] ?? null) ? $newSteps[$stepId] : [];
+        $attempts = is_int($record['attempts'] ?? null) ? $record['attempts'] : 0;
+        $record['attempts'] = $attempts + 1;
+        $newSteps[$stepId] = $record;
 
         return new self($this->definitionId, $this->inputs, $newSteps, $this->components, $this->workflowId, $this->executionId, workflows: $this->workflows, stepsSpent: $this->stepsSpent, workflowCallStack: $this->workflowCallStack);
     }
