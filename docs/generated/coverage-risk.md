@@ -50,12 +50,12 @@ quadrantChart
     expression/Xpath: [0.667, 0.5]
     laravel/Bindings: [0.96, 0.857]
     laravel/Events: [0, 1]
-    laravel/Http: [0.714, 1]
+    laravel/Http: [0.75, 1]
     laravel/Lock: [0.5, 1]
     laravel/Persistence: [0.833, 1]
     laravel/Queue: [0.75, 1]
-    laravel/State: [0.5, 1]
-    laravel/Support: [0.714, 0.333]
+    laravel/State: [0.667, 1]
+    laravel/Support: [0.556, 0.5]
     runner/Async: [0.833, 1]
     runner/Execution: [0.643, 1]
     runner/Interfaces: [1, 0]
@@ -101,12 +101,12 @@ quadrantChart
 | `expression/Xpath` | 0.67 | 1 | 2 | 50% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
-| `laravel/Http` | 0.71 | 4 | 3 | 100% |
+| `laravel/Http` | 0.75 | 4 | 3 | 100% |
 | `laravel/Lock` | 0.50 | 3 | 1 | 100% |
 | `laravel/Persistence` | 0.83 | 6 | 4 | 100% |
 | `laravel/Queue` | 0.75 | 6 | 3 | 100% |
-| `laravel/State` | 0.50 | 3 | 1 | 100% |
-| `laravel/Support` | 0.71 | 1 | 3 | 33% |
+| `laravel/State` | 0.67 | 3 | 1 | 100% |
+| `laravel/Support` | 0.56 | 2 | 4 | 50% |
 | `runner/Async` | 0.83 | 21 | 7 | 100% |
 | `runner/Execution` | 0.64 | 30 | 15 | 100% |
 | `runner/Interfaces` | 1.00 | 0 | 1 | 0% |

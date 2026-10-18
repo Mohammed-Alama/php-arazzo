@@ -277,6 +277,7 @@ flowchart LR
     laravel_Http --> contracts_Interfaces
     laravel_Http --> cli_Generator
     laravel_Http --> contracts_Spec
+    laravel_Http --> laravel_Support
     laravel_Http --> sources_Resolver
     laravel_Http --> runner_Async
     laravel_Lock --> contracts_Interfaces
@@ -288,6 +289,7 @@ flowchart LR
     laravel_Queue --> contracts_Interfaces
     laravel_Queue --> runner_Async
     laravel_Queue --> runner__
+    laravel_State --> laravel_Support
     laravel_State --> runtime_State
     laravel_Support --> sources_Resolver
     laravel_Support --> contracts_Interfaces

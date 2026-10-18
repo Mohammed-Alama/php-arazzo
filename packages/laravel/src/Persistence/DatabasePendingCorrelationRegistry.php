@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Laravel\Persistence;
 use Alama\Arazzo\Contracts\Interfaces\PendingCorrelationRegistryInterface;
 use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Illuminate\Database\ConnectionInterface;
+use UnexpectedValueException;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -41,12 +42,27 @@ class DatabasePendingCorrelationRegistry implements PendingCorrelationRegistryIn
         }
 
         return new PendingCorrelation(
-            $row->correlation_id,
-            $row->execution_id,
-            $row->step_id,
-            $row->channel_path,
+            self::textColumn($row->correlation_id, 'correlation_id'),
+            self::textColumn($row->execution_id, 'execution_id'),
+            self::textColumn($row->step_id, 'step_id'),
+            self::textColumn($row->channel_path, 'channel_path'),
             $row->expires_at !== null && $row->expires_at instanceof \DateTimeInterface ? \DateTimeImmutable::createFromInterface($row->expires_at) : null,
         );
+    }
+
+    /**
+     * Laravel types query-builder column values as mixed. Every column read
+     * back here is written as a string by create(), so anything else means the
+     * row cannot be turned into a usable PendingCorrelation and we refuse to
+     * invent one.
+     */
+    private static function textColumn(mixed $value, string $column): string
+    {
+        if (!is_scalar($value)) {
+            throw new UnexpectedValueException("Pending correlation column '{$column}' is not a scalar, got ".get_debug_type($value).'.');
+        }
+
+        return (string) $value;
     }
 
     public function consume(string $correlationId): void
