@@ -230,3 +230,79 @@ it('install-gh-shim symlinks gh and is idempotent', function () {
         ->and($second->getOutput())->toContain('already installed')
         ->and(is_link("$dir/gh"))->toBeTrue();
 });
+
+it('blocks a PR whose body closes no issue', function () {
+    [$gh, $log] = shimStub();
+
+    $process = runShim(['pr', 'create', '--title', 'x', '--body', 'just a change'], $gh, $log);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and($process->getErrorOutput())->toContain('closes no issue')
+        ->and($process->getErrorOutput())->toContain('gh issue develop')
+        ->and(trim(file_get_contents($log)))->toBe('');
+});
+
+it('delegates a PR that closes an issue', function () {
+    [$gh, $log] = shimStub();
+
+    $process = runShim(['pr', 'create', '--title', 'x', '--body', "Fixes the parser.\n\nCloses #204"], $gh, $log);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(file_get_contents($log))->toContain('pr create');
+});
+
+it('accepts every GitHub closing keyword', function (string $keyword) {
+    [$gh, $log] = shimStub();
+
+    $body = $keyword.' #204';
+
+    $process = runShim(['pr', 'create', '--title', 'x', '--body', $body], $gh, $log);
+
+    expect($process->getExitCode())->toBe(0);
+})->with(['Closes', 'closes', 'Fixes', 'fixed', 'Resolves', 'RESOLVED']);
+
+it('does not mistake a mere reference for a closing link', function (string $body) {
+    [$gh, $log] = shimStub();
+
+    $process = runShim(['pr', 'create', '--title', 'x', '--body', $body], $gh, $log);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and(trim(file_get_contents($log)))->toBe('');
+})->with([
+    'Refs #204',
+    'See #204 for context',
+    'Related to the parser work',
+]);
+
+it('does not guard a body-less pr edit (the triage escape hatch)', function () {
+    [$gh, $log] = shimStub();
+
+    $process = runShim(['pr', 'edit', '5', '--add-label', 'foo'], $gh, $log);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(file_get_contents($log))->toContain('pr edit 5 --add-label foo');
+});
+
+it('refuses pr create --fill because it cannot carry the link', function () {
+    [$gh, $log] = shimStub();
+
+    $process = runShim(['pr', 'create', '--fill'], $gh, $log);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and($process->getErrorOutput())->toContain('--fill')
+        ->and(trim(file_get_contents($log)))->toBe('');
+});
+
+it('reads --body-file - for a PR and re-supplies it downstream', function () {
+    [$gh, $log] = shimStub();
+    $capture = tempnam(sys_get_temp_dir(), 'capture');
+
+    $process = runShim(
+        ['pr', 'create', '--title', 'x', '--body-file', '-'],
+        $gh, $log, null, ['GATE_STUB_CAPTURE' => $capture], "Closes #214\n",
+    );
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(file_get_contents($log))->toContain('pr create')
+        ->and(file_get_contents($capture))->toBe("Closes #214\n");
+});
