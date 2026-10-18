@@ -156,3 +156,26 @@ it('derives deterministic sha256 cache keys that vary with base path', function 
             ->and(strlen($key))->toBe(78); // 'arazzo_source_' is 14 chars + 64 hex (md5 would be 46)
     }
 });
+
+it('treats a non-scalar cached value as a miss', function (): void {
+    $inner = new class() implements SourceFetcher
+    {
+        public int $calls = 0;
+
+        public function fetch(string $urlOrPath, string $basePath): string
+        {
+            $this->calls++;
+
+            return 'fresh';
+        }
+    };
+
+    // A PSR-16 store may hold any serializable value, not just the string we wrote.
+    $cache = new ArrayCache();
+    $cache->set('arazzo_source_'.hash('sha256', 'http://test.com|'), ['stale' => true]);
+
+    $fetcher = new CachedFetcher($inner, $cache, 3600);
+
+    expect($fetcher->fetch('http://test.com', ''))->toBe('fresh')
+        ->and($inner->calls)->toBe(1);
+});

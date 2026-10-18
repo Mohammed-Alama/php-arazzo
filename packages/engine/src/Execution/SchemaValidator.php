@@ -23,8 +23,11 @@ final class SchemaValidator
 
         $violations = [];
 
-        if ($schema->allOf !== null && $schema->allOf !== []) {
-            foreach ($schema->allOf as $subSchema) {
+        // `allOf`/`anyOf`/`oneOf` default to null in cebe's attribute defaults and
+        // its `@property` docblock does not say so; `??` is the only null-safe read.
+        $allOf = $schema->allOf ?? [];
+        if ($allOf !== []) {
+            foreach ($allOf as $subSchema) {
                 $resolved = self::resolveSchema($subSchema);
                 if ($resolved !== null) {
                     $violations = [...$violations, ...self::validate($resolved, $value, $path)];
@@ -32,9 +35,10 @@ final class SchemaValidator
             }
         }
 
-        if ($schema->anyOf !== null && $schema->anyOf !== []) {
+        $anyOf = $schema->anyOf ?? [];
+        if ($anyOf !== []) {
             $anyPassed = false;
-            foreach ($schema->anyOf as $subSchema) {
+            foreach ($anyOf as $subSchema) {
                 $resolved = self::resolveSchema($subSchema);
                 if ($resolved !== null && self::validate($resolved, $value, $path) === []) {
                     $anyPassed = true;
@@ -46,9 +50,10 @@ final class SchemaValidator
             }
         }
 
-        if ($schema->oneOf !== null && $schema->oneOf !== []) {
+        $oneOf = $schema->oneOf ?? [];
+        if ($oneOf !== []) {
             $passes = 0;
-            foreach ($schema->oneOf as $subSchema) {
+            foreach ($oneOf as $subSchema) {
                 $resolved = self::resolveSchema($subSchema);
                 if ($resolved !== null && self::validate($resolved, $value, $path) === []) {
                     $passes++;
@@ -128,7 +133,10 @@ final class SchemaValidator
     }
 
     /**
-     * @param  array<string,mixed>  $value
+     * Member maps are array-keyed, not string-keyed: `json_decode(..., true)`
+     * turns `{"1": ...}` into the int key 1, and that property is real.
+     *
+     * @param  array<array-key,mixed>  $value
      * @return list<array{path: string, message: string}>
      */
     private static function validateObject(Schema $schema, array $value, string $path): array

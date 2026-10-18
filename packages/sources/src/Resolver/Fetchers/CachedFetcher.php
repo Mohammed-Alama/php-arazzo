@@ -24,10 +24,12 @@ final class CachedFetcher implements SourceFetcher
         $key = 'arazzo_source_'.hash('sha256', $urlOrPath.'|'.$basePath);
 
         $cached = $this->cache->get($key);
-        if ($cached !== null) {
+        if (is_scalar($cached)) {
             return (string) $cached;
         }
 
+        // Anything else is a store that handed back a shape we never wrote
+        // (a decoded array, an object); treat it as cold and refetch.
         $fresh = $this->inner->fetch($urlOrPath, $basePath);
         $this->cache->set($key, $fresh, $this->ttlSeconds);
 

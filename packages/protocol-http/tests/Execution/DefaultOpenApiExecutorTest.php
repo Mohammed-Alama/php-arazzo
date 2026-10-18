@@ -19,6 +19,7 @@ use GuzzleHttp\Psr7\Response;
 use Mockery;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 it('builds and sends an openapi request using the schema to route parameters', function () {
@@ -108,4 +109,76 @@ it('builds and sends an openapi request using the schema to route parameters', f
     $response = $executor->execute($resolved, $payload);
 
     expect($response->getStatusCode())->toBe(200);
+});
+
+it('logs and falls back to the raw value when a parameter cannot be cast to its schema type', function () {
+    $openapiJson = <<<'JSON'
+    {
+      "openapi": "3.0.0",
+      "info": { "title": "API", "version": "1.0" },
+      "servers": [{ "url": "https://api.example.com/v1" }],
+      "paths": {
+        "/search": {
+          "get": {
+            "operationId": "search",
+            "parameters": [
+              { "name": "limit", "in": "query", "schema": { "type": "integer" } }
+            ]
+          }
+        }
+      }
+    }
+    JSON;
+
+    $openApi = Reader::readFromJson($openapiJson);
+
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $httpClient->shouldReceive('sendRequest')->withArgs(function ($request) {
+        // The uncastable value is forwarded as-is rather than dropped.
+        expect((string) $request->getUri())->toBe('https://api.example.com/v1/search?limit=not-a-number');
+
+        return true;
+    })->andReturn(new Response(200));
+
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $requestFactory->shouldReceive('createRequest')->andReturnUsing(function ($method, $uri) {
+        return new Request($method, $uri);
+    });
+
+    $logger = Mockery::mock(LoggerInterface::class);
+    $logger->shouldReceive('warning')->once()->with(Mockery::pattern("/^Failed to cast value to schema type 'integer'/"));
+    $executor = new DefaultOpenApiExecutor($httpClient, $requestFactory, $logger);
+
+    $payload = new OpenApiPayload(auto: ['limit' => 'not-a-number']);
+
+    $source = new SourceDescription('test', 'test.json', SourceType::Openapi);
+    $normalized = new NormalizedOpenApiOperation(
+        path: '/search',
+        method: 'get',
+        resolvedServerUrl: 'https://api.example.com/v1',
+        pathParameters: [],
+        queryParameters: [
+            'limit' => ['name' => 'limit', 'in' => 'query', 'schema' => ['type' => 'integer']],
+        ],
+        headerParameters: [],
+        cookieParameters: [],
+        requestBodies: [],
+        responses: [],
+    );
+
+    $resolved = new OpenApiOperationHandle(
+        new ResolvedOperation(
+            source: $source,
+            normalized: $normalized,
+            rpcProtocol: null,
+            operationName: null,
+            rpcMethod: null,
+            graphqlOperation: null,
+            interaction: null,
+        ),
+        $openApi,
+        clone $openApi->paths->getPath('/search')->get,
+    );
+
+    expect($executor->execute($resolved, $payload)->getStatusCode())->toBe(200);
 });

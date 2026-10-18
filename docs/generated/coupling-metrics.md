@@ -12,7 +12,7 @@ targets. Regenerated before every commit.
 | Module | Files | LOC | Fan-in | Fan-out | Instability | Flag |
 |---|---:|---:|---:|---:|---:|---|
 | `cli:Console` | 12 | 921 | 0 | 18 | 1.00 |  |
-| `cli:Generator` | 2 | 109 | 2 | 1 | 0.33 |  |
+| `cli:Generator` | 2 | 139 | 2 | 1 | 0.33 |  |
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
@@ -26,7 +26,7 @@ targets. Regenerated before every commit.
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 8 | 976 | 2 | 5 | 0.71 |  |
+| `engine:Execution` | 8 | 984 | 2 | 5 | 0.71 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -63,7 +63,7 @@ targets. Regenerated before every commit.
 | `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
 | `runtime:Telemetry` | 2 | 280 | 2 | 0 | 0.00 |  |
 | `sources:Normalizer` | 11 | 1272 | 9 | 5 | 0.36 |  |
-| `sources:Resolver` | 13 | 475 | 8 | 3 | 0.27 |  |
+| `sources:Resolver` | 13 | 477 | 8 | 3 | 0.27 |  |
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 

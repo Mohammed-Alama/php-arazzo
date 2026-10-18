@@ -49,12 +49,42 @@ class OpenAiClient implements AiClientInterface
 
         if ($response->getStatusCode() >= 400) {
             $data = json_decode($responseBody, true);
-            $errorMessage = $data['error']['message'] ?? $response->getReasonPhrase();
-            throw new RuntimeException('API Error: '.$errorMessage);
+            $message = self::dig($data, 'error', 'message');
+
+            // The reason phrase stands in for a missing or unstringifiable error payload.
+            $detail = is_scalar($message) ? (string) $message : $response->getReasonPhrase();
+
+            throw new RuntimeException('API Error: '.$detail);
         }
 
         $data = json_decode($responseBody, true);
 
-        return $data['choices'][0]['message']['content'] ?? '';
+        return self::text(self::dig($data, 'choices', 0, 'message', 'content'));
+    }
+
+    /**
+     * Walks a decoded response along a key path. The API is untrusted, so every
+     * level has to be established rather than assumed; the first level that is
+     * missing or is not a map ends the walk with null.
+     */
+    private static function dig(mixed $payload, int|string ...$path): mixed
+    {
+        foreach ($path as $key) {
+            if (!is_array($payload)) {
+                return null;
+            }
+
+            $payload = $payload[$key] ?? null;
+        }
+
+        return $payload;
+    }
+
+    /**
+     * Narrows a textual response field; anything unstringifiable reads as empty.
+     */
+    private static function text(mixed $value): string
+    {
+        return is_scalar($value) ? (string) $value : '';
     }
 }

@@ -93,15 +93,15 @@ pie showData
 
 ```mermaid
 pie showData
-    title Engine — 3 test files
+    title Engine — 4 test files
+    "Module-scoped": 2
     "Root": 2
-    "Module-scoped": 1
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 2 | 67% |
-| Module-scoped | 1 | 33% |
+| Module-scoped | 2 | 50% |
+| Root | 2 | 50% |
 
 ## Events package
 

@@ -171,12 +171,15 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
      */
     private function castToSchemaType(mixed $value, ?array $schema): mixed
     {
-        if ($schema === null || !isset($schema['type'])) {
+        // A JSON Schema may declare a type list (`["string", "null"]`); only a
+        // single named type can drive a cast.
+        $type = $schema['type'] ?? null;
+        if (!is_string($type)) {
             return $value;
         }
 
         try {
-            return match ($schema['type']) {
+            return match ($type) {
                 'integer' => $this->typeCaster->asInteger($value),
                 'number' => $this->typeCaster->asFloat($value),
                 'string' => $this->typeCaster->asString($value),
@@ -184,7 +187,9 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
                 'array' => $this->typeCaster->asArray($value),
                 default => $value,
             };
-        } catch (Exception) {
+        } catch (Exception $e) {
+            $this->logger?->warning("Failed to cast value to schema type '{$type}': {$e->getMessage()}");
+
             return $value;
         }
     }
