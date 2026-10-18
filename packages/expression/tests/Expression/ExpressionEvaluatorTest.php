@@ -112,6 +112,40 @@ it('evaluates component parameters', function () {
     expect($evaluator->evaluate(new Expression('{$components.parameters.missing}'), new EvaluationContext($context)))->toBeNull();
 });
 
+it('returns null when the components parameter map is not an array', function () {
+    $evaluator = evaluator();
+    $expr = new Expression('{$components.parameters.api-key}');
+
+    $object = new WorkflowContext('def_1', components: ['parameters' => (object) ['api-key' => 'secret-123']]);
+    $scalar = new WorkflowContext('def_1', components: ['parameters' => 'not-a-map']);
+
+    expect($evaluator->evaluate($expr, new EvaluationContext($object)))->toBeNull()
+        ->and($evaluator->evaluate($expr, new EvaluationContext($scalar)))->toBeNull();
+});
+
+it('returns null for HttpMetaRef when the step payload is not an array', function () {
+    $context = new WorkflowContext('def_1', steps: ['step1' => (object) ['response' => ['statusCode' => 201]]]);
+
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(new Expression('{$statusCode}'), new EvaluationContext($context, 'step1')))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$method}'), new EvaluationContext($context, 'step1')))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$url}'), new EvaluationContext($context, 'step1')))->toBeNull();
+});
+
+it('returns null for HttpMetaRef when the step request or response is not an array', function () {
+    $context = new WorkflowContext('def_1', steps: ['step1' => [
+        'request' => (object) ['method' => 'POST'],
+        'response' => (object) ['statusCode' => 201],
+    ]]);
+
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(new Expression('{$statusCode}'), new EvaluationContext($context, 'step1')))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$method}'), new EvaluationContext($context, 'step1')))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$url}'), new EvaluationContext($context, 'step1')))->toBeNull();
+});
+
 it('evaluates step input references', function () {
     $context = (new WorkflowContext('def_1'))->withStepInputs('create-user', ['name' => 'Alice', 'age' => 30]);
     $evaluator = evaluator();

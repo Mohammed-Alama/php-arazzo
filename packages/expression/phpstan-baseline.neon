@@ -1,19 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method looseEquals has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Evaluation/Condition/ConditionEvaluator.php
-
-		-
-			message: '#^Method expressionEnd has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Evaluation/Condition/Lexer.php
-
-		-
-			message: '#^Method lex has too high cyclomatic complexity \(21\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Evaluation/Condition/Lexer.php
+			path: src/Data/ExpressionReference.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
@@ -21,62 +11,9 @@ parameters:
 			path: src/Exceptions/ExpressionSyntaxException.php
 
 		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Data/ExpressionReference.php
-
-		-
-			message: '#^Cannot access offset ''method'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''request'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset ''url'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/ExpressionEvaluator.php
-
-		-
 			message: '#^Method evaluateAst has too high cyclomatic complexity \(48\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/ExpressionEvaluator.php
-
-		-
-			message: '#^Cannot access offset 0 on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/JsonPathEvaluator.php
-
-		-
-			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/JsonPathEvaluator.php
 
 		-
 			message: '#^Method tokenize has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
@@ -87,26 +24,3 @@ parameters:
 			message: '#^Method parseWorkflowRef has too high cyclomatic complexity \(12\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Parser.php
-
-		-
-			message: '#^Method processMatch has too high cyclomatic complexity \(13\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Interpolator.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Interpolator.php
-
-		-
-			message: '#^Call to function is_string\(\) with mixed will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: src/Interpolator.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Interpolator.php
