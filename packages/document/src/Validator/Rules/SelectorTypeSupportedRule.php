@@ -87,7 +87,7 @@ final class SelectorTypeSupportedRule implements Rule
             return; // No pinned version = implementation default; allowed.
         }
 
-        $allowed = self::KNOWN_VERSIONS[$s->type->value] ?? [];
+        $allowed = self::KNOWN_VERSIONS[$s->type->value];
         if (!in_array($s->version, $allowed, true)) {
             $errors->error(
                 $this->code(),

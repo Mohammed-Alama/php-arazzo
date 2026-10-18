@@ -10,12 +10,22 @@ use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowDependsOnExistsRule;
 use Alama\Arazzo\Tests\Support\Fx;
 
-it('flags non-scalar and missing workflow references', function (): void {
-    /** @var list<mixed> $dep */
-    $dep = [['bad'], 'ghost'];
-    $wf = new Workflow('main', null, null, null, $dep, [Fx::step()], [], [], [], []);
+it('flags a reference to an undeclared workflow', function (): void {
+    $wf = new Workflow('main', null, null, null, ['ghost'], [Fx::step()], [], [], [], []);
     $doc = Fx::doc(workflows: [$wf]);
     $ec = new ErrorCollector();
     (new WorkflowDependsOnExistsRule())->check($doc, SymbolTable::build($doc), $ec);
-    expect(count($ec->errors()))->toBeGreaterThanOrEqual(2);
+
+    expect($ec->errors())->toHaveCount(1)
+        ->and($ec->errors()[0]->path)->toBe('/workflows/0/dependsOn/0');
+});
+
+it('accepts a reference to a declared workflow', function (): void {
+    $first = new Workflow('first', null, null, null, [], [Fx::step()], [], [], [], []);
+    $second = new Workflow('second', null, null, null, ['first'], [Fx::step()], [], [], [], []);
+    $doc = Fx::doc(workflows: [$first, $second]);
+    $ec = new ErrorCollector();
+    (new WorkflowDependsOnExistsRule())->check($doc, SymbolTable::build($doc), $ec);
+
+    expect($ec->errors())->toBe([]);
 });
