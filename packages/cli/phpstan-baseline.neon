@@ -6,53 +6,6 @@ parameters:
 			path: src/Console/Cli/CliRunner.php
 
 		-
-			message: '#^Method execute has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Console/Command/RunCommand.php
-
-		-
-			message: '#^Binary operation "\." between ''API Error\: '' and mixed results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
-			message: '#^Cannot access offset ''choices'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
-			message: '#^Cannot access offset ''content'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
-			message: '#^Cannot access offset ''error'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
-			message: '#^Cannot access offset ''message'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
-			message: '#^Cannot access offset 0 on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
-			message: '#^Method Alama\\Arazzo\\Cli\\Generator\\Clients\\OpenAiClient\:\:generate\(\) should return string but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Generator/Clients/OpenAiClient.php
-
-		-
 			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Generator/Clients/OpenAiClient.php

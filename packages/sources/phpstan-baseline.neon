@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Resolver/Fetchers/CachedFetcher.php
-
-		-
 			message: '#^Method resolveParameters has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Normalizer/OpenApi30Normalizer.php

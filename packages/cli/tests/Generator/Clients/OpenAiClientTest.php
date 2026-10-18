@@ -118,3 +118,73 @@ it('throws exception when api returns error', function () {
     expect(fn () => $client->generate('system_instructions', 'user_trace'))
         ->toThrow(RuntimeException::class, 'API Error: Invalid API key');
 });
+
+it('falls back to the reason phrase when the api error message is not a string', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $streamFactory = Mockery::mock(StreamFactoryInterface::class);
+    $request = Mockery::mock(RequestInterface::class);
+    $response = Mockery::mock(ResponseInterface::class);
+    $requestStream = Mockery::mock(StreamInterface::class);
+    $responseStream = Mockery::mock(StreamInterface::class);
+
+    $endpoint = 'https://api.openai.com/v1/chat/completions';
+    $apiKey = 'test-key';
+
+    $streamFactory->shouldReceive('createStream')->andReturn($requestStream);
+    $requestFactory->shouldReceive('createRequest')->andReturn($request);
+    $request->shouldReceive('withHeader')->andReturn($request);
+    $request->shouldReceive('withBody')->andReturn($request);
+
+    $httpClient->shouldReceive('sendRequest')->andReturn($response);
+
+    $response->shouldReceive('getStatusCode')->andReturn(401);
+    $response->shouldReceive('getBody')->andReturn($responseStream);
+    $response->shouldReceive('getReasonPhrase')->andReturn('Unauthorized');
+
+    $responseStream->shouldReceive('__toString')
+        ->andReturn(json_encode([
+            'error' => [
+                'message' => ['type' => 'invalid_request_error'],
+            ],
+        ]));
+
+    $client = new OpenAiClient($httpClient, $requestFactory, $streamFactory, $apiKey, $endpoint, 'gpt-4o');
+
+    expect(fn () => $client->generate('system_instructions', 'user_trace'))
+        ->toThrow(RuntimeException::class, 'API Error: Unauthorized');
+});
+
+it('returns an empty string when the choice content carries no text', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $streamFactory = Mockery::mock(StreamFactoryInterface::class);
+    $request = Mockery::mock(RequestInterface::class);
+    $response = Mockery::mock(ResponseInterface::class);
+    $requestStream = Mockery::mock(StreamInterface::class);
+    $responseStream = Mockery::mock(StreamInterface::class);
+
+    $endpoint = 'https://api.openai.com/v1/chat/completions';
+    $apiKey = 'test-key';
+
+    $streamFactory->shouldReceive('createStream')->andReturn($requestStream);
+    $requestFactory->shouldReceive('createRequest')->andReturn($request);
+    $request->shouldReceive('withHeader')->andReturn($request);
+    $request->shouldReceive('withBody')->andReturn($request);
+
+    $httpClient->shouldReceive('sendRequest')->andReturn($response);
+
+    $response->shouldReceive('getStatusCode')->andReturn(200);
+    $response->shouldReceive('getBody')->andReturn($responseStream);
+
+    $responseStream->shouldReceive('__toString')
+        ->andReturn(json_encode([
+            'choices' => [
+                ['message' => ['content' => [['type' => 'text', 'text' => 'chunked']]]],
+            ],
+        ]));
+
+    $client = new OpenAiClient($httpClient, $requestFactory, $streamFactory, $apiKey, $endpoint, 'gpt-4o');
+
+    expect($client->generate('system_instructions', 'user_trace'))->toBe('');
+});

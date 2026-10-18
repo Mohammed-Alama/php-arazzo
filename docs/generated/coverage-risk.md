@@ -85,7 +85,7 @@ quadrantChart
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
-| `engine/Execution` | 0.71 | 11 | 8 | 100% |
+| `engine/Execution` | 0.71 | 12 | 8 | 100% |
 | `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
