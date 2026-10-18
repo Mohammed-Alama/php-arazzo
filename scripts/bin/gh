@@ -7,10 +7,11 @@
 # parent from the arguments and defers the verdict to the one engine,
 # tools/issue-intake/bin/validate-issue (D12).
 #
-# Guarded (only when a body is supplied):
-#   gh issue create ...
+# Guarded:
+#   gh issue create ...                  (body must match the intake structure)
 #   gh issue edit ...                    (label-only edits pass straight through)
 #   gh api .../issues | .../issues/<n>   (POST/PATCH with a body field)
+#   gh pr create ... | gh pr edit ...    (a supplied body must close an issue)
 #
 # Everything else — reads, label changes, comments, sub-resources — execs the
 # real gh untouched (anti-goal A2). GATE_GH_BIN overrides the real binary.
@@ -110,6 +111,21 @@ all_labels_of() {
         | jq -r '.labels[]?.name' 2>/dev/null || true
 }
 
+# Does the body carry a GitHub closing keyword aimed at an issue? Prose that
+# merely mentions an issue ("Refs #1", "See #1") does not count. Mirrors
+# GitHub's own set: close(s|d), fix(es|ed), resolve(s|d).
+has_closing_reference() {
+    printf '%s' "$1" | grep -Eqi \
+        '(close[sd]?|fix(e[sd])?|resolve[sd]?)[[:space:]]*:?[[:space:]]*(#[0-9]+|[[:alnum:]_.-]+/[[:alnum:]_.-]+#[0-9]+|https?://[^[:space:]]+/issues/[0-9]+)'
+}
+
+refuse_unlinked_pr() {
+    printf '\ngh-shim: refusing to run gh — this PR closes no issue.\n' >&2
+    printf 'Every PR must be traceable to the issue it resolves. Put a closing\n' >&2
+    printf 'keyword in the body, for example:\n\n    Closes #123\n\n' >&2
+    printf 'Paved path:\n    gh issue develop <issue> --checkout\n' >&2
+}
+
 # $1 body, $2 labels-json, $3 parent number or empty, $4 parent level or empty.
 gate() {
     parent_json='null'
@@ -172,6 +188,12 @@ case "${1:-}" in
         case "${2:-}" in
             create) action=create ;;
             edit)   action=edit ;;
+        esac
+    ;;
+    pr)
+        case "${2:-}" in
+            create) action=pr-create ;;
+            edit)   action=pr-edit ;;
         esac
     ;;
     api) action=api ;;
@@ -275,6 +297,84 @@ $labels_in"
             fi
 
             rm -f "$TMP_RESULT"
+        fi
+    fi
+
+    exec "$REAL_GH" "$@"
+fi
+
+if [ "$action" = pr-create ] || [ "$action" = pr-edit ]; then
+    body='' body_file='' body_supplied=0 fill=0
+    skip=0 pending='' index=0
+
+    for arg in "$@"; do
+        index=$((index + 1))
+
+        [ "$index" -le 2 ] && continue
+
+        if [ "$skip" -eq 1 ]; then
+            skip=0
+            case "$pending" in
+                body) body=$arg; body_supplied=1 ;;
+                file) body_file=$arg; body_supplied=1 ;;
+            esac
+            pending=''
+            continue
+        fi
+
+        case "$arg" in
+            --body)        skip=1; pending=body ;;
+            -b)            skip=1; pending=body ;;
+            --body-file)   skip=1; pending=file ;;
+            -F)            skip=1; pending=file ;;
+            --body=*)      body=${arg#--body=}; body_supplied=1 ;;
+            --body-file=*) body_file=${arg#--body-file=}; body_supplied=1 ;;
+            -b*)           body=${arg#-b}; body_supplied=1 ;;
+            -F*)           body_file=${arg#-F}; body_supplied=1 ;;
+            --fill|--fill-first|--fill-verbose) fill=1 ;;
+            -d|--draft)    : ;;
+            -t|--title|-B|--base|-H|--head|-l|--label|--add-label|--remove-label|-r|--reviewer|--add-reviewer|--remove-reviewer|-a|--assignee|--add-assignee|--remove-assignee|-m|--milestone|-p|--project|--add-project|--remove-project|--repo|-R|--template|-T)
+                skip=1; pending='' ;;
+            -*)            : ;;
+            *)             : ;;
+        esac
+    done
+
+    if [ "$fill" -eq 1 ]; then
+        die 'refusing `--fill`: it cannot carry the closing reference a PR needs. Pass --body with "Closes #<issue>".'
+    fi
+
+    if [ "$body_supplied" -eq 1 ]; then
+        let_through=0
+
+        case "$body_file" in
+            '') : ;;
+            '-')
+                require_engine
+                TMP_BODY=$(mktemp "${TMPDIR:-/tmp}/gh-shim-body.XXXXXX") || die 'cannot create a temp file' 2
+                cat > "$TMP_BODY"
+                body=$(cat "$TMP_BODY")
+            ;;
+            *)
+                if [ -f "$body_file" ]; then
+                    body=$(cat "$body_file")
+                else
+                    let_through=1   # unreadable body file: let the real gh report it
+                fi
+            ;;
+        esac
+
+        if [ "$let_through" -eq 0 ] && ! has_closing_reference "$body"; then
+            rm -f "$TMP_BODY"
+            refuse_unlinked_pr
+            exit 1
+        fi
+
+        if [ -n "$TMP_BODY" ]; then
+            "$REAL_GH" "$@" < "$TMP_BODY"
+            status=$?
+            rm -f "$TMP_BODY"
+            exit $status
         fi
     fi
 
