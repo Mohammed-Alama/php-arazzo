@@ -46,6 +46,7 @@ final readonly class ExecutionState implements JsonSerializable
 
     /**
      * @param  array<string, mixed>  $inputs
+     * @param  array<string, mixed>  $components
      * @param  list<string>|null  $workflowCallStack
      */
     public static function start(string $executionId, string $definitionId, string $workflowId, array $inputs = [], int $maxSteps = 1000, int $maxWorkflowDepth = 32, array $components = [], int $stepsSpent = 0, ?array $workflowCallStack = null): self
@@ -66,18 +67,90 @@ final readonly class ExecutionState implements JsonSerializable
     /** @param array<string, mixed> $values */
     public static function fromArray(array $values): self
     {
+        // Hydration narrows every field instead of blind-casting it: a corrupt
+        // or truncated payload falls back to a default rather than producing a
+        // TypeError deep inside a resumed run.
+        $workflowId = self::stringField($values, 'workflowId');
+
+        /** @var array<string, mixed> $inputs */
+        $inputs = self::arrayField($values, 'inputs');
+
+        /** @var array<string, int> $stepAttempts */
+        $stepAttempts = self::arrayField($values, 'stepAttempts');
+
+        /** @var array<string, mixed> $stepResults */
+        $stepResults = self::arrayField($values, 'stepResults');
+
+        /** @var array<string, list<string>> $dependencies */
+        $dependencies = self::arrayField($values, 'dependencies');
+
+        /** @var array<string, mixed> $outputs */
+        $outputs = self::arrayField($values, 'outputs');
+
+        /** @var list<mixed> $errors */
+        $errors = self::arrayField($values, 'errors');
+
+        /** @var list<string> $workflowCallStack */
+        $workflowCallStack = is_array($values['workflowCallStack'] ?? null)
+            ? $values['workflowCallStack']
+            : [$workflowId];
+
+        /** @var array<string, mixed> $components */
+        $components = self::arrayField($values, 'components');
+
         return new self(
-            (string) $values['executionId'],
-            (string) ($values['definitionId'] ?? ''),
-            (string) $values['workflowId'],
-            array_key_exists('currentStepId', $values) ? $values['currentStepId'] : null,
-            $values['inputs'] ?? [], $values['stepAttempts'] ?? [], $values['stepResults'] ?? [],
-            $values['dependencies'] ?? [], $values['outputs'] ?? [], $values['errors'] ?? [],
-            (int) ($values['stepsSpent'] ?? 0), (int) ($values['maxSteps'] ?? 1000),
-            $values['workflowCallStack'] ?? [(string) $values['workflowId']],
-            (int) ($values['maxWorkflowDepth'] ?? 32), $values['components'] ?? [],
-            (string) ($values['status'] ?? 'running'),
+            self::stringField($values, 'executionId'),
+            self::stringField($values, 'definitionId'),
+            $workflowId,
+            self::nullableStringField($values, 'currentStepId'),
+            $inputs,
+            $stepAttempts,
+            $stepResults,
+            $dependencies,
+            $outputs,
+            $errors,
+            self::intField($values, 'stepsSpent', 0),
+            self::intField($values, 'maxSteps', 1000),
+            $workflowCallStack,
+            self::intField($values, 'maxWorkflowDepth', 32),
+            $components,
+            self::stringField($values, 'status', 'running'),
         );
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     * @return array<mixed>
+     */
+    private static function arrayField(array $values, string $key): array
+    {
+        $value = $values[$key] ?? null;
+
+        return is_array($value) ? $value : [];
+    }
+
+    /** @param array<string, mixed> $values */
+    private static function stringField(array $values, string $key, string $default = ''): string
+    {
+        $value = $values[$key] ?? null;
+
+        return is_string($value) ? $value : $default;
+    }
+
+    /** @param array<string, mixed> $values */
+    private static function intField(array $values, string $key, int $default): int
+    {
+        $value = $values[$key] ?? null;
+
+        return is_int($value) ? $value : $default;
+    }
+
+    /** @param array<string, mixed> $values */
+    private static function nullableStringField(array $values, string $key): ?string
+    {
+        $value = $values[$key] ?? null;
+
+        return is_string($value) ? $value : null;
     }
 
     /** @return array<string, mixed> */
@@ -89,7 +162,26 @@ final readonly class ExecutionState implements JsonSerializable
     /** @return array<string, mixed> */
     public function toArray(): array
     {
-        return get_object_vars($this);
+        // Listed explicitly (rather than get_object_vars) so the persisted shape
+        // is a typed array<string, mixed> and its key order is contractual.
+        return [
+            'executionId' => $this->executionId,
+            'definitionId' => $this->definitionId,
+            'workflowId' => $this->workflowId,
+            'currentStepId' => $this->currentStepId,
+            'inputs' => $this->inputs,
+            'stepAttempts' => $this->stepAttempts,
+            'stepResults' => $this->stepResults,
+            'dependencies' => $this->dependencies,
+            'outputs' => $this->outputs,
+            'errors' => $this->errors,
+            'stepsSpent' => $this->stepsSpent,
+            'maxSteps' => $this->maxSteps,
+            'workflowCallStack' => $this->workflowCallStack,
+            'maxWorkflowDepth' => $this->maxWorkflowDepth,
+            'components' => $this->components,
+            'status' => $this->status,
+        ];
     }
 
     public function attemptFor(string $stepId): int
@@ -107,9 +199,19 @@ final readonly class ExecutionState implements JsonSerializable
         return $this->copy(status: $status);
     }
 
+    /**
+     * @param  array<string, mixed>  $inputs
+     * @param  array<string, int>  $stepAttempts
+     * @param  array<string, mixed>  $stepResults
+     * @param  array<string, list<string>>  $dependencies
+     * @param  array<string, mixed>  $outputs
+     * @param  list<mixed>  $errors
+     * @param  list<string>  $workflowCallStack
+     * @param  array<string, mixed>  $components
+     */
     private function copy(
         ?string $executionId = null, ?string $definitionId = null, ?string $workflowId = null,
-        mixed $currentStepId = null, ?array $inputs = null, ?array $stepAttempts = null,
+        ?string $currentStepId = null, ?array $inputs = null, ?array $stepAttempts = null,
         ?array $stepResults = null, ?array $dependencies = null, ?array $outputs = null,
         ?array $errors = null, ?int $stepsSpent = null, ?int $maxSteps = null,
         ?array $workflowCallStack = null, ?int $maxWorkflowDepth = null, ?array $components = null,

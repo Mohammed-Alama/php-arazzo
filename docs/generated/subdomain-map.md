@@ -27,7 +27,7 @@ flowchart LR
         S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
     subgraph S_generic["Generic subdomain"]
-        S_contracts_State["contracts:State<br/><small>667 LOC</small>"]:::genericDomain
+        S_contracts_State["contracts:State<br/><small>792 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
         S_laravel_Bindings["laravel:Bindings<br/><small>385 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
@@ -79,8 +79,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
 | Supporting | 7 | 6,999 | 0 | 36% |
-| Generic subdomain | 11 | 1,891 | 1,263 | 16% |
-| Unclassified | 28 | 8,097 | 0 | 42% |
+| Generic subdomain | 11 | 2,016 | 1,263 | 17% |
+| Unclassified | 28 | 8,097 | 0 | 41% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
