@@ -522,28 +522,7 @@ class Parser
         }
 
         if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
-            $rawType = $value['type'];
-            $version = null;
-
-            if (is_array($rawType)) {
-                $typeCtx = $ctx->push('type');
-                $typeStr = $this->requireString($rawType, 'type', $typeCtx);
-                $version = $this->optionalString($rawType, 'version', $typeCtx);
-            } else {
-                $typeStr = $this->requireString($value, 'type', $ctx);
-            }
-
-            $type = ExpressionType::tryFrom($typeStr);
-            if ($type === null) {
-                throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
-            }
-
-            return new Selector(
-                context: $this->optionalString($value, 'context', $ctx),
-                selector: $this->requireString($value, 'selector', $ctx),
-                type: $type,
-                version: $version ?? $this->optionalString($value, 'version', $ctx),
-            );
+            return $this->parseSelector($value, $ctx);
         }
 
         if (is_array($value)) {
@@ -556,6 +535,34 @@ class Parser
         }
 
         return $value;
+    }
+
+    private function parseSelector(mixed $node, ParseContext $ctx): Selector
+    {
+        $value = $this->requireObjectMap($node, $ctx);
+
+        $rawType = $value['type'] ?? null;
+        $version = null;
+
+        if (is_array($rawType)) {
+            $typeCtx = $ctx->push('type');
+            $typeStr = $this->requireString($rawType, 'type', $typeCtx);
+            $version = $this->optionalString($rawType, 'version', $typeCtx);
+        } else {
+            $typeStr = $this->requireString($value, 'type', $ctx);
+        }
+
+        $type = ExpressionType::tryFrom($typeStr);
+        if ($type === null) {
+            throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
+        }
+
+        return new Selector(
+            context: $this->optionalString($value, 'context', $ctx),
+            selector: $this->requireString($value, 'selector', $ctx),
+            type: $type,
+            version: $version ?? $this->optionalString($value, 'version', $ctx),
+        );
     }
 
     protected function parseRequestBody(mixed $node, ParseContext $ctx): RequestBody
