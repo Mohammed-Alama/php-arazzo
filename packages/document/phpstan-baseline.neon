@@ -6,19 +6,13 @@ parameters:
             path: src/NormalizedOpenApiOperation.php
 
         -
-            message: '#^Call to an undefined method Alama\\Arazzo\\Document\\Parser\\Parser\:\:parseSelector\(\)\.$#'
-            identifier: method.notFound
-            count: 1
-            path: src/Parser/Parser.php
-
-        -
             message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
             identifier: function.alreadyNarrowedType
             count: 1
             path: src/Parser/Parser.php
 
         -
-            message: '#^Class Parser has too many methods \(36\)\. Maximum allowed is 20\.$#'
+            message: '#^Class Parser has too many methods \(37\)\. Maximum allowed is 20\.$#'
             count: 1
             path: src/Parser/Parser.php
 

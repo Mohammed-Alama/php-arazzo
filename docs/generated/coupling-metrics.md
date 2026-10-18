@@ -20,7 +20,7 @@ targets. Regenerated before every commit.
 | `contracts:Spec` | 49 | 1154 | 33 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 665 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
-| `document:Parser` | 11 | 1305 | 7 | 2 | 0.22 |  |
+| `document:Parser` | 11 | 1312 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 68 | 3518 | 6 | 5 | 0.45 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |

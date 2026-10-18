@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Parser;
 
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Enum\Format;
 use Alama\Arazzo\Contracts\Spec\Enum\InteractionMode;
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
 use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\RawDocument;
+use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
 use Alama\Arazzo\Document\Parser\Parser;
 
@@ -74,6 +76,30 @@ it('parses graphql-step graphqlOperation object', function () use ($decode): voi
     expect($op->schema)->toBe('$sourceDescriptions.gql');
     expect($op->operation)->toBe('query GetToken { token }');
     expect($op->extensions)->toBe(['contentType' => 'application/json']);
+});
+
+it('parses graphql-step extensionsSelector', function () use ($decode): void {
+    $document = (new Parser())->parse($decode(<<<'YAML'
+    arazzo: 1.2.0
+    info: { title: "T", version: "1" }
+    sourceDescriptions:
+      - { name: gql, type: graphql, url: ./schema.graphql }
+    workflows:
+      - workflowId: w
+        steps:
+          - stepId: s
+            graphqlOperation:
+              schema: $sourceDescriptions.gql
+              operation: "query GetToken { token }"
+              extensionsSelector:
+                selector: $.data.token
+                type: jsonpath
+    YAML));
+
+    $op = $document->workflows[0]->steps[0]->target->graphqlOperation;
+    expect($op->extensionsSelector)->toBeInstanceOf(Selector::class)
+        ->and($op->extensionsSelector->selector)->toBe('$.data.token')
+        ->and($op->extensionsSelector->type)->toBe(ExpressionType::JsonPath);
 });
 
 it('parses interaction-step interaction and components.interactions', function () use ($decode): void {
