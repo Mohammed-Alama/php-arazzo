@@ -11,20 +11,16 @@ parameters:
     scanDirectories:
         - ../contracts/src
         - ../runtime/src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true
     ignoreErrors:
         -
             message: '#Method .* has too many parameters#'
         -
             message: '#Property DateInterval::\$f .* not nullable#'
         -
-            message: '#has InvalidArgumentException in PHPDoc @throws tag but it is not thrown#'
-        -
             message: '#Property .* is never read, only written#'
         -
             message: '#Strict comparison using !== between int and null will always evaluate to true#'
-        -
-            message: '#Strict comparison using !== between float\|int and null will always evaluate to true#'
         -
             message: '#Strict comparison using !== between string and null will always evaluate to true#'
         -
@@ -33,8 +29,6 @@ parameters:
             message: '#Method validateObject has too high cyclomatic complexity#'
         -
             message: '#Parameter \#1 \$array \(list<mixed>\) of array_values is already a list#'
-        -
-            message: '#Strict comparison using !== between float\|int and null will always evaluate to true#'
         -
             message: '#Strict comparison using === between string and null will always evaluate to false#'
         -

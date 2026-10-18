@@ -81,10 +81,11 @@ hooks-install: ## Point git at .githooks/ (one-time per clone)
 	git config core.hooksPath .githooks
 	@echo "hooks installed: pre-push will run pint --test + phpstan + pest before pushing main"
 
-verify: ## Run the same gates the pre-push hook runs (docs, pint, analyse, tests)
+verify: ## Run the same gates the pre-push hook runs (docs, pint, analyse, baselines, tests)
 	php scripts/generate-docs.php
 	vendor/bin/pint --test
 	composer run analyse
+	composer run check-baselines
 	composer run test
 
 # Falsification testing (Popper/Hume/Socrates/Descartes) — see .agents/skills/falsification-testing/SKILL.md

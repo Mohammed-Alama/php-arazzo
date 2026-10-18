@@ -13,4 +13,4 @@ parameters:
         - ../contracts/src
         - ../expression/src
         - src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true

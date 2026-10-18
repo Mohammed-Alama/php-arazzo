@@ -16,4 +16,4 @@ parameters:
         - ../engine/src
         - ../sources/src
         - ../protocol-http/src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true

@@ -14,4 +14,4 @@ parameters:
         - ../expression/src
         - ../protocol-http/src
         - ../runner/src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true

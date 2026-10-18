@@ -20,13 +20,13 @@ targets. Regenerated before every commit.
 | `contracts:Spec` | 49 | 1154 | 33 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
-| `document:Parser` | 11 | 1313 | 7 | 2 | 0.22 |  |
+| `document:Parser` | 11 | 1317 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 68 | 3459 | 6 | 5 | 0.45 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 8 | 984 | 2 | 5 | 0.71 |  |
+| `engine:Execution` | 8 | 990 | 2 | 5 | 0.71 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
@@ -53,7 +53,7 @@ targets. Regenerated before every commit.
 | `laravel:State` | 1 | 51 | 1 | 2 | 0.67 |  |
 | `laravel:Support` | 4 | 268 | 4 | 5 | 0.56 |  |
 | `(laravel root)` | 4 | 594 | 0 | 9 | 1.00 |  |
-| `runner:Async` | 7 | 1347 | 4 | 20 | 0.83 | ⚠ unstable hub |
+| `runner:Async` | 7 | 1346 | 4 | 20 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
 | `runner:Sync` | 5 | 815 | 4 | 18 | 0.82 | ⚠ unstable hub |
