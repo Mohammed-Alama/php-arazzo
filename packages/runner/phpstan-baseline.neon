@@ -1,149 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/AsyncExecutionGraph.php
-
-		-
-			message: '#^Method __construct has too many parameters \(18\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/AsyncGraphSeams.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 2
-			path: src/Async/CorrelationResumer.php
-
-		-
 			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Async/CorrelationResumer.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Execution/Data/ExecutionResult.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Execution/Data/SubWorkflowResult.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Execution/Data/Transition.php
-
-		-
-			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
-			identifier: greater.alwaysTrue
-			count: 1
-			path: src/Execution/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Method execute has too high cyclomatic complexity \(20\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Property Alama\\Arazzo\\Runner\\Execution\\DefaultOpenApiExecutor\:\:\$logger is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/Execution/DefaultOpenApiExecutor.php
-
-		-
-			message: '#^Method findResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/ResponseSchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between array\<cebe\\openapi\\spec\\MediaType\> and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Execution/ResponseSchemaValidator.php
-
-		-
-			message: '#^Method validate has too high cyclomatic complexity \(35\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Method validateNumber has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Method validateObject has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<mixed\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Parameter \#2 \$value of static method Alama\\Arazzo\\Runner\\Execution\\SchemaValidator\:\:validateObject\(\) expects array\<string, mixed\>, array\<mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between array and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between array\<cebe\\openapi\\spec\\Reference\|cebe\\openapi\\spec\\Schema\> and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between float\|int and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 6
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Execution/SchemaValidator.php
-
-		-
-			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Async/StepExecutionWorker.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: src/Async/StepExecutionWorker.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
@@ -154,95 +14,6 @@ parameters:
 			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(25\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Async/StepExecutionWorker.php
-
-		-
-			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Async/StepExecutionWorker.php
-
-		-
-			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot call method getBody\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot call method getContents\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot call method getHeaders\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot call method getQuery\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot call method getUri\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot call method rewind\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$request of method Alama\\Arazzo\\Runner\\Execution\\IdempotencyKeyInjector\:\:inject\(\) expects Psr\\Http\\Message\\RequestInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Parameter \#1 \$string of function parse_str expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Parameter \#2 \$array of function implode expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: src/Sync/StepExecutor.php
-
-		-
-			message: '#^Cannot access offset ''outputs'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
@@ -265,50 +36,24 @@ parameters:
 			path: src/Async/StepOutcomeHandler.php
 
 		-
-			message: '#^Cannot access offset ''body'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutputExtractor.php
+			path: src/AsyncExecutionGraph.php
 
 		-
-			message: '#^Cannot access offset ''response'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Execution/StepOutputExtractor.php
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			count: 1
+			path: src/Execution/Data/ExecutionResult.php
 
 		-
-			message: '#^Cannot access offset ''statusCode'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutputExtractor.php
+			path: src/Execution/Data/SubWorkflowResult.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
+			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
-			path: src/Execution/StepOutputExtractor.php
-
-		-
-			message: '#^Method castOutputAgainstResponseSchema has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
-			count: 1
-			path: src/Execution/StepOutputExtractor.php
-
-		-
-			message: '#^Method name ''castOutputAgainstResponseSchema'' length \(31\) is outside allowed range \(3\-30\)\.$#'
-			count: 1
-			path: src/Execution/StepOutputExtractor.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/Execution/StepOutputExtractor.php
-
-		-
-			message: '#^Cannot access offset ''status'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Sync/WorkflowEngine.php
+			path: src/Execution/Data/Transition.php
 
 		-
 			message: '#^Method transition has too high cyclomatic complexity \(23\)\. Maximum allowed is 10\.$#'
@@ -321,31 +66,9 @@ parameters:
 			path: src/Sync/WorkflowEngine.php
 
 		-
-			message: '#^Parameter \#2 \$result of method Alama\\Arazzo\\Contracts\\State\\ExecutionState\:\:withStepResult\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Sync/WorkflowEngine.php
-
-		-
 			message: '#^Method executeCanonically has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
 			count: 1
 			path: src/Sync/WorkflowExecutor.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: src/Protocol/AsyncApiStepExecutor.php
-
-		-
-			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Protocol/AsyncApiStepExecutor.php
-
-		-
-			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
-			count: 1
-			path: src/Protocol/HttpStepExecutor.php
 
 		-
 			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'

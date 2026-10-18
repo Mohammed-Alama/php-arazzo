@@ -442,7 +442,8 @@ class StepOutcomeHandler
      */
     private function stepOutputs(WorkflowContext $context, string $stepId): array
     {
-        $outputs = $context->getSteps()[$stepId]['outputs'] ?? [];
+        $record = $context->getSteps()[$stepId] ?? null;
+        $outputs = is_array($record) ? ($record['outputs'] ?? null) : null;
 
         if (!is_array($outputs)) {
             return [];

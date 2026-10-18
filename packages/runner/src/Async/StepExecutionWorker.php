@@ -203,7 +203,7 @@ class StepExecutionWorker
                     ? ExecutionState::fromArray($persisted)
                     : ExecutionState::start($executionId, $contextWithResult->getDefinitionId(), $workflow->workflowId, $contextWithResult->getInputs(), components: $contextWithResult->getComponents());
                 foreach ($contextWithResult->getSteps() as $completedStepId => $completedResult) {
-                    $state = $state->withStepResult($completedStepId, $completedResult);
+                    $state = $state->withStepResult($completedStepId, self::stepRecord($completedResult));
                 }
                 $state = $state->restoreBudget($contextWithResult->getStepsSpent(), $contextWithResult->getWorkflowCallStack() ?: [$workflow->workflowId]);
                 foreach ($this->attemptsFrom($contextWithResult) as $attemptedStepId => $attempts) {
@@ -214,7 +214,8 @@ class StepExecutionWorker
                         $state = $state->withStepAttempt($attemptedStepId);
                     }
                 }
-                $state = $state->withStepResult($step->stepId, $contextWithResult->getSteps()[$step->stepId] ?? []);
+                $record = self::stepRecord($contextWithResult->getSteps()[$step->stepId] ?? null);
+                $state = $state->withStepResult($step->stepId, $record);
                 $transition = $this->workflowEngine->transition($document, $workflow, $step, $state, $criteriaMet);
                 // Persist in WorkflowContext shape so reconcileWithPersistedState
                 // and CorrelationResumer keep reading the same keys.
@@ -360,10 +361,27 @@ class StepExecutionWorker
     {
         $attempts = [];
         foreach ($context->getSteps() as $id => $step) {
-            $attempts[$id] = (int) ($step['attempts'] ?? 0);
+            $attempt = self::stepRecord($step)['attempts'] ?? null;
+            $attempts[$id] = is_scalar($attempt) ? (int) $attempt : 0;
         }
 
         return $attempts;
+    }
+
+    /**
+     * Persisted step records are name-to-value maps. Non-array entries are
+     * dropped and non-string keys filtered so the result matches the typed
+     * seam the record is handed to.
+     *
+     * @return array<string, mixed>
+     */
+    private static function stepRecord(mixed $record): array
+    {
+        if (!is_array($record)) {
+            return [];
+        }
+
+        return array_filter($record, static fn (mixed $key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
     }
 
     private function findStep(Workflow $workflow, string $stepId): ?Step

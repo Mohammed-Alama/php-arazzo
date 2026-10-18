@@ -62,16 +62,19 @@ class CorrelationResumer
                 return;
             }
 
-            $document = $this->definitionRegistry->get((string) $persisted['definitionId']);
+            $definitionId = $persisted['definitionId'] ?? null;
+            $workflowId = $persisted['workflowId'] ?? null;
+
+            $document = is_scalar($definitionId) ? $this->definitionRegistry->get((string) $definitionId) : null;
             if ($document === null) {
-                $this->eventLedger->append($executionId, 'execution.definition_missing', ['definitionId' => $persisted['definitionId']]);
+                $this->eventLedger->append($executionId, 'execution.definition_missing', ['definitionId' => $definitionId]);
 
                 return;
             }
 
-            $workflow = $this->findWorkflow($document, (string) $persisted['workflowId']);
+            $workflow = is_scalar($workflowId) ? $this->findWorkflow($document, (string) $workflowId) : null;
             if ($workflow === null) {
-                $this->eventLedger->append($executionId, 'execution.workflow_missing', ['workflowId' => $persisted['workflowId']]);
+                $this->eventLedger->append($executionId, 'execution.workflow_missing', ['workflowId' => $workflowId]);
 
                 return;
             }

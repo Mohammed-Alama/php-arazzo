@@ -53,10 +53,10 @@ targets. Regenerated before every commit.
 | `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
 | `laravel:Support` | 3 | 210 | 2 | 5 | 0.71 |  |
 | `(laravel root)` | 4 | 594 | 0 | 9 | 1.00 |  |
-| `runner:Async` | 7 | 1310 | 4 | 20 | 0.83 | ⚠ unstable hub |
+| `runner:Async` | 7 | 1332 | 4 | 20 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 5 | 799 | 4 | 18 | 0.82 | ⚠ unstable hub |
+| `runner:Sync` | 5 | 815 | 4 | 18 | 0.82 | ⚠ unstable hub |
 | `(runner root)` | 9 | 529 | 6 | 16 | 0.73 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
