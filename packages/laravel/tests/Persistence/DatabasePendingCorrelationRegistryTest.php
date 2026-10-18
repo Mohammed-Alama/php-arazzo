@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Alama\Arazzo\Laravel\Persistence\DatabasePendingCorrelationRegistry;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Facades\DB;
 
 beforeEach(function () {
@@ -40,4 +41,26 @@ it('existsForExecution reflects whether any correlation is outstanding', functio
 
     $this->registry->consume('corr_3');
     expect($this->registry->existsForExecution('exec_3'))->toBeFalse();
+});
+
+it('refuses a row whose identity columns are not scalars', function () {
+    $row = (object) [
+        'correlation_id' => ['not-a-string'],
+        'execution_id' => 'exec_1',
+        'step_id' => 'step_1',
+        'channel_path' => 'channel_1',
+        'expires_at' => null,
+    ];
+
+    $builder = Mockery::mock('QueryBuilder');
+    $builder->shouldReceive('where')->andReturnSelf();
+    $builder->shouldReceive('first')->andReturn($row);
+
+    $connection = Mockery::mock(ConnectionInterface::class);
+    $connection->shouldReceive('table')->andReturn($builder);
+
+    $registry = new DatabasePendingCorrelationRegistry($connection);
+
+    expect(fn () => $registry->findByCorrelationId('corr_1'))
+        ->toThrow(UnexpectedValueException::class, "Pending correlation column 'correlation_id' is not a scalar");
 });

@@ -42,7 +42,7 @@ class CorrelationResumer
     }
 
     /**
-     * @param  array{statusCode?: int, headers?: array<string, mixed>, body?: mixed}  $response
+     * @param  array<string, mixed>  $response
      */
     public function resume(string $correlationId, array $response): void
     {
@@ -111,7 +111,7 @@ class CorrelationResumer
 
             $context = $this->hydrateContext($persisted, $executionId);
 
-            $statusCode = $response['statusCode'] ?? 200;
+            $statusCode = self::httpStatus($response['statusCode'] ?? null);
             $body = $response['body'] ?? null;
 
             $contextWithResponse = $context->withStepResponse($step->stepId, [
@@ -154,6 +154,16 @@ class CorrelationResumer
     private function hydrateContext(array $persisted, string $executionId): WorkflowContext
     {
         return WorkflowContext::fromPersisted($persisted, $executionId);
+    }
+
+    /**
+     * The resumption payload arrives from the transport, so only an int can
+     * stand in for an HTTP status; anything else means "no status given" and
+     * the resume path falls back to a successful response.
+     */
+    private static function httpStatus(mixed $value): int
+    {
+        return is_int($value) ? $value : 200;
     }
 
     private function findWorkflow(ArazzoDocument $document, string $workflowId): ?Workflow

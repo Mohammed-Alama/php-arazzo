@@ -46,14 +46,14 @@ targets. Regenerated before every commit.
 | `(expression root)` | 9 | 1143 | 4 | 7 | 0.64 |  |
 | `laravel:Bindings` | 7 | 378 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
-| `laravel:Http` | 3 | 167 | 2 | 5 | 0.71 |  |
+| `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
-| `laravel:Persistence` | 4 | 260 | 1 | 5 | 0.83 |  |
+| `laravel:Persistence` | 4 | 312 | 1 | 5 | 0.83 |  |
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
-| `laravel:State` | 1 | 45 | 1 | 1 | 0.50 |  |
-| `laravel:Support` | 3 | 210 | 2 | 5 | 0.71 |  |
+| `laravel:State` | 1 | 51 | 1 | 2 | 0.67 |  |
+| `laravel:Support` | 4 | 268 | 4 | 5 | 0.56 |  |
 | `(laravel root)` | 4 | 594 | 0 | 9 | 1.00 |  |
-| `runner:Async` | 7 | 1332 | 4 | 20 | 0.83 | ⚠ unstable hub |
+| `runner:Async` | 7 | 1347 | 4 | 20 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
 | `runner:Sync` | 5 | 815 | 4 | 18 | 0.82 | ⚠ unstable hub |
@@ -67,7 +67,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1017**
+Total cross-module edges: **1020**
 
 ## Most entangled module pairs
 

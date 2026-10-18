@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Laravel\State;
 
+use Alama\Arazzo\Laravel\Support\Payload;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 
@@ -34,8 +35,13 @@ class RedisHotStateStore implements StateStoreInterface
     public function load(string $executionId): ?array
     {
         $data = $this->redis->connection()->get($this->prefix.$executionId);
+        if (!is_string($data) || $data === '') {
+            return null;
+        }
 
-        return $data ? json_decode($data, true) : null;
+        $decoded = json_decode($data, true);
+
+        return is_array($decoded) ? Payload::record($decoded) : null;
     }
 
     public function delete(string $executionId): void

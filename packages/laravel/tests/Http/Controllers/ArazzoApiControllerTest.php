@@ -51,3 +51,84 @@ it('generates yaml from graph', function () {
         ->assertStatus(200)
         ->assertJson(['yaml' => 'generated_yaml']);
 });
+
+it('shapes a graph into a natural language trace', function () {
+    $generator = Mockery::mock(ArazzoGenerator::class);
+    $trace = '';
+    $generator->shouldReceive('generate')
+        ->once()
+        ->with('fake.yaml', Mockery::on(function (string $value) use (&$trace): bool {
+            $trace = $value;
+
+            return true;
+        }))
+        ->andReturn('generated_yaml');
+    $this->app->instance(ArazzoGenerator::class, $generator);
+
+    postJson('/api/arazzo/generate', [
+        'openapi' => 'fake.yaml',
+        'graph' => [
+            'nodes' => [
+                [
+                    'id' => 'n1',
+                    'data' => [
+                        'method' => 'GET',
+                        'path' => '/rides',
+                        'operationId' => 'listRides',
+                        'parameters' => "page\nsize",
+                        'criteria' => 'status == 200',
+                    ],
+                ],
+            ],
+            'edges' => [
+                ['source' => 'n1', 'target' => 'n2'],
+            ],
+        ],
+    ])
+        ->assertStatus(200)
+        ->assertJson(['yaml' => 'generated_yaml']);
+
+    expect($trace)->toBe(
+        "Workflow Graph Intent:\n"
+        ."- Node n1: Execute GET /rides (Operation: listRides).\n"
+        ."  - Parameters: page size\n"
+        ."  - Success Criteria: status == 200\n"
+        ."- Edge: Output of Node n1 flows to Node n2.\n",
+    );
+});
+
+it('tolerates malformed graph entries', function () {
+    $generator = Mockery::mock(ArazzoGenerator::class);
+    $trace = '';
+    $generator->shouldReceive('generate')
+        ->once()
+        ->with('fake.yaml', Mockery::on(function (string $value) use (&$trace): bool {
+            $trace = $value;
+
+            return true;
+        }))
+        ->andReturn('generated_yaml');
+    $this->app->instance(ArazzoGenerator::class, $generator);
+
+    postJson('/api/arazzo/generate', [
+        'openapi' => 'fake.yaml',
+        'graph' => [
+            'nodes' => [
+                ['id' => 'n1', 'data' => ['method' => 'GET', 'path' => '/rides', 'operationId' => 'listRides']],
+                'not-a-record',
+                ['id' => 'n2', 'data' => 'not-a-map'],
+                ['id' => ['not', 'a', 'string'], 'data' => ['method' => ['not', 'a', 'string']]],
+            ],
+            'edges' => 'not-a-list',
+        ],
+    ])
+        ->assertStatus(200)
+        ->assertJson(['yaml' => 'generated_yaml']);
+
+    expect($trace)->toBe(
+        "Workflow Graph Intent:\n"
+        ."- Node n1: Execute GET /rides (Operation: listRides).\n"
+        ."- Node n2: Execute   (Operation: ).\n"
+        ."- Node : Execute   (Operation: ).\n",
+    );
+});

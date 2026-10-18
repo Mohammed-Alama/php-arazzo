@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Laravel\Http\Controllers;
 use Alama\Arazzo\Cli\Generator\ArazzoGenerator;
 use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
+use Alama\Arazzo\Laravel\Support\Payload;
 use Alama\Arazzo\Sources\Resolver\Interfaces\SourceResolver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class ArazzoApiController extends Controller
         $source = new SourceDescription('api', is_string($specPath) ? $specPath : '', SourceType::Openapi);
         $resolved = $resolver->resolve($source, getcwd() ?: '');
 
-        $data = json_decode((string) json_encode($resolved->content), true);
+        $data = Payload::record(json_decode((string) json_encode($resolved->content), true));
         $endpoints = [];
 
         if (isset($data['paths']) && is_array($data['paths'])) {
@@ -57,30 +58,45 @@ class ArazzoApiController extends Controller
             'graph' => 'required|array',
         ]);
 
-        $graph = $request->input('graph');
+        $graph = Payload::record($request->input('graph'));
 
         // Convert graph to a natural language trace for the AI
         $trace = "Workflow Graph Intent:\n";
-        foreach ($graph['nodes'] ?? [] as $node) {
-            $trace .= "- Node {$node['id']}: Execute {$node['data']['method']} {$node['data']['path']} (Operation: {$node['data']['operationId']}).\n";
-            if (!empty($node['data']['parameters'])) {
-                $trace .= '  - Parameters: '.str_replace("\n", ' ', $node['data']['parameters'])."\n";
+        foreach (Payload::records($graph, 'nodes') as $node) {
+            $data = Payload::record($node['data'] ?? null);
+            $id = Payload::text($node['id'] ?? null);
+            $method = Payload::text($data['method'] ?? null);
+            $path = Payload::text($data['path'] ?? null);
+            $operationId = Payload::text($data['operationId'] ?? null);
+            $trace .= "- Node {$id}: Execute {$method} {$path} (Operation: {$operationId}).\n";
+
+            $parameters = $data['parameters'] ?? null;
+            if (!empty($parameters)) {
+                $trace .= '  - Parameters: '.str_replace("\n", ' ', Payload::text($parameters))."\n";
             }
-            if (!empty($node['data']['requestBody'])) {
-                $trace .= '  - Request Body: '.str_replace("\n", ' ', $node['data']['requestBody'])."\n";
+
+            $requestBody = $data['requestBody'] ?? null;
+            if (!empty($requestBody)) {
+                $trace .= '  - Request Body: '.str_replace("\n", ' ', Payload::text($requestBody))."\n";
             }
-            if (!empty($node['data']['criteria'])) {
-                $trace .= '  - Success Criteria: '.str_replace("\n", ' ', $node['data']['criteria'])."\n";
+
+            $criteria = $data['criteria'] ?? null;
+            if (!empty($criteria)) {
+                $trace .= '  - Success Criteria: '.str_replace("\n", ' ', Payload::text($criteria))."\n";
             }
-            if (!empty($node['data']['outputs'])) {
-                $trace .= '  - Outputs: '.str_replace("\n", ' ', $node['data']['outputs'])."\n";
+
+            $outputs = $data['outputs'] ?? null;
+            if (!empty($outputs)) {
+                $trace .= '  - Outputs: '.str_replace("\n", ' ', Payload::text($outputs))."\n";
             }
         }
-        foreach ($graph['edges'] ?? [] as $edge) {
-            $trace .= "- Edge: Output of Node {$edge['source']} flows to Node {$edge['target']}.\n";
+        foreach (Payload::records($graph, 'edges') as $edge) {
+            $source = Payload::text($edge['source'] ?? null);
+            $target = Payload::text($edge['target'] ?? null);
+            $trace .= "- Edge: Output of Node {$source} flows to Node {$target}.\n";
         }
 
-        $yaml = $generator->generate($request->input('openapi'), $trace);
+        $yaml = $generator->generate(Payload::text($request->input('openapi')), $trace);
 
         return response()->json(['yaml' => $yaml]);
     }

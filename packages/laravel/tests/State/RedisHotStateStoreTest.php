@@ -84,3 +84,29 @@ it('returns null when the key is missing', function (): void {
 
     expect($store->load('missing'))->toBeNull();
 });
+
+it('returns null when the stored value is not a json object', function (mixed $stored): void {
+    $redisConnection = new class($stored) extends Connection
+    {
+        public function __construct(private mixed $stored) {}
+
+        public function get($key)
+        {
+            return $this->stored;
+        }
+
+        public function createSubscription($channels, \Closure $callback, $method = 'subscribe') {}
+    };
+    $factory = $this->createMock(RedisFactory::class);
+    $factory->method('connection')->willReturn($redisConnection);
+
+    $store = new RedisHotStateStore($factory);
+
+    expect($store->load('exec_123'))->toBeNull();
+})->with([
+    'json scalar' => ['123'],
+    'json string' => ['"state"'],
+    'json null' => ['null'],
+    'empty string' => [''],
+    'non-string payload' => [[['foo' => 'bar']]],
+]);

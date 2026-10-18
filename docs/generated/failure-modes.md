@@ -31,6 +31,7 @@ Regenerated before every commit.
 | **SourceFetchException** | `SchemeSourceFetcher` <small>laravel:Support</small>, `DefaultSourceResolver` <small>sources:Resolver</small>, `HttpFetcher` <small>sources:Resolver</small>, `LocalFetcher` <small>sources:Resolver</small> |
 | **SourceParseException** | `DefaultSourceResolver` <small>sources:Resolver</small> |
 | **StepBudgetExceededException** | `WorkflowEngine` <small>runner:Sync</small> |
+| **UnexpectedValueException** | `DatabasePendingCorrelationRegistry` <small>laravel:Persistence</small> |
 | **UnresolvableReferenceException** | `SourceRegistry` <small>sources:Resolver</small> |
 | **UnsupportedSerializationStyleException** | `ParameterSerializer` <small>engine:Execution</small> |
 | **WorkflowCycleException** | `WorkflowEngine` <small>runner:Sync</small> |

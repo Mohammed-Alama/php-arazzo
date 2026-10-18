@@ -131,6 +131,7 @@ laravel-Bindings,sources-root,2
 laravel-Http,cli-Generator,1
 laravel-Http,contracts-Interfaces,3
 laravel-Http,contracts-Spec,2
+laravel-Http,laravel-Support,2
 laravel-Http,runner-Async,1
 laravel-Http,sources-Resolver,1
 laravel-Lock,contracts-Interfaces,1
@@ -142,6 +143,7 @@ laravel-Persistence,runtime-State,3
 laravel-Queue,contracts-Interfaces,1
 laravel-Queue,runner-Async,4
 laravel-Queue,runner-root,2
+laravel-State,laravel-Support,1
 laravel-State,runtime-State,1
 laravel-Support,contracts-Interfaces,6
 laravel-Support,events-Interfaces,1

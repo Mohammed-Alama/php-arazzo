@@ -264,3 +264,34 @@ it('reports a missing workflow when the persisted workflowId is not scalar', fun
         ->and($eventLedger->appended[0]['eventType'])->toBe('execution.workflow_missing')
         ->and($eventLedger->appended[0]['payload'])->toBe(['workflowId' => ['not', 'a', 'string']]);
 });
+
+it('falls back to a 200 status when the resumption payload carries a non-int statusCode', function (): void {
+    [$registry, $definitionId] = resumerDocument();
+    $document = $registry->get($definitionId);
+
+    $pendingCorrelations = new ResumerMockPendingCorrelations();
+    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
+
+    $stateStore = new ResumerMockStateStore();
+    $stateStore->state = ['definitionId' => $definitionId, 'workflowId' => 'wf_1'];
+
+    $outcomeHandler = new RecordingStepOutcomeHandler();
+
+    $resumer = new CorrelationResumer(
+        $pendingCorrelations,
+        $stateStore,
+        new RecordingDefinitionRegistry($document),
+        \Mockery::mock(OutputExtractorInterface::class)->shouldReceive('extractOutputs')->andReturn([])->getMock(),
+        \Mockery::mock(EvaluationEngineInterface::class)->shouldReceive('evaluateSuccessCriteria')->andReturn(true)->getMock(),
+        $outcomeHandler,
+        new ResumerMockEventLedger(),
+        new ResumerMockLockManager(),
+    );
+
+    $response = ['statusCode' => 'not-an-int', 'body' => ['x' => 1]];
+    $resumer->resume('corr_1', $response);
+
+    expect($stateStore->saved['exec_1']['steps']['wait-for-ride']['statusCode'])->toBe(200)
+        ->and($stateStore->saved['exec_1']['steps']['wait-for-ride']['response'])->toBe($response)
+        ->and($outcomeHandler->handled)->toHaveCount(1);
+});

@@ -216,6 +216,7 @@ flowchart TB
     M_laravel_Http --> M_cli_Generator
     M_laravel_Http --> M_contracts_Interfaces
     M_laravel_Http --> M_contracts_Spec
+    M_laravel_Http --> M_laravel_Support
     M_laravel_Http --> M_runner_Async
     M_laravel_Http --> M_sources_Resolver
     M_laravel_Lock --> M_contracts_Interfaces
@@ -227,6 +228,7 @@ flowchart TB
     M_laravel_Queue --> M_contracts_Interfaces
     M_laravel_Queue --> M_runner_Async
     M_laravel_Queue --> M_runner__
+    M_laravel_State --> M_laravel_Support
     M_laravel_State --> M_runtime_State
     M_laravel_Support --> M_contracts_Interfaces
     M_laravel_Support --> M_events_Interfaces

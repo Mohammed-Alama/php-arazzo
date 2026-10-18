@@ -42,7 +42,7 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
             ->value('id');
 
         if ($existingId !== null) {
-            return (string) $existingId;
+            return $this->textColumn($existingId);
         }
 
         $id = (string) Str::ulid();
@@ -56,10 +56,10 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
         ]);
 
         // A concurrent register() may have won the race; re-select rather than trust $id.
-        return (string) $this->db->table($this->tableName)
+        return $this->textColumn($this->db->table($this->tableName)
             ->where('document_identity', $identity)
             ->where('content_hash', $contentHash)
-            ->value('id');
+            ->value('id'));
     }
 
     public function get(string $definitionId): ?ArazzoDocument
@@ -69,19 +69,52 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
             return null;
         }
 
-        $decoded = json_decode((string) $row->raw_document, true);
+        $decoded = json_decode($this->textColumn($row->raw_document), true);
         if (!is_array($decoded)) {
             throw new DefinitionHydrationException("Definition '{$definitionId}' has unparseable raw_document JSON.");
         }
 
         try {
-            return $this->parser->parse(new RawDocument($decoded, "db://{$definitionId}", Format::Json));
+            return $this->parser->parse(new RawDocument($this->stringKeyedDocument($decoded), "db://{$definitionId}", Format::Json));
         } catch (ParserException $e) {
             throw new DefinitionHydrationException(
                 "Definition '{$definitionId}' no longer passes validation: {$e->getMessage()}",
                 previous: $e,
             );
         }
+    }
+
+    /**
+     * Laravel types query-builder column values as mixed. Every column this
+     * registry reads holds text; anything else means a corrupt row rather
+     * than a document we can register or hydrate.
+     */
+    private function textColumn(mixed $value): string
+    {
+        if (!is_scalar($value)) {
+            throw new DefinitionHydrationException('Expected a scalar column value, got '.get_debug_type($value).'.');
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * RawDocument models the decoded document as a name-to-value map. JSON
+     * object keys are strings, but PHP turns the numeric ones ("0") into ints;
+     * they are restored rather than dropped, leaving it to the parser to
+     * decide whether such a key is a legal Arazzo field.
+     *
+     * @param  array<array-key, mixed>  $decoded
+     * @return array<string, mixed>
+     */
+    private function stringKeyedDocument(array $decoded): array
+    {
+        $document = [];
+        foreach ($decoded as $key => $value) {
+            $document[(string) $key] = $value;
+        }
+
+        return $document;
     }
 
     /**
@@ -95,8 +128,11 @@ class DatabaseDefinitionRegistry implements DefinitionRegistryInterface
     }
 
     /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * Keys are irrelevant to canonical hashing; a document nests lists, so the
+     * recursion cannot assume string keys.
+     *
+     * @param  array<array-key, mixed>  $data
+     * @return array<array-key, mixed>
      */
     private function sortRecursive(array $data): array
     {
