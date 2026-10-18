@@ -109,34 +109,31 @@ final class Interpolator
         $resolved = $resolver($bare);
 
         if ($stringifyOpt !== null) {
-            $stringified = call_user_func($stringifyOpt, $resolved);
-            if (is_string($stringified)) {
-                return $stringified;
-            }
-
-            return (string) $stringified;
+            return self::stringify(call_user_func($stringifyOpt, $resolved));
         }
 
-        if ($resolved === null || $resolved === '') {
-            return '';
+        return self::stringify($resolved);
+    }
+
+    /**
+     * Total stringification: scalars stringify natively, structured values as
+     * JSON, everything else (null, and resource handles the resolver cannot
+     * produce) as empty. A custom stringifier that returns a non-string is
+     * normalised the same way rather than being cast blindly.
+     */
+    private static function stringify(mixed $value): string
+    {
+        if (is_scalar($value)) {
+            return (string) $value;
         }
 
-        if (is_scalar($resolved)) {
-            $scalar = $resolved;
+        if (is_array($value) || is_object($value)) {
+            $encoded = json_encode($value);
 
-            return (string) $scalar;
+            return $encoded === false ? '' : $encoded;
         }
 
-        if (is_array($resolved) || is_object($resolved)) {
-            $encoded = json_encode($resolved);
-            if ($encoded === false) {
-                return '';
-            }
-
-            return $encoded;
-        }
-
-        return is_string($resolved) ? $resolved : (string) $resolved;
+        return '';
     }
 
     public function test(string $raw): bool

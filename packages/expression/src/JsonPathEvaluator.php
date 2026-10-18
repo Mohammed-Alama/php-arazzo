@@ -35,6 +35,12 @@ class JsonPathEvaluator
 
         $arrayResult = $result->getData();
 
+        // The engine types its payload as mixed; find() always yields a list,
+        // but anything unexpected is passed through rather than counted.
+        if (!is_array($arrayResult)) {
+            return $arrayResult;
+        }
+
         // Single-match plucks unwrap to the value itself; standard JSONPath
         // collections stay collections. Wrapped object-filters keep their
         // collection shape so criteria truthiness sees "matched".

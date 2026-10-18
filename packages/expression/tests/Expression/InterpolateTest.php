@@ -71,3 +71,11 @@ it('interpolateWithOptions works with InterpolationOptions object', function ():
     $result = $engine->interpolateWithOptions('Hello {$name}', fn () => 'world', $opts);
     expect($result)->toBe('Hello WORLD');
 });
+
+it('json encodes structured values returned by a custom stringify callback', function (): void {
+    $engine = new ExpressionEngine();
+    $result = $engine->interpolate('{$request.body}', fn (string $expr) => ['id' => 1], [
+        'stringify' => static fn (mixed $value): mixed => $value,
+    ]);
+    expect($result)->toBe('{"id":1}');
+});

@@ -53,14 +53,17 @@ final class ExpressionEvaluator
             }
 
             $stepData = $context->getWorkflowContext()->getSteps()[$context->getCurrentStepId()] ?? null;
-            if (!$stepData) {
+            if (!is_array($stepData)) {
                 return null;
             }
 
+            $response = $this->mapOrEmpty($stepData, 'response');
+            $request = $this->mapOrEmpty($stepData, 'request');
+
             return match ($ast->field) {
-                'statusCode' => $stepData['response']['statusCode'] ?? null,
-                'method' => $stepData['request']['method'] ?? null,
-                'url' => $stepData['request']['url'] ?? null,
+                'statusCode' => $response['statusCode'] ?? null,
+                'method' => $request['method'] ?? null,
+                'url' => $request['url'] ?? null,
             };
         }
 
@@ -159,7 +162,7 @@ final class ExpressionEvaluator
         if ($ast instanceof ComponentRef) {
             $comps = $context->getWorkflowContext()->getComponents();
             if ($ast->type === 'parameters') {
-                return $comps['parameters'][$ast->name] ?? null;
+                return $this->mapOrEmpty($comps, 'parameters')[$ast->name] ?? null;
             }
         }
 
