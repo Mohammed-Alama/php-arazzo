@@ -54,6 +54,9 @@
         <testsuite name="Arazzo Tools Test Suite">
             <directory>tools/issue-intake/tests</directory>
         </testsuite>
+        <testsuite name="Arazzo Scripts Test Suite">
+            <directory>tests/scripts</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
