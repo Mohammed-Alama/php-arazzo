@@ -134,6 +134,24 @@ it('edits an existing issue instead of creating one with --edit', function () {
         ->and(file_get_contents($log))->toContain('--add-label level:package --add-label package:core');
 });
 
+it('does not pass --parent on edit (issue is already linked)', function () {
+    [$gh, $log] = stubGh();
+
+    $process = runFileIssue([
+        '--kind=kind:bugfix', '--level=level:story', '--parent=137',
+        '--edit=170', '--title=x',
+        '--sections='.sectionsFile([
+            'core-metadata', 'problem-statement', 'dependency-matrix', 'artifacts',
+            'runtime-state', 'acceptance-criteria', 'source-grounding', 'impact-profile',
+            'epistemic-matrix',
+        ]),
+    ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"},{"name":"kind:feature"}]']);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(file_get_contents($log))->toContain('issue edit 170')
+        ->and(file_get_contents($log))->not->toContain('--parent');
+});
+
 it('exits 2 for an unknown kind', function () {
     [$gh, $log] = stubGh();
 

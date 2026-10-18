@@ -296,7 +296,9 @@ $command = $packageEpic
         ? [$gh, 'issue', 'create', '--title', $options['title'], '--body-file', $bodyFile, '--label', $kind, '--label', $level]
         : [$gh, 'issue', 'edit', (string) $edit, '--body-file', $bodyFile, '--add-label', $kind, '--add-label', $level]);
 
-if ($parent !== null) {
+// --parent is only meaningful on create; on edit the sub-issue link already exists,
+// and re-passing it makes `gh` fail with "Issue may not contain duplicate sub-issues"
+if ($parent !== null && $edit === null) {
     $command[] = '--parent';
     $command[] = (string) $parent;
 }
