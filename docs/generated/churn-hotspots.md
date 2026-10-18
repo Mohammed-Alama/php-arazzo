@@ -17,45 +17,45 @@ xychart-beta
     bar [44, 27, 26, 22, 20, 17, 15, 14, 13, 12, 12, 10]
 ```
 
-Analyzed 346 total file-touches across 47 modules.
+Analyzed 349 total file-touches across 47 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 44 | 13% | 385 | 114.3 |
 | `cli:Console` | 27 | 8% | 933 | 28.9 |
-| `runner:Execution` | 26 | 8% | 370 | 70.3 |
+| `runner:Execution` | 26 | 7% | 370 | 70.3 |
 | `laravel:Http` | 22 | 6% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 6% | 316 | 63.3 |
 | `document:Validator` | 17 | 5% | 3,527 | 4.8 |
 | `laravel:Support` | 15 | 4% | 272 | 55.1 |
 | `laravel:Queue` | 14 | 4% | 109 | 128.4 |
-| `runner:Async` | 13 | 4% | 1,354 | 9.6 |
+| `runner:Async` | 13 | 4% | 1,353 | 9.6 |
 | `laravel:State` | 12 | 3% | 52 | 230.8 |
 | `sources:Normalizer` | 12 | 3% | 1,283 | 9.4 |
 | `contracts:Interfaces` | 10 | 3% | 359 | 27.9 |
 | `contracts:Spec` | 10 | 3% | 1,203 | 8.3 |
-| `document:Parser` | 10 | 3% | 1,324 | 7.6 |
+| `document:Parser` | 10 | 3% | 1,328 | 7.5 |
 | `expression:Interfaces` | 9 | 3% | 110 | 81.8 |
 | `laravel:Lock` | 9 | 3% | 52 | 173.1 |
 | `evaluation:Registries` | 5 | 1% | 123 | 40.7 |
 | `expression:Data` | 5 | 1% | 128 | 39.1 |
+| `cli:Generator` | 4 | 1% | 141 | 28.4 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
 | `evaluation:Plugins` | 4 | 1% | 110 | 36.4 |
 | `expression:Ast` | 4 | 1% | 350 | 11.4 |
-| `cli:Generator` | 3 | 1% | 141 | 21.3 |
+| `sources:Resolver` | 4 | 1% | 490 | 8.2 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
+| `engine:Execution` | 3 | 1% | 998 | 3 |
 | `evaluation:Condition` | 3 | 1% | 654 | 4.6 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
 | `expression:Xpath` | 3 | 1% | 110 | 27.3 |
 | `laravel:Events` | 3 | 1% | 24 | 125 |
 | `runtime:State` | 3 | 1% | 1,039 | 2.9 |
-| `sources:Resolver` | 3 | 1% | 490 | 6.1 |
 | `contracts:Exceptions` | 2 | 1% | 31 | 64.5 |
 | `contracts:State` | 2 | 1% | 792 | 2.5 |
 | `engine:Data` | 2 | 1% | 74 | 27 |
 | `engine:Enum` | 2 | 1% | 17 | 117.6 |
-| `engine:Execution` | 2 | 1% | 992 | 2 |
 | `evaluation:Interfaces` | 2 | 1% | 35 | 57.1 |
 | `expression:Exceptions` | 2 | 1% | 55 | 36.4 |
 | `runner:Sync` | 2 | 1% | 820 | 2.4 |

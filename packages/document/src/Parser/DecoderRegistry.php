@@ -16,20 +16,25 @@ final class DecoderRegistry
      */
     private readonly array $decoders;
 
-    /** @phpstan-ignore missingType.iterableValue,assign.propertyType */
+    /**
+     * @param  array<string, DecoderInterface>  $decoders
+     */
     private function __construct(array $decoders)
     {
-        /** @phpstan-ignore assign.propertyType */
         $this->decoders = $decoders;
     }
 
-    /** @phpstan-ignore missingType.iterableValue,return.type */
+    /**
+     * @return array<string, DecoderInterface>
+     */
     public function all(): array
     {
         return $this->decoders;
     }
 
-    /** @phpstan-ignore missingType.iterableValue */
+    /**
+     * @param  array<string, DecoderInterface>  $decoders
+     */
     public static function fromArray(array $decoders): self
     {
         return new self($decoders);

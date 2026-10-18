@@ -73,7 +73,6 @@ final class Loader
         }
 
         try {
-            /** @phpstan-ignore method.nonObject */
             $data = $decoder->decode($raw);
         } catch (DecodeException $e) {
             throw LoaderException::decodeFailed($path, $e);

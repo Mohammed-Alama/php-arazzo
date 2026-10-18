@@ -23,8 +23,10 @@
  *   1  at least one disallowed entry
  *   2  usage / internal error
  *
- * Not wired into CI yet — that is #202, once the sweep (#205–#210) clears
- * the existing findings.
+ * Wired into `.githooks/pre-commit`, the PHPStan CI job, `make verify` and
+ * `scripts/quality-gates.php` (#202). The quality gate passes `--json` so the
+ * snapshot can record the violation count; every other caller uses the default
+ * human-readable output.
  */
 
 declare(strict_types=1);

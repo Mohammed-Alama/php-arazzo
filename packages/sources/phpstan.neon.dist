@@ -12,4 +12,4 @@ parameters:
         - ../contracts/src
         - ../expression/src
         - ../document/src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true

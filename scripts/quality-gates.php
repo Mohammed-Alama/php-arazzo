@@ -72,6 +72,27 @@ function parsePhpStan(int $code, string $text): array
     ];
 }
 
+/**
+ * `php scripts/check-baselines.php --json`: correctness errors hidden in a
+ * `phpstan-baseline.neon`. The gate exists so this number stays 0 — `--json`
+ * is only used here so the snapshot can record the count.
+ *
+ * @return array{status: string, metrics: array<string, int|float|string>, notes: string}
+ */
+function parseBaselines(int $code, string $text): array
+{
+    $data = json_decode(trim($text), true);
+    $violations = is_array($data) && isset($data['count'])
+        ? (int) $data['count']
+        : ($code === 0 ? 0 : -1);
+
+    return [
+        'status' => $code === 0 ? 'pass' : 'fail',
+        'metrics' => ['violations' => $violations],
+        'notes' => $violations > 0 ? "Correctness errors hidden in a baseline: {$violations}" : '',
+    ];
+}
+
 /** @return array{status: string, metrics: array<string, int|float|string>, notes: string} */
 function parsePest(int $code, string $text): array
 {
@@ -164,6 +185,7 @@ $gateDefs = [
         \ArazzoDocs\CORE_SRC_PACKAGES,
     )), $root, 'parsePhpStan'],
     ['phpstan-laravel', 'Static Analysis · laravel', 'composer run analyse-laravel', $root, 'parsePhpStan'],
+    ['baseline-policy', 'Baseline Policy · correctness', 'php scripts/check-baselines.php --json', $root, 'parseBaselines'],
     ['pest-core', 'Tests · core', 'vendor/bin/pest packages/core/tests --no-coverage', $root, 'parsePest'],
     ['pest-laravel', 'Tests · laravel', 'vendor/bin/pest packages/laravel/tests --no-coverage', $root, 'parsePest'],
 ];

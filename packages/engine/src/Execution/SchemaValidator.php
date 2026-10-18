@@ -261,28 +261,34 @@ final class SchemaValidator
         $at = $path === '' ? '/' : $path;
         $violations = [];
 
-        if ($schema->minimum !== null) {
+        // `minimum`/`maximum`/`multipleOf` default to null in cebe's attribute
+        // defaults and its `@property` docblock does not say so; `??` is the only
+        // null-safe read.
+        $minimum = $schema->minimum ?? null;
+        if ($minimum !== null) {
             $exclusive = $schema->exclusiveMinimum === true;
-            if ($exclusive ? $value <= $schema->minimum : $value < $schema->minimum) {
+            if ($exclusive ? $value <= $minimum : $value < $minimum) {
                 $bound = $exclusive ? 'greater than' : 'at least';
-                $violations[] = ['path' => $at, 'message' => "value must be {$bound} {$schema->minimum}"];
+                $violations[] = ['path' => $at, 'message' => "value must be {$bound} {$minimum}"];
             }
         }
 
-        if ($schema->maximum !== null) {
+        $maximum = $schema->maximum ?? null;
+        if ($maximum !== null) {
             $exclusive = $schema->exclusiveMaximum === true;
-            if ($exclusive ? $value >= $schema->maximum : $value > $schema->maximum) {
+            if ($exclusive ? $value >= $maximum : $value > $maximum) {
                 $bound = $exclusive ? 'less than' : 'at most';
-                $violations[] = ['path' => $at, 'message' => "value must be {$bound} {$schema->maximum}"];
+                $violations[] = ['path' => $at, 'message' => "value must be {$bound} {$maximum}"];
             }
         }
 
-        if ($schema->multipleOf !== null && (float) $schema->multipleOf !== 0.0) {
-            $remainder = fmod((float) $value, (float) $schema->multipleOf);
+        $multipleOf = $schema->multipleOf ?? null;
+        if ($multipleOf !== null && (float) $multipleOf !== 0.0) {
+            $remainder = fmod((float) $value, (float) $multipleOf);
             $nearZero = abs($remainder) < 1e-9;
-            $nearDivisor = abs(abs($remainder) - abs((float) $schema->multipleOf)) < 1e-9;
+            $nearDivisor = abs(abs($remainder) - abs((float) $multipleOf)) < 1e-9;
             if (!$nearZero && !$nearDivisor) {
-                $violations[] = ['path' => $at, 'message' => "value must be a multiple of {$schema->multipleOf}"];
+                $violations[] = ['path' => $at, 'message' => "value must be a multiple of {$multipleOf}"];
             }
         }
 

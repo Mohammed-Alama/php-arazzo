@@ -47,7 +47,19 @@ fi
 echo "✅ Static Analysis passed."
 echo ""
 
-echo "3. Running Tests (Pest/PHPUnit)..."
+echo "3. Checking PHPStan baseline policy..."
+if ! composer run check-baselines; then
+    echo "========================================"
+    echo "❌ A correctness error is hidden in a PHPStan baseline!"
+    echo "💡 Fix the underlying error — it must not be baselined."
+    echo "   Only entries without an identifier, and missingType.*, may be baselined."
+    echo "========================================"
+    exit 1
+fi
+echo "✅ Baseline policy passed."
+echo ""
+
+echo "4. Running Tests (Pest/PHPUnit)..."
 if ! composer test; then
     echo "========================================"
     echo "❌ Tests failed!"
@@ -58,7 +70,7 @@ fi
 echo "✅ Tests passed."
 echo ""
 
-echo "4. Checking Spec Conformance (warn-only)..."
+echo "5. Checking Spec Conformance (warn-only)..."
 if ! php scripts/generate-conformance-matrix.php >/dev/null 2>&1; then
     echo "⚠️  Conformance matrix check failed (network or corpus issue) — continuing."
 else

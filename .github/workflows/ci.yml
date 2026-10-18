@@ -67,6 +67,8 @@ jobs:
           composer update --no-progress --prefer-dist --no-interaction
       - name: Run PHPStan
         run: composer run analyse
+      - name: Check baseline policy
+        run: composer run check-baselines
 
   phpmd:
     name: PHP Mess Detector

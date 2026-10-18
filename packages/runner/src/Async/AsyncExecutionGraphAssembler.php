@@ -31,7 +31,6 @@ final class AsyncExecutionGraphAssembler
     public function __construct(
         private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ?OperationRuntime $operations = null,
-        /** @phpstan-ignore property.onlyWritten */
         private readonly ?ExpressionEngineInterface $inspector = null,
     ) {}
 

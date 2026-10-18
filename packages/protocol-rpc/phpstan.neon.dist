@@ -15,4 +15,4 @@ parameters:
         - ../document/src
         - ../engine/src
         - ../sources/src
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true
