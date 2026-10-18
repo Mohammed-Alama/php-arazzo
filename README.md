@@ -227,16 +227,16 @@ We welcome contributions! Please see the issue tracker to report bugs, suggest f
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
-## 📡 Ecosystem feed — Human Dashboard
+## 📡 Ecosystem feed — Digest
 
 Daily **human-readable** poll of 54 github sources via `gh` (30 `OAI/*`, 4 `usearazzo/*`, 20 runners/validators/generators) — see `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json`. Captures SOAP/WSDL, `application/xml` payloads, actor-in-loop, `MCP`/`CLI`/`A2A`/`gRPC` proposals early and maps each event to `P0-P2` gaps.
 
-> **Human dashboard:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) — regrouped by severity (Breaking / Actionable / Watch),levance, with summary stats, legend, and newest-200 table. Any contributor can open it without running a command.
+> **Digest:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) — a bounded, evidence-first digest: **Act** (everything worth a decision, with links and what changed), the tracked **watchlist** status table, collapsed **peer releases**, the **meeting agenda**, and a one-line `suppressed:` count. Any contributor can open it without running a command.
 
-* **Human:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated `Human Dashboard`) · **Raw:** `storage/ecosystem-feed/feed.json` · **Snapshots:** `storage/ecosystem-feed/snapshots/`
+* **Digest:** [`docs/ECOSYSTEM_FEED.md`](docs/ECOSYSTEM_FEED.md) (generated) · **State:** `storage/ecosystem-feed/state/`
 * **Poll locally:** `composer ecosystem:poll:dry` (dry) / `composer ecosystem:poll` (commit) or `php scripts/ecosystem/poll.php --fixtures --dry-run` (offline fixtures including `OAI/Arazzo-Specification#533` SOAP + `#410` actor/loop)
 * **Triage:** `php .agents/skills/ecosystem-triage/scripts/analyze.php --verbose` → `.scratch/ecosystem-triage/<date>.md` → `/to-tickets`
-* **Workflow:** `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags, 30-day prune
+* **Workflow:** `.github/workflows/ecosystem-feed.yml` (`cron 17 6 * * *`, `workflow_dispatch` with `source` filter), `actions/cache` for ETags
 
 All 54 sources polled via `gh api` (`gh` CLI) with `GITHUB_TOKEN` fallback — see `scripts/ecosystem/GhCli.php`.
 

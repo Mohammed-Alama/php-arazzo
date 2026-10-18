@@ -73,7 +73,7 @@ quadrantChart
 |---|---:|---:|---:|---:|
 | `cli/Console` | 1.00 | 11 | 12 | 92% |
 | `cli/Generator` | 0.33 | 5 | 2 | 100% |
-| `cli/Renderer` | 0.50 | 3 | 1 | 100% |
+| `cli/Renderer` | 0.50 | 5 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.12 | 40 | 19 | 100% |
@@ -81,7 +81,7 @@ quadrantChart
 | `contracts/State` | 0.07 | 57 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
-| `document/Validator` | 0.46 | 76 | 68 | 100% |
+| `document/Validator` | 0.46 | 77 | 68 | 100% |
 | `engine/Data` | 0.75 | 3 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |

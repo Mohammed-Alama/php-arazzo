@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "weeklyDigest": true,
+    "autoIssue": false,
+    "project": {
+        "enabled": false,
+        "owner": "",
+        "number": null,
+        "upstreamRefField": "Upstream ref",
+        "status": "Needs triage"
+    }
+}

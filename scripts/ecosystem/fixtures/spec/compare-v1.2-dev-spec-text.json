@@ -1,0 +1,56 @@
+{
+  "status": "ahead",
+  "ahead_by": 2,
+  "behind_by": 0,
+  "total_commits": 2,
+  "url": "https://api.github.com/repos/OAI/Arazzo-Specification/compare/ccc1111...ddd2222",
+  "html_url": "https://github.com/OAI/Arazzo-Specification/compare/ccc1111...ddd2222",
+  "commits": [
+    {
+      "sha": "ddd2222eeee3333",
+      "commit": {
+        "message": "docs(spec): clarify retry outputs",
+        "author": {"date": "2026-10-08T10:00:00Z"},
+        "committer": {"date": "2026-10-08T10:00:00Z"}
+      }
+    },
+    {
+      "sha": "ddd2222ffff4444",
+      "commit": {
+        "message": "docs(examples): add retry-output example",
+        "author": {"date": "2026-10-09T11:30:00Z"},
+        "committer": {"date": "2026-10-09T11:30:00Z"}
+      }
+    }
+  ],
+  "files": [
+    {
+      "filename": "versions/1.2.0.md",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 2,
+      "changes": 12
+    },
+    {
+      "filename": "examples/retry-output.arazzo.yaml",
+      "status": "added",
+      "additions": 40,
+      "deletions": 0,
+      "changes": 40
+    },
+    {
+      "filename": "src/arazzo.md",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 0,
+      "changes": 5
+    },
+    {
+      "filename": "CONTRIBUTING.md",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2
+    }
+  ]
+}

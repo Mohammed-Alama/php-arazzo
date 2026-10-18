@@ -54,9 +54,6 @@ storage/**
 /packages/core/_*.json
 /packages/core/storage/*
 
-# Ecosystem feed (snapshots + generated feed)
-/storage/ecosystem-feed
-
 # PHPMD cache
 /.phpmd.result-cache.php
 

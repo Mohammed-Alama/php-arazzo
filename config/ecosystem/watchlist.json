@@ -1,0 +1,63 @@
+{
+    "version": 1,
+    "generated": "2026-10-16",
+    "notes": "Tracked upstream proposals. Adding an item is a one-line PR; removing one records a decision in decisions.json (scripts/ecosystem/watchlist-cli.php remove). Stances: shipped | plan-to-support | evaluate | watch | declined. Refs are owner/repo#number; the ingestor resolves PR vs issue from the payload.",
+    "items": [
+        {
+            "ref": "OAI/Arazzo-Specification#533",
+            "topic": "wsdl",
+            "roadmap": ["spec:plugin-stack-oms-multiprotocol", "plan:phase-f-protocol-packages"],
+            "ourIssue": null,
+            "stance": "shipped"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#556",
+            "topic": "protobuf",
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "ourIssue": null,
+            "stance": "plan-to-support"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#567",
+            "topic": "graphql",
+            "roadmap": ["plan:phase-f-protocol-packages"],
+            "ourIssue": null,
+            "stance": "plan-to-support"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#568",
+            "topic": "actor-in-loop",
+            "roadmap": [],
+            "ourIssue": 189,
+            "stance": "evaluate"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#410",
+            "topic": "1.2-discussion",
+            "roadmap": [],
+            "ourIssue": null,
+            "stance": "watch"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#590",
+            "topic": "retry-outputs",
+            "roadmap": ["plan:phase-e-runner-oms"],
+            "ourIssue": null,
+            "stance": "watch"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#516",
+            "topic": "criterion-regex",
+            "roadmap": ["plan:expression-evaluation-parity-hardening"],
+            "ourIssue": null,
+            "stance": "watch"
+        },
+        {
+            "ref": "OAI/Arazzo-Specification#597",
+            "topic": "meeting",
+            "roadmap": [],
+            "ourIssue": null,
+            "stance": "watch"
+        }
+    ]
+}

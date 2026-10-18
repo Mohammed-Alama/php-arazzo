@@ -7,6 +7,7 @@ namespace Ecosystem\Ingestors;
 use Ecosystem\GhCli;
 
 require_once dirname(__DIR__).'/GhCli.php';
+require_once __DIR__.'/TagDateResolver.php';
 
 final class GithubApiIngestor
 {
@@ -16,9 +17,10 @@ final class GithubApiIngestor
      * @param  string  $repo  e.g. OAI/Arazzo-Specification
      * @param  string[]  $endpoints  e.g. [releases, pulls, issues]
      * @param  array<string,string>  $etagCache  key -> etag (kept for curl fallback; gh ignores)
+     * @param  array<string,mixed>|null  $watermarks  prior state, used to early-stop release/tag paging
      * @return array<int,array<string,mixed>> raw normalized items (pre-Normalizer but with source/type/externalId/title/url/publishedAt)
      */
-    public static function poll(string $repo, array $endpoints, array &$etagCache, ?string $token, int $limitPerEndpoint = 20, bool $verbose = false): array
+    public static function poll(string $repo, array $endpoints, array &$etagCache, ?string $token, int $limitPerEndpoint = 20, bool $verbose = false, ?array $watermarks = null): array
     {
         $useGh = GhCli::isAvailable();
         if ($verbose) {
@@ -27,6 +29,17 @@ final class GithubApiIngestor
 
         $out = [];
         foreach ($endpoints as $ep) {
+            // Tags carry no date in the REST API (§5.4): resolve a real, date-ordered
+            // timestamp via the GraphQL `refs` connection instead of stamping `now`.
+            if ($ep === 'tags') {
+                foreach (TagDateResolver::fetch($repo, $limitPerEndpoint, $token, $verbose, $watermarks) as $item) {
+                    $out[] = $item;
+                }
+                usleep(150000);
+
+                continue;
+            }
+
             $ghEndpoint = match ($ep) {
                 'releases' => "repos/{$repo}/releases?per_page={$limitPerEndpoint}",
                 'tags' => "repos/{$repo}/tags?per_page={$limitPerEndpoint}",
@@ -39,6 +52,13 @@ final class GithubApiIngestor
                 continue;
             }
 
+            // Stop paging releases at the stored `lastTag`: the list is newest-first, so
+            // anything at or after the boundary has already been recorded (§5.4, A9).
+            $lastTag = is_array($watermarks)
+                ? ($watermarks['sources'][$repo]['endpoints'][$ep]['lastTag'] ?? null)
+                : null;
+            $lastTag = is_string($lastTag) && $lastTag !== '' ? $lastTag : null;
+
             $items = null;
             if ($useGh) {
                 $items = GhCli::api($ghEndpoint, false, $verbose);
@@ -46,6 +66,9 @@ final class GithubApiIngestor
                     foreach ($items as $item) {
                         if (!is_array($item)) {
                             continue;
+                        }
+                        if ($lastTag !== null && ($item['tag_name'] ?? null) === $lastTag) {
+                            break;
                         }
                         $mapped = self::map($repo, $ep, $item);
                         if ($mapped !== null) {
@@ -75,6 +98,12 @@ final class GithubApiIngestor
                     $etagCache[$cacheKey] = $res['etag'];
                 }
                 foreach ($res['json'] as $item) {
+                    if (!is_array($item)) {
+                        continue;
+                    }
+                    if ($lastTag !== null && ($item['tag_name'] ?? null) === $lastTag) {
+                        break;
+                    }
                     $mapped = self::map($repo, $ep, $item);
                     if ($mapped !== null) {
                         $out[] = $mapped;
@@ -153,21 +182,13 @@ final class GithubApiIngestor
                 'externalId' => 'release:'.($item['tag_name'] ?? $item['id'] ?? ''),
                 'title' => $item['name'] ?? $item['tag_name'] ?? 'release',
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/releases/tag/".($item['tag_name'] ?? ''),
-                'publishedAt' => $item['published_at'] ?? $item['created_at'] ?? gmdate('c'),
+                'publishedAt' => $item['published_at'] ?? $item['created_at'] ?? '',
                 'body' => $item['body'] ?? '',
                 'labels' => [],
                 'state' => 'published',
-            ],
-            'tags' => [
-                'source' => $repo,
-                'type' => 'tag',
-                'externalId' => 'tag:'.($item['name'] ?? ''),
-                'title' => 'tag '.($item['name'] ?? ''),
-                'url' => "https://github.com/{$repo}/releases/tag/".($item['name'] ?? ''),
-                'publishedAt' => gmdate('c'), // tags lack timestamp; use now but dedup via id
-                'body' => $item['commit']['sha'] ?? '',
-                'labels' => [],
-                'state' => 'published',
+                'draft' => ($item['draft'] ?? false) === true,
+                'prerelease' => ($item['prerelease'] ?? false) === true,
+                'author' => $item['author']['login'] ?? '',
             ],
             'pulls' => [
                 'source' => $repo,
@@ -175,11 +196,14 @@ final class GithubApiIngestor
                 'externalId' => 'pr:'.($item['number'] ?? ''),
                 'title' => $item['title'] ?? 'PR',
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/pull/".($item['number'] ?? ''),
-                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? gmdate('c'),
+                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? '',
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
                 'state' => $item['state'] ?? '',
+                'draft' => ($item['draft'] ?? false) === true,
                 'merged' => $item['merged_at'] !== null,
+                'base' => (string) ($item['base']['ref'] ?? ''),
+                'author' => $item['user']['login'] ?? '',
             ],
             'issues' => isset($item['pull_request']) ? null : [
                 'source' => $repo,
@@ -187,10 +211,11 @@ final class GithubApiIngestor
                 'externalId' => 'issue:'.($item['number'] ?? ''),
                 'title' => $item['title'] ?? 'issue',
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/issues/".($item['number'] ?? ''),
-                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? gmdate('c'),
+                'publishedAt' => $item['updated_at'] ?? $item['created_at'] ?? '',
                 'body' => $item['body'] ?? '',
                 'labels' => array_map(fn ($l) => $l['name'] ?? '', $item['labels'] ?? []),
                 'state' => $item['state'] ?? '',
+                'author' => $item['user']['login'] ?? '',
             ],
             'commits' => [
                 'source' => $repo,
@@ -198,10 +223,11 @@ final class GithubApiIngestor
                 'externalId' => 'commit:'.substr($item['sha'] ?? '', 0, 7),
                 'title' => trim(explode("\n", $item['commit']['message'] ?? 'commit')[0]),
                 'url' => $item['html_url'] ?? "https://github.com/{$repo}/commit/".($item['sha'] ?? ''),
-                'publishedAt' => $item['commit']['committer']['date'] ?? $item['commit']['author']['date'] ?? gmdate('c'),
+                'publishedAt' => $item['commit']['committer']['date'] ?? $item['commit']['author']['date'] ?? '',
                 'body' => $item['commit']['message'] ?? '',
                 'labels' => [],
                 'state' => '',
+                'author' => $item['author']['login'] ?? $item['commit']['author']['name'] ?? '',
             ],
             default => null,
         };

@@ -1,0 +1,238 @@
+[
+    {
+        "name": "own-repo refactor is excluded and never tags actor",
+        "observation": {
+            "source": "Mohammed-Alama/php-arazzo",
+            "type": "commit",
+            "externalId": "commit:abc",
+            "title": "refactor: extract framework-agnostic engine into arazzo-core (Plan A)",
+            "url": "https://github.com/Mohammed-Alama/php-arazzo/commit/abc",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["noise-source"] }
+    },
+    {
+        "name": "toolkit api-extractor bump is noise",
+        "observation": {
+            "source": "usearazzo/arazzo-toolkit",
+            "type": "pr",
+            "externalId": "pr:9",
+            "title": "chore(deps-dev): bump @microsoft/api-extractor 7.59.2→7.59.3",
+            "url": "https://github.com/usearazzo/arazzo-toolkit/pull/9",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["noise-title"] }
+    },
+    {
+        "name": "dependabot actions/checkout bump is noise, never breaking",
+        "observation": {
+            "source": "OAI/learn.openapis.org",
+            "type": "pr",
+            "externalId": "pr:12",
+            "title": "build(deps): bump actions/checkout from 6 to 7",
+            "url": "https://github.com/OAI/learn.openapis.org/pull/12",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "Bumps actions/checkout from 6 to 7. Release notes contain a breaking change and SHA a2a1b2c3.",
+            "labels": [],
+            "author": "dependabot[bot]"
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["bot-author"] }
+    },
+    {
+        "name": "build-infra Bump respec is noise",
+        "observation": {
+            "source": "OAI/build-infra",
+            "type": "pr",
+            "externalId": "pr:7",
+            "title": "Bump respec 37.3.6→37.4.0",
+            "url": "https://github.com/OAI/build-infra/pull/7",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["noise-title"] }
+    },
+    {
+        "name": "spec-repo respec bump is noise",
+        "observation": {
+            "source": "OAI/Arazzo-Specification",
+            "type": "pr",
+            "externalId": "pr:8",
+            "title": "chore(deps): bump respec 37.4.0→37.4.1",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/8",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["noise-title"] }
+    },
+    {
+        "name": "Redocly prerelease patch tag is noise",
+        "observation": {
+            "source": "Redocly/redocly-cli",
+            "type": "tag",
+            "externalId": "tag:v1.0.0-beta.116",
+            "title": "v1.0.0-beta.116",
+            "url": "https://github.com/Redocly/redocly-cli/releases/tag/v1.0.0-beta.116",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["prerelease-tag"] }
+    },
+    {
+        "name": "Redocly monorepo minor release is an Act peer release",
+        "observation": {
+            "source": "Redocly/redocly-cli",
+            "type": "release",
+            "externalId": "release:@redocly/cli@2.63.0",
+            "title": "@redocly/cli@2.63.0",
+            "url": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.63.0",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "act", "topics": [], "why_contains": ["tracked-library-release"], "breaking": false }
+    },
+    {
+        "name": "jentic bulk commit is noise",
+        "observation": {
+            "source": "jentic/jentic-public-apis",
+            "type": "commit",
+            "externalId": "commit:def",
+            "title": "Rebuild apis.json, scores.json, spec.json",
+            "url": "https://github.com/jentic/jentic-public-apis/commit/def",
+            "publishedAt": "2026-10-13T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "noise", "topics": [], "why_contains": ["noise-source"] }
+    },
+    {
+        "name": "PR #533 SOAP is Watch with topic wsdl and the Phase F ref",
+        "observation": {
+            "source": "OAI/Arazzo-Specification",
+            "type": "pr",
+            "externalId": "pr:533",
+            "title": "feat(spec): add SOAP support",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+            "publishedAt": "2026-07-27T15:46:00Z",
+            "body": "Adds first-class WSDL support to Arazzo 1.2 via wsdl type WSDL 1.1 and 2.0. operationId reuse, MUST NOT operationPath, SOAPAction/Content-Type, SOAP Fault",
+            "labels": ["enhancement"],
+            "state": "open",
+            "merged": false
+        },
+        "expected": {
+            "tier": "watch",
+            "topics": ["wsdl"],
+            "roadmap_contains": ["plan:phase-f-protocol-packages"]
+        }
+    },
+    {
+        "name": "PR #516 criterion regex is Watch with the parity-hardening ref",
+        "observation": {
+            "source": "OAI/Arazzo-Specification",
+            "type": "pr",
+            "externalId": "pr:516",
+            "title": "fix(spec): specify ECMA-262 dialect for regex Criterion",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/516",
+            "publishedAt": "2026-07-09T00:00:00Z",
+            "body": "regex Criterion ECMA-262",
+            "labels": [],
+            "state": "open",
+            "merged": false
+        },
+        "expected": {
+            "tier": "watch",
+            "topics": ["criterion-regex"],
+            "roadmap_contains": ["plan:expression-evaluation-parity-hardening"]
+        }
+    },
+    {
+        "name": "PR #590 retry outputs is Watch",
+        "observation": {
+            "source": "OAI/Arazzo-Specification",
+            "type": "pr",
+            "externalId": "pr:590",
+            "title": "Clarify how to read outputs of a workflow run by a retry failure action",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/590",
+            "publishedAt": "2026-09-01T00:00:00Z",
+            "body": "",
+            "labels": [],
+            "state": "open"
+        },
+        "expected": { "tier": "watch", "topics": ["retry-outputs"] }
+    },
+    {
+        "name": "toolkit #129 conformance-test idea is Watch",
+        "observation": {
+            "source": "usearazzo/arazzo-toolkit",
+            "type": "issue",
+            "externalId": "issue:129",
+            "title": "embedded runtime expressions in requestBody payloads are sent verbatim",
+            "url": "https://github.com/usearazzo/arazzo-toolkit/issues/129",
+            "publishedAt": "2026-09-20T00:00:00Z",
+            "body": "Runtime expressions embedded in a requestBody payload are not evaluated before sending.",
+            "labels": [],
+            "state": "open"
+        },
+        "expected": { "tier": "watch", "topics": [], "why_contains": ["peer-event"] }
+    },
+    {
+        "name": "spec #597 meeting agenda is Watch",
+        "observation": {
+            "source": "OAI/Arazzo-Specification",
+            "type": "issue",
+            "externalId": "issue:597",
+            "title": "Meeting: Oct 14th, 2026",
+            "url": "https://github.com/OAI/Arazzo-Specification/issues/597",
+            "publishedAt": "2026-10-08T00:00:00Z",
+            "body": "",
+            "labels": [],
+            "state": "open"
+        },
+        "expected": { "tier": "watch", "topics": [], "why_contains": ["meeting-agenda"] }
+    },
+    {
+        "name": "swaggerexpert oracle major release is Act and breaking",
+        "observation": {
+            "source": "swaggerexpert/arazzo-runtime-expression",
+            "type": "release",
+            "externalId": "release:v3.0.0",
+            "title": "v3.0.0",
+            "url": "https://github.com/swaggerexpert/arazzo-runtime-expression/releases/tag/v3.0.0",
+            "publishedAt": "2026-09-30T00:00:00Z",
+            "body": "",
+            "labels": []
+        },
+        "expected": { "tier": "act", "topics": [], "breaking": true }
+    },
+    {
+        "name": "watchlist transition of #533 into v1.2-dev is Act",
+        "watchlist": true,
+        "observation": {
+            "source": "OAI/Arazzo-Specification",
+            "type": "pr",
+            "externalId": "pr:533",
+            "title": "feat(spec): add SOAP support",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/533",
+            "publishedAt": "2026-09-30T12:00:00Z",
+            "body": "Adds first-class WSDL support to Arazzo 1.2 via wsdl type",
+            "labels": ["enhancement"],
+            "state": "closed",
+            "merged": true,
+            "base": "v1.2-dev"
+        },
+        "expected": {
+            "tier": "act",
+            "topics": ["wsdl"],
+            "roadmap_contains": ["plan:phase-f-protocol-packages"],
+            "why_contains": ["watchlist-transition"],
+            "breaking": false
+        }
+    }
+]

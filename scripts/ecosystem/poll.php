@@ -8,33 +8,50 @@ error_reporting(E_ALL);
 // No Composer autoload needed — pure PHP, PSR-0 via require chain.
 require __DIR__.'/GhCli.php';
 require __DIR__.'/FeedEvent.php';
+require __DIR__.'/Event.php';
 require __DIR__.'/RelevanceMapper.php';
+require_once __DIR__.'/TopicMatcher.php';
+require __DIR__.'/Scorer.php';
 require __DIR__.'/Normalizer.php';
-require __DIR__.'/Store.php';
+require __DIR__.'/State.php';
+require __DIR__.'/Differ.php';
+require __DIR__.'/Watchlist.php';
+require __DIR__.'/Cadence.php';
 require __DIR__.'/Renderer.php';
 require __DIR__.'/Enumerators/OaiOrgEnumerator.php';
 require __DIR__.'/Ingestors/GithubApiIngestor.php';
+require __DIR__.'/Ingestors/WatchlistIngestor.php';
 require __DIR__.'/Ingestors/AtomRssIngestor.php';
 require __DIR__.'/Ingestors/NpmRegistryIngestor.php';
+require __DIR__.'/Ingestors/SpecBranchIngestor.php';
 require __DIR__.'/Ingestors/WebScrapeIngestor.php';
 
+use Ecosystem\Cadence;
+use Ecosystem\Differ;
 use Ecosystem\Enumerators\OaiOrgEnumerator;
+use Ecosystem\Event;
 use Ecosystem\GhCli;
 use Ecosystem\Ingestors\AtomRssIngestor;
 use Ecosystem\Ingestors\GithubApiIngestor;
 use Ecosystem\Ingestors\NpmRegistryIngestor;
+use Ecosystem\Ingestors\SpecBranchIngestor;
+use Ecosystem\Ingestors\WatchlistIngestor;
 use Ecosystem\Ingestors\WebScrapeIngestor;
 use Ecosystem\Normalizer;
 use Ecosystem\Renderer;
-use Ecosystem\Store;
+use Ecosystem\Scorer;
+use Ecosystem\State;
+use Ecosystem\TopicMatcher;
+use Ecosystem\Watchlist;
 
 $root = dirname(__DIR__, 2);
-$opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'help']);
+$opts = getopt('', ['dry-run', 'commit', 'since:', 'source:', 'limit:', 'verbose', 'fixtures', 'baseline', 'help']);
 
 if (isset($opts['help'])) {
-    echo "Usage: php scripts/ecosystem/poll.php [--dry-run|--commit] [--since=YYYY-MM-DD] [--source=REPO] [--limit=N] [--verbose] [--fixtures]\n";
-    echo "  --dry-run : normalize+render without writing snapshots/feed\n";
-    echo "  --commit  : write storage/ecosystem-feed/* + docs/ECOSYSTEM_FEED.md\n";
+    echo "Usage: php scripts/ecosystem/poll.php [--dry-run|--commit] [--baseline] [--since=YYYY-MM-DD] [--source=REPO] [--limit=N] [--verbose] [--fixtures]\n";
+    echo "  --dry-run : normalize+render without writing state/feed\n";
+    echo "  --commit  : write storage/ecosystem-feed/state/* + docs/ECOSYSTEM_FEED.md\n";
+    echo "  --baseline: record current entities as state but emit nothing (also automatic on empty state)\n";
     echo "  --since   : filter events publishedAt >= date (post-normalize)\n";
     echo "  --source  : filter to single source id (e.g. OAI/Arazzo-Specification)\n";
     echo "  --limit   : per-endpoint cap (default 20, fixtures mode ignores)\n";
@@ -63,15 +80,27 @@ if (is_file($etagCachePath)) {
     $etagCache = json_decode((string) file_get_contents($etagCachePath), true) ?? [];
 }
 
+// State is loaded up front so cadence decisions and API watermarks (lastTag, npm
+// lastSeenVersion) are available to the ingestors (§5.4); the spec-branch ingestor needs the
+// stored `headSha` per branch to call `compare/{lastSha}...{branch}`, and the npm ingestor needs
+// its version watermark.
+$stateDir = $root.'/storage/ecosystem-feed/state';
+$decisionsPath = $root.'/config/ecosystem/decisions.json';
+$state = new State($stateDir, $decisionsPath);
+$loadedEntities = $state->count();
+
+// Baseline: the first run on empty state records entities + watermarks but emits nothing,
+// so historical releases/tags/PRs are not re-announced as "new" (F2/A2). Also forced by --baseline.
+$baseline = isset($opts['baseline']) || $state->isEmpty();
+
 $rawItems = [];
 
-// Optionally enumerate OAI org live and diff + auto-merge any missing repos so no github is missed
-$oaiLiveRepos = null;
+// Lightweight OAI org enumeration: surface new/removed repos as an `org_diff` event.
+// New repos are curated into `sources.json` by hand (the enumerator never rewrites it).
 if (!$useFixtures) {
-    // lightweight OAI enumeration only in verbose or when no source filter; keeps daily cheap (uses gh cli)
+    // only in verbose or when no source filter; keeps daily cheap (uses gh cli)
     if ($verbose || $filterSource === null) {
         $enum = OaiOrgEnumerator::fetch($etagCachePath, $token, $verbose);
-        $oaiLiveRepos = $enum['repos'];
         $committedPath = $root.'/config/ecosystem/sources.oai.json';
         $committed = json_decode((string) file_get_contents($committedPath), true)['repos'] ?? [];
         $diff = OaiOrgEnumerator::diff($enum['repos'], $committed);
@@ -93,75 +122,9 @@ if (!$useFixtures) {
             ];
         }
 
-        // Auto-merge any OAI repo not yet in curated sources.json as weekly github source so nothing is missed.
-        // Also keep sources.json in sync on --commit.
-        $curatedRepos = array_column(array_filter($sources['sources'], fn ($s) => isset($s['repo'])), 'repo');
-        $curatedSet = array_flip($curatedRepos);
-        $missing = [];
-        foreach ($oaiLiveRepos as $r) {
-            $full = $r['full_name'] ?? '';
-            if ($full !== '' && !isset($curatedSet[$full])) {
-                $missing[] = $full;
-            }
-        }
-        if ($missing !== []) {
-            if ($verbose) {
-                echo 'Auto-adding missing OAI repos as weekly sources: '.implode(', ', $missing)."\n";
-            }
-            foreach ($missing as $full) {
-                $id = $full;
-                // don't re-add if filtered out
-                if ($filterSource !== null && $id !== $filterSource && $full !== $filterSource) {
-                    continue;
-                }
-                $sources['sources'][] = [
-                    'id' => $id,
-                    'repo' => $full,
-                    'tier' => 'auto',
-                    'ingestor' => 'github',
-                    'poll' => 'weekly',
-                    'endpoints' => ['releases', 'pulls', 'issues'],
-                    'auto' => true,
-                ];
-            }
-            // Persist auto-added sources back to sources.json on commit so next run is stable without re-enum cost
-            if (!$dryRun && $filterSource === null) {
-                file_put_contents($sourcesPath, json_encode($sources, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
-                if ($verbose) {
-                    echo "Updated {$sourcesPath} with ".count($missing)." auto sources\n";
-                }
-            }
-        }
-
-        // Also enumerate usearazzo org for completeness (4 repos) via gh if available
-        if (class_exists(GhCli::class) && GhCli::isAvailable()) {
-            $usearazzoRepos = GhCli::api('orgs/usearazzo/repos?per_page=100', true, false);
-            if (is_array($usearazzoRepos)) {
-                $curatedRepos2 = array_column(array_filter($sources['sources'], fn ($s) => isset($s['repo'])), 'repo');
-                $curatedSet2 = array_flip($curatedRepos2);
-                foreach ($usearazzoRepos as $r) {
-                    $full = $r['full_name'] ?? '';
-                    if ($full !== '' && !isset($curatedSet2[$full])) {
-                        if ($verbose) {
-                            echo "Auto-adding missing usearazzo repo: {$full}\n";
-                        }
-                        if ($filterSource !== null && $full !== $filterSource) {
-                            continue;
-                        }
-                        $sources['sources'][] = [
-                            'id' => $full,
-                            'repo' => $full,
-                            'tier' => 'auto',
-                            'ingestor' => 'github',
-                            'poll' => 'weekly',
-                            'endpoints' => ['releases', 'tags', 'pulls', 'issues'],
-                            'auto' => true,
-                        ];
-                        $curatedSet2[$full] = true;
-                    }
-                }
-            }
-        }
+        // NOTE: OAI/usearazzo repos are no longer auto-merged into the curated source list.
+        // New repos surface as an `org_diff` event and are added to `sources.json` by hand;
+        // auto-adding them (and rewriting `sources.json`) only fed non-Arazzo noise into the feed (F9).
     }
 }
 
@@ -186,9 +149,20 @@ if ($useFixtures) {
         ];
     }
 } else {
+    $today = gmdate('Y-m-d');
     foreach ($sources['sources'] as $src) {
         $id = $src['id'] ?? '';
         if ($filterSource !== null && $id !== $filterSource && ($src['repo'] ?? '') !== $filterSource) {
+            continue;
+        }
+
+        // Cadence (§5.4, F12): honour `poll: daily|weekly` using the stored poll date.
+        $poll = (string) ($src['poll'] ?? 'daily');
+        if (!Cadence::isDue($poll, $state->lastPolledAt($id), $today)) {
+            if ($verbose) {
+                echo "Skip {$id} (poll={$poll}, lastPolledAt=".$state->lastPolledAt($id).")\n";
+            }
+
             continue;
         }
 
@@ -198,15 +172,42 @@ if ($useFixtures) {
         }
 
         try {
+            $watermarks = $state->watermarks();
             $items = match ($ingestor) {
-                'github' => GithubApiIngestor::poll($src['repo'], $src['endpoints'] ?? ['releases'], $etagCache, $token, $limit, $verbose),
+                'github' => GithubApiIngestor::poll($src['repo'], $src['endpoints'] ?? ['releases'], $etagCache, $token, $limit, $verbose, $watermarks),
                 'atom' => AtomRssIngestor::poll($src['url'], $id, $limit),
-                'npm' => NpmRegistryIngestor::poll($src['package'], $id),
+                'npm' => NpmRegistryIngestor::poll($src['package'], $id, $state->watermark($id, 'npm', 'lastSeenUpdatedAt')),
                 'scrape' => WebScrapeIngestor::poll($src['url'], $id, $src['kind'] ?? 'scrape'),
                 default => [],
             };
+
+            // Spec-branch diffing (§5.4): compare the stored headSha against the live branch head
+            // and emit `spec.text_changed` / `schema.changed` observations for confirmed paths.
+            if ($ingestor === 'github' && is_array($src['branches'] ?? null) && $src['branches'] !== []) {
+                $newShas = [];
+                $items = array_merge($items, SpecBranchIngestor::poll(
+                    (string) ($src['repo'] ?? $id),
+                    $id,
+                    $src['branches'],
+                    is_array($src['watch_files'] ?? null) ? $src['watch_files'] : [],
+                    $state->branchHeads($id),
+                    $newShas,
+                    $token,
+                    $verbose,
+                ));
+                foreach ($newShas as $branch => $sha) {
+                    $state->recordBranchHead($id, (string) $branch, (string) $sha);
+                }
+            }
+
             foreach ($items as $it) {
                 $rawItems[] = $it;
+            }
+
+            // Only weekly sources persist a poll date; daily sources must not churn state
+            // on every run (§5.2 guardrail / A10).
+            if ($poll === 'weekly' && !$dryRun) {
+                $state->recordPolledAt($id, $today);
             }
         } catch (Throwable $e) {
             fwrite(STDERR, "  [error] {$id}: ".$e->getMessage()."\n");
@@ -225,47 +226,118 @@ if (!$useFixtures && !$dryRun) {
     file_put_contents($etagCachePath, json_encode($etagCache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 }
 
-$events = Normalizer::normalizeMany($rawItems);
+$feedEvents = Normalizer::normalizeMany($rawItems);
 
 // filters
 if ($since !== null) {
     $sinceTs = strtotime($since);
-    $events = array_values(array_filter($events, fn ($e) => strtotime($e->publishedAt) >= $sinceTs));
+    $feedEvents = array_values(array_filter($feedEvents, fn ($e) => strtotime($e->publishedAt) >= $sinceTs));
 }
 if ($filterSource !== null) {
     // after normalize, source may be repo id
-    $events = array_values(array_filter($events, fn ($e) => $e->source === $filterSource));
+    $feedEvents = array_values(array_filter($feedEvents, fn ($e) => $e->source === $filterSource));
 }
 
-usort($events, fn ($a, $b) => strcmp($b->publishedAt, $a->publishedAt));
+usort($feedEvents, fn ($a, $b) => strcmp($b->publishedAt, $a->publishedAt));
 
-echo sprintf("Collected %d raw -> %d events (dryRun=%s, fixtures=%s)\n", count($rawItems), count($events), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no');
-foreach (array_slice($events, 0, 10) as $e) {
-    echo sprintf("  [%s] %s %s tags=%s sev=%s rel=%s\n", $e->publishedAt, $e->source, $e->title, implode(',', $e->tags), $e->severity, $e->relevance ?? '-');
+// T3: topics come from the authored `topics.json` vocabulary (via the Normalizer) and the Scorer
+// classifies each observation Act/Watch/Noise; the Differ turns them into transition events and
+// carries topics/roadmapRefs/tier/score/why/breaking (§5.3, §5.6).
+$matcher = TopicMatcher::fromDefault();
+$scorer = new Scorer($matcher);
+$observations = [];
+foreach ($feedEvents as $event) {
+    $observation = array_merge($event->raw, [
+        'tags' => $event->tags,
+        'topics' => $event->tags,
+        'relevance' => $event->relevance,
+    ]);
+    $observations[] = $scorer->annotate($observation);
 }
 
-$feedPath = $root.'/storage/ecosystem-feed/feed.json';
-$snapshotsDir = $root.'/storage/ecosystem-feed/snapshots';
-$store = new Store($feedPath, $snapshotsDir);
-$res = $store->commit($events, $dryRun);
-echo sprintf("Store: written %d new, feedCount %d -> %s\n", $res['written'], $res['feedCount'], $res['feedPath']);
-
-// always render markdown preview even in dry-run (but only write on commit)
-$feedForRender = [];
-if (is_file($feedPath)) {
-    $feedForRender = json_decode((string) file_get_contents($feedPath), true) ?? [];
-} else {
-    // dry-run first time: render from events
-    $feedForRender = array_map(fn ($e) => $e->toArray(), $events);
+// Watchlist (§5.5): fetch per-item detail for the tracked upstream proposals and merge it
+// into the same transition pipeline, so a merge/retarget emits a real event.
+// NOTE: State is constructed up front (above) because the spec-branch and npm ingestors need
+// their watermarks before polling; only the watchlist half of T5's block is merged here.
+$watchlistPath = $root.'/config/ecosystem/watchlist.json';
+$watchlistItems = Watchlist::load($watchlistPath);
+if ($watchlistItems !== [] && !$useFixtures) {
+    $watchlistObservations = WatchlistIngestor::poll($watchlistItems, $verbose);
+    foreach ($watchlistObservations as $watchlistObservation) {
+        // A watchlist transition is Act (§5.6), so score with the watchlist flag — an unscored
+        // observation would fall back to `tier: null` → Watch in the Renderer (P0-1).
+        $observations[] = $scorer->annotate($watchlistObservation, true);
+    }
+    if ($verbose) {
+        echo sprintf("Watchlist: %d items, %d observed\n", count($watchlistItems), count($watchlistObservations));
+    }
 }
-$md = Renderer::renderMarkdown($feedForRender, gmdate('c'));
+$watchlistStatus = Watchlist::statusRows($watchlistItems, $observations);
+
+$differ = new Differ();
+$newEvents = $differ->diff($observations, $state, gmdate('c'), $baseline);
+
+if (!$dryRun) {
+    $state->appendEvents($newEvents);
+    $state->save();
+}
+
+// Persist the watchlist status (§5.7 output 5). No run clock is written, so an unchanged
+// status is byte-identical and produces no commit (A10 guardrail).
+$statusPath = $stateDir.'/watchlist-status.json';
+$statusJson = $watchlistItems === [] ? null : State::prettyJson([
+    'version' => State::SCHEMA_VERSION,
+    'items' => $watchlistStatus,
+])."\n";
+$watchlistChanged = $statusJson !== null && (!is_file($statusPath) || file_get_contents($statusPath) !== $statusJson);
+if (!$dryRun && $watchlistChanged) {
+    file_put_contents($statusPath, $statusJson);
+}
+
+echo sprintf("Collected %d raw -> %d observations (dryRun=%s, fixtures=%s, baseline=%s)\n", count($rawItems), count($observations), $dryRun ? 'yes' : 'no', $useFixtures ? 'yes' : 'no', $baseline ? 'yes' : 'no');
+echo sprintf("State: loaded %d entities from %s\n", $loadedEntities, $stateDir);
+echo sprintf("Differ: %d new events, %d entities tracked%s\n", count($newEvents), $state->count(), $baseline ? ' (baseline - nothing emitted)' : '');
+foreach (array_slice($newEvents, 0, 10) as $event) {
+    echo sprintf("  [%s] %s %s %s\n", $event->occurredAt, $event->kind, $event->source, $event->subject['title'] ?? '');
+}
+
+// Render the bounded digest (T4/§5.7.1) from this run's transition events. The renderer reuses
+// the previous `Generated` timestamp when the body (everything else) is unchanged, so a quiet
+// run is byte-identical and produces no commit (A10 / §5.2 guardrail).
+$eventRows = array_map(static fn (Event $event): array => $event->toArray(), $newEvents);
+
+$digestPath = $root.'/docs/ECOSYSTEM_FEED.md';
+$existingDigest = is_file($digestPath) ? (string) file_get_contents($digestPath) : null;
+$md = Renderer::renderDigest(array_values($eventRows), $watchlistStatus, gmdate('c'), $existingDigest);
 if ($dryRun) {
     echo "\n--- Markdown preview (not written) ---\n";
     echo substr($md, 0, 2000)."\n";
+} elseif ($md !== $existingDigest) {
+    file_put_contents($digestPath, $md);
+    echo "Wrote {$digestPath}\n";
 } else {
-    $outPath = $root.'/docs/ECOSYSTEM_FEED.md';
-    file_put_contents($outPath, $md);
-    echo "Wrote {$outPath}\n";
+    echo "Digest unchanged (no events this run) - {$digestPath} left as-is.\n";
+}
+
+// A9: log the remaining API budget at the end of the run. The `rate_limit` endpoint
+// does not itself count against the limit, so this is cheap and safe.
+if (!$useFixtures) {
+    $resources = GhCli::rateLimit($verbose);
+    if (is_array($resources)) {
+        foreach (['core', 'graphql', 'search'] as $bucket) {
+            $row = $resources[$bucket] ?? null;
+            if (!is_array($row)) {
+                continue;
+            }
+            echo sprintf(
+                "X-RateLimit %s: %d/%d remaining (resets %s)\n",
+                $bucket,
+                (int) ($row['remaining'] ?? 0),
+                (int) ($row['limit'] ?? 0),
+                (string) ($row['reset'] ?? '?'),
+            );
+        }
+    }
 }
 
 exit(0);
