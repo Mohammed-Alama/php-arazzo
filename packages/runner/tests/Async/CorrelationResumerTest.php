@@ -205,3 +205,62 @@ it('logs and does nothing when persisted state is missing', function (): void {
         ->and($eventLedger->appended[0]['eventType'])->toBe('execution.state_missing')
         ->and($eventLedger->appended[0]['payload'])->toBe(['correlationId' => 'corr_1']);
 });
+
+it('reports a missing definition when the persisted definitionId is not scalar', function (): void {
+    $pendingCorrelations = new ResumerMockPendingCorrelations();
+    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
+
+    $stateStore = new ResumerMockStateStore();
+    $stateStore->state = ['definitionId' => ['not', 'a', 'string']];
+
+    $eventLedger = new ResumerMockEventLedger();
+    $outcomeHandler = new RecordingStepOutcomeHandler();
+
+    $resumer = new CorrelationResumer(
+        $pendingCorrelations,
+        $stateStore,
+        new RecordingDefinitionRegistry(),
+        \Mockery::mock(OutputExtractorInterface::class),
+        \Mockery::mock(EvaluationEngineInterface::class),
+        $outcomeHandler,
+        $eventLedger,
+        new ResumerMockLockManager(),
+    );
+
+    $resumer->resume('corr_1', ['body' => ['x' => 1]]);
+
+    expect($outcomeHandler->handled)->toBe([])
+        ->and($eventLedger->appended[0]['eventType'])->toBe('execution.definition_missing')
+        ->and($eventLedger->appended[0]['payload'])->toBe(['definitionId' => ['not', 'a', 'string']]);
+});
+
+it('reports a missing workflow when the persisted workflowId is not scalar', function (): void {
+    [$registry, $definitionId] = resumerDocument();
+    $document = $registry->get($definitionId);
+
+    $pendingCorrelations = new ResumerMockPendingCorrelations();
+    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
+
+    $stateStore = new ResumerMockStateStore();
+    $stateStore->state = ['definitionId' => $definitionId, 'workflowId' => ['not', 'a', 'string']];
+
+    $eventLedger = new ResumerMockEventLedger();
+    $outcomeHandler = new RecordingStepOutcomeHandler();
+
+    $resumer = new CorrelationResumer(
+        $pendingCorrelations,
+        $stateStore,
+        new RecordingDefinitionRegistry($document),
+        \Mockery::mock(OutputExtractorInterface::class),
+        \Mockery::mock(EvaluationEngineInterface::class),
+        $outcomeHandler,
+        $eventLedger,
+        new ResumerMockLockManager(),
+    );
+
+    $resumer->resume('corr_1', ['body' => ['x' => 1]]);
+
+    expect($outcomeHandler->handled)->toBe([])
+        ->and($eventLedger->appended[0]['eventType'])->toBe('execution.workflow_missing')
+        ->and($eventLedger->appended[0]['payload'])->toBe(['workflowId' => ['not', 'a', 'string']]);
+});

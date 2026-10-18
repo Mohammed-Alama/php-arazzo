@@ -74,7 +74,7 @@ final class WorkflowEngine
         }
 
         $state = $state->spendStep()->withCurrentStep($step->stepId);
-        $record = $state->stepResults[$step->stepId] ?? [];
+        $record = self::stepRecord($state->stepResults[$step->stepId] ?? null);
         $record['status'] = $criteriaMet ? StepStatus::Succeeded->value : StepStatus::Failed->value;
         $state = $state->withStepResult($step->stepId, $record);
         $actions = $this->actions($document, $workflow, $step, $criteriaMet);
@@ -232,6 +232,22 @@ final class WorkflowEngine
         }
 
         return null;
+    }
+
+    /**
+     * Persisted step results are name-to-value maps. Non-array entries are
+     * dropped and non-string keys filtered so the result matches the typed
+     * seam the record is handed to.
+     *
+     * @return array<string, mixed>
+     */
+    private static function stepRecord(mixed $record): array
+    {
+        if (!is_array($record)) {
+            return [];
+        }
+
+        return array_filter($record, static fn (mixed $key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
     }
 
     /**

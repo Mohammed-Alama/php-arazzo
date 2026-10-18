@@ -14,10 +14,10 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "laravel:Persistence", "document:Validator", "laravel:Queue", "laravel:Support", "sources:Normalizer", "laravel:State", "runner:Async", "contracts:Interfaces"]
     y-axis "Touches" 0 --> 60
-    bar [44, 27, 26, 21, 19, 16, 14, 14, 12, 11, 11, 10]
+    bar [44, 27, 26, 21, 19, 17, 14, 14, 12, 11, 11, 10]
 ```
 
-Analyzed 337 total file-touches across 47 modules.
+Analyzed 339 total file-touches across 47 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -26,15 +26,15 @@ Analyzed 337 total file-touches across 47 modules.
 | `runner:Execution` | 26 | 8% | 370 | 70.3 |
 | `laravel:Http` | 21 | 6% | 170 | 123.5 |
 | `laravel:Persistence` | 19 | 6% | 264 | 72 |
-| `document:Validator` | 16 | 5% | 3,527 | 4.5 |
+| `document:Validator` | 17 | 5% | 3,527 | 4.8 |
 | `laravel:Queue` | 14 | 4% | 109 | 128.4 |
 | `laravel:Support` | 14 | 4% | 213 | 65.7 |
 | `sources:Normalizer` | 12 | 4% | 1,283 | 9.4 |
 | `laravel:State` | 11 | 3% | 46 | 239.1 |
-| `runner:Async` | 11 | 3% | 1,317 | 8.4 |
+| `runner:Async` | 11 | 3% | 1,339 | 8.2 |
 | `contracts:Interfaces` | 10 | 3% | 359 | 27.9 |
 | `contracts:Spec` | 10 | 3% | 1,203 | 8.3 |
-| `document:Parser` | 9 | 3% | 1,324 | 6.8 |
+| `document:Parser` | 10 | 3% | 1,324 | 7.6 |
 | `expression:Interfaces` | 9 | 3% | 110 | 81.8 |
 | `laravel:Lock` | 9 | 3% | 52 | 173.1 |
 | `evaluation:Registries` | 5 | 1% | 123 | 40.7 |
@@ -64,7 +64,7 @@ Analyzed 337 total file-touches across 47 modules.
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
-| `runner:Sync` | 1 | 0% | 804 | 1.2 |
+| `runner:Sync` | 1 | 0% | 820 | 1.2 |
 | `runtime:Infrastructure` | 1 | 0% | 155 | 6.5 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
