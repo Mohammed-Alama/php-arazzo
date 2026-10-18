@@ -18,16 +18,7 @@ final class WorkflowDependsOnExistsRule implements Rule
     {
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->dependsOn as $j => $dep) {
-                if (!is_scalar($dep)) {
-                    $errors->error(
-                        $this->code(),
-                        "workflow '{$w->workflowId}' dependsOn item at index {$j} must be a string or integer.",
-                        "/workflows/{$i}/dependsOn/{$j}",
-                    );
-
-                    continue;
-                }
-                if (!isset($symbols->workflows[(string) $dep])) {
+                if (!isset($symbols->workflows[$dep])) {
                     $errors->error(
                         $this->code(),
                         "workflow '{$w->workflowId}' dependsOn '{$dep}' which is not declared.",

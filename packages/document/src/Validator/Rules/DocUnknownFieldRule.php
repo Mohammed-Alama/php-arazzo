@@ -23,10 +23,10 @@ final class DocUnknownFieldRule implements Rule
         if ($doc->rawRoot === null) {
             return;
         }
-        foreach ($doc->rawRoot as $k => $_) {
-            if (!is_string($k)) {
-                continue;
-            }
+        foreach ($doc->rawRoot as $rawKey => $_) {
+            // A decoded root map may hold integer keys (`{"0": …}`); fold them to
+            // strings so a numeric top-level field is reported instead of skipped.
+            $k = (string) $rawKey;
             if (in_array($k, self::KNOWN, true) || str_starts_with($k, 'x-')) {
                 continue;
             }

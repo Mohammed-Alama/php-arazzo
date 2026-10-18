@@ -89,7 +89,8 @@ class Parser
         $components = $this->parseComponents($d['components'] ?? null, $ctx->push('components'));
 
         $extensions = array_filter($d, function ($k) {
-            return is_string($k) && str_starts_with($k, 'x-');
+            // A decoded root map may hold integer keys (`{"0": …}`).
+            return str_starts_with((string) $k, 'x-');
         }, ARRAY_FILTER_USE_KEY);
 
         return new ArazzoDocument(
@@ -190,7 +191,7 @@ class Parser
 
         $dependsOn = [];
         if (($d = $this->optionalList($obj, 'dependsOn', $ctx)) !== null) {
-            foreach (array_values($d) as $i => $item) {
+            foreach ($d as $i => $item) {
                 if (!is_string($item)) {
                     throw ParserException::wrongType(
                         $ctx->push('dependsOn')->push($i), 'string', $item,
@@ -205,27 +206,27 @@ class Parser
             throw ParserException::missingField($ctx, 'steps');
         }
         $rawSteps = $this->requireList($obj['steps'], $ctx->push('steps'));
-        foreach (array_values($rawSteps) as $i => $item) {
+        foreach ($rawSteps as $i => $item) {
             $steps[] = $this->parseStep($item, $ctx->push('steps')->push($i));
         }
 
         $successActions = [];
         if (($s = $this->optionalList($obj, 'successActions', $ctx)) !== null) {
-            foreach (array_values($s) as $i => $item) {
+            foreach ($s as $i => $item) {
                 $successActions[] = $this->parseSuccessAction($item, $ctx->push('successActions')->push($i));
             }
         }
 
         $failureActions = [];
         if (($f = $this->optionalList($obj, 'failureActions', $ctx)) !== null) {
-            foreach (array_values($f) as $i => $item) {
+            foreach ($f as $i => $item) {
                 $failureActions[] = $this->parseFailureAction($item, $ctx->push('failureActions')->push($i));
             }
         }
 
         $parameters = [];
         if (($p = $this->optionalList($obj, 'parameters', $ctx)) !== null) {
-            foreach (array_values($p) as $i => $item) {
+            foreach ($p as $i => $item) {
                 $parameters[] = $this->parseParameter($item, $ctx->push('parameters')->push($i));
             }
         }
@@ -347,9 +348,6 @@ class Parser
         };
     }
 
-    /**
-     * @param  array<string,mixed>  $obj
-     */
     private function parseGraphQlOperation(mixed $node, ParseContext $ctx): GraphQlOperation
     {
         $obj = $this->requireObjectMap($node, $ctx);
@@ -369,9 +367,6 @@ class Parser
         );
     }
 
-    /**
-     * @param  array<string,mixed>  $obj
-     */
     private function parseInteraction(mixed $node, ParseContext $ctx): Interaction
     {
         $obj = $this->requireObjectMap($node, $ctx);
@@ -407,7 +402,7 @@ class Parser
     {
         $dependsOn = [];
         if (($d = $this->optionalList($obj, 'dependsOn', $ctx)) !== null) {
-            foreach (array_values($d) as $i => $item) {
+            foreach ($d as $i => $item) {
                 if (!is_string($item)) {
                     throw ParserException::wrongType(
                         $ctx->push('dependsOn')->push((string) $i), 'string', $item,
@@ -419,14 +414,14 @@ class Parser
 
         $onSuccess = [];
         if (($o = $this->optionalList($obj, 'onSuccess', $ctx)) !== null) {
-            foreach (array_values($o) as $i => $item) {
+            foreach ($o as $i => $item) {
                 $onSuccess[] = $this->parseSuccessAction($item, $ctx->push('onSuccess')->push($i));
             }
         }
 
         $onFailure = [];
         if (($o = $this->optionalList($obj, 'onFailure', $ctx)) !== null) {
-            foreach (array_values($o) as $i => $item) {
+            foreach ($o as $i => $item) {
                 $onFailure[] = $this->parseFailureAction($item, $ctx->push('onFailure')->push($i));
             }
         }
@@ -449,7 +444,7 @@ class Parser
     {
         $parameters = [];
         if (($p = $this->optionalList($obj, 'parameters', $ctx)) !== null) {
-            foreach (array_values($p) as $i => $item) {
+            foreach ($p as $i => $item) {
                 $parameters[] = $this->parseParameter($item, $ctx->push('parameters')->push($i));
             }
         }
@@ -461,7 +456,7 @@ class Parser
 
         $criteria = [];
         if (($c = $this->optionalList($obj, 'successCriteria', $ctx)) !== null) {
-            foreach (array_values($c) as $i => $item) {
+            foreach ($c as $i => $item) {
                 $criteria[] = $this->parseSuccessCriterion($item, $ctx->push('successCriteria')->push($i));
             }
         }
@@ -534,7 +529,11 @@ class Parser
             return $parsed;
         }
 
-        return $value;
+        if (is_bool($value) || is_int($value) || is_float($value) || $value === null) {
+            return $value;
+        }
+
+        throw ParserException::wrongType($ctx, 'scalar, map, selector or expression', $value);
     }
 
     private function parseSelector(mixed $node, ParseContext $ctx): Selector
@@ -546,8 +545,9 @@ class Parser
 
         if (is_array($rawType)) {
             $typeCtx = $ctx->push('type');
-            $typeStr = $this->requireString($rawType, 'type', $typeCtx);
-            $version = $this->optionalString($rawType, 'version', $typeCtx);
+            $typeNode = $this->requireObjectMap($rawType, $typeCtx);
+            $typeStr = $this->requireString($typeNode, 'type', $typeCtx);
+            $version = $this->optionalString($typeNode, 'version', $typeCtx);
         } else {
             $typeStr = $this->requireString($value, 'type', $ctx);
         }
@@ -571,7 +571,7 @@ class Parser
         $replacements = [];
         $rawRepl = $this->optionalList($obj, 'replacements', $ctx);
         if ($rawRepl !== null) {
-            foreach (array_values($rawRepl) as $i => $item) {
+            foreach ($rawRepl as $i => $item) {
                 $replacements[] = $this->parsePayloadReplacement($item, $ctx->push('replacements')->push((string) $i));
             }
         }
@@ -630,8 +630,9 @@ class Parser
 
             if (is_array($rawType)) {
                 $typeCtx = $ctx->push('type');
-                $t = $this->requireString($rawType, 'type', $typeCtx);
-                $version = $this->optionalString($rawType, 'version', $typeCtx);
+                $typeNode = $this->requireObjectMap($rawType, $typeCtx);
+                $t = $this->requireString($typeNode, 'type', $typeCtx);
+                $version = $this->optionalString($typeNode, 'version', $typeCtx);
             } else {
                 $t = $this->requireString($obj, 'type', $ctx);
             }

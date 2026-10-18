@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Validator\Data;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Parameter;
-use Alama\Arazzo\Contracts\Spec\SourceDescription;
-use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 
 final readonly class SymbolTable
@@ -27,61 +24,34 @@ final readonly class SymbolTable
     public static function build(ArazzoDocument $doc): self
     {
         $sources = [];
-        // @phpstan-ignore isset.property
-        if (isset($doc->sourceDescriptions) && is_iterable($doc->sourceDescriptions)) {
-            foreach ($doc->sourceDescriptions as $s) {
-                // @phpstan-ignore isset.property
-                if ($s instanceof SourceDescription && isset($s->name)) {
-                    $sources[$s->name] = true;
-                }
-            }
+        foreach ($doc->sourceDescriptions as $s) {
+            $sources[$s->name] = true;
         }
 
         $components = [
-            'inputs' => [],
-            'parameters' => [],
-            'successActions' => [],
-            'failureActions' => [],
+            'inputs' => self::keysOf($doc->components->inputs),
+            'parameters' => self::keysOf($doc->components->parameters),
+            'successActions' => self::keysOf($doc->components->successActions),
+            'failureActions' => self::keysOf($doc->components->failureActions),
         ];
 
-        // @phpstan-ignore isset.property, instanceof.alwaysTrue, booleanAnd.alwaysTrue
-        if (isset($doc->components) && $doc->components instanceof Components) {
-            $components = [
-                // @phpstan-ignore isset.property
-                'inputs' => self::keysOf(isset($doc->components->inputs) ? $doc->components->inputs : null),
-                // @phpstan-ignore isset.property
-                'parameters' => self::keysOf(isset($doc->components->parameters) ? $doc->components->parameters : null),
-                // @phpstan-ignore isset.property
-                'successActions' => self::keysOf(isset($doc->components->successActions) ? $doc->components->successActions : null),
-                // @phpstan-ignore isset.property
-                'failureActions' => self::keysOf(isset($doc->components->failureActions) ? $doc->components->failureActions : null),
-            ];
-        }
-
         $workflows = [];
-        // @phpstan-ignore isset.property
-        if (isset($doc->workflows) && is_iterable($doc->workflows)) {
-            foreach ($doc->workflows as $wf) {
-                // @phpstan-ignore isset.property
-                if ($wf instanceof Workflow && isset($wf->workflowId)) {
-                    $workflows[$wf->workflowId] = self::buildWorkflow($wf);
-                }
-            }
+        foreach ($doc->workflows as $wf) {
+            $workflows[$wf->workflowId] = self::buildWorkflow($wf);
         }
 
         return new self($workflows, $sources, $components);
     }
 
     /**
+     * @param  array<array-key,mixed>  $arr
      * @return array<string,true>
      */
-    private static function keysOf(mixed $arr): array
+    private static function keysOf(array $arr): array
     {
         $out = [];
-        if (is_iterable($arr)) {
-            foreach ($arr as $k => $_) {
-                $out[(string) $k] = true;
-            }
+        foreach ($arr as $k => $_) {
+            $out[(string) $k] = true;
         }
 
         return $out;
@@ -90,62 +60,42 @@ final readonly class SymbolTable
     private static function buildWorkflow(Workflow $wf): WorkflowSymbols
     {
         $inputs = [];
-        $params = [];
-        $steps = [];
-        $outputs = [];
-        $dependsOn = [];
-
-        if (isset($wf->inputs['properties']) && is_iterable($wf->inputs['properties'])) {
-            foreach ($wf->inputs['properties'] as $k => $_) {
+        $properties = $wf->inputs['properties'] ?? null;
+        if (is_array($properties)) {
+            foreach ($properties as $k => $_) {
                 $inputs[(string) $k] = true;
             }
         }
 
-        // @phpstan-ignore isset.property
-        if (isset($wf->parameters) && is_iterable($wf->parameters)) {
-            foreach ($wf->parameters as $p) {
-                // @phpstan-ignore isset.property
-                if ($p instanceof Parameter && isset($p->name)) {
-                    $params[$p->name] = true;
-                }
+        $params = [];
+        foreach ($wf->parameters as $p) {
+            // Reusable parameters carry no name of their own.
+            if ($p instanceof Parameter) {
+                $params[$p->name] = true;
             }
         }
 
-        // @phpstan-ignore isset.property
-        if (isset($wf->steps) && is_iterable($wf->steps)) {
-            foreach ($wf->steps as $i => $s) {
-                // @phpstan-ignore isset.property
-                if ($s instanceof Step && isset($s->stepId)) {
-                    $outs = [];
-                    // @phpstan-ignore isset.property
-                    if (isset($s->io->outputs) && is_iterable($s->io->outputs)) {
-                        foreach ($s->io->outputs as $k => $_) {
-                            $outs[(string) $k] = true;
-                        }
-                    }
-                    $stepDependsOn = [];
-                    foreach ($s->flow->dependsOn as $d) {
-                        $stepDependsOn[$d] = true;
-                    }
-                    $steps[$s->stepId] = new StepSymbols($outs, (int) $i, $stepDependsOn);
-                }
+        $steps = [];
+        foreach ($wf->steps as $i => $s) {
+            $outs = [];
+            foreach ($s->io->outputs as $k => $_) {
+                $outs[$k] = true;
             }
+            $stepDependsOn = [];
+            foreach ($s->flow->dependsOn as $d) {
+                $stepDependsOn[$d] = true;
+            }
+            $steps[$s->stepId] = new StepSymbols($outs, (int) $i, $stepDependsOn);
         }
 
-        // @phpstan-ignore isset.property
-        if (isset($wf->outputs) && is_iterable($wf->outputs)) {
-            foreach ($wf->outputs as $k => $_) {
-                $outputs[(string) $k] = true;
-            }
+        $outputs = [];
+        foreach ($wf->outputs as $k => $_) {
+            $outputs[$k] = true;
         }
 
-        // @phpstan-ignore isset.property
-        if (isset($wf->dependsOn) && is_iterable($wf->dependsOn)) {
-            foreach ($wf->dependsOn as $d) {
-                if (is_string($d) || is_int($d)) {
-                    $dependsOn[(string) $d] = true;
-                }
-            }
+        $dependsOn = [];
+        foreach ($wf->dependsOn as $d) {
+            $dependsOn[$d] = true;
         }
 
         return new WorkflowSymbols($inputs, $params, $steps, $outputs, $dependsOn);
