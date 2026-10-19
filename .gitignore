@@ -36,6 +36,8 @@ testbench.yaml
 /packages/*/vendor/
 # Ecosystem feed cache (ETag) — not committed, restored via actions/cache
 /.cache/ecosystem/
+# Composer download cache — not committed, restored via actions/cache
+/.cache/composer/
 /packages/*/composer.lock
 /packages/*/.phpunit.cache/
 public/ST_local_api.json
