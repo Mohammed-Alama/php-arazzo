@@ -26,23 +26,59 @@ format: ## Format code using Laravel Pint
 analyse: ## Run PHPStan static analysis
 	composer run analyse
 
-analyse-baseline: ## Regenerate PHPStan baselines for the split core packages + laravel
-	@# Each sub-package config inlines `includes: - phpstan-baseline.neon`; PHPStan can
-	@# regenerate an in-place baseline, but the first run needs the file to exist. Run
-	@# from inside each package dir so baseline `path:` entries stay config-relative.
-	@# Sub-packages & laravel use their own vendor/bin/phpstan (fall back to core's).
-	@for pkg in contracts expression document runner cli; do \
+analyse-baseline: ## Regenerate every PHPStan baseline (one per package that has one)
+	@# Each package config inlines `includes: - phpstan-baseline.neon`; PHPStan can
+	@# regenerate a baseline in place, but only once the file exists — a package that
+	@# should have one needs it created first.
+	@# Always pass the output path
+	@# (`--generate-baseline=packages/<pkg>/phpstan-baseline.neon`): PHPStan writes the
+	@# file next to the *cwd* and spells its `path:` entries relative to it, so a bare
+	@# `--generate-baseline` from the repo root drops a baseline there full of
+	@# `packages/<pkg>/src/...` paths. Pointed at the package, both stay package-relative,
+	@# which is what the committed baselines use.
+	@# The package list comes from the baselines that exist, so a package added to the
+	@# split is picked up rather than forgotten. `core` is not here at all: it has no
+	@# baseline (empty src, and its config's cwd-relative `includes:` cannot resolve).
+	@# Analysis runs from the repo root on the root binary, exactly like the
+	@# `composer analyse-*` scripts — larastan needs the root as cwd to bootstrap.
+	@# `--allow-empty-baseline` lets an errors-free package (laravel today) write an
+	@# empty baseline; PHPStan spells that `ignoreErrors: []`, so rewrite it to the
+	@# `parameters: {}` the repo commits, or every run would churn the file.
+	@# And `--generate-baseline` freezes whatever it finds, so it is guarded (#203,
+	@# docs/BASELINE-POLICY.md): the tree must be policy-clean before we start, and every
+	@# baseline we rewrite is audited — one that now hides a correctness error is put
+	@# back the way it was and the target fails instead of leaving it behind.
+	@php scripts/check-baselines.php || { \
+	  echo ""; \
+	  echo "❌ This tree already hides a correctness error — nothing was regenerated."; \
+	  echo "💡 Fix the code; baselines may not hide it. See docs/BASELINE-POLICY.md."; \
+	  exit 1; \
+	}
+	@for baseline in packages/*/phpstan-baseline.neon; do \
+	  pkg=$$(basename "$$(dirname "$$baseline")"); \
 	  echo "==> $$pkg"; \
-	  ( cd packages/$$pkg && ( \
-	      vendor/bin/phpstan analyse -c phpstan.neon.dist --generate-baseline --memory-limit=1G || \
-	      ../../../vendor/bin/phpstan analyse -c phpstan.neon.dist --generate-baseline --memory-limit=1G || \
-	      ../core/vendor/bin/phpstan analyse -c phpstan.neon.dist --generate-baseline --memory-limit=1G \
-	  ) ); \
+	  previous=$$(mktemp); \
+	  cp "$$baseline" "$$previous"; \
+	  if ! vendor/bin/phpstan analyse -c "packages/$$pkg/phpstan.neon.dist" \
+	      --generate-baseline="$$baseline" --allow-empty-baseline --memory-limit=1G; then \
+	    rm -f "$$previous"; \
+	    echo ""; \
+	    echo "❌ PHPStan could not regenerate $$baseline — it was left untouched."; \
+	    exit 1; \
+	  fi; \
+	  if ! grep -q 'message:' "$$baseline"; then \
+	    printf 'parameters: {}\n' > "$$baseline"; \
+	  fi; \
+	  if ! php scripts/check-baselines.php; then \
+	    cp "$$previous" "$$baseline"; \
+	    rm -f "$$previous"; \
+	    echo ""; \
+	    echo "❌ $$baseline now hides a correctness error — previous baseline restored."; \
+	    echo "💡 Fix the code; baselines may not hide it. See docs/BASELINE-POLICY.md."; \
+	    exit 1; \
+	  fi; \
+	  rm -f "$$previous"; \
 	done
-	@echo "==> laravel"; \
-	cd packages/laravel && vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G; cd ../..
-	@echo "==> core (hollow — src empty, baseline optional/absent)"; \
-	cd packages/core && (vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G || true); cd ../..
 
 phpmd: ## Run PHP Mess Detector with baseline (new violations only)
 	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src ansi phpmd.xml --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit
