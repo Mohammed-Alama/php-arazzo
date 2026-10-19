@@ -141,6 +141,7 @@
         "analyse": [
             "@analyse-contracts",
             "@analyse-expression",
+            "@analyse-evaluation",
             "@analyse-document",
             "@analyse-sources",
             "@analyse-runtime",

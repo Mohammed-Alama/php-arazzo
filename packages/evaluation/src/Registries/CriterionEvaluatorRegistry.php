@@ -19,7 +19,7 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
  */
 final class CriterionEvaluatorRegistry
 {
-    /** @var array<int, CriterionEvaluatorPluginInterface> */
+    /** @var array<int, list<CriterionEvaluatorPluginInterface>> */
     private array $plugins = [];
 
     public function __construct(ExpressionEngineInterface $expression)
@@ -51,7 +51,6 @@ final class CriterionEvaluatorRegistry
     public function all(): array
     {
         $flat = [];
-        /** @var CriterionEvaluatorPluginInterface[] $priorityPlugins */
         foreach ($this->plugins as $priorityPlugins) {
             $flat = array_merge($flat, $priorityPlugins);
         }
