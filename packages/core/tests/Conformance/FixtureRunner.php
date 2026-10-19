@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Tests\Conformance;
 
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Runner\Sync\StepExecutor;
 use Alama\Arazzo\Runner\Sync\WorkflowEngine;
@@ -46,7 +45,6 @@ final class FixtureRunner extends ConformanceHarness
                 $this->engine(),
                 $this->outputExtractor($runtime),
                 $this->schemaValidator($runtime),
-                inspector: new ExpressionEngine(),
             ),
             new WorkflowEngine($this->engine()),
             events: $this->events,

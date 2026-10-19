@@ -12,7 +12,6 @@ use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerRegistryInterface;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Protocol\Http\Execution\ResponseSchemaValidator;
 use Alama\Arazzo\Protocol\Http\Protocol\AsyncApiStepExecutor;
@@ -45,7 +44,6 @@ final class ProtocolHttpRegistrar
         private readonly OutputExtractorInterface $outputExtractor,
         private readonly ResponseValidatorInterface $schemaValidator,
         private readonly EvaluationEngineInterface $evaluationEngine,
-        private readonly ExpressionEngineInterface $inspector,
         private readonly PendingCorrelationRegistryInterface $pendingCorrelations,
         private readonly HttpClientInterface $httpClient,
         private readonly ?RequestFactoryInterface $requestFactory = null,
@@ -123,7 +121,6 @@ final class ProtocolHttpRegistrar
             $this->openApiExecutor,
             $this->operationResolver,
             $this->evaluationEngine,
-            $this->inspector,
             $this->outputExtractor,
             $this->schemaValidator,
             strictValidationDefault: $this->strictValidationDefault,

@@ -122,7 +122,6 @@ final class ProtocolHttpServiceProvider extends ServiceProvider
                 outputExtractor: $app->make(OutputExtractorInterface::class),
                 schemaValidator: $app->make(ResponseValidatorInterface::class),
                 evaluationEngine: $app->make(EvaluationEngineInterface::class),
-                inspector: $app->make(ExpressionEngineInterface::class),
                 pendingCorrelations: $app->make(PendingCorrelationRegistryInterface::class),
                 httpClient: $app->make(HttpClientInterface::class),
                 requestFactory: $app->bound(RequestFactoryInterface::class)

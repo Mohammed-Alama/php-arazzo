@@ -503,7 +503,7 @@ it('executes a workflow end-to-end', function () {
     $schemaValidator = new ResponseSchemaValidator($runtime->operations);
 
     $openApiExecutor = new DefaultOpenApiExecutor($httpClient, $requestFactory);
-    $stepExecutor = new StepExecutor($openApiExecutor, $runtime->operations, $engine, $outputExtractor, $schemaValidator, inspector: new ExpressionEngine());
+    $stepExecutor = new StepExecutor($openApiExecutor, $runtime->operations, $engine, $outputExtractor, $schemaValidator);
 
     $workflowExecutor = new WorkflowExecutor($stepExecutor, new WorkflowEngine(new TestEvaluationEngine()));
 

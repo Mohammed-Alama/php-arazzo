@@ -13,7 +13,6 @@ use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Engine\Execution\ReusableParameterResolver;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Protocol\Rpc\Protocol\RpcFieldBag;
 use Alama\Arazzo\Protocol\Rpc\Protocol\RpcMessageCodec;
 use Alama\Arazzo\Protocol\Rpc\Protocol\RpcWireProfile;
@@ -47,7 +46,6 @@ final class RpcRequestBuilder
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory,
         private EvaluationEngineInterface $evaluationEngine,
-        private ExpressionEngineInterface $inspector,
         private RpcMessageCodec $codec,
     ) {}
 
@@ -76,7 +74,7 @@ final class RpcRequestBuilder
             );
         }
 
-        $compiled = (new RequestCompiler($this->evaluationEngine, $this->inspector))->compile($step, $document, $context);
+        $compiled = (new RequestCompiler($this->evaluationEngine))->compile($step, $document, $context);
         $inputs = $compiled['resolvedInputs'];
 
         $target = $this->override($inputs, 'url') ?? $this->override($inputs, 'endpoint') ?? $resolved->normalized->resolvedServerUrl;

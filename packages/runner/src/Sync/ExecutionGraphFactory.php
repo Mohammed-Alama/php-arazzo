@@ -9,7 +9,6 @@ use Alama\Arazzo\Contracts\Interfaces\ResponseValidatorInterface;
 use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
 
@@ -26,11 +25,9 @@ use Alama\Arazzo\Runner\Execution\OperationRuntime;
  */
 final class ExecutionGraphFactory
 {
-    /** @phpstan-ignore-next-line constructor has 6 parameters, max 5 allowed by config */
     public function __construct(
         private readonly OperationRuntime $operations,
         private readonly EvaluationEngineInterface $evaluationEngine,
-        private readonly ExpressionEngineInterface $inspector,
         private readonly ?OpenApiExecutorInterface $openApiExecutor = null,
         private readonly ?OutputExtractorInterface $outputExtractor = null,
         private readonly ?ResponseValidatorInterface $schemaValidator = null,
@@ -52,7 +49,6 @@ final class ExecutionGraphFactory
                 $this->evaluationEngine,
                 $outputExtractor,
                 $schemaValidator,
-                inspector: $this->inspector,
             ),
             workflowEngine: new WorkflowEngine($this->evaluationEngine),
             preflight: $this->operations->document,

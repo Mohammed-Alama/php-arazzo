@@ -24,7 +24,6 @@ use Alama\Arazzo\Document\OperationResolverInterface;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Protocol\Soap\Execution\SoapFaultMapper;
 use Alama\Arazzo\Protocol\Soap\Execution\SoapOperationExecutor;
@@ -194,7 +193,6 @@ function soapExecutor(SoapExecutorFakeClient $client, OperationResolverInterface
             requestFactory: $psr17,
             streamFactory: $psr17,
             evaluationEngine: new SoapExecutorMockEngine(),
-            inspector: new ExpressionEngine(),
         ),
         httpClient: $client,
         responseMapper: new SoapResponseTransferMapper(),
@@ -219,7 +217,6 @@ it('supports WSDL steps and rejects non-SOAP steps', function (): void {
             requestFactory: new HttpFactory(),
             streamFactory: new HttpFactory(),
             evaluationEngine: new SoapExecutorMockEngine(),
-            inspector: new ExpressionEngine(),
         ),
         httpClient: new SoapExecutorFakeClient(new Response(200)),
         responseMapper: new SoapResponseTransferMapper(),

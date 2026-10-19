@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Tests\Conformance;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\Parser\Decoders\SymfonyYamlDecoder;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\Async\ExecuteStepJob;
@@ -92,7 +91,6 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
                     $engine,
                     $this->outputExtractor($runtime),
                     $this->schemaValidator($runtime),
-                    inspector: new ExpressionEngine(),
                 ),
                 new WorkflowEngine($engine),
             ),
@@ -105,7 +103,6 @@ final class OaiQueueFixtureRunner extends ConformanceHarness
             ),
             $runtime->operations,
             $engine,
-            new ExpressionEngine(), // inspector
             $this->outputExtractor($runtime),
             $this->schemaValidator($runtime),
         ));

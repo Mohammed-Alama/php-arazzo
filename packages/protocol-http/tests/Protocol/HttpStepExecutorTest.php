@@ -177,7 +177,6 @@ it('supports a step with no action set', function (): void {
         new HttpStepExecutorMockOpenApiExecutor(new Response(200)),
         createMockDocumentResolver(),
         new HttpStepExecutorMockEngine(),
-        new ExpressionEngine(), // inspector
         Mockery::mock(OutputExtractorInterface::class),
         Mockery::mock(ResponseValidatorInterface::class),
     );
@@ -191,7 +190,6 @@ it('does not support a step with an action set', function (): void {
         new HttpStepExecutorMockOpenApiExecutor(new Response(200)),
         createMockDocumentResolver(),
         new HttpStepExecutorMockEngine(),
-        new ExpressionEngine(), // inspector
         Mockery::mock(OutputExtractorInterface::class),
         Mockery::mock(ResponseValidatorInterface::class),
     );
@@ -211,7 +209,6 @@ it('executes the request and returns a resolved outcome with statusCode/outputs/
         $openApiExecutor,
         createMockDocumentResolver(),
         new HttpStepExecutorMockEngine(),
-        new ExpressionEngine(), // inspector
         $outputExtractor,
         Mockery::mock(ResponseValidatorInterface::class),
     );
@@ -241,7 +238,6 @@ it('stores the response on the context before calling extractOutputs, fixing the
         $openApiExecutor,
         createMockDocumentResolver(),
         new HttpStepExecutorMockEngine(),
-        new ExpressionEngine(), // inspector
         $outputExtractor,
         Mockery::mock(ResponseValidatorInterface::class),
     );
@@ -275,7 +271,6 @@ it('validates response schema and fails fast on failure', function (): void {
         $openApiExecutor,
         createMockDocumentResolver(),
         new EvaluationEngine(expression: new ExpressionEngine()),
-        new ExpressionEngine(), // inspector
         $outputExtractor,
         $validator,
         true, // strict default

@@ -19,7 +19,6 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Closure;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -38,7 +37,7 @@ function requestCompilerDocument(): ArazzoDocument
 
 function requestCompilerFor(EvaluationEngineInterface $evaluationEngine): RequestCompiler
 {
-    return new RequestCompiler($evaluationEngine, new ExpressionEngine());
+    return new RequestCompiler($evaluationEngine);
 }
 
 function requestCompilerStub(): RequestCompiler

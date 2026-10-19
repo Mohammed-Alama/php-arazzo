@@ -25,7 +25,6 @@ use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Protocol\Rpc\Execution\RpcRequestBuilder;
 use Alama\Arazzo\Protocol\Rpc\Protocol\RpcMessageCodec;
@@ -138,7 +137,6 @@ function rpcBuilder(): RpcRequestBuilder
         requestFactory: $psr17,
         streamFactory: $psr17,
         evaluationEngine: new RpcBuilderMockEngine(),
-        inspector: new ExpressionEngine(),
         codec: new RpcMessageCodec(),
     );
 }

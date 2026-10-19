@@ -14,7 +14,6 @@ use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -43,7 +42,6 @@ final class SoapRequestBuilder
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory,
         private EvaluationEngineInterface $evaluationEngine,
-        private ExpressionEngineInterface $inspector,
         private ?ReplacementTargetResolverInterface $replacementResolver = null,
     ) {}
 
@@ -74,7 +72,7 @@ final class SoapRequestBuilder
             );
         }
 
-        $compiled = (new RequestCompiler($this->evaluationEngine, $this->inspector))->compile($step, $document, $context);
+        $compiled = (new RequestCompiler($this->evaluationEngine))->compile($step, $document, $context);
         $inputs = $compiled['resolvedInputs'];
 
         $target = $this->override($inputs, 'url') ?? $this->override($inputs, 'location') ?? $normalized->resolvedServerUrl;
