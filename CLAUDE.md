@@ -48,6 +48,10 @@ composer run analyse
 make verify
 ```
 
+Suppressions are governed by [`docs/BASELINE-POLICY.md`](docs/BASELINE-POLICY.md) — a
+baseline may freeze style findings, never correctness ones, and `composer run
+check-baselines` enforces that.
+
 ## Project structure
 
 - `packages/core/` - Arazzo core library

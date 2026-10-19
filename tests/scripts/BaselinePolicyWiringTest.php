@@ -49,3 +49,41 @@ it('turns on reportUnmatchedIgnoredErrors for every phpstan config', function ()
         );
     }
 });
+
+it('checks the policy on both sides of every baseline regeneration (#203)', function () use ($repo): void {
+    $makefile = (string) file_get_contents($repo.'/Makefile');
+
+    preg_match('/(^analyse-baseline:.*?)(?=\n[a-zA-Z0-9_.-]+:)/ms', $makefile, $matches);
+    $recipe = $matches[1] ?? '';
+
+    expect($recipe)->not->toBe('');
+
+    // Comments name the flag too (make writes them as `@#`), and they are not what runs —
+    // compare shell lines only.
+    $shell = implode("\n", array_filter(
+        explode("\n", $recipe),
+        static fn (string $line): bool => preg_match('/^\s*@?#/', $line) !== 1,
+    ));
+
+    $checker = 'scripts/check-baselines.php';
+    $generate = strpos($shell, '--generate-baseline');
+
+    expect($generate)->toBeInt()
+        ->and(strpos($shell, $checker))->toBeInt()
+        ->and(strrpos($shell, $checker))->toBeInt();
+
+    // `--generate-baseline` freezes whatever it finds, so the checker has to run before
+    // it (the tree must be clean to start with) and after it (nothing was re-admitted),
+    // or a correctness error can be written into a baseline unnoticed.
+    expect((int) strpos($shell, $checker))->toBeLessThan((int) $generate)
+        ->and((int) strrpos($shell, $checker))->toBeGreaterThan((int) $generate);
+
+    // Detecting a violation is not enough — the regenerated baseline has to go back and
+    // the target has to fail, otherwise the bad baseline is what gets committed.
+    expect($shell)->toContain('phpstan-baseline.neon')
+        ->and($shell)->toContain('exit 1');
+
+    // The packages to regenerate come from the baselines themselves, so a package added
+    // to the split is picked up instead of sitting outside the guard behind a stale list.
+    expect($shell)->toContain('packages/*/phpstan-baseline.neon');
+});

@@ -207,6 +207,10 @@ Run static analysis:
 composer analyse
 ```
 
+Baselines follow a strict policy — they may freeze style findings, never correctness ones.
+See [`docs/BASELINE-POLICY.md`](docs/BASELINE-POLICY.md); `composer run check-baselines`
+enforces it.
+
 Format code:
 ```bash
 composer format
