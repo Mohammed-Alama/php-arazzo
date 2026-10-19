@@ -32,6 +32,11 @@ permissions:
   contents: read
   issues: write
 
+# Composer's download cache is kept inside the workspace so the cache step and
+# composer agree on one directory, instead of trusting a platform default.
+env:
+  COMPOSER_CACHE_DIR: ${{ github.workspace }}/.cache/composer
+
 jobs:
   index:
     name: Regenerate the package index
@@ -46,6 +51,13 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
+
+      - name: Cache composer downloads
+        uses: actions/cache@v6
+        with:
+          path: .cache/composer
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.json', 'packages/*/composer.json') }}
+          restore-keys: composer-${{ runner.os }}-
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
