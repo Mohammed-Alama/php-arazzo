@@ -9,7 +9,19 @@ echo "========================================"
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 cd "$PROJECT_ROOT"
 
-echo "0. Regenerating architecture docs (mermaid)..."
+echo "0. Checking composer.lock is in step with the manifests..."
+if ! composer run check-lock; then
+    echo "========================================"
+    echo "❌ composer.lock no longer matches a composer.json!"
+    echo "💡 Run: composer update"
+    echo "   CI installs from this lock, so a stale one fails the build."
+    echo "========================================"
+    exit 1
+fi
+echo "✅ composer.lock is in step."
+echo ""
+
+echo "1. Regenerating architecture docs (mermaid)..."
 if ! php scripts/generate-docs.php; then
     echo "========================================"
     echo "❌ Doc generation failed!"
@@ -25,7 +37,7 @@ fi
 echo "✅ Docs up to date."
 echo ""
 
-echo "1. Checking Code Style (Pint)..."
+echo "2. Checking Code Style (Pint)..."
 if ! vendor/bin/pint --test -v; then
     echo "========================================"
     echo "❌ Code style check failed!"
@@ -36,7 +48,7 @@ fi
 echo "✅ Code Style passed."
 echo ""
 
-echo "2. Running Static Analysis (PHPStan)..."
+echo "3. Running Static Analysis (PHPStan)..."
 if ! composer analyse; then
     echo "========================================"
     echo "❌ Static analysis failed!"
@@ -47,7 +59,7 @@ fi
 echo "✅ Static Analysis passed."
 echo ""
 
-echo "3. Checking PHPStan baseline policy..."
+echo "4. Checking PHPStan baseline policy..."
 if ! composer run check-baselines; then
     echo "========================================"
     echo "❌ A correctness error is hidden in a PHPStan baseline!"
@@ -59,7 +71,7 @@ fi
 echo "✅ Baseline policy passed."
 echo ""
 
-echo "4. Running Tests (Pest/PHPUnit)..."
+echo "5. Running Tests (Pest/PHPUnit)..."
 if ! composer test; then
     echo "========================================"
     echo "❌ Tests failed!"
@@ -70,7 +82,7 @@ fi
 echo "✅ Tests passed."
 echo ""
 
-echo "5. Checking Spec Conformance (warn-only)..."
+echo "6. Checking Spec Conformance (warn-only)..."
 if ! php scripts/generate-conformance-matrix.php >/dev/null 2>&1; then
     echo "⚠️  Conformance matrix check failed (network or corpus issue) — continuing."
 else
