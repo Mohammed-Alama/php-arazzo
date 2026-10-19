@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\Process\Process;
+
 /**
  * Fitness functions for the committed composer.lock (#236, epic #27).
  *
@@ -54,24 +56,27 @@ it('fails the commit on a stale lock, naming the fix', function () use ($repo): 
 });
 
 it('accepts the committed lock and rejects one the manifest no longer matches', function () use ($repo): void {
-    $command = 'composer validate --no-check-publish --check-lock';
+    $command = ['composer', 'validate', '--no-check-publish', '--check-lock'];
 
     $sandbox = sys_get_temp_dir().'/arazzo-lock-check-'.bin2hex(random_bytes(4));
-    mkdir($sandbox);
-    copy($repo.'/composer.json', $sandbox.'/composer.json');
-    copy($repo.'/composer.lock', $sandbox.'/composer.lock');
 
     try {
+        mkdir($sandbox);
+        copy($repo.'/composer.json', $sandbox.'/composer.json');
+        copy($repo.'/composer.lock', $sandbox.'/composer.lock');
+
         $inSync = lockCheckRun($sandbox, $command);
         $this->assertSame(
             0,
-            $inSync['exit'],
-            "the committed lock does not match composer.json — run `composer update`:\n".$inSync['output'],
+            $inSync->getExitCode(),
+            "the committed lock does not match composer.json — run `composer update`:\n".lockCheckOutput($inSync),
         );
 
-        // A requirement the lock cannot satisfy. This is the shape a forgotten
-        // `composer update` leaves behind, and composer escalates it to a lock
-        // file error even though nothing is unresolvable in principle.
+        // Change the root manifest without touching the lock. The constraint
+        // itself is beside the point — `symfony/yaml` is already in require-dev
+        // and in the lock, so nothing here is unresolvable. What fails is
+        // composer's content-hash check, which it reports as a lock file error:
+        // the same shape a forgotten `composer update` leaves behind.
         $manifest = json_decode((string) file_get_contents($sandbox.'/composer.json'), true);
         $manifest['require']['symfony/yaml'] = '*';
         file_put_contents(
@@ -81,13 +86,19 @@ it('accepts the committed lock and rejects one the manifest no longer matches', 
 
         $stale = lockCheckRun($sandbox, $command);
 
-        expect($stale['exit'])->not->toBe(0)
-            ->and($stale['output'])->toContain('Lock file errors')
-            ->and($stale['output'])->toContain('composer update');
+        expect($stale->getExitCode())->not->toBe(0)
+            ->and(lockCheckOutput($stale))->toContain('Lock file errors')
+            ->and(lockCheckOutput($stale))->toContain('composer update');
     } finally {
-        @unlink($sandbox.'/composer.json');
-        @unlink($sandbox.'/composer.lock');
-        @rmdir($sandbox);
+        foreach (['composer.json', 'composer.lock'] as $file) {
+            if (is_file($sandbox.'/'.$file)) {
+                unlink($sandbox.'/'.$file);
+            }
+        }
+
+        if (is_dir($sandbox)) {
+            rmdir($sandbox);
+        }
     }
 });
 
@@ -95,14 +106,20 @@ it('accepts the committed lock and rejects one the manifest no longer matches', 
  * Run the check in a directory of its own, so the sandbox's manifest is what
  * composer reads and the working tree is never touched.
  *
- * @return array{exit: int, output: string}
+ * @param  list<string>  $command
  */
-function lockCheckRun(string $directory, string $command): array
+function lockCheckRun(string $directory, array $command): Process
 {
-    $output = [];
-    $exit = 0;
+    $process = new Process($command, $directory);
+    $process->run();
 
-    exec(sprintf('cd %s && %s 2>&1', escapeshellarg($directory), $command), $output, $exit);
+    return $process;
+}
 
-    return ['exit' => $exit, 'output' => implode("\n", $output)];
+/**
+ * Composer writes its diagnosis to whichever of the two streams it prefers.
+ */
+function lockCheckOutput(Process $process): string
+{
+    return $process->getOutput().$process->getErrorOutput();
 }
