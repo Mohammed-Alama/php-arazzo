@@ -187,6 +187,7 @@
         "test-tools": "vendor/bin/pest tools/issue-intake/tests",
         "test-scripts": "vendor/bin/pest tests/scripts",
         "check-baselines": "@php scripts/check-baselines.php",
+        "check-lock": "composer validate --no-check-publish --check-lock",
         "test": [
             "@test-contracts",
             "@test-expression",
