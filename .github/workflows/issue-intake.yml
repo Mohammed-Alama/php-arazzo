@@ -39,7 +39,6 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
-          cache: composer
 
       - name: Install dependencies
         run: composer update --no-progress --prefer-dist --no-interaction
