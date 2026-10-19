@@ -9,18 +9,19 @@ echo "========================================"
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 cd "$PROJECT_ROOT"
 
-echo "0. Checking composer.lock is in step with the root composer.json..."
+echo "0. Checking composer.lock is in step with the root and package manifests..."
 if ! composer run check-lock; then
     echo "========================================"
     echo "❌ composer run check-lock failed."
-    echo "   Usual cause: composer.lock no longer matches the root composer.json."
+    echo "   Usual cause: composer.lock no longer matches the root composer.json,"
+    echo "   or one of the packages/*/composer.json files."
     echo "💡 Run: composer update"
     echo "   CI installs from this lock, so a stale one fails the build."
     echo "   If the command itself did not run, read what it printed above."
     echo "========================================"
     exit 1
 fi
-echo "✅ composer.lock is in step with the root composer.json."
+echo "✅ composer.lock is in step with the root and package manifests."
 echo ""
 
 echo "1. Regenerating architecture docs (mermaid)..."

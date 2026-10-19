@@ -86,6 +86,10 @@ jobs:
         run: composer run analyse
       - name: Check baseline policy
         run: composer run check-baselines
+      # This job installs from the lock and rewrites nothing, unlike the test
+      # matrix, which swaps a package manifest to change Laravel version.
+      - name: Check the lock still describes the package manifests
+        run: composer run check-lock-manifests
 
   phpmd:
     name: PHP Mess Detector

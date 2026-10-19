@@ -24,8 +24,15 @@ $repo = dirname(__DIR__, 2);
 it('exposes the lock check to composer so the hook and a human can both run it', function () use ($repo): void {
     $composer = json_decode((string) file_get_contents($repo.'/composer.json'), true);
 
+    // Both shapes of drift: the root manifest's content-hash, and a package
+    // manifest the lock's snapshot no longer describes (#238).
     expect($composer['scripts']['check-lock'] ?? null)
-        ->toBe('composer validate --no-check-publish --check-lock');
+        ->toBe([
+            'composer validate --no-check-publish --check-lock',
+            '@check-lock-manifests',
+        ])
+        ->and($composer['scripts']['check-lock-manifests'] ?? null)
+        ->toBe('@php scripts/check-lock-manifests.php');
 });
 
 it('runs the lock check from the hook that guards a commit', function () use ($repo): void {
@@ -34,6 +41,23 @@ it('runs the lock check from the hook that guards a commit', function () use ($r
         (string) file_get_contents($repo.'/.githooks/pre-commit'),
         '.githooks/pre-commit no longer runs the lock check',
     );
+});
+
+it('checks the package manifests on the CI job that rewrites nothing', function () use ($repo): void {
+    // The hook sees a working tree, which is the right thing to guard a commit
+    // with. A merge is guarded by CI, and the test matrix rewrites a package
+    // manifest to change Laravel version, so the check has to run on a job that
+    // installs from the lock and edits nothing (#238).
+    $workflow = (string) file_get_contents($repo.'/.github/workflows/ci.yml');
+
+    $this->assertStringContainsString(
+        'composer run check-lock-manifests',
+        $workflow,
+        'ci.yml no longer checks the lock against the package manifests',
+    );
+
+    expect(strpos($workflow, 'composer run check-lock-manifests'))
+        ->toBeLessThan((int) strpos($workflow, "\n  test:"));
 });
 
 it('fails the commit on a stale lock, naming the fix', function () use ($repo): void {
