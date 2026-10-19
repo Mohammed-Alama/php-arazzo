@@ -1,5 +1,6 @@
 includes:
     - ../core/phpstan/rules/phpstan-custom.neon
+    - phpstan-baseline.neon
 
 parameters:
     level: max
@@ -10,5 +11,3 @@ parameters:
     scanDirectories:
         - ../contracts/src
     reportUnmatchedIgnoredErrors: true
-    ignoreErrors:
-        - '#Method __construct has too many parameters#'

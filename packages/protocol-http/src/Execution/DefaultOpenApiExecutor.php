@@ -52,7 +52,7 @@ class DefaultOpenApiExecutor implements OpenApiExecutorInterface
         $normalized = $operation->operation->normalized;
 
         $baseUrl = '';
-        if ($openApi->servers && count($openApi->servers) > 0) {
+        if ($openApi->servers) {
             $baseUrl = rtrim($openApi->servers[0]->url, '/');
         }
 

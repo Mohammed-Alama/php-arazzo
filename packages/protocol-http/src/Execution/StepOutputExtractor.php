@@ -48,7 +48,7 @@ class StepOutputExtractor implements OutputExtractorInterface
      */
     public function extractOutputs(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
     {
-        $responseBody = $context->getSteps()[$step->stepId]['response']['body'] ?? [];
+        $responseBody = self::stepRecordValue($context, $step, 'response', 'body') ?? [];
 
         $outputs = [];
         foreach ($step->io->outputs as $outputName => $expression) {
@@ -104,7 +104,7 @@ class StepOutputExtractor implements OutputExtractorInterface
             return $value;
         }
 
-        $statusCode = (string) ($context->getSteps()[$step->stepId]['response']['statusCode'] ?? '');
+        $statusCode = self::stringify(self::stepRecordValue($context, $step, 'response', 'statusCode'));
         $responses = $operation->responses;
         if (!$responses instanceof Responses) {
             return $value;
@@ -159,7 +159,7 @@ class StepOutputExtractor implements OutputExtractorInterface
 
     private function castToSchemaType(mixed $value, ?Schema $schema): mixed
     {
-        if ($schema === null || $schema->type === null) {
+        if ($schema === null || ($schema->type ?? null) === null) {
             return $value;
         }
 
@@ -177,5 +177,41 @@ class StepOutputExtractor implements OutputExtractorInterface
 
             return $value;
         }
+    }
+
+    /**
+     * Read a value out of a step's canonical record without trusting its shape.
+     *
+     * `WorkflowContextInterface::getSteps()` hands back `mixed` payloads — the
+     * registry stores whatever the executor reported — so every hop is narrowed
+     * rather than assumed to be an array.
+     */
+    private static function stepRecordValue(WorkflowContextInterface $context, Step $step, string ...$keys): mixed
+    {
+        $value = $context->getSteps()[$step->stepId] ?? null;
+
+        foreach ($keys as $key) {
+            if (!is_array($value)) {
+                return null;
+            }
+
+            $value = $value[$key] ?? null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Render a value as text without trusting its type: scalars as they are,
+     * anything else as an empty string. A plain `(string)` cast raises on an
+     * object and emits `Array` for an array.
+     */
+    private static function stringify(mixed $value): string
+    {
+        return match (true) {
+            is_string($value) => $value,
+            is_scalar($value) => (string) $value,
+            default => '',
+        };
     }
 }

@@ -16,34 +16,16 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\ExecutionState;
-use Alama\Arazzo\Engine\Data\Transition;
 use Alama\Arazzo\Engine\Enum\StepTransitionType;
 use Alama\Arazzo\Engine\StepStateMachineEngine;
-use Alama\Arazzo\Engine\WorkflowEngineInterface;
 
 function engineTestDocument(Workflow $workflow): ArazzoDocument
 {
     return new ArazzoDocument('1.0.0', new Info('Test', null, null, '1.0.0'), [], [$workflow], new Components([], [], [], []), []);
 }
 
-function engineTestWorkflowEngine(): WorkflowEngineInterface
-{
-    return new class() implements WorkflowEngineInterface
-    {
-        public function transition(
-            ArazzoDocument $document,
-            Workflow $workflow,
-            Step $step,
-            ExecutionState $state,
-            bool $criteriaMet,
-        ): Transition {
-            return new Transition($state, 'succeeded');
-        }
-    };
-}
-
 it('starts from Pending and goes to ExecutingRequest when budget ok', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -59,7 +41,7 @@ it('starts from Pending and goes to ExecutingRequest when budget ok', function (
 });
 
 it('blocks when step budget exceeded in Pending', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -75,7 +57,7 @@ it('blocks when step budget exceeded in Pending', function (): void {
 });
 
 it('bypasses to AwaitingActorInput for interaction steps from Pending', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $target = new StepTarget(interaction: new Interaction());
     $step = new Step('s1', null, $target, new StepFlow(), new StepIo());
@@ -91,7 +73,7 @@ it('bypasses to AwaitingActorInput for interaction steps from Pending', function
 });
 
 it('from ExecutingRequest goes to EvaluatingCriteria on response', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -106,7 +88,7 @@ it('from ExecutingRequest goes to EvaluatingCriteria on response', function (): 
 });
 
 it('from ExecutingRequest goes to Failed on suspension', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -121,7 +103,7 @@ it('from ExecutingRequest goes to Failed on suspension', function (): void {
 });
 
 it('from EvaluatingCriteria goes to Completed when criteria met', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -136,7 +118,7 @@ it('from EvaluatingCriteria goes to Completed when criteria met', function (): v
 });
 
 it('from EvaluatingCriteria goes to Failed when criteria not met', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -151,7 +133,7 @@ it('from EvaluatingCriteria goes to Failed when criteria not met', function (): 
 });
 
 it('from EvaluatingCriteria re-routes to AwaitingActorInput for interaction steps', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $target = new StepTarget(interaction: new Interaction());
     $step = new Step('s1', null, $target, new StepFlow(), new StepIo());
@@ -167,7 +149,7 @@ it('from EvaluatingCriteria re-routes to AwaitingActorInput for interaction step
 });
 
 it('from AwaitingActorInput goes to ActorInputReceived', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $target = new StepTarget(interaction: new Interaction());
     $step = new Step('s1', null, $target, new StepFlow(), new StepIo());
@@ -183,7 +165,7 @@ it('from AwaitingActorInput goes to ActorInputReceived', function (): void {
 });
 
 it('from ActorInputReceived goes to Completed when criteria met', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $target = new StepTarget(interaction: new Interaction());
     $step = new Step('s1', null, $target, new StepFlow(), new StepIo());
@@ -199,7 +181,7 @@ it('from ActorInputReceived goes to Completed when criteria met', function (): v
 });
 
 it('from ActorInputReceived goes to EvaluatingCriteria when criteria not met', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $target = new StepTarget(interaction: new Interaction());
     $step = new Step('s1', null, $target, new StepFlow(), new StepIo());
@@ -215,7 +197,7 @@ it('from ActorInputReceived goes to EvaluatingCriteria when criteria not met', f
 });
 
 it('terminal states stay terminal', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -252,7 +234,7 @@ it('throws on invalid ISO 8601 duration', function (): void {
 });
 
 it('cancels a pending step with the ordered onCancel actions', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $first = new FailureEndAction('stop', []);
     $second = new RetryAction('retry', 1.0, 3, 's1', null, []);
@@ -270,7 +252,7 @@ it('cancels a pending step with the ordered onCancel actions', function (): void
 });
 
 it('refuses to cancel a completed step', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -285,7 +267,7 @@ it('refuses to cancel a completed step', function (): void {
 });
 
 it('fails a timed out step with the ordered onTimeout actions', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $first = new FailureEndAction('abort', []);
     $second = new RetryAction('retry', 2.0, 1, null, null, []);
@@ -303,7 +285,7 @@ it('fails a timed out step with the ordered onTimeout actions', function (): voi
 });
 
 it('refuses to time out a cancelled step', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);
@@ -317,7 +299,7 @@ it('refuses to time out a cancelled step', function (): void {
 });
 
 it('passes Reusable entries through the cancel action list unresolved', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $reusable = new Reusable('$components.parameters.cancelStep');
     $step = new Step('s1', null, new StepTarget(), new StepFlow(onCancel: [$reusable]), new StepIo());
@@ -332,7 +314,7 @@ it('passes Reusable entries through the cancel action list unresolved', function
 });
 
 it('treats Cancelled as terminal in fire()', function (): void {
-    $engine = new StepStateMachineEngine(engineTestWorkflowEngine());
+    $engine = new StepStateMachineEngine();
 
     $step = new Step('s1', null, new StepTarget(), new StepFlow(), new StepIo());
     $workflow = new Workflow('wf_1', null, null, null, [], [$step], [], [], [], []);

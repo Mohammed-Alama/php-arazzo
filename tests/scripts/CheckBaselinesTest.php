@@ -81,8 +81,100 @@ it('fails and reports file:line  identifier for a baselined correctness error', 
 
     expect($process->getExitCode())->toBe(1)
         ->and($process->getOutput())->toContain('packages/document/phpstan-baseline.neon:5')
-        ->and($process->getOutput())->toContain('method.notFound')
-        ->and($process->getErrorOutput())->toContain('1 baselined correctness error');
+        ->and($process->getOutput())->toContain('[baseline] method.notFound')
+        ->and($process->getErrorOutput())->toContain('1 correctness error hidden from PHPStan');
+});
+
+it('fails on an ignoreErrors block declared in a PHPStan config', function () {
+    $root = baselineFixture([
+        'packages/engine/phpstan.neon.dist' => <<<'NEON'
+        includes:
+            - phpstan-baseline.neon
+
+        parameters:
+            level: 8
+            ignoreErrors:
+                -
+                    message: '#^Strict comparison using === between string and null will always evaluate to false\.$#'
+                    path: src/Execution/SchemaValidator.php
+
+                -
+                    message: '#^Method Foo::bar\(\) has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+                    count: 1
+                    path: src/Execution/RequestCompiler.php
+        NEON,
+    ]);
+
+    $process = runCheckBaselines($root);
+
+    $payload = json_decode(runCheckBaselines($root, ['--json'])->getOutput(), true);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and($process->getOutput())->toContain('packages/engine/phpstan.neon.dist:7')
+        ->and($process->getOutput())->toContain('[config]')
+        ->and($process->getErrorOutput())->toContain('2 correctness errors hidden from PHPStan')
+        ->and($payload['count'])->toBe(2)
+        ->and($payload['violations'][0]['file'])->toBe('packages/engine/phpstan.neon.dist')
+        ->and($payload['violations'][0]['line'])->toBe(7)
+        ->and($payload['violations'][0]['kind'])->toBe('config')
+        ->and($payload['violations'][0]['message'])->toContain('Strict comparison')
+        ->and($payload['violations'][1]['line'])->toBe(11);
+});
+
+it('fails on the inline ignoreErrors form PHPStan also accepts', function () {
+    $root = baselineFixture([
+        'packages/events/phpstan.neon.dist' => <<<'NEON'
+        parameters:
+            level: 8
+            ignoreErrors:
+                - '#^Method StepExecutedEvent::__construct\(\) has too many parameters \(7\)\.$#'
+        NEON,
+    ]);
+
+    $payload = json_decode(runCheckBaselines($root, ['--json'])->getOutput(), true);
+
+    expect(runCheckBaselines($root)->getExitCode())->toBe(1)
+        ->and($payload['count'])->toBe(1)
+        ->and($payload['violations'][0]['line'])->toBe(4)
+        ->and($payload['violations'][0]['identifier'])->toBe('')
+        ->and($payload['violations'][0]['kind'])->toBe('config')
+        ->and($payload['violations'][0]['message'])->toContain('too many parameters');
+});
+
+it('reports a populated inline ignoreErrors list as a suppression', function () {
+    $root = baselineFixture([
+        'packages/runtime/phpstan.neon.dist' => "parameters:\n    ignoreErrors: ['#^Method Foo::bar\\(\\) has too many parameters$#', '#^Method Baz::qux\\(\\) is too long$#']\n",
+    ]);
+
+    $process = runCheckBaselines($root);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and($process->getOutput())->toContain('packages/runtime/phpstan.neon.dist:2')
+        ->and($process->getOutput())->toContain('[config]');
+});
+
+it('accepts an empty ignoreErrors and never mistakes other lists for suppressions', function () {
+    $root = baselineFixture([
+        'packages/evaluation/phpstan.neon.dist' => <<<'NEON'
+        includes:
+            - phpstan-baseline.neon
+
+        parameters:
+            level: max
+            paths:
+                - src
+            excludePaths:
+                - tests
+            scanDirectories:
+                - ../contracts/src
+            ignoreErrors: []
+        NEON,
+    ]);
+
+    $process = runCheckBaselines($root);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($process->getOutput())->toBe('');
 });
 
 it('emits machine-readable findings for the quality-gate integration', function () {
@@ -106,7 +198,8 @@ it('emits machine-readable findings for the quality-gate integration', function 
         ->and($payload['count'])->toBe(1)
         ->and($payload['violations'][0]['file'])->toBe('packages/runner/phpstan-baseline.neon')
         ->and($payload['violations'][0]['line'])->toBe(5)
-        ->and($payload['violations'][0]['identifier'])->toBe('method.notFound');
+        ->and($payload['violations'][0]['identifier'])->toBe('method.notFound')
+        ->and($payload['violations'][0]['kind'])->toBe('baseline');
 });
 
 it('discovers baselines in nested directories and counts every finding', function () {

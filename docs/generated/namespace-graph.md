@@ -158,7 +158,6 @@ flowchart LR
     engine_Execution --> contracts_State
     engine_Execution --> document_Parser
     engine_Execution --> evaluation__
-    engine_Execution --> expression_Interfaces
     engine__ --> contracts_Spec
     engine__ --> contracts_State
     engine__ --> engine_Data
@@ -183,7 +182,6 @@ flowchart LR
     runner_Async --> events_Interfaces
     runner_Async --> runner__
     runner_Async --> runtime_Telemetry
-    runner_Async --> expression_Interfaces
     runner_Async --> contracts_Dependency
     runner_Execution --> document__
     runner_Execution --> sources_Normalizer
@@ -208,7 +206,6 @@ flowchart LR
     runner_Sync --> contracts_Interfaces
     runner_Sync --> contracts_Support
     runner_Sync --> engine_Execution
-    runner_Sync --> expression_Interfaces
     runner_Sync --> sources_Normalizer
     runner_Sync --> document__
     runner_Sync --> engine_Exceptions
@@ -223,12 +220,11 @@ flowchart LR
     runner__ --> contracts_Exceptions
     runner__ --> engine_Exceptions
     runner__ --> evaluation__
-    runner__ --> expression_Interfaces
     runner__ --> runner_Execution
     runner__ --> contracts_State
     runner__ --> engine__
     runner__ --> document__
-    runner__ --> expression__
+    runner__ --> expression_Interfaces
     runner__ --> sources_Normalizer
     cli_Console --> contracts_Interfaces
     cli_Console --> contracts_Spec

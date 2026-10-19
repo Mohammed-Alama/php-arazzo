@@ -143,7 +143,6 @@ flowchart TB
     M_engine_Execution --> M_contracts_State
     M_engine_Execution --> M_document_Parser
     M_engine_Execution --> M_evaluation__
-    M_engine_Execution --> M_expression_Interfaces
     M_engine__ --> M_contracts_Spec
     M_engine__ --> M_contracts_State
     M_engine__ --> M_engine_Data
@@ -258,7 +257,6 @@ flowchart TB
     M_runner_Async --> M_events_Interfaces
     M_runner_Async --> M_events__
     M_runner_Async --> M_expression_Data
-    M_runner_Async --> M_expression_Interfaces
     M_runner_Async --> M_runner_Execution
     M_runner_Async --> M_runner_Sync
     M_runner_Async --> M_runner__
@@ -288,7 +286,6 @@ flowchart TB
     M_runner_Sync --> M_evaluation__
     M_runner_Sync --> M_events__
     M_runner_Sync --> M_expression_Data
-    M_runner_Sync --> M_expression_Interfaces
     M_runner_Sync --> M_runner_Execution
     M_runner_Sync --> M_runtime_Policy
     M_runner_Sync --> M_runtime_State
@@ -303,7 +300,6 @@ flowchart TB
     M_runner__ --> M_evaluation__
     M_runner__ --> M_events_Interfaces
     M_runner__ --> M_expression_Interfaces
-    M_runner__ --> M_expression__
     M_runner__ --> M_runner_Async
     M_runner__ --> M_runner_Execution
     M_runner__ --> M_runner_Sync
@@ -368,7 +364,6 @@ flowchart TB
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
-| `engine` | `expression` | 1 |
 | `evaluation` | `contracts` | 46 |
 | `evaluation` | `expression` | 15 |
 | `events` | `contracts` | 1 |
@@ -378,7 +373,7 @@ flowchart TB
 | `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 6 |
 | `laravel` | `events` | 5 |
-| `laravel` | `expression` | 5 |
+| `laravel` | `expression` | 3 |
 | `laravel` | `runner` | 24 |
 | `laravel` | `runtime` | 10 |
 | `laravel` | `sources` | 29 |
@@ -387,7 +382,7 @@ flowchart TB
 | `runner` | `engine` | 13 |
 | `runner` | `evaluation` | 11 |
 | `runner` | `events` | 24 |
-| `runner` | `expression` | 11 |
+| `runner` | `expression` | 6 |
 | `runner` | `runtime` | 20 |
 | `runner` | `sources` | 5 |
 | `runtime` | `contracts` | 19 |

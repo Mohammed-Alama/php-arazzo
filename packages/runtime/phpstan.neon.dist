@@ -11,6 +11,3 @@ parameters:
     scanDirectories:
         - ../contracts/src
     reportUnmatchedIgnoredErrors: true
-    ignoreErrors:
-        - '#Class .* has too many methods#'
-        - '#Method .* has too many parameters#'
