@@ -7,6 +7,8 @@ description: Prepare a release of alama/arazzo-core or alama/laravel-arazzo — 
 
 Wraps the discipline in `docs/release-checklist.md` into one deterministic step: the script runs the behavior gates, refuses a dirty tree, bumps the package `composer.json` version, and promotes `CHANGELOG.md`'s `[Unreleased]` section to a dated release heading. It never tags or pushes.
 
+Drop that package's `options.versions` pin in the root `composer.json` in the same commit. Composer prefers the pin over a declared version, and `tests/scripts/ComposerLockWiringTest.php` fails when a package has both.
+
 ## Step 1 — Fill the changelog first
 
 The script promotes what is already written. Ensure every user-visible change since the last release sits under `## [Unreleased]` with **BREAKING** prefixed where needed — an empty section means nothing to ship.

@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad45512b81fd265c1fe358091065bffc",
+    "content-hash": "18496be0177d826e5682089b419c9d6e",
     "packages": [
         {
             "name": "alama/arazzo-cli",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/cli",
-                "reference": "6150ed7e55977d416c7a04c6a0967a9f6f1f3f52"
+                "reference": "a2e80cfc7ff71116d63dc8a26b2d4c66bb3d0140"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -60,11 +60,11 @@
         },
         {
             "name": "alama/arazzo-contracts",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/contracts",
-                "reference": "8f0ffb58b88191b7cdb72e266962c93af4ee24cb"
+                "reference": "60fa85cc1429da851b0ce3dd6f745f591b4da336"
             },
             "require": {
                 "php": "^8.4",
@@ -101,11 +101,11 @@
         },
         {
             "name": "alama/arazzo-core",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/core",
-                "reference": "9c4716cf80e053fd5cecf86f8486212c190a8ebf"
+                "reference": "517f8e15e4f12a48736415a8ee927cc55bc264a4"
             },
             "require": {
                 "alama/arazzo-cli": "@dev",
@@ -172,11 +172,11 @@
         },
         {
             "name": "alama/arazzo-document",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/document",
-                "reference": "2e4c8acd34979436a0f368d8e456dad8f2fd5e44"
+                "reference": "ce0150ec7450266fdd75db63a9f5376027305fcd"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -216,11 +216,11 @@
         },
         {
             "name": "alama/arazzo-engine",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/engine",
-                "reference": "f76e8ef8474a831dac2a5d2c07c99d1d1c57f583"
+                "reference": "a86ed70f960317e29048518f33cfbfa7609964f8"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -252,11 +252,11 @@
         },
         {
             "name": "alama/arazzo-evaluation",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/evaluation",
-                "reference": "1bb6c1c003c5bf1ab669876ffa924dd954f22b39"
+                "reference": "b6a4390a328f4a15f8c0cf0a93f0fa39fa175011"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -296,11 +296,11 @@
         },
         {
             "name": "alama/arazzo-events",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/events",
-                "reference": "dc4fef79e11812421d140407d506605fdaa5ac8c"
+                "reference": "bd92c25b2267dfe6586abef854bd3ce0a442e884"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -332,11 +332,11 @@
         },
         {
             "name": "alama/arazzo-expression",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/expression",
-                "reference": "aa286535e706aa9feef80d4edf818d32e0f4b4e1"
+                "reference": "6bb07db8a9fbb2c0309a78bb7156b926648cfb57"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -376,11 +376,11 @@
         },
         {
             "name": "alama/arazzo-protocol-http",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/protocol-http",
-                "reference": "90d7c144d6b90b4ad2988cfc449a0ef51094e991"
+                "reference": "c2dfa2f5cd46003bc8f3e8dfe0006ace7e00526c"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -429,11 +429,11 @@
         },
         {
             "name": "alama/arazzo-protocol-rpc",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/protocol-rpc",
-                "reference": "b7125b826625eceaa72c38ee92722b7f24bc10b1"
+                "reference": "83d6f15f5b8c5918ba1b43590851068ada34533d"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -483,11 +483,11 @@
         },
         {
             "name": "alama/arazzo-protocol-soap",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/protocol-soap",
-                "reference": "f1252bd1dc4c6e2f38adab627fdcf4ccf2188db8"
+                "reference": "bc3ec94751bada2eefbb5efcae0d1adf6da31eb3"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -536,11 +536,11 @@
         },
         {
             "name": "alama/arazzo-runner",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/runner",
-                "reference": "aae978a632a264fd8c3c31826dbea1c04e2e68d7"
+                "reference": "ef820d142411edd7d44a994864b41e115bbc8d8c"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -589,11 +589,11 @@
         },
         {
             "name": "alama/arazzo-runtime",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/runtime",
-                "reference": "5ed4c37ad7aa63f557b825088986a93a93dc08a4"
+                "reference": "9dd000dcc8a2f523086b24e9f4218645dbd0e6f9"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",
@@ -633,11 +633,11 @@
         },
         {
             "name": "alama/arazzo-sources",
-            "version": "dev-fix/78-phpmd-3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/sources",
-                "reference": "a9bd9d7499bf98e4820800455e85ad040516f131"
+                "reference": "5eb8c7fda4f1a15b8846a8b64022ec17a28970b4"
             },
             "require": {
                 "alama/arazzo-contracts": "@dev",

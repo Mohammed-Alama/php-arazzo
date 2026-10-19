@@ -6,27 +6,57 @@
     "repositories": [
         {
             "type": "path",
-            "url": "packages/cli"
+            "url": "packages/cli",
+            "options": {
+                "versions": {
+                    "alama/arazzo-cli": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/contracts"
+            "url": "packages/contracts",
+            "options": {
+                "versions": {
+                    "alama/arazzo-contracts": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/core"
+            "url": "packages/core",
+            "options": {
+                "versions": {
+                    "alama/arazzo-core": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/document"
+            "url": "packages/document",
+            "options": {
+                "versions": {
+                    "alama/arazzo-document": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/expression"
+            "url": "packages/expression",
+            "options": {
+                "versions": {
+                    "alama/arazzo-expression": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/evaluation"
+            "url": "packages/evaluation",
+            "options": {
+                "versions": {
+                    "alama/arazzo-evaluation": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
@@ -34,35 +64,75 @@
         },
         {
             "type": "path",
-            "url": "packages/runtime"
+            "url": "packages/runtime",
+            "options": {
+                "versions": {
+                    "alama/arazzo-runtime": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/engine"
+            "url": "packages/engine",
+            "options": {
+                "versions": {
+                    "alama/arazzo-engine": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/events"
+            "url": "packages/events",
+            "options": {
+                "versions": {
+                    "alama/arazzo-events": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/runner"
+            "url": "packages/runner",
+            "options": {
+                "versions": {
+                    "alama/arazzo-runner": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/sources"
+            "url": "packages/sources",
+            "options": {
+                "versions": {
+                    "alama/arazzo-sources": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/protocol-http"
+            "url": "packages/protocol-http",
+            "options": {
+                "versions": {
+                    "alama/arazzo-protocol-http": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/protocol-soap"
+            "url": "packages/protocol-soap",
+            "options": {
+                "versions": {
+                    "alama/arazzo-protocol-soap": "dev-main"
+                }
+            }
         },
         {
             "type": "path",
-            "url": "packages/protocol-rpc"
+            "url": "packages/protocol-rpc",
+            "options": {
+                "versions": {
+                    "alama/arazzo-protocol-rpc": "dev-main"
+                }
+            }
         }
     ],
     "require": {
