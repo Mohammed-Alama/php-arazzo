@@ -80,15 +80,15 @@ analyse-baseline: ## Regenerate every PHPStan baseline (one per package that has
 	  rm -f "$$previous"; \
 	done
 
-phpmd: ## Run PHP Mess Detector with baseline (new violations only)
-	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src ansi phpmd.xml --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit
+phpmd: ## Run PHP Mess Detector (fails on any violation not in the baseline)
+	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format ansi --ruleset phpmd.xml --baseline-file phpmd.baseline.xml
 
 phpmd-report: ## Generate PHPMD XML report to storage/phpmd-report.xml
 	@mkdir -p storage
-	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src xml phpmd.xml --reportfile storage/phpmd-report.xml --ignore-violations-on-exit --ignore-errors-on-exit || true
+	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format xml --ruleset phpmd.xml --reportfile storage/phpmd-report.xml || true
 
-phpmd-baseline: ## Regenerate PHPMD baseline (resets all suppressed violations)
-	vendor/bin/phpmd packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src xml phpmd.xml --generate-baseline --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit
+phpmd-baseline: ## Regenerate PHPMD baseline from the current violations (replaces the file)
+	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --ruleset phpmd.xml --generate-baseline --baseline-file phpmd.baseline.xml
 
 pdepend: ## Run PHP-Depend structural metrics (outputs to storage/pdepend/)
 	@mkdir -p storage/pdepend
