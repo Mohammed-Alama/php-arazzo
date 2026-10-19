@@ -29,7 +29,7 @@ Read the log excerpts and name one root cause per failed job **before touching a
 | PHPStan | `composer run analyse` |
 | Test P8.4-L* | `composer run test` |
 
-CI runs `composer update`, so a failure that does not reproduce locally may be a dependency-version difference — check for a newly released constraint before blaming your diff.
+CI's `test` job runs `composer update` — it floats on purpose, so it is the one job that can fail because of a newly released constraint. The `phpstan`, `phpmd`, `phpdoc`, package-index and issue-intake jobs install from the committed `composer.lock` instead, so their failures point at the lock: if a manifest changed without it, the install reports the disagreement before anything is analysed. Check both before blaming your diff.
 
 ## Step 3 — Fix minimally
 

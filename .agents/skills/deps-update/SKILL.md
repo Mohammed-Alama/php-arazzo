@@ -13,8 +13,9 @@ Refreshes all three composer roots (root, `packages/core`, `packages/laravel`) i
 bash .agents/skills/deps-update/scripts/update-deps.sh [--outdated] [--no-gates]
 ```
 
-- Updates run `composer update --no-interaction` per root; CI does the same, so local parity is exact.
+- Updates run `composer update --no-interaction` per root; CI's `test` job does the same, so local parity with the matrix is exact.
 - Only the root `composer.lock` is tracked — package locks are gitignored by design; the script still refreshes them.
+- Because the root lock *is* tracked and the analysis, issue-intake and package-index jobs install from it, a change to any `composer.json` (root or package) needs `composer update` before it is committed. `composer validate --no-check-publish --check-lock` checks it locally: it exits `0` for a lock that matches the manifest, and non-zero with a `# Lock file errors` section when it does not — measured on the committed lock and on a manifest requiring a package the lock lacks (exit `0` and `2` respectively, Composer 2.10).
 - `--outdated` additionally lists direct-dependency updates per root.
 - On gate failure the script exits non-zero and prints the exact revert commands.
 
