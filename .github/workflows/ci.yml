@@ -61,7 +61,6 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
-          cache: composer
       - name: Install composer dependencies
         run: |
           composer update --no-progress --prefer-dist --no-interaction
@@ -82,7 +81,6 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
-          cache: composer
       - name: Install composer dependencies
         run: |
           composer update --no-progress --prefer-dist --no-interaction
@@ -108,7 +106,6 @@ jobs:
           php-version: '8.4'
           extensions: dom, curl, libxml, mbstring, zip, intl, iconv, simplexml, xml
           coverage: none
-          cache: composer
       - name: Install composer dependencies
         run: |
           composer update --no-progress --prefer-dist --no-interaction
@@ -138,7 +135,6 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
-          cache: composer
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
