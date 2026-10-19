@@ -55,6 +55,69 @@ it('fails the commit on a stale lock, naming the fix', function () use ($repo): 
         ->toContain('composer update');
 });
 
+it('keeps the generating branch name out of the lock', function () use ($repo): void {
+    $lock = json_decode((string) file_get_contents($repo.'/composer.lock'), true);
+    $branchDerived = [];
+
+    foreach (array_merge($lock['packages'], $lock['packages-dev']) as $package) {
+        $name = (string) $package['name'];
+        $version = (string) $package['version'];
+
+        if (!str_starts_with($name, 'alama/')) {
+            continue;
+        }
+
+        // `dev-main` is a fixed literal, pinned in the root manifest's path
+        // repositories. Anything else beginning with `dev-` is the branch the
+        // lock happened to be generated on: no other branch can satisfy it, so
+        // `composer update --lock` refuses there.
+        if ($version !== 'dev-main' && str_starts_with($version, 'dev-')) {
+            $branchDerived[] = $name.' => '.$version;
+        }
+    }
+
+    expect($branchDerived)->toBe([]);
+});
+
+it('pins a version for every path repository whose package does not declare one', function () use ($repo): void {
+    $composer = json_decode((string) file_get_contents($repo.'/composer.json'), true);
+    $unpinned = [];
+    $pinnedTwice = [];
+
+    foreach ($composer['repositories'] as $repository) {
+        if (($repository['type'] ?? null) !== 'path') {
+            continue;
+        }
+
+        $manifest = json_decode(
+            (string) file_get_contents($repo.'/'.$repository['url'].'/composer.json'),
+            true,
+        );
+        $name = (string) $manifest['name'];
+        $pin = $repository['options']['versions'][$name] ?? null;
+        $declaresVersion = isset($manifest['version']);
+
+        // Both at once is worse than either: composer prefers the pin, so a
+        // released package would still resolve here as `dev-main`. The release
+        // flow is what adds a version, so it has to drop the pin with it.
+        if ($declaresVersion && $pin !== null) {
+            $pinnedTwice[] = $name;
+
+            continue;
+        }
+
+        // A declared version stays the same on every branch; without one the
+        // version comes from git, and the lock records whichever branch was
+        // checked out when it was last written.
+        if (!$declaresVersion && $pin === null) {
+            $unpinned[] = $name;
+        }
+    }
+
+    expect(['unpinned' => $unpinned, 'pinned twice' => $pinnedTwice])
+        ->toBe(['unpinned' => [], 'pinned twice' => []]);
+});
+
 it('accepts the committed lock and rejects one the manifest no longer matches', function () use ($repo): void {
     $command = ['composer', 'validate', '--no-check-publish', '--check-lock'];
 
