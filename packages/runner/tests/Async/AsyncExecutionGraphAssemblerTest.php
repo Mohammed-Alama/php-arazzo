@@ -220,7 +220,6 @@ it('assembles graph with all core nodes', function () {
             $runtime->document,
             $runtime->operations,
         ),
-        inspector: new ExpressionEngine(),
     );
     $graph = $assembler->assemble($seams);
 
@@ -243,7 +242,6 @@ it('flows host-registered protocol executors into the graph alongside the compos
             $runtime->document,
             $runtime->operations,
         ),
-        inspector: new ExpressionEngine(),
     );
     $graph = $assembler->assemble($seams);
 

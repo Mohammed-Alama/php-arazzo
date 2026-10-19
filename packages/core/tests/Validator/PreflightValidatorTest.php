@@ -164,7 +164,6 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             $engine,
             $outputExtractor,
             $schemaValidator,
-            inspector: new ExpressionEngine(),
         ),
         new WorkflowEngine($engine),
         events: $events,

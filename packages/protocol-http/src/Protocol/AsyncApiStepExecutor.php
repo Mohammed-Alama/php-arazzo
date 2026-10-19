@@ -89,7 +89,7 @@ final class AsyncApiStepExecutor implements OperationExecutorPluginInterface, St
             throw new LogicException("Step '{$step->stepId}' has action 'receive' but no channelPath.");
         }
 
-        $correlationId = (string) $this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId, $document));
+        $correlationId = self::stringify($this->evaluationEngine->evaluate($step->target->correlationId, new EvaluationContext($context, $step->stepId, $document)));
 
         $this->pendingCorrelations->create($correlationId, $executionId, $step->stepId, $step->target->channelPath, $step->flow->timeout !== null ? $step->flow->timeout : null);
 

@@ -26,8 +26,8 @@ targets. Regenerated before every commit.
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
-| `engine:Execution` | 8 | 990 | 2 | 5 | 0.71 |  |
-| `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
+| `engine:Execution` | 8 | 992 | 2 | 4 | 0.67 |  |
+| `(engine root)` | 2 | 187 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
@@ -41,10 +41,10 @@ targets. Regenerated before every commit.
 | `expression:Data` | 4 | 124 | 7 | 3 | 0.30 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
-| `expression:Interfaces` | 2 | 108 | 14 | 3 | 0.18 |  |
+| `expression:Interfaces` | 2 | 108 | 11 | 3 | 0.21 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1149 | 4 | 7 | 0.64 |  |
-| `laravel:Bindings` | 7 | 378 | 1 | 24 | 0.96 |  |
+| `(expression root)` | 9 | 1149 | 3 | 7 | 0.70 |  |
+| `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
@@ -52,12 +52,12 @@ targets. Regenerated before every commit.
 | `laravel:Queue` | 3 | 106 | 1 | 3 | 0.75 |  |
 | `laravel:State` | 1 | 51 | 1 | 2 | 0.67 |  |
 | `laravel:Support` | 4 | 268 | 4 | 5 | 0.56 |  |
-| `(laravel root)` | 4 | 594 | 0 | 9 | 1.00 |  |
-| `runner:Async` | 7 | 1346 | 4 | 20 | 0.83 | ⚠ unstable hub |
+| `(laravel root)` | 4 | 589 | 0 | 9 | 1.00 |  |
+| `runner:Async` | 7 | 1339 | 4 | 19 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 5 | 815 | 4 | 18 | 0.82 | ⚠ unstable hub |
-| `(runner root)` | 9 | 529 | 6 | 16 | 0.73 |  |
+| `runner:Sync` | 5 | 809 | 4 | 17 | 0.81 | ⚠ unstable hub |
+| `(runner root)` | 9 | 522 | 6 | 15 | 0.71 |  |
 | `runtime:Infrastructure` | 3 | 152 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
 | `runtime:State` | 12 | 1027 | 9 | 3 | 0.25 |  |
@@ -67,7 +67,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 322 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1020**
+Total cross-module edges: **1012**
 
 ## Most entangled module pairs
 

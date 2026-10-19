@@ -29,7 +29,7 @@ flowchart LR
     subgraph S_generic["Generic subdomain"]
         S_contracts_State["contracts:State<br/><small>792 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
-        S_laravel_Bindings["laravel:Bindings<br/><small>385 LOC</small>"]:::genericDomain
+        S_laravel_Bindings["laravel:Bindings<br/><small>384 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>187 LOC</small>"]:::genericDomain
         S_laravel_Lock["laravel:Lock<br/><small>52 LOC</small>"]:::genericDomain
@@ -46,7 +46,7 @@ flowchart LR
         S_engine_Data["engine:Data<br/><small>74 LOC</small>"]:::unknownDomain
         S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_engine_Exceptions["engine:Exceptions<br/><small>42 LOC</small>"]:::unknownDomain
-        S_engine_Execution["engine:Execution<br/><small>998 LOC</small>"]:::unknownDomain
+        S_engine_Execution["engine:Execution<br/><small>1000 LOC</small>"]:::unknownDomain
         S_evaluation_Condition["evaluation:Condition<br/><small>654 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
         S_evaluation_Interfaces["evaluation:Interfaces<br/><small>35 LOC</small>"]:::unknownDomain
@@ -60,10 +60,10 @@ flowchart LR
         S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>110 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>110 LOC</small>"]:::unknownDomain
-        S_runner_Async["runner:Async<br/><small>1353 LOC</small>"]:::unknownDomain
+        S_runner_Async["runner:Async<br/><small>1346 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>370 LOC</small>"]:::unknownDomain
         S_runner_Interfaces["runner:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
-        S_runner_Sync["runner:Sync<br/><small>820 LOC</small>"]:::unknownDomain
+        S_runner_Sync["runner:Sync<br/><small>814 LOC</small>"]:::unknownDomain
         S_runtime_Infrastructure["runtime:Infrastructure<br/><small>155 LOC</small>"]:::unknownDomain
         S_runtime_Policy["runtime:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runtime_Telemetry["runtime:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
@@ -79,8 +79,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
 | Supporting | 7 | 6,977 | 0 | 35% |
-| Generic subdomain | 11 | 2,016 | 1,397 | 17% |
-| Unclassified | 28 | 8,163 | 0 | 41% |
+| Generic subdomain | 11 | 2,016 | 1,396 | 17% |
+| Unclassified | 28 | 8,152 | 0 | 41% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

@@ -10,7 +10,6 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Psr\Http\Message\RequestInterface as Psr7Request;
 use Psr\Http\Message\ResponseInterface;
 
@@ -27,7 +26,6 @@ final readonly class RequestCompiler
 {
     public function __construct(
         private EvaluationEngineInterface $evaluationEngine,
-        private ExpressionEngineInterface $inspector,
     ) {}
 
     /**

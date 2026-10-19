@@ -59,7 +59,9 @@ class ResponseSchemaValidator implements ResponseValidatorInterface
             $response = $response->resolve();
         }
 
-        if (!$response instanceof Response || $response->content === null) {
+        // `content` never comes back null from cebe: an unset array attribute
+        // defaults to `[]`, and the lookup below handles the empty map.
+        if (!$response instanceof Response) {
             return null;
         }
 

@@ -14,7 +14,6 @@ use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Engine\Execution\RequestCompiler;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationHandle;
 use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
@@ -37,7 +36,6 @@ class StepExecutor
         private EvaluationEngineInterface $evaluationEngine,
         private OutputExtractorInterface $outputExtractor,
         private ResponseValidatorInterface $schemaValidator,
-        private ExpressionEngineInterface $inspector,
         private bool $strictValidationDefault = false,
         private ?IdempotencyKeyInjector $injector = null,
         ?EventDispatcherInterface $events = null,
@@ -52,7 +50,7 @@ class StepExecutor
      */
     public function execute(Step $step, WorkflowContext $context, ArazzoDocument $document): array
     {
-        $compiler = new RequestCompiler($this->evaluationEngine, $this->inspector);
+        $compiler = new RequestCompiler($this->evaluationEngine);
         ['payload' => $payload] = $compiler->compile($step, $document, $context);
 
         $resolved = $this->resolveOperation($step, $document);

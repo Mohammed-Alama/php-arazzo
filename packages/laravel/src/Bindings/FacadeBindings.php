@@ -56,7 +56,6 @@ final class FacadeBindings
                     $app->make(DocumentInterface::class),
                     $app->make(OpenApiOperationResolver::class),
                 ),
-                inspector: $app->make(ExpressionEngineInterface::class),
             );
         });
     }

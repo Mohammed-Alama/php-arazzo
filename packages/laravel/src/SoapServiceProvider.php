@@ -8,7 +8,6 @@ use Alama\Arazzo\Contracts\Interfaces\HttpClientInterface;
 use Alama\Arazzo\Contracts\Interfaces\ReplacementTargetResolverInterface;
 use Alama\Arazzo\Contracts\Interfaces\SourceNormalizerRegistryInterface;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Laravel\Support\ConfigValue;
 use Alama\Arazzo\Laravel\Support\SchemeSourceFetcher;
 use Alama\Arazzo\Protocol\Http\Registrar\ProtocolHttpRegistrar;
@@ -84,7 +83,6 @@ final class SoapServiceProvider extends ServiceProvider
                 requestFactory: $app->make(RequestFactoryInterface::class),
                 streamFactory: $app->make(StreamFactoryInterface::class),
                 evaluationEngine: $app->make(EvaluationEngineInterface::class),
-                inspector: $app->make(ExpressionEngineInterface::class),
                 replacementResolver: $app->make(ReplacementTargetResolverInterface::class),
             ),
         );

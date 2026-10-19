@@ -73,9 +73,10 @@ function parsePhpStan(int $code, string $text): array
 }
 
 /**
- * `php scripts/check-baselines.php --json`: correctness errors hidden in a
- * `phpstan-baseline.neon`. The gate exists so this number stays 0 — `--json`
- * is only used here so the snapshot can record the count.
+ * `php scripts/check-baselines.php --json`: correctness errors hidden from
+ * PHPStan, in a `phpstan-baseline.neon` or in a config `ignoreErrors` block. The
+ * gate exists so this number stays 0 — `--json` is only used here so the
+ * snapshot can record the count.
  *
  * @return array{status: string, metrics: array<string, int|float|string>, notes: string}
  */
@@ -89,7 +90,7 @@ function parseBaselines(int $code, string $text): array
     return [
         'status' => $code === 0 ? 'pass' : 'fail',
         'metrics' => ['violations' => $violations],
-        'notes' => $violations > 0 ? "Correctness errors hidden in a baseline: {$violations}" : '',
+        'notes' => $violations > 0 ? "Correctness errors hidden from PHPStan: {$violations}" : '',
     ];
 }
 

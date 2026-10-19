@@ -98,7 +98,6 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($classificationHarness->client(), new HttpFactory()),
         $runtime->operations,
         $engine,
-        new ExpressionEngine(), // inspector
         $outputExtractor,
         $schemaValidator,
     );
@@ -120,7 +119,6 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($failingHttp, new HttpFactory()),
         $runtime->operations,
         $engine,
-        new ExpressionEngine(), // inspector
         $outputExtractor,
         $schemaValidator,
     );
@@ -142,7 +140,6 @@ it('preserves raw body, content type, and transport category on synthetic failur
         new DefaultOpenApiExecutor($http2, new HttpFactory()),
         $runtime->operations,
         $engine,
-        new ExpressionEngine(), // inspector
         $outputExtractor,
         $schemaValidator,
     );
@@ -176,7 +173,6 @@ it('classifies unmet-criteria failures on step events while keeping execution fa
             strictValidationDefault: false,
             injector: null,
             events: null,
-            inspector: new ExpressionEngine(),
         ),
         new WorkflowEngine($engine),
         events: $classificationHarness->ev(),

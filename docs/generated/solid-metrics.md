@@ -38,7 +38,7 @@ quadrantChart
     engine/Data: [0.75, 0]
     engine/Enum: [0, 0]
     engine/Exceptions: [0.25, 0]
-    engine/Execution: [0.714, 0]
+    engine/Execution: [0.667, 0]
     engine/_: [0.75, 0.5]
     evaluation/Condition: [0.857, 0]
     evaluation/Enum: [0, 0]
@@ -53,9 +53,9 @@ quadrantChart
     expression/Data: [0.3, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.25, 0]
-    expression/Interfaces: [0.176, 1]
+    expression/Interfaces: [0.214, 1]
     expression/Xpath: [0.667, 0.5]
-    expression/_: [0.636, 0]
+    expression/_: [0.7, 0]
     laravel/Bindings: [0.96, 0]
     laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
@@ -64,11 +64,11 @@ quadrantChart
     laravel/State: [0.667, 0]
     laravel/Support: [0.556, 0]
     laravel/_: [1, 0]
-    runner/Async: [0.833, 0]
+    runner/Async: [0.826, 0]
     runner/Execution: [0.643, 0.067]
     runner/Interfaces: [1, 1]
-    runner/Sync: [0.818, 0]
-    runner/_: [0.727, 0.222]
+    runner/Sync: [0.81, 0]
+    runner/_: [0.714, 0.222]
     runtime/Infrastructure: [1, 0]
     runtime/Policy: [0.75, 0]
     runtime/State: [0.25, 0.333]
@@ -94,6 +94,7 @@ Concrete types over 300 LOC:
 | `WorkflowContext` | `contracts:State` | 382 |
 | `Parser` | `expression:_` | 365 |
 | `PreflightValidator` | `sources:Validator` | 303 |
+| `SchemaValidator` | `engine:Execution` | 302 |
 
 ## Fat interfaces (ISP)
 

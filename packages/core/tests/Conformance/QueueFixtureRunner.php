@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Tests\Conformance;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Protocol\Http\Execution\DefaultOpenApiExecutor;
 use Alama\Arazzo\Protocol\Http\Protocol\HttpStepExecutor;
 use Alama\Arazzo\Runner\Async\ExecuteStepJob;
@@ -56,7 +55,6 @@ final class QueueFixtureRunner extends ConformanceHarness
             new DefaultOpenApiExecutor($this->http, new HttpFactory()),
             $runtime->operations,
             $engine,
-            new ExpressionEngine(), // inspector
             $this->outputExtractor($runtime),
             $this->schemaValidator($runtime),
         ));

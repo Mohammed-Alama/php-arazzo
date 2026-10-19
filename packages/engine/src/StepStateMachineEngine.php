@@ -14,19 +14,14 @@ use DateInterval;
 /**
  * Explicit step-level state machine over StepState.
  *
- * The engine maps (StepState, outcome) pairs to (next StepState, enter-handler).
- * Guards (budget, deps) delegate to the pure WorkflowEngineInterface::transition() for
- * protocol-agnostic decisions. The enter-handlers are side-effect closures
- * invoked after a successful state transition.
+ * The engine maps (StepState, outcome) pairs to (next StepState, enter-handler)
+ * with inline guards (step budget, interaction steps). The enter-handlers are
+ * side-effect closures invoked after a successful state transition.
  *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class StepStateMachineEngine
 {
-    public function __construct(
-        private WorkflowEngineInterface $workflowEngine,
-    ) {}
-
     /** @var list<StepState> */
     private const TERMINAL_STATES = [StepState::Completed, StepState::Failed, StepState::Cancelled];
 
@@ -160,6 +155,6 @@ final class StepStateMachineEngine
     {
         $interval = new DateInterval($duration);
 
-        return $interval->h * 3600 + $interval->i * 60 + $interval->s + ($interval->f ?? 0);
+        return $interval->h * 3600 + $interval->i * 60 + $interval->s + $interval->f;
     }
 }

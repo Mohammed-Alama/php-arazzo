@@ -6,7 +6,6 @@ namespace Alama\Arazzo\Runner;
 
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\Async\AsyncExecutionGraphAssembler;
 use Alama\Arazzo\Runner\Async\StepExecutionWorker;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
@@ -19,7 +18,6 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
     public function __construct(
         private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ?OperationRuntime $operations = null,
-        private readonly ?ExpressionEngineInterface $inspector = null,
     ) {}
 
     public function buildAsync(AsyncGraphSeams $seams): AsyncExecutionGraph
@@ -28,14 +26,9 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
             throw new ExecutionException('RunnerGraphBuilder needs an OperationRuntime to assemble the async graph; worker-only hosts should use buildWorker().');
         }
 
-        if ($this->inspector === null) {
-            throw new ExecutionException('RunnerGraphBuilder needs an ExpressionEngineInterface to assemble the async graph; worker-only hosts should use buildWorker().');
-        }
-
         $assembler = new AsyncExecutionGraphAssembler(
             evaluationEngine: $this->evaluationEngine,
             operations: $this->operations,
-            inspector: $this->inspector,
         );
 
         return $assembler->assemble($seams);
@@ -46,7 +39,6 @@ final class RunnerGraphBuilder implements RunnerGraphBuilderInterface
         $assembler = new AsyncExecutionGraphAssembler(
             evaluationEngine: $this->evaluationEngine,
             operations: $this->operations,
-            inspector: $this->inspector,
         );
 
         return $assembler->buildWorker($seams, $this->operations?->document);

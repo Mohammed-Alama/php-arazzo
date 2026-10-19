@@ -8,7 +8,6 @@ use Alama\Arazzo\Document\DocumentInterface;
 use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Engine\Execution\IdempotencyKeyInjector;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Runner\AsyncExecutionGraph;
 use Alama\Arazzo\Runner\AsyncGraphSeams;
 use Alama\Arazzo\Runner\Execution\Data\RunControlFlow;
@@ -31,17 +30,12 @@ final class AsyncExecutionGraphAssembler
     public function __construct(
         private readonly EvaluationEngineInterface $evaluationEngine,
         private readonly ?OperationRuntime $operations = null,
-        private readonly ?ExpressionEngineInterface $inspector = null,
     ) {}
 
     public function assemble(AsyncGraphSeams $seams): AsyncExecutionGraph
     {
         if ($this->operations === null) {
             throw new ExecutionException('AsyncExecutionGraphAssembler needs an OperationRuntime to build the full graph; worker-only hosts should call buildWorker().');
-        }
-
-        if ($this->inspector === null) {
-            throw new ExecutionException('AsyncExecutionGraphAssembler needs an ExpressionEngineInterface to build the full graph; worker-only hosts should call buildWorker().');
         }
 
         $openApiExecutor = $seams->openApiExecutor
@@ -68,7 +62,6 @@ final class AsyncExecutionGraphAssembler
             $this->evaluationEngine,
             $outputExtractor,
             $schemaValidator,
-            inspector: $this->inspector,
             strictValidationDefault: $seams->strictValidation,
             injector: $injector,
         );

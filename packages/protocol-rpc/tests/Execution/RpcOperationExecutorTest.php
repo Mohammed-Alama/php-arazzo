@@ -26,7 +26,6 @@ use Alama\Arazzo\Document\OperationResolverInterface;
 use Alama\Arazzo\Document\ResolvedOperation;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Protocol\Rpc\Execution\RpcFailureMapper;
 use Alama\Arazzo\Protocol\Rpc\Execution\RpcOperationExecutor;
@@ -214,7 +213,6 @@ function rpcExecutor(OperationResolverInterface $resolver, HttpClientInterface $
             requestFactory: $psr17,
             streamFactory: $psr17,
             evaluationEngine: new RpcExecutorMockEngine(),
-            inspector: new ExpressionEngine(),
             codec: new RpcMessageCodec(),
         ),
         httpClient: $client,

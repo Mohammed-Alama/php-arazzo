@@ -102,7 +102,6 @@ Cross-package references from library code must target `*Interface` facades, val
 
 | From package | To package | From | References concrete facade |
 |---|---|---|---|
-| `runner` | `expression` | `RunnerFacade` | `ExpressionEngine` |
 | `sources` | `document` | `SourceGraph` | `Document` |
 | `sources` | `expression` | `SourceGraph` | `ExpressionEngine` |
 

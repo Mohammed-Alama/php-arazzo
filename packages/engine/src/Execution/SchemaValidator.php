@@ -10,6 +10,13 @@ use DateTime;
 use DateTimeInterface;
 
 /**
+ * Guards against a cebe attribute that was never set are load-bearing, not dead
+ * code: its `@property` docblock claims every attribute is non-nullable, but
+ * `SpecBaseObject::__get()` falls back to `attributeDefaults()`, which yields
+ * `null` for an unset attribute. PHPStan believes the docblock and reports the
+ * guard as `notIdentical.alwaysTrue`, so the reads below go through
+ * `($schema->x ?? null)` -- the null-safe read of a docblock that lies (#223).
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class SchemaValidator
@@ -23,8 +30,6 @@ final class SchemaValidator
 
         $violations = [];
 
-        // `allOf`/`anyOf`/`oneOf` default to null in cebe's attribute defaults and
-        // its `@property` docblock does not say so; `??` is the only null-safe read.
         $allOf = $schema->allOf ?? [];
         if ($allOf !== []) {
             foreach ($allOf as $subSchema) {
@@ -71,7 +76,7 @@ final class SchemaValidator
         }
 
         if ($value === null) {
-            if ($schema->nullable === true || $schema->type === null) {
+            if ($schema->nullable === true || ($schema->type ?? null) === null) {
                 return [];
             }
 
@@ -80,11 +85,11 @@ final class SchemaValidator
 
         $violations = [];
 
-        if ($schema->type !== null && !self::matchesType($schema->type, $value)) {
+        if (($schema->type ?? null) !== null && !self::matchesType($schema->type, $value)) {
             $violations[] = ['path' => $at, 'message' => "expected type '{$schema->type}', got ".get_debug_type($value)];
         }
 
-        if ($schema->enum !== null && $schema->enum !== [] && !in_array($value, $schema->enum, true)) {
+        if (($schema->enum ?? null) !== null && $schema->enum !== [] && !in_array($value, $schema->enum, true)) {
             $violations[] = ['path' => $at, 'message' => 'value is not one of the allowed enum values'];
         }
 
@@ -144,10 +149,10 @@ final class SchemaValidator
         $at = $path === '' ? '/' : $path;
         $violations = [];
 
-        if ($schema->minProperties !== null && count($value) < $schema->minProperties) {
+        if (($schema->minProperties ?? null) !== null && count($value) < $schema->minProperties) {
             $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minProperties} properties, got ".count($value)];
         }
-        if ($schema->maxProperties !== null && count($value) > $schema->maxProperties) {
+        if (($schema->maxProperties ?? null) !== null && count($value) > $schema->maxProperties) {
             $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxProperties} properties, got ".count($value)];
         }
 
@@ -183,10 +188,10 @@ final class SchemaValidator
         $at = $path === '' ? '/' : $path;
         $violations = [];
 
-        if ($schema->minItems !== null && count($value) < $schema->minItems) {
+        if (($schema->minItems ?? null) !== null && count($value) < $schema->minItems) {
             $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minItems} items, got ".count($value)];
         }
-        if ($schema->maxItems !== null && count($value) > $schema->maxItems) {
+        if (($schema->maxItems ?? null) !== null && count($value) > $schema->maxItems) {
             $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxItems} items, got ".count($value)];
         }
         if ($schema->uniqueItems === true && count($value) !== count(array_unique($value, SORT_REGULAR))) {
@@ -195,7 +200,9 @@ final class SchemaValidator
 
         $itemSchema = self::resolveSchema($schema->items);
         if ($itemSchema !== null) {
-            foreach (array_values($value) as $index => $item) {
+            // `$value` is a list by contract: `validate()` only routes list-shaped
+            // arrays here, so re-indexing with `array_values()` is a no-op.
+            foreach ($value as $index => $item) {
                 $violations = [...$violations, ...self::validate($itemSchema, $item, $path.'/'.$index)];
             }
         }
@@ -211,18 +218,18 @@ final class SchemaValidator
         $at = $path === '' ? '/' : $path;
         $violations = [];
 
-        if ($schema->minLength !== null && mb_strlen($value) < $schema->minLength) {
+        if (($schema->minLength ?? null) !== null && mb_strlen($value) < $schema->minLength) {
             $violations[] = ['path' => $at, 'message' => "expected at least {$schema->minLength} characters, got ".mb_strlen($value)];
         }
-        if ($schema->maxLength !== null && mb_strlen($value) > $schema->maxLength) {
+        if (($schema->maxLength ?? null) !== null && mb_strlen($value) > $schema->maxLength) {
             $violations[] = ['path' => $at, 'message' => "expected at most {$schema->maxLength} characters, got ".mb_strlen($value)];
         }
 
-        if ($schema->pattern !== null && @preg_match('/'.str_replace('/', '\/', $schema->pattern).'/u', $value) !== 1) {
+        if (($schema->pattern ?? null) !== null && @preg_match('/'.str_replace('/', '\/', $schema->pattern).'/u', $value) !== 1) {
             $violations[] = ['path' => $at, 'message' => "does not match pattern '{$schema->pattern}'"];
         }
 
-        if ($schema->format !== null && !self::matchesFormat($schema->format, $value)) {
+        if (($schema->format ?? null) !== null && !self::matchesFormat($schema->format, $value)) {
             $violations[] = ['path' => $at, 'message' => "does not match format '{$schema->format}'"];
         }
 
@@ -261,9 +268,6 @@ final class SchemaValidator
         $at = $path === '' ? '/' : $path;
         $violations = [];
 
-        // `minimum`/`maximum`/`multipleOf` default to null in cebe's attribute
-        // defaults and its `@property` docblock does not say so; `??` is the only
-        // null-safe read.
         $minimum = $schema->minimum ?? null;
         if ($minimum !== null) {
             $exclusive = $schema->exclusiveMinimum === true;

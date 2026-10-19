@@ -75,7 +75,6 @@ it('blocks executor runs on invalid inputs before any event fires', function ():
             $engine,
             $outputExtractor,
             $schemaValidator,
-            inspector: new ExpressionEngine(),
         ),
         workflowEngine: new WorkflowEngine($engine),
         events: $events,
