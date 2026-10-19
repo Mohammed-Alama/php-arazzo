@@ -45,15 +45,20 @@ jobs:
           php-version: '8.4'
           coverage: none
 
-      - name: Cache composer downloads
+      # Rotate the php8.4 literal in the key when php-version above changes.
+      - name: Cache composer downloads and vendor
+        id: composer-cache
         uses: actions/cache@v6
         with:
-          path: .cache/composer
-          key: composer-${{ runner.os }}-${{ hashFiles('composer.json', 'packages/*/composer.json') }}
-          restore-keys: composer-${{ runner.os }}-
+          path: |
+            .cache/composer
+            vendor
+          key: vendor-${{ runner.os }}-php8.4-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php8.4-
 
       - name: Install dependencies
-        run: composer update --no-progress --prefer-dist --no-interaction
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-progress --prefer-dist --no-interaction
 
       - name: Validate and label
         env:
