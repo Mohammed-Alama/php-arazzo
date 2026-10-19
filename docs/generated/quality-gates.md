@@ -16,9 +16,11 @@ byte-deterministic per measurement.
 | Gate | Status | Metrics | Command |
 |---|---|---|---|
 | Code Style (Pint) | **PASS** | files-reported: **0** | `vendor/bin/pint --test` |
-| Static Analysis · core | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
-| Static Analysis · laravel | **PASS** | errors: **0** | `vendor/bin/phpstan analyse --memory-limit=1G --no-progress` |
-| Tests · core | **PASS** | skipped: **3** · passed: **775** · assertions: **2162** | `vendor/bin/pest --no-coverage` |
-| Tests · laravel | **PASS** | passed: **100** · assertions: **194** | `vendor/bin/pest --no-coverage` |
+| Mess Detector (PHPMD) | **PASS** | violations: **0** | `vendor/bin/phpmd packages/contracts/src,packages/expression/src,packages/evaluation/src,packages/document/src,packages/sources/src,packages/runtime/src,packages/engine/src,packages/events/src,packages/runner/src,packages/cli/src,packages/laravel/src text phpmd.xml --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit` |
+| Static Analysis · core | **PASS** | errors: **0** | `composer run analyse-contracts && composer run analyse-expression && composer run analyse-evaluation && composer run analyse-document && composer run analyse-sources && composer run analyse-runtime && composer run analyse-engine && composer run analyse-events && composer run analyse-runner && composer run analyse-cli` |
+| Static Analysis · laravel | **PASS** | errors: **0** | `composer run analyse-laravel` |
+| Baseline Policy · correctness | **PASS** | violations: **0** | `php scripts/check-baselines.php --json` |
+| Tests · core | **PASS** | skipped: **3** · passed: **264** · assertions: **1300** | `vendor/bin/pest packages/core/tests --no-coverage` |
+| Tests · laravel | **PASS** | passed: **161** · assertions: **392** | `vendor/bin/pest packages/laravel/tests --no-coverage` |
 
-**5/5 gates passing.**
+**7/7 gates passing.**

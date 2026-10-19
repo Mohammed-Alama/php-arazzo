@@ -48,10 +48,18 @@ final readonly class JsonPathExpressionPlugin implements ExpressionEvaluatorPlug
     }
 
     /**
-     * @param  mixed  $context  Expected to be an array|object that JSONPath can query
+     * @param  mixed  $context  The data to query; a JSONPath expression over
+     *                          anything that is not an array or an object cannot
+     *                          match
      */
     public function evaluate(Expression $expression, mixed $context): mixed
     {
+        // Mirrors JsonPathCriterionPlugin: a context that cannot be queried has no
+        // matches, which is what jsonPath() answers for an empty collection.
+        if (!is_array($context) && !is_object($context)) {
+            return [];
+        }
+
         return $this->expression->jsonPath($expression->raw, $context);
     }
 }

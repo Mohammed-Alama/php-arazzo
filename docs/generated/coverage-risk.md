@@ -38,7 +38,7 @@ quadrantChart
     evaluation/Condition: [0.857, 1]
     evaluation/Enum: [0, 0.333]
     evaluation/Interfaces: [0.333, 0]
-    evaluation/Plugins: [0.75, 0]
+    evaluation/Plugins: [0.75, 0.5]
     evaluation/Registries: [0.8, 0]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 1]
@@ -77,8 +77,8 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.12 | 40 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 200 | 49 | 100% |
-| `contracts/State` | 0.07 | 57 | 2 | 100% |
+| `contracts/Spec` | 0.03 | 201 | 49 | 100% |
+| `contracts/State` | 0.07 | 58 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.46 | 77 | 68 | 100% |
@@ -89,7 +89,7 @@ quadrantChart
 | `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
-| `evaluation/Plugins` | 0.75 | 0 | 2 | 0% |
+| `evaluation/Plugins` | 0.75 | 1 | 2 | 50% |
 | `evaluation/Registries` | 0.80 | 0 | 2 | 0% |
 | `events/Interfaces` | 0.00 | 21 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
@@ -119,4 +119,4 @@ quadrantChart
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `runner/Interfaces`, `evaluation/Registries`, `evaluation/Plugins`
+**Refactor-now list** (untested churn): `runner/Interfaces`, `evaluation/Registries`

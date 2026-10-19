@@ -9,58 +9,82 @@
             "metrics": {
                 "files_reported": 0,
                 "exit_code": 0,
-                "duration_ms": 526
+                "duration_ms": 3441
+            },
+            "notes": ""
+        },
+        {
+            "id": "phpmd",
+            "label": "Mess Detector (PHPMD)",
+            "command": "vendor/bin/phpmd packages/contracts/src,packages/expression/src,packages/evaluation/src,packages/document/src,packages/sources/src,packages/runtime/src,packages/engine/src,packages/events/src,packages/runner/src,packages/cli/src,packages/laravel/src text phpmd.xml --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit",
+            "status": "pass",
+            "metrics": {
+                "violations": 0,
+                "exit_code": 0,
+                "duration_ms": 2496
             },
             "notes": ""
         },
         {
             "id": "phpstan-core",
             "label": "Static Analysis \u00b7 core",
-            "command": "vendor/bin/phpstan analyse --memory-limit=1G --no-progress",
+            "command": "composer run analyse-contracts && composer run analyse-expression && composer run analyse-evaluation && composer run analyse-document && composer run analyse-sources && composer run analyse-runtime && composer run analyse-engine && composer run analyse-events && composer run analyse-runner && composer run analyse-cli",
             "status": "pass",
             "metrics": {
                 "errors": 0,
                 "exit_code": 0,
-                "duration_ms": 4416
+                "duration_ms": 17231
             },
             "notes": ""
         },
         {
             "id": "phpstan-laravel",
             "label": "Static Analysis \u00b7 laravel",
-            "command": "vendor/bin/phpstan analyse --memory-limit=1G --no-progress",
+            "command": "composer run analyse-laravel",
             "status": "pass",
             "metrics": {
                 "errors": 0,
                 "exit_code": 0,
-                "duration_ms": 3598
+                "duration_ms": 2596
+            },
+            "notes": ""
+        },
+        {
+            "id": "baseline-policy",
+            "label": "Baseline Policy \u00b7 correctness",
+            "command": "php scripts/check-baselines.php --json",
+            "status": "pass",
+            "metrics": {
+                "violations": 0,
+                "exit_code": 0,
+                "duration_ms": 97
             },
             "notes": ""
         },
         {
             "id": "pest-core",
             "label": "Tests \u00b7 core",
-            "command": "vendor/bin/pest --no-coverage",
+            "command": "vendor/bin/pest packages/core/tests --no-coverage",
             "status": "pass",
             "metrics": {
                 "skipped": 3,
-                "passed": 775,
-                "assertions": 2162,
+                "passed": 264,
+                "assertions": 1300,
                 "exit_code": 0,
-                "duration_ms": 7322
+                "duration_ms": 9179
             },
             "notes": ""
         },
         {
             "id": "pest-laravel",
             "label": "Tests \u00b7 laravel",
-            "command": "vendor/bin/pest --no-coverage",
+            "command": "vendor/bin/pest packages/laravel/tests --no-coverage",
             "status": "pass",
             "metrics": {
-                "passed": 100,
-                "assertions": 194,
+                "passed": 161,
+                "assertions": 392,
                 "exit_code": 0,
-                "duration_ms": 1337
+                "duration_ms": 2893
             },
             "notes": ""
         }

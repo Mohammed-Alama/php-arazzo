@@ -41,13 +41,13 @@ pie showData
 
 ```mermaid
 pie showData
-    title Evaluation — 7 test files
-    "Root": 7
+    title Evaluation — 8 test files
+    "Root": 8
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 7 | 100% |
+| Root | 8 | 100% |
 
 ## Document package
 

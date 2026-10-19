@@ -8,9 +8,7 @@ parameters:
         - src
     excludePaths:
         - tests
-        - ../../.worktrees (?)
     scanDirectories:
         - ../contracts/src
         - ../expression/src
-        - src
     reportUnmatchedIgnoredErrors: true
