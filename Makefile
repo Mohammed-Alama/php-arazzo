@@ -81,14 +81,25 @@ analyse-baseline: ## Regenerate every PHPStan baseline (one per package that has
 	done
 
 phpmd: ## Run PHP Mess Detector (fails on any violation not in the baseline)
-	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format ansi --ruleset phpmd.xml --baseline-file phpmd.baseline.xml
+	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format ansi --ruleset phpmd.xml --baseline-file phpmd.baseline.xml --threads 1
 
 phpmd-report: ## Generate PHPMD XML report to storage/phpmd-report.xml
 	@mkdir -p storage
-	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format xml --ruleset phpmd.xml --reportfile storage/phpmd-report.xml || true
+	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format xml --ruleset phpmd.xml --reportfile-xml storage/phpmd-report.xml --threads 1
 
-phpmd-baseline: ## Regenerate PHPMD baseline from the current violations (replaces the file)
-	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --ruleset phpmd.xml --generate-baseline --baseline-file phpmd.baseline.xml
+# Regenerating straight into phpmd.baseline.xml truncates it: PHPMD opens the
+# file for writing before analysis finishes, and a PDepend parse failure aborts
+# the process mid-write (101 entries -> 0, measured). So the new baseline is
+# built beside the old one and swapped in only after a clean run.
+phpmd-baseline: ## Regenerate PHPMD baseline from the current violations (writes only on success)
+	@tmp=$$(mktemp); \
+	if vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --ruleset phpmd.xml --generate-baseline --baseline-file "$$tmp" --threads 1; then \
+		mv "$$tmp" phpmd.baseline.xml; \
+	else \
+		rm -f "$$tmp"; \
+		echo "phpmd-baseline: generation failed; phpmd.baseline.xml left untouched"; \
+		exit 1; \
+	fi
 
 pdepend: ## Run PHP-Depend structural metrics (outputs to storage/pdepend/)
 	@mkdir -p storage/pdepend

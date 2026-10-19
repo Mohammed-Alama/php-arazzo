@@ -129,12 +129,23 @@ jobs:
             packages/laravel/src \
             --format github \
             --ruleset phpmd.xml \
-            --baseline-file phpmd.baseline.xml
+            --baseline-file phpmd.baseline.xml \
+            --threads 1
           # Deliberately neither --ignore-errors-on-exit nor
           # --ignore-violations-on-exit. PDepend 3 parses PHP 8.4, so a parse
           # failure now fails the job instead of being annotated and swallowed,
           # and phpmd.baseline.xml is the single place a known violation is
           # accepted.
+          #
+          # --threads 1 for the same reason: multi-threaded, a parse failure
+          # aborts through a worker-protocol panic that names no file, and a
+          # regeneration can write a half-finished baseline. Single-threaded it
+          # is a clean exit 3 that says which file it could not read.
+          #
+          # Known upstream gap, so nobody assumes coverage: PDepend parses PHP
+          # 8.4 property hooks but PHPMD applies no rules to hook bodies, so a
+          # violation inside a `get`/`set` hook is invisible here. Tracked by
+          # #244.
 
   phpdoc:
     name: phpDocumentor (smoke)
