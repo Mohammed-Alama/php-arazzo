@@ -50,7 +50,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Check PHP code style
         uses: aglipanci/laravel-pint-action@2.6
         with:
@@ -62,7 +62,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -93,7 +93,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -115,12 +115,26 @@ jobs:
           composer install --no-progress --prefer-dist --no-interaction
       - name: Run PHPMD
         run: |
-          vendor/bin/phpmd \
-            packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src \
-            github phpmd.xml \
-            --baseline-file phpmd.baseline.xml \
-            --ignore-violations-on-exit \
-            --ignore-errors-on-exit
+          # `phpmd analyze` takes the paths as separate arguments; the old
+          # comma-joined form only worked because the deprecated positional
+          # syntax split on commas, and is now silently wrong.
+          #
+          # The 7 packages are a deliberate boundary, not an accident: the other
+          # 8 carry 102 violations between them (measured under 3.0.0), and
+          # widening the list without triaging those would only grow the
+          # baseline without anyone reading it. Tracked by #242.
+          vendor/bin/phpmd analyze \
+            packages/core/src packages/contracts/src packages/document/src \
+            packages/expression/src packages/runner/src packages/cli/src \
+            packages/laravel/src \
+            --format github \
+            --ruleset phpmd.xml \
+            --baseline-file phpmd.baseline.xml
+          # Deliberately neither --ignore-errors-on-exit nor
+          # --ignore-violations-on-exit. PDepend 3 parses PHP 8.4, so a parse
+          # failure now fails the job instead of being annotated and swallowed,
+          # and phpmd.baseline.xml is the single place a known violation is
+          # accepted.
 
   phpdoc:
     name: phpDocumentor (smoke)
@@ -128,7 +142,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -168,7 +182,7 @@ jobs:
             testbench: 11.*
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
