@@ -1,0 +1,39 @@
+name: Dependency canary
+
+# The five install jobs in ci.yml install from the committed composer.lock, and
+# issue-intake and package-index do too. That removes the float that used to
+# notice a breaking upstream release on every CI run. The test job still floats,
+# but it only runs when a human pushes. This workflow is the deliberate version:
+# it resolves dependencies from scratch once a week and runs the gates, so a
+# breaking release turns up as a red run on main within a week even when nobody
+# pushes. It caches nothing — a cold resolution is the point of it.
+
+on:
+  schedule:
+    # Mondays, 05:30 UTC.
+    - cron: '30 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  canary:
+    name: Fresh resolution, then the gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+      - name: Resolve dependencies from scratch
+        run: composer update --no-progress --prefer-dist --no-interaction
+      - name: Run the analysis gates
+        run: composer run analyse
+      - name: Run the test suite
+        run: composer run test
