@@ -1,48 +1,36 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-10-16T06:17:00Z by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-19T13:08:32+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
-## Act — since last digest (3)
+## Act — since last digest (0)
 
-- `2026-09-30` [feat(spec): add SOAP support](https://github.com/OAI/Arazzo-Specification/pull/533) — `OAI/Arazzo-Specification` · `pr.state_changed` · state `open` → `merged` · topics `wsdl` → `plan:phase-f-protocol-packages`, `spec:plugin-stack-oms-multiprotocol`
-- `2026-09-30` [feat(spec): add SOAP support](https://github.com/OAI/Arazzo-Specification/pull/533) — `OAI/Arazzo-Specification` · `pr.retargeted` · base → `v1.2-dev` · topics `wsdl` → `plan:phase-f-protocol-packages`, `spec:plugin-stack-oms-multiprotocol`
-- `2026-10-13` [@redocly/cli@2.63.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.63.0) — `Redocly/redocly-cli` · `release.published` · version → `2.63.0` (1 package)
+_No Act events since the last digest._
 
 ## Watchlist — tracked upstream items
 
 | Ref | Title | State | Base | Last change | Roadmap | Our issue | Stance |
 |---|---|---|---|---|---|---|---|
 | `OAI/Arazzo-Specification#533` | [feat(spec): add SOAP support](https://github.com/OAI/Arazzo-Specification/pull/533) | merged | v1.2-dev | 2026-09-30 | spec:plugin-stack-oms-multiprotocol, plan:phase-f-protocol-packages | — | shipped |
-| `OAI/Arazzo-Specification#556` | — | unknown | — | — | plan:phase-f-protocol-packages | — | plan-to-support |
-| `OAI/Arazzo-Specification#567` | — | unknown | — | — | plan:phase-f-protocol-packages | — | plan-to-support |
-| `OAI/Arazzo-Specification#568` | — | unknown | — | — |  | — | evaluate |
-| `OAI/Arazzo-Specification#410` | [1.2 - start of discussion/ideas/breaking changes](https://github.com/OAI/Arazzo-Specification/issues/410) | closed | — | 2026-10-15 |  | — | watch |
-| `OAI/Arazzo-Specification#590` | — | unknown | — | — | plan:phase-e-runner-oms | — | watch |
-| `OAI/Arazzo-Specification#516` | — | unknown | — | — | plan:expression-evaluation-parity-hardening | — | watch |
-| `OAI/Arazzo-Specification#597` | — | unknown | — | — |  | — | watch |
+| `OAI/Arazzo-Specification#556` | [feat(spec): add Protocol Buffer RPC support](https://github.com/OAI/Arazzo-Specification/pull/556) | open | v1.2-dev | 2026-10-14 | plan:phase-f-protocol-packages | — | plan-to-support |
+| `OAI/Arazzo-Specification#567` | [feat(spec): add GraphQL operation support](https://github.com/OAI/Arazzo-Specification/pull/567) | open | v1.2-dev | 2026-10-14 | plan:phase-f-protocol-packages | — | plan-to-support |
+| `OAI/Arazzo-Specification#568` | [feat(spec): add actor-in-the-loop support](https://github.com/OAI/Arazzo-Specification/pull/568) | open | v1.2-dev | 2026-10-19 |  | 189 | evaluate |
+| `OAI/Arazzo-Specification#410` | [1.2 - start of discussion/ideas/breaking changes](https://github.com/OAI/Arazzo-Specification/issues/410) | open | — | 2026-07-27 |  | — | watch |
+| `OAI/Arazzo-Specification#590` | [Clarify how to read outputs of a workflow run by a `retry` failure action](https://github.com/OAI/Arazzo-Specification/issues/590) | open | — | 2026-10-02 | plan:phase-e-runner-oms | — | watch |
+| `OAI/Arazzo-Specification#516` | [fix(spec): specify ECMA-262 dialect for regex Criterion condition type](https://github.com/OAI/Arazzo-Specification/pull/516) | open | v1.1-dev | 2026-10-10 | plan:expression-evaluation-parity-hardening | — | watch |
+| `OAI/Arazzo-Specification#597` | [Meeting: Oct 14th, 2026](https://github.com/OAI/Arazzo-Specification/issues/597) | open | — | 2026-10-14 |  | — | watch |
 
 ## Peer releases
 
-<details>
-<summary><code>Redocly/redocly-cli</code> — 1</summary>
-
-- `2026-10-13` [@redocly/cli@2.63.0](https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.63.0) — version → `2.63.0` (1 package)
-
-</details>
+_No peer releases in this window._
 
 ## Meeting agenda
 
 _No scheduled meeting items._
 
-## Watch — 1 collapsed
+## Watch — 0 collapsed
 
-<details>
-<summary>1 topic-matched items — click to expand</summary>
-
-- `2026-10-15` [1.2 - start of discussion/ideas/breaking changes](https://github.com/OAI/Arazzo-Specification/issues/410) — `OAI/Arazzo-Specification` · `issue.state_changed` · state `open` → `closed` · topics `1.2-discussion`, `actor-in-loop`, `mcp` → `plan:phase-f-protocol-packages`, `upstream:OAI/Arazzo-Specification#410`
-
-</details>
+_No Watch items in this window._
 
 suppressed: none

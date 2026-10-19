@@ -1,0 +1,120 @@
+{
+    "items": [
+        {
+            "base": "v1.2-dev",
+            "lastChange": "2026-09-30",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#533",
+            "roadmap": [
+                "spec:plugin-stack-oms-multiprotocol",
+                "plan:phase-f-protocol-packages"
+            ],
+            "stance": "shipped",
+            "state": "merged",
+            "title": "feat(spec): add SOAP support",
+            "topic": "wsdl",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/533"
+        },
+        {
+            "base": "v1.2-dev",
+            "lastChange": "2026-10-14",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#556",
+            "roadmap": [
+                "plan:phase-f-protocol-packages"
+            ],
+            "stance": "plan-to-support",
+            "state": "open",
+            "title": "feat(spec): add Protocol Buffer RPC support",
+            "topic": "protobuf",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/556"
+        },
+        {
+            "base": "v1.2-dev",
+            "lastChange": "2026-10-14",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#567",
+            "roadmap": [
+                "plan:phase-f-protocol-packages"
+            ],
+            "stance": "plan-to-support",
+            "state": "open",
+            "title": "feat(spec): add GraphQL operation support",
+            "topic": "graphql",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/567"
+        },
+        {
+            "base": "v1.2-dev",
+            "lastChange": "2026-10-19",
+            "live": true,
+            "ourIssue": 189,
+            "ref": "OAI/Arazzo-Specification#568",
+            "roadmap": [],
+            "stance": "evaluate",
+            "state": "open",
+            "title": "feat(spec): add actor-in-the-loop support",
+            "topic": "actor-in-loop",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/568"
+        },
+        {
+            "base": "—",
+            "lastChange": "2026-07-27",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#410",
+            "roadmap": [],
+            "stance": "watch",
+            "state": "open",
+            "title": "1.2 - start of discussion/ideas/breaking changes",
+            "topic": "1.2-discussion",
+            "url": "https://github.com/OAI/Arazzo-Specification/issues/410"
+        },
+        {
+            "base": "—",
+            "lastChange": "2026-10-02",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#590",
+            "roadmap": [
+                "plan:phase-e-runner-oms"
+            ],
+            "stance": "watch",
+            "state": "open",
+            "title": "Clarify how to read outputs of a workflow run by a `retry` failure action",
+            "topic": "retry-outputs",
+            "url": "https://github.com/OAI/Arazzo-Specification/issues/590"
+        },
+        {
+            "base": "v1.1-dev",
+            "lastChange": "2026-10-10",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#516",
+            "roadmap": [
+                "plan:expression-evaluation-parity-hardening"
+            ],
+            "stance": "watch",
+            "state": "open",
+            "title": "fix(spec): specify ECMA-262 dialect for regex Criterion condition type",
+            "topic": "criterion-regex",
+            "url": "https://github.com/OAI/Arazzo-Specification/pull/516"
+        },
+        {
+            "base": "—",
+            "lastChange": "2026-10-14",
+            "live": true,
+            "ourIssue": null,
+            "ref": "OAI/Arazzo-Specification#597",
+            "roadmap": [],
+            "stance": "watch",
+            "state": "open",
+            "title": "Meeting: Oct 14th, 2026",
+            "topic": "meeting",
+            "url": "https://github.com/OAI/Arazzo-Specification/issues/597"
+        }
+    ],
+    "version": 1
+}
