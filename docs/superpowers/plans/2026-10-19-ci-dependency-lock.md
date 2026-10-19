@@ -45,7 +45,7 @@ Inputs and conditions the spec implies but no task's tests exercise, most likely
 
 Run: `composer validate --no-check-publish --check-lock 2>&1 | grep -c "Lock file errors"`
 
-Expected: `0`. Gate on that grep, **not** the exit code: the command exits non-zero even when the lock is valid, because the manifest's `@dev` constraints produce warnings. (Verified 2026-10-19.)
+Expected: `0`. Gate on the grep for belt and braces; the command's exit code is also usable — it is `0` for a lock that matches the manifest and `2` with a `# Lock file errors` section when it does not (both measured on the committed lock and on a manifest requiring a package the lock lacks, Composer 2.10).
 
 - [ ] **Step 2: Stop ignoring the root lock**
 
@@ -236,14 +236,20 @@ Decided, so a reviewer can object: the canary runs the full suite (not the analy
 
 - [ ] **Step 3: Verify GitHub accepts the file**
 
-There is no local YAML linter on this machine (`ruby`'s psych is broken, no `pyyaml`, no `yq`, no `actionlint`), so the parser that counts is GitHub's:
+There is no standalone YAML linter on this machine (`ruby`'s psych is broken, no `pyyaml`, no `yq`, no `actionlint`) — but the repository's own vendored `symfony/yaml` parses all eight workflow files, including this one:
+
+```bash
+php -r 'require "vendor/autoload.php"; foreach (glob(".github/workflows/*.yml") as $f) { Symfony\Component\Yaml\Yaml::parseFile($f); echo "parsed ok  ".basename($f)."\n"; }'
+```
+
+That is syntax only, so the parser that counts is still GitHub's:
 
 ```bash
 gh workflow run dependency-canary.yml --ref chore/234-ci-lock-install
 gh run list --workflow dependency-canary.yml --limit 3
 ```
 
-Expected: a queued run appears for this branch. A dispatch on a non-default branch is refused if the workflow is invalid, or if GitHub will not accept the ref — in that case leave it to Task 6 Step 6, which dispatches the same file from `main` after the merge.
+Measured: GitHub refuses a dispatch for a workflow that is not on the default branch (`HTTP 404: workflow dependency-canary.yml not found on the default branch`), so the first exercised run is the post-merge dispatch in Task 6 Step 6. A dispatch on a non-default branch also fails if the file is invalid.
 
 ---
 

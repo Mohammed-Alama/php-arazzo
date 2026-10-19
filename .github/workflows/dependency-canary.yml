@@ -1,6 +1,6 @@
 name: Dependency canary
 
-# The five install jobs in ci.yml install from the committed composer.lock, and
+# The three analysis jobs in ci.yml install from the committed composer.lock, and
 # issue-intake and package-index do too. That removes the float that used to
 # notice a breaking upstream release on every CI run. The test job still floats,
 # but it only runs when a human pushes. This workflow is the deliberate version:
