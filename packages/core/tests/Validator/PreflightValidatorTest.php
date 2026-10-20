@@ -151,7 +151,7 @@ it('guards the synchronous adapter before any side effect or event fires', funct
             ['name' => 'other', 'url' => 'https://conformance.invalid/other.json', 'type' => 'openapi'],
         ],
     ]);
-    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new DefaultSourceResolver([])));
+    $runtime = SourceGraph::runtime(new SourceRegistry(new DefaultSourceResolver([])));
     $documents = $runtime->document;
     $engine = new EvaluationEngine(expression: new ExpressionEngine());
     $outputExtractor = new StepOutputExtractor($runtime->operations, $engine, new ExpressionEngine());

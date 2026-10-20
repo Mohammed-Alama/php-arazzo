@@ -23,9 +23,14 @@ $withMutations = in_array('--with-mutations', $argv, true);
 // Single source of truth for which packages hold real source, so newly split
 // packages (runtime, engine, events) are analysed without editing this file.
 require __DIR__.'/generate-docs/Scanner.php';
-$sourcePaths = implode(',', array_map(
-    static fn (string $package): string => 'packages/'.$package.'/src',
-    [...\ArazzoDocs\CORE_SRC_PACKAGES, 'laravel'],
+
+// PHPMD scans every package that has a src/ directory, derived from the
+// filesystem so a package split out of core joins the gate without an edit
+// here. The Makefile's PHPMD_PATHS carries the same set as explicit paths;
+// tests/scripts/PhpmdGateWiringTest.php holds the two to each other.
+$phpmdPaths = implode(' ', array_map(
+    static fn (string $dir): string => 'packages/'.basename(dirname($dir)).'/src',
+    glob(__DIR__.'/../packages/*/src', GLOB_ONLYDIR) ?: [],
 ));
 
 /** @return array{status: string, metrics: array<string, int|float|string>, notes: string} */
@@ -174,12 +179,16 @@ $gateDefs = [
     ['pint', 'Code Style (Pint)', 'vendor/bin/pint --test', $root, 'parsePint'],
     ['phpmd', 'Mess Detector (PHPMD)', implode(' ', [
         'vendor/bin/phpmd',
-        $sourcePaths,
+        'analyze',
+        $phpmdPaths,
+        '--format',
         'text',
+        '--ruleset',
         'phpmd.xml',
-        '--baseline-file phpmd.baseline.xml',
-        '--ignore-violations-on-exit',
-        '--ignore-errors-on-exit',
+        '--baseline-file',
+        'phpmd.baseline.xml',
+        '--threads',
+        '1',
     ]), $root, 'parsePhpMd'],
     ['phpstan-core', 'Static Analysis · core', implode(' && ', array_map(
         static fn (string $package): string => 'composer run analyse-'.$package,

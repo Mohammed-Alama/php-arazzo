@@ -49,7 +49,8 @@ final class ProtoParser
         $services = [];
         $messages = [];
 
-        while ($this->offset < count($this->tokens)) {
+        $tokenCount = count($this->tokens);
+        while ($this->offset < $tokenCount) {
             $token = $this->tokens[$this->offset];
 
             if ($token[0] === 'sym') {
@@ -90,7 +91,8 @@ final class ProtoParser
         $this->expectSymbol('{');
 
         $fields = [];
-        while (!$this->atSymbol('}') && $this->offset < count($this->tokens)) {
+        $tokenCount = count($this->tokens);
+        while (!$this->atSymbol('}') && $this->offset < $tokenCount) {
             $token = $this->peek();
 
             if ($token[0] === 'sym') {
@@ -141,7 +143,8 @@ final class ProtoParser
         $this->expectSymbol('{');
 
         $methods = [];
-        while (!$this->atSymbol('}') && $this->offset < count($this->tokens)) {
+        $tokenCount = count($this->tokens);
+        while (!$this->atSymbol('}') && $this->offset < $tokenCount) {
             $token = $this->peek();
 
             if ($token[0] === 'sym') {
@@ -215,7 +218,8 @@ final class ProtoParser
         $this->expectSymbol('{');
 
         $depth = 1;
-        while ($this->offset < count($this->tokens) && $depth > 0) {
+        $tokenCount = count($this->tokens);
+        while ($this->offset < $tokenCount && $depth > 0) {
             $token = $this->tokens[$this->offset++];
             if ($token[0] === 'sym') {
                 if ($token[1] === '{') {
@@ -247,7 +251,8 @@ final class ProtoParser
     private function skipToTerminator(string $terminal): void
     {
         $depth = 0;
-        while ($this->offset < count($this->tokens)) {
+        $tokenCount = count($this->tokens);
+        while ($this->offset < $tokenCount) {
             $token = $this->tokens[$this->offset++];
             if ($token[0] !== 'sym') {
                 continue;

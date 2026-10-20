@@ -1,5 +1,16 @@
 .PHONY: help test test-coverage test-mutate format analyse analyse-baseline phpmd phpmd-report phpmd-baseline pdepend phpdoc ci-all ci-test ci-phpstan ci-format hooks-install verify docs insights quality-gates detect-fake audit-boundaries hume-audit scaffold-test test-scripts verify-falsification falsify coverage coverage-core coverage-laravel coverage-query coverage-hotspots coverage-dashboard severity-audit property-audit socratic-fuzz demon-sim verify-falsification-v2 report report-json report-all
 
+# Every package with a src/ directory, in one place. The four phpmd targets and
+# the CI job all scan this set; tests/scripts/PhpmdGateWiringTest.php holds them
+# to it, so a package split out of core cannot sit outside the gate unnoticed.
+PHPMD_PATHS = packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/evaluation/src packages/sources/src packages/runtime/src packages/engine/src packages/events/src packages/runner/src packages/cli/src packages/laravel/src packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src
+
+# pdepend takes the same paths comma-joined, in one argument.
+empty :=
+space := $(empty) $(empty)
+comma := ,
+PHPMD_PATHS_COMMA = $(subst $(space),$(comma),$(PHPMD_PATHS))
+
 docs: ## Regenerate architecture diagrams into docs/generated/
 	php scripts/generate-docs.php
 
@@ -81,11 +92,11 @@ analyse-baseline: ## Regenerate every PHPStan baseline (one per package that has
 	done
 
 phpmd: ## Run PHP Mess Detector (fails on any violation not in the baseline)
-	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format ansi --ruleset phpmd.xml --baseline-file phpmd.baseline.xml --threads 1
+	vendor/bin/phpmd analyze $(PHPMD_PATHS) --format ansi --ruleset phpmd.xml --baseline-file phpmd.baseline.xml --threads 1
 
 phpmd-report: ## Generate PHPMD XML report to storage/phpmd-report.xml
 	@mkdir -p storage
-	vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --format xml --ruleset phpmd.xml --reportfile-xml storage/phpmd-report.xml --threads 1
+	vendor/bin/phpmd analyze $(PHPMD_PATHS) --format xml --ruleset phpmd.xml --reportfile-xml storage/phpmd-report.xml --threads 1
 
 # Regenerating straight into phpmd.baseline.xml truncates it: PHPMD opens the
 # file for writing before analysis finishes, and a PDepend parse failure aborts
@@ -93,7 +104,7 @@ phpmd-report: ## Generate PHPMD XML report to storage/phpmd-report.xml
 # built beside the old one and swapped in only after a clean run.
 phpmd-baseline: ## Regenerate PHPMD baseline from the current violations (writes only on success)
 	@tmp=$$(mktemp); \
-	if vendor/bin/phpmd analyze packages/core/src packages/contracts/src packages/document/src packages/expression/src packages/runner/src packages/cli/src packages/laravel/src --ruleset phpmd.xml --generate-baseline --baseline-file "$$tmp" --threads 1; then \
+	if vendor/bin/phpmd analyze $(PHPMD_PATHS) --ruleset phpmd.xml --generate-baseline --baseline-file "$$tmp" --threads 1; then \
 		mv "$$tmp" phpmd.baseline.xml; \
 	else \
 		rm -f "$$tmp"; \
@@ -107,7 +118,7 @@ pdepend: ## Run PHP-Depend structural metrics (outputs to storage/pdepend/)
 		--summary-xml=storage/pdepend/summary.xml \
 		--jdepend-chart=storage/pdepend/jdepend.svg \
 		--overview-pyramid=storage/pdepend/pyramid.svg \
-		packages/core/src,packages/contracts/src,packages/document/src,packages/expression/src,packages/runner/src,packages/cli/src,packages/laravel/src
+		$(PHPMD_PATHS_COMMA)
 
 phpdoc: ## Generate API documentation into docs/generated/api/
 	vendor/bin/phpdoc run

@@ -18,11 +18,11 @@ flowchart LR
         S_contracts_Spec["contracts:Spec<br/><small>1203 LOC</small>"]:::coreDomain
     end
     subgraph S_supporting["Supporting"]
-        S_cli_Console["cli:Console<br/><small>933 LOC</small>"]:::supportingDomain
+        S_cli_Console["cli:Console<br/><small>932 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>141 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
         S_document_Parser["document:Parser<br/><small>1328 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3527 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3521 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>490 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
@@ -37,7 +37,7 @@ flowchart LR
         S_laravel_Queue["laravel:Queue<br/><small>109 LOC</small>"]:::genericDomain
         S_laravel_State["laravel:State<br/><small>52 LOC</small>"]:::genericDomain
         S_laravel_Support["laravel:Support<br/><small>272 LOC</small>"]:::genericDomain
-        S_runtime_State["runtime:State<br/><small>1039 LOC</small>"]:::genericDomain
+        S_runtime_State["runtime:State<br/><small>1036 LOC</small>"]:::genericDomain
     end
     subgraph S_unclassified["Unclassified"]
         S_contracts_Dependency["contracts:Dependency<br/><small>336 LOC</small>"]:::unknownDomain
@@ -60,14 +60,14 @@ flowchart LR
         S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>110 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>110 LOC</small>"]:::unknownDomain
-        S_runner_Async["runner:Async<br/><small>1346 LOC</small>"]:::unknownDomain
+        S_runner_Async["runner:Async<br/><small>1345 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>370 LOC</small>"]:::unknownDomain
         S_runner_Interfaces["runner:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
-        S_runner_Sync["runner:Sync<br/><small>814 LOC</small>"]:::unknownDomain
-        S_runtime_Infrastructure["runtime:Infrastructure<br/><small>155 LOC</small>"]:::unknownDomain
+        S_runner_Sync["runner:Sync<br/><small>806 LOC</small>"]:::unknownDomain
+        S_runtime_Infrastructure["runtime:Infrastructure<br/><small>162 LOC</small>"]:::unknownDomain
         S_runtime_Policy["runtime:Policy<br/><small>102 LOC</small>"]:::unknownDomain
         S_runtime_Telemetry["runtime:Telemetry<br/><small>282 LOC</small>"]:::unknownDomain
-        S_sources_Normalizer["sources:Normalizer<br/><small>1283 LOC</small>"]:::unknownDomain
+        S_sources_Normalizer["sources:Normalizer<br/><small>1282 LOC</small>"]:::unknownDomain
     end
     classDef coreDomain fill:#e6f4ea,stroke:#34a853,color:#1a1a1a;
     classDef supportingDomain fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a;
@@ -78,9 +78,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
-| Supporting | 7 | 6,977 | 0 | 35% |
-| Generic subdomain | 11 | 2,016 | 1,396 | 17% |
-| Unclassified | 28 | 8,165 | 0 | 41% |
+| Supporting | 7 | 6,970 | 0 | 35% |
+| Generic subdomain | 11 | 2,013 | 1,396 | 17% |
+| Unclassified | 28 | 8,162 | 0 | 41% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

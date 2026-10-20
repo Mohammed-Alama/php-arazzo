@@ -9,19 +9,19 @@
             "metrics": {
                 "files_reported": 0,
                 "exit_code": 0,
-                "duration_ms": 3441
+                "duration_ms": 357
             },
             "notes": ""
         },
         {
             "id": "phpmd",
             "label": "Mess Detector (PHPMD)",
-            "command": "vendor/bin/phpmd packages/contracts/src,packages/expression/src,packages/evaluation/src,packages/document/src,packages/sources/src,packages/runtime/src,packages/engine/src,packages/events/src,packages/runner/src,packages/cli/src,packages/laravel/src text phpmd.xml --baseline-file phpmd.baseline.xml --ignore-violations-on-exit --ignore-errors-on-exit",
+            "command": "vendor/bin/phpmd analyze packages/cli/src packages/contracts/src packages/core/src packages/document/src packages/engine/src packages/evaluation/src packages/events/src packages/expression/src packages/laravel/src packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src packages/runner/src packages/runtime/src packages/sources/src --format text --ruleset phpmd.xml --baseline-file phpmd.baseline.xml --threads 1",
             "status": "pass",
             "metrics": {
                 "violations": 0,
                 "exit_code": 0,
-                "duration_ms": 2496
+                "duration_ms": 1463
             },
             "notes": ""
         },
@@ -33,7 +33,7 @@
             "metrics": {
                 "errors": 0,
                 "exit_code": 0,
-                "duration_ms": 17231
+                "duration_ms": 15469
             },
             "notes": ""
         },
@@ -45,7 +45,7 @@
             "metrics": {
                 "errors": 0,
                 "exit_code": 0,
-                "duration_ms": 2596
+                "duration_ms": 2348
             },
             "notes": ""
         },
@@ -57,7 +57,7 @@
             "metrics": {
                 "violations": 0,
                 "exit_code": 0,
-                "duration_ms": 97
+                "duration_ms": 93
             },
             "notes": ""
         },
@@ -71,7 +71,7 @@
                 "passed": 264,
                 "assertions": 1300,
                 "exit_code": 0,
-                "duration_ms": 9179
+                "duration_ms": 8958
             },
             "notes": ""
         },
@@ -84,7 +84,7 @@
                 "passed": 161,
                 "assertions": 392,
                 "exit_code": 0,
-                "duration_ms": 2893
+                "duration_ms": 2867
             },
             "notes": ""
         }

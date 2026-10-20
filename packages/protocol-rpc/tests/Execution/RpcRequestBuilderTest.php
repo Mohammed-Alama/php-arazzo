@@ -173,7 +173,6 @@ function rpcBuilderBuild(array $parameters, RpcProtocol $protocol = RpcProtocol:
         rpcBuilderContext(),
         rpcBuilderDocument(),
         rpcBuilderResolvedOperation($protocol, $fields ?? rpcBuilderAddFields(), $serverUrl),
-        'exec-1',
     );
 
     return [$request];
@@ -227,7 +226,6 @@ it('throws when the resolved step has no rpcProtocol, naming the four variants',
         rpcBuilderContext(),
         rpcBuilderDocument(),
         new ResolvedOperation(source: $resolved->source, normalized: $resolved->normalized, rpcProtocol: null),
-        'exec-1',
     );
 })->throws(ExecutionException::class, 'grpc');
 
@@ -253,7 +251,6 @@ it('throws when the operation declares no application/protobuf body', function (
             ),
             rpcProtocol: RpcProtocol::Grpc,
         ),
-        'exec-1',
     );
 })->throws(ExecutionException::class, 'application/protobuf');
 
@@ -265,6 +262,5 @@ it('throws when no endpoint can be resolved', function (): void {
         rpcBuilderContext(),
         rpcBuilderDocument(),
         $resolved,
-        'exec-1',
     );
 })->throws(ExecutionException::class, 'endpoint');

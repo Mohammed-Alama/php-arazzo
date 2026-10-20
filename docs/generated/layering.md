@@ -358,7 +358,7 @@ flowchart TB
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
-| `document` | `contracts` | 153 |
+| `document` | `contracts` | 152 |
 | `document` | `expression` | 17 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |

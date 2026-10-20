@@ -67,7 +67,7 @@ function parityFixtures(): array
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 99])));
     $httpClient->enqueue(new Response(201, [], json_encode(['rideId' => 100])));
     $engine = new EvaluationEngine(expression: new ExpressionEngine());
-    $runtime = SourceGraph::runtime(null, null, new SourceRegistry(new class() implements SourceResolver
+    $runtime = SourceGraph::runtime(new SourceRegistry(new class() implements SourceResolver
     {
         public function resolve(SourceDescription $description, string $basePath): SourceDocument
         {

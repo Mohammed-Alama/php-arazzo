@@ -10,21 +10,25 @@ use Symfony\Component\Yaml\Yaml;
 | The PHPMD gate
 |--------------------------------------------------------------------------
 | #78: the gate reported success while PDepend's parser gave up on PHP 8.4's
-| parentheses-less instantiation, and --ignore-errors-on-exit turned "I could
-| not read this file" into a green check. #244: two of the same shape survived
-| the fix — a report target that wrote nothing behind `|| true`, and a baseline
-| target that could empty the committed file on a parse error.
+| parentheses-less instantiation, and the ignore-errors-on-exit flag turned "I
+| could not read this file" into a green check. #244: two of the same shape
+| survived the fix - a report target that wrote nothing behind a swallowed exit
+| code, and a baseline target that could empty the committed file on a parse
+| error. #242: the gate covered 7 of 15 packages, so 8 carried their violations
+| where nobody read them.
 |
-| Two halves hold all of it in place: the wiring, and a real run over the
-| committed tree.
+| Two halves hold all of it in place: the wiring (one list, scanned the same way
+| by CI, the Makefile and the scorecard) and a real run over the committed tree.
 */
 
 /**
- * The packages the gate is meant to scan.
+ * Every package that has a src/ directory, in the order CI scans them.
  *
- * A deliberate boundary rather than an accident: the 8 packages outside it
- * carry 102 violations between them, and widening the list without triaging
- * those would only grow the baseline sight-unseen.
+ * All of them, with no boundary and no exclusion: a package split out of core
+ * joins the gate when it is added here, and the test below fails until it is.
+ * The three dirs that carry no PHP today (core is a placeholder) are still
+ * listed, so the list stays "every package" rather than "every package we
+ * remembered".
  *
  * @return list<string>
  */
@@ -35,18 +39,60 @@ function phpmdScannedPackages(): array
         'packages/contracts/src',
         'packages/document/src',
         'packages/expression/src',
+        'packages/evaluation/src',
+        'packages/sources/src',
+        'packages/runtime/src',
+        'packages/engine/src',
+        'packages/events/src',
         'packages/runner/src',
         'packages/cli/src',
         'packages/laravel/src',
+        'packages/protocol-http/src',
+        'packages/protocol-rpc/src',
+        'packages/protocol-soap/src',
     ];
 }
 
 /**
- * The `Run PHPMD` step's executable lines, as argv and without a shell.
+ * The same list as the filesystem sees it: packages/<name>/src, sorted.
+ *
+ * @return list<string>
+ */
+function phpmdSourceDirectories(string $repo): array
+{
+    $paths = [];
+
+    foreach (glob($repo.'/packages/*/src', GLOB_ONLYDIR) ?: [] as $dir) {
+        $paths[] = 'packages/'.basename(dirname($dir)).'/src';
+    }
+
+    sort($paths);
+
+    return $paths;
+}
+
+/**
+ * The value of a Makefile variable, split on whitespace.
+ *
+ * @return list<string>
+ */
+function phpmdMakeVariable(string $repo, string $name): array
+{
+    $makefile = (string) file_get_contents($repo.'/Makefile');
+
+    if (preg_match('/^'.preg_quote($name, '/').' = (.+)$/m', $makefile, $matches) !== 1) {
+        return [];
+    }
+
+    return array_values(array_filter(preg_split('/\s+/', trim($matches[1])) ?: []));
+}
+
+/**
+ * The Run PHPMD step's executable lines, as argv and without a shell.
  *
  * Comment lines are dropped, so the flags the invocation does not pass cannot
  * be confused with the ones it merely mentions. An empty body means the step
- * or the job was renamed, and answers `[]` so that the assertions below fail
+ * or the job was renamed, and answers [] so that the assertions below fail
  * loudly instead of passing vacuously.
  *
  * @return list<string>
@@ -125,6 +171,15 @@ function runPhpmdGate(string $repo): Process
     return $process;
 }
 
+it('scans every package that has a src directory', function () {
+    $repo = dirname(__DIR__, 2);
+    $scanned = phpmdScannedPackages();
+    sort($scanned);
+
+    expect(phpmdSourceDirectories($repo))->not->toBe([])
+        ->and($scanned)->toBe(phpmdSourceDirectories($repo));
+});
+
 it('leaves off the flags that turn a parse failure into a green check', function () {
     $repo = dirname(__DIR__, 2);
     $invocation = phpmdCiInvocation($repo);
@@ -146,17 +201,33 @@ it('calls the analyze subcommand with separate paths, not the deprecated comma f
 
 it('scans from the Makefile the same packages it scans from CI', function () {
     $repo = dirname(__DIR__, 2);
-    $target = phpmdMakeTarget($repo, 'phpmd');
 
-    expect($target)->not->toBe('');
+    // One variable, four targets: the list exists once and every target reads it.
+    expect(phpmdMakeVariable($repo, 'PHPMD_PATHS'))->toBe(phpmdScannedPackages());
 
-    foreach (['--ignore-errors-on-exit', '--ignore-violations-on-exit'] as $flag) {
-        expect($target)->not->toContain($flag);
+    foreach (['phpmd', 'phpmd-report', 'phpmd-baseline'] as $target) {
+        $recipe = phpmdMakeTarget($repo, $target);
+
+        expect($recipe)->not->toBe('')
+            ->and($recipe)->toContain('$(PHPMD_PATHS)');
+
+        foreach (['--ignore-errors-on-exit', '--ignore-violations-on-exit'] as $flag) {
+            expect($recipe)->not->toContain($flag);
+        }
     }
 
-    foreach (phpmdScannedPackages() as $path) {
-        expect($target)->toContain($path);
-    }
+    // pdepend takes the same set comma-joined, from the same variable.
+    expect(phpmdMakeTarget($repo, 'pdepend'))->toContain('$(PHPMD_PATHS_COMMA)');
+});
+
+it('runs the same gate from the quality scorecard, not a stale second list', function () {
+    $repo = dirname(__DIR__, 2);
+    $script = (string) file_get_contents($repo.'/scripts/quality-gates.php');
+
+    expect($script)->toContain("glob(__DIR__.'/../packages/*/src', GLOB_ONLYDIR)")
+        ->and($script)->toContain("'analyze'")
+        ->and($script)->not->toContain('--ignore-violations-on-exit')
+        ->and($script)->not->toContain('--ignore-errors-on-exit');
 });
 
 it('writes the report it promises, rather than failing behind a swallowed exit code', function () {
@@ -189,6 +260,48 @@ it('never lets a failed regeneration write the committed baseline', function () 
         ->and($target)->not->toContain('--baseline-file phpmd.baseline.xml')
         ->and($target)->toContain('mv')
         ->and($target)->toContain('phpmd.baseline.xml');
+});
+
+it('carries no baseline entry for a violation that no longer exists', function () {
+    $repo = dirname(__DIR__, 2);
+    $committed = $repo.'/phpmd.baseline.xml';
+    $copy = (string) tempnam(sys_get_temp_dir(), 'phpmd-baseline-');
+
+    copy($committed, $copy);
+
+    $process = new Process(
+        [
+            $repo.'/vendor/bin/phpmd',
+            'analyze',
+            ...phpmdScannedPackages(),
+            '--ruleset',
+            'phpmd.xml',
+            '--update-baseline',
+            '--baseline-file',
+            $copy,
+            '--threads',
+            '1',
+        ],
+        $repo,
+    );
+    $process->run();
+
+    $before = file($committed, FILE_IGNORE_NEW_LINES) ?: [];
+    $after = file($copy, FILE_IGNORE_NEW_LINES) ?: [];
+
+    if (is_file($copy)) {
+        unlink($copy);
+    }
+
+    // PHPMD writes entries in a scan-dependent order, so this compares the set
+    // rather than the file: pruning means an entry disappears, not that the
+    // file moved.
+    sort($before);
+    sort($after);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and(count($after))->toBeGreaterThan(1)
+        ->and($after)->toBe($before);
 });
 
 it('passes over the committed tree, so the baseline covers every current violation', function () {

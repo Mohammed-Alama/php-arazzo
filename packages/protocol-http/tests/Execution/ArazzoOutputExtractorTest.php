@@ -59,7 +59,7 @@ beforeEach(function () {
     file_put_contents($this->openApiFile, $openApiJson);
 
     $this->makeExtractor = function (): StepOutputExtractor {
-        $runtime = SourceGraph::runtime(null, null, new SourceRegistry(
+        $runtime = SourceGraph::runtime(new SourceRegistry(
             new DefaultSourceResolver(fetchers: ['file' => new LocalFetcher()]),
         ));
 

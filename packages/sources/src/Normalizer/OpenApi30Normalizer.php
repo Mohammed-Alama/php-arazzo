@@ -42,7 +42,7 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
         $requestBodies = $this->resolveRequestBodies($document, $operation);
 
         // 4. Resolve Responses
-        $responses = $this->resolveResponses($document, $operation);
+        $responses = $this->resolveResponses($operation);
 
         return new NormalizedOpenApiOperation(
             path: $path,
@@ -195,11 +195,10 @@ class OpenApi30Normalizer implements OpenApiNormalizerInterface
     }
 
     /**
-     * @param  array<string, mixed>  $document
      * @param  array<string, mixed>  $operation
      * @return array<string, mixed>
      */
-    private function resolveResponses(array $document, array $operation): array
+    private function resolveResponses(array $operation): array
     {
         if (!isset($operation['responses']) || !is_array($operation['responses'])) {
             return [];

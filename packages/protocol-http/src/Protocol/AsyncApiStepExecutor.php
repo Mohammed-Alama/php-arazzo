@@ -108,9 +108,9 @@ final class AsyncApiStepExecutor implements OperationExecutorPluginInterface, St
             ?? throw ExecutionException::messageFactoryMissing($step->stepId);
         $streams = $this->streamFactory
             ?? throw ExecutionException::messageFactoryMissing($step->stepId);
-        $uris = $this->uriFactory
-            ?? throw ExecutionException::messageFactoryMissing($step->stepId);
 
+        // resolveChannelUri() already raises messageFactoryMissing when the
+        // URI factory is absent, so there is nothing to pre-check here.
         $uri = $this->resolveChannelUri($step);
 
         $evaluationContext = new EvaluationContext($context, $step->stepId, $document);

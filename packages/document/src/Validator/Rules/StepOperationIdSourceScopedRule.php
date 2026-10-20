@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Document\Validator\Rules;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
-use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
@@ -17,18 +16,13 @@ final class StepOperationIdSourceScopedRule implements Rule
 {
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
-        $openapiSources = array_values(array_filter(
-            $doc->sourceDescriptions,
-            fn ($s) => $s->type === SourceType::Openapi,
-        ));
-
         foreach ($doc->workflows as $i => $w) {
             foreach ($w->steps as $j => $s) {
                 if ($s->target->operationId === null) {
                     continue;
                 }
                 $isQualified = false;
-                foreach ($symbols->sourceDescriptions as $srcName => $source) {
+                foreach (array_keys($symbols->sourceDescriptions) as $srcName) {
                     // Accept both the spec runtime-expression form
                     // `$sourceDescriptions.<name>.<operationId>` and the
                     // bare `<name>.<operationId>` form.

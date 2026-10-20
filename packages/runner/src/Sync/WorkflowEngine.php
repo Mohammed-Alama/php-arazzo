@@ -78,7 +78,7 @@ final class WorkflowEngine
         $record['status'] = $criteriaMet ? StepStatus::Succeeded->value : StepStatus::Failed->value;
         $state = $state->withStepResult($step->stepId, $record);
         $actions = $this->actions($document, $workflow, $step, $criteriaMet);
-        foreach ($actions as $position => $action) {
+        foreach ($actions as $action) {
             if (!$this->evaluationEngine->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
                 continue;
             }
@@ -257,7 +257,7 @@ final class WorkflowEngine
      *
      * @return array<string, mixed>
      */
-    public function evaluateWorkflowOutputs(ArazzoDocument $document, Workflow $workflow, ExecutionState|ExecutionContext $state): array
+    public function evaluateWorkflowOutputs(Workflow $workflow, ExecutionState|ExecutionContext $state): array
     {
         if ($workflow->outputs === []) {
             return [];

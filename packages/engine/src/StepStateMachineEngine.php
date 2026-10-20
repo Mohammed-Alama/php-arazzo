@@ -18,6 +18,11 @@ use DateInterval;
  * with inline guards (step budget, interaction steps). The enter-handlers are
  * side-effect closures invoked after a successful state transition.
  *
+ * Every handler under fire() takes the same context — step, document, state,
+ * criteriaMet — even where an arm reads only part of it. The match is read as
+ * a table, and a narrower signature per arm would turn it into five unrelated
+ * branches. PHPMD's UnusedFormalParameter is accepted here for that reason.
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class StepStateMachineEngine
