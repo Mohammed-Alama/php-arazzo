@@ -1,6 +1,6 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-10-19T13:08:32+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-20T11:32:09+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
@@ -29,8 +29,15 @@ _No peer releases in this window._
 
 _No scheduled meeting items._
 
-## Watch — 0 collapsed
+## Watch — 3 collapsed
 
-_No Watch items in this window._
+<details>
+<summary>3 topic-matched items — click to expand</summary>
 
-suppressed: none
+- `2026-10-20` [Merge pull request #606 from OAI/dependabot/npm_and_yarn/markdown-it-15.0.3](https://github.com/OAI/Arazzo-Specification/commit/de9b85ebd6c3c03be03198387f650ffdde335cdf) — `OAI/Arazzo-Specification` · `entity.created` · entity.created
+- `2026-10-20` [Merge pull request #605 from OAI/dependabot/npm_and_yarn/vitest-83061dbefc](https://github.com/OAI/Arazzo-Specification/commit/c87cedc9a7f679c0b299b189545a11b05369d56a) — `OAI/Arazzo-Specification` · `entity.created` · entity.created
+- `2026-10-19` [Use consistent RFC 3986 terminology](https://github.com/OAI/Overlay-Specification/pull/417) — `OAI/Overlay-Specification` · `entity.created` · state → `open`
+
+</details>
+
+suppressed: 8 bot PRs

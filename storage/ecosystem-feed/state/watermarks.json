@@ -18,7 +18,7 @@
                     "headSha": "2c2429f2cbfcfe88f998d029515bf317684c749f"
                 },
                 "main": {
-                    "headSha": "75086725801da714973b9ae5bcc9cd4971470ec1"
+                    "headSha": "de9b85ebd6c3c03be03198387f650ffdde335cdf"
                 },
                 "v1.1-dev": {
                     "headSha": "78926ee9bb21b620b13be815d7ba3ac2fea3cc8a"
@@ -29,13 +29,13 @@
             },
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-16T14:19:47Z"
+                    "lastSeenUpdatedAt": "2026-10-20T08:28:40Z"
                 },
                 "issues": {
                     "lastSeenUpdatedAt": "2026-10-14T15:50:31Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-19T11:25:59Z"
+                    "lastSeenUpdatedAt": "2026-10-20T08:28:55Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -74,7 +74,7 @@
                     "lastSeenUpdatedAt": "2026-10-11T14:17:57Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-06T17:33:29Z"
+                    "lastSeenUpdatedAt": "2026-10-19T18:31:28Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-22T15:29:46Z",
@@ -180,8 +180,8 @@
         "Redocly/redocly-cli": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-19T12:04:12Z",
-                    "lastTag": "@redocly/reunite-integration@2.65.0"
+                    "lastSeenUpdatedAt": "2026-10-20T07:39:47Z",
+                    "lastTag": "@redocly/recheck@2.65.1"
                 }
             }
         },
@@ -370,7 +370,7 @@
                     "lastSeenUpdatedAt": "2026-10-15T11:14:51Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-16T23:04:40Z"
+                    "lastSeenUpdatedAt": "2026-10-19T23:08:49Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-10-10T05:19:59Z",
