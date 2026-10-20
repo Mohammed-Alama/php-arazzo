@@ -29,6 +29,9 @@ permissions:
 # composer agree on one directory, instead of trusting a platform default.
 env:
   COMPOSER_CACHE_DIR: ${{ github.workspace }}/.cache/composer
+  # The one place this workflow states its PHP version; the pin and the vendor
+  # cache key both read it (#249).
+  PHP_VERSION: '8.4'
 
 jobs:
   gate:
@@ -42,10 +45,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ env.PHP_VERSION }}
           coverage: none
 
-      # Rotate the php8.4 literal in the key when php-version above changes.
       - name: Cache composer downloads and vendor
         id: composer-cache
         uses: actions/cache@v6
@@ -53,8 +55,8 @@ jobs:
           path: |
             .cache/composer
             vendor
-          key: vendor-${{ runner.os }}-php8.4-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
-          restore-keys: vendor-${{ runner.os }}-php8.4-
+          key: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'

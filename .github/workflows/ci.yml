@@ -42,6 +42,10 @@ concurrency:
 # composer agree on one directory, instead of trusting a platform default.
 env:
   COMPOSER_CACHE_DIR: ${{ github.workspace }}/.cache/composer
+  # The one place CI states its PHP version. The three jobs that cache vendor/
+  # both pin from it and key from it, so a bump cannot leave behind a vendor
+  # tree built by the previous interpreter (#249).
+  PHP_VERSION: '8.4'
 
 jobs:
   style:
@@ -66,9 +70,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ env.PHP_VERSION }}
           coverage: none
-      # Rotate the php8.4 literal in the key when php-version above changes.
       - name: Cache composer downloads and vendor
         id: composer-cache
         uses: actions/cache@v6
@@ -76,8 +79,8 @@ jobs:
           path: |
             .cache/composer
             vendor
-          key: vendor-${{ runner.os }}-php8.4-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
-          restore-keys: vendor-${{ runner.os }}-php8.4-
+          key: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-
       - name: Install composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
@@ -101,9 +104,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ env.PHP_VERSION }}
           coverage: none
-      # Rotate the php8.4 literal in the key when php-version above changes.
       - name: Cache composer downloads and vendor
         id: composer-cache
         uses: actions/cache@v6
@@ -111,8 +113,8 @@ jobs:
           path: |
             .cache/composer
             vendor
-          key: vendor-${{ runner.os }}-php8.4-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
-          restore-keys: vendor-${{ runner.os }}-php8.4-
+          key: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-
       - name: Install composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
@@ -161,10 +163,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ env.PHP_VERSION }}
           extensions: dom, curl, libxml, mbstring, zip, intl, iconv, simplexml, xml
           coverage: none
-      # Rotate the php8.4 literal in the key when php-version above changes.
       - name: Cache composer downloads and vendor
         id: composer-cache
         uses: actions/cache@v6
@@ -172,8 +173,8 @@ jobs:
           path: |
             .cache/composer
             vendor
-          key: vendor-${{ runner.os }}-php8.4-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
-          restore-keys: vendor-${{ runner.os }}-php8.4-
+          key: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('composer.lock', 'composer.json', 'packages/*/composer.json') }}
+          restore-keys: vendor-${{ runner.os }}-php${{ env.PHP_VERSION }}-
       - name: Install composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
