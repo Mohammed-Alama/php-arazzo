@@ -1,6 +1,6 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-10-20T11:32:09+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-21T11:45:09+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
@@ -29,15 +29,17 @@ _No peer releases in this window._
 
 _No scheduled meeting items._
 
-## Watch — 3 collapsed
+## Watch — 5 collapsed
 
 <details>
-<summary>3 topic-matched items — click to expand</summary>
+<summary>5 topic-matched items — click to expand</summary>
 
-- `2026-10-20` [Merge pull request #606 from OAI/dependabot/npm_and_yarn/markdown-it-15.0.3](https://github.com/OAI/Arazzo-Specification/commit/de9b85ebd6c3c03be03198387f650ffdde335cdf) — `OAI/Arazzo-Specification` · `entity.created` · entity.created
-- `2026-10-20` [Merge pull request #605 from OAI/dependabot/npm_and_yarn/vitest-83061dbefc](https://github.com/OAI/Arazzo-Specification/commit/c87cedc9a7f679c0b299b189545a11b05369d56a) — `OAI/Arazzo-Specification` · `entity.created` · entity.created
-- `2026-10-19` [Use consistent RFC 3986 terminology](https://github.com/OAI/Overlay-Specification/pull/417) — `OAI/Overlay-Specification` · `entity.created` · state → `open`
+- `2026-10-21` [fix(ecosystem): make videos click-to-play so the page stops freezing](https://github.com/usearazzo/website/commit/4455d06668f4066c3f8a5fe54c9a166927f78798) — `usearazzo/website` · `entity.created` · entity.created
+- `2026-10-21` [fix(ecosystem): make videos click-to-play so the page stops freezing](https://github.com/usearazzo/website/commit/4455d06668f4066c3f8a5fe54c9a166927f78798) — `usearazzo/website.ecosystem.atom` · `entity.created` · entity.created
+- `2026-10-21` [feat(ecosystem): list the From DX to AX slides by Benjamin Granados](https://github.com/usearazzo/website/commit/3c3610d01469de27d66f48ac40960d58e59fa091) — `usearazzo/website` · `entity.created` · entity.created
+- `2026-10-21` [feat(ecosystem): list the From DX to AX slides by Benjamin Granados](https://github.com/usearazzo/website/commit/3c3610d01469de27d66f48ac40960d58e59fa091) — `usearazzo/website.ecosystem.atom` · `entity.created` · entity.created
+- `2026-10-20` [update contributing guidelines to document the dev branch](https://github.com/OAI/Overlay-Specification/issues/418) — `OAI/Overlay-Specification` · `entity.created` · state → `open`
 
 </details>
 
-suppressed: 8 bot PRs
+suppressed: 7 bot PRs, 5 dependency/CI noise
