@@ -64,6 +64,48 @@ it('passes when every entry is legal — no identifier, or a missingType.* ident
         ->and($process->getOutput())->not->toContain('missingType');
 });
 
+it('accepts the identifiers this repository\'s own rules emit', function () {
+    // PHPStan 2 requires every rule error to carry an identifier, so a baseline
+    // regenerated from the custom rules now names them. #230: the policy's
+    // "our rules emit none" premise stopped being true when core's rules were
+    // finally analysed, so an identifier from `arazzo.custom.*` is the same
+    // rule-authoring signal an identifier-free entry already was.
+    $root = baselineFixture([
+        'packages/core/phpstan-baseline.neon' => <<<'NEON'
+        parameters:
+            ignoreErrors:
+                -
+                    message: '#^Method Foo::bar\(\) has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+                    identifier: arazzo.custom.maxParameterCount
+                    count: 1
+                    path: src/Foo.php
+        NEON,
+    ]);
+
+    $process = runCheckBaselines($root);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($process->getOutput())->not->toContain('arazzo.custom');
+});
+
+it('rejects an identifier that only looks like one of ours', function () {
+    $root = baselineFixture([
+        'packages/core/phpstan-baseline.neon' => <<<'NEON'
+        parameters:
+            ignoreErrors:
+                -
+                    message: '#^Call to an undefined method Foo::bar\(\)\.$#'
+                    identifier: arazzo.customish.methodNotFound
+                    count: 1
+                    path: src/Foo.php
+        NEON,
+    ]);
+
+    $process = runCheckBaselines($root);
+
+    expect($process->getExitCode())->toBe(1);
+});
+
 it('fails and reports file:line  identifier for a baselined correctness error', function () {
     $root = baselineFixture([
         'packages/document/phpstan-baseline.neon' => <<<'NEON'

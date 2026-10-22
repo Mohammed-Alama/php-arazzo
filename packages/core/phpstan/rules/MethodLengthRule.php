@@ -37,7 +37,7 @@ class MethodLengthRule implements Rule
             return [
                 RuleErrorBuilder::message(
                     sprintf('Method %s is too long (%d statements). Maximum allowed is %d.', $node->name->toString(), $length, self::MAX_LENGTH),
-                )->build(),
+                )->identifier('arazzo.custom.methodLength')->build(),
             ];
         }
 

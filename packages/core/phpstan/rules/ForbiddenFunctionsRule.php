@@ -25,13 +25,13 @@ class ForbiddenFunctionsRule implements Rule
     {
         if ($node instanceof Eval_) {
             return [
-                RuleErrorBuilder::message('Usage of eval() is forbidden.')->build(),
+                RuleErrorBuilder::message('Usage of eval() is forbidden.')->identifier('arazzo.custom.forbiddenFunction')->build(),
             ];
         }
 
         if ($node instanceof Goto_) {
             return [
-                RuleErrorBuilder::message('Usage of goto is forbidden.')->build(),
+                RuleErrorBuilder::message('Usage of goto is forbidden.')->identifier('arazzo.custom.forbiddenFunction')->build(),
             ];
         }
 

@@ -33,7 +33,7 @@ class MaxParameterCountRule implements Rule
                     $node->name->toString(),
                     $count,
                     self::MAX_PARAMS,
-                ))->build(),
+                ))->identifier('arazzo.custom.maxParameterCount')->build(),
             ];
         }
 
