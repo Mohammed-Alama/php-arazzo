@@ -42,9 +42,11 @@ concurrency:
 # composer agree on one directory, instead of trusting a platform default.
 env:
   COMPOSER_CACHE_DIR: ${{ github.workspace }}/.cache/composer
-  # The one place CI states its PHP version. The three jobs that cache vendor/
-  # both pin from it and key from it, so a bump cannot leave behind a vendor
-  # tree built by the previous interpreter (#249).
+  # The version the vendor-caching jobs state: they pin from it and key from
+  # it, so a bump cannot leave behind a vendor tree built by the previous
+  # interpreter (#249). The test job's matrix cannot read env, so
+  # tests/scripts/VendorCacheKeyWiringTest.php asserts that it agrees with this
+  # value rather than letting a bump split the two (#251).
   PHP_VERSION: '8.4'
 
 jobs:
