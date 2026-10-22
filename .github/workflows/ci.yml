@@ -125,14 +125,15 @@ jobs:
           # comma-joined form only worked because the deprecated positional
           # syntax split on commas, and is now silently wrong.
           #
-          # The 7 packages are a deliberate boundary, not an accident: the other
-          # 8 carry 102 violations between them (measured under 3.0.0), and
-          # widening the list without triaging those would only grow the
-          # baseline without anyone reading it. Tracked by #242.
+          # Every package with a src/ directory, matching the Makefile's
+          # PHPMD_PATHS (#242). tests/scripts/PhpmdGateWiringTest.php fails
+          # if the two lists drift apart or if a package is left out.
           vendor/bin/phpmd analyze \
             packages/core/src packages/contracts/src packages/document/src \
-            packages/expression/src packages/runner/src packages/cli/src \
-            packages/laravel/src \
+            packages/expression/src packages/evaluation/src packages/sources/src \
+            packages/runtime/src packages/engine/src packages/events/src \
+            packages/runner/src packages/cli/src packages/laravel/src \
+            packages/protocol-http/src packages/protocol-rpc/src packages/protocol-soap/src \
             --format github \
             --ruleset phpmd.xml \
             --baseline-file phpmd.baseline.xml \

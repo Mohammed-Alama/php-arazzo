@@ -7,6 +7,9 @@ namespace Alama\Arazzo\Runtime\Infrastructure;
 use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
 
 /**
+ * Null object: every call succeeds and nothing is locked, so the interface's
+ * parameters are accepted for parity and ignored by design.
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class NullLockStrategy implements LockStrategyInterface

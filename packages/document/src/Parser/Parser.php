@@ -667,7 +667,7 @@ class Parser
                 stepId: $this->optionalString($obj, 'stepId', $ctx),
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
                 criteria: $criteria,
-                parameters: $this->parseActionParameters($obj, $ctx, $name),
+                parameters: $this->parseActionParameters($obj, $ctx),
             ),
             'end' => new SuccessEndAction($name, $criteria),
             'invoke' => $this->parseSubWorkflowSuccessAction($name, $obj, $criteria, $ctx),
@@ -685,7 +685,7 @@ class Parser
      * @param  array<string,mixed>  $obj
      * @return list<Parameter|Reusable>
      */
-    protected function parseActionParameters(array $obj, ParseContext $ctx, string $actionName): array
+    protected function parseActionParameters(array $obj, ParseContext $ctx): array
     {
         if (!isset($obj['parameters']) || !is_array($obj['parameters'])) {
             return [];
@@ -778,7 +778,7 @@ class Parser
                 stepId: $this->optionalString($obj, 'stepId', $ctx),
                 workflowId: $this->optionalString($obj, 'workflowId', $ctx),
                 criteria: $criteria,
-                parameters: $this->parseActionParameters($obj, $ctx, $name),
+                parameters: $this->parseActionParameters($obj, $ctx),
             ),
             'end' => new FailureEndAction($name, $criteria),
             'retry' => new RetryAction(

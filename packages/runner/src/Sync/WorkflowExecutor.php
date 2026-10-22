@@ -156,7 +156,7 @@ class WorkflowExecutor
 
                         return new ExecutionResult($currentWorkflow->workflowId, 'failed', [], $results, $state->stepsSpent, $state->workflowCallStack);
                     }
-                    $outputs = $this->workflowEngine->evaluateWorkflowOutputs($document, $currentWorkflow, $state);
+                    $outputs = $this->workflowEngine->evaluateWorkflowOutputs($currentWorkflow, $state);
                     $this->events->dispatch(new RunCompletedEvent($executionId, $currentWorkflow->workflowId, $outputs, new DateTimeImmutable()));
 
                     return new ExecutionResult($currentWorkflow->workflowId, 'succeeded', $outputs, $results, $state->stepsSpent, $state->workflowCallStack);

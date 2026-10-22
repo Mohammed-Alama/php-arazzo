@@ -237,7 +237,7 @@ class StepExecutionWorker
                         $this->events->dispatch(new RunCompletedEvent(
                             $executionId,
                             $transition->state->workflowId,
-                            $this->workflowEngine->evaluateWorkflowOutputs($document, $workflow, $transition->state),
+                            $this->workflowEngine->evaluateWorkflowOutputs($workflow, $transition->state),
                             new DateTimeImmutable(),
                         ));
                     } else {

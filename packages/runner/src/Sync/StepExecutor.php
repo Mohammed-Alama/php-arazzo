@@ -64,18 +64,10 @@ class StepExecutor
                         $request = $this->injector->inject($request, $step, $context)->request;
                     }
 
-                    $bodyStream = $request->getBody();
-                    $bodyStream->rewind();
-                    $bodyData = json_decode($bodyStream->getContents(), true) ?? [];
-                    $bodyStream->rewind();
-
-                    $queryParams = [];
-                    parse_str($request->getUri()->getQuery(), $queryParams);
-
-                    $headers = [];
-                    foreach ($request->getHeaders() as $name => $values) {
-                        $headers[$name] = implode(', ', $values);
-                    }
+                    // The record below reads the payload, not the stream, but the
+                    // caller still sends this request: rewind so an injector that
+                    // read the body cannot leave the cursor past the start.
+                    $request->getBody()->rewind();
 
                     $captured = $request;
                     $context = $context->withStepRequest($step->stepId, $compiler->requestRecord($captured, $payload));

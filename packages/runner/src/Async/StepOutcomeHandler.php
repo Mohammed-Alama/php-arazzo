@@ -113,7 +113,7 @@ class StepOutcomeHandler
         match ($transition->type) {
             TransitionType::Next => $this->applyNext($transition, $workflow, $step, $context, $executionId),
             TransitionType::Retry => $this->applyRetry($transition, $document, $workflow, $step, $context, $executionId),
-            TransitionType::Goto => $this->applyGoto($transition, $document, $workflow, $step, $context, $executionId, $criteriaMet),
+            TransitionType::Goto => $this->applyGoto($transition, $document, $step, $context, $executionId, $criteriaMet),
             TransitionType::Invoke => $this->applyInvoke($document, $workflow, $step, $context, $executionId),
             TransitionType::End => $this->applyEnd($transition, $workflow, $step, $context, $executionId),
             TransitionType::Suspend => $this->applySuspend($step, $context, $executionId),
@@ -242,7 +242,6 @@ class StepOutcomeHandler
     private function applyGoto(
         Transition $transition,
         ArazzoDocument $document,
-        Workflow $workflow,
         Step $step,
         WorkflowContext $context,
         string $executionId,
@@ -315,7 +314,7 @@ class StepOutcomeHandler
         $context = $context->withStepOutput($step->stepId, $invoke->name, $result->outputs);
         $context = $context->withStepStatus($step->stepId, StepStatus::Succeeded);
 
-        $this->continueFrom($document, $workflow, $step, $context, $executionId);
+        $this->continueFrom($workflow, $context, $executionId);
     }
 
     private function applyEnd(
@@ -358,7 +357,7 @@ class StepOutcomeHandler
      * Continues execution after an inline sub-workflow invocation resolved:
      * computes the next runnable step and dispatches or completes.
      */
-    private function continueFrom(ArazzoDocument $document, Workflow $workflow, Step $step, WorkflowContext $context, string $executionId): void
+    private function continueFrom(Workflow $workflow, WorkflowContext $context, string $executionId): void
     {
         $this->stateStore->save($executionId, $this->serialize($context), $this->stateTtlSeconds);
 

@@ -70,7 +70,7 @@ final class RpcOperationExecutor implements OperationExecutorPluginInterface
         $resolved = $this->resolve($step, $document);
 
         try {
-            $request = $this->requestBuilder->build($step, $context, $document, $resolved, $executionId);
+            $request = $this->requestBuilder->build($step, $context, $document, $resolved);
             $response = $this->httpClient->sendRequest($request, $step->flow->timeout);
         } catch (ClientExceptionInterface $e) {
             // Transport-level failures become a synthetic 500 (HTTP precedent)

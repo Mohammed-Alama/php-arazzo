@@ -25,7 +25,7 @@ class ParameterSerializer
             /** @var string $style */
             $style = $def['style'] ?? self::getDefaultStyle($location);
             /** @var bool $explode */
-            $explode = $def['explode'] ?? self::getDefaultExplode($style);
+            $explode = $def['explode'] ?? self::isDefaultExplode($style);
 
             $serialized[$name] = self::serializeValue($name, $value, $style, $explode, $location);
         }
@@ -42,7 +42,7 @@ class ParameterSerializer
         };
     }
 
-    private function getDefaultExplode(string $style): bool
+    private function isDefaultExplode(string $style): bool
     {
         return $style === 'form';
     }
@@ -50,10 +50,10 @@ class ParameterSerializer
     public function serializeValue(string $name, mixed $value, string $style, bool $explode, string $location): string
     {
         return match ($style) {
-            'simple' => self::serializeSimple($name, $value, $explode),
+            'simple' => self::serializeSimple($value, $explode),
             'form' => self::serializeForm($name, $value, $explode),
             'matrix' => self::serializeMatrix($name, $value, $explode),
-            'label' => self::serializeLabel($name, $value, $explode),
+            'label' => self::serializeLabel($value, $explode),
             'spaceDelimited' => self::serializeDelimited($name, $value, $explode, ' '),
             'pipeDelimited' => self::serializeDelimited($name, $value, $explode, '|'),
             'deepObject' => self::serializeDeepObject($name, $value),
@@ -61,7 +61,7 @@ class ParameterSerializer
         };
     }
 
-    private function serializeSimple(string $name, mixed $value, bool $explode): string
+    private function serializeSimple(mixed $value, bool $explode): string
     {
         if (is_array($value)) {
             // associative vs sequential
@@ -164,7 +164,7 @@ class ParameterSerializer
         return ';'.urlencode($name).'='.urlencode(self::asString($value));
     }
 
-    private function serializeLabel(string $name, mixed $value, bool $explode): string
+    private function serializeLabel(mixed $value, bool $explode): string
     {
         if (is_array($value)) {
             if (array_is_list($value)) {

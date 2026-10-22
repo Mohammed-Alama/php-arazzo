@@ -37,7 +37,7 @@ final class StoredWorkflowStateRepository implements WorkflowStateRepositoryInte
 
         $envelope = [
             'version' => self::ENVELOPE_VERSION,
-            'stepState' => $this->deriveStepState($payload),
+            'stepState' => $this->deriveStepState(),
             'payload' => $payload,
         ];
 
@@ -86,10 +86,7 @@ final class StoredWorkflowStateRepository implements WorkflowStateRepositoryInte
         return StepState::tryFrom($stepState);
     }
 
-    /**
-     * @param  array<string, mixed>  $contextArray
-     */
-    private function deriveStepState(array $contextArray): string
+    private function deriveStepState(): string
     {
         return StepState::Pending->value;
     }

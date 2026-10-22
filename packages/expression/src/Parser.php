@@ -251,13 +251,14 @@ final class Parser
         }
         $out = '';
         $i = 1;
-        while ($i < count($tail)) {
+        $tokenCount = count($tail);
+        while ($i < $tokenCount) {
             if ($tail[$i]->kind !== TokenKind::Slash) {
                 throw new ExpressionSyntaxException("Expected '/' in JSON pointer at token {$i} in: {$raw}", $raw, -1, '', 'expr.syntax');
             }
             $out .= '/';
             $i++;
-            if ($i < count($tail) && ($tail[$i]->kind === TokenKind::PointerSegment || $tail[$i]->kind === TokenKind::Name || $tail[$i]->kind === TokenKind::Keyword)) {
+            if ($i < $tokenCount && ($tail[$i]->kind === TokenKind::PointerSegment || $tail[$i]->kind === TokenKind::Name || $tail[$i]->kind === TokenKind::Keyword)) {
                 $out .= $tail[$i]->value;
                 $i++;
             }

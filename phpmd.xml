@@ -7,6 +7,25 @@
     xsi:noNamespaceSchemaLocation="https://phpmd.org/xml/ruleset_xml_schema_1.0.0.xsd">
     <description>PHPMD rules for the Arazzo PHP monorepo.</description>
 
+    <!--
+        What the baseline may hold (#242).
+
+        Every rule below measures shape, not correctness: size and coupling
+        metrics, naming, and unused code. A metric that fires on a parser, a
+        schema validator or a protocol executor is a refactor candidate, not a
+        bug, so it is accepted in phpmd.baseline.xml and tracked in #252 rather
+        than silenced one argument at a time.
+
+        Unused code is the exception: it can be a real defect, so every current
+        finding was read before it was accepted. What remains is an
+        interface-mandated parameter (the class docblock says so), the state
+        machine's uniform transition context (see StepStateMachineEngine), or
+        the idiomatic $_ foreach-key discard.
+
+        Regenerate with `make phpmd-baseline`: it rebuilds the file from a clean
+        run of all 15 packages, and a second update-baseline pass prunes nothing.
+    -->
+
     <!-- Code size: cyclomatic complexity, too many methods/parameters, long methods -->
     <rule ref="rulesets/codesize.xml" />
 

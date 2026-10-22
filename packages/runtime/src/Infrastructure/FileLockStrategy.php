@@ -8,6 +8,10 @@ use Alama\Arazzo\Contracts\Interfaces\LockStrategyInterface;
 use RuntimeException;
 
 /**
+ * flock() drops the descriptor when the process exits, so there is no stale
+ * lock for a TTL to expire: the parameter exists because the interface offers
+ * one and is deliberately ignored here.
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final class FileLockStrategy implements LockStrategyInterface

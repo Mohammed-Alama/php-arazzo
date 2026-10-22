@@ -21,7 +21,7 @@ parameters:
 			path: src/Async/StepOutcomeHandler.php
 
 		-
-			message: '#^Method applyGoto has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			message: '#^Method applyGoto has too many parameters \(6\)\. Maximum allowed is 5\.$#'
 			count: 1
 			path: src/Async/StepOutcomeHandler.php
 

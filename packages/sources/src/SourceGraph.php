@@ -167,8 +167,14 @@ final class SourceGraph
         );
     }
 
-    /** Generic façade only – pure document pipeline */
-    public static function using(?SourceRegistry $registry = null): DocumentInterface
+    /**
+     * Generic façade only: the pure document pipeline.
+     *
+     * Registry-free by design — callers that need a particular registry use
+     * `runtime()`, which threads one through both façades. A parameter here
+     * would be silently ignored, so there is none.
+     */
+    public static function using(): DocumentInterface
     {
         return self::document();
     }

@@ -50,7 +50,7 @@ final class PayloadReplacer
             }
 
             if ($context !== null && self::isSelectorTarget($replacement)) {
-                self::applySelectorTarget($body, $replacement, $context, $resolveValue, $expression);
+                self::applySelectorTarget($body, $replacement, $resolveValue, $expression);
             }
         }
 
@@ -88,7 +88,6 @@ final class PayloadReplacer
     private static function applySelectorTarget(
         array &$body,
         PayloadReplacement $replacement,
-        WorkflowContext $context,
         ?callable $resolveValue,
         ExpressionEngineInterface $expression,
     ): void {

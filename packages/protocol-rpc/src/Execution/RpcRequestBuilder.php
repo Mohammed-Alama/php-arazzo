@@ -54,7 +54,6 @@ final class RpcRequestBuilder
         WorkflowContext $context,
         ArazzoDocument $document,
         ResolvedOperation $resolved,
-        string $executionId,
     ): RequestInterface {
         $protocol = $resolved->rpcProtocol;
         if ($protocol === null) {

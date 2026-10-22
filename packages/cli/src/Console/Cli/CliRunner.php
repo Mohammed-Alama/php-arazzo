@@ -25,7 +25,6 @@ use Alama\Arazzo\Runtime\State\Interfaces\ExecutionRegistryInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\StateStoreInterface;
 use Alama\Arazzo\Runtime\State\Interfaces\WritableDefinitionRegistryInterface;
 use Alama\Arazzo\Runtime\Telemetry\OtelSetup;
-use OpenTelemetry\API\Trace\SpanInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -191,14 +190,14 @@ final class CliRunner
         $scope = $runSpan->activate();
 
         try {
-            return $this->drainUnderSpan($executionId, $runSpan);
+            return $this->drainUnderSpan($executionId);
         } finally {
             $scope->detach();
             $runSpan->end();
         }
     }
 
-    private function drainUnderSpan(string $executionId, SpanInterface $runSpan): CliRunResult
+    private function drainUnderSpan(string $executionId): CliRunResult
     {
         // CliRunner is a worker-only host: the facade builds the canonical
         // async worker from the seams (no protocol value seams required).
