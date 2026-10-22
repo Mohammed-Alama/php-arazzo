@@ -1,6 +1,6 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-10-21T11:45:09+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-22T11:47:43+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
@@ -29,17 +29,15 @@ _No peer releases in this window._
 
 _No scheduled meeting items._
 
-## Watch — 5 collapsed
+## Watch — 3 collapsed
 
 <details>
-<summary>5 topic-matched items — click to expand</summary>
+<summary>3 topic-matched items — click to expand</summary>
 
-- `2026-10-21` [fix(ecosystem): make videos click-to-play so the page stops freezing](https://github.com/usearazzo/website/commit/4455d06668f4066c3f8a5fe54c9a166927f78798) — `usearazzo/website` · `entity.created` · entity.created
-- `2026-10-21` [fix(ecosystem): make videos click-to-play so the page stops freezing](https://github.com/usearazzo/website/commit/4455d06668f4066c3f8a5fe54c9a166927f78798) — `usearazzo/website.ecosystem.atom` · `entity.created` · entity.created
-- `2026-10-21` [feat(ecosystem): list the From DX to AX slides by Benjamin Granados](https://github.com/usearazzo/website/commit/3c3610d01469de27d66f48ac40960d58e59fa091) — `usearazzo/website` · `entity.created` · entity.created
-- `2026-10-21` [feat(ecosystem): list the From DX to AX slides by Benjamin Granados](https://github.com/usearazzo/website/commit/3c3610d01469de27d66f48ac40960d58e59fa091) — `usearazzo/website.ecosystem.atom` · `entity.created` · entity.created
-- `2026-10-20` [update contributing guidelines to document the dev branch](https://github.com/OAI/Overlay-Specification/issues/418) — `OAI/Overlay-Specification` · `entity.created` · state → `open`
+- `2026-10-22` [fix(runner): keep SpecLynx ApiDOM external in swagger-client bundle](https://github.com/usearazzo/arazzo-toolkit/pull/257) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-22` [fix(runner): emit CommonJS build of vendored swagger-client](https://github.com/usearazzo/arazzo-toolkit/pull/255) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-22` [runner: CommonJS entry fails to load — missing vendor/swagger-client.cjs](https://github.com/usearazzo/arazzo-toolkit/issues/234) — `usearazzo/arazzo-toolkit` · `issue.state_changed` · state `open` → `closed` · topics `runner` → `plan:phase-e-runner-oms`
 
 </details>
 
-suppressed: 7 bot PRs, 5 dependency/CI noise
+suppressed: 11 bot PRs, 1 dependency/CI noise

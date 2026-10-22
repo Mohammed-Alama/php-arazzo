@@ -49,7 +49,7 @@
                     "lastSeenUpdatedAt": "2026-10-20T19:40:53Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-20T19:49:21Z"
+                    "lastSeenUpdatedAt": "2026-10-22T07:54:30Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -159,10 +159,10 @@
         "OAI/spec.openapis.org": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-15T09:09:56Z"
+                    "lastSeenUpdatedAt": "2026-10-22T09:19:11Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-15T09:09:59Z"
+                    "lastSeenUpdatedAt": "2026-10-22T09:19:13Z"
                 }
             }
         },
@@ -180,8 +180,8 @@
         "Redocly/redocly-cli": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-21T09:12:39Z",
-                    "lastTag": "@redocly/reunite-integration@2.66.1"
+                    "lastSeenUpdatedAt": "2026-10-22T11:35:03Z",
+                    "lastTag": "@redocly/respect-core@1.34.22"
                 }
             }
         },
@@ -294,7 +294,7 @@
         "spec.arazzo.html": {
             "endpoints": {
                 "spec_html_checksum": {
-                    "lastSeenUpdatedAt": "2026-10-15T09:11:21+00:00"
+                    "lastSeenUpdatedAt": "2026-10-22T09:20:16+00:00"
                 }
             }
         },
@@ -367,10 +367,10 @@
         "usearazzo/arazzo-toolkit": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-15T11:14:51Z"
+                    "lastSeenUpdatedAt": "2026-10-22T11:19:23Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-21T09:23:29Z"
+                    "lastSeenUpdatedAt": "2026-10-22T11:35:17Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-10-10T05:19:59Z",
