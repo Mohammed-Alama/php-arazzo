@@ -225,6 +225,27 @@ it('resolves json pointer suffixes on inputs and outputs (1.1)', function () {
         ->toBe('a@b.c');
 });
 
+it('returns null when a non-empty pointer addresses a scalar value', function () {
+    $context = (new WorkflowContext('def_1', ['name' => 'Alice']))
+        ->withStepOutput('s1', 'name', 'Alice')
+        ->withStepResult('call', ['outputs' => ['name' => 'Alice']])
+        ->withStepResponse('s1', ['body' => 'plain text']);
+
+    $evaluator = evaluator();
+    $inStep = new EvaluationContext($context, 's1');
+
+    // A pointer addresses structure; a scalar has none.
+    expect($evaluator->evaluate(new Expression('{$inputs.name#/first}'), $inStep))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$steps.s1.outputs.name#/first}'), $inStep))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$outputs.name#/first}'), new EvaluationContext($context, 'call')))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$message.payload#/first}'), $inStep))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$steps.s1.response.body#/first}'), $inStep))->toBeNull();
+
+    // An empty pointer is the whole value (RFC 6901 §3), scalar included.
+    expect($evaluator->evaluate(new Expression('{$inputs.name#}'), $inStep))->toBe('Alice')
+        ->and($evaluator->evaluate(new Expression('{$steps.s1.outputs.name#}'), $inStep))->toBe('Alice');
+});
+
 it('resolves $outputs.name to the output the current step produced (1.1)', function () {
     // The official OAI corpus uses this form in a workflow-invocation step:
     //   outputs: { my_order_id: $outputs.workflow_order_id }

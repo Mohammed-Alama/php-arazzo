@@ -278,6 +278,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public static function normalizeFilters(string $expression): string`
 
 #### `JsonPointer` class
+- `public static function isValid(string $pointer): bool`
 - `public static function resolve(array $data, ?string $pointer): mixed`
 
 ### `Alama\Arazzo\Expression\Data`

@@ -41,11 +41,10 @@ final class ExpressionEvaluator
     private function evaluateAst(ExpressionAst $ast, EvaluationInputInterface $context): mixed
     {
         if ($ast instanceof InputRef) {
-            $value = $context->getWorkflowContext()->getInputs()[$ast->name] ?? null;
-
-            return $ast->jsonPointer !== null && (is_array($value) || $value === null)
-                ? $this->jsonPointer->resolve(is_array($value) ? $value : [], $ast->jsonPointer)
-                : $value;
+            return $this->withPointer(
+                $context->getWorkflowContext()->getInputs()[$ast->name] ?? null,
+                $ast->jsonPointer,
+            );
         }
 
         if ($ast instanceof OutputRef) {
@@ -92,7 +91,7 @@ final class ExpressionEvaluator
                     'header' => $this->mapOrEmpty($req, 'headers')[$part->headerName] ?? null,
                     'query' => $this->mapOrEmpty($req, 'query')[$part->headerName] ?? null,
                     'path' => $this->mapOrEmpty($req, 'path')[$part->headerName] ?? null,
-                    'body' => $this->jsonPointer->resolve(is_array($req['body'] ?? null) ? $req['body'] : [], $part->jsonPointer),
+                    'body' => $this->resolveBody($req['body'] ?? null, $part->jsonPointer),
                     default => null,
                 };
             }
@@ -105,17 +104,16 @@ final class ExpressionEvaluator
 
                 return match ($part->httpPart) {
                     'header' => $this->mapOrEmpty($res, 'headers')[$part->headerName] ?? null,
-                    'body' => $this->jsonPointer->resolve(is_array($res['body'] ?? null) ? $res['body'] : [], $part->jsonPointer),
+                    'body' => $this->resolveBody($res['body'] ?? null, $part->jsonPointer),
                     default => null,
                 };
             }
 
             if ($part instanceof OutputPart) {
-                $output = $this->mapOrEmpty($stepData, 'outputs')[$part->name] ?? null;
-
-                return $part->jsonPointer !== null && (is_array($output) || $output === null)
-                    ? $this->jsonPointer->resolve(is_array($output) ? $output : [], $part->jsonPointer)
-                    : $output;
+                return $this->withPointer(
+                    $this->mapOrEmpty($stepData, 'outputs')[$part->name] ?? null,
+                    $part->jsonPointer,
+                );
             }
 
             if ($part instanceof InputPart) {
@@ -155,9 +153,7 @@ final class ExpressionEvaluator
             // payload
             $body = is_array($response) ? ($response['body'] ?? []) : [];
 
-            return $ast->jsonPointer !== null
-                ? $this->jsonPointer->resolve(is_array($body) ? $body : [], $ast->jsonPointer)
-                : $body;
+            return $this->withPointer($body, $ast->jsonPointer);
         }
 
         if ($ast instanceof SelfRef) {
@@ -200,9 +196,34 @@ final class ExpressionEvaluator
         $stepData = $stepId !== null ? ($context->getWorkflowContext()->getSteps()[$stepId] ?? null) : null;
         $output = is_array($stepData) ? ($this->mapOrEmpty($stepData, 'outputs')[$ast->name] ?? null) : null;
 
-        return $ast->jsonPointer !== null && (is_array($output) || $output === null)
-            ? $this->jsonPointer->resolve(is_array($output) ? $output : [], $ast->jsonPointer)
-            : $output;
+        return $this->withPointer($output, $ast->jsonPointer);
+    }
+
+    /**
+     * Apply an optional `#/json-pointer` suffix to a value. An absent or empty
+     * pointer is the value itself (RFC 6901 §3); a non-empty pointer addresses
+     * structure, so a scalar value yields null.
+     */
+    private function withPointer(mixed $value, ?string $pointer): mixed
+    {
+        if ($pointer === null || $pointer === '') {
+            return $value;
+        }
+
+        return is_array($value) ? $this->jsonPointer->resolve($value, $pointer) : null;
+    }
+
+    /**
+     * Resolve a pointer against an HTTP body. Without a pointer the historical
+     * shape is kept: an array body, otherwise an empty array.
+     */
+    private function resolveBody(mixed $body, ?string $pointer): mixed
+    {
+        if ($pointer === null) {
+            return is_array($body) ? $body : [];
+        }
+
+        return $this->withPointer($body, $pointer);
     }
 
     /**
