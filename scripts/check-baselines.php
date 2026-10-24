@@ -13,12 +13,14 @@
  *      `identifier:`, so they slip past the identifier rule below entirely.
  *      Anything that must be suppressed goes in the baseline, where this gate
  *      can see and audit it.
- *   2. A baseline entry is legal iff it carries no `identifier:` at all — the
- *      shape this repo's own PHPStan rules emitted before PHPStan 2 required
- *      one, so those findings are rule-authoring signal, not correctness bugs
- *      — or its identifier is `missingType.*`, an untyped collection being a
- *      documentation gap rather than a crash, or `arazzo.custom.*`, the
- *      identifiers this repository's own PHPStan rules emit.
+ *   2. A baseline entry is legal only when its identifier is `missingType.*`
+ *      (an untyped collection: a documentation gap, not a crash) or
+ *      `arazzo.custom.*` (a finding from this repository's own PHPStan rules).
+ *      An entry with no `identifier:` is a violation. Every rule in this
+ *      repository stamps an identifier, and PHPStan matches an `ignoreErrors`
+ *      entry on the identifier it declares, so an identifier-free entry is
+ *      indistinguishable from a hand-written suppression of a correctness
+ *      error. Provenance is the identifier, not the absence of one.
  *
  * Everything else (`method.notFound`, `function.alreadyNarrowedType`, …) is a
  * real defect that has to be fixed in the code, never frozen in a suppression.
@@ -77,7 +79,7 @@ final class SuppressionPolicy
     /** A suppression declared in a PHPStan config (never legal). */
     public const CONFIG = 'config';
 
-    /** A suppression declared in a `phpstan-baseline.neon` (legal when identifier-free). */
+    /** A suppression declared in a `phpstan-baseline.neon` (legal only with an allowed identifier). */
     public const BASELINE = 'baseline';
 
     public function __construct(private readonly string $root) {}
@@ -138,16 +140,14 @@ final class SuppressionPolicy
     }
 
     /**
-     * A baseline entry is legal only when it carries no identifier, a
-     * `missingType.*` one, or one of the `arazzo.custom.*` identifiers this
-     * repository's own rules emit.
+     * A baseline entry is legal only when its identifier is `missingType.*`
+     * (a documentation gap) or `arazzo.custom.*` (one of this repository's own
+     * rules). An identifier-free entry cannot be told apart from a hand-written
+     * suppression, and PHPStan matches on the declared identifier, so it is not
+     * legal — see the class docblock.
      */
     private function allows(string $identifier): bool
     {
-        if ($identifier === '') {
-            return true;
-        }
-
         return preg_match('/^(missingType|arazzo\.custom)(\.|$)/', $identifier) === 1;
     }
 
@@ -242,9 +242,8 @@ final class SuppressionPolicy
      * Every suppression an `ignoreErrors` block declares in a PHPStan config.
      *
      * Each entry is a violation by definition: the policy is that suppressions
-     * live in the baseline, and a config pattern is the one place a hand-written
-     * (identifier-free) pattern can hide where the identifier rule cannot see it
-     * (#223).
+     * live in the baseline, where the identifier rule can audit them, and a
+     * config pattern bypasses that audit entirely (#223).
      *
      * Understood shapes — the block PHPStan writes,
      *

@@ -87,3 +87,44 @@ it('checks the policy on both sides of every baseline regeneration (#203)', func
     // to the split is picked up instead of sitting outside the guard behind a stale list.
     expect($shell)->toContain('packages/*/phpstan-baseline.neon');
 });
+
+it('keeps every committed baseline entry identified (#231)', function () use ($repo): void {
+    // Provenance is the identifier. Every rule here stamps `arazzo.custom.*`, so
+    // a fresh run never writes an identifier-free entry; one that appears
+    // committed is either stale or hand-written. This fails if such an entry
+    // lands, independently of the checker's own fixture tests.
+    $baselines = glob($repo.'/packages/*/phpstan-baseline.neon') ?: [];
+
+    expect($baselines)->not->toBeEmpty();
+
+    foreach ($baselines as $baseline) {
+        $source = (string) file_get_contents($baseline);
+        $messages = substr_count($source, 'message:');
+        $identifiers = substr_count($source, 'identifier:');
+
+        expect($identifiers)->toBe(
+            $messages,
+            basename(dirname($baseline)).' has an identifier-free baseline entry, so its provenance cannot be checked',
+        );
+    }
+});
+
+it('stamps an arazzo.custom.* identifier on every custom rule error (#231)', function () use ($repo): void {
+    // The gate bans identifier-free entries because the rules no longer produce
+    // them. A new rule that forgets an identifier would make its findings
+    // unsuppressible (fail-closed) and break that premise; pin it here.
+    $rules = glob($repo.'/packages/core/phpstan/rules/*Rule.php') ?: [];
+
+    expect($rules)->not->toBeEmpty();
+
+    foreach ($rules as $rule) {
+        $source = (string) file_get_contents($rule);
+        $builders = substr_count($source, 'RuleErrorBuilder::message(');
+        $identifiers = substr_count($source, "->identifier('arazzo.custom.");
+
+        expect($identifiers)->toBe(
+            $builders,
+            basename($rule).' emits a finding without an arazzo.custom.* identifier',
+        );
+    }
+});

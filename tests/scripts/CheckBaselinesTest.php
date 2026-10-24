@@ -40,13 +40,14 @@ function baselineFixture(array $baselines): string
     return $root;
 }
 
-it('passes when every entry is legal — no identifier, or a missingType.* identifier', function () {
+it('passes when every entry carries an allowed identifier', function () {
     $root = baselineFixture([
         'packages/document/phpstan-baseline.neon' => <<<'NEON'
         parameters:
             ignoreErrors:
                 -
                     message: '#^Class Parser has too many methods \(37\)\. Maximum allowed is 20\.$#'
+                    identifier: arazzo.custom.maxMethodCount
                     count: 1
                     path: src/Parser/Parser.php
 
@@ -61,15 +62,53 @@ it('passes when every entry is legal — no identifier, or a missingType.* ident
     $process = runCheckBaselines($root);
 
     expect($process->getExitCode())->toBe(0)
-        ->and($process->getOutput())->not->toContain('missingType');
+        ->and($process->getOutput())->toBe('');
+});
+
+it('rejects an identifier-free entry a fresh generation run would not produce', function () {
+    // The hand-written shape: copy a genuine correctness finding into the
+    // baseline without an identifier. PHPStan would honour it; the gate must not.
+    $root = baselineFixture([
+        'packages/document/phpstan-baseline.neon' => <<<'NEON'
+        parameters:
+            ignoreErrors:
+                -
+                    message: '#^Call to an undefined method Parser::parseSelector\(\)\.$#'
+                    count: 1
+                    path: src/Parser/Parser.php
+        NEON,
+    ]);
+
+    $process = runCheckBaselines($root);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and($process->getOutput())->toContain('packages/document/phpstan-baseline.neon')
+        ->and($process->getErrorOutput())->toContain('1 correctness error hidden from PHPStan');
+});
+
+it('rejects an identifier-free entry even when its message resembles one of our rules', function () {
+    // Every rule in this repository stamps `arazzo.custom.*`, so a fresh run
+    // never writes this entry either. Trusting its shape would reopen the hole
+    // for a message that merely looks like rule-authoring signal.
+    $root = baselineFixture([
+        'packages/cli/phpstan-baseline.neon' => <<<'NEON'
+        parameters:
+            ignoreErrors:
+                -
+                    message: '#^Method __construct has too many parameters \(11\)\. Maximum allowed is 5\.$#'
+                    count: 1
+                    path: src/Console/Cli/CliRunner.php
+        NEON,
+    ]);
+
+    expect(runCheckBaselines($root)->getExitCode())->toBe(1);
 });
 
 it('accepts the identifiers this repository\'s own rules emit', function () {
-    // PHPStan 2 requires every rule error to carry an identifier, so a baseline
-    // regenerated from the custom rules now names them. #230: the policy's
-    // "our rules emit none" premise stopped being true when core's rules were
-    // finally analysed, so an identifier from `arazzo.custom.*` is the same
-    // rule-authoring signal an identifier-free entry already was.
+    // PHPStan 2 requires every rule error to carry an identifier, and every
+    // rule here stamps `arazzo.custom.*`. That identifier is what makes a
+    // rule-authoring finding auditable (#230); an identifier-free entry can no
+    // longer stand in for one.
     $root = baselineFixture([
         'packages/core/phpstan-baseline.neon' => <<<'NEON'
         parameters:
@@ -284,6 +323,7 @@ it('ignores baselines inside vendor, .worktrees and other build noise', function
             ignoreErrors:
                 -
                     message: '#^Class Parser has too many methods \(37\)\. Maximum allowed is 20\.$#'
+                    identifier: arazzo.custom.maxMethodCount
                     count: 1
                     path: src/Parser/Parser.php
         NEON,
