@@ -1,12 +1,12 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-10-23T11:35:00+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-24T10:55:05+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
-## Act — since last digest (1)
+## Act — since last digest (0)
 
-- `2026-10-22` [v3.3: First pass at explaining SAFs](https://github.com/OAI/OpenAPI-Specification/pull/5447) — `OAI/OpenAPI-Specification` · `pr.state_changed` · state `open` → `merged`
+_No Act events since the last digest._
 
 ## Watchlist — tracked upstream items
 
@@ -23,92 +23,27 @@
 
 ## Peer releases
 
-<details>
-<summary><code>npm.@usearazzo/cli</code> — 2</summary>
-
-- `2026-10-23` [@usearazzo/cli@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.10) — version → `1.0.1-alpha.10`
-- `2026-10-22` [@usearazzo/cli@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.9) — version → `1.0.1-alpha.9`
-
-</details>
-
-<details>
-<summary><code>npm.@usearazzo/parser</code> — 3</summary>
-
-- `2026-10-23` [@usearazzo/parser@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.10) — version → `1.0.1-alpha.10`
-- `2026-10-22` [@usearazzo/parser@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.9) — version → `1.0.1-alpha.9`
-- `2026-10-22` [@usearazzo/parser@1.0.1-alpha.8](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.8) — version → `1.0.1-alpha.8`
-
-</details>
-
-<details>
-<summary><code>npm.@usearazzo/resolver</code> — 3</summary>
-
-- `2026-10-23` [@usearazzo/resolver@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.10) — version → `1.0.1-alpha.10`
-- `2026-10-22` [@usearazzo/resolver@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.9) — version → `1.0.1-alpha.9`
-- `2026-10-22` [@usearazzo/resolver@1.0.1-alpha.8](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.8) — version → `1.0.1-alpha.8`
-
-</details>
-
-<details>
-<summary><code>npm.@usearazzo/runner</code> — 4</summary>
-
-- `2026-10-23` [@usearazzo/runner@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.10) — version → `1.0.1-alpha.10`
-- `2026-10-22` [@usearazzo/runner@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.9) — version → `1.0.1-alpha.9`
-- `2026-10-22` [@usearazzo/runner@1.0.1-alpha.7](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.7) — version → `1.0.1-alpha.7`
-- `2026-10-22` [@usearazzo/runner@0.0.0-stage](https://www.npmjs.com/package/@usearazzo/runner/v/0.0.0-stage) — version → `0.0.0-stage`
-
-</details>
-
-<details>
-<summary><code>npm.@usearazzo/validator</code> — 2</summary>
-
-- `2026-10-23` [@usearazzo/validator@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.10) — version → `1.0.1-alpha.10`
-- `2026-10-22` [@usearazzo/validator@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.9) — version → `1.0.1-alpha.9`
-
-</details>
-
-<details>
-<summary><code>usearazzo/arazzo-toolkit</code> — 3</summary>
-
-- `2026-10-23` [v1.0.1-alpha.10](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.10) — version → `1.0.1-alpha.10`
-- `2026-10-22` [v1.0.1-alpha.9](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.9) — version → `1.0.1-alpha.9`
-- `2026-10-22` [v1.0.1-alpha.8](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.8) — version → `1.0.1-alpha.8`
-
-</details>
+_No peer releases in this window._
 
 ## Meeting agenda
 
 _No scheduled meeting items._
 
-## Watch — 23 collapsed
+## Watch — 9 collapsed
 
 <details>
-<summary>23 topic-matched items — click to expand</summary>
+<summary>9 topic-matched items — click to expand</summary>
 
-- `2026-10-23` [fix(runner): match declared media types carrying parameters](https://github.com/usearazzo/arazzo-toolkit/pull/265) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-22` [fix(runner): keep response header values as sent](https://github.com/usearazzo/arazzo-toolkit/pull/259) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-23` [v1.0.1-alpha.10](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.10) — `usearazzo/arazzo-toolkit` · `release.published` · version → `1.0.1-alpha.10` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-22` [v1.0.1-alpha.9](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.9) — `usearazzo/arazzo-toolkit` · `release.published` · version → `1.0.1-alpha.9` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-23` [@usearazzo/validator@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.10) — `npm.@usearazzo/validator` · `package.version` · version → `1.0.1-alpha.10` · topics `json-schema` → `plan:php-arazzo-spec-suite-plan-index`
-- `2026-10-22` [@usearazzo/validator@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.9) — `npm.@usearazzo/validator` · `package.version` · version → `1.0.1-alpha.9` · topics `json-schema` → `plan:php-arazzo-spec-suite-plan-index`
-- `2026-10-22` [v1.0.1-alpha.8](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.8) — `usearazzo/arazzo-toolkit` · `release.published` · version → `1.0.1-alpha.8`
-- `2026-10-23` [@usearazzo/parser@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.10) — `npm.@usearazzo/parser` · `package.version` · version → `1.0.1-alpha.10` · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
-- `2026-10-23` [@usearazzo/runner@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.10) — `npm.@usearazzo/runner` · `package.version` · version → `1.0.1-alpha.10` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-23` [@usearazzo/cli@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.10) — `npm.@usearazzo/cli` · `package.version` · version → `1.0.1-alpha.10` · topics `cli` → `plan:php-arazzo-spec-suite-plan-index`
-- `2026-10-22` [@usearazzo/runner@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.9) — `npm.@usearazzo/runner` · `package.version` · version → `1.0.1-alpha.9` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-22` [@usearazzo/parser@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.9) — `npm.@usearazzo/parser` · `package.version` · version → `1.0.1-alpha.9` · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
-- `2026-10-22` [@usearazzo/cli@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.9) — `npm.@usearazzo/cli` · `package.version` · version → `1.0.1-alpha.9` · topics `cli` → `plan:php-arazzo-spec-suite-plan-index`
-- `2026-10-22` [@usearazzo/parser@1.0.1-alpha.8](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.8) — `npm.@usearazzo/parser` · `package.version` · version → `1.0.1-alpha.8` · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
-- `2026-10-22` [@usearazzo/runner@1.0.1-alpha.7](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.7) — `npm.@usearazzo/runner` · `package.version` · version → `1.0.1-alpha.7` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-22` [@usearazzo/runner@0.0.0-stage](https://www.npmjs.com/package/@usearazzo/runner/v/0.0.0-stage) — `npm.@usearazzo/runner` · `package.version` · version → `0.0.0-stage` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-23` [Expose media type matching (declared ranges, parameters ignored) as a public utility](https://github.com/usearazzo/arazzo-toolkit/issues/260) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `closed` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-22` [runner: run against official arazzo examples](https://github.com/usearazzo/arazzo-toolkit/issues/106) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `closed` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-22` [Response header values containing ", " are split into arrays (e.g. Cache-Control, Date)](https://github.com/usearazzo/arazzo-toolkit/issues/258) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `closed` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-23` [@usearazzo/resolver@1.0.1-alpha.10](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.10) — `npm.@usearazzo/resolver` · `package.version` · version → `1.0.1-alpha.10`
-- `2026-10-22` [@usearazzo/resolver@1.0.1-alpha.9](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.9) — `npm.@usearazzo/resolver` · `package.version` · version → `1.0.1-alpha.9`
-- `2026-10-22` [@usearazzo/resolver@1.0.1-alpha.8](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.8) — `npm.@usearazzo/resolver` · `package.version` · version → `1.0.1-alpha.8`
-- `2026-10-23` [OpenAPIOperationResponse.text is a Blob for binary and empty responses, though typed as string](https://github.com/usearazzo/arazzo-toolkit/issues/264) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `open`
+- `2026-10-23` [fix: adds missing xpath-31 to field description](https://github.com/OAI/Arazzo-Specification/pull/613) — `OAI/Arazzo-Specification` · `entity.created` · state → `open` · topics `xpath` → `spec:plugin-stack-oms-multiprotocol`
+- `2026-10-23` [1.1: Expression Type version field description omits xpath-31](https://github.com/OAI/Arazzo-Specification/issues/609) — `OAI/Arazzo-Specification` · `entity.created` · state → `open` · topics `xpath` → `spec:plugin-stack-oms-multiprotocol`
+- `2026-10-23` [fix: reusable object value type should be any](https://github.com/OAI/Arazzo-Specification/pull/616) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
+- `2026-10-23` [fix: adds missing channel value for in](https://github.com/OAI/Arazzo-Specification/pull/615) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
+- `2026-10-23` [fix: allow arbitrary JSON for payload replacement](https://github.com/OAI/Arazzo-Specification/pull/614) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
+- `2026-10-23` [1.1: Payload Replacement value rejects literals allowed by the specification](https://github.com/OAI/Arazzo-Specification/issues/612) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
+- `2026-10-23` [1.1: Parameter Object in enum differs between specification and schema](https://github.com/OAI/Arazzo-Specification/issues/611) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
+- `2026-10-23` [1.1: clarify correlationId type and its relationship to AsyncAPI](https://github.com/OAI/Arazzo-Specification/issues/610) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
+- `2026-10-23` [The value for the example reusable object is the wrong type](https://github.com/OAI/Arazzo-Specification/issues/431) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
 
 </details>
 
-suppressed: 8 bot PRs
+suppressed: 6 bot PRs
