@@ -40,6 +40,7 @@ flowchart LR
     expression_Enum["Alama\Arazzo\Expression\Enum"]:::coreNode
     expression_Exceptions["Alama\Arazzo\Expression\Exceptions"]:::coreNode
     expression_Interfaces["Alama\Arazzo\Expression\Interfaces"]:::coreNode
+    expression_Internal["Alama\Arazzo\Expression\Internal"]:::coreNode
     expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
     laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
@@ -79,6 +80,9 @@ flowchart LR
     expression_Interfaces --> contracts_Spec
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
+    expression_Internal --> expression__
+    expression_Internal --> expression_Ast
+    expression_Internal --> expression_Interfaces
     expression_Xpath --> contracts_Spec
     expression_Xpath --> expression_Exceptions
     expression__ --> contracts_Spec
@@ -88,6 +92,7 @@ flowchart LR
     expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
+    expression__ --> expression_Internal
     evaluation_Condition --> evaluation_Enum
     evaluation_Condition --> contracts_Spec
     evaluation_Condition --> evaluation_Interfaces

@@ -19,91 +19,111 @@ final class Lexer
         'body', 'header', 'query', 'path', 'message', 'payload', 'self',
     ];
 
+    /** One character of a name or pointer segment. */
+    private const string WORD_CHARACTER = '/[A-Za-z0-9_\-~%@+:]/';
+
     /** @return list<Token> */
     public function tokenize(string $raw): array
     {
-        $inner = $raw;
-        $absOffsetBase = 0;
-        if (str_starts_with($raw, '{$') && str_ends_with($raw, '}')) {
-            $inner = substr($raw, 2, -1);
-            $absOffsetBase = 2;
-        } elseif (str_starts_with($raw, '${') && str_ends_with($raw, '}')) {
-            // `${token}` is the alternate Arazzo spelling of `{$token}`:
-            // drop the wrapper braces but keep the leading `$`.
-            $inner = '$'.substr($raw, 2, -1);
-        } elseif (str_starts_with($raw, '$')) {
-            $inner = substr($raw, 1);
-            $absOffsetBase = 1;
-        } else {
-            throw new ExpressionSyntaxException(
-                "Expression must start with $ or be wrapped in {\$...}: {$raw}",
-                $raw, 0, '', 'expr.syntax',
-            );
-        }
+        [$inner, $base] = $this->unwrap($raw);
 
         if ($inner === '') {
             throw new ExpressionSyntaxException("Empty expression: {$raw}", $raw, -1, '', 'expr.syntax');
         }
 
         $tokens = [];
-        $len = strlen($inner);
-        $i = 0;
+        $length = strlen($inner);
+        $offset = 0;
         $inPointer = false;
 
-        while ($i < $len) {
-            $ch = $inner[$i];
+        while ($offset < $length) {
+            $character = $inner[$offset];
+            $absoluteOffset = $offset + $base;
 
-            $absOffset = $i + $absOffsetBase;
-
-            if ($ch === '$') {
-                $tokens[] = new Token(TokenKind::Dollar, '$', $absOffset);
-                $i++;
-
-                continue;
-            }
-            if ($ch === '.') {
-                $tokens[] = new Token(TokenKind::Dot, '.', $absOffset);
-                $i++;
-
-                continue;
-            }
-            if ($ch === '#') {
-                $tokens[] = new Token(TokenKind::Hash, '#', $absOffset);
-                $i++;
+            if ($character === '#') {
                 $inPointer = true;
+            }
+
+            $kind = $this->singleCharacterKind($character);
+            if ($kind !== null) {
+                $tokens[] = new Token($kind, $character, $absoluteOffset);
+                $offset++;
 
                 continue;
             }
-            if ($ch === '/') {
-                $tokens[] = new Token(TokenKind::Slash, '/', $absOffset);
-                $i++;
 
-                continue;
-            }
-
-            if (preg_match('/[A-Za-z0-9_\-~%@+:]/', $ch) === 1) {
-                $start = $i;
-                while ($i < $len && preg_match('/[A-Za-z0-9_\-~%@+:]/', $inner[$i]) === 1) {
-                    $i++;
-                }
-                $word = substr($inner, $start, $i - $start);
-                if ($inPointer) {
-                    $tokens[] = new Token(TokenKind::PointerSegment, $word, $absOffset);
-                } elseif (in_array($word, self::KEYWORDS, true)) {
-                    $tokens[] = new Token(TokenKind::Keyword, $word, $absOffset);
-                } else {
-                    $tokens[] = new Token(TokenKind::Name, $word, $absOffset);
-                }
+            if (preg_match(self::WORD_CHARACTER, $character) === 1) {
+                [$word, $offset] = $this->scanWord($inner, $offset, $length);
+                $tokens[] = new Token($this->wordKind($word, $inPointer), $word, $absoluteOffset);
 
                 continue;
             }
 
             throw new ExpressionSyntaxException(
-                "Illegal character '{$ch}' at offset {$absOffset} in expression: {$raw}",
-                $raw, $absOffset, '', 'expr.syntax',
+                "Illegal character '{$character}' at offset {$absoluteOffset} in expression: {$raw}",
+                $raw, $absoluteOffset, '', 'expr.syntax',
             );
         }
 
         return $tokens;
+    }
+
+    /**
+     * Strip the expression wrapper, returning the token stream's source and the
+     * byte offset its index zero maps to in the original expression.
+     *
+     * @return array{string, int}
+     */
+    private function unwrap(string $raw): array
+    {
+        if (str_starts_with($raw, '{$') && str_ends_with($raw, '}')) {
+            return [substr($raw, 2, -1), 2];
+        }
+
+        if (str_starts_with($raw, '${') && str_ends_with($raw, '}')) {
+            // `${token}` is the alternate Arazzo spelling of `{$token}`:
+            // drop the wrapper braces but keep the leading `$`.
+            return ['$'.substr($raw, 2, -1), 0];
+        }
+
+        if (str_starts_with($raw, '$')) {
+            return [substr($raw, 1), 1];
+        }
+
+        throw new ExpressionSyntaxException(
+            "Expression must start with $ or be wrapped in {\$...}: {$raw}",
+            $raw, 0, '', 'expr.syntax',
+        );
+    }
+
+    private function singleCharacterKind(string $character): ?TokenKind
+    {
+        return match ($character) {
+            '$' => TokenKind::Dollar,
+            '.' => TokenKind::Dot,
+            '#' => TokenKind::Hash,
+            '/' => TokenKind::Slash,
+            default => null,
+        };
+    }
+
+    /** @return array{string, int} */
+    private function scanWord(string $inner, int $start, int $length): array
+    {
+        $offset = $start;
+        while ($offset < $length && preg_match(self::WORD_CHARACTER, $inner[$offset]) === 1) {
+            $offset++;
+        }
+
+        return [substr($inner, $start, $offset - $start), $offset];
+    }
+
+    private function wordKind(string $word, bool $inPointer): TokenKind
+    {
+        if ($inPointer) {
+            return TokenKind::PointerSegment;
+        }
+
+        return in_array($word, self::KEYWORDS, true) ? TokenKind::Keyword : TokenKind::Name;
     }
 }

@@ -59,6 +59,7 @@ flowchart LR
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
         S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
         S_expression_Interfaces["expression:Interfaces<br/><small>110 LOC</small>"]:::unknownDomain
+        S_expression_Internal["expression:Internal<br/><small>238 LOC</small>"]:::unknownDomain
         S_expression_Xpath["expression:Xpath<br/><small>110 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>1345 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>370 LOC</small>"]:::unknownDomain
@@ -80,7 +81,7 @@ flowchart LR
 | Core domain | 1 | 1,203 | 0 | 6% |
 | Supporting | 7 | 6,997 | 0 | 35% |
 | Generic subdomain | 11 | 2,013 | 1,396 | 17% |
-| Unclassified | 28 | 8,269 | 0 | 42% |
+| Unclassified | 29 | 8,507 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`
@@ -102,6 +103,7 @@ flowchart LR
 - `expression:Enum`
 - `expression:Exceptions`
 - `expression:Interfaces`
+- `expression:Internal`
 - `expression:Xpath`
 - `runner:Async`
 - `runner:Execution`

@@ -37,13 +37,14 @@ targets. Regenerated before every commit.
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
-| `expression:Ast` | 15 | 335 | 1 | 2 | 0.67 |  |
+| `expression:Ast` | 15 | 335 | 2 | 2 | 0.50 |  |
 | `expression:Data` | 4 | 124 | 7 | 3 | 0.30 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
-| `expression:Interfaces` | 2 | 108 | 11 | 3 | 0.21 |  |
+| `expression:Interfaces` | 2 | 108 | 12 | 3 | 0.20 |  |
+| `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1211 | 3 | 7 | 0.70 |  |
+| `(expression root)` | 9 | 1129 | 4 | 8 | 0.67 |  |
 | `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
@@ -67,7 +68,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 328 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1016**
+Total cross-module edges: **1022**
 
 ## Most entangled module pairs
 
@@ -75,11 +76,11 @@ Total cross-module edges: **1016**
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 96 |
 | `document:Parser` → `contracts:Spec` | 38 |
-| `(expression root)` → `expression:Ast` | 28 |
 | `runner:Sync` → `contracts:Spec` | 24 |
 | `runner:Async` → `contracts:Spec` | 23 |
 | `(evaluation root)` → `contracts:Spec` | 22 |
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
+| `(expression root)` → `expression:Ast` | 20 |
 | `(runner root)` → `contracts:Interfaces` | 14 |
 | `(document root)` → `contracts:Spec` | 13 |
 | `engine:Execution` → `contracts:Spec` | 13 |

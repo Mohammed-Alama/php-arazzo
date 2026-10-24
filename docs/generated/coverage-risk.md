@@ -42,11 +42,12 @@ quadrantChart
     evaluation/Registries: [0.8, 0.5]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 1]
-    expression/Ast: [0.667, 0.333]
+    expression/Ast: [0.5, 0.333]
     expression/Data: [0.3, 1]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.25, 1]
-    expression/Interfaces: [0.214, 1]
+    expression/Interfaces: [0.2, 1]
+    expression/Internal: [0.75, 0]
     expression/Xpath: [0.667, 0.5]
     laravel/Bindings: [0.96, 0.857]
     laravel/Events: [0, 1]
@@ -93,11 +94,12 @@ quadrantChart
 | `evaluation/Registries` | 0.80 | 1 | 2 | 50% |
 | `events/Interfaces` | 0.00 | 21 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
-| `expression/Ast` | 0.67 | 5 | 15 | 33% |
+| `expression/Ast` | 0.50 | 5 | 15 | 33% |
 | `expression/Data` | 0.30 | 15 | 4 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.25 | 6 | 2 | 100% |
-| `expression/Interfaces` | 0.21 | 16 | 2 | 100% |
+| `expression/Interfaces` | 0.20 | 16 | 2 | 100% |
+| `expression/Internal` | 0.75 | 0 | 2 | 0% |
 | `expression/Xpath` | 0.67 | 1 | 2 | 50% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
@@ -119,4 +121,4 @@ quadrantChart
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `runner/Interfaces`
+**Refactor-now list** (untested churn): `runner/Interfaces`, `expression/Internal`
