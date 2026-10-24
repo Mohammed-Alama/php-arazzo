@@ -246,6 +246,42 @@ it('returns null when a non-empty pointer addresses a scalar value', function ()
         ->and($evaluator->evaluate(new Expression('{$steps.s1.outputs.name#}'), $inStep))->toBe('Alice');
 });
 
+it('returns a non-JSON response body verbatim when the reference carries no pointer', function (): void {
+    $xml = '<root><id>1</id></root>';
+    $context = (new WorkflowContext('def_1'))->withStepResponse('s1', [
+        'statusCode' => 200,
+        'headers' => [],
+        'body' => $xml,
+    ]);
+    $evaluator = evaluator();
+    $inStep = new EvaluationContext($context, 's1');
+
+    expect($evaluator->evaluate(new Expression('{$response.body}'), $inStep))->toBe($xml)
+        ->and($evaluator->evaluate(new Expression('{$steps.s1.response.body}'), $inStep))->toBe($xml);
+});
+
+it('returns a non-JSON request body verbatim when the reference carries no pointer', function (): void {
+    $text = '<envelope>payload</envelope>';
+    $context = (new WorkflowContext('def_1'))->withStepRequest('s1', ['body' => $text]);
+    $evaluator = evaluator();
+    $inStep = new EvaluationContext($context, 's1');
+
+    expect($evaluator->evaluate(new Expression('{$steps.s1.request.body}'), $inStep))->toBe($text);
+});
+
+it('keeps returning a structured body unchanged', function (): void {
+    $body = ['data' => ['items' => [1, 2]]];
+    $context = (new WorkflowContext('def_1'))->withStepResponse('s1', ['body' => $body]);
+
+    expect(evaluator()->evaluate(new Expression('{$response.body}'), new EvaluationContext($context, 's1')))->toBe($body);
+});
+
+it('returns null when no body was recorded', function (): void {
+    $context = (new WorkflowContext('def_1'))->withStepResponse('s1', ['statusCode' => 204]);
+
+    expect(evaluator()->evaluate(new Expression('{$response.body}'), new EvaluationContext($context, 's1')))->toBeNull();
+});
+
 it('resolves $outputs.name to the output the current step produced (1.1)', function () {
     // The official OAI corpus uses this form in a workflow-invocation step:
     //   outputs: { my_order_id: $outputs.workflow_order_id }

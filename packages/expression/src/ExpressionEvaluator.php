@@ -219,11 +219,11 @@ final class ExpressionEvaluator
      */
     private function resolveBody(mixed $body, ?string $pointer): mixed
     {
-        if ($pointer === null) {
-            return is_array($body) ? $body : [];
-        }
-
-        return $this->withPointer($body, $pointer);
+        // Bodies are not always JSON: XPath criteria read XML strings through
+        // `context: $response.body`, and text payloads are first-class too. A
+        // pointerless reference is the body itself; only a pointer addresses
+        // structure (and a non-empty pointer on a scalar still yields null).
+        return $pointer === null ? $body : $this->withPointer($body, $pointer);
     }
 
     /**
