@@ -71,7 +71,15 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
             if ($this->criterionRegistry !== null) {
                 $plugin = $this->criterionRegistry->resolve($criterion);
                 if ($plugin !== null) {
-                    $passed = $plugin->evaluate($criterion, $responseBody, $step, $context);
+                    try {
+                        $root = $this->criterionRoot($criterion, $responseBody, $context, $step->stepId, $document);
+                    } catch (\Throwable) {
+                        // A context that cannot be resolved fails the criterion
+                        // deterministically instead of running it on the wrong root.
+                        return false;
+                    }
+
+                    $passed = $plugin->evaluate($criterion, $root, $step, $context);
                     if (!$passed) {
                         return false;
                     }
@@ -128,20 +136,40 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
 
     private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseBody, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
     {
-        if ($criterion->context !== null) {
-            try {
-                $root = $this->expression->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
-            } catch (\Throwable) {
-                // Evaluation errors fail the criterion deterministically.
-                return false;
-            }
-        } else {
-            $root = $responseBody;
+        try {
+            $root = $this->criterionRoot($criterion, $responseBody, $context, $stepId, $document);
+        } catch (\Throwable) {
+            // Evaluation errors fail the criterion deterministically.
+            return false;
         }
 
         $result = $this->expression->jsonPath($criterion->condition, is_array($root) ? $root : []);
 
         return !empty($result);
+    }
+
+    /**
+     * The root a criterion applies to: its resolved `context` expression, or the
+     * step's response body when no context is declared. Shared by the built-in
+     * branch and the plugin dispatch so the two cannot drift.
+     *
+     * @throws \Throwable when the context expression cannot be evaluated
+     */
+    private function criterionRoot(
+        SuccessCriterion $criterion,
+        mixed $responseBody,
+        WorkflowContextInterface $context,
+        string $stepId,
+        ?ArazzoDocument $document,
+    ): mixed {
+        if ($criterion->context === null) {
+            return $responseBody;
+        }
+
+        return $this->expression->evaluate(
+            new Expression($criterion->context),
+            new EvaluationContext($context, $stepId, $document),
+        );
     }
 
     private function hasOperationTarget(Step $step): bool

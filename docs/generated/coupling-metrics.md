@@ -16,7 +16,7 @@ targets. Regenerated before every commit.
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 19 | 340 | 23 | 3 | 0.12 |  |
+| `contracts:Interfaces` | 19 | 348 | 23 | 3 | 0.12 |  |
 | `contracts:Spec` | 49 | 1154 | 33 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
@@ -31,9 +31,9 @@ targets. Regenerated before every commit.
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
-| `evaluation:Plugins` | 2 | 117 | 1 | 3 | 0.75 |  |
+| `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 5 | 620 | 7 | 7 | 0.50 |  |
+| `(evaluation root)` | 5 | 648 | 7 | 7 | 0.50 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |

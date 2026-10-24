@@ -38,9 +38,10 @@ final readonly class JsonPathCriterionPlugin implements CriterionEvaluatorPlugin
 
     public function evaluate(SuccessCriterion $criterion, mixed $context, Step $step, WorkflowContextInterface $workflowContext): bool
     {
-        // $context is the response body, and need not be structured: a JSONPath
-        // query over anything else cannot match, the same answer jsonPath()
-        // gives for an empty collection.
+        // $context is the root the criterion applies to: the resolved `context`
+        // expression when the criterion declares one, otherwise the response
+        // body. It need not be structured: a JSONPath query over anything else
+        // cannot match, the same answer jsonPath() gives for an empty collection.
         if (!is_array($context) && !is_object($context)) {
             return false;
         }
