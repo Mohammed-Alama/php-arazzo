@@ -49,13 +49,14 @@ quadrantChart
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 0]
     events/_: [0, 0]
-    expression/Ast: [0.667, 0]
+    expression/Ast: [0.5, 0]
     expression/Data: [0.3, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.25, 0]
-    expression/Interfaces: [0.214, 1]
+    expression/Interfaces: [0.2, 1]
+    expression/Internal: [0.75, 0]
     expression/Xpath: [0.667, 0.5]
-    expression/_: [0.7, 0]
+    expression/_: [0.667, 0]
     laravel/Bindings: [0.96, 0]
     laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
@@ -91,8 +92,8 @@ Concrete types over 300 LOC:
 | `StepOutcomeHandler` | `runner:Async` | 454 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
 | `ExecutionState` | `contracts:State` | 410 |
+| `Parser` | `expression:_` | 388 |
 | `WorkflowContext` | `contracts:State` | 382 |
-| `Parser` | `expression:_` | 366 |
 | `PreflightValidator` | `sources:Validator` | 303 |
 | `SchemaValidator` | `engine:Execution` | 302 |
 

@@ -16,6 +16,12 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 /**
  * Concrete expression facade: static parsing and reference projection, plus
  * runtime evaluation of expressions and selectors.
+ *
+ * PHPMD counts twelve public methods (TooManyPublicMethods). That is the
+ * facade's intended surface — parse, extract, interpolate, test, evaluate,
+ * selectors, JSONPath, JSON Pointer and XPath — and splitting it would make
+ * every caller depend on several objects instead of one entry point. Kept as a
+ * single facade, not waived for convenience (#260).
  */
 final readonly class ExpressionEngine implements ExpressionEngineInterface
 {

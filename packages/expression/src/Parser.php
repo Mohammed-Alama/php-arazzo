@@ -24,6 +24,16 @@ use Alama\Arazzo\Expression\Enum\TokenKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 
 /**
+ * Recursive-descent parser for the runtime-expression grammar.
+ *
+ * PHPMD's ExcessiveClassComplexity and CouplingBetweenObjects findings stay
+ * above the default thresholds here, deliberately: the class is one pass over
+ * one grammar, so its weight is the grammar's branch count and its coupling is
+ * the AST vocabulary every production constructs. Splitting productions across
+ * objects would share the token cursor and lookahead without removing a single
+ * decision; the grammar reads better in one place. The per-method findings are
+ * fixed, not waived (#260).
+ *
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
  */
 final class Parser
@@ -281,16 +291,12 @@ final class Parser
     private function parseWorkflowRef(array $tokens, string $raw, int $i): WorkflowRef
     {
         $rest = array_slice($tokens, $i);
+
         // workflows . <name> . (inputs|outputs) . <name>
-        if (count($rest) !== 7
-            || $rest[1]->kind !== TokenKind::Dot
-            || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)
-            || $rest[3]->kind !== TokenKind::Dot
-            || $rest[4]->kind !== TokenKind::Keyword
-            || $rest[5]->kind !== TokenKind::Dot
-            || ($rest[6]->kind !== TokenKind::Name && $rest[6]->kind !== TokenKind::Keyword)) {
+        if (count($rest) !== 7 || !$this->isWorkflowShape($rest)) {
             throw new ExpressionSyntaxException("Malformed workflow reference: {$raw}", $raw, -1, '', 'expr.syntax');
         }
+
         $kind = $rest[4]->value;
         if ($kind !== 'inputs' && $kind !== 'outputs') {
             throw new ExpressionSyntaxException("Workflow part must be inputs or outputs in: {$raw}", $raw, -1, '', 'expr.syntax');
@@ -298,6 +304,22 @@ final class Parser
 
         /** @var 'inputs'|'outputs' $kind */
         return new WorkflowRef($rest[2]->value, $kind, $rest[6]->value);
+    }
+
+    /** @param list<Token> $rest */
+    private function isWorkflowShape(array $rest): bool
+    {
+        return $rest[1]->kind === TokenKind::Dot
+            && $this->isNameOrKeyword($rest[2])
+            && $rest[3]->kind === TokenKind::Dot
+            && $rest[4]->kind === TokenKind::Keyword
+            && $rest[5]->kind === TokenKind::Dot
+            && $this->isNameOrKeyword($rest[6]);
+    }
+
+    private function isNameOrKeyword(Token $token): bool
+    {
+        return $token->kind === TokenKind::Name || $token->kind === TokenKind::Keyword;
     }
 
     /** @param list<Token> $tokens */

@@ -32,6 +32,7 @@ flowchart TB
         M_expression_Enum["expression:Enum"]:::node
         M_expression_Exceptions["expression:Exceptions"]:::node
         M_expression_Interfaces["expression:Interfaces"]:::node
+        M_expression_Internal["expression:Internal"]:::node
         M_expression_Xpath["expression:Xpath"]:::node
         M_expression__["(expression package root)"]:::node
     end
@@ -179,6 +180,9 @@ flowchart TB
     M_expression_Interfaces --> M_contracts_Spec
     M_expression_Interfaces --> M_expression_Data
     M_expression_Interfaces --> M_expression_Exceptions
+    M_expression_Internal --> M_expression_Ast
+    M_expression_Internal --> M_expression_Interfaces
+    M_expression_Internal --> M_expression__
     M_expression_Xpath --> M_contracts_Spec
     M_expression_Xpath --> M_expression_Exceptions
     M_expression__ --> M_contracts_Spec
@@ -187,6 +191,7 @@ flowchart TB
     M_expression__ --> M_expression_Enum
     M_expression__ --> M_expression_Exceptions
     M_expression__ --> M_expression_Interfaces
+    M_expression__ --> M_expression_Internal
     M_expression__ --> M_expression_Xpath
     M_laravel_Bindings --> M_cli_Generator
     M_laravel_Bindings --> M_contracts_Interfaces

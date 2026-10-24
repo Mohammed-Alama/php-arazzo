@@ -17,12 +17,12 @@ xychart-beta
     bar [45, 28, 26, 22, 20, 19, 16, 15, 14, 13, 12, 12]
 ```
 
-Analyzed 373 total file-touches across 47 modules.
+Analyzed 374 total file-touches across 48 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 45 | 12% | 384 | 117.2 |
-| `cli:Console` | 28 | 8% | 932 | 30 |
+| `cli:Console` | 28 | 7% | 932 | 30 |
 | `runner:Execution` | 26 | 7% | 370 | 70.3 |
 | `laravel:Http` | 22 | 6% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
@@ -45,11 +45,11 @@ Analyzed 373 total file-touches across 47 modules.
 | `cli:Generator` | 4 | 1% | 141 | 28.4 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
+| `evaluation:Condition` | 4 | 1% | 690 | 5.8 |
 | `expression:Ast` | 4 | 1% | 350 | 11.4 |
 | `runtime:State` | 4 | 1% | 1,036 | 3.9 |
 | `sources:Resolver` | 4 | 1% | 490 | 8.2 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
-| `evaluation:Condition` | 3 | 1% | 690 | 4.3 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
 | `expression:Xpath` | 3 | 1% | 110 | 27.3 |
 | `laravel:Events` | 3 | 1% | 24 | 125 |
@@ -68,5 +68,6 @@ Analyzed 373 total file-touches across 47 modules.
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
+| `expression:Internal` | 0 | 0% | 238 | 0 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (128.4), `laravel:Http` (117.6), `laravel:Bindings` (117.2)

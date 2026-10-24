@@ -94,14 +94,17 @@ expression-Exceptions,contracts-Support,2
 expression-Interfaces,contracts-Spec,5
 expression-Interfaces,expression-Data,2
 expression-Interfaces,expression-Exceptions,1
+expression-Internal,expression-Ast,10
+expression-Internal,expression-Interfaces,1
 expression-Xpath,contracts-Spec,1
 expression-Xpath,expression-Exceptions,1
 expression-root,contracts-Spec,8
-expression-root,expression-Ast,28
+expression-root,expression-Ast,20
 expression-root,expression-Data,7
 expression-root,expression-Enum,2
 expression-root,expression-Exceptions,5
 expression-root,expression-Interfaces,4
+expression-root,expression-Internal,2
 expression-root,expression-Xpath,3
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,8
@@ -258,6 +261,7 @@ These references exist in the code but are not drawn: drawing them would close a
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
+| `expression-Internal` | `expression-root` | 1 |
 | `runner-Async` | `runner-root` | 4 |
 | `runner-Execution` | `runner-Sync` | 1 |
 | `runner-Sync` | `runner-root` | 2 |

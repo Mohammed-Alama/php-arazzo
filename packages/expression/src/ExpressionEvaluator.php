@@ -7,29 +7,36 @@ namespace Alama\Arazzo\Expression;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Expression\Ast\ComponentRef;
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
-use Alama\Arazzo\Expression\Ast\HttpMetaRef;
-use Alama\Arazzo\Expression\Ast\InputPart;
 use Alama\Arazzo\Expression\Ast\InputRef;
-use Alama\Arazzo\Expression\Ast\MessageRef;
-use Alama\Arazzo\Expression\Ast\OutputPart;
-use Alama\Arazzo\Expression\Ast\OutputRef;
-use Alama\Arazzo\Expression\Ast\RequestPart;
-use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
-use Alama\Arazzo\Expression\Ast\StepRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Internal\StepReferenceResolver;
+use Alama\Arazzo\Expression\Internal\ValueReader;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
 
 /**
+ * Evaluates a parsed runtime expression against the current workflow state.
+ *
+ * Step, output, message and HTTP-meta references live in StepReferenceResolver;
+ * this class keeps the workflow-level references. Both stayed under PHPMD's
+ * class thresholds after the split (#260).
+ *
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
  */
 final class ExpressionEvaluator
 {
+    private readonly ValueReader $values;
+
+    private readonly StepReferenceResolver $steps;
+
     public function __construct(
-        private JsonPointer $jsonPointer,
-    ) {}
+        JsonPointer $jsonPointer,
+    ) {
+        $this->values = new ValueReader($jsonPointer);
+        $this->steps = new StepReferenceResolver($this->values);
+    }
 
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
@@ -40,201 +47,64 @@ final class ExpressionEvaluator
 
     private function evaluateAst(ExpressionAst $ast, EvaluationInputInterface $context): mixed
     {
-        if ($ast instanceof InputRef) {
-            return $this->withPointer(
+        if ($this->steps->supports($ast)) {
+            return $this->steps->resolve($ast, $context);
+        }
+
+        return match (true) {
+            $ast instanceof InputRef => $this->values->withPointer(
                 $context->getWorkflowContext()->getInputs()[$ast->name] ?? null,
                 $ast->jsonPointer,
-            );
-        }
+            ),
+            $ast instanceof WorkflowRef => $this->workflow($ast, $context),
+            $ast instanceof SelfRef => $context->getDocument()?->self,
+            $ast instanceof ComponentRef => $this->component($ast, $context),
+            $ast instanceof SourceRef => $this->source($ast, $context),
+            default => null,
+        };
+    }
 
-        if ($ast instanceof OutputRef) {
-            return $this->resolveOutputRef($ast, $context);
-        }
-
-        if ($ast instanceof HttpMetaRef) {
-            if ($context->getCurrentStepId() === null) {
-                return null;
-            }
-
-            $stepData = $context->getWorkflowContext()->getSteps()[$context->getCurrentStepId()] ?? null;
-            if (!is_array($stepData)) {
-                return null;
-            }
-
-            $response = $this->mapOrEmpty($stepData, 'response');
-            $request = $this->mapOrEmpty($stepData, 'request');
-
-            return match ($ast->field) {
-                'statusCode' => $response['statusCode'] ?? null,
-                'method' => $request['method'] ?? null,
-                'url' => $request['url'] ?? null,
-            };
-        }
-
-        if ($ast instanceof StepRef) {
-            $steps = $context->getWorkflowContext()->getSteps();
-            $targetStepId = $ast->stepId ?? $context->getCurrentStepId();
-            $rawStepData = $steps[$targetStepId] ?? null;
-            if (!is_array($rawStepData)) {
-                return null;
-            }
-
-            /** @var array<string, mixed> $stepData */
-            $stepData = $rawStepData;
-
-            $part = $ast->part;
-
-            if ($part instanceof RequestPart) {
-                $req = is_array($stepData['request'] ?? null) ? $stepData['request'] : [];
-
-                return match ($part->httpPart) {
-                    'header' => $this->mapOrEmpty($req, 'headers')[$part->headerName] ?? null,
-                    'query' => $this->mapOrEmpty($req, 'query')[$part->headerName] ?? null,
-                    'path' => $this->mapOrEmpty($req, 'path')[$part->headerName] ?? null,
-                    'body' => $this->resolveBody($req['body'] ?? null, $part->jsonPointer),
-                    default => null,
-                };
-            }
-
-            if ($part instanceof ResponsePart) {
-                $res = is_array($stepData['response'] ?? null) ? $stepData['response'] : [];
-                if ($part->httpPart === 'statusCode') {
-                    return $res['statusCode'] ?? null;
-                }
-
-                return match ($part->httpPart) {
-                    'header' => $this->mapOrEmpty($res, 'headers')[$part->headerName] ?? null,
-                    'body' => $this->resolveBody($res['body'] ?? null, $part->jsonPointer),
-                    default => null,
-                };
-            }
-
-            if ($part instanceof OutputPart) {
-                return $this->withPointer(
-                    $this->mapOrEmpty($stepData, 'outputs')[$part->name] ?? null,
-                    $part->jsonPointer,
-                );
-            }
-
-            if ($part instanceof InputPart) {
-                return $this->mapOrEmpty($stepData, 'inputs')[$part->name] ?? null;
-            }
-        }
-
-        if ($ast instanceof WorkflowRef) {
-            $workflowData = $context->getWorkflowContext()->getWorkflows()[$ast->workflowId] ?? null;
-            if ($workflowData === null) {
-                return null;
-            }
-
-            return $workflowData[$ast->partKind][$ast->name] ?? null;
-        }
-
-        if ($ast instanceof MessageRef) {
-            $steps = $context->getWorkflowContext()->getSteps();
-            $stepData = $context->getCurrentStepId() !== null ? ($steps[$context->getCurrentStepId()] ?? null) : null;
-            $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
-
-            if ($ast->part === 'header') {
-                $headers = is_array($response) ? ($response['headers'] ?? []) : [];
-                if (!is_array($headers)) {
-                    return null;
-                }
-
-                foreach ($headers as $key => $value) {
-                    if (is_string($key) && strcasecmp($key, (string) $ast->name) === 0 && is_scalar($value)) {
-                        return (string) $value;
-                    }
-                }
-
-                return null;
-            }
-
-            // payload
-            $body = is_array($response) ? ($response['body'] ?? []) : [];
-
-            return $this->withPointer($body, $ast->jsonPointer);
-        }
-
-        if ($ast instanceof SelfRef) {
-            return $context->getDocument()?->self;
-        }
-
-        if ($ast instanceof ComponentRef) {
-            $comps = $context->getWorkflowContext()->getComponents();
-            if ($ast->type === 'parameters') {
-                return $this->mapOrEmpty($comps, 'parameters')[$ast->name] ?? null;
-            }
-        }
-
-        if ($ast instanceof SourceRef && $context->getDocument()) {
-            foreach ($context->getDocument()->sourceDescriptions as $sourceDesc) {
-                if ($sourceDesc->name === $ast->name) {
-                    if ($ast->subPath === 'url') {
-                        return $sourceDesc->url;
-                    }
-                    if ($ast->subPath === 'type') {
-                        return $sourceDesc->type->value;
-                    }
-                }
-            }
-
+    private function workflow(WorkflowRef $ast, EvaluationInputInterface $context): mixed
+    {
+        $workflowData = $context->getWorkflowContext()->getWorkflows()[$ast->workflowId] ?? null;
+        if ($workflowData === null) {
             return null;
         }
 
-        return null;
+        return $workflowData[$ast->partKind][$ast->name] ?? null;
     }
 
-    /**
-     * The workflow output the current step produced. A workflow-invocation
-     * step records the invoked workflow's outputs on the step result, and the
-     * step's own `outputs` map is evaluated against that same record.
-     */
-    private function resolveOutputRef(OutputRef $ast, EvaluationInputInterface $context): mixed
+    private function component(ComponentRef $ast, EvaluationInputInterface $context): mixed
     {
-        $stepId = $context->getCurrentStepId();
-        $stepData = $stepId !== null ? ($context->getWorkflowContext()->getSteps()[$stepId] ?? null) : null;
-        $output = is_array($stepData) ? ($this->mapOrEmpty($stepData, 'outputs')[$ast->name] ?? null) : null;
-
-        return $this->withPointer($output, $ast->jsonPointer);
-    }
-
-    /**
-     * Apply an optional `#/json-pointer` suffix to a value. An absent or empty
-     * pointer is the value itself (RFC 6901 §3); a non-empty pointer addresses
-     * structure, so a scalar value yields null.
-     */
-    private function withPointer(mixed $value, ?string $pointer): mixed
-    {
-        if ($pointer === null || $pointer === '') {
-            return $value;
+        if ($ast->type !== 'parameters') {
+            return null;
         }
 
-        return is_array($value) ? $this->jsonPointer->resolve($value, $pointer) : null;
+        $components = $context->getWorkflowContext()->getComponents();
+
+        return $this->values->map($components, 'parameters')[$ast->name] ?? null;
     }
 
-    /**
-     * Resolve a pointer against an HTTP body. Without a pointer the historical
-     * shape is kept: an array body, otherwise an empty array.
-     */
-    private function resolveBody(mixed $body, ?string $pointer): mixed
+    private function source(SourceRef $ast, EvaluationInputInterface $context): mixed
     {
-        // Bodies are not always JSON: XPath criteria read XML strings through
-        // `context: $response.body`, and text payloads are first-class too. A
-        // pointerless reference is the body itself; only a pointer addresses
-        // structure (and a non-empty pointer on a scalar still yields null).
-        return $pointer === null ? $body : $this->withPointer($body, $pointer);
-    }
+        $document = $context->getDocument();
+        if ($document === null) {
+            return null;
+        }
 
-    /**
-     * @param  array<array-key, mixed>  $data
-     * @return array<array-key, mixed>
-     */
-    private function mapOrEmpty(array $data, string $key): array
-    {
-        $value = $data[$key] ?? [];
+        foreach ($document->sourceDescriptions as $sourceDesc) {
+            if ($sourceDesc->name !== $ast->name) {
+                continue;
+            }
 
-        return is_array($value) ? $value : [];
+            return match ($ast->subPath) {
+                'url' => $sourceDesc->url,
+                'type' => $sourceDesc->type->value,
+                default => null,
+            };
+        }
+
+        return null;
     }
 
     /**
@@ -242,6 +112,6 @@ final class ExpressionEvaluator
      */
     public function jsonPointer(array $data, ?string $pointer): mixed
     {
-        return $this->jsonPointer->resolve($data, $pointer);
+        return $this->values->pointer($data, $pointer);
     }
 }
