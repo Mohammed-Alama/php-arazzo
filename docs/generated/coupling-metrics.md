@@ -31,7 +31,7 @@ targets. Regenerated before every commit.
 | `evaluation:Condition` | 10 | 644 | 1 | 6 | 0.86 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
-| `evaluation:Plugins` | 2 | 123 | 1 | 3 | 0.75 |  |
+| `evaluation:Plugins` | 2 | 117 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
 | `(evaluation root)` | 5 | 616 | 7 | 7 | 0.50 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
