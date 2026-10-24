@@ -64,7 +64,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `StepTimeoutRequires11Rule` <small>core</small> | `error` | 2 |
 | `StepUniqueIdRule` <small>core</small> | `error` | 1 |
 | `SubWorkflowInvokeTargetResolvesRule` <small>core</small> | `error` | 1 |
-| `SuccessCriteriaVersionSupportedRule` <small>core</small> | `error` | 1 |
+| `SuccessCriteriaVersionSupportedRule` <small>core</small> | `error` | 2 |
 | `WorkflowAtLeastOneRule` <small>core</small> | `error` | 1 |
 | `WorkflowDependsOnExistsRule` <small>core</small> | `error` | 1 |
 | `WorkflowDependsOnNoCycleRule` <small>core</small> | `error` | 1 |
@@ -74,7 +74,7 @@ _No catalog found (LedgerAppendingListener not found)._
 | `WsdlStepRule` <small>core</small> | `error` | 3 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 
-84 logging calls total. PSR-14 events are dispatched independently (see events.md).
+85 logging calls total. PSR-14 events are dispatched independently (see events.md).
 
 ## Persistence adapters
 

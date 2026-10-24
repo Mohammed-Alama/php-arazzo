@@ -125,7 +125,7 @@ final readonly class RuleSet
             new StepSuccessCriteriaConditionRule(),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),
-            new SuccessCriteriaVersionSupportedRule(),
+            new SuccessCriteriaVersionSupportedRule($engine->supportedXPathVersions()),
             new WorkflowAtLeastOneRule(),
             new WorkflowDependsOnExistsRule(),
             new WorkflowDependsOnNoCycleRule(),

@@ -34,7 +34,7 @@ workflows:
             condition: //ListCustomersResponse
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           totalCount:
             context: $response.body

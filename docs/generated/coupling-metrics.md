@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
 | `document:Parser` | 11 | 1317 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 68 | 3453 | 6 | 5 | 0.45 |  |
+| `document:Validator` | 68 | 3480 | 6 | 5 | 0.45 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
@@ -33,7 +33,7 @@ targets. Regenerated before every commit.
 | `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
 | `evaluation:Plugins` | 2 | 117 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 5 | 616 | 7 | 7 | 0.50 |  |
+| `(evaluation root)` | 5 | 620 | 7 | 7 | 0.50 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
