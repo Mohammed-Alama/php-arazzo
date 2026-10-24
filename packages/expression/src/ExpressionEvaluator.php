@@ -12,6 +12,7 @@ use Alama\Arazzo\Expression\Ast\InputPart;
 use Alama\Arazzo\Expression\Ast\InputRef;
 use Alama\Arazzo\Expression\Ast\MessageRef;
 use Alama\Arazzo\Expression\Ast\OutputPart;
+use Alama\Arazzo\Expression\Ast\OutputRef;
 use Alama\Arazzo\Expression\Ast\RequestPart;
 use Alama\Arazzo\Expression\Ast\ResponsePart;
 use Alama\Arazzo\Expression\Ast\SelfRef;
@@ -45,6 +46,10 @@ final class ExpressionEvaluator
             return $ast->jsonPointer !== null && (is_array($value) || $value === null)
                 ? $this->jsonPointer->resolve(is_array($value) ? $value : [], $ast->jsonPointer)
                 : $value;
+        }
+
+        if ($ast instanceof OutputRef) {
+            return $this->resolveOutputRef($ast, $context);
         }
 
         if ($ast instanceof HttpMetaRef) {
@@ -182,6 +187,22 @@ final class ExpressionEvaluator
         }
 
         return null;
+    }
+
+    /**
+     * The workflow output the current step produced. A workflow-invocation
+     * step records the invoked workflow's outputs on the step result, and the
+     * step's own `outputs` map is evaluated against that same record.
+     */
+    private function resolveOutputRef(OutputRef $ast, EvaluationInputInterface $context): mixed
+    {
+        $stepId = $context->getCurrentStepId();
+        $stepData = $stepId !== null ? ($context->getWorkflowContext()->getSteps()[$stepId] ?? null) : null;
+        $output = is_array($stepData) ? ($this->mapOrEmpty($stepData, 'outputs')[$ast->name] ?? null) : null;
+
+        return $ast->jsonPointer !== null && (is_array($output) || $output === null)
+            ? $this->jsonPointer->resolve(is_array($output) ? $output : [], $ast->jsonPointer)
+            : $output;
     }
 
     /**

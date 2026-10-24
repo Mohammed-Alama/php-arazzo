@@ -225,6 +225,26 @@ it('resolves json pointer suffixes on inputs and outputs (1.1)', function () {
         ->toBe('a@b.c');
 });
 
+it('resolves $outputs.name to the output the current step produced (1.1)', function () {
+    // The official OAI corpus uses this form in a workflow-invocation step:
+    //   outputs: { my_order_id: $outputs.workflow_order_id }
+    // The invoked workflow's outputs reach the step result, which is where this
+    // reference reads them (the async runner records them before step outputs
+    // are evaluated).
+    $context = (new WorkflowContext('def_1'))->withStepResult('place-order', [
+        'outputs' => ['workflow_order_id' => ['id' => 'ord_7', 'status' => 'placed']],
+    ]);
+
+    $evaluator = evaluator();
+    $ctx = new EvaluationContext($context, 'place-order');
+
+    expect($evaluator->evaluate(new Expression('{$outputs.workflow_order_id}'), $ctx))
+        ->toBe(['id' => 'ord_7', 'status' => 'placed'])
+        ->and($evaluator->evaluate(new Expression('{$outputs.workflow_order_id#/id}'), $ctx))->toBe('ord_7')
+        ->and($evaluator->evaluate(new Expression('{$outputs.missing}'), $ctx))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$outputs.missing#/id}'), $ctx))->toBeNull();
+});
+
 it('resolves $message.header and $message.payload against the current step response (1.1)', function () {
     $context = (new WorkflowContext('def_1'))->withStepResponse('consume', [
         'statusCode' => 200,
