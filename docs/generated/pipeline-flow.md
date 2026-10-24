@@ -65,6 +65,7 @@ flowchart TD
     Alama_Arazzo_Runner_Execution_Data_RunControlFlow --> Alama_Arazzo_Runner_Sync_WorkflowEngine
     Alama_Arazzo_Runner_Sync_ExecutionGraphFactory --> Alama_Arazzo_Runner_Execution_OperationRuntime
     Alama_Arazzo_Runner_Sync_ExecutionGraphFactory --> Alama_Arazzo_Runner_Sync_StepExecutor
+    Alama_Arazzo_Runner_Sync_ExecutionGraphFactory --> Alama_Arazzo_Runner_Sync_SubWorkflowStepExecutor
     Alama_Arazzo_Runner_Sync_ExecutionGraphFactory --> Alama_Arazzo_Runner_Sync_WorkflowEngine
     Alama_Arazzo_Runner_Sync_ExecutionGraphFactory --> Alama_Arazzo_Runner_Sync_WorkflowExecutor
     Alama_Arazzo_Runner_Sync_SubWorkflowStepExecutor --> Alama_Arazzo_Runner_Sync_WorkflowExecutor
@@ -94,8 +95,8 @@ flowchart TD
 | **StepResult** | runner | — | `WorkflowExecutor` | — |
 | **SubWorkflowResult** | runner | — | `SubWorkflowInvoker` | — |
 | **OperationRuntime** | runner | — | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
-| **ExecutionGraphFactory** | runner | `OperationRuntime`, `StepExecutor`, `WorkflowEngine`, `WorkflowExecutor` | — | — |
+| **ExecutionGraphFactory** | runner | `OperationRuntime`, `StepExecutor`, `SubWorkflowStepExecutor`, `WorkflowEngine`, `WorkflowExecutor` | — | — |
 | **StepExecutor** | runner | — | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory`, `WorkflowExecutor` | — |
-| **SubWorkflowStepExecutor** | runner | `WorkflowExecutor` | `AsyncExecutionGraphAssembler` | — |
+| **SubWorkflowStepExecutor** | runner | `WorkflowExecutor` | `AsyncExecutionGraphAssembler`, `ExecutionGraphFactory` | — |
 | **WorkflowEngine** | runner | — | `AsyncExecutionGraphAssembler`, `StepExecutionWorker`, `StepOutcomeHandler`, `RunControlFlow`, `ExecutionGraphFactory`, `WorkflowExecutor` | — |
 | **WorkflowExecutor** | runner | `ExecutionResult`, `StepResult`, `StepExecutor`, `WorkflowEngine` | `AsyncExecutionGraphAssembler`, `SubWorkflowInvoker`, `ExecutionGraphFactory`, `SubWorkflowStepExecutor` | — |

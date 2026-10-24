@@ -11,6 +11,7 @@ use Alama\Arazzo\Engine\Exceptions\ExecutionException;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
+use Alama\Arazzo\Runner\OperationExecutorRegistry;
 
 /**
  * Assembles the runner execution graph.
@@ -33,7 +34,7 @@ final class ExecutionGraphFactory
         private readonly ?ResponseValidatorInterface $schemaValidator = null,
     ) {}
 
-    public function createWorkflowExecutor(): WorkflowExecutor
+    public function createWorkflowExecutor(?OperationExecutorRegistry $executors = null): WorkflowExecutor
     {
         $openApiExecutor = $this->openApiExecutor
             ?? throw new ExecutionException('No HTTP/OpenAPI executor configured; register alama/arazzo-protocol-http (Phase F1).');
@@ -42,16 +43,30 @@ final class ExecutionGraphFactory
         $schemaValidator = $this->schemaValidator
             ?? throw new ExecutionException('No response validator configured; register alama/arazzo-protocol-http (Phase F1).');
 
-        return new WorkflowExecutor(
-            new StepExecutor(
-                $openApiExecutor,
-                $this->operations->resolver,
-                $this->evaluationEngine,
-                $outputExtractor,
-                $schemaValidator,
-            ),
+        // Runner-native plugins go through the same first-supports()-wins
+        // registry the async assembler uses; the host's protocol executors stay
+        // on the constructor seam for this facade.
+        $executors ??= new OperationExecutorRegistry();
+
+        $stepExecutor = new StepExecutor(
+            $openApiExecutor,
+            $this->operations->resolver,
+            $this->evaluationEngine,
+            $outputExtractor,
+            $schemaValidator,
+            executors: $executors,
+        );
+
+        $workflowExecutor = new WorkflowExecutor(
+            $stepExecutor,
             workflowEngine: new WorkflowEngine($this->evaluationEngine),
             preflight: $this->operations->document,
         );
+
+        // The sub-workflow executor wraps THIS graph's WorkflowExecutor, so it
+        // is registered after construction, exactly like the async assembly.
+        $executors->register(new SubWorkflowStepExecutor($workflowExecutor, $this->evaluationEngine));
+
+        return $workflowExecutor;
     }
 }

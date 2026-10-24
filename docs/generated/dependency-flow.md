@@ -188,13 +188,13 @@ runner-Interfaces,contracts-Interfaces,1
 runner-Interfaces,contracts-Spec,2
 runner-Sync,contracts-Dependency,1
 runner-Sync,contracts-Exceptions,2
-runner-Sync,contracts-Interfaces,6
+runner-Sync,contracts-Interfaces,7
 runner-Sync,contracts-Spec,24
 runner-Sync,contracts-State,5
 runner-Sync,contracts-Support,2
 runner-Sync,document-Validator,2
 runner-Sync,document-root,2
-runner-Sync,engine-Exceptions,2
+runner-Sync,engine-Exceptions,3
 runner-Sync,engine-Execution,4
 runner-Sync,evaluation-root,4
 runner-Sync,events-root,7
@@ -260,3 +260,4 @@ These references exist in the code but are not drawn: drawing them would close a
 | `expression-Data` | `expression-Interfaces` | 1 |
 | `runner-Async` | `runner-root` | 4 |
 | `runner-Execution` | `runner-Sync` | 1 |
+| `runner-Sync` | `runner-root` | 2 |
