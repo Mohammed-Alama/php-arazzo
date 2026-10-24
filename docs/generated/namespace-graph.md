@@ -205,10 +205,11 @@ flowchart LR
     runner_Sync --> contracts_Exceptions
     runner_Sync --> contracts_Interfaces
     runner_Sync --> contracts_Support
+    runner_Sync --> engine_Exceptions
     runner_Sync --> engine_Execution
+    runner_Sync --> runner__
     runner_Sync --> sources_Normalizer
     runner_Sync --> document__
-    runner_Sync --> engine_Exceptions
     runner_Sync --> document_Validator
     runner_Sync --> events__
     runner__ --> contracts_Interfaces
