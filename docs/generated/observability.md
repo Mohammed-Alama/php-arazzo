@@ -67,11 +67,11 @@ _No catalog found (LedgerAppendingListener not found)._
 | `SuccessCriteriaVersionSupportedRule` <small>core</small> | `error` | 2 |
 | `WorkflowAtLeastOneRule` <small>core</small> | `error` | 1 |
 | `WorkflowDependsOnExistsRule` <small>core</small> | `error` | 1 |
-| `WorkflowDependsOnNoCycleRule` <small>core</small> | `error` | 1 |
 | `WorkflowIdPatternRule` <small>core</small> | `error` | 1 |
 | `WorkflowInputsValidSchemaRule` <small>core</small> | `error` | 3 |
 | `WorkflowUniqueIdRule` <small>core</small> | `error` | 1 |
 | `WsdlStepRule` <small>core</small> | `error` | 3 |
+| `WorkflowDependencyCycleWalker` <small>core</small> | `error` | 1 |
 | `DatabaseEventLedger` <small>laravel</small> | `warning` | 1 |
 
 85 logging calls total. PSR-14 events are dispatched independently (see events.md).

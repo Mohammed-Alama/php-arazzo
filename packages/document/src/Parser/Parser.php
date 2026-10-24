@@ -43,9 +43,20 @@ use Alama\Arazzo\Document\Parser\Exceptions\ParserException;
 use InvalidArgumentException;
 
 /**
+ * Recursive-descent parser for the Arazzo document grammar.
+ *
+ * PHPMD's TooManyMethods, ExcessiveClassComplexity and CouplingBetweenObjects
+ * findings stay above the default thresholds here, deliberately: the class is
+ * one pass over one specification, so its methods are the grammar's
+ * productions, its complexity is their branch count, and its coupling is the
+ * model vocabulary each production constructs. Splitting productions across
+ * objects would share the cursor and ParseContext without removing a decision.
+ * Field reads and their JSON type checks live in FieldParser, which this class
+ * extends. The per-method findings are fixed, not waived (#257).
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-class Parser
+class Parser extends FieldParser
 {
     public function parse(RawDocument $raw): ArazzoDocument
     {
@@ -106,34 +117,6 @@ class Parser
         );
     }
 
-    /** @param array<string,mixed> $arr */
-    protected function requireString(array $arr, string $key, ParseContext $ctx): string
-    {
-        if (!array_key_exists($key, $arr)) {
-            throw ParserException::missingField($ctx, $key);
-        }
-        $v = $arr[$key];
-        if (!is_string($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'string', $v);
-        }
-
-        return $v;
-    }
-
-    /** @param array<string,mixed> $arr */
-    protected function optionalString(array $arr, string $key, ParseContext $ctx): ?string
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_string($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'string', $v);
-        }
-
-        return $v;
-    }
-
     protected function parseInfo(mixed $node, ParseContext $ctx): Info
     {
         $obj = $this->requireObjectMap($node, $ctx);
@@ -144,27 +127,6 @@ class Parser
             description: $this->optionalString($obj, 'description', $ctx),
             version: $this->requireString($obj, 'version', $ctx),
         );
-    }
-
-    /** @return array<string,mixed> */
-    protected function requireObjectMap(mixed $node, ParseContext $ctx): array
-    {
-        if (!is_array($node) || (array_is_list($node) && $node !== [])) {
-            throw ParserException::wrongType($ctx, 'object', $node);
-        }
-
-        /** @var array<string,mixed> $node */
-        return $node;
-    }
-
-    /** @return list<mixed> */
-    protected function requireList(mixed $node, ParseContext $ctx): array
-    {
-        if (!is_array($node) || (!empty($node) && !array_is_list($node))) {
-            throw ParserException::wrongType($ctx, 'list', $node);
-        }
-
-        return $node;
     }
 
     protected function parseSourceDescription(mixed $node, ParseContext $ctx): SourceDescription
@@ -201,35 +163,17 @@ class Parser
             }
         }
 
-        $steps = [];
         if (!array_key_exists('steps', $obj)) {
             throw ParserException::missingField($ctx, 'steps');
         }
-        $rawSteps = $this->requireList($obj['steps'], $ctx->push('steps'));
-        foreach ($rawSteps as $i => $item) {
+        $steps = [];
+        foreach ($this->requireList($obj['steps'], $ctx->push('steps')) as $i => $item) {
             $steps[] = $this->parseStep($item, $ctx->push('steps')->push($i));
         }
 
-        $successActions = [];
-        if (($s = $this->optionalList($obj, 'successActions', $ctx)) !== null) {
-            foreach ($s as $i => $item) {
-                $successActions[] = $this->parseSuccessAction($item, $ctx->push('successActions')->push($i));
-            }
-        }
-
-        $failureActions = [];
-        if (($f = $this->optionalList($obj, 'failureActions', $ctx)) !== null) {
-            foreach ($f as $i => $item) {
-                $failureActions[] = $this->parseFailureAction($item, $ctx->push('failureActions')->push($i));
-            }
-        }
-
-        $parameters = [];
-        if (($p = $this->optionalList($obj, 'parameters', $ctx)) !== null) {
-            foreach ($p as $i => $item) {
-                $parameters[] = $this->parseParameter($item, $ctx->push('parameters')->push($i));
-            }
-        }
+        $successActions = $this->parseOptionalListOf($obj, 'successActions', $ctx, $this->parseSuccessAction(...));
+        $failureActions = $this->parseOptionalListOf($obj, 'failureActions', $ctx, $this->parseFailureAction(...));
+        $parameters = $this->parseOptionalListOf($obj, 'parameters', $ctx, $this->parseParameter(...));
 
         $outputs = [];
         if (array_key_exists('outputs', $obj) && $obj['outputs'] !== null) {
@@ -252,33 +196,28 @@ class Parser
     }
 
     /**
-     * @param  array<string,mixed>  $arr
-     * @return array<int|string,mixed>|null
+     * Parse an optional list field into a list, preserving the original field
+     * order and pointer in any error it raises.
+     *
+     * @template T
+     *
+     * @param  array<string,mixed>  $obj
+     * @param  callable(mixed, ParseContext): T  $parse
+     * @return list<T>
      */
-    protected function optionalArray(array $arr, string $key, ParseContext $ctx): ?array
+    private function parseOptionalListOf(array $obj, string $key, ParseContext $ctx, callable $parse): array
     {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_array($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'array', $v);
+        $items = $this->optionalList($obj, $key, $ctx);
+        if ($items === null) {
+            return [];
         }
 
-        return $v;
-    }
-
-    /**
-     * @param  array<string,mixed>  $arr
-     * @return list<mixed>|null
-     */
-    protected function optionalList(array $arr, string $key, ParseContext $ctx): ?array
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
+        $parsed = [];
+        foreach ($items as $i => $item) {
+            $parsed[] = $parse($item, $ctx->push($key)->push($i));
         }
 
-        return $this->requireList($arr[$key], $ctx->push($key));
+        return $parsed;
     }
 
     protected function parseStep(mixed $node, ParseContext $ctx): Step
@@ -308,19 +247,9 @@ class Parser
         $workflowId = $this->optionalString($obj, 'workflowId', $ctx);
         $operationName = $this->optionalString($obj, 'operationName', $ctx);
         $rpcMethod = $this->optionalString($obj, 'rpcMethod', $ctx);
-        $rpcProtocolRaw = $this->optionalString($obj, 'rpcProtocol', $ctx);
-        $rpcProtocol = $rpcProtocolRaw !== null ? RpcProtocol::tryFrom($rpcProtocolRaw) : null;
-        if ($rpcProtocolRaw !== null && $rpcProtocol === null) {
-            throw ParserException::invalidEnum($ctx->push('rpcProtocol'), 'grpc|grpc-web|twirp|connect', $rpcProtocolRaw);
-        }
-        $graphqlOperation = null;
-        if (array_key_exists('graphqlOperation', $obj) && $obj['graphqlOperation'] !== null) {
-            $graphqlOperation = $this->parseGraphQlOperation($obj['graphqlOperation'], $ctx->push('graphqlOperation'));
-        }
-        $interaction = null;
-        if (array_key_exists('interaction', $obj) && $obj['interaction'] !== null) {
-            $interaction = $this->parseInteraction($obj['interaction'], $ctx->push('interaction'));
-        }
+        $rpcProtocol = $this->parseRpcProtocol($obj, $ctx);
+        $graphqlOperation = $this->parseOptionalNode($obj, 'graphqlOperation', $ctx, $this->parseGraphQlOperation(...));
+        $interaction = $this->parseOptionalNode($obj, 'interaction', $ctx, $this->parseInteraction(...));
 
         return match (true) {
             $workflowId !== null => StepTarget::workflow($workflowId),
@@ -346,6 +275,41 @@ class Parser
                 interaction: $interaction,
             ),
         };
+    }
+
+    /** @param array<string,mixed> $obj */
+    private function parseRpcProtocol(array $obj, ParseContext $ctx): ?RpcProtocol
+    {
+        $raw = $this->optionalString($obj, 'rpcProtocol', $ctx);
+        if ($raw === null) {
+            return null;
+        }
+
+        $protocol = RpcProtocol::tryFrom($raw);
+        if ($protocol === null) {
+            throw ParserException::invalidEnum($ctx->push('rpcProtocol'), 'grpc|grpc-web|twirp|connect', $raw);
+        }
+
+        return $protocol;
+    }
+
+    /**
+     * Parse an optional sub-node through `$parse`, keeping the field's pointer
+     * as the context for any error it raises.
+     *
+     * @template T
+     *
+     * @param  array<string,mixed>  $obj
+     * @param  callable(mixed, ParseContext): T  $parse
+     * @return T|null
+     */
+    private function parseOptionalNode(array $obj, string $key, ParseContext $ctx, callable $parse): mixed
+    {
+        if (!array_key_exists($key, $obj) || $obj[$key] === null) {
+            return null;
+        }
+
+        return $parse($obj[$key], $ctx->push($key));
     }
 
     private function parseGraphQlOperation(mixed $node, ParseContext $ctx): GraphQlOperation
@@ -506,34 +470,49 @@ class Parser
     /**
      * @return Expression|Selector|scalar|array<mixed>|null
      */
-    private function parseValueOrSelector(mixed $value, ParseContext $ctx, bool $forceStringExpression = false): mixed
+    private function parseValueOrSelector(mixed $value, ParseContext $ctx, bool $forceExpression = false): mixed
     {
         if (is_string($value)) {
-            if ($forceStringExpression || preg_match('/^\{\$.+\}$/', $value) === 1) {
-                return new Expression($value);
-            }
-
-            return $value;
-        }
-
-        if (is_array($value) && array_key_exists('selector', $value) && array_key_exists('type', $value)) {
-            return $this->parseSelector($value, $ctx);
+            return $forceExpression || preg_match('/^\{\$.+\}$/', $value) === 1
+                ? new Expression($value)
+                : $value;
         }
 
         if (is_array($value)) {
-            $parsed = [];
-            foreach ($value as $k => $v) {
-                $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k), $forceStringExpression);
+            if (array_key_exists('selector', $value) && array_key_exists('type', $value)) {
+                return $this->parseSelector($value, $ctx);
             }
 
-            return $parsed;
+            return $this->parseValueMapping($value, $ctx, $forceExpression);
         }
 
-        if (is_bool($value) || is_int($value) || is_float($value) || $value === null) {
+        if ($this->isScalarValue($value)) {
             return $value;
         }
 
         throw ParserException::wrongType($ctx, 'scalar, map, selector or expression', $value);
+    }
+
+    /**
+     * @param  array<array-key,mixed>  $value
+     * @return array<array-key,mixed>
+     */
+    private function parseValueMapping(array $value, ParseContext $ctx, bool $forceExpression): array
+    {
+        $parsed = [];
+        foreach ($value as $k => $v) {
+            $parsed[$k] = $this->parseValueOrSelector($v, $ctx->push((string) $k), $forceExpression);
+        }
+
+        return $parsed;
+    }
+
+    /**
+     * @phpstan-assert-if-true scalar|null $value
+     */
+    private function isScalarValue(mixed $value): bool
+    {
+        return is_bool($value) || is_int($value) || is_float($value) || $value === null;
     }
 
     private function parseSelector(mixed $node, ParseContext $ctx): Selector
@@ -794,34 +773,6 @@ class Parser
         };
     }
 
-    /** @param array<string,mixed> $arr */
-    protected function optionalNumber(array $arr, string $key, ParseContext $ctx): int|float|null
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_int($v) && !is_float($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'number', $v);
-        }
-
-        return $v;
-    }
-
-    /** @param array<string,mixed> $arr */
-    protected function optionalInt(array $arr, string $key, ParseContext $ctx): ?int
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_int($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'int', $v);
-        }
-
-        return $v;
-    }
-
     /**
      * @param  array<string,mixed>  $d
      * @param  list<SuccessCriterion>  $criteria
@@ -853,20 +804,6 @@ class Parser
         return $out;
     }
 
-    /** @param array<string,mixed> $arr */
-    protected function optionalBool(array $arr, string $key, ParseContext $ctx): ?bool
-    {
-        if (!array_key_exists($key, $arr) || $arr[$key] === null) {
-            return null;
-        }
-        $v = $arr[$key];
-        if (!is_bool($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'bool', $v);
-        }
-
-        return $v;
-    }
-
     protected function parseComponents(mixed $node, ParseContext $ctx): Components
     {
         if ($node === null) {
@@ -874,90 +811,116 @@ class Parser
         }
         $obj = $this->requireObjectMap($node, $ctx);
 
-        $inputs = [];
-        if (($i = $this->optionalArray($obj, 'inputs', $ctx)) !== null) {
-            foreach ($i as $k => $v) {
-                if (!is_array($v)) {
-                    throw ParserException::wrongType(
-                        $ctx->push('inputs')->push((string) $k), 'object (JSON Schema)', $v,
-                    );
-                }
-                /** @var array<string,mixed> $v */
-                $inputs[(string) $k] = $v;
-            }
-        }
-
-        $parameters = [];
-        if (($p = $this->optionalArray($obj, 'parameters', $ctx)) !== null) {
-            foreach ($p as $k => $v) {
-                $parsed = $this->parseParameter($v, $ctx->push('parameters')->push((string) $k));
-                if ($parsed instanceof Reusable) {
-                    throw ParserException::wrongType(
-                        $ctx->push('parameters')->push((string) $k),
-                        'parameter (not a reusable ref)', $v,
-                    );
-                }
-                $parameters[(string) $k] = $parsed;
-            }
-        }
-
-        $successActions = [];
-        if (($s = $this->optionalArray($obj, 'successActions', $ctx)) !== null) {
-            foreach ($s as $k => $v) {
-                $parsed = $this->parseSuccessAction($v, $ctx->push('successActions')->push((string) $k));
-                if ($parsed instanceof Reusable) {
-                    throw ParserException::wrongType(
-                        $ctx->push('successActions')->push((string) $k),
-                        'action (not a reusable ref)', $v,
-                    );
-                }
-                $successActions[(string) $k] = $parsed;
-            }
-        }
-
-        $failureActions = [];
-        if (($f = $this->optionalArray($obj, 'failureActions', $ctx)) !== null) {
-            foreach ($f as $k => $v) {
-                $parsed = $this->parseFailureAction($v, $ctx->push('failureActions')->push((string) $k));
-                if ($parsed instanceof Reusable) {
-                    throw ParserException::wrongType(
-                        $ctx->push('failureActions')->push((string) $k),
-                        'action (not a reusable ref)', $v,
-                    );
-                }
-                $failureActions[(string) $k] = $parsed;
-            }
-        }
-
-        $interactions = [];
-        if (($i = $this->optionalArray($obj, 'interactions', $ctx)) !== null) {
-            foreach ($i as $k => $v) {
-                if (!is_array($v)) {
-                    throw ParserException::wrongType(
-                        $ctx->push('interactions')->push((string) $k), 'object', $v,
-                    );
-                }
-                $interactions[(string) $k] = $this->parseInteraction($v, $ctx->push('interactions')->push((string) $k));
-            }
-        }
-
-        return new Components($inputs, $parameters, $successActions, $failureActions, $interactions);
+        return new Components(
+            inputs: $this->parseComponentInputs($obj, $ctx),
+            parameters: $this->parseComponentParameters($obj, $ctx),
+            successActions: $this->parseComponentActions($obj, 'successActions', $ctx, $this->parseSuccessAction(...)),
+            failureActions: $this->parseComponentActions($obj, 'failureActions', $ctx, $this->parseFailureAction(...)),
+            interactions: $this->parseComponentInteractions($obj, $ctx),
+        );
     }
 
     /**
-     * @param  array<string,mixed>  $arr
-     * @return array<int|string,mixed>
+     * @param  array<string,mixed>  $obj
+     * @return array<string,array<string,mixed>>
      */
-    protected function requireArray(array $arr, string $key, ParseContext $ctx): array
+    private function parseComponentInputs(array $obj, ParseContext $ctx): array
     {
-        if (!array_key_exists($key, $arr)) {
-            throw ParserException::missingField($ctx, $key);
-        }
-        $v = $arr[$key];
-        if (!is_array($v)) {
-            throw ParserException::wrongType($ctx->push($key), 'array', $v);
+        $items = $this->optionalArray($obj, 'inputs', $ctx);
+        if ($items === null) {
+            return [];
         }
 
-        return $v;
+        $inputs = [];
+        foreach ($items as $k => $v) {
+            if (!is_array($v)) {
+                throw ParserException::wrongType(
+                    $ctx->push('inputs')->push((string) $k), 'object (JSON Schema)', $v,
+                );
+            }
+            /** @var array<string,mixed> $v */
+            $inputs[(string) $k] = $v;
+        }
+
+        return $inputs;
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     * @return array<string,Parameter>
+     */
+    private function parseComponentParameters(array $obj, ParseContext $ctx): array
+    {
+        $items = $this->optionalArray($obj, 'parameters', $ctx);
+        if ($items === null) {
+            return [];
+        }
+
+        $parameters = [];
+        foreach ($items as $k => $v) {
+            $parsed = $this->parseParameter($v, $ctx->push('parameters')->push((string) $k));
+            if ($parsed instanceof Reusable) {
+                throw ParserException::wrongType(
+                    $ctx->push('parameters')->push((string) $k),
+                    'parameter (not a reusable ref)', $v,
+                );
+            }
+            $parameters[(string) $k] = $parsed;
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * @template T of SuccessAction|FailureAction
+     *
+     * @param  array<string,mixed>  $obj
+     * @param  callable(mixed, ParseContext): (T|Reusable)  $parse
+     * @return array<string,T>
+     */
+    private function parseComponentActions(array $obj, string $key, ParseContext $ctx, callable $parse): array
+    {
+        $items = $this->optionalArray($obj, $key, $ctx);
+        if ($items === null) {
+            return [];
+        }
+
+        $parsed = [];
+        foreach ($items as $k => $v) {
+            $action = $parse($v, $ctx->push($key)->push((string) $k));
+            if ($action instanceof Reusable) {
+                throw ParserException::wrongType(
+                    $ctx->push($key)->push((string) $k),
+                    'action (not a reusable ref)', $v,
+                );
+            }
+            $parsed[(string) $k] = $action;
+        }
+
+        return $parsed;
+    }
+
+    /**
+     * @param  array<string,mixed>  $obj
+     * @return array<string,Interaction>
+     */
+    private function parseComponentInteractions(array $obj, ParseContext $ctx): array
+    {
+        $items = $this->optionalArray($obj, 'interactions', $ctx);
+        if ($items === null) {
+            return [];
+        }
+
+        $interactions = [];
+        foreach ($items as $k => $v) {
+            if (!is_array($v)) {
+                throw ParserException::wrongType(
+                    $ctx->push('interactions')->push((string) $k), 'object', $v,
+                );
+            }
+            $interactions[(string) $k] = $this->parseInteraction($v, $ctx->push('interactions')->push((string) $k));
+        }
+
+        return $interactions;
     }
 }

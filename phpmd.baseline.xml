@@ -20,31 +20,10 @@
   <violation rule="PHPMD\Rule\Design\TooManyMethods" file="packages/document/src/Parser/Parser.php"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveClassComplexity" file="packages/document/src/Parser/Parser.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Parser/Parser.php"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseWorkflow"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Parser/Parser.php" method="parseWorkflow"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseStepTarget"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Parser/Parser.php" method="parseStepTarget"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseValueOrSelector"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Parser/Parser.php" method="parseValueOrSelector"/>
-  <violation rule="PHPMD\Rule\Naming\LongVariable" file="packages/document/src/Parser/Parser.php"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Parser/Parser.php" method="parseComponents"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Parser/Parser.php" method="parseComponents"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Data/SymbolTable.php"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/document/src/Validator/RuleSet.php"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/DocUnknownFieldRule.php"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/ExpressionUnresolvedStepRefRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Validator/Rules/ExpressionUnresolvedStepRefRule.php" method="check"/>
   <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/ExtensionsXPrefixRule.php"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/InteractionStepRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Validator/Rules/InteractionStepRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/SelectorTypeSupportedRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Validator/Rules/SelectorTypeSupportedRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/SubWorkflowInvokeTargetResolvesRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Rules/WorkflowDependsOnNoCycleRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Validator/Rules/WorkflowDependsOnNoCycleRule.php" method="check"/>
-  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="packages/document/src/Validator/Rules/WorkflowDependsOnNoCycleRule.php"/>
-  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/document/src/Validator/Support/ExpressionWalker.php" method="walk"/>
-  <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/document/src/Validator/Support/ExpressionWalker.php" method="walk"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveClassComplexity" file="packages/engine/src/Execution/SchemaValidator.php"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/engine/src/Execution/SchemaValidator.php" method="validate"/>
   <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/engine/src/Execution/SchemaValidator.php" method="validate"/>

@@ -21,8 +21,8 @@ flowchart LR
         S_cli_Console["cli:Console<br/><small>932 LOC</small>"]:::supportingDomain
         S_cli_Generator["cli:Generator<br/><small>141 LOC</small>"]:::supportingDomain
         S_cli_Renderer["cli:Renderer<br/><small>255 LOC</small>"]:::supportingDomain
-        S_document_Parser["document:Parser<br/><small>1328 LOC</small>"]:::supportingDomain
-        S_document_Validator["document:Validator<br/><small>3548 LOC</small>"]:::supportingDomain
+        S_document_Parser["document:Parser<br/><small>1449 LOC</small>"]:::supportingDomain
+        S_document_Validator["document:Validator<br/><small>3726 LOC</small>"]:::supportingDomain
         S_sources_Resolver["sources:Resolver<br/><small>490 LOC</small>"]:::supportingDomain
         S_sources_Validator["sources:Validator<br/><small>303 LOC</small>"]:::supportingDomain
     end
@@ -79,7 +79,7 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
-| Supporting | 7 | 6,997 | 0 | 35% |
+| Supporting | 7 | 7,296 | 0 | 36% |
 | Generic subdomain | 11 | 2,013 | 1,396 | 17% |
 | Unclassified | 29 | 8,507 | 0 | 42% |
 

@@ -110,6 +110,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | From package | Target | In package | Refs | Example site |
 |---|---|---|---:|---|
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
+| `document` | `ExpressionReference` | `expression` | 1 | `ExpressionUnresolvedStepRefRule` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
 | `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
 | `runner` | `CorrelationPendingEvent` | `events` | 2 | `StepExecutionWorker` |

@@ -43,8 +43,9 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,96
+document-Validator,contracts-Spec,102
 document-Validator,contracts-Support,2
+document-Validator,expression-Data,1
 document-Validator,expression-Enum,7
 document-Validator,expression-Interfaces,9
 document-root,contracts-Spec,13

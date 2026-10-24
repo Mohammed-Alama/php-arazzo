@@ -25,7 +25,7 @@ Evans' first question: does the code speak one language?
 
 - **Decoder**: `DecoderInterface`, `DecoderRegistry`, `NativeJsonDecoder`, `SymfonyYamlDecoder` (4 types)
 - **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` + 1 more (5 types)
-- **Parser**: `Parser`, `ParserException` (2 types)
+- **Parser**: `FieldParser`, `Parser`, `ParserException` (3 types)
 
 ### document vs definition vs spec
 
@@ -53,7 +53,7 @@ Evans' first question: does the code speak one language?
 
 - **Flow**: `RunControlFlow`, `StepFlow` (2 types)
 - **Process**: `InProcessExecutionRegistry`, `InProcessPendingCorrelationRegistry` (2 types)
-- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 24 more (28 types)
+- **Workflow**: `ExpressionUnresolvedWorkflowRefRule`, `ListWorkflowsCommand`, `StepNestedWorkflowExistsRule`, `StepNestedWorkflowNoCycleRule` + 25 more (29 types)
 
 ### render vs generate
 

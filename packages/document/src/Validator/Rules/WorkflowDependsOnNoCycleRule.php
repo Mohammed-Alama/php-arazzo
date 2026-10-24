@@ -8,6 +8,7 @@ use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
+use Alama\Arazzo\Document\Validator\Support\WorkflowDependencyCycleWalker;
 
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
@@ -16,59 +17,7 @@ final class WorkflowDependsOnNoCycleRule implements Rule
 {
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
-        /** @var array<string,int> $color 0=white,1=grey,2=black */
-        $color = [];
-        foreach ($doc->workflows as $w) {
-            $color[$w->workflowId] = 0;
-        }
-        $indexOf = [];
-        foreach ($doc->workflows as $i => $w) {
-            $indexOf[$w->workflowId] = $i;
-        }
-
-        $reported = false;
-        $dfs = function (string $node) use (&$dfs, &$color, $symbols, $errors, $indexOf, &$reported): void {
-            if ($reported) {
-                return;
-            }
-            if (!isset($symbols->workflows[$node])) {
-                return;
-            }
-            $color[$node] = 1;
-            foreach ($symbols->workflows[$node]->dependsOn as $next => $_) {
-                if (!isset($color[$next])) {
-                    continue;
-                }
-                if ($color[$next] === 1) {
-                    $i = $indexOf[$node] ?? 0;
-                    $errors->error(
-                        $this->code(),
-                        "workflow.dependsOn cycle detected involving '{$node}' -> '{$next}'.",
-                        "/workflows/{$i}/dependsOn",
-                    );
-                    $reported = true;
-
-                    return;
-                }
-                if ($color[$next] === 0) {
-                    $dfs($next);
-                }
-                /** @phpstan-ignore if.alwaysFalse */
-                if ($reported) {
-                    return;
-                }
-            }
-            $color[$node] = 2;
-        };
-
-        foreach ($doc->workflows as $w) {
-            if (($color[$w->workflowId] ?? 0) === 0) {
-                $dfs($w->workflowId);
-            }
-            if ($reported) {
-                break;
-            }
-        }
+        (new WorkflowDependencyCycleWalker($symbols, $errors, $this->code()))->run($doc);
     }
 
     public function code(): string

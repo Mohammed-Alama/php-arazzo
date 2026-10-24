@@ -36,31 +36,50 @@ final class InteractionStepRule implements Rule
                     continue;
                 }
 
-                $path = "/workflows/{$i}/steps/{$j}";
-
-                // Prompt is required
-                if ($interaction->prompt === null || trim($interaction->prompt) === '') {
-                    $errors->error('step.interaction_step', "Step '{$s->stepId}' interaction requires a prompt.", $path);
-                }
-
-                $mode = $interaction->mode;
-
-                if ($mode === InteractionMode::Form || $mode === InteractionMode::Redirect) {
-                    if ($interaction->inputSchema === null) {
-                        $errors->error('step.interaction_step', "Step '{$s->stepId}' interaction mode {$mode->value} requires inputSchema.", $path);
-                    }
-                }
-
-                if ($mode === InteractionMode::Acknowledge && $interaction->inputSchema !== null) {
-                    $errors->error('step.interaction_step', "Step '{$s->stepId}' interaction mode Acknowledge must not have inputSchema.", $path);
-                }
-
-                if ($mode === InteractionMode::Redirect) {
-                    if (!isset($interaction->redirectOperationId)) {
-                        $errors->error('step.interaction_step', "Step '{$s->stepId}' redirect interaction requires redirectOperationId.", $path);
-                    }
-                }
+                $this->checkInteraction($s->stepId, $interaction, "/workflows/{$i}/steps/{$j}", $errors);
             }
+        }
+    }
+
+    private function checkInteraction(
+        string $stepId,
+        Interaction $interaction,
+        string $path,
+        ErrorCollector $errors,
+    ): void {
+        if ($interaction->prompt === null || trim($interaction->prompt) === '') {
+            $errors->error('step.interaction_step', "Step '{$stepId}' interaction requires a prompt.", $path);
+        }
+
+        $this->checkInputSchema($stepId, $interaction, $path, $errors);
+        $this->checkRedirectTarget($stepId, $interaction, $path, $errors);
+    }
+
+    private function checkInputSchema(
+        string $stepId,
+        Interaction $interaction,
+        string $path,
+        ErrorCollector $errors,
+    ): void {
+        $mode = $interaction->mode;
+
+        if (($mode === InteractionMode::Form || $mode === InteractionMode::Redirect) && $interaction->inputSchema === null) {
+            $errors->error('step.interaction_step', "Step '{$stepId}' interaction mode {$mode->value} requires inputSchema.", $path);
+        }
+
+        if ($mode === InteractionMode::Acknowledge && $interaction->inputSchema !== null) {
+            $errors->error('step.interaction_step', "Step '{$stepId}' interaction mode Acknowledge must not have inputSchema.", $path);
+        }
+    }
+
+    private function checkRedirectTarget(
+        string $stepId,
+        Interaction $interaction,
+        string $path,
+        ErrorCollector $errors,
+    ): void {
+        if ($interaction->mode === InteractionMode::Redirect && !isset($interaction->redirectOperationId)) {
+            $errors->error('step.interaction_step', "Step '{$stepId}' redirect interaction requires redirectOperationId.", $path);
         }
     }
 }
