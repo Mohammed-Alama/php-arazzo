@@ -61,6 +61,15 @@ use Alama\Arazzo\Document\Validator\Rules\WsdlStepRule;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
+ * The default validator rule set: the single place that names every rule and
+ * the engine services each one needs.
+ *
+ * PHPMD's CouplingBetweenObjects finding stays above the default threshold
+ * here, deliberately: this is the composition root, so naming every rule is the
+ * job. Moving the list into a factory or per-domain groups would relocate the
+ * same coupling, and each group would still reference more rules than the
+ * threshold allows. Kept as one readable list (#257).
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class RuleSet

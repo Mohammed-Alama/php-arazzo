@@ -32,8 +32,8 @@ quadrantChart
     contracts/Spec: [0.029, 0.02]
     contracts/State: [0.071, 0]
     contracts/Support: [0, 0.2]
-    document/Parser: [0.222, 0.091]
-    document/Validator: [0.455, 0.015]
+    document/Parser: [0.222, 0.167]
+    document/Validator: [0.5, 0.014]
     document/_: [0.462, 0.333]
     engine/Data: [0.75, 0]
     engine/Enum: [0, 0]
@@ -50,7 +50,7 @@ quadrantChart
     events/Listener: [0.75, 0]
     events/_: [0, 0]
     expression/Ast: [0.5, 0]
-    expression/Data: [0.3, 0]
+    expression/Data: [0.273, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.25, 0]
     expression/Interfaces: [0.2, 1]
@@ -86,7 +86,7 @@ Concrete types over 300 LOC:
 
 | Class | Module | LOC |
 |---|---|---:|
-| `Parser` | `document:Parser` | 964 |
+| `Parser` | `document:Parser` | 927 |
 | `ExecutionContext` | `runtime:State` | 496 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |

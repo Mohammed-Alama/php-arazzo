@@ -6,8 +6,10 @@ namespace Alama\Arazzo\Document\Validator\Rules;
 
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
+use Alama\Arazzo\Contracts\Spec\Parameter;
 use Alama\Arazzo\Contracts\Spec\Reusable;
 use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
@@ -30,53 +32,59 @@ final class SelectorTypeSupportedRule implements Rule
         }
 
         foreach ($doc->workflows as $wi => $wf) {
-            foreach ($wf->parameters as $pi => $p) {
-                if ($p instanceof Reusable) {
-                    continue;
-                }
-
-                if ($p->value instanceof Selector) {
-                    $this->validateSelector($p->value, $errors, "/workflows/{$wi}/parameters/{$pi}/value");
-                }
-            }
+            $this->checkParameters($wf->parameters, "/workflows/{$wi}/parameters", $errors);
             foreach ($wf->steps as $si => $step) {
-                foreach ($step->io->parameters as $pi => $p) {
-                    if ($p instanceof Reusable) {
-                        continue;
-                    }
-
-                    if ($p->value instanceof Selector) {
-                        $this->validateSelector($p->value, $errors, "/workflows/{$wi}/steps/{$si}/parameters/{$pi}/value");
-                    }
-                }
-                if ($step->io->requestBody !== null) {
-                    foreach ($step->io->requestBody->replacements as $ri => $r) {
-                        if ($r->value instanceof Selector) {
-                            $this->validateSelector($r->value, $errors, "/workflows/{$wi}/steps/{$si}/requestBody/replacements/{$ri}/value");
-                        }
-                    }
-                }
-                foreach ($step->io->outputs as $name => $value) {
-                    if ($value instanceof Selector) {
-                        $this->validateSelector(
-                            $value, $errors,
-                            "/workflows/{$wi}/steps/{$si}/outputs/{$name}",
-                        );
-                    }
-                }
+                $this->checkStep($step, "/workflows/{$wi}/steps/{$si}", $errors);
             }
-            foreach ($wf->outputs as $name => $value) {
-                if ($value instanceof Selector) {
-                    $this->validateSelector(
-                        $value, $errors,
-                        "/workflows/{$wi}/outputs/{$name}",
-                    );
-                }
-            }
+            $this->checkValues($wf->outputs, "/workflows/{$wi}/outputs", $errors);
         }
+
         foreach ($doc->components->parameters as $name => $p) {
             if ($p->value instanceof Selector) {
                 $this->validateSelector($p->value, $errors, "/components/parameters/{$name}/value");
+            }
+        }
+    }
+
+    /**
+     * @param  array<int|string,Parameter|Reusable>  $parameters
+     */
+    private function checkParameters(array $parameters, string $basePath, ErrorCollector $errors): void
+    {
+        foreach ($parameters as $pi => $p) {
+            if ($p instanceof Reusable) {
+                continue;
+            }
+
+            if ($p->value instanceof Selector) {
+                $this->validateSelector($p->value, $errors, "{$basePath}/{$pi}/value");
+            }
+        }
+    }
+
+    private function checkStep(Step $step, string $basePath, ErrorCollector $errors): void
+    {
+        $this->checkParameters($step->io->parameters, "{$basePath}/parameters", $errors);
+
+        if ($step->io->requestBody !== null) {
+            foreach ($step->io->requestBody->replacements as $ri => $r) {
+                if ($r->value instanceof Selector) {
+                    $this->validateSelector($r->value, $errors, "{$basePath}/requestBody/replacements/{$ri}/value");
+                }
+            }
+        }
+
+        $this->checkValues($step->io->outputs, "{$basePath}/outputs", $errors);
+    }
+
+    /**
+     * @param  array<array-key,mixed>  $values
+     */
+    private function checkValues(array $values, string $basePath, ErrorCollector $errors): void
+    {
+        foreach ($values as $name => $value) {
+            if ($value instanceof Selector) {
+                $this->validateSelector($value, $errors, "{$basePath}/{$name}");
             }
         }
     }

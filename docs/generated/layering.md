@@ -128,6 +128,7 @@ flowchart TB
     M_document_Validator --> M_contracts_Dependency
     M_document_Validator --> M_contracts_Spec
     M_document_Validator --> M_contracts_Support
+    M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression_Interfaces
     M_document__ --> M_contracts_Spec
@@ -364,8 +365,8 @@ flowchart TB
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
-| `document` | `contracts` | 152 |
-| `document` | `expression` | 17 |
+| `document` | `contracts` | 158 |
+| `document` | `expression` | 18 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |

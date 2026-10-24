@@ -17,7 +17,7 @@ xychart-beta
     bar [45, 28, 26, 22, 20, 19, 16, 15, 14, 13, 12, 12]
 ```
 
-Analyzed 374 total file-touches across 48 modules.
+Analyzed 375 total file-touches across 48 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -26,12 +26,12 @@ Analyzed 374 total file-touches across 48 modules.
 | `runner:Execution` | 26 | 7% | 370 | 70.3 |
 | `laravel:Http` | 22 | 6% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
-| `document:Validator` | 19 | 5% | 3,548 | 5.4 |
+| `document:Validator` | 19 | 5% | 3,726 | 5.1 |
 | `runner:Async` | 16 | 4% | 1,345 | 11.9 |
 | `laravel:Support` | 15 | 4% | 272 | 55.1 |
 | `laravel:Queue` | 14 | 4% | 109 | 128.4 |
 | `sources:Normalizer` | 13 | 3% | 1,282 | 10.1 |
-| `document:Parser` | 12 | 3% | 1,328 | 9 |
+| `document:Parser` | 12 | 3% | 1,449 | 8.3 |
 | `laravel:State` | 12 | 3% | 52 | 230.8 |
 | `contracts:Interfaces` | 11 | 3% | 367 | 30 |
 | `contracts:Spec` | 10 | 3% | 1,203 | 8.3 |
@@ -65,9 +65,9 @@ Analyzed 374 total file-touches across 48 modules.
 | `evaluation:Enum` | 1 | 0% | 82 | 12.2 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |
+| `expression:Internal` | 1 | 0% | 238 | 4.2 |
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
-| `expression:Internal` | 0 | 0% | 238 | 0 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (128.4), `laravel:Http` (117.6), `laravel:Bindings` (117.2)
