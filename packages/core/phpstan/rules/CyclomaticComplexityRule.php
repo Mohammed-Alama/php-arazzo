@@ -41,13 +41,16 @@ class CyclomaticComplexityRule implements Rule
                         $complexity,
                         self::MAX_COMPLEXITY,
                     ),
-                )->build(),
+                )->identifier('arazzo.custom.cyclomaticComplexity')->build(),
             ];
         }
 
         return [];
     }
 
+    /**
+     * @param  array<Node>  $nodes
+     */
     private function calculateComplexity(array $nodes): int
     {
         $matches = (new NodeFinder())->find(

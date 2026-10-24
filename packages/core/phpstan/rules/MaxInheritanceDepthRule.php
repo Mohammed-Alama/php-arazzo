@@ -51,7 +51,7 @@ class MaxInheritanceDepthRule implements Rule
                         $depth,
                         self::MAX_DEPTH,
                     ),
-                )->build(),
+                )->identifier('arazzo.custom.maxInheritanceDepth')->build(),
             ];
         }
 

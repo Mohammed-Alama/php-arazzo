@@ -35,11 +35,11 @@ class MaxMethodCountRule implements Rule
             return [
                 RuleErrorBuilder::message(
                     sprintf('Class %s has too many methods (%d). Maximum allowed is %d.',
-                        $node->name->toString(),
+                        $node->name?->toString() ?? 'anonymous class',
                         $methodCount,
                         self::MAX_METHODS,
                     ),
-                )->build(),
+                )->identifier('arazzo.custom.maxMethodCount')->build(),
             ];
         }
 

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Arazzo\PHPStan\Rules;
 
 use PhpParser\Node;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\IntersectionType;
+use PhpParser\Node\Name;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\UnionType;
@@ -53,7 +55,7 @@ class BooleanMethodNamingRule implements Rule
             return [
                 RuleErrorBuilder::message(
                     sprintf('Method %s starts with a boolean prefix but does not explicitly return bool.', $methodName),
-                )->build(),
+                )->identifier('arazzo.custom.booleanMethodNaming')->build(),
             ];
         }
 
@@ -73,6 +75,10 @@ class BooleanMethodNamingRule implements Rule
         };
 
         foreach ($types as $type) {
+            if (!$type instanceof Identifier && !$type instanceof Name) {
+                continue;
+            }
+
             if (str_ends_with($type->toString(), 'bool')) {
                 return true;
             }

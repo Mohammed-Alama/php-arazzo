@@ -209,6 +209,7 @@
     },
     "scripts": {
         "analyse": [
+            "@analyse-core",
             "@analyse-contracts",
             "@analyse-expression",
             "@analyse-evaluation",

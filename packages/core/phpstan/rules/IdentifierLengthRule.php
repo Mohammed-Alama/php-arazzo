@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use PHPStan\Analyser\Scope;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 
@@ -44,7 +45,7 @@ class IdentifierLengthRule implements Rule
                             self::MIN_LENGTH,
                             self::MAX_LENGTH,
                         ),
-                    )->build();
+                    )->identifier('arazzo.custom.identifierLength')->build();
                 }
             }
 
@@ -54,6 +55,9 @@ class IdentifierLengthRule implements Rule
         return [];
     }
 
+    /**
+     * @return list<IdentifierRuleError>
+     */
     private function checkLength(string $name, string $type): array
     {
         $len = strlen($name);
@@ -67,7 +71,7 @@ class IdentifierLengthRule implements Rule
                         self::MIN_LENGTH,
                         self::MAX_LENGTH,
                     ),
-                )->build(),
+                )->identifier('arazzo.custom.identifierLength')->build(),
             ];
         }
 

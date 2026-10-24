@@ -13,10 +13,12 @@
  *      `identifier:`, so they slip past the identifier rule below entirely.
  *      Anything that must be suppressed goes in the baseline, where this gate
  *      can see and audit it.
- *   2. A baseline entry is legal iff it carries no `identifier:` at all — this
- *      repo's own PHPStan rules emit none, so those findings are rule-authoring
- *      signal, not correctness bugs — or its identifier matches `missingType.*`,
- *      an untyped collection being a documentation gap rather than a crash.
+ *   2. A baseline entry is legal iff it carries no `identifier:` at all — the
+ *      shape this repo's own PHPStan rules emitted before PHPStan 2 required
+ *      one, so those findings are rule-authoring signal, not correctness bugs
+ *      — or its identifier is `missingType.*`, an untyped collection being a
+ *      documentation gap rather than a crash, or `arazzo.custom.*`, the
+ *      identifiers this repository's own PHPStan rules emit.
  *
  * Everything else (`method.notFound`, `function.alreadyNarrowedType`, …) is a
  * real defect that has to be fixed in the code, never frozen in a suppression.
@@ -136,12 +138,17 @@ final class SuppressionPolicy
     }
 
     /**
-     * A baseline entry is legal only when it carries no identifier or a
-     * `missingType.*` one.
+     * A baseline entry is legal only when it carries no identifier, a
+     * `missingType.*` one, or one of the `arazzo.custom.*` identifiers this
+     * repository's own rules emit.
      */
     private function allows(string $identifier): bool
     {
-        return $identifier === '' || preg_match('/^missingType(\.|$)/', $identifier) === 1;
+        if ($identifier === '') {
+            return true;
+        }
+
+        return preg_match('/^(missingType|arazzo\.custom)(\.|$)/', $identifier) === 1;
     }
 
     /**
