@@ -2,20 +2,24 @@ parameters:
 	ignoreErrors:
 		-
 			message: '#^Method validate has too high cyclomatic complexity \(32\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Execution/SchemaValidator.php
 
 		-
 			message: '#^Method validateNumber has too high cyclomatic complexity \(14\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Execution/SchemaValidator.php
 
 		-
 			message: '#^Method validateObject has too high cyclomatic complexity \(11\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Execution/SchemaValidator.php
 
 		-
 			message: '#^Method fire has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/StepStateMachineEngine.php

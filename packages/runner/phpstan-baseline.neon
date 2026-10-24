@@ -2,75 +2,90 @@ parameters:
 	ignoreErrors:
 		-
 			message: '#^Method __construct has too many parameters \(9\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Async/CorrelationResumer.php
 
 		-
 			message: '#^Method __construct has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Method handleUnderSpan has too high cyclomatic complexity \(25\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Async/StepExecutionWorker.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method applyGoto has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method applyRetry has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method handle has too many parameters \(7\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Async/StepOutcomeHandler.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/AsyncExecutionGraph.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Execution/Data/ExecutionResult.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Execution/Data/SubWorkflowResult.php
 
 		-
 			message: '#^Method __construct has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Execution/Data/Transition.php
 
 		-
 			message: '#^Method transition has too high cyclomatic complexity \(23\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Sync/WorkflowEngine.php
 
 		-
 			message: '#^Method transition has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/Sync/WorkflowEngine.php
 
 		-
 			message: '#^Method executeCanonically has too high cyclomatic complexity \(15\)\. Maximum allowed is 10\.$#'
+			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Sync/WorkflowExecutor.php
 
 		-
 			message: '#^Method __construct has too many parameters \(8\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
 			count: 1
 			path: src/UnifiedStepCarrier.php

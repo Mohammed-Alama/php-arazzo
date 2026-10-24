@@ -17,23 +17,28 @@ suppressions.
 
 ## What a baseline entry may contain
 
-An entry is legal only if it is one of these two:
+An entry is legal only if its `identifier:` is one of these two:
 
 | # | Shape | Why it is acceptable |
 |---|---|---|
-| 1 | **No `identifier:` at all** | This repo's own rules (cyclomatic complexity, parameter count, method count, method-name length, …) emit no identifier. Those findings are style signal, not defects — and they are the *only* thing worth freezing. |
+| 1 | **`identifier:` matches `arazzo.custom.*`** | A finding from this repo's own rules (cyclomatic complexity, parameter count, method count, name length, …). That is style signal, not a defect — and it is the only thing worth freezing. |
 | 2 | **`identifier:` matches `missingType.*`** | An untyped collection is a documentation gap, not a crash. Prefer annotating the code; baseline only when that is out of reach. |
+
+An entry with **no `identifier:`** is not legal. PHPStan 2 requires every rule error to
+carry an identifier, every rule in this repository stamps `arazzo.custom.*`, and PHPStan
+matches an `ignoreErrors` entry on the identifier it declares. So an identifier-free entry
+is indistinguishable from a hand-written suppression of a correctness error, and it is no
+longer a shape a fresh `--generate-baseline` run produces. Provenance is the identifier,
+not the absence of one.
 
 Everything else — `method.notFound`, `method.nonObject`, `function.alreadyNarrowedType`,
 `return.type`, … — is a real defect that has to be fixed in the code.
 
-Run `grep -rn 'identifier:' packages/*/phpstan-baseline.neon` to see the exceptions that
-qualify today.
-
 ```neon
-# ✅ legal — one of our own rules, no identifier emitted
+# ✅ legal — one of our own rules, identified as such
 -
     message: '#^Method toMarkdown has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+    identifier: arazzo.custom.cyclomaticComplexity
     count: 1
     path: src/Renderer/Renderer.php
 
@@ -43,6 +48,12 @@ qualify today.
     identifier: missingType.iterableValue
     count: 1
     path: src/Spec/GraphQlOperation.php
+
+# ❌ illegal — no identifier: provenance cannot be checked
+-
+    message: '#^Method toMarkdown has too high cyclomatic complexity \(17\)\. Maximum allowed is 10\.$#'
+    count: 1
+    path: src/Renderer/Renderer.php
 
 # ❌ illegal — a correctness error frozen in a baseline
 -
@@ -91,6 +102,11 @@ to freeze whatever is broken, so the target wraps it:
 
 Running `vendor/bin/phpstan analyse ... --generate-baseline` by hand has no such guard.
 If in doubt, run `composer run check-baselines` afterwards and read the diff.
+
+`--generate-baseline` writes the `identifier:` PHPStan assigns to each finding, and the
+gate refuses any entry left without one. A baseline regenerated after a rule gained an
+identifier therefore cannot keep the stale, identifier-free shape: it either gains the
+identifier or fails the gate.
 
 ## Why this exists
 
