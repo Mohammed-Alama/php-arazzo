@@ -43,13 +43,8 @@ final class Lexer
             }
 
             if ($char === '\'' || $char === '"') {
-                $end = strpos($condition, $char, $i + 1);
-                if ($end === false) {
-                    throw new ConditionSyntaxException("Unterminated string literal in condition at offset {$i}.");
-                }
-
-                $tokens[] = new Token(TokenKind::String, substr($condition, $i + 1, $end - $i - 1), $i);
-                $i = $end + 1;
+                [$token, $i] = $this->scanString($condition, $i);
+                $tokens[] = $token;
 
                 continue;
             }
@@ -96,6 +91,45 @@ final class Lexer
         }
 
         return $tokens;
+    }
+
+    /**
+     * Scan a quoted string literal starting at `$start`, returning the token and
+     * the index just past its closing quote.
+     *
+     * The spec escapes a literal single quote inside a single-quoted string by
+     * doubling it (`''`), so the closing quote is the first one that is not part
+     * of such a pair. Double quotes are a lenient extension and simply close at
+     * the next quote.
+     *
+     * @return array{Token, int}
+     */
+    private function scanString(string $condition, int $start): array
+    {
+        $length = strlen($condition);
+        $quote = $condition[$start];
+        $value = '';
+        $i = $start + 1;
+
+        while (true) {
+            if ($i >= $length) {
+                throw new ConditionSyntaxException("Unterminated string literal in condition at offset {$start}.");
+            }
+
+            if ($condition[$i] === $quote) {
+                if ($quote === '\'' && ($condition[$i + 1] ?? '') === '\'') {
+                    $value .= '\'';
+                    $i += 2;
+
+                    continue;
+                }
+
+                return [new Token(TokenKind::String, $value, $start), $i + 1];
+            }
+
+            $value .= $condition[$i];
+            $i++;
+        }
     }
 
     /**

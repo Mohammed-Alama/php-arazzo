@@ -77,8 +77,8 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.12 | 40 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 207 | 49 | 100% |
-| `contracts/State` | 0.07 | 62 | 2 | 100% |
+| `contracts/Spec` | 0.03 | 208 | 49 | 100% |
+| `contracts/State` | 0.07 | 63 | 2 | 100% |
 | `contracts/Support` | 0.00 | 11 | 5 | 100% |
 | `document/Parser` | 0.22 | 35 | 11 | 100% |
 | `document/Validator` | 0.46 | 79 | 68 | 100% |
@@ -86,7 +86,7 @@ quadrantChart
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
 | `engine/Execution` | 0.67 | 12 | 8 | 100% |
-| `evaluation/Condition` | 0.86 | 43 | 10 | 100% |
+| `evaluation/Condition` | 0.86 | 44 | 10 | 100% |
 | `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
 | `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
 | `evaluation/Plugins` | 0.75 | 3 | 2 | 100% |
@@ -97,7 +97,7 @@ quadrantChart
 | `expression/Data` | 0.30 | 15 | 4 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.25 | 6 | 2 | 100% |
-| `expression/Interfaces` | 0.21 | 15 | 2 | 100% |
+| `expression/Interfaces` | 0.21 | 16 | 2 | 100% |
 | `expression/Xpath` | 0.67 | 1 | 2 | 50% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |

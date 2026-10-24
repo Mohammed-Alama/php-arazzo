@@ -122,7 +122,9 @@ final class ConditionEvaluator
         $a = self::asNumber($left);
         $b = self::asNumber($right);
         if ($a !== null && $b !== null) {
-            return $a === $b;
+            // Loose, not strict: the spec has one JSON number type, so 3 and
+            // 3.0 are the same value even though PHP types them differently.
+            return $a == $b;
         }
 
         if (is_array($left) || is_array($right)) {

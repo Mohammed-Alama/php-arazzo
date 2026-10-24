@@ -13,7 +13,7 @@ parameters:
 			path: src/Condition/Lexer.php
 
 		-
-			message: '#^Method lex has too high cyclomatic complexity \(21\)\. Maximum allowed is 10\.$#'
+			message: '#^Method lex has too high cyclomatic complexity \(20\)\. Maximum allowed is 10\.$#'
 			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Condition/Lexer.php
