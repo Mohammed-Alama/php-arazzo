@@ -43,7 +43,7 @@ targets. Regenerated before every commit.
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
 | `expression:Interfaces` | 2 | 108 | 11 | 3 | 0.21 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1171 | 3 | 7 | 0.70 |  |
+| `(expression root)` | 9 | 1211 | 3 | 7 | 0.70 |  |
 | `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
