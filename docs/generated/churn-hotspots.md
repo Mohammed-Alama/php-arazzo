@@ -17,7 +17,7 @@ xychart-beta
     bar [45, 28, 26, 22, 20, 18, 16, 15, 14, 13, 12, 12]
 ```
 
-Analyzed 369 total file-touches across 47 modules.
+Analyzed 370 total file-touches across 47 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
@@ -26,7 +26,7 @@ Analyzed 369 total file-touches across 47 modules.
 | `runner:Execution` | 26 | 7% | 370 | 70.3 |
 | `laravel:Http` | 22 | 6% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
-| `document:Validator` | 18 | 5% | 3,521 | 5.1 |
+| `document:Validator` | 18 | 5% | 3,548 | 5.1 |
 | `runner:Async` | 16 | 4% | 1,345 | 11.9 |
 | `laravel:Support` | 15 | 4% | 272 | 55.1 |
 | `laravel:Queue` | 14 | 4% | 109 | 128.4 |
@@ -38,8 +38,8 @@ Analyzed 369 total file-touches across 47 modules.
 | `expression:Interfaces` | 9 | 2% | 110 | 81.8 |
 | `laravel:Lock` | 9 | 2% | 52 | 173.1 |
 | `engine:Execution` | 7 | 2% | 1,000 | 7 |
+| `evaluation:Plugins` | 6 | 2% | 119 | 50.4 |
 | `evaluation:Registries` | 6 | 2% | 121 | 49.6 |
-| `evaluation:Plugins` | 5 | 1% | 119 | 42 |
 | `expression:Data` | 5 | 1% | 128 | 39.1 |
 | `runner:Sync` | 5 | 1% | 874 | 5.7 |
 | `cli:Generator` | 4 | 1% | 141 | 28.4 |

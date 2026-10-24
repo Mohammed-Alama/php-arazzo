@@ -38,7 +38,7 @@ workflows:
             context: $response.body
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           total_count:
             context: $response.body
@@ -76,7 +76,7 @@ workflows:
             context: $response.body
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           customer_name:
             context: $response.body
@@ -113,7 +113,7 @@ workflows:
             context: $response.body
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           new_id:
             context: $response.body
@@ -153,7 +153,7 @@ workflows:
             context: $response.body
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           updated_name:
             context: $response.body
@@ -187,7 +187,7 @@ workflows:
             context: $response.body
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           deleted:
             context: $response.body

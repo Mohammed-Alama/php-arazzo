@@ -75,7 +75,7 @@ workflows:
             condition: //CheckInventoryResponse/Available[text()='true']
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           availableStock:
             context: $response.body
@@ -133,7 +133,7 @@ workflows:
             condition: //DispatchOrderResponse/TrackingNumber
             type:
               type: xpath
-              version: xpath-31
+              version: xpath-10
         outputs:
           trackingNumber:
             context: $response.body

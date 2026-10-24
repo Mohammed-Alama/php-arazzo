@@ -176,6 +176,10 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
             $root = is_array($response) ? ($response['body'] ?? []) : [];
         }
 
+        // The Arazzo default is xpath-31, but this engine implements XPath 1.0
+        // (DOMXPath) only. A versionless criterion therefore runs as xpath-10,
+        // which the validator accepts; explicit xpath-20/30/31 declarations are
+        // refused at validation time rather than failing here.
         $version = $criterion->version ?? 'xpath-10';
 
         try {
