@@ -43,7 +43,7 @@ targets. Regenerated before every commit.
 | `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
 | `expression:Interfaces` | 2 | 108 | 11 | 3 | 0.21 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1150 | 3 | 7 | 0.70 |  |
+| `(expression root)` | 9 | 1171 | 3 | 7 | 0.70 |  |
 | `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
@@ -67,7 +67,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 328 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1011**
+Total cross-module edges: **1012**
 
 ## Most entangled module pairs
 
@@ -75,7 +75,7 @@ Total cross-module edges: **1011**
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 96 |
 | `document:Parser` → `contracts:Spec` | 38 |
-| `(expression root)` → `expression:Ast` | 27 |
+| `(expression root)` → `expression:Ast` | 28 |
 | `runner:Sync` → `contracts:Spec` | 24 |
 | `runner:Async` → `contracts:Spec` | 23 |
 | `(evaluation root)` → `contracts:Spec` | 22 |
