@@ -1,0 +1,46 @@
+; Arazzo Runtime Expression ABNF
+;
+; Spec version: 1.0.1
+; Source: https://github.com/OAI/Arazzo-Specification/blob/main/versions/1.0.1.md
+; Section: Runtime Expressions (§5.9)
+; Retrieved: 2026-10-28
+;
+; Transcribed from the Arazzo Specification text. Not copied from another
+; project's grammar file (see provenance rule in the repo's design spec).
+;
+; NOTE: The 1.0.1 block references CHAR / ALPHA / DIGIT without defining them
+; in-line; they are the RFC 5234 core rules included below so the grammar is
+; self-contained for the ABNF oracle (tests/Support/Abnf).
+;
+; Diff vs 1.1.0: no "$message." source; "$steps." takes a bare name (no
+; "step-id.outputs." form); "$workflows." takes a bare name (no
+; "workflow-id.field.field-name" form); "$sourceDescriptions." takes a bare
+; name (no "source-name.source-reference-id" form); components exposes only
+; "$components.name" and "$components.parameters.parameter-name" (no
+; successActions/failureActions); no embedded-expression / expression-string
+; rules; JSON Pointer unescapes only "~" (no exclusion of "{" / "}" in CHAR).
+
+expression = ( "$url" / "$method" / "$statusCode" / "$request." source / "$response." source / "$inputs." name / "$outputs." name / "$steps." name / "$workflows." name / "$sourceDescriptions." name / "$components." name / "$components.parameters." parameter-name)
+parameter-name = name ; Reuses 'name' rule for parameter names
+source = ( header-reference / query-reference / path-reference / body-reference )
+header-reference = "header." token
+query-reference = "query." name
+path-reference = "path." name
+body-reference = "body" ["#" json-pointer ]
+json-pointer    = *( "/" reference-token )
+reference-token = *( unescaped / escaped )
+unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF
+   ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'
+escaped         = "~" ( "0" / "1" )
+name = *( CHAR )
+token = 1*tchar
+tchar = "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "." /
+  "^" / "_" / "`" / "|" / "~" / DIGIT / ALPHA
+
+; Core ABNF rules (RFC 5234) — referenced by the 1.0.1 block but not defined
+; in-line in the specification's ABNF listing.
+ALPHA = %x41-5A / %x61-7A   ; A-Z / a-z
+DIGIT = %x30-39             ; 0-9
+CHAR = *( unescaped / escaped )
+unescaped-char = %x00-7D / %x7F-10FFFF
+escaped-char = "~" ( "0" / "1" )
