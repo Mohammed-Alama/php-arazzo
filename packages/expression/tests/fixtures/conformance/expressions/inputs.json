@@ -1,0 +1,77 @@
+[
+  {
+    "id": "inputs-name-001",
+    "description": "workflow input reference",
+    "expression": "$inputs.userId",
+    "valid": true,
+    "projection": {
+      "kind": "Input",
+      "target": "userId",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "inputs-name-pointer-002",
+    "description": "workflow input with JSON Pointer suffix",
+    "expression": "$inputs.userId#/address/city",
+    "valid": true,
+    "projection": {
+      "kind": "Input",
+      "target": "userId",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": "/address/city"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "inputs-username-003",
+    "description": "workflow input named username",
+    "expression": "$inputs.username",
+    "valid": true,
+    "projection": {
+      "kind": "Input",
+      "target": "username",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "inputs-wrapped-004",
+    "description": "wrapped workflow input {$...}",
+    "expression": "{$inputs.userId}",
+    "valid": true,
+    "projection": {
+      "kind": "Input",
+      "target": "userId",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "inputs-wrapped-dollar-005",
+    "description": "alternate wrapped workflow input ${...}",
+    "expression": "${inputs.userId}",
+    "valid": true,
+    "projection": {
+      "kind": "Input",
+      "target": "userId",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  }
+]

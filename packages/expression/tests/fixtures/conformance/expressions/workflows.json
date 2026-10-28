@@ -1,0 +1,17 @@
+[
+  {
+    "id": "workflows-outputs-001",
+    "description": "workflow output reference",
+    "expression": "$workflows.main.outputs.token",
+    "valid": true,
+    "projection": {
+      "kind": "Workflow",
+      "target": "main",
+      "part": "outputs",
+      "name": "token",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  }
+]

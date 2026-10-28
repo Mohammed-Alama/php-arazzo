@@ -1,0 +1,92 @@
+[
+  {
+    "id": "embedded-wrapped-step-output-001",
+    "description": "embedded step output expression {$...}",
+    "expression": "{$steps.login.outputs.user}",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "login",
+      "part": "outputs",
+      "name": "user",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-alt-wrapped-input-002",
+    "description": "embedded input expression ${...}",
+    "expression": "${inputs.clientId}",
+    "valid": true,
+    "projection": {
+      "kind": "Input",
+      "target": "clientId",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-httpmeta-003",
+    "description": "embedded HTTP meta expression {$...}",
+    "expression": "{$url}",
+    "valid": true,
+    "projection": {
+      "kind": "HttpMeta",
+      "target": null,
+      "part": null,
+      "name": null,
+      "httpPart": "url",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-self-004",
+    "description": "embedded self expression {$...}",
+    "expression": "{$self}",
+    "valid": true,
+    "projection": {
+      "kind": "Self",
+      "target": null,
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-message-payload-pointer-005",
+    "description": "embedded message payload with JSON Pointer {$...}",
+    "expression": "{$message.payload#/order/id}",
+    "valid": true,
+    "projection": {
+      "kind": "Message",
+      "target": null,
+      "part": "payload",
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": "/order/id"
+    },
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "embedded-message-header-006",
+    "description": "embedded message header {$...}",
+    "expression": "{$message.header.X-Trace}",
+    "valid": true,
+    "projection": {
+      "kind": "Message",
+      "target": null,
+      "part": "header",
+      "name": "X-Trace",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  }
+]

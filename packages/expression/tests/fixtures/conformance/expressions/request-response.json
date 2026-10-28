@@ -1,0 +1,122 @@
+[
+  {
+    "id": "request-query-001",
+    "description": "current step request query parameter",
+    "expression": "$request.query.page",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "request",
+      "name": "page",
+      "httpPart": "query",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "request-path-002",
+    "description": "current step request path parameter",
+    "expression": "$request.path.id",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "request",
+      "name": "id",
+      "httpPart": "path",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "request-body-pointer-003",
+    "description": "current step request body with JSON Pointer",
+    "expression": "$request.body#/petId",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "request",
+      "name": null,
+      "httpPart": "body",
+      "jsonPointer": "/petId"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "request-url-004",
+    "description": "current step request URL",
+    "expression": "$request.url",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "request",
+      "name": null,
+      "httpPart": "url",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "response-header-005",
+    "description": "current step response header",
+    "expression": "$response.header.Server",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "response",
+      "name": "Server",
+      "httpPart": "header",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "response-body-pointer-006",
+    "description": "current step response body with JSON Pointer",
+    "expression": "$response.body#/status",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "response",
+      "name": null,
+      "httpPart": "body",
+      "jsonPointer": "/status"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "response-method-007",
+    "description": "current step response method",
+    "expression": "$response.method",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "response",
+      "name": null,
+      "httpPart": "method",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "pointer-tilde-escapes-008",
+    "description": "JSON Pointer ~0/~1 escape sequences (parser stores raw segments)",
+    "expression": "$response.body#/a~0b~1c",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": null,
+      "part": "response",
+      "name": null,
+      "httpPart": "body",
+      "jsonPointer": "/a~0b~1c"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  }
+]

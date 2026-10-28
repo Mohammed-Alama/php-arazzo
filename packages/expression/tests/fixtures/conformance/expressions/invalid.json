@@ -1,0 +1,177 @@
+[
+  {
+    "id": "dollar-alone-001",
+    "description": "lone dollar sign with no root keyword",
+    "expression": "$",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "wrapped-empty-002",
+    "description": "empty wrapped expression {$}",
+    "expression": "{$}",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "wrapped-dollar-empty-003",
+    "description": "empty alternate wrapped expression ${}",
+    "expression": "${}",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "unknown-root-004",
+    "description": "unknown root keyword foobar",
+    "expression": "$foobar",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "inputs-missing-name-005",
+    "description": "inputs with missing name after dot",
+    "expression": "$inputs.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-missing-step-id-006",
+    "description": "steps with missing step id",
+    "expression": "$steps.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-missing-part-007",
+    "description": "steps with missing part infix",
+    "expression": "$steps.fetch",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-missing-sub-008",
+    "description": "steps with missing sub after part dot",
+    "expression": "$steps.fetch.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-outputs-missing-name-009",
+    "description": "steps outputs with missing name",
+    "expression": "$steps.fetch.outputs.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-trailing-tokens-010",
+    "description": "steps reference with trailing tokens",
+    "expression": "$steps.fetch.outputs.user extra",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "workflows-missing-parts-011",
+    "description": "workflows missing part and name",
+    "expression": "$workflows.main",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "sourcedescriptions-missing-name-012",
+    "description": "sourceDescriptions missing name",
+    "expression": "$sourceDescriptions.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "components-missing-type-013",
+    "description": "components missing type",
+    "expression": "$components.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "message-missing-part-014",
+    "description": "message missing part",
+    "expression": "$message",
+    "valid": false,
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "message-payload-extra-015",
+    "description": "message payload with trailing tokens",
+    "expression": "$message.payload#/order/id extra",
+    "valid": false,
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "self-extra-016",
+    "description": "self with extra suffix",
+    "expression": "$self.url",
+    "valid": false,
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "request-missing-part-017",
+    "description": "request missing part",
+    "expression": "$request.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "response-missing-part-018",
+    "description": "response missing part",
+    "expression": "$response.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "empty-string-019",
+    "description": "empty expression string",
+    "expression": "",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "whitespace-only-020",
+    "description": "whitespace-only expression",
+    "expression": "   ",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "double-dot-022",
+    "description": "double dot between root and name",
+    "expression": "$inputs..name",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-request-missing-name-023",
+    "description": "step request missing name",
+    "expression": "$steps.fetch.request.query",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "outputs-missing-name-024",
+    "description": "outputs missing name",
+    "expression": "$outputs.",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-outputs-pointer-marker-empty-025",
+    "description": "steps outputs pointer marker with empty path",
+    "expression": "$steps.fetch.outputs.#",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-outputs-hash-after-dot-026",
+    "description": "steps outputs hash immediately after dot",
+    "expression": "$steps.fetch.outputs.#/x",
+    "valid": false,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  }
+]
