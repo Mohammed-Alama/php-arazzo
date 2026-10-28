@@ -32,10 +32,10 @@
                     "lastSeenUpdatedAt": "2026-10-20T08:28:40Z"
                 },
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-25T04:49:28Z"
+                    "lastSeenUpdatedAt": "2026-10-28T07:15:07Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-26T15:30:56Z"
+                    "lastSeenUpdatedAt": "2026-10-28T07:17:46Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -46,10 +46,10 @@
         "OAI/OpenAPI-Specification": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-27T08:11:11Z"
+                    "lastSeenUpdatedAt": "2026-10-27T21:43:01Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-22T16:49:24Z"
+                    "lastSeenUpdatedAt": "2026-10-28T12:30:32Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -242,40 +242,40 @@
         "npm.@usearazzo/cli": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:08:59+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.14"
+                    "lastSeenUpdatedAt": "2026-10-28T07:25:10+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.16"
                 }
             }
         },
         "npm.@usearazzo/parser": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:08:19+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.14"
+                    "lastSeenUpdatedAt": "2026-10-28T07:24:55+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.16"
                 }
             }
         },
         "npm.@usearazzo/resolver": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:10:10+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.14"
+                    "lastSeenUpdatedAt": "2026-10-28T07:25:42+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.16"
                 }
             }
         },
         "npm.@usearazzo/runner": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:09:29+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.14"
+                    "lastSeenUpdatedAt": "2026-10-28T07:26:20+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.16"
                 }
             }
         },
         "npm.@usearazzo/validator": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:11:51+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.14"
+                    "lastSeenUpdatedAt": "2026-10-28T07:26:15+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.16"
                 }
             }
         },
@@ -343,14 +343,14 @@
         "strefethen/arazzo-cli": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-13T18:22:54Z"
+                    "lastSeenUpdatedAt": "2026-10-27T23:14:04Z"
                 },
                 "issues": {
                     "lastSeenUpdatedAt": "2026-08-26T23:48:42Z"
                 },
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-18T07:09:06Z",
-                    "lastTag": "vscode-v0.0.8"
+                    "lastSeenUpdatedAt": "2026-10-27T18:56:22Z",
+                    "lastTag": "vscode-v0.0.9"
                 }
             }
         },
@@ -375,21 +375,21 @@
         "usearazzo/arazzo-toolkit": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:01:40Z"
+                    "lastSeenUpdatedAt": "2026-10-28T07:17:56Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:01:41Z"
+                    "lastSeenUpdatedAt": "2026-10-28T07:17:57Z"
                 },
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:07:06Z",
-                    "lastTag": "v1.0.1-alpha.14"
+                    "lastSeenUpdatedAt": "2026-10-28T07:23:51Z",
+                    "lastTag": "v1.0.1-alpha.16"
                 }
             }
         },
         "usearazzo/website": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:32:13Z"
+                    "lastSeenUpdatedAt": "2026-10-28T07:20:04Z"
                 }
             }
         },
