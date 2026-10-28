@@ -1,0 +1,107 @@
+[
+  {
+    "id": "steps-outputs-001",
+    "description": "step output reference",
+    "expression": "$steps.fetch.outputs.user",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "outputs",
+      "name": "user",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-outputs-pointer-002",
+    "description": "step output with JSON Pointer suffix",
+    "expression": "$steps.fetch.outputs.user#/profile/email",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "outputs",
+      "name": "user",
+      "httpPart": null,
+      "jsonPointer": "/profile/email"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-inputs-003",
+    "description": "step input reference",
+    "expression": "$steps.fetch.inputs.query",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "inputs",
+      "name": "query",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-output-shortcut-004",
+    "description": "step output shortcut (outputs infix omitted)",
+    "expression": "$steps.fetch.user",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "outputs",
+      "name": "user",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-output-shortcut-pointer-005",
+    "description": "step output shortcut with JSON Pointer suffix",
+    "expression": "$steps.fetch.user#/id",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "outputs",
+      "name": "user",
+      "httpPart": null,
+      "jsonPointer": "/id"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-request-query-006",
+    "description": "step request query parameter",
+    "expression": "$steps.fetch.request.query.page",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "request",
+      "name": "page",
+      "httpPart": "query",
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "steps-response-body-pointer-007",
+    "description": "step response body with JSON Pointer",
+    "expression": "$steps.fetch.response.body#/x/0",
+    "valid": true,
+    "projection": {
+      "kind": "Step",
+      "target": "fetch",
+      "part": "response",
+      "name": null,
+      "httpPart": "body",
+      "jsonPointer": "/x/0"
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  }
+]

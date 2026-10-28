@@ -1,0 +1,77 @@
+[
+  {
+    "id": "source-descriptions-name-001",
+    "description": "source description reference",
+    "expression": "$sourceDescriptions.api",
+    "valid": true,
+    "projection": {
+      "kind": "Source",
+      "target": "api",
+      "part": null,
+      "name": null,
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "source-descriptions-subpath-002",
+    "description": "source description sub-path tail",
+    "expression": "$sourceDescriptions.api.workflows.x",
+    "valid": true,
+    "projection": {
+      "kind": "Source",
+      "target": "api",
+      "part": null,
+      "name": "workflows.x",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "components-parameters-003",
+    "description": "component parameter reference",
+    "expression": "$components.parameters.Trace",
+    "valid": true,
+    "projection": {
+      "kind": "Component",
+      "target": "parameters",
+      "part": null,
+      "name": "Trace",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "components-success-actions-004",
+    "description": "component success action reference",
+    "expression": "$components.successActions.refresh",
+    "valid": true,
+    "projection": {
+      "kind": "Component",
+      "target": "successActions",
+      "part": null,
+      "name": "refresh",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "components-failure-actions-005",
+    "description": "component failure action reference",
+    "expression": "$components.failureActions.retry",
+    "valid": true,
+    "projection": {
+      "kind": "Component",
+      "target": "failureActions",
+      "part": null,
+      "name": "retry",
+      "httpPart": null,
+      "jsonPointer": null
+    },
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  }
+]
