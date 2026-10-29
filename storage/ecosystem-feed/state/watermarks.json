@@ -18,7 +18,7 @@
                     "headSha": "2c2429f2cbfcfe88f998d029515bf317684c749f"
                 },
                 "main": {
-                    "headSha": "de9b85ebd6c3c03be03198387f650ffdde335cdf"
+                    "headSha": "e9ee1c49414780441fef0c5196c52f8222357a0a"
                 },
                 "v1.1-dev": {
                     "headSha": "78926ee9bb21b620b13be815d7ba3ac2fea3cc8a"
@@ -29,13 +29,13 @@
             },
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-20T08:28:40Z"
+                    "lastSeenUpdatedAt": "2026-10-28T13:12:00Z"
                 },
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-28T07:15:07Z"
+                    "lastSeenUpdatedAt": "2026-10-29T06:07:22Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-28T07:17:46Z"
+                    "lastSeenUpdatedAt": "2026-10-28T23:26:32Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -46,10 +46,10 @@
         "OAI/OpenAPI-Specification": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-27T21:43:01Z"
+                    "lastSeenUpdatedAt": "2026-10-29T12:51:12Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-28T12:30:32Z"
+                    "lastSeenUpdatedAt": "2026-10-28T15:41:34Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -162,7 +162,7 @@
                     "lastSeenUpdatedAt": "2026-10-27T09:51:27Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:51:30Z"
+                    "lastSeenUpdatedAt": "2026-10-28T16:45:54Z"
                 }
             }
         },
@@ -180,8 +180,8 @@
         "Redocly/redocly-cli": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-27T11:02:11Z",
-                    "lastTag": "@redocly/reunite-integration@2.71.2"
+                    "lastSeenUpdatedAt": "2026-10-29T09:27:33Z",
+                    "lastTag": "@redocly/reunite-integration@2.72.1"
                 }
             }
         },
@@ -302,7 +302,7 @@
         "spec.arazzo.html": {
             "endpoints": {
                 "spec_html_checksum": {
-                    "lastSeenUpdatedAt": "2026-10-27T09:52:38+00:00"
+                    "lastSeenUpdatedAt": "2026-10-27T09:52:39+00:00"
                 }
             }
         },
@@ -343,7 +343,7 @@
         "strefethen/arazzo-cli": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-27T23:14:04Z"
+                    "lastSeenUpdatedAt": "2026-10-28T20:48:15Z"
                 },
                 "issues": {
                     "lastSeenUpdatedAt": "2026-08-26T23:48:42Z"
@@ -378,7 +378,7 @@
                     "lastSeenUpdatedAt": "2026-10-28T07:17:56Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-28T07:17:57Z"
+                    "lastSeenUpdatedAt": "2026-10-28T23:19:10Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-10-28T07:23:51Z",

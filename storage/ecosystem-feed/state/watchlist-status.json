@@ -18,7 +18,7 @@
         },
         {
             "base": "v1.2-dev",
-            "lastChange": "2026-10-14",
+            "lastChange": "2026-10-28",
             "live": true,
             "ourIssue": null,
             "ref": "OAI/Arazzo-Specification#556",
@@ -48,7 +48,7 @@
         },
         {
             "base": "v1.2-dev",
-            "lastChange": "2026-10-19",
+            "lastChange": "2026-10-28",
             "live": true,
             "ourIssue": 189,
             "ref": "OAI/Arazzo-Specification#568",
@@ -104,13 +104,13 @@
         },
         {
             "base": "—",
-            "lastChange": "2026-10-14",
+            "lastChange": "2026-10-28",
             "live": true,
             "ourIssue": null,
             "ref": "OAI/Arazzo-Specification#597",
             "roadmap": [],
             "stance": "watch",
-            "state": "open",
+            "state": "closed",
             "title": "Meeting: Oct 14th, 2026",
             "topic": "meeting",
             "url": "https://github.com/OAI/Arazzo-Specification/issues/597"
