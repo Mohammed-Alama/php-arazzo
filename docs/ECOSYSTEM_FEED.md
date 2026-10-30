@@ -1,12 +1,15 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-10-29T12:56:35+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-10-30T12:50:14+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
-## Act — since last digest (0)
+## Act — since last digest (4)
 
-_No Act events since the last digest._
+- `2026-10-29` **breaking** [Schema v1.1-dev: 1 schema file(s) changed](https://github.com/OAI/Arazzo-Specification/compare/78926ee9bb21b620b13be815d7ba3ac2fea3cc8a...v1.1-dev) — `OAI/Arazzo-Specification` · `schema.changed` · hash — → 99fbf68c (1 file, +8/−2) · topics `xpath` → `spec:plugin-stack-oms-multiprotocol`
+- `2026-10-29` [fix: adds missing xpath-31 to field description](https://github.com/OAI/Arazzo-Specification/pull/613) — `OAI/Arazzo-Specification` · `pr.state_changed` · state `open` → `merged` · topics `xpath` → `spec:plugin-stack-oms-multiprotocol`
+- `2026-10-29` [fix: reusable object value type should be any](https://github.com/OAI/Arazzo-Specification/pull/616) — `OAI/Arazzo-Specification` · `pr.state_changed` · state `open` → `merged`
+- `2026-10-29` [fix: allow arbitrary JSON for payload replacement](https://github.com/OAI/Arazzo-Specification/pull/614) — `OAI/Arazzo-Specification` · `pr.state_changed` · state `open` → `merged`
 
 ## Watchlist — tracked upstream items
 
@@ -23,29 +26,77 @@ _No Act events since the last digest._
 
 ## Peer releases
 
-_No peer releases in this window._
-
-## Meeting agenda
-
-- `2026-10-28` [Meeting: Oct 14th, 2026](https://github.com/OAI/Arazzo-Specification/issues/597) — `OAI/Arazzo-Specification`
-- `2026-10-28` [Meeting: Oct 28th, 2026](https://github.com/OAI/Arazzo-Specification/issues/621) — `OAI/Arazzo-Specification`
-
-## Watch — 10 collapsed
-
 <details>
-<summary>10 topic-matched items — click to expand</summary>
+<summary><code>npm.@usearazzo/cli</code> — 1</summary>
 
-- `2026-10-29` [1.1: Two runtime expressions examples for `$message.payload.orderId` are incorrect according to defined ABNF grammar](https://github.com/OAI/Arazzo-Specification/issues/622) — `OAI/Arazzo-Specification` · `entity.created` · state → `open`
-- `2026-10-28` [fix: redact complete URL userinfo containing multiple at signs](https://github.com/strefethen/arazzo-cli/commit/f3cfd102825127a93a7c4c8f34f8aa90d64adc1d) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
-- `2026-10-28` [fix: redact URL userinfo across trace and dry-run output](https://github.com/strefethen/arazzo-cli/commit/f9abdd01b16936fff37626f1337b1f1c4865b5b0) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `mcp` → `plan:phase-f-protocol-packages`
-- `2026-10-28` [fix(cli): keep cancelled test cases out of completed workflows](https://github.com/strefethen/arazzo-cli/commit/bd009354d9083e850260408f34caba9be85f9141) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-10-28` [Merge pull request #618 from OAI/dependabot/npm_and_yarn/markdownlint-cli2-0.24.0](https://github.com/OAI/Arazzo-Specification/commit/e9ee1c49414780441fef0c5196c52f8222357a0a) — `OAI/Arazzo-Specification` · `entity.created` · entity.created
-- `2026-10-28` [refactor(runtime): own operation projection with target resolution](https://github.com/strefethen/arazzo-cli/commit/1adaacb7c0910b95b53685821ee84f52ec6f62aa) — `strefethen/arazzo-cli` · `entity.created` · entity.created
-- `2026-10-28` [refactor(cli): separate workflow catalog ownership](https://github.com/strefethen/arazzo-cli/commit/b68625fa8934c2e6aa6fbb8b253ff7d8bf94c2a1) — `strefethen/arazzo-cli` · `entity.created` · entity.created
-- `2026-10-28` [feat(cli): demonstrate Kafka receive correlation filtering](https://github.com/strefethen/arazzo-cli/commit/841aa5ccb37afc9b84540565b696e2cbb7b67718) — `strefethen/arazzo-cli` · `entity.created` · entity.created
-- `2026-10-28` [feat(runtime): filter Kafka receives by AsyncAPI correlation location](https://github.com/strefethen/arazzo-cli/commit/4d15897226b5fc906b7353564899c12256c92677) — `strefethen/arazzo-cli` · `entity.created` · entity.created
-- `2026-10-28` [Register x-oai-traits](https://github.com/OAI/spec.openapis.org/pull/25) — `OAI/spec.openapis.org` · `entity.created` · state → `closed`
+- `2026-10-29` [@usearazzo/cli@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.17) — version → `1.0.1-alpha.17`
 
 </details>
 
-suppressed: 9 bot PRs, 12 dependency/CI noise
+<details>
+<summary><code>npm.@usearazzo/parser</code> — 1</summary>
+
+- `2026-10-29` [@usearazzo/parser@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.17) — version → `1.0.1-alpha.17`
+
+</details>
+
+<details>
+<summary><code>npm.@usearazzo/resolver</code> — 1</summary>
+
+- `2026-10-29` [@usearazzo/resolver@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.17) — version → `1.0.1-alpha.17`
+
+</details>
+
+<details>
+<summary><code>npm.@usearazzo/runner</code> — 1</summary>
+
+- `2026-10-29` [@usearazzo/runner@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.17) — version → `1.0.1-alpha.17`
+
+</details>
+
+<details>
+<summary><code>npm.@usearazzo/validator</code> — 1</summary>
+
+- `2026-10-29` [@usearazzo/validator@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.17) — version → `1.0.1-alpha.17`
+
+</details>
+
+<details>
+<summary><code>usearazzo/arazzo-toolkit</code> — 1</summary>
+
+- `2026-10-29` [v1.0.1-alpha.17](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.17) — version → `1.0.1-alpha.17`
+
+</details>
+
+## Meeting agenda
+
+_No scheduled meeting items._
+
+## Watch — 19 collapsed
+
+<details>
+<summary>19 topic-matched items — click to expand</summary>
+
+- `2026-10-29` [fix(runner): reject a querystring name shaped like a location key](https://github.com/usearazzo/arazzo-toolkit/pull/292) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-29` [v1.0.1-alpha.17](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.17) — `usearazzo/arazzo-toolkit` · `release.published` · version → `1.0.1-alpha.17` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-29` [@usearazzo/validator@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.17) — `npm.@usearazzo/validator` · `package.version` · version → `1.0.1-alpha.17` · topics `json-schema` → `plan:php-arazzo-spec-suite-plan-index`
+- `2026-10-29` [@usearazzo/runner@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.17) — `npm.@usearazzo/runner` · `package.version` · version → `1.0.1-alpha.17` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-29` [@usearazzo/cli@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.17) — `npm.@usearazzo/cli` · `package.version` · version → `1.0.1-alpha.17` · topics `cli` → `plan:php-arazzo-spec-suite-plan-index`
+- `2026-10-29` [@usearazzo/parser@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.17) — `npm.@usearazzo/parser` · `package.version` · version → `1.0.1-alpha.17` · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
+- `2026-10-29` [runner: a querystring parameter named like a location prefix is misdelivered](https://github.com/usearazzo/arazzo-toolkit/issues/280) — `usearazzo/arazzo-toolkit` · `issue.state_changed` · state `open` → `closed` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-29` [runner: reject querystring.-prefixed querystring names with OpenAPI 3.2](https://github.com/usearazzo/arazzo-toolkit/issues/293) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `open` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-10-29` [@usearazzo/resolver@1.0.1-alpha.17](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.17) — `npm.@usearazzo/resolver` · `package.version` · version → `1.0.1-alpha.17`
+- `2026-10-30` [feat(runtime): verify body retry and cancellation workloads](https://github.com/strefethen/arazzo-cli/commit/e10d28c58ce7e3e6b22fc08c732073bad6619124) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `retry-outputs` → `plan:phase-e-runner-oms`
+- `2026-10-29` [feat(bench): measure validated root parsing with independent oracles](https://github.com/strefethen/arazzo-cli/commit/63a9460cc3f3ce16b7656e9aefefdc31ac9e2ecb) — `strefethen/arazzo-cli` · `entity.created` · entity.created · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
+- `2026-10-30` [fix(runtime): make settings admission test portable](https://github.com/strefethen/arazzo-cli/commit/43159f4197263a4c1e181afa2f784b071efa2766) — `strefethen/arazzo-cli` · `entity.created` · entity.created
+- `2026-10-30` [fix(runtime): enforce shared workload readiness and cleanup deadlines](https://github.com/strefethen/arazzo-cli/commit/eb11c0dc0f3d94d86dabbb17f04ccf1133bab6de) — `strefethen/arazzo-cli` · `entity.created` · entity.created
+- `2026-10-30` [feat: measure verified core runtime workloads](https://github.com/strefethen/arazzo-cli/commit/c3bf3f8bec21fc7d3c0f286ad21ee524139b07aa) — `strefethen/arazzo-cli` · `entity.created` · entity.created
+- `2026-10-30` [feat: add runtime workload fixture and service foundation](https://github.com/strefethen/arazzo-cli/commit/d2418fabf0cde1ffbeac861b681c655447583ab1) — `strefethen/arazzo-cli` · `entity.created` · entity.created
+- `2026-10-29` [v3.2: Add "description" field to media-type object](https://github.com/OAI/OpenAPI-Specification/pull/5584) — `OAI/OpenAPI-Specification` · `entity.created` · state → `open`
+- `2026-10-29` [v3.3: Add "description" field to media-type object](https://github.com/OAI/OpenAPI-Specification/pull/5583) — `OAI/OpenAPI-Specification` · `entity.created` · state → `open`
+- `2026-10-29` [v3.2: fix some tests, as noted in #5575](https://github.com/OAI/OpenAPI-Specification/pull/5581) — `OAI/OpenAPI-Specification` · `entity.created` · state → `open`
+- `2026-10-29` [v3.3: fix some tests, as noted in #5575](https://github.com/OAI/OpenAPI-Specification/pull/5580) — `OAI/OpenAPI-Specification` · `entity.created` · state → `open`
+
+</details>
+
+suppressed: 9 bot PRs, 15 dependency/CI noise
