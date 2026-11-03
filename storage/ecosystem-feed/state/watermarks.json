@@ -49,10 +49,10 @@
         "OAI/OpenAPI-Specification": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-01T09:07:11Z"
+                    "lastSeenUpdatedAt": "2026-11-03T11:56:26Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-02T13:47:40Z"
+                    "lastSeenUpdatedAt": "2026-11-02T18:20:05Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -381,7 +381,7 @@
                     "lastSeenUpdatedAt": "2026-11-01T23:08:56Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-02T11:27:58Z"
+                    "lastSeenUpdatedAt": "2026-11-02T23:23:32Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-11-01T23:14:02Z",
