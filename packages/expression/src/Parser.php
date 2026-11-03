@@ -46,7 +46,7 @@ final class Parser
     {
         $tokens = $this->lexer->tokenize($raw);
         if ($tokens === []) {
-            throw new ExpressionSyntaxException("Empty expression: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Empty expression: {$raw}", $raw);
         }
 
         $i = 0;
@@ -54,22 +54,22 @@ final class Parser
         if ($tokens[$i]->kind === TokenKind::Dollar) {
             $i++;
             if (!isset($tokens[$i])) {
-                throw new ExpressionSyntaxException("Expression ended after \$: {$raw}", $raw, -1, '', 'expr.syntax');
+                $this->fail("Expression ended after \$: {$raw}", $raw);
             }
         }
 
         $head = $tokens[$i];
         if ($head->kind !== TokenKind::Keyword) {
-            throw new ExpressionSyntaxException("Expression must start with a keyword: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Expression must start with a keyword: {$raw}", $raw, $head);
         }
 
         return match ($head->value) {
             'inputs' => $this->parseSimpleRef($tokens, InputRef::class, $raw, $i),
             'outputs' => $this->parseSimpleRef($tokens, OutputRef::class, $raw, $i),
             'message' => $this->parseMessageRef(array_slice($tokens, $i), $raw),
-            'self' => (static function () use ($tokens, $raw, $i) {
+            'self' => (function () use ($tokens, $raw, $i) {
                 if (count(array_slice($tokens, $i)) !== 1) {
-                    throw new ExpressionSyntaxException("Malformed \$self reference: {$raw}", $raw, -1, '', 'expr.syntax');
+                    $this->fail("Malformed \$self reference: {$raw}", $raw, $tokens[$i + 1]);
                 }
 
                 return new SelfRef();
@@ -83,7 +83,7 @@ final class Parser
                 null,
                 $this->parseHttpPart(array_slice($tokens, $i + 1), $head->value === 'request' ? RequestPart::class : ResponsePart::class, $raw),
             ),
-            default => throw new ExpressionSyntaxException("Unknown root '{$head->value}' in expression: {$raw}", $raw, -1, '', 'expr.syntax'),
+            default => $this->fail("Unknown root '{$head->value}' in expression: {$raw}", $raw, $head),
         };
     }
 
@@ -98,7 +98,10 @@ final class Parser
         if (count($rest) < 3
             || $rest[1]->kind !== TokenKind::Dot
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)) {
-            throw new ExpressionSyntaxException("Malformed reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed reference: {$raw}", $raw, $this->firstUnexpected($rest, [
+                1 => [TokenKind::Dot],
+                2 => [TokenKind::Name, TokenKind::Keyword],
+            ]));
         }
 
         if (count($rest) > 3) {
@@ -106,7 +109,7 @@ final class Parser
                 return new $refClass($rest[2]->value, $this->parseJsonPointer(array_slice($rest, 3), $raw));
             }
 
-            throw new ExpressionSyntaxException("Malformed reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed reference: {$raw}", $raw, $rest[3]);
         }
 
         return new $refClass($rest[2]->value);
@@ -117,7 +120,7 @@ final class Parser
     {
         $rest = array_slice($tokens, $i);
         if (count($rest) !== 1) {
-            throw new ExpressionSyntaxException("Malformed HTTP meta reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed HTTP meta reference: {$raw}", $raw, $rest[1] ?? null);
         }
         /** @var 'url'|'method'|'statusCode' $field */
         $field = $rest[0]->value;
@@ -135,7 +138,12 @@ final class Parser
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)
             || $rest[3]->kind !== TokenKind::Dot
             || ($rest[4]->kind !== TokenKind::Keyword && $rest[4]->kind !== TokenKind::Name)) {
-            throw new ExpressionSyntaxException("Malformed step reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed step reference: {$raw}", $raw, $this->firstUnexpected($rest, [
+                1 => [TokenKind::Dot],
+                2 => [TokenKind::Name, TokenKind::Keyword],
+                3 => [TokenKind::Dot],
+                4 => [TokenKind::Name, TokenKind::Keyword],
+            ]));
         }
         $stepId = $rest[2]->value;
         $sub = $rest[4]->value;
@@ -165,7 +173,7 @@ final class Parser
             return new OutputPart($name, $this->parseJsonPointer($tail, $raw));
         }
 
-        throw new ExpressionSyntaxException("Malformed output reference after step name in: {$raw}", $raw, -1, '', 'expr.syntax');
+        $this->fail("Malformed output reference after step name in: {$raw}", $raw, $tail[0]);
     }
 
     /**
@@ -175,7 +183,10 @@ final class Parser
     private function parseNamedPart(array $rest, string $cls, string $raw, bool $allowPointer = false): OutputPart|InputPart
     {
         if (count($rest) < 2 || $rest[0]->kind !== TokenKind::Dot || ($rest[1]->kind !== TokenKind::Name && $rest[1]->kind !== TokenKind::Keyword)) {
-            throw new ExpressionSyntaxException("Malformed reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed reference: {$raw}", $raw, $this->firstUnexpected($rest, [
+                0 => [TokenKind::Dot],
+                1 => [TokenKind::Name, TokenKind::Keyword],
+            ]));
         }
 
         if ($allowPointer && count($rest) > 2) {
@@ -183,11 +194,11 @@ final class Parser
                 return new OutputPart($rest[1]->value, $this->parseJsonPointer(array_slice($rest, 2), $raw));
             }
 
-            throw new ExpressionSyntaxException("Unexpected tokens after '{$rest[1]->value}' in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Unexpected tokens after '{$rest[1]->value}' in: {$raw}", $raw, $rest[2]);
         }
 
         if (count($rest) !== 2) {
-            throw new ExpressionSyntaxException("Malformed reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed reference: {$raw}", $raw, $rest[2] ?? null);
         }
 
         return new $cls($rest[1]->value);
@@ -200,7 +211,10 @@ final class Parser
         if (count($rest) < 3
             || $rest[1]->kind !== TokenKind::Dot
             || $rest[2]->kind !== TokenKind::Keyword) {
-            throw new ExpressionSyntaxException("Malformed message reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed message reference: {$raw}", $raw, $this->firstUnexpected($rest, [
+                1 => [TokenKind::Dot],
+                2 => [TokenKind::Keyword],
+            ]));
         }
 
         $part = $rest[2]->value;
@@ -214,7 +228,7 @@ final class Parser
             return new MessageRef('payload', null, $this->parseJsonPointer($tail, $raw));
         }
 
-        throw new ExpressionSyntaxException("Message part must be header or payload in: {$raw}", $raw, -1, '', 'expr.syntax');
+        $this->fail("Message part must be header or payload in: {$raw}", $raw, $rest[2]);
     }
 
     /**
@@ -228,10 +242,12 @@ final class Parser
             return new $cls(null, null, null);
         }
         if ($rest[0]->kind !== TokenKind::Dot) {
-            throw new ExpressionSyntaxException("Expected '.' after part in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Expected '.' after part in: {$raw}", $raw, $rest[0]);
         }
         if (count($rest) < 2 || $rest[1]->kind !== TokenKind::Keyword) {
-            throw new ExpressionSyntaxException("Expected keyword after '.' in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Expected keyword after '.' in: {$raw}", $raw, $this->firstUnexpected($rest, [
+                1 => [TokenKind::Keyword],
+            ]));
         }
         $kw = $rest[1]->value;
         $tail = array_slice($rest, 2);
@@ -241,12 +257,12 @@ final class Parser
             'header', 'query', 'path' => new $cls($kw, $this->parseHeaderName($tail, $raw), null),
             'url', 'method', 'statusCode' => (function () use ($cls, $kw, $tail, $raw) {
                 if ($tail !== []) {
-                    throw new ExpressionSyntaxException("Unexpected tokens after '{$kw}' in: {$raw}", $raw, -1, '', 'expr.syntax');
+                    $this->fail("Unexpected tokens after '{$kw}' in: {$raw}", $raw, $tail[0]);
                 }
 
                 return new $cls($kw, null, null);
             })(),
-            default => throw new ExpressionSyntaxException("Unknown http part '{$kw}' in: {$raw}", $raw, -1, '', 'expr.syntax'),
+            default => $this->fail("Unknown http part '{$kw}' in: {$raw}", $raw, $rest[1]),
         };
     }
 
@@ -257,14 +273,14 @@ final class Parser
             return null;
         }
         if ($tail[0]->kind !== TokenKind::Hash) {
-            throw new ExpressionSyntaxException("Expected '#' before JSON pointer in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Expected '#' before JSON pointer in: {$raw}", $raw, $tail[0]);
         }
         $out = '';
         $i = 1;
         $tokenCount = count($tail);
         while ($i < $tokenCount) {
             if ($tail[$i]->kind !== TokenKind::Slash) {
-                throw new ExpressionSyntaxException("Expected '/' in JSON pointer at token {$i} in: {$raw}", $raw, -1, '', 'expr.syntax');
+                $this->fail("Expected '/' in JSON pointer at token {$i} in: {$raw}", $raw, $tail[$i]);
             }
             $out .= '/';
             $i++;
@@ -281,7 +297,14 @@ final class Parser
     private function parseHeaderName(array $tail, string $raw): string
     {
         if (count($tail) !== 2 || $tail[0]->kind !== TokenKind::Dot || ($tail[1]->kind !== TokenKind::Name && $tail[1]->kind !== TokenKind::Keyword)) {
-            throw new ExpressionSyntaxException("Expected '.name' after header in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $at = $this->firstUnexpected($tail, [
+                0 => [TokenKind::Dot],
+                1 => [TokenKind::Name, TokenKind::Keyword],
+            ]);
+            if ($at === null && isset($tail[2])) {
+                $at = $tail[2];
+            }
+            $this->fail("Expected '.name' after header in: {$raw}", $raw, $at);
         }
 
         return $tail[1]->value;
@@ -294,12 +317,23 @@ final class Parser
 
         // workflows . <name> . (inputs|outputs) . <name>
         if (count($rest) !== 7 || !$this->isWorkflowShape($rest)) {
-            throw new ExpressionSyntaxException("Malformed workflow reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $at = $this->firstUnexpected($rest, [
+                1 => [TokenKind::Dot],
+                2 => [TokenKind::Name, TokenKind::Keyword],
+                3 => [TokenKind::Dot],
+                4 => [TokenKind::Keyword],
+                5 => [TokenKind::Dot],
+                6 => [TokenKind::Name, TokenKind::Keyword],
+            ]);
+            if ($at === null && isset($rest[7])) {
+                $at = $rest[7];
+            }
+            $this->fail("Malformed workflow reference: {$raw}", $raw, $at);
         }
 
         $kind = $rest[4]->value;
         if ($kind !== 'inputs' && $kind !== 'outputs') {
-            throw new ExpressionSyntaxException("Workflow part must be inputs or outputs in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Workflow part must be inputs or outputs in: {$raw}", $raw, $rest[4]);
         }
 
         /** @var 'inputs'|'outputs' $kind */
@@ -330,14 +364,17 @@ final class Parser
         if (count($rest) < 3
             || $rest[1]->kind !== TokenKind::Dot
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)) {
-            throw new ExpressionSyntaxException("Malformed sourceDescriptions reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Malformed sourceDescriptions reference: {$raw}", $raw, $this->firstUnexpected($rest, [
+                1 => [TokenKind::Dot],
+                2 => [TokenKind::Name, TokenKind::Keyword],
+            ]));
         }
         $name = $rest[2]->value;
         if (count($rest) === 3) {
             return new SourceRef($name, null);
         }
         if ($rest[3]->kind !== TokenKind::Dot) {
-            throw new ExpressionSyntaxException("Expected '.' after source name in: {$raw}", $raw, -1, '', 'expr.syntax');
+            $this->fail("Expected '.' after source name in: {$raw}", $raw, $rest[3]);
         }
         // Reassemble the tail from token offsets.
         $tail = array_slice($rest, 4);
@@ -359,10 +396,50 @@ final class Parser
             || ($rest[2]->kind !== TokenKind::Name && $rest[2]->kind !== TokenKind::Keyword)
             || $rest[3]->kind !== TokenKind::Dot
             || ($rest[4]->kind !== TokenKind::Name && $rest[4]->kind !== TokenKind::Keyword)) {
-            throw new ExpressionSyntaxException("Malformed components reference: {$raw}", $raw, -1, '', 'expr.syntax');
+            $at = $this->firstUnexpected($rest, [
+                1 => [TokenKind::Dot],
+                2 => [TokenKind::Name, TokenKind::Keyword],
+                3 => [TokenKind::Dot],
+                4 => [TokenKind::Name, TokenKind::Keyword],
+            ]);
+            if ($at === null && isset($rest[5])) {
+                $at = $rest[5];
+            }
+            $this->fail("Malformed components reference: {$raw}", $raw, $at);
         }
 
         return new ComponentRef($rest[2]->value, $rest[4]->value);
+    }
+
+    /**
+     * Throw a syntax error carrying the offending token's byte offset, or the
+     * end of the input when the failure is an absent token.
+     */
+    private function fail(string $message, string $raw, ?Token $at = null): never
+    {
+        throw new ExpressionSyntaxException($message, $raw, $at->offset ?? strlen($raw), '', 'expr.syntax');
+    }
+
+    /**
+     * Find the first token that violates the expected kinds at its index.
+     * Returns null when the expected token is missing (end of input) or every
+     * inspected position matches.
+     *
+     * @param  list<Token>  $tokens
+     * @param  array<int, list<TokenKind>>  $expected
+     */
+    private function firstUnexpected(array $tokens, array $expected): ?Token
+    {
+        foreach ($expected as $index => $kinds) {
+            if (!isset($tokens[$index])) {
+                return null;
+            }
+            if (!in_array($tokens[$index]->kind, $kinds, true)) {
+                return $tokens[$index];
+            }
+        }
+
+        return null;
     }
 
     public function parseOrError(string $raw): ExpressionAst|ExpressionSyntaxException

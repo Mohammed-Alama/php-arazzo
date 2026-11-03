@@ -28,7 +28,7 @@ final class Lexer
         [$inner, $base] = $this->unwrap($raw);
 
         if ($inner === '') {
-            throw new ExpressionSyntaxException("Empty expression: {$raw}", $raw, -1, '', 'expr.syntax');
+            throw new ExpressionSyntaxException("Empty expression: {$raw}", $raw, $base, '', 'expr.syntax');
         }
 
         $tokens = [];

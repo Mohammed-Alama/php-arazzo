@@ -44,7 +44,7 @@ targets. Regenerated before every commit.
 | `expression:Interfaces` | 2 | 108 | 12 | 3 | 0.20 |  |
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1129 | 4 | 8 | 0.67 |  |
+| `(expression root)` | 9 | 1206 | 4 | 8 | 0.67 |  |
 | `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
