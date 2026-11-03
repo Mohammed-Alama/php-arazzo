@@ -25,14 +25,14 @@ foreach (['inputs', 'steps', 'request-response', 'workflows', 'sources-component
     }
 }
 
-/** @var list<array{0: string}> $invalidDataset */
+/** @var list<array{0: array<string, mixed>}> $invalidDataset */
 $invalidDataset = [];
 $path = "$fixtureDir/invalid.json";
 if (file_exists($path)) {
     $entries = json_decode(file_get_contents($path), true) ?? [];
     foreach ($entries as $entry) {
         if ($entry['valid'] === false) {
-            $invalidDataset[] = [$entry['expression']];
+            $invalidDataset[] = [$entry];
         }
     }
 }
@@ -55,7 +55,21 @@ it('valid corpus entries parse and project as expected', function (array $entry)
     expect($actual)->toEqual($entry['projection'] ?? []);
 })->with($validDataset);
 
-it('invalid corpus entries throw ExpressionSyntaxException', function (string $expression): void {
-    (new Parser())->parse($expression);
-})->throws(ExpressionSyntaxException::class)
-    ->with($invalidDataset);
+it('invalid corpus entries throw ExpressionSyntaxException with a real offset', function (array $entry): void {
+    $thrown = false;
+
+    try {
+        (new Parser())->parse($entry['expression']);
+    } catch (ExpressionSyntaxException $e) {
+        $thrown = true;
+
+        expect($e->offset)->toBeGreaterThanOrEqual(0)
+            ->and($e->expression)->toBe($entry['expression']);
+
+        if (array_key_exists('errorOffset', $entry)) {
+            expect($e->offset)->toBe($entry['errorOffset']);
+        }
+    }
+
+    expect($thrown)->toBeTrue();
+})->with($invalidDataset);

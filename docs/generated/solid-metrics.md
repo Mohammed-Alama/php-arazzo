@@ -89,10 +89,10 @@ Concrete types over 300 LOC:
 | `Parser` | `document:Parser` | 927 |
 | `ExecutionContext` | `runtime:State` | 496 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
+| `Parser` | `expression:_` | 465 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
 | `ExecutionState` | `contracts:State` | 410 |
-| `Parser` | `expression:_` | 388 |
 | `WorkflowContext` | `contracts:State` | 382 |
 | `PreflightValidator` | `sources:Validator` | 303 |
 | `SchemaValidator` | `engine:Execution` | 302 |
