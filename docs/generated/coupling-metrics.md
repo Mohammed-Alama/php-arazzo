@@ -16,10 +16,10 @@ targets. Regenerated before every commit.
 | `cli:Renderer` | 1 | 254 | 1 | 1 | 0.50 |  |
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
-| `contracts:Interfaces` | 19 | 348 | 23 | 3 | 0.12 |  |
-| `contracts:Spec` | 49 | 1154 | 33 | 1 | 0.03 |  |
+| `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
+| `contracts:Spec` | 49 | 1154 | 34 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
-| `contracts:Support` | 5 | 180 | 11 | 0 | 0.00 |  |
+| `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1437 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 69 | 3657 | 6 | 6 | 0.50 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
@@ -29,11 +29,13 @@ targets. Regenerated before every commit.
 | `engine:Execution` | 8 | 992 | 2 | 4 | 0.67 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
 | `evaluation:Condition` | 14 | 897 | 1 | 8 | 0.89 |  |
-| `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
-| `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
+| `evaluation:Data` | 2 | 84 | 3 | 2 | 0.40 |  |
+| `evaluation:Enum` | 5 | 118 | 3 | 0 | 0.00 |  |
+| `evaluation:Events` | 1 | 26 | 2 | 1 | 0.33 |  |
+| `evaluation:Interfaces` | 2 | 42 | 2 | 3 | 0.60 |  |
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 5 | 648 | 7 | 7 | 0.50 |  |
+| `(evaluation root)` | 6 | 784 | 7 | 12 | 0.63 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
@@ -45,7 +47,7 @@ targets. Regenerated before every commit.
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
 | `(expression root)` | 9 | 1206 | 5 | 8 | 0.62 |  |
-| `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
+| `laravel:Bindings` | 7 | 381 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
 | `laravel:Lock` | 1 | 51 | 1 | 1 | 0.50 |  |
@@ -57,7 +59,7 @@ targets. Regenerated before every commit.
 | `runner:Async` | 7 | 1338 | 4 | 19 | 0.83 | ⚠ unstable hub |
 | `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 5 | 869 | 4 | 18 | 0.82 | ⚠ unstable hub |
+| `runner:Sync` | 5 | 870 | 4 | 18 | 0.82 | ⚠ unstable hub |
 | `(runner root)` | 9 | 522 | 7 | 15 | 0.68 |  |
 | `runtime:Infrastructure` | 3 | 159 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
@@ -68,7 +70,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 328 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1031**
+Total cross-module edges: **1056**
 
 ## Most entangled module pairs
 
@@ -76,9 +78,9 @@ Total cross-module edges: **1031**
 |---|---:|
 | `document:Validator` → `contracts:Spec` | 102 |
 | `document:Parser` → `contracts:Spec` | 38 |
+| `(evaluation root)` → `contracts:Spec` | 25 |
 | `runner:Sync` → `contracts:Spec` | 24 |
 | `runner:Async` → `contracts:Spec` | 23 |
-| `(evaluation root)` → `contracts:Spec` | 22 |
 | `contracts:Interfaces` → `contracts:Spec` | 22 |
 | `(expression root)` → `expression:Ast` | 20 |
 | `(runner root)` → `contracts:Interfaces` | 14 |

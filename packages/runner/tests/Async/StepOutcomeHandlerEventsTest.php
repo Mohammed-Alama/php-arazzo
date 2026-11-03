@@ -13,6 +13,8 @@ use Alama\Arazzo\Contracts\Spec\PendingCorrelation;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\CriterionResult;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
@@ -105,9 +107,20 @@ class OutcomeEventsMockExpressionResolver implements EvaluationEngineInterface
         return true;
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
-        return true;
+        return new CriterionResultCollection([]);
+    }
+
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteriaDetailed(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+    {
+        return [];
     }
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed

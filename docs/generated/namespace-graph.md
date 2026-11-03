@@ -27,7 +27,9 @@ flowchart LR
     engine_Execution["Alama\Arazzo\Engine\Execution"]:::coreNode
     engine__["(engine package root)"]:::coreNode
     evaluation_Condition["Alama\Arazzo\Evaluation\Condition\Ast"]:::coreNode
+    evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
     evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
+    evaluation_Events["Alama\Arazzo\Evaluation\Events"]:::coreNode
     evaluation_Interfaces["Alama\Arazzo\Evaluation\Interfaces"]:::coreNode
     evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
     evaluation_Registries["Alama\Arazzo\Evaluation\Registries"]:::coreNode
@@ -101,7 +103,12 @@ flowchart LR
     evaluation_Condition --> contracts_Support
     evaluation_Condition --> expression_Data
     evaluation_Condition --> expression_Interfaces
+    evaluation_Data --> evaluation_Enum
+    evaluation_Data --> contracts_Spec
+    evaluation_Events --> evaluation_Data
     evaluation_Interfaces --> contracts_Spec
+    evaluation_Interfaces --> evaluation_Data
+    evaluation_Interfaces --> evaluation_Events
     evaluation_Plugins --> contracts_Interfaces
     evaluation_Plugins --> contracts_Spec
     evaluation_Plugins --> expression_Interfaces
@@ -112,10 +119,15 @@ flowchart LR
     evaluation__ --> contracts_Spec
     evaluation__ --> contracts_State
     evaluation__ --> expression_Interfaces
+    evaluation__ --> evaluation_Data
+    evaluation__ --> evaluation_Events
     evaluation__ --> evaluation_Condition
+    evaluation__ --> expression_Data
+    evaluation__ --> contracts_Interfaces
+    evaluation__ --> contracts_Support
+    evaluation__ --> evaluation_Enum
     evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
-    evaluation__ --> expression_Data
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec

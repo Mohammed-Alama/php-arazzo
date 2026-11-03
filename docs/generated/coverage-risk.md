@@ -25,7 +25,7 @@ quadrantChart
     cli/Renderer: [0.5, 1]
     contracts/Dependency: [0.333, 1]
     contracts/Exceptions: [0, 1]
-    contracts/Interfaces: [0.115, 1]
+    contracts/Interfaces: [0.111, 1]
     contracts/Spec: [0.029, 1]
     contracts/State: [0.071, 1]
     contracts/Support: [0, 1]
@@ -36,10 +36,12 @@ quadrantChart
     engine/Exceptions: [0.25, 1]
     engine/Execution: [0.667, 1]
     evaluation/Condition: [0.889, 1]
-    evaluation/Enum: [0, 0.333]
-    evaluation/Interfaces: [0.333, 0]
+    evaluation/Data: [0.4, 1]
+    evaluation/Enum: [0, 1]
+    evaluation/Events: [0.333, 1]
+    evaluation/Interfaces: [0.6, 0]
     evaluation/Plugins: [0.75, 1]
-    evaluation/Registries: [0.8, 0.5]
+    evaluation/Registries: [0.8, 1]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 1]
     expression/Ast: [0.5, 0.333]
@@ -77,21 +79,23 @@ quadrantChart
 | `cli/Renderer` | 0.50 | 5 | 1 | 100% |
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
-| `contracts/Interfaces` | 0.12 | 40 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 224 | 49 | 100% |
-| `contracts/State` | 0.07 | 65 | 2 | 100% |
-| `contracts/Support` | 0.00 | 11 | 5 | 100% |
+| `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
+| `contracts/Spec` | 0.03 | 225 | 49 | 100% |
+| `contracts/State` | 0.07 | 66 | 2 | 100% |
+| `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 39 | 12 | 100% |
-| `document/Validator` | 0.50 | 79 | 69 | 100% |
+| `document/Validator` | 0.50 | 80 | 69 | 100% |
 | `engine/Data` | 0.75 | 2 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
 | `engine/Execution` | 0.67 | 12 | 8 | 100% |
 | `evaluation/Condition` | 0.89 | 49 | 14 | 100% |
-| `evaluation/Enum` | 0.00 | 1 | 3 | 33% |
-| `evaluation/Interfaces` | 0.33 | 0 | 2 | 0% |
+| `evaluation/Data` | 0.40 | 11 | 2 | 100% |
+| `evaluation/Enum` | 0.00 | 6 | 5 | 100% |
+| `evaluation/Events` | 0.33 | 1 | 1 | 100% |
+| `evaluation/Interfaces` | 0.60 | 0 | 2 | 0% |
 | `evaluation/Plugins` | 0.75 | 3 | 2 | 100% |
-| `evaluation/Registries` | 0.80 | 1 | 2 | 50% |
+| `evaluation/Registries` | 0.80 | 2 | 2 | 100% |
 | `events/Interfaces` | 0.00 | 21 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
 | `expression/Ast` | 0.50 | 5 | 15 | 33% |
@@ -121,4 +125,4 @@ quadrantChart
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `runner/Interfaces`, `expression/Internal`
+**Refactor-now list** (untested churn): `runner/Interfaces`, `expression/Internal`, `evaluation/Interfaces`

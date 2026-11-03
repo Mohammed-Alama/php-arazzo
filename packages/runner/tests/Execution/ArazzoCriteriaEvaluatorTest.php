@@ -12,6 +12,8 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\CriteriaEvaluator;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
+use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
 beforeEach(function () {
@@ -118,13 +120,19 @@ it('evaluateCriteria evaluates an arbitrary criteria list against the current st
         new SuccessCriterion('{$statusCode}', '^5\d\d$', CriterionType::Regex),
     ];
 
-    expect($evaluator->evaluateCriteria($criteria, $step, $context))->toBeTrue();
+    $passResults = $evaluator->evaluateCriteria($criteria, $step, $context);
+
+    expect($passResults->count())->toBe(1)
+        ->and($passResults->results[0]->outcome)->toBe(CriterionOutcome::Passed);
 
     $failCriteria = [
         new SuccessCriterion('{$statusCode}', '^2\d\d$', CriterionType::Regex),
     ];
 
-    expect($evaluator->evaluateCriteria($failCriteria, $step, $context))->toBeFalse();
+    $failResults = $evaluator->evaluateCriteria($failCriteria, $step, $context);
+
+    expect($failResults->count())->toBe(1)
+        ->and($failResults->results[0]->outcome)->toBe(CriterionOutcome::Failed);
 });
 
 it('evaluateCriteria returns true for an empty criteria list', function () {
@@ -140,7 +148,10 @@ it('evaluateCriteria returns true for an empty criteria list', function () {
 
     $context = new WorkflowContext('def_1');
 
-    expect($evaluator->evaluateCriteria([], $step, $context))->toBeTrue();
+    $emptyResults = $evaluator->evaluateCriteria([], $step, $context);
+
+    expect($emptyResults)->toBeInstanceOf(CriterionResultCollection::class)
+        ->and($emptyResults->count())->toBe(0);
 });
 
 it('simple criteria fail the step when the status code does not match', function () {

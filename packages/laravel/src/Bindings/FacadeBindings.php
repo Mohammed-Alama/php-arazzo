@@ -21,6 +21,7 @@ use Alama\Arazzo\Sources\Normalizer\OpenApiOperationResolver;
 use Alama\Arazzo\Sources\SourceGraph;
 use Alama\Arazzo\Sources\SourceRuntime;
 use Illuminate\Contracts\Container\Container;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /** Entry-point facade bindings: each *Interface resolves to its self-contained concrete facade.
  *
@@ -31,7 +32,10 @@ final class FacadeBindings
     public static function register(Container $app): void
     {
         $app->singleton(ExpressionEngineInterface::class, fn (): ExpressionEngine => new ExpressionEngine());
-        $app->singleton(EvaluationEngineInterface::class, fn (): EvaluationEngine => new EvaluationEngine(expression: new ExpressionEngine()));
+        $app->singleton(EvaluationEngineInterface::class, fn (Container $app): EvaluationEngine => new EvaluationEngine(
+            expression: new ExpressionEngine(),
+            eventDispatcher: $app->make(EventDispatcherInterface::class),
+        ));
         // One runtime, so the document and the resolver behind it share a
         // single transport instead of each building a fetcher map.
         $app->singleton(SourceRuntime::class, fn (Container $app): SourceRuntime => SourceGraph::runtime(

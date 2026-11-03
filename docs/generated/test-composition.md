@@ -43,16 +43,16 @@ pie showData
 
 ```mermaid
 pie showData
-    title Evaluation — 14 test files
-    "Root": 11
+    title Evaluation — 15 test files
+    "Root": 12
     "Module-scoped": 2
     "Conformance": 1
 ```
 
 | Suite | Files | Share |
 |---|---:|---:|
-| Root | 11 | 79% |
-| Module-scoped | 2 | 14% |
+| Root | 12 | 80% |
+| Module-scoped | 2 | 13% |
 | Conformance | 1 | 7% |
 
 ## Document package

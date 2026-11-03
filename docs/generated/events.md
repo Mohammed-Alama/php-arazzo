@@ -11,6 +11,7 @@ Regenerated before every commit.
 flowchart LR
     E_CorrelationPendingEvent(["CorrelationPendingEvent"]):::event
     E_CorrelationResumedEvent(["CorrelationResumedEvent"]):::event
+    E_CriterionEvaluatedEvent(["CriterionEvaluatedEvent"]):::event
     E_RunCompletedEvent(["RunCompletedEvent"]):::event
     E_RunFailedEvent(["RunFailedEvent"]):::event
     E_RunStartedEvent(["RunStartedEvent"]):::event
@@ -18,6 +19,7 @@ flowchart LR
     E_StepFailedEvent(["StepFailedEvent"]):::event
     E_StepRetriedEvent(["StepRetriedEvent"]):::event
     E_StepStartedEvent(["StepStartedEvent"]):::event
+    S_Alama_Arazzo_Evaluation_CriteriaEvaluator["CriteriaEvaluator<br/><small>(evaluation root)</small>"] -->|dispatches| E_CriterionEvaluatedEvent
     S_Alama_Arazzo_Runner_Async_CorrelationResumer["CorrelationResumer<br/><small>runner:Async</small>"] -->|dispatches| E_CorrelationResumedEvent
     S_Alama_Arazzo_Runner_Async_StepExecutionWorker["StepExecutionWorker<br/><small>runner:Async</small>"] -->|dispatches| E_StepStartedEvent
     S_Alama_Arazzo_Runner_Sync_WorkflowExecutor["WorkflowExecutor<br/><small>runner:Sync</small>"] -->|dispatches| E_StepStartedEvent
@@ -44,6 +46,7 @@ flowchart LR
 |---|---|
 | **CorrelationPendingEvent** | `StepExecutionWorker`, `StepOutcomeHandler` |
 | **CorrelationResumedEvent** | `CorrelationResumer` |
+| **CriterionEvaluatedEvent** | `CriteriaEvaluator` |
 | **RunCompletedEvent** | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
 | **RunFailedEvent** | `StepExecutionWorker`, `StepOutcomeHandler`, `WorkflowExecutor` |
 | **RunStartedEvent** | `WorkflowExecutor` |

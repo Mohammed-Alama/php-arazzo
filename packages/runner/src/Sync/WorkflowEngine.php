@@ -79,7 +79,8 @@ final class WorkflowEngine
         $state = $state->withStepResult($step->stepId, $record);
         $actions = $this->actions($document, $workflow, $step, $criteriaMet);
         foreach ($actions as $action) {
-            if (!$this->evaluationEngine->evaluateCriteria($action->criteria, $step, $state->toContext(), $document)) {
+            $criteriaResults = $this->evaluationEngine->evaluateCriteria($action->criteria, $step, $state->toContext(), $document);
+            if (!$criteriaResults->criteriaMet()) {
                 continue;
             }
             if ($action instanceof RetryAction) {

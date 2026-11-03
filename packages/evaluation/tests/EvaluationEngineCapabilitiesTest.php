@@ -23,6 +23,7 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
@@ -77,7 +78,10 @@ it('evaluates success criteria and criteria lists against the context', function
         ->withStepResponse('s1', ['statusCode' => 200, 'headers' => [], 'body' => []]);
 
     expect($engine->evaluateSuccessCriteria($step, $context))->toBeTrue();
-    expect($engine->evaluateCriteria([new SuccessCriterion(null, '{$statusCode} == 201', CriterionType::Simple)], $step, $context))->toBeFalse();
+    $results = $engine->evaluateCriteria([new SuccessCriterion(null, '{$statusCode} == 201', CriterionType::Simple)], $step, $context);
+
+    expect($results->count())->toBe(1)
+        ->and($results->results[0]->outcome)->toBe(CriterionOutcome::Failed);
 });
 
 it('evaluates selectors rooted at the current step', function (): void {

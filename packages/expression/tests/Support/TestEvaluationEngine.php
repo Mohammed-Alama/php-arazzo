@@ -11,6 +11,8 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\CriterionResult;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
@@ -25,9 +27,20 @@ final class TestEvaluationEngine implements EvaluationEngineInterface
     /**
      * @param  list<SuccessCriterion>  $criteria
      */
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
-        return $criteria === [];
+        return new CriterionResultCollection([]);
+    }
+
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteriaDetailed(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+    {
+        return [];
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
