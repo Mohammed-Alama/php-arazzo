@@ -8,6 +8,7 @@ from both packages. Core defines contracts; Laravel implements them.
 
 ```mermaid
 flowchart LR
+    I_Accessor["Accessor<br/><small>evaluation:Condition</small>"]:::contract
     I_AiClientInterface["AiClientInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_BackoffCalculatorInterface["BackoffCalculatorInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ConditionNode["ConditionNode<br/><small>evaluation:Interfaces</small>"]:::contract
@@ -72,6 +73,10 @@ flowchart LR
     C_evaluation_evaluation_Condition_RuntimeExpr -.->|implements| I_ConditionNode
     C_evaluation_evaluation_Condition_UnaryNot["UnaryNot<br/><small>evaluation:Condition</small>"]:::implCore
     C_evaluation_evaluation_Condition_UnaryNot -.->|implements| I_ConditionNode
+    C_evaluation_evaluation_Condition_Index["Index<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_Index -.->|implements| I_Accessor
+    C_evaluation_evaluation_Condition_Member["Member<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_Member -.->|implements| I_Accessor
     C_evaluation_evaluation___CriteriaEvaluator["CriteriaEvaluator<br/><small>(evaluation root)</small>"]:::implCore
     C_evaluation_evaluation___CriteriaEvaluator -.->|implements| I_CriteriaEvaluatorInterface
     C_evaluation_evaluation___EvaluationEngine["EvaluationEngine<br/><small>(evaluation root)</small>"]:::implCore

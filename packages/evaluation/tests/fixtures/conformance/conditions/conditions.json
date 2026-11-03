@@ -1,0 +1,253 @@
+[
+  {
+    "id": "accessor-index-member-001",
+    "description": "zero-based index followed by property de-reference on a response body list",
+    "condition": "$response.body.items[0].id == 1",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": {
+          "items": [
+            { "id": 1, "name": "one" },
+            { "id": 2, "name": "two" }
+          ]
+        }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: [] Index (0-based), . Property de-reference"
+  },
+  {
+    "id": "accessor-property-chain-002",
+    "description": "chained property de-references",
+    "condition": "$response.body.nested.a.b == 42",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "nested": { "a": { "b": 42 } } }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: . Property de-reference"
+  },
+  {
+    "id": "accessor-missing-member-003",
+    "description": "a missing member resolves to null",
+    "condition": "$response.body.missing == null",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "items": [] }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Simple Conditions: null only equals itself; missing-member behaviour unspecified"
+  },
+  {
+    "id": "accessor-index-out-of-range-004",
+    "description": "an out-of-range index resolves to null",
+    "condition": "$response.body.items[9].id == null",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "items": [{ "id": 1 }] }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: [] Index (0-based); out-of-range behaviour unspecified"
+  },
+  {
+    "id": "accessor-on-scalar-005",
+    "description": "an accessor on a non-array value resolves to null",
+    "condition": "$response.body.scalar.name == null",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "scalar": "text" }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: . Property de-reference; non-array behaviour unspecified"
+  },
+  {
+    "id": "accessor-bare-truthy-006",
+    "description": "a bare accessor operand is evaluated by truthiness",
+    "condition": "$response.body.items[0].id",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "items": [{ "id": 1 }] }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Simple Conditions: expression evaluates to true"
+  },
+  {
+    "id": "accessor-bare-falsy-007",
+    "description": "a null accessor result is falsy",
+    "condition": "$response.body.items[9].id",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "items": [{ "id": 1 }] }
+      }
+    },
+    "expected": false,
+    "spec": "Arazzo 1.1.0, Criterion Object, Simple Conditions: the expression evaluates to null"
+  },
+  {
+    "id": "accessor-logical-008",
+    "description": "accessors compose under &&",
+    "condition": "$response.body.items[0].id == 1 && $response.body.items[1].id == 2",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": {
+          "items": [
+            { "id": 1 },
+            { "id": 2 }
+          ]
+        }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: && And"
+  },
+  {
+    "id": "accessor-parentheses-009",
+    "description": "accessors compose under ! and logical grouping",
+    "condition": "!($response.body.items[0].id == 9)",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "items": [{ "id": 1 }] }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: ! Not, () Logical Grouping"
+  },
+  {
+    "id": "accessor-inputs-010",
+    "description": "property and index accessors on an input value",
+    "condition": "$inputs.user.roles[0] == 'admin'",
+    "context": {
+      "stepId": "s1",
+      "inputs": {
+        "user": { "name": "Alice", "roles": ["admin", "editor"] }
+      },
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": {}
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Operators: [] Index (0-based), . Property de-reference"
+  },
+  {
+    "id": "accessor-json-pointer-011",
+    "description": "accessors apply after a JSON-pointer runtime-expression base",
+    "condition": "$response.body#/items/0.id == 1",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": {
+          "items": [
+            { "id": 1, "name": "one" }
+          ]
+        }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Runtime Expressions (JSON Pointer) + Criterion Object Operators"
+  },
+  {
+    "id": "accessor-alt-spelling-012",
+    "description": "accessors work in the alternate ${...} runtime-expression spelling",
+    "condition": "${response.body.items[0].id} == 1",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "items": [{ "id": 1 }] }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Runtime Expressions: alternate ${...} spelling"
+  },
+  {
+    "id": "accessor-braced-spelling-013",
+    "description": "accessors work in the {$...} runtime-expression spelling",
+    "condition": "{$response.body.items[1].id} == 2",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": {
+          "items": [
+            { "id": 1 },
+            { "id": 2 }
+          ]
+        }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Runtime Expressions: {$...} spelling"
+  },
+  {
+    "id": "accessor-without-index-014",
+    "description": "a runtime expression without accessors still evaluates",
+    "condition": "$response.body.status == 'OK'",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": { "status": "OK" }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object, Simple Conditions"
+  },
+  {
+    "id": "accessor-case-insensitive-015",
+    "description": "string comparison stays case-insensitive after an accessor",
+    "condition": "$response.body.items[0].name == 'ONE'",
+    "context": {
+      "stepId": "s1",
+      "response": {
+        "statusCode": 200,
+        "headers": {},
+        "body": {
+          "items": [
+            { "name": "one" }
+          ]
+        }
+      }
+    },
+    "expected": true,
+    "spec": "Arazzo 1.1.0, Criterion Object: String comparisons MUST be case insensitive"
+  }
+]

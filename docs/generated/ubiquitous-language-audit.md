@@ -25,7 +25,7 @@ Evans' first question: does the code speak one language?
 
 - **Decoder**: `DecoderInterface`, `DecoderRegistry`, `NativeJsonDecoder`, `SymfonyYamlDecoder` (4 types)
 - **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` + 1 more (5 types)
-- **Parser**: `FieldParser`, `Parser`, `ParserException` (3 types)
+- **Parser**: `AccessorParser`, `FieldParser`, `Parser`, `ParserException` (4 types)
 
 ### document vs definition vs spec
 

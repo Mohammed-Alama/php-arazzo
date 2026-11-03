@@ -141,13 +141,7 @@ final class Parser
             TokenKind::Number => new Literal(str_contains($token->value, '.') ? (float) $token->value : (int) $token->value),
             TokenKind::String => new Literal($token->value),
             TokenKind::Ident => $this->parseIdentLiteral($token),
-            // Normalize both runtime-expression spellings to the canonical
-            // `{$...}` form. The lexer captures `${token}` verbatim including
-            // its closing brace, so re-wrapping must not duplicate it.
-            default => new RuntimeExpr(
-                new Expression(self::canonicalExpression($token->value)),
-                $token->value,
-            ),
+            default => $this->parseRuntimeExpr($token),
         };
 
         $next = $this->peek();
@@ -158,18 +152,22 @@ final class Parser
         return $node;
     }
 
-    private static function canonicalExpression(string $captured): string
+    /**
+     * The Criterion Object Operators table allows property de-reference (`.name`)
+     * and zero-based index access (`[n]`) on runtime-expression operands, but the
+     * runtime-expression grammar itself has no accessor syntax. Split the
+     * captured operand into the longest valid expression prefix plus the trailing
+     * accessor chain, then keep the expression in its canonical `{$...}` form.
+     */
+    private function parseRuntimeExpr(Token $token): RuntimeExpr
     {
-        // The lexer captures runtime expressions verbatim: either bare
-        // `$steps.A.outputs.x` or the braced `${...}` spelling including its
-        // closing brace. Normalize both to the canonical `{$...}` form.
-        $body = str_ends_with($captured, '}') ? substr($captured, 0, -1) : $captured;
+        [$base, $accessors] = $this->lexer->splitAccessors($token->value);
 
-        if (str_starts_with($body, '${')) {
-            $body = '$'.substr($body, 2);
-        }
-
-        return '{'.$body.'}';
+        return new RuntimeExpr(
+            new Expression('{'.$base.'}'),
+            $token->value,
+            $accessors,
+        );
     }
 
     private function parseIdentLiteral(Token $token): Literal

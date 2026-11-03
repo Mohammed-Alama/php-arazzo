@@ -64,7 +64,7 @@ final class ConditionEvaluator
         }
 
         if ($node instanceof Ast\RuntimeExpr) {
-            return self::truthy($this->expression->evaluate($node->expression, $context));
+            return self::truthy($this->runtimeValue($node, $context));
         }
 
         throw new ConditionSyntaxException('Unsupported condition node.');
@@ -81,10 +81,39 @@ final class ConditionEvaluator
         }
 
         if ($operand instanceof Ast\RuntimeExpr) {
-            return $this->expression->evaluate($operand->expression, $context);
+            return $this->runtimeValue($operand, $context);
         }
 
         return $this->resolve($operand, $context);
+    }
+
+    /**
+     * Evaluate the runtime expression, then walk the accessor chain. Navigation
+     * is null-safe: a missing member, an out-of-range index, or an accessor on a
+     * non-array value yields null.
+     */
+    private function runtimeValue(Ast\RuntimeExpr $node, EvaluationContext $context): mixed
+    {
+        $value = $this->expression->evaluate($node->expression, $context);
+
+        foreach ($node->accessors as $accessor) {
+            $value = self::navigate($value, $accessor);
+        }
+
+        return $value;
+    }
+
+    private static function navigate(mixed $value, Ast\Accessor $accessor): mixed
+    {
+        if (!is_array($value)) {
+            return null;
+        }
+
+        return match (true) {
+            $accessor instanceof Ast\Member => $value[$accessor->name] ?? null,
+            $accessor instanceof Ast\Index => $value[$accessor->index] ?? null,
+            default => null,
+        };
     }
 
     private function compare(Ast\Comparison $comparison, mixed $left, mixed $right): bool

@@ -26,7 +26,7 @@ flowchart LR
     engine_Exceptions["Alama\Arazzo\Engine\Exceptions"]:::coreNode
     engine_Execution["Alama\Arazzo\Engine\Execution"]:::coreNode
     engine__["(engine package root)"]:::coreNode
-    evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
+    evaluation_Condition["Alama\Arazzo\Evaluation\Condition\Ast"]:::coreNode
     evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
     evaluation_Interfaces["Alama\Arazzo\Evaluation\Interfaces"]:::coreNode
     evaluation_Plugins["Alama\Arazzo\Evaluation\Plugins"]:::coreNode
@@ -93,6 +93,8 @@ flowchart LR
     expression__ --> expression_Ast
     expression__ --> expression_Enum
     expression__ --> expression_Internal
+    evaluation_Condition --> expression_Exceptions
+    evaluation_Condition --> expression__
     evaluation_Condition --> evaluation_Enum
     evaluation_Condition --> contracts_Spec
     evaluation_Condition --> evaluation_Interfaces

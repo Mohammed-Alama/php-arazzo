@@ -12,8 +12,12 @@ use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
  */
 final readonly class RuntimeExpr implements ConditionNode
 {
+    /**
+     * @param  list<Accessor>  $accessors
+     */
     public function __construct(
         public Expression $expression,
         public string $raw,
+        public array $accessors = [],
     ) {}
 }
