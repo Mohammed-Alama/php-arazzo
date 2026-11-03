@@ -33,6 +33,8 @@ flowchart TB
         M_expression_Exceptions["expression:Exceptions"]:::node
         M_expression_Interfaces["expression:Interfaces"]:::node
         M_expression_Internal["expression:Internal"]:::node
+        M_expression_Plugins["expression:Plugins"]:::node
+        M_expression_Registries["expression:Registries"]:::node
         M_expression_Xpath["expression:Xpath"]:::node
         M_expression__["(expression package root)"]:::node
     end
@@ -133,6 +135,8 @@ flowchart TB
     M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression_Interfaces
+    M_document_Validator --> M_expression_Registries
+    M_document_Validator --> M_expression__
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Validator
@@ -183,6 +187,8 @@ flowchart TB
     M_evaluation__ --> M_evaluation_Registries
     M_evaluation__ --> M_expression_Data
     M_evaluation__ --> M_expression_Interfaces
+    M_evaluation__ --> M_expression_Registries
+    M_evaluation__ --> M_expression__
     M_events_Listener --> M_contracts_Support
     M_events_Listener --> M_events_Interfaces
     M_events_Listener --> M_events__
@@ -195,9 +201,16 @@ flowchart TB
     M_expression_Interfaces --> M_contracts_Spec
     M_expression_Interfaces --> M_expression_Data
     M_expression_Interfaces --> M_expression_Exceptions
+    M_expression_Interfaces --> M_expression_Registries
     M_expression_Internal --> M_expression_Ast
     M_expression_Internal --> M_expression_Interfaces
     M_expression_Internal --> M_expression__
+    M_expression_Plugins --> M_contracts_Spec
+    M_expression_Plugins --> M_expression_Interfaces
+    M_expression_Plugins --> M_expression_Xpath
+    M_expression_Plugins --> M_expression__
+    M_expression_Registries --> M_contracts_Spec
+    M_expression_Registries --> M_expression_Interfaces
     M_expression_Xpath --> M_contracts_Spec
     M_expression_Xpath --> M_expression_Exceptions
     M_expression__ --> M_contracts_Spec
@@ -207,6 +220,8 @@ flowchart TB
     M_expression__ --> M_expression_Exceptions
     M_expression__ --> M_expression_Interfaces
     M_expression__ --> M_expression_Internal
+    M_expression__ --> M_expression_Plugins
+    M_expression__ --> M_expression_Registries
     M_expression__ --> M_expression_Xpath
     M_laravel_Bindings --> M_cli_Generator
     M_laravel_Bindings --> M_contracts_Interfaces
@@ -379,16 +394,16 @@ flowchart TB
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
-| `document` | `contracts` | 158 |
-| `document` | `expression` | 18 |
+| `document` | `contracts` | 159 |
+| `document` | `expression` | 20 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
-| `evaluation` | `contracts` | 53 |
-| `evaluation` | `expression` | 19 |
+| `evaluation` | `contracts` | 55 |
+| `evaluation` | `expression` | 24 |
 | `events` | `contracts` | 1 |
-| `expression` | `contracts` | 18 |
+| `expression` | `contracts` | 23 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 38 |
 | `laravel` | `document` | 4 |

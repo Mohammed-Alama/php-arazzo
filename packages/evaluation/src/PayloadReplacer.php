@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 
 /**
  * Applies a step's payload replacements to an array-shaped body.
@@ -31,6 +33,7 @@ final class PayloadReplacer
      */
     public static function apply(
         ExpressionEngineInterface $expression,
+        SelectorPluginRegistry $selectorRegistry,
         Step $step,
         array $body,
         ?callable $resolveValue = null,
@@ -50,7 +53,7 @@ final class PayloadReplacer
             }
 
             if ($context !== null && self::isSelectorTarget($replacement)) {
-                self::applySelectorTarget($body, $replacement, $resolveValue, $expression);
+                self::applySelectorTarget($body, $replacement, $resolveValue, $expression, $selectorRegistry);
             }
         }
 
@@ -90,12 +93,15 @@ final class PayloadReplacer
         PayloadReplacement $replacement,
         ?callable $resolveValue,
         ExpressionEngineInterface $expression,
+        SelectorPluginRegistry $selectorRegistry,
     ): void {
         $value = $resolveValue !== null ? $resolveValue($replacement) : $replacement->value;
         $type = (string) self::selectorType($replacement);
 
+        $xpathPlugin = $selectorRegistry->get(ExpressionType::XPath);
+
         $found = match ($type) {
-            'xpath' => $expression->queryXPath($body, $replacement->target, 'xpath-10'),
+            'xpath' => $xpathPlugin !== null ? $xpathPlugin->evaluate($body, $replacement->target, 'xpath-10') : null,
             default => $expression->jsonPath($replacement->target, $body),
         };
 

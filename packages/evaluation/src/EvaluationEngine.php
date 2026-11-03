@@ -16,8 +16,10 @@ use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -32,16 +34,20 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     private readonly CriterionEvaluatorRegistry $criterionRegistry;
 
+    private readonly SelectorPluginRegistry $selectorRegistry;
+
     private readonly EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         private readonly ExpressionEngineInterface $expression,
         ?ExpressionEvaluatorRegistry $expressionRegistry = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,
+        ?SelectorPluginRegistry $selectorRegistry = null,
         ?EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->expressionRegistry = $expressionRegistry ?? new ExpressionEvaluatorRegistry($this->expression);
         $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry($this->expression);
+        $this->selectorRegistry = $selectorRegistry ?? (new ExpressionDependencyProvider())->getSelectorPluginRegistry();
         $this->eventDispatcher = $eventDispatcher ?? new NullEventDispatcher();
     }
 
@@ -80,16 +86,6 @@ final class EvaluationEngine implements EvaluationEngineInterface
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
     {
         return $this->expression->evaluateSelector($selector, $context, $stepId);
-    }
-
-    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
-    {
-        return $this->expression->queryXPath($rootValue, $selector, $version);
-    }
-
-    public function supportedXPathVersions(): array
-    {
-        return $this->expression->supportedXPathVersions();
     }
 
     public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed
@@ -133,7 +129,7 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array
     {
-        return PayloadReplacer::apply($this->expression, $step, $body, $resolveValue, $context);
+        return PayloadReplacer::apply($this->expression, $this->selectorRegistry, $step, $body, $resolveValue, $context);
     }
 
     public function jsonPath(string $expression, array|object $data): mixed
@@ -147,6 +143,7 @@ final class EvaluationEngine implements EvaluationEngineInterface
             $this->expression,
             null,
             $this->criterionRegistry,
+            $this->selectorRegistry,
             $this->eventDispatcher,
         );
     }

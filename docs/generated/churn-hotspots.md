@@ -14,18 +14,18 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "laravel:Http", "document:Validator", "laravel:Persistence", "runner:Async", "laravel:Support", "laravel:Queue", "document:Parser", "sources:Normalizer", "laravel:State"]
     y-axis "Touches" 0 --> 60
-    bar [45, 28, 26, 22, 20, 20, 16, 15, 14, 13, 13, 12]
+    bar [46, 28, 26, 22, 20, 20, 16, 15, 14, 13, 13, 12]
 ```
 
-Analyzed 381 total file-touches across 50 modules.
+Analyzed 387 total file-touches across 52 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
-| `laravel:Bindings` | 45 | 12% | 388 | 116 |
+| `laravel:Bindings` | 46 | 12% | 388 | 118.6 |
 | `cli:Console` | 28 | 7% | 932 | 30 |
 | `runner:Execution` | 26 | 7% | 370 | 70.3 |
 | `laravel:Http` | 22 | 6% | 187 | 117.6 |
-| `document:Validator` | 20 | 5% | 3,726 | 5.4 |
+| `document:Validator` | 20 | 5% | 3,735 | 5.4 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
 | `runner:Async` | 16 | 4% | 1,345 | 11.9 |
 | `laravel:Support` | 15 | 4% | 272 | 55.1 |
@@ -35,22 +35,23 @@ Analyzed 381 total file-touches across 50 modules.
 | `laravel:State` | 12 | 3% | 52 | 230.8 |
 | `contracts:Interfaces` | 11 | 3% | 367 | 30 |
 | `contracts:Spec` | 10 | 3% | 1,203 | 8.3 |
-| `expression:Interfaces` | 9 | 2% | 110 | 81.8 |
+| `expression:Interfaces` | 9 | 2% | 138 | 65.2 |
 | `laravel:Lock` | 9 | 2% | 52 | 173.1 |
 | `engine:Execution` | 7 | 2% | 1,000 | 7 |
 | `evaluation:Plugins` | 7 | 2% | 120 | 58.3 |
 | `evaluation:Registries` | 6 | 2% | 121 | 49.6 |
+| `runner:Sync` | 6 | 2% | 875 | 6.9 |
 | `evaluation:Condition` | 5 | 1% | 911 | 5.5 |
 | `expression:Data` | 5 | 1% | 128 | 39.1 |
-| `runner:Sync` | 5 | 1% | 875 | 5.7 |
 | `cli:Generator` | 4 | 1% | 141 | 28.4 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
 | `contracts:Dependency` | 4 | 1% | 336 | 11.9 |
+| `evaluation:Data` | 4 | 1% | 86 | 46.5 |
 | `expression:Ast` | 4 | 1% | 350 | 11.4 |
 | `runtime:State` | 4 | 1% | 1,036 | 3.9 |
 | `sources:Resolver` | 4 | 1% | 490 | 8.2 |
 | `contracts:Support` | 3 | 1% | 185 | 16.2 |
-| `evaluation:Data` | 3 | 1% | 86 | 34.9 |
+| `evaluation:Interfaces` | 3 | 1% | 44 | 68.2 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
 | `expression:Xpath` | 3 | 1% | 110 | 27.3 |
 | `laravel:Events` | 3 | 1% | 24 | 125 |
@@ -58,18 +59,19 @@ Analyzed 381 total file-touches across 50 modules.
 | `contracts:State` | 2 | 1% | 792 | 2.5 |
 | `engine:Data` | 2 | 1% | 74 | 27 |
 | `engine:Enum` | 2 | 1% | 17 | 117.6 |
-| `evaluation:Interfaces` | 2 | 1% | 44 | 45.5 |
+| `evaluation:Enum` | 2 | 1% | 123 | 16.3 |
 | `expression:Exceptions` | 2 | 1% | 55 | 36.4 |
 | `runtime:Infrastructure` | 2 | 1% | 162 | 12.3 |
 | `sources:Validator` | 2 | 1% | 303 | 6.6 |
 | `engine:Exceptions` | 1 | 0% | 42 | 23.8 |
-| `evaluation:Enum` | 1 | 0% | 123 | 8.1 |
+| `evaluation:Events` | 1 | 0% | 27 | 37 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |
 | `expression:Internal` | 1 | 0% | 238 | 4.2 |
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
-| `evaluation:Events` | 0 | 0% | 27 | 0 |
+| `expression:Plugins` | 0 | 0% | 126 | 0 |
+| `expression:Registries` | 0 | 0% | 72 | 0 |
 
-**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (128.4), `laravel:Http` (117.6), `laravel:Bindings` (116)
+**Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (128.4), `laravel:Bindings` (118.6), `laravel:Http` (117.6)

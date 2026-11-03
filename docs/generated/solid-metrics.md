@@ -29,11 +29,11 @@ quadrantChart
     contracts/Dependency: [0.333, 0]
     contracts/Exceptions: [0, 0]
     contracts/Interfaces: [0.111, 1]
-    contracts/Spec: [0.029, 0.02]
+    contracts/Spec: [0.027, 0.02]
     contracts/State: [0.071, 0]
     contracts/Support: [0, 0.2]
     document/Parser: [0.222, 0.167]
-    document/Validator: [0.5, 0.014]
+    document/Validator: [0.571, 0.014]
     document/_: [0.462, 0.333]
     engine/Data: [0.75, 0]
     engine/Enum: [0, 0]
@@ -47,7 +47,7 @@ quadrantChart
     evaluation/Interfaces: [0.6, 1]
     evaluation/Plugins: [0.75, 0]
     evaluation/Registries: [0.8, 0]
-    evaluation/_: [0.632, 0.167]
+    evaluation/_: [0.667, 0.167]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 0]
     events/_: [0, 0]
@@ -55,10 +55,12 @@ quadrantChart
     expression/Data: [0.273, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.2, 0]
-    expression/Interfaces: [0.2, 1]
+    expression/Interfaces: [0.222, 1]
     expression/Internal: [0.75, 0]
-    expression/Xpath: [0.667, 0.5]
-    expression/_: [0.615, 0]
+    expression/Plugins: [0.8, 0]
+    expression/Registries: [0.333, 0]
+    expression/Xpath: [0.5, 0.5]
+    expression/_: [0.556, 0]
     laravel/Bindings: [0.96, 0]
     laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
@@ -105,8 +107,8 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| `ExpressionEngineInterface` <small>expression</small> | 12 |
-| `EvaluationEngineInterface` <small>evaluation</small> | 10 |
+| `ExpressionEngineInterface` <small>expression</small> | 10 |
+| `EvaluationEngineInterface` <small>evaluation</small> | 8 |
 
 ## Concrete hubs (DIP)
 

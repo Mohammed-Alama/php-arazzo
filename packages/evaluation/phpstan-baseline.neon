@@ -17,3 +17,9 @@ parameters:
 			identifier: arazzo.custom.cyclomaticComplexity
 			count: 1
 			path: src/Condition/Lexer.php
+
+		-
+			message: '#^Method apply has too many parameters \(6\)\. Maximum allowed is 5\.$#'
+			identifier: arazzo.custom.maxParameterCount
+			count: 1
+			path: src/PayloadReplacer.php
