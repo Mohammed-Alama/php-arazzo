@@ -68,7 +68,9 @@ evaluation-Condition,contracts-Support,1
 evaluation-Condition,evaluation-Enum,9
 evaluation-Condition,evaluation-Interfaces,7
 evaluation-Condition,expression-Data,1
+evaluation-Condition,expression-Exceptions,1
 evaluation-Condition,expression-Interfaces,1
+evaluation-Condition,expression-root,1
 evaluation-Interfaces,contracts-Spec,4
 evaluation-Plugins,contracts-Interfaces,2
 evaluation-Plugins,contracts-Spec,5

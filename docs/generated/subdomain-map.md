@@ -47,7 +47,7 @@ flowchart LR
         S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_engine_Exceptions["engine:Exceptions<br/><small>42 LOC</small>"]:::unknownDomain
         S_engine_Execution["engine:Execution<br/><small>1000 LOC</small>"]:::unknownDomain
-        S_evaluation_Condition["evaluation:Condition<br/><small>690 LOC</small>"]:::unknownDomain
+        S_evaluation_Condition["evaluation:Condition<br/><small>911 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>82 LOC</small>"]:::unknownDomain
         S_evaluation_Interfaces["evaluation:Interfaces<br/><small>35 LOC</small>"]:::unknownDomain
         S_evaluation_Plugins["evaluation:Plugins<br/><small>120 LOC</small>"]:::unknownDomain
@@ -79,9 +79,9 @@ flowchart LR
 | Subdomain | Modules | Core pkg LOC | Laravel pkg LOC | Share |
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,203 | 0 | 6% |
-| Supporting | 7 | 7,296 | 0 | 36% |
+| Supporting | 7 | 7,296 | 0 | 35% |
 | Generic subdomain | 11 | 2,013 | 1,396 | 17% |
-| Unclassified | 29 | 8,507 | 0 | 42% |
+| Unclassified | 29 | 8,728 | 0 | 42% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

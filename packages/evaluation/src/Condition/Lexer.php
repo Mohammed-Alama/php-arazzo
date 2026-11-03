@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation\Condition;
 
+use Alama\Arazzo\Evaluation\Condition\Ast\Accessor;
 use Alama\Arazzo\Evaluation\Enum\TokenKind;
 
 /**
@@ -11,6 +12,13 @@ use Alama\Arazzo\Evaluation\Enum\TokenKind;
  */
 final class Lexer
 {
+    private AccessorParser $accessorParser;
+
+    public function __construct()
+    {
+        $this->accessorParser = new AccessorParser();
+    }
+
     /** @return list<Token> */
     public function lex(string $condition): array
     {
@@ -91,6 +99,22 @@ final class Lexer
         }
 
         return $tokens;
+    }
+
+    /**
+     * Split a captured runtime-expression operand into the longest valid
+     * runtime-expression prefix and its trailing accessor chain.
+     *
+     * The runtime-expression grammar has no accessor syntax, while the Criterion
+     * Object Operators table allows `[]` index and `.` property de-reference on
+     * a runtime-expression operand. The expression parser remains the authority
+     * on what a valid base is.
+     *
+     * @return array{string, list<Accessor>}
+     */
+    public function splitAccessors(string $captured): array
+    {
+        return $this->accessorParser->split($captured);
     }
 
     /**

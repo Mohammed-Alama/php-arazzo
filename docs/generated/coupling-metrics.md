@@ -28,7 +28,7 @@ targets. Regenerated before every commit.
 | `engine:Exceptions` | 1 | 41 | 3 | 1 | 0.25 |  |
 | `engine:Execution` | 8 | 992 | 2 | 4 | 0.67 |  |
 | `(engine root)` | 2 | 192 | 1 | 3 | 0.75 |  |
-| `evaluation:Condition` | 10 | 680 | 1 | 6 | 0.86 |  |
+| `evaluation:Condition` | 14 | 897 | 1 | 8 | 0.89 |  |
 | `evaluation:Enum` | 3 | 79 | 1 | 0 | 0.00 |  |
 | `evaluation:Interfaces` | 2 | 33 | 2 | 1 | 0.33 |  |
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
@@ -40,11 +40,11 @@ targets. Regenerated before every commit.
 | `expression:Ast` | 15 | 335 | 2 | 2 | 0.50 |  |
 | `expression:Data` | 4 | 124 | 8 | 3 | 0.27 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
-| `expression:Exceptions` | 2 | 53 | 3 | 1 | 0.25 |  |
+| `expression:Exceptions` | 2 | 53 | 4 | 1 | 0.20 |  |
 | `expression:Interfaces` | 2 | 108 | 12 | 3 | 0.20 |  |
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
 | `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1206 | 4 | 8 | 0.67 |  |
+| `(expression root)` | 9 | 1206 | 5 | 8 | 0.62 |  |
 | `laravel:Bindings` | 7 | 377 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
@@ -68,7 +68,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 328 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1029**
+Total cross-module edges: **1031**
 
 ## Most entangled module pairs
 

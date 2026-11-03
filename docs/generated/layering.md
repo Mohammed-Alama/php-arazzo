@@ -153,7 +153,9 @@ flowchart TB
     M_evaluation_Condition --> M_evaluation_Enum
     M_evaluation_Condition --> M_evaluation_Interfaces
     M_evaluation_Condition --> M_expression_Data
+    M_evaluation_Condition --> M_expression_Exceptions
     M_evaluation_Condition --> M_expression_Interfaces
+    M_evaluation_Condition --> M_expression__
     M_evaluation_Interfaces --> M_contracts_Spec
     M_evaluation_Plugins --> M_contracts_Interfaces
     M_evaluation_Plugins --> M_contracts_Spec
@@ -372,7 +374,7 @@ flowchart TB
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
 | `evaluation` | `contracts` | 46 |
-| `evaluation` | `expression` | 15 |
+| `evaluation` | `expression` | 17 |
 | `events` | `contracts` | 1 |
 | `expression` | `contracts` | 18 |
 | `laravel` | `cli` | 3 |
