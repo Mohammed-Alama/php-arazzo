@@ -269,8 +269,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
 - `public function jsonPointer(array $data, ?string $pointer): mixed`
-- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
-- `public function supportedXPathVersions(): array`
 - `public function test(string $raw): bool`
 
 #### `JsonPathEvaluator` class
@@ -319,8 +317,6 @@ this file on a commit is a public API change — review it deliberately.
 - `public function jsonPath(string $expression, array|object $data): mixed;`
 - `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
-- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
-- `public function supportedXPathVersions(): array;`
 - `public function test(string $raw): bool;`
 
 ### `Alama\Arazzo\Expression\Xpath`
@@ -334,17 +330,15 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Evaluation`
 
 #### `EvaluationEngine` class
-- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null, ?EventDispatcherInterface $eventDispatcher = null)`
+- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null, ?SelectorPluginRegistry $selectorRegistry = null, ?EventDispatcherInterface $eventDispatcher = null)`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
-- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array`
 - `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed`
-- `public function supportedXPathVersions(): array`
 
 #### `EvaluationEngineInterface` interface
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
@@ -353,10 +347,8 @@ this file on a commit is a public API change — review it deliberately.
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
 - `public function jsonPath(string $expression, array|object $data): mixed;`
-- `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
 - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
 - `public function resolveValue(mixed $value, WorkflowContextInterface $context, ?string $stepId = null): mixed;`
-- `public function supportedXPathVersions(): array;`
 
 ### `Alama\Arazzo\Evaluation\Plugins`
 

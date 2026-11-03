@@ -43,6 +43,8 @@ flowchart LR
     expression_Exceptions["Alama\Arazzo\Expression\Exceptions"]:::coreNode
     expression_Interfaces["Alama\Arazzo\Expression\Interfaces"]:::coreNode
     expression_Internal["Alama\Arazzo\Expression\Internal"]:::coreNode
+    expression_Plugins["Alama\Arazzo\Expression\Plugins"]:::coreNode
+    expression_Registries["Alama\Arazzo\Expression\Registries"]:::coreNode
     expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
     laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
@@ -80,17 +82,26 @@ flowchart LR
     expression_Data --> expression_Interfaces
     expression_Exceptions --> contracts_Support
     expression_Interfaces --> contracts_Spec
+    expression_Interfaces --> expression_Registries
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
     expression_Internal --> expression__
     expression_Internal --> expression_Ast
     expression_Internal --> expression_Interfaces
+    expression_Plugins --> contracts_Spec
+    expression_Plugins --> expression_Interfaces
+    expression_Plugins --> expression_Xpath
+    expression_Plugins --> expression__
+    expression_Registries --> contracts_Spec
+    expression_Registries --> expression_Interfaces
     expression_Xpath --> contracts_Spec
     expression_Xpath --> expression_Exceptions
     expression__ --> contracts_Spec
     expression__ --> expression_Data
     expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
+    expression__ --> expression_Plugins
+    expression__ --> expression_Registries
     expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
@@ -119,6 +130,7 @@ flowchart LR
     evaluation__ --> contracts_Spec
     evaluation__ --> contracts_State
     evaluation__ --> expression_Interfaces
+    evaluation__ --> expression_Registries
     evaluation__ --> evaluation_Data
     evaluation__ --> evaluation_Events
     evaluation__ --> evaluation_Condition
@@ -128,10 +140,13 @@ flowchart LR
     evaluation__ --> evaluation_Enum
     evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
+    evaluation__ --> expression__
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec
+    document_Validator --> expression__
     document_Validator --> expression_Interfaces
+    document_Validator --> expression_Registries
     document_Validator --> contracts_Support
     document_Validator --> expression_Data
     document_Validator --> expression_Enum

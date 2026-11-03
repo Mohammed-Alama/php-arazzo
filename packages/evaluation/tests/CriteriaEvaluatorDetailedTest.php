@@ -50,7 +50,7 @@ function detailedContext(array $body = []): WorkflowContext
 
 function detailedEvaluator(?EventDispatcherInterface $dispatcher = null): CriteriaEvaluator
 {
-    return new CriteriaEvaluator(new ExpressionEngine(), null, null, $dispatcher);
+    return new CriteriaEvaluator(new ExpressionEngine(), null, null, null, $dispatcher);
 }
 
 it('reports a passing simple criterion as passed/evaluated', function (): void {

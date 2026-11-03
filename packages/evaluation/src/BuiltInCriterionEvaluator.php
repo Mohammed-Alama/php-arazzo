@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Alama\Arazzo\Evaluation;
 
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
-use Alama\Arazzo\Evaluation\Data\CriterionResult;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 
 /**
  * Evaluates the built-in criterion types against a root the caller has already
@@ -19,12 +19,16 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
  * {@see CriteriaEvaluator} can classify them into a
  * {@see CriterionResult}.
  *
+ * Selector evaluation (JSONPath, XPath, JSON Pointer) is delegated to plugins
+ * registered in the {@see SelectorPluginRegistry}. The engine is type-agnostic;
+ * new expression types can be added by registering additional plugins.
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 final readonly class BuiltInCriterionEvaluator
 {
     public function __construct(
-        private ExpressionEngineInterface $expression,
+        private SelectorPluginRegistry $selectorRegistry,
         private ConditionEvaluator $conditionEvaluator,
     ) {}
 
@@ -60,20 +64,32 @@ final readonly class BuiltInCriterionEvaluator
 
     private function evaluateJsonPath(SuccessCriterion $criterion, mixed $root): bool
     {
-        $result = $this->expression->jsonPath($criterion->condition, is_array($root) ? $root : []);
+        $plugin = $this->selectorRegistry->get(ExpressionType::JsonPath);
+
+        if ($plugin === null) {
+            throw new \RuntimeException('No JSONPath selector plugin registered.');
+        }
+
+        $result = $plugin->evaluate($root, $criterion->condition, null);
 
         return !empty($result);
     }
 
     private function evaluateXPath(SuccessCriterion $criterion, mixed $root): bool
     {
+        $plugin = $this->selectorRegistry->get(ExpressionType::XPath);
+
+        if ($plugin === null) {
+            throw new \RuntimeException('No XPath selector plugin registered.');
+        }
+
         // The Arazzo default is xpath-31, but this engine implements XPath 1.0
         // (DOMXPath) only. A versionless criterion therefore runs as xpath-10,
         // which the validator accepts; explicit xpath-20/30/31 declarations are
         // refused at validation time rather than failing here.
         $version = $criterion->version ?? 'xpath-10';
 
-        return ConditionEvaluator::truthy($this->expression->queryXPath($root, $criterion->condition, $version));
+        return ConditionEvaluator::truthy($plugin->evaluate($root, $criterion->condition, $version));
     }
 
     private static function stringify(mixed $value): string

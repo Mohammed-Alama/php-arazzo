@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Tests\Feature;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Info;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\StepFactory;
@@ -20,11 +21,14 @@ use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
 const XPATH_VERSION_RULE = 'step.success_criteria_version_supported';
 
-$supportedVersions = (new ExpressionEngine())->supportedXPathVersions();
+$provider = new ExpressionDependencyProvider();
+$registry = $provider->getSelectorPluginRegistry();
+$supportedVersions = $registry->supportedVersions(ExpressionType::XPath);
 
 /**
  * @return array{0: ArazzoDocument, 1: Step}

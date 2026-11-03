@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Document\Validator;
 
+use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
 use Alama\Arazzo\Document\Validator\Rules\ActionGotoTargetResolvesRule;
 use Alama\Arazzo\Document\Validator\Rules\ActionRetryLimitsRule;
@@ -58,7 +59,9 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
 use Alama\Arazzo\Document\Validator\Rules\WsdlStepRule;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 
 /**
  * The default validator rule set: the single place that names every rule and
@@ -87,8 +90,14 @@ final readonly class RuleSet
     /**
      * @param  list<string>  $disabled
      */
-    public static function default(ExpressionEngineInterface $engine, array $disabled = [], bool $strict = true): self
-    {
+    public static function default(
+        ExpressionEngineInterface $engine,
+        ?SelectorPluginRegistry $selectorRegistry = null,
+        array $disabled = [],
+        bool $strict = true,
+    ): self {
+        $selectorRegistry ??= (new ExpressionDependencyProvider())->getSelectorPluginRegistry();
+
         return new self([
             new OfficialSchemaRule(),
             new ActionGotoTargetResolvesRule(),
@@ -134,7 +143,7 @@ final readonly class RuleSet
             new StepSuccessCriteriaConditionRule(),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),
-            new SuccessCriteriaVersionSupportedRule($engine->supportedXPathVersions()),
+            new SuccessCriteriaVersionSupportedRule($selectorRegistry->supportedVersions(ExpressionType::XPath)),
             new WorkflowAtLeastOneRule(),
             new WorkflowDependsOnExistsRule(),
             new WorkflowDependsOnNoCycleRule(),

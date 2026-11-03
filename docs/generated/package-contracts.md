@@ -95,8 +95,6 @@ public contract between packages.
   - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
   - `public function jsonPath(string $expression, array|object $data): mixed;`
   - `public function jsonPointer(array $data, ?string $pointer): mixed;`
-  - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
-  - `public function supportedXPathVersions(): array;`
 
 ### Cross-boundary value types
 
@@ -133,8 +131,6 @@ public contract between packages.
   - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection;`
   - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
   - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
-  - `public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;`
-  - `public function supportedXPathVersions(): array;`
   - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`
   - `public function replacePayload(Step $step, array $body, ?callable $resolveValue = null, ?WorkflowContext $context = null): array;`
   - `public function jsonPath(string $expression, array|object $data): mixed;`

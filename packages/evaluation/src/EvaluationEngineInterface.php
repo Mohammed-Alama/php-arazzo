@@ -57,16 +57,6 @@ interface EvaluationEngineInterface
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;
 
     /**
-     * Query an XPath selector against an XML string or DOM node.
-     */
-    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;
-
-    /**
-     * @return list<string> Supported XPath version tokens, e.g. ['xpath-10'].
-     */
-    public function supportedXPathVersions(): array;
-
-    /**
      * Interpolate {$...} expression references within a string against the workflow context.
      */
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;

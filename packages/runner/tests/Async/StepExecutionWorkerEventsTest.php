@@ -155,16 +155,6 @@ class WorkerEventsMockExpressionResolver implements EvaluationEngineInterface
         return null;
     }
 
-    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
-    {
-        return null;
-    }
-
-    public function supportedXPathVersions(): array
-    {
-        return [];
-    }
-
     public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string
     {
         return $value;

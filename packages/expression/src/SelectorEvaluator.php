@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression;
 
-use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
-use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
+use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
@@ -18,7 +17,7 @@ use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 final class SelectorEvaluator
 {
     public function __construct(
-        private XpathEvaluator $xpath,
+        private SelectorPluginRegistry $plugins,
         private ExpressionEvaluator $expressions,
     ) {}
 
@@ -26,7 +25,10 @@ final class SelectorEvaluator
     {
         // Spec default when context is omitted: the current step's response body.
         if ($sel->context !== null) {
-            $root = $this->expressions->evaluate(new Expression($sel->context), new EvaluationContext($wf, $stepId));
+            $root = $this->expressions->evaluate(
+                new Expression($sel->context),
+                new EvaluationContext($wf, $stepId),
+            );
         } else {
             $steps = $wf->getSteps();
             $stepData = $steps[$stepId] ?? null;
@@ -36,27 +38,23 @@ final class SelectorEvaluator
             $root = is_array($body) ? $body : [];
         }
 
-        return match ($sel->type) {
-            ExpressionType::JsonPath => is_array($root) || is_object($root)
-                ? JsonPathEvaluator::evaluate($sel->selector, $root)
-                : null,
-            ExpressionType::JsonPointer => is_array($root)
-                ? $this->expressions->jsonPointer($root, $sel->selector)
-                : null,
-            ExpressionType::XPath => (function () use ($root, $sel, $wf, $stepId) {
-                try {
-                    return $this->xpath->query(
-                        $root,
-                        $sel->selector,
-                        $sel->version ?? 'xpath-10',
-                    );
-                } catch (SelectorEvaluationException $e) {
-                    // Enrich capability errors with the document location.
-                    $location = 'workflows/'.($wf->getWorkflowId() ?? 'unknown').'/steps/'.$stepId;
+        $plugin = $this->plugins->get($sel->type);
 
-                    throw new SelectorEvaluationException($e->getMessage(), $location, $e->codeId, $e);
-                }
-            })(),
-        };
+        if ($plugin === null) {
+            throw new SelectorEvaluationException(
+                "No selector plugin registered for type '{$sel->type->value}'.",
+                'workflows/'.($wf->getWorkflowId() ?? 'unknown').'/steps/'.$stepId,
+                'selector.no_plugin',
+            );
+        }
+
+        try {
+            return $plugin->evaluate($root, $sel->selector, $sel->version);
+        } catch (SelectorEvaluationException $e) {
+            // Enrich capability errors with the document location.
+            $location = 'workflows/'.($wf->getWorkflowId() ?? 'unknown').'/steps/'.$stepId;
+
+            throw new SelectorEvaluationException($e->getMessage(), $location, $e->codeId, $e);
+        }
     }
 }

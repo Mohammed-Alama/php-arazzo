@@ -83,16 +83,6 @@ final readonly class ExpressionEngine implements ExpressionEngineInterface
         return JsonPointer::resolve($data, $pointer);
     }
 
-    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed
-    {
-        return $this->provider->getXpathEvaluator()->query($rootValue, $selector, $version);
-    }
-
-    public function supportedXPathVersions(): array
-    {
-        return $this->provider->getXpathEvaluator()->supportedVersions();
-    }
-
     private function getInterpolator(): Interpolator
     {
         return $this->provider->getInterpolator();

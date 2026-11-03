@@ -25,6 +25,7 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
 function capabilityStep(?RequestBody $body = null, array $criteria = [], array $outputs = []): Step
@@ -95,11 +96,13 @@ it('evaluates selectors rooted at the current step', function (): void {
     expect($engine->evaluateSelector($selector, $context, 's1'))->toBe(1);
 });
 
-it('queries xpath and reports the supported versions', function (): void {
-    $engine = new EvaluationEngine(expression: new ExpressionEngine());
+it('reports xpath supported versions through the selector plugin registry', function (): void {
+    $provider = new ExpressionDependencyProvider();
+    $registry = $provider->getSelectorPluginRegistry();
+    $plugin = $registry->get(ExpressionType::XPath);
 
-    expect($engine->supportedXPathVersions())->toBe(['xpath-10']);
-    expect($engine->queryXPath('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
+    expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10']);
+    expect($plugin->evaluate('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
 });
 
 it('interpolates expression references into strings', function (): void {

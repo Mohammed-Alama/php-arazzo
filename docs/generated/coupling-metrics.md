@@ -17,11 +17,11 @@ targets. Regenerated before every commit.
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
-| `contracts:Spec` | 49 | 1154 | 34 | 1 | 0.03 |  |
+| `contracts:Spec` | 49 | 1154 | 36 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1437 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 69 | 3657 | 6 | 6 | 0.50 |  |
+| `document:Validator` | 69 | 3666 | 6 | 8 | 0.57 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
@@ -35,7 +35,7 @@ targets. Regenerated before every commit.
 | `evaluation:Interfaces` | 2 | 42 | 2 | 3 | 0.60 |  |
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 6 | 784 | 7 | 12 | 0.63 |  |
+| `(evaluation root)` | 6 | 799 | 7 | 14 | 0.67 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
@@ -43,10 +43,12 @@ targets. Regenerated before every commit.
 | `expression:Data` | 4 | 124 | 8 | 3 | 0.27 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 4 | 1 | 0.20 |  |
-| `expression:Interfaces` | 2 | 108 | 12 | 3 | 0.20 |  |
+| `expression:Interfaces` | 3 | 135 | 14 | 4 | 0.22 |  |
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
-| `expression:Xpath` | 2 | 108 | 1 | 2 | 0.67 |  |
-| `(expression root)` | 9 | 1206 | 5 | 8 | 0.62 |  |
+| `expression:Plugins` | 3 | 123 | 1 | 4 | 0.80 |  |
+| `expression:Registries` | 1 | 71 | 4 | 2 | 0.33 |  |
+| `expression:Xpath` | 2 | 108 | 2 | 2 | 0.50 |  |
+| `(expression root)` | 9 | 1225 | 8 | 10 | 0.56 |  |
 | `laravel:Bindings` | 7 | 381 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
@@ -70,15 +72,15 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 328 | 2 | 9 | 0.82 |  |
 
-Total cross-module edges: **1056**
+Total cross-module edges: **1084**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `document:Validator` → `contracts:Spec` | 102 |
+| `document:Validator` → `contracts:Spec` | 103 |
 | `document:Parser` → `contracts:Spec` | 38 |
-| `(evaluation root)` → `contracts:Spec` | 25 |
+| `(evaluation root)` → `contracts:Spec` | 27 |
 | `runner:Sync` → `contracts:Spec` | 24 |
 | `runner:Async` → `contracts:Spec` | 23 |
 | `contracts:Interfaces` → `contracts:Spec` | 22 |

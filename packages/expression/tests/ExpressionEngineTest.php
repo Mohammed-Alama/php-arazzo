@@ -10,6 +10,7 @@ use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
@@ -38,14 +39,12 @@ it('projects expression references statically', function () {
         ->and($engine->expressionReferences('bad'))->toBeNull();
 });
 
-it('declares evaluate, evaluateSelector, jsonPath and xpath on the public interface', function () {
+it('declares evaluate, evaluateSelector and jsonPath on the public interface', function () {
     $reflection = new ReflectionClass(ExpressionEngineInterface::class);
 
     expect($reflection->hasMethod('evaluate'))->toBeTrue()
         ->and($reflection->hasMethod('evaluateSelector'))->toBeTrue()
-        ->and($reflection->hasMethod('jsonPath'))->toBeTrue()
-        ->and($reflection->hasMethod('queryXPath'))->toBeTrue()
-        ->and($reflection->hasMethod('supportedXPathVersions'))->toBeTrue();
+        ->and($reflection->hasMethod('jsonPath'))->toBeTrue();
 });
 
 it('evaluates expressions through the public face', function () {
@@ -69,11 +68,13 @@ it('evaluates raw jsonpath queries through the public face', function () {
     ]))->toBe('B');
 });
 
-it('evaluates xpath queries through the public face', function () {
-    $engine = new ExpressionEngine();
+it('evaluates xpath queries through the selector plugin', function () {
+    $provider = new ExpressionDependencyProvider();
+    $registry = $provider->getSelectorPluginRegistry();
+    $plugin = $registry->get(ExpressionType::XPath);
 
-    expect($engine->supportedXPathVersions())->toBe(['xpath-10'])
-        ->and($engine->queryXPath('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
+    expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10']);
+    expect($plugin->evaluate('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
 });
 
 it('evaluates selectors through the public face', function () {

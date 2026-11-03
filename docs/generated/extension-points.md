@@ -71,6 +71,9 @@ mindmap
       RunnerFacade
     RunnerGraphBuilderInterface
       RunnerGraphBuilder
+    SelectorPluginInterface
+      JsonPathSelectorPlugin
+      JsonPointerSelectorPlugin
     SourceNormalizerInterface
       OpenApiSourceNormalizer
       WsdlSourceNormalizer
@@ -117,6 +120,7 @@ mindmap
 | `ResponseTransferInterface` | no | `ResponseTransfer` <small>core</small> |
 | `RunnerFacadeInterface` | no | `RunnerFacade` <small>core</small> |
 | `RunnerGraphBuilderInterface` | no | `RunnerGraphBuilder` <small>core</small> |
+| `SelectorPluginInterface` | no | `JsonPathSelectorPlugin` <small>core</small>, `JsonPointerSelectorPlugin` <small>core</small> |
 | `SourceNormalizerInterface` | no | `OpenApiSourceNormalizer` <small>core</small>, `WsdlSourceNormalizer` <small>core</small> |
 | `SourceNormalizerRegistryInterface` | no | `SourceNormalizerRegistry` <small>core</small> |
 | `StateStoreInterface` | no | `FileStateStore` <small>core</small>, `InMemoryStateStore` <small>core</small>, `RedisHotStateStore` <small>laravel</small> |

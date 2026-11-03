@@ -42,6 +42,7 @@ flowchart LR
     I_Rule["Rule<br/><small>document:Validator</small>"]:::contract
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
     I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
+    I_SelectorPluginInterface["SelectorPluginInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>sources:Resolver</small>"]:::contract
     I_SourceNormalizerInterface["SourceNormalizerInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_SourceNormalizerRegistryInterface["SourceNormalizerRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -61,6 +62,12 @@ flowchart LR
     C_expression_expression_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_expression_expression_Plugins_JsonPathSelectorPlugin["JsonPathSelectorPlugin<br/><small>expression:Plugins</small>"]:::implCore
+    C_expression_expression_Plugins_JsonPathSelectorPlugin -.->|implements| I_SelectorPluginInterface
+    C_expression_expression_Plugins_JsonPointerSelectorPlugin["JsonPointerSelectorPlugin<br/><small>expression:Plugins</small>"]:::implCore
+    C_expression_expression_Plugins_JsonPointerSelectorPlugin -.->|implements| I_SelectorPluginInterface
+    C_expression_expression_Plugins_XpathSelectorPlugin["XpathSelectorPlugin<br/><small>expression:Plugins</small>"]:::implCore
+    C_expression_expression_Plugins_XpathSelectorPlugin -.->|implements| I_SelectorPluginInterface
     C_expression_expression_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>expression:Xpath</small>"]:::implCore
     C_expression_expression_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore

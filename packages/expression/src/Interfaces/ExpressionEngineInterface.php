@@ -76,16 +76,4 @@ interface ExpressionEngineInterface
      * @param  array<array-key, mixed>  $data
      */
     public function jsonPointer(array $data, ?string $pointer): mixed;
-
-    /**
-     * Run an XPath query against a root value with an explicit spec version.
-     */
-    public function queryXPath(mixed $rootValue, string $selector, string $version): mixed;
-
-    /**
-     * The XPath spec versions this engine can evaluate.
-     *
-     * @return list<string>
-     */
-    public function supportedXPathVersions(): array;
 }
