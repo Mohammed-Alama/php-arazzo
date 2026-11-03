@@ -12,6 +12,8 @@ use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
+use Alama\Arazzo\Evaluation\Events\CriterionEvaluatedEvent;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 
 /**
@@ -37,9 +39,12 @@ interface EvaluationEngineInterface
     /**
      * Evaluate a list of success criteria against the current workflow step.
      *
+     * Short-circuits at the first criterion that is not `Passed`. Each evaluated
+     * criterion is emitted as a {@see CriterionEvaluatedEvent}.
+     *
      * @param  list<SuccessCriterion>  $criteria
      */
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection;
 
     /**
      * Evaluate a step's declared success criteria (2xx default when applicable).

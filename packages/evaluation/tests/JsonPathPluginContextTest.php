@@ -12,6 +12,7 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\Plugins\JsonPathExpressionPlugin;
 use Alama\Arazzo\Expression\ExpressionEngine;
@@ -32,8 +33,11 @@ it('answers a jsonpath criterion against a response body that is not structured'
     $text = (new WorkflowContext('def_1'))
         ->withStepResponse('s1', ['statusCode' => 200, 'headers' => [], 'body' => 'plain text']);
 
-    expect($engine->evaluateCriteria([$criterion], $step, $structured))->toBeTrue()
-        ->and($engine->evaluateCriteria([$criterion], $step, $text))->toBeFalse();
+    $structuredResult = $engine->evaluateCriteria([$criterion], $step, $structured)->results[0];
+    $textResult = $engine->evaluateCriteria([$criterion], $step, $text)->results[0];
+
+    expect($structuredResult->outcome)->toBe(CriterionOutcome::Passed)
+        ->and($textResult->outcome)->toBe(CriterionOutcome::Failed);
 });
 
 it('reports no matches when a jsonpath expression is evaluated over a scalar', function (): void {

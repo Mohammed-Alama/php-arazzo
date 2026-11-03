@@ -28,6 +28,10 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\CriterionResult;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
+use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
+use Alama\Arazzo\Evaluation\Enum\CriterionReason;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
@@ -101,16 +105,34 @@ class StepOutcomeMockExpressionResolver implements EvaluationEngineInterface
         return true;
     }
 
-    // Test convention: an empty criteria list always matches (unconditional action); a
-    // non-empty list matches only when its first criterion's condition is the literal
-    // string 'MATCH'. Keeps these tests independent of the real criterion evaluator.
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    /**
+     * Test convention: an empty criteria list always matches (unconditional action); a
+     * non-empty list matches only when its first criterion's condition is the literal
+     * string 'MATCH'. Keeps these tests independent of the real criterion evaluator.
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
         if ($criteria === []) {
-            return true;
+            return new CriterionResultCollection([]);
         }
 
-        return $criteria[0]->condition === 'MATCH';
+        $matched = $criteria[0]->condition === 'MATCH';
+
+        return new CriterionResultCollection([
+            new CriterionResult(
+                $criteria[0],
+                $matched ? CriterionOutcome::Passed : CriterionOutcome::Failed,
+                CriterionReason::Evaluated,
+            ),
+        ]);
+    }
+
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteriaDetailed(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+    {
+        return [];
     }
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed

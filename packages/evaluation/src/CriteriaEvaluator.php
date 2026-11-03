@@ -4,20 +4,40 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Evaluation;
 
+use Alama\Arazzo\Contracts\Interfaces\CriterionEvaluatorPluginInterface;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Enum\CriterionType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Evaluation\Condition\ConditionSyntaxException;
+use Alama\Arazzo\Evaluation\Data\CriterionResult;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
+use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
+use Alama\Arazzo\Evaluation\Enum\CriterionReason;
+use Alama\Arazzo\Evaluation\Events\CriterionEvaluatedEvent;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * Evaluates success criteria and reports why each one reached its outcome.
+ *
+ * Every evaluation failure is deterministic: the boolean convenience methods
+ * return `false` and the detailed API records `Error` with a machine-readable
+ * reason. That includes a plugin that throws, which is reported as
+ * `PluginError` instead of propagating; this is the one deliberate change from
+ * the previous behaviour.
+ *
+ * Each evaluated criterion is emitted as a {@see CriterionEvaluatedEvent}
+ * through the injected PSR-14 dispatcher so telemetry can observe outcomes
+ * without pulling them back out of the return value.
+ *
  * @internal stays out of the advertised contract; not part of the public API surface
  */
 class CriteriaEvaluator implements CriteriaEvaluatorInterface
@@ -26,13 +46,20 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
 
     private ?CriterionEvaluatorRegistry $criterionRegistry;
 
+    private BuiltInCriterionEvaluator $builtIn;
+
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         private ExpressionEngineInterface $expression,
         ?ConditionEvaluator $conditionEvaluator = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($expression);
         $this->criterionRegistry = $criterionRegistry;
+        $this->builtIn = new BuiltInCriterionEvaluator($expression, $this->conditionEvaluator);
+        $this->eventDispatcher = $eventDispatcher ?? new NullEventDispatcher();
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
@@ -47,105 +74,115 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
             return self::isSuccessStatusCode(is_array($response) ? ($response['statusCode'] ?? null) : null);
         }
 
-        return $this->evaluateCriteria($step->io->successCriteria, $step, $context, $document);
+        return $this->evaluateCriteria($step->io->successCriteria, $step, $context, $document)->criteriaMet();
     }
 
     /**
+     * Evaluate criteria and report why each one reached its outcome.
+     *
+     * Short-circuits at the first criterion that is not `Passed`, so the last
+     * result is the one that decided the outcome. Each evaluated criterion is
+     * emitted as a {@see CriterionEvaluatedEvent}.
+     *
      * @param  list<SuccessCriterion>  $criteria
      */
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
-        if (empty($criteria)) {
-            return true;
-        }
-
-        $steps = $context->getSteps();
-        $stepData = $steps[$step->stepId] ?? null;
-        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
-        $responseBody = is_array($response) ? ($response['body'] ?? []) : [];
+        $results = [];
 
         foreach ($criteria as $criterion) {
-            $type = $criterion->type ?? CriterionType::Simple;
+            $result = $this->evaluateCriterion($criterion, $step, $context, $document);
+            $results[] = $result;
 
-            // If we have a registry and it has a plugin for this criterion, delegate.
-            if ($this->criterionRegistry !== null) {
-                $plugin = $this->criterionRegistry->resolve($criterion);
-                if ($plugin !== null) {
-                    try {
-                        $root = $this->criterionRoot($criterion, $responseBody, $context, $step->stepId, $document);
-                    } catch (\Throwable) {
-                        // A context that cannot be resolved fails the criterion
-                        // deterministically instead of running it on the wrong root.
-                        return false;
-                    }
+            $this->eventDispatcher->dispatch(
+                new CriterionEvaluatedEvent($result, $step->stepId, $document?->info->version ?? null),
+            );
 
-                    $passed = $plugin->evaluate($criterion, $root, $step, $context);
-                    if (!$passed) {
-                        return false;
-                    }
-
-                    continue;
-                }
-            }
-
-            // Evaluation errors inside each branch fail the criterion deterministically.
-            $passed = match ($type) {
-                CriterionType::Simple => $this->evaluateSimple($criterion, $context, $step->stepId, $document),
-                CriterionType::Regex => $this->evaluateRegex($criterion, $context, $step->stepId, $document),
-                CriterionType::JsonPath => $this->evaluateJsonPath($criterion, $responseBody, $context, $step->stepId, $document),
-                CriterionType::XPath => $this->evaluateXPath($criterion, $context, $step->stepId, $document),
-            };
-
-            if (!$passed) {
-                return false;
+            if ($result->outcome !== CriterionOutcome::Passed) {
+                break;
             }
         }
 
-        return true;
+        return new CriterionResultCollection($results);
     }
 
-    private function evaluateSimple(SuccessCriterion $criterion, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
-    {
-        try {
-            return $this->conditionEvaluator->evaluate($criterion->condition, $context, $stepId, $document);
-        } catch (ConditionSyntaxException) {
-            // Evaluation errors fail the criterion deterministically.
-            return false;
+    private function evaluateCriterion(
+        SuccessCriterion $criterion,
+        Step $step,
+        WorkflowContextInterface $context,
+        ?ArazzoDocument $document,
+    ): CriterionResult {
+        $type = $criterion->type ?? CriterionType::Simple;
+
+        if ($this->criterionRegistry !== null) {
+            $plugin = $this->criterionRegistry->resolve($criterion);
+
+            if ($plugin !== null) {
+                return $this->evaluatePlugin($criterion, $plugin, $step, $context, $document);
+            }
         }
+
+        try {
+            $root = $this->resolveRoot($criterion, $type, $context, $step->stepId, $document);
+        } catch (\Throwable $exception) {
+            return self::error($criterion, CriterionReason::ContextUnresolved, $exception->getMessage());
+        }
+
+        try {
+            $passed = $this->builtIn->evaluate($criterion, $type, $root, new EvaluationContext($context, $step->stepId, $document));
+        } catch (ConditionSyntaxException $exception) {
+            return self::error($criterion, CriterionReason::SyntaxError, $exception->getMessage());
+        } catch (\Throwable $exception) {
+            return self::error($criterion, CriterionReason::SelectorError, $exception->getMessage());
+        }
+
+        return self::result($criterion, $passed);
     }
 
-    private function evaluateRegex(SuccessCriterion $criterion, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
-    {
-        if ($criterion->context === null) {
-            // A regex criterion without a context cannot be evaluated; fail deterministically.
-            return false;
+    private function evaluatePlugin(
+        SuccessCriterion $criterion,
+        CriterionEvaluatorPluginInterface $plugin,
+        Step $step,
+        WorkflowContextInterface $context,
+        ?ArazzoDocument $document,
+    ): CriterionResult {
+        try {
+            $root = $this->criterionRoot($criterion, $context, $step->stepId, $document);
+        } catch (\Throwable $exception) {
+            return self::error($criterion, CriterionReason::ContextUnresolved, $exception->getMessage());
         }
 
         try {
-            $target = $this->expression->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
-        } catch (\Throwable) {
-            return false;
+            $passed = $plugin->evaluate($criterion, $root, $step, $context);
+        } catch (\Throwable $exception) {
+            return self::error($criterion, CriterionReason::PluginError, $exception->getMessage());
         }
 
-        if ($target === null) {
-            return false;
-        }
-
-        return preg_match('/'.str_replace('/', '\/', $criterion->condition).'/', self::stringify($target)) === 1;
+        return self::result($criterion, $passed);
     }
 
-    private function evaluateJsonPath(SuccessCriterion $criterion, mixed $responseBody, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
-    {
-        try {
-            $root = $this->criterionRoot($criterion, $responseBody, $context, $stepId, $document);
-        } catch (\Throwable) {
-            // Evaluation errors fail the criterion deterministically.
-            return false;
+    /**
+     * Resolve the value a criterion evaluates against. Simple conditions resolve
+     * their own operands, so they need no root.
+     *
+     * @throws \RuntimeException when the criterion declares no context but needs one
+     */
+    private function resolveRoot(
+        SuccessCriterion $criterion,
+        CriterionType $type,
+        WorkflowContextInterface $context,
+        string $stepId,
+        ?ArazzoDocument $document,
+    ): mixed {
+        if ($type === CriterionType::Simple) {
+            return null;
         }
 
-        $result = $this->expression->jsonPath($criterion->condition, is_array($root) ? $root : []);
+        if ($type === CriterionType::Regex && $criterion->context === null) {
+            throw new \RuntimeException('A regex criterion requires a context.');
+        }
 
-        return !empty($result);
+        return $this->criterionRoot($criterion, $context, $stepId, $document);
     }
 
     /**
@@ -153,23 +190,37 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
      * step's response body when no context is declared. Shared by the built-in
      * branch and the plugin dispatch so the two cannot drift.
      *
-     * @throws \Throwable when the context expression cannot be evaluated
+     * @throws \Throwable when the context expression cannot be evaluated or resolves to null
      */
     private function criterionRoot(
         SuccessCriterion $criterion,
-        mixed $responseBody,
         WorkflowContextInterface $context,
         string $stepId,
         ?ArazzoDocument $document,
     ): mixed {
         if ($criterion->context === null) {
-            return $responseBody;
+            return $this->responseBody($context, $stepId);
         }
 
-        return $this->expression->evaluate(
+        $root = $this->expression->evaluate(
             new Expression($criterion->context),
             new EvaluationContext($context, $stepId, $document),
         );
+
+        if ($root === null) {
+            throw new \RuntimeException("Criterion context '{$criterion->context}' resolved to null.");
+        }
+
+        return $root;
+    }
+
+    private function responseBody(WorkflowContextInterface $context, string $stepId): mixed
+    {
+        $steps = $context->getSteps();
+        $stepData = $steps[$stepId] ?? null;
+        $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
+
+        return is_array($response) ? ($response['body'] ?? []) : [];
     }
 
     private function hasOperationTarget(Step $step): bool
@@ -189,60 +240,17 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         return $code >= 200 && $code < 300;
     }
 
-    private function evaluateXPath(SuccessCriterion $criterion, WorkflowContextInterface $context, string $stepId, ?ArazzoDocument $document): bool
+    private static function result(SuccessCriterion $criterion, bool $passed): CriterionResult
     {
-        if ($criterion->context !== null) {
-            try {
-                $root = $this->expression->evaluate(new Expression($criterion->context), new EvaluationContext($context, $stepId, $document));
-            } catch (\Throwable) {
-                return false;
-            }
-        } else {
-            $steps = $context->getSteps();
-            $stepData = $steps[$stepId] ?? null;
-            $response = is_array($stepData) ? ($stepData['response'] ?? null) : null;
-            $root = is_array($response) ? ($response['body'] ?? []) : [];
-        }
-
-        // The Arazzo default is xpath-31, but this engine implements XPath 1.0
-        // (DOMXPath) only. A versionless criterion therefore runs as xpath-10,
-        // which the validator accepts; explicit xpath-20/30/31 declarations are
-        // refused at validation time rather than failing here.
-        $version = $criterion->version ?? 'xpath-10';
-
-        try {
-            $result = $this->expression->queryXPath($root, $criterion->condition, $version);
-        } catch (\Throwable) {
-            // Evaluation errors fail the criterion deterministically.
-            return false;
-        }
-
-        return ConditionEvaluator::truthy($result);
+        return new CriterionResult(
+            $criterion,
+            $passed ? CriterionOutcome::Passed : CriterionOutcome::Failed,
+            CriterionReason::Evaluated,
+        );
     }
 
-    private static function stringify(mixed $value): string
+    private static function error(SuccessCriterion $criterion, CriterionReason $reason, string $message): CriterionResult
     {
-        if (is_string($value)) {
-            return $value;
-        }
-
-        if (is_scalar($value)) {
-            return (string) $value;
-        }
-
-        if (is_array($value) && !array_is_list($value)) {
-            // Non-list arrays stringify as JSON for regex matching convenience.
-            try {
-                return json_encode($value, JSON_THROW_ON_ERROR);
-            } catch (\JsonException) {
-                return '';
-            }
-        }
-
-        if (is_array($value)) {
-            return implode(',', array_map(self::stringify(...), $value));
-        }
-
-        return '';
+        return new CriterionResult($criterion, CriterionOutcome::Error, $reason, $message);
     }
 }

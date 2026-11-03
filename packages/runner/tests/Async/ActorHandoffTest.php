@@ -24,6 +24,8 @@ use Alama\Arazzo\Contracts\Spec\StepIo;
 use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Evaluation\Data\CriterionResult;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Events\CorrelationPendingEvent;
 use Alama\Arazzo\Events\Interfaces\EventLedgerInterface;
@@ -109,9 +111,20 @@ class HandoffMockExpressionResolver implements EvaluationEngineInterface
         return true;
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
-        return true;
+        return new CriterionResultCollection([]);
+    }
+
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteriaDetailed(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+    {
+        return [];
     }
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed

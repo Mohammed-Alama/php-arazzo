@@ -334,9 +334,9 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Evaluation`
 
 #### `EvaluationEngine` class
-- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null)`
+- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null, ?EventDispatcherInterface $eventDispatcher = null)`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string`
@@ -348,7 +348,7 @@ this file on a commit is a public API change — review it deliberately.
 
 #### `EvaluationEngineInterface` interface
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed;`
-- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
+- `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection;`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed;`
 - `public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool;`
 - `public function interpolate(string $value, WorkflowContextInterface $context, string $stepId): string;`

@@ -24,6 +24,8 @@ use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Document\NormalizedOpenApiOperation;
 use Alama\Arazzo\Document\OperationResolverInterface;
 use Alama\Arazzo\Document\ResolvedOperation;
+use Alama\Arazzo\Evaluation\Data\CriterionResult;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
@@ -52,9 +54,20 @@ class RpcExecutorMockEngine implements EvaluationEngineInterface
         return true;
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
-        return true;
+        return new CriterionResultCollection([]);
+    }
+
+    /**
+     * @return list<CriterionResult>
+     */
+    public function evaluateCriteriaDetailed(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): array
+    {
+        return [];
     }
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed

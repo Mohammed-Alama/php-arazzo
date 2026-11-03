@@ -49,7 +49,9 @@ flowchart TB
     end
     subgraph PKG_M_evaluation["evaluation"]
         M_evaluation_Condition["evaluation:Condition"]:::node
+        M_evaluation_Data["evaluation:Data"]:::node
         M_evaluation_Enum["evaluation:Enum"]:::node
+        M_evaluation_Events["evaluation:Events"]:::node
         M_evaluation_Interfaces["evaluation:Interfaces"]:::node
         M_evaluation_Plugins["evaluation:Plugins"]:::node
         M_evaluation_Registries["evaluation:Registries"]:::node
@@ -156,7 +158,12 @@ flowchart TB
     M_evaluation_Condition --> M_expression_Exceptions
     M_evaluation_Condition --> M_expression_Interfaces
     M_evaluation_Condition --> M_expression__
+    M_evaluation_Data --> M_contracts_Spec
+    M_evaluation_Data --> M_evaluation_Enum
+    M_evaluation_Events --> M_evaluation_Data
     M_evaluation_Interfaces --> M_contracts_Spec
+    M_evaluation_Interfaces --> M_evaluation_Data
+    M_evaluation_Interfaces --> M_evaluation_Events
     M_evaluation_Plugins --> M_contracts_Interfaces
     M_evaluation_Plugins --> M_contracts_Spec
     M_evaluation_Plugins --> M_expression_Interfaces
@@ -164,9 +171,14 @@ flowchart TB
     M_evaluation_Registries --> M_contracts_Spec
     M_evaluation_Registries --> M_evaluation_Plugins
     M_evaluation_Registries --> M_expression_Interfaces
+    M_evaluation__ --> M_contracts_Interfaces
     M_evaluation__ --> M_contracts_Spec
     M_evaluation__ --> M_contracts_State
+    M_evaluation__ --> M_contracts_Support
     M_evaluation__ --> M_evaluation_Condition
+    M_evaluation__ --> M_evaluation_Data
+    M_evaluation__ --> M_evaluation_Enum
+    M_evaluation__ --> M_evaluation_Events
     M_evaluation__ --> M_evaluation_Interfaces
     M_evaluation__ --> M_evaluation_Registries
     M_evaluation__ --> M_expression_Data
@@ -373,8 +385,8 @@ flowchart TB
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
-| `evaluation` | `contracts` | 46 |
-| `evaluation` | `expression` | 17 |
+| `evaluation` | `contracts` | 53 |
+| `evaluation` | `expression` | 19 |
 | `events` | `contracts` | 1 |
 | `expression` | `contracts` | 18 |
 | `laravel` | `cli` | 3 |

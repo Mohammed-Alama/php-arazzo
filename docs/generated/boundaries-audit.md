@@ -21,7 +21,7 @@ when a boundary consciously moves.
 | `Illuminate` | 0 | 46 | **forbidden** |
 | `JsonSchema` | 7 | 0 | _unclassified_ ⚠ |
 | `OpenTelemetry` | 25 | 0 | _unclassified_ ⚠ |
-| `Psr` | 34 | 25 | allowed |
+| `Psr` | 36 | 26 | allowed |
 | `Spatie` | 0 | 2 | _unclassified_ |
 | `Symfony` | 32 | 0 | **forbidden** ⚠ |
 | `cebe` | 10 | 0 | **forbidden** ⚠ |
@@ -40,6 +40,7 @@ when a boundary consciously moves.
 | document | `document:Validator` | `JsonSchema` | 4 |
 | engine | `engine:Execution` | `Psr` | 4 |
 | engine | `engine:Execution` | `cebe` | 2 |
+| evaluation | `evaluation:_` | `Psr` | 2 |
 | expression | `expression:_` | `Flow` | 1 |
 | runner | `runner:Async` | `OpenTelemetry` | 2 |
 | runner | `runner:Async` | `Psr` | 3 |
@@ -55,7 +56,7 @@ when a boundary consciously moves.
 | sources | `sources:_` | `Psr` | 2 |
 | laravel | `laravel:Bindings` | `GuzzleHttp` | 2 |
 | laravel | `laravel:Bindings` | `Illuminate` | 9 |
-| laravel | `laravel:Bindings` | `Psr` | 10 |
+| laravel | `laravel:Bindings` | `Psr` | 11 |
 | laravel | `laravel:Events` | `Illuminate` | 1 |
 | laravel | `laravel:Events` | `Psr` | 1 |
 | laravel | `laravel:Http` | `GuzzleHttp` | 1 |
@@ -112,7 +113,7 @@ Grouped cross-package uses of concrete internals (AST nodes, evaluators, resolve
 | `document` | `DependencyGraph` | `contracts` | 1 | `StepDependsOnNoCycleRule` |
 | `document` | `ExpressionReference` | `expression` | 1 | `ExpressionUnresolvedStepRefRule` |
 | `document` | `PreflightValidator` | `sources` | 1 | `ModelStack` |
-| `evaluation` | `EvaluationContext` | `expression` | 4 | `ConditionEvaluator` |
+| `evaluation` | `EvaluationContext` | `expression` | 5 | `ConditionEvaluator` |
 | `evaluation` | `Parser` | `expression` | 1 | `AccessorParser` |
 | `runner` | `CorrelationPendingEvent` | `events` | 2 | `StepExecutionWorker` |
 | `runner` | `CorrelationResumedEvent` | `events` | 1 | `CorrelationResumer` |

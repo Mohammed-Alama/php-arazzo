@@ -9,12 +9,16 @@ use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Contracts\Spec\Step;
+use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Contracts\Support\Events\Dispatcher\NullEventDispatcher;
+use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Concrete evaluation facade.
@@ -28,13 +32,17 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     private readonly CriterionEvaluatorRegistry $criterionRegistry;
 
+    private readonly EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         private readonly ExpressionEngineInterface $expression,
         ?ExpressionEvaluatorRegistry $expressionRegistry = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->expressionRegistry = $expressionRegistry ?? new ExpressionEvaluatorRegistry($this->expression);
         $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry($this->expression);
+        $this->eventDispatcher = $eventDispatcher ?? new NullEventDispatcher();
     }
 
     private ?CriteriaEvaluator $criteriaEvaluator = null;
@@ -51,14 +59,22 @@ final class EvaluationEngine implements EvaluationEngineInterface
         return $this->expression->evaluate($expression, $context);
     }
 
-    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
+    /**
+     * Evaluate a list of success criteria against the current workflow step.
+     *
+     * Short-circuits at the first criterion that is not `Passed`. Each evaluated
+     * criterion is emitted as a {@see CriterionEvaluatedEvent}.
+     *
+     * @param  list<SuccessCriterion>  $criteria
+     */
+    public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection
     {
         return $this->criteria()->evaluateCriteria($criteria, $step, $context, $document);
     }
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
-        return $this->criteria()->evaluateSuccessCriteria($step, $context, $document);
+        return $this->criteria()->evaluateCriteria($step->io->successCriteria, $step, $context, $document)->criteriaMet();
     }
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
@@ -127,7 +143,12 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     private function criteria(): CriteriaEvaluator
     {
-        return $this->criteriaEvaluator ??= new CriteriaEvaluator($this->expression, null, $this->criterionRegistry);
+        return $this->criteriaEvaluator ??= new CriteriaEvaluator(
+            $this->expression,
+            null,
+            $this->criterionRegistry,
+            $this->eventDispatcher,
+        );
     }
 
     private function interpolator(): StringInterpolator
