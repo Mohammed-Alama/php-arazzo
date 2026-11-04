@@ -25,7 +25,6 @@ use Alama\Arazzo\Contracts\Spec\Workflow;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\Enum\CriterionOutcome;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
 function capabilityStep(?RequestBody $body = null, array $criteria = [], array $outputs = []): Step
@@ -97,8 +96,8 @@ it('evaluates selectors rooted at the current step', function (): void {
 });
 
 it('reports xpath supported versions through the selector plugin registry', function (): void {
-    $provider = new ExpressionDependencyProvider();
-    $registry = $provider->getSelectorPluginRegistry();
+    $expressionEngine = new ExpressionEngine();
+    $registry = $expressionEngine->selectorPlugins();
     $plugin = $registry->get(ExpressionType::XPath);
 
     expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10']);

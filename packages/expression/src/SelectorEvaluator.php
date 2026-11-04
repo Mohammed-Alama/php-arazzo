@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Exceptions\SelectorEvaluationException;
-use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 
 /**
  * @internal stays out of the advertised contract; consumed by the ExpressionEngine facade.
@@ -17,7 +17,7 @@ use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 final class SelectorEvaluator
 {
     public function __construct(
-        private SelectorPluginRegistry $plugins,
+        private SelectorPluginRegistryInterface $plugins,
         private ExpressionEvaluator $expressions,
     ) {}
 

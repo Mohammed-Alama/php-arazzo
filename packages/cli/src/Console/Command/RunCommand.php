@@ -73,8 +73,9 @@ final class RunCommand extends Command
         }
 
         $registry = $this->resolveRegistry();
-        $engine = new EvaluationEngine(expression: new ExpressionEngine());
-        $runtime = SourceGraph::runtime(registry: $registry);
+        $expressionEngine = new ExpressionEngine();
+        $engine = new EvaluationEngine(expression: $expressionEngine);
+        $runtime = SourceGraph::runtime(registry: $registry, engine: $expressionEngine);
 
         $fakeClient = new FakePsr18Client();
         $fakeFactory = new HttpFactory();

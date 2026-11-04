@@ -43,6 +43,7 @@ flowchart LR
     I_RunnerFacadeInterface["RunnerFacadeInterface<br/><small>(runner root)</small>"]:::contract
     I_RunnerGraphBuilderInterface["RunnerGraphBuilderInterface<br/><small>(runner root)</small>"]:::contract
     I_SelectorPluginInterface["SelectorPluginInterface<br/><small>expression:Interfaces</small>"]:::contract
+    I_SelectorPluginRegistryInterface["SelectorPluginRegistryInterface<br/><small>expression:Interfaces</small>"]:::contract
     I_SourceFetcher["SourceFetcher<br/><small>sources:Resolver</small>"]:::contract
     I_SourceNormalizerInterface["SourceNormalizerInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_SourceNormalizerRegistryInterface["SourceNormalizerRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
@@ -68,6 +69,8 @@ flowchart LR
     C_expression_expression_Plugins_JsonPointerSelectorPlugin -.->|implements| I_SelectorPluginInterface
     C_expression_expression_Plugins_XpathSelectorPlugin["XpathSelectorPlugin<br/><small>expression:Plugins</small>"]:::implCore
     C_expression_expression_Plugins_XpathSelectorPlugin -.->|implements| I_SelectorPluginInterface
+    C_expression_expression_Registries_SelectorPluginRegistry["SelectorPluginRegistry<br/><small>expression:Registries</small>"]:::implCore
+    C_expression_expression_Registries_SelectorPluginRegistry -.->|implements| I_SelectorPluginRegistryInterface
     C_expression_expression_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>expression:Xpath</small>"]:::implCore
     C_expression_expression_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore

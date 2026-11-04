@@ -12,6 +12,7 @@ use Alama\Arazzo\Expression\Data\InterpolationOptions;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 
 /**
  * Concrete expression facade: static parsing and reference projection, plus
@@ -25,15 +26,19 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
  */
 final readonly class ExpressionEngine implements ExpressionEngineInterface
 {
+    private ExpressionDependencyProvider $provider;
+
     public function __construct(
-        private ExpressionDependencyProvider $provider = new ExpressionDependencyProvider(),
-    ) {}
+        private readonly ?SelectorPluginRegistryInterface $selectorPlugins = null,
+    ) {
+        $this->provider = new ExpressionDependencyProvider($this->selectorPlugins);
+    }
 
     public function parseExpression(string $raw): ?ExpressionSyntaxException
     {
-        return $this->provider->getParser()->parseOrError($raw) instanceof ExpressionSyntaxException
-            ? $this->provider->getParser()->parseOrError($raw)
-            : null;
+        $result = $this->provider->getParser()->parseOrError($raw);
+
+        return $result instanceof ExpressionSyntaxException ? $result : null;
     }
 
     public function expressionReferences(string $raw): ?ExpressionReference
@@ -81,6 +86,11 @@ final readonly class ExpressionEngine implements ExpressionEngineInterface
     public function jsonPointer(array $data, ?string $pointer): mixed
     {
         return JsonPointer::resolve($data, $pointer);
+    }
+
+    public function selectorPlugins(): SelectorPluginRegistryInterface
+    {
+        return $this->selectorPlugins ?? $this->provider->getSelectorPluginRegistry();
     }
 
     private function getInterpolator(): Interpolator

@@ -10,7 +10,6 @@ use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Enum\ReferenceKind;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
-use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
@@ -69,8 +68,8 @@ it('evaluates raw jsonpath queries through the public face', function () {
 });
 
 it('evaluates xpath queries through the selector plugin', function () {
-    $provider = new ExpressionDependencyProvider();
-    $registry = $provider->getSelectorPluginRegistry();
+    $engine = new ExpressionEngine();
+    $registry = $engine->selectorPlugins();
     $plugin = $registry->get(ExpressionType::XPath);
 
     expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10']);

@@ -16,10 +16,9 @@ use Alama\Arazzo\Evaluation\Data\CriterionResultCollection;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Evaluation\Registries\ExpressionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -34,7 +33,7 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     private readonly CriterionEvaluatorRegistry $criterionRegistry;
 
-    private readonly SelectorPluginRegistry $selectorRegistry;
+    private readonly SelectorPluginRegistryInterface $selectorRegistry;
 
     private readonly EventDispatcherInterface $eventDispatcher;
 
@@ -42,12 +41,12 @@ final class EvaluationEngine implements EvaluationEngineInterface
         private readonly ExpressionEngineInterface $expression,
         ?ExpressionEvaluatorRegistry $expressionRegistry = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,
-        ?SelectorPluginRegistry $selectorRegistry = null,
+        ?SelectorPluginRegistryInterface $selectorRegistry = null,
         ?EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->expressionRegistry = $expressionRegistry ?? new ExpressionEvaluatorRegistry($this->expression);
         $this->criterionRegistry = $criterionRegistry ?? new CriterionEvaluatorRegistry($this->expression);
-        $this->selectorRegistry = $selectorRegistry ?? (new ExpressionDependencyProvider())->getSelectorPluginRegistry();
+        $this->selectorRegistry = $selectorRegistry ?? $this->expression->selectorPlugins();
         $this->eventDispatcher = $eventDispatcher ?? new NullEventDispatcher();
     }
 

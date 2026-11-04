@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\PayloadReplacement;
 use Alama\Arazzo\Contracts\Spec\Step;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 
 /**
  * Applies a step's payload replacements to an array-shaped body.
@@ -33,7 +33,7 @@ final class PayloadReplacer
      */
     public static function apply(
         ExpressionEngineInterface $expression,
-        SelectorPluginRegistry $selectorRegistry,
+        SelectorPluginRegistryInterface $selectorRegistry,
         Step $step,
         array $body,
         ?callable $resolveValue = null,
@@ -93,7 +93,7 @@ final class PayloadReplacer
         PayloadReplacement $replacement,
         ?callable $resolveValue,
         ExpressionEngineInterface $expression,
-        SelectorPluginRegistry $selectorRegistry,
+        SelectorPluginRegistryInterface $selectorRegistry,
     ): void {
         $value = $resolveValue !== null ? $resolveValue($replacement) : $replacement->value;
         $type = (string) self::selectorType($replacement);

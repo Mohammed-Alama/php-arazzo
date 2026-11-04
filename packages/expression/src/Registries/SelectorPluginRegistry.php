@@ -6,6 +6,7 @@ namespace Alama\Arazzo\Expression\Registries;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Expression\Interfaces\SelectorPluginInterface;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 
 /**
  * Registry for selector plugins.
@@ -16,7 +17,7 @@ use Alama\Arazzo\Expression\Interfaces\SelectorPluginInterface;
  *
  * @internal stays out of the advertised contract; consumed by SelectorEvaluator.
  */
-final class SelectorPluginRegistry
+final class SelectorPluginRegistry implements SelectorPluginRegistryInterface
 {
     /** @var array<string, array<int, list<SelectorPluginInterface>>> */
     private array $plugins = [];

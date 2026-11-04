@@ -47,9 +47,7 @@ document-Validator,contracts-Spec,103
 document-Validator,contracts-Support,2
 document-Validator,expression-Data,1
 document-Validator,expression-Enum,7
-document-Validator,expression-Interfaces,9
-document-Validator,expression-Registries,1
-document-Validator,expression-root,1
+document-Validator,expression-Interfaces,10
 document-root,contracts-Spec,13
 document-root,document-Parser,4
 document-root,document-Validator,4
@@ -97,9 +95,7 @@ evaluation-root,evaluation-Events,2
 evaluation-root,evaluation-Interfaces,1
 evaluation-root,evaluation-Registries,3
 evaluation-root,expression-Data,4
-evaluation-root,expression-Interfaces,6
-evaluation-root,expression-Registries,4
-evaluation-root,expression-root,2
+evaluation-root,expression-Interfaces,10
 events-Listener,contracts-Support,1
 events-Listener,events-Interfaces,1
 events-Listener,events-root,9
@@ -108,16 +104,16 @@ expression-Ast,expression-Enum,9
 expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
 expression-Exceptions,contracts-Support,2
-expression-Interfaces,contracts-Spec,6
+expression-Interfaces,contracts-Spec,7
 expression-Interfaces,expression-Data,2
 expression-Interfaces,expression-Exceptions,1
-expression-Interfaces,expression-Registries,1
 expression-Internal,expression-Ast,10
 expression-Internal,expression-Interfaces,1
 expression-Plugins,contracts-Spec,3
 expression-Plugins,expression-Interfaces,3
 expression-Plugins,expression-Xpath,2
 expression-Registries,contracts-Spec,1
+expression-Registries,expression-Interfaces,2
 expression-Xpath,contracts-Spec,1
 expression-Xpath,expression-Exceptions,1
 expression-root,contracts-Spec,8
@@ -125,10 +121,10 @@ expression-root,expression-Ast,20
 expression-root,expression-Data,7
 expression-root,expression-Enum,2
 expression-root,expression-Exceptions,5
-expression-root,expression-Interfaces,5
+expression-root,expression-Interfaces,7
 expression-root,expression-Internal,2
 expression-root,expression-Plugins,3
-expression-root,expression-Registries,2
+expression-root,expression-Registries,1
 expression-root,expression-Xpath,2
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,8
@@ -138,7 +134,7 @@ laravel-Bindings,document-root,1
 laravel-Bindings,evaluation-root,3
 laravel-Bindings,events-Interfaces,2
 laravel-Bindings,events-Listener,1
-laravel-Bindings,expression-Interfaces,1
+laravel-Bindings,expression-Interfaces,2
 laravel-Bindings,expression-root,1
 laravel-Bindings,laravel-Http,1
 laravel-Bindings,laravel-Lock,1
@@ -269,6 +265,7 @@ sources-root,contracts-Spec,3
 sources-root,document-Parser,2
 sources-root,document-Validator,3
 sources-root,document-root,5
+sources-root,expression-Interfaces,1
 sources-root,expression-root,1
 sources-root,sources-Normalizer,8
 sources-root,sources-Resolver,6
@@ -285,9 +282,9 @@ These references exist in the code but are not drawn: drawing them would close a
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
+| `expression-Interfaces` | `expression-Registries` | 1 |
 | `expression-Internal` | `expression-root` | 1 |
 | `expression-Plugins` | `expression-root` | 2 |
-| `expression-Registries` | `expression-Interfaces` | 1 |
 | `runner-Async` | `runner-root` | 4 |
 | `runner-Execution` | `runner-Sync` | 1 |
 | `runner-Sync` | `runner-root` | 2 |

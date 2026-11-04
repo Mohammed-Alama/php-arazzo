@@ -11,6 +11,7 @@ use Alama\Arazzo\Evaluation\EvaluationEngine;
 use Alama\Arazzo\Evaluation\EvaluationEngineInterface;
 use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 use Alama\Arazzo\Protocol\Http\Execution\Interfaces\OpenApiExecutorInterface;
 use Alama\Arazzo\Runner\Execution\OperationRuntime;
 use Alama\Arazzo\Runner\RunnerFacade;
@@ -31,9 +32,15 @@ final class FacadeBindings
 {
     public static function register(Container $app): void
     {
-        $app->singleton(ExpressionEngineInterface::class, fn (): ExpressionEngine => new ExpressionEngine());
+        $app->singleton(ExpressionEngineInterface::class, function (Container $app): ExpressionEngine {
+            $engine = new ExpressionEngine();
+            // One registry, shared with anything that resolves SelectorPluginRegistryInterface.
+            $app->instance(SelectorPluginRegistryInterface::class, $engine->selectorPlugins());
+
+            return $engine;
+        });
         $app->singleton(EvaluationEngineInterface::class, fn (Container $app): EvaluationEngine => new EvaluationEngine(
-            expression: new ExpressionEngine(),
+            expression: $app->make(ExpressionEngineInterface::class),
             eventDispatcher: $app->make(EventDispatcherInterface::class),
         ));
         // One runtime, so the document and the resolver behind it share a

@@ -22,9 +22,8 @@ use Alama\Arazzo\Evaluation\Events\CriterionEvaluatedEvent;
 use Alama\Arazzo\Evaluation\Interfaces\CriteriaEvaluatorInterface;
 use Alama\Arazzo\Evaluation\Registries\CriterionEvaluatorRegistry;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -56,13 +55,13 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
         private ExpressionEngineInterface $expression,
         ?ConditionEvaluator $conditionEvaluator = null,
         ?CriterionEvaluatorRegistry $criterionRegistry = null,
-        ?SelectorPluginRegistry $selectorRegistry = null,
+        ?SelectorPluginRegistryInterface $selectorRegistry = null,
         ?EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->conditionEvaluator = $conditionEvaluator ?? new ConditionEvaluator($expression);
         $this->criterionRegistry = $criterionRegistry;
         $this->builtIn = new BuiltInCriterionEvaluator(
-            $selectorRegistry ?? (new ExpressionDependencyProvider())->getSelectorPluginRegistry(),
+            $selectorRegistry ?? $this->expression->selectorPlugins(),
             $this->conditionEvaluator,
         );
         $this->eventDispatcher = $eventDispatcher ?? new NullEventDispatcher();
