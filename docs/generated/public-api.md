@@ -260,7 +260,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Expression`
 
 #### `ExpressionEngine` class
-- `public function __construct(private ExpressionDependencyProvider $provider = new ExpressionDependencyProvider())`
+- `public function __construct(private readonly ?SelectorPluginRegistryInterface $selectorPlugins = null)`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
 - `public function expressionReferences(string $raw): ?ExpressionReference`
@@ -269,6 +269,8 @@ this file on a commit is a public API change — review it deliberately.
 - `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
 - `public function jsonPointer(array $data, ?string $pointer): mixed`
+- `public function parseExpression(string $raw): ?ExpressionSyntaxException`
+- `public function selectorPlugins(): SelectorPluginRegistryInterface`
 - `public function test(string $raw): bool`
 
 #### `JsonPathEvaluator` class
@@ -317,7 +319,13 @@ this file on a commit is a public API change — review it deliberately.
 - `public function jsonPath(string $expression, array|object $data): mixed;`
 - `public function jsonPointer(array $data, ?string $pointer): mixed;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
+- `public function selectorPlugins(): SelectorPluginRegistryInterface;`
 - `public function test(string $raw): bool;`
+
+#### `SelectorPluginRegistryInterface` interface
+- `public function get(ExpressionType $type): ?SelectorPluginInterface;`
+- `public function has(ExpressionType $type): bool;`
+- `public function supportedVersions(ExpressionType $type): array;`
 
 ### `Alama\Arazzo\Expression\Xpath`
 
@@ -330,7 +338,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Evaluation`
 
 #### `EvaluationEngine` class
-- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null, ?SelectorPluginRegistry $selectorRegistry = null, ?EventDispatcherInterface $eventDispatcher = null)`
+- `public function __construct(private readonly ExpressionEngineInterface $expression, ?ExpressionEvaluatorRegistry $expressionRegistry = null, ?CriterionEvaluatorRegistry $criterionRegistry = null, ?SelectorPluginRegistryInterface $selectorRegistry = null, ?EventDispatcherInterface $eventDispatcher = null)`
 - `public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed`
 - `public function evaluateCriteria(array $criteria, Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): CriterionResultCollection`
 - `public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed`
@@ -451,10 +459,10 @@ this file on a commit is a public API change — review it deliberately.
 
 ### `SourceGraph` class
 - `public static function createRegistry(?ClientInterface $httpClient = null, ?RequestFactoryInterface $httpFactory = null, ): SourceRegistry`
-- `public static function document(?OpenApiOperationResolver $operationResolver = null): DocumentInterface`
+- `public static function document(?ExpressionEngineInterface $engine = null, ?OpenApiOperationResolver $operationResolver = null, ): DocumentInterface`
 - `public static function loader(?SourceRegistry $registry = null): SourceLoader`
 - `public static function operations(?SourceRegistry $registry = null): OpenApiOperationResolver`
-- `public static function runtime(?SourceRegistry $registry = null, ?OpenApiOperationResolver $operations = null, ): SourceRuntime`
+- `public static function runtime(?SourceRegistry $registry = null, ?OpenApiOperationResolver $operations = null, ?ExpressionEngineInterface $engine = null, ): SourceRuntime`
 - `public static function using(): DocumentInterface`
 
 ### `Alama\Arazzo\Sources`

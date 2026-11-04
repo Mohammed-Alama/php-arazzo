@@ -130,7 +130,6 @@ flowchart LR
     evaluation__ --> contracts_Spec
     evaluation__ --> contracts_State
     evaluation__ --> expression_Interfaces
-    evaluation__ --> expression_Registries
     evaluation__ --> evaluation_Data
     evaluation__ --> evaluation_Events
     evaluation__ --> evaluation_Condition
@@ -140,13 +139,10 @@ flowchart LR
     evaluation__ --> evaluation_Enum
     evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
-    evaluation__ --> expression__
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec
-    document_Validator --> expression__
     document_Validator --> expression_Interfaces
-    document_Validator --> expression_Registries
     document_Validator --> contracts_Support
     document_Validator --> expression_Data
     document_Validator --> expression_Enum
@@ -178,6 +174,7 @@ flowchart LR
     sources__ --> sources_Validator
     sources__ --> document_Parser
     sources__ --> expression__
+    sources__ --> expression_Interfaces
     runtime_Infrastructure --> contracts_Interfaces
     runtime_Policy --> contracts_Interfaces
     runtime_Policy --> contracts_Spec

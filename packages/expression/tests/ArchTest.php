@@ -21,3 +21,28 @@ arch('expression facade seams are entry-point only')
     ->expect('Alama\Arazzo\Expression')
     ->not->toUse('Alama\Arazzo\Sources\Document')
     ->not->toUse('Alama\Arazzo\Runner\RunnerFacade');
+
+arch('ExpressionDependencyProvider and concrete SelectorPluginRegistry stay inside packages/expression')
+    ->expect('Alama\Arazzo\Document')
+    ->not->toUse('Alama\Arazzo\Expression\ExpressionDependencyProvider')
+    ->not->toUse('Alama\Arazzo\Expression\Registries\SelectorPluginRegistry');
+
+arch('ExpressionDependencyProvider and concrete SelectorPluginRegistry stay inside packages/expression (evaluation)')
+    ->expect('Alama\Arazzo\Evaluation')
+    ->not->toUse('Alama\Arazzo\Expression\ExpressionDependencyProvider')
+    ->not->toUse('Alama\Arazzo\Expression\Registries\SelectorPluginRegistry');
+
+arch('ExpressionDependencyProvider and concrete SelectorPluginRegistry stay inside packages/expression (laravel)')
+    ->expect('Alama\Arazzo\Laravel')
+    ->not->toUse('Alama\Arazzo\Expression\ExpressionDependencyProvider')
+    ->not->toUse('Alama\Arazzo\Expression\Registries\SelectorPluginRegistry');
+
+arch('ExpressionDependencyProvider and concrete SelectorPluginRegistry stay inside packages/expression (cli)')
+    ->expect('Alama\Arazzo\Cli')
+    ->not->toUse('Alama\Arazzo\Expression\ExpressionDependencyProvider')
+    ->not->toUse('Alama\Arazzo\Expression\Registries\SelectorPluginRegistry');
+
+arch('ExpressionDependencyProvider and concrete SelectorPluginRegistry stay inside packages/expression (sources)')
+    ->expect('Alama\Arazzo\Sources')
+    ->not->toUse('Alama\Arazzo\Expression\ExpressionDependencyProvider')
+    ->not->toUse('Alama\Arazzo\Expression\Registries\SelectorPluginRegistry');

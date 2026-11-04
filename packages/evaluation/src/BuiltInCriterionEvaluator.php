@@ -9,7 +9,7 @@ use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Contracts\Spec\SuccessCriterion;
 use Alama\Arazzo\Evaluation\Condition\ConditionEvaluator;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
-use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 
 /**
  * Evaluates the built-in criterion types against a root the caller has already
@@ -28,7 +28,7 @@ use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 final readonly class BuiltInCriterionEvaluator
 {
     public function __construct(
-        private SelectorPluginRegistry $selectorRegistry,
+        private SelectorPluginRegistryInterface $selectorRegistry,
         private ConditionEvaluator $conditionEvaluator,
     ) {}
 

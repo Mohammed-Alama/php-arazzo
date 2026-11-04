@@ -21,13 +21,12 @@ use Alama\Arazzo\Document\Validator\Data\ValidationResult;
 use Alama\Arazzo\Document\Validator\RuleSet;
 use Alama\Arazzo\Document\Validator\Validator;
 use Alama\Arazzo\Evaluation\EvaluationEngine;
-use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEngine;
 
 const XPATH_VERSION_RULE = 'step.success_criteria_version_supported';
 
-$provider = new ExpressionDependencyProvider();
-$registry = $provider->getSelectorPluginRegistry();
+$engine = new ExpressionEngine();
+$registry = $engine->selectorPlugins();
 $supportedVersions = $registry->supportedVersions(ExpressionType::XPath);
 
 /**

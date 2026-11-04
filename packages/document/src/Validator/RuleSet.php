@@ -59,9 +59,8 @@ use Alama\Arazzo\Document\Validator\Rules\WorkflowIdPatternRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowInputsValidSchemaRule;
 use Alama\Arazzo\Document\Validator\Rules\WorkflowUniqueIdRule;
 use Alama\Arazzo\Document\Validator\Rules\WsdlStepRule;
-use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 
 /**
  * The default validator rule set: the single place that names every rule and
@@ -92,11 +91,11 @@ final readonly class RuleSet
      */
     public static function default(
         ExpressionEngineInterface $engine,
-        ?SelectorPluginRegistry $selectorRegistry = null,
+        ?SelectorPluginRegistryInterface $selectorRegistry = null,
         array $disabled = [],
         bool $strict = true,
     ): self {
-        $selectorRegistry ??= (new ExpressionDependencyProvider())->getSelectorPluginRegistry();
+        $selectorRegistry ??= $engine->selectorPlugins();
 
         return new self([
             new OfficialSchemaRule(),

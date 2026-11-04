@@ -135,8 +135,6 @@ flowchart TB
     M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
     M_document_Validator --> M_expression_Interfaces
-    M_document_Validator --> M_expression_Registries
-    M_document_Validator --> M_expression__
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Parser
     M_document__ --> M_document_Validator
@@ -187,8 +185,6 @@ flowchart TB
     M_evaluation__ --> M_evaluation_Registries
     M_evaluation__ --> M_expression_Data
     M_evaluation__ --> M_expression_Interfaces
-    M_evaluation__ --> M_expression_Registries
-    M_evaluation__ --> M_expression__
     M_events_Listener --> M_contracts_Support
     M_events_Listener --> M_events_Interfaces
     M_events_Listener --> M_events__
@@ -365,6 +361,7 @@ flowchart TB
     M_sources__ --> M_document_Parser
     M_sources__ --> M_document_Validator
     M_sources__ --> M_document__
+    M_sources__ --> M_expression_Interfaces
     M_sources__ --> M_expression__
     M_sources__ --> M_sources_Normalizer
     M_sources__ --> M_sources_Resolver
@@ -395,21 +392,21 @@ flowchart TB
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
 | `document` | `contracts` | 159 |
-| `document` | `expression` | 20 |
+| `document` | `expression` | 19 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
 | `evaluation` | `contracts` | 55 |
-| `evaluation` | `expression` | 24 |
+| `evaluation` | `expression` | 22 |
 | `events` | `contracts` | 1 |
-| `expression` | `contracts` | 23 |
+| `expression` | `contracts` | 24 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 38 |
 | `laravel` | `document` | 4 |
 | `laravel` | `evaluation` | 6 |
 | `laravel` | `events` | 5 |
-| `laravel` | `expression` | 3 |
+| `laravel` | `expression` | 4 |
 | `laravel` | `runner` | 24 |
 | `laravel` | `runtime` | 10 |
 | `laravel` | `sources` | 29 |
@@ -424,7 +421,7 @@ flowchart TB
 | `runtime` | `contracts` | 19 |
 | `sources` | `contracts` | 34 |
 | `sources` | `document` | 26 |
-| `sources` | `expression` | 1 |
+| `sources` | `expression` | 2 |
 
 ## Module-level detail
 

@@ -30,7 +30,7 @@ quadrantChart
     contracts/State: [0.071, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
-    document/Validator: [0.571, 1]
+    document/Validator: [0.5, 1]
     engine/Data: [0.75, 1]
     engine/Enum: [0, 1]
     engine/Exceptions: [0.25, 1]
@@ -48,10 +48,10 @@ quadrantChart
     expression/Data: [0.273, 1]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.2, 1]
-    expression/Interfaces: [0.222, 1]
+    expression/Interfaces: [0.211, 1]
     expression/Internal: [0.75, 0]
     expression/Plugins: [0.8, 0]
-    expression/Registries: [0.333, 0]
+    expression/Registries: [0.5, 1]
     expression/Xpath: [0.5, 0.5]
     laravel/Bindings: [0.96, 0.857]
     laravel/Events: [0, 1]
@@ -86,7 +86,7 @@ quadrantChart
 | `contracts/State` | 0.07 | 66 | 2 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 39 | 12 | 100% |
-| `document/Validator` | 0.57 | 80 | 69 | 100% |
+| `document/Validator` | 0.50 | 80 | 69 | 100% |
 | `engine/Data` | 0.75 | 2 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
@@ -104,10 +104,10 @@ quadrantChart
 | `expression/Data` | 0.27 | 15 | 4 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.20 | 9 | 2 | 100% |
-| `expression/Interfaces` | 0.22 | 16 | 3 | 100% |
+| `expression/Interfaces` | 0.21 | 16 | 4 | 100% |
 | `expression/Internal` | 0.75 | 0 | 2 | 0% |
 | `expression/Plugins` | 0.80 | 0 | 3 | 0% |
-| `expression/Registries` | 0.33 | 0 | 1 | 0% |
+| `expression/Registries` | 0.50 | 1 | 1 | 100% |
 | `expression/Xpath` | 0.50 | 1 | 2 | 50% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |

@@ -76,4 +76,10 @@ interface ExpressionEngineInterface
      * @param  array<array-key, mixed>  $data
      */
     public function jsonPointer(array $data, ?string $pointer): mixed;
+
+    /**
+     * The selector-plugin registry this engine uses (and shares with its
+     * SelectorEvaluator). Returns the same instance on every call.
+     */
+    public function selectorPlugins(): SelectorPluginRegistryInterface;
 }

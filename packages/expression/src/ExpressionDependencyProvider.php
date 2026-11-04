@@ -6,7 +6,7 @@ namespace Alama\Arazzo\Expression;
 
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
-use Alama\Arazzo\Expression\Interfaces\SelectorPluginInterface;
+use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
 use Alama\Arazzo\Expression\Plugins\JsonPathSelectorPlugin;
 use Alama\Arazzo\Expression\Plugins\JsonPointerSelectorPlugin;
 use Alama\Arazzo\Expression\Plugins\XpathSelectorPlugin;
@@ -20,13 +20,20 @@ use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
  */
 final class ExpressionDependencyProvider
 {
+    private ?SelectorPluginRegistryInterface $selectorPlugins = null;
+
     private ?XpathEvaluator $xpathEvaluator = null;
 
-    private ?SelectorPluginRegistry $selectorPluginRegistry = null;
+    private ?SelectorPluginRegistryInterface $selectorPluginRegistry = null;
+
+    public function __construct(?SelectorPluginRegistryInterface $selectorPlugins = null)
+    {
+        $this->selectorPlugins = $selectorPlugins;
+    }
 
     public function getExpressionEngine(): ExpressionEngineInterface
     {
-        return new ExpressionEngine($this);
+        return new ExpressionEngine($this->selectorPlugins);
     }
 
     public function getExpressionEvaluator(): ExpressionEvaluator
@@ -49,8 +56,12 @@ final class ExpressionDependencyProvider
         return $this->xpathEvaluator ??= new DomXpathEvaluator();
     }
 
-    public function getSelectorPluginRegistry(): SelectorPluginRegistry
+    public function getSelectorPluginRegistry(): SelectorPluginRegistryInterface
     {
+        if ($this->selectorPlugins !== null) {
+            return $this->selectorPlugins;
+        }
+
         if ($this->selectorPluginRegistry === null) {
             $registry = new SelectorPluginRegistry();
             $registry->register(ExpressionType::JsonPath, new JsonPathSelectorPlugin($this->getJsonPathEvaluator()));
@@ -76,22 +87,5 @@ final class ExpressionDependencyProvider
     public function getInterpolator(): Interpolator
     {
         return new Interpolator();
-    }
-
-    /** @internal For testing only */
-    public function setXpathEvaluator(XpathEvaluator $xpathEvaluator): self
-    {
-        $this->xpathEvaluator = $xpathEvaluator;
-        $this->selectorPluginRegistry = null;
-
-        return $this;
-    }
-
-    /** @internal For testing only */
-    public function registerSelectorPlugin(ExpressionType $type, SelectorPluginInterface $plugin, int $priority = 0): self
-    {
-        $this->getSelectorPluginRegistry()->register($type, $plugin, $priority);
-
-        return $this;
     }
 }
