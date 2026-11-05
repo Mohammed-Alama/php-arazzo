@@ -116,4 +116,6 @@
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="packages/sources/src/Validator/PreflightValidator.php" method="checkStep"/>
   <violation rule="PHPMD\Rule\Design\NPathComplexity" file="packages/sources/src/Validator/PreflightValidator.php" method="checkStep"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveMethodLength" file="packages/sources/src/Validator/PreflightValidator.php" method="checkStep"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/expression/src/ExpressionEngine.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="packages/expression/src/ExpressionEvaluator.php"/>
 </phpmd-baseline>

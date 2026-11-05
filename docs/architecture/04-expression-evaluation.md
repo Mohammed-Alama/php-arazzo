@@ -40,6 +40,29 @@ flowchart LR
 | `HttpMetaRef` | `$statusCode`, `$method`, `$url` (of the *current* step) |
 | `MessageRef` | `$message.<header\|payload>` (AsyncAPI steps) |
 
+### Vendored ABNF grammar and oracle
+
+The Arazzo runtime-expression grammar is vendored as an ABNF (RFC 5234) artifact, transcribed from the specification text:
+
+- `packages/expression/resources/grammar/arazzo-runtime-expression-1.0.1.abnf` — Arazzo 1.0.1
+- `packages/expression/resources/grammar/arazzo-runtime-expression-1.1.0.abnf` — Arazzo 1.1.0
+
+Each file carries a provenance header (spec version, source URL, retrieval date). The grammar is executable in tests as an oracle:
+
+- `AbnfGrammar` parses the ABNF and flags undefined rule references.
+- `AbnfRecognizer` backtracking-matches inputs against a rule.
+- `AbnfGenerator` seeds and depth-bounds generation of valid strings.
+- `AbnfMutator` produces single-character edits for differential testing.
+
+The `AbnfDifferentialTest` mechanically compares the hand-written `Parser` against the ABNF oracle: generated strings must be accepted by the parser, and mutated strings must produce oracle/parser agreement. Residual divergences are recorded in `packages/expression/tests/fixtures/conformance/divergences.json` with a class (`bug`, `leniency`, or `ambiguity`) and a reason.
+
+### Conformance corpus
+
+A language-agnostic conformance corpus lives at
+`packages/expression/tests/fixtures/conformance/expressions/`, one JSON file per topic
+(`inputs`, `steps`, `request-response`, `workflows`, `sources-components`, `embedded`, `invalid`).
+Every entry carries an expected outcome and — for valid entries — the expected reference projection. The `ExpressionCorpusTest` runs every entry through `Parser::parse()` and `mapToExpressionReference()`, asserting valid entries parse and project as expected and invalid entries throw `ExpressionSyntaxException` with a real byte offset.
+
 ```mermaid
 flowchart TD
     STEPREF["Ast\\StepRef<br/><small>stepId + part</small>"]
@@ -64,6 +87,16 @@ flowchart TD
 - **`SourceRef`** → looks up `ArazzoDocument::$sourceDescriptions` by name and returns `url` or `type`.
 
 All missing-data cases resolve to `null` rather than throwing — an expression referencing a step that hasn't run yet, or an output key that was never set, simply evaluates to `null`. Callers (e.g. `evaluateSuccessCriteria`) are expected to handle `null` meaningfully rather than relying on the evaluator to fail loudly.
+
+### Bounded AST cache and positioned errors
+
+`ExpressionEvaluator` caches parsed ASTs in a bounded `AstCache` (per-instance, no static state, FIFO eviction at 256 entries) keyed by the raw expression string. Only successful parses are cached; syntax errors are re-thrown fresh on each call. This means repeated evaluation of the same expression parses once — important for long-lived queue workers — without leaking memory.
+
+Syntax errors (`ExpressionSyntaxException`) now carry a real zero-based byte offset of the offending token and the offending fragment text, instead of the previous `-1` offset and empty fragment. Offsets are sourced from lexer tokens, so every parse failure reports exactly where it occurred.
+
+### Embedded expression splitting
+
+String interpolation (`StringInterpolator`) delegates embedded-expression splitting to `ExpressionEngineInterface::parseEmbedded()`, which returns ordered `EmbeddedSegment` records (literal vs expression, bare text, byte offset). Each expression segment is validated with the same `Parser` used for bare expressions, so expression boundaries are decided by the grammar, not a regex character class. This replaces the previous `preg_replace_callback`-based splitting.
 
 ## JSONPath, XPath, and the Selector path
 
@@ -102,6 +135,16 @@ flowchart LR
 ```
 
 `successCriteria` entries are evaluated by `ArazzoCriteriaEvaluator`, which for `condition`-bearing criteria delegates to a **separate** small grammar under `Runner/Evaluation/Condition/` (`Lexer`, `Parser`, `ConditionEvaluator`, and an AST of `Comparison`, `LogicalOp`, `UnaryNot`, `RuntimeExpr`, `Literal`). This lets a single criterion express boolean logic like `$statusCode == 200 && $response.body#/status == 'ok'`, where each `RuntimeExpr` leaf is itself resolved through the same `ExpressionEvaluator` described above. This is a distinct parser from the top-level `Expression\Parser` — don't confuse the two when navigating the codebase.
+
+### Criterion diagnostics
+
+`CriteriaEvaluator` exposes a detailed per-criterion result API via `evaluateCriteriaDetailed()`, returning one `CriterionResult` per criterion with:
+- `criterion` — the `SuccessCriterion` being evaluated
+- `outcome` — `CriterionOutcome::Passed`, `::Failed`, or `::Error`
+- `reason` — `CriterionReason::Evaluated`, `::SyntaxError`, `::ContextUnresolved`, `::SelectorError`, or `::PluginError`
+- `message` — optional human-readable error message
+
+This lets callers distinguish "criterion evaluated to false" from "criterion could not be evaluated" (e.g. a syntax error or an unresolvable context). The boolean `evaluateCriteria()` delegates to the detailed API and preserves its existing behavior (`true` when all criteria pass, `false` otherwise). An optional `CriterionObserverInterface` receives one `CriterionEvaluatedEvent` per criterion, modelled on arazzo-cli's observer events.
 
 ## String interpolation
 

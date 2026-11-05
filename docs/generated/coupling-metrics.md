@@ -35,20 +35,20 @@ targets. Regenerated before every commit.
 | `evaluation:Interfaces` | 2 | 42 | 2 | 3 | 0.60 |  |
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 6 | 798 | 7 | 12 | 0.63 |  |
+| `(evaluation root)` | 6 | 814 | 7 | 12 | 0.63 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
-| `expression:Ast` | 15 | 335 | 2 | 2 | 0.50 |  |
-| `expression:Data` | 4 | 124 | 8 | 3 | 0.27 |  |
+| `expression:Ast` | 15 | 335 | 3 | 2 | 0.40 |  |
+| `expression:Data` | 6 | 201 | 8 | 4 | 0.33 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 4 | 1 | 0.20 |  |
-| `expression:Interfaces` | 4 | 174 | 15 | 4 | 0.21 |  |
+| `expression:Interfaces` | 4 | 186 | 15 | 4 | 0.21 |  |
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
 | `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 9 | 1230 | 6 | 10 | 0.63 |  |
+| `(expression root)` | 9 | 1302 | 6 | 10 | 0.63 |  |
 | `laravel:Bindings` | 7 | 388 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
@@ -72,7 +72,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 333 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1088**
+Total cross-module edges: **1092**
 
 ## Most entangled module pairs
 

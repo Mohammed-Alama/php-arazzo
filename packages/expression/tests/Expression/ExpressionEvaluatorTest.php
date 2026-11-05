@@ -9,9 +9,11 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
+use Alama\Arazzo\Expression\Data\AstCache;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
+use Alama\Arazzo\Expression\JsonPointer;
 
 function evaluator(): ExpressionEvaluator
 {
@@ -325,4 +327,25 @@ it('resolves $self to the document self URI (1.1)', function () {
 
     expect($evaluator->evaluate(new Expression('{$self}'), new EvaluationContext(new WorkflowContext('d'), null, $doc)))
         ->toBe('https://api.example.com/workflows.arazzo.yaml');
+});
+
+it('caches parsed ASTs for repeated evaluation on the same instance', function (): void {
+    $astCache = new AstCache(max: 10);
+    $evaluator = new ExpressionEvaluator(new JsonPointer(), $astCache);
+
+    $context = new WorkflowContext('def_1', ['name' => 'Ada']);
+    $expr = new Expression('{$inputs.name}');
+
+    // First evaluation parses and caches.
+    expect($evaluator->evaluate($expr, new EvaluationContext($context)))->toBe('Ada');
+    expect($astCache->count())->toBe(1);
+
+    // Second evaluation of the same expression hits the cache.
+    expect($evaluator->evaluate($expr, new EvaluationContext($context)))->toBe('Ada');
+    expect($astCache->count())->toBe(1);
+
+    // A different expression gets its own cache entry.
+    $expr2 = new Expression('{$inputs.other}');
+    expect($evaluator->evaluate($expr2, new EvaluationContext($context)))->toBeNull();
+    expect($astCache->count())->toBe(2);
 });

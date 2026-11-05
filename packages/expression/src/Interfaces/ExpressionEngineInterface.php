@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Expression\Interfaces;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
+use Alama\Arazzo\Expression\Data\EmbeddedSegment;
 use Alama\Arazzo\Expression\Data\ExpressionReference;
 use Alama\Arazzo\Expression\Data\InterpolationOptions;
 use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
@@ -34,6 +35,17 @@ interface ExpressionEngineInterface
      * @return list<string>
      */
     public function extract(string $template): array;
+
+    /**
+     * Split a template string into ordered literal/expression segments with byte offsets.
+     *
+     * Each expression segment is validated with the same parser used for bare expressions.
+     *
+     * @return list<EmbeddedSegment>
+     *
+     * @throws ExpressionSyntaxException on unterminated or invalid embedded expression
+     */
+    public function parseEmbedded(string $raw): array;
 
     /**
      * Interpolate a template string by replacing embedded expressions with resolved values.

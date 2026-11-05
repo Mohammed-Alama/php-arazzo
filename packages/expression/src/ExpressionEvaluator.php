@@ -11,6 +11,7 @@ use Alama\Arazzo\Expression\Ast\InputRef;
 use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
+use Alama\Arazzo\Expression\Data\AstCache;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
 use Alama\Arazzo\Expression\Internal\StepReferenceResolver;
 use Alama\Arazzo\Expression\Internal\ValueReader;
@@ -31,16 +32,28 @@ final class ExpressionEvaluator
 
     private readonly StepReferenceResolver $steps;
 
+    private readonly AstCache $astCache;
+
+    private readonly ExpressionParser $parser;
+
     public function __construct(
         JsonPointer $jsonPointer,
+        ?AstCache $astCache = null,
     ) {
         $this->values = new ValueReader($jsonPointer);
         $this->steps = new StepReferenceResolver($this->values);
+        $this->astCache = $astCache ?? new AstCache();
+        $this->parser = new ExpressionParser();
     }
 
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed
     {
-        $ast = new ExpressionParser()->parse($expression->raw);
+        $ast = $this->astCache->get($expression->raw);
+
+        if ($ast === null) {
+            $ast = $this->parser->parse($expression->raw);
+            $this->astCache->put($expression->raw, $ast);
+        }
 
         return $this->evaluateAst($ast, $context);
     }

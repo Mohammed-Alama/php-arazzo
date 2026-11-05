@@ -105,7 +105,7 @@ expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
 expression-Exceptions,contracts-Support,2
 expression-Interfaces,contracts-Spec,7
-expression-Interfaces,expression-Data,2
+expression-Interfaces,expression-Data,3
 expression-Interfaces,expression-Exceptions,1
 expression-Internal,expression-Ast,10
 expression-Internal,expression-Interfaces,1
@@ -118,7 +118,7 @@ expression-Xpath,contracts-Spec,1
 expression-Xpath,expression-Exceptions,2
 expression-root,contracts-Spec,8
 expression-root,expression-Ast,20
-expression-root,expression-Data,7
+expression-root,expression-Data,9
 expression-root,expression-Enum,2
 expression-root,expression-Exceptions,5
 expression-root,expression-Interfaces,7
@@ -281,6 +281,7 @@ These references exist in the code but are not drawn: drawing them would close a
 | `contracts-Spec` | `contracts-Interfaces` | 1 |
 | `document-root` | `sources-Normalizer` | 2 |
 | `document-root` | `sources-Validator` | 1 |
+| `expression-Data` | `expression-Ast` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
 | `expression-Interfaces` | `expression-Registries` | 1 |
 | `expression-Internal` | `expression-root` | 1 |
