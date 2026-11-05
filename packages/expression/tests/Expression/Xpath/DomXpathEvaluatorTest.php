@@ -24,3 +24,14 @@ it('rejects unsupported version', function () {
 it('rejects non-XML input', function () {
     (new DomXpathEvaluator())->query(['not' => 'xml'], '/r', 'xpath-10');
 })->throws(SelectorEvaluationException::class);
+
+it('matches namespaced nodes when namespaces are registered', function () {
+    $xml = '<ns:root xmlns:ns="http://example.com/ns"><ns:item>widget</ns:item></ns:root>';
+    $result = (new DomXpathEvaluator())->query(
+        $xml,
+        '/ns:root/ns:item',
+        'xpath-10',
+        ['ns' => 'http://example.com/ns'],
+    );
+    expect($result)->toBe('widget');
+});

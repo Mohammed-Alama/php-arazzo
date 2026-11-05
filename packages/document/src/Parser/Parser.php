@@ -536,11 +536,15 @@ class Parser extends FieldParser
             throw ParserException::invalidEnum($ctx->push('type'), 'simple|regex|jsonpath|xpath', $typeStr);
         }
 
+        /** @var array<string, string>|null $namespaces */
+        $namespaces = $this->optionalArray($value, 'namespaces', $ctx);
+
         return new Selector(
             context: $this->optionalString($value, 'context', $ctx),
             selector: $this->requireString($value, 'selector', $ctx),
             type: $type,
             version: $version ?? $this->optionalString($value, 'version', $ctx),
+            namespaces: $namespaces,
         );
     }
 

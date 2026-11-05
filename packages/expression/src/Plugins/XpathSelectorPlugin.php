@@ -31,9 +31,9 @@ final class XpathSelectorPlugin implements SelectorPluginInterface
     /**
      * @param  mixed  $rootValue  XML string or \DOMNode
      */
-    public function evaluate(mixed $rootValue, string $expression, ?string $version): mixed
+    public function evaluate(mixed $rootValue, string $expression, ?string $version, ?array $namespaces = null): mixed
     {
-        return $this->evaluator->query($rootValue, $expression, $version ?? 'xpath-10');
+        return $this->evaluator->query($rootValue, $expression, $version ?? 'xpath-10', $namespaces);
     }
 
     public function supportedVersions(): array

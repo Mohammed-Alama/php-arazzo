@@ -330,7 +330,7 @@ this file on a commit is a public API change — review it deliberately.
 ### `Alama\Arazzo\Expression\Xpath`
 
 #### `XpathEvaluator` interface
-- `public function query(mixed $rootValue, string $selector, string $version): mixed;`
+- `public function query(mixed $rootValue, string $selector, string $version, ?array $namespaces = null): mixed;`
 - `public function supportedVersions(): array;`
 
 ## evaluation

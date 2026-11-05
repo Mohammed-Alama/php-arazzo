@@ -22,8 +22,9 @@ final class JsonPointerSelectorPlugin implements SelectorPluginInterface
 
     /**
      * @param  mixed  $rootValue  array-shaped document
+     * @param  array<string, string>|null  $namespaces  ignored for JSON Pointer
      */
-    public function evaluate(mixed $rootValue, string $expression, ?string $version): mixed
+    public function evaluate(mixed $rootValue, string $expression, ?string $version, ?array $namespaces = null): mixed
     {
         if (!is_array($rootValue)) {
             return null;
