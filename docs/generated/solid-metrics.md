@@ -51,8 +51,8 @@ quadrantChart
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 0]
     events/_: [0, 0]
-    expression/Ast: [0.5, 0]
-    expression/Data: [0.273, 0]
+    expression/Ast: [0.4, 0]
+    expression/Data: [0.333, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.2, 0]
     expression/Interfaces: [0.211, 1]
@@ -107,7 +107,7 @@ Contracts declaring more than 7 methods:
 
 | Interface | Methods |
 |---|---:|
-| `ExpressionEngineInterface` <small>expression</small> | 11 |
+| `ExpressionEngineInterface` <small>expression</small> | 12 |
 | `EvaluationEngineInterface` <small>evaluation</small> | 8 |
 
 ## Concrete hubs (DIP)

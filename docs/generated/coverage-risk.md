@@ -44,8 +44,8 @@ quadrantChart
     evaluation/Registries: [0.8, 1]
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 1]
-    expression/Ast: [0.5, 0.333]
-    expression/Data: [0.273, 1]
+    expression/Ast: [0.4, 0.333]
+    expression/Data: [0.333, 1]
     expression/Enum: [0, 1]
     expression/Exceptions: [0.2, 1]
     expression/Interfaces: [0.211, 1]
@@ -82,7 +82,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 226 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 227 | 49 | 100% |
 | `contracts/State` | 0.07 | 66 | 2 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 39 | 12 | 100% |
@@ -100,8 +100,8 @@ quadrantChart
 | `evaluation/Registries` | 0.80 | 2 | 2 | 100% |
 | `events/Interfaces` | 0.00 | 21 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
-| `expression/Ast` | 0.50 | 5 | 15 | 33% |
-| `expression/Data` | 0.27 | 15 | 4 | 100% |
+| `expression/Ast` | 0.40 | 5 | 15 | 33% |
+| `expression/Data` | 0.33 | 17 | 6 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
 | `expression/Exceptions` | 0.20 | 10 | 2 | 100% |
 | `expression/Interfaces` | 0.21 | 16 | 4 | 100% |

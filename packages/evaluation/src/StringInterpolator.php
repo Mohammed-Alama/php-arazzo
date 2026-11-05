@@ -22,15 +22,31 @@ class StringInterpolator
         // both are captured here and handed to the evaluator in the canonical
         // `{$token}` form. A bare `$token` has no closing delimiter, so it is
         // only meaningful as a whole value and is never interpolated here.
-        return preg_replace_callback('/(?:\{\$|\$\{)([^\}]+)\}/', function ($matches) use ($context, $stepId) {
-            $expr = new Expression('{$'.$matches[1].'}');
-            $ctx = new EvaluationContext($context, $stepId);
-            $result = $this->expression->evaluate($expr, $ctx);
-            if ($result === null) {
-                return '';
+        //
+        // Embedded-expression splitting is delegated to
+        // ExpressionEngineInterface::parseEmbedded() (grammar-aware, with source
+        // offsets) rather than a regex callback, so expression boundaries are
+        // decided by the parser, not a character class.
+        $out = '';
+
+        foreach ($this->expression->parseEmbedded($value) as $segment) {
+            if (!$segment->isExpression) {
+                $out .= $segment->text;
+
+                continue;
             }
 
-            return is_scalar($result) ? (string) $result : (string) json_encode($result);
-        }, $value) ?? $value;
+            $expr = new Expression('{'.$segment->text.'}');
+            $ctx = new EvaluationContext($context, $stepId);
+            $result = $this->expression->evaluate($expr, $ctx);
+
+            if ($result === null) {
+                continue;
+            }
+
+            $out .= is_scalar($result) ? (string) $result : (string) json_encode($result);
+        }
+
+        return $out;
     }
 }

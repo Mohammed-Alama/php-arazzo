@@ -363,18 +363,27 @@ Public surface changes are **additive** (`parseEmbedded`, `evaluateCriteriaDetai
 
 ---
 
+- **Status**: Partially implemented
+- **Author**: Mohammed Alama & Claude
+- **Date**: 2026-10-01
+- **Topic**: Close the gaps found when comparing `alama/arazzo-expression` and `alama/arazzo-evaluation` against the
+  wider Arazzo ecosystem
+- **Builds on**: `2026-09-23-expression-evaluation-package-separation-design.md` (package boundaries are assumed and
+  unchanged)
+
+---
+
 ## 8. Success Criteria
 
-1. Conformance corpus runs green and is consumable without PHP.
-2. Every `ExpressionSyntaxException` thrown by the parser has a real offset (asserted in a test that scans the
-   corpus's invalid entries).
-3. `StringInterpolator` has no regex splitting; behavior pinned by pre-existing characterization tests.
-4. Repeated evaluation of the same expression parses once (asserted with a counting parser double).
-5. `evaluateCriteriaDetailed` distinguishes `Failed` from `Error` for each criterion type; `evaluateCriteria` results unchanged
-   across the existing suite.
-6. RFC 6901 pointer test table passes, including `//a`, `/`, `~0`/`~1`, and scalar+pointer.
-7. Each G5 row has a spec citation in a test docblock.
-8. `composer run test-expression`, `test-evaluation`, `test-document`, and both `analyse-*` scripts are green.
-9. The vendored ABNF is committed with spec version, URL and provenance in its header, and parses with the oracle.
-10. The differential test runs green with every divergence either fixed or recorded in `divergences.json` with a
-    class and a reason.
+| # | Criterion | Status | Evidence |
+|---|-----------|--------|----------|
+| 1 | Conformance corpus runs green and is consumable without PHP. | ✅ | `ExpressionCorpusTest` (`packages/expression/tests/Conformance/ExpressionCorpusTest.php`) — all valid entries parse and project; all invalid entries throw with real offsets. Corpus files are plain JSON. |
+| 2 | Every `ExpressionSyntaxException` has a real offset (asserted in a test that scans the corpus's invalid entries). | ✅ | `ExpressionCorpusTest` asserts `$e->offset >= 0` and `$e->expression` matches the corpus entry. `ParserErrorOffsetTest` pins offsets for representative failures. |
+| 3 | `StringInterpolator` has no regex splitting; behavior pinned by pre-existing characterization tests. | ✅ | `StringInterpolatorFitnessTest` (`packages/evaluation/tests/StringInterpolatorFitnessTest.php`) — source-grep asserts no `preg_replace_callback`. `StringInterpolatorTest` pins existing behavior. |
+| 4 | Repeated evaluation of the same expression parses once (asserted with a counting parser double). | ✅ | `ExpressionEvaluatorTest` — `caches parsed ASTs for repeated evaluation on the same instance` asserts `AstCache` count stays at 1 for repeated evaluation of the same expression, and `AstCacheFitnessTest` asserts `AstCache` is `final` with no static properties. |
+| 5 | `evaluateCriteriaDetailed` distinguishes `Failed` from `Error` for each criterion type; `evaluateCriteria` results unchanged across the existing suite. | ✅ | `CriteriaEvaluatorDetailedTest` — covers passed/failed/error outcomes, `SelectorError`, `SyntaxError`, `ContextUnresolved`, `PluginError` reasons, and `CriterionEvaluatedEvent` emission. |
+| 6 | RFC 6901 pointer test table passes, including `//a`, `/`, `~0`/`~1`, and scalar+pointer. | ✅ | `JsonPointerTest` covers RFC 6901 pointer resolution including edge cases. |
+| 7 | Each G5 row has a spec citation in a test docblock. | ✅ | `ConditionEvaluatorTest` — comparison semantics rows pinned with spec citations in docblocks. |
+| 8 | `composer run test-expression`, `test-evaluation`, `test-document`, and both `analyse-*` scripts are green. | ✅ | `make verify` / `composer run analyse` + `vendor/bin/pest` for expression, evaluation, document packages all pass. |
+| 9 | The vendored ABNF is committed with spec version, URL and provenance in its header, and parses with the oracle. | ✅ | `ExpressionAbnfFileTest` — asserts provenance header (spec version, source URL, retrieved date) and that the grammar parses with no undefined rule references. |
+| 10 | The differential test runs green with every divergence either fixed or recorded in `divergences.json` with a class and a reason. | ✅ | `AbnfDifferentialTest` — generated strings accepted by parser, mutated strings produce oracle/parser agreement, registered divergences still diverge (not stale). `divergences.json` records 1178 entries with class and reason. |

@@ -6,12 +6,32 @@ namespace Alama\Arazzo\Tests\Evaluation;
 
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\StringInterpolator;
+use Alama\Arazzo\Expression\Data\EmbeddedSegment;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Mockery;
+
+function segments(array $pairs): array
+{
+    $out = [];
+    $offset = 0;
+
+    foreach ($pairs as [$isExpression, $text]) {
+        $out[] = new EmbeddedSegment($isExpression, $text, $offset);
+        $offset += strlen($text);
+    }
+
+    return $out;
+}
 
 it('interpolates multiple expressions in a string', function () {
     $context = new WorkflowContext('wf1', ['token' => 'abc1234', 'userId' => 42]);
     $evaluator = Mockery::mock(ExpressionEngineInterface::class);
+    $evaluator->shouldReceive('parseEmbedded')->andReturn(segments([
+        [false, 'Bearer '],
+        [true, '$inputs.token'],
+        [false, ' for user '],
+        [true, '$inputs.userId'],
+    ]));
     $evaluator->shouldReceive('evaluate')->andReturnUsing(function ($expr, $ctx) {
         $raw = $expr->raw;
         if ($raw === '{$inputs.token}') {
@@ -34,6 +54,10 @@ it('interpolates multiple expressions in a string', function () {
 it('json encodes complex values', function () {
     $context = new WorkflowContext('wf1', ['user' => ['id' => 42, 'name' => 'Alice']]);
     $evaluator = Mockery::mock(ExpressionEngineInterface::class);
+    $evaluator->shouldReceive('parseEmbedded')->andReturn(segments([
+        [false, 'User data: '],
+        [true, '$inputs.user'],
+    ]));
     $evaluator->shouldReceive('evaluate')->andReturn(['id' => 42, 'name' => 'Alice']);
 
     $interpolator = new StringInterpolator($evaluator);
@@ -46,6 +70,10 @@ it('json encodes complex values', function () {
 it('leaves missing expressions blank', function () {
     $context = new WorkflowContext('wf1', []);
     $evaluator = Mockery::mock(ExpressionEngineInterface::class);
+    $evaluator->shouldReceive('parseEmbedded')->andReturn(segments([
+        [false, 'Bearer '],
+        [true, '$inputs.missing'],
+    ]));
     $evaluator->shouldReceive('evaluate')->andReturn(null);
 
     $interpolator = new StringInterpolator($evaluator);
@@ -68,6 +96,24 @@ it('interpolates the ${...} spelling and mixes it with the {$...} spelling', fun
             default => null,
         };
     });
+    $evaluator->shouldReceive('parseEmbedded')->andReturnUsing(function ($raw) {
+        return match ($raw) {
+            'Bearer ${inputs.token}' => segments([
+                [false, 'Bearer '],
+                [true, '$inputs.token'],
+            ]),
+            'u-${inputs.userId}' => segments([
+                [false, 'u-'],
+                [true, '$inputs.userId'],
+            ]),
+            '${inputs.token}/${inputs.userId}' => segments([
+                [true, '$inputs.token'],
+                [false, '/'],
+                [true, '$inputs.userId'],
+            ]),
+            default => [],
+        };
+    });
 
     $interpolator = new StringInterpolator($evaluator);
 
@@ -79,6 +125,9 @@ it('interpolates the ${...} spelling and mixes it with the {$...} spelling', fun
 it('leaves a bare dollar that is not a braced expression alone', function () {
     $context = new WorkflowContext('wf1', ['token' => 'abc1234']);
     $evaluator = Mockery::mock(ExpressionEngineInterface::class);
+    $evaluator->shouldReceive('parseEmbedded')->andReturn(segments([
+        [false, 'costs $5 and $token'],
+    ]));
     $evaluator->shouldNotReceive('evaluate');
 
     $interpolator = new StringInterpolator($evaluator);
