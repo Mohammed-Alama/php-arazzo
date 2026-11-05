@@ -99,3 +99,25 @@ it('evaluates selector with context expression', function () {
 
     expect($result)->toBe('user-123');
 });
+
+it('evaluates namespaced XPath selector when namespaces are declared', function () {
+    $evaluator = selectorEvaluator();
+
+    $xml = '<ns:root xmlns:ns="http://example.com/ns"><ns:item>widget</ns:item></ns:root>';
+
+    $selector = new Selector(
+        type: ExpressionType::XPath,
+        selector: '/ns:root/ns:item',
+        context: '{$inputs.xmlData}',
+        namespaces: ['ns' => 'http://example.com/ns'],
+    );
+
+    $context = new WorkflowContext(
+        definitionId: 'test',
+        inputs: ['xmlData' => $xml],
+    );
+
+    $result = $evaluator->evaluate($selector, $context, 'step1');
+
+    expect($result)->toBe('widget');
+});

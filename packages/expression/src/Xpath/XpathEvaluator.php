@@ -21,6 +21,7 @@ interface XpathEvaluator
      * @param  mixed  $rootValue  XML string or \DOMNode.
      * @param  string  $selector  XPath expression.
      * @param  string  $version  Requested version token e.g. 'xpath-10'.
+     * @param  array<string, string>|null  $namespaces  XML namespace prefix => URI map.
      */
-    public function query(mixed $rootValue, string $selector, string $version): mixed;
+    public function query(mixed $rootValue, string $selector, string $version, ?array $namespaces = null): mixed;
 }

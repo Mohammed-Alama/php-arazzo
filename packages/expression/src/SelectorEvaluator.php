@@ -49,7 +49,7 @@ final class SelectorEvaluator
         }
 
         try {
-            return $plugin->evaluate($root, $sel->selector, $sel->version);
+            return $plugin->evaluate($root, $sel->selector, $sel->version, $sel->namespaces);
         } catch (SelectorEvaluationException $e) {
             // Enrich capability errors with the document location.
             $location = 'workflows/'.($wf->getWorkflowId() ?? 'unknown').'/steps/'.$stepId;

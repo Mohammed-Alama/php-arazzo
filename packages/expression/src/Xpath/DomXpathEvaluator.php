@@ -15,7 +15,7 @@ use DOMXPath;
  */
 final class DomXpathEvaluator implements XpathEvaluator
 {
-    public function query(mixed $rootValue, string $selector, string $version): mixed
+    public function query(mixed $rootValue, string $selector, string $version, ?array $namespaces = null): mixed
     {
         if (!in_array($version, $this->supportedVersions(), true)) {
             throw SelectorEvaluationException::unsupportedXpathVersion($version, $this->supportedVersions());
@@ -23,6 +23,10 @@ final class DomXpathEvaluator implements XpathEvaluator
 
         $doc = $this->coerceDocument($rootValue);
         $xp = new DOMXPath($doc);
+
+        foreach ($namespaces ?? [] as $prefix => $uri) {
+            $xp->registerNamespace($prefix, $uri);
+        }
 
         $result = $xp->evaluate($selector);
 

@@ -24,8 +24,9 @@ final class JsonPathSelectorPlugin implements SelectorPluginInterface
 
     /**
      * @param  mixed  $rootValue  array or object
+     * @param  array<string, string>|null  $namespaces  ignored for JSONPath
      */
-    public function evaluate(mixed $rootValue, string $expression, ?string $version): mixed
+    public function evaluate(mixed $rootValue, string $expression, ?string $version, ?array $namespaces = null): mixed
     {
         if (!is_array($rootValue) && !is_object($rootValue)) {
             return null;
