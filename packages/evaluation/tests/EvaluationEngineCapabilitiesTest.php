@@ -100,8 +100,9 @@ it('reports xpath supported versions through the selector plugin registry', func
     $registry = $expressionEngine->selectorPlugins();
     $plugin = $registry->get(ExpressionType::XPath);
 
-    expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10']);
+    expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10', 'xpath-31']);
     expect($plugin->evaluate('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
+    expect($plugin->evaluate('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-31'))->toBe('Ada');
 });
 
 it('interpolates expression references into strings', function (): void {

@@ -64,7 +64,7 @@ flowchart LR
         S_expression_Internal["expression:Internal<br/><small>238 LOC</small>"]:::unknownDomain
         S_expression_Plugins["expression:Plugins<br/><small>128 LOC</small>"]:::unknownDomain
         S_expression_Registries["expression:Registries<br/><small>73 LOC</small>"]:::unknownDomain
-        S_expression_Xpath["expression:Xpath<br/><small>115 LOC</small>"]:::unknownDomain
+        S_expression_Xpath["expression:Xpath<br/><small>173 LOC</small>"]:::unknownDomain
         S_runner_Async["runner:Async<br/><small>1345 LOC</small>"]:::unknownDomain
         S_runner_Execution["runner:Execution<br/><small>370 LOC</small>"]:::unknownDomain
         S_runner_Interfaces["runner:Interfaces<br/><small>25 LOC</small>"]:::unknownDomain
@@ -85,7 +85,7 @@ flowchart LR
 | Core domain | 1 | 1,207 | 0 | 6% |
 | Supporting | 7 | 7,309 | 0 | 35% |
 | Generic subdomain | 12 | 2,040 | 1,407 | 16% |
-| Unclassified | 32 | 9,139 | 0 | 43% |
+| Unclassified | 32 | 9,197 | 0 | 43% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

@@ -52,7 +52,7 @@ quadrantChart
     expression/Internal: [0.75, 0]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 1]
-    expression/Xpath: [0.5, 0.5]
+    expression/Xpath: [0.5, 0.667]
     laravel/Bindings: [0.96, 0.857]
     laravel/Events: [0, 1]
     laravel/Http: [0.75, 1]
@@ -82,7 +82,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 225 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 226 | 49 | 100% |
 | `contracts/State` | 0.07 | 66 | 2 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 39 | 12 | 100% |
@@ -103,12 +103,12 @@ quadrantChart
 | `expression/Ast` | 0.50 | 5 | 15 | 33% |
 | `expression/Data` | 0.27 | 15 | 4 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
-| `expression/Exceptions` | 0.20 | 9 | 2 | 100% |
+| `expression/Exceptions` | 0.20 | 10 | 2 | 100% |
 | `expression/Interfaces` | 0.21 | 16 | 4 | 100% |
 | `expression/Internal` | 0.75 | 0 | 2 | 0% |
 | `expression/Plugins` | 0.80 | 0 | 3 | 0% |
 | `expression/Registries` | 0.50 | 1 | 1 | 100% |
-| `expression/Xpath` | 0.50 | 1 | 2 | 50% |
+| `expression/Xpath` | 0.50 | 2 | 3 | 67% |
 | `laravel/Bindings` | 0.96 | 6 | 7 | 86% |
 | `laravel/Events` | 0.00 | 1 | 1 | 100% |
 | `laravel/Http` | 0.75 | 4 | 3 | 100% |

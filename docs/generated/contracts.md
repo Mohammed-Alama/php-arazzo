@@ -73,6 +73,8 @@ flowchart LR
     C_expression_expression_Registries_SelectorPluginRegistry -.->|implements| I_SelectorPluginRegistryInterface
     C_expression_expression_Xpath_DomXpathEvaluator["DomXpathEvaluator<br/><small>expression:Xpath</small>"]:::implCore
     C_expression_expression_Xpath_DomXpathEvaluator -.->|implements| I_XpathEvaluator
+    C_expression_expression_Xpath_Xpath31Evaluator["Xpath31Evaluator<br/><small>expression:Xpath</small>"]:::implCore
+    C_expression_expression_Xpath_Xpath31Evaluator -.->|implements| I_XpathEvaluator
     C_evaluation_evaluation_Condition_Comparison["Comparison<br/><small>evaluation:Condition</small>"]:::implCore
     C_evaluation_evaluation_Condition_Comparison -.->|implements| I_ConditionNode
     C_evaluation_evaluation_Condition_Literal["Literal<br/><small>evaluation:Condition</small>"]:::implCore

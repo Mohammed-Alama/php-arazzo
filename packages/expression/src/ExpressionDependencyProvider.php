@@ -12,6 +12,7 @@ use Alama\Arazzo\Expression\Plugins\JsonPointerSelectorPlugin;
 use Alama\Arazzo\Expression\Plugins\XpathSelectorPlugin;
 use Alama\Arazzo\Expression\Registries\SelectorPluginRegistry;
 use Alama\Arazzo\Expression\Xpath\DomXpathEvaluator;
+use Alama\Arazzo\Expression\Xpath\Xpath31Evaluator;
 use Alama\Arazzo\Expression\Xpath\XpathEvaluator;
 
 /**
@@ -66,7 +67,7 @@ final class ExpressionDependencyProvider
             $registry = new SelectorPluginRegistry();
             $registry->register(ExpressionType::JsonPath, new JsonPathSelectorPlugin($this->getJsonPathEvaluator()));
             $registry->register(ExpressionType::JsonPointer, new JsonPointerSelectorPlugin());
-            $registry->register(ExpressionType::XPath, new XpathSelectorPlugin($this->getXpathEvaluator()));
+            $registry->register(ExpressionType::XPath, new XpathSelectorPlugin(new Xpath31Evaluator()));
 
             $this->selectorPluginRegistry = $registry;
         }

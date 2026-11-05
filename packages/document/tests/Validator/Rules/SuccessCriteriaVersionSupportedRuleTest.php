@@ -30,23 +30,24 @@ it('accepts the xpath versions the evaluator implements', function (string $vers
     $doc = versionRuleDoc($c);
     $ec = new ErrorCollector();
 
-    (new SuccessCriteriaVersionSupportedRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new SuccessCriteriaVersionSupportedRule(['xpath-10', 'xpath-31']))->check($doc, SymbolTable::build($doc), $ec);
 
     expect($ec->errors())->toHaveCount(0);
-})->with(['xpath-10']);
+})->with(['xpath-10', 'xpath-31']);
 
 it('rejects a spec-recognised xpath version the evaluator cannot implement', function (string $version): void {
     $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, $version);
     $doc = versionRuleDoc($c);
     $ec = new ErrorCollector();
 
-    (new SuccessCriteriaVersionSupportedRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new SuccessCriteriaVersionSupportedRule(['xpath-10', 'xpath-31']))->check($doc, SymbolTable::build($doc), $ec);
 
     expect($ec->errors())->toHaveCount(1)
         ->and($ec->errors()[0]->code)->toBe('step.success_criteria_version_supported')
         ->and($ec->errors()[0]->message)->toContain($version)
-        ->and($ec->errors()[0]->message)->toContain('xpath-10');
-})->with(['xpath-20', 'xpath-30', 'xpath-31']);
+        ->and($ec->errors()[0]->message)->toContain('xpath-10')
+        ->and($ec->errors()[0]->message)->toContain('xpath-31');
+})->with(['xpath-20', 'xpath-30']);
 
 it('rejects a version outside the specification vocabulary', function (): void {
     $c = new SuccessCriterion(null, '/users/id', CriterionType::XPath, 'xpath-99');

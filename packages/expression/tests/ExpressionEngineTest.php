@@ -72,8 +72,9 @@ it('evaluates xpath queries through the selector plugin', function () {
     $registry = $engine->selectorPlugins();
     $plugin = $registry->get(ExpressionType::XPath);
 
-    expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10']);
+    expect($registry->supportedVersions(ExpressionType::XPath))->toBe(['xpath-10', 'xpath-31']);
     expect($plugin->evaluate('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-10'))->toBe('Ada');
+    expect($plugin->evaluate('<root><user><name>Ada</name></user></root>', '/root/user/name', 'xpath-31'))->toBe('Ada');
 });
 
 it('evaluates selectors through the public face', function () {
