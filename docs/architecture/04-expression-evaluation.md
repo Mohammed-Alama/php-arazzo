@@ -88,6 +88,27 @@ flowchart TD
 
 All missing-data cases resolve to `null` rather than throwing — an expression referencing a step that hasn't run yet, or an output key that was never set, simply evaluates to `null`. Callers (e.g. `evaluateSuccessCriteria`) are expected to handle `null` meaningfully rather than relying on the evaluator to fail loudly.
 
+### Component and source reference resolution
+
+`ComponentRef` resolves entries under `WorkflowContext::getComponents()`, keyed by component type. The spec defines three component types:
+
+| Form | Spec says | We resolve |
+|------|-----------|------------|
+| `$components.parameters.name` | parameter value | ✅ yes |
+| `$components.successActions.name` | success action object | ✅ yes |
+| `$components.failureActions.name` | failure action object | ✅ yes |
+
+`SourceRef` resolves entries under `ArazzoDocument::$sourceDescriptions`, keyed by source name, then narrowed by sub-path:
+
+| Form | Spec says | We resolve |
+|------|-----------|------------|
+| `$sourceDescriptions.name.url` | source URL | ✅ yes |
+| `$sourceDescriptions.name.type` | source type | ✅ yes |
+
+`SourceDescription` exposes only `name`, `url`, and `type`, so `url` and `type` are the only sub-paths — both are implemented.
+
+`MessageRef` reads from the current step's HTTP response (headers via `$message.header.<name>`, body via `$message.payload#/json-pointer`). No separate message transport populates a `message` key in step data — see `StepReferenceResolver::message()`. This is by-design: if a future spec version or runner protocol introduces true message transports, `$message.*` resolution can be extended there without changing the expression grammar.
+
 ### Bounded AST cache and positioned errors
 
 `ExpressionEvaluator` caches parsed ASTs in a bounded `AstCache` (per-instance, no static state, FIFO eviction at 256 entries) keyed by the raw expression string. Only successful parses are cached; syntax errors are re-thrown fresh on each call. This means repeated evaluation of the same expression parses once — important for long-lived queue workers — without leaking memory.

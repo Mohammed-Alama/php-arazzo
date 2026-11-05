@@ -114,6 +114,46 @@ it('evaluates component parameters', function () {
     expect($evaluator->evaluate(new Expression('{$components.parameters.missing}'), new EvaluationContext($context)))->toBeNull();
 });
 
+it('evaluates component success actions', function () {
+    $context = new WorkflowContext('def_1', components: [
+        'successActions' => [
+            'notify' => ['http' => ['method' => 'POST', 'url' => 'https://example.com/hook']],
+        ],
+    ]);
+
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(new Expression('{$components.successActions.notify}'), new EvaluationContext($context)))
+        ->toBe(['http' => ['method' => 'POST', 'url' => 'https://example.com/hook']]);
+});
+
+it('evaluates component failure actions', function () {
+    $context = new WorkflowContext('def_1', components: [
+        'failureActions' => [
+            'retry' => ['http' => ['method' => 'POST', 'url' => 'https://example.com/retry']],
+        ],
+    ]);
+
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(new Expression('{$components.failureActions.retry}'), new EvaluationContext($context)))
+        ->toBe(['http' => ['method' => 'POST', 'url' => 'https://example.com/retry']]);
+});
+
+it('returns null for unknown component name across all types', function () {
+    $context = new WorkflowContext('def_1', components: [
+        'parameters' => ['api-key' => 'secret'],
+        'successActions' => ['notify' => ['http' => ['url' => 'https://x']]],
+        'failureActions' => ['rollback' => ['http' => ['url' => 'https://y']]],
+    ]);
+
+    $evaluator = evaluator();
+
+    expect($evaluator->evaluate(new Expression('{$components.parameters.missing}'), new EvaluationContext($context)))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$components.successActions.missing}'), new EvaluationContext($context)))->toBeNull()
+        ->and($evaluator->evaluate(new Expression('{$components.failureActions.missing}'), new EvaluationContext($context)))->toBeNull();
+});
+
 it('returns null when the components parameter map is not an array', function () {
     $evaluator = evaluator();
     $expr = new Expression('{$components.parameters.api-key}');

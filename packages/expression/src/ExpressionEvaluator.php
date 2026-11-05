@@ -89,13 +89,9 @@ final class ExpressionEvaluator
 
     private function component(ComponentRef $ast, EvaluationInputInterface $context): mixed
     {
-        if ($ast->type !== 'parameters') {
-            return null;
-        }
-
         $components = $context->getWorkflowContext()->getComponents();
 
-        return $this->values->map($components, 'parameters')[$ast->name] ?? null;
+        return $this->values->map($components, $ast->type)[$ast->name] ?? null;
     }
 
     private function source(SourceRef $ast, EvaluationInputInterface $context): mixed
