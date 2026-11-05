@@ -17,10 +17,10 @@ targets. Regenerated before every commit.
 | `contracts:Dependency` | 3 | 333 | 4 | 2 | 0.33 |  |
 | `contracts:Exceptions` | 1 | 30 | 4 | 0 | 0.00 |  |
 | `contracts:Interfaces` | 19 | 348 | 24 | 3 | 0.11 |  |
-| `contracts:Spec` | 49 | 1154 | 36 | 1 | 0.03 |  |
+| `contracts:Spec` | 49 | 1158 | 36 | 1 | 0.03 |  |
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
-| `document:Parser` | 12 | 1437 | 7 | 2 | 0.22 |  |
+| `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
 | `document:Validator` | 69 | 3665 | 6 | 6 | 0.50 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
@@ -43,9 +43,9 @@ targets. Regenerated before every commit.
 | `expression:Data` | 4 | 124 | 8 | 3 | 0.27 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 4 | 1 | 0.20 |  |
-| `expression:Interfaces` | 4 | 173 | 15 | 4 | 0.21 |  |
+| `expression:Interfaces` | 4 | 174 | 15 | 4 | 0.21 |  |
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
-| `expression:Plugins` | 3 | 123 | 1 | 4 | 0.80 |  |
+| `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
 | `(expression root)` | 9 | 1230 | 6 | 10 | 0.63 |  |

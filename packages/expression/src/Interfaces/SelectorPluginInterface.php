@@ -29,8 +29,9 @@ interface SelectorPluginInterface
      * @param  mixed  $rootValue  Resolved root (array, object, XML string, DOMNode, …)
      * @param  string  $expression  Selector expression (XPath, JSONPath, JSON Pointer, …)
      * @param  string|null  $version  Version token, may be null; plugin decides the default
+     * @param  array<string, string>|null  $namespaces  XML namespace prefix => URI map, for XPath selectors
      */
-    public function evaluate(mixed $rootValue, string $expression, ?string $version): mixed;
+    public function evaluate(mixed $rootValue, string $expression, ?string $version, ?array $namespaces = null): mixed;
 
     /**
      * @return list<string> Supported version tokens, e.g. ['xpath-10']. Empty for unversioned types.
