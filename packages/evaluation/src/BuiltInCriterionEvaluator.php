@@ -83,10 +83,11 @@ final readonly class BuiltInCriterionEvaluator
             throw new \RuntimeException('No XPath selector plugin registered.');
         }
 
-        // The Arazzo default is xpath-31, but this engine implements XPath 1.0
-        // (DOMXPath) only. A versionless criterion therefore runs as xpath-10,
-        // which the validator accepts; explicit xpath-20/30/31 declarations are
-        // refused at validation time rather than failing here.
+        // The Arazzo default is xpath-31, which this engine implements via
+        // Xpath31Evaluator (backed by DOMXPath for the XPath 1.0 subset).
+        // A versionless criterion therefore runs as xpath-10; explicit
+        // xpath-31 declarations are accepted; xpath-20/xpath-30 are refused
+        // at validation time rather than failing here.
         $version = $criterion->version ?? 'xpath-10';
 
         return ConditionEvaluator::truthy($plugin->evaluate($root, $criterion->condition, $version));

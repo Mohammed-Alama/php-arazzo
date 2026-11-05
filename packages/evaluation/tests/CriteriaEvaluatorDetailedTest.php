@@ -157,8 +157,18 @@ it('reports xpath pass and fail as evaluated', function (): void {
         ->and(detailedEvaluator()->evaluateCriteria([$fail], $step, $context)->results[0]->outcome)->toBe(CriterionOutcome::Failed);
 });
 
-it('reports an unsupported xpath version as error/selector_error', function (): void {
+it('evaluates xpath-31 criterion as passed', function (): void {
     $criterion = new SuccessCriterion('$response.body#/xml', '/root/id', CriterionType::XPath, 'xpath-31');
+    $step = detailedStep([$criterion]);
+    $context = detailedContext();
+
+    $results = detailedEvaluator()->evaluateCriteria([$criterion], $step, $context);
+
+    expect($results->results[0]->outcome)->toBe(CriterionOutcome::Passed);
+});
+
+it('reports an unsupported xpath version as error/selector_error', function (): void {
+    $criterion = new SuccessCriterion('$response.body#/xml', '/root/id', CriterionType::XPath, 'xpath-20');
     $step = detailedStep([$criterion]);
     $context = detailedContext();
 
@@ -166,7 +176,7 @@ it('reports an unsupported xpath version as error/selector_error', function (): 
 
     expect($results->results[0]->outcome)->toBe(CriterionOutcome::Error)
         ->and($results->results[0]->reason)->toBe(CriterionReason::SelectorError)
-        ->and($results->results[0]->message)->toContain('xpath-31');
+        ->and($results->results[0]->message)->toContain('xpath-20');
 });
 
 it('reports a plugin pass and fail as evaluated', function (): void {

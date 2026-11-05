@@ -35,7 +35,7 @@ targets. Regenerated before every commit.
 | `evaluation:Interfaces` | 2 | 42 | 2 | 3 | 0.60 |  |
 | `evaluation:Plugins` | 2 | 118 | 1 | 3 | 0.75 |  |
 | `evaluation:Registries` | 2 | 119 | 1 | 4 | 0.80 |  |
-| `(evaluation root)` | 6 | 797 | 7 | 12 | 0.63 |  |
+| `(evaluation root)` | 6 | 798 | 7 | 12 | 0.63 |  |
 | `events:Interfaces` | 1 | 18 | 8 | 0 | 0.00 |  |
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
@@ -47,8 +47,8 @@ targets. Regenerated before every commit.
 | `expression:Internal` | 2 | 236 | 1 | 3 | 0.75 |  |
 | `expression:Plugins` | 3 | 123 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
-| `expression:Xpath` | 2 | 108 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 9 | 1229 | 6 | 10 | 0.63 |  |
+| `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
+| `(expression root)` | 9 | 1230 | 6 | 10 | 0.63 |  |
 | `laravel:Bindings` | 7 | 388 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
@@ -72,7 +72,7 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 302 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 333 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1086**
+Total cross-module edges: **1088**
 
 ## Most entangled module pairs
 

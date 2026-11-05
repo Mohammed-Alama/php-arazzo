@@ -90,7 +90,7 @@ it('rejects every spec-recognised xpath version the evaluator cannot implement',
     // The refusal is honest: this is exactly the criterion the runtime would fail.
     expect((new EvaluationEngine(expression: new ExpressionEngine()))->evaluateSuccessCriteria($step, xpathXmlContext(), $document))
         ->toBeFalse();
-})->with(['xpath-20', 'xpath-30', 'xpath-31']);
+})->with(['xpath-20', 'xpath-30']);
 
 it('rejects a version outside the specification vocabulary', function (): void {
     [$document] = xpathVersionDocument('xpath-99');

@@ -59,7 +59,7 @@ quadrantChart
     expression/Internal: [0.75, 0]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 0]
-    expression/Xpath: [0.5, 0.5]
+    expression/Xpath: [0.5, 0.333]
     expression/_: [0.625, 0]
     laravel/Bindings: [0.96, 0]
     laravel/Http: [0.75, 0]

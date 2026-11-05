@@ -115,7 +115,7 @@ expression-Plugins,expression-Xpath,2
 expression-Registries,contracts-Spec,1
 expression-Registries,expression-Interfaces,2
 expression-Xpath,contracts-Spec,1
-expression-Xpath,expression-Exceptions,1
+expression-Xpath,expression-Exceptions,2
 expression-root,contracts-Spec,8
 expression-root,expression-Ast,20
 expression-root,expression-Data,7
@@ -125,7 +125,7 @@ expression-root,expression-Interfaces,7
 expression-root,expression-Internal,2
 expression-root,expression-Plugins,3
 expression-root,expression-Registries,1
-expression-root,expression-Xpath,2
+expression-root,expression-Xpath,3
 laravel-Bindings,cli-Generator,2
 laravel-Bindings,contracts-Interfaces,8
 laravel-Bindings,contracts-Support,1
