@@ -199,7 +199,10 @@ flowchart TB
     M_expression_Interfaces --> M_expression_Data
     M_expression_Interfaces --> M_expression_Exceptions
     M_expression_Interfaces --> M_expression_Registries
+    M_expression_Internal --> M_contracts_Spec
     M_expression_Internal --> M_expression_Ast
+    M_expression_Internal --> M_expression_Data
+    M_expression_Internal --> M_expression_Exceptions
     M_expression_Internal --> M_expression_Interfaces
     M_expression_Internal --> M_expression__
     M_expression_Plugins --> M_contracts_Spec
@@ -401,7 +404,7 @@ flowchart TB
 | `evaluation` | `contracts` | 55 |
 | `evaluation` | `expression` | 22 |
 | `events` | `contracts` | 1 |
-| `expression` | `contracts` | 24 |
+| `expression` | `contracts` | 27 |
 | `laravel` | `cli` | 3 |
 | `laravel` | `contracts` | 38 |
 | `laravel` | `document` | 4 |

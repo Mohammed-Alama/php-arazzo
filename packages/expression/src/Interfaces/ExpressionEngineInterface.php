@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alama\Arazzo\Expression\Interfaces;
 
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\Interfaces\WorkflowContextInterface;
 use Alama\Arazzo\Contracts\Spec\Selector;
@@ -40,12 +41,16 @@ interface ExpressionEngineInterface
      * Split a template string into ordered literal/expression segments with byte offsets.
      *
      * Each expression segment is validated with the same parser used for bare expressions.
+     * The spec version selects the embedded-expression policy: 1.0.x is
+     * prose-only and also accepts the legacy `${...}` spelling, while 1.1.x /
+     * 1.2.x follow `embedded-expression = "{" expression "}"` and treat
+     * `${...}` as literal text.
      *
      * @return list<EmbeddedSegment>
      *
      * @throws ExpressionSyntaxException on unterminated or invalid embedded expression
      */
-    public function parseEmbedded(string $raw): array;
+    public function parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0): array;
 
     /**
      * Interpolate a template string by replacing embedded expressions with resolved values.

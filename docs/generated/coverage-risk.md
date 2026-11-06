@@ -26,7 +26,7 @@ quadrantChart
     contracts/Dependency: [0.333, 1]
     contracts/Exceptions: [0, 1]
     contracts/Interfaces: [0.111, 1]
-    contracts/Spec: [0.027, 1]
+    contracts/Spec: [0.026, 1]
     contracts/State: [0.071, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
@@ -45,11 +45,11 @@ quadrantChart
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 1]
     expression/Ast: [0.4, 0.333]
-    expression/Data: [0.333, 1]
+    expression/Data: [0.308, 1]
     expression/Enum: [0, 1]
-    expression/Exceptions: [0.2, 1]
+    expression/Exceptions: [0.167, 1]
     expression/Interfaces: [0.211, 1]
-    expression/Internal: [0.75, 0]
+    expression/Internal: [0.857, 0]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 1]
     expression/Xpath: [0.5, 0.667]
@@ -82,7 +82,7 @@ quadrantChart
 | `contracts/Dependency` | 0.33 | 5 | 3 | 100% |
 | `contracts/Exceptions` | 0.00 | 3 | 1 | 100% |
 | `contracts/Interfaces` | 0.11 | 41 | 19 | 100% |
-| `contracts/Spec` | 0.03 | 227 | 49 | 100% |
+| `contracts/Spec` | 0.03 | 228 | 49 | 100% |
 | `contracts/State` | 0.07 | 66 | 2 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 39 | 12 | 100% |
@@ -91,7 +91,7 @@ quadrantChart
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
 | `engine/Execution` | 0.67 | 12 | 8 | 100% |
-| `evaluation/Condition` | 0.89 | 49 | 14 | 100% |
+| `evaluation/Condition` | 0.89 | 50 | 14 | 100% |
 | `evaluation/Data` | 0.40 | 11 | 2 | 100% |
 | `evaluation/Enum` | 0.00 | 6 | 5 | 100% |
 | `evaluation/Events` | 0.33 | 1 | 1 | 100% |
@@ -101,11 +101,11 @@ quadrantChart
 | `events/Interfaces` | 0.00 | 21 | 1 | 100% |
 | `events/Listener` | 0.75 | 3 | 1 | 100% |
 | `expression/Ast` | 0.40 | 5 | 15 | 33% |
-| `expression/Data` | 0.33 | 17 | 6 | 100% |
+| `expression/Data` | 0.31 | 17 | 6 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
-| `expression/Exceptions` | 0.20 | 10 | 2 | 100% |
+| `expression/Exceptions` | 0.17 | 11 | 2 | 100% |
 | `expression/Interfaces` | 0.21 | 16 | 4 | 100% |
-| `expression/Internal` | 0.75 | 0 | 2 | 0% |
+| `expression/Internal` | 0.86 | 0 | 3 | 0% |
 | `expression/Plugins` | 0.80 | 0 | 3 | 0% |
 | `expression/Registries` | 0.50 | 1 | 1 | 100% |
 | `expression/Xpath` | 0.50 | 2 | 3 | 67% |
@@ -129,4 +129,4 @@ quadrantChart
 | `sources/Resolver` | 0.27 | 24 | 13 | 100% |
 | `sources/Validator` | 0.57 | 5 | 1 | 100% |
 
-**Refactor-now list** (untested churn): `runner/Interfaces`, `expression/Plugins`, `expression/Internal`, `evaluation/Interfaces`
+**Refactor-now list** (untested churn): `runner/Interfaces`, `expression/Internal`, `expression/Plugins`, `evaluation/Interfaces`

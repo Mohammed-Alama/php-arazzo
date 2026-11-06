@@ -86,6 +86,9 @@ flowchart LR
     expression_Interfaces --> expression_Registries
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
+    expression_Internal --> contracts_Spec
+    expression_Internal --> expression_Data
+    expression_Internal --> expression_Exceptions
     expression_Internal --> expression__
     expression_Internal --> expression_Ast
     expression_Internal --> expression_Interfaces
@@ -101,12 +104,12 @@ flowchart LR
     expression__ --> expression_Data
     expression__ --> expression_Exceptions
     expression__ --> expression_Interfaces
+    expression__ --> expression_Internal
     expression__ --> expression_Plugins
     expression__ --> expression_Registries
     expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
-    expression__ --> expression_Internal
     evaluation_Condition --> expression_Exceptions
     evaluation_Condition --> expression__
     evaluation_Condition --> evaluation_Enum

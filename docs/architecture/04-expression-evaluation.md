@@ -117,7 +117,15 @@ Syntax errors (`ExpressionSyntaxException`) now carry a real zero-based byte off
 
 ### Embedded expression splitting
 
-String interpolation (`StringInterpolator`) delegates embedded-expression splitting to `ExpressionEngineInterface::parseEmbedded()`, which returns ordered `EmbeddedSegment` records (literal vs expression, bare text, byte offset). Each expression segment is validated with the same `Parser` used for bare expressions, so expression boundaries are decided by the grammar, not a regex character class. This replaces the previous `preg_replace_callback`-based splitting.
+`ExpressionEngineInterface::parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0)` returns ordered `EmbeddedSegment` records (literal vs expression, bare text, byte offset). Each expression segment is validated with the same `Parser` used for bare expressions, and unterminated or invalid expressions throw `ExpressionSyntaxException` with the absolute offset of the opening delimiter. The splitting policy is version-explicit because the vendored grammars disagree:
+
+| Spec version | Grammar source | Embedded form | `${...}` spelling | `}` inside a JSON Pointer |
+| --- | --- | --- | --- | --- |
+| 1.0.x | `arazzo-runtime-expression-1.0.1.abnf` has no `embedded-expression` rule; prose only | `{$expression}`; first `}` closes | accepted as a legacy compatibility extension | legal in the 1.0.1 `json-pointer` ABNF, but the prose defines no delimiter, so the first `}` still closes; use a bare expression for such a pointer |
+| 1.1.x | `embedded-expression = "{" expression "}"`; pointer `CHAR`/`unescaped` exclude `{`/`}` "for unambiguous embedded expression parsing" | `{$expression}`; first `}` closes | left as literal text | always terminates the expression |
+| 1.2.x | no 1.2 ABNF vendored yet | follows the 1.1.x rule set | left as literal text | always terminates the expression |
+
+`StringInterpolator` consumes the same splitter, so runtime interpolation and expression validation agree on boundaries rather than each carrying its own regex.
 
 ## JSONPath, XPath, and the Selector path
 
@@ -169,7 +177,7 @@ This lets callers distinguish "criterion evaluated to false" from "criterion cou
 
 ## String interpolation
 
-Not every dynamic value is a bare expression — a `Parameter`'s value or a header can be a literal string with an expression *embedded*, e.g. `"Bearer {$steps.auth.outputs.token}"`. `StringInterpolator::interpolate()` handles this with a regex callback (`/\{\$([^\}]+)\}/`) that re-wraps each match as an `Expression`, evaluates it, and stringifies the result (`json_encode` for non-scalars). `StepExecutor::resolveValue()` decides which path to take: a bare `Expression` instance goes straight to `ExpressionResolverInterface::evaluate()`; a string merely *containing* `{$` is routed through the interpolator instead.
+Not every dynamic value is a bare expression — a `Parameter`'s value or a header can be a literal string with an expression *embedded*, e.g. `"Bearer {$steps.auth.outputs.token}"`. `StringInterpolator::interpolate()` iterates the segments from `parseEmbedded()`, re-wraps each expression segment as an `Expression`, evaluates it, and stringifies the result (`json_encode` for non-scalars); literal segments pass through untouched. `StepExecutor::resolveValue()` decides which path to take: a bare `Expression` instance goes straight to `ExpressionResolverInterface::evaluate()`; a string merely *containing* `{$` is routed through the interpolator instead.
 
 ## Output extraction and schema-aware casting
 

@@ -55,6 +55,21 @@ the "Act" step of a conformance check.
   - `jsonPointer` — JSON Pointer suffix (RFC 6901), or null.
 - `spec` — the Arazzo specification version this entry targets.
 
+## Embedded-template entries
+
+Entries in `embedded.json` that carry a `template` instead of an `expression`
+exercise `parseEmbedded()` rather than `Parser::parse()`. They use:
+
+- `template` — the full string with zero or more embedded expressions.
+- `specVersion` — exact `1.0.0` / `1.1.0` / `1.2.0`, selecting the
+  embedded-expression policy (see the version matrix in
+  `docs/architecture/04-expression-evaluation.md`).
+- `segments` — for valid entries, the ordered
+  `{ isExpression, text, offset }` segments. Expression `text` excludes the
+  delimiters; `offset` is the byte offset of the segment start.
+- `errorOffset` — for invalid entries, the expected absolute byte offset
+  (the opening delimiter).
+
 ## Spec-version tagging
 
 Entries are tagged with the spec version they derive from. Patch versions
