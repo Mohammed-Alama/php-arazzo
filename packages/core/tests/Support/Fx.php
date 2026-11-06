@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Tests\Support;
 use Alama\Arazzo\Contracts\Spec\ArazzoDocument;
 use Alama\Arazzo\Contracts\Spec\Components;
 use Alama\Arazzo\Contracts\Spec\Enum\RpcProtocol;
+use Alama\Arazzo\Contracts\Spec\Enum\SpecVersion;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\GraphQlOperation;
 use Alama\Arazzo\Contracts\Spec\Info;
@@ -36,15 +37,17 @@ final class Fx
         array $extensions = [],
         ?array $rawRoot = null,
         ?Components $components = null,
+        SpecVersion $specVersion = SpecVersion::V1_0,
     ): ArazzoDocument {
         return new ArazzoDocument(
-            '1.0.0',
+            $specVersion->value,
             new Info('T', null, null, '1'),
             $sources,
             $workflows,
             $components ?? new Components([], [], [], []),
             $extensions,
             $rawRoot,
+            $specVersion,
         );
     }
 

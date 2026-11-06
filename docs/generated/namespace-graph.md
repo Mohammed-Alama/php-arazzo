@@ -143,13 +143,15 @@ flowchart LR
     evaluation__ --> evaluation_Enum
     evaluation__ --> evaluation_Interfaces
     evaluation__ --> evaluation_Registries
+    evaluation__ --> expression_Exceptions
     document_Parser --> contracts_Spec
     document_Parser --> contracts_Support
     document_Validator --> contracts_Spec
     document_Validator --> expression_Interfaces
     document_Validator --> contracts_Support
-    document_Validator --> expression_Data
     document_Validator --> expression_Enum
+    document_Validator --> expression_Exceptions
+    document_Validator --> expression_Data
     document_Validator --> contracts_Dependency
     document__ --> contracts_Spec
     document__ --> document_Validator
