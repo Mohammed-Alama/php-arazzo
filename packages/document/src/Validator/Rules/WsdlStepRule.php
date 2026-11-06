@@ -12,6 +12,9 @@ use Alama\Arazzo\Contracts\Spec\StepTarget;
 use Alama\Arazzo\Document\Validator\Data\SymbolTable;
 use Alama\Arazzo\Document\Validator\ErrorCollector;
 use Alama\Arazzo\Document\Validator\Interfaces\Rule;
+use Alama\Arazzo\Expression\Enum\ReferenceKind;
+use Alama\Arazzo\Expression\Exceptions\ExpressionSyntaxException;
+use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 
 /**
  * wsdl-step rules (Arazzo Specification, Step Object):
@@ -28,6 +31,8 @@ use Alama\Arazzo\Document\Validator\Interfaces\Rule;
  */
 final class WsdlStepRule implements Rule
 {
+    public function __construct(private readonly ExpressionEngineInterface $engine) {}
+
     public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector $errors): void
     {
         foreach ($doc->workflows as $wfIndex => $wf) {
@@ -113,7 +118,7 @@ final class WsdlStepRule implements Rule
 
     private function resolveSource(StepTarget $target, ArazzoDocument $doc): ?SourceDescription
     {
-        $name = $this->qualifiedSourceName($target) ?? $this->operationPathSourceName($target);
+        $name = $this->qualifiedSourceName($target) ?? $this->operationPathSourceName($target, $doc);
         if ($name !== null) {
             return self::findSource($doc, $name);
         }
@@ -143,13 +148,33 @@ final class WsdlStepRule implements Rule
         return null;
     }
 
-    private function operationPathSourceName(StepTarget $target): ?string
+    private function operationPathSourceName(StepTarget $target, ArazzoDocument $doc): ?string
     {
         if ($target->operationPath === null) {
             return null;
         }
 
-        return preg_match('/\{\$sourceDescriptions\.([^}.]+)\.url\}/', $target->operationPath, $m) === 1 ? $m[1] : null;
+        try {
+            $segments = $this->engine->parseEmbedded($target->operationPath, $doc->specVersion);
+        } catch (ExpressionSyntaxException) {
+            return null;
+        }
+
+        foreach ($segments as $segment) {
+            if (!$segment->isExpression) {
+                continue;
+            }
+
+            $reference = $this->engine->expressionReferences($segment->text);
+            if ($reference !== null
+                && $reference->kind === ReferenceKind::Source
+                && $reference->name === 'url'
+                && $reference->target !== null) {
+                return $reference->target;
+            }
+        }
+
+        return null;
     }
 
     private static function findSource(ArazzoDocument $doc, string $name): ?SourceDescription
