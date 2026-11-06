@@ -40,7 +40,7 @@ targets. Regenerated before every commit.
 | `events:Listener` | 1 | 94 | 1 | 3 | 0.75 |  |
 | `(events root)` | 9 | 205 | 3 | 0 | 0.00 |  |
 | `expression:Ast` | 15 | 335 | 3 | 2 | 0.40 |  |
-| `expression:Data` | 6 | 201 | 8 | 4 | 0.33 |  |
+| `expression:Data` | 6 | 203 | 8 | 4 | 0.33 |  |
 | `expression:Enum` | 2 | 43 | 4 | 0 | 0.00 |  |
 | `expression:Exceptions` | 2 | 53 | 4 | 1 | 0.20 |  |
 | `expression:Interfaces` | 4 | 186 | 15 | 4 | 0.21 |  |
@@ -48,7 +48,7 @@ targets. Regenerated before every commit.
 | `expression:Plugins` | 3 | 125 | 1 | 4 | 0.80 |  |
 | `expression:Registries` | 1 | 72 | 2 | 2 | 0.50 |  |
 | `expression:Xpath` | 3 | 170 | 2 | 2 | 0.50 |  |
-| `(expression root)` | 9 | 1302 | 6 | 10 | 0.63 |  |
+| `(expression root)` | 9 | 1298 | 6 | 10 | 0.63 |  |
 | `laravel:Bindings` | 7 | 388 | 1 | 24 | 0.96 |  |
 | `laravel:Events` | 1 | 23 | 0 | 0 | 0.00 |  |
 | `laravel:Http` | 3 | 184 | 2 | 6 | 0.75 |  |
