@@ -88,5 +88,132 @@
       "jsonPointer": null
     },
     "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-literal-only-007",
+    "description": "template with no embedded expression is a single literal segment",
+    "template": "plain text",
+    "specVersion": "1.0.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": false, "text": "plain text", "offset": 0 }
+    ],
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-single-008",
+    "description": "template split around one expression",
+    "template": "Hello {$inputs.name}!",
+    "specVersion": "1.0.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": false, "text": "Hello ", "offset": 0 },
+      { "isExpression": true, "text": "$inputs.name", "offset": 6 },
+      { "isExpression": false, "text": "!", "offset": 20 }
+    ],
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-multiple-009",
+    "description": "template with several expressions keeps literal offsets",
+    "template": "a {$inputs.x} b {$steps.login.outputs.y} c",
+    "specVersion": "1.0.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": false, "text": "a ", "offset": 0 },
+      { "isExpression": true, "text": "$inputs.x", "offset": 2 },
+      { "isExpression": false, "text": " b ", "offset": 13 },
+      { "isExpression": true, "text": "$steps.login.outputs.y", "offset": 16 },
+      { "isExpression": false, "text": " c", "offset": 40 }
+    ],
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-adjacent-010",
+    "description": "adjacent expressions produce no empty literal between them",
+    "template": "{$inputs.x}{$inputs.y}",
+    "specVersion": "1.0.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": true, "text": "$inputs.x", "offset": 0 },
+      { "isExpression": true, "text": "$inputs.y", "offset": 11 }
+    ],
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-brace-pointer-1.0-011",
+    "description": "1.0.x has no delimiter rule; a }-containing pointer closes at the first }",
+    "template": "{$request.body#/a}b}",
+    "specVersion": "1.0.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": true, "text": "$request.body#/a", "offset": 0 },
+      { "isExpression": false, "text": "b}", "offset": 18 }
+    ],
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-brace-pointer-1.1-012",
+    "description": "1.1.x excludes } from JSON Pointer, so the first } always terminates",
+    "template": "{$request.body#/a}b}",
+    "specVersion": "1.1.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": true, "text": "$request.body#/a", "offset": 0 },
+      { "isExpression": false, "text": "b}", "offset": 18 }
+    ],
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-legacy-1.0-013",
+    "description": "the ${...} spelling is a 1.0.x compatibility extension",
+    "template": "x ${inputs.name}",
+    "specVersion": "1.0.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": false, "text": "x ", "offset": 0 },
+      { "isExpression": true, "text": "$inputs.name", "offset": 2 }
+    ],
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-legacy-literal-1.1-014",
+    "description": "${...} is not an embedded expression under 1.1.x and stays literal",
+    "template": "x ${inputs.name}",
+    "specVersion": "1.1.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": false, "text": "x ${inputs.name}", "offset": 0 }
+    ],
+    "spec": "Arazzo 1.1.0, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-legacy-literal-1.2-015",
+    "description": "1.2.x follows the 1.1.x rule set with no vendored 1.2 grammar",
+    "template": "x ${inputs.name}",
+    "specVersion": "1.2.0",
+    "valid": true,
+    "segments": [
+      { "isExpression": false, "text": "x ${inputs.name}", "offset": 0 }
+    ],
+    "spec": "Arazzo 1.2.0, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-unterminated-016",
+    "description": "unterminated embedded expression reports its opening delimiter",
+    "template": "Hello {$inputs.name",
+    "specVersion": "1.0.0",
+    "valid": false,
+    "errorOffset": 6,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
+  },
+  {
+    "id": "embedded-template-invalid-017",
+    "description": "invalid embedded expression reports its opening delimiter",
+    "template": "Hello {$inputs.}!",
+    "specVersion": "1.0.0",
+    "valid": false,
+    "errorOffset": 6,
+    "spec": "Arazzo 1.0.1, Runtime Expressions"
   }
 ]

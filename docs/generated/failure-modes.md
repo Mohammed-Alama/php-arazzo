@@ -20,7 +20,7 @@ Regenerated before every commit.
 | **DecodeException** | `NativeJsonDecoder` <small>document:Parser</small>, `SymfonyYamlDecoder` <small>document:Parser</small> |
 | **DefinitionHydrationException** | `DatabaseDefinitionRegistry` <small>laravel:Persistence</small> |
 | **ExecutionException** | `AsyncExecutionGraphAssembler` <small>runner:Async</small>, `StepExecutionWorker` <small>runner:Async</small>, `RunnerGraphBuilder` <small>(runner root)</small>, `ExecutionGraphFactory` <small>runner:Sync</small>, `StepExecutor` <small>runner:Sync</small> |
-| **ExpressionSyntaxException** | `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
+| **ExpressionSyntaxException** | `EmbeddedExpressionSplitter` <small>expression:Internal</small>, `Interpolator` <small>(expression root)</small>, `Lexer` <small>(expression root)</small>, `Parser` <small>(expression root)</small> |
 | **GotoTargetNotFoundException** | `WorkflowEngine` <small>runner:Sync</small> |
 | **InvalidArgumentException** | `SpecVersion` <small>contracts:Spec</small>, `StepTarget` <small>contracts:Spec</small>, `TypeCaster` <small>engine:Execution</small>, `DatabaseDefinitionRegistry` <small>laravel:Persistence</small>, `OpenApi30Normalizer` <small>sources:Normalizer</small>, `OpenApiSourceNormalizer` <small>sources:Normalizer</small>, `OpenApiVersionDetector` <small>sources:Normalizer</small>, `WsdlSourceNormalizer` <small>sources:Normalizer</small> |
 | **LogicException** | `StepExecutionWorker` <small>runner:Async</small>, `WorkflowExecutor` <small>runner:Sync</small>, `UnifiedStepCarrier` <small>(runner root)</small> |
@@ -50,6 +50,7 @@ Regenerated before every commit.
 | `ClientExceptionInterface` | `HttpFetcher` |  |
 | `ConditionSyntaxException` | `CriteriaEvaluator` |  |
 | `DecodeException` | `Loader` |  |
+| `ExpressionSyntaxException` | `EmbeddedExpressionSplitter` |  |
 | `ExpressionSyntaxException` | `Parser` |  |
 | `JsonException` | `NativeJsonDecoder` |  |
 | `LoaderException` | `ValidateCommand` |  |

@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Expression;
 use Alama\Arazzo\Contracts\Spec\Enum\ExpressionType;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Alama\Arazzo\Expression\Interfaces\SelectorPluginRegistryInterface;
+use Alama\Arazzo\Expression\Internal\EmbeddedExpressionSplitter;
 use Alama\Arazzo\Expression\Plugins\JsonPathSelectorPlugin;
 use Alama\Arazzo\Expression\Plugins\JsonPointerSelectorPlugin;
 use Alama\Arazzo\Expression\Plugins\XpathSelectorPlugin;
@@ -26,6 +27,8 @@ final class ExpressionDependencyProvider
     private ?XpathEvaluator $xpathEvaluator = null;
 
     private ?SelectorPluginRegistryInterface $selectorPluginRegistry = null;
+
+    private ?EmbeddedExpressionSplitter $embeddedExpressionSplitter = null;
 
     public function __construct(?SelectorPluginRegistryInterface $selectorPlugins = null)
     {
@@ -88,5 +91,10 @@ final class ExpressionDependencyProvider
     public function getInterpolator(): Interpolator
     {
         return new Interpolator();
+    }
+
+    public function getEmbeddedExpressionSplitter(): EmbeddedExpressionSplitter
+    {
+        return $this->embeddedExpressionSplitter ??= new EmbeddedExpressionSplitter($this->getParser());
     }
 }

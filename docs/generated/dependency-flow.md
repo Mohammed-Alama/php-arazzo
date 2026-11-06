@@ -104,10 +104,13 @@ expression-Ast,expression-Enum,9
 expression-Data,contracts-Spec,2
 expression-Data,expression-Enum,2
 expression-Exceptions,contracts-Support,2
-expression-Interfaces,contracts-Spec,7
+expression-Interfaces,contracts-Spec,8
 expression-Interfaces,expression-Data,3
 expression-Interfaces,expression-Exceptions,1
+expression-Internal,contracts-Spec,1
 expression-Internal,expression-Ast,10
+expression-Internal,expression-Data,1
+expression-Internal,expression-Exceptions,1
 expression-Internal,expression-Interfaces,1
 expression-Plugins,contracts-Spec,3
 expression-Plugins,expression-Interfaces,3
@@ -116,13 +119,13 @@ expression-Registries,contracts-Spec,1
 expression-Registries,expression-Interfaces,2
 expression-Xpath,contracts-Spec,1
 expression-Xpath,expression-Exceptions,2
-expression-root,contracts-Spec,8
+expression-root,contracts-Spec,9
 expression-root,expression-Ast,20
 expression-root,expression-Data,9
 expression-root,expression-Enum,2
 expression-root,expression-Exceptions,5
 expression-root,expression-Interfaces,7
-expression-root,expression-Internal,2
+expression-root,expression-Internal,3
 expression-root,expression-Plugins,3
 expression-root,expression-Registries,1
 expression-root,expression-Xpath,3
@@ -284,7 +287,7 @@ These references exist in the code but are not drawn: drawing them would close a
 | `expression-Data` | `expression-Ast` | 1 |
 | `expression-Data` | `expression-Interfaces` | 1 |
 | `expression-Interfaces` | `expression-Registries` | 1 |
-| `expression-Internal` | `expression-root` | 1 |
+| `expression-Internal` | `expression-root` | 2 |
 | `expression-Plugins` | `expression-root` | 2 |
 | `runner-Async` | `runner-root` | 4 |
 | `runner-Execution` | `runner-Sync` | 1 |

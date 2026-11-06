@@ -269,7 +269,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string`
 - `public function jsonPath(string $expression, array|object $data): mixed`
 - `public function jsonPointer(array $data, ?string $pointer): mixed`
-- `public function parseEmbedded(string $raw): array`
+- `public function parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0): array`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException`
 - `public function selectorPlugins(): SelectorPluginRegistryInterface`
 - `public function test(string $raw): bool`
@@ -319,7 +319,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string;`
 - `public function jsonPath(string $expression, array|object $data): mixed;`
 - `public function jsonPointer(array $data, ?string $pointer): mixed;`
-- `public function parseEmbedded(string $raw): array;`
+- `public function parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0): array;`
 - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
 - `public function selectorPlugins(): SelectorPluginRegistryInterface;`
 - `public function test(string $raw): bool;`

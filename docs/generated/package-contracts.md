@@ -88,7 +88,7 @@ public contract between packages.
   - `public function parseExpression(string $raw): ?ExpressionSyntaxException;`
   - `public function expressionReferences(string $raw): ?ExpressionReference;`
   - `public function extract(string $template): array;`
-  - `public function parseEmbedded(string $raw): array;`
+  - `public function parseEmbedded(string $raw, SpecVersion $version = SpecVersion::V1_0): array;`
   - `public function interpolate(string $template, callable $resolver, array $options = []): string;`
   - `public function interpolateWithOptions(string $template, callable $resolver, ?InterpolationOptions $options = null): string;`
   - `public function test(string $raw): bool;`
