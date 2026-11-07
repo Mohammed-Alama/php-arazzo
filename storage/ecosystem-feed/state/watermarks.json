@@ -52,7 +52,7 @@
                     "lastSeenUpdatedAt": "2026-11-05T21:40:55Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-05T20:09:59Z"
+                    "lastSeenUpdatedAt": "2026-11-07T09:11:51Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -346,14 +346,14 @@
         "strefethen/arazzo-cli": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-30T03:51:04Z"
+                    "lastSeenUpdatedAt": "2026-11-06T20:37:07Z"
                 },
                 "issues": {
                     "lastSeenUpdatedAt": "2026-08-26T23:48:42Z"
                 },
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-27T18:56:22Z",
-                    "lastTag": "vscode-v0.0.9"
+                    "lastSeenUpdatedAt": "2026-11-06T19:31:51Z",
+                    "lastTag": "v0.9.0"
                 }
             }
         },
@@ -381,7 +381,7 @@
                     "lastSeenUpdatedAt": "2026-11-05T13:10:40Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-05T23:21:05Z"
+                    "lastSeenUpdatedAt": "2026-11-06T23:07:48Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-11-05T12:04:08Z",
@@ -392,7 +392,7 @@
         "usearazzo/website": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:05:38Z"
+                    "lastSeenUpdatedAt": "2026-11-06T22:21:48Z"
                 }
             }
         },
@@ -406,7 +406,7 @@
         "usearazzo/website.feed": {
             "endpoints": {
                 "article": {
-                    "lastSeenUpdatedAt": "2026-10-26T00:00:00+00:00"
+                    "lastSeenUpdatedAt": "2026-11-06T00:00:00+00:00"
                 }
             }
         },
