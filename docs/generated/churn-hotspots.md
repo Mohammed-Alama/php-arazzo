@@ -14,23 +14,23 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "document:Validator", "laravel:Http", "laravel:Persistence", "runner:Async", "laravel:Support", "document:Parser", "expression:Interfaces", "laravel:Queue", "sources:Normalizer"]
     y-axis "Touches" 0 --> 60
-    bar [47, 29, 26, 22, 22, 20, 16, 15, 14, 14, 14, 13]
+    bar [47, 29, 26, 23, 22, 20, 16, 15, 14, 14, 14, 13]
 ```
 
-Analyzed 406 total file-touches across 52 modules.
+Analyzed 407 total file-touches across 53 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 47 | 12% | 395 | 119 |
 | `cli:Console` | 29 | 7% | 933 | 31.1 |
 | `runner:Execution` | 26 | 6% | 370 | 70.3 |
-| `document:Validator` | 22 | 5% | 3,789 | 5.8 |
+| `document:Validator` | 23 | 6% | 3,789 | 6.1 |
 | `laravel:Http` | 22 | 5% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
 | `runner:Async` | 16 | 4% | 1,345 | 11.9 |
 | `laravel:Support` | 15 | 4% | 272 | 55.1 |
 | `document:Parser` | 14 | 3% | 1,453 | 9.6 |
-| `expression:Interfaces` | 14 | 3% | 195 | 71.8 |
+| `expression:Interfaces` | 14 | 3% | 211 | 66.4 |
 | `laravel:Queue` | 14 | 3% | 109 | 128.4 |
 | `sources:Normalizer` | 13 | 3% | 1,282 | 10.1 |
 | `laravel:State` | 12 | 3% | 52 | 230.8 |
@@ -40,9 +40,9 @@ Analyzed 406 total file-touches across 52 modules.
 | `engine:Execution` | 7 | 2% | 1,000 | 7 |
 | `evaluation:Plugins` | 7 | 2% | 120 | 58.3 |
 | `evaluation:Registries` | 6 | 1% | 121 | 49.6 |
-| `expression:Data` | 6 | 1% | 209 | 28.7 |
+| `expression:Data` | 6 | 1% | 150 | 40 |
 | `runner:Sync` | 6 | 1% | 875 | 6.9 |
-| `evaluation:Condition` | 5 | 1% | 911 | 5.5 |
+| `evaluation:Condition` | 5 | 1% | 1,023 | 4.9 |
 | `expression:Xpath` | 5 | 1% | 173 | 28.9 |
 | `cli:Generator` | 4 | 1% | 141 | 28.4 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
@@ -73,5 +73,6 @@ Analyzed 406 total file-touches across 52 modules.
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
+| `expression:Support` | 0 | 0% | 59 | 0 |
 
 **Hotspots** (highest touches-per-KLOC with meaningful size/churn): `laravel:Queue` (128.4), `laravel:Bindings` (119), `laravel:Http` (117.6)

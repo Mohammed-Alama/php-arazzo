@@ -30,6 +30,10 @@ final class ExpressionDependencyProvider
 
     private ?EmbeddedExpressionSplitter $embeddedExpressionSplitter = null;
 
+    private ?ExpressionEvaluator $expressionEvaluator = null;
+
+    private ?SelectorEvaluator $selectorEvaluator = null;
+
     public function __construct(?SelectorPluginRegistryInterface $selectorPlugins = null)
     {
         $this->selectorPlugins = $selectorPlugins;
@@ -42,12 +46,14 @@ final class ExpressionDependencyProvider
 
     public function getExpressionEvaluator(): ExpressionEvaluator
     {
-        return new ExpressionEvaluator($this->getJsonPointer());
+        // Held per provider (and therefore per engine) so the bounded AST cache
+        // survives across evaluations instead of being rebuilt on every call.
+        return $this->expressionEvaluator ??= new ExpressionEvaluator($this->getJsonPointer());
     }
 
     public function getSelectorEvaluator(): SelectorEvaluator
     {
-        return new SelectorEvaluator($this->getSelectorPluginRegistry(), $this->getExpressionEvaluator());
+        return $this->selectorEvaluator ??= new SelectorEvaluator($this->getSelectorPluginRegistry(), $this->getExpressionEvaluator());
     }
 
     public function getJsonPathEvaluator(): JsonPathEvaluator

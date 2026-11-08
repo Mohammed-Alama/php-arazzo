@@ -35,6 +35,7 @@ flowchart TB
         M_expression_Internal["expression:Internal"]:::node
         M_expression_Plugins["expression:Plugins"]:::node
         M_expression_Registries["expression:Registries"]:::node
+        M_expression_Support["expression:Support"]:::node
         M_expression_Xpath["expression:Xpath"]:::node
         M_expression__["(expression package root)"]:::node
     end
@@ -193,11 +194,11 @@ flowchart TB
     M_expression_Ast --> M_expression_Data
     M_expression_Ast --> M_expression_Enum
     M_expression_Data --> M_contracts_Spec
-    M_expression_Data --> M_expression_Ast
     M_expression_Data --> M_expression_Enum
     M_expression_Data --> M_expression_Interfaces
     M_expression_Exceptions --> M_contracts_Support
     M_expression_Interfaces --> M_contracts_Spec
+    M_expression_Interfaces --> M_expression_Ast
     M_expression_Interfaces --> M_expression_Data
     M_expression_Interfaces --> M_expression_Exceptions
     M_expression_Interfaces --> M_expression_Registries
@@ -213,6 +214,7 @@ flowchart TB
     M_expression_Plugins --> M_expression__
     M_expression_Registries --> M_contracts_Spec
     M_expression_Registries --> M_expression_Interfaces
+    M_expression_Support --> M_expression_Ast
     M_expression_Xpath --> M_contracts_Spec
     M_expression_Xpath --> M_expression_Exceptions
     M_expression__ --> M_contracts_Spec
@@ -224,6 +226,7 @@ flowchart TB
     M_expression__ --> M_expression_Internal
     M_expression__ --> M_expression_Plugins
     M_expression__ --> M_expression_Registries
+    M_expression__ --> M_expression_Support
     M_expression__ --> M_expression_Xpath
     M_laravel_Bindings --> M_cli_Generator
     M_laravel_Bindings --> M_contracts_Interfaces

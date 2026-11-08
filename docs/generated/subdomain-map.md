@@ -30,6 +30,7 @@ flowchart LR
         S_contracts_State["contracts:State<br/><small>792 LOC</small>"]:::genericDomain
         S_contracts_Support["contracts:Support<br/><small>185 LOC</small>"]:::genericDomain
         S_evaluation_Events["evaluation:Events<br/><small>27 LOC</small>"]:::genericDomain
+        S_expression_Support["expression:Support<br/><small>59 LOC</small>"]:::genericDomain
         S_laravel_Bindings["laravel:Bindings<br/><small>395 LOC</small>"]:::genericDomain
         S_laravel_Events["laravel:Events<br/><small>24 LOC</small>"]:::genericDomain
         S_laravel_Http["laravel:Http<br/><small>187 LOC</small>"]:::genericDomain
@@ -48,7 +49,7 @@ flowchart LR
         S_engine_Enum["engine:Enum<br/><small>17 LOC</small>"]:::unknownDomain
         S_engine_Exceptions["engine:Exceptions<br/><small>42 LOC</small>"]:::unknownDomain
         S_engine_Execution["engine:Execution<br/><small>1000 LOC</small>"]:::unknownDomain
-        S_evaluation_Condition["evaluation:Condition<br/><small>911 LOC</small>"]:::unknownDomain
+        S_evaluation_Condition["evaluation:Condition<br/><small>1023 LOC</small>"]:::unknownDomain
         S_evaluation_Data["evaluation:Data<br/><small>86 LOC</small>"]:::unknownDomain
         S_evaluation_Enum["evaluation:Enum<br/><small>123 LOC</small>"]:::unknownDomain
         S_evaluation_Interfaces["evaluation:Interfaces<br/><small>44 LOC</small>"]:::unknownDomain
@@ -57,10 +58,10 @@ flowchart LR
         S_events_Interfaces["events:Interfaces<br/><small>19 LOC</small>"]:::unknownDomain
         S_events_Listener["events:Listener<br/><small>95 LOC</small>"]:::unknownDomain
         S_expression_Ast["expression:Ast<br/><small>350 LOC</small>"]:::unknownDomain
-        S_expression_Data["expression:Data<br/><small>209 LOC</small>"]:::unknownDomain
+        S_expression_Data["expression:Data<br/><small>150 LOC</small>"]:::unknownDomain
         S_expression_Enum["expression:Enum<br/><small>45 LOC</small>"]:::unknownDomain
         S_expression_Exceptions["expression:Exceptions<br/><small>55 LOC</small>"]:::unknownDomain
-        S_expression_Interfaces["expression:Interfaces<br/><small>195 LOC</small>"]:::unknownDomain
+        S_expression_Interfaces["expression:Interfaces<br/><small>211 LOC</small>"]:::unknownDomain
         S_expression_Internal["expression:Internal<br/><small>425 LOC</small>"]:::unknownDomain
         S_expression_Plugins["expression:Plugins<br/><small>128 LOC</small>"]:::unknownDomain
         S_expression_Registries["expression:Registries<br/><small>73 LOC</small>"]:::unknownDomain
@@ -84,8 +85,8 @@ flowchart LR
 |---|---:|---:|---:|---:|
 | Core domain | 1 | 1,207 | 0 | 6% |
 | Supporting | 7 | 7,364 | 0 | 34% |
-| Generic subdomain | 12 | 2,040 | 1,407 | 16% |
-| Unclassified | 32 | 9,482 | 0 | 44% |
+| Generic subdomain | 13 | 2,099 | 1,407 | 16% |
+| Unclassified | 32 | 9,551 | 0 | 44% |
 
 **Unclassified modules** — classify them in `SUBDOMAINS` or delete them:
 - `contracts:Dependency`

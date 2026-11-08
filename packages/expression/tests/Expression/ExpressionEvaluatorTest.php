@@ -9,11 +9,11 @@ use Alama\Arazzo\Contracts\Spec\Enum\SourceType;
 use Alama\Arazzo\Contracts\Spec\Expression;
 use Alama\Arazzo\Contracts\Spec\SourceDescription;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
-use Alama\Arazzo\Expression\Data\AstCache;
 use Alama\Arazzo\Expression\Data\EvaluationContext;
 use Alama\Arazzo\Expression\ExpressionDependencyProvider;
 use Alama\Arazzo\Expression\ExpressionEvaluator;
 use Alama\Arazzo\Expression\JsonPointer;
+use Alama\Arazzo\Expression\Support\AstCache;
 
 function evaluator(): ExpressionEvaluator
 {

@@ -17,15 +17,14 @@ use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
  */
 final class ConditionEvaluator
 {
-    private Lexer $lexer;
-
-    private Parser $parser;
+    private ParserInterface $parser;
 
     public function __construct(
         private ExpressionEngineInterface $expression,
+        ?ConditionCache $cache = null,
+        ?ParserInterface $parser = null,
     ) {
-        $this->lexer = new Lexer();
-        $this->parser = new Parser($this->lexer);
+        $this->parser = new CachedParser(new Lexer(), $cache ?? new ConditionCache(), $parser);
     }
 
     public function evaluate(string $condition, WorkflowContextInterface $context, ?string $stepId = null, ?ArazzoDocument $document = null): bool
