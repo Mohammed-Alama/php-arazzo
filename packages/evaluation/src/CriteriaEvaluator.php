@@ -79,6 +79,13 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
             return self::isSuccessStatusCode(is_array($response) ? ($response['statusCode'] ?? null) : null);
         }
 
+        // A receive step succeeds by default only when a message actually
+        // arrived. The resumer records that explicitly; a missing record or a
+        // timeout record must not pass silently.
+        if ($step->target->action === 'receive' && $step->io->successCriteria === []) {
+            return self::hasReceivedMessage($context, $step->stepId);
+        }
+
         return $this->evaluateCriteria($step->io->successCriteria, $step, $context, $document)->criteriaMet();
     }
 
@@ -231,6 +238,13 @@ class CriteriaEvaluator implements CriteriaEvaluatorInterface
     private function hasOperationTarget(Step $step): bool
     {
         return $step->target->operationId !== null || $step->target->operationPath !== null;
+    }
+
+    private static function hasReceivedMessage(WorkflowContextInterface $context, string $stepId): bool
+    {
+        $record = $context->getSteps()[$stepId] ?? null;
+
+        return is_array($record) && ($record['messageReceived'] ?? false) === true;
     }
 
     private static function isSuccessStatusCode(mixed $statusCode): bool
