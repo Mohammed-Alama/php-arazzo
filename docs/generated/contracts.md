@@ -156,6 +156,8 @@ flowchart LR
     C_document_document_Validator_InteractionStepRule -.->|implements| I_Rule
     C_document_document_Validator_ParameterQuerystringOperationShapeRule["ParameterQuerystringOperationShapeRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ParameterQuerystringOperationShapeRule -.->|implements| I_Rule
+    C_document_document_Validator_ReceiveStepSuccessCriteriaRule["ReceiveStepSuccessCriteriaRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ReceiveStepSuccessCriteriaRule -.->|implements| I_Rule
     C_document_document_Validator_RpcStepRule["RpcStepRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_RpcStepRule -.->|implements| I_Rule
     C_document_document_Validator_SelectorTypeSupportedRule["SelectorTypeSupportedRule<br/><small>document:Validator</small>"]:::implCore

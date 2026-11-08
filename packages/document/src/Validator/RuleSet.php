@@ -28,6 +28,7 @@ use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
 use Alama\Arazzo\Document\Validator\Rules\GraphQlStepRule;
 use Alama\Arazzo\Document\Validator\Rules\InteractionStepRule;
 use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
+use Alama\Arazzo\Document\Validator\Rules\ReceiveStepSuccessCriteriaRule;
 use Alama\Arazzo\Document\Validator\Rules\RpcStepRule;
 use Alama\Arazzo\Document\Validator\Rules\SelectorTypeSupportedRule;
 use Alama\Arazzo\Document\Validator\Rules\SelfUriSyntaxRule;
@@ -140,6 +141,7 @@ final readonly class RuleSet
             new StepParametersHaveNameRule(),
             new StepRequestBodyReplacementsTargetRule(),
             new StepSuccessCriteriaConditionRule(),
+            new ReceiveStepSuccessCriteriaRule($strict),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),
             new SuccessCriteriaVersionSupportedRule($selectorRegistry->supportedVersions(ExpressionType::XPath)),
