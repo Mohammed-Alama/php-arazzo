@@ -129,6 +129,13 @@
             },
             "lastPolledAt": "2026-11-02"
         },
+        "OAI/org": {
+            "endpoints": {
+                "org_diff": {
+                    "lastSeenUpdatedAt": "2026-11-08T13:18:41+00:00"
+                }
+            }
+        },
         "OAI/sig-lifecycle": {
             "endpoints": {
                 "issues": {
@@ -346,7 +353,7 @@
         "strefethen/arazzo-cli": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-06T20:37:07Z"
+                    "lastSeenUpdatedAt": "2026-11-07T21:04:03Z"
                 },
                 "issues": {
                     "lastSeenUpdatedAt": "2026-08-26T23:48:42Z"
