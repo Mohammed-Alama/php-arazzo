@@ -45,3 +45,17 @@ it('exposes strict flag via isStrict()', function (): void {
     expect(RuleSet::default(new ExpressionEngine(), strict: true)->isStrict())->toBeTrue()
         ->and(RuleSet::default(new ExpressionEngine(), strict: false)->isStrict())->toBeFalse();
 });
+
+it('registers the receive missing-criteria rule', function (): void {
+    $codes = array_map(fn (Rule $r) => $r->code(),
+        RuleSet::default(new ExpressionEngine())->activeRules());
+
+    expect($codes)->toContain('step.receive_missing_success_criteria');
+});
+
+it('lets the receive missing-criteria rule be disabled', function (): void {
+    $codes = array_map(fn (Rule $r) => $r->code(),
+        RuleSet::default(new ExpressionEngine(), disabled: ['step.receive_missing_success_criteria'])->activeRules());
+
+    expect($codes)->not->toContain('step.receive_missing_success_criteria');
+});

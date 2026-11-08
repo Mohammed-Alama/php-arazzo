@@ -295,3 +295,29 @@ it('falls back to a 200 status when the resumption payload carries a non-int sta
         ->and($stateStore->saved['exec_1']['steps']['wait-for-ride']['response'])->toBe($response)
         ->and($outcomeHandler->handled)->toHaveCount(1);
 });
+
+it('marks a resumed receive step as having received a message', function (): void {
+    [$registry, $definitionId] = resumerDocument();
+    $document = $registry->get($definitionId);
+
+    $pendingCorrelations = new ResumerMockPendingCorrelations();
+    $pendingCorrelations->toReturn = new PendingCorrelation('corr_1', 'exec_1', 'wait-for-ride', 'channels/rides/created');
+
+    $stateStore = new ResumerMockStateStore();
+    $stateStore->state = ['definitionId' => $definitionId, 'workflowId' => 'wf_1'];
+
+    $resumer = new CorrelationResumer(
+        $pendingCorrelations,
+        $stateStore,
+        new RecordingDefinitionRegistry($document),
+        \Mockery::mock(OutputExtractorInterface::class)->shouldReceive('extractOutputs')->andReturn([])->getMock(),
+        \Mockery::mock(EvaluationEngineInterface::class)->shouldReceive('evaluateSuccessCriteria')->andReturn(true)->getMock(),
+        new RecordingStepOutcomeHandler(),
+        new ResumerMockEventLedger(),
+        new ResumerMockLockManager(),
+    );
+
+    $resumer->resume('corr_1', ['body' => ['x' => 1]]);
+
+    expect($stateStore->saved['exec_1']['steps']['wait-for-ride']['messageReceived'])->toBeTrue();
+});
