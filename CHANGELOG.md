@@ -13,6 +13,7 @@ Entries under `## Unreleased` → `### Shipped` are promoted via `scripts/ship-p
 - **Raw response retention**: `StepExecutionOutcome` carries `rawBody` + `contentType`; step records persist them.
 - **Severity model**: validator `Error`/`Warning` gain a `Severity` enum exposed via `toArray()`.
 - Deterministic conformance harness: 9 golden fixtures executed through BOTH sync and queued adapters with normalized parity assertions; property tests for pointer round-trips, expression spelling equivalence, DAG acyclicity, retry ceilings, and state serialization.
+- AsyncAPI `receive` step default success: a receive step with no `successCriteria` passes only when a message arrived (`CorrelationResumer` records `messageReceived => true` on the step record); no record or a non-`true` marker fails the step. `EvaluationEngine::evaluateSuccessCriteria()` delegates to `CriteriaEvaluator` so both the receive default and the existing operation 2xx default apply at runtime. New validator rule `step.receive_missing_success_criteria` reports empty-criteria receive steps (error when strict, warning otherwise; no-op on 1.0 documents).
 
 ### Changed
 - **BREAKING**: single control-flow path - legacy `Engine` dispatcher deleted; `WorkflowEngine` is the only decision point and `StepOutcomeHandler` is now a thin adapter over it. `StepExecutionWorker` requires `WorkflowEngine` + `QueueDriverInterface`. Custom subclasses of these classes must be updated.

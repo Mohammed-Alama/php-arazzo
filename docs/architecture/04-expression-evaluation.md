@@ -175,6 +175,14 @@ flowchart LR
 
 This lets callers distinguish "criterion evaluated to false" from "criterion could not be evaluated" (e.g. a syntax error or an unresolvable context). The boolean `evaluateCriteria()` delegates to the detailed API and preserves its existing behavior (`true` when all criteria pass, `false` otherwise). An optional `CriterionObserverInterface` receives one `CriterionEvaluatedEvent` per criterion, modelled on arazzo-cli's observer events.
 
+### Default success outcomes
+
+`EvaluationEngine::evaluateSuccessCriteria()` delegates to `CriteriaEvaluator`, so default outcomes apply at runtime:
+
+- **Operation step** (`operationId`/`operationPath`) with no `successCriteria`: passes on any 2xx response status code.
+- **AsyncAPI `receive` step** with no `successCriteria`: passes only when the step's persisted record carries `messageReceived => true`. `CorrelationResumer` sets that marker when a message resumes the step; no record, a non-array record, or a marker that is not `true` fails the step. This keeps a receive step from silently passing when no message arrived.
+- Explicit `successCriteria` always win: they are evaluated normally and the default does not apply.
+
 ## String interpolation
 
 Not every dynamic value is a bare expression — a `Parameter`'s value or a header can be a literal string with an expression *embedded*, e.g. `"Bearer {$steps.auth.outputs.token}"`. `StringInterpolator::interpolate()` iterates the segments from `parseEmbedded()`, re-wraps each expression segment as an `Expression`, evaluates it, and stringifies the result (`json_encode` for non-scalars); literal segments pass through untouched. `StepExecutor::resolveValue()` decides which path to take: a bare `Expression` instance goes straight to `ExpressionResolverInterface::evaluate()`; a string merely *containing* `{$` is routed through the interpolator instead.
