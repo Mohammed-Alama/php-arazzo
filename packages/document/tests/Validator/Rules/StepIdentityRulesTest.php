@@ -24,6 +24,7 @@ use Alama\Arazzo\Document\Validator\Rules\StepOperationIdSourceScopedRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationPathSyntaxRule;
 use Alama\Arazzo\Document\Validator\Rules\StepOperationTargetPresentRule;
 use Alama\Arazzo\Document\Validator\Rules\StepUniqueIdRule;
+use Alama\Arazzo\Expression\ExpressionEngine;
 
 function stepIdMk(string $id, ?string $opId = 'op', ?string $opPath = null, ?string $wfId = null): Step
 {
@@ -104,7 +105,7 @@ it('requires single openapi source for unqualified operationId', function (): vo
 it('validates operationPath syntax', function (): void {
     $doc = stepIdDoc([stepIdWf('a', [stepIdMk('x', null, 'nosource-no-hash')])]);
     $ec = new ErrorCollector();
-    (new StepOperationPathSyntaxRule())->check($doc, SymbolTable::build($doc), $ec);
+    (new StepOperationPathSyntaxRule(new ExpressionEngine()))->check($doc, SymbolTable::build($doc), $ec);
     expect($ec->errors())->toHaveCount(1);
 });
 

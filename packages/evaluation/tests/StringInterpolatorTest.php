@@ -7,6 +7,7 @@ namespace Alama\Arazzo\Tests\Evaluation;
 use Alama\Arazzo\Contracts\State\WorkflowContext;
 use Alama\Arazzo\Evaluation\StringInterpolator;
 use Alama\Arazzo\Expression\Data\EmbeddedSegment;
+use Alama\Arazzo\Expression\ExpressionEngine;
 use Alama\Arazzo\Expression\Interfaces\ExpressionEngineInterface;
 use Mockery;
 
@@ -21,6 +22,11 @@ function segments(array $pairs): array
     }
 
     return $out;
+}
+
+function grammarInterpolator(): StringInterpolator
+{
+    return new StringInterpolator(new ExpressionEngine());
 }
 
 it('interpolates multiple expressions in a string', function () {
@@ -133,4 +139,43 @@ it('leaves a bare dollar that is not a braced expression alone', function () {
     $interpolator = new StringInterpolator($evaluator);
 
     expect($interpolator->interpolate('costs $5 and $token', $context, 'step1'))->toBe('costs $5 and $token');
+});
+
+it('returns a template without expressions untouched', function () {
+    $context = new WorkflowContext('wf1', []);
+
+    expect(grammarInterpolator()->interpolate('plain text', $context, 'step1'))->toBe('plain text');
+});
+
+it('interpolates adjacent expressions without inventing a separator', function () {
+    $context = new WorkflowContext('wf1', ['a' => 'A', 'b' => 'B']);
+
+    expect(grammarInterpolator()->interpolate('{$inputs.a}{$inputs.b}', $context, 'step1'))->toBe('AB');
+});
+
+it('passes a literal brace that does not open an expression through', function () {
+    $context = new WorkflowContext('wf1', ['x' => 'X']);
+
+    expect(grammarInterpolator()->interpolate('{not an expression} {$inputs.x}', $context, 'step1'))
+        ->toBe('{not an expression} X');
+});
+
+it('closes an embedded expression at the first closing brace', function () {
+    // A `}` inside a JSON Pointer is not a delimiter under any supported spec
+    // version, so it ends the expression and the remainder stays literal.
+    $context = new WorkflowContext('wf1', ['user' => ['city' => 'Berlin']]);
+
+    expect(grammarInterpolator()->interpolate('{$inputs.user#/city}b}', $context, 'step1'))
+        ->toBe('Berlinb}');
+});
+
+it('returns the template unchanged when an embedded expression is malformed', function () {
+    // Runtime interpolation must stay lenient: the validator is the strict
+    // path, while odd step data passes through verbatim.
+    $context = new WorkflowContext('wf1', []);
+
+    expect(grammarInterpolator()->interpolate('Hello {$inputs.name', $context, 'step1'))
+        ->toBe('Hello {$inputs.name')
+        ->and(grammarInterpolator()->interpolate('Bad {$inputs.}!', $context, 'step1'))
+        ->toBe('Bad {$inputs.}!');
 });

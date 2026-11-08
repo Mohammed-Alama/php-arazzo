@@ -30,7 +30,7 @@ quadrantChart
     contracts/State: [0.071, 1]
     contracts/Support: [0, 1]
     document/Parser: [0.222, 1]
-    document/Validator: [0.5, 1]
+    document/Validator: [0.538, 1]
     engine/Data: [0.75, 1]
     engine/Enum: [0, 1]
     engine/Exceptions: [0.25, 1]
@@ -47,7 +47,7 @@ quadrantChart
     expression/Ast: [0.4, 0.333]
     expression/Data: [0.308, 1]
     expression/Enum: [0, 1]
-    expression/Exceptions: [0.167, 1]
+    expression/Exceptions: [0.125, 1]
     expression/Interfaces: [0.211, 1]
     expression/Internal: [0.857, 0]
     expression/Plugins: [0.8, 0]
@@ -86,7 +86,7 @@ quadrantChart
 | `contracts/State` | 0.07 | 66 | 2 | 100% |
 | `contracts/Support` | 0.00 | 12 | 5 | 100% |
 | `document/Parser` | 0.22 | 39 | 12 | 100% |
-| `document/Validator` | 0.50 | 80 | 69 | 100% |
+| `document/Validator` | 0.54 | 80 | 69 | 100% |
 | `engine/Data` | 0.75 | 2 | 2 | 100% |
 | `engine/Enum` | 0.00 | 1 | 1 | 100% |
 | `engine/Exceptions` | 0.25 | 4 | 1 | 100% |
@@ -103,7 +103,7 @@ quadrantChart
 | `expression/Ast` | 0.40 | 5 | 15 | 33% |
 | `expression/Data` | 0.31 | 17 | 6 | 100% |
 | `expression/Enum` | 0.00 | 4 | 2 | 100% |
-| `expression/Exceptions` | 0.17 | 11 | 2 | 100% |
+| `expression/Exceptions` | 0.12 | 11 | 2 | 100% |
 | `expression/Interfaces` | 0.21 | 16 | 4 | 100% |
 | `expression/Internal` | 0.86 | 0 | 3 | 0% |
 | `expression/Plugins` | 0.80 | 0 | 3 | 0% |

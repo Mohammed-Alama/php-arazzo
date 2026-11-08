@@ -43,11 +43,12 @@ contracts-State,contracts-Spec,3
 document-Parser,contracts-Spec,38
 document-Parser,contracts-Support,2
 document-Validator,contracts-Dependency,1
-document-Validator,contracts-Spec,103
+document-Validator,contracts-Spec,104
 document-Validator,contracts-Support,2
 document-Validator,expression-Data,1
-document-Validator,expression-Enum,7
-document-Validator,expression-Interfaces,10
+document-Validator,expression-Enum,9
+document-Validator,expression-Exceptions,2
+document-Validator,expression-Interfaces,12
 document-root,contracts-Spec,13
 document-root,document-Parser,4
 document-root,document-Validator,4
@@ -85,7 +86,7 @@ evaluation-Registries,contracts-Spec,3
 evaluation-Registries,evaluation-Plugins,2
 evaluation-Registries,expression-Interfaces,2
 evaluation-root,contracts-Interfaces,1
-evaluation-root,contracts-Spec,27
+evaluation-root,contracts-Spec,28
 evaluation-root,contracts-State,3
 evaluation-root,contracts-Support,2
 evaluation-root,evaluation-Condition,3
@@ -95,6 +96,7 @@ evaluation-root,evaluation-Events,2
 evaluation-root,evaluation-Interfaces,1
 evaluation-root,evaluation-Registries,3
 evaluation-root,expression-Data,4
+evaluation-root,expression-Exceptions,1
 evaluation-root,expression-Interfaces,10
 events-Listener,contracts-Support,1
 events-Listener,events-Interfaces,1

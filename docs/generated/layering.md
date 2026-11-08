@@ -134,6 +134,7 @@ flowchart TB
     M_document_Validator --> M_contracts_Support
     M_document_Validator --> M_expression_Data
     M_document_Validator --> M_expression_Enum
+    M_document_Validator --> M_expression_Exceptions
     M_document_Validator --> M_expression_Interfaces
     M_document__ --> M_contracts_Spec
     M_document__ --> M_document_Parser
@@ -184,6 +185,7 @@ flowchart TB
     M_evaluation__ --> M_evaluation_Interfaces
     M_evaluation__ --> M_evaluation_Registries
     M_evaluation__ --> M_expression_Data
+    M_evaluation__ --> M_expression_Exceptions
     M_evaluation__ --> M_expression_Interfaces
     M_events_Listener --> M_contracts_Support
     M_events_Listener --> M_events_Interfaces
@@ -395,14 +397,14 @@ flowchart TB
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
-| `document` | `contracts` | 159 |
-| `document` | `expression` | 19 |
+| `document` | `contracts` | 160 |
+| `document` | `expression` | 25 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |
 | `engine` | `evaluation` | 1 |
-| `evaluation` | `contracts` | 55 |
-| `evaluation` | `expression` | 22 |
+| `evaluation` | `contracts` | 56 |
+| `evaluation` | `expression` | 23 |
 | `events` | `contracts` | 1 |
 | `expression` | `contracts` | 27 |
 | `laravel` | `cli` | 3 |

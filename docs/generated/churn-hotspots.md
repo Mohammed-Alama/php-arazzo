@@ -12,26 +12,26 @@ same corner every week" signal that static structure graphs cannot show.
 ```mermaid
 xychart-beta
     title "Edit churn per module (git touches)"
-    x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "document:Validator", "laravel:Http", "laravel:Persistence", "runner:Async", "laravel:Support", "document:Parser", "laravel:Queue", "expression:Interfaces", "sources:Normalizer"]
+    x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "document:Validator", "laravel:Http", "laravel:Persistence", "runner:Async", "laravel:Support", "document:Parser", "expression:Interfaces", "laravel:Queue", "sources:Normalizer"]
     y-axis "Touches" 0 --> 60
-    bar [47, 29, 26, 22, 22, 20, 16, 15, 14, 14, 13, 13]
+    bar [47, 29, 26, 22, 22, 20, 16, 15, 14, 14, 14, 13]
 ```
 
-Analyzed 404 total file-touches across 52 modules.
+Analyzed 406 total file-touches across 52 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 47 | 12% | 395 | 119 |
 | `cli:Console` | 29 | 7% | 933 | 31.1 |
 | `runner:Execution` | 26 | 6% | 370 | 70.3 |
-| `document:Validator` | 22 | 5% | 3,734 | 5.9 |
+| `document:Validator` | 22 | 5% | 3,789 | 5.8 |
 | `laravel:Http` | 22 | 5% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
 | `runner:Async` | 16 | 4% | 1,345 | 11.9 |
 | `laravel:Support` | 15 | 4% | 272 | 55.1 |
 | `document:Parser` | 14 | 3% | 1,453 | 9.6 |
+| `expression:Interfaces` | 14 | 3% | 195 | 71.8 |
 | `laravel:Queue` | 14 | 3% | 109 | 128.4 |
-| `expression:Interfaces` | 13 | 3% | 195 | 66.7 |
 | `sources:Normalizer` | 13 | 3% | 1,282 | 10.1 |
 | `laravel:State` | 12 | 3% | 52 | 230.8 |
 | `contracts:Interfaces` | 11 | 3% | 367 | 30 |
@@ -61,6 +61,7 @@ Analyzed 404 total file-touches across 52 modules.
 | `engine:Enum` | 2 | 0% | 17 | 117.6 |
 | `evaluation:Enum` | 2 | 0% | 123 | 16.3 |
 | `expression:Exceptions` | 2 | 0% | 55 | 36.4 |
+| `expression:Internal` | 2 | 0% | 425 | 4.7 |
 | `expression:Plugins` | 2 | 0% | 128 | 15.6 |
 | `expression:Registries` | 2 | 0% | 73 | 27.4 |
 | `runtime:Infrastructure` | 2 | 0% | 162 | 12.3 |
@@ -69,7 +70,6 @@ Analyzed 404 total file-touches across 52 modules.
 | `evaluation:Events` | 1 | 0% | 27 | 37 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
 | `events:Listener` | 1 | 0% | 95 | 10.5 |
-| `expression:Internal` | 1 | 0% | 425 | 2.4 |
 | `runner:Interfaces` | 1 | 0% | 25 | 40 |
 | `runtime:Policy` | 1 | 0% | 102 | 9.8 |
 | `runtime:Telemetry` | 1 | 0% | 282 | 3.5 |
