@@ -11,11 +11,12 @@ use Alama\Arazzo\Expression\Ast\InputRef;
 use Alama\Arazzo\Expression\Ast\SelfRef;
 use Alama\Arazzo\Expression\Ast\SourceRef;
 use Alama\Arazzo\Expression\Ast\WorkflowRef;
-use Alama\Arazzo\Expression\Data\AstCache;
 use Alama\Arazzo\Expression\Interfaces\EvaluationInputInterface;
+use Alama\Arazzo\Expression\Interfaces\ParserInterface;
 use Alama\Arazzo\Expression\Internal\StepReferenceResolver;
 use Alama\Arazzo\Expression\Internal\ValueReader;
 use Alama\Arazzo\Expression\Parser as ExpressionParser;
+use Alama\Arazzo\Expression\Support\AstCache;
 
 /**
  * Evaluates a parsed runtime expression against the current workflow state.
@@ -34,16 +35,19 @@ final class ExpressionEvaluator
 
     private readonly AstCache $astCache;
 
-    private readonly ExpressionParser $parser;
+    private readonly ParserInterface $parser;
 
     public function __construct(
-        JsonPointer $jsonPointer,
+        JsonPointer $jsonPointer = new JsonPointer(),
         ?AstCache $astCache = null,
+        ?ParserInterface $parser = null,
     ) {
         $this->values = new ValueReader($jsonPointer);
         $this->steps = new StepReferenceResolver($this->values);
         $this->astCache = $astCache ?? new AstCache();
-        $this->parser = new ExpressionParser();
+        // The runtime-expression parser is stateless, so one instance is safe
+        // to reuse across nested evaluations.
+        $this->parser = $parser ?? new ExpressionParser();
     }
 
     public function evaluate(Expression $expression, EvaluationInputInterface $context): mixed

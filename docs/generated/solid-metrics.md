@@ -40,7 +40,7 @@ quadrantChart
     engine/Exceptions: [0.25, 0]
     engine/Execution: [0.667, 0]
     engine/_: [0.75, 0.5]
-    evaluation/Condition: [0.889, 0.071]
+    evaluation/Condition: [0.889, 0.118]
     evaluation/Data: [0.4, 0]
     evaluation/Enum: [0, 0]
     evaluation/Events: [0.333, 0]
@@ -51,16 +51,17 @@ quadrantChart
     events/Interfaces: [0, 1]
     events/Listener: [0.75, 0]
     events/_: [0, 0]
-    expression/Ast: [0.4, 0]
-    expression/Data: [0.308, 0]
+    expression/Ast: [0.333, 0]
+    expression/Data: [0.25, 0]
     expression/Enum: [0, 0]
     expression/Exceptions: [0.125, 0]
-    expression/Interfaces: [0.211, 1]
+    expression/Interfaces: [0.25, 1]
     expression/Internal: [0.857, 0]
     expression/Plugins: [0.8, 0]
     expression/Registries: [0.5, 0]
+    expression/Support: [0.5, 0]
     expression/Xpath: [0.5, 0.333]
-    expression/_: [0.625, 0]
+    expression/_: [0.647, 0]
     laravel/Bindings: [0.96, 0]
     laravel/Http: [0.75, 0]
     laravel/Lock: [0.5, 0]
@@ -93,7 +94,7 @@ Concrete types over 300 LOC:
 | `Parser` | `document:Parser` | 931 |
 | `ExecutionContext` | `runtime:State` | 496 |
 | `WsdlSourceNormalizer` | `sources:Normalizer` | 474 |
-| `Parser` | `expression:_` | 465 |
+| `Parser` | `expression:_` | 466 |
 | `StepOutcomeHandler` | `runner:Async` | 454 |
 | `StepExecutionWorker` | `runner:Async` | 414 |
 | `ExecutionState` | `contracts:State` | 410 |

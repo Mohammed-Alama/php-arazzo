@@ -111,7 +111,7 @@ All missing-data cases resolve to `null` rather than throwing — an expression 
 
 ### Bounded AST cache and positioned errors
 
-`ExpressionEvaluator` caches parsed ASTs in a bounded `AstCache` (per-instance, no static state, FIFO eviction at 256 entries) keyed by the raw expression string. Only successful parses are cached; syntax errors are re-thrown fresh on each call. This means repeated evaluation of the same expression parses once — important for long-lived queue workers — without leaking memory.
+`ExpressionEvaluator` caches parsed ASTs in a bounded `AstCache` (per-engine, no static state, FIFO eviction at 256 entries) keyed by the raw expression string. `ExpressionDependencyProvider` holds one evaluator per engine, so the cache survives across `evaluate()` calls. `ConditionEvaluator` applies the same policy to parsed conditions through its bounded `ConditionCache`, keyed by the condition string. Only successful parses are cached; syntax errors are re-thrown fresh on each call. This means repeated evaluation of the same expression or condition parses once — important for long-lived queue workers — without leaking memory.
 
 Syntax errors (`ExpressionSyntaxException`) now carry a real zero-based byte offset of the offending token and the offending fragment text, instead of the previous `-1` offset and empty fragment. Offsets are sourced from lexer tokens, so every parse failure reports exactly where it occurred.
 

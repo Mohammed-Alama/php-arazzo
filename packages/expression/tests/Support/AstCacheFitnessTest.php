@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Tests\Expression\Data;
+namespace Alama\Arazzo\Tests\Expression\Support;
 
-use Alama\Arazzo\Expression\Data\AstCache;
+use Alama\Arazzo\Expression\Support\AstCache;
 use ReflectionClass;
 use ReflectionProperty;
 

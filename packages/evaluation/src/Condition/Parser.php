@@ -18,7 +18,7 @@ use Alama\Arazzo\Evaluation\Interfaces\ConditionNode;
 /**
  * @internal stays out of the advertised contract; not part of the public API surface
  */
-final class Parser
+final class Parser implements ParserInterface
 {
     private const array TERMINAL_KINDS = [
         TokenKind::Number,

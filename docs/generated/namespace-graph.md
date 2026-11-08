@@ -26,7 +26,7 @@ flowchart LR
     engine_Exceptions["Alama\Arazzo\Engine\Exceptions"]:::coreNode
     engine_Execution["Alama\Arazzo\Engine\Execution"]:::coreNode
     engine__["(engine package root)"]:::coreNode
-    evaluation_Condition["Alama\Arazzo\Evaluation\Condition\Ast"]:::coreNode
+    evaluation_Condition["Alama\Arazzo\Evaluation\Condition"]:::coreNode
     evaluation_Data["Alama\Arazzo\Evaluation\Data"]:::coreNode
     evaluation_Enum["Alama\Arazzo\Evaluation\Enum"]:::coreNode
     evaluation_Events["Alama\Arazzo\Evaluation\Events"]:::coreNode
@@ -45,6 +45,7 @@ flowchart LR
     expression_Internal["Alama\Arazzo\Expression\Internal"]:::coreNode
     expression_Plugins["Alama\Arazzo\Expression\Plugins"]:::coreNode
     expression_Registries["Alama\Arazzo\Expression\Registries"]:::coreNode
+    expression_Support["Alama\Arazzo\Expression\Support"]:::coreNode
     expression_Xpath["Alama\Arazzo\Expression\Xpath"]:::coreNode
     expression__["(expression package root)"]:::coreNode
     laravel_Bindings["Alama\Arazzo\Laravel\Bindings"]:::laravelNode
@@ -77,13 +78,13 @@ flowchart LR
     contracts_State --> contracts_Spec
     expression_Ast --> expression_Data
     expression_Ast --> expression_Enum
-    expression_Data --> expression_Ast
     expression_Data --> expression_Enum
     expression_Data --> contracts_Spec
     expression_Data --> expression_Interfaces
     expression_Exceptions --> contracts_Support
     expression_Interfaces --> contracts_Spec
     expression_Interfaces --> expression_Registries
+    expression_Interfaces --> expression_Ast
     expression_Interfaces --> expression_Data
     expression_Interfaces --> expression_Exceptions
     expression_Internal --> contracts_Spec
@@ -98,6 +99,7 @@ flowchart LR
     expression_Plugins --> expression__
     expression_Registries --> contracts_Spec
     expression_Registries --> expression_Interfaces
+    expression_Support --> expression_Ast
     expression_Xpath --> contracts_Spec
     expression_Xpath --> expression_Exceptions
     expression__ --> contracts_Spec
@@ -110,6 +112,7 @@ flowchart LR
     expression__ --> expression_Xpath
     expression__ --> expression_Ast
     expression__ --> expression_Enum
+    expression__ --> expression_Support
     evaluation_Condition --> expression_Exceptions
     evaluation_Condition --> expression__
     evaluation_Condition --> evaluation_Enum

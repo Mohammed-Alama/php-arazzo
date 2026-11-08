@@ -32,6 +32,7 @@ flowchart LR
     I_OperationExecutorPluginInterface["OperationExecutorPluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_OperationResolverInterface["OperationResolverInterface<br/><small>(document root)</small>"]:::contract
     I_OutputExtractorInterface["OutputExtractorInterface<br/><small>contracts:Interfaces</small>"]:::contract
+    I_ParserInterface["ParserInterface<br/><small>evaluation:Condition</small>"]:::contract
     I_PendingCorrelationRegistryInterface["PendingCorrelationRegistryInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_PluginInterface["PluginInterface<br/><small>contracts:Interfaces</small>"]:::contract
     I_ProtocolExecutorRegistryInterface["ProtocolExecutorRegistryInterface<br/><small>runner:Interfaces</small>"]:::contract
@@ -63,6 +64,12 @@ flowchart LR
     C_expression_expression_Data_EvaluationContext -.->|implements| I_EvaluationInputInterface
     C_expression_expression___ExpressionEngine["ExpressionEngine<br/><small>(expression root)</small>"]:::implCore
     C_expression_expression___ExpressionEngine -.->|implements| I_ExpressionEngineInterface
+    C_expression_expression___Parser["Parser<br/><small>(expression root)</small>"]:::implCore
+    C_expression_expression___Parser -.->|implements| I_ParserInterface
+    C_evaluation_evaluation_Condition_CachedParser["CachedParser<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_CachedParser -.->|implements| I_ParserInterface
+    C_evaluation_evaluation_Condition_Parser["Parser<br/><small>evaluation:Condition</small>"]:::implCore
+    C_evaluation_evaluation_Condition_Parser -.->|implements| I_ParserInterface
     C_expression_expression_Plugins_JsonPathSelectorPlugin["JsonPathSelectorPlugin<br/><small>expression:Plugins</small>"]:::implCore
     C_expression_expression_Plugins_JsonPathSelectorPlugin -.->|implements| I_SelectorPluginInterface
     C_expression_expression_Plugins_JsonPointerSelectorPlugin["JsonPointerSelectorPlugin<br/><small>expression:Plugins</small>"]:::implCore

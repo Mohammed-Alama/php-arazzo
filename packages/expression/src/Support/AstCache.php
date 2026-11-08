@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alama\Arazzo\Expression\Data;
+namespace Alama\Arazzo\Expression\Support;
 
 use Alama\Arazzo\Expression\Ast\ExpressionAst;
 

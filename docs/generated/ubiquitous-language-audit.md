@@ -25,7 +25,7 @@ Evans' first question: does the code speak one language?
 
 - **Decoder**: `DecoderInterface`, `DecoderRegistry`, `NativeJsonDecoder`, `SymfonyYamlDecoder` (4 types)
 - **Loader**: `DocumentLoader`, `Loader`, `LoaderException`, `OpenApiDocumentLoader` + 1 more (5 types)
-- **Parser**: `AccessorParser`, `FieldParser`, `Parser`, `ParserException` (4 types)
+- **Parser**: `AccessorParser`, `CachedParser`, `FieldParser`, `Parser` + 2 more (6 types)
 
 ### document vs definition vs spec
 
@@ -66,6 +66,7 @@ Evans' first question: does the code speak one language?
 |---|---|---|
 | `Lexer` | `Expression\Lexer`<br/>`Evaluation\Condition\Lexer` | expression, evaluation |
 | `Parser` | `Expression\Parser`<br/>`Evaluation\Condition\Parser`<br/>`Document\Parser\Parser` | expression, evaluation, document |
+| `ParserInterface` | `Expression\Interfaces\ParserInterface`<br/>`Evaluation\Condition\ParserInterface` | expression, evaluation |
 | `StepResult` | `Runtime\State\Data\StepResult`<br/>`Runner\Execution\Data\StepResult` | runtime, runner |
 | `Token` | `Expression\Data\Token`<br/>`Evaluation\Condition\Token` | expression, evaluation |
 | `TokenKind` | `Expression\Enum\TokenKind`<br/>`Evaluation\Enum\TokenKind` | expression, evaluation |
