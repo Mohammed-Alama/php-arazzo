@@ -79,7 +79,7 @@ final class EvaluationEngine implements EvaluationEngineInterface
 
     public function evaluateSuccessCriteria(Step $step, WorkflowContextInterface $context, ?ArazzoDocument $document = null): bool
     {
-        return $this->criteria()->evaluateCriteria($step->io->successCriteria, $step, $context, $document)->criteriaMet();
+        return $this->criteria()->evaluateSuccessCriteria($step, $context, $document);
     }
 
     public function evaluateSelector(Selector $selector, WorkflowContextInterface $context, string $stepId): mixed
