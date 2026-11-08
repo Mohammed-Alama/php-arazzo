@@ -124,6 +124,7 @@ class CorrelationResumer
                 'statusCode' => $statusCode,
                 'response' => $response,
                 'outputs' => $outputs,
+                'messageReceived' => true,
             ]);
 
             $this->pendingCorrelations->consume($correlationId);
