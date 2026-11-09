@@ -1,7 +1,7 @@
 {
     "sources": {
         "API-Flows/api-flows-studio": {
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "JaredCE/Arazzo-Generator": {
             "endpoints": {
@@ -10,7 +10,7 @@
                     "lastTag": "0.0.4"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/Arazzo-Specification": {
             "branches": {
@@ -35,10 +35,10 @@
                     "lastSeenUpdatedAt": "2026-10-28T13:12:00Z"
                 },
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-29T06:07:22Z"
+                    "lastSeenUpdatedAt": "2026-11-08T19:45:01Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-06T10:45:01Z"
+                    "lastSeenUpdatedAt": "2026-11-09T00:54:28Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -49,10 +49,10 @@
         "OAI/OpenAPI-Specification": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-05T21:40:55Z"
+                    "lastSeenUpdatedAt": "2026-11-08T15:12:10Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-07T09:11:51Z"
+                    "lastSeenUpdatedAt": "2026-11-08T15:17:21Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-10T17:18:00Z",
@@ -69,15 +69,15 @@
                     "lastSeenUpdatedAt": "2026-07-27T12:55:37Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/Overlay-Specification": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-03T16:32:47Z"
+                    "lastSeenUpdatedAt": "2026-11-09T13:48:06Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-05T08:22:34Z"
+                    "lastSeenUpdatedAt": "2026-11-08T15:02:49Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-09-22T15:29:46Z",
@@ -94,10 +94,10 @@
                     "lastSeenUpdatedAt": "2026-10-11T17:18:19Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-30T22:25:04Z"
+                    "lastSeenUpdatedAt": "2026-11-06T22:24:56Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/community": {
             "endpoints": {
@@ -108,31 +108,31 @@
                     "lastSeenUpdatedAt": "2026-07-24T14:41:16Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/landscape": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-10-14T00:42:41Z"
+                    "lastSeenUpdatedAt": "2026-11-09T05:48:42Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/learn.openapis.org": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-10-28T12:43:53Z"
+                    "lastSeenUpdatedAt": "2026-11-06T16:36:13Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-30T17:43:56Z"
+                    "lastSeenUpdatedAt": "2026-11-07T03:14:34Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/org": {
             "endpoints": {
                 "org_diff": {
-                    "lastSeenUpdatedAt": "2026-11-08T13:18:41+00:00"
+                    "lastSeenUpdatedAt": "2026-11-09T16:10:59+00:00"
                 }
             }
         },
@@ -142,10 +142,10 @@
                     "lastSeenUpdatedAt": "2026-08-21T18:26:32Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-10-30T15:43:05Z"
+                    "lastSeenUpdatedAt": "2026-11-06T02:56:27Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/sig-moonwalk": {
             "endpoints": {
@@ -156,7 +156,7 @@
                     "lastSeenUpdatedAt": "2025-11-12T00:10:49Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/sig-security": {
             "endpoints": {
@@ -164,15 +164,15 @@
                     "lastSeenUpdatedAt": "2026-10-25T21:03:25Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "OAI/spec.openapis.org": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-02T10:32:22Z"
+                    "lastSeenUpdatedAt": "2026-11-09T10:27:52Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-02T10:32:24Z"
+                    "lastSeenUpdatedAt": "2026-11-09T13:55:28Z"
                 }
             }
         },
@@ -185,13 +185,13 @@
                     "lastSeenUpdatedAt": "2026-10-24T21:02:21Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "Redocly/redocly-cli": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-05T15:37:06Z",
-                    "lastTag": "@redocly/respect-core@2.76.0"
+                    "lastSeenUpdatedAt": "2026-11-09T09:56:40Z",
+                    "lastTag": "@redocly/respect-core@2.77.0"
                 }
             }
         },
@@ -210,19 +210,19 @@
                     "lastTag": "v0.0.6"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "frankkilcommins/arazzo2openapi": {
             "endpoints": {
                 "tags": {
-                    "lastSeenUpdatedAt": "2026-04-09T21:26:34Z",
-                    "lastTag": "v1.0.2"
+                    "lastSeenUpdatedAt": "2026-11-02T19:18:48Z",
+                    "lastTag": "v1.1.0"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "imminent-technology/tapestry": {
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "jentic/arazzo-engine": {
             "endpoints": {
@@ -238,67 +238,67 @@
         "jentic/jentic-arazzo-tools": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-07-21T10:20:02Z",
-                    "lastTag": "v1.0.0-alpha.32"
+                    "lastSeenUpdatedAt": "2026-11-09T10:41:50Z",
+                    "lastTag": "v1.0.0-alpha.33"
                 }
             }
         },
         "jentic/jentic-public-apis": {
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "lornajane/apitapviz": {
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "npm.@usearazzo/cli": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:05:49+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.26"
+                    "lastSeenUpdatedAt": "2026-11-08T19:45:30+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.27"
                 }
             }
         },
         "npm.@usearazzo/parser": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:05:33+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.26"
+                    "lastSeenUpdatedAt": "2026-11-08T19:43:14+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.27"
                 }
             }
         },
         "npm.@usearazzo/resolver": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:08:31+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.26"
+                    "lastSeenUpdatedAt": "2026-11-08T19:43:48+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.27"
                 }
             }
         },
         "npm.@usearazzo/runner": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:06:37+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.26"
+                    "lastSeenUpdatedAt": "2026-11-08T19:43:56+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.27"
                 }
             }
         },
         "npm.@usearazzo/validator": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:05:43+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.26"
+                    "lastSeenUpdatedAt": "2026-11-08T19:43:22+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.27"
                 }
             }
         },
         "openapi.tools": {
             "endpoints": {
                 "tool_collection": {
-                    "lastSeenUpdatedAt": "2026-11-02T15:44:28+00:00"
+                    "lastSeenUpdatedAt": "2026-11-09T16:11:50+00:00"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "openapis.org.blog": {
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "speakeasy-api/openapi": {
             "endpoints": {
@@ -307,48 +307,48 @@
                     "lastTag": "v1.26.3"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "spec.arazzo.html": {
             "endpoints": {
                 "spec_html_checksum": {
-                    "lastSeenUpdatedAt": "2026-11-02T10:33:32+00:00"
+                    "lastSeenUpdatedAt": "2026-11-09T10:29:28+00:00"
                 }
             }
         },
         "spec.arazzo.schema.1.0": {
             "endpoints": {
                 "schema_checksum": {
-                    "lastSeenUpdatedAt": "2026-11-02T10:33:32+00:00"
+                    "lastSeenUpdatedAt": "2026-11-09T10:29:01+00:00"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "spec.arazzo.schema.1.1": {
             "endpoints": {
                 "schema_checksum": {
-                    "lastSeenUpdatedAt": "2026-11-02T10:33:31+00:00"
+                    "lastSeenUpdatedAt": "2026-11-09T10:29:01+00:00"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "speclynx/apidom": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-29T19:55:50Z",
-                    "lastTag": "v6.1.2"
+                    "lastSeenUpdatedAt": "2026-11-08T18:46:53Z",
+                    "lastTag": "v7.0.1"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "stoplightio/spectral": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-10-01T12:40:07Z",
-                    "lastTag": "v6.17.0"
+                    "lastSeenUpdatedAt": "2026-11-06T07:57:06Z",
+                    "lastTag": "v6.17.1"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "strefethen/arazzo-cli": {
             "endpoints": {
@@ -371,7 +371,7 @@
                     "lastTag": "v1.0.1"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "swaggerexpert/arazzo-runtime-expression": {
             "endpoints": {
@@ -380,26 +380,26 @@
                     "lastTag": "v3.3.0"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         },
         "usearazzo/arazzo-toolkit": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-05T13:10:40Z"
+                    "lastSeenUpdatedAt": "2026-11-08T19:45:09Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-06T23:07:48Z"
+                    "lastSeenUpdatedAt": "2026-11-08T19:47:31Z"
                 },
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-05T12:04:08Z",
-                    "lastTag": "v1.0.1-alpha.26"
+                    "lastSeenUpdatedAt": "2026-11-08T19:40:57Z",
+                    "lastTag": "v1.0.1-alpha.27"
                 }
             }
         },
         "usearazzo/website": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-06T22:21:48Z"
+                    "lastSeenUpdatedAt": "2026-11-08T19:38:58Z"
                 }
             }
         },
@@ -426,7 +426,7 @@
                     "lastSeenUpdatedAt": "2025-03-28T08:29:40Z"
                 }
             },
-            "lastPolledAt": "2026-11-02"
+            "lastPolledAt": "2026-11-09"
         }
     },
     "version": 1
