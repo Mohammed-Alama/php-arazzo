@@ -400,8 +400,8 @@ flowchart TB
 | `cli` | `runner` | 7 |
 | `cli` | `runtime` | 7 |
 | `cli` | `sources` | 3 |
-| `document` | `contracts` | 162 |
-| `document` | `expression` | 25 |
+| `document` | `contracts` | 164 |
+| `document` | `expression` | 27 |
 | `document` | `sources` | 3 |
 | `engine` | `contracts` | 28 |
 | `engine` | `document` | 1 |

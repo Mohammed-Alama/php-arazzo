@@ -27,6 +27,7 @@ use Alama\Arazzo\Document\Validator\Rules\ExpressionUnresolvedWorkflowRefRule;
 use Alama\Arazzo\Document\Validator\Rules\ExtensionsXPrefixRule;
 use Alama\Arazzo\Document\Validator\Rules\GraphQlStepRule;
 use Alama\Arazzo\Document\Validator\Rules\InteractionStepRule;
+use Alama\Arazzo\Document\Validator\Rules\MessageRefRequiresReceiveRule;
 use Alama\Arazzo\Document\Validator\Rules\ParameterQuerystringOperationShapeRule;
 use Alama\Arazzo\Document\Validator\Rules\ReceiveStepSuccessCriteriaRule;
 use Alama\Arazzo\Document\Validator\Rules\RpcStepRule;
@@ -142,6 +143,7 @@ final readonly class RuleSet
             new StepRequestBodyReplacementsTargetRule(),
             new StepSuccessCriteriaConditionRule(),
             new ReceiveStepSuccessCriteriaRule($strict),
+            new MessageRefRequiresReceiveRule($engine),
             new StepUniqueIdRule(),
             new SubWorkflowInvokeTargetResolvesRule(),
             new SuccessCriteriaVersionSupportedRule($selectorRegistry->supportedVersions(ExpressionType::XPath)),
