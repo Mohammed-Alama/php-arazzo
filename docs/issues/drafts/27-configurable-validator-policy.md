@@ -58,18 +58,71 @@ Expected: a policy mechanism (config + flags) to e.g. `arazzo validate --disable
 - Collector: errors and warnings are collected separately but `ValidateCommand` prints both and returns `FAILURE` whenever there are errors — warnings do not affect the exit code but there is no way to produce them from configurable rules.
 - No configuration file is read; no CLI options for policy exist.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `RuleSet::default()` remains the composition root; add a policy object (or named arguments) accepting per-rule severity overrides and a disabled list.
-- [ ] Rules can report a finding as `warning()` instead of `error()` based on the configured policy for that rule's code.
-- [ ] `ValidateCommand` reads a policy (config file `arazzo.validate.php`/`arazzo.json` section, and/or CLI flags `--severity <code>:<level>`, `--disable <code>`, `--strict`/`--no-strict`).
-- [ ] `arazzo validate` exits non-zero only when errors (not warnings) are present.
-- [ ] `ValidationResult` continues to expose `errors` and `warnings` separately; output lists warnings under a distinct section.
-- [ ] `RuleSetTest` gains cases: disabled rule is not active; strict flag toggles; severity override demotes an error to a warning.
-- [ ] `ValidatorTest`/`PreflightValidatorTest` unchanged in behaviour when no policy is supplied (backward compatible).
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Expose the validator's existing policy machinery (severity, enable/disable, strict) through the CLI so operators can demote noisy rules to warnings or disable rules for incremental adoption.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI validation + validator policy. Packages: `packages/document` (`RuleSet`, `ErrorCollector`, `Severity`, rules), `packages/cli` (`ValidateCommand`). No new rules — this is policy wiring only.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Policy evaluation is O(rules) per validation; no added overhead when no policy supplied (backward compatible).
+- [ ] **Flexible:** `RuleSet::default()` accepts policy object/named arguments for per-rule severity overrides and disabled list; config file and/or CLI flags.
+- [ ] **Maintainable:** Rules report `warning()` instead of `error()` based on configured policy; `ErrorCollector` records errors/warnings separately; `ValidationResult` exposes both.
+- [ ] **Operable:** `arazzo validate` exits non-zero only on errors (not warnings); warnings printed under distinct section; rollback by removing policy wiring.
+- [ ] **Reliable:** Deterministic validation result with policy; idempotent; `ValidatorTest`/`PreflightValidatorTest` unchanged when no policy supplied.
+- [ ] **Safe:** Validation is read-only; policy only affects error/warning classification; no state mutation.
+- [ ] **Secure:** No authorization/ACL impact; input validation unaffected.
+- [ ] **Suitable:** Closes the gap where every rule fires at hard-coded `Error` severity with no way to suppress or demote.
+- [ ] **Usable:** CLI flags `--severity <code>:<level>`, `--disable-rule <code>`, `--enable-rule <code>`, `--strict`/`--no-strict`; optional config file (`arazzo.validate.php`/`arazzo.json`).
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `RuleSet::default()` accepts policy object**
+- **Given** a `ValidatorPolicy` object with per-rule severity overrides (e.g., `{ "requestBody-replacements-unique": "warning" }`) and a disabled list (e.g., `["expr.forward_step_ref"]`); `RuleSet::default()` accepts the policy object as a named argument; `ValidateCommand` passes the policy to `RuleSet::default($engine, policy: $policy)`.
+- **When** `RuleSet::default($engine, policy: $policy)` is called.
+- **Then** disabled rules (`expr.forward_step_ref`) are not active in `RuleSet::activeRules()`; severity overrides are applied (`requestBody-replacements-unique` fires at warning severity, not error); `Validator::validate()` uses the active rules with configured severities.
+
+**Scenario 2: Rules report `warning()` instead of `error()` based on policy**
+- **Given** a rule (`RequestBodyReplacementsUniqueRule`) configured with `severity: warn` in the policy; the rule fires during validation (duplicate replacement targets found).
+- **When** the rule's `check()` method is called and it calls `$errors->warning()` instead of `$errors->error()`.
+- **Then** the finding is recorded as a warning, not an error; `ErrorCollector` records it under `warnings` (not `errors`); `ValidationResult::isValid()` returns `true` if no errors; warnings are printed under a distinct section in output.
+
+**Scenario 3: `ValidateCommand` reads policy from flags/config**
+- **Given** `arazzo validate doc.arazzo.yaml --severity requestBody-replacements-unique:warn --disable-rule expr.forward_step_ref --strict` or a config file (`arazzo.validate.php` or `arazzo.json` section) with policy settings.
+- **When** `ValidateCommand` parses CLI flags and/or reads the config file; builds `ValidatorPolicy` from the combined configuration.
+- **Then** the policy is applied to `RuleSet::default()`; disabled rules are not active; severity overrides demote errors to warnings; strict flag toggles strict mode.
+
+**Scenario 4: Exit non-zero only on errors**
+- **Given** validation produces warnings only (no errors); `--strict` is not set or warnings don't affect exit code.
+- **When** `arazzo validate` completes.
+- **Then** exit code is `0` (success); warnings are printed under a distinct section in output; `ValidationResult::isValid()` returns `true` (no errors); `ErrorCollector::errors()` is empty.
+
+**Scenario 5: Backward compatible when no policy supplied**
+- **Given** `arazzo validate doc.arazzo.yaml` with no policy flags/config; `RuleSet::default($engine)` is called without a policy object.
+- **When** validation runs.
+- **Then** behavior is unchanged from today (all rules at `Error` severity); every registered rule fires at hard-coded `Error`; `ValidationResult::isValid()` returns `false` if any rule fires; backward compatible with existing CI scripts.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `RuleSet::default()` remains composition root; add policy object/named arguments for per-rule severity overrides and disabled list
+- [ ] Rules can report `warning()` instead of `error()` based on configured policy for rule code
+- [ ] `ValidateCommand` reads policy from config file (`arazzo.validate.php`/`arazzo.json`) and/or CLI flags
+- [ ] `arazzo validate` exits non-zero only when errors (not warnings) present
+- [ ] `ValidationResult` exposes `errors` and `warnings` separately; warnings under distinct section
+- [ ] `RuleSetTest` cases: disabled rule not active; strict flag toggles; severity override demotes error to warning
+- [ ] `ValidatorTest`/`PreflightValidatorTest` unchanged when no policy supplied
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] CLI flags: `--severity <code>:<level>`, `--disable-rule <code>`, `--enable-rule <code>`, `--strict`/`--no-strict`
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/RuleSet.php:88-100` — `default()` accepts `$disabled`/`$strict` but `ValidateCommand` never passes them.
 - `packages/document/src/Validator/RuleSet.php:143-157` — rules list; `ReceiveStepSuccessCriteriaRule($strict)` is the only rule consuming `$strict`.
@@ -104,14 +157,14 @@ Expected: a policy mechanism (config + flags) to e.g. `arazzo validate --disable
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** `RuleSet::default()` signature unchanged (additive policy object optional); `RuleSet`/`ErrorCollector` are `@internal`, so no public contract break.
 - **Blast radius:** `packages/cli` `ValidateCommand` output and exit code; CI scripts parsing `arazzo validate` output.
 - **Severity:** medium — no behaviour change by default; opt-in policy changes results.
 - **Rollback:** remove policy wiring; `RuleSet::default($engine)` call unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

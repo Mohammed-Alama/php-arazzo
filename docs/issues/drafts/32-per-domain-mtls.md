@@ -67,19 +67,76 @@ Minimal document (any HTTP step document). Expected: the request to `https://mtl
 - Requests to a configured domain use the mTLS context; other domains use the default client.
 - Missing cert/key files error before execution with a clear message.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Execution accepts a per-domain mTLS config mapping `domain → cert:key[:ca]`.
-- [ ] A PSR-18 client is built with per-domain SSL context.
-- [ ] Requests to a configured domain use the mTLS context; other domains use the default client.
-- [ ] Missing cert/key files error before execution with a clear message.
-- [ ] Invalid config format errors before execution.
-- [ ] No behaviour change when mTLS config is omitted.
-- [ ] `DefaultOpenApiExecutorTest` gains a case: mTLS config → client created with SSL context for matching domain; no config → default client.
-- [ ] PHPStan max and Pint pass.
-- [ ] **CLI port** (repeatable `--mtls domain=cert:key[:ca]` flag on `RunCommand`) is tracked separately in draft 42.
+**Core Domain Objective:** Add per-domain mTLS client certificate support for outbound requests, mapping domain → (cert, key, optional CA), so production APIs requiring mutual TLS can be called.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = HTTP execution + TLS configuration. Packages: `packages/protocol-http` (`DefaultOpenApiExecutor`, PSR-18 client creation), `packages/runner` (`StepExecutor`). Port-agnostic; CLI port tracked in draft 42.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** PSR-18 client built with per-domain SSL context; no overhead for domains without mTLS config (default client used).
+- [ ] **Flexible:** Per-domain config mapping `domain → (cert, key, optional ca)`; swappable client adapter; optional config — no behavior change when omitted.
+- [ ] **Maintainable:** Client construction internal to `DefaultOpenApiExecutor`; missing cert/key files error before execution; invalid config format errors before execution.
+- [ ] **Operable:** Deterministic client selection per domain; rollback by removing mTLS config parameter (default non-mTLS client unchanged).
+- [ ] **Reliable:** Requests to configured domain use mTLS context; other domains use default client; cert/key validated before execution.
+- [ ] **Safe:** No state mutation; SSL context setup is read-only configuration; no side effects beyond TLS handshake.
+- [ ] **Secure:** mTLS enables mutual authentication for protected APIs; server-side CA trust via optional `ca` beyond v1 scope.
+- [ ] **Suitable:** Closes the gap where php-arazzo has no certificate wiring at all; mTLS required for some production APIs.
+- [ ] **Usable:** Simple config `$mtls = ['domain' => ['cert' => '...', 'key' => '...', 'ca' => '...']]`.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: mTLS config accepted per domain**
+- **Given** an Arazzo document with an HTTP step targeting `https://mtls.example.com/api`; `OutboundRequestPolicy`/`HttpExecutionPolicy` (draft 32 core) is configured with `mTls: ['mtls.example.com' => ['cert' => '/path/to/client.pem', 'key' => '/path/to/client-key.pem', 'ca' => '/path/to/ca.pem']]`; `DefaultOpenApiExecutor` accepts per-domain mTLS config.
+- **When** `DefaultOpenApiExecutor` configures the PSR-18 client for the target domain.
+- **Then** a PSR-18 client is built with per-domain SSL context (client cert + key + optional CA); Guzzle SSL context is configured with the client certificate for `mtls.example.com`.
+
+**Scenario 2: Configured domain uses mTLS context**
+- **Given** a request to `https://mtls.example.com/api/endpoint`; mTLS config exists for `mtls.example.com`.
+- **When** the HTTP request is sent to the configured domain.
+- **Then** the mTLS context (client certificate + key + optional CA) is used for the TLS handshake; the server can verify the client identity; `DefaultOpenApiExecutor` uses the mTLS-configured client for this domain.
+
+**Scenario 3: Other domains use default client**
+- **Given** a request to `https://other.example.com/api/endpoint` with no mTLS config for `other.example.com`; mTLS config exists only for `mtls.example.com`.
+- **When** the HTTP request is sent to an unconfigured domain.
+- **Then** the default (non-mTLS) PSR-18 client is used; no client certificate is presented; standard TLS handshake without mutual authentication.
+
+**Scenario 4: Missing cert/key files error before execution**
+- **Given** mTLS config references non-existent cert/key files (e.g., `/nonexistent/client.pem`); `DefaultOpenApiExecutor` validates cert/key file existence before execution.
+- **When** `DefaultOpenApiExecutor` initializes the mTLS client configuration.
+- **Then** a clear error is raised before any request (`InvalidArgumentException` or `RuntimeException` with message "mTLS certificate file not found: /nonexistent/client.pem"); no HTTP request is dispatched; execution fails fast.
+
+**Scenario 5: Invalid config format errors before execution**
+- **Given** malformed mTLS config (e.g., missing `key` field, invalid domain format); `DefaultOpenApiExecutor` validates config format before execution.
+- **When** `DefaultOpenApiExecutor` parses the mTLS configuration.
+- **Then** a clear error is raised before any request; the error identifies the malformed config entry; no HTTP request is dispatched; execution fails fast with a descriptive error.
+
+**Scenario 6: No behavior change when mTLS config omitted**
+- **Given** no mTLS config is provided (`mTls: []` or not set); `DefaultOpenApiExecutor` operates without mTLS configuration.
+- **When** execution runs without mTLS config.
+- **Then** behavior is identical to today (default non-mTLS client); all requests use the standard PSR-18 client without client certificates; no regression for existing users.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Execution accepts per-domain mTLS config mapping `domain → cert:key[:ca]`
+- [ ] PSR-18 client built with per-domain SSL context (client cert + key + optional CA)
+- [ ] Requests to configured domain use mTLS context; other domains use default client
+- [ ] Missing cert/key files error before execution with clear message
+- [ ] Invalid config format errors before execution
+- [ ] No behavior change when mTLS config omitted
+- [ ] `DefaultOpenApiExecutorTest` case: mTLS config → client with SSL context for matching domain; no config → default client
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] CLI port (repeatable `--mtls domain=cert:key[:ca]`) tracked separately in draft 42
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/protocol-http/src/Execution/DefaultOpenApiExecutor.php:45-50` — `execute()` receives the client indirectly via `RunnerFacade`.
 - `packages/cli/composer.json` — `guzzlehttp/guzzle: ^7.9` already a dependency (CLI side, referenced for context).
@@ -93,14 +150,14 @@ public function __construct(ClientInterface $httpClient, ...)
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive executor parameter; client construction internal.
 - **Blast radius:** `packages/protocol-http` execution outbound TLS; no document or validator impact.
 - **Severity:** medium — enables mTLS-protected APIs; no behaviour change by default.
 - **Rollback:** remove parameter; default (non-mTLS) client unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

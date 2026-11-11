@@ -71,18 +71,71 @@ Expected: validation fails with an error such as "Duplicate replacement target '
 - Validation phase: `Validator::validate()` → `RuleSet::activeRules()` → `StepRequestBodyReplacementsTargetRule::check()` (no uniqueness check).
 - Execution phase (not reached because no error): `RequestCompiler` applies replacements sequentially; the last write to `/a` wins.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] A validator rule reports an error when two replacements in the same `requestBody` share the same `target` string.
-- [ ] The error names the duplicate `target` and the indices/paths of both entries (e.g. `/workflows/0/steps/0/requestBody/replacements/1/target`).
-- [ ] Replacements with the same `target` but different `targetSelectorType` are still flagged (target identity is the string; the spec does not say type differentiates targets).
-- [ ] Replacements with distinct targets pass unchanged.
-- [ ] `ValidatorTest` gains a case: duplicate targets → invalid, error code `step.requestBody_replacements_duplicate_target` (or the rule's existing code extended).
-- [ ] `ValidatorTest` gains a case: distinct targets → valid.
-- [ ] `StepRequestBodyReplacementsTargetRule` (or a new `RequestBodyReplacementsUniqueRule`) is registered in `RuleSet::default()`.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Reject duplicate `requestBody.replacements[].target` values at validation time, preventing silent content override where the second replacement silently wins over the first.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation. Package: `packages/document` (validator rules). Per-step `requestBody.replacements` only; workflow-level parameters/actions have their own uniqueness rules (draft 04).
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Duplicate detection via hash set is O(replacements) per request body; validation-only, no runtime impact.
+- [ ] **Flexible:** Rule additive to `RuleSet::default()`; configurable via draft 27 policy; can extend existing `StepRequestBodyReplacementsTargetRule` or add a new `RequestBodyReplacementsUniqueRule`.
+- [ ] **Maintainable:** Single-responsibility rule; error names duplicate target and indices/paths of both entries; logged via `ErrorCollector`.
+- [ ] **Operable:** `arazzo validate` emits deterministic `step.requestBody_replacements_duplicate_target` error; rollback by removing the rule (schema `uniqueItems` remains structural only).
+- [ ] **Reliable:** Deterministic validation; idempotent; prevents silent data-integrity issues at authoring time.
+- [ ] **Safe:** Read-only validation; prevents wrong payload content from being sent at runtime.
+- [ ] **Secure:** Input validation strengthens conformance; no authorization impact.
+- [ ] **Suitable:** Implements spec intent that replacements describe "a list of locations and values to set within a payload" — duplicate targets are ambiguous.
+- [ ] **Usable:** Error names the duplicate target and both entry locations; author can quickly identify the mistake.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Duplicate replacement targets rejected**
+- **Given** an Arazzo document (`doc.arazzo`) containing workflow index 0, step index 0 with `requestBody: { contentType: "application/json", payload: { "a": 1 }, replacements: [{ target: "/a", value: "2" }, { target: "/a", value: "3" }] }`; both replacements target the same location `/a` with different values; `RequestBodyReplacementsUniqueRule` (or extended `StepRequestBodyReplacementsTargetRule`) is registered in `RuleSet::default()` with code `step.requestBody_replacements_duplicate_target`.
+- **When** `php bin/console arazzo validate doc.arazzo` invokes `Validator::validate()` against the parsed `ArazzoDocument`.
+- **Then** validation fails with error code `step.requestBody_replacements_duplicate_target`; `ErrorCollector` records the error under `errors`; the error names the duplicate target `/a` and the indices/paths of both entries (e.g., `/workflows/0/steps/0/requestBody/replacements/0/target` and `/workflows/0/steps/0/requestBody/replacements/1/target`); `ValidationResult::isValid()` returns `false`.
+
+**Scenario 2: Same target with different `targetSelectorType` still flagged**
+- **Given** two replacements targeting `/a` but one uses JSON Pointer (`targetSelectorType: "jsonpointer"`) and one uses JSONPath (`targetSelectorType: "jsonpath"`); target identity is the string `/a`, not the type.
+- **When** `Validator::validate()` applies the uniqueness rule.
+- **Then** both replacements are flagged as duplicates; the error names target `/a` with indices of both entries; the spec does not say type differentiates targets; target identity is the target string itself.
+
+**Scenario 3: Distinct targets pass unchanged**
+- **Given** replacements targeting `/a` and `/b` (distinct targets).
+- **When** `Validator::validate()` applies the uniqueness rule.
+- **Then** validation passes; `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors; no false positives for distinct targets.
+
+**Scenario 4: Error code and pointer**
+- **Given** duplicate targets in step 0 of workflow 0; `ValidatorTest` fixture-tests this case.
+- **When** validation fails.
+- **Then** error code is `step.requestBody_replacements_duplicate_target`; error pointer is `/workflows/0/steps/0/requestBody/replacements/1/target` (pointing at the second duplicate entry); the error message identifies both entries and the duplicate target value.
+
+**Scenario 4: Error code and pointer**
+- **Given** duplicate targets in step 0 of workflow 0
+- **When** validation fails
+- **Then** error code `step.requestBody_replacements_duplicate_target` with pointer `/workflows/0/steps/0/requestBody/replacements/1/target`
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Validator rule reports error when two replacements in same `requestBody` share same `target` string
+- [ ] Error names duplicate `target` and indices/paths of both entries (e.g. `/workflows/0/steps/0/requestBody/replacements/1/target`)
+- [ ] Same `target` with different `targetSelectorType` still flagged
+- [ ] Distinct targets pass unchanged
+- [ ] `ValidatorTest` case: duplicate targets → invalid with error code
+- [ ] `ValidatorTest` case: distinct targets → valid
+- [ ] `StepRequestBodyReplacementsTargetRule` (or new `RequestBodyReplacementsUniqueRule`) registered in `RuleSet::default()`
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/Rules/StepRequestBodyReplacementsTargetRule.php` — existing rule; checks target resolvability, not uniqueness.
 - `packages/document/resources/schemas/arazzo-1.1.schema.json:383` — `replacements.uniqueItems: true` (structural dedup only).
@@ -112,14 +165,14 @@ final class StepRequestBodyReplacementsTargetRule implements Rule
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** none (validator is `@internal`); new validation error may cause previously-valid documents to fail `arazzo validate`.
 - **Blast radius:** documents with duplicate replacement targets (authoring error); no runtime behaviour change for valid documents.
 - **Severity:** medium — silent content override is a data-integrity risk; caught at validation time.
 - **Rollback:** remove the rule; `uniqueItems` schema check remains (structural only).
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

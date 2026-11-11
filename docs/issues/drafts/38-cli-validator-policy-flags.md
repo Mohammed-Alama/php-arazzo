@@ -58,18 +58,77 @@ arazzo validate doc.arazzo.yaml --severity requestBody-replacements-unique:warn 
 - `ValidateCommand` builds `ValidatorPolicy` from flags/config, passes to `RuleSet::default($engine, policy: $policy)`.
 - `Validator::validate()` returns `ValidationResult` with separate errors/warnings; exit code based on errors only.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `ValidateCommand` gains `--severity <code>:<level>` (repeatable), `--disable-rule <code>` (repeatable), `--strict`/`--no-strict` flags.
-- [ ] Optional config file (`arazzo.validate.php` / `arazzo.json` section) read for policy.
-- [ ] Policy passed to `RuleSet::default()`; disabled rules not active; severity overrides demote errors to warnings.
-- [ ] `arazzo validate` exits non-zero only when errors (not warnings) are present.
-- [ ] Warnings printed under a distinct section in output.
-- [ ] `ValidateCommandTest` gains cases: severity demotion, rule disable, strict toggle, invalid flag format.
-- [ ] PHPStan max and Pint pass.
-- [ ] **Core policy mechanism** (draft 27) is a prerequisite; this draft is the CLI port only.
+**Core Domain Objective:** Wire the core `ValidatorPolicy` mechanism (per-rule severity overrides + disabled list) into `arazzo validate` via CLI flags and/or config file, so operators can demote noisy rules to warnings or disable rules.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI validation command. Packages: `packages/cli` (`ValidateCommand`), `packages/document` (`ValidatorPolicy` — draft 27 core). CLI port only; core policy mechanism is draft 27.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** CLI flag parsing is O(flags); policy passed to `RuleSet::default()` with no added runtime overhead when no policy supplied.
+- [ ] **Flexible:** `--severity <code>:<level>` (repeatable), `--disable-rule <code>` (repeatable), `--enable-rule <code>`, `--strict`/`--no-strict`; optional config file (`arazzo.validate.php`/`arazzo.json`).
+- [ ] **Maintainable:** Policy passed to `RuleSet::default()`; disabled rules not active; severity overrides demote errors to warnings; `ValidateCommandTest` gains cases.
+- [ ] **Operable:** `arazzo validate` exits non-zero only on errors (not warnings); warnings under distinct section; rollback by removing flags (`RuleSet::default($engine)` unchanged).
+- [ ] **Reliable:** Deterministic validation result with policy; idempotent; invalid flag format errors clearly.
+- [ ] **Safe:** CLI-only wiring; validation logic unchanged; no state mutation.
+- [ ] **Secure:** No authorization/ACL impact; input validation unaffected.
+- [ ] **Suitable:** Closes gap where `ValidateCommand` calls `RuleSet::default($engine)` with no policy; every rule fires at hard-coded `Error`.
+- [ ] **Usable:** Familiar flag syntax; optional config file; clear error on invalid flag format.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `--severity` flag demotes error to warning**
+- **Given** `arazzo validate doc.yaml --severity requestBody-replacements-unique:warn`; `ValidatorPolicy` (draft 27 core) is wired into `ValidateCommand`; `--severity` is repeatable and accepts `code:level` format.
+- **When** `php bin/console arazzo validate doc.yaml --severity requestBody-replacements-unique:warn` executes.
+- **Then** the rule's finding is a warning, not an error; `ErrorCollector` records it under `warnings` (not `errors`); exit code is `0` if no errors; `ValidationResult::isValid()` returns `true`.
+
+**Scenario 2: `--disable-rule` flag disables a rule**
+- **Given** `arazzo validate doc.yaml --disable-rule expr.forward_step_ref`; `ValidatorPolicy` disabled list contains `expr.forward_step_ref`.
+- **When** `ValidateCommand` runs validation.
+- **Then** the rule is not active in `RuleSet::activeRules()`; no findings from `expr.forward_step_ref` are reported; `ValidationResult::isValid()` is unaffected by that rule.
+
+**Scenario 3: `--strict`/`--no-strict` toggle**
+- **Given** `--no-strict` is passed; `ValidatorPolicy` strict mode is disabled.
+- **When** `ValidateCommand` runs validation.
+- **Then** strict mode is disabled per policy; rules that require strict mode behave accordingly; `RuleSet::isStrict()` returns `false`.
+
+**Scenario 4: Config file read for policy**
+- **Given** `arazzo.validate.php` or `arazzo.json` with a policy section (e.g., `{'severity': {'requestBody-replacements-unique': 'warn'}, 'disabled': ['expr.forward_step_ref']}`).
+- **When** `ValidateCommand` reads the config file and builds `ValidatorPolicy`.
+- **Then** the policy is applied from the config file; severity overrides and disabled rules are configured; CLI flags can override config file settings.
+
+**Scenario 5: Exit non-zero only on errors**
+- **Given** validation produces warnings only (no errors); `--strict` is not set or warnings don't affect exit code.
+- **When** `arazzo validate` completes.
+- **Then** exit code is `0`; warnings are printed under a distinct section in output; `ErrorCollector::errors()` is empty; `ValidationResult::isValid()` returns `true`; CI scripts that check exit code see success.
+- **When`validation runs
+- **Then`policy applied from config file
+
+**Scenario 5: Exit non-zero only on errors**
+- **Given** warnings only (no errors)
+- **When`arazzo validate completes
+- **Then`exit code 0; warnings under distinct section
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `ValidateCommand` gains `--severity <code>:<level>` (repeatable), `--disable-rule <code>` (repeatable), `--strict`/`--no-strict` flags
+- [ ] Optional config file (`arazzo.validate.php`/`arazzo.json` section) read for policy
+- [ ] Policy passed to `RuleSet::default()`; disabled rules not active; severity overrides demote errors to warnings
+- [ ] `arazzo validate` exits non-zero only when errors (not warnings) present
+- [ ] Warnings printed under distinct section in output
+- [ ] `ValidateCommandTest` cases: severity demotion, rule disable, strict toggle, invalid flag format
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Core policy mechanism (draft 27) is prerequisite; this draft is CLI port only
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Command/ValidateCommand.php:40-42` — `RuleSet::default($engine)` with no policy.
 - `packages/cli/src/Console/Command/ValidateCommand.php:43-69` — prints errors + warnings; returns `FAILURE` on invalid.
@@ -84,14 +143,14 @@ arazzo validate doc.arazzo.yaml --severity requestBody-replacements-unique:warn 
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive CLI options; no public contract break.
 - **Blast radius:** `packages/cli` `validate` output and exit code; CI scripts parsing output.
 - **Severity:** medium — no behaviour change by default; opt-in policy changes results.
 - **Rollback:** remove flags; `RuleSet::default($engine)` unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim                                                                  | Tier | Evidence                          | Verification |
 | ---------------------------------------------------------------------- | ---- | --------------------------------- | ------------ |

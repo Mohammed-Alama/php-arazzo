@@ -63,18 +63,76 @@ Expected: validation fails with an error such as "Workflow-level success action 
 - Validation phase: `Validator::validate()` → `ActionGotoTargetResolvesRule::check()` skips `$w->successActions`/`$w->failureActions`.
 - Execution phase (not reached because no error): the runner would resolve the goto target and fail with `GotoTargetNotFoundException` or similar.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `ActionGotoTargetResolvesRule` (or new rule) validates workflow-level `successActions`: each `goto` action's `stepId` exists in the same workflow's steps, or its `workflowId` exists in the document.
-- [ ] Same validation for workflow-level `failureActions` (goto and retry target resolution).
-- [ ] Error paths point at `/workflows/{i}/successActions/{j}/stepId` or `/workflowId`.
-- [ ] `end`-type actions (no target) pass unchanged.
-- [ ] `retry`-type failure actions with `stepId`/`workflowId` are validated for target existence.
-- [ ] Step-level validation (existing) is unchanged.
-- [ ] `ValidatorTest` gains cases: workflow-level goto to unknown stepId → invalid; goto to known stepId → valid; goto to known workflowId → valid; failureActions retry to unknown workflowId → invalid.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Validate workflow-level `successActions`/`failureActions` goto targets (stepId/workflowId existence) so misconfigured workflow actions fail at validation time instead of runtime.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation. Package: `packages/document` (validator rules). Goto target resolution only; criteria validation is draft 35.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Validation-only; target existence lookup is O(actions × workflows); no runtime execution impact.
+- [ ] **Flexible:** `ActionGotoTargetResolvesRule` extended or new companion rule; configurable via draft 27 policy; error paths point at exact location.
+- [ ] **Maintainable:** Single-responsibility rule; reuses existing step-level goto resolution logic; `ValidatorTest` gains cases.
+- [ ] **Operable:** `arazzo validate` emits deterministic error with pointer at `/workflows/{i}/successActions/{j}/stepId`; rollback by removing workflow-level branch (step-level unchanged).
+- [ ] **Reliable:** Deterministic validation; idempotent; catches misconfigured actions before execution.
+- [ ] **Safe:** Read-only validation; prevents runtime `GotoTargetNotFoundException`-class errors.
+- [ ] **Secure:** Input validation strengthens conformance; no authorization impact.
+- [ ] **Suitable:** Implements spec requirement that goto targets (stepId/workflowId) must resolve; closes gap where workflow-level actions were not validated.
+- [ ] **Usable:** Precise error path; `end`-type actions (no target) pass unchanged.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Workflow-level `successActions` goto target validated**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) containing workflow index 0 with `successActions: [{ name: "go", type: "goto", stepId: "nonexistent" }]`; `stepId: "nonexistent"` is not declared in the workflow's steps; `ActionGotoTargetResolvesRule` (or new companion rule) validates workflow-level action targets; `RuleSet::default()` includes the rule.
+- **When** `php bin/console arazzo validate doc.arazzo` invokes `Validator::validate()`.
+- **Then** validation fails with error code `action.goto_target_not_found` (or the rule's existing code); `ErrorCollector` records the error under `errors` at pointer `/workflows/0/successActions/0/stepId`; the error message states `Workflow-level success action 'go' goto stepId 'nonexistent' is not declared in workflow 'wf'`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 2: Workflow-level `failureActions` goto target validated**
+- **Given** an Arazzo document containing workflow index 0 with `failureActions: [{ name: "recover", type: "goto", stepId: "missing" }]`; `stepId: "missing"` is not declared.
+- **When** `Validator::validate()` applies the rule to workflow-level `failureActions`.
+- **Then** validation fails with error code `action.goto_target_not_found`; error pointer at `/workflows/0/failureActions/0/stepId`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 3: Workflow-level retry target validated**
+- **Given** an Arazzo document containing workflow index 0 with `failureActions: [{ name: "retry", type: "retry", workflowId: "nonexistent-wf" }]`; `workflowId: "nonexistent-wf"` is not declared in the document.
+- **When** `Validator::validate()` applies the rule to workflow-level `failureActions` retry targets.
+- **Then** validation fails with error code `action.goto_target_not_found`; error pointer at `/workflows/0/failureActions/0/workflowId`; message states `Workflow-level failure action 'retry' goto workflowId 'nonexistent-wf' is not declared`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 4: Valid targets pass**
+- **Given** an Arazzo document with workflow-level `successActions: [{ name: "go", type: "goto", stepId: "existing-step" }]` where `existing-step` is declared in the same workflow's steps; or `workflowId: "existing-wf"` where that workflow is declared in the document.
+- **When** `Validator::validate()` applies the rule.
+- **Then** validation passes; `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors; known stepId/workflowId targets are accepted.
+
+**Scenario 5: `end`-type actions pass unchanged**
+- **Given** a workflow-level action `{ name: "finish", type: "end" }` with no `stepId` or `workflowId` target.
+- **When** `Validator::validate()` applies the rule.
+- **Then** validation passes; `end`-type actions (no target) are not checked for target existence; `ValidationResult::isValid()` returns `true`.
+
+**Scenario 6: Step-level validation unchanged**
+- **Given** step-level `onSuccess`/`onFailure` goto targets (existing validation).
+- **When** `Validator::validate()` applies step-level validation.
+- **Then** existing step-level validation behavior is unchanged; step-level goto targets continue to be validated as before; no regression in step-level action target validation.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `ActionGotoTargetResolvesRule` (or new rule) validates workflow-level `successActions` goto targets (stepId in same workflow, workflowId in document)
+- [ ] Same validation for workflow-level `failureActions` (goto and retry target resolution)
+- [ ] Error paths point at `/workflows/{i}/successActions/{j}/stepId` or `/workflowId`
+- [ ] `end`-type actions pass unchanged
+- [ ] `retry`-type failure actions with `stepId`/`workflowId` validated for target existence
+- [ ] Step-level validation unchanged
+- [ ] `ValidatorTest` cases: workflow-level goto to unknown stepId → invalid; goto to known stepId → valid; goto to known workflowId → valid; failureActions retry to unknown workflowId → invalid
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/Rules/ActionGotoTargetResolvesRule.php:16-26` — validates step-level onSuccess/onFailure only; skips workflow-level actions.
 - `packages/document/src/Parser/Parser.php` — parses workflow-level `successActions`/`failureActions`.
@@ -97,14 +155,14 @@ Expected: validation fails with an error such as "Workflow-level success action 
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact: none (validator is `@internal`); new validation error may cause previously-valid documents to fail `arazzo validate`.
 - **Blast radius: documents with workflow-level goto to undeclared targets (authoring errors); no runtime behaviour change for valid documents.
 - **Severity: medium — catches misconfigured workflow actions at validation time instead of runtime.
 - **Rollback: remove the workflow-level branch; step-level validation unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

@@ -74,18 +74,90 @@ components:
 - Observed: the document above reports no error for any `bad key!` key.
 - A valid key containing dots, dashes and underscores (e.g. `pets.page-size_2`) must remain accepted.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Workflow output keys are validated against `^[a-zA-Z0-9\.\-_]+$` with a stable code (suggested: `workflow.outputs_key_pattern`).
-- [ ] Step output keys are validated with a stable code (suggested: `step.outputs_key_pattern`); the existing `step.outputs_unique` code may be retained as an alias or deprecated explicitly.
-- [ ] `components.inputs`, `components.parameters`, `components.successActions` and `components.failureActions` keys are validated with a stable code (suggested: `components.key_pattern`); repurpose `components.unique_names` or deprecate it explicitly.
-- [ ] Error pointers identify the exact key (e.g. `/workflows/0/outputs/bad key!`).
-- [ ] Valid keys containing `.`, `-` and `_` are accepted.
-- [ ] Pest tests cover workflow outputs, step outputs, each components map, valid keys, and each invalid character class (space, slash, colon, `#`).
-- [ ] The two no-op rule tests are replaced with behavioural tests.
-- [ ] The rule index/documentation describes the new codes.
+**Core Domain Objective:** Enforce the Arazzo spec map key pattern `^[a-zA-Z0-9.\-_]+$` on workflow outputs, step outputs, and every `components` map (inputs, parameters, successActions, failureActions), closing a gap where two registered rules are empty no-ops and invalid keys pass validation.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation. Package affected: `packages/document` (validator rules `StepOutputsUniqueRule`, `ComponentsUniqueNamesRule`, parser `parseOutputsMap()`). Downstream output expressions (`$steps.x.outputs.<name>`, `$outputs.<name>`) and component references depend on valid keys.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Validation-only; regex key checks are O(keys) per map; no runtime execution impact.
+- [ ] **Flexible:** Rules additive to `RuleSet::default()`; configurable via draft 27 policy (disable/severity).
+- [ ] **Maintainable:** Single-responsibility rules; error pointers identify exact invalid key; logged via `ErrorCollector`.
+- [ ] **Operable:** `arazzo validate` emits deterministic `workflow.outputs_key_pattern`, `step.outputs_key_pattern`, `components.key_pattern` errors; no deployment changes.
+- [ ] **Reliable:** Deterministic validation; idempotent; no side effects.
+- [ ] **Safe:** Read-only validation; no state mutation.
+- [ ] **Secure:** Input validation prevents malformed keys from reaching expression resolution and code generation.
+- [ ] **Suitable:** Implements Arazzo 1.1.0 §5.8.2 (workflow outputs), §5.8.5.1 (step outputs), §5.8.6 (components key pattern).
+- [ ] **Usable:** Precise error pointers (e.g. `/workflows/0/outputs/bad key!`) aid author debugging.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Invalid workflow output key is rejected**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) containing workflow index 0 with `outputs: { "bad key!": $steps.one.outputs.ok }`; `StepOutputsUniqueRule` implements the pattern check against `^[a-zA-Z0-9.\-_]+$` with error code `workflow.outputs_key_pattern`; the rule is registered in `RuleSet::default()`.
+- **When** `php bin/console arazzo validate doc.arazzo` invokes `Validator::validate()` against the parsed `ArazzoDocument`.
+- **Then** validation fails with error code `workflow.outputs_key_pattern` at pointer `/workflows/0/outputs/bad key!`; `ErrorCollector` records the error under `errors`; the error message identifies the invalid key `bad key!` and the required pattern `^[a-zA-Z0-9.\-_]+$`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 2: Invalid step output key is rejected**
+- **Given** an Arazzo 1.1.0 document containing workflow index 0, step index 0 with `outputs: { "bad key!": $response.body }`; `step.outputs_key_pattern` error code is active.
+- **When** `Validator::validate()` applies the step output key pattern rule to `StepIo::$outputs`.
+- **Then** validation fails with error code `step.outputs_key_pattern` at pointer `/workflows/0/steps/0/outputs/bad key!`; `ErrorCollector` records the error under `errors`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 3: Invalid components map key is rejected**
+- **Given** an Arazzo 1.1.0 document with `components.parameters: { "bad key!": { name: "q", in: "query", value: "1" } }`; `components.key_pattern` error code is active; the rule covers `components.inputs`, `components.parameters`, `components.successActions`, `components.failureActions`.
+- **When** `Validator::validate()` applies the components key pattern rule to `Components::$parameters`.
+- **Then** validation fails with error code `components.key_pattern` at pointer `/components/parameters/bad key!`; `ErrorCollector` records the error under `errors`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 4: Valid keys with `.`, `-`, `_` are accepted**
+- **Given** an Arazzo 1.1.0 document with workflow output keys `pets.page-size_2` and `user.name`; all keys match `^[a-zA-Z0-9.\-_]+$`.
+- **When** `Validator::validate()` applies the key pattern rules.
+- **Then** `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors under `errors`; no key pattern error codes are emitted.
+
+**Scenario 5: Invalid character class space is rejected**
+- **Given** an Arazzo 1.1.0 document with workflow output key `bad key` (contains space).
+- **When** `Validator::validate()` applies the workflow output key pattern rule.
+- **Then** validation fails with error code `workflow.outputs_key_pattern` at pointer `/workflows/0/outputs/bad key`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 6: Invalid character class slash is rejected**
+- **Given** an Arazzo 1.1.0 document with workflow output key `bad/key` (contains slash).
+- **When** `Validator::validate()` applies the workflow output key pattern rule.
+- **Then** validation fails with error code `workflow.outputs_key_pattern` at pointer `/workflows/0/outputs/bad/key`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 7: Invalid character class colon is rejected**
+- **Given** an Arazzo 1.1.0 document with workflow output key `bad:key` (contains colon).
+- **When** `Validator::validate()` applies the workflow output key pattern rule.
+- **Then** validation fails with error code `workflow.outputs_key_pattern` at pointer `/workflows/0/outputs/bad:key`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 8: Invalid character class `#` is rejected**
+- **Given** an Arazzo 1.1.0 document with workflow output key `bad#key` (contains hash).
+- **When** `Validator::validate()` applies the workflow output key pattern rule.
+- **Then** validation fails with error code `workflow.outputs_key_pattern` at pointer `/workflows/0/outputs/bad#key`; `ValidationResult::isValid()` returns `false`.
+- **When** validation runs
+- **Then** validation fails with the corresponding key pattern error
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Implement `StepOutputsUniqueRule.check()` to validate workflow output keys against `^[a-zA-Z0-9.\-_]+$` with code `workflow.outputs_key_pattern`
+- [ ] Implement step output key validation with code `step.outputs_key_pattern` (retain `step.outputs_unique` as alias or deprecate explicitly)
+- [ ] Implement components map key validation (`inputs`, `parameters`, `successActions`, `failureActions`) with code `components.key_pattern` (repurpose `components.unique_names` or deprecate explicitly)
+- [ ] Error pointers identify the exact key (e.g. `/workflows/0/outputs/bad key!`)
+- [ ] Accept valid keys containing `.`, `-`, `_`
+- [ ] Replace the two no-op rule tests with behavioural tests
+- [ ] Pest tests cover workflow outputs, step outputs, each components map, valid keys, and each invalid character class (space, slash, colon, `#`)
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+- [ ] Rule index/documentation describes the new codes
+
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/Rules/StepOutputsUniqueRule.php:15-23` — registered, empty `check()`.
 
@@ -127,13 +199,13 @@ protected function parseOutputsMap(mixed $node, ParseContext $ctx): array
 
 - Spec: Arazzo 1.1.0 §5.8.2 (`workflowOutputs`), §5.8.5.1 (`stepOutputs`), §5.8.6 (components key pattern).
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** none; invalid documents start failing validation.
 - **Blast radius:** `packages/document`; output keys are consumed by expression resolution and by the runner.
 - **Severity:** medium — malformed outputs surface later as unresolved expressions or missing outputs.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

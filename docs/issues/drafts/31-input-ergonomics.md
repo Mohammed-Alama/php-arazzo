@@ -74,20 +74,77 @@ Expected: all sources merged into one input map; `.env` discovered by walking up
 - Result passed to `RunnerFacade::execute($document, $workflowId, $inputs)`.
 - Invalid JSON or unparseable `key=value` errors before execution with a clear message.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Execution accepts multiple input specs of forms: `key=value`, `key=@file.json`, inline JSON object, `@file.json`.
-- [ ] Values merged in declaration order (later overrides earlier).
-- [ ] `.env` discovered by walking up from the document's directory; `.env` values overridden by explicit inputs.
-- [ ] Duplicate keys: last declaration wins.
-- [ ] Invalid input errors before execution with a clear message.
-- [ ] `parseInputs()` returns `array<string, mixed>`; empty input → `[]`.
-- [ ] `RunnerTest` gains cases: repeated inputs, `key=value`, `@file`, `.env` discovery, merge precedence, invalid input.
-- [ ] No new Composer dependency for dotenv (small internal parser).
-- [ ] PHPStan max and Pint pass.
-- [ ] **CLI port** (repeatable `--input`/`-i` flag on `RunCommand`) is tracked separately in draft 41.
+**Core Domain Objective:** Make execution input collection ergonomic by accepting multiple input specifications (`key=value`, `key=@file.json`, inline JSON object, `@file.json`), merging in declaration order, plus automatic `.env` discovery.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI input handling + execution input merge. Packages: `packages/runner` (execution input handling); CLI side referenced in `RunCommand::parseInputs()` for context. Core merge logic is this draft; CLI port (repeatable `--input`/`-i`) is draft 41.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Input merge is O(specs × size); `.env` discovery walks up directory tree once; no runtime execution impact.
+- [ ] **Flexible:** Multiple input spec forms; merge in declaration order (later overrides earlier); `.env` overridden by explicit inputs; duplicate keys — last wins.
+- [ ] **Maintainable:** Single `mergeInputs()` function; `parseInputs()` returns `array<string, mixed>`; no new Composer dependency (small internal dotenv parser).
+- [ ] **Operable:** Invalid input errors before execution with clear message; empty input → `[]`; rollback to single-map input if needed.
+- [ ] **Reliable:** Deterministic merge result; idempotent; invalid JSON or unparseable `key=value` errors before execution.
+- [ ] **Safe:** No state mutation before execution; `.env` values are inputs only; secret redaction (draft 22) applies separately.
+- [ ] **Secure:** No authorization impact; `.env` loading doesn't bypass input validation (draft 19/52).
+- [ ] **Suitable:** Closes ergonomics gap where many inputs as one JSON blob is poor UX; no `key=value` shorthand, no repeated input merge, no `.env` loading today.
+- [ ] **Usable:** `key=value` shorthand for scalars; `key=@file.json` for file contents; inline JSON object; `@file.json` for whole object.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Multiple input specs accepted**
+- **Given** an Arazzo document (`doc.arazzo`) with a workflow that declares `inputs`; `mergeInputs()` (draft 31 core) accepts multiple input specs: `key=value` (string), `key=@file.json` (file contents), inline JSON object, `@file.json` (whole object); `arazzo run doc.arazzo --input 'username=amy' --input '{"timeout":30}' --input @env.json` is invoked; `parseInputs()` returns `array<string, mixed>`.
+- **When** `parseInputs()` merges all input specifications into one `array<string, mixed>`.
+- **Then** all forms are accepted and merged into one input map; `username` is `"amy"` (string), `timeout` is `30` (integer from JSON), and values from `@env.json` are included; `empty input → []` when no specs provided.
+
+**Scenario 2: Values merged in declaration order**
+- **Given** `--input username=amy --input username=bob`; `mergeInputs()` processes specs in declaration order; later specs override earlier ones.
+- **When** `mergeInputs(['username=amy', 'username=bob'])` is called.
+- **Then** `username=bob` (later overrides earlier); the final value for `username` is `"bob"`; `array_replace()` semantics apply (last declaration wins).
+
+**Scenario 3: `.env` discovered and overridden by explicit inputs**
+- **Given** a `.env` file next to the document (`./.env`) containing `username=envuser` and `timeout=60`; explicit `--input username=amy` is passed; `.env` discovery walks up from the document's directory.
+- **When** inputs are resolved (`.env` loaded first, then explicit inputs override).
+- **Then** `.env` values are loaded (`username=envuser`, `timeout=60`); explicit inputs override `.env` values (`username=amy` wins over `envuser`); final input map: `username=amy`, `timeout=60`.
+
+**Scenario 4: Duplicate keys — last declaration wins**
+- **Given** two specs setting the same key (`--input key=first --input key=second`).
+- **When** `mergeInputs()` processes both specs.
+- **Then** the last declaration's value wins; `key=second`; `parseInputs()` returns `['key' => 'second']`.
+
+**Scenario 5: Invalid input errors before execution**
+- **Given** invalid JSON (`--input 'not-json'`) or unparseable `key=value` (`--input 'not-key-value'`); `parseInputs()` validates before execution.
+- **When** `parseInputs()` is called with invalid input.
+- **Then** a clear error message is returned; `Command::FAILURE` is returned; no execution proceeds; `RunnerFacade::execute()` is never called with invalid inputs.
+
+**Scenario 6: `.env` not found — no error**
+- **Given** no `.env` file exists next to or above the document's directory; `.env` discovery walks up the directory tree.
+- **When** `parseInputs()` attempts `.env` discovery.
+- **Then** no error is thrown; `.env` loading is optional; input merge proceeds with only explicit inputs; empty input → `[]` if no explicit inputs either.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Execution accepts multiple input specs: `key=value`, `key=@file.json`, inline JSON object, `@file.json`
+- [ ] Values merged in declaration order (later overrides earlier)
+- [ ] `.env` discovered by walking up from document's directory; `.env` values overridden by explicit inputs
+- [ ] Duplicate keys: last declaration wins
+- [ ] Invalid input errors before execution with clear message
+- [ ] `parseInputs()` returns `array<string, mixed>`; empty input → `[]`
+- [ ] `RunnerTest` cases: repeated inputs, `key=value`, `@file`, `.env` discovery, merge precedence, invalid input
+- [ ] No new Composer dependency for dotenv (small internal parser)
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] CLI port (repeatable `--input`/`-i`) tracked separately in draft 41
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Command/RunCommand.php:45-51` — `--input` single `VALUE_REQUIRED` (CLI side, referenced for context only).
 - `packages/cli/src/Console/Command/RunCommand.php:68-73` — `$rawInput = $input->getOption('input'); $inputs = $this->parseInputs(...)` (CLI side).
@@ -107,14 +164,14 @@ Expected: all sources merged into one input map; `.env` discovered by walking up
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive input-spec parameter; internal merge logic.
 - **Blast radius:** `packages/runner` execution; users supplying inputs.
 - **Severity:** medium — ergonomics; no behaviour change for existing single-map input use.
 - **Rollback:** revert to single-map input; `.env` loading removed.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

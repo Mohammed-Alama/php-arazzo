@@ -51,20 +51,83 @@ Expected: `arazzo replay <trace.json>` re-executes the workflow with a transport
 - `FakePsr18Client` and the conformance `FakerOpenApiExecutor` prove a deterministic transport seam is already a supported pattern; neither is a production replay transport.
 - Draft 48 core: `ReplayTransport` and replay engine.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `arazzo replay <trace.json>` runs the recorded workflow without any outbound request.
-- [ ] The replay transport matches responses by step id and attempt.
-- [ ] A step missing from the trace produces a stable `replay.missing_response` error, not a network call.
-- [ ] A trace from a failed run replays the failure at the same step with the same criterion outcome.
-- [ ] A trace captured under `--dry-run` is rejected with `replay.not_replayable`.
-- [ ] Outputs match the trace exactly; the command exits non-zero on any mismatch.
-- [ ] `--spec` and `--workflow-id` override the recorded values and are reflected in the report.
-- [ ] Replay is covered by a fixture that runs once live (fake transport), records a trace, then replays it.
-- [ ] PHPStan max and Pint pass.
-- [ ] **Core engine** (`ReplayTransport`) is draft 48; this draft is the CLI port only.
+**Core Domain Objective:** Expose core replay engine via CLI so `arazzo replay <trace.json>` re-executes a workflow from a recorded trace without network requests.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI replay command. Packages: `packages/cli` (new command), `packages/runner` (execution), `packages/protocol-http` (transport seam), `packages/runtime` (state). CLI port only; core engine is draft 48. Depends on traces (draft 47 core).
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Recorded responses served from memory; O(1) lookup by `(stepId, attempt)`; no network I/O.
+- [ ] **Flexible:** `--spec <path>` and `--workflow-id <id>` override recorded values; `ReplayTransport` implements `ClientInterface` (swappable).
+- [ ] **Maintainable:** Single-responsibility replay transport; stable errors (`replay.missing_response`, `replay.not_replayable`); typed failures.
+- [ ] **Operable:** `arazzo replay <trace.json>` runs without outbound requests; `--json` output using `run-report.v1` shape; rollback by removing command.
+- [ ] **Reliable:** Every replayed step produces same status/outputs/criteria as trace; mismatch is replay failure with diff; exits non-zero on mismatch.
+- [ ] **Safe:** No network traffic during replay; `--dry-run` traces rejected as non-replayable; no side effects beyond report generation.
+- [ ] **Secure:** No new authorization surface; replay is read-only against recorded data.
+- [ ] **Suitable:** Unlocks deterministic debugging and regression tests; depends on traces (draft 47 core).
+- [ ] **Usable:** `arazzo replay <trace.json>` with `--spec`/`--workflow-id` overrides; `--json` output.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `arazzo replay <trace.json>` runs without outbound requests**
+- **Given** a recorded `trace.v1` artifact (`trace-id: 01H8XABC123`) containing 4 executed steps with recorded HTTP request/response frames; `ReplayTransport` (draft 57 core) implements PSR-18 `ClientInterface`; `arazzo replay trace-01H8XABC123.json --mode=strict` is invoked; no real network is available.
+- **When** `php bin/console arazzo replay trace-01H8XABC123.json --mode=strict` executes.
+- **Then** the workflow re-executes using `ReplayTransport` which returns recorded responses keyed by `(stepId, attempt)`; zero outbound network requests are sent; `ReplayTransport` never falls through to the network; the command completes using only recorded data.
+
+**Scenario 2: Responses matched by step id and attempt**
+- **Given** a `trace.v1` artifact where step `charge-payment` has 3 attempts (attempt 1 failed with 503, attempt 2 failed with 503, attempt 3 succeeded with 200); each attempt has a distinct recorded response frame.
+- **When** `ReplayTransport` processes step `charge-payment` across its 3 attempts.
+- **Then** attempt 1 receives the recorded 503 response; attempt 2 receives the recorded 503 response; attempt 3 receives the recorded 200 response; responses are matched by `(stepId: "charge-payment", attempt: N)` in O(1) lookup.
+
+**Scenario 3: Missing step produces stable error**
+- **Given** a `trace.v1` artifact containing steps `step-1` and `step-2` only; the workflow being replayed has a third step `step-3` that is not present in the trace.
+- **When** replay reaches `step-3` and `ReplayTransport` looks up `(stepId: "step-3", attempt: 1)`.
+- **Then** a stable error `replay.missing_response` is returned; no network call is made; `ErrorCollector` records the error under `errors`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 4: Failed run replays same failure**
+- **Given** a `trace.v1` artifact captured from a failed run where step `validate-payment` (step index 1) failed with criterion `$statusCode == 200` evaluating to `false` (actual status 402); `arazzo replay trace-failed.json` is invoked.
+- **When** replay executes the recorded workflow.
+- **Then** the failure replays at step `validate-payment` (step index 1); the same criterion outcome (`not-met`) is produced; the criterion reason ("Expected statusCode 200, got 402") matches the original; `ReplayTransportTest` verifies the replayed outputs match the trace.
+
+**Scenario 5: `--dry-run` trace rejected**
+- **Given** a `trace.v1` artifact captured under `--dry-run` mode (no response frames recorded, only request plans); `arazzo replay trace-dryrun.json` is invoked.
+- **When** replay attempts to load and validate the trace artifact.
+- **Then** the trace is rejected with error `replay.not_replayable`; `ErrorCollector` records the error; `ValidationResult::isValid()` returns `false`; no execution is attempted.
+
+**Scenario 6: Outputs match trace exactly**
+- **Given** a recorded `trace.v1` artifact where workflow outputs are `{ "orderId": "ORD-12345", "total": 99.99 }`; `arazzo replay trace.json` is invoked.
+- **When** replay completes and outputs are compared against the trace.
+- **Then** replayed outputs match the trace exactly (`orderId: "ORD-12345"`, `total: 99.99`); any mismatch causes a non-zero exit code; `ReplayTransportTest` runs once live (fake transport), records a trace, then replays it and asserts output equality.
+
+**Scenario 7: `--spec`/`--workflow-id` override recorded values**
+- **Given** `--spec <path>` / `--workflow-id <id>` override recorded values in the trace; `ReplayTransport` accepts overrides via CLI flags supplied by `RunCommand`.
+- **When** `arazzo replay trace.json --spec other.yaml --workflow-id other-wf` executes.
+- **Then** the overrides are reflected in the replay report; `RunnerFacade` uses the overridden spec/workflow instead of the recorded values.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `arazzo replay <trace.json>` runs without any outbound request
+- [ ] Replay transport matches responses by step id and attempt
+- [ ] Step missing from trace → stable `replay.missing_response` error, not network call
+- [ ] Trace from failed run replays failure at same step with same criterion outcome
+- [ ] Trace under `--dry-run` rejected with `replay.not_replayable`
+- [ ] Outputs match trace exactly; exits non-zero on mismatch
+- [ ] `--spec`/`--workflow-id` override recorded values; reflected in report
+- [ ] `--json` output using `run-report.v1` shape (draft 45/54)
+- [ ] Fixture: run once live (fake transport), record trace, then replay it
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Core engine (`ReplayTransport`) is draft 48; this draft is CLI port only
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Cli/CliRunner.php:138-170` — resume is not replay.
 - `packages/cli/src/Console/Command/RunCommand.php` — no `--trace`/replay equivalent.
@@ -94,14 +157,14 @@ public function resume(ArazzoDocument $document, string $executionId): CliRunRes
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** new command; a new internal replay transport (draft 48 core).
 - **Blast radius:** `packages/cli`, `packages/runner` transport seams; no change to live execution when replay is not used.
 - **Severity:** medium — debugging and deterministic regression testing.
 - **Rollback:** remove the command; traces remain useful on their own.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

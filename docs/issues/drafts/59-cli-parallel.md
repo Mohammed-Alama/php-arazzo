@@ -51,21 +51,83 @@ Expected: `arazzo run --parallel` (default off) executes independent steps concu
 - The event ledger already timestamps events, so concurrency needs stable ordering only at the report layer.
 - Draft 50 core: DAG scheduler.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `RunCommand` gains `--parallel` option, default off.
-- [ ] `--parallel` executes independent steps in the same level concurrently; an instrumented test observes overlapping execution.
-- [ ] Dependent steps never start before their dependencies complete.
-- [ ] Results are reported in original step order regardless of completion order.
-- [ ] A cycle produces `runtime.dependency_cycle` and no requests are sent.
-- [ ] Workflows with control-flow actions fall back to sequential execution and report the reason.
-- [ ] The concurrency cap is enforced; a test with a blocking fake transport never exceeds it.
-- [ ] Failure in one step cancels or drains siblings deterministically before the level ends.
-- [ ] Default behaviour without `--parallel` is byte-for-byte equivalent to today.
-- [ ] PHPStan max and Pint pass.
-- [ ] **Core scheduler** is draft 50; this draft is the CLI port only.
+**Core Domain Objective:** Expose core DAG scheduler via CLI flag so `arazzo run --parallel` executes independent steps concurrently.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI `run` command concurrency option. Packages: `packages/cli` (`RunCommand` `--parallel` option), `packages/runner` (DAG scheduler — draft 50 core). CLI port only; core scheduler is draft 50.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Independent steps in same level execute concurrently; bounded worker pool; effective concurrency `min(schedulerConcurrency, maxConcurrent)`.
+- [ ] **Flexible:** `--parallel` default off; concurrency cap configurable; sequential fallback for control-flow actions.
+- [ ] **Maintainable:** Additive CLI option; scheduler internal to `packages/runner`; deterministic reporting by original step index.
+- [ ] **Operable:** Default off; cycle detection `runtime.dependency_cycle`; rollback by disabling flag (sequential is default).
+- [ ] **Reliable:** Dependent steps never start before dependencies complete; results in original step order; concurrency cap enforced.
+- [ ] **Safe:** No fire-and-forget; every level is a barrier; sequential fallback for control-flow actions.
+- [ ] **Secure:** No new authorization surface; concurrency controls protect against request floods (with draft 21 rate limiting).
+- [ ] **Suitable:** Addresses sequential bottleneck; large change (P2); default off to manage risk.
+- [ ] **Usable:** `--parallel` flag; default preserves existing behavior.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `--parallel` default off**
+- **Given** `arazzo run doc.yaml` without `--parallel`; `DAGScheduler` (draft 50 core) is disabled (default off); `WorkflowExecutor::executeCanonically()` runs the strict sequential loop.
+- **When** `php bin/console arazzo run doc.yaml` executes without `--parallel`.
+- **Then** sequential execution (byte-for-byte equivalent to today); `run.sequentialFallbacks[]` is empty; no concurrency is introduced; existing tests pass without modification.
+
+**Scenario 2: `--parallel` executes independent steps concurrently**
+- **Given** an Arazzo document (`doc.arazzo`) containing workflow index 0 with three independent steps (step-1: `GET /items`, step-2: `GET /users`, step-3: `GET /config`; no `dependsOn` between them); `--parallel` is passed; concurrency cap is 4; an instrumented fake transport records request start/end timestamps.
+- **When** `php bin/console arazzo run doc.arazzo --parallel` executes.
+- **Then** steps in the same level (level 0, no dependencies) execute concurrently; the instrumented test observes overlapping execution (step-1 start < step-2 start AND step-1 end > step-2 start, proving overlap); `DAGScheduler` builds execution levels via Kahn's algorithm over `DependencyGraph`; all three steps complete.
+
+**Scenario 3: Dependent steps wait for dependencies**
+- **Given** an Arazzo document where step B (`stepId: "fetch-user"`) depends on step A (`stepId: "login"`) via `dependsOn: ["login"]` or implicit output reference (`$steps.login.outputs.token`); `--parallel` is used.
+- **When** `DAGScheduler` builds execution levels (level 0: step A; level 1: step B).
+- **Then** step B never starts before step A completes; step B's `startedAt` timestamp is after step A's `finishedAt` timestamp; `WorkflowExecutor` waits for the whole level before starting the next.
+
+**Scenario 4: Results in original step order**
+- **Given** concurrent execution where step-2 completes before step-1 (step-1 is slow, step-2 is fast); `--parallel` is used.
+- **When** the run completes and results are collected.
+- **Then** `run.steps[]` is reported in original step index order (step-1 first, then step-2), not completion order; `WorkflowExecutor` preserves deterministic ordering by original step index.
+
+**Scenario 5: Cycle produces `runtime.dependency_cycle`**
+- **Given** an Arazzo document with a dependency cycle (step A `dependsOn: ["B"]`, step B `dependsOn: ["A"]`); `--parallel` is used; `DependencyGraph` detects the cycle.
+- **When** `DAGScheduler` attempts to build execution levels.
+- **Then** `runtime.dependency_cycle` error is produced; `ErrorCollector` records the error under `errors`; no requests are sent; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 6: Control-flow triggers sequential fallback**
+- **Given** an Arazzo document with control-flow actions present: `onSuccess` actions (other than plain `end`), `goto` actions, `end` onFailure actions, workflow-level `successActions`/`failureActions`, or `retry` naming another step/workflow; `--parallel` is used.
+- **When** `DAGScheduler` evaluates whether parallel execution is safe.
+- **Then** the workflow falls back to sequential execution; `run.sequentialFallbacks[]` records the reason (e.g., `"control-flow action: onSuccess goto"`); steps execute one at a time in document order.
+
+**Scenario 7: Concurrency cap enforced**
+- **Given** blocking fake transport; concurrency cap = 4; `--parallel` is used with 10 independent steps; `SyncQueueDriver` enforces the cap at the job drain level.
+- **When** 10 independent steps execute concurrently with `--parallel`.
+- **Then** never more than 4 requests are in-flight at any time; steps 5-10 wait for a permit before sending; the semaphore enforces the cap; each step acquires a semaphore permit before sending and releases it after response/failure.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `RunCommand` gains `--parallel` option, default off
+- [ ] `--parallel` executes independent steps in same level concurrently
+- [ ] Dependent steps never start before dependencies complete
+- [ ] Results reported in original step order regardless of completion order
+- [ ] Cycle produces `runtime.dependency_cycle`; no requests sent
+- [ ] Workflows with control-flow actions fall back to sequential and report reason
+- [ ] Concurrency cap enforced; blocking fake transport never exceeds it
+- [ ] Failure in one step cancels/drains siblings deterministically
+- [ ] Default behavior byte-for-byte equivalent to today
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Core scheduler (DAG scheduler) is draft 50; this draft is CLI port only
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Command/RunCommand.php:45-51` — no `--parallel` option.
 - `packages/runner/src/Sync/WorkflowExecutor.php:113-165` — sequential loop and transitions.
@@ -86,14 +148,14 @@ Expected: `arazzo run --parallel` (default off) executes independent steps concu
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive `--parallel` flag; new scheduler internal to `packages/runner` (draft 50 core).
 - **Blast radius:** both execution paths if the async worker is touched; keep the change scoped to the sync executor plus the CLI flag initially.
 - **Severity:** high complexity — concurrency bugs are hard to detect. Default off.
 - **Rollback:** disable the flag; sequential behaviour remains the default.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

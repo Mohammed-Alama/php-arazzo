@@ -77,16 +77,63 @@ Expected with override `api=https://prod.example.com`: request goes to `https://
 - The override is keyed by source description `name`; if multiple source descriptions exist, each can be overridden independently.
 - `OpenApiOperationHandle->operation->source->name` provides the key at execute time.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Execution accepts a server-override map keyed by source description `name`.
-- [ ] `DefaultOpenApiExecutor` uses the override for the matching source name; falls back to `servers[0]` (then path/operation servers per existing normalizer precedence) when no override matches.
-- [ ] Invalid URLs are rejected before execution with a clear error.
-- [ ] `DefaultOpenApiExecutorTest` gains a case: override supplied → request URL uses override; no override → `servers[0]`.
-- [ ] PHPStan max and Pint pass.
-- [ ] **CLI port** (`--server name=url` flag on `RunCommand`) is tracked separately in draft 39.
+**Core Domain Objective:** Allow execution to override the base URL of a source description at execution time, keyed by source description `name`, so workflows can target staging/prod/different hosts without editing the source document.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = HTTP execution + source resolution. Packages: `packages/protocol-http` (`DefaultOpenApiExecutor` base URL), `packages/sources` (`OpenApi30Normalizer::resolveServerUrl()`), `packages/runner` (`StepExecutor`). Port-agnostic; CLI port tracked in draft 39.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Override lookup is O(1) via hash map keyed by source name; no per-request overhead beyond map lookup.
+- [ ] **Flexible:** Override map keyed by source `name`; falls back to existing precedence (operation → path → document servers) when no override matches; per-source independent overrides.
+- [ ] **Maintainable:** Additive executor parameter (`DefaultOpenApiExecutor` is `@internal`); no public contract break; invalid URLs rejected before execution.
+- [ ] **Operable:** Override takes precedence over `servers[0]`; clear error on invalid URL; rollback by removing override parameter (`servers[0]` behavior unchanged).
+- [ ] **Reliable:** Deterministic URL resolution; fallback chain well-defined; invalid URLs fail fast before any request.
+- [ ] **Safe:** No state mutation; override only affects URL construction; no side effects.
+- [ ] **Secure:** No new authorization surface; override is an operational concern, not a security boundary.
+- [ ] **Suitable:** Enables multi-environment execution (staging/prod) without document edits; complements draft 20 (HTTP hardening).
+- [ ] **Usable:** Simple map structure `$overrides = ['api' => 'https://prod.example.com']`; intuitive keyed by source name.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Override used for matching source name**
+- **Given** an Arazzo document with source description `{ name: "api", url: "https://staging.example.com/openapi.yaml", type: "openapi" }` where `servers[0]` is `https://staging.example.com`; an override map `$overrides = ['api' => 'https://prod.example.com']` is supplied to execution; `DefaultOpenApiExecutor` receives the override map keyed by source description `name`.
+- **When** a step executes against source `api` and `DefaultOpenApiExecutor` computes the request URL (`$url = $baseUrl . $urlPath`).
+- **Then** the request URL uses `https://prod.example.com` as base (the override) instead of `https://staging.example.com` (`servers[0]`); the override wins over `servers[0]`.
+
+**Scenario 2: Fallback to `servers[0]` when no override matches**
+- **Given** an Arazzo document with source description `{ name: "api", url: "https://staging.example.com/openapi.yaml", type: "openapi" }` where `servers[0]` is `https://staging.example.com`; no override map entry exists for source `api`.
+- **When** a step executes against source `api` and `DefaultOpenApiExecutor` computes the request URL.
+- **Then** the request URL uses `https://staging.example.com` as base (`servers[0]`); then falls back to path/operation servers per existing normalizer precedence (`OpenApi30Normalizer::resolveServerUrl()`).
+
+**Scenario 3: Invalid URLs rejected before execution**
+- **Given** an override value that is not a valid URL (e.g., `api=not-a-url`); `DefaultOpenApiExecutor` validates override URLs before execution.
+- **When** execution starts and the override map is processed.
+- **Then** a clear error is raised before any request is sent; `InvalidArgumentException` or similar is thrown with message identifying the invalid override URL; no HTTP request is dispatched.
+
+**Scenario 4: Multiple sources independently overridable**
+- **Given** an Arazzo document with two source descriptions (`api` and `auth`); override map `$overrides = ['api' => 'https://prod.example.com', 'auth' => 'https://auth-prod.example.com']`; each source has its own `servers[0]`.
+- **When** steps execute against each source independently.
+- **Then** source `api` uses `https://prod.example.com` as base; source `auth` uses `https://auth-prod.example.com` as base; each source's override is applied independently; no cross-contamination between sources.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Execution accepts a server-override map keyed by source description `name`
+- [ ] `DefaultOpenApiExecutor` uses override for matching source name; falls back to `servers[0]` (then path/operation servers) when no override matches
+- [ ] Invalid URLs rejected before execution with clear error
+- [ ] `DefaultOpenApiExecutorTest` case: override supplied → request URL uses override; no override → `servers[0]`
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] CLI port (`--server name=url` flag on `RunCommand`) tracked separately in draft 39
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/protocol-http/src/Execution/DefaultOpenApiExecutor.php:54-57` — `$baseUrl = rtrim($openApi->servers[0]->url, '/')`.
 - `packages/protocol-http/src/Execution/DefaultOpenApiExecutor.php:93` — `$url = $baseUrl.$urlPath`.
@@ -104,14 +151,14 @@ Expected with override `api=https://prod.example.com`: request goes to `https://
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive executor parameter; `DefaultOpenApiExecutor` is `@internal`, so no public contract break.
 - **Blast radius:** `packages/protocol-http` execution; any entry point supplying overrides.
 - **Severity:** medium — enables multi-environment execution without document edits.
 - **Rollback:** remove override parameter; `servers[0]` behaviour unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

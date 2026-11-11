@@ -82,18 +82,71 @@ Expected: validation reports an error for the unresolved reference with a precis
 - Validation phase: `ExpressionWalker::walk()` skips actions entirely; unresolved-reference rules never see action sites.
 - Execution phase (not reached because no error): `EvaluationEngine` evaluates action criteria/parameters at runtime and the unresolved expression returns null or fails, producing an obscure runtime error.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `ExpressionWalker::walkStep()` (or a new `walkActions()`) yields `ExpressionSite`s for each action's `criteria[].condition` and `parameters[].value` (when the value is an `Expression`).
-- [ ] Both step-level `onSuccess`/`onFailure` actions and workflow-level `successActions`/`failureActions` are walked.
-- [ ] `ExpressionSite` pointer targets the exact location (e.g. `/workflows/0/steps/0/onSuccess/0/criteria/0/condition`).
-- [ ] `referenceKind` is set appropriately (step ref, workflow ref, input ref) so the unresolved-reference rules apply their existing logic.
-- [ ] `ExpressionUnresolvedStepRefRule`/`ExpressionUnresolvedWorkflowRefRule`/`ExpressionUnresolvedInputRefRule` report errors for references discovered in actions.
-- [ ] `ExpressionWalkerTest` gains cases: action criteria with unresolved step ref → site yielded; action parameter with unresolved input → site yielded; no false positives for resolvable references.
-- [ ] `ValidatorTest`/probe: previously-`valid=true` documents above now invalid with clear errors.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Extend `ExpressionWalker` to yield `ExpressionSite`s for action criteria conditions and action parameter values, so unresolved references in actions are caught by the unresolved-reference validation rules.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation + expression walking. Packages: `packages/document` (`ExpressionWalker`), `packages/expression` (read-only — rules consume sites). Criterion `condition` strings and parameter `value` expressions in step-level and workflow-level actions.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Action walking is O(actions × expressions); validation-only, no runtime impact.
+- [ ] **Flexible:** `ExpressionSite` data class carries pointer + referenceKind; existing unresolved-reference rules consume sites unchanged; walker extensible for selector objects in actions.
+- [ ] **Maintainable:** `walkActions()` mirrors `walkStep()` pattern; single-responsibility; `ExpressionWalkerTest` gains cases.
+- [ ] **Operable:** `arazzo validate` emits deterministic errors with precise pointers into action criteria/parameters; rollback by reverting action walk (step/workflow-level unchanged).
+- [ ] **Reliable:** Deterministic walking; idempotent; no false positives for resolvable references.
+- [ ] **Safe:** Read-only validation; prevents obscure runtime evaluation errors.
+- [ ] **Secure:** Input validation strengthens conformance; no authorization impact.
+- [ ] **Suitable:** Closes gap where `$steps.unknown.outputs.x` or `$inputs.missing` in action criteria/parameters passed validation but failed at evaluation time.
+- [ ] **Usable:** Precise pointer (e.g. `/workflows/0/steps/0/onSuccess/0/criteria/0/condition`); `referenceKind` set appropriately.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Action criteria condition walked**
+- **Given** an Arazzo 1.1.0 document containing workflow index 0, step index 0 with `onSuccess: [{ name: "go", type: "end", criteria: [{ condition: "$steps.unknown.outputs.x == 1" }] }]`; `ExpressionWalker` (draft 35 core) walks action criteria conditions; `ExpressionUnresolvedStepRefRule` consumes `ExpressionSite`s.
+- **When** `ExpressionWalker::walk()` processes the action criteria condition `$steps.unknown.outputs.x == 1`.
+- **Then** an `ExpressionSite` is yielded for the condition with pointer `/workflows/0/steps/0/onSuccess/0/criteria/0/condition`; `referenceKind` is `stepRef`; the site carries the expression string `$steps.unknown.outputs.x`; `ExpressionUnresolvedStepRefRule` detects the unresolved reference `$steps.unknown.outputs.x` and reports an error.
+
+**Scenario 2: Action parameter value walked**
+- **Given** a step `onSuccess` goto action with `parameters: [{ name: "x", value: "$inputs.missing" }]`; `$inputs.missing` is not declared in the workflow's `inputs` schema.
+- **When** `ExpressionWalker::walk()` processes the action parameter value `$inputs.missing`.
+- **Then** an `ExpressionSite` is yielded for the parameter value with pointer `/workflows/0/steps/0/onSuccess/0/parameters/0/value`; `referenceKind` is `inputRef`; `ExpressionUnresolvedInputRefRule` detects the unresolved reference and reports an error at that pointer.
+
+**Scenario 3: Both step-level and workflow-level actions walked**
+- **Given** an Arazzo document with step-level `onSuccess`/`onFailure` actions and workflow-level `successActions`/`failureActions` containing expression references.
+- **When** `ExpressionWalker::walk()` processes all action levels.
+- **Then** `ExpressionSite`s are yielded from both step-level actions (`onSuccess`/`onFailure`) and workflow-level actions (`successActions`/`failureActions`); the walker covers all action types where expressions can appear.
+
+**Scenario 4: Unresolved-reference rules report errors**
+- **Given** an unresolved step reference `$steps.missing.outputs.x` in step `onSuccess` action criteria; `ExpressionUnresolvedStepRefRule` consumes `ExpressionSite`s from `ExpressionWalker`.
+- **When** validation rules run against the walked sites.
+- **Then** errors are reported for references discovered in actions; `Validator::validate()` returns `false`; `ErrorCollector` records errors with precise pointers into the action criteria/parameters; `ValidatorTest` fixture-tests previously-`valid=true` documents now producing invalid results with clear errors.
+
+**Scenario 5: No false positives for resolvable references**
+- **Given** resolvable references in action criteria/parameters (e.g., `$steps.existing.outputs.y` where `existing` is a declared step; `$inputs.username` where `username` is declared in `inputs`).
+- **When** validation rules run against the walked sites.
+- **Then** no errors are reported for resolvable references; `Validator::validate()` returns `true`; `ExpressionWalker` does not yield false positives; only genuinely unresolved references trigger errors.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `ExpressionWalker::walkStep()` (or new `walkActions()`) yields `ExpressionSite`s for each action's `criteria[].condition` and `parameters[].value` (when value is `Expression`)
+- [ ] Both step-level `onSuccess`/`onFailure` and workflow-level `successActions`/`failureActions` walked
+- [ ] `ExpressionSite` pointer targets exact location
+- [ ] `referenceKind` set appropriately so unresolved-reference rules apply existing logic
+- [ ] `ExpressionUnresolvedStepRefRule`/`ExpressionUnresolvedWorkflowRefRule`/`ExpressionUnresolvedInputRefRule` report errors for action references
+- [ ] `ExpressionWalkerTest` cases: action criteria with unresolved step ref → site yielded; action parameter with unresolved input → site yielded; no false positives
+- [ ] `ValidatorTest`/probe: previously-`valid=true` documents now invalid with clear errors
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/Support/ExpressionWalker.php:24-45` — `walk()` visits workflow params/outputs and step params/body/criteria/outputs; no action visitation.
 - `packages/document/src/Validator/Support/ExpressionWalker.php:60-72` — `walkStep()` yields step-level sites.
@@ -137,14 +190,14 @@ Expected: validation reports an error for the unresolved reference with a precis
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact: none (validator is `@internal`); new validation errors may cause previously-valid documents to fail `arazzo validate`.
 - **Blast radius: documents with unresolved expressions inside action criteria/parameters (authoring errors); no runtime behaviour change for valid documents.
 - **Severity: medium — catches broken action expressions at validation time instead of evaluation time.
 - **Rollback: revert the action walk; step/workflow-level expression validation unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

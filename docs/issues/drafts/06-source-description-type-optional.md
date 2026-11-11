@@ -54,18 +54,84 @@ workflows:
 - Observed: `ParserException: Missing required field: /sourceDescriptions/0/type`.
 - The official 1.1 schema accepts the same document (`required` is only `name`, `url`).
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `SourceDescription::$type` becomes nullable (or gains a sentinel `Unknown` case); existing code that assumes a `SourceType` is updated.
-- [ ] The parser accepts a source description without `type` on 1.0.x and 1.1.x.
-- [ ] When `type` is present, it is validated against the version-appropriate enum exactly as today.
-- [ ] When `type` is absent, resolution infers the type from the fetched document (OpenAPI version detection, Arazzo document shape, AsyncAPI shape) and reports a clear diagnostic if inference fails.
-- [ ] Explicit `type` always wins over inference.
-- [ ] `SourceTypeMatchesRule` can consume the inferred type (coordinate with draft 08).
-- [ ] Pest tests cover: omitted type parses; explicit type parses; invalid explicit type still throws; inference for OpenAPI 3.x and Arazzo; un-inferable source produces a stable error.
-- [ ] `arazzo validate` on a document without `type` succeeds offline (validation must not require fetching).
+**Core Domain Objective:** Make `sourceDescriptions[].type` optional in the parser so valid documents that omit `type` (per the spec and official schema) are accepted, with type inferred at resolution time when absent.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document parsing + source resolution. Packages: `packages/document` (parser `parseSourceDescription`, `SourceDescription::$type`), `packages/sources` (resolver inference), `packages/contracts` (`SourceDescription`, `SourceType`). CLI `arazzo validate` must accept such documents offline.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Parser change is O(1); inference happens at resolution time only when needed; no impact on valid documents with explicit `type`.
+- [ ] **Flexible:** `$type` becomes nullable or gains `Unknown` sentinel; inference is pluggable via `SourceNormalizerRegistry`; explicit `type` always wins.
+- [ ] **Maintainable:** Single change point in `parseSourceDescription()`; `SourceTypeMatchesRule` (draft 08) can consume inferred type.
+- [ ] **Operable:** `arazzo validate` remains offline and deterministic; no deployment changes.
+- [ ] **Reliable:** Deterministic parse result; idempotent; un-inferable sources produce a stable error rather than a crash.
+- [ ] **Safe:** Parser change is additive for valid documents; no state mutation; inference failures are graceful diagnostics.
+- [ ] **Secure:** No authorization impact; type inference does not bypass fetcher hardening (draft 09).
+- [ ] **Suitable:** Aligns with Arazzo 1.1.0 §5.8.3.1 (only `name` and `url` are REQUIRED; `type` is optional in schema `required: ["name","url"]`).
+- [ ] **Usable:** Users can omit `type` and let the resolver infer it; clear diagnostic when inference fails.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Document without `type` parses successfully on 1.1.x**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) containing a source description `{ name: "api", url: "https://example.com/openapi.yaml" }` with no `type` field; `SourceDescription::$type` is nullable (`?SourceType`); `Parser::parseSourceDescription()` does not call `requireString($obj, 'type')`.
+- **When** `php bin/console arazzo validate doc.arazzo` invokes the parser's `parseSourceDescription()`.
+- **Then** parsing succeeds; `SourceDescription::$type` is `null`; no `ParserException` is thrown; `ValidationResult::isValid()` returns `true`.
+
+**Scenario 2: Document without `type` parses successfully on 1.0.x**
+- **Given** an Arazzo 1.0.0 document containing a source description `{ name: "api", url: "https://example.com/openapi.yaml" }` with no `type` field.
+- **When** the parser parses the source description.
+- **Then** parsing succeeds; `SourceDescription::$type` is `null`; no `ParserException` is thrown.
+
+**Scenario 3: Explicit `type: openapi` is validated against the enum**
+- **Given** an Arazzo 1.1.0 document containing a source description `{ name: "api", url: "https://example.com/openapi.yaml", type: "openapi" }`; `SourceType::tryFrom('openapi')` returns `SourceType::OpenAPI`.
+- **When** `Parser::parseSourceDescription()` reads the `type` field.
+- **Then** `SourceDescription::$type` is set to `SourceType::OpenAPI`; no `ParserException` is thrown.
+
+**Scenario 4: Invalid explicit `type` still throws**
+- **Given** an Arazzo 1.1.0 document containing a source description `{ name: "api", url: "https://example.com/openapi.yaml", type: "bogus" }`; `SourceType::tryFrom('bogus')` returns `null`.
+- **When** `Parser::parseSourceDescription()` validates the `type` enum.
+- **Then** a `ParserException` (invalid enum) is thrown with message containing `Invalid enum value 'bogus' for type; expected one of: openapi|arazzo|asyncapi|wsdl|protobuf|graphql`; parsing fails before document validation.
+
+**Scenario 5: Missing `type` is inferred at resolution time**
+- **Given** an Arazzo 1.1.0 document containing a source description `{ name: "api", url: "./openapi.yaml" }` with no `type`; `DefaultSourceResolver` fetches the URL and the content is an OpenAPI 3.0 document; `OpenApiVersionDetector` detects the OpenAPI shape.
+- **When** `DefaultSourceResolver::resolve()` infers the type from the fetched document content.
+- **Then** the inferred type is `openapi`; no `source.type_inference_failed` diagnostic is emitted.
+
+**Scenario 6: Explicit `type` always wins over inference**
+- **Given** an Arazzo 1.1.0 document containing a source description `{ name: "api", url: "./openapi.yaml", type: "arazzo" }`; the content at the URL looks like OpenAPI but the declared type is `arazzo`.
+- **When** `DefaultSourceResolver::resolve()` processes the source description.
+- **Then** `SourceType::OpenAPI` is NOT used; `SourceType::Arazzo` is used (explicit wins); inference is skipped when `type` is explicitly declared.
+
+**Scenario 7: `arazzo validate` succeeds offline without `type`**
+- **Given** an Arazzo 1.1.0 document containing a source description with no `type` field; no network access is available; validation does not require fetching sources.
+- **When** `php bin/console arazzo validate doc.arazzo` runs without `--resolve-sources`.
+- **Then** validation succeeds; parsing does not require fetching; no network request is made; `ValidationResult::isValid()` returns `true`.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `SourceDescription::$type` becomes nullable (or gains `Unknown` sentinel); update existing code that assumes a `SourceType`
+- [ ] Parser accepts a source description without `type` on 1.0.x and 1.1.x
+- [ ] When `type` is present, validate against the version-appropriate enum exactly as today
+- [ ] When `type` is absent, resolution infers type from fetched document (OpenAPI version detection, Arazzo document shape, AsyncAPI shape); clear diagnostic if inference fails
+- [ ] Explicit `type` always wins over inference
+- [ ] `SourceTypeMatchesRule` can consume the inferred type (coordinate with draft 08)
+- [ ] Pest tests: omitted type parses; explicit type parses; invalid explicit type throws; inference for OpenAPI 3.x and Arazzo; un-inferable source produces stable error
+- [ ] `arazzo validate` on a document without `type` succeeds offline
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+- [ ] Document the minor-version BC change (`?SourceType`)
+
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Parser/Parser.php:132-146` — `type` is read with `requireString()`.
 
@@ -95,13 +161,13 @@ protected function parseSourceDescription(mixed $node, ParseContext $ctx): Sourc
 - Vendored schema: `packages/document/resources/schemas/arazzo-1.0.schema.json` (and 1.1/1.2), `source-description-object.required = ["name","url"]`.
 - Spec: Arazzo 1.1.0 §5.8.3.1 Source Description Object.
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** `SourceDescription::$type` changes from `SourceType` to `?SourceType` (or `SourceType::Unknown`). This is a small BC break; a minor release is appropriate.
 - **Blast radius:** parser, source resolver, normalizer selection, validator.
 - **Severity:** high — currently rejects valid third-party documents before any rule runs.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

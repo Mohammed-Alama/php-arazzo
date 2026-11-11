@@ -62,18 +62,70 @@ Expected `run.har`: HAR 1.2 with one entry per executed step request (method, UR
 - Secret redaction (draft 22) applied before serialization (do not redact in-memory execution values).
 - File written after run completes; unwritable path errors with a clear message.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `RunCommand` gains `--har-output <path>` option.
-- [ ] HAR 1.2 serializer (draft 33 core) produces `log.version = "1.2"`, `creator`, `entries[]`.
-- [ ] One entry per executed step request.
-- [ ] Secret redaction (draft 22) applied before serialization.
-- [ ] Unwritable path errors with a clear message.
-- [ ] `RunCommandTest` gains a case: `--har-output` produces valid HAR 1.2 with one entry per step.
-- [ ] PHPStan max and Pint pass.
-- [ ] **Core HAR serializer** (draft 33) is a prerequisite; this draft is the CLI port only.
+**Core Domain Objective:** Expose core HAR 1.2 serialization via CLI flag so `arazzo run` can write a HAR archive of all executed requests/responses.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI `run` command output + HAR export. Packages: `packages/cli` (`RunCommand` `--har-output` option), `packages/runner` (step results — draft 33 core), `packages/contracts` (`WorkflowContext`). CLI port only; core HAR serializer is draft 33. Secret redaction (draft 22) applies at serialization time.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** HAR written once after run; per-step entries; no streaming overhead.
+- [ ] **Flexible:** `--har-output <path>` additive option; `HarSerializer` (draft 33 core) produces HAR 1.2; secret redaction delegated to draft 22.
+- [ ] **Maintainable:** Additive CLI option; models existing `FileStateStore` JSON persistence pattern; unwritable path errors clearly.
+- [ ] **Operable:** Write-after-run only; rollback by removing option (no data migration).
+- [ ] **Reliable:** One entry per executed step request; deterministic HAR 1.2 shape.
+- [ ] **Safe:** Read-only serialization; redaction does not affect in-memory execution values.
+- [ ] **Secure:** Secret redaction (draft 22) applied before serialization; no credentials in plaintext.
+- [ ] **Suitable:** Closes gap where request/response data captured per step but never exported as archive.
+- [ ] **Usable:** `arazzo run doc.yaml --har-output run.har`.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `--har-output <path>` option**
+- **Given** `arazzo run doc.yaml --har-output run.har`; `RunCommand` accepts `--har-output <path>` option; `HarSerializer` (draft 33 core) produces HAR 1.2 archive; `StepResult` captures request/response per step via `WorkflowContext::withStepRequest()`/`withStepResponse()`.
+- **When** `php bin/console arazzo run doc.yaml --har-output run.har` executes.
+- **Then** a HAR 1.2 archive is written to `run.har`; `log.version` is `"1.2"`; `creator` is `{"name": "arazzo", "version": "1.0.0"}`; `log.entries[]` contains one entry per executed step request; each entry has `startedDateTime`, `time`, `request`, `response`, `cache`, `timings`.
+
+**Scenario 2: HAR 1.2 serializer produces valid output**
+- **Given** per-step request/response records captured in `StepResult`; `HarSerializer` serializes to HAR 1.2 format.
+- **When** `HarSerializer` serializes the entries.
+- **Then** `log.version = "1.2"`; `creator` object is present; `entries[]` array contains one entry per step; each entry conforms to HAR 1.2 specification.
+
+**Scenario 3: One entry per step request**
+- **Given** a workflow with multiple HTTP steps (step-1, step-2, step-3); each step's request/response is captured via `WorkflowContext::withStepRequest()`/`withStepResponse()`.
+- **When** `HarSerializer` generates the HAR archive.
+- **Then** one `entries[]` item per executed step request (3 entries total); each entry corresponds to one step's request/response pair.
+
+**Scenario 4: Secret redaction applied**
+- **Given** a request with header `Authorization: Bearer sk-test-1234567890abcdef`; `Redactor` (draft 22 core) is applied before serialization; `HarSerializer` integrates with `Redactor`.
+- **When** `HarSerializer` serializes the HAR entry including request headers.
+- **Then** the `Authorization` header value in the HAR archive is `<redacted>`; the token `sk-test-1234567890abcdef` does not appear in plaintext in the HAR file; the header key `Authorization` is preserved; secret redaction does not affect in-memory execution values.
+
+**Scenario 5: Unwritable path errors clearly**
+- **Given** `--har-output /unwritable/path/run.har` where the directory `/unwritable/path/` does not exist or is not writable; `RunCommand` attempts to write the HAR file.
+- **When** `php bin/console arazzo run doc.yaml --har-output /unwritable/path/run.har` executes.
+- **Then** a clear CLI error is raised; `RuntimeException` or `InvalidArgumentException` is thrown with message identifying the unwritable path; no partial HAR file is left; exit code is non-zero.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `RunCommand` gains `--har-output <path>` option
+- [ ] HAR 1.2 serializer (draft 33 core) produces `log.version = "1.2"`, `creator`, `entries[]`
+- [ ] One entry per executed step request
+- [ ] Secret redaction (draft 22) applied before serialization
+- [ ] Unwritable path errors with clear message
+- [ ] `RunCommandTest` case: `--har-output` produces valid HAR 1.2 with one entry per step
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Core HAR serializer (draft 33) is prerequisite; this draft is CLI port only
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Command/RunCommand.php:45-51` — no `--har-output` option.
 - `packages/runner/src/Sync/StepExecutor.php:81-82` — `withStepRequest` recorded (draft 33 core).
@@ -95,14 +147,14 @@ Expected `run.har`: HAR 1.2 with one entry per executed step request (method, UR
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive CLI option; new `HarSerializer` class (draft 33 core, internal).
 - **Blast radius:** `packages/cli` `run`; persisted artifact content (HAR file). Secret redaction intersects with draft 22.
 - **Severity:** medium — debuggability; no behaviour change by default.
 - **Rollback:** remove option; no data migration.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

@@ -71,19 +71,77 @@ workflows:
 - State: `WorkflowContext::getWorkflows()` contains only the current workflow's inputs; dependency outputs are never written.
 - Events: `RunStartedEvent` fires for `dependent`; no `RunStartedEvent`/`StepStartedEvent` for `base`.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `WorkflowExecutor::execute()` (or a new orchestration layer) resolves `$workflow->dependsOn` and executes each dependency before the selected workflow.
-- [ ] Dependency execution is recursive: if `C dependsOn: [B]` and `B dependsOn: [A]`, order is A → B → C.
-- [ ] Each dependency's outputs are recorded via `WorkflowContext::withWorkflowData($depId, ['outputs' => ...])` so `$workflows.<depId>.outputs.*` resolves.
-- [ ] If any dependency fails (step failure, unmet successCriteria), the selected workflow is not executed and the run reports failure.
-- [ ] Cycle and missing-target cases remain handled by `WorkflowDependsOnNoCycleRule` / `WorkflowDependsOnExistsRule` (preflight), not duplicated at runtime.
-- [ ] `RunnerFacade::execute()` result includes executed dependency workflows in `workflowCallStack` (or a new field) so callers can observe the dependency chain.
-- [ ] `WorkflowExecutorTest` gains a case: dependent workflow with a dependency that returns an output; assert the dependent step sees the dependency output.
-- [ ] `WorkflowExecutorTest` gains a case: dependent workflow whose dependency fails; assert the dependent never runs and the run fails.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Enforce workflow-level `dependsOn` at execution time so a workflow declared to depend on sibling workflows runs only after its dependencies complete, and dependency outputs are available to `$workflows.<depId>.outputs.*`.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = runner execution. Packages: `packages/runner` (`WorkflowExecutor`, `RunnerFacade`), `packages/document` (parser/validator — read-only confirmation), `packages/cli` (read-only confirmation). Local workflow IDs only; cross-document deps out of scope (#83).
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Dependency resolution is O(workflows); recursive execution with memoization; each dependency executed once.
+- [ ] **Flexible:** Works with existing `WorkflowDependsOnExistsRule`/`WorkflowDependsOnNoCycleRule` validation; doesn't duplicate cycle/missing-target checks at runtime.
+- [ ] **Maintainable:** Orchestration layer added to `WorkflowExecutor::execute()`; `WorkflowContext::withWorkflowData()` seam for recording dependency outputs; `WorkflowExecutorTest` gains cases.
+- [ ] **Operable:** `RunnerFacade::execute()` result includes executed dependency workflows in `workflowCallStack`; cycle/missing-target remain preflight validation errors.
+- [ ] **Reliable:** Recursive dependency execution (A → B → C); if any dependency fails, selected workflow is not executed; run reports failure.
+- [ ] **Safe:** Validation rules guarantee acyclic targets before execution; local dependency outputs only; no cross-document side effects.
+- [ ] **Secure:** No new authorization surface; dependency execution is part of normal workflow execution.
+- [ ] **Suitable:** Closes P0 correctness gap where `workflow B dependsOn: [A]` executes B even if A hasn't completed or failed; `$workflows.A.outputs.*` resolves to null.
+- [ ] **Usable:** Transparent to users — `dependsOn` field works as the spec declares; no new CLI flags needed.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Dependencies execute before the selected workflow**
+- **Given** an Arazzo document (`doc.arazzo`) containing workflow `dependent` with `dependsOn: ["base"]` and workflow `base` with a step that produces output `order_id`; `RunnerFacade::execute()` is called for workflow `dependent`; `WorkflowDependsOnExistsRule` and `WorkflowDependsOnNoCycleRule` have already validated the dependency (target exists, acyclic).
+- **When** `RunnerFacade::execute($document, 'dependent', [])` is invoked.
+- **Then** workflow `base` executes first; its outputs are recorded via `WorkflowContext::withWorkflowData('base', ['outputs' => ['order_id' => 'ORD-123']])`; only then does workflow `dependent` execute; `$workflows.base.outputs.order_id` resolves to `ORD-123` (not null).
+
+**Scenario 2: Recursive dependency execution**
+- **Given** an Arazzo document with three workflows: `C dependsOn: ["B"]`, `B dependsOn: ["A"]`, and `A` has no dependencies; `WorkflowExecutor::execute()` is called for workflow `C`.
+- **When** execution of workflow `C` begins.
+- **Then** execution order is A → B → C; recursive dependency resolution ensures `A` executes first, then `B`, then `C`; each dependency's outputs are recorded before the dependent workflow runs.
+
+**Scenario 3: Dependency outputs available to dependents**
+- **Given** workflow `base` produces output `order_id` with value `ORD-999`; workflow `dependent` has `dependsOn: ["base"]` and a step that references `$workflows.base.outputs.order_id` in a request parameter.
+- **When** `dependent` is executed after `base` completes.
+- **Then** the expression `$workflows.base.outputs.order_id` resolves to `ORD-999` (the actual output from `base`, not null); the step receives the correct dependency output value.
+
+**Scenario 4: Failed dependency prevents selected workflow execution**
+- **Given** workflow `dependent dependsOn: ["base"]`; workflow `base` fails (step failure or unmet `successCriteria`); `RunnerFacade::execute()` is called for workflow `dependent`.
+- **When** workflow `base` fails during execution.
+- **Then** workflow `dependent` is not executed; the run reports failure; `WorkflowExecutor` short-circuits and does not run the dependent workflow when a dependency has failed.
+
+**Scenario 5: Cycle and missing-target remain preflight concerns**
+- **Given** an Arazzo document with a cyclic `dependsOn` (A dependsOn B, B dependsOn A) or a missing `dependsOn` target (A dependsOn ["nonexistent"]).
+- **When** `arazzo validate` runs (preflight validation).
+- **Then** `WorkflowDependsOnNoCycleRule` catches cycles; `WorkflowDependsOnExistsRule` catches missing targets; these are NOT duplicated at runtime; validation fails before execution with clear error messages.
+
+**Scenario 6: Dependency chain visible in result**
+- **Given** a workflow `dependent` with `dependsOn: ["base"]`; both workflows execute successfully.
+- **When** `RunnerFacade::execute()` completes.
+- **Then** the result includes executed dependency workflows in `workflowCallStack` (or a new field); callers can observe the dependency chain (`["base", "dependent"]`); the result shows which workflows were executed as dependencies vs. the selected workflow.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `WorkflowExecutor::execute()` resolves `$workflow->dependsOn` and executes each dependency before the selected workflow
+- [ ] Dependency execution is recursive (A → B → C order)
+- [ ] Each dependency's outputs recorded via `WorkflowContext::withWorkflowData($depId, ['outputs' => ...])`
+- [ ] If any dependency fails, selected workflow is not executed; run reports failure
+- [ ] Cycle/missing-target remain handled by validation rules (preflight), not duplicated at runtime
+- [ ] `RunnerFacade::execute()` result includes executed dependency workflows in `workflowCallStack`
+- [ ] `WorkflowExecutorTest` case: dependent workflow with dependency returning output; assert dependent sees it
+- [ ] `WorkflowExecutorTest` case: dependent workflow whose dependency fails; assert dependent never runs
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] No telemetry/logging changes needed beyond existing execution events
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/runner/src/Sync/WorkflowExecutor.php:53` — `execute()` entry; `executeCanonically()` at :99–180 runs a strict sequential loop with no `dependsOn`.
 - `packages/runner/src/Sync/WorkflowExecutor.php:85` — `withWorkflowData($workflow->workflowId, ['inputs' => $inputs])` records only the current workflow's inputs.
@@ -131,14 +189,14 @@ workflows:
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** `WorkflowExecutor::execute()` signature unchanged; behaviour changes so dependency workflows run first. `RunnerFacade::execute()` output gains dependency visibility.
 - **Blast radius:** `packages/runner` execution path; any code that calls `execute()` on a workflow with `dependsOn`. No persisted state changes.
 - **Severity:** high — workflows with declared dependencies execute out of order and read `null` outputs, silently producing wrong results.
 - **Rollback:** revert the dependency orchestration; validation rules still reject invalid `dependsOn`.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

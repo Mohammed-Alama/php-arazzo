@@ -48,22 +48,92 @@ Expected: `arazzo run --http-timeout`, `--execution-timeout`, `--max-response-si
 - `Budget` already models execution limits (`packages/runtime/src/State/Data/Budget.php:13-21`).
 - Draft 53 core: `HttpExecutionPolicy` and enforcement.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `RunCommand` gains `--http-timeout`, `--execution-timeout`, `--max-response-size`, `--max-redirects`, `--allow-downgrade-redirects`, `--insecure-host` flags.
-- [ ] Flags construct an `HttpExecutionPolicy` and thread it to `DefaultOpenApiExecutor`.
-- [ ] The executor refuses a redirect chain longer than `maxRedirects` with `transport.redirect_limit`.
-- [ ] An HTTPS→HTTP redirect is refused unless `allowDowngradeRedirects` is set.
-- [ ] A response body larger than `maxResponseBytes` is aborted without buffering the full body.
-- [ ] A resolved URL with a scheme outside `allowedSchemes` is refused before sending.
-- [ ] A denied host is refused before sending and on each redirect hop.
-- [ ] `executionTimeoutSeconds` bounds the whole workflow; exceeding it produces `transport.execution_timeout`.
-- [ ] Each policy refusal appears as a structured warning in the run report and trace.
-- [ ] `RunCommandTest` fixture-tests redirect limit, downgrade, oversized body, disallowed scheme, denied host and execution deadline.
-- [ ] PHPStan max and Pint pass.
-- [ ] **Core policy** (`HttpExecutionPolicy`) is draft 53; this draft is the CLI port only.
+**Core Domain Objective:** Expose core `HttpExecutionPolicy` via CLI flags so `arazzo run` can bound outbound HTTP execution (timeout, response size, redirects, schemes, hosts, deadline).
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI `run` command options + transport policy threading. Packages: `packages/cli` (`RunCommand` options), `packages/protocol-http` (`DefaultOpenApiExecutor` — draft 53 core), `packages/runner` (threading policy to executor). CLI port only; core policy is draft 53.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Oversized body aborted during streaming; execution deadline bounds whole workflow; per-step timeout preserved.
+- [ ] **Flexible:** CLI flags map to `HttpExecutionPolicy` fields; secure defaults with opt-outs; enforcement in executor not injected client.
+- [ ] **Maintainable:** Additive CLI options; policy object (draft 53 core); typed warnings in run report and trace.
+- [ ] **Operable:** Structured warnings (`transport.redirect_limit`, `transport.downgrade_refused`, etc.); secure defaults may refuse previously accepted endpoints; rollback by removing flags.
+- [ ] **Reliable:** Redirect limit prevents loops; downgrade refused; execution timeout prevents indefinite runs; denied hosts refused on each hop.
+- [ ] **Safe:** Response size cap prevents memory exhaustion; scheme/host policy prevents SSRF/link-local access; no state corruption.
+- [ ] **Secure:** SSRF mitigation (allowed schemes, denied hosts); TLS downgrade prevention; memory exhaustion prevention.
+- [ ] **Suitable:** P2 security/availability feature; matters when endpoints/documents untrusted; builds on existing `Budget`.
+- [ ] **Usable:** `--http-timeout`, `--execution-timeout`, `--max-response-size`, `--max-redirects`, `--allow-downgrade-redirects`, `--insecure-host`.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: CLI gains HTTP policy flags**
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: CLI flags parsed into `HttpExecutionPolicy`**
+- **Given** `arazzo run doc.yaml --http-timeout 30 --max-response-size 5242880`; `RunCommand` gains repeatable `--http-timeout`, `--execution-timeout`, `--max-response-size`, `--max-redirects`, `--allow-downgrade-redirects`, `--insecure-host` flags; flags construct `HttpExecutionPolicy` (draft 53 core); `HttpExecutionPolicy` is threaded to `DefaultOpenApiExecutor`.
+- **When** `php bin/console arazzo run doc.yaml --http-timeout 30 --max-response-size 5242880` executes.
+- **Then** flags parsed into `HttpExecutionPolicy`; threaded to executor; `DefaultOpenApiExecutor` enforces per-step connect timeout (30s) and max response body (5 MiB).
+
+**Scenario 2: Redirect limit enforced**
+- **Given** `--max-redirects 5`; redirect chain exceeds 5; `HttpExecutionPolicy` configured with `maxRedirects: 5`; `DefaultOpenApiExecutor` enforces the policy in the executor.
+- **When** `request follows redirects` through the chain.
+- **Then** refused with `transport.redirect_limit`; `ErrorCollector` records the warning under `warnings`; `ValidationResult::isValid()` returns `false`; no request sent beyond the limit.
+
+**Scenario 3: Downgrade redirect refused**
+- **Given** `--allow-downgrade-redirects` not set (default false); HTTPS→HTTP redirect (from `https://api.example.com/` to `http://insecure.example.com/`).
+- **When** `redirect followed` and `DefaultOpenApiExecutor` processes the redirect.
+- **Then** refused with `transport.downgrade_refused`; `ErrorCollector` records the warning; request not downgraded from HTTPS to HTTP; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 4: Oversized body aborted**
+- **Given** `--max-response-size 1048576` (1 MiB); response > 1 MiB; body is being streamed.
+- **When** `body streamed` and `DefaultOpenApiExecutor` reads the response body.
+- **Then** aborted without buffering full body; `transport.response_too_large` warning recorded under `warnings`; full body not buffered in memory; `StepResult` does not hold the oversized body.
+
+**Scenario 5: Disallowed scheme refused**
+- **Given** URL scheme outside `allowedSchemes` (http, https); `allowedSchemes: ["http", "https"]` (default).
+- **When** `request prepared` and `DefaultOpenApiExecutor` prepares the request.
+- **Then** scheme refused before sending; `transport.scheme_refused` warning recorded under `warnings`; no HTTP request dispatched to disallowed scheme.
+
+**Scenario 6: Denied host refused**
+- **Given** denied host (loopback, link-local, private); `deniedHosts` includes loopback/link-local/private ranges.
+- **When** `request or redirect targets host` and `DefaultOpenApiExecutor` prepares the request or processes a redirect hop.
+- **Then** host refused; `transport.denied_host` warning recorded under `warnings`; no request made to denied host; refusal checked before sending and on each redirect hop.
+
+**Scenario 7: Execution timeout bounds workflow**
+- **Given** `--execution-timeout 300`; workflow exceeds 300s; `HttpExecutionPolicy` configured with `executionTimeoutSeconds: 300`.
+- **When** `workflow runs` and cumulative execution time exceeds 300 seconds.
+- **Then** ``transport.execution_timeout`` produced as structured warning under `warnings`; workflow aborted; no further steps executed; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 8: Policy refusals as structured warnings**
+- **Given** any policy refusal (redirect limit, downgrade, oversized body, disallowed scheme, denied host, execution timeout).
+- **When** `run completes`.
+- **Then** `refusal appears as structured warning in run report and trace`; each warning has stable code (`transport.*`), message, and step ID; `TraceSerializer` includes warnings in the trace artifact; `run.warnings[]` populated.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `RunCommand` gains `--http-timeout`, `--execution-timeout`, `--max-response-size`, `--max-redirects`, `--allow-downgrade-redirects`, `--insecure-host` flags
+- [ ] Flags construct `HttpExecutionPolicy`; threaded to `DefaultOpenApiExecutor`
+- [ ] Executor refuses redirect chain > `maxRedirects` with `transport.redirect_limit`
+- [ ] HTTPS→HTTP redirect refused unless `allowDowngradeRedirects` set
+- [ ] Oversized body aborted during streaming; not buffered beyond cap
+- [ ] Disallowed scheme refused before sending
+- [ ] Denied host refused before sending and on each redirect hop
+- [ ] `executionTimeoutSeconds` bounds whole workflow; `transport.execution_timeout` on exceed
+- [ ] Each refusal appears as structured warning in run report and trace
+- [ ] `RunCommandTest` fixture-tests redirect limit, downgrade, oversized body, disallowed scheme, denied host, deadline
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Core policy (`HttpExecutionPolicy`) is draft 53; this draft is CLI port only
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Command/RunCommand.php:45-51` — no HTTP policy flags.
 - `packages/protocol-http/src/Execution/DefaultOpenApiExecutor.php:101-149` — request build, timeout-only transport handling (draft 53 core).
@@ -83,14 +153,14 @@ Expected: `arazzo run --http-timeout`, `--execution-timeout`, `--max-response-si
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive CLI options; `HttpExecutionPolicy` (draft 53 core).
 - **Blast radius:** every HTTP/OpenAPI execution in core, CLI and Laravel. Secure defaults may refuse previously accepted endpoints.
 - **Severity:** high — SSRF, memory exhaustion and silent TLS downgrade.
 - **Rollback:** remove flags; `HttpExecutionPolicy` defaults keep previous behaviour configurable.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

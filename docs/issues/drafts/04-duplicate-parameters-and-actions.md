@@ -81,29 +81,85 @@ workflows:
 - Observed: both documents validate with **zero errors**.
 - At execution time, `StepParameterMerger::sameTarget()` considers `name + in` the identity, and action selection uses the first matching action name.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] A parameter is considered duplicate when another non-reusable parameter in the same list has the same `name` and the same `in` value (including both `null`).
-- [ ] Reusable parameter entries are excluded from this check (their identity is the reference; draft 05 covers resolution).
-- [ ] A new rule reports duplicates in workflow parameters, step parameters, and action parameters with stable codes and exact pointers.
-- [ ] A new rule reports duplicate action names in workflow `successActions`/`failureActions` and step `onSuccess`/`onFailure`.
-- [ ] Same `name` with **different** `in` is accepted (e.g. a path parameter and a query parameter both named `id`).
-- [ ] The chosen duplicate definition is documented as an interpretation: the spec does not define “duplicate” for actions, so action identity is taken as `name` (consistent with selection by name). Mark this as T3 in the epistemic matrix.
-- [ ] Pest tests cover: duplicate query parameter; same name/different `in` accepted; duplicate success action; duplicate failure action; workflow-level and step-level lists; reusable entries ignored.
+**Core Domain Objective:** Detect duplicate parameters and success/failure actions in lists, rejecting documents that the spec says MUST NOT include duplicate entries, preventing ambiguous last-wins / first-match runtime precedence.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation. Package affected: `packages/document` (new validator rules registered in `RuleSet`). Runtime merge key is `name + in` in `StepParameterMerger`; action selection is by action name.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Validation-only; duplicate detection via hash set is O(n) per list; no runtime execution impact.
+- [ ] **Flexible:** Rules additive to `RuleSet::default()`; configurable via draft 27 policy (disable/severity).
+- [ ] **Maintainable:** Single-responsibility rules; exact pointers to duplicate entries; logged via `ErrorCollector`.
+- [ ] **Operable:** `arazzo validate` emits deterministic duplicate errors; no deployment changes.
+- [ ] **Reliable:** Deterministic validation; idempotent; no side effects.
+- [ ] **Safe:** Read-only validation; prevents silent content override at runtime.
+- [ ] **Secure:** Input validation strengthens conformance; reduces ambiguity in parameter/action resolution.
+- [ ] **Suitable:** Implements Arazzo 1.1.0 §5.8.2, §5.8.5.1, §5.8.5.2, §5.8.5.3 (lists MUST NOT include duplicates).
+- [ ] **Usable:** Precise error pointers name the duplicate and its locations; action identity documented as `name`.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Duplicate parameter (`name` + `in`) is rejected**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) containing workflow index 0, step index 0 with `parameters: [{ name: "q", in: "query", value: "a" }, { name: "q", in: "query", value: "b" }]`; both entries are non-reusable (no `reference` field); a new parameter uniqueness rule is registered in `RuleSet::default()` with code `step.parameters_duplicate`.
+- **When** `php bin/console arazzo validate doc.arazzo` invokes `Validator::validate()` against the parsed `ArazzoDocument`.
+- **Then** validation fails with error code `step.parameters_duplicate` at pointer `/workflows/0/steps/0/parameters`; `ErrorCollector` records the error under `errors`; the error message names the duplicate parameter `name: q, in: query` and the indices of both entries (0 and 1); `ValidationResult::isValid()` returns `false`.
+
+**Scenario 2: Duplicate action names in onSuccess are rejected**
+- **Given** an Arazzo 1.1.0 document containing workflow index 0, step index 0 with `onSuccess: [{ name: "go", type: "end", criteria: [...] }, { name: "go", type: "end", criteria: [...] }]`; both actions share name `go`; a new action uniqueness rule is registered with code `step.actions_duplicate`.
+- **When** `Validator::validate()` applies the action uniqueness rule to `StepFlow::$onSuccess`.
+- **Then** validation fails with error code `step.actions_duplicate` at pointer `/workflows/0/steps/0/onSuccess`; `ErrorCollector` records the error under `errors`; the error message names the duplicate action name `go`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 3: Same `name` with different `in` is accepted**
+- **Given** an Arazzo 1.1.0 document containing workflow index 0, step index 0 with `parameters: [{ name: "id", in: "path", value: "1" }, { name: "id", in: "query", value: "2" }]`; both entries are non-reusable; the duplicate definition treats identity as `name + in` (same name, different `in` is not a duplicate).
+- **When** `Validator::validate()` applies the parameter uniqueness rule.
+- **Then** validation passes; `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors; path and query parameters may share a name.
+
+**Scenario 4: Reusable parameter entries are excluded from duplicate check**
+- **Given** an Arazzo 1.1.0 document containing workflow index 0, step index 0 with `parameters: [{ reference: "$components.parameters.x" }, { reference: "$components.parameters.x" }]`; both entries are reusable (`reference` field set, no `in` field); per draft 05, reusable entries are skipped (identity is the reference).
+- **When** `Validator::validate()` applies the parameter uniqueness rule.
+- **Then** validation passes; `ValidationResult::isValid()` returns `true`; reusable entries are skipped; no duplicate error is reported for identical references.
+
+**Scenario 5: Workflow-level and step-level duplicate checks both apply**
+- **Given** an Arazzo 1.1.0 document with duplicate parameters `{ name: "q", in: "query" }` appearing twice in both workflow-level `parameters` and step index 0 `parameters`.
+- **When** `Validator::validate()` applies the parameter uniqueness rule to both `Workflow::$parameters` and `Step::$parameters`.
+- **Then** validation fails in both cases; `ErrorCollector` reports errors at pointers `/workflows/0/parameters` and `/workflows/0/steps/0/parameters`; `ValidationResult::isValid()` returns `false`.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] New rule reports duplicate parameters when same `name` and same `in` (including both `null`) appear in the same list
+- [ ] Reusable parameter entries excluded from the duplicate check
+- [ ] New rule reports duplicate action names in workflow `successActions`/`failureActions` and step `onSuccess`/`onFailure`
+- [ ] Same `name` with different `in` is accepted
+- [ ] Duplicate definition documented as an interpretation (spec does not define "duplicate" for actions; identity taken as `name`); marked T3 in epistemic matrix
+- [ ] Stable error codes and exact pointers for all duplicate cases
+- [ ] Rules registered in `RuleSet::default()`
+- [ ] Pest tests: duplicate query parameter; same name/different `in` accepted; duplicate success action; duplicate failure action; workflow-level and step-level lists; reusable entries ignored
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/engine/src/Execution/StepParameterMerger.php:26-47` — merge identity is `name + in`.
 - `packages/document/src/Validator/RuleSet.php:100-160` — registration point.
 - Spec: Arazzo 1.1.0 §5.8.2, §5.8.5.1, §5.8.5.2, §5.8.5.3.
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** none; invalid documents start failing validation.
 - **Blast radius:** `packages/document`; execution precedence becomes deterministic because duplicates are rejected earlier.
 - **Severity:** medium — silent last-wins behaviour is hard to diagnose.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

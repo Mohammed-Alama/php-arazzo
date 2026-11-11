@@ -78,17 +78,82 @@ workflows:
 - Observed for `$self: ./doc.arazzo` on `1.1.0`: `[document.self_uri_syntax] Invalid $self URI: './doc.arazzo'`.
 - Observed for an absolute 1.1 `$self` without a fragment: **zero errors** (correct).
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Relative URI-references are accepted on 1.0.x and 1.1.x (e.g. `./doc.arazzo`, `../base/doc.arazzo`, `doc.arazzo`).
-- [ ] Absolute URIs are accepted on 1.0.x and 1.1.x.
-- [ ] A `$self` containing `#` is rejected on every supported version, with a pointer at `/$self`.
-- [ ] An empty or whitespace-only `$self` is rejected.
-- [ ] Validation uses RFC 3986 URI-reference rules rather than `FILTER_VALIDATE_URL` (e.g. `parse_url()` plus a relative-reference check, or a dedicated URI parser).
-- [ ] Pest tests cover the six combinations of {1.0, 1.1} × {absolute, relative, fragment}.
-- [ ] The existing error code `document.self_uri_syntax` is retained for compatibility.
+**Core Domain Objective:** Fix `$self` URI validation so relative URI-references are accepted (per RFC 3986 §4.1) and fragment identifiers are rejected (per Arazzo spec), in both 1.0.x and 1.1.x, eliminating the current false positives and false negatives.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation. Package affected: `packages/document` (`Validator/Rules/SelfUriSyntaxRule.php`). Parser stores `$self` (read-only); downstream source resolution and identity-based referencing (draft 07) depend on a correct `$self`.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Validation-only change; URI parsing is O(length of `$self` string); no runtime execution impact.
+- [ ] **Flexible:** Rule remains a single `Rule` implementation; configurable via draft 27 policy (disable/severity).
+- [ ] **Maintainable:** Single-responsibility rule; error pointer at `/$self`; uses `ErrorCollector` for consistent output.
+- [ ] **Operable:** `arazzo validate` emits deterministic `document.self_uri_syntax` errors; no deployment or telemetry changes.
+- [ ] **Reliable:** Deterministic validation result; idempotent across runs; no side effects.
+- [ ] **Safe:** Read-only validation; no state mutation or side-effect isolation concerns.
+- [ ] **Secure:** Input validation strengthens conformance; prevents fragment-based URI ambiguity.
+- [ ] **Suitable:** Implements Arazzo 1.1.0 §5.8.1 (`$self`) and §5.2 (relative references); `$self` MUST NOT contain a fragment.
+- [ ] **Usable:** Clear error message identifies the invalid `$self` value; relative references now accepted as the spec intends.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Relative `$self` is accepted on 1.1.0**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) with `$self: ./doc.arazzo`; `SelfUriSyntaxRule` is active in `RuleSet::activeRules()`; the 1.0.x early return has been removed; `FILTER_VALIDATE_URL` is replaced with RFC 3986 URI-reference validation via `parse_url()` plus a relative-reference check.
+- **When** `php bin/console arazzo validate doc.arazzo` executes `Validator::validate()` against the parsed `ArazzoDocument`.
+- **Then** `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors under `errors` and zero under `warnings`; no `document.self_uri_syntax` error is emitted for pointer `/$self`.
+
+**Scenario 2: `$self` with a fragment is rejected on 1.0.0**
+- **Given** an Arazzo 1.0.0 document (`doc.arazzo`) with `$self: https://example.com/doc.arazzo#frag`; `$specVersion === SpecVersion::V1_0`; fragment stripping (`strtok($doc->self, '#')`) has been removed.
+- **When** `Validator::validate()` applies `SelfUriSyntaxRule` to the `$self` field.
+- **Then** validation fails with error code `document.self_uri_syntax` at pointer `/$self`; `ErrorCollector` records the error under `errors`; the error message contains `Invalid \$self URI: 'https://example.com/doc.arazzo#frag'`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 3: `$self` with a fragment is rejected on 1.1.0**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) with `$self: https://example.com/doc.arazzo#frag`; `$specVersion === SpecVersion::V1_1`; fragment stripping has been removed.
+- **When** `Validator::validate()` applies `SelfUriSyntaxRule` to the `$self` field.
+- **Then** validation fails with error code `document.self_uri_syntax` at pointer `/$self`; `ErrorCollector` records the error under `errors`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 4: Absolute `$self` without fragment is accepted on 1.0.0**
+- **Given** an Arazzo 1.0.0 document with `$self: https://example.com/doc.arazzo`; `$specVersion === SpecVersion::V1_0`; RFC 3986 URI-reference validation accepts absolute URIs without fragments.
+- **When** `Validator::validate()` applies `SelfUriSyntaxRule` to the `$self` field.
+- **Then** `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors; no `document.self_uri_syntax` error is emitted.
+
+**Scenario 5: Absolute `$self` without fragment is accepted on 1.1.0**
+- **Given** an Arazzo 1.1.0 document with `$self: https://example.com/doc.arazzo`; `$specVersion === SpecVersion::V1_1`.
+- **When** `Validator::validate()` applies `SelfUriSyntaxRule` to the `$self` field.
+- **Then** `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors; no `document.self_uri_syntax` error is emitted.
+
+**Scenario 6: Empty `$self` is rejected**
+- **Given** an Arazzo 1.1.0 document with `$self: ""` (empty string); `SelfUriSyntaxRule` rejects empty or whitespace-only `$self`.
+- **When** `Validator::validate()` applies `SelfUriSyntaxRule` to the `$self` field.
+- **Then** validation fails with error code `document.self_uri_syntax` at pointer `/$self`; the error message states `Invalid \$self URI: ''`; `ValidationResult::isValid()` returns `false`.
+
+**Scenario 7: Whitespace-only `$self` is rejected**
+- **Given** an Arazzo 1.1.0 document with `$self: "   "` (three spaces); `SelfUriSyntaxRule` rejects empty or whitespace-only `$self`.
+- **When** `Validator::validate()` applies `SelfUriSyntaxRule` to the `$self` field.
+- **Then** validation fails with error code `document.self_uri_syntax` at pointer `/$self`; `ValidationResult::isValid()` returns `false`.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Replace `FILTER_VALIDATE_URL` with RFC 3986 URI-reference validation (e.g. `parse_url()` plus relative-reference check)
+- [ ] Remove the 1.0.x early return so `$self` is validated on all supported versions
+- [ ] Remove fragment stripping (`strtok($doc->self, '#')`) so fragments are rejected
+- [ ] Reject empty or whitespace-only `$self`
+- [ ] Retain error code `document.self_uri_syntax` for compatibility
+- [ ] Pest tests cover {1.0, 1.1} × {absolute, relative, fragment} plus empty/whitespace
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+- [ ] No documentation changes needed (error code unchanged)
+
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/Rules/SelfUriSyntaxRule.php:18-33` — the 1.0 early return, fragment stripping, and `FILTER_VALIDATE_URL` check.
 
@@ -118,13 +183,13 @@ public function check(ArazzoDocument $doc, SymbolTable $symbols, ErrorCollector 
 - `packages/document/src/Parser/Parser.php:74` — `$self` is parsed as an optional string.
 - Spec: Arazzo 1.1.0 §5.8.1 (Arazzo Object `$self`) and §5.2 “Relative References in Arazzo Description URIs”.
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** none; validation correctness only.
 - **Blast radius:** `packages/document`. Relative `$self` documents become valid; fragment documents become invalid as the spec requires.
 - **Severity:** medium — blocks valid federated documents and hides invalid ones.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

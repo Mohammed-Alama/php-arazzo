@@ -69,18 +69,90 @@ interface SourceIdentityIndex
 }
 ```
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `SourceDocument` (or a companion value object) exposes the document's `$self` when present.
-- [ ] A registry indexes fetched Arazzo documents by `$self` and by retrieval URI.
-- [ ] An absolute source `url` equal to a known `$self` resolves by identity even when the retrieval location differs.
-- [ ] Relative source URLs inside a document are resolved against its `$self` when `$self` is absolute; when `$self` is relative, it is first resolved against the retrieval URI.
-- [ ] If `$self` is absent, behaviour is unchanged (retrieval URI is the base).
-- [ ] Conflicts (two documents claiming the same `$self`) produce a deterministic error with both retrieval URIs.
-- [ ] Tests cover: absolute `$self`; relative `$self`; identity match with different location; identity miss falls back to location; duplicate `$self`; nested source descriptions.
-- [ ] The design is documented in `docs/architecture/` and referenced by #83.
+**Core Domain Objective:** Resolve Arazzo sources by `$self` identity and use `$self` as the base URI for relative references, implementing Arazzo 1.1.0 §5.2 identity-based referencing so cross-document references are interoperable.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = source resolution + document model. Packages: `packages/sources` (resolution + registry), `packages/document` (document model), `packages/runner` (locator, coordinated with #83). Does not implement cross-document workflow execution itself (#83) or bundling (#84).
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Identity index lookup is O(1) via hash map; resolution by identity first then location adds one map lookup; no impact on single-document users.
+- [ ] **Flexible:** `SourceIdentityIndex` interface is swappable; `$self` capture is additive to `SourceDocument`; index is consumed by the #83 locator.
+- [ ] **Maintainable:** Single-responsibility identity value object and registry; deterministic conflict error includes both retrieval URIs.
+- [ ] **Operable:** No new deployment or telemetry; conflicts produce deterministic errors; rollback is removing the index (location-only resolution unchanged).
+- [ ] **Reliable:** Deterministic resolution order (identity first, then location); cycle/duplicate `$self` handled with deterministic error.
+- [ ] **Safe:** No state corruption; resolution is read-only; absent `$self` falls back to retrieval URI (unchanged behaviour).
+- [ ] **Secure:** No authorization/ACL impact; identity-based resolution reduces reliance on location which the spec calls non-interoperable.
+- [ ] **Suitable:** Implements Arazzo 1.1.0 §5.2 (identity-based referencing and relative references); `$self` is used as base URI when present and absolute.
+- [ ] **Usable:** Clear error on duplicate `$self` with both retrieval URIs; behaviour unchanged when `$self` is absent.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `$self` is captured when an Arazzo document is fetched**
+- **Given** an Arazzo 1.1.0 document fetched from `https://example.com/doc.arazzo` containing `$self: https://example.com/doc.arazzo`; `DefaultSourceResolver` has fetched and decoded the document; `SourceDocument` (or companion value object) exposes a `$selfUri` field.
+- **When** `DefaultSourceResolver::resolve($source, $basePath)` returns a `SourceDocument`.
+- **Then** `SourceDocument::$selfUri` equals `https://example.com/doc.arazzo`; `SourceDocument::$retrievalUri` equals `https://example.com/doc.arazzo`; the identity value object is populated.
+
+**Scenario 2: Absolute source `url` matching a known `$self` resolves by identity**
+- **Given** a `SourceIdentityIndex` containing one entry: retrieval URI `https://cache.example.com/copy.arazzo`, `$self` URI `https://example.com/doc.arazzo`; a source description with `url: https://example.com/doc.arazzo` (absolute, matches `$self` but different retrieval location).
+- **When** `SourceIdentityIndex::findBySelf('https://example.com/doc.arazzo')` is called during resolution.
+- **Then** the document is resolved by identity (returns the cached entry) even though the retrieval location differs; `SourceIdentityIndex::findByLocation` is not the primary match.
+
+**Scenario 3: Identity miss falls back to location resolution**
+- **Given** a `SourceIdentityIndex` containing no entry with `$self` URI `https://example.com/unknown.arazzo`; a source description with `url: https://example.com/unknown.arazzo` (absolute, no identity match).
+- **When** `SourceIdentityIndex::findBySelf('https://example.com/unknown.arazzo')` returns `null`.
+- **Then** resolution falls back to location-based resolution (`findByLocation`); the document is fetched from `https://example.com/unknown.arazzo`; no identity-based error is raised.
+
+**Scenario 4: Relative source URLs resolved against `$self` when absolute**
+- **Given** a document with absolute `$self: https://example.com/base/doc.arazzo` and a relative source `url: ./other.arazzo`; `$self` is absolute per RFC 3986.
+- **When** the relative source URL is resolved against `$self` as the base URI.
+- **Then** the resolved URL is `https://example.com/base/other.arazzo`; the `$self` URI serves as the base URI per Arazzo 1.1.0 §5.2.
+
+**Scenario 5: Relative `$self` resolved against retrieval URI first**
+- **Given** a document with relative `$self: ./doc.arazzo` retrieved from `https://example.com/base/`; `$self` is relative per RFC 3986.
+- **When** `$self` is used as the base URI for relative references.
+- **Then** `$self` is first resolved against the retrieval URI to `https://example.com/base/doc.arazzo`; subsequent relative source URLs resolve against this resolved `$self`.
+
+**Scenario 6: Absent `$self` leaves behaviour unchanged**
+- **Given** an Arazzo document with no `$self` field (`$self === null`); `SourceDocument::$selfUri` is `null`.
+- **When** `DefaultSourceResolver::resolve()` processes the source description.
+- **Then** the retrieval URI is used as the base URI (unchanged behaviour); no identity-based resolution is attempted; no error is raised.
+
+**Scenario 7: Duplicate `$self` produces deterministic error**
+- **Given** two fetched documents both claiming `$self: https://example.com/doc.arazzo` with retrieval URIs `https://cache-a.example.com/doc.arazzo` and `https://cache-b.example.com/doc.arazzo`; both are added to the `SourceIdentityIndex`.
+- **When** the second document with the same `$self` URI is added to the index.
+- **Then** a deterministic error is thrown with message containing both retrieval URIs (`https://cache-a.example.com/doc.arazzo` and `https://cache-b.example.com/doc.arazzo`); the error identifies the duplicate `$self` conflict; `SourceIdentityIndex::add()` does not silently overwrite.
+- **When** resolution runs
+- **Then** retrieval URI is used as the base (unchanged behaviour)
+
+**Scenario 6: Duplicate `$self` produces deterministic error**
+- **Given** two fetched documents both claiming `$self: https://example.com/doc.arazzo` with different retrieval URIs
+- **When** both are added to the index
+- **Then** a deterministic error reports both retrieval URIs
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `SourceDocument` (or companion value object) exposes the document's `$self` when present
+- [ ] Registry indexes fetched Arazzo documents by `$self` and by retrieval URI
+- [ ] Absolute source `url` equal to a known `$self` resolves by identity even when retrieval location differs
+- [ ] Relative source URLs resolved against `$self` when absolute; relative `$self` first resolved against retrieval URI
+- [ ] Absent `$self` leaves behaviour unchanged (retrieval URI is base)
+- [ ] Conflicts (two documents claiming same `$self`) produce deterministic error with both retrieval URIs
+- [ ] Tests: absolute `$self`; relative `$self`; identity match with different location; identity miss falls back to location; duplicate `$self`; nested source descriptions
+- [ ] Design documented in `docs/architecture/` and referenced by #83
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] No telemetry/logging changes needed (resolution is read-only)
+
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/sources/src/Resolver/DefaultSourceResolver.php:58-96` — resolves by URL and computes `canonicalUri` from the retrieval path; no `$self` use.
 
@@ -113,13 +185,13 @@ public function resolve(SourceDescription $source, string $basePath): SourceDocu
 - `packages/contracts/src/Spec/ArazzoDocument.php:27` — `public ?string $self = null`.
 - Spec: Arazzo 1.1.0 §5.2 “Identity-Based Referencing” and “Relative References in Arazzo Description URIs”.
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive — new identity value object and registry; `SourceDocument` gains a field.
 - **Blast radius:** `packages/sources` resolution, `packages/runner` locator (#83), cross-document references.
 - **Severity:** high for federated documents; medium for single-document users.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

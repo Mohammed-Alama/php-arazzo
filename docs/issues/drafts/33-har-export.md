@@ -100,22 +100,79 @@ Expected HAR 1.2 (abbreviated):
 - Serialization: a `HarSerializer` builds `log.entries[]` from step records; bodies base64-encoded when binary per HAR spec; redaction applied before serialization (draft 22).
 - File write: the entry point (CLI, MCP, UI) decides where to write the archive.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Execution exposes per-step request/response records suitable for HAR serialization.
-- [ ] A HAR 1.2 serializer produces `log.version = "1.2"`, `creator`, and `entries[]`.
-- [ ] One entry per executed step request.
-- [ ] Request: method, URL, httpVersion, cookies, headers, queryString, postData, headersSize, bodySize.
-- [ ] Response: status, statusText, httpVersion, cookies, headers, body, redirectURL, headersSize, bodySize.
-- [ ] Timings: `send`/`wait`/`receive` (best-effort; 0 if not measured).
-- [ ] Bodies base64-encoded when binary; `content.text`/`content.encoding` set per HAR.
-- [ ] Secret redaction (draft 22) applied before serialization (do not redact in-memory execution values).
-- [ ] `RunnerTest`/`HarSerializerTest` gains a case: HAR output valid 1.2 with one entry per step.
-- [ ] HAR validates against minimal HAR 1.2 shape (`log.version`/`entries`).
-- [ ] PHPStan max and Pint pass.
-- [ ] **CLI port** (`--har-output <path>` flag on `RunCommand`) is tracked separately in draft 43.
+**Core Domain Objective:** Export executed requests/responses as a HAR 1.2 archive so operators have a machine-readable archive for debugging, support tickets, and replay.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = execution output + archive serialization. Packages: `packages/runner` (step results), `packages/contracts` (`WorkflowContext::withStepRequest`/`withStepResponse`). Port-agnostic; CLI port tracked in draft 43. Secret redaction (draft 22) applies at serialization time.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** HAR written once after run; per-step entries; no streaming overhead; bodies base64-encoded when binary.
+- [ ] **Flexible:** `HarSerializer` additive class; HAR 1.2 format; secret redaction delegated to draft 22; best-effort timings (0 if not measured).
+- [ ] **Maintainable:** Single-responsibility serializer; models existing `FileStateStore` JSON persistence pattern; `RunnerTest`/`HarSerializerTest` gains cases.
+- [ ] **Operable:** Write-after-run only; entry point (CLI/MCP/UI) decides file location; rollback by removing serializer (no data migration).
+- [ ] **Reliable:** One entry per executed step request; deterministic HAR shape; validates against minimal HAR 1.2 shape.
+- [ ] **Safe:** Read-only serialization; no state mutation; redaction does not affect in-memory execution values.
+- [ ] **Secure:** Secret redaction (draft 22) applied before serialization; no credentials in plaintext in the archive.
+- [ ] **Suitable:** Closes the gap where request/response data is captured per step but never exported as an archive.
+- [ ] **Usable:** HAR 1.2 is an established format; tooling exists for HAR analysis; one entry per step.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: HAR 1.2 archive produced with one entry per step**
+- **Given** an Arazzo document (`doc.arazzo`) containing workflow index 0 with three HTTP steps (step-1, step-2, step-3); `HarSerializer` (draft 33 core) is wired into `RunCommand`; `--har-output run.har` is passed; `StepResult` captures request/response per step via `WorkflowContext::withStepRequest()`/`withStepResponse()`.
+- **When** the run completes and HAR export is requested via `arazzo run doc.arazzo --har-output run.har`.
+- **Then** a HAR 1.2 archive is produced at `run.har`; `log.version` is `"1.2"`; `creator` is `{"name": "arazzo", "version": "1.0.0"}`; `log.entries[]` contains exactly one entry per executed step request (3 entries); each entry has `startedDateTime`, `time`, `request`, `response`, `cache`, `timings`.
+
+**Scenario 2: Request fields populated per HAR spec**
+- **Given** an executed step with an HTTP request (`GET https://api.example.com/items?filter=active`, headers `Accept: application/json`, no body).
+- **When** `HarSerializer` serializes the HAR entry for this step.
+- **Then** the request object contains: `method: "GET"`, `url: "https://api.example.com/items?filter=active"`, `httpVersion: "HTTP/1.1"`, `cookies: []`, `headers: [{name: "Accept", value: "application/json"}]`, `queryString: [{name: "filter", value: "active"}]`, `postData: null`, `headersSize: -1`, `bodySize: -1`.
+
+**Scenario 3: Response fields populated per HAR spec**
+- **Given** an executed step with an HTTP response (status 200, `Content-Type: application/json`, body `{"id": 1, "name": "item1"}`).
+- **When** `HarSerializer` serializes the HAR entry for this step.
+- **Then** the response object contains: `status: 200`, `statusText: "OK"`, `httpVersion: "HTTP/1.1"`, `cookies: []`, `headers: [{name: "Content-Type", value: "application/json"}]`, `body: {"id": 1, "name": "item1"}`, `redirectURL: ""`, `headersSize: -1`, `bodySize: <byte count>`.
+
+**Scenario 4: Timings best-effort**
+- **Given** a step without detailed timing measurements (only total duration is known); `HarSerializer` uses best-effort timing.
+- **When** `HarSerializer` serializes the `timings` object for this step.
+- **Then** `timings` is `{"send": 0, "wait": <measured_duration_ms>, "receive": 0}`; `send` and `receive` are 0 (not measured); `wait` contains the measured step duration; timings are best-effort.
+
+**Scenario 5: Bodies base64-encoded when binary**
+- **Given** an executed step with a binary response body (e.g., image/png); `HarSerializer` follows HAR 1.2 spec for binary content.
+- **When** `HarSerializer` serializes the response body.
+- **Then** the response body is base64-encoded; `content.text` contains the base64 string; `content.encoding` is `"base64"`; `content.size` and `content.compression` are set per HAR spec.
+
+**Scenario 6: Secret redaction applied before serialization**
+- **Given** an executed step with request header `Authorization: Bearer sk-test-1234567890abcdef`; `Redactor` (draft 22 core) is applied before serialization; `HarSerializer` integrates with `Redactor`.
+- **When** `HarSerializer` serializes the HAR entry including request headers.
+- **Then** the `Authorization` header value in the HAR archive is `<redacted>`; the token `sk-test-1234567890abcdef` does not appear in plaintext in the HAR file; the header key `Authorization` is preserved; secret redaction does not affect in-memory execution values.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Execution exposes per-step request/response records suitable for HAR serialization
+- [ ] HAR 1.2 serializer produces `log.version = "1.2"`, `creator`, `entries[]`
+- [ ] One entry per executed step request
+- [ ] Request: method, URL, httpVersion, cookies, headers, queryString, postData, headersSize, bodySize
+- [ ] Response: status, statusText, httpVersion, cookies, headers, body, redirectURL, headersSize, bodySize
+- [ ] Timings: `send`/`wait`/`receive` (best-effort; 0 if not measured)
+- [ ] Bodies base64-encoded when binary; `content.text`/`content.encoding` set per HAR
+- [ ] Secret redaction (draft 22) applied before serialization (do not redact in-memory execution values)
+- [ ] `RunnerTest`/`HarSerializerTest` case: HAR output valid 1.2 with one entry per step
+- [ ] HAR validates against minimal HAR 1.2 shape (`log.version`/`entries`)
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] CLI port (`--har-output <path>`) tracked separately in draft 43
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/runner/src/Sync/StepExecutor.php:81-82` — `withStepRequest` recorded.
 - `packages/runner/src/Sync/StepExecutor.php:126-159` — `withStepResponse` recorded with statusCode/headers/body.
@@ -132,14 +189,14 @@ Expected HAR 1.2 (abbreviated):
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive serialization capability; new `HarSerializer` class (internal).
 - **Blast radius:** `packages/runner` execution; persisted artifact content (HAR file). Secret redaction intersects with draft 22.
 - **Severity:** medium — debuggability; no behaviour change by default.
 - **Rollback:** remove serializer; no data migration.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

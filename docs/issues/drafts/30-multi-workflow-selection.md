@@ -86,20 +86,82 @@ Expected: `run($document, selection: ['build', 'deploy'], skip: ['test'])` runs 
 - Order: preserve document order for selected workflows.
 - `dependsOn` guard: if a selected workflow depends on a skipped/unselected workflow, fail fast with a clear error (until draft 26 auto-runs dependencies).
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] Execution accepts a selection list and a skip list of workflow ids.
-- [ ] When selection is omitted, behaviour is unchanged: the first (or default) workflow runs.
-- [ ] Selected workflows execute in document order; each result is reported.
-- [ ] Skip wins over select when a workflow id appears in both.
-- [ ] Unknown selection/skip ids error with a clear message.
-- [ ] A selected workflow whose `dependsOn` target is skipped/unselected fails with a clear error.
-- [ ] Exit-equivalent: non-zero if any selected workflow failed.
-- [ ] `RunnerFacadeTest`/`WorkflowExecutorTest` gains cases: multiple workflows, skip, unknown id, dependsOn guard.
-- [ ] PHPStan max and Pint pass.
-- [ ] **CLI port** (repeatable `--workflow`/`--skip` flags on `RunCommand`) is tracked separately in draft 40.
+**Core Domain Objective:** Allow execution to select a subset of workflows (selection list) and skip a subset (skip list) in a single call, returning per-workflow results, instead of requiring repeated execution invocations.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = runner execution. Package: `packages/runner` (`RunnerFacade`, `WorkflowExecutor`). Port-agnostic; CLI port tracked in draft 40. Depends on draft 26 for dependency auto-execution (until then, skipped deps are an error).
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Single document parse per invocation; each selected workflow executed once; no redundant re-parsing or preflight.
+- [ ] **Flexible:** Selection and skip lists are additive parameters; selection omitted = current behavior (first workflow); skip wins over select.
+- [ ] **Maintainable:** Additive `RunnerFacade` parameters; `RunnerFacadeTest`/`WorkflowExecutorTest` gain cases; dependsOn guard until draft 26.
+- [ ] **Operable:** Non-zero exit if any selected workflow failed; per-workflow results reported; rollback by removing parameters (single-workflow unchanged).
+- [ ] **Reliable:** Selected workflows execute in document order; unknown selection/skip ids error with clear message; dependsOn guard prevents running workflows with skipped dependencies.
+- [ ] **Safe:** No state mutation beyond normal execution; skip wins over select to prevent accidental execution; no cross-document effects.
+- [ ] **Secure:** No new authorization surface; selection/skip are operational concerns.
+- [ ] **Suitable:** Addresses QoL gap where authors with `build`, `test`, `deploy` workflows must invoke execution three times.
+- [ ] **Usable:** Simple API `$runner->run($document, selection: ['build', 'deploy'], skip: ['test'])`.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Selection list runs selected workflows**
+- **Given** an Arazzo document containing workflows `build`, `test`, `deploy`; `RunnerFacade::run()` is called with `selection: ['build', 'deploy']`; `skip` is empty; `RunnerFacade` (draft 30 core) supports multi-workflow selection.
+- **When** `RunnerFacade::run($document, null, [], selection: ['build', 'deploy'], skip: [])` executes.
+- **Then** workflows `build` and `deploy` execute; workflow `test` does not; each result is reported individually; per-workflow results are aggregated.
+
+**Scenario 2: Omitted selection = current behavior**
+- **Given** an Arazzo document containing workflows `build`, `test`, `deploy`; no `selection` parameter is passed to `RunnerFacade::run()`.
+- **When** `RunnerFacade::run($document, null, [])` executes (default behavior).
+- **Then** the first (default) workflow (`build`) runs; behavior is unchanged from the single-workflow entry point; `RunnerFacade::run($document, 'build', [])` equivalent.
+
+**Scenario 3: Selected workflows execute in document order**
+- **Given** an Arazzo document where `build` appears before `deploy` in document order; `selection: ['deploy', 'build']` is passed (out of document order).
+- **When** `RunnerFacade::run()` executes selected workflows.
+- **Then** `build` executes before `deploy` (document order preserved, not selection order); `RunnerFacade` sorts selected workflows by their position in the document.
+
+**Scenario 4: Skip wins over select**
+- **Given** `selection: ['build', 'test']` and `skip: ['test']`; both `build` and `test` are in the selection list, but `test` is also in the skip list.
+- **When** `RunnerFacade::run()` computes the effective selection (intersect selection with document IDs, subtract skip).
+- **Then** only `build` executes; `test` is excluded even though it appears in `--workflow`; skip wins over select.
+
+**Scenario 5: Unknown selection/skip ids error**
+- **Given** `selection: ['nonexistent']` where `nonexistent` is not a declared workflowId in the document.
+- **When** `RunnerFacade::run()` validates selection/skip IDs against declared workflow IDs.
+- **Then** a clear error message is returned naming the unknown ID (`nonexistent`); valid workflow IDs are listed; execution does not proceed; non-zero exit.
+
+**Scenario 6: Selected workflow with skipped dependency fails**
+- **Given** workflow `test dependsOn: ["build"]`; `selection: ['test']` and `skip: ['build']`; draft 26 (dependency auto-execution) is not yet implemented.
+- **When** `RunnerFacade::run()` executes workflow `test`.
+- **Then** a clear error is returned: workflow `test` depends on skipped workflow `build`; execution fails fast with a clear error; `dependent` is not executed until draft 26 auto-runs dependencies.
+
+**Scenario 7: Non-zero exit if any selected workflow failed**
+- **Given** `selection: ['build', 'deploy']`; workflow `deploy` fails during execution (step failure or unmet `successCriteria`); workflow `build` succeeds.
+- **When** execution completes.
+- **Then** exit code is non-zero (failure); per-workflow results are reported (`build`: succeeded, `deploy`: failed); the overall run result reflects that at least one selected workflow failed.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] Execution accepts a selection list and a skip list of workflow ids
+- [ ] Omitted selection = unchanged behavior (first/default workflow runs)
+- [ ] Selected workflows execute in document order; each result reported
+- [ ] Skip wins over select when id appears in both
+- [ ] Unknown selection/skip ids error with clear message
+- [ ] Selected workflow whose `dependsOn` target is skipped/unselected fails with clear error
+- [ ] Non-zero exit if any selected workflow failed
+- [ ] `RunnerFacadeTest`/`WorkflowExecutorTest` cases: multiple workflows, skip, unknown id, dependsOn guard
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] CLI port (repeatable `--workflow`/`--skip`) tracked separately in draft 40
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/runner/src/RunnerFacade.php:56-72` — `run()`/`execute()` single-workflow entry points.
 - `packages/cli/src/Console/Command/RunCommand.php:45-51` — `--workflow` single `VALUE_REQUIRED`; no `--skip` (CLI side, referenced for context only).
@@ -117,14 +179,14 @@ Expected: `run($document, selection: ['build', 'deploy'], skip: ['test'])` runs 
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive `RunnerFacade` parameter(s); `RunnerFacade` may gain a multi-workflow convenience method (internal).
 - **Blast radius:** `packages/runner` execution path; any entry point invoking execution multiple times can consolidate.
 - **Severity:** medium — QoL for multi-workflow documents; no behaviour change by default.
 - **Rollback:** remove selection/skip parameters; single-workflow behaviour unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

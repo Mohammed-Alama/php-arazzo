@@ -67,20 +67,79 @@ requests.
 - `RunCommand` already accepts an injectable `ClientInterface`; dry-run can
   supply a transport that throws if touched, proving no request escapes.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `arazzo run <file> --dry-run` sends zero outbound requests; a transport that throws on use is never invoked.
-- [ ] The command prints a request plan for every step that can be resolved.
-- [ ] Unresolved response-derived values use a stable placeholder and identify the expression.
-- [ ] Unknown operations, missing required inputs and invalid documents fail with a stable error and non-zero exit code.
-- [ ] `--strict-dry-run` promotes unresolved placeholders to errors.
-- [ ] Success criteria are reported as `not-evaluated`.
-- [ ] `--json` emits a plan using the `run-report.v1` contract (draft 12).
-- [ ] Schema defaults from input validation appear in the plan.
-- [ ] Tests assert the transport is never called and cover resolvable, partially resolvable and hard-failure documents.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Provide `arazzo run --dry-run` that resolves the full request plan (method, URL, parameters, headers, body) without sending any outbound requests, so authors can preview workflows safely before execution.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = dry-run execution + request planning. Packages: `packages/cli` (`RunCommand`), `packages/runner` (step execution), `packages/protocol-http` (request compilation), `packages/sources` (preflight and operation resolution). Core dry-run mode is draft 49; this draft is the CLI port.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Sends zero outbound requests; full preflight and resolution without execution; transport that throws on use is never invoked.
+- [ ] **Flexible:** `--strict-dry-run` promotes unresolved placeholders to errors; `--json` emits plan using `run-report.v1` contract; composes with `--step`, `--trace`.
+- [ ] **Maintainable:** Dry-run is a distinct execution mode that does not enter the sequential loop (`WorkflowExecutor`); reuses `PreflightValidator` and `RequestCompiler`.
+- [ ] **Operable:** Exit `0` when plan fully resolvable; non-zero on hard resolution errors; `--strict-dry-run` flag for CI gates.
+- [ ] **Reliable:** Deterministic plan output; unresolved response-derived values use stable placeholders; no side effects.
+- [ ] **Safe:** Never constructs a live transport; safe even if the PSR-18 client would send real requests; no side-effect isolation concerns.
+- [ ] **Secure:** No new authorization surface; input validation (draft 19) applies to dry-run inputs.
+- [ ] **Suitable:** Safest way to preview a workflow before it touches a real system; reports unresolved values and `not-evaluated` criteria.
+- [ ] **Usable:** `--dry-run` and `--strict-dry-run` flags on `RunCommand`; request plan printed for every resolvable step.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `--dry-run` sends zero outbound requests**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) containing workflow index 0 with two HTTP steps; a PSR-18 client that throws `TransportException` on any `sendRequest()` call is injected; `arazzo run doc.arazzo --dry-run` is invoked; `DryRunExecutionMode` (draft 49 core) is wired into `RunCommand`.
+- **When** `php bin/console arazzo run doc.arazzo --dry-run` executes.
+- **Then** zero outbound requests are sent; the throwing transport is never invoked; `PreflightValidator` resolves all operations; `RequestCompiler` compiles request records for each step; a request plan is printed to stdout; the command exits with code 0.
+
+**Scenario 2: Request plan printed for every resolvable step**
+- **Given** an Arazzo document with two resolvable steps: step-1 (`GET /items`, no dependencies) and step-2 (`POST /orders`, depends on step-1 output `$steps.step-1.outputs.orderId`).
+- **When** `--dry-run` executes full preflight and request compilation.
+- **Then** a request plan is printed for step-1 (method: GET, URL: `https://api.example.com/items`, headers, query, body preview) and step-2 (method: POST, URL: `https://api.example.com/orders`, headers, query, body preview with resolved `orderId` placeholder); both steps appear in the plan.
+
+**Scenario 3: Unresolved response-derived values use stable placeholders**
+- **Given** an Arazzo document where step-2 body references `$steps.step-1.outputs.orderId` but step-1 has not been executed (dry-run cannot know the response); `--dry-run` is invoked without `--strict-dry-run`.
+- **When** `RequestCompiler` compiles step-2's request body.
+- **Then** the unresolved value uses stable placeholder `<unresolved:response.body#/orderId>` identifying the expression `$steps.step-1.outputs.orderId`; the command does not fail; the plan marks the value as unresolved but resolvable at runtime.
+
+**Scenario 4: Unknown operations and missing required inputs fail**
+- **Given** an Arazzo document referencing operation `$sourceDescriptions.api.nonexistentOp` which does not exist in any loaded source description; or a workflow with a required input `username` that is not supplied via `--input`.
+- **When** `--dry-run` executes preflight and operation resolution.
+- **Then** the command fails with a stable error (`operation.not_found` or `preflight.inputs_schema`); `ErrorCollector` records the error under `errors`; `ValidationResult::isValid()` returns `false`; the command exits with a non-zero code before any request is sent.
+
+**Scenario 5: `--strict-dry-run` promotes unresolved placeholders to errors**
+- **Given** `--strict-dry-run` is passed; step-2 body references `$steps.step-1.outputs.orderId` which is unresolved in dry-run.
+- **When** `--dry-run --strict-dry-run` executes.
+- **Then** the placeholder `<unresolved:response.body#/orderId>` is promoted to an error (`dry-run.unresolved_placeholder`); `ErrorCollector` records the error under `errors`; the command exits with a non-zero code.
+
+**Scenario 6: Success criteria reported as `not-evaluated`**
+- **Given** an Arazzo document with `successCriteria: [{ condition: "$statusCode == 200" }]` on step-1; `--dry-run` is invoked (no live response exists).
+- **When** dry-run executes the preflight and resolution path.
+- **Then** the success criterion is reported as `not-evaluated` in the request plan; `ValidationResult::isValid()` returns `true` (criteria are not evaluated in dry-run); the plan indicates criteria status as `not-evaluated`.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `arazzo run <file> --dry-run` sends zero outbound requests; transport that throws on use is never invoked
+- [ ] The command prints a request plan for every step that can be resolved
+- [ ] Unresolved response-derived values use a stable placeholder and identify the expression
+- [ ] Unknown operations, missing required inputs and invalid documents fail with a stable error and non-zero exit code
+- [ ] `--strict-dry-run` promotes unresolved placeholders to errors
+- [ ] Success criteria are reported as `not-evaluated`
+- [ ] `--json` emits a plan using the `run-report.v1` contract (draft 12)
+- [ ] Schema defaults from input validation appear in the plan
+- [ ] Tests assert the transport is never called and cover resolvable, partially resolvable and hard-failure documents
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via existing CLI error handling
+- [ ] Core mode (dry-run execution) is draft 49; this draft is the CLI port only
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/sources/src/Validator/PreflightValidator.php:48-59` — side-effect-free preflight.
 - `packages/runner/src/Sync/WorkflowExecutor.php:116-152` — execution loop that dry-run must not enter.
@@ -101,14 +160,14 @@ protected function configure(): void
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive option.
 - **Blast radius:** `packages/cli`, `packages/runner`; a new no-op transport path.
 - **Severity:** medium — prevents destructive mistakes and shortens the authoring loop.
 - **Rollback:** remove the option.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

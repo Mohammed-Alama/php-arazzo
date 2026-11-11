@@ -64,20 +64,80 @@ into text.
   (`packages/cli/src/Console/Cli/CliRunResult.php`).
 - `#85` establishes the precedent for a JSON formatter on a command.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] `arazzo run <file> --json` writes exactly one JSON object to stdout and no human text to stdout.
-- [ ] The object validates against the published `run-report.v1` JSON Schema.
-- [ ] `run.status` is `succeeded` or `failed` and matches the process exit code.
-- [ ] Every executed step appears in `run.steps` with `stepId`, `status`, `attempts`, `statusCode`, `outputs`, `durationMs` and `failureCategory` when failed.
-- [ ] `run.outputs` contains the evaluated workflow outputs.
-- [ ] `--export-run <path>` writes the same bytes to a file and leaves stdout human-readable unless `--json` is also passed.
-- [ ] `schema run` prints the JSON Schema for `run-report.v1` and exits `0`.
-- [ ] A representative run is fixture-tested: known document, deterministic fake transport, asserted JSON shape and values.
-- [ ] Documentation includes the schema version and the stability promise.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Provide a machine-readable, versioned run report (`run-report.v1`) from `arazzo run` via `--json` and `--export-run`, so CI and agents can consume structured run results instead of scraping human-oriented text.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = CLI output + run result serialization. Packages: `packages/cli` (`RunCommand` output/serialization), `packages/runner` (`RunnerFacade` result shape), `packages/runtime` (versioned artifact schemas). Core contract (`run-report.v1` schema + serializer) is draft 45; this draft is the CLI port only.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** JSON serialization is O(result size); one JSON object to stdout; no per-step overhead beyond existing result collection.
+- [ ] **Flexible:** Versioned schema (`run-report.v1`) allows future breaking changes as `v2`; additive CLI options; human text unaffected unless `--json` opted in.
+- [ ] **Maintainable:** `RunReportSerializer` (draft 45 core) turns `RunnerFacade` result into the shape; deterministic output; no new dependencies beyond Symfony Console + `json_encode`.
+- [ ] **Operable:** `schema run` emits the JSON Schema for consumer validation; exit codes unchanged (0 succeeded, non-zero failed); atomic file write for `--export-run`.
+- [ ] **Reliable:** `run.status` matches process exit code; deterministic JSON; idempotent across runs with same inputs.
+- [ ] **Safe:** No state mutation; output is read-only serialization of the run result.
+- [ ] **Secure:** Secret redaction (draft 22) deferred; until then `inputs`/`outputs` emitted verbatim with a documented warning.
+- [ ] **Suitable:** Required for CI use and agent/tool consumption; provides workflow id, status, per-step status, outputs, failure category, attempts, warnings.
+- [ ] **Usable:** Exactly one JSON object to stdout; `--export-run <path>` writes to file; `schema run` for consumer validation.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: `--json` writes exactly one JSON object to stdout**
+- **Given** an Arazzo 1.1.0 document (`doc.arazzo`) containing workflow index 0 (`workflowId: "wf-001"`) with one step (`stepId: "step-1"`, status `succeeded`); `arazzo run doc.arazzo --json` is invoked; `RunReportSerializer` (draft 45 core) is wired into `RunCommand`; `--json` is passed on the command line.
+- **When** `php bin/console arazzo run doc.arazzo --json` executes and the run completes.
+- **Then** stdout contains exactly one JSON object (no human text on stdout); human-oriented text goes to stderr; the JSON object validates against `run-report.v1` schema; `run.workflowId` is `"wf-001"`; `run.status` is `"succeeded"`.
+
+**Scenario 2: The JSON object validates against `run-report.v1`**
+- **Given** the `--json` output from a successful run; the `run-report.v1` JSON Schema is published (draft 45 core).
+- **When** the JSON object is validated against the `run-report.v1` JSON Schema.
+- **Then** schema validation passes; the object contains `schemaVersion`, `run.workflowId`, `run.status`, `run.startedAt`, `run.finishedAt`, `run.durationMs`, `run.inputs`, `run.outputs`, `run.steps[]`, `run.warnings[]`.
+
+**Scenario 3: `run.status` matches the process exit code**
+- **Given** an Arazzo document containing workflow index 0 where step index 0 fails (HTTP 500 with failing `successCriteria`); `arazzo run doc.arazzo --json` is invoked.
+- **When** `--json` is emitted after the run completes.
+- **Then** `run.status` is `"failed"`; the process exits with a non-zero code; `run.status` matches the process exit code.
+
+**Scenario 4: Every executed step appears in `run.steps`**
+- **Given** an Arazzo document containing workflow index 0 with three steps (`stepId: "step-1"`, `stepId: "step-2"`, `stepId: "step-3"`); all steps execute successfully.
+- **When** `--json` is emitted.
+- **Then** `run.steps[]` contains three entries; each entry has `stepId`, `status`, `attempts`, `statusCode`, `outputs`, `durationMs`; `failureCategory` is present when a step failed; `run.outputs` contains the evaluated workflow outputs.
+
+**Scenario 5: `--export-run <path>` writes the same bytes to a file**
+- **Given** `arazzo run doc.arazzo --export-run report.json` is invoked without `--json`; the run completes successfully.
+- **When** `--export-run` writes the report to `report.json`.
+- **Then** the file `report.json` contains the same JSON bytes as the `--json` output would produce; stdout remains human-readable (not JSON); unless `--json` is also passed, stdout is human-oriented text.
+
+**Scenario 6: `schema run` prints the JSON Schema and exits 0**
+- **Given** `php bin/console arazzo run schema run` is invoked; the `run-report.v1` JSON Schema is published.
+- **When** the `schema run` subcommand executes.
+- **Then** the JSON Schema for `run-report.v1` is printed to stdout; the command exits with code 0.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] `arazzo run <file> --json` writes exactly one JSON object to stdout and no human text to stdout
+- [ ] The object validates against the published `run-report.v1` JSON Schema (draft 45 core)
+- [ ] `run.status` is `succeeded` or `failed` and matches the process exit code
+- [ ] Every executed step appears in `run.steps` with `stepId`, `status`, `attempts`, `statusCode`, `outputs`, `durationMs`, `failureCategory` when failed
+- [ ] `run.outputs` contains the evaluated workflow outputs
+- [ ] `--export-run <path>` writes the same bytes to a file; stdout human-readable unless `--json` also passed
+- [ ] `schema run` prints the JSON Schema for `run-report.v1` and exits 0
+- [ ] Representative run fixture-tested: known document, deterministic fake transport, asserted JSON shape and values
+- [ ] Documentation includes schema version and stability promise
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via existing CLI error handling
+- [ ] Core contract (`run-report.v1` schema + serializer) is draft 45; this draft is the CLI port only
+
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/cli/src/Console/Command/RunCommand.php:173-189` — text-only rendering.
 - `packages/runner/src/RunnerFacade.php:44-70` — structured result already available.
@@ -106,14 +166,14 @@ private function renderOutput(OutputInterface $output, array $result): void
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** additive CLI option and a new, versioned output contract.
 - **Blast radius:** `packages/cli`; consumers that parse human output are unaffected unless they opt in.
 - **Severity:** medium — without it, CI and agents cannot consume run results reliably.
 - **Rollback:** remove the options; the schema is versioned, so a future breaking change ships as `run-report.v2`.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |

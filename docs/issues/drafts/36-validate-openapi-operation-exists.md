@@ -62,17 +62,70 @@ workflows:
 - The operation resolver (`OpenApiOperationResolver`) is available in the sources package and already indexes operations; the rule just needs to consult it.
 - Execution phase (not reached because no error): `PreflightValidator` would catch the missing operation, but only at run time.
 
-### 🧪 6. Acceptance Criteria & Behavioral Specification
+## 6. Issue Context & Architectural Intent
 
-- [ ] A new validator rule (e.g. `StepOperationExistsRule`) checks that each step's `operationId` / `operationPath` resolves to a real operation in a loaded source description.
-- [ ] The rule reports an error naming the missing operation and the source description, with a pointer to the step's `operationId`/`operationPath`.
-- [ ] Qualified references (`$sourceDescriptions.<name>.<op>`) are resolved against the named source; bare references require exactly one source (existing behavior preserved).
-- [ ] `operationPath` pointers (`{$sourceDescriptions.<name>.url}#/paths/...`) are checked for operation existence where the source is loadable.
-- [ ] The rule is registered in `RuleSet::default()` and enabled by default.
-- [ ] `ValidatorTest` gains cases: nonexistent operation → invalid; existent operation → valid; multiple sources with unqualified op → invalid (existing); qualified op against wrong source → invalid.
-- [ ] PHPStan max and Pint pass.
+**Core Domain Objective:** Validate at lint time that each step's `operationId`/`operationPath` references an operation that actually exists in a loaded source description, so broken references fail at `arazzo validate` instead of at runtime.
 
-### 🧬 7. Source Grounding & Code Location
+**Architectural Boundary:** Bounded context = document validation + source resolution. Packages: `packages/document` (new lint rule + registration), `packages/sources` (read-only — operation resolver already exists). OpenAPI sources only; cross-document refs covered by #83; AsyncAPI channel existence out of scope for v1.
+
+---
+
+## 7. arc42 Quality Characteristics Compliance Matrix
+
+- [ ] **Efficient:** Operation existence check is O(steps × operations); operation index built once; validation-only, no execution impact.
+- [ ] **Flexible:** New rule (`StepOperationExistsRule`) registered in `RuleSet::default()`; qualified/bare reference handling preserved; reusable resolver logic from `PreflightValidator`.
+- [ ] **Maintainable:** Single-responsibility rule; error names missing operation and source; pointer to step's `operationId`/`operationPath`; `ValidatorTest` gains cases.
+- [ ] **Operable:** `arazzo validate` exits non-zero on missing operation; rollback by removing the rule (scoping check and preflight unchanged).
+- [ ] **Reliable:** Deterministic validation; idempotent; operation resolver indexes operations by `operationId`.
+- [ ] **Safe:** Read-only validation; prevents runtime resolution errors for missing operations.
+- [ ] **Secure:** Input validation strengthens conformance; no authorization impact.
+- [ ] **Suitable:** Closes gap where `arazzo validate` passes for documents referencing non-existent operations; spec requires `operationId`/`operationPath` to reference real operations.
+- [ ] **Usable:** Clear error message naming missing operation and source description.
+
+---
+
+## 8. Behavioral Specification (Given / When / Then)
+
+**Scenario 1: Nonexistent operation rejected**
+- **Given** an Arazzo document (`doc.arazzo`) containing workflow index 0, step index 0 with `operationId: $sourceDescriptions.api.nonexistentOp`; source description `api` is declared; `StepOperationExistsRule` (draft 36 core) is registered in `RuleSet::default()`; `OpenApiOperationResolver` (in `packages/sources`) indexes operations by `operationId`.
+- **When** `php bin/console arazzo validate doc.arazzo` invokes `Validator::validate()`.
+- **Then** validation fails with error code `step.operation_not_found`; `ErrorCollector` records the error at pointer `/workflows/0/steps/0/operationId`; the error message names the missing operation (`nonexistentOp`) and source description (`api`); `ValidationResult::isValid()` returns `false`; `arazzo validate` exits non-zero.
+
+**Scenario 2: Existent operation accepted**
+- **Given** a step with `operationId: $sourceDescriptions.api.getThing` where `getThing` exists in source `api`; the operation resolver has indexed `getThing` from the fetched OpenAPI document.
+- **When** `Validator::validate()` applies `StepOperationExistsRule`.
+- **Then** validation passes; `ValidationResult::isValid()` returns `true`; `ErrorCollector` records zero errors; the operation reference is valid.
+
+**Scenario 3: Qualified references resolved against named source**
+- **Given** `$sourceDescriptions.api.getThing` with multiple sources declared (`api` and `other`); `getThing` exists only in source `api`, not in `other`.
+- **When** `Validator::validate()` applies the rule.
+- **Then** the qualified reference is resolved against source `api`; if a qualified op is checked against the wrong source (`$sourceDescriptions.other.getThing` where `getThing` doesn't exist in `other`), validation fails; existing qualified-reference behavior is preserved.
+
+**Scenario 4: Bare references require exactly one source**
+- **Given** bare `operationId: getThing` (no `$sourceDescriptions.` prefix) with multiple sources declared (`api` and `other`).
+- **When** `Validator::validate()` applies the existing unqualified-reference check.
+- **Then** validation fails because multiple sources exist and the bare reference is ambiguous; existing behavior is preserved (bare references require exactly one source).
+
+**Scenario 5: `operationPath` pointers checked**
+- **Given** an `operationPath` pointer like `{$sourceDescriptions.api.url}#/paths/~1items~1{id}/get` pointing to a specific operation in the source URL; the source is loadable.
+- **When** `Validator::validate()` checks operation existence for loadable sources.
+- **Then** operation existence is checked where the source is loadable; if the pointer addresses a non-existent operation, validation fails with a clear error; if the source cannot be loaded at lint time, the check is deferred to preflight/execution.
+
+---
+
+## 9. Actionable Implementation & Verification Checklist
+
+- [ ] New validator rule (`StepOperationExistsRule`) checks each step's `operationId`/`operationPath` resolves to a real operation in a loaded source description
+- [ ] Error names missing operation and source description; pointer to step's `operationId`/`operationPath`
+- [ ] Qualified references resolved against named source; bare references require exactly one source (existing behavior preserved)
+- [ ] `operationPath` pointers checked for operation existence where source is loadable
+- [ ] Rule registered in `RuleSet::default()` and enabled by default
+- [ ] `ValidatorTest` cases: nonexistent operation → invalid; existent operation → valid; multiple sources with unqualified op → invalid; qualified op against wrong source → invalid
+- [ ] Unit & integration test coverage written and passing
+- [ ] Static analysis & type safety verified (PHPStan max + Pint)
+- [ ] Error logging via `ErrorCollector` instrumented
+
+### 🧬 10. Source Grounding & Code Location
 
 - `packages/document/src/Validator/Rules/StepOperationIdSourceScopedRule.php:16-43` — checks operationId qualification only; no existence check.
 - `packages/document/src/Validator/Rules/StepOperationPathSyntaxRule.php` — checks operationPath syntax only.
@@ -126,14 +179,14 @@ workflows:
 
 </details>
 
-### 🌍 8. Public Domains & Impact Profile
+### 🌍 11. Public Domains & Impact Profile
 
 - **Public API impact:** none (validator is `@internal`); new validation error may cause previously-passing documents to fail `arazzo validate`.
 - **Blast radius:** documents referencing mistyped or removed operationIds (authoring errors); no runtime behaviour change for valid documents.
 - **Severity:** medium — catches broken operation references at validation time instead of run time.
 - **Rollback:** remove the rule; scoping check and preflight validation unchanged.
 
-### 📊 9. Epistemic Verification Matrix
+### 📊 12. Epistemic Verification Matrix
 
 | Claim | Tier | Evidence | Verification |
 | --- | --- | --- | --- |
