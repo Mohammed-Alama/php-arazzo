@@ -18,7 +18,7 @@
         },
         {
             "base": "v1.2-dev",
-            "lastChange": "2026-11-06",
+            "lastChange": "2026-11-11",
             "live": true,
             "ourIssue": null,
             "ref": "OAI/Arazzo-Specification#556",
@@ -33,7 +33,7 @@
         },
         {
             "base": "v1.2-dev",
-            "lastChange": "2026-10-26",
+            "lastChange": "2026-11-11",
             "live": true,
             "ourIssue": null,
             "ref": "OAI/Arazzo-Specification#567",
