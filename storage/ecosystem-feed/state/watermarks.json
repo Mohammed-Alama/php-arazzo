@@ -21,7 +21,7 @@
                     "headSha": "12f619ecd85e79fb67ce0610b85926ca3cfd9c79"
                 },
                 "v1.1-dev": {
-                    "headSha": "aece737bc149c4564c6138962ecc9e026b3752f9"
+                    "headSha": "22be335abb8b70f33ac328290adf52edeef8739e"
                 },
                 "v1.2-dev": {
                     "headSha": "6c1f09f81c51a5ceb3476a98158507015fe56ccd"
@@ -35,10 +35,10 @@
                     "lastSeenUpdatedAt": "2026-11-09T22:41:22Z"
                 },
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-08T19:45:01Z"
+                    "lastSeenUpdatedAt": "2026-11-11T22:49:45Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-11T14:08:11Z"
+                    "lastSeenUpdatedAt": "2026-11-11T22:49:10Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -132,7 +132,7 @@
         "OAI/org": {
             "endpoints": {
                 "org_diff": {
-                    "lastSeenUpdatedAt": "2026-11-11T14:15:12+00:00"
+                    "lastSeenUpdatedAt": "2026-11-12T15:08:07+00:00"
                 }
             }
         },
@@ -190,8 +190,8 @@
         "Redocly/redocly-cli": {
             "endpoints": {
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-09T09:56:40Z",
-                    "lastTag": "@redocly/respect-core@2.77.0"
+                    "lastSeenUpdatedAt": "2026-11-12T15:01:25Z",
+                    "lastTag": "@redocly/respect-core@2.78.0"
                 }
             }
         },
@@ -252,40 +252,40 @@
         "npm.@usearazzo/cli": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-11T12:08:51+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.28"
+                    "lastSeenUpdatedAt": "2026-11-11T15:32:52+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.29"
                 }
             }
         },
         "npm.@usearazzo/parser": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-11T12:10:04+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.28"
+                    "lastSeenUpdatedAt": "2026-11-11T15:32:08+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.29"
                 }
             }
         },
         "npm.@usearazzo/resolver": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-11T12:10:10+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.28"
+                    "lastSeenUpdatedAt": "2026-11-11T15:33:35+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.29"
                 }
             }
         },
         "npm.@usearazzo/runner": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-11T12:13:21+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.28"
+                    "lastSeenUpdatedAt": "2026-11-11T15:35:19+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.29"
                 }
             }
         },
         "npm.@usearazzo/validator": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-11T12:11:16+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.28"
+                    "lastSeenUpdatedAt": "2026-11-11T15:33:11+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.29"
                 }
             }
         },
@@ -385,21 +385,21 @@
         "usearazzo/arazzo-toolkit": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-11T14:09:17Z"
+                    "lastSeenUpdatedAt": "2026-11-11T15:24:30Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-11T11:59:19Z"
+                    "lastSeenUpdatedAt": "2026-11-11T23:05:36Z"
                 },
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-11T12:06:44Z",
-                    "lastTag": "v1.0.1-alpha.28"
+                    "lastSeenUpdatedAt": "2026-11-11T15:30:36Z",
+                    "lastTag": "v1.0.1-alpha.29"
                 }
             }
         },
         "usearazzo/website": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-08T19:38:58Z"
+                    "lastSeenUpdatedAt": "2026-11-12T12:01:46Z"
                 }
             }
         },

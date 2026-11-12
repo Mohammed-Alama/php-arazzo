@@ -1,12 +1,13 @@
 # Ecosystem Feed — Digest
 
-> **Generated:** 2026-11-11T14:15:53+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
+> **Generated:** 2026-11-12T15:08:51+00:00 by `php scripts/ecosystem/poll.php` · **Internal · Daily · Repo-local** via `gh`
 > **Sources:** `config/ecosystem/sources.json` + `config/ecosystem/sources.oai.json` · **Watchlist:** `config/ecosystem/watchlist.json`
 > **Legend:** **Act** = worth a decision · **Watch** = context, collapsed · **Noise** = counted only
 
-## Act — since last digest (1)
+## Act — since last digest (2)
 
-- `2026-11-10` [v3.1: fix parameter object and style defaults test fixtures](https://github.com/OAI/OpenAPI-Specification/pull/5589) — `OAI/OpenAPI-Specification` · `pr.state_changed` · state `open` → `merged`
+- `2026-11-11` [fix: adds missing channel value for in](https://github.com/OAI/Arazzo-Specification/pull/615) — `OAI/Arazzo-Specification` · `pr.state_changed` · state `open` → `merged`
+- `2026-11-11` [fix(spec): use valid runtime expressions for message payload examples](https://github.com/OAI/Arazzo-Specification/pull/627) — `OAI/Arazzo-Specification` · `pr.state_changed` · state `open` → `merged`
 
 ## Watchlist — tracked upstream items
 
@@ -24,77 +25,72 @@
 ## Peer releases
 
 <details>
-<summary><code>Specmatic/specmatic</code> — 1</summary>
-
-- `2026-11-11` [2.56.1](https://github.com/specmatic/specmatic/releases/tag/2.56.1) — version → `2.56.1`
-
-</details>
-
-<details>
 <summary><code>npm.@usearazzo/cli</code> — 1</summary>
 
-- `2026-11-11` [@usearazzo/cli@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.28) — version → `1.0.1-alpha.28`
+- `2026-11-11` [@usearazzo/cli@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.29) — version → `1.0.1-alpha.29`
 
 </details>
 
 <details>
 <summary><code>npm.@usearazzo/parser</code> — 1</summary>
 
-- `2026-11-11` [@usearazzo/parser@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.28) — version → `1.0.1-alpha.28`
+- `2026-11-11` [@usearazzo/parser@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.29) — version → `1.0.1-alpha.29`
 
 </details>
 
 <details>
 <summary><code>npm.@usearazzo/resolver</code> — 1</summary>
 
-- `2026-11-11` [@usearazzo/resolver@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.28) — version → `1.0.1-alpha.28`
+- `2026-11-11` [@usearazzo/resolver@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.29) — version → `1.0.1-alpha.29`
 
 </details>
 
 <details>
 <summary><code>npm.@usearazzo/runner</code> — 1</summary>
 
-- `2026-11-11` [@usearazzo/runner@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.28) — version → `1.0.1-alpha.28`
+- `2026-11-11` [@usearazzo/runner@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.29) — version → `1.0.1-alpha.29`
 
 </details>
 
 <details>
 <summary><code>npm.@usearazzo/validator</code> — 1</summary>
 
-- `2026-11-11` [@usearazzo/validator@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.28) — version → `1.0.1-alpha.28`
+- `2026-11-11` [@usearazzo/validator@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.29) — version → `1.0.1-alpha.29`
 
 </details>
 
 <details>
 <summary><code>usearazzo/arazzo-toolkit</code> — 1</summary>
 
-- `2026-11-11` [v1.0.1-alpha.28](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.28) — version → `1.0.1-alpha.28`
+- `2026-11-11` [v1.0.1-alpha.29](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.29) — version → `1.0.1-alpha.29`
 
 </details>
 
 ## Meeting agenda
 
-_No scheduled meeting items._
+- `2026-11-11` [Meeting: Oct 28th, 2026](https://github.com/OAI/Arazzo-Specification/issues/621) — `OAI/Arazzo-Specification`
+- `2026-11-11` [Meeting: Nov 11th, 2026](https://github.com/OAI/Arazzo-Specification/issues/633) — `OAI/Arazzo-Specification`
 
-## Watch — 13 collapsed
+## Watch — 14 collapsed
 
 <details>
-<summary>13 topic-matched items — click to expand</summary>
+<summary>14 topic-matched items — click to expand</summary>
 
-- `2026-11-11` [feat(runner): add reference options for document retrieval](https://github.com/usearazzo/arazzo-toolkit/pull/343) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-11-11` [v1.0.1-alpha.28](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.28) — `usearazzo/arazzo-toolkit` · `release.published` · version → `1.0.1-alpha.28` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-11-11` [@usearazzo/validator@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.28) — `npm.@usearazzo/validator` · `package.version` · version → `1.0.1-alpha.28` · topics `json-schema` → `plan:php-arazzo-spec-suite-plan-index`
-- `2026-11-11` [runner: static credentials per source description (scoped securities)](https://github.com/usearazzo/arazzo-toolkit/issues/345) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `open` · topics `runner`, `security` → `plan:phase-e-runner-oms`, `plan:php-arazzo-spec-suite-plan-index`
-- `2026-11-11` [@usearazzo/runner@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.28) — `npm.@usearazzo/runner` · `package.version` · version → `1.0.1-alpha.28` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-11-11` [@usearazzo/parser@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.28) — `npm.@usearazzo/parser` · `package.version` · version → `1.0.1-alpha.28` · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
-- `2026-11-11` [@usearazzo/cli@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.28) — `npm.@usearazzo/cli` · `package.version` · version → `1.0.1-alpha.28` · topics `cli` → `plan:php-arazzo-spec-suite-plan-index`
-- `2026-11-11` [runner: verify and document protected source documents and mutual TLS](https://github.com/usearazzo/arazzo-toolkit/issues/310) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `closed` · topics `runner` → `plan:phase-e-runner-oms`
-- `2026-11-11` [@usearazzo/resolver@1.0.1-alpha.28](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.28) — `npm.@usearazzo/resolver` · `package.version` · version → `1.0.1-alpha.28`
-- `2026-11-11` [2.56.1](https://github.com/specmatic/specmatic/releases/tag/2.56.1) — `Specmatic/specmatic` · `release.published` · version → `2.56.1`
-- `2026-11-11` [v3.2: fix parameter object and style defaults test fixtures](https://github.com/OAI/OpenAPI-Specification/pull/5590) — `OAI/OpenAPI-Specification` · `entity.created` · state → `open`
-- `2026-11-11` [v3.3: fix parameter object and style defaults test fixtures](https://github.com/OAI/OpenAPI-Specification/pull/5591) — `OAI/OpenAPI-Specification` · `entity.created` · state → `open`
-- `2026-11-11` [OAI org diff: +1 -0](https://github.com/orgs/OAI/repositories) — `OAI/org` · `entity.created` · entity.created
+- `2026-11-11` [feat(runner): address execute options to a source description](https://github.com/usearazzo/arazzo-toolkit/pull/346) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `merged` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-11-11` [v1.0.1-alpha.29](https://github.com/usearazzo/arazzo-toolkit/releases/tag/v1.0.1-alpha.29) — `usearazzo/arazzo-toolkit` · `release.published` · version → `1.0.1-alpha.29` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-11-11` [@usearazzo/validator@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/validator/v/1.0.1-alpha.29) — `npm.@usearazzo/validator` · `package.version` · version → `1.0.1-alpha.29` · topics `json-schema` → `plan:php-arazzo-spec-suite-plan-index`
+- `2026-11-11` [runner: workflow execution profile — analyze what a run needs, pre-configure the runner with the filled artifact](https://github.com/usearazzo/arazzo-toolkit/issues/82) — `usearazzo/arazzo-toolkit` · `entity.created` · state → `open` · topics `runner`, `security` → `plan:phase-e-runner-oms`, `plan:php-arazzo-spec-suite-plan-index`
+- `2026-11-11` [@usearazzo/runner@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/runner/v/1.0.1-alpha.29) — `npm.@usearazzo/runner` · `package.version` · version → `1.0.1-alpha.29` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-11-11` [@usearazzo/cli@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/cli/v/1.0.1-alpha.29) — `npm.@usearazzo/cli` · `package.version` · version → `1.0.1-alpha.29` · topics `cli` → `plan:php-arazzo-spec-suite-plan-index`
+- `2026-11-11` [@usearazzo/parser@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/parser/v/1.0.1-alpha.29) — `npm.@usearazzo/parser` · `package.version` · version → `1.0.1-alpha.29` · topics `criterion-regex` → `plan:expression-evaluation-parity-hardening`
+- `2026-11-11` [runner: address execute options to a source description](https://github.com/usearazzo/arazzo-toolkit/issues/345) — `usearazzo/arazzo-toolkit` · `issue.state_changed` · state `open` → `closed` · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-11-11` [@usearazzo/resolver@1.0.1-alpha.29](https://www.npmjs.com/package/@usearazzo/resolver/v/1.0.1-alpha.29) — `npm.@usearazzo/resolver` · `package.version` · version → `1.0.1-alpha.29`
+- `2026-11-11` [feat(docs): restructure product pages around how each tool is used](https://github.com/usearazzo/website/commit/c8c9ea5c1a0e1c690468cb4521e877639f541678) — `usearazzo/website` · `entity.created` · entity.created · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-11-11` [feat(docs): document runner authentication and document retrieval](https://github.com/usearazzo/website/commit/ca786ce00c308586d3704aed23ce88362fc1bcb2) — `usearazzo/website` · `entity.created` · entity.created · topics `runner` → `plan:phase-e-runner-oms`
+- `2026-11-12` [feat(nav): add a Get started button to the header](https://github.com/usearazzo/website/commit/ef46272a9ed9ab1cad098e843c5802be534bd3a2) — `usearazzo/website` · `entity.created` · entity.created
+- `2026-11-12` [feat(docs): add a getting started guide and put guides first](https://github.com/usearazzo/website/commit/a4002c3308f32ad7965fb7a5b2d6024ed193e0b5) — `usearazzo/website` · `entity.created` · entity.created
+- `2026-11-12` [OAI org diff: +1 -0](https://github.com/orgs/OAI/repositories) — `OAI/org` · `entity.created` · entity.created
 
 </details>
 
-suppressed: 3 bot PRs, 2 dependency/CI noise
+suppressed: 3 bot PRs, 1 dependency/CI noise
