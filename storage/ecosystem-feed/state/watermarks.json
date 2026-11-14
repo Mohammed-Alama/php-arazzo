@@ -38,7 +38,7 @@
                     "lastSeenUpdatedAt": "2026-11-13T12:22:40Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-13T00:53:30Z"
+                    "lastSeenUpdatedAt": "2026-11-13T18:06:03Z"
                 },
                 "releases": {
                     "lastSeenUpdatedAt": "2026-05-18T11:11:50Z",
@@ -132,7 +132,7 @@
         "OAI/org": {
             "endpoints": {
                 "org_diff": {
-                    "lastSeenUpdatedAt": "2026-11-13T14:30:27+00:00"
+                    "lastSeenUpdatedAt": "2026-11-14T13:27:43+00:00"
                 }
             }
         },
@@ -252,40 +252,40 @@
         "npm.@usearazzo/cli": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:50:10+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.31"
+                    "lastSeenUpdatedAt": "2026-11-13T14:38:23+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.32"
                 }
             }
         },
         "npm.@usearazzo/parser": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:50:34+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.31"
+                    "lastSeenUpdatedAt": "2026-11-13T14:38:06+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.32"
                 }
             }
         },
         "npm.@usearazzo/resolver": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:49:49+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.31"
+                    "lastSeenUpdatedAt": "2026-11-13T14:42:03+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.32"
                 }
             }
         },
         "npm.@usearazzo/runner": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:52:57+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.31"
+                    "lastSeenUpdatedAt": "2026-11-13T14:41:16+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.32"
                 }
             }
         },
         "npm.@usearazzo/validator": {
             "endpoints": {
                 "npm": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:52:50+00:00",
-                    "lastSeenVersion": "1.0.1-alpha.31"
+                    "lastSeenUpdatedAt": "2026-11-13T14:40:10+00:00",
+                    "lastSeenVersion": "1.0.1-alpha.32"
                 }
             }
         },
@@ -385,21 +385,21 @@
         "usearazzo/arazzo-toolkit": {
             "endpoints": {
                 "issues": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:10:21Z"
+                    "lastSeenUpdatedAt": "2026-11-14T06:56:22Z"
                 },
                 "pulls": {
-                    "lastSeenUpdatedAt": "2026-11-13T14:29:19Z"
+                    "lastSeenUpdatedAt": "2026-11-13T14:30:47Z"
                 },
                 "releases": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:48:11Z",
-                    "lastTag": "v1.0.1-alpha.31"
+                    "lastSeenUpdatedAt": "2026-11-13T14:36:39Z",
+                    "lastTag": "v1.0.1-alpha.32"
                 }
             }
         },
         "usearazzo/website": {
             "endpoints": {
                 "commits": {
-                    "lastSeenUpdatedAt": "2026-11-13T13:44:09Z"
+                    "lastSeenUpdatedAt": "2026-11-13T20:01:34Z"
                 }
             }
         },
