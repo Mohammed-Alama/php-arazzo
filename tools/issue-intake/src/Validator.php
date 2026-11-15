@@ -323,11 +323,11 @@ final class Validator
         }
 
         if ($level !== null) {
-            $this->checkLevel($level, $parent, $parentLevel, $findings);
+            $this->checkLevel($level, $parent, $parentLevel, $labels, $findings);
             $this->checkPackageLabel($level, $labels, $findings);
         }
 
-        return $findings;
+        return $this->demoteLightProfile($level, $findings);
     }
 
     /**
@@ -1194,15 +1194,63 @@ final class Validator
         return false;
     }
 
+    /**
+     * D14 light profile: a level may demote check codes from `error` to
+     * `warning`, and may demote whole sections (`missing-section`,
+     * `empty-section` and every content code they own) to advisory. Applied
+     * to every finding after collection, so `validate()` sees only the
+     * remaining errors while `report()` still lists the warnings.
+     *
+     * @param  list<Finding>  $findings
+     * @return list<Finding>
+     */
+    private function demoteLightProfile(?string $level, array $findings): array
+    {
+        if ($level === null) {
+            return $findings;
+        }
+
+        $codes = $this->schema->demotionsFor($level);
+        $sections = $this->schema->demotedSectionsFor($level);
+
+        if ($codes === [] && $sections === []) {
+            return $findings;
+        }
+
+        return array_map(
+            function (Finding $finding) use ($codes, $sections): Finding {
+                $demoted = in_array($finding->code, $codes, true)
+                    || ($finding->section !== null && in_array($finding->section, $sections, true));
+
+                return $demoted
+                    ? new Finding($finding->code, $finding->message, 'warning', $finding->section)
+                    : $finding;
+            },
+            $findings,
+        );
+    }
+
+    /**
+     * Cross-cutting parent exemption (D14): when the level's parent rule
+     * carries `exempt_if: no_single_package_label`, an issue naming zero
+     * or several `package:*` labels is not required to sit under a parent
+     * — an epic indexes packages rather than living under one.
+     */
+    private function parentExempt(string $level, array $labels): bool
+    {
+        return $this->schema->exemptParentWhen($level) === 'no_single_package_label'
+            && count(array_filter($labels, static fn (string $label): bool => str_starts_with($label, 'package:'))) !== 1;
+    }
+
     /** @param list<Finding> $findings */
-    private function checkLevel(string $level, ?int $parent, ?string $parentLevel, array &$findings): void
+    private function checkLevel(string $level, ?int $parent, ?string $parentLevel, array $labels, array &$findings): void
     {
         $parentRule = $this->schema->levels()[$level]['parent'] ?? null;
         $allowed = is_array($parentRule) ? self::strings($parentRule['allowed_parent_levels'] ?? []) : [];
         $required = is_array($parentRule) && ($parentRule['required'] ?? false);
 
         if ($parent === null) {
-            if ($required) {
+            if ($required && !$this->parentExempt($level, $labels)) {
                 $findings[] = new Finding('parent-missing', sprintf(
                     'A %s issue must sit under a parent (%s). Link one, or file the parent first.',
                     $level, implode(', ', $allowed),

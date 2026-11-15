@@ -285,7 +285,7 @@ it('requires an epic to sit under a package-epic', function () {
             'impact-profile' => 'API: none · BC break: no',
             'core-metadata' => 'Package: core · Parent: #1',
         ]),
-        'labels' => ['kind:bugfix', 'level:epic'],
+        'labels' => ['kind:bugfix', 'level:epic', 'package:core'],
         'parent' => null,
         'parentLevel' => null,
     ]);
@@ -428,4 +428,53 @@ it('accepts T1-T4 and rejects any other tier', function () {
 
     expect($run($good))->not->toContain('tier-invalid')
         ->and($run($bad))->toContain('tier-invalid');
+});
+
+it('demotes source-grounding and Test-line errors for an epic', function () {
+    $schema = arazzoSchema();
+    $input = [
+        'body' => issueBody($schema, featureSectionIds(), [
+            'acceptance-criteria' => "S1 (R1, Reliable): x\n  Given a\n  When b\n  Then it throws DomainException",
+        ]),
+        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ];
+    $validator = new Validator($schema);
+
+    expect(codes($validator->validate($input)))->not->toContain('scenario-no-test')
+        ->and(codes($validator->report($input)))->toContain('scenario-no-test');
+});
+
+it('warns rather than errors when an epic omits feature-scope and epistemic-matrix', function () {
+    $schema = arazzoSchema();
+    $ids = array_values(array_diff(featureSectionIds(), ['feature-scope', 'epistemic-matrix']));
+    $input = [
+        'body' => issueBody($schema, $ids),
+        'labels' => ['kind:feature', 'level:epic', 'package:core'],
+        'parent' => 1, 'parentLevel' => 'level:package',
+    ];
+    $validator = new Validator($schema);
+
+    expect(codes($validator->validate($input)))->not->toContain('missing-section')
+        ->and(codes($validator->report($input)))->toContain('missing-section');
+});
+
+it('lets an epic with zero or two package labels have no parent', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds()),
+        'labels' => ['kind:feature', 'level:epic', 'package:a', 'package:b'],
+        'parent' => null, 'parentLevel' => null,
+    ]);
+
+    expect(codes($findings))->not->toContain('parent-missing');
+});
+
+it('still refuses a story with no parent', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds()),
+        'labels' => ['kind:feature', 'level:story'], 'parent' => null, 'parentLevel' => null,
+    ]);
+
+    expect(codes($findings))->toContain('parent-missing');
 });

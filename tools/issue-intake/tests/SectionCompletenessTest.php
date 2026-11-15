@@ -15,9 +15,16 @@ function contentCodes(string $kind, array $ids, array $content, int $parent = 10
     ]));
 }
 
-it('flags a feature scope with no non-goals', function () {
-    expect(contentCodes('kind:feature', featureSectionIds(), ['feature-scope' => 'Goals: x']))
-        ->toContain('non-goals-missing');
+it('treats a feature scope with no non-goals as advisory for an epic', function () {
+    $schema = arazzoSchema();
+    $validator = new Validator($schema);
+    $input = [
+        'body' => issueBody($schema, featureSectionIds(), ['feature-scope' => 'Goals: x']),
+        'labels' => ['kind:feature', 'level:epic'], 'parent' => 10, 'parentLevel' => 'level:package',
+    ];
+
+    expect(codes($validator->validate($input)))->not->toContain('non-goals-missing')
+        ->and(codes($validator->report($input)))->toContain('non-goals-missing');
 });
 
 it('flags an affected surface with no rollback line', function () {
