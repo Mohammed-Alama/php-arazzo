@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Alama\Tools\IssueIntake\Finding;
 use Alama\Tools\IssueIntake\Schema;
 use Symfony\Component\Process\Process;
 
@@ -104,7 +105,7 @@ function conformingBody(Schema $schema, string $kind, ?int $parent = null): stri
     return issueBody($schema, $schema->requiredIdsFor($kind), conformingSections($schema, $kind, $parent));
 }
 
-/** @param  list<\Alama\Tools\IssueIntake\Finding>  $findings  @return list<string> */
+/** @param  list<Finding>  $findings  @return list<string> */
 function codes(array $findings): array
 {
     return array_map(static fn ($finding): string => $finding->code, $findings);

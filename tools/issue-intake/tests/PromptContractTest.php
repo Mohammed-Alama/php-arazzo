@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Alama\Tools\IssueIntake\Schema;
 use Alama\Tools\IssueIntake\Validator;
 use Symfony\Component\Process\Process;
 
@@ -48,7 +47,7 @@ it('validates every worked example against the engine', function () {
         // stub, only this section's own checks can be held to that.
         expect(array_intersect(codes($findings), array_keys($schema->checksFor($id))))->toBe([]);
     }
-    });
+});
 
 it('has a prompt for every required section except core-metadata', function () {
     $schema = arazzoSchema();
@@ -96,6 +95,7 @@ it('names each section-owned code in that section prompt', function () {
         if ($id === 'core-metadata') {
             expect(file_get_contents(dirname(__DIR__, 3).'/.agents/skills/file-issue/SKILL.md'))
                 ->toContain('parent-mismatch');
+
             continue;
         }
 

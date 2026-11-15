@@ -18,7 +18,7 @@ final class Validator
     /** GitHub renders this for a form field the reporter left blank. */
     private const NO_RESPONSE = '_No response_';
 
-    private const QUALITIES = ['Efficient','Flexible','Maintainable','Operable','Reliable','Safe','Secure','Suitable','Usable'];
+    private const QUALITIES = ['Efficient', 'Flexible', 'Maintainable', 'Operable', 'Reliable', 'Safe', 'Secure', 'Suitable', 'Usable'];
 
     public function __construct(private readonly Schema $schema, private readonly ?PermalinkResolver $resolver = null) {}
 
@@ -131,6 +131,7 @@ final class Validator
         foreach (Content::lines(implode("\n\n", $parsed[$key])) as $line) {
             if (!$started) {
                 $started = true;
+
                 continue;
             }
 
@@ -151,8 +152,6 @@ final class Validator
     /**
      * The level the issue resolves to, without recording any finding —
      * readiness reports, it does not validate.
-     *
-     * @return string|null
      */
     private function readinessLevel(array $input): ?string
     {
@@ -611,7 +610,7 @@ final class Validator
 
         $hasBare = Content::barePermalinks($text) !== [];
 
-        if (! $hasBare) {
+        if (!$hasBare) {
             $findings[] = new Finding(
                 'source-grounding-empty',
                 'Source grounding names no bare commit-pinned permalink — add one per claim: '
@@ -732,6 +731,7 @@ final class Validator
             // The first table line is the header — never a data row.
             if (!$started) {
                 $started = true;
+
                 continue;
             }
 
@@ -804,7 +804,7 @@ final class Validator
                 $findings[] = new Finding(
                     'scenario-shape',
                     "Scenario {$scenario} breaks the Given → When → Then shape: "
-                    ."at least one Given, exactly one When, at least one Then, in that order.",
+                    .'at least one Given, exactly one When, at least one Then, in that order.',
                     $severities['scenario-shape'] ?? 'error',
                     'acceptance-criteria',
                 );
@@ -859,7 +859,7 @@ final class Validator
         if ($uncovered !== []) {
             $findings[] = new Finding(
                 'requirement-uncovered',
-                'Requirement(s) not referenced by any S# scenario: ' . implode(', ', $uncovered),
+                'Requirement(s) not referenced by any S# scenario: '.implode(', ', $uncovered),
                 $severities['requirement-uncovered'] ?? 'error',
                 'acceptance-criteria',
             );
@@ -917,7 +917,7 @@ final class Validator
         if ($missing !== []) {
             $findings[] = new Finding(
                 'quality-coverage-missing',
-                'Quality coverage table is missing these qualities: ' . implode(', ', $missing),
+                'Quality coverage table is missing these qualities: '.implode(', ', $missing),
                 $severities['quality-coverage-missing'] ?? 'error',
                 'acceptance-criteria',
             );
@@ -966,7 +966,7 @@ final class Validator
 
                 $findings[] = new Finding(
                     'vague-then',
-                    'Vague Then/And step names no concrete outcome: ' . trim($line),
+                    'Vague Then/And step names no concrete outcome: '.trim($line),
                     $severities['vague-then'] ?? 'error',
                     'acceptance-criteria',
                 );

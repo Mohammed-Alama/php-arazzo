@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
+use Alama\Tools\IssueIntake\Finding;
 use Alama\Tools\IssueIntake\Validator;
 
-/** @param  list<\Alama\Tools\IssueIntake\Finding>  $findings  @return list<string> */
+/** @param  list<Finding>  $findings  @return list<string> */
 function contentCodes(string $kind, array $ids, array $content, int $parent = 10): array
 {
     $schema = arazzoSchema();

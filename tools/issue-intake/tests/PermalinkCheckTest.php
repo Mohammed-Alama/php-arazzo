@@ -7,10 +7,22 @@ use Alama\Tools\IssueIntake\Validator;
 
 it('rejects a branch link and a missing path at a known SHA', function () {
     $schema = arazzoSchema();
-    $resolver = new class implements PermalinkResolver {
-        public function pathExistsAt(string $sha, string $path): bool { return $path === 'exists.php'; }
-        public function isKnown(string $sha): bool { return true; }
-        public function isAncestor(string $sha): bool { return true; }
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return $path === 'exists.php';
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return true;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return true;
+        }
     };
     $sha = str_repeat('a', 40);
     $text = "- claim\nhttps://github.com/o/r/blob/main/a.php#L1-L2\n"
@@ -26,10 +38,22 @@ it('rejects a branch link and a missing path at a known SHA', function () {
 
 it('warns instead of erroring when the SHA is not in the clone', function () {
     $schema = arazzoSchema();
-    $resolver = new class implements PermalinkResolver {
-        public function pathExistsAt(string $sha, string $path): bool { return false; }
-        public function isKnown(string $sha): bool { return false; }
-        public function isAncestor(string $sha): bool { return false; }
+    $resolver = new class() implements PermalinkResolver
+    {
+        public function pathExistsAt(string $sha, string $path): bool
+        {
+            return false;
+        }
+
+        public function isKnown(string $sha): bool
+        {
+            return false;
+        }
+
+        public function isAncestor(string $sha): bool
+        {
+            return false;
+        }
     };
     $sha = str_repeat('b', 40);
 

@@ -20,6 +20,7 @@ require_once __DIR__.'/PermalinkResolver.php';
 final class IssueInventory
 {
     public const FORMAT_TSV = 'tsv';
+
     public const FORMAT_JSON = 'json';
 
     /** @return list<array{number:int, title:string, kind:?string, level:?string, dialect:string, missing:list<string>, requirements:int, scenarios:int, tests:int, permalinks:int, permalink_shas_resolve:int, errors:list<string>, warnings:list<string>, ready:bool}> */

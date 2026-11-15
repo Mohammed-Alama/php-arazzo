@@ -15,9 +15,7 @@ namespace Alama\Tools\IssueIntake;
  */
 final class Content
 {
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * All occurrences of one section joined with `"\n\n"`, or `''` when the
@@ -126,7 +124,7 @@ final class Content
         $inFence = false;
 
         foreach (self::lines($text) as $line) {
-            if (! $inFence) {
+            if (!$inFence) {
                 if (preg_match('/^\s*```/', $line) === 1) {
                     $inFence = true;
                 }

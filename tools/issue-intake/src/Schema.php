@@ -194,7 +194,7 @@ final class Schema
             foreach ($rawChecks as $code => $severity) {
                 if (!is_string($code) || !is_string($severity) || !in_array($severity, self::CHECK_SEVERITIES, true)) {
                     throw new InvalidArgumentException(
-                        "Section \"{$id}\" declares an invalid check \"{$code}\" (expected one of: ".implode(', ', self::CHECK_SEVERITIES).").",
+                        "Section \"{$id}\" declares an invalid check \"{$code}\" (expected one of: ".implode(', ', self::CHECK_SEVERITIES).').',
                     );
                 }
 
@@ -209,7 +209,7 @@ final class Schema
         $rawTitleChecks = $data['title_checks'] ?? [];
 
         if (!is_array($rawTitleChecks)) {
-            throw new InvalidArgumentException("title_checks must be a mapping.");
+            throw new InvalidArgumentException('title_checks must be a mapping.');
         }
 
         $titleChecks = [];
@@ -217,7 +217,7 @@ final class Schema
         foreach ($rawTitleChecks as $code => $severity) {
             if (!is_string($code) || !is_string($severity) || !in_array($severity, self::CHECK_SEVERITIES, true)) {
                 throw new InvalidArgumentException(
-                    "title_checks.\"{$code}\" must be one of: ".implode(', ', self::CHECK_SEVERITIES).".",
+                    "title_checks.\"{$code}\" must be one of: ".implode(', ', self::CHECK_SEVERITIES).'.',
                 );
             }
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Alama\Tools\IssueIntake;
 
-use Symfony\Component\Process\Process;
-
 /**
  * Verifies a commit-pinned permalink against a local clone.
  *

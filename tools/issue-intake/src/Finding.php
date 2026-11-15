@@ -16,8 +16,8 @@ namespace Alama\Tools\IssueIntake;
 final readonly class Finding
 {
     /**
-     * @param  string  $code      Stable machine-readable finding code.
-     * @param  string  $message   Human-facing, actionable text.
+     * @param  string  $code  Stable machine-readable finding code.
+     * @param  string  $message  Human-facing, actionable text.
      * @param  string  $severity  'error' or 'warning' (defaults to 'error').
      * @param  string|null  $section  Section id the finding is about, or null.
      */
