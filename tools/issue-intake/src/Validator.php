@@ -18,7 +18,7 @@ final class Validator
 
     private const QUALITIES = ['Efficient','Flexible','Maintainable','Operable','Reliable','Safe','Secure','Suitable','Usable'];
 
-    public function __construct(private readonly Schema $schema) {}
+    public function __construct(private readonly Schema $schema, private readonly ?PermalinkResolver $resolver = null) {}
 
     /**
      * All findings whose severity is `error` — the conformance verdict.
@@ -114,6 +114,7 @@ final class Validator
         if ($kind !== null && !$this->sectionsExempt($level)) {
             $this->checkSections($kind, $parsed, $findings);
             $this->checkSectionContent($kind, $parsed, $findings);
+            $this->checkPermalinks($parsed, $findings);
         }
 
         if ($kind !== null && $title !== '') {
@@ -189,6 +190,108 @@ final class Validator
 
             $this->checkChecklistItems($acText, $findings);
         }
+    }
+
+    /**
+     * Permalink verification on the source-grounding section (spec §7): every
+     * line mentioning `blob/` must be a bare, commit-pinned URL; bare URLs
+     * must be known to the clone and name a path that exists at that SHA.
+     * Runs only when a resolver was injected — without one the engine stays
+     * pure and reports nothing here.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkPermalinks(array $parsed, array &$findings): void
+    {
+        if ($this->resolver === null) {
+            return;
+        }
+
+        $severities = $this->schema->checks();
+        $key = SectionParser::normalise($this->schema->section('source-grounding')['heading']);
+
+        if (!array_key_exists($key, $parsed)) {
+            return;
+        }
+
+        $text = self::stripWrappers(implode("\n\n", $parsed[$key]));
+
+        $hasBare = Content::barePermalinks($text) !== [];
+
+        if (! $hasBare) {
+            $findings[] = new Finding(
+                'source-grounding-empty',
+                'Source grounding names no bare commit-pinned permalink — add one per claim: '
+                .'https://github.com/<owner>/<repo>/blob/<40-hex-sha>/<path>#L<start>-L<end>',
+                $severities['source-grounding-empty'] ?? 'error',
+                'source-grounding',
+            );
+        }
+
+        foreach (Content::lines($text) as $line) {
+            if (str_contains($line, 'blob/') === false) {
+                continue;
+            }
+
+            $trimmed = trim($line);
+
+            // A wrapped permalink ([label](url), <a href>, text then URL) is
+            // not bare — it fails as not-bare, never as a bare permalink.
+            if (preg_match('/^https?:\/\/\S+$/', $trimmed) !== 1) {
+                $findings[] = new Finding(
+                    'permalink-not-bare',
+                    'Permalink is not a bare URL: "'.$trimmed.'" — paste the URL on its own line.',
+                    $severities['permalink-not-bare'] ?? 'error',
+                    'source-grounding',
+                );
+
+                continue;
+            }
+
+            if (preg_match('~^https://github\.com/[^/]+/[^/]+/blob/([0-9a-f]{40})/([^#]+)#L(\d+)-L(\d+)$~', $trimmed, $match) !== 1) {
+                $findings[] = new Finding(
+                    'permalink-invalid',
+                    'Permalink is not pinned to a commit SHA with a line range: "'.$trimmed.'"',
+                    $severities['permalink-invalid'] ?? 'error',
+                    'source-grounding',
+                );
+
+                continue;
+            }
+
+            $sha = $match[1];
+            $path = $match[2];
+
+            if (!$this->resolver->isKnown($sha)) {
+                $findings[] = new Finding(
+                    'permalink-unverifiable',
+                    "Commit {$sha} is not in this clone — the permalink cannot be verified.",
+                    $severities['permalink-unverifiable'] ?? 'warning',
+                    'source-grounding',
+                );
+
+                continue;
+            }
+
+            if (!$this->resolver->pathExistsAt($sha, $path)) {
+                $findings[] = new Finding(
+                    'permalink-invalid',
+                    "Path \"{$path}\" does not exist at {$sha} — the permalink points at nothing.",
+                    $severities['permalink-invalid'] ?? 'error',
+                    'source-grounding',
+                );
+            }
+        }
+    }
+
+    /**
+     * Strips `<details>`/`<summary>` wrapper tags while keeping their inner
+     * content, so a wrapped permalink still reads as a non-bare line instead
+     * of disappearing from the check entirely.
+     */
+    private static function stripWrappers(string $text): string
+    {
+        return preg_replace('/<\/?(details|summary)(\s[^>]*)?>/i', '', $text);
     }
 
     /**

@@ -4,6 +4,7 @@
 declare(strict_types=1);
 
 use Alama\Tools\IssueIntake\Finding;
+use Alama\Tools\IssueIntake\GitPermalinkResolver;
 use Alama\Tools\IssueIntake\Schema;
 use Alama\Tools\IssueIntake\Validator;
 
@@ -36,7 +37,8 @@ if (!is_array($decoded)) {
     exit(2);
 }
 
-$schemaPath = getenv('ISSUE_INTAKE_SCHEMA') ?: dirname(__DIR__, 3).'/config/issues/schema.yaml';
+$root = dirname(__DIR__, 3);
+$schemaPath = getenv('ISSUE_INTAKE_SCHEMA') ?: $root.'/config/issues/schema.yaml';
 
 try {
     $schema = Schema::fromFile($schemaPath);
@@ -45,7 +47,7 @@ try {
     exit(2);
 }
 
-$validator = new Validator($schema);
+$validator = new Validator($schema, new GitPermalinkResolver($root));
 $input = [
     'body' => is_string($decoded['body'] ?? null) ? $decoded['body'] : '',
     'labels' => is_array($decoded['labels'] ?? null) ? $decoded['labels'] : [],
