@@ -21,10 +21,10 @@ any indexed prompt to stdout.
 | `runtime-state` | `write-runtime-state.md` | none |
 | `impact-profile` | `write-impact-profile.md` | `bc-line-missing` |
 | `epistemic-matrix` | `write-epistemic-matrix.md` | `tier-invalid` |
+| `source-grounding` | `write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `source-grounding-empty` |
 
-The remaining section prompt — `write-source-grounding.md` — plus the
-orchestrator and reviewer prompts are added by later tasks of the tooling
-plan; this index grows with them.
+The remaining prompts — the orchestrator and reviewer — are added by later
+tasks of the tooling plan; this index grows with them.
 
 ## Reachable through `--prompt`
 
