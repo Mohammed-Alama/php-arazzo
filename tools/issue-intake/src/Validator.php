@@ -24,6 +24,7 @@ final class Validator
      * @param  array{
      *     body?: string,
      *     labels?: list<string>,
+     *     title?: string,
      *     parent?: int|null,
      *     parentLevel?: string|null,
      * }  $input
@@ -44,6 +45,7 @@ final class Validator
      * @param  array{
      *     body?: string,
      *     labels?: list<string>,
+     *     title?: string,
      *     parent?: int|null,
      *     parentLevel?: string|null,
      * }  $input
@@ -87,6 +89,7 @@ final class Validator
      * @param  array{
      *     body?: string,
      *     labels?: list<string>,
+     *     title?: string,
      *     parent?: int|null,
      *     parentLevel?: string|null,
      * }  $input
@@ -96,6 +99,7 @@ final class Validator
     {
         $body = $input['body'] ?? '';
         $labels = self::strings($input['labels'] ?? []);
+        $title = $input['title'] ?? '';
         $parent = $input['parent'] ?? null;
         $parentLevel = $input['parentLevel'] ?? null;
 
@@ -108,6 +112,10 @@ final class Validator
         if ($kind !== null && !$this->sectionsExempt($level)) {
             $this->checkSections($kind, $parsed, $findings);
             $this->checkSectionContent($kind, $parsed, $findings);
+        }
+
+        if ($kind !== null && $title !== '') {
+            $this->checkTitle($title, $kind, $findings);
         }
 
         if ($level !== null) {
@@ -146,6 +154,62 @@ final class Validator
                 }
             }
         }
+    }
+
+    /**
+     * title-kind-mismatch (Schema::checks()): when the issue declares a kind
+     * and a title, the title must open with one of that kind's conventional
+     * prefixes (`feat(core):`, `fix:`, …). The prefix is parsed as
+     * `^(prefix)(\(|!?:)`. Severity comes from the schema, defaulting to
+     * `error`.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkTitle(string $title, string $kind, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+        $allowed = self::allowedPrefixes($kind);
+        $prefix = self::parsePrefix($title, $allowed);
+
+        if ($prefix === null) {
+            $findings[] = new Finding(
+                'title-kind-mismatch',
+                sprintf(
+                    'Title "%s" does not open with an allowed prefix for %s — expected one of: %s.',
+                    $title, $kind, implode(', ', $allowed),
+                ),
+                $severities['title-kind-mismatch'] ?? 'error',
+            );
+        }
+    }
+
+    /** @return list<string> */
+    private static function allowedPrefixes(string $kind): array
+    {
+        return match ($kind) {
+            'kind:feature' => ['feat'],
+            'kind:bugfix' => ['fix'],
+            'kind:release' => ['release'],
+            'kind:chore' => ['chore', 'refactor', 'test', 'docs', 'build', 'ci', 'perf', 'style'],
+        };
+    }
+
+    /**
+     * Parses the conventional prefix of a title as `^(prefix)(\(|!?:)`.
+     *
+     * @param  list<string>  $allowed
+     * @return string|null The matched prefix, or null when the title opens
+     *                     with nothing allowed for the kind.
+     */
+    private static function parsePrefix(string $title, array $allowed): ?string
+    {
+        foreach ($allowed as $prefix) {
+            if (preg_match('/^'.preg_quote($prefix, '/').'(\(|!?:)/', $title) === 1) {
+                return $prefix;
+            }
+        }
+
+        return null;
     }
 
     /** A package-epic reports no work; it indexes it, so it carries no kind. */

@@ -268,6 +268,7 @@ $labels = $packageEpic ? [$level, 'package:'.$package] : [$kind, $level];
 $findings = (new Validator($schema))->validate([
     'body' => $body,
     'labels' => $labels,
+    'title' => $options['title'],
     'parent' => $parent,
     'parentLevel' => $parentLevel,
 ]);

@@ -82,7 +82,7 @@ it('blocks an incomplete issue create before calling real gh', function () {
     $marker = tempnam(sys_get_temp_dir(), 'marker');
 
     $process = runShim(
-        ['issue', 'create', '--title', 'x', '--body', 'nothing', '--label', 'kind:bugfix', '--label', 'level:package'],
+        ['issue', 'create', '--title', 'fix(core): x', '--body', 'nothing', '--label', 'kind:bugfix', '--label', 'level:package'],
         $marker, $log,
     );
 
@@ -96,7 +96,7 @@ it('delegates a conforming issue create untouched', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', conformingBody(arazzoSchema(), 'kind:bugfix', 1),
+        'issue', 'create', '--title', 'fix(core): x', '--body', conformingBody(arazzoSchema(), 'kind:bugfix', 1),
         '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log);
 
@@ -110,7 +110,7 @@ it('reads --body-file - once and re-supplies it downstream', function () {
     $body = conformingBody(arazzoSchema(), 'kind:bugfix', 1);
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
+        'issue', 'create', '--title', 'fix(core): x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log, null, ['GATE_STUB_CAPTURE' => $capture], $body);
 
     expect($process->getExitCode())->toBe(0)
@@ -143,7 +143,7 @@ it('refuses a story whose parent has no level label', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
+        'issue', 'create', '--title', 'fix(core): x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
         '--label', 'kind:bugfix', '--label', 'level:story', '--parent', '99',
     ], $gh, $log, null, ['GATE_STUB_LABELS' => '[{"name":"kind:chore"}]']);
 
@@ -305,4 +305,17 @@ it('reads --body-file - for a PR and re-supplies it downstream', function () {
     expect($process->getExitCode())->toBe(0)
         ->and(file_get_contents($log))->toContain('pr create')
         ->and(file_get_contents($capture))->toBe("Closes #214\n");
+});
+
+it('refuses a shimmed create whose title prefix contradicts the kind', function () {
+    [$gh] = shimStub();
+    $log = tempnam(sys_get_temp_dir(), 'log');
+
+    $process = runShim([
+        'issue', 'create', '--title', '[Feature] add x', '--body', 'nothing',
+        '--label', 'kind:feature', '--label', 'level:story', '--parent', '99',
+    ], $gh, $log);
+
+    expect($process->getExitCode())->toBe(1)
+        ->and($process->getErrorOutput())->toContain('title-kind-mismatch');
 });

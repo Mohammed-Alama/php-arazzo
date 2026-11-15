@@ -243,6 +243,28 @@ it('requires an epic to sit under a package-epic', function () {
     expect(codes($findings))->toBe(['parent-missing']);
 });
 
+it('accepts a conventional prefix that matches the kind', function () {
+    $schema = arazzoSchema();
+    foreach (['feat(core): add x', 'feat: add x'] as $title) {
+        $findings = (new Validator($schema))->validate([
+            'title' => $title, 'body' => issueBody($schema, featureSectionIds()),
+            'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        ]);
+        expect(codes($findings))->not->toContain('title-kind-mismatch');
+    }
+});
+
+it('rejects a bracket title and a prefix that belongs to another kind', function () {
+    $schema = arazzoSchema();
+    foreach (['[Feature] add x', 'fix(core): add x'] as $title) {
+        $findings = (new Validator($schema))->validate([
+            'title' => $title, 'body' => issueBody($schema, featureSectionIds()),
+            'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        ]);
+        expect(codes($findings))->toContain('title-kind-mismatch');
+    }
+});
+
 it('returns warnings only from report(), never from validate()', function () {
     $schema = arazzoSchema();
     $validator = new Validator($schema);
