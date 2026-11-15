@@ -26,35 +26,6 @@ it('resolves the owner/name slug from every github remote form', function (strin
     'empty' => ['', null],
 ]);
 
-it('folds the snippet behind a <details> summary that keeps the permalink visible', function () {
-    $permalink = new Permalink('Mohammed-Alama/php-arazzo', 'abc1234def');
-    $details = $permalink->details(SourceLocation::parse('src/Foo.php:3-4'), "    \$x = 1;\n    return \$x;");
-
-    expect($details)->toBe(implode("\n", [
-        '<details><summary><a href="https://github.com/Mohammed-Alama/php-arazzo/blob/abc1234def/src/Foo.php#L3-L4"><code>src/Foo.php:3-4</code></a> @ <code>abc1234</code></summary>',
-        '',
-        '```php',
-        '    $x = 1;',
-        '    return $x;',
-        '```',
-        '',
-        '</details>',
-    ]));
-});
-
-it('infers the fence language from the extension, defaulting to a plain fence', function (string $path, string $expected) {
-    $details = (new Permalink('o/r', 'abc1234'))->details(SourceLocation::parse($path.':1'), 'x');
-
-    preg_match('/^```(.*)$/m', $details, $matches);
-
-    expect($matches[1] ?? null)->toBe($expected);
-})->with([
-    'php' => ['src/Foo.php', 'php'],
-    'yaml' => ['config/x.yml', 'yaml'],
-    'json' => ['composer.json', 'json'],
-    'unknown' => ['LICENSE', ''],
-]);
-
 it('rejects a repo that is not owner/name or a non-hex SHA', function (string $repo, string $sha) {
     new Permalink($repo, $sha);
 })->with([

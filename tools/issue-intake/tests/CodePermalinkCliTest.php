@@ -34,16 +34,17 @@ it('prints a permalink pinned to the resolved commit', function () {
         );
 });
 
-it('folds the snippet into a <details> block with --fold', function () {
-    $process = runCodePermalink('config/issues/schema.yaml:1-2', '--repo=Mohammed-Alama/php-arazzo', '--fold');
-    $output = $process->getOutput();
+it('prints only the bare permalink', function () {
+    $process = runCodePermalink('config/issues/schema.yaml:1-2', '--repo=Mohammed-Alama/php-arazzo');
 
     expect($process->getExitCode())->toBe(0)
-        ->and($output)->toContain(
-            '<details><summary><a href="https://github.com/Mohammed-Alama/php-arazzo/blob/'.headSha().'/config/issues/schema.yaml#L1-L2">',
-        )
-        ->and($output)->toContain('```yaml')
-        ->and($output)->toContain('</details>');
+        ->and(trim($process->getOutput()))->toBe(
+            'https://github.com/Mohammed-Alama/php-arazzo/blob/'.headSha().'/config/issues/schema.yaml#L1-L2',
+        );
+});
+
+it('rejects --fold', function () {
+    expect(runCodePermalink('config/issues/schema.yaml:1-2', '--repo=Mohammed-Alama/php-arazzo', '--fold')->getExitCode())->toBe(2);
 });
 
 it('exits 2 for a malformed location', function () {
