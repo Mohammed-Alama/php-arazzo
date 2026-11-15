@@ -16,7 +16,13 @@ use Alama\Tools\IssueIntake\Validator;
  * print, before any network call that mutates state.
  *
  * usage: file-issue.php --kind=<kind> --level=<level> --title=<title> \
- *            --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>]
+ *            --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--prompt=<section-id>]
+ *
+ * With `--prompt=<section-id>` the script prints the section prompt file
+ * (`.agents/skills/file-issue/prompts/write-<section-id>.md`, or the
+ * cross-cutting `preamble`/`readme` ids) to stdout and exits `0`. An unknown
+ * id exits `2` with the available ids. Nothing is validated or filed in this
+ * mode.
  *
  * `--sections` is a JSON object mapping a section id to markdown content
  * (`-` reads stdin). Section ids come from config/issues/schema.yaml; unknown
@@ -42,7 +48,7 @@ function fail(string $message, int $code = 2): void
 function usage(): void
 {
     fwrite(STDOUT, <<<'TXT'
-        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>]
+        usage: file-issue.php --kind=<kind> --level=<level> --title=<title> --sections=<file|-> [--parent=<n>] [--edit=<n>] [--repo=<owner/name>] [--package=<name>] [--prompt=<section-id>]
 
           --kind=<kind>        one of: bug, enhancement, chore
           --level=<label>      one of: level:package, level:epic, level:story, level:task
@@ -52,6 +58,7 @@ function usage(): void
           --edit=<n>           edit issue <n> instead of creating a new one
           --repo=<owner/name>  target repository (defaults to the current one)
           --package=<name>     primary package (required for level:package; adds package:<name> label)
+          --prompt=<section-id> print prompts/write-<section-id>.md (or preamble/readme) to stdout and exit 0
 
         The body is validated before `gh` is called; nothing is filed when it
         does not conform.
@@ -135,6 +142,36 @@ foreach (array_slice($argv, 1) as $argument) {
     }
 
     $options[$matches[1]] = $matches[2];
+}
+
+$promptDir = dirname(__DIR__).'/prompts';
+$promptCrossCutting = [
+    'preamble' => 'prompt-preamble.md',
+    'readme'   => 'README.md',
+];
+
+if (isset($options['prompt'])) {
+    $available = [];
+
+    foreach (glob($promptDir.'/write-*.md') ?: [] as $path) {
+        $available[] = str_replace(['write-', '.md'], '', basename($path));
+    }
+
+    $file = $promptDir.'/write-'.$options['prompt'].'.md';
+
+    if (!is_file($file) && array_key_exists($options['prompt'], $promptCrossCutting)) {
+        $file = $promptDir.'/'.$promptCrossCutting[$options['prompt']];
+    }
+
+    if (!is_file($file)) {
+        $available = array_merge($available, array_keys($promptCrossCutting));
+        sort($available);
+
+        fail('unknown prompt section "'.$options['prompt'].'"; available: '.implode(', ', $available), 2);
+    }
+
+    readfile($file);
+    exit(0);
 }
 
 foreach (['level', 'title'] as $required) {
