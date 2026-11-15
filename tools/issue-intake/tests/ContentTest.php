@@ -48,6 +48,12 @@ it('returns every fenced block without the fence lines', function () {
     expect(Content::fencedBlocks($text))->toBe(['{"a":1}', 'plain']);
 });
 
+it('only counts fences indented 0-3 spaces, per CommonMark', function () {
+    $text = "```json\n{\"a\":1}\n```\n   ```\nindented three\n```\n    ```\nindented four\n```\n";
+
+    expect(Content::fencedBlocks($text))->toBe(['{"a":1}', 'indented three']);
+});
+
 it('returns bare github permalinks from trimmed lines', function () {
     $text = "- claim\n"
         ."https://github.com/Mohammed-Alama/php-arazzo/blob/0123456789abcdef0123456789abcdef01234567/tools/issue-intake/src/Validator.php#L1-L10\n"

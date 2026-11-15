@@ -369,6 +369,123 @@ MD;
     expect(codes($findings))->toContain('scenario-shape')->toContain('scenario-no-test');
 });
 
+it('exempts a scenario blocked by a defined decision from scenario-no-test', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one observable requirement.',
+        'feature-scope' => "Goals: x\nNon-goals: y\nD1. Should the engine cache? Options: yes, no. Default: no.",
+        'acceptance-criteria' => <<<'MD'
+S1 (R1, Reliable): blocked by an open decision
+  Given a request blocked by D1
+  When the cache is consulted
+  Then it throws UnresolvedWorkflowException
+
+C1. the cache decision is open
+  Check: D1 is open in feature-scope
+
+| Quality | Covered by | Note |
+| --- | --- | --- |
+| Efficient | S1 | one traversal |
+| Flexible | S1 | any key |
+| Maintainable | S1 | one scenario per rule |
+| Operable | S1 | the exception names the failure |
+| Reliable | S1 | throws UnresolvedWorkflowException |
+| Safe | C1 | no silent fallback |
+| Secure | N/A | no untrusted input surface |
+| Suitable | S1 | matches the reported symptom |
+| Usable | S1 | the test names the call site |
+MD,
+        'impact-profile' => 'API: none · BC break: no',
+        'core-metadata' => 'Package: core · Parent: #10',
+    ]);
+
+    $findings = (new Validator($schema))->validate([
+        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10, 'parentLevel' => 'level:epic',
+    ]);
+
+    expect($findings)->toBe([]);
+});
+
+it('flags a scenario blocked by a decision feature-scope does not define', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one observable requirement.',
+        'feature-scope' => "Goals: x\nNon-goals: y",
+        'acceptance-criteria' => <<<'MD'
+S1 (R1, Reliable): blocked by a ghost decision
+  Given a request blocked by D9
+  When it runs
+  Then it throws UnresolvedWorkflowException
+MD,
+        'impact-profile' => 'API: none · BC break: no',
+        'core-metadata' => 'Package: core · Parent: #10',
+    ]);
+
+    $input = [
+        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10, 'parentLevel' => 'level:epic',
+    ];
+    $reported = (new Validator($schema))->report($input);
+    $unknown = array_values(array_filter(
+        $reported,
+        static fn (Finding $f): bool => $f->code === 'blocked-by-unknown-decision',
+    ));
+
+    expect($unknown)->toHaveCount(1)
+        ->and($unknown[0]->message)->toContain('D9')
+        ->and($unknown[0]->severity)->toBe('warning')
+        ->and(codes((new Validator($schema))->validate($input)))->not->toContain('blocked-by-unknown-decision');
+});
+
+it('still requires a Test line when the blocked-by decision is undefined', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one observable requirement.',
+        'feature-scope' => "Goals: x\nNon-goals: y",
+        'acceptance-criteria' => <<<'MD'
+S1 (R1, Reliable): blocked by a ghost decision, no test
+  Given a request blocked by D9
+  When it runs
+  Then it throws UnresolvedWorkflowException
+MD,
+        'impact-profile' => 'API: none · BC break: no',
+        'core-metadata' => 'Package: core · Parent: #10',
+    ]);
+
+    $input = [
+        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10, 'parentLevel' => 'level:epic',
+    ];
+
+    expect(codes((new Validator($schema))->validate($input)))->toContain('scenario-no-test');
+    expect(codes((new Validator($schema))->report($input)))->toContain('blocked-by-unknown-decision');
+});
+
+it('exempts a scenario blocked by a defined decision but warns on an unknown one too', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one observable requirement.',
+        'feature-scope' => "Goals: x\nNon-goals: y\nD1. Should the engine cache? Options: yes, no. Default: no.",
+        'acceptance-criteria' => <<<'MD'
+S1 (R1, Reliable): blocked by one known and one unknown decision
+  Given a request blocked by D1 and D9
+  When the cache is consulted
+  Then it throws UnresolvedWorkflowException
+MD,
+        'impact-profile' => 'API: none · BC break: no',
+        'core-metadata' => 'Package: core · Parent: #10',
+    ]);
+
+    $input = [
+        'body' => $body, 'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10, 'parentLevel' => 'level:epic',
+    ];
+
+    expect(codes((new Validator($schema))->validate($input)))->not->toContain('scenario-no-test');
+    expect(codes((new Validator($schema))->report($input)))->toContain('blocked-by-unknown-decision');
+});
+
 it('flags an uncovered requirement and a quality with no coverage', function () {
     $schema = arazzoSchema();
     $body = issueBody($schema, featureSectionIds(), [

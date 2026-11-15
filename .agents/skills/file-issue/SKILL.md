@@ -101,7 +101,7 @@ In schema (`config/issues/schema.yaml`) visual order:
 | `affected-surface` | `prompts/write-affected-surface.md` | `rollback-missing` |
 | `artifacts` | `prompts/write-artifacts.md` | `artifact-block-missing` |
 | `runtime-state` | `prompts/write-runtime-state.md` | — |
-| `acceptance-criteria` | `prompts/write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then`, `checklist-unverifiable` |
+| `acceptance-criteria` | `prompts/write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `blocked-by-unknown-decision`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then`, `checklist-unverifiable` |
 | `source-grounding` | `prompts/write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `source-grounding-empty` |
 | `impact-profile` | `prompts/write-impact-profile.md` | `bc-line-missing` |
 | `epistemic-matrix` | `prompts/write-epistemic-matrix.md` | `tier-invalid` |
