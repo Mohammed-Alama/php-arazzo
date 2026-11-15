@@ -35,12 +35,14 @@ it('emits one textarea per section, in visual order, using the schema label', fu
         ->toBe(array_fill(0, count($fields), true));
 });
 
-it('marks a section the kind only offers as optional as not required', function () {
+it('marks skeleton sections as required for every kind', function () {
     $fields = formFields((new FormGenerator(arazzoSchema()))->forKind('kind:feature'), 'textarea');
     $byId = array_column($fields, null, 'id');
 
+    // source-grounding is in the skeleton, so it is required for every kind (v2 §7.1)
     expect($byId)->toHaveKey('source-grounding')
-        ->and($byId['source-grounding']['validations']['required'])->toBeFalse()
+        ->and($byId['source-grounding']['validations']['required'])->toBeTrue()
+        // feature-scope is required for kind:feature specifically
         ->and($byId['feature-scope']['validations']['required'])->toBeTrue();
 });
 
