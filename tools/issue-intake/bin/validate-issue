@@ -58,6 +58,7 @@ $input = [
 
 $findings = $validator->report($input);
 $classified = $validator->classify($input);
+$readiness = $validator->readiness($input);
 
 foreach ($findings as $finding) {
     fwrite(STDERR, "[{$finding->code}] {$finding->message}\n");
@@ -83,6 +84,8 @@ echo json_encode([
     ),
     'kind' => $classified['kind'],
     'level' => $classified['level'],
+    'ready' => $readiness['ready'],
+    'blockers' => $readiness['blockers'],
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
 
 exit($hasError ? 1 : 0);

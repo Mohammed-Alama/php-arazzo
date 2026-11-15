@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alama\Tools\IssueIntake;
 
+use DateTimeImmutable;
+
 /**
  * Validates an issue body, its labels and its level links against the schema.
  *
@@ -38,6 +40,205 @@ final class Validator
             $this->allFindings($input),
             static fn (Finding $finding): bool => $finding->severity === 'error',
         ));
+    }
+
+    /**
+     * Agent readiness: whether an issue is safe to hand to an agent, evaluated
+     * separately from conformance. An issue can conform yet still be blocked
+     * — an open design decision, a T4 tier, a non-agent-ready level, stale
+     * grounding, or a broken parent chain.
+     *
+     * Readiness reports — it never mutates labels. The gate decides what to
+     * do with the blockers.
+     *
+     * Blocker codes: `open-decision`, `tier-unverified`,
+     * `level-not-agent-ready`, `stale-grounding`, `parent-chain-invalid`.
+     *
+     * @param  array{
+     *     body?: string,
+     *     labels?: list<string>,
+     *     title?: string,
+     *     parent?: int|null,
+     *     parentLevel?: string|null,
+     *     readyForAgent?: bool,
+     * }  $input
+     * @return array{ready: bool, blockers: list<string>}
+     */
+    public function readiness(array $input): array
+    {
+        $body = $input['body'] ?? '';
+        $parsed = SectionParser::parse($body);
+
+        $blockers = [];
+
+        if ($this->hasOpenDecision($parsed)) {
+            $blockers[] = 'open-decision';
+        }
+
+        if ($this->hasUnverifiedTier($parsed)) {
+            $blockers[] = 'tier-unverified';
+        }
+
+        $level = $this->readinessLevel($input);
+
+        if ($level !== 'level:story' && $level !== 'level:task') {
+            $blockers[] = 'level-not-agent-ready';
+        }
+
+        if ($this->isStaleGrounding($body)) {
+            $blockers[] = 'stale-grounding';
+        }
+
+        // Any conformance error breaks the parent chain the agent would build on.
+        if ($this->validate($input) !== []) {
+            $blockers[] = 'parent-chain-invalid';
+        }
+
+        return ['ready' => $blockers === [], 'blockers' => $blockers];
+    }
+
+    /**
+     * open-decision: the feature-scope names an unresolved design decision,
+     * a line-anchored `D<n>. `.
+     */
+    private function hasOpenDecision(array $parsed): bool
+    {
+        $key = SectionParser::normalise($this->schema->section('feature-scope')['heading']);
+
+        foreach (Content::lines(implode("\n\n", $parsed[$key] ?? [])) as $line) {
+            if (preg_match('/^D\d+\./', $line) === 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * tier-unverified: any epistemic-matrix data row carries tier T4 — a
+     * valid tier, but not one an agent may act on without verification.
+     */
+    private function hasUnverifiedTier(array $parsed): bool
+    {
+        $key = SectionParser::normalise($this->schema->section('epistemic-matrix')['heading']);
+
+        if (!array_key_exists($key, $parsed)) {
+            return false;
+        }
+
+        $started = false;
+
+        foreach (Content::lines(implode("\n\n", $parsed[$key])) as $line) {
+            if (!$started) {
+                $started = true;
+                continue;
+            }
+
+            if (preg_match('/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/', $line) === 1) {
+                continue;
+            }
+
+            $cells = explode('|', $line);
+
+            if (trim($cells[2] ?? '') === 'T4') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The level the issue resolves to, without recording any finding —
+     * readiness reports, it does not validate.
+     *
+     * @return string|null
+     */
+    private function readinessLevel(array $input): ?string
+    {
+        $labels = self::strings($input['labels'] ?? []);
+        $levels = array_keys($this->schema->levels());
+
+        $declared = array_values(array_intersect($labels, $levels));
+
+        if ($declared !== []) {
+            return $declared[0];
+        }
+
+        $parsed = SectionParser::parse($input['body'] ?? '');
+
+        foreach ($parsed[SectionParser::normalise('Level')] ?? [] as $block) {
+            $candidate = trim($block);
+
+            if (in_array($candidate, $levels, true)) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * stale-grounding: the `Verified:` date is older than 14 days and no
+     * commit-pinned permalink names a SHA that is an ancestor of HEAD.
+     *
+     * With no resolver injected, freshness falls back to the date alone: an
+     * old `Verified:` is stale by itself.
+     */
+    private function isStaleGrounding(string $body): bool
+    {
+        $verified = null;
+
+        foreach (Content::lines($body) as $line) {
+            if (preg_match('/^Verified:\s*(\d{4}-\d{2}-\d{2})/', trim($line), $match) === 1) {
+                $verified = $match[1];
+            }
+        }
+
+        if ($verified === null) {
+            return false;
+        }
+
+        $verifiedAt = DateTimeImmutable::createFromFormat('Y-m-d', $verified);
+
+        if ($verifiedAt === false) {
+            return false;
+        }
+
+        if ($verifiedAt->diff(new DateTimeImmutable())->days <= 14) {
+            return false;
+        }
+
+        if ($this->resolver !== null) {
+            foreach ($this->groundingShas($body) as $sha) {
+                if ($this->resolver->isAncestor($sha)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // No resolver: freshness falls back to the date alone.
+        return true;
+    }
+
+    /**
+     * The commit SHAs pinned by the bare permalinks in the body.
+     *
+     * @return list<string>
+     */
+    private function groundingShas(string $body): array
+    {
+        $shas = [];
+
+        foreach (Content::barePermalinks($body) as $url) {
+            if (preg_match('/blob\/([0-9a-f]{40})/', $url, $match) === 1) {
+                $shas[] = $match[1];
+            }
+        }
+
+        return $shas;
     }
 
     /**
