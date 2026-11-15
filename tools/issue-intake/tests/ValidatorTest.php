@@ -310,3 +310,27 @@ it('requires at least one numbered requirement for feature and bugfix', function
 
     expect(codes($findings))->toContain('missing-requirement');
 });
+
+it('rejects a scenario with two When clauses or a missing Test line', function () {
+    $schema = arazzoSchema();
+    $text = <<<'MD'
+S1 (R1, Reliable): two whens
+  Given a step
+  When it runs
+  When it retries
+  Then it throws UnresolvedWorkflowException
+  Test: WorkflowEngineTest::it_rejects_unknown
+
+S2 (R1, Safe): no test
+  Given a step
+  When it runs
+  Then it throws UnresolvedWorkflowException
+MD;
+
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds(), ['acceptance-criteria' => $text]),
+        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('scenario-shape')->toContain('scenario-no-test');
+});

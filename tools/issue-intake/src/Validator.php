@@ -156,6 +156,10 @@ final class Validator
         }
 
         if (in_array($kind, ['kind:feature', 'kind:bugfix'], true)) {
+            $acKey = SectionParser::normalise($this->schema->section('acceptance-criteria')['heading']);
+
+            $this->checkScenarioShape(implode("\n\n", $parsed[$acKey] ?? []), $findings);
+
             $problemKey = SectionParser::normalise($this->schema->section('problem-statement')['heading']);
 
             // A missing or placeholder section is already reported by checkSections();
@@ -169,6 +173,73 @@ final class Validator
                     'Problem statement must name at least one numbered requirement: "R1. <one sentence>".',
                     $severities['missing-requirement'] ?? 'error',
                     'problem-statement',
+                );
+            }
+        }
+    }
+
+    /**
+     * Each `S<n>` scenario block in the acceptance criteria must be Given →
+     * When → Then: at least one `Given`, exactly one `When`, at least one
+     * `Then`, first occurrences in that order — otherwise `scenario-shape`,
+     * naming the `S<n>`. Every block must also carry a `Test:
+     * ClassTest::it_does_x` line — otherwise `scenario-no-test`.
+     * Applies to feature and bugfix only; a chore/release acceptance section
+     * is a checklist (Task 8).
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkScenarioShape(string $text, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        foreach (Content::headingBlocks($text) as $block) {
+            $header = Content::scenarioHeader($block);
+
+            // Free-form acceptance criteria (no `S<n>` scenario header) is not
+            // a scenario block — nothing to shape-check here.
+            if ($header === null) {
+                continue;
+            }
+
+            $scenario = $header['id'];
+
+            $given = $when = $then = 0;
+            $givenAt = $whenAt = $thenAt = null;
+
+            foreach (Content::lines($block) as $index => $line) {
+                if (preg_match('/^\s*Given\b/', $line) === 1) {
+                    $givenAt ??= $index;
+                    $given++;
+                } elseif (preg_match('/^\s*When\b/', $line) === 1) {
+                    $whenAt ??= $index;
+                    $when++;
+                } elseif (preg_match('/^\s*Then\b/', $line) === 1) {
+                    $thenAt ??= $index;
+                    $then++;
+                }
+            }
+
+            $shapeOk = $given >= 1 && $when === 1 && $then >= 1
+                && $givenAt !== null && $whenAt !== null && $thenAt !== null
+                && $givenAt < $whenAt && $whenAt < $thenAt;
+
+            if (!$shapeOk) {
+                $findings[] = new Finding(
+                    'scenario-shape',
+                    "Scenario {$scenario} breaks the Given → When → Then shape: "
+                    ."at least one Given, exactly one When, at least one Then, in that order.",
+                    $severities['scenario-shape'] ?? 'error',
+                    'acceptance-criteria',
+                );
+            }
+
+            if (preg_match('/^\s*Test:\s*\S+::\S+\s*$/m', $block) !== 1) {
+                $findings[] = new Finding(
+                    'scenario-no-test',
+                    "Scenario {$scenario} names no Test: line — add \"Test: ClassTest::it_does_x\".",
+                    $severities['scenario-no-test'] ?? 'error',
+                    'acceptance-criteria',
                 );
             }
         }
