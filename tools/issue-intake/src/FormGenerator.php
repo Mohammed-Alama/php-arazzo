@@ -28,25 +28,25 @@ final class FormGenerator
         'kind:feature' => [
             'name' => 'Feature request',
             'description' => 'Request a new capability or an improvement.',
-            'title' => '[Feature] ',
+            'title' => 'feat(<package>): ',
             'file' => 'kind-feature.yml',
         ],
         'kind:bugfix' => [
             'name' => 'Bug fix',
             'description' => 'Report something that is broken or behaves incorrectly.',
-            'title' => '[Bugfix] ',
+            'title' => 'fix(<package>): ',
             'file' => 'kind-bugfix.yml',
         ],
         'kind:release' => [
             'name' => 'Release task',
             'description' => 'Cut a release, publish artifacts, or update changelogs.',
-            'title' => '[Release] ',
+            'title' => 'release(<package>): ',
             'file' => 'kind-release.yml',
         ],
         'kind:chore' => [
             'name' => 'Chore',
             'description' => 'Maintenance, tooling or cleanup — no user-facing change.',
-            'title' => '[Chore] ',
+            'title' => 'chore(<package>): ',
             'file' => 'kind-chore.yml',
         ],
     ];

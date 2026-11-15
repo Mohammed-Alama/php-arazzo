@@ -73,3 +73,35 @@ it('rejects a level whose sections fact is neither absent nor exempt', function 
         'sections' => [],
     ]);
 })->throws(InvalidArgumentException::class);
+
+it('exposes the v2 section set in visual order', function () {
+    $schema = arazzoSchema();
+
+    expect($schema->sectionIds())->toBe([
+        'core-metadata', 'problem-statement', 'feature-scope', 'dependency-matrix',
+        'affected-surface', 'artifacts', 'runtime-state', 'acceptance-criteria',
+        'source-grounding', 'impact-profile', 'epistemic-matrix',
+    ]);
+});
+
+it('carries a severity for every content check', function () {
+    $schema = arazzoSchema();
+
+    expect($schema->checksFor('acceptance-criteria'))->toMatchArray([
+        'scenario-shape' => 'error',
+        'scenario-no-test' => 'error',
+        'requirement-uncovered' => 'error',
+        'quality-coverage-missing' => 'error',
+        'vague-then' => 'error',
+        'checklist-unverifiable' => 'error',
+    ]);
+});
+
+it('demotes the epic-light checks to warnings for epics only', function () {
+    $schema = arazzoSchema();
+
+    expect($schema->demotionsFor('level:epic'))
+        ->toContain('source-grounding-empty')->toContain('scenario-no-test')
+        ->and($schema->demotedSectionsFor('level:epic'))->toBe(['feature-scope', 'epistemic-matrix'])
+        ->and($schema->demotionsFor('level:story'))->toBe([]);
+});

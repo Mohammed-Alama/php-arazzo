@@ -34,7 +34,7 @@ it('exits 0 and reports conforming for a complete body', function () {
     $schema = arazzoSchema();
 
     $process = runIntakeValidator([
-        'body' => issueBody($schema, bugfixSectionIds()),
+        'body' => conformingBody($schema, 'kind:bugfix', 1),
         'labels' => ['kind:bugfix', 'level:package', 'package:core'],
         'parent' => null,
         'parentLevel' => null,
@@ -47,6 +47,8 @@ it('exits 0 and reports conforming for a complete body', function () {
             'findings' => [],
             'kind' => 'kind:bugfix',
             'level' => 'level:package',
+            'ready' => false,
+            'blockers' => ['level-not-agent-ready'],
         ]);
 });
 

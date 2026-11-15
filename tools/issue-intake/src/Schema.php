@@ -17,7 +17,10 @@ use Symfony\Component\Yaml\Yaml;
 final class Schema
 {
     /** @var list<string> */
-    private const SECTION_COPY = ['heading', 'label', 'description', 'placeholder'];
+    private const SECTION_COPY = ['heading', 'label', 'description', 'placeholder', 'checks'];
+
+    /** @var list<string> */
+    private const CHECK_SEVERITIES = ['error', 'warning'];
 
     /**
      * @param  list<string>  $kinds
@@ -25,6 +28,11 @@ final class Schema
      * @param  array<string, array<string, mixed>>  $levels
      * @param  array<string, array{requires: list<string>, optional: list<string>, exempt: list<string>}>  $kindSections
      * @param  array<string, array<string, string>>  $sections
+     * @param  array<string, string>  $titleChecks
+     * @param  array<string, array<string, string>>  $sectionChecks
+     * @param  array<string, list<string>>  $demotions
+     * @param  array<string, list<string>>  $demotedSections
+     * @param  array<string, ?string>  $exemptParent
      */
     private function __construct(
         private readonly array $kinds,
@@ -32,6 +40,11 @@ final class Schema
         private readonly array $levels,
         private readonly array $kindSections,
         private readonly array $sections,
+        private readonly array $titleChecks,
+        private readonly array $sectionChecks,
+        private readonly array $demotions,
+        private readonly array $demotedSections,
+        private readonly array $exemptParent,
     ) {}
 
     public static function fromFile(string $path): self
@@ -119,6 +132,14 @@ final class Schema
                         );
                     }
                 }
+
+                $exemptIf = $parent['exempt_if'] ?? null;
+
+                if ($exemptIf !== null && $exemptIf !== 'no_single_package_label') {
+                    throw new InvalidArgumentException(
+                        "levels.\"{$label}\".parent.exempt_if must be absent or \"no_single_package_label\".",
+                    );
+                }
             }
 
             $levelSections = $spec['sections'] ?? null;
@@ -144,21 +165,101 @@ final class Schema
             }
         }
 
+        $sectionChecks = [];
+        $declaredChecks = [];
+
         foreach ($sections as $id => $section) {
             if (!is_array($section)) {
                 throw new InvalidArgumentException("sections.\"{$id}\" must be a mapping.");
             }
 
             foreach (self::SECTION_COPY as $key) {
+                if ($key === 'checks') {
+                    continue;
+                }
+
                 if (!isset($section[$key]) || !is_string($section[$key]) || trim($section[$key]) === '') {
                     throw new InvalidArgumentException("Section \"{$id}\" is missing the \"{$key}\" copy.");
                 }
             }
 
+            $rawChecks = $section['checks'] ?? [];
+
+            if (!is_array($rawChecks)) {
+                throw new InvalidArgumentException("sections.\"{$id}\".checks must be a mapping.");
+            }
+
+            $checks = [];
+
+            foreach ($rawChecks as $code => $severity) {
+                if (!is_string($code) || !is_string($severity) || !in_array($severity, self::CHECK_SEVERITIES, true)) {
+                    throw new InvalidArgumentException(
+                        "Section \"{$id}\" declares an invalid check \"{$code}\" (expected one of: ".implode(', ', self::CHECK_SEVERITIES).').',
+                    );
+                }
+
+                $checks[$code] = $severity;
+                $declaredChecks[$code] = true;
+            }
+
+            $sectionChecks[$id] = $checks;
             $sections[$id] = array_intersect_key($section, array_flip(self::SECTION_COPY));
         }
 
-        return new self($kinds, $skeleton, $levels, $kindSections, $sections);
+        $rawTitleChecks = $data['title_checks'] ?? [];
+
+        if (!is_array($rawTitleChecks)) {
+            throw new InvalidArgumentException('title_checks must be a mapping.');
+        }
+
+        $titleChecks = [];
+
+        foreach ($rawTitleChecks as $code => $severity) {
+            if (!is_string($code) || !is_string($severity) || !in_array($severity, self::CHECK_SEVERITIES, true)) {
+                throw new InvalidArgumentException(
+                    "title_checks.\"{$code}\" must be one of: ".implode(', ', self::CHECK_SEVERITIES).'.',
+                );
+            }
+
+            $titleChecks[$code] = $severity;
+            $declaredChecks[$code] = true;
+        }
+
+        $demotions = [];
+        $demotedSections = [];
+        $exemptParent = [];
+
+        foreach ($levels as $label => $spec) {
+            $demotions[$label] = self::stringList($spec['demote'] ?? [], "levels.{$label}.demote");
+            $demotedSections[$label] = self::stringList(
+                $spec['demote_sections'] ?? [],
+                "levels.{$label}.demote_sections",
+            );
+
+            foreach ($demotions[$label] as $code) {
+                if (!isset($declaredChecks[$code])) {
+                    throw new InvalidArgumentException(
+                        "Level \"{$label}\" demotes undeclared check \"{$code}\".",
+                    );
+                }
+            }
+
+            $parent = $spec['parent'] ?? null;
+            $exemptParent[$label] = is_array($parent) ? ($parent['exempt_if'] ?? null) : null;
+        }
+
+        return new self(
+            $kinds,
+            $skeleton,
+            $levels,
+            $kindSections,
+            $sections,
+            $titleChecks,
+            $sectionChecks,
+            $demotions,
+            $demotedSections,
+            $exemptParent,
+        );
     }
 
     /** @return list<string> */
@@ -270,6 +371,78 @@ final class Schema
     public function sectionIds(): array
     {
         return array_keys($this->sections);
+    }
+
+    /**
+     * The default severity of each check declared by one section, code => error|warning.
+     *
+     * @return array<string, string>
+     */
+    public function checksFor(string $id): array
+    {
+        if (!array_key_exists($id, $this->sections)) {
+            throw new InvalidArgumentException("Unknown section \"{$id}\".");
+        }
+
+        return $this->sectionChecks[$id] ?? [];
+    }
+
+    /**
+     * Every check's default severity, flattened across title checks and
+     * sections: first declaration wins on a repeated code.
+     *
+     * @return array<string, string>
+     */
+    public function checks(): array
+    {
+        $severities = [];
+
+        foreach ($this->titleChecks as $code => $severity) {
+            $severities[$code] = $severity;
+        }
+
+        foreach ($this->sectionChecks as $checks) {
+            foreach ($checks as $code => $severity) {
+                $severities[$code] ??= $severity;
+            }
+        }
+
+        return $severities;
+    }
+
+    /**
+     * The check codes this level demotes from error to warning.
+     *
+     * @return list<string>
+     */
+    public function demotionsFor(string $level): array
+    {
+        $this->level($level);
+
+        return $this->demotions[$level] ?? [];
+    }
+
+    /**
+     * The sections this level demotes: their checks become warnings.
+     *
+     * @return list<string>
+     */
+    public function demotedSectionsFor(string $level): array
+    {
+        $this->level($level);
+
+        return $this->demotedSections[$level] ?? [];
+    }
+
+    /**
+     * The condition under which this level's parent requirement is exempt,
+     * or null when the parent is always required (or forbidden).
+     */
+    public function exemptParentWhen(string $level): ?string
+    {
+        $this->level($level);
+
+        return $this->exemptParent[$level] ?? null;
     }
 
     /** @return array{requires: list<string>, optional: list<string>, exempt: list<string>} */

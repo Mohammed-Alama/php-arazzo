@@ -1,33 +1,42 @@
-# Issue-intake schema — the single source of truth (spec D9).
+# Issue-intake schema — the single source of truth (spec D9), version 2.
+#
+# Every section carries a `checks:` map of finding code => default severity,
+# and each level may demote checks to warnings (`demote:`) or demote whole
+# sections (`demote_sections:`). `title_checks:` holds section-less checks
+# (title-kind-mismatch). Headings carry `## ` directly and are emitted
+# verbatim — nothing wraps them in `### ` anymore.
 #
 # Everything structural about an issue lives here: which sections each kind
-# requires, the level invariants GitHub will not enforce, and the human copy
-# the form generator emits. The gh shim, the CI gate and the file-issue skill
-# all read their semantics from this file through tools/issue-intake.
+# requires, the level invariants GitHub will not enforce, the per-check
+# severities the gate enforces, and the human copy the form generator emits.
+# The gh shim, the CI gate and the file-issue skill all read their semantics
+# from this file through tools/issue-intake.
 #
-# `sections:` is declared in visual (heading) order. Rendering order is
-# declaration order, so the decorative numerals in the headings stay
-# decorative. The three per-kind variants of section 3 sit together.
+# `sections:` is declared in visual (heading) order. `sectionIds()` returns
+# declaration order, so it doubles as the render order. Headings compare
+# through SectionParser::normalise(), never literally.
 
-version: 1
+version: 2
 
 kinds: [kind:feature, kind:bugfix, kind:release, kind:chore]
 
-# Present on every kind. Order here is the skeleton's own order; it is not
-# the render order (see the note above).
-skeleton: [core-metadata, problem-statement, acceptance-criteria, source-grounding, impact-profile]
+# The five every kind carries. Do not add epistemic-matrix here: chore excludes it.
+skeleton: [core-metadata, problem-statement, acceptance-criteria,
+           source-grounding, impact-profile]
 
-# Kind-specific sections, appended to the skeleton.
 kind_sections:
   kind:feature:
     requires: [feature-scope, epistemic-matrix]
-    optional: [source-grounding]
+    optional: []
   kind:bugfix:
     requires: [dependency-matrix, artifacts, runtime-state, epistemic-matrix]
-  kind:release:
-    requires: [affected-surface, epistemic-matrix]
+    optional: []
   kind:chore:
     requires: [affected-surface]
+    optional: []
+  kind:release:
+    requires: [affected-surface, epistemic-matrix]
+    optional: []
 
 # Level invariants the shim and CI enforce (GitHub will not).
 # `level:package` is the root of a package's tree: it names the package,
@@ -43,6 +52,11 @@ levels:
     parent:
       required: true
       allowed_parent_levels: [level:package]
+      exempt_if: no_single_package_label
+    # D14: epics keep core, problem, acceptance (no Test: line) and impact.
+    # feature-scope, epistemic-matrix and source-grounding are warnings.
+    demote: [source-grounding-empty, scenario-no-test]
+    demote_sections: [feature-scope, epistemic-matrix]
   level:story:
     parent:
       required: true
@@ -55,57 +69,83 @@ levels:
 
 sections:
   core-metadata:
-    heading: "🏗️ 1. Core Metadata & Alignment"
+    heading: "## 🏗️ Core Metadata & Alignment"
     label: "Core Metadata & Alignment"
-    description: "Which component, which versions, which ecosystem."
-    placeholder: "Component / subsystem, Arazzo spec version, PHP target, framework ecosystem."
+    description: "Locates the work: package, spec version, PHP target, parent, related issues."
+    placeholder: "Package / subsystem · Arazzo spec version · PHP 8.4 · Parent: #n · Related: #n"
+    checks: { parent-mismatch: error }
   problem-statement:
-    heading: "📝 2. Problem Statement & Intent"
+    heading: "## 📝 Problem Statement & Intent"
     label: "Problem Statement & Intent"
-    description: "What is wrong (or wanted), and why it matters."
-    placeholder: "Observed vs. expected behaviour, or the intent behind the request."
-  dependency-matrix:
-    heading: "📦 3. System Dependency Matrix"
-    label: "System Dependency Matrix"
-    description: "What this touches, upstream and downstream."
-    placeholder: "Packages involved, upstream spec versions, runtime dependencies."
+    description: "Why this exists, in requirements."
+    placeholder: "Observed vs expected (bugfix) or intent (feature), under 150 words, then R1..Rn."
+    checks: { missing-requirement: error }
   feature-scope:
-    heading: "🎯 3. Feature Scope & Prior Art"
+    heading: "## 🎯 Feature Scope & Prior Art"
     label: "Feature Scope & Prior Art"
     description: "Goals, non-goals, prior art and the proposed interface."
     placeholder: "Goals, non-goals, prior art, proposed interface."
+    checks: { non-goals-missing: warning }
+  dependency-matrix:
+    heading: "## 📦 System Dependency Matrix"
+    label: "System Dependency Matrix"
+    description: "What this touches, upstream and downstream."
+    placeholder: "Packages involved, upstream spec versions, runtime dependencies."
+    checks: {}
   affected-surface:
-    heading: "🛠️ 3. Affected Surface & Rollback"
+    heading: "## 🛠️ Affected Surface & Rollback"
     label: "Affected Surface & Rollback"
     description: "Packages touched, the risk, and how to roll back."
     placeholder: "Packages touched, risk level, rollback plan."
+    checks: { rollback-missing: error }
   artifacts:
-    heading: "📄 4. Structural Artifacts & Raw Inputs"
+    heading: "## 📄 Structural Artifacts & Raw Inputs"
     label: "Structural Artifacts & Raw Inputs"
     description: "The smallest document, request or fixture that shows the behaviour."
     placeholder: "Minimal Arazzo/OpenAPI document, request/response, stack trace, or exact command."
+    checks: { artifact-block-missing: error }
   runtime-state:
-    heading: "🌀 5. Runtime Execution State Context"
+    heading: "## 🌀 Runtime Execution State Context"
     label: "Runtime Execution State Context"
     description: "Where in the execution this happens."
     placeholder: "Workflow/step/action id, inputs, resolved expressions, environment."
+    checks: {}
   acceptance-criteria:
-    heading: "🧪 6. Acceptance Criteria & Behavioral Specification"
+    heading: "## 🧪 Acceptance Criteria & Behavioral Specification"
     label: "Acceptance Criteria & Behavioral Specification"
-    description: "How we will know it is done."
-    placeholder: "- [ ] Given … when … then …"
+    description: "Scenarios, constraints and the nine-quality coverage table."
+    placeholder: "S1 (R1, Reliable): title / Given … When … Then … / Test: ClassTest::it_does_x; C1 … Check: …; coverage table"
+    checks:
+      scenario-shape: error
+      scenario-no-test: error
+      requirement-uncovered: error
+      quality-coverage-missing: error
+      vague-then: error
+      checklist-unverifiable: error
   source-grounding:
-    heading: "🧬 7. Source Grounding & Code Location"
+    heading: "## 🧬 Source Grounding & Code Location"
     label: "Source Grounding & Code Location"
-    description: "A permalink to the exact code, pinned to a commit, with the snippet folded away."
-    placeholder: "permalink to <path> at a commit SHA: blob/<sha>/<path>#L<start>-L<end>; snippet in <details>; command → output."
+    description: "Bare permalinks pinned to a commit SHA, one per claim, then Verified: YYYY-MM-DD."
+    placeholder: "- claim\nhttps://github.com/<owner>/<repo>/blob/<40-hex>/<path>#L<a>-L<b>\nVerified: YYYY-MM-DD"
+    checks:
+      permalink-invalid: error
+      permalink-not-bare: error
+      permalink-unverifiable: warning
+      source-grounding-empty: error
   impact-profile:
-    heading: "🌍 8. Public Domains & Impact Profile"
+    heading: "## 🌍 Public Domains & Impact Profile"
     label: "Public Domains & Impact Profile"
     description: "Who is affected, and how badly."
     placeholder: "Public API impact, blast radius, severity."
+    checks: { bc-line-missing: error }
   epistemic-matrix:
-    heading: "📊 9. Epistemic Verification Matrix"
+    heading: "## 📊 Epistemic Verification Matrix"
     label: "Epistemic Verification Matrix"
     description: "Verified ground-truths separated from inferred assumptions."
     placeholder: "Claim | Tier (T1–T4) | Evidence | Verification"
+    checks: { tier-invalid: error }
+
+# Section-less checks: title-kind-mismatch is validated against the issue
+# title, not against any section body.
+title_checks:
+  title-kind-mismatch: error

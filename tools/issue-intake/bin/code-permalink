@@ -9,10 +9,10 @@ use Symfony\Component\Process\Process;
 
 /**
  * Builds a §7 source-grounding permalink (schema: "the exact code … behind the
- * claim"). Resolves the repo slug and commit SHA from git, then prints either
- * the permalink or the foldable `<details>` block the issue body pastes in.
+ * claim"). Resolves the repo slug and commit SHA from git, then prints the
+ * bare permalink URL the issue body pastes in.
  *
- * usage: code-permalink <path>:<start>[-<end>] [--ref=<rev>] [--repo=<owner/name>] [--fold] [--json]
+ * usage: code-permalink <path>:<start>[-<end>] [--ref=<rev>] [--repo=<owner/name>] [--json]
  *
  * A permalink is only permanent once the file is committed and the SHA is
  * pushed. Uncommitted edits and unpushed commits are warned about on stderr,
@@ -50,13 +50,12 @@ function usage(): void
           <path>:<start>[-<end>]  repo-relative path and inclusive line range, e.g. src/JsonPath.php:88-92
           --ref=<rev>             commit the link is pinned to (default: HEAD)
           --repo=<owner/name>     override the repo slug resolved from `origin` (use for forks)
-          --fold                  emit the <details> block with the snippet, not just the URL
-          --json                  emit {repo, sha, url, label} (plus code/details with --fold)
+          --json                  emit {repo, sha, url, label}
 
         TXT);
 }
 
-$options = ['ref' => 'HEAD', 'repo' => null, 'fold' => false, 'json' => false];
+$options = ['ref' => 'HEAD', 'repo' => null, 'json' => false];
 $locationSpec = null;
 
 foreach (array_slice($argv, 1) as $argument) {
@@ -72,11 +71,6 @@ foreach (array_slice($argv, 1) as $argument) {
 
     if (str_starts_with($argument, '--repo=')) {
         $options['repo'] = substr($argument, 7);
-        continue;
-    }
-
-    if ($argument === '--fold') {
-        $options['fold'] = true;
         continue;
     }
 
@@ -161,23 +155,12 @@ if (!$containing['ok'] || trim($containing['out']) === '') {
 $payload = [
     'repo' => $repo,
     'sha' => $sha,
-    'label' => $location->label(),
     'url' => $permalink->url($location),
+    'label' => $location->label(),
 ];
-
-if ($options['fold']) {
-    $blob = git($root, ['show', $sha.':'.$location->path]);
-    $lines = preg_split('/\R/', rtrim($blob['out'], "\n")) ?: [];
-    $code = implode("\n", array_slice($lines, $location->start - 1, $location->end - $location->start + 1));
-
-    $payload['code'] = $code;
-    $payload['details'] = $permalink->details($location, $code);
-}
 
 if ($options['json']) {
     echo json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
-} elseif ($options['fold']) {
-    echo $payload['details'], "\n";
 } else {
     echo $permalink->url($location), "\n";
 }

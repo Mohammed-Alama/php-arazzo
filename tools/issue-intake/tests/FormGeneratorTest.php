@@ -35,12 +35,14 @@ it('emits one textarea per section, in visual order, using the schema label', fu
         ->toBe(array_fill(0, count($fields), true));
 });
 
-it('marks a section the kind only offers as optional as not required', function () {
+it('marks skeleton sections as required for every kind', function () {
     $fields = formFields((new FormGenerator(arazzoSchema()))->forKind('kind:feature'), 'textarea');
     $byId = array_column($fields, null, 'id');
 
+    // source-grounding is in the skeleton, so it is required for every kind (v2 §7.1)
     expect($byId)->toHaveKey('source-grounding')
-        ->and($byId['source-grounding']['validations']['required'])->toBeFalse()
+        ->and($byId['source-grounding']['validations']['required'])->toBeTrue()
+        // feature-scope is required for kind:feature specifically
         ->and($byId['feature-scope']['validations']['required'])->toBeTrue();
 });
 
@@ -94,6 +96,12 @@ it('produces forms whose filled body conforms to the validator', function () {
             $body .= '### '.$field['attributes']['label']."\n\n";
             $body .= match (true) {
                 $field['id'] === 'level' => "level:epic\n\n",
+                $field['id'] === 'problem-statement' => "R1. filled {$field['id']}\n\n",
+                $field['id'] === 'feature-scope' => "Goals: filled {$field['id']}\nNon-goals: out of scope\n\n",
+                $field['id'] === 'affected-surface' => "Risk: low\nRollback: revert the commit\n\n",
+                $field['id'] === 'artifacts' => "```json\n{}\n```\n\n",
+                $field['id'] === 'impact-profile' => 'BC break: no'."\n\n",
+                $field['id'] === 'core-metadata' => 'Package: core · Parent: #1'."\n\n",
                 $field['validations']['required'] === false => "_No response_\n\n",
                 default => "filled {$field['id']}\n\n",
             };
@@ -111,5 +119,24 @@ it('produces forms whose filled body conforms to the validator', function () {
         ]);
 
         expect($findings)->toBe([], "a filled {$kind} form must conform");
+
+    }
+});
+
+it('offers a title prefix the gate accepts', function () {
+    $schema = arazzoSchema();
+    $generator = new FormGenerator($schema);
+
+    foreach ($generator->kinds() as $kind) {
+        $title = $generator->forKind($kind)['title'];
+        $findings = (new Validator($schema))->validate([
+            'title' => $title.'add x',
+            'body' => issueBody($schema, $schema->requiredIdsFor($kind)),
+            'labels' => [$kind, 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+        ]);
+
+        // The stub body fails the content checks on purpose; only the title is under test.
+        expect($title)->not->toStartWith('[')
+            ->and(codes($findings))->not->toContain('title-kind-mismatch');
     }
 });
