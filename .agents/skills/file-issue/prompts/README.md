@@ -17,11 +17,14 @@ any indexed prompt to stdout.
 | `feature-scope` | `write-feature-scope.md` | `non-goals-missing` and the `D#` shape (`D#. <question>? Options: <a>, <b>. Default: <a>.`) |
 | `dependency-matrix` | `write-dependency-matrix.md` | none — lists only packages the change touches, never "just in case" |
 | `affected-surface` | `write-affected-surface.md` | `rollback-missing` |
+| `artifacts` | `write-artifacts.md` | `artifact-block-missing` |
+| `runtime-state` | `write-runtime-state.md` | none |
+| `impact-profile` | `write-impact-profile.md` | `bc-line-missing` |
+| `epistemic-matrix` | `write-epistemic-matrix.md` | `tier-invalid` |
 
-The remaining section prompts — `write-artifacts.md`,
-`write-runtime-state.md`, `write-source-grounding.md`, `write-impact-profile.md`,
-`write-epistemic-matrix.md` — plus the orchestrator and reviewer prompts are
-added by later tasks of the tooling plan; this index grows with them.
+The remaining section prompt — `write-source-grounding.md` — plus the
+orchestrator and reviewer prompts are added by later tasks of the tooling
+plan; this index grows with them.
 
 ## Reachable through `--prompt`
 
