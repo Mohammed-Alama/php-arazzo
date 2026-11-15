@@ -371,3 +371,15 @@ it('flags an unmeasurable Then', function () {
 
     expect(codes($findings))->toContain('vague-then');
 });
+
+it('requires every chore checklist item to name a command or a URL', function () {
+    $schema = arazzoSchema();
+    $text = "- [ ] composer test exits 0\n- [ ] everything looks fine";
+
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, choreSectionIds(), ['acceptance-criteria' => $text]),
+        'labels' => ['kind:chore', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('checklist-unverifiable');
+});

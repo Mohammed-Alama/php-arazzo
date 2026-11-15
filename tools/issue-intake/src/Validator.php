@@ -182,6 +182,39 @@ final class Validator
                 );
             }
         }
+
+        if (in_array($kind, ['kind:chore', 'kind:release'], true)) {
+            $acKey = SectionParser::normalise($this->schema->section('acceptance-criteria')['heading']);
+            $acText = implode("\n\n", $parsed[$acKey] ?? []);
+
+            $this->checkChecklistItems($acText, $findings);
+        }
+    }
+
+    /**
+     * checklist-unverifiable: every `- [ ]` / `- [x]` line in a chore or
+     * release acceptance criteria must name a backticked command/token or a
+     * `https://` URL — otherwise one finding per item, quoting the item text.
+     * Applies to kind:chore and kind:release only.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkChecklistItems(string $text, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        foreach (Content::checklistItems($text) as $item) {
+            if (preg_match('/`[^`]+`/', $item) === 1 || preg_match('/https?:\/\//', $item) === 1) {
+                continue;
+            }
+
+            $findings[] = new Finding(
+                'checklist-unverifiable',
+                'Checklist item is unverifiable: "'.$item.'" — name a backticked command or link to a URL.',
+                $severities['checklist-unverifiable'] ?? 'error',
+                'acceptance-criteria',
+            );
+        }
     }
 
     /**
