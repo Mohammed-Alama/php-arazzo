@@ -1,0 +1,162 @@
+# Pairing manifest for v2 conversion runbook (spec §7.6)
+# 62 drafts → 52 units (43 standalone stories + 9 story→task pairs)
+# Draft 15 is superseded by draft 48/57 (same replay work); not converted separately.
+# Every draft 01–62 appears exactly once except superseded 15.
+
+- story: 01-action-parameters-must-not-use-in
+  tasks: []
+
+- story: 02-self-uri-validation-correctness
+  tasks: []
+
+- story: 03-map-key-pattern-conformance
+  tasks: []
+
+- story: 04-duplicate-parameters-and-actions
+  tasks: []
+
+- story: 05-reusable-parameter-refs-resolve
+  tasks: []
+
+- story: 06-source-description-type-optional
+  tasks: []
+
+- story: 07-self-identity-and-base-uri-resolution
+  tasks: []
+
+- story: 08-source-integrity-validation
+  tasks: []
+
+- story: 09-source-fetcher-hardening
+  tasks: []
+
+- story: 10-request-schema-validation
+  tasks: []
+
+- story: 11-run-command-real-execution
+  tasks: []
+
+- story: 12-machine-readable-run-report
+  tasks: []
+
+- story: 13-workflow-test-runner
+  tasks: []
+
+- story: 14-execution-traces
+  tasks: []
+
+- story: 16-dry-run
+  tasks: []
+
+- story: 17-parallel-dag-execution
+  tasks: []
+
+- story: 18-single-step-execution
+  tasks: []
+
+- story: 19-input-validation-and-defaults
+  tasks: []
+
+- story: 20-outbound-http-hardening
+  tasks: []
+
+- story: 21-outbound-rate-limiting
+  tasks: []
+
+- story: 22-secret-redaction
+  tasks: []
+
+- story: 23-rfc9535-jsonpath
+  tasks: []
+
+- story: 24-yaml-alias-bounds
+  tasks: []
+
+- story: 25-conformance-capability-manifest
+  tasks: []
+
+- story: 26-execute-workflow-level-dependson
+  tasks: []
+
+- story: 27-configurable-validator-policy
+  tasks: []
+
+- story: 28-reject-duplicate-requestbody-replacement-targets
+  tasks: []
+
+- story: 29-source-url-override
+  tasks: []
+
+- story: 30-multi-workflow-selection
+  tasks: []
+
+- story: 31-input-ergonomics
+  tasks: []
+
+- story: 32-per-domain-mtls
+  tasks: []
+
+- story: 33-har-export
+  tasks: []
+
+- story: 34-validate-workflow-action-targets
+  tasks: []
+
+- story: 35-walk-action-criteria-parameters
+  tasks: []
+
+- story: 36-validate-openapi-operation-exists
+  tasks: []
+
+- story: 37-themed-html-rendering
+  tasks: []
+
+- story: 38-cli-validator-policy-flags
+  tasks: []
+
+- story: 39-cli-server-override
+  tasks: []
+
+- story: 40-cli-multi-workflow
+  tasks: []
+
+- story: 41-cli-input-ergonomics
+  tasks: []
+
+- story: 42-cli-mtls
+  tasks: []
+
+- story: 43-cli-har-export
+  tasks: []
+
+- story: 44-cli-html-rendering
+  tasks: []
+
+# Core engine story with CLI task child
+- story: 45-run-report-contract
+  tasks: [54-cli-run-report]
+
+- story: 46-test-runner-engine
+  story_engine: null
+  tasks: [55-cli-test-runner]
+
+- story: 47-execution-trace-artifact
+  tasks: [56-cli-trace-export]
+
+- story: 48-deterministic-replay-engine
+  tasks: [57-cli-replay]
+
+- story: 49-dry-run-execution-mode
+  tasks: [58-cli-dry-run]
+
+- story: 50-parallel-dag-scheduler
+  tasks: [59-cli-parallel]
+
+- story: 51-single-step-execution
+  tasks: [60-cli-single-step]
+
+- story: 52-input-validation-defaults
+  tasks: [61-cli-input-validation]
+
+- story: 53-http-execution-policy
+  tasks: [62-cli-http-policy]
