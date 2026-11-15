@@ -116,6 +116,10 @@ final class Content
      * @return list<string>
      *
      * The text inside each triple-backtick fence, fence lines excluded.
+     *
+     * A fence counts only at column 0-3: CommonMark allows 0-3 leading
+     * spaces, so a 4-space-indented fence renders as literal backticks and
+     * is not a fence here.
      */
     public static function fencedBlocks(string $text): array
     {
@@ -125,14 +129,14 @@ final class Content
 
         foreach (self::lines($text) as $line) {
             if (!$inFence) {
-                if (preg_match('/^\s*```/', $line) === 1) {
+                if (preg_match('/^(?: {0,3})```/', $line) === 1) {
                     $inFence = true;
                 }
 
                 continue;
             }
 
-            if (preg_match('/^\s*```/', $line) === 1) {
+            if (preg_match('/^(?: {0,3})```/', $line) === 1) {
                 $blocks[] = implode("\n", $buffer);
                 $buffer = [];
                 $inFence = false;

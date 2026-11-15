@@ -10,7 +10,7 @@ any indexed prompt to stdout.
 
 | Section | Prompt | Gate codes owned |
 | --- | --- | --- |
-| `acceptance-criteria` | `write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then`, `checklist-unverifiable` |
+| `acceptance-criteria` | `write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `blocked-by-unknown-decision`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then`, `checklist-unverifiable` |
 | (shared rules) | `prompt-preamble.md` | — citation rule, stop rule (`D#`), tier rule, prohibitions |
 | `core-metadata` | none — scripted | `parent-mismatch` (read from labels and the sub-issue link; no agent writes this section) |
 | `problem-statement` | `write-problem-statement.md` | `missing-requirement` |

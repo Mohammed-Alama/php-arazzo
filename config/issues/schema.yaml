@@ -118,6 +118,7 @@ sections:
     checks:
       scenario-shape: error
       scenario-no-test: error
+      blocked-by-unknown-decision: warning
       requirement-uncovered: error
       quality-coverage-missing: error
       vague-then: error

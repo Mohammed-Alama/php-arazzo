@@ -20,15 +20,15 @@ does not depend on.
 
 Use exactly this heading — do not rename it:
 
-```markdown
+````markdown
 ## 📄 Structural Artifacts & Raw Inputs
 
 <one line: what the block shows, e.g. "The request that triggers the behaviour">
 
-    ```<lang>
-    <smallest failing document, request/response or stack trace>
-    ```
+```<lang>
+<smallest failing document, request/response or stack trace>
 ```
+````
 
 Rules:
 
@@ -48,17 +48,17 @@ Rules:
 A real, conforming section — the engine accepts this exact content for
 `artifacts` with zero findings.
 
-```markdown
+````markdown
 The request that triggers the behaviour — the smallest document that still fails:
 
-    ```json
-    {
-      "asyncapi": "2.6.0",
-      "id": "unresolved",
-      "defaultChannel": "definitions"
-    }
-    ```
+```json
+{
+  "asyncapi": "2.6.0",
+  "id": "unresolved",
+  "defaultChannel": "definitions"
+}
+```
 
 A production spec would name every server and operation; this one names none —
 it is the smallest failing document, never a production one.
-```
+````

@@ -18,8 +18,11 @@ An unresolved choice is not a scenario and not an assumption: it becomes a
 `D#` line in `feature-scope` — `D#. <question>? Options: <a>, <b>. Default: <a>.`
 — and every scenario that depends on it is marked `blocked by D#` in its
 `Given`/`When`/`Then` lines. A scenario whose decision is still open does not
-get a `Test:` line yet; the dependent agent files it after the decision
-closes.
+get a `Test:` line yet: `blocked by D#` with `D#` defined in `feature-scope`
+exempts it from `scenario-no-test`, and the dependent agent files the
+`Test:` line after the decision closes — `readiness()` still reports
+`open-decision` until then. `blocked by D#` for a decision that is not
+defined in `feature-scope` raises `blocked-by-unknown-decision` instead.
 
 ## Tier rule
 

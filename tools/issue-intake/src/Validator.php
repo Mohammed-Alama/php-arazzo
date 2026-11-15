@@ -351,7 +351,7 @@ final class Validator
             $acKey = SectionParser::normalise($this->schema->section('acceptance-criteria')['heading']);
             $acText = implode("\n\n", $parsed[$acKey] ?? []);
 
-            $this->checkScenarioShape($acText, $findings);
+            $this->checkScenarioShape($acText, Content::sectionText($parsed, $this->schema, 'feature-scope'), $findings);
             $this->checkRequirementCoverage($acText, Content::sectionText($parsed, $this->schema, 'problem-statement'), $findings);
             $this->checkQualityCoverage($acText, $findings);
             $this->checkVagueThen($acText, $findings);
@@ -759,15 +759,29 @@ final class Validator
      * When → Then: at least one `Given`, exactly one `When`, at least one
      * `Then`, first occurrences in that order — otherwise `scenario-shape`,
      * naming the `S<n>`. Every block must also carry a `Test:
-     * ClassTest::it_does_x` line — otherwise `scenario-no-test`.
-     * Applies to feature and bugfix only; a chore/release acceptance section
-     * is a checklist (Task 8).
+     * ClassTest::it_does_x` line — otherwise `scenario-no-test` — unless the
+     * block is `blocked by D<n>` for a decision `D<n>` defined in
+     * `feature-scope`: an open, defined decision means no `Test:` line yet
+     * (readiness still reports `open-decision`). A `blocked by D<n>` that
+     * names no decision defined in `feature-scope` raises
+     * `blocked-by-unknown-decision` instead. Applies to feature and bugfix
+     * only; a chore/release acceptance section is a checklist (Task 8).
      *
+     * @param  string  $featureScope  the feature-scope section body, used to
+     *                                tell defined `D<n>` decisions from undefined ones
      * @param  list<Finding>  $findings
      */
-    private function checkScenarioShape(string $text, array &$findings): void
+    private function checkScenarioShape(string $text, string $featureScope, array &$findings): void
     {
         $severities = $this->schema->checks();
+
+        /** @var array<string, true> */
+        $defined = [];
+        preg_match_all('/^D(\d+)\./m', $featureScope, $matches, PREG_SET_ORDER);
+
+        foreach ($matches as $match) {
+            $defined['D'.$match[1]] = true;
+        }
 
         foreach (Content::headingBlocks($text) as $block) {
             $header = Content::scenarioHeader($block);
@@ -810,6 +824,31 @@ final class Validator
                 );
             }
 
+            $blockedBy = self::blockedByDecisions($block);
+
+            foreach (array_values(array_filter(
+                $blockedBy,
+                static fn (string $d): bool => !isset($defined[$d]),
+            )) as $d) {
+                $findings[] = new Finding(
+                    'blocked-by-unknown-decision',
+                    "Scenario {$scenario} is blocked by {$d}, but feature-scope defines no {$d} — "
+                    .'define the decision or unblock the scenario.',
+                    $severities['blocked-by-unknown-decision'] ?? 'warning',
+                    'acceptance-criteria',
+                );
+            }
+
+            // A scenario blocked by a defined, open decision needs no Test:
+            // line yet — the dependent agent files it after the decision
+            // closes, while readiness() keeps reporting `open-decision`.
+            if (array_filter(
+                $blockedBy,
+                static fn (string $d): bool => isset($defined[$d]),
+            ) !== []) {
+                continue;
+            }
+
             if (preg_match('/^\s*Test:\s*\S+::\S+\s*$/m', $block) !== 1) {
                 $findings[] = new Finding(
                     'scenario-no-test',
@@ -819,6 +858,32 @@ final class Validator
                 );
             }
         }
+    }
+
+    /**
+     * The `D<n>` decisions one scenario block declares itself blocked by,
+     * de-duplicated and in order of appearance: `blocked by D1` and
+     * `blocked by D1 and D2` both yield `['D1', 'D2']`.
+     *
+     * @return list<string>
+     */
+    private static function blockedByDecisions(string $block): array
+    {
+        $found = [];
+
+        foreach (Content::lines($block) as $line) {
+            if (preg_match('/blocked by\s+/i', $line) !== 1) {
+                continue;
+            }
+
+            preg_match_all('/D(\d+)/', $line, $matches, PREG_SET_ORDER);
+
+            foreach ($matches as $match) {
+                $found[] = 'D'.$match[1];
+            }
+        }
+
+        return array_values(array_unique($found));
     }
 
     /**

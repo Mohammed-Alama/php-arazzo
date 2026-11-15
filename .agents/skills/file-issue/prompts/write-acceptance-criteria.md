@@ -2,7 +2,8 @@
 
 Section: `## 🧪 Acceptance Criteria & Behavioral Specification`
 Owns the gate codes: `scenario-shape`, `scenario-no-test`,
-`requirement-uncovered`, `quality-coverage-missing`, `vague-then`,
+`blocked-by-unknown-decision`, `requirement-uncovered`,
+`quality-coverage-missing`, `vague-then`,
 `checklist-unverifiable`.
 
 This prompt converts the `R#` requirements of `problem-statement` and the
@@ -59,7 +60,12 @@ Rules:
   `When`, at least one `Then`, first occurrences in that order
   (`scenario-shape`). Two choices are two scenarios, or a `D#`.
 - Every block carries `Test: ClassTest::it_does_x` naming a test that will
-  exist (`scenario-no-test`).
+  exist (`scenario-no-test`). A block whose `Given`/`When`/`Then` lines mark
+  it `blocked by D#` for a decision defined in `feature-scope` is exempt —
+  the `Test:` line is filed after the decision closes, while `readiness()`
+  keeps reporting `open-decision`. `blocked by D#` for a decision that is
+  not defined in `feature-scope` raises `blocked-by-unknown-decision`
+  (warning).
 - A `Then`/`And` step using a vague qualifier must also name a concrete
   outcome — exception class, return value, event, state field or count.
   "Works correctly", "as expected", "gracefully", "properly" alone fail
