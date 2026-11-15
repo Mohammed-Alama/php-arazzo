@@ -1,6 +1,6 @@
 name: 'Feature request'
 description: 'Request a new capability or an improvement.'
-title: '[Feature] '
+title: 'feat(<package>): '
 labels:
   - 'kind:feature'
 body:
@@ -21,8 +21,8 @@ body:
     id: core-metadata
     attributes:
       label: 'Core Metadata & Alignment'
-      description: 'Which component, which versions, which ecosystem.'
-      placeholder: 'Component / subsystem, Arazzo spec version, PHP target, framework ecosystem.'
+      description: 'Locates the work: package, spec version, PHP target, parent, related issues.'
+      placeholder: 'Package / subsystem · Arazzo spec version · PHP 8.4 · Parent: #n · Related: #n'
     validations:
       required: true
   -
@@ -30,8 +30,8 @@ body:
     id: problem-statement
     attributes:
       label: 'Problem Statement & Intent'
-      description: 'What is wrong (or wanted), and why it matters.'
-      placeholder: 'Observed vs. expected behaviour, or the intent behind the request.'
+      description: 'Why this exists, in requirements.'
+      placeholder: 'Observed vs expected (bugfix) or intent (feature), under 150 words, then R1..Rn.'
     validations:
       required: true
   -
@@ -48,8 +48,8 @@ body:
     id: acceptance-criteria
     attributes:
       label: 'Acceptance Criteria & Behavioral Specification'
-      description: 'How we will know it is done.'
-      placeholder: '- [ ] Given … when … then …'
+      description: 'Scenarios, constraints and the nine-quality coverage table.'
+      placeholder: 'S1 (R1, Reliable): title / Given … When … Then … / Test: ClassTest::it_does_x; C1 … Check: …; coverage table'
     validations:
       required: true
   -
@@ -57,10 +57,10 @@ body:
     id: source-grounding
     attributes:
       label: 'Source Grounding & Code Location'
-      description: 'A permalink to the exact code, pinned to a commit, with the snippet folded away.'
-      placeholder: 'permalink to <path> at a commit SHA: blob/<sha>/<path>#L<start>-L<end>; snippet in <details>; command → output.'
+      description: 'Bare permalinks pinned to a commit SHA, one per claim, then Verified: YYYY-MM-DD.'
+      placeholder: "- claim\nhttps://github.com/<owner>/<repo>/blob/<40-hex>/<path>#L<a>-L<b>\nVerified: YYYY-MM-DD"
     validations:
-      required: false
+      required: true
   -
     type: textarea
     id: impact-profile

@@ -117,5 +117,24 @@ it('produces forms whose filled body conforms to the validator', function () {
         ]);
 
         expect($findings)->toBe([], "a filled {$kind} form must conform");
+
     }
 });
+
+    it('offers a title prefix the gate accepts', function () {
+        $schema = arazzoSchema();
+        $generator = new FormGenerator($schema);
+
+        foreach ($generator->kinds() as $kind) {
+            $title = $generator->forKind($kind)['title'];
+            $findings = (new Validator($schema))->validate([
+                'title' => $title.'add x',
+                'body' => issueBody($schema, $schema->requiredIdsFor($kind)),
+                'labels' => [$kind, 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+            ]);
+
+            // The stub body fails the content checks on purpose; only the title is under test.
+            expect($title)->not->toStartWith('[')
+                ->and(codes($findings))->not->toContain('title-kind-mismatch');
+        }
+    });
