@@ -22,7 +22,7 @@ function issueBody(Schema $schema, array $ids, array $content = []): string
     $body = '';
 
     foreach ($ids as $id) {
-        $body .= '### '.$schema->section($id)['heading']."\n\n".($content[$id] ?? "filled {$id}")."\n\n";
+        $body .= $schema->section($id)['heading']."\n\n".($content[$id] ?? "filled {$id}")."\n\n";
     }
 
     return $body;
