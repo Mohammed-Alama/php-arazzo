@@ -36,13 +36,11 @@ function stubGh(): array
 }
 
 /** @param list<string> $ids */
-function sectionsFile(array $ids): string
+function sectionsFile(array $ids, ?int $parent = null): string
 {
-    $sections = [];
-
-    foreach ($ids as $id) {
-        $sections[$id] = "filled {$id}";
-    }
+    $schema = arazzoSchema();
+    $all = conformingSections($schema, 'kind:bugfix', $parent);
+    $sections = array_intersect_key($all, array_flip($ids));
 
     $path = tempnam(sys_get_temp_dir(), 'sections-');
     file_put_contents($path, (string) json_encode($sections));
@@ -68,7 +66,7 @@ it('files a conforming issue and relays the kind and level labels to gh', functi
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=[Bugfix] x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=kind:bugfix', '--level=level:epic', '--parent=1', '--title=[Bugfix] x', '--sections='.sectionsFile(bugfixSectionIds(), 1),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:package"}]']);
 
     expect($process->getExitCode())->toBe(0)
@@ -91,7 +89,7 @@ it('files a story under an epic', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=kind:bugfix', '--level=level:story', '--parent=25', '--title=x', '--sections='.sectionsFile(bugfixSectionIds(), 25),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"}]']);
 
     expect($process->getExitCode())->toBe(0)
@@ -102,7 +100,7 @@ it('refuses a story under a parent that has no level label', function () {
     [$gh, $log] = stubGh();
 
     $process = runFileIssue([
-        '--kind=kind:bugfix', '--level=level:story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugfixSectionIds()),
+        '--kind=kind:bugfix', '--level=level:story', '--parent=99', '--title=x', '--sections='.sectionsFile(bugfixSectionIds(), 99),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"kind:chore"}]']);
 
     expect($process->getExitCode())->toBe(1)
@@ -144,7 +142,7 @@ it('does not pass --parent on edit (issue is already linked)', function () {
             'core-metadata', 'problem-statement', 'dependency-matrix', 'artifacts',
             'runtime-state', 'acceptance-criteria', 'source-grounding', 'impact-profile',
             'epistemic-matrix',
-        ]),
+        ], 137),
     ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"},{"name":"kind:feature"}]']);
 
     expect($process->getExitCode())->toBe(0)

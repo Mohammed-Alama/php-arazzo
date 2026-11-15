@@ -11,7 +11,7 @@ it('passes a complete bugfix body', function () {
     expect($schema->requiredIdsFor('kind:bugfix'))->toBe(bugfixSectionIds());
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, bugfixSectionIds()),
+        'body' => conformingBody($schema, 'kind:bugfix', 1),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
         'parentLevel' => 'level:package',

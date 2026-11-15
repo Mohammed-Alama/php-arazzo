@@ -96,7 +96,7 @@ it('delegates a conforming issue create untouched', function () {
     [$gh, $log] = shimStub();
 
     $process = runShim([
-        'issue', 'create', '--title', 'x', '--body', issueBody(arazzoSchema(), bugfixSectionIds()),
+        'issue', 'create', '--title', 'x', '--body', conformingBody(arazzoSchema(), 'kind:bugfix', 1),
         '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
     ], $gh, $log);
 
@@ -107,7 +107,7 @@ it('delegates a conforming issue create untouched', function () {
 it('reads --body-file - once and re-supplies it downstream', function () {
     [$gh, $log] = shimStub();
     $capture = tempnam(sys_get_temp_dir(), 'capture');
-    $body = issueBody(arazzoSchema(), bugfixSectionIds());
+    $body = conformingBody(arazzoSchema(), 'kind:bugfix', 1);
 
     $process = runShim([
         'issue', 'create', '--title', 'x', '--body-file', '-', '--label', 'kind:bugfix', '--label', 'level:package', '--label', 'package:core',
