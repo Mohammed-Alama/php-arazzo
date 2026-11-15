@@ -16,6 +16,8 @@ final class Validator
     /** GitHub renders this for a form field the reporter left blank. */
     private const NO_RESPONSE = '_No response_';
 
+    private const QUALITIES = ['Efficient','Flexible','Maintainable','Operable','Reliable','Safe','Secure','Suitable','Usable'];
+
     public function __construct(private readonly Schema $schema) {}
 
     /**
@@ -157,8 +159,12 @@ final class Validator
 
         if (in_array($kind, ['kind:feature', 'kind:bugfix'], true)) {
             $acKey = SectionParser::normalise($this->schema->section('acceptance-criteria')['heading']);
+            $acText = implode("\n\n", $parsed[$acKey] ?? []);
 
-            $this->checkScenarioShape(implode("\n\n", $parsed[$acKey] ?? []), $findings);
+            $this->checkScenarioShape($acText, $findings);
+            $this->checkRequirementCoverage($acText, Content::sectionText($parsed, $this->schema, 'problem-statement'), $findings);
+            $this->checkQualityCoverage($acText, $findings);
+            $this->checkVagueThen($acText, $findings);
 
             $problemKey = SectionParser::normalise($this->schema->section('problem-statement')['heading']);
 
@@ -239,6 +245,159 @@ final class Validator
                     'scenario-no-test',
                     "Scenario {$scenario} names no Test: line — add \"Test: ClassTest::it_does_x\".",
                     $severities['scenario-no-test'] ?? 'error',
+                    'acceptance-criteria',
+                );
+            }
+        }
+    }
+
+    /**
+     * requirement-uncovered: every R<n> named in the problem statement must be
+     * referenced by at least one S# scenario header. One finding lists every
+     * uncovered requirement id.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkRequirementCoverage(string $acText, string $problemText, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        if (!$this->hasScenarios($acText)) {
+            return;
+        }
+
+        $required = array_keys(Content::requirementIds($problemText));
+
+        $covered = [];
+        foreach (Content::headingBlocks($acText) as $block) {
+            $header = Content::scenarioHeader($block);
+
+            if ($header === null) {
+                continue;
+            }
+
+            foreach ($header['refs'] as $ref) {
+                $covered[$ref] = true;
+            }
+        }
+
+        $uncovered = array_values(array_filter(
+            $required,
+            static fn (string $id): bool => !isset($covered[$id]),
+        ));
+
+        if ($uncovered !== []) {
+            $findings[] = new Finding(
+                'requirement-uncovered',
+                'Requirement(s) not referenced by any S# scenario: ' . implode(', ', $uncovered),
+                $severities['requirement-uncovered'] ?? 'error',
+                'acceptance-criteria',
+            );
+        }
+    }
+
+    /**
+     * True when the acceptance criteria holds at least one `S<n>` scenario
+     * block. Free-form criteria (a checklist, a paragraph) carries no
+     * scenario coverage to verify.
+     */
+    private function hasScenarios(string $acText): bool
+    {
+        foreach (Content::headingBlocks($acText) as $block) {
+            if (Content::scenarioHeader($block) !== null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * quality-coverage-missing: the | Quality | Covered by | Note | table must
+     * name each of the nine qualities in its first cell. One finding lists
+     * every quality with no coverage row.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkQualityCoverage(string $acText, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        if (!$this->hasScenarios($acText)) {
+            return;
+        }
+
+        $present = [];
+
+        foreach (Content::lines($acText) as $line) {
+            if (preg_match('/^\s*\|\s*([^|]+?)\s*\|\s*[^|]*?\s*\|\s*[^|]*?\s*\|?\s*$/', $line, $m) !== 1) {
+                continue;
+            }
+
+            if (in_array(trim($m[1]), self::QUALITIES, true)) {
+                $present[trim($m[1])] = true;
+            }
+        }
+
+        $missing = array_values(array_filter(
+            self::QUALITIES,
+            static fn (string $q): bool => !isset($present[$q]),
+        ));
+
+        if ($missing !== []) {
+            $findings[] = new Finding(
+                'quality-coverage-missing',
+                'Quality coverage table is missing these qualities: ' . implode(', ', $missing),
+                $severities['quality-coverage-missing'] ?? 'error',
+                'acceptance-criteria',
+            );
+        }
+    }
+
+    /**
+     * vague-then: a Then/And step under a Then that uses a vague qualifier
+     * (works, as expected, correctly, gracefully, properly) must also name a
+     * concrete artifact (class, Exception, backtick span, number, return,
+     * event, count). One finding per vague step.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkVagueThen(string $acText, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        foreach (Content::headingBlocks($acText) as $block) {
+            $inThen = false;
+
+            foreach (Content::lines($block) as $line) {
+                if (preg_match('/^\s*Given\b/', $line) === 1 || preg_match('/^\s*When\b/', $line) === 1) {
+                    $inThen = false;
+
+                    continue;
+                }
+
+                if (preg_match('/^\s*Then\b/', $line) === 1) {
+                    $inThen = true;
+                } elseif (preg_match('/^\s*And\b/', $line) === 1) {
+                    if (!$inThen) {
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+
+                if (preg_match('/\bworks\b|as expected|\bcorrectly\b|\bgracefully\b|\bproperly\b/', $line) !== 1) {
+                    continue;
+                }
+
+                if (preg_match('/::class|\b[A-Z]\w+Exception\b|`[^`]+`|\b\d+\b|\breturns? \S+|\bevent\b|\bcount\b/', $line) === 1) {
+                    continue;
+                }
+
+                $findings[] = new Finding(
+                    'vague-then',
+                    'Vague Then/And step names no concrete outcome: ' . trim($line),
+                    $severities['vague-then'] ?? 'error',
                     'acceptance-criteria',
                 );
             }

@@ -334,3 +334,40 @@ MD;
 
     expect(codes($findings))->toContain('scenario-shape')->toContain('scenario-no-test');
 });
+
+it('flags an uncovered requirement and a quality with no coverage', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => "R1. one\nR2. two",
+        'acceptance-criteria' => <<<'MD'
+S1 (R1, Reliable): covered
+  Given a
+  When b
+  Then it throws DomainException
+  Test: ATest::it_x
+MD,
+    ]);
+
+    $findings = (new Validator($schema))->validate([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'],
+        'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('requirement-uncovered')
+        ->toContain('quality-coverage-missing');
+});
+
+it('flags an unmeasurable Then', function () {
+    $schema = arazzoSchema();
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one',
+        'acceptance-criteria' => "S1 (R1, Reliable): x\n  Given a\n  When b\n  Then it works correctly\n  Test: ATest::it_x",
+    ]);
+
+    $findings = (new Validator($schema))->validate([
+        'body' => $body, 'labels' => ['kind:feature', 'level:epic'],
+        'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('vague-then');
+});
