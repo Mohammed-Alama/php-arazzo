@@ -41,9 +41,7 @@ Rules:
 - Name the artifact kind on the line above the fence (Arazzo document, HTTP
   request/response, stack trace, exact command).
 - Do not restate the problem statement here — cite `R#` ids instead.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule, tier
-  rule, and the prohibitions — no invented permalinks, no restating, one
-  `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

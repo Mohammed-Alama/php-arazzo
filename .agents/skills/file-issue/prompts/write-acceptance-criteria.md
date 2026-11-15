@@ -73,11 +73,7 @@ Rules:
 - On `kind:chore` and `kind:release` every `- [ ]` / `- [x]` checklist item
   names a backticked command or token or carries a `https://` URL — an item
   naming neither fails `checklist-unverifiable`.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule
-  (`D#` with options and a default), tier rule (no tier without evidence;
-  `T4` blocks `ready-for-agent`), and the prohibitions — no invented
-  permalinks, no `Verified:` without reading the pinned lines, no "works
-  correctly", no restating, one `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

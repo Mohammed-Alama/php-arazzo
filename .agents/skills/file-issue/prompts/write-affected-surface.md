@@ -34,9 +34,7 @@ Rules:
 - Every package named here must appear in `dependency-matrix` — cite it,
   never restate it.
 - No `D#` lines here — open decisions live in `feature-scope`.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule
-  (`D#` with options and a default), tier rule, and the prohibitions — no
-  invented permalinks, no restating, one `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

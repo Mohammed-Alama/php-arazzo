@@ -28,6 +28,30 @@ function workedExample(string $prompt): string
     return $match[1];
 }
 
+/**
+ * The shared preamble file content.
+ */
+function preamble(): string
+{
+    return file_get_contents(dirname(__DIR__, 3).'/.agents/skills/file-issue/prompts/prompt-preamble.md');
+}
+
+/**
+ * What `--prompt=<id>` should print: section prompts are prefixed with the
+ * shared preamble; cross-cutting prompts are printed as-is.
+ */
+function expectedPromptOutput(string $id): string
+{
+    $promptDir = dirname(__DIR__, 3).'/.agents/skills/file-issue/prompts';
+    $crossCutting = ['prompt-preamble', 'readme', 'orchestrate-issue-conversion', 'review-issue-body'];
+
+    if (in_array($id, $crossCutting, true)) {
+        return file_get_contents($promptDir.'/'.$id.'.md');
+    }
+
+    return preamble().file_get_contents($promptDir.'/write-'.$id.'.md');
+}
+
 it('validates every worked example against the engine', function () {
     $schema = arazzoSchema();
     $validator = new Validator($schema);
@@ -82,7 +106,7 @@ it('lists every prompt in the index and reaches it through --prompt', function (
         $process->run();
 
         expect($process->getExitCode())->toBe(0)
-            ->and($process->getOutput())->toBe(file_get_contents($file));
+            ->and($process->getOutput())->toBe(expectedPromptOutput($id));
     }
 });
 
@@ -104,3 +128,64 @@ it('names each section-owned code in that section prompt', function () {
         }
     }
 });
+
+it('keeps README, SKILL.md and schema checks in sync', function () {
+    $schema = arazzoSchema();
+
+    /** @var array<string, list<string>> */
+    $schemaCodes = [];
+
+    foreach ($schema->sectionIds() as $id) {
+        $schemaCodes[$id] = array_keys($schema->checksFor($id));
+    }
+
+    $readme = file_get_contents(dirname(__DIR__, 3).'/.agents/skills/file-issue/prompts/README.md');
+    $skill = file_get_contents(dirname(__DIR__, 3).'/.agents/skills/file-issue/SKILL.md');
+
+    foreach ($schemaCodes as $id => $codes) {
+        $readmeCell = cellFor($readme, $id);
+        $skillCell = cellFor($skill, $id);
+
+        // Each check code declared in schema must appear verbatim in both tables.
+        foreach ($codes as $code) {
+            expect($readmeCell)->toContain('`'.$code.'`');
+            expect($skillCell)->toContain('`'.$code.'`');
+        }
+
+        // And no extra codes that are not declared in schema.
+        preg_match_all('/`([a-z-]+)`/', $readmeCell, $readmeQuoted);
+        preg_match_all('/`([a-z-]+)`/', $skillCell, $skillQuoted);
+
+        $declared = array_flip($codes);
+
+        foreach (array_unique($readmeQuoted[1]) as $quoted) {
+            if (!isset($declared[$quoted])) {
+                // Cross-cutting descriptors in README cells are not codes.
+                expect(in_array($quoted, $codes, true))->toBeTrue("README cell for {$id} names undeclared code {$quoted}");
+            }
+        }
+
+        foreach (array_unique($skillQuoted[1]) as $quoted) {
+            if (!isset($declared[$quoted])) {
+                expect(in_array($quoted, $codes, true))->toBeTrue("SKILL.md cell for {$id} names undeclared code {$quoted}");
+            }
+        }
+    }
+});
+
+/**
+ * Extract the third table cell (gate codes) for a section row.
+ *
+ * @param  string  $markdown  the README.md or SKILL.md content
+ * @param  string  $id  the section id (backticked in the first cell)
+ */
+function cellFor(string $markdown, string $id): string
+{
+    $pattern = '/\| `'.$id.'`[^\n]*\|[^\n]*\|([^\n]*)\|/';
+
+    if (preg_match($pattern, $markdown, $match) === 1) {
+        return $match[1];
+    }
+
+    return '';
+}

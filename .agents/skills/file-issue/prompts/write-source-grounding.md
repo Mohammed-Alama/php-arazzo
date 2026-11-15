@@ -38,15 +38,14 @@ Rules:
   (`permalink-not-bare`).
 - Every URL is commit-pinned: `blob/<40-hex-sha>` with `#L<start>-L<end>`, produced by
   `bin/code-permalink` from `git` in this session. The commit must be in this clone and the
-  path must exist at that SHA — otherwise the permalink fails `permalink-unverifiable`.
+  path must exist at that SHA — otherwise the permalink triggers `permalink-unverifiable`
+  (schema severity: warning) or `permalink-invalid` (error).
   Never `blob/main`, never `file:line`, never a URL typed from memory (`permalink-invalid`).
 - The section must contain at least one bare commit-pinned permalink — without one it fails
   `source-grounding-empty`.
 - Write `Verified: YYYY-MM-DD` only after reading the pinned lines at that SHA in the current
   session; a date not backed by reading them is fabrication.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule (`D#` with options and a
-  default), tier rule, and the prohibitions — no invented permalinks, no `Verified:` without reading
-  the pinned lines, no restating.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 
