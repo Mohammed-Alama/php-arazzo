@@ -69,7 +69,9 @@ it('reports sections that are absent entirely', function () {
         'parentLevel' => 'level:package',
     ]);
 
-    expect(codes($findings))->toBe(array_fill(0, 8, 'missing-section'));
+    // 8 required sections for bugfix, 1 present (core-metadata); epistemic-matrix
+    // missing-section is demoted to warning for epics (D14), so validate() returns 7 errors.
+    expect(codes($findings))->toBe(array_fill(0, 7, 'missing-section'));
 });
 
 it('demands exactly one kind label', function () {
@@ -359,7 +361,7 @@ S2 (R1, Safe): no test
   Then it throws UnresolvedWorkflowException
 MD;
 
-    $findings = (new Validator($schema))->validate([
+    $findings = (new Validator($schema))->report([
         'body' => issueBody($schema, featureSectionIds(), ['acceptance-criteria' => $text]),
         'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]);
@@ -421,7 +423,7 @@ it('accepts T1-T4 and rejects any other tier', function () {
     $good = "| Claim | Tier | Evidence | Verification |\n| --- | --- | --- | --- |\n| x | T2 | file | read |";
     $bad = "| Claim | Tier | Evidence | Verification |\n| --- | --- | --- | --- |\n| x | T5 | file | read |";
 
-    $run = fn (string $t) => codes((new Validator($schema))->validate([
+    $run = fn (string $t) => codes((new Validator($schema))->report([
         'body' => issueBody($schema, featureSectionIds(), ['epistemic-matrix' => $t]),
         'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
     ]));
