@@ -1,7 +1,7 @@
 # Prompt: write source grounding (`source-grounding`)
 
 Section: `## 🧬 Source Grounding & Code Location`
-Owns the gate codes: `permalink-invalid`, `permalink-not-bare`, `source-grounding-empty`.
+Owns the gate codes: `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `source-grounding-empty`.
 
 This prompt turns located code into pinned evidence: one claim per bullet, the bare URL produced by
 `bin/code-permalink` on the line under it, then a trailing `Verified: YYYY-MM-DD` line. It never
@@ -37,8 +37,9 @@ Rules:
   `<details>`, never an HTML `<a href>`, and never text after the URL on the same line
   (`permalink-not-bare`).
 - Every URL is commit-pinned: `blob/<40-hex-sha>` with `#L<start>-L<end>`, produced by
-  `bin/code-permalink` from `git` in this session. Never `blob/main`, never `file:line`, never a
-  URL typed from memory (`permalink-invalid`).
+  `bin/code-permalink` from `git` in this session. The commit must be in this clone and the
+  path must exist at that SHA — otherwise the permalink fails `permalink-unverifiable`.
+  Never `blob/main`, never `file:line`, never a URL typed from memory (`permalink-invalid`).
 - The section must contain at least one bare commit-pinned permalink — without one it fails
   `source-grounding-empty`.
 - Write `Verified: YYYY-MM-DD` only after reading the pinned lines at that SHA in the current

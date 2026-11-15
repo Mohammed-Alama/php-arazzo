@@ -48,4 +48,59 @@ it('validates every worked example against the engine', function () {
         // stub, only this section's own checks can be held to that.
         expect(array_intersect(codes($findings), array_keys($schema->checksFor($id))))->toBe([]);
     }
+    });
+
+it('has a prompt for every required section except core-metadata', function () {
+    $schema = arazzoSchema();
+    $ids = array_unique(array_merge(...array_map(
+        fn (string $kind): array => $schema->requiredIdsFor($kind),
+        $schema->kinds(),
+    )));
+
+    foreach (array_diff($ids, ['core-metadata']) as $id) {
+        expect(promptPath($id))->toBeFile();
+    }
+});
+
+it('lists every prompt in the index and reaches it through --prompt', function () {
+    $index = file_get_contents(dirname(__DIR__, 3).'/.agents/skills/file-issue/prompts/README.md');
+    $files = glob(dirname(__DIR__, 3).'/.agents/skills/file-issue/prompts/*.md');
+
+    expect($files)->not->toBeEmpty();
+
+    foreach ($files as $file) {
+        $name = basename($file, '.md');
+        if ($name === 'README') {
+            continue;
+        }
+
+        $id = str_starts_with($name, 'write-') ? substr($name, 6) : $name;
+
+        expect($index)->toContain($name)
+            ->and($index)->toContain($id);
+
+        $process = new Process(['php', '.agents/skills/file-issue/scripts/file-issue.php', '--prompt='.$id], dirname(__DIR__, 3));
+        $process->run();
+
+        expect($process->getExitCode())->toBe(0)
+            ->and($process->getOutput())->toBe(file_get_contents($file));
+    }
+});
+
+it('names each section-owned code in that section prompt', function () {
+    $schema = arazzoSchema();
+
+    foreach ($schema->sectionIds() as $id) {
+        // core-metadata is scripted, not prompted (D22): its only code is
+        // documented in SKILL.md, and there is no prompt to carry it.
+        if ($id === 'core-metadata') {
+            expect(file_get_contents(dirname(__DIR__, 3).'/.agents/skills/file-issue/SKILL.md'))
+                ->toContain('parent-mismatch');
+            continue;
+        }
+
+        foreach ($schema->checksFor($id) as $code => $severity) {
+            expect(file_get_contents(promptPath($id)))->toContain($code);
+        }
+    }
 });

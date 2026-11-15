@@ -2,7 +2,8 @@
 
 Section: `## 🧪 Acceptance Criteria & Behavioral Specification`
 Owns the gate codes: `scenario-shape`, `scenario-no-test`,
-`requirement-uncovered`, `quality-coverage-missing`, `vague-then`.
+`requirement-uncovered`, `quality-coverage-missing`, `vague-then`,
+`checklist-unverifiable`.
 
 This prompt converts the `R#` requirements of `problem-statement` and the
 open `D#` decisions of `feature-scope` into checkable scenarios. It never
@@ -69,6 +70,9 @@ Rules:
   and every `N/A` row carries a non-empty reason
   (`quality-coverage-missing`).
 - Each `C#` constraint carries a `Check:` line.
+- On `kind:chore` and `kind:release` every `- [ ]` / `- [x]` checklist item
+  names a backticked command or token or carries a `https://` URL — an item
+  naming neither fails `checklist-unverifiable`.
 - Inherits the shared `prompt-preamble.md`: citation rule, stop rule
   (`D#` with options and a default), tier rule (no tier without evidence;
   `T4` blocks `ready-for-agent`), and the prohibitions — no invented

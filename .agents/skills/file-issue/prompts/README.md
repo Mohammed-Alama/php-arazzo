@@ -21,10 +21,9 @@ any indexed prompt to stdout.
 | `runtime-state` | `write-runtime-state.md` | none |
 | `impact-profile` | `write-impact-profile.md` | `bc-line-missing` |
 | `epistemic-matrix` | `write-epistemic-matrix.md` | `tier-invalid` |
-| `source-grounding` | `write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `source-grounding-empty` |
-
-The remaining prompts — the orchestrator and reviewer — are added by later
-tasks of the tooling plan; this index grows with them.
+| `source-grounding` | `write-source-grounding.md` | `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `source-grounding-empty` |
+| `orchestrate-issue-conversion` | `orchestrate-issue-conversion.md` | none — fixes the §7.7 writing order and assembles the final body (no section code) |
+| `review-issue-body` | `review-issue-body.md` | none — adversarial read of the assembled body; lists rejectable lines (no section code) |
 
 ## Reachable through `--prompt`
 
@@ -32,6 +31,7 @@ tasks of the tooling plan; this index grows with them.
 php .agents/skills/file-issue/scripts/file-issue.php --prompt=acceptance-criteria
 ```
 
-prints `write-acceptance-criteria.md` and exits `0`. `--prompt=preamble` and
-`--prompt=readme` print the two cross-cutting files. Any unknown id exits `2`
-with the list of available ids.
+prints `write-acceptance-criteria.md` and exits `0`. `--prompt=prompt-preamble`,
+`--prompt=readme`, `--prompt=orchestrate-issue-conversion` and
+`--prompt=review-issue-body` print the cross-cutting and conversion prompts.
+Any unknown id exits `2` with the list of available ids.

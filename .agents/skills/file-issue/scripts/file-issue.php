@@ -20,9 +20,9 @@ use Alama\Tools\IssueIntake\Validator;
  *
  * With `--prompt=<section-id>` the script prints the section prompt file
  * (`.agents/skills/file-issue/prompts/write-<section-id>.md`, or the
- * cross-cutting `preamble`/`readme` ids) to stdout and exits `0`. An unknown
- * id exits `2` with the available ids. Nothing is validated or filed in this
- * mode.
+ * cross-cutting `prompt-preamble`, `readme`, `orchestrate-issue-conversion`
+ * and `review-issue-body` ids) to stdout and exits `0`. An unknown id exits
+ * `2` with the available ids. Nothing is validated or filed in this mode.
  *
  * `--sections` is a JSON object mapping a section id to markdown content
  * (`-` reads stdin). Section ids come from config/issues/schema.yaml; unknown
@@ -58,7 +58,9 @@ function usage(): void
           --edit=<n>           edit issue <n> instead of creating a new one
           --repo=<owner/name>  target repository (defaults to the current one)
           --package=<name>     primary package (required for level:package; adds package:<name> label)
-          --prompt=<section-id> print prompts/write-<section-id>.md (or preamble/readme) to stdout and exit 0
+          --prompt=<section-id> print prompts/write-<section-id>.md, or a cross-cutting
+          prompt (prompt-preamble, readme, orchestrate-issue-conversion,
+          review-issue-body), to stdout and exit 0
 
         The body is validated before `gh` is called; nothing is filed when it
         does not conform.
@@ -146,8 +148,10 @@ foreach (array_slice($argv, 1) as $argument) {
 
 $promptDir = dirname(__DIR__).'/prompts';
 $promptCrossCutting = [
-    'preamble' => 'prompt-preamble.md',
-    'readme'   => 'README.md',
+    'prompt-preamble'             => 'prompt-preamble.md',
+    'readme'                      => 'README.md',
+    'orchestrate-issue-conversion' => 'orchestrate-issue-conversion.md',
+    'review-issue-body'           => 'review-issue-body.md',
 ];
 
 if (isset($options['prompt'])) {
