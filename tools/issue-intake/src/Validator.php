@@ -19,6 +19,8 @@ final class Validator
     public function __construct(private readonly Schema $schema) {}
 
     /**
+     * All findings whose severity is `error` — the conformance verdict.
+     *
      * @param  array{
      *     body?: string,
      *     labels?: list<string>,
@@ -28,6 +30,69 @@ final class Validator
      * @return list<Finding>
      */
     public function validate(array $input): array
+    {
+        return array_values(array_filter(
+            $this->allFindings($input),
+            static fn (Finding $finding): bool => $finding->severity === 'error',
+        ));
+    }
+
+    /**
+     * Every finding, errors first while preserving discovery order within
+     * each severity — the full report the gate and inventory consume.
+     *
+     * @param  array{
+     *     body?: string,
+     *     labels?: list<string>,
+     *     parent?: int|null,
+     *     parentLevel?: string|null,
+     * }  $input
+     * @return list<Finding>
+     */
+    public function report(array $input): array
+    {
+        $findings = $this->allFindings($input);
+
+        usort($findings, static fn (Finding $a, Finding $b): int => [
+            'error' => 0,
+            'warning' => 1,
+        ][$a->severity] <=> [
+            'error' => 0,
+            'warning' => 1,
+        ][$b->severity]);
+
+        return $findings;
+    }
+
+    /**
+     * True when no finding carries `error` severity — warnings are allowed.
+     *
+     * @param  list<Finding>  $findings
+     */
+    public static function isConforming(array $findings): bool
+    {
+        foreach ($findings as $finding) {
+            if ($finding->severity === 'error') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Every finding the engine produces, in discovery order, before any
+     * severity filtering or re-sorting.
+     *
+     * @param  array{
+     *     body?: string,
+     *     labels?: list<string>,
+     *     parent?: int|null,
+     *     parentLevel?: string|null,
+     * }  $input
+     * @return list<Finding>
+     */
+    private function allFindings(array $input): array
     {
         $body = $input['body'] ?? '';
         $labels = self::strings($input['labels'] ?? []);
@@ -42,6 +107,7 @@ final class Validator
 
         if ($kind !== null && !$this->sectionsExempt($level)) {
             $this->checkSections($kind, $parsed, $findings);
+            $this->checkSectionContent($kind, $parsed, $findings);
         }
 
         if ($level !== null) {
@@ -50,6 +116,36 @@ final class Validator
         }
 
         return $findings;
+    }
+
+    /**
+     * Runs the per-section content checks declared in `Schema::checks()`.
+     * Only `non-goals-missing` is implemented here; the remaining content
+     * checks land in later tasks. Severity comes from the schema, defaulting
+     * to `error`.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkSectionContent(string $kind, array $parsed, array &$findings): void
+    {
+        $severities = $this->schema->checks();
+
+        if ($kind === 'kind:feature') {
+            $key = SectionParser::normalise($this->schema->section('feature-scope')['heading']);
+
+            if (array_key_exists($key, $parsed)) {
+                $text = implode("\n\n", $parsed[$key]);
+
+                if (!str_contains($text, 'Non-goals:')) {
+                    $findings[] = new Finding(
+                        'non-goals-missing',
+                        'Feature scope must name non-goals: add a "Non-goals:" line.',
+                        $severities['non-goals-missing'] ?? 'warning',
+                        'feature-scope',
+                    );
+                }
+            }
+        }
     }
 
     /** A package-epic reports no work; it indexes it, so it carries no kind. */
@@ -61,12 +157,6 @@ final class Validator
     private function sectionsExempt(?string $level): bool
     {
         return $level !== null && $this->schema->levelSectionsExempt($level);
-    }
-
-    /** @param list<Finding> $findings */
-    public static function isConforming(array $findings): bool
-    {
-        return $findings === [];
     }
 
     /**
@@ -178,7 +268,7 @@ final class Validator
             if (!array_key_exists($key, $parsed)) {
                 $findings[] = new Finding('missing-section', sprintf(
                     'Missing required section "%s".', $section['heading'],
-                ));
+                ), 'error', $id);
 
                 continue;
             }
@@ -186,7 +276,7 @@ final class Validator
             if (!$this->hasContent($parsed[$key], $section['placeholder'])) {
                 $findings[] = new Finding('empty-section', sprintf(
                     'Section "%s" is empty — replace the placeholder with real content.', $section['heading'],
-                ));
+                ), 'error', $id);
             }
         }
     }

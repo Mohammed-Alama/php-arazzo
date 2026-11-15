@@ -53,11 +53,19 @@ $input = [
     'parentLevel' => is_string($decoded['parentLevel'] ?? null) ? $decoded['parentLevel'] : null,
 ];
 
-$findings = $validator->validate($input);
+$findings = $validator->report($input);
 $classified = $validator->classify($input);
 
 foreach ($findings as $finding) {
     fwrite(STDERR, "[{$finding->code}] {$finding->message}\n");
+}
+
+$hasError = false;
+foreach ($findings as $finding) {
+    if ($finding->severity === 'error') {
+        $hasError = true;
+        break;
+    }
 }
 
 echo json_encode([
@@ -66,6 +74,7 @@ echo json_encode([
         static fn (Finding $finding): array => [
             'code' => $finding->code,
             'message' => $finding->message,
+            'severity' => $finding->severity,
         ],
         $findings,
     ),
@@ -73,4 +82,4 @@ echo json_encode([
     'level' => $classified['level'],
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "\n";
 
-exit($findings === [] ? 0 : 1);
+exit($hasError ? 1 : 0);

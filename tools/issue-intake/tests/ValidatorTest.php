@@ -5,12 +5,6 @@ declare(strict_types=1);
 use Alama\Tools\IssueIntake\Finding;
 use Alama\Tools\IssueIntake\Validator;
 
-/** @param  list<Finding>  $findings  @return list<string> */
-function codes(array $findings): array
-{
-    return array_map(static fn (Finding $finding): string => $finding->code, $findings);
-}
-
 it('passes a complete bugfix body', function () {
     $schema = arazzoSchema();
 
@@ -247,4 +241,22 @@ it('requires an epic to sit under a package-epic', function () {
     ]);
 
     expect(codes($findings))->toBe(['parent-missing']);
+});
+
+it('returns warnings only from report(), never from validate()', function () {
+    $schema = arazzoSchema();
+    $validator = new Validator($schema);
+
+    $input = [
+        'body' => issueBody($schema, featureSectionIds(), ['feature-scope' => 'Goals: x']),
+        'labels' => ['kind:feature', 'level:story'],
+        'parent' => 10,
+        'parentLevel' => 'level:epic',
+    ];
+
+    expect(codes($validator->validate($input)))->not->toContain('non-goals-missing')
+        ->and(codes($validator->report($input)))->toContain('non-goals-missing');
+
+    expect(Validator::isConforming([new Finding('non-goals-missing', 'x', 'warning')]))->toBeTrue()
+        ->and(Validator::isConforming([new Finding('missing-section', 'x')]))->toBeFalse();
 });

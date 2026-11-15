@@ -63,3 +63,9 @@ function choreSectionIds(): array
         'source-grounding', 'impact-profile',
     ];
 }
+
+/** @param  list<\Alama\Tools\IssueIntake\Finding>  $findings  @return list<string> */
+function codes(array $findings): array
+{
+    return array_map(static fn ($finding): string => $finding->code, $findings);
+}
