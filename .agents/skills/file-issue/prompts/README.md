@@ -13,11 +13,13 @@ any indexed prompt to stdout.
 | `acceptance-criteria` | `write-acceptance-criteria.md` | `scenario-shape`, `scenario-no-test`, `requirement-uncovered`, `quality-coverage-missing`, `vague-then` |
 | (shared rules) | `prompt-preamble.md` | — citation rule, stop rule (`D#`), tier rule, prohibitions |
 | `core-metadata` | none — scripted | `parent-mismatch` (read from labels and the sub-issue link; no agent writes this section) |
+| `problem-statement` | `write-problem-statement.md` | `missing-requirement` |
+| `feature-scope` | `write-feature-scope.md` | `non-goals-missing` and the `D#` shape (`D#. <question>? Options: <a>, <b>. Default: <a>.`) |
+| `dependency-matrix` | `write-dependency-matrix.md` | none — lists only packages the change touches, never "just in case" |
+| `affected-surface` | `write-affected-surface.md` | `rollback-missing` |
 
-The remaining section prompts — `write-problem-statement.md`,
-`write-feature-scope.md`, `write-dependency-matrix.md`,
-`write-affected-surface.md`, `write-artifacts.md`, `write-runtime-state.md`,
-`write-source-grounding.md`, `write-impact-profile.md`,
+The remaining section prompts — `write-artifacts.md`,
+`write-runtime-state.md`, `write-source-grounding.md`, `write-impact-profile.md`,
 `write-epistemic-matrix.md` — plus the orchestrator and reviewer prompts are
 added by later tasks of the tooling plan; this index grows with them.
 
