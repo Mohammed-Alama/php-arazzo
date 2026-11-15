@@ -34,9 +34,7 @@ Rules:
 - Every package named here must appear in `dependency-matrix` — cite it,
   never restate it.
 - Do not restate the problem statement — cite `R#` ids instead.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule, tier
-  rule, and the prohibitions — no invented permalinks, no restating, one
-  `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

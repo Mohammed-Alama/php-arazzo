@@ -23,7 +23,7 @@ duplicate their prose.
 
 ## When to use
 
-- You are about to open a `bug`, `enhancement`/feature, or `chore` issue.
+- You are about to open a `kind:bugfix`, `kind:feature`, or `kind:chore` issue.
 - You are rewriting an existing issue so it conforms (use `--edit`).
 - You have an investigation report from `arazzo-detective` and want to turn its
   Source-Grounding and Epistemic-Matrix blocks into a real issue.
@@ -35,7 +35,7 @@ php .agents/skills/file-issue/scripts/file-issue.php \
     --kind=kind:bugfix \
     --level=level:story \
     --parent=123 \
-    --title="[Bug] Expression $steps.x.outputs.body#/id resolves empty" \
+    --title="fix(core): Expression $steps.x.outputs.body#/id resolves empty" \
     --sections=sections.json
 ```
 
@@ -45,7 +45,7 @@ php .agents/skills/file-issue/scripts/file-issue.php \
 php .agents/skills/file-issue/scripts/file-issue.php \
     --level=level:package \
     --package=runner \
-    --title="[Package] runner"
+    --title="chore(runner): runner"
 ```
 
 | Argument | Required | Meaning |
@@ -68,17 +68,18 @@ keys are ignored — the validator names any required section you left out.
 
 ```json
 {
-  "core-metadata": "packages/evaluation; Arazzo 1.0.1; PHP 8.4.",
   "problem-statement": "`$steps.x.outputs.body#/id` resolves to empty when the body is a JSON string.",
   "dependency-matrix": "Depends on packages/expression; consumed by packages/runner.",
   "artifacts": "Minimal Arazzo document + the failing command (see below).",
   "runtime-state": "workflowId=wf, stepId=fetch, expression on line 3.",
   "acceptance-criteria": "- [ ] the expression resolves to `42` for the fixture",
-  "source-grounding": "- `packages/evaluation/src/JsonPath.php:88-92` — permalink pinned to `abc1234`, snippet in <details>.",
+  "source-grounding": "- the resolver returns null for string bodies.\nhttps://github.com/Mohammed-Alama/php-arazzo/blob/abc1234/packages/evaluation/src/JsonPath.php#L88-L92",
   "impact-profile": "Correctness of every output expression; medium blast radius.",
   "epistemic-matrix": "| Claim | Tier | Evidence |\n| --- | --- | --- |\n| … | T1 | Pest result |"
 }
 ```
+
+`core-metadata` is not supplied in the payload: it is scripted from the issue labels and the parent link (D22). Any supplied value is ignored — the gate computes it instead.
 
 ## Required section ids per kind
 
@@ -157,7 +158,7 @@ first, then the child.
 ## What it does, in order
 
 1. Loads `config/issues/schema.yaml`.
-2. Reads the sections payload and renders `### <heading>` blocks in schema
+2. Reads the sections payload and renders `## <heading>` blocks in schema
    order — the same shape a web-filed form produces.
 3. Resolves the parent's level (one `gh issue view <n> --json labels`) when
    `--parent` is given.

@@ -35,9 +35,7 @@ Rules:
 - A row marked `no` is allowed: it documents a dependency this change sits
   next to but does not touch.
 - No packages beyond those rows; this section is a matrix, not a narrative.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule
-  (`D#` with options and a default), tier rule, and the prohibitions — no
-  invented permalinks, no restating, one `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

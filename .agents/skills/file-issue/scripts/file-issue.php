@@ -175,6 +175,12 @@ if (isset($options['prompt'])) {
         fail('unknown prompt section "'.$options['prompt'].'"; available: '.implode(', ', $available), 2);
     }
 
+    // A section prompt is printed with the shared preamble prepended so the
+    // citation, stop, tier and prohibition rules travel with it.
+    if ($file === $promptDir.'/write-'.$options['prompt'].'.md') {
+        readfile($promptDir.'/prompt-preamble.md');
+    }
+
     readfile($file);
     exit(0);
 }
@@ -286,16 +292,36 @@ if (!$packageEpic) {
     }
 
     // Render the sections the kind cares about, in schema (visual) order.
+    // core-metadata is scripted (D22): it is computed from the labels and the
+    // parent link, never taken from the supplied payload.
     $wanted = [...$schema->requiredIdsFor($kind), ...$schema->optionalFor($kind)];
     $blocks = [];
 
     foreach ($schema->sectionIds() as $id) {
+        if ($id === 'core-metadata') {
+            continue;
+        }
+
         if (!in_array($id, $wanted, true) || trim($content[$id] ?? '') === '') {
             continue;
         }
 
-        $blocks[] = '### '.$schema->section($id)['heading']."\n\n".trim($content[$id]);
+        // Schema headings carry `## ` directly and are emitted verbatim.
+        $blocks[] = $schema->section($id)['heading']."\n\n".trim($content[$id]);
     }
+
+    // Script core-metadata from the labels and parent link (D22).
+    $coreMetadata = [];
+
+    if ($package !== null) {
+        $coreMetadata[] = 'Package: '.$package;
+    }
+
+    if ($parent !== null) {
+        $coreMetadata[] = 'Parent: #'.$parent;
+    }
+
+    array_unshift($blocks, $schema->section('core-metadata')['heading']."\n\n".implode(' · ', $coreMetadata));
 
     $body = implode("\n\n", $blocks);
 } else {

@@ -39,9 +39,7 @@ Rules:
   `tier-unverified`).
 - Do not restate other sections — cite `R#` ids and source-grounding lines
   instead.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule, tier
-  rule, and the prohibitions — no invented permalinks, no restating, one
-  `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

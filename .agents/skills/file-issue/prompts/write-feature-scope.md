@@ -34,17 +34,15 @@ Proposed interface: <class/method/signature sketch>
 Rules:
 
 - `Non-goals:` must carry text on the same line, or head a non-empty bullet
-  list that runs until the next non-bullet line — otherwise the section fails
-  `non-goals-missing`.
+  list that runs until the next non-bullet line — otherwise the section
+  triggers `non-goals-missing` (schema severity: warning).
 - Every `D#` line follows the stop rule shape:
   `D#. <question>? Options: <a>, <b>. Default: <a>.` — question, two or more
   options, and a default. This is the `D#` shape this prompt owns.
 - Cite `R#` ids instead of repeating requirements; never copy the problem
   statement into this section.
 - No `S#` scenarios here — those belong to acceptance criteria.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule
-  (`D#` with options and a default), tier rule, and the prohibitions — no
-  invented permalinks, no restating, one `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

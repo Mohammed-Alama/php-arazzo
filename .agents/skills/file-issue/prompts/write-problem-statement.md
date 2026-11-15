@@ -38,9 +38,7 @@ Rules:
 - Each requirement is one sentence, observable in behavior or test output,
   and names no design decision (decisions belong in `feature-scope` as `D#`).
 - No solutions, no interfaces, no packages here — those sections follow.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule
-  (`D#` with options and a default), tier rule, and the prohibitions — no
-  invented permalinks, no restating, one `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

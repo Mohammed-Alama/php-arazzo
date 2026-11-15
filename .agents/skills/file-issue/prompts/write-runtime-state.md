@@ -32,9 +32,7 @@ Rules:
 - Fill in what was true at the moment of the failure; leave out what the fix
   will change.
 - Do not restate the problem statement — cite `R#` ids instead.
-- Inherits the shared `prompt-preamble.md`: citation rule, stop rule, tier
-  rule, and the prohibitions — no invented permalinks, no restating, one
-  `When`.
+- Inherits prompt-preamble.md.
 
 ## Worked example
 

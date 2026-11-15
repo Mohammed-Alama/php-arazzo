@@ -198,3 +198,25 @@ it('refuses a --kind on a package-epic', function () {
     expect($process->getExitCode())->toBe(2)
         ->and($process->getErrorOutput())->toContain('kind');
 });
+
+it('scripts core-metadata from the parent link and ignores any supplied core-metadata', function () {
+    [$gh, $log] = stubGh();
+
+    $schema = arazzoSchema();
+    $all = conformingSections($schema, 'kind:bugfix', 1);
+
+    // Deliberately wrong parent in the supplied payload core-metadata — it must
+    // be ignored and computed from --parent instead (D22).
+    $all['core-metadata'] = 'Package: core · Parent: #999 · Arazzo 1.0.1 · PHP 8.4.';
+    $path = tempnam(sys_get_temp_dir(), 'sections-');
+    file_put_contents($path, json_encode($all));
+
+    $process = runFileIssue([
+        '--kind=kind:bugfix', '--level=level:story', '--parent=1', '--title=fix(core): x',
+        '--sections='.$path,
+    ], $gh, $log, ['STUB_LABELS' => '[{"name":"level:epic"}]']);
+
+    expect($process->getExitCode())->toBe(0)
+        ->and($process->getErrorOutput())->not->toContain('parent-mismatch')
+        ->and(file_get_contents($log))->toContain('issue create');
+});
