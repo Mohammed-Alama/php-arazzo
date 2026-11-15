@@ -190,6 +190,16 @@ final class Validator
 
             $this->checkChecklistItems($acText, $findings);
         }
+
+        $matrixKey = SectionParser::normalise($this->schema->section('epistemic-matrix')['heading']);
+
+        if (array_key_exists($matrixKey, $parsed)) {
+            $this->checkTierValidity(
+                Content::sectionText($parsed, $this->schema, 'epistemic-matrix'),
+                $findings,
+                $severities['tier-invalid'] ?? 'error',
+            );
+        }
     }
 
     /**
@@ -317,6 +327,47 @@ final class Validator
                 $severities['checklist-unverifiable'] ?? 'error',
                 'acceptance-criteria',
             );
+        }
+    }
+
+    /**
+     * tier-invalid: every data row of the epistemic-matrix table must carry a
+     * tier cell (the second cell) drawn from T1–T4. The header row and any
+     * separator row are skipped; every other row yields one finding when its
+     * tier cell is missing or outside T1–T4. Applies when epistemic-matrix is
+     * required or present — an absent required section is already reported by
+     * checkSections().
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkTierValidity(string $text, array &$findings, string $severity): void
+    {
+        $lines = Content::lines($text);
+        $started = false;
+
+        foreach ($lines as $line) {
+            // The first table line is the header — never a data row.
+            if (!$started) {
+                $started = true;
+                continue;
+            }
+
+            // Separator rows (`| --- | --- |`) carry no tier.
+            if (preg_match('/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/', $line) === 1) {
+                continue;
+            }
+
+            $cells = explode('|', $line);
+            $tier = trim($cells[2] ?? '');
+
+            if (preg_match('/^T[1-4]$/', $tier) !== 1) {
+                $findings[] = new Finding(
+                    'tier-invalid',
+                    'Epistemic matrix row names no T1–T4 tier: "'.$line.'" — the second cell must be T1, T2, T3 or T4.',
+                    $severity,
+                    'epistemic-matrix',
+                );
+            }
         }
     }
 

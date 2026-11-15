@@ -383,3 +383,17 @@ it('requires every chore checklist item to name a command or a URL', function ()
 
     expect(codes($findings))->toContain('checklist-unverifiable');
 });
+
+it('accepts T1-T4 and rejects any other tier', function () {
+    $schema = arazzoSchema();
+    $good = "| Claim | Tier | Evidence | Verification |\n| --- | --- | --- | --- |\n| x | T2 | file | read |";
+    $bad = "| Claim | Tier | Evidence | Verification |\n| --- | --- | --- | --- |\n| x | T5 | file | read |";
+
+    $run = fn (string $t) => codes((new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds(), ['epistemic-matrix' => $t]),
+        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]));
+
+    expect($run($good))->not->toContain('tier-invalid')
+        ->and($run($bad))->toContain('tier-invalid');
+});
