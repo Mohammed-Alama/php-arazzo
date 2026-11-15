@@ -94,6 +94,7 @@ it('produces forms whose filled body conforms to the validator', function () {
             $body .= '### '.$field['attributes']['label']."\n\n";
             $body .= match (true) {
                 $field['id'] === 'level' => "level:epic\n\n",
+                $field['id'] === 'problem-statement' => "R1. filled {$field['id']}\n\n",
                 $field['validations']['required'] === false => "_No response_\n\n",
                 default => "filled {$field['id']}\n\n",
             };

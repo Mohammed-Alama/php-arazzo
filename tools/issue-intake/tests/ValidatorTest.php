@@ -42,6 +42,7 @@ it('treats a written checklist as content', function () {
 
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugfixSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
             'acceptance-criteria' => '- [ ] Given a valid document, when I validate, then it passes',
         ]),
         'labels' => ['kind:bugfix', 'level:epic'],
@@ -87,7 +88,9 @@ it('accepts the level declared by the form dropdown when no level label is set',
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => "### Level\n\nlevel:epic\n\n".issueBody($schema, bugfixSectionIds()),
+        'body' => "### Level\n\nlevel:epic\n\n".issueBody($schema, bugfixSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+        ]),
         'labels' => ['kind:bugfix'],
         'parent' => 1,
         'parentLevel' => 'level:package',
@@ -100,7 +103,9 @@ it('does not accept a body level it cannot resolve', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => "### Level\n\nwhatever\n\n".issueBody($schema, bugfixSectionIds()),
+        'body' => "### Level\n\nwhatever\n\n".issueBody($schema, bugfixSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+        ]),
         'labels' => ['kind:bugfix'],
     ]);
 
@@ -110,7 +115,9 @@ it('does not accept a body level it cannot resolve', function () {
 it('requires a story to sit under an epic', function () {
     $schema = arazzoSchema();
 
-    $body = issueBody($schema, featureSectionIds());
+    $body = issueBody($schema, featureSectionIds(), [
+        'problem-statement' => 'R1. one observable requirement.',
+    ]);
 
     $underEpic = (new Validator($schema))->validate([
         'body' => $body, 'labels' => ['kind:feature', 'level:story'],
@@ -131,7 +138,9 @@ it('requires a story to have a parent at all', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, featureSectionIds()),
+        'body' => issueBody($schema, featureSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+        ]),
         'labels' => ['kind:feature', 'level:story'],
         'parent' => null,
         'parentLevel' => null,
@@ -144,7 +153,9 @@ it('names a legacy parent that carries no level label', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, featureSectionIds()),
+        'body' => issueBody($schema, featureSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+        ]),
         'labels' => ['kind:feature', 'level:story'],
         'parent' => 42,
         'parentLevel' => null,
@@ -174,7 +185,10 @@ it('treats GitHub\'s no-response sentinel as an empty section', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, bugfixSectionIds(), ['artifacts' => '_No response_']),
+        'body' => issueBody($schema, bugfixSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+            'artifacts' => '_No response_',
+        ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
         'parentLevel' => 'level:package',
@@ -187,7 +201,9 @@ it('tolerates a missing parentLevel key', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, bugfixSectionIds()),
+        'body' => issueBody($schema, bugfixSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+        ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
         'parentLevel' => 'level:package',
@@ -234,7 +250,9 @@ it('forbids a parent on a package-epic', function () {
 
 it('requires an epic to sit under a package-epic', function () {
     $findings = (new Validator(arazzoSchema()))->validate([
-        'body' => issueBody(arazzoSchema(), bugfixSectionIds()),
+        'body' => issueBody(arazzoSchema(), bugfixSectionIds(), [
+            'problem-statement' => 'R1. one observable requirement.',
+        ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => null,
         'parentLevel' => null,
@@ -281,4 +299,14 @@ it('returns warnings only from report(), never from validate()', function () {
 
     expect(Validator::isConforming([new Finding('non-goals-missing', 'x', 'warning')]))->toBeTrue()
         ->and(Validator::isConforming([new Finding('missing-section', 'x')]))->toBeFalse();
+});
+
+it('requires at least one numbered requirement for feature and bugfix', function () {
+    $schema = arazzoSchema();
+    $findings = (new Validator($schema))->validate([
+        'body' => issueBody($schema, featureSectionIds(), ['problem-statement' => 'It is broken.']),
+        'labels' => ['kind:feature', 'level:epic'], 'parent' => 1, 'parentLevel' => 'level:package',
+    ]);
+
+    expect(codes($findings))->toContain('missing-requirement');
 });

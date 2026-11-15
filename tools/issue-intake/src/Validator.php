@@ -154,6 +154,24 @@ final class Validator
                 }
             }
         }
+
+        if (in_array($kind, ['kind:feature', 'kind:bugfix'], true)) {
+            $problemKey = SectionParser::normalise($this->schema->section('problem-statement')['heading']);
+
+            // A missing or placeholder section is already reported by checkSections();
+            // only a present, non-empty statement without a numbered requirement
+            // gets missing-requirement.
+            if (array_key_exists($problemKey, $parsed)
+                && $this->hasContent($parsed[$problemKey], $this->schema->section('problem-statement')['placeholder'])
+                && Content::requirementIds(Content::sectionText($parsed, $this->schema, 'problem-statement')) === []) {
+                $findings[] = new Finding(
+                    'missing-requirement',
+                    'Problem statement must name at least one numbered requirement: "R1. <one sentence>".',
+                    $severities['missing-requirement'] ?? 'error',
+                    'problem-statement',
+                );
+            }
+        }
     }
 
     /**
