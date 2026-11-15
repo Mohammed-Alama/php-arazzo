@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use Alama\Tools\IssueIntake\GitPermalinkResolver;
 use Alama\Tools\IssueIntake\PackageIndex;
 use Alama\Tools\IssueIntake\Schema;
 use Alama\Tools\IssueIntake\Validator;
@@ -306,7 +307,8 @@ $parentLevel = $parent !== null ? resolveParentLevel($gh, $parent, $repo) : null
 
 $labels = $packageEpic ? [$level, 'package:'.$package] : [$kind, $level];
 
-$findings = (new Validator($schema))->validate([
+$root = dirname(__DIR__, 3);
+$findings = (new Validator($schema, new GitPermalinkResolver($root)))->validate([
     'body' => $body,
     'labels' => $labels,
     'title' => $options['title'],

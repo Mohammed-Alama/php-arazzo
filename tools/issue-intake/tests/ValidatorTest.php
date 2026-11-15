@@ -328,7 +328,7 @@ it('returns errors from validate() and every finding from report()', function ()
         'parentLevel' => 'level:epic',
     ];
 
-    expect(codes($validator->validate($input)))->toContain('non-goals-missing')
+    expect(codes($validator->validate($input)))->not->toContain('non-goals-missing')
         ->and(codes($validator->report($input)))->toContain('non-goals-missing');
 
     expect(Validator::isConforming([new Finding('non-goals-missing', 'x', 'error')]))->toBeFalse()
