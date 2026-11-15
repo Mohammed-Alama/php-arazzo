@@ -113,7 +113,7 @@ final class Validator
 
         if ($kind !== null && !$this->sectionsExempt($level)) {
             $this->checkSections($kind, $parsed, $findings);
-            $this->checkSectionContent($kind, $parsed, $findings);
+            $this->checkSectionContent($kind, $parsed, $parent, $findings);
             $this->checkPermalinks($parsed, $findings);
         }
 
@@ -130,35 +130,24 @@ final class Validator
     }
 
     /**
-     * Runs the per-section content checks declared in `Schema::checks()`.
-     * Only `non-goals-missing` is implemented here; the remaining content
-     * checks land in later tasks. Severity comes from the schema, defaulting
-     * to `error`.
+     * Runs the per-section content checks declared in `Schema::checks()`:
+     * `non-goals-missing`, `rollback-missing`, `artifact-block-missing`,
+     * `bc-line-missing` and `parent-mismatch`, plus the acceptance-criteria
+     * checks (scenario shape, requirement/quality coverage, vague Thens)
+     * implemented in earlier tasks. Severity comes from the schema,
+     * defaulting to `error`. A section that is blank or still holds its
+     * placeholder is already reported by `checkSections()`, so the
+     * completeness checks below only run on sections that hold real content.
      *
      * @param  list<Finding>  $findings
      */
-    private function checkSectionContent(string $kind, array $parsed, array &$findings): void
+    private function checkSectionContent(string $kind, array $parsed, ?int $parent, array &$findings): void
     {
         $severities = $this->schema->checks();
 
         if ($kind === 'kind:feature') {
-            $key = SectionParser::normalise($this->schema->section('feature-scope')['heading']);
+            $this->checkNonGoals($parsed, $severities, $findings);
 
-            if (array_key_exists($key, $parsed)) {
-                $text = implode("\n\n", $parsed[$key]);
-
-                if (!str_contains($text, 'Non-goals:')) {
-                    $findings[] = new Finding(
-                        'non-goals-missing',
-                        'Feature scope must name non-goals: add a "Non-goals:" line.',
-                        $severities['non-goals-missing'] ?? 'warning',
-                        'feature-scope',
-                    );
-                }
-            }
-        }
-
-        if (in_array($kind, ['kind:feature', 'kind:bugfix'], true)) {
             $acKey = SectionParser::normalise($this->schema->section('acceptance-criteria')['heading']);
             $acText = implode("\n\n", $parsed[$acKey] ?? []);
 
@@ -184,12 +173,20 @@ final class Validator
             }
         }
 
+        if (in_array($kind, ['kind:feature', 'kind:bugfix'], true)) {
+            $this->checkBcLine($parsed, $severities, $findings);
+        }
+
         if (in_array($kind, ['kind:chore', 'kind:release'], true)) {
             $acKey = SectionParser::normalise($this->schema->section('acceptance-criteria')['heading']);
             $acText = implode("\n\n", $parsed[$acKey] ?? []);
 
             $this->checkChecklistItems($acText, $findings);
         }
+
+        $this->checkRollback($parsed, $severities, $findings);
+        $this->checkArtifacts($parsed, $severities, $findings);
+        $this->checkParentMismatch($parent, $parsed, $severities, $findings);
 
         $matrixKey = SectionParser::normalise($this->schema->section('epistemic-matrix')['heading']);
 
@@ -200,6 +197,191 @@ final class Validator
                 $severities['tier-invalid'] ?? 'error',
             );
         }
+    }
+
+    /**
+     * non-goals-missing: `feature-scope` must contain `Non-goals:` with text
+     * after it on the same line, or a non-empty bullet list under a bare
+     * `Non-goals:` header that runs until the next `Key:`-style line.
+     * Feature only.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkNonGoals(array $parsed, array $severities, array &$findings): void
+    {
+        $key = SectionParser::normalise($this->schema->section('feature-scope')['heading']);
+
+        if (!array_key_exists($key, $parsed)
+            || !$this->hasContent($parsed[$key], $this->schema->section('feature-scope')['placeholder'])) {
+            return;
+        }
+
+        if ($this->satisfiesNonGoals(Content::sectionText($parsed, $this->schema, 'feature-scope'))) {
+            return;
+        }
+
+        $findings[] = new Finding(
+            'non-goals-missing',
+            'Feature scope must name its non-goals: add `Non-goals: <line>` with text after it, '
+            .'or a non-empty bullet list under a bare `Non-goals:` before the next `Key:` line.',
+            $severities['non-goals-missing'] ?? 'error',
+            'feature-scope',
+        );
+    }
+
+    /**
+     * True when `Non-goals:` carries text on the same line, or heads a
+     * non-empty bullet list (blank lines allowed) before anything that is
+     * not a bullet ends it.
+     */
+    private static function satisfiesNonGoals(string $text): bool
+    {
+        $lines = Content::lines($text);
+
+        foreach ($lines as $index => $line) {
+            $line = trim($line);
+
+            if (preg_match('/^Non-goals:\s*\S/u', $line) === 1) {
+                return true;
+            }
+
+            if (preg_match('/^Non-goals:\s*$/u', $line) !== 1) {
+                continue;
+            }
+
+            // Bare header: the first non-blank line after it must open the
+            // bullet list; anything else (a `Key:` line, a paragraph) ends it.
+            for ($j = $index + 1; $j < count($lines); $j++) {
+                $follow = trim($lines[$j]);
+
+                if ($follow === '') {
+                    continue;
+                }
+
+                return preg_match('/^[-*+]\s+\S/u', $follow) === 1;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * rollback-missing: `affected-surface` must contain `Rollback:` with at
+     * least one word after it. Runs whenever the section holds content.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkRollback(array $parsed, array $severities, array &$findings): void
+    {
+        $key = SectionParser::normalise($this->schema->section('affected-surface')['heading']);
+
+        if (!array_key_exists($key, $parsed)
+            || !$this->hasContent($parsed[$key], $this->schema->section('affected-surface')['placeholder'])) {
+            return;
+        }
+
+        foreach (Content::lines(Content::sectionText($parsed, $this->schema, 'affected-surface')) as $raw) {
+            if (preg_match('/^Rollback:\s+\S/u', trim($raw)) === 1) {
+                return;
+            }
+        }
+
+        $findings[] = new Finding(
+            'rollback-missing',
+            'Affected surface must name a rollback: add a `Rollback: <step>` line with at least one word after it.',
+            $severities['rollback-missing'] ?? 'error',
+            'affected-surface',
+        );
+    }
+
+    /**
+     * artifact-block-missing: `artifacts` must hold at least one fenced
+     * triple-backtick block. Runs whenever the section holds content.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkArtifacts(array $parsed, array $severities, array &$findings): void
+    {
+        $key = SectionParser::normalise($this->schema->section('artifacts')['heading']);
+
+        if (!array_key_exists($key, $parsed)
+            || !$this->hasContent($parsed[$key], $this->schema->section('artifacts')['placeholder'])
+            || Content::fencedBlocks(Content::sectionText($parsed, $this->schema, 'artifacts')) !== []) {
+            return;
+        }
+
+        $findings[] = new Finding(
+            'artifact-block-missing',
+            'Artifacts must include a fenced block: the minimal document, request/response or stack trace in triple backticks.',
+            $severities['artifact-block-missing'] ?? 'error',
+            'artifacts',
+        );
+    }
+
+    /**
+     * bc-line-missing: `impact-profile` must match `BC break: yes|no`.
+     * Feature and bugfix only.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkBcLine(array $parsed, array $severities, array &$findings): void
+    {
+        $key = SectionParser::normalise($this->schema->section('impact-profile')['heading']);
+
+        if (!array_key_exists($key, $parsed)
+            || !$this->hasContent($parsed[$key], $this->schema->section('impact-profile')['placeholder'])) {
+            return;
+        }
+
+        if (preg_match('/BC break:\s*(yes|no)/i', Content::sectionText($parsed, $this->schema, 'impact-profile')) === 1) {
+            return;
+        }
+
+        $findings[] = new Finding(
+            'bc-line-missing',
+            'Impact profile must state whether this is a BC break: `BC break: yes` or `BC break: no`.',
+            $severities['bc-line-missing'] ?? 'error',
+            'impact-profile',
+        );
+    }
+
+    /**
+     * parent-mismatch: when the issue links a parent, `core-metadata` must
+     * name the same `Parent: #n`; a missing line is also a mismatch.
+     *
+     * @param  list<Finding>  $findings
+     */
+    private function checkParentMismatch(?int $parent, array $parsed, array $severities, array &$findings): void
+    {
+        if ($parent === null) {
+            return;
+        }
+
+        $key = SectionParser::normalise($this->schema->section('core-metadata')['heading']);
+
+        if (!array_key_exists($key, $parsed)
+            || !$this->hasContent($parsed[$key], $this->schema->section('core-metadata')['placeholder'])) {
+            return;
+        }
+
+        $named = null;
+
+        if (preg_match('/Parent:\s*#(\d+)/u', Content::sectionText($parsed, $this->schema, 'core-metadata'), $match) === 1) {
+            $named = (int) $match[1];
+        }
+
+        if ($named === $parent) {
+            return;
+        }
+
+        $findings[] = new Finding(
+            'parent-mismatch',
+            $named === null
+                ? sprintf('core-metadata names no parent — add `Parent: #%d` to match the linked parent.', $parent)
+                : sprintf('core-metadata names Parent: #%d but the issue is linked to parent #%d.', $named, $parent),
+            $severities['parent-mismatch'] ?? 'error',
+            'core-metadata',
+        );
     }
 
     /**

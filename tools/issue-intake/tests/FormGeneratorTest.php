@@ -95,6 +95,11 @@ it('produces forms whose filled body conforms to the validator', function () {
             $body .= match (true) {
                 $field['id'] === 'level' => "level:epic\n\n",
                 $field['id'] === 'problem-statement' => "R1. filled {$field['id']}\n\n",
+                $field['id'] === 'feature-scope' => "Goals: filled {$field['id']}\nNon-goals: out of scope\n\n",
+                $field['id'] === 'affected-surface' => "Risk: low\nRollback: revert the commit\n\n",
+                $field['id'] === 'artifacts' => "```json\n{}\n```\n\n",
+                $field['id'] === 'impact-profile' => 'BC break: no'."\n\n",
+                $field['id'] === 'core-metadata' => 'Package: core · Parent: #1'."\n\n",
                 $field['validations']['required'] === false => "_No response_\n\n",
                 default => "filled {$field['id']}\n\n",
             };

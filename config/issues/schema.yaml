@@ -85,7 +85,7 @@ sections:
     label: "Feature Scope & Prior Art"
     description: "Goals, non-goals, prior art and the proposed interface."
     placeholder: "Goals, non-goals, prior art, proposed interface."
-    checks: { non-goals-missing: warning }
+    checks: { non-goals-missing: error }
   dependency-matrix:
     heading: "## 📦 System Dependency Matrix"
     label: "System Dependency Matrix"

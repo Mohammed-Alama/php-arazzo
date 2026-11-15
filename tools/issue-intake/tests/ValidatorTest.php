@@ -28,6 +28,9 @@ it('flags an unedited placeholder or bare checklist as empty, not missing', func
         'body' => issueBody($schema, bugfixSectionIds(), [
             'problem-statement' => '<!-- explain here -->',
             'acceptance-criteria' => "- [ ]\n- [ ]",
+            'artifacts' => "```json\n{}\n```",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
@@ -44,6 +47,9 @@ it('treats a written checklist as content', function () {
         'body' => issueBody($schema, bugfixSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
             'acceptance-criteria' => '- [ ] Given a valid document, when I validate, then it passes',
+            'artifacts' => "```json\n{}\n```",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
@@ -57,7 +63,7 @@ it('reports sections that are absent entirely', function () {
     $schema = arazzoSchema();
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, ['core-metadata']),
+        'body' => issueBody($schema, ['core-metadata'], ['core-metadata' => 'Package: core · Parent: #1']),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
         'parentLevel' => 'level:package',
@@ -90,6 +96,9 @@ it('accepts the level declared by the form dropdown when no level label is set',
     $findings = (new Validator($schema))->validate([
         'body' => "### Level\n\nlevel:epic\n\n".issueBody($schema, bugfixSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
+            'artifacts' => "```json\n{}\n```",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix'],
         'parent' => 1,
@@ -105,6 +114,9 @@ it('does not accept a body level it cannot resolve', function () {
     $findings = (new Validator($schema))->validate([
         'body' => "### Level\n\nwhatever\n\n".issueBody($schema, bugfixSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
+            'artifacts' => "```json\n{}\n```",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix'],
     ]);
@@ -117,6 +129,9 @@ it('requires a story to sit under an epic', function () {
 
     $body = issueBody($schema, featureSectionIds(), [
         'problem-statement' => 'R1. one observable requirement.',
+        'feature-scope' => "Goals: filled feature-scope\nNon-goals: out of scope",
+        'impact-profile' => 'API: none · BC break: no',
+        'core-metadata' => 'Package: core · Parent: #10',
     ]);
 
     $underEpic = (new Validator($schema))->validate([
@@ -140,6 +155,9 @@ it('requires a story to have a parent at all', function () {
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, featureSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
+            'feature-scope' => "Goals: filled feature-scope\nNon-goals: out of scope",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core',
         ]),
         'labels' => ['kind:feature', 'level:story'],
         'parent' => null,
@@ -155,6 +173,9 @@ it('names a legacy parent that carries no level label', function () {
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, featureSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
+            'feature-scope' => "Goals: filled feature-scope\nNon-goals: out of scope",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #42',
         ]),
         'labels' => ['kind:feature', 'level:story'],
         'parent' => 42,
@@ -171,7 +192,10 @@ it('refuses to give a sub-task children', function () {
     expect($schema->requiredIdsFor('kind:chore'))->toBe(choreSectionIds());
 
     $findings = (new Validator($schema))->validate([
-        'body' => issueBody($schema, choreSectionIds()),
+        'body' => issueBody($schema, choreSectionIds(), [
+            'affected-surface' => "Risk: low\nRollback: revert the commit",
+            'core-metadata' => 'Package: core · Parent: #7',
+        ]),
         'labels' => ['kind:chore', 'level:task'],
         'parent' => 7,
         'parentLevel' => 'level:task',
@@ -188,6 +212,8 @@ it('treats GitHub\'s no-response sentinel as an empty section', function () {
         'body' => issueBody($schema, bugfixSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
             'artifacts' => '_No response_',
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
@@ -203,6 +229,9 @@ it('tolerates a missing parentLevel key', function () {
     $findings = (new Validator($schema))->validate([
         'body' => issueBody($schema, bugfixSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
+            'artifacts' => "```json\n{}\n```",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => 1,
@@ -252,6 +281,9 @@ it('requires an epic to sit under a package-epic', function () {
     $findings = (new Validator(arazzoSchema()))->validate([
         'body' => issueBody(arazzoSchema(), bugfixSectionIds(), [
             'problem-statement' => 'R1. one observable requirement.',
+            'artifacts' => "```json\n{}\n```",
+            'impact-profile' => 'API: none · BC break: no',
+            'core-metadata' => 'Package: core · Parent: #1',
         ]),
         'labels' => ['kind:bugfix', 'level:epic'],
         'parent' => null,
@@ -283,7 +315,7 @@ it('rejects a bracket title and a prefix that belongs to another kind', function
     }
 });
 
-it('returns warnings only from report(), never from validate()', function () {
+it('returns errors from validate() and every finding from report()', function () {
     $schema = arazzoSchema();
     $validator = new Validator($schema);
 
@@ -294,10 +326,10 @@ it('returns warnings only from report(), never from validate()', function () {
         'parentLevel' => 'level:epic',
     ];
 
-    expect(codes($validator->validate($input)))->not->toContain('non-goals-missing')
+    expect(codes($validator->validate($input)))->toContain('non-goals-missing')
         ->and(codes($validator->report($input)))->toContain('non-goals-missing');
 
-    expect(Validator::isConforming([new Finding('non-goals-missing', 'x', 'warning')]))->toBeTrue()
+    expect(Validator::isConforming([new Finding('non-goals-missing', 'x', 'error')]))->toBeFalse()
         ->and(Validator::isConforming([new Finding('missing-section', 'x')]))->toBeFalse();
 });
 
