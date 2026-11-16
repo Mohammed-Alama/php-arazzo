@@ -278,6 +278,7 @@ units:
     tasks:
       - task: 59-cli-parallel
         kind: kind:feature
+        filed: 369
 
   - story: 51-single-step-execution
     kind: kind:feature
