@@ -118,6 +118,8 @@ flowchart LR
     C_document_document_Validator_ActionRetryLimitsRule -.->|implements| I_Rule
     C_document_document_Validator_ActionReusableRefResolvesRule["ActionReusableRefResolvesRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionReusableRefResolvesRule -.->|implements| I_Rule
+    C_document_document_Validator_ActionTargetExclusivityRule["ActionTargetExclusivityRule<br/><small>document:Validator</small>"]:::implCore
+    C_document_document_Validator_ActionTargetExclusivityRule -.->|implements| I_Rule
     C_document_document_Validator_ActionTypeValidRule["ActionTypeValidRule<br/><small>document:Validator</small>"]:::implCore
     C_document_document_Validator_ActionTypeValidRule -.->|implements| I_Rule
     C_document_document_Validator_AsyncApiFieldsRequire11Rule["AsyncApiFieldsRequire11Rule<br/><small>document:Validator</small>"]:::implCore

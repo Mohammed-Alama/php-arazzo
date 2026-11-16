@@ -21,7 +21,7 @@ targets. Regenerated before every commit.
 | `contracts:State` | 2 | 790 | 13 | 1 | 0.07 |  |
 | `contracts:Support` | 5 | 180 | 12 | 0 | 0.00 |  |
 | `document:Parser` | 12 | 1441 | 7 | 2 | 0.22 |  |
-| `document:Validator` | 70 | 3776 | 6 | 7 | 0.54 |  |
+| `document:Validator` | 71 | 3829 | 6 | 7 | 0.54 |  |
 | `(document root)` | 6 | 293 | 7 | 6 | 0.46 |  |
 | `engine:Data` | 2 | 72 | 1 | 3 | 0.75 |  |
 | `engine:Enum` | 1 | 16 | 1 | 0 | 0.00 |  |
@@ -60,9 +60,9 @@ targets. Regenerated before every commit.
 | `laravel:Support` | 4 | 268 | 4 | 5 | 0.56 |  |
 | `(laravel root)` | 4 | 589 | 0 | 9 | 1.00 |  |
 | `runner:Async` | 7 | 1339 | 4 | 19 | 0.83 | ⚠ unstable hub |
-| `runner:Execution` | 15 | 355 | 5 | 9 | 0.64 |  |
+| `runner:Execution` | 16 | 367 | 5 | 9 | 0.64 |  |
 | `runner:Interfaces` | 1 | 24 | 0 | 2 | 1.00 |  |
-| `runner:Sync` | 5 | 873 | 4 | 18 | 0.82 | ⚠ unstable hub |
+| `runner:Sync` | 5 | 889 | 4 | 18 | 0.82 | ⚠ unstable hub |
 | `(runner root)` | 9 | 522 | 7 | 15 | 0.68 |  |
 | `runtime:Infrastructure` | 3 | 159 | 0 | 1 | 1.00 |  |
 | `runtime:Policy` | 2 | 100 | 1 | 3 | 0.75 |  |
@@ -73,13 +73,13 @@ targets. Regenerated before every commit.
 | `sources:Validator` | 1 | 324 | 3 | 4 | 0.57 |  |
 | `(sources root)` | 3 | 333 | 2 | 10 | 0.83 |  |
 
-Total cross-module edges: **1116**
+Total cross-module edges: **1122**
 
 ## Most entangled module pairs
 
 | From → To | References |
 |---|---:|
-| `document:Validator` → `contracts:Spec` | 106 |
+| `document:Validator` → `contracts:Spec` | 110 |
 | `document:Parser` → `contracts:Spec` | 38 |
 | `(evaluation root)` → `contracts:Spec` | 28 |
 | `runner:Sync` → `contracts:Spec` | 24 |
