@@ -446,7 +446,7 @@ this file on a commit is a public API change — review it deliberately.
 - `public function __construct(public array $workflows, public array $sourceDescriptions, public array $components)`
 
 #### `ValidationResult` class
-- `public function __construct(public ArazzoDocument $document, public array $errors, public array $warnings)`
+- `public function __construct(public ArazzoDocument $document, public array $errors, public array $warnings, public array $inputs = [])`
 - `public function isValid(): bool`
 
 #### `Warning` class

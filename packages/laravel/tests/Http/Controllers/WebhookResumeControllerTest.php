@@ -142,7 +142,7 @@ it('runs a full HTTP -> AsyncAPI suspend/resume saga end to end via the fixture 
         ),
     );
     $documents->shouldReceive('preflight')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
-    $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d) => new ValidationResult($d, [], []));
+    $documents->shouldReceive('preflightInputs')->andReturnUsing(fn (ArazzoDocument $d, string $w, array $i) => new ValidationResult($d, [], [], $i));
     $this->app->instance(DocumentInterface::class, $documents);
     $this->app->instance(OpenApiOperationResolver::class, $operations);
 

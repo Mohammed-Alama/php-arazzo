@@ -14,17 +14,17 @@ xychart-beta
     title "Edit churn per module (git touches)"
     x-axis ["laravel:Bindings", "cli:Console", "runner:Execution", "document:Validator", "laravel:Http", "laravel:Persistence", "runner:Async", "expression:Interfaces", "laravel:Support", "document:Parser", "laravel:Queue", "sources:Normalizer"]
     y-axis "Touches" 0 --> 60
-    bar [47, 29, 26, 24, 22, 20, 17, 15, 15, 14, 14, 13]
+    bar [47, 29, 26, 25, 22, 20, 17, 15, 15, 14, 14, 13]
 ```
 
-Analyzed 412 total file-touches across 53 modules.
+Analyzed 415 total file-touches across 53 modules.
 
 | Module | Touches | Share | LOC | Touches/KLOC |
 |---|---:|---:|---:|---:|
 | `laravel:Bindings` | 47 | 11% | 395 | 119 |
 | `cli:Console` | 29 | 7% | 933 | 31.1 |
 | `runner:Execution` | 26 | 6% | 370 | 70.3 |
-| `document:Validator` | 24 | 6% | 3,844 | 6.2 |
+| `document:Validator` | 25 | 6% | 3,846 | 6.5 |
 | `laravel:Http` | 22 | 5% | 187 | 117.6 |
 | `laravel:Persistence` | 20 | 5% | 316 | 63.3 |
 | `runner:Async` | 17 | 4% | 1,346 | 12.6 |
@@ -39,10 +39,10 @@ Analyzed 412 total file-touches across 53 modules.
 | `laravel:Lock` | 9 | 2% | 52 | 173.1 |
 | `engine:Execution` | 7 | 2% | 1,000 | 7 |
 | `evaluation:Plugins` | 7 | 2% | 120 | 58.3 |
+| `runner:Sync` | 7 | 2% | 878 | 8 |
 | `evaluation:Condition` | 6 | 1% | 1,023 | 5.9 |
 | `evaluation:Registries` | 6 | 1% | 121 | 49.6 |
 | `expression:Data` | 6 | 1% | 150 | 40 |
-| `runner:Sync` | 6 | 1% | 875 | 6.9 |
 | `expression:Xpath` | 5 | 1% | 173 | 28.9 |
 | `cli:Generator` | 4 | 1% | 141 | 28.4 |
 | `cli:Renderer` | 4 | 1% | 255 | 15.7 |
@@ -55,6 +55,7 @@ Analyzed 412 total file-touches across 53 modules.
 | `evaluation:Interfaces` | 3 | 1% | 44 | 68.2 |
 | `expression:Enum` | 3 | 1% | 45 | 66.7 |
 | `laravel:Events` | 3 | 1% | 24 | 125 |
+| `sources:Validator` | 3 | 1% | 325 | 9.2 |
 | `contracts:Exceptions` | 2 | 0% | 31 | 64.5 |
 | `contracts:State` | 2 | 0% | 792 | 2.5 |
 | `engine:Data` | 2 | 0% | 74 | 27 |
@@ -65,7 +66,6 @@ Analyzed 412 total file-touches across 53 modules.
 | `expression:Plugins` | 2 | 0% | 128 | 15.6 |
 | `expression:Registries` | 2 | 0% | 73 | 27.4 |
 | `runtime:Infrastructure` | 2 | 0% | 162 | 12.3 |
-| `sources:Validator` | 2 | 0% | 303 | 6.6 |
 | `engine:Exceptions` | 1 | 0% | 42 | 23.8 |
 | `evaluation:Events` | 1 | 0% | 27 | 37 |
 | `events:Interfaces` | 1 | 0% | 19 | 52.6 |
