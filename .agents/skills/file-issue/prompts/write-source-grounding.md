@@ -1,7 +1,7 @@
 # Prompt: write source grounding (`source-grounding`)
 
 Section: `## 🧬 Source Grounding & Code Location`
-Owns the gate codes: `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `source-grounding-empty`.
+Owns the gate codes: `permalink-invalid`, `permalink-not-bare`, `permalink-unverifiable`, `permalink-range-invalid`, `source-grounding-empty`.
 
 This prompt turns located code into pinned evidence: one claim per bullet, the bare URL produced by
 `bin/code-permalink` on the line under it, then a trailing `Verified: YYYY-MM-DD` line. It never
@@ -41,6 +41,10 @@ Rules:
   path must exist at that SHA — otherwise the permalink triggers `permalink-unverifiable`
   (schema severity: warning) or `permalink-invalid` (error).
   Never `blob/main`, never `file:line`, never a URL typed from memory (`permalink-invalid`).
+- The range `#L<start>-L<end>` must fall within the file's line count at the pinned SHA
+  (`1 <= start <= end <= lineCount`). A range past the end of the file triggers
+  `permalink-range-invalid` (warning). When the resolver cannot count the file's lines,
+  the range is not checked (the existing `permalink-unverifiable` warning covers it).
 - The section must contain at least one bare commit-pinned permalink — without one it fails
   `source-grounding-empty`.
 - Write `Verified: YYYY-MM-DD` only after reading the pinned lines at that SHA in the current

@@ -79,7 +79,9 @@ sections:
     label: "Problem Statement & Intent"
     description: "Why this exists, in requirements."
     placeholder: "Observed vs expected (bugfix) or intent (feature), under 150 words, then R1..Rn."
-    checks: { missing-requirement: error }
+    checks:
+      missing-requirement: error
+      problem-statement-too-long: warning
   feature-scope:
     heading: "## 🎯 Feature Scope & Prior Art"
     label: "Feature Scope & Prior Art"
@@ -132,6 +134,7 @@ sections:
       permalink-invalid: error
       permalink-not-bare: error
       permalink-unverifiable: warning
+      permalink-range-invalid: warning
       source-grounding-empty: error
   impact-profile:
     heading: "## 🌍 Public Domains & Impact Profile"
@@ -150,3 +153,4 @@ sections:
 # title, not against any section body.
 title_checks:
   title-kind-mismatch: error
+  draft-reference: warning

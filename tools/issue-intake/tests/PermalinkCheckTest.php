@@ -14,6 +14,11 @@ it('rejects a branch link and a missing path at a known SHA', function () {
             return $path === 'exists.php';
         }
 
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return $path === 'exists.php' ? 10 : null;
+        }
+
         public function isKnown(string $sha): bool
         {
             return true;
@@ -43,6 +48,11 @@ it('warns instead of erroring when the SHA is not in the clone', function () {
         public function pathExistsAt(string $sha, string $path): bool
         {
             return false;
+        }
+
+        public function lineCount(string $sha, string $path): ?int
+        {
+            return null;
         }
 
         public function isKnown(string $sha): bool

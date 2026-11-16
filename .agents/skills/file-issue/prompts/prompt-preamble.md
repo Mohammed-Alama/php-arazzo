@@ -24,6 +24,9 @@ exempts it from `scenario-no-test`, and the dependent agent files the
 `open-decision` until then. `blocked by D#` for a decision that is not
 defined in `feature-scope` raises `blocked-by-unknown-decision` instead.
 
+A `D#` line that ends with `Decided: <option>.` (case-sensitive) is a closed,
+resolved decision and does not count as open.
+
 ## Tier rule
 
 Every `epistemic-matrix` row carries a tier the body can evidence: `T1`
@@ -33,6 +36,9 @@ claim is re-verified.
 
 ## Prohibitions (spec §7.7)
 
+- **No "draft NN" citations.** A body must not cite an unfiled draft number
+  (`draft NN`, `draft #NN`, `Draft NN core`, etc.). Cite the filed issue as
+  `#<n>` instead — otherwise the body triggers `draft-reference` (warning).
 - **No invented permalinks.** A `source-grounding` link is only a bare
   `https://github.com/<owner>/<repo>/blob/<40-hex>/<path>#L<a>-L<b>` line
   produced from `git` in this session (via `bin/code-permalink`). Never a

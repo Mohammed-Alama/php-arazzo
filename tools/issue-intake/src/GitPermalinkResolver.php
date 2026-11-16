@@ -20,6 +20,20 @@ final class GitPermalinkResolver implements PermalinkResolver
         return $this->run(['cat-file', '-e', "{$sha}:{$path}"]);
     }
 
+    public function lineCount(string $sha, string $path): ?int
+    {
+        $count = $this->runString(['cat-file', 'blob', "{$sha}:{$path}"]);
+
+        if ($count === null) {
+            return null;
+        }
+
+        // A file without a trailing newline still counts its last line.
+        $lines = preg_match_all("/\R/", $count) + 1;
+
+        return $lines === null ? null : $lines;
+    }
+
     public function isKnown(string $sha): bool
     {
         return $this->run(['cat-file', '-t', $sha]);
@@ -39,6 +53,23 @@ final class GitPermalinkResolver implements PermalinkResolver
             return $process->isSuccessful();
         } catch (\Throwable $error) {
             return false;
+        }
+    }
+
+    /** Returns the blob contents as a string, or null when it cannot be read. */
+    private function runString(array $arguments): ?string
+    {
+        try {
+            $process = new Process(['git', '-C', $this->repoRoot, ...$arguments]);
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                return null;
+            }
+
+            return $process->getOutput();
+        } catch (\Throwable $error) {
+            return null;
         }
     }
 }
