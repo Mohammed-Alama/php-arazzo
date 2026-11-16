@@ -247,6 +247,7 @@ units:
   - story: 47-execution-trace-artifact
     kind: kind:feature
     parent: 137
+    filed: 364
     tasks:
       - task: 56-cli-trace-export
         kind: kind:feature
