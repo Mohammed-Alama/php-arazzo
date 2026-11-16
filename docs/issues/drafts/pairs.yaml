@@ -251,6 +251,7 @@ units:
     tasks:
       - task: 56-cli-trace-export
         kind: kind:feature
+        filed: 365
 
   - story: 48-deterministic-replay-engine
     kind: kind:feature
